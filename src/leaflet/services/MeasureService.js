@@ -64,6 +64,7 @@ export var MeasureService = ServiceBase.extend({
             params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
         var measureService = new CommonMeasureService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {

@@ -2420,7 +2420,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
         key: 'getJobs',
         value: function getJobs(url) {
             var me = this;
-            _FetchRequest.FetchRequest.get(url).then(function (response) {
+            _FetchRequest.FetchRequest.get(url, null, { proxy: me.proxy }).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 me.events.triggerEvent("processCompleted", { result: result });
@@ -2448,6 +2448,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 paramType.toObject(params, parameterObject);
             }
             var options = {
+                proxy: me.proxy,
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             };
             _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
@@ -2569,6 +2570,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
@@ -2587,6 +2589,8 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         this.url = null;
 
         this.urls = null;
+
+        this.proxy = null;
 
         this.serverType = null;
 
@@ -2695,6 +2699,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         value: function request(options) {
             var me = this;
             options.url = options.url || me.url;
+            options.proxy = options.proxy || me.proxy;
             options.isInTheSameDomain = me.isInTheSameDomain;
             //为url添加安全认证信息片段
             var credential = this.getCredential(options.url);
@@ -2711,6 +2716,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                     options.url += "?" + credential.getUrlParameters();
                 }
             }
+
             me.calculatePollingTimes();
             me._processSuccess = options.success;
             me._processFailed = options.failure;
@@ -4913,6 +4919,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         value: function code(params, callback) {
             var me = this;
             var addressMatchService = new _AddressMatchService.AddressMatchService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4935,6 +4942,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         value: function decode(params, callback) {
             var me = this;
             var addressMatchService = new _AddressMatchService.AddressMatchService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5042,6 +5050,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5067,6 +5076,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5093,6 +5103,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -5132,6 +5143,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5157,6 +5169,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5183,6 +5196,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -5222,6 +5236,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5247,6 +5262,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5274,6 +5290,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -5313,6 +5330,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5338,6 +5356,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5364,6 +5383,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -5403,6 +5423,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _VectorClipJobsService.VectorClipJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5428,6 +5449,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _VectorClipJobsService.VectorClipJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5455,6 +5477,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _VectorClipJobsService.VectorClipJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5495,6 +5518,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _OverlayGeoJobsService.OverlayGeoJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5520,6 +5544,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _OverlayGeoJobsService.OverlayGeoJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5546,6 +5571,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _OverlayGeoJobsService.OverlayGeoJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5586,6 +5612,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _BuffersAnalystJobsService.BuffersAnalystJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5611,6 +5638,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _BuffersAnalystJobsService.BuffersAnalystJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5637,6 +5665,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _BuffersAnalystJobsService.BuffersAnalystJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5677,6 +5706,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _TopologyValidatorJobsService.TopologyValidatorJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5702,6 +5732,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _TopologyValidatorJobsService.TopologyValidatorJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5728,6 +5759,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _TopologyValidatorJobsService.TopologyValidatorJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5768,6 +5800,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _SummaryAttributesJobsService.SummaryAttributesJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5793,6 +5826,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _SummaryAttributesJobsService.SummaryAttributesJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -5819,6 +5853,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _SummaryAttributesJobsService.SummaryAttributesJobsService(me.url, {
+                proxy: me.proxy,
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -9010,7 +9045,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         key: 'processAsync',
         value: function processAsync(url, params) {
             var me = this;
-            _FetchRequest.FetchRequest.get(url, params).then(function (response) {
+            _FetchRequest.FetchRequest.get(url, params, { proxy: me.proxy }).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result) {

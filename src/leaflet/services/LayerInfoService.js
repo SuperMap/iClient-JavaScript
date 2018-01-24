@@ -38,6 +38,7 @@ export var LayerInfoService = ServiceBase.extend({
     getLayersInfo: function (callback) {
         var me = this;
         var getLayersInfoService = new GetLayersInfoService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -68,6 +69,7 @@ export var LayerInfoService = ServiceBase.extend({
         url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
 
         var setLayerInfoService = new SetLayerInfoService(url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -97,6 +99,7 @@ export var LayerInfoService = ServiceBase.extend({
             return;
         }
         var setLayersInfoService = new SetLayersInfoService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -122,6 +125,7 @@ export var LayerInfoService = ServiceBase.extend({
         }
         var me = this;
         var setLayerStatusService = new SetLayerStatusService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

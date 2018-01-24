@@ -2305,6 +2305,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
@@ -2323,6 +2324,8 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         this.url = null;
 
         this.urls = null;
+
+        this.proxy = null;
 
         this.serverType = null;
 
@@ -2431,6 +2434,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         value: function request(options) {
             var me = this;
             options.url = options.url || me.url;
+            options.proxy = options.proxy || me.proxy;
             options.isInTheSameDomain = me.isInTheSameDomain;
             //为url添加安全认证信息片段
             var credential = this.getCredential(options.url);
@@ -2447,6 +2451,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                     options.url += "?" + credential.getUrlParameters();
                 }
             }
+
             me.calculatePollingTimes();
             me._processSuccess = options.success;
             me._processFailed = options.failure;
@@ -3122,6 +3127,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @description mapboxgl.supermap服务基类
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
+ *        proxy - {string} 服务代理地址<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
 var ServiceBase = exports.ServiceBase = function (_mapboxgl$Evented) {
@@ -7349,7 +7355,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
         key: 'getJobs',
         value: function getJobs(url) {
             var me = this;
-            _FetchRequest.FetchRequest.get(url).then(function (response) {
+            _FetchRequest.FetchRequest.get(url, null, { proxy: me.proxy }).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 me.events.triggerEvent("processCompleted", { result: result });
@@ -7377,6 +7383,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 paramType.toObject(params, parameterObject);
             }
             var options = {
+                proxy: me.proxy,
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             };
             _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
@@ -54213,6 +54220,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
         value: function code(params, callback) {
             var me = this;
             var addressMatchService = new _iclientCommon.AddressMatchService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54235,6 +54243,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
         value: function decode(params, callback) {
             var me = this;
             var addressMatchService = new _iclientCommon.AddressMatchService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54323,6 +54332,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var chartQueryService = new _iclientCommon.ChartQueryService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54348,6 +54358,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
                 url = me.url.concat();
             url += "/chartFeatureInfoSpecs";
             var chartFeatureInfoSpecsService = new _iclientCommon.ChartFeatureInfoSpecsService(url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54640,6 +54651,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         value: function getFeaturesByIDs(params, callback, resultFormat) {
             var me = this;
             var getFeaturesByIDsService = new _iclientCommon.GetFeaturesByIDsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -54663,6 +54675,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         value: function getFeaturesByBounds(params, callback, resultFormat) {
             var me = this;
             var getFeaturesByBoundsService = new _iclientCommon.GetFeaturesByBoundsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -54686,6 +54699,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         value: function getFeaturesByBuffer(params, callback, resultFormat) {
             var me = this;
             var getFeatureService = new _iclientCommon.GetFeaturesByBufferService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -54709,6 +54723,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         value: function getFeaturesBySQL(params, callback, resultFormat) {
             var me = this;
             var getFeatureBySQLService = new _iclientCommon.GetFeaturesBySQLService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -54733,6 +54748,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         value: function getFeaturesByGeometry(params, callback, resultFormat) {
             var me = this;
             var getFeaturesByGeometryService = new _iclientCommon.GetFeaturesByGeometryService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -54763,6 +54779,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
 
             url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
             var editFeatureService = new _iclientCommon.EditFeaturesService(url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -54916,6 +54933,7 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
         value: function getFields(params, callback) {
             var me = this;
             var getFieldsService = new _iclientCommon.GetFieldsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55069,6 +55087,7 @@ var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase
             }
             var me = this;
             var gridCellQueryService = new _iclientCommon.GetGridCellInfosService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55152,6 +55171,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
         value: function getLayersInfo(callback) {
             var me = this;
             var getLayersInfoService = new _iclientCommon.GetLayersInfoService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55184,6 +55204,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
             var url = me.url.concat();
             url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
             var setLayerInfoService = new _iclientCommon.SetLayerInfoService(url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55214,6 +55235,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
                 return;
             }
             var setLayersInfoService = new _iclientCommon.SetLayersInfoService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55240,6 +55262,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
             }
             var me = this;
             var setLayerStatusService = new _iclientCommon.SetLayerStatusService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55322,6 +55345,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
         value: function getMapInfo(callback) {
             var me = this;
             var getMapStatusService = new _iclientCommon.MapService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55344,6 +55368,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
         value: function getTilesets(callback) {
             var me = this;
             var tilesetsService = new _iclientCommon.TilesetsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55453,6 +55478,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
         value: function measure(params, type, callback) {
             var me = this;
             var measureService = new _iclientCommon.MeasureService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 measureMode: type,
                 eventListeners: {
@@ -55549,6 +55575,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         value: function sinksFacilityAnalyst(params, callback) {
             var me = this;
             var facilityAnalystSinks3DService = new _iclientCommon.FacilityAnalystSinks3DService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55572,6 +55599,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         value: function sourcesFacilityAnalyst(params, callback) {
             var me = this;
             var facilityAnalystSources3DService = new _iclientCommon.FacilityAnalystSources3DService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55595,6 +55623,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         value: function traceUpFacilityAnalyst(params, callback) {
             var me = this;
             var facilityAnalystTraceup3DService = new _iclientCommon.FacilityAnalystTraceup3DService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55618,6 +55647,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         value: function traceDownFacilityAnalyst(params, callback) {
             var me = this;
             var facilityAnalystTracedown3DService = new _iclientCommon.FacilityAnalystTracedown3DService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55641,6 +55671,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         value: function upstreamFacilityAnalyst(params, callback) {
             var me = this;
             var facilityAnalystUpstream3DService = new _iclientCommon.FacilityAnalystUpstream3DService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55728,6 +55759,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function burstPipelineAnalyst(params, callback) {
             var me = this;
             var burstPipelineAnalystService = new _iclientCommon.BurstPipelineAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55750,6 +55782,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function computeWeightMatrix(params, callback) {
             var me = this;
             var computeWeightMatrixService = new _iclientCommon.ComputeWeightMatrixService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55773,6 +55806,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function findClosestFacilities(params, callback, resultFormat) {
             var me = this;
             var findClosestFacilitiesService = new _iclientCommon.FindClosestFacilitiesService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55797,6 +55831,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function streamFacilityAnalyst(params, callback, resultFormat) {
             var me = this;
             var facilityAnalystStreamService = new _iclientCommon.FacilityAnalystStreamService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55821,6 +55856,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function findLocation(params, callback, resultFormat) {
             var me = this;
             var findLocationService = new _iclientCommon.FindLocationService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55845,6 +55881,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function findPath(params, callback, resultFormat) {
             var me = this;
             var findPathService = new _iclientCommon.FindPathService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55869,6 +55906,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function findTSPPaths(params, callback, resultFormat) {
             var me = this;
             var findTSPPathsService = new _iclientCommon.FindTSPPathsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55893,6 +55931,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function findMTSPPaths(params, callback, resultFormat) {
             var me = this;
             var findMTSPPathsService = new _iclientCommon.FindMTSPPathsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55917,6 +55956,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function findServiceAreas(params, callback, resultFormat) {
             var me = this;
             var findServiceAreasService = new _iclientCommon.FindServiceAreasService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55940,6 +55980,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function updateEdgeWeight(params, callback) {
             var me = this;
             var updateEdgeWeightService = new _iclientCommon.UpdateEdgeWeightService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55962,6 +56003,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         value: function updateTurnNodeWeight(params, callback) {
             var me = this;
             var updateTurnNodeWeightService = new _iclientCommon.UpdateTurnNodeWeightService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56138,6 +56180,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _iclientCommon.KernelDensityJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56163,6 +56206,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _iclientCommon.KernelDensityJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56190,6 +56234,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _iclientCommon.KernelDensityJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -56229,6 +56274,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _iclientCommon.SummaryMeshJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56254,6 +56300,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _iclientCommon.SummaryMeshJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56281,6 +56328,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _iclientCommon.SummaryMeshJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -56320,6 +56368,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _iclientCommon.SingleObjectQueryJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56345,6 +56394,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _iclientCommon.SingleObjectQueryJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56372,6 +56422,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _iclientCommon.SingleObjectQueryJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -56411,6 +56462,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _iclientCommon.SummaryRegionJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56436,6 +56488,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _iclientCommon.SummaryRegionJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56463,6 +56516,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _iclientCommon.SummaryRegionJobsService(me.url, {
+                proxy: me.proxy,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -56502,6 +56556,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _iclientCommon.VectorClipJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56527,6 +56582,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _iclientCommon.VectorClipJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56554,6 +56610,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _iclientCommon.VectorClipJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56594,6 +56651,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _iclientCommon.OverlayGeoJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56619,6 +56677,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _iclientCommon.OverlayGeoJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56646,6 +56705,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _iclientCommon.OverlayGeoJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56686,6 +56746,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _iclientCommon.BuffersAnalystJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56711,6 +56772,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _iclientCommon.BuffersAnalystJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56738,6 +56800,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _iclientCommon.BuffersAnalystJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56778,6 +56841,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _iclientCommon.TopologyValidatorJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56803,6 +56867,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _iclientCommon.TopologyValidatorJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56830,6 +56895,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _iclientCommon.TopologyValidatorJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56870,6 +56936,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _iclientCommon.SummaryAttributesJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56895,6 +56962,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _iclientCommon.SummaryAttributesJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56922,6 +56990,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _iclientCommon.SummaryAttributesJobsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57051,6 +57120,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         value: function queryByBounds(params, callback, resultFormat) {
             var me = this;
             var queryService = new _iclientCommon.QueryByBoundsService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57077,6 +57147,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         value: function queryByDistance(params, callback, resultFormat) {
             var me = this;
             var queryByDistanceService = new _iclientCommon.QueryByDistanceService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57102,6 +57173,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         value: function queryBySQL(params, callback, resultFormat) {
             var me = this;
             var queryBySQLService = new _iclientCommon.QueryBySQLService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57127,6 +57199,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         value: function queryByGeometry(params, callback, resultFormat) {
             var me = this;
             var queryByGeometryService = new _iclientCommon.QueryByGeometryService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57256,6 +57329,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function getAreaSolarRadiationResult(params, callback, resultFormat) {
             var me = this;
             var areaSolarRadiationService = new _iclientCommon.AreaSolarRadiationService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57280,6 +57354,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function bufferAnalysis(params, callback, resultFormat) {
             var me = this;
             var bufferAnalystService = new _iclientCommon.BufferAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57304,6 +57379,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function densityAnalysis(params, callback, resultFormat) {
             var me = this;
             var densityAnalystService = new _iclientCommon.DensityAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57328,6 +57404,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function generateSpatialData(params, callback, resultFormat) {
             var me = this;
             var generateSpatialDataService = new _iclientCommon.GenerateSpatialDataService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57352,6 +57429,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function geoRelationAnalysis(params, callback, resultFormat) {
             var me = this;
             var geoRelationAnalystService = new _iclientCommon.GeoRelationAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57376,6 +57454,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function interpolationAnalysis(params, callback, resultFormat) {
             var me = this;
             var interpolationAnalystService = new _iclientCommon.InterpolationAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57400,6 +57479,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function mathExpressionAnalysis(params, callback, resultFormat) {
             var me = this;
             var mathExpressionAnalysisService = new _iclientCommon.MathExpressionAnalysisService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57424,6 +57504,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function overlayAnalysis(params, callback, resultFormat) {
             var me = this;
             var overlayAnalystService = new _iclientCommon.OverlayAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57448,6 +57529,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function routeCalculateMeasure(params, callback, resultFormat) {
             var me = this;
             var routeCalculateMeasureService = new _iclientCommon.RouteCalculateMeasureService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57472,6 +57554,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function routeLocate(params, callback, resultFormat) {
             var me = this;
             var routeLocatorService = new _iclientCommon.RouteLocatorService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57496,6 +57579,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function surfaceAnalysis(params, callback, resultFormat) {
             var me = this;
             var surfaceAnalystService = new _iclientCommon.SurfaceAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57520,6 +57604,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function terrainCurvatureCalculate(params, callback, resultFormat) {
             var me = this;
             var terrainCurvatureCalculationService = new _iclientCommon.TerrainCurvatureCalculationService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57544,6 +57629,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         value: function thiessenAnalysis(params, callback, resultFormat) {
             var me = this;
             var thiessenAnalystService = new _iclientCommon.ThiessenAnalystService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57720,6 +57806,7 @@ var ThemeService = exports.ThemeService = function (_ServiceBase) {
         value: function getThemeInfo(params, callback) {
             var me = this;
             var themeService = new _iclientCommon.ThemeService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57805,6 +57892,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
         value: function queryStop(params, callback) {
             var me = this;
             var stopQueryService = new _iclientCommon.StopQueryService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57827,6 +57915,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
         value: function analysisTransferPath(params, callback) {
             var me = this;
             var transferPathService = new _iclientCommon.TransferPathService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -57849,6 +57938,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
         value: function analysisTransferSolution(params, callback) {
             var me = this;
             var transferSolutionService = new _iclientCommon.TransferSolutionService(me.url, {
+                proxy: me.options.proxy,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -58958,7 +59048,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         key: 'processAsync',
         value: function processAsync(url, params) {
             var me = this;
-            _FetchRequest.FetchRequest.get(url, params).then(function (response) {
+            _FetchRequest.FetchRequest.get(url, params, { proxy: me.proxy }).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result) {

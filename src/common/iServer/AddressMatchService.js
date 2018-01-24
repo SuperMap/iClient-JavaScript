@@ -58,7 +58,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     processAsync(url, params) {
         var me = this;
-        FetchRequest.get(url, params).then(function (response) {
+        FetchRequest.get(url, params,{proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {

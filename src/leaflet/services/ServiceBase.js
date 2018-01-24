@@ -6,12 +6,15 @@
  * @description L.supermap服务基类
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
+ *        proxy - {string} 服务代理地址<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
 export var ServiceBase = L.Evented.extend({
 
     options: {
         url: null,
+
+        proxy: null,
         //服务来源 iServer|iPortal|online
         serverType: null
     },

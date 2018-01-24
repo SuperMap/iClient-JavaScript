@@ -31,6 +31,7 @@ export class MapService extends ServiceBase {
     getMapInfo(callback) {
         var me = this;
         var getMapStatusService = new CommonMapService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -50,6 +51,7 @@ export class MapService extends ServiceBase {
     getTilesets(callback) {
         var me = this;
         var tilesetsService = new TilesetsService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

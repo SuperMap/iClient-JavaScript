@@ -7,6 +7,7 @@ ol.supermap = ol.supermap || {};
  * @classdesc ol.supermap的服务基类。
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 参数。<br>
+ *        proxy - {string} 服务代理地址<br>
  *        serverType -{SuperMap.ServerType} 服务来源 iServer|iPortal|online <br>
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */

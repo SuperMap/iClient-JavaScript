@@ -40,6 +40,7 @@ export class FeatureService extends ServiceBase {
     getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
         var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -60,6 +61,7 @@ export class FeatureService extends ServiceBase {
     getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
         var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -80,6 +82,7 @@ export class FeatureService extends ServiceBase {
     getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
         var getFeatureService = new GetFeaturesByBufferService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -100,6 +103,7 @@ export class FeatureService extends ServiceBase {
     getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
         var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -121,6 +125,7 @@ export class FeatureService extends ServiceBase {
     getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
         var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -148,6 +153,7 @@ export class FeatureService extends ServiceBase {
 
         url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
         var editFeatureService = new EditFeaturesService(url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

@@ -30,6 +30,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     queryStop: function (params, callback) {
         var me = this;
         var stopQueryService = new StopQueryService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -48,6 +49,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     analysisTransferPath: function (params, callback) {
         var me = this;
         var transferPathService = new TransferPathService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -66,6 +68,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     analysisTransferSolution: function (params, callback) {
         var me = this;
         var transferSolutionService = new TransferSolutionService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

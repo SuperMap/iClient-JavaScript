@@ -31,6 +31,7 @@ export class ThemeService extends ServiceBase {
     getThemeInfo(params, callback) {
         var me = this;
         var themeService = new CommonThemeService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

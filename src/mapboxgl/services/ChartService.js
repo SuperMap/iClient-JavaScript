@@ -34,6 +34,7 @@ export class ChartService extends ServiceBase {
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
         var chartQueryService = new ChartQueryService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -55,6 +56,7 @@ export class ChartService extends ServiceBase {
         var me = this, url = me.url.concat();
         url += "/chartFeatureInfoSpecs";
         var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

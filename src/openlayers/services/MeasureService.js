@@ -49,6 +49,7 @@ export class MeasureService extends ServiceBase {
     measure(params, type, callback) {
         var me = this;
         var measureService = new CommonMeasureService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {

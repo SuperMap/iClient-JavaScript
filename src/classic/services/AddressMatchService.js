@@ -25,6 +25,7 @@ export class AddressMatchService extends CommonServiceBase {
     code(params, callback) {
         var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
+            proxy: me.proxy,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
@@ -44,6 +45,7 @@ export class AddressMatchService extends CommonServiceBase {
     decode(params, callback) {
         var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
+            proxy: me.proxy,
             serverType: me.serverType,
             eventListeners: {
                 scope: me,

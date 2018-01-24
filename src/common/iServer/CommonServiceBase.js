@@ -14,6 +14,7 @@ import {FunctionExt} from '../commontypes/BaseTypes';
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
@@ -31,6 +32,8 @@ export class CommonServiceBase {
         this.url = null;
 
         this.urls = null;
+
+        this.proxy = null;
 
         this.serverType = null;
 
@@ -132,6 +135,7 @@ export class CommonServiceBase {
     request(options) {
         let me = this;
         options.url = options.url || me.url;
+        options.proxy = options.proxy || me.proxy;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);
@@ -148,6 +152,7 @@ export class CommonServiceBase {
                 options.url += "?" + credential.getUrlParameters();
             }
         }
+
         me.calculatePollingTimes();
         me._processSuccess = options.success;
         me._processFailed = options.failure;

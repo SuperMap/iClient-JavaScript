@@ -29,7 +29,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
          * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
          */
         options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
-        super(url, options)
+        super(url, options);
 
         this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
     }
@@ -49,7 +49,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(url).then(function (response) {
+        FetchRequest.get(url, null, {proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             me.events.triggerEvent("processCompleted", {result: result});
@@ -73,6 +73,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
             paramType.toObject(params, parameterObject);
         }
         var options = {
+            proxy: me.proxy,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
         FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
@@ -94,7 +95,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(result.newResourceLocation,{_t:new Date().getTime()})
+                FetchRequest.get(result.newResourceLocation, {_t: new Date().getTime()})
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {

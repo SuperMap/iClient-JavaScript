@@ -32,6 +32,7 @@ export var FieldService = ServiceBase.extend({
     getFields: function (params, callback) {
         var me = this;
         var getFieldsService = new GetFieldsService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

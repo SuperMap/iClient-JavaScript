@@ -47,6 +47,7 @@ export class SpatialAnalystService extends ServiceBase {
     getAreaSolarRadiationResult(params, callback, resultFormat) {
         var me = this;
         var areaSolarRadiationService = new AreaSolarRadiationService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -68,6 +69,7 @@ export class SpatialAnalystService extends ServiceBase {
     bufferAnalysis(params, callback, resultFormat) {
         var me = this;
         var bufferAnalystService = new BufferAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -89,6 +91,7 @@ export class SpatialAnalystService extends ServiceBase {
     densityAnalysis(params, callback, resultFormat) {
         var me = this;
         var densityAnalystService = new DensityAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -110,6 +113,7 @@ export class SpatialAnalystService extends ServiceBase {
     generateSpatialData(params, callback, resultFormat) {
         var me = this;
         var generateSpatialDataService = new GenerateSpatialDataService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -131,6 +135,7 @@ export class SpatialAnalystService extends ServiceBase {
     geoRelationAnalysis(params, callback, resultFormat) {
         var me = this;
         var geoRelationAnalystService = new GeoRelationAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -152,6 +157,7 @@ export class SpatialAnalystService extends ServiceBase {
     interpolationAnalysis(params, callback, resultFormat) {
         var me = this;
         var interpolationAnalystService = new InterpolationAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -173,6 +179,7 @@ export class SpatialAnalystService extends ServiceBase {
     mathExpressionAnalysis(params, callback, resultFormat) {
         var me = this;
         var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -194,6 +201,7 @@ export class SpatialAnalystService extends ServiceBase {
     overlayAnalysis(params, callback, resultFormat) {
         var me = this;
         var overlayAnalystService = new OverlayAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -215,6 +223,7 @@ export class SpatialAnalystService extends ServiceBase {
     routeCalculateMeasure(params, callback, resultFormat) {
         var me = this;
         var routeCalculateMeasureService = new RouteCalculateMeasureService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -236,6 +245,7 @@ export class SpatialAnalystService extends ServiceBase {
     routeLocate(params, callback, resultFormat) {
         var me = this;
         var routeLocatorService = new RouteLocatorService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -257,6 +267,7 @@ export class SpatialAnalystService extends ServiceBase {
     surfaceAnalysis(params, callback, resultFormat) {
         var me = this;
         var surfaceAnalystService = new SurfaceAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -278,6 +289,7 @@ export class SpatialAnalystService extends ServiceBase {
     terrainCurvatureCalculate(params, callback, resultFormat) {
         var me = this;
         var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -299,6 +311,7 @@ export class SpatialAnalystService extends ServiceBase {
     thiessenAnalysis(params, callback, resultFormat) {
         var me = this;
         var thiessenAnalystService = new ThiessenAnalystService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

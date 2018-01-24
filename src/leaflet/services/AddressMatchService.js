@@ -32,6 +32,7 @@ export var AddressMatchService = ServiceBase.extend({
     code: function (params, callback) {
         var me = this;
         var addressMatchService = new CommonMatchAddressService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -51,6 +52,7 @@ export var AddressMatchService = ServiceBase.extend({
     decode: function (params, callback) {
         var me = this;
         var addressMatchService = new CommonMatchAddressService(me.url, {
+            proxy: me.options.proxy,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
