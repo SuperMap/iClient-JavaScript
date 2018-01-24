@@ -26946,7 +26946,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc ElasticSearch服务类。
  * @param url - {string} ElasticSearch服务地址。
  * @param options - {Object} 可选参数。如:</br>
- *         change - {function} 服务器返回数据后执行的函数。</br>
+ *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>
  *         openGeoFence - {boolean} 是否开启地理围栏验证，默认为不开启。</br>
  *         outOfGeoFence - {function} 数据超出地理围栏后执行的函数。</br>
  *         geoFence - {Object} 地理围栏。</br>
@@ -26970,8 +26970,9 @@ var ElasticSearch = exports.ElasticSearch = function () {
             host: this.url
         });
         /**
+         *  @deprecated
          *  @member SuperMap.ElasticSearch.prototype.change -{function}
-         *  @description 服务器返回数据后执行的函数
+         *  @description 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
          */
         this.change = null;
         /**
@@ -27325,21 +27326,23 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch</br>
          * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html</br>
          * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         *     回调参数：error,response。结果存储在response.responses中
          */
 
     }, {
         key: 'msearch',
         value: function msearch(params, callback) {
             var me = this;
-            if (me.openGeoFence) {
-                return me.client.msearch(params, callback).then(function (resp) {
-                    me._update(resp.responses);
-                }, function (err) {
-                    me.events.triggerEvent('error', { error: err });
-                });
-            }
-            return me.client.msearch(params, callback);
+
+            return me.client.msearch(params).then(function (resp) {
+                me._update(resp.responses, callback);
+                return resp;
+            }, function (err) {
+                callback(err);
+                me.events.triggerEvent('error', { error: err });
+                return err;
+            });
         }
 
         /**
@@ -27483,21 +27486,22 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search</br>
          * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html</br>
          * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         *     回调参数：error,response,结果存储在response.responses中
          */
 
     }, {
         key: 'search',
         value: function search(params, callback) {
             var me = this;
-            if (me.openGeoFence) {
-                return me.client.search(params, callback).then(function (resp) {
-                    me._update(resp.responses);
-                }, function (err) {
-                    me.events.triggerEvent('error', { error: err });
-                });
-            }
-            return me.client.search(params, callback);
+            return me.client.search(params).then(function (resp) {
+                me._update(resp.responses, callback);
+                return resp;
+            }, function (err) {
+                callback(err);
+                me.events.triggerEvent('error', { error: err });
+                return err;
+            });
         }
 
         /**
@@ -27591,17 +27595,23 @@ var ElasticSearch = exports.ElasticSearch = function () {
         }
     }, {
         key: '_update',
-        value: function _update(data) {
+        value: function _update(data, callback) {
             var me = this;
             if (!data) {
                 return;
             }
             me.data = data;
-            if (me.geoFence) {
+            if (me.openGeoFence && me.geoFence) {
                 me._validateDatas(data);
             }
             me.events.triggerEvent('change', { data: me.data });
-            me.change && me.change(data);
+            //change方法已废弃，不建议使用。建议使用search方法的第二个参数传入请求成功的回调
+            if (me.change) {
+                me.change && me.change(data);
+            } else {
+                //加responses是为了保持跟原来es自身的数据结构一致
+                callback && callback(undefined, { responses: data });
+            }
         }
     }, {
         key: '_validateDatas',
@@ -91728,7 +91738,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 472 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 473 */

@@ -26133,7 +26133,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc ElasticSearch服务类。
  * @param url - {string} ElasticSearch服务地址。
  * @param options - {Object} 可选参数。如:</br>
- *         change - {function} 服务器返回数据后执行的函数。</br>
+ *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>
  *         openGeoFence - {boolean} 是否开启地理围栏验证，默认为不开启。</br>
  *         outOfGeoFence - {function} 数据超出地理围栏后执行的函数。</br>
  *         geoFence - {Object} 地理围栏。</br>
@@ -26157,8 +26157,9 @@ var ElasticSearch = exports.ElasticSearch = function () {
             host: this.url
         });
         /**
+         *  @deprecated
          *  @member SuperMap.ElasticSearch.prototype.change -{function}
-         *  @description 服务器返回数据后执行的函数
+         *  @description 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
          */
         this.change = null;
         /**
@@ -26512,21 +26513,23 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch</br>
          * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html</br>
          * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         *     回调参数：error,response。结果存储在response.responses中
          */
 
     }, {
         key: 'msearch',
         value: function msearch(params, callback) {
             var me = this;
-            if (me.openGeoFence) {
-                return me.client.msearch(params, callback).then(function (resp) {
-                    me._update(resp.responses);
-                }, function (err) {
-                    me.events.triggerEvent('error', { error: err });
-                });
-            }
-            return me.client.msearch(params, callback);
+
+            return me.client.msearch(params).then(function (resp) {
+                me._update(resp.responses, callback);
+                return resp;
+            }, function (err) {
+                callback(err);
+                me.events.triggerEvent('error', { error: err });
+                return err;
+            });
         }
 
         /**
@@ -26670,21 +26673,22 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search</br>
          * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html</br>
          * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         *     回调参数：error,response,结果存储在response.responses中
          */
 
     }, {
         key: 'search',
         value: function search(params, callback) {
             var me = this;
-            if (me.openGeoFence) {
-                return me.client.search(params, callback).then(function (resp) {
-                    me._update(resp.responses);
-                }, function (err) {
-                    me.events.triggerEvent('error', { error: err });
-                });
-            }
-            return me.client.search(params, callback);
+            return me.client.search(params).then(function (resp) {
+                me._update(resp.responses, callback);
+                return resp;
+            }, function (err) {
+                callback(err);
+                me.events.triggerEvent('error', { error: err });
+                return err;
+            });
         }
 
         /**
@@ -26778,17 +26782,23 @@ var ElasticSearch = exports.ElasticSearch = function () {
         }
     }, {
         key: '_update',
-        value: function _update(data) {
+        value: function _update(data, callback) {
             var me = this;
             if (!data) {
                 return;
             }
             me.data = data;
-            if (me.geoFence) {
+            if (me.openGeoFence && me.geoFence) {
                 me._validateDatas(data);
             }
             me.events.triggerEvent('change', { data: me.data });
-            me.change && me.change(data);
+            //change方法已废弃，不建议使用。建议使用search方法的第二个参数传入请求成功的回调
+            if (me.change) {
+                me.change && me.change(data);
+            } else {
+                //加responses是为了保持跟原来es自身的数据结构一致
+                callback && callback(undefined, { responses: data });
+            }
         }
     }, {
         key: '_validateDatas',
