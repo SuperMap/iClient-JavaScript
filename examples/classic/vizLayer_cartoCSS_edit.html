@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>CartoCSS编辑</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_cartoCSS_edit">CartoCSS编辑</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -42,8 +40,8 @@
 </head>
 <body>
 <div id="cartoContainer" class="toolbar panel panel-primary">
-    <a href="#" style="position: absolute;right: 15px;top: 15px;z-index: 100" onclick="toggle(event)">隐藏</a>
-    <div id="text" class='panel-heading'><h5 class='panel-title text-center'>CartoCSS样式表：</h5></div>
+    <a href="#" style="position: absolute;right: 15px;top: 15px;z-index: 100" onclick="toggle(event)" data-i18n="resources.text_hide">隐藏</a>
+    <div id="text" class='panel-heading'><h5 class='panel-title text-center' data-i18n="resources.text_cartoCSSStyleChart">CartoCSS样式表：</h5></div>
     <div class='panel'>
         <div class='input-group'>
             <textarea id="cartocssStr"></textarea>
@@ -53,6 +51,8 @@
            style="margin-bottom: 10px"/>-->
 </div>
 <div id="map"></div>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, layer, editor, cartoCssStr, cartoContainer,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
@@ -61,7 +61,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas,false);
             return;
         }
         //语言默认为跟当前浏览器的语言一样,当要切换至英文时,要先引入英文的语言包，然后用以下语言切换
@@ -115,9 +115,9 @@
         var element = SuperMap.Event.element(event);
         SuperMap.Element.toggleClass(cartoContainer, "hide");
         if (SuperMap.Element.hasClass(cartoContainer, "hide")) {
-            element.innerHTML = "打开";
+            element.innerHTML = resources.btn_open;
         } else {
-            element.innerHTML = "隐藏";
+            element.innerHTML = resources.text_hide;
         }
     }
 </script>

@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>热点图颜色手动配置</title>
-    <script type="text/javascript" include="bootstrap,colorpicker,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_heatMapColorManual">热点图颜色手动配置</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -55,16 +53,16 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>热点图颜色手动配置</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_heatMapColorManual">热点图颜色手动配置</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>热点数量：</span>
+                <span class='input-group-addon' data-i18n="resources.text_countsDraw">热点数量：</span>
                 <input class='form-control' type='text' style='width:50px;' id='heatNums' value='200'/>
             </div>
 
             <div class='input-group'>
-                <span class='input-group-addon'>热点半径：</span>
+                <span class='input-group-addon' data-i18n="resources.text_radius">热点半径：</span>
                 <input class='form-control' type='text' style='width:50px' value='50' id='heatradius'/>
                 <select class='form-control' style='width:70px' id='radiusUnit'>
                     <option value='px'>px</option>
@@ -72,23 +70,24 @@
                 </select>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon' style="width:112px;height: 16px;">请输入颜色值：</span>
+                <span class='input-group-addon' style="width:112px;height: 16px;" data-i18n="resources.text_radius">请输入颜色值：</span>
                 <input type="text" class='form-control' id="cp1text" value="" style=" width:102px;"/>
-                <span class='input-group-addon'><img src='./images/colorpicker.png' id="cp1"
-                                                     style="cursor:pointer"/></span>
+                <span class='input-group-addon'><img src='./images/colorpicker.png' id="cp1" style="cursor:pointer"/></span>
             </div>
         </div>
-        <input type="button" class="btn btn-default" id="btn1" value="渲染热点" onclick="createHeatPoints()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" value="清除" onclick="clearHeatPoints()"/>
+        <input type="button" class="btn btn-default" id="btn1" data-i18n="[value]resources.btn_startDraw" onclick="createHeatPoints()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearHeatPoints()"/>
     </div>
 </div>
 <div class="row panel panel-primary" id="colorList">
     <div class="winTitle">
-        <span class="title_left">已添加颜色值：</span>
-        <span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span>
+        <span class="title_left" data-i18n="resources.text_addedColor">已添加颜色值：</span>
+        <span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口" data-i18n="resources.text_close">关闭</a></span>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,colorpicker,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, layer, heatMapLayer, color = [],
@@ -98,7 +97,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
 
@@ -187,20 +186,20 @@
         if (severColor.value.match(/rgb()/)) {
             for (var i = 0; i < color.length; i++) {
                 if (severColor.value == color[i]) {
-                    widgets.alert.showAlert("重复添加！",false);
+                    widgets.alert.showAlert(resources.msg_repeatedAdditions,false);
                     return;
                     $("#colorList").css("display", "block");
                 }
             }
             initColorList(severColor.value);
             color.push(severColor.value);
-            var cl_s = "new  SuperMap.REST.ServerColor" + severColor.value.replace(/rgb/gi, "");
+            var cl_s = "new SuperMap.REST.ServerColor" + severColor.value.replace(/rgb/gi, "");
             var cl = eval(cl_s);
             heatMapLayer.colors.push(cl);
             $("#colorList").css("display", "block");
         }
         else {
-            widgets.alert.showAlert("请选颜色值",true);
+            widgets.alert.showAlert(resources.msg_chooseColor, true);
             severColor.value = "";
         }
 

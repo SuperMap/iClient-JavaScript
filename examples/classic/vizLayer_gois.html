@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>麻点图</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_goisLayer">麻点图</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,13 +32,15 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>麻点图</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_goisLayer">麻点图</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="渲染麻点图" onclick="createLayer()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="清除" onclick="clearLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_startDraw" onclick="createLayer()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayer()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, datasetName, popup, myGOIs, control,
         host = window.isLocal ? window.server : "http://117.122.248.69:8090",

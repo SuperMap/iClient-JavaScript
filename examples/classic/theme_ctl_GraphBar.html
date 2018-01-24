@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>柱状图</title>
+    <title data-i18n="resources.title_GraphBar">柱状图</title>
     <style type="text/css">
         .editPane {
             position: absolute;
@@ -17,13 +17,15 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>柱状图</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.title_GraphBar">柱状图</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='right' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='添加专题图' onclick="addThemeLayer()"/>
-            <input type='button' id='btn2' class='btn btn-primary' value='清除' onclick="clearThemeLayer()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.btn_addThemeLayer"
+                   onclick="addThemeLayer()"/>
+            <input type='button' id='btn2' class='btn btn-primary' data-i18n="[value]resources.text_input_value_clear"
+                   onclick="clearThemeLayer()"/>
         </div>
     </div>
 </div>
@@ -38,7 +40,7 @@
 
     // 统计图模块要求浏览器支持 Canvas 渲染
     if (!document.createElement('canvas').getContext) {
-        widgets.alert.showAlert("您的浏览器不支持 Canvas，请升级！", false);
+        widgets.alert.showAlert(resources.msg_supportCanvas, false);
     }
 
     map = new SuperMap.Map("map", {
@@ -151,24 +153,24 @@
 
             // 弹窗内容
             var contentHTML = "<div style='color: #000; background-color: #fff'>";
-            contentHTML += "省级行政区名称:<br><strong>" + fea.attributes.NAME + "</strong>";
+            contentHTML += resources.text_Name + "<br><strong>" + fea.attributes.NAME + "</strong>";
 
             contentHTML += "<hr style='margin: 3px'>";
             switch (info.field) {
                 case "CON2009":
-                    contentHTML += "09年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "09" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2010":
-                    contentHTML += "10年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "10" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2011":
-                    contentHTML += "11年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "11" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2012":
-                    contentHTML += "12年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "12" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2013":
-                    contentHTML += "13年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "13" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 default:
                     contentHTML += "No Data";
@@ -202,7 +204,7 @@
                 map.removePopup(infowin);
             }
             catch (e) {
-                widgets.alert.showAlert(e.message,false);
+                widgets.alert.showAlert(e.message, false);
             }
         }
     }

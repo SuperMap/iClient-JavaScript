@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>春运模拟</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_animatorMigrate">春运模拟</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,7 +23,7 @@
             position: absolute;
             top: 50px;
             right: 10px;
-            width: 220px;
+            width: 230px;
             text-align: center;
             z-index: 100;
             border-radius: 4px;
@@ -35,20 +33,22 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>春运模拟</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_animatorMigrate">春运模拟</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <label style="display:inline">当前时间：</label>
+                <label data-i18n="resources.text_currentTime" style="display:inline">当前时间：</label>
                 <label style="display:inline" id="timeDate"></label>
                 <label style="display:inline" id="timeHour"></label>
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="播放" onclick="startAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="暂停" onclick="pauseAnimator()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="startAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pause" onclick="pauseAnimator()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text" id="cartocssStr">
     @color:#111;
     #World_Continent_txt___China::hover{
@@ -77,6 +77,7 @@
     #China_Boundary_A___China{
     line-color:#000000;
     }
+
 
 
 
@@ -197,7 +198,7 @@
     function init() {
 
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         //初始化地图
@@ -327,33 +328,33 @@
         }
 
         function processFailed(getFeaturesEventArgs) {
-            widgets.alert.showAlert(getFeaturesEventArgs.error.errorMsg,false);
+            widgets.alert.showAlert(getFeaturesEventArgs.error.errorMsg, false);
         }
     }
 
     function changeTime(time) {
         if (time >= 0 && time < 1) {
-            document.getElementById("timeDate").innerHTML = "腊月二十四";
+            document.getElementById("timeDate").innerHTML = resources.text_24;
         }
         else if (time >= 1 && time < 2) {
-            document.getElementById("timeDate").innerHTML = "腊月二十五";
+            document.getElementById("timeDate").innerHTML = resources.text_25;
         }
         else if (time >= 1 && time < 3) {
-            document.getElementById("timeDate").innerHTML = "腊月二十六";
+            document.getElementById("timeDate").innerHTML = resources.text_26;
         }
         else if (time >= 1 && time < 4) {
-            document.getElementById("timeDate").innerHTML = "腊月二十七";
+            document.getElementById("timeDate").innerHTML = resources.text_27;
         }
         else if (time >= 1 && time < 5) {
-            document.getElementById("timeDate").innerHTML = "腊月二十八";
+            document.getElementById("timeDate").innerHTML = resources.text_28;
         }
         else if (time >= 1 && time < 6) {
-            document.getElementById("timeDate").innerHTML = "腊月二十九";
+            document.getElementById("timeDate").innerHTML = resources.text_29;
         }
         else if (time >= 1 && time < 7) {
-            document.getElementById("timeDate").innerHTML = "大年三十";
+            document.getElementById("timeDate").innerHTML = resources.text_23;
         }
-        document.getElementById("timeHour").innerHTML = parseInt((time - parseInt(time)) * 24) + "点";
+        document.getElementById("timeHour").innerHTML = parseInt((time - parseInt(time)) * 24) + resources.text_clock;
     }
 
     //添加迁徙数据
@@ -397,7 +398,7 @@
     }
 
     function processFailed(getFeaturesEventArgs) {
-        widgets.alert.showAlert(getFeaturesEventArgs.error.errorMsg,false);
+        widgets.alert.showAlert(getFeaturesEventArgs.error.errorMsg, false);
     }
 
     //开始播放动画

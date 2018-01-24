@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>折线图</title>
+    <title data-i18n="resources.title_GraphLine">折线图</title>
     <style type="text/css">
         .editPane {
             position: absolute;
@@ -18,13 +18,13 @@
 
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>折线图</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.title_GraphLine">折线图</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='right' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='添加专题图' onclick="addThemeLayer()"/>
-            <input type='button' id='btn2' class='btn btn-primary' value='清除' onclick="clearThemeLayer()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.btn_addThemeLayer" onclick="addThemeLayer()"/>
+            <input type='button' id='btn2' class='btn btn-primary' data-i18n="[value]resources.text_input_value_clear" onclick="clearThemeLayer()"/>
         </div>
     </div>
 </div>
@@ -39,7 +39,7 @@
 
     // 统计图模块要求浏览器支持 Canvas 渲染
     if (!document.createElement('canvas').getContext) {
-        widgets.alert.showAlert("您的浏览器不支持 Canvas，请升级！", false);
+        widgets.alert.showAlert(resources.msg_supportCanvas, false);
     }
 
     map = new SuperMap.Map("map", {
@@ -88,8 +88,8 @@
         },
         xShapeBlank: [10, 10],       // 水平方向上的空白间距参数
         axisYTick: 4,         // y 轴刻度数量
-        axisYLabels: ["4万", "3万", "2万", "1万", "0"],         // y 轴标签
-        axisXLabels: ["09年", "10年", "11年", "12年", "13年"],         // x 轴标签
+        axisYLabels: ["4w", "3w", "2w", "1w", "0"],         // y 轴标签
+        axisXLabels: ["2009", "2010", "2011", "2012", "2013"],         // x 轴标签
         backgroundStyle: {fillColor: "#CCE8CF"},        // 背景样式
         backgroundRadius: [5, 5, 5, 5]        // 背景框圆角参数
     };

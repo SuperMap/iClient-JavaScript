@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>缓冲区查询</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_getFeatureByBuffer">缓冲区查询</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,15 +32,17 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>缓冲区查询</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_getFeatureByBuffer">缓冲区查询</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="点" onclick="drawPointGeometry()" />
-        <input type="button" class="btn btn-default" value="线" onclick="drawLineGeometry()" />
-        <input type="button" class="btn btn-default" value="面" onclick="drawPolygonGeometry()" />
-        <input type="button" class="btn btn-default" value="清除" onclick="clearFeatures()" />
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_point" onclick="drawPointGeometry()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_line" onclick="drawLineGeometry()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_Polygon" onclick="drawPolygonGeometry()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, local, layer, vectorLayer, drawPoint, drawLine, drawPolygon, markerLayer,
@@ -52,15 +52,19 @@
             pointerEvents: "visiblePainted",
             fillColor: "#304DBE",
             fillOpacity: 0.5,
-            pointRadius:2
+            pointRadius: 2
         },
-        url1=host+"/iserver/services/map-world/rest/maps/World",
-        url2=host+"/iserver/services/data-world/rest/data";
+        url1 = host + "/iserver/services/map-world/rest/maps/World",
+        url2 = host + "/iserver/services/data-world/rest/data";
 
     init();
-    function init(){
-        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url1, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
-        layer.events.on({"layerInitialized":addLayer});
+
+    function init() {
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url1, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
         vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
         markerLayer = new SuperMap.Layer.Markers("Markers");
 
@@ -73,14 +77,16 @@
         drawPolygon = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Polygon);
         drawPolygon.events.on({"featureadded": drawCompleted});
 
-        map = new SuperMap.Map("map",{controls: [
-            new SuperMap.Control.ScaleLine(),
-            new SuperMap.Control.Zoom(),
-            new SuperMap.Control.Navigation({
-                dragPanOptions: {
-                    enableKinetic: true
-                }}),
-            drawPoint, drawLine, drawPolygon]
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                }),
+                drawPoint, drawLine, drawPolygon]
         });
         map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
     }
@@ -89,6 +95,7 @@
         map.addLayers([layer, vectorLayer, markerLayer]);
         map.setCenter(new SuperMap.LonLat(0, 0), 0);
     }
+
     function drawPointGeometry() {
         //先清除上次的显示结果
         vectorLayer.removeAllFeatures();
@@ -96,6 +103,7 @@
 
         drawPoint.activate();
     }
+
     function drawLineGeometry() {
         //先清除上次的显示结果
         vectorLayer.removeAllFeatures();
@@ -103,6 +111,7 @@
 
         drawLine.activate();
     }
+
     function drawPolygonGeometry() {
         //先清除上次的显示结果
         vectorLayer.removeAllFeatures();
@@ -110,6 +119,7 @@
 
         drawPolygon.activate();
     }
+
     function drawCompleted(drawGeometryArgs) {
         drawPoint.deactivate();
         drawLine.deactivate();
@@ -124,7 +134,7 @@
             bufferDistance: 30,
             //attributeFilter: "SMID > 0",
             datasetNames: ["World:Capitals"],
-            returnContent:true,
+            returnContent: true,
             geometry: drawGeometryArgs.feature.geometry
         });
         getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(url2, {
@@ -140,10 +150,10 @@
         var i, len, features, result = getFeaturesEventArgs.result;
         if (result && result.features) {
             features = result.features;
-            for (i=0, len=features.length; i<len; i++) {
+            for (i = 0, len = features.length; i < len; i++) {
                 var point = features[i].geometry,
                     size = new SuperMap.Size(44, 33),
-                    offset = new SuperMap.Pixel(-(size.w/2), -size.h),
+                    offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
                     icon = new SuperMap.Icon("./images/marker.png", size, offset);
                 markerLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
             }
@@ -151,8 +161,9 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
+
     function clearFeatures() {
         vectorLayer.removeAllFeatures();
         markerLayer.clearMarkers();

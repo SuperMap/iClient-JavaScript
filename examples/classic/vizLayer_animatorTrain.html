@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>火车监控模拟</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_animatorTrain">火车监控模拟</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,20 +32,22 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>火车监控模拟</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_animatorTrain">火车监控模拟</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="播放" onclick="startAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="暂停" onclick="pauseAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="停止" onclick="stopAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="加速" onclick="increaseSpeed()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="减速" onclick="decreaseSpeed()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="正/反播放" onclick="setReverseAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="开/关闪烁" onclick="setGlint()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="开/关尾巴" onclick="setTailr()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="显示/隐藏铁路线" onclick="show()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="startAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pause" onclick="pauseAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_stop" onclick="stopAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_acceleration" onclick="increaseSpeed()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deceleration" onclick="decreaseSpeed()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_switchDirection" onclick="setReverseAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_switchTwinkle" onclick="setGlint()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_switchTails" onclick="setTailr()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_showOrHideTrain" onclick="show()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text" id="cartocssStr">
           /*此处定义不同的颜色变量，在后面可以重复用这些颜色值*/
 
@@ -92,6 +92,7 @@
         polygon-fill:@waterColor;
         }
 
+
 </script>
 <script>
     var map, layer, animatorVector, lineVector1, lineVector2,
@@ -114,9 +115,10 @@
         };
 
     init();
+
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         //初始化地图
@@ -261,7 +263,7 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     //开始播放动画

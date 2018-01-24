@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>车辆监控模拟</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_animatorCar">车辆监控模拟</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,15 +32,17 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>车辆监控模拟</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_animatorCar">车辆监控模拟</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="查询车辆" onclick="queryBySQL()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="开始监控" onclick="startAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="暂停监控" onclick="pauseAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="停止监控" onclick="stopAnimator()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_queryCar" onclick="queryBySQL()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_startAnimator" onclick="startAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pauseAnimator" onclick="pauseAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_stopAnimator" onclick="stopAnimator()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, layer, vectorLayer, features, cars, animatorVector,
         //定义公交线路的样式。
@@ -77,10 +77,10 @@
         var broz = SuperMap.Util.getBrowser();
 
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         } else if (broz.device === 'android') {
-            widgets.alert.showAlert('您的设备不支持高性能渲染，请使用pc或其他设备',false);
+            widgets.alert.showAlert(resources.msg_supportEquipment, false);
             return;
         }
 
@@ -178,7 +178,7 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     //开始播放动画

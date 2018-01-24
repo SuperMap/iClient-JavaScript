@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>地铁修建模拟</title>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
-    <script type="text/javascript" include="responsive,bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_animatorMetro">地铁修建模拟</title>
     <script type="text/javascript" src="./data/animationExtendLineData.js"></script>
     <style type="text/css">
         body {
@@ -39,14 +37,16 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>地铁修建模拟</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_animatorMetro">地铁修建模拟</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="播放" onclick="startAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="暂停" onclick="pauseAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="显示/隐藏底图" onclick="show()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="startAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pause" onclick="pauseAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_showOrHide" onclick="show()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript" include="responsive,bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script>
     var map, layer, animatorVector, vectorLayer, popup,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
@@ -156,7 +156,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         //初始化地图
@@ -222,7 +222,7 @@
             var po = ml.components[0];
             var contentHTML = "";
             contentHTML += "<span style='font-size:12px; line-height: 12px;background-color: #fff'>";
-            contentHTML += po.MetroName + "站";
+            contentHTML += po.MetroName + resources.text_stops;
             contentHTML += "</span>";
             var popup = new SuperMap.Popup("d",
                 new SuperMap.LonLat(po.x, po.y),
@@ -257,7 +257,7 @@
         popup = new SuperMap.Popup.FramedCloud("chicken",
             new SuperMap.LonLat(e.geometry.x, e.geometry.y),
             null,
-            "地铁" + e.attributes["metro"] + "</br>" + e.attributes["name"] + "站",
+            resources.text_metro + e.attributes["metro"] + "</br>" + e.attributes["name"] + resources.text_stops,
             null,
             true);
         map.addPopup(popup);
@@ -344,7 +344,7 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     //开始播放动画

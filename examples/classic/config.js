@@ -588,34 +588,42 @@ var exampleConfig = {
                     fileName: "analysis_routeLocatorPoint"
                 }, {
                     name: "点密度插值分析",
+                    name_en: "point density analysis",
                     thumbnail: "analysis_interpolationAnalystByDensity.png",
                     fileName: "analysis_interpolationAnalystByDensity"
                 }, {
                     name: "反距离加权插值分析",
+                    name_en: "inverse distance weighted analysis",
                     thumbnail: "analysis_interpolationAnalystByIDW.png",
                     fileName: "analysis_interpolationAnalystByIDW"
                 }, {
                     name: "克吕金插值分析",
+                    name_en: "Kriging interpolation",
                     thumbnail: "analysis_interpolationAnalystByKriging.png",
                     fileName: "analysis_interpolationAnalystByKriging"
                 }, {
                     name: "径向基函数插值分析",
+                    name_en: "KrigingUniversal interpolation",
                     thumbnail: "analysis_interpolationAnalystByRBF.png",
                     fileName: "analysis_interpolationAnalystByRBF"
                 }, {
                     name: "离散点插值分析",
+                    name_en: "radial basis function interpolation",
                     thumbnail: "analysis_interpolationAnalystByGeometry.png",
                     fileName: "analysis_interpolationAnalystByGeometry"
                 }, {
                     name: "地形曲率计算",
+                    name_en: "discrete point interpolation",
                     thumbnail: "analysis_terrainCurvatureCalculation.png",
                     fileName: "analysis_terrainCurvatureCalculation"
                 }, {
                     name: "栅格代数运算",
+                    name_en: "terrain curvature calculation",
                     thumbnail: "analysis_mathExpression.png",
                     fileName: "analysis_mathExpression"
                 }, {
                     name: "核密度分析",
+                    name_en: "math expression",
                     thumbnail: "analysis_densityKernelAnalyst.png",
                     fileName: "analysis_densityKernelAnalyst"
                 },

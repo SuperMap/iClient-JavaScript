@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>热点网格图</title>
+    <title data-i18n="resources.title_heatGridMapLayer">热点网格图</title>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
@@ -236,7 +236,7 @@
         var bounds = geo.getBounds();
         var center = bounds.getCenterLonLat();
         var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>";
-        contentHTML += "<div>" + "SmID：" + feature.data.SmID + "<br />" + "国家：" + feature.data.COUNTRY + "<br />" + "首都：" + feature.data.CAPITAL + "</div></div>";
+        contentHTML += "<div>" + "SmID：" + feature.data.SmID + "<br />" + resources.text_country + feature.data.COUNTRY + "<br />" + resources.text_capital + feature.data.CAPITAL + "</div></div>";
 
         var popup = new SuperMap.Popup.FramedCloud("popwin",
             new SuperMap.LonLat(center.lon, center.lat),

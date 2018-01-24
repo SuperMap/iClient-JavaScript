@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>地铁修建模拟2</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_animatorMetro2">地铁修建模拟2</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -35,14 +33,16 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>地铁修建模拟2</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_animatorMetro2">地铁修建模拟2</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="播放" onclick="startAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="暂停" onclick="pauseAnimator()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="显示/隐藏底图" onclick="show()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="startAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pause" onclick="pauseAnimator()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_showOrHide" onclick="show()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, layer, animatorVector, labelLayer, pointLayer, popup, selectFeature,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
@@ -165,7 +165,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         //初始化地图
@@ -261,7 +261,7 @@
         popup = new SuperMap.Popup.FramedCloud("click",
             new SuperMap.LonLat(e.geometry.x, e.geometry.y),
             null,
-            "地铁" + e.attributes["Metro"] + "</br>" + e.attributes["MetroName"] + "站",
+            resources.text_metro + e.attributes["Metro"] + "</br>" + e.attributes["MetroName"] + resources.text_stops,
             null,
             true);
         map.addPopup(popup);
@@ -391,7 +391,7 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     //开始播放动画

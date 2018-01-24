@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>热点图颜色分段配置</title>
-    <script type="text/javascript" include="bootstrap,responsive,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" include="heatmapColorCSS" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_heatMapColorSection">热点图颜色分段配置</title>
+<script type="text/javascript" exclude="iclient-classic" include="heatmapColorCSS"
+        src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -41,7 +41,6 @@
         .popupWindow {
             right: 10px;
             bottom: 5px;
-            width: 220px;
             position: absolute;
             background: #FFF;
             z-index: 9999;
@@ -65,17 +64,17 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>热点图颜色分段配置</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_heatMapColorSection">热点图颜色分段配置</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>热点数量：</span>
+                <span class='input-group-addon' data-i18n="resources.text_countsDraw">热点数量：</span>
                 <input type='text' class='form-control' id='heatNums' value='200'/>
             </div>
         </div>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>热点半径：</span>
+                <span class='input-group-addon' data-i18n="resources.text_radius">热点半径：</span>
                 <input class='form-control' style='width: 50px' value='50' id='heatradius'/>
                 <select class='form-control' style='width:auto' id='radiusUnit'>
                     <option value='px'>px</option>
@@ -83,62 +82,76 @@
                 </select>
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="渲染热点" onclick="createHeatPoints()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" value="清除" onclick="clearHeatPoints()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_startDraw"
+               onclick="createHeatPoints()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
+               onclick="clearHeatPoints()"/>
     </div>
 </div>
 <div id="popupWin" class="panel panel-primary popupWindow">
     <div class="winTitle">
-        <span class="title_left">颜色分段配置</span>
+        <span class="title_left" data-i18n="resources.text_colorSection">颜色分段配置</span>
     </div>
     <div class="winContent" style="overflow-y:auto;height:250px;">
         <table>
             <tbody>
             <tr>
-                <td style="padding-right: 25px;"> 温度范围</td>
-                <td style="padding-left: 25px;"> 颜色渐变</td>
+                <td data-i18n="resources.text_temperatureRange" style="padding-right: 25px;padding-left: 5px;"> 温度范围
+                </td>
+                <td data-i18n="resources.text_colorGrad" style="padding-right:10px;padding-left: 20px;"> 颜色渐变</td>
             </tr>
             </tbody>
         </table>
         <div style="height: 21px;">
             <label class="lab">17--18</label>
-            <div class="ex" id="ex1" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex1" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">18--19</label>
-            <div class="ex" id="ex2" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex2" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">19--20</label>
-            <div class="ex" id="ex3" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex3" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">20--21</label>
-            <div class="ex" id="ex4" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex4" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">21--22</label>
-            <div class="ex" id="ex5" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex5" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">22--23</label>
-            <div class="ex" id="ex6" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex6" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">23--24</label>
-            <div class="ex" id="ex7" style="top: -23px;left: 86px;"></div>
+
+
+            <div class="ex" id="ex7" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">24--25</label>
-            <div class="ex" id="ex8" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex8" data-i18n="[style]resources.set_style"></div>
         </div>
         <div style="height: 21px;">
             <label class="lab">25--26</label>
-            <div class="ex" id="ex9" style="top: -23px;left: 86px;"></div>
+
+            <div class="ex" id="ex9" data-i18n="[style]resources.set_style"></div>
         </div>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,responsive,widgets.alert" src="../js/include-web.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, layer, heatMapLayer,
@@ -149,7 +162,7 @@
     function init() {
         if (!document.createElement('canvas').getContext) {
             document.getElementById("popupWin").style.display = "none";
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         map = new SuperMap.Map("map", {

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>强边界风格</title>
+    <title data-i18n="resources.title_boundryStyle">强边界风格</title>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
@@ -110,7 +110,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas,false);
             return;
         }
 

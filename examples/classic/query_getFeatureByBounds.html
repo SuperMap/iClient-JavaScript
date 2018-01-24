@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>数据集范围查询</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_getFeatureByBounds">数据集范围查询</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,13 +32,15 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>数据集范围查询</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_getFeatureByBounds">数据集范围查询</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="查询" onclick="draw()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="清除" onclick="clearFeatures()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="draw()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, local, layer, vectorLayer, markerLayer, drawBounds,
@@ -131,7 +131,7 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     function clearFeatures() {

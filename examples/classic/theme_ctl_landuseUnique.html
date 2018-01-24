@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>单值专题图</title>
+    <title data-i18n="resources.title_landuseUnique">单值专题图</title>
     <style type="text/css">
         /*图例 style*/
         .legend {
@@ -68,13 +68,13 @@
 
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>单值专题图</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.title_landuseUnique">单值专题图</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='right' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='添加专题图层' onclick="addThemeLayer()"/>
-            <input type='button' id='btn2' class='btn btn-primary' value='清除' onclick="clearLayer()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.btn_addThemeLayer" onclick="addThemeLayer()"/>
+            <input type='button' id='btn2' class='btn btn-primary' data-i18n="[value]resources.text_input_value_clear" onclick="clearLayer()"/>
         </div>
     </div>
 </div>
@@ -83,67 +83,67 @@
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
     <div id="mapLegend" class="legend">
         <div class="legendTitle">
-            <span>图例</span>
+            <span data-i18n="resources.text_legend">图例</span>
         </div>
         <div class="legendContent">
             <table>
                 <tr>
-                    <td class="legendItemHeader">土地类型</td>
-                    <td class="legendItemValue">颜色</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_landType">土地类型</td>
+                    <td class="legendItemValue" data-i18n="resources.text_color">颜色</td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">草地</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_grassland">草地</td>
                     <td class="legendItemValue" style="background: #C1FFC1"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">城市</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_city">城市</td>
                     <td class="legendItemValue" style="background: #CD7054"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">灌丛</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_shrub">灌丛</td>
                     <td class="legendItemValue" style="background: #7CCD7C"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">旱地</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_dryLand">旱地</td>
                     <td class="legendItemValue" style="background: #EE9A49"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">湖泊水库</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_lakeReservoir">湖泊水库</td>
                     <td class="legendItemValue" style="background: #8EE5EE"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">经济林</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_economicForest">经济林</td>
                     <td class="legendItemValue" style="background: #548B54"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">沙漠</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_desert">沙漠</td>
                     <td class="legendItemValue" style="background: #DEB887"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">水浇地</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_irrigatedLand">水浇地</td>
                     <td class="legendItemValue" style="background: #E0FFFF"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">水田</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_paddyField">水田</td>
                     <td class="legendItemValue" style="background: #388E8E"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">用材林</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_timberForest">用材林</td>
                     <td class="legendItemValue" style="background: #556B2F"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">沼泽</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_swamp">沼泽</td>
                     <td class="legendItemValue" style="background: #2F4F4F"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">缺省风格</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_DefaultStyle">缺省风格</td>
                     <td class="legendItemValue" style="background: #ABABAB"></td>
                 </tr>
             </table>
         </div>
     </div>
     <div id="infoPlane">
-        <div style="text-align: center;background: #1E90FF"> 属性表</div>
+        <div data-i18n="resources.text_attributeTable" style="text-align: center;background: #1E90FF"> 属性表</div>
         <div id="infoContent" style="overflow-y: auto; padding: 5px; background-color: #FFFFFF">
         </div>
     </div>
@@ -158,7 +158,7 @@
     var map, layer, themeLayer;
     // 检测是否支持 Canvas
     if (!document.createElement('canvas').getContext) {
-        widgets.alert.showAlert("您的浏览器不支持 Canvas，请升级！", false);
+        widgets.alert.showAlert(resources.msg_supportCanvas, false);
     }
 
     map = new SuperMap.Map("map", {
@@ -208,73 +208,73 @@
     // 风格数组，设定值对应的样式
     themeLayer.styleGroups = [
         {
-            value: "草地",
+            value: resources.text_grassland,
             style: {
                 fillColor: "#C1FFC1"
             }
         },
         {
-            value: "城市",
+            value: resources.text_city,
             style: {
                 fillColor: "#CD7054"
             }
         },
         {
-            value: "灌丛",
+            value: resources.text_shrub,
             style: {
                 fillColor: "#7CCD7C"
             }
         },
         {
-            value: "旱地",
+            value: resources.text_dryLand,
             style: {
                 fillColor: "#EE9A49"
             }
         },
         {
-            value: "湖泊水库",
+            value: resources.text_lakeReservoir,
             style: {
                 fillColor: "#8EE5EE"
             }
         },
         {
-            value: "经济林",
+            value: resources.text_economicForest,
             style: {
                 fillColor: "#548B54"
             }
         },
         {
-            value: "沙漠",
+            value: resources.text_desert,
             style: {
                 fillColor: "#DEB887"
             }
         },
         {
-            value: "水浇地",
+            value: resources.text_irrigatedLand,
             style: {
                 fillColor: "#E0FFFF"
             }
         },
         {
-            value: "水田",
+            value: resources.text_paddyField,
             style: {
                 fillColor: "#388E8E"
             }
         },
         {
-            value: "用材林",
+            value: resources.text_timberForest,
             style: {
                 fillColor: "#556B2F"
             }
         },
         {
-            value: "沼泽",
+            value: resources.text_swamp,
             style: {
                 fillColor: "#2F4F4F"
             }
         },
         {
-            value: "缺省风格",
+            value: resources.text_DefaultStyle,
             style: {
                 fillColor: "#ABABAB"
             }
@@ -355,8 +355,8 @@
             if (fea) {
                 document.getElementById("infoContent").innerHTML = "";
                 document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
-                document.getElementById("infoContent").innerHTML += "土地类型: " + fea.attributes.LANDTYPE + "<br/>";
-                document.getElementById("infoContent").innerHTML += "面积: " + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
+                document.getElementById("infoContent").innerHTML += resources.text_landType+": " + fea.attributes.LANDTYPE + "<br/>";
+                document.getElementById("infoContent").innerHTML += resources.text_area + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
             }
         }
         else {
