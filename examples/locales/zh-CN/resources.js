@@ -106,7 +106,15 @@ window.resources = {
         "soon": "敬请期待"
     },
     "footer": {
-        "copyright": "版权所有 © 2000-2017 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074"
+        "download": "下载",
+        "faq": "常见问题",
+        "supermap": "超图官网",
+        "dituhui": "地图慧",
+        "support": "超图技术资源中心",
+        "tel": "电话",
+        "sns": "WebGIS中文技术圈 QQ群",
+        "sns_tips": "点击链接加入群",
+        "copyright": "版权所有 © 2000-2018 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074"
     },
     "resources": {
         "title_tiledMapLayer4326": "SuperMap REST 地图服务底图",
@@ -691,7 +699,7 @@ window.resources = {
         "msg_updateFeatureSuccess":'更新地物成功',
         "msg_updateFeatureFailed":'更新地物失败',
         "msg_deleteFeatureSuccess":'删除地物成功',
-        "msg_deleteFeatureFailed":'删除地物失败',
+        "msg_deleteFeatureFailed":'删除地物失败'
 
 
     }
