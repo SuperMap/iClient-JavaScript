@@ -125,13 +125,28 @@ a {
     padding: 10px 0;
 }
 
-.icl-contact .home-link {
-    padding: 10px;
+.contact-main {
+    margin: 0 auto;
+    max-width: 770px;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.home-link {
+    padding: 14px 60px;
 }
 
 .home-link a {
     padding: 0 20px;
     color: #7d7d7d;
+}
+
+.contact-link, .join-link {
+    padding-left: 20px;
+}
+
+.join-link {
+    margin-top: 10px;
 }
 
 /*footer end */

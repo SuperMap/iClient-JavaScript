@@ -111,9 +111,13 @@ window.resources = {
         "supermap": "超图官网",
         "dituhui": "地图慧",
         "support": "超图技术资源中心",
-        "tel": "电话",
+        "tel": "电话：",
         "sns": "WebGIS中文技术圈 QQ群",
-        "sns_tips": "点击链接加入群",
+        "sns_tips": "（点击链接加入群）",
+        "contact": "联系我们：",
+        "join": "加入我们： 超图Web客户端团队 ",
+        "join_tips1": "（请发邮件至: ",
+        "join_tips2": "，附上您的简历哦）",
         "copyright": "版权所有 © 2000-2018 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074"
     },
     "resources": {

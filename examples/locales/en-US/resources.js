@@ -111,9 +111,13 @@ window.resources = {
         "supermap": "SuperMap",
         "dituhui": "dituhui",
         "support": "Technical Resource Center",
-        "tel": "Tel",
+        "tel": "Tel: ",
         "sns": " WebGIS Chinese Technical QQ Group",
-        "sns_tips": "click to join",
+        "sns_tips": " (click to join)",
+        "contact": "Contact us: ",
+        "join": "Join us: SuperMap Web Client Team",
+        "join_tips1": "(Please send email to: ",
+        "join_tips2": " and attach your resume)",
         "copyright": "Copyright © 2000-2018 SuperMap Software Co., Ltd. All rights reserved"
     },
     "resources": {
