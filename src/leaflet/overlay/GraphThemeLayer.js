@@ -100,7 +100,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        if (bounds && bounds instanceof L.LatLngBounds) {
+        if (this.options.alwaysMapCRS && bounds && bounds instanceof L.LatLngBounds) {
             var crs = this._map.options.crs;
             bounds = L.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
@@ -412,7 +412,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
         var crs = this._map.options.crs;
-        mapBounds = L.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        if(this.options.alwaysMapCRS ){
+            mapBounds = L.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        }
         mapBounds = CommontypesConversion.toSuperMapBounds(mapBounds);
         var charts = me.charts;
         var chartsBounds = [];

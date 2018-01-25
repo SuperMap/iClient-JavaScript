@@ -26150,7 +26150,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
+        if (this.options.alwaysMapCRS && bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
             var crs = this._map.options.crs;
             bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
@@ -28677,7 +28677,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
+        if (this.options.alwaysMapCRS && bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
             var crs = this._map.options.crs;
             bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
@@ -28987,7 +28987,9 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
         var crs = this._map.options.crs;
-        mapBounds = _leaflet2["default"].bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        if (this.options.alwaysMapCRS) {
+            mapBounds = _leaflet2["default"].bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        }
         mapBounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(mapBounds);
         var charts = me.charts;
         var chartsBounds = [];
@@ -29329,9 +29331,9 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
                 }
 
                 //屏蔽有偏移性质的style属性,偏移量在算bounds时已经加入计算
-                var leftBottom = map.options.crs.project(geoBs[3]);
-                var rightTop = map.options.crs.project(geoBs[1]);
-                var bounds = new _iclientCommon.Bounds(leftBottom.x, leftBottom.y, rightTop.x, [rightTop.y]);
+                var leftBottom = geoBs[3];
+                var rightTop = geoBs[1];
+                var bounds = new _iclientCommon.Bounds(leftBottom.lng, leftBottom.lat, rightTop.lng, rightTop.lat);
                 var center = bounds.getCenterLonLat();
                 var label = new _iclientCommon.GeoText(center.lon, center.lat, fi.attributes[this.themeField]);
                 label.calculateBounds();
@@ -29488,7 +29490,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
 
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
-        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(_leaflet2["default"].point(locationTmp.x, locationTmp.y)));
+        var locTmp = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS ? _leaflet2["default"].latLng(locationTmp.y, locationTmp.x) : this._map.options.crs.unproject(_leaflet2["default"].point(locationTmp.x, locationTmp.y)));
         var loc = _leaflet2["default"].point(locTmp.x, locTmp.y);
 
         //偏移处理
@@ -55470,6 +55472,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
     options: {
+        //要素坐标是否和地图坐标系一致，默认为false，要素默认是经纬度坐标。
+        alwaysMapCRS: false,
         name: null,
         opacity: 1,
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
@@ -55846,14 +55850,15 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         var coor = coordinate;
         if (_leaflet2["default"].Util.isArray(coordinate)) {
             coor = _leaflet2["default"].point(coordinate[0], coordinate[1]);
-        } else if (!(coordinate instanceof _leaflet2["default"].Point)) {
+        }
+        if (!(coordinate instanceof _leaflet2["default"].Point)) {
             if (coordinate instanceof _iclientCommon.GeometryPoint || coordinate instanceof _iclientCommon.GeoText) {
                 coor = _leaflet2["default"].point(coordinate.x, coordinate.y);
             } else {
                 coor = _leaflet2["default"].point(coordinate.lon, coordinate.lat);
             }
         }
-        var point = this._map.latLngToContainerPoint(this._map.options.crs.unproject(coor));
+        var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS ? _leaflet2["default"].latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
         return [point.x, point.y];
     },
 
@@ -94335,7 +94340,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 500 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 501 */

@@ -46,7 +46,8 @@
         themeLayer = L.supermap.uniqueThemeLayer("ThemeLayer", {
             // 开启 hover 高亮效果
             isHoverAble: true,
-            opacity: 0.8
+            opacity: 0.8,
+            alwaysMapCRS:true
         }).addTo(map);
 
         // 图层基础样式

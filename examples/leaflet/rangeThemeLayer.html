@@ -45,7 +45,8 @@
         themeLayer = L.supermap.rangeThemeLayer("ThemeLayer", {
             // 开启 hover 高亮效果
             isHoverAble: true,
-            opacity: 0.8
+            opacity: 0.8,
+            alwaysMapCRS:true
         }).addTo(map);
 
         themeLayer.style = new SuperMap.ThemeStyle({

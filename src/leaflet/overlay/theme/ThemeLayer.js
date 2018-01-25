@@ -12,6 +12,8 @@ import {CommonUtil, GeometryPoint as Point, GeoText, LevelRenderer} from '@super
 export var ThemeLayer = L.Layer.extend({
 
     options: {
+        //要素坐标是否和地图坐标系一致，默认为false，要素默认是经纬度坐标。
+        alwaysMapCRS:false,
         name: null,
         opacity: 1,
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
@@ -389,7 +391,8 @@ export var ThemeLayer = L.Layer.extend({
         var coor = coordinate;
         if (L.Util.isArray(coordinate)) {
             coor = L.point(coordinate[0], coordinate[1]);
-        } else if (!(coordinate instanceof L.Point)) {
+        } 
+        if (!(coordinate instanceof L.Point)) {
             if (coordinate instanceof Point || coordinate instanceof GeoText) {
                 coor = L.point(coordinate.x, coordinate.y);
             } else {
@@ -397,7 +400,7 @@ export var ThemeLayer = L.Layer.extend({
             }
 
         }
-        var point = this._map.latLngToContainerPoint(this._map.options.crs.unproject(coor));
+        var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS?L.latLng(coor.y,coor.x):this._map.options.crs.unproject(coor));
         return [point.x, point.y];
     },
 

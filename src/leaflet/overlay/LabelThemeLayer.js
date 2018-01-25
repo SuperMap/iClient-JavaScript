@@ -245,9 +245,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
                 }
 
                 //屏蔽有偏移性质的style属性,偏移量在算bounds时已经加入计算
-                var leftBottom = map.options.crs.project(geoBs[3]);
-                var rightTop = map.options.crs.project(geoBs[1]);
-                var bounds = new Bounds(leftBottom.x, leftBottom.y, rightTop.x, [rightTop.y]);
+                var leftBottom = geoBs[3];
+                var rightTop =  geoBs[1];
+                var bounds = new Bounds(leftBottom.lng, leftBottom.lat, rightTop.lng, rightTop.lat);
                 var center = bounds.getCenterLonLat();
                 var label = new GeoText(center.lon, center.lat, fi.attributes[this.themeField]);
                 label.calculateBounds();
@@ -404,7 +404,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
-        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(L.point(locationTmp.x, locationTmp.y)));
+        var locTmp = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS?L.latLng(locationTmp.y,locationTmp.x):this._map.options.crs.unproject(L.point(locationTmp.x, locationTmp.y)));
         var loc = L.point(locTmp.x, locTmp.y);
 
         //偏移处理

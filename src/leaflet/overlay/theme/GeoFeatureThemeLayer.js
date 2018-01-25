@@ -126,7 +126,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        if (bounds && bounds instanceof L.LatLngBounds) {
+        if (this.options.alwaysMapCRS && bounds && bounds instanceof L.LatLngBounds) {
             var crs = this._map.options.crs;
             bounds = L.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
