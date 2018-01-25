@@ -20,7 +20,7 @@
             "src/classic","src/common/thirdparty"
         ],
         "exclude": [
-            "src/common/overlay/feature","src/common/overlay/levelRenderer"
+            "src/common/overlay/feature","src/common/overlay/levelRenderer","src/classic/libs","src/classic/theme","src/classic/resource"
         ]
     },
     "plugins": ["plugins/markdown"],
