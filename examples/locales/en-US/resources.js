@@ -51,7 +51,8 @@ window.resources = {
             "trafficTransferAnalystService": "Traffic Transfer Analysis Service",
             "processingService": "Distributed Analysis Services",
             "dataFlow": "Data Flow Service",
-            "addressMatch": "Address Match Service"
+            "addressMatch": "Address Match Service",
+            "visualization":"visualization"
         },
         "examples": {
             "_name": "Example",

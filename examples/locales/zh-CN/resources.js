@@ -51,7 +51,8 @@ window.resources = {
             "trafficTransferAnalystService": "使用交通换乘分析",
             "processingService": "使用分布式分析服务",
             "dataFlow": "使用数据流服务",
-            "addressMatch": "使用地址匹配服务"
+            "addressMatch": "使用地址匹配服务",
+            "visualization":"使用可视化"
         },
         "examples": {
             "_name": "示例",
