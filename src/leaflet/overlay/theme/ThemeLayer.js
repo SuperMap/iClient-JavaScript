@@ -6,14 +6,17 @@ import {CommonUtil, GeometryPoint as Point, GeoText, LevelRenderer} from '@super
  * @classdesc 专题图层基类，调用建议使用其子类实现类。
  * @private
  * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param name - {string} 专题图层名称
- * @param options -{Object} 待设置得参数。
+ * @param name - {string} 专题图图层名称
+ * @param options -{Object} 可选参数，如：</br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {L.Map} 当前leaflet的map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
  */
 export var ThemeLayer = L.Layer.extend({
 
     options: {
         //要素坐标是否和地图坐标系一致，默认为false，要素默认是经纬度坐标。
-        alwaysMapCRS:false,
+        alwaysMapCRS: false,
         name: null,
         opacity: 1,
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
@@ -24,7 +27,8 @@ export var ThemeLayer = L.Layer.extend({
 
     initialize: function (name, options) {
         L.Util.setOptions(this, options);
-        this.options.name = name;
+        this.name = name;
+        this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         this.features = [];
         this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
         this.levelRenderer = new LevelRenderer();
@@ -273,15 +277,15 @@ export var ThemeLayer = L.Layer.extend({
         L.DomUtil.setPosition(this.container, mapOffset);
 
         var me = this;
-       //  var bounds = me._map.getBounds();
-       //  var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
-       //  var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
-       // // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
-       // // offsetLeft = -Math.round(offsetLeft);
-       //  //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
-       //  //offsetTop = -Math.round(offsetTop);
-       //  me.container.style.left = mapOffset[0] + 'px';
-       //  me.container.style.top = mapOffset[1] + 'px';
+        //  var bounds = me._map.getBounds();
+        //  var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
+        //  var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+        // // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
+        // // offsetLeft = -Math.round(offsetLeft);
+        //  //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
+        //  //offsetTop = -Math.round(offsetTop);
+        //  me.container.style.left = mapOffset[0] + 'px';
+        //  me.container.style.top = mapOffset[1] + 'px';
 
         //绘制专题要素
         if (me.renderer) {
@@ -391,7 +395,7 @@ export var ThemeLayer = L.Layer.extend({
         var coor = coordinate;
         if (L.Util.isArray(coordinate)) {
             coor = L.point(coordinate[0], coordinate[1]);
-        } 
+        }
         if (!(coordinate instanceof L.Point)) {
             if (coordinate instanceof Point || coordinate instanceof GeoText) {
                 coor = L.point(coordinate.x, coordinate.y);
@@ -400,18 +404,18 @@ export var ThemeLayer = L.Layer.extend({
             }
 
         }
-        var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS?L.latLng(coor.y,coor.x):this._map.options.crs.unproject(coor));
+        var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS ? L.latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
         return [point.x, point.y];
     },
 
     _initContainer: function () {
         var parentContainer = this.getPane();
         var animated = this._map.options.zoomAnimation && L.Browser.any3d;
-        var className = this.options.name || "themeLayer";
-        className += ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide');
+        var className = 'themeLayer leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide');
         this.container = L.DomUtil.create("div", className, parentContainer);
 
         var originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+        this.container.id = this.id;
         this.container.style[originProp] = '50% 50%';
 
         this.container.style.position = "absolute";
@@ -445,15 +449,15 @@ export var ThemeLayer = L.Layer.extend({
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
         var size = me._map.getSize();
-         // var bounds = me._map.getBounds();
-         // var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
-         // var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+        // var bounds = me._map.getBounds();
+        // var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
+        // var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
         // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
         // offsetLeft = -Math.round(offsetLeft);
-         //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
-         //offsetTop = -Math.round(offsetTop);
-         //me.container.style.left = mapOffset[0] + 'px';
-         //me.container.style.top = mapOffset[1] + 'px';
+        //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
+        //offsetTop = -Math.round(offsetTop);
+        //me.container.style.left = mapOffset[0] + 'px';
+        //me.container.style.top = mapOffset[1] + 'px';
         var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
         L.DomUtil.setPosition(this.container, mapOffset);
 

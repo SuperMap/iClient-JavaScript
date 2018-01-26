@@ -7,15 +7,19 @@ import {
     GeometryPoint as Point,
     GeoText,
     LevelRenderer,
-    CommonUtil as Util
+    CommonUtil
 } from '@supermap/iclient-common';
 
 /**
  * @private
  * @class mapboxgl.supermap.ThemeLayer
  * @classdesc 专题图基类。
- * @param name - {string} 图层名。
- * @param options -{Object} 参数。
+ * @param name - {string} 专题图图层名。
+ * @param options -{Object} 可选参数，如：</br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
  */
 export class Theme {
 
@@ -28,6 +32,11 @@ export class Theme {
          */
         this.name = name;
 
+        /**
+         * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
+         * @description 专题图图层id
+         */
+        this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
          * @member mapboxgl.supermap.ThemeLayer.prototype.opacity -{float}
          * @description 图层透明度
@@ -49,14 +58,16 @@ export class Theme {
         this.features = [];
         this.TFEvents = [];
         this.movingOffset = [0, 0];
+        this.mapContainer = this.map.getCanvasContainer();
         this.div = document.createElement('div');
+        this.div.id = this.id;
+        this.div.style.position = 'absolute';
         var container = this.map.getCanvasContainer();
         var canvas = this.map.getCanvas();
-        this.div.id = this.name;
+        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         this.div.style.width = canvas.style.width;
         this.div.style.height = canvas.style.height;
-        this.div.style.position = "absolute";
-        this.div.className = (options.name != null) ? opt_options.name : "themeLayer";
+        this.div.className = "themeLayer";
         this.div.width = parseInt(canvas.width);
         this.div.height = parseInt(canvas.height);
         container.appendChild(this.div);
@@ -68,10 +79,17 @@ export class Theme {
         this.renderer.clear();
         //处理用户预先（在图层添加到 map 前）监听的事件
         this.addTFEvents();
+        this.map.on('resize', this.resizeEvent.bind(this));
+        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
+        this.map.on('zoomend', this.zoomEndEvent.bind(this));
+        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
+        this.map.on('rotate', this.rotateEvent.bind(this));
+        this.map.on('rotateend', this.rotateEndEvent.bind(this));
+        this.map.on('dragend', this.dragEndEvent.bind(this));
+        this.map.on('movestart', this.moveStartEvent.bind(this));
         this.map.on('move', this.moveEvent.bind(this));
         this.map.on('moveend', this.moveEndEvent.bind(this));
         this.map.on('remove', this.removeFromMap.bind(this));
-        this.map.on('resize', this.resizeEvent.bind(this));
     }
 
     /**
@@ -101,7 +119,7 @@ export class Theme {
         if (opacity !== this.opacity) {
             this.opacity = opacity;
             var element = this.div;
-            Util.modifyDOMElement(element, null, null, null,
+            CommonUtil.modifyDOMElement(element, null, null, null,
                 null, null, null, opacity);
 
             if (this.map !== null) {
@@ -137,7 +155,7 @@ export class Theme {
         if (features === this.features) {
             return this.removeAllFeatures();
         }
-        if (!(Util.isArray(features))) {
+        if (!(CommonUtil.isArray(features))) {
             features = [features];
         }
         var featuresFailRemoved = [];
@@ -145,7 +163,7 @@ export class Theme {
             var feature = features[i];
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = Util.indexOf(this.features, feature);
+            var findex = CommonUtil.indexOf(this.features, feature);
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
                 continue;
@@ -268,7 +286,7 @@ export class Theme {
     }
 
     /**
-     * @function L.supermap.ThemeLayer.prototype.off
+     * @function mapboxgl.supermap.ThemeLayer.prototype.off
      * @description 移除专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
@@ -327,34 +345,105 @@ export class Theme {
         return new ServerFeature.fromJson(feature).toFeature();
     }
 
-    moveEvent() {
+    moveEndEvent() {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        this.div.style.transform = '';
+        this.redrawThematicFeatures(this.map.getBounds());
+        this._show();
+    }
+
+    moveStartEvent(e) {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        this.startPitch = this.map.getPitch();
+        this.startBearing = this.map.getBearing();
+        if (e.originalEvent) {
+            this.startMoveX = e.originalEvent.pageX;
+            this.startMoveY = e.originalEvent.pageY;
+        }
+    }
+
+    moveEvent(e) {
         if (this.loadWhileAnimating) {
             this.redrawThematicFeatures(this.map.getBounds());
+            return;
+        }
+        if (this.rotating || this.zooming) {
+            return;
+        }
+        if (this.map.getPitch() !== 0) {
+            this._hide();
+        }
+        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+        var tPitch = this.map.getPitch() - this.startPitch;
+        var tBearing = -this.map.getBearing() + this.startBearing;
+        var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
+        var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+        this.div.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
+    }
+
+    zoomStartEvent() {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        this.zooming = true;
+        this._hide();
+    }
+
+    zoomEndEvent() {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        this.zooming = false;
+        this._show();
+    }
+
+    rotateStartEvent() {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        this.rotating = true;
+    }
+
+    rotateEvent() {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        if (this.map.getPitch() !== 0) {
+            this._hide();
+        }
+        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+        var tPitch = this.map.getPitch() - this.startPitch;
+        var tBearing = -this.map.getBearing() + this.startBearing;
+        this.div.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)'
+    }
+
+    rotateEndEvent() {
+        if (this.loadWhileAnimating) {
+            return;
+        }
+        this.rotating = false;
+        this._show();
+    }
+
+    dragEndEvent() {
+        if (this.loadWhileAnimating) {
             return;
         }
         this._hide();
     }
 
-    moveEndEvent() {
-        if (this.loadWhileAnimating) {
-            return;
-        }
-        this.redrawThematicFeatures(this.map.getBounds());
-        this._show();
-    }
-
-    /**
-     * @function mapboxgl.supermap.ThemeLayer.prototype.resizeEvent
-     * @description 调整事件
-     */
     resizeEvent() {
+        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var canvas = this.map.getCanvas();
         this.div.style.width = canvas.style.width;
         this.div.style.height = canvas.style.height;
         this.div.width = parseInt(canvas.width);
         this.div.height = parseInt(canvas.height);
         this.renderer.resize();
-        this.redrawThematicFeatures(this.map.getBounds());
     }
 
     /**
@@ -364,6 +453,32 @@ export class Theme {
     removeFromMap() {
         this.map.getCanvasContainer().removeChild(this.div);
         this.removeAllFeatures();
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThemeLayer.prototype.moveTo
+     * @description 将图层移动到某个图层之前。
+     * @param layerID - {string} 待插入的图层ID。
+     * @param before - {boolean} 是否将本图层插入到图层id为layerID的图层之前(默认为true，如果为false则将本图层插入到图层id为layerID的图层之后)。
+     */
+    moveTo(layerID, before) {
+        var layer = document.getElementById(this.div.id);
+        before = before !== undefined ? before : true;
+        if (before) {
+            var beforeLayer = document.getElementById(layerID);
+            if (layer && beforeLayer) {
+                beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+            }
+            return;
+        }
+        var nextLayer = document.getElementById(layerID);
+        if (layer) {
+            if (nextLayer.nextSibling) {
+                nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+                return;
+            }
+            nextLayer.parentNode.appendChild(layer);
+        }
     }
 
     _hide() {

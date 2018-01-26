@@ -13,12 +13,15 @@ export class MapvLayer {
 
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
+        this.layerID = mapVOptions.layerID;
+        delete mapVOptions["layerID"];
         this.renderer = new MapvRenderer(map, this, dataSet, mapVOptions);
         this.mapVOptions = mapVOptions;
         this.canvas = this._createCanvas();
         this.renderer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
         this.mapContainer.appendChild(this.canvas);
+        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
     }
 
     /**
@@ -108,6 +111,7 @@ export class MapvLayer {
 
     _createCanvas() {
         var canvas = document.createElement('canvas');
+        canvas.id = this.layerID;
         canvas.style.position = 'absolute';
         canvas.style.top = 0 + "px";
         canvas.style.left = 0 + "px";
@@ -121,6 +125,32 @@ export class MapvLayer {
             canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
         }
         return canvas;
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
+     * @description 将图层移动到某个图层之前。
+     * @param layerID - {string} 待插入的图层ID。
+     * @param before - {boolean} 是否将本图层插入到图层id为layerID的图层之前(默认为true，如果为false则将本图层插入到图层id为layerID的图层之后)。
+     */
+    moveTo(layerID, before) {
+        var layer = document.getElementById(this.layerID);
+        before = before !== undefined ? before : true;
+        if (before) {
+            var beforeLayer = document.getElementById(layerID);
+            if (layer && beforeLayer) {
+                beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+            }
+            return;
+        }
+        var nextLayer = document.getElementById(layerID);
+        if (layer) {
+            if (nextLayer.nextSibling) {
+                nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+                return;
+            }
+            nextLayer.parentNode.appendChild(layer);
+        }
     }
 
 }

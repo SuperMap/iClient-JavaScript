@@ -27,10 +27,19 @@ export class MapvRenderer extends BaseLayer {
         self.init(options);
         self.argCheck(options);
         this.canvasLayer = layer;
+        this.stopAniamation = false;
+        this.animation = options.animation;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
-        this.map.on('move', this.moveEvent.bind(this));
         this.map.on('resize', this.resizeEvent.bind(this));
+        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
+        this.map.on('zoomend', this.zoomEndEvent.bind(this));
+        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
+        this.map.on('rotate', this.rotateEvent.bind(this));
+        this.map.on('rotateend', this.rotateEndEvent.bind(this));
+        this.map.on('dragend', this.dragEndEvent.bind(this));
+        this.map.on('movestart', this.moveStartEvent.bind(this));
+        this.map.on('move', this.moveEvent.bind(this));
         this.map.on('moveend', this.moveEndEvent.bind(this));
         this.map.on('remove', this.removeEvent.bind(this));
         this.bindEvent();
@@ -180,16 +189,16 @@ export class MapvRenderer extends BaseLayer {
     }
 
     _canvasUpdate(time) {
-        if (!this.canvasLayer) {
+        var map = this.map;
+        if (!this.canvasLayer || this.stopAniamation) {
             return;
         }
-
         var self = this;
 
         var animationOptions = self.options.animation;
 
         var context = this.getContext();
-        var map = this.map;
+
         if (self.isEnabledTime()) {
             if (time === undefined) {
                 this.clear(context);
@@ -218,20 +227,9 @@ export class MapvRenderer extends BaseLayer {
             return;
         }
 
-        // function projectPoint(p) {
-        //     var sin = Math.sin(p[1] * Math.PI / 180),
-        //         x = (p[0] / 360 + 0.5),
-        //         y = (0.5 - 0.25 * Math.log((1 + sin) / (1 - sin)) / Math.PI);
-        //
-        //     y = y < 0 ? 0 :
-        //         y > 1 ? 1 : y;
-        //
-        //     return [x, y, 0];
-        // }
-
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var worldPoint = map.transform.locationPoint((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
+                var worldPoint = map.project((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
                 return [worldPoint.x, worldPoint.y];
             }
         };
@@ -289,18 +287,11 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function MapvRenderer.prototype.moveEvent
-     * @description 隐藏事件
-     */
-    moveEvent() {
-        this._hide();
-    }
-
-    /**
      * @function MapvRenderer.prototype.resizeEvent
      * @description 调整事件
      */
     resizeEvent() {
+        this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var canvas = this.canvasLayer.canvas;
         canvas.style.position = 'absolute';
         canvas.style.top = 0 + "px";
@@ -311,13 +302,75 @@ export class MapvRenderer extends BaseLayer {
         canvas.style.height = this.map.getCanvas().style.height;
     }
 
-    /**
-     * @function MapvRenderer.prototype.moveEndEvent
-     * @description 移除最后事件
-     */
     moveEndEvent() {
+        this.stopAniamation = false;
+        var canvas = this.getContext().canvas;
+        canvas.style.transform = '';
         this._canvasUpdate();
         this._show();
+    }
+
+    moveStartEvent(e) {
+        this.startPitch = this.map.getPitch();
+        this.startBearing = this.map.getBearing();
+        if (e.originalEvent) {
+            this.startMoveX = e.originalEvent.pageX;
+            this.startMoveY = e.originalEvent.pageY;
+        }
+        if (this.animation) {
+            this.stopAniamation = true;
+        }
+    }
+
+    moveEvent(e) {
+        if (this.rotating || this.zooming) {
+            return;
+        }
+        if (this.map.getPitch() !== 0) {
+            this._hide();
+        }
+        this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+        var tPitch = this.map.getPitch() - this.startPitch;
+        var tBearing = -this.map.getBearing() + this.startBearing;
+        var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
+        var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+        var canvas = this.getContext().canvas;
+        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
+    }
+
+    zoomStartEvent() {
+        this.zooming = true;
+        this._hide();
+    }
+
+    zoomEndEvent() {
+        this.zooming = false;
+        this._show();
+    }
+
+
+    rotateStartEvent() {
+        this.rotating = true;
+    }
+
+    rotateEvent() {
+        if (this.map.getPitch() !== 0) {
+            this._hide();
+        }
+        this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+        var tPitch = this.map.getPitch() - this.startPitch;
+        var tBearing = -this.map.getBearing() + this.startBearing;
+        var canvas = this.getContext().canvas;
+        canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)'
+    }
+
+    rotateEndEvent() {
+        this.rotating = false;
+        this._show();
+    }
+
+    dragEndEvent() {
+        this._hide();
     }
 
     /**
@@ -329,6 +382,14 @@ export class MapvRenderer extends BaseLayer {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
 
+    /**
+     * @function MapvRenderer.prototype.draw
+     * @description 渲染绘制
+     */
+    draw() {
+        this.canvasLayer.draw();
+    }
+
     _hide() {
         this.canvasLayer.canvas.style.display = 'none';
     }
@@ -337,12 +398,5 @@ export class MapvRenderer extends BaseLayer {
         this.canvasLayer.canvas.style.display = 'block';
     }
 
-    /**
-     * @function MapvRenderer.prototype.draw
-     * @description 渲染绘制
-     */
-    draw() {
-        this.canvasLayer.draw();
-    }
 
 }

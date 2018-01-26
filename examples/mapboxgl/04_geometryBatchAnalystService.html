@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量几何空间分析</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map,
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [117, 40],
+        zoom: 8
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("load", function () {
+        batchAnalystFromGeometry();
+    });
+
+    function batchAnalystFromGeometry() {
+        //缓冲区分析数据：
+        var bufferLine = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [[117, 40.50], [118, 40]]
+            }
+        };
+        var bufferPoint = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [117, 40]
+            }
+        };
+        //叠加分析数据：
+        var sourceGeometry = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116, 39.75],
+                    [116, 39.15],
+                    [117, 39.15],
+                    [117, 39.85],
+                    [116, 39.85]]]
+            }
+        };
+        var operateGeometry = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.25, 40.5],
+                    [116.25, 38.5],
+                    [116.75, 38.5],
+                    [116.75, 40.5],
+                    [116.25, 40.5]]]
+            }
+        };
+
+        //数据加载到地图：
+        map.addSource("analystSource", {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": [bufferLine, bufferPoint, sourceGeometry, operateGeometry]
+            }
+        });
+
+        //绘制缓冲区线
+        map.addLayer({
+            "id": "bufferLine",
+            "type": "line",
+            "source": "analystSource",
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "red",
+                "line-width": 4
+            },
+            "filter": ["==", "$type", "LineString"]
+        });
+
+        //绘制缓冲区点
+        map.addLayer({
+            "id": "bufferPoint",
+            "type": "circle",
+            "source": "analystSource",
+            "paint": {
+                "circle-radius": 6, /* 圆的直径，单位像素 */
+                "circle-color": "blue", /* 圆的颜色 */
+            },
+            "filter": ["==", "$type", "Point"],
+        });
+
+        //绘制叠加分析面：
+        map.addLayer({
+            "id": "overlayPolygon",
+            "type": "fill",
+            "source": "analystSource",
+            'paint': {
+                'fill-outline-color': 'blue',
+                'fill-color': 'rgba(0, 0, 255, 0.1)'
+            },
+            "filter": ["==", "$type", "Polygon"],
+        });
+
+        //缓冲区分析参数
+        var geoBufferAnalystParams = {
+            analystName: "buffer",
+            param: new SuperMap.GeometryBufferAnalystParameters({
+                sourceGeometry: bufferLine,
+                sourceGeometrySRID: 4326,
+                bufferSetting: new SuperMap.BufferSetting({
+                    endType: SuperMap.BufferEndType.ROUND,
+                    leftDistance: new SuperMap.BufferDistance({value: 5000}),
+                    rightDistance: new SuperMap.BufferDistance({value: 5000}),
+                    radiusUnit: "METER",
+                    semicircleLineSegment: 10
+                })
+
+            })
+        };
+        var geoBufferAnalystParams_Point = {
+            analystName: "buffer",
+            param: new SuperMap.GeometryBufferAnalystParameters({
+                sourceGeometry: bufferPoint,
+                sourceGeometrySRID: 4326,
+                bufferSetting: new SuperMap.BufferSetting({
+                    endType: SuperMap.BufferEndType.ROUND,
+                    leftDistance: new SuperMap.BufferDistance({value: 10000}),
+                    rightDistance: new SuperMap.BufferDistance({value: 10000}),
+                    radiusUnit: "METER",
+                    semicircleLineSegment: 10
+                })
+
+            })
+        };
+
+        //叠加分析参数
+        var OverlayBatchAnalystParameters = {
+            analystName: "overlay",
+            param: new SuperMap.GeometryOverlayAnalystParameters({
+                sourceGeometry: sourceGeometry,
+                operateGeometry: operateGeometry,
+                operation: SuperMap.OverlayOperationType.CLIP
+            })
+        };
+
+        //批量分析参数
+        var paramter = [geoBufferAnalystParams, OverlayBatchAnalystParameters, geoBufferAnalystParams_Point];
+
+        //批量分析
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter, function (serviceResult) {
+            //结果展示
+            map.addSource("bufferResultLine", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        serviceResult.result[0].resultGeometry,
+                    ]
+                }
+            });
+            map.addSource("bufferResultPoint", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        serviceResult.result[2].resultGeometry,
+                    ]
+                }
+            });
+            map.addSource("overlayResult", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        serviceResult.result[1].resultGeometry,
+                    ]
+                }
+            });
+            map.addLayer({
+                "id": "bufferResultLayer_line",
+                "type": "fill",
+                "source": "bufferResultLine",
+                "paint": {
+                    "fill-color": "red", /* 填充的颜色 */
+                    "fill-opacity": 0.4  /* 透明度 */
+                },
+            });
+            map.addLayer({
+                "id": "bufferResultLayer_point",
+                "type": "fill",
+                "source": "bufferResultPoint",
+                "paint": {
+                    "fill-color": "red", /* 填充的颜色 */
+                    "fill-opacity": 0.4  /* 透明度 */
+                },
+            });
+            map.addLayer({
+                "id": "overlayResultLayer",
+                "type": "fill",
+                "source": "overlayResult",
+                "paint": {
+                    "fill-color": "red", /* 填充的颜色 */
+                    "fill-opacity": 0.4  /* 透明度 */
+                },
+            });
+
+            var bufferPop = new mapboxgl.Popup()
+                .setLngLat([117.15, 40.45])
+                .setHTML("<h4>缓冲分析结果</h4>");
+            var overlayPop = new mapboxgl.Popup()
+                .setLngLat([116.35, 39.75])
+                .setHTML("<h4>叠加分析结果</h4>");
+
+
+            map.on('mouseenter', 'bufferResultLayer_line', function (e) {
+                bufferPop.remove();
+                map.getCanvas().style.cursor = 'pointer';
+
+                bufferPop.setLngLat([117.5, 40.25])
+                    .setHTML("<h4>缓冲分析结果</h4>")
+                    .addTo(map);
+            });
+            map.on('mouseleave', 'bufferResultLayer_line', function () {
+                map.getCanvas().style.cursor = '';
+                bufferPop.remove();
+            });
+            map.on('mouseenter', 'bufferResultLayer_point', function (e) {
+                bufferPop.remove();
+                map.getCanvas().style.cursor = 'pointer';
+
+                bufferPop.setLngLat([117, 40])
+                    .setHTML("<h4>缓冲分析结果</h4>")
+                    .addTo(map);
+            });
+            map.on('mouseleave', 'bufferResultLayer_point', function () {
+                map.getCanvas().style.cursor = '';
+                bufferPop.remove();
+            });
+
+            map.on('mouseenter', 'overlayResultLayer', function (e) {
+                map.getCanvas().style.cursor = 'pointer';
+
+                overlayPop.setLngLat([116.5, 39.5])
+                    .setHTML("<h4>叠加分析结果</h4>")
+                    .addTo(map);
+            });
+            map.on('mouseleave', 'overlayResultLayer', function () {
+                map.getCanvas().style.cursor = '';
+                overlayPop.remove();
+            });
+        });
+    }
+</script>
+</body>
+</html>

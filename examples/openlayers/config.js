@@ -270,6 +270,16 @@ var exampleConfig = {
                     name_en: "kernel density",
                     thumbnail: "ol_densityAnalystService.png",
                     fileName: "04_densityKernelAnalystService"
+                },{
+                    name: "几何对象批量空间分析",
+                    name_en: "batchAnalyst_geometry",
+                    thumbnail: "ol_geometryBatchAnalystService.png",
+                    fileName: "04_geometryBatchAnalystService"
+                },{
+                    name: "几何对象批量叠加分析",
+                    name_en: "overlayBatchAnalyst_geometry",
+                    thumbnail: "ol_geometryOverlayBatchAnalystService.png",
+                    fileName: "04_geometryOverlayBatchAnalystService"
                 }]
             },
             "networkAnalyst": {

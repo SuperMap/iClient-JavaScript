@@ -10,37 +10,42 @@ import {ServerGeometry} from './ServerGeometry';
  * @param options - {Object} 可选参数。如:</br>
  *        operateGeometry - {Object} 叠加分析的操作几何对象。必设字段。</br>
  *                      点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
- *                      线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
- *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
+ *                      线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|GeoJSON。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|GeoJSON。</br>
  *        sourceGeometry - {Object} 叠加分析的源几何对象。必设字段。</br>
- *                      点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
- *                      线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
- *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
+ *                      点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|GeoJSON。</br>
+ *                      线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|GeoJSON。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|GeoJSON。</br>
+ *
+ *        operateGeometries -{Array} 批量叠加分析的操作几何对象数组。批量叠加分析时必设字段。</br>
+ *                         点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|GeoJSON。</br>
+ *                         线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|GeoJSON。</br>
+ *                         面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|GeoJSON
+ *        sourceGeometries -{Array} 批量叠加分析的源几何对象数组。批量叠加分析时必设字段。</br>
+ *                         点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|GeoJSON。</br>
+ *                         线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|GeoJSON。</br>
+ *                         面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|GeoJSON。
  *        operation - {{@link SuperMap.OverlayOperationType}} 叠加操作枚举值。</br>
  * @extends SuperMap.OverlayAnalystParameters
  */
 export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
-
     constructor(options) {
         super(options);
-        /**
-         * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry -{Object}
-         * @description 叠加分析的操作几何对象。必设字段。</br>
-         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-         */
-        this.operateGeometry = null;
 
-        /**
-         * @member SuperMap.GeometryOverlayAnalystParameters.prototype.sourceGeometry -{Object}
-         * @description 叠加分析的源几何对象。必设字段。</br>
-         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
-         */
-        this.sourceGeometry = null;
+        if (options.operateGeometry) {
+            this.operateGeometry = options.operateGeometry;
+        }
+        if (options.sourceGeometry) {
+            this.sourceGeometry = options.sourceGeometry;
+        }
+        if (options.operateGeometries) {
+            this.operateGeometries = options.operateGeometries;
+        }
+        if (options.sourceGeometries) {
+            this.sourceGeometries = options.sourceGeometries;
+        }
+
         if (options) {
             Util.extend(this, options);
         }
@@ -59,9 +64,18 @@ export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
             me.sourceGeometry = null;
         }
 
-        if (me.operateGeometry) {
-            me.operateGeometry.destroy();
-            me.operateGeometry = null;
+        if (me.sourceGeometries) {
+            me.sourceGeometries.destroy();
+            me.sourceGeometries = null;
+        }
+        if (me.sourceGeometry) {
+            me.sourceGeometry.destroy();
+            me.sourceGeometry = null;
+        }
+
+        if (me.operateGeometries) {
+            me.operateGeometries.destroy();
+            me.operateGeometries = null;
         }
     }
 
@@ -76,8 +90,24 @@ export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
         for (var name in geometryOverlayAnalystParameters) {
             if (name === "sourceGeometry") {
                 tempObj.sourceGeometry = ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.sourceGeometry);
+
+            } else if (name === "sourceGeometries") {
+                var sourceGeometries = [];
+                for (var i = 0; i < geometryOverlayAnalystParameters.sourceGeometries.length; i++) {
+                    sourceGeometries.push(ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.sourceGeometries[i]));
+                }
+                tempObj.sourceGeometries = sourceGeometries;
+
             } else if (name === "operateGeometry") {
                 tempObj.operateGeometry = ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.operateGeometry);
+
+            } else if (name === "operateGeometries") {
+                var operateGeometries = [];
+                for (var j = 0; j < geometryOverlayAnalystParameters.operateGeometries.length; j++) {
+                    operateGeometries.push(ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.operateGeometries[j]));
+                }
+                tempObj.operateGeometries = operateGeometries;
+
             } else {
                 tempObj[name] = geometryOverlayAnalystParameters[name];
             }

@@ -70,6 +70,10 @@ export class SpatialAnalystBase extends CommonServiceBase {
         if (!result) {
             return null;
         }
+        //批量叠加分析时结果这样处理
+        if(result.result){
+            result = result.result
+        }
         var geoJSONFormat = new GeoJSON();
         if (result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {

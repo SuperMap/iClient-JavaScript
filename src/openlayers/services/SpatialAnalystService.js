@@ -15,7 +15,8 @@ import {
     RouteLocatorService,
     SurfaceAnalystService,
     TerrainCurvatureCalculationService,
-    ThiessenAnalystService
+    ThiessenAnalystService,
+    GeometryBatchAnalystService
 } from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
 
@@ -194,7 +195,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析
-     * @param params - {SuperMap.DatasetOverlayAnalystParameters} 查询相关参数类
+     * @param params - {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类，支持批量几何要素叠加分析。
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
@@ -260,7 +261,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析
-     * @param params - {SuperMap.DatasetSurfaceAnalystParameters} 查询相关参数类
+     * @param params - {SuperMap.SurfaceAnalystParameters} 表面分析参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
@@ -282,7 +283,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算
-     * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 查询相关参数类
+     * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 地形曲率计算相关参数
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
@@ -321,6 +322,45 @@ export class SpatialAnalystService extends ServiceBase {
             format: me._processFormat(resultFormat)
         });
         thiessenAnalystService.processAsync(me._processParams(params));
+    }
+
+    /**
+     * @function ol.supermap.SpatialAnalystService.prototype.geometrybatchAnalysis
+     * @description 批量空间分析
+     * @param params - {Array} 批量分析参数对象数组；包括：</br>
+     *                            analystName - {string} 空间分析方法的名称。包括：</br>
+     *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"
+     *                            param - {Object} 空间分析类型对应的请求参数，包括：</br>
+     *                                    {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
+     *                                    {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
+     *                                    {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
+     *                                    {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
+     * @param callback
+     * @param resultFormat
+     */
+    geometrybatchAnalysis(params, callback, resultFormat) {
+        var me = this;
+        var geometryBatchAnalystService = new GeometryBatchAnalystService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+
+        //处理批量分析中各个分类类型的参数：
+        var analystParameters = [];
+        for (var i = 0; i < params.length; i++) {
+            var tempParameter = params[i];
+            analystParameters.push({
+                analystName: tempParameter.analystName,
+                param: me._processParams(tempParameter.param)
+            })
+        }
+
+        geometryBatchAnalystService.processAsync(analystParameters);
     }
 
     _processParams(params) {
@@ -367,9 +407,30 @@ export class SpatialAnalystService extends ServiceBase {
         if (params.extractParameter && params.extractParameter.clipRegion) {
             params.extractParameter.clipRegion = this.convertGeometry(params.extractParameter.clipRegion);
         }
+        //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
             params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
         }
+        if (params.operateGeometry) {
+            params.operateGeometry = this.convertGeometry(params.operateGeometry);
+        }
+        //支持传入多个几何要素进行叠加分析：
+        if (params.sourceGeometries) {
+            var sourceGeometries = [];
+            for (var k = 0; k < params.sourceGeometries.length; k++) {
+                sourceGeometries.push(this.convertGeometry(params.sourceGeometries[k]));
+            }
+            params.sourceGeometries = sourceGeometries;
+        }
+        //支持传入多个几何要素进行叠加分析：
+        if (params.operateGeometries) {
+            var operateGeometries = [];
+            for (var j = 0; j < params.operateGeometries.length; j++) {
+                operateGeometries.push(this.convertGeometry(params.operateGeometries[j]));
+            }
+            params.operateGeometries = operateGeometries;
+        }
+
         if (params.sourceRoute) {
             if (params.sourceRoute instanceof ol.geom.LineString && params.sourceRoute.getCoordinates()) {
                 var target = {};
@@ -410,7 +471,12 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 转换几何对象
      * @param ol3Geometry - {Object} 待转换的几何对象
      */
+
     convertGeometry(ol3Geometry) {
+        //判断是否传入的是geojson 并作相应处理
+        if(["FeatureCollection", "Feature", "Geometry"].indexOf(ol3Geometry.type) != -1){
+            return Util.toSuperMapGeometry(ol3Geometry);
+        }
         return Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
     }
 }

@@ -202,6 +202,16 @@ var exampleConfig = {
                     name_en: "route locator - line",
                     thumbnail: "mb_routeLocatorService_line.png",
                     fileName: "04_routeLocatorService_line"
+                },{
+                    name: "几何对象批量空间分析",
+                    name_en: "batchAnalyst_geometry",
+                    thumbnail: "mb_geometryBatchAnalystService.png",
+                    fileName: "04_geometryBatchAnalystService"
+                },{
+                    name: "几何对象批量叠加分析",
+                    name_en: "overlayBatchAnalyst_geometry",
+                    thumbnail: "mb_geometryOverlayBatchAnalystService.png",
+                    fileName: "04_geometryOverlayBatchAnalystService"
                 }]
             },
             "addressMatch": {

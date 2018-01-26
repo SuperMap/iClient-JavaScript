@@ -20,6 +20,7 @@ require('./common/iServer/FindMTSPPathsServiceSpec.js');
 require('./common/iServer/FindPathServiceSpec.js');
 require('./common/iServer/FindServiceAreasServiceSpec.js');
 require('./common/iServer/FindTSPPathsServiceSpec.js');
+require('./common/iServer/GeometryBatchAnalystServiceSpec.js');
 require('./common/iServer/GenerateSpatialDataServiceSpec.js');
 require('./common/iServer/GeoRelationAnalystServiceSpec.js');
 require('./common/iServer/GetFeaturesByBoundsServiceSpec.js');

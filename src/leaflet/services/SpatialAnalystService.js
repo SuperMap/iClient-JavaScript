@@ -17,7 +17,8 @@ import {
     RouteLocatorService,
     SurfaceAnalystService,
     TerrainCurvatureCalculationService,
-    ThiessenAnalystService
+    ThiessenAnalystService,
+    GeometryBatchAnalystService
 } from '@supermap/iclient-common';
 
 /**
@@ -196,7 +197,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function L.supermap.spatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析
-     * @param params - {SuperMap.DatasetOverlayAnalystParameters} 数据集叠加分析参数类
+     * @param params - {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类，支持批量几何要素叠加分析。
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
@@ -262,7 +263,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function L.supermap.spatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析
-     * @param params - {SuperMap.DatasetSurfaceAnalystParameters} 数据集表面分析参数类
+     * @param params - {SuperMap.SurfaceAnalystParameters} 表面分析参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
@@ -325,6 +326,45 @@ export var SpatialAnalystService = ServiceBase.extend({
         thiessenAnalystService.processAsync(me._processParams(params));
     },
 
+    /**
+     * @function L.supermap.spatialAnalystService.prototype.geometrybatchAnalysis
+     * @description 批量空间分析
+     * @param params - {Array} 批量分析参数对象数组；包括：</br>
+     *                            analystName - {string} 空间分析方法的名称。包括：</br>
+     *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"
+     *                            param - {Object} 空间分析类型对应的请求参数，包括：</br>
+     *                                    {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
+     *                                    {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
+     *                                    {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
+     *                                    {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
+     * @param callback
+     * @param resultFormat
+     */
+    geometrybatchAnalysis: function (params, callback, resultFormat) {
+        var me = this;
+        var geometryBatchAnalystService = new GeometryBatchAnalystService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+
+        //处理批量分析中各个分类类型的参数：
+        var analystParameters = [];
+        for (var i = 0; i < params.length; i++) {
+            var tempParameter = params[i];
+            analystParameters.push({
+                analystName: tempParameter.analystName,
+                param: me._processParams(tempParameter.param)
+            })
+        }
+
+        geometryBatchAnalystService.processAsync(analystParameters);
+    },
+
     _processParams: function (params) {
         if (!params) {
             return {};
@@ -369,8 +409,28 @@ export var SpatialAnalystService = ServiceBase.extend({
         if (params.extractParameter && params.extractParameter.clipRegion) {
             params.extractParameter.clipRegion = Util.toSuperMapGeometry(params.extractParameter.clipRegion);
         }
+        //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
             params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
+        }
+        if (params.operateGeometry) {
+            params.operateGeometry = Util.toSuperMapGeometry(params.operateGeometry);
+        }
+        //支持传入多个几何要素进行叠加分析：
+        if (params.sourceGeometries) {
+            var sourceGeometries = [];
+            for (var k = 0; k < params.sourceGeometries.length; k++) {
+                sourceGeometries.push(Util.toSuperMapGeometry(params.sourceGeometries[k]));
+            }
+            params.sourceGeometries = sourceGeometries;
+        }
+        //支持传入多个几何要素进行叠加分析：
+        if (params.operateGeometries) {
+            var operateGeometries = [];
+            for (var j = 0; j < params.operateGeometries.length; j++) {
+                operateGeometries.push(Util.toSuperMapGeometry(params.operateGeometries[j]));
+            }
+            params.operateGeometries = operateGeometries;
         }
         if (params.sourceRoute) {
             if (params.sourceRoute instanceof L.Polyline) {

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量叠加分析</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        map = L.map('map', {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 8
+        });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+
+    overlayerBatchAnalystFromGeometry();
+
+    function overlayerBatchAnalystFromGeometry() {
+        //叠加分析数据：
+        var sourceGeometry1 = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.25, 40.25],
+                    [116.25, 39.75],
+                    [117.25, 39.75],
+                    [117.25, 40.25],
+                    [116.25, 40.25]]]
+            }
+        };
+        var sourceGeometry2 = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.75, 40.25],
+                    [116.75, 39.75],
+                    [117.75, 39.75],
+                    [117.75, 40.25],
+                    [116.75, 40.25]]]
+            }
+        };
+        var operateGeometry1 = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.75, 39.75],
+                    [117.25, 39.75],
+                    [117.25, 40.75],
+                    [116.75, 40.75],
+                    [116.75, 39.75]]]
+            }
+        };
+
+        var operateGeometry2 = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.75, 40.25],
+                    [116.75, 39.25],
+                    [117.25, 39.25],
+                    [117.25, 40.25],
+                    [116.75, 40.25]]]
+            }
+        };
+
+        //数据加载到地图：
+        var geojsonFeature = {
+            "type": "FeatureCollection",
+            "features": [sourceGeometry1, sourceGeometry2, operateGeometry1, operateGeometry2]
+        };
+        var overlayDataStyle = {
+            "color": "blue",
+            "opacity": 0.15
+        };
+        L.geoJSON(geojsonFeature, {
+            style: overlayDataStyle
+        }).addTo(map);
+
+        var OverlayBatchAnalystParameters = new SuperMap.GeometryOverlayAnalystParameters({
+            sourceGeometries: [sourceGeometry1, sourceGeometry2],
+            operateGeometries: [operateGeometry1, operateGeometry2],
+            operation: SuperMap.OverlayOperationType.INTERSECT
+        });
+
+        L.supermap.spatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
+            var overlayResultStyle = {
+                "color": "red",
+                "opacity": 0.65
+            };
+
+            var resultLayer = L.geoJSON(serviceResult.result[0].resultGeometry, {
+                style: overlayResultStyle
+            }).addTo(map);
+            resultLayer.on("mousemove", function (e) {
+                e.layer.bindPopup('<h4>批量叠加分析结果</h4>').openPopup();
+            });
+            resultLayer.on("mouseout", function (e) {
+                e.layer.closePopup();
+            });
+        });
+    }
+</script>
+</body>
+</html>

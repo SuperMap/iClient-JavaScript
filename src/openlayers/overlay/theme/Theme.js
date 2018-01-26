@@ -15,8 +15,17 @@ import {ThemeFeature} from './ThemeFeature';
  * @class ol.source.Theme
  * @classdesc 专题图基类。
  * @private
- * @param name - {string} 名称
- * @param opt_options -{Object} 可选构造参数。如：
+ * @param name - {string} 专题图图层名称
+ * @param opt_option-{Object} 可选参数，如：</br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {ol.Map} 当前openlayers的map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - {@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {@linkdoc-openlayers/ol.source.html#.State} 资源状态。
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export class Theme extends ol.source.ImageCanvas {
@@ -54,6 +63,8 @@ export class Theme extends ol.source.ImageCanvas {
                 this.redrawThematicFeatures(extent);
                 this.notFirst = true;
             }
+            this.div.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
+            this.div.className = "themeLayer";
             this.div.style.width = mapWidth + "px";
             this.div.style.height = mapHeight + "px";
             this.map.getViewport().appendChild(this.div);
@@ -162,7 +173,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param features -{Array<SuperMap.Feature.Vector>} 需要添加的数据
+     * @param features - {Array<SuperMap.Feature.Vector>} 需要添加的数据
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。

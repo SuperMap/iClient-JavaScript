@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量几何空间分析</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        map = L.map('map', {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 8
+        });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+
+    batchAnalystFromGeometry();
+
+    function batchAnalystFromGeometry() {
+        //缓冲区分析数据：
+        var bufferLine = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [[117, 40.50], [118, 40]]
+            }
+        };
+        var bufferPoint = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [117, 40]
+            }
+        };
+        //叠加分析数据：
+        var sourceGeometry = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116, 39.75],
+                    [116, 39.15],
+                    [117, 39.15],
+                    [117, 39.85],
+                    [116, 39.85]]]
+            }
+        };
+        var operateGeometry = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.25, 40.5],
+                    [116.25, 38.5],
+                    [116.75, 38.5],
+                    [116.75, 40.5],
+                    [116.25, 40.5]]]
+            }
+        };
+
+        //数据加载到地图：
+        var geojsonFeature = {
+            "type": "FeatureCollection",
+            "features": [bufferLine, bufferPoint, sourceGeometry, operateGeometry]
+        };
+
+        L.geoJSON(geojsonFeature, {
+            style: function (feature) {
+                if (feature.geometry.type === "LineString") {
+                    return {
+                        "color": "blue",
+                        "weight": 1.5,
+                    };
+                } else if (feature.geometry.type === "Polygon") {
+                    return {
+                        "weight": 1.5,
+                        "color": "blue",
+                        "opacity": 0.15
+                    };
+                }
+            }
+        }).addTo(map);
+
+        //缓冲区分析参数
+        var geoBufferAnalystParams = {
+            analystName: "buffer",
+            param: new SuperMap.GeometryBufferAnalystParameters({
+                sourceGeometry: bufferLine,
+                sourceGeometrySRID: 4326,
+                bufferSetting: new SuperMap.BufferSetting({
+                    endType: SuperMap.BufferEndType.ROUND,
+                    leftDistance: new SuperMap.BufferDistance({value: 0.05}),
+                    rightDistance: new SuperMap.BufferDistance({value: 0.05}),
+                    semicircleLineSegment: 10
+                })
+
+            })
+        };
+        var geoBufferAnalystParams_Point = {
+            analystName: "buffer",
+            param: new SuperMap.GeometryBufferAnalystParameters({
+                sourceGeometry: bufferPoint,
+                sourceGeometrySRID: 4326,
+                bufferSetting: new SuperMap.BufferSetting({
+                    endType: SuperMap.BufferEndType.ROUND,
+                    leftDistance: new SuperMap.BufferDistance({value: 0.05}),
+                    rightDistance: new SuperMap.BufferDistance({value: 0.05}),
+                    radiusUnit: "METER",
+                    semicircleLineSegment: 10
+                })
+
+            })
+        };
+
+        //叠加分析参数
+        var OverlayBatchAnalystParameters = {
+            analystName: "overlay",
+            param: new SuperMap.GeometryOverlayAnalystParameters({
+                sourceGeometry: sourceGeometry,
+                operateGeometry: operateGeometry,
+                operation: SuperMap.OverlayOperationType.CLIP
+            })
+        };
+
+        //批量分析参数
+        var paramter = [geoBufferAnalystParams, OverlayBatchAnalystParameters, geoBufferAnalystParams_Point];
+
+        //批量分析
+        L.supermap.spatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter, function (serviceResult) {
+            //结果展示
+            var overlayResultStyle = {
+                "color": "red",
+                "opacity": 0.65
+            };
+
+            var bufferResultLayer = L.geoJSON([serviceResult.result[0].resultGeometry, serviceResult.result[2].resultGeometry], {
+                style: overlayResultStyle
+            }).addTo(map);
+            bufferResultLayer.on("mousemove", function (e) {
+                e.layer.bindPopup('<h4>缓冲区分析结果</h4>').openPopup();
+            });
+            bufferResultLayer.on("mouseout", function (e) {
+                e.layer.closePopup();
+            });
+
+            var overlayResultLayer = L.geoJSON(serviceResult.result[1].resultGeometry, {
+                style: overlayResultStyle
+            }).addTo(map);
+            overlayResultLayer.on("mousemove", function (e) {
+                e.layer.bindPopup('<h4>叠加分析结果</h4>').openPopup();
+            });
+            overlayResultLayer.on("mouseout", function (e) {
+                e.layer.closePopup();
+            });
+        });
+    }
+</script>
+</body>
+</html>

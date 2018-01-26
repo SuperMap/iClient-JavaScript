@@ -88,6 +88,7 @@ deps = {
             "./src/common/iServer/SurfaceAnalystService.js",
             "./src/common/iServer/TerrainCurvatureCalculationService.js",
             "./src/common/iServer/ThiessenAnalystService.js",
+            "./src/common/iServer/GeometryBatchAnalystService.js",
             //ProcessingService
             "./src/common/iServer/BuffersAnalystJobsService",
             "./src/common/iServer/KernelDensityJobsService.js",
