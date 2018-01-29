@@ -6,9 +6,10 @@ import * as Util from "../core/Util";
 /**
  * @class L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用TileImage资源出图.
+ * @category iServer Map
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
- *      L.superMap.tiledMapLayer(url).addTo(map);
+ *      L.supermap.tiledMapLayer(url).addTo(map);
  * @param url -{string} 影像图层地址
  * @param options -{Object} 影像图层参数。如：<br>
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>

@@ -2,9 +2,10 @@
 
 ## API changes
 
-
 ### for Leaflet
+
 - `L.supermap.webmap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVE" 格式 json 数据
+
 - 客户端专题图新增支持 `L.CircleMarker` `L.Circle`
 - 客户端专题图 `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置改参数为true , `addFeatures` 方法可添加底图坐标要素
 - `L.supermap.wmtsLayer` 和 `L.supermap.tiandituTileLayer` 新增 `options.tileProxy` 参数
@@ -12,86 +13,72 @@
 - `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
 - `L.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
 
-
-
 ### for OpenLayers
+
 - `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVE" 格式 json 数据
+
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+
 - `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
+
 - `ol.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
 
-
 ### for MapboxGL
+
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+
 - `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
+
 - `mapboxgl.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
 
-
-
 ### Classic
+
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 - `SuperMap.ElasticSearch.update` 增加 `callback` 参数
 
-
 ## Fixed
 
-
 ### for Leaflet
+
 - 修复客户端专题图无法加载 `L.Polygon` 的问题
 - 修改 `L.superMap.imageMapLayer` 的出图方式为整张image出图
 
-
 ### for OpenLayers
+
 - 修复 `ol.source.DataFlow` 修改传入父类参数无效的问题
 - 修复 `ol.source.DataFlow` 的 `dataUpdated` 事件返回参数为空的问题
 
-
 ### for MapboxGL
+
 - 修复多个客户端专题图叠加偏移的问题
 
-
 ### Classic
-
 
 ## Examples
 
-
 ### for Leaflet
-
 
 ### for OpenLayers
 
-
 ### for MapboxGL
 
-
 ### Classic
-
 
 ## Web Site &amp;&amp; Docs
 
-
 ### for Leaflet
-
 
 ### for OpenLayers
 
-
 ### for MapboxGL
-- `ThemeLayer.removeFromMap` `ThemeLayer.toiClientFeature` `ThemeLayer.resizeEvent` 增加api docs
 
+- `ThemeLayer.removeFromMap` `ThemeLayer.toiClientFeature` `ThemeLayer.resizeEvent` 增加api docs
 
 ### Classic
 
-
 ## Code Quality
 
-
 ## Project
-
-
-
-
 
 # 9.0.1 (2017-12-27) #
 
@@ -101,50 +88,49 @@
 
 - 分布式分析服务(ProcessingService)接口变更
 
-    - 新增缓冲区分析服务相关接口, 新增的接口如下：
-        - getBuffersJobs
-        - getBuffersJob
-        - addBuffersJob
-        - getBuffersJobState
+  - 新增缓冲区分析服务相关接口, 新增的接口如下：
+    - getBuffersJobs
+    - getBuffersJob
+    - addBuffersJob
+    - getBuffersJobState
 
-    - 新增缓冲区分析服务参数类：
-        - BuffersAnalystJobsParameter
+  - 新增缓冲区分析服务参数类：
+    - BuffersAnalystJobsParameter
 
-    - 新增拓扑检查分析服务相关接口, 新增的接口如下：
-        - getTopologyValidatorJobs
-        - getTopologyValidatorJob
-        - addTopologyValidatorJob
-        - getTopologyValidatorJobState
+  - 新增拓扑检查分析服务相关接口, 新增的接口如下：
+    - getTopologyValidatorJobs
+    - getTopologyValidatorJob
+    - addTopologyValidatorJob
+    - getTopologyValidatorJobState
 
-    - 新增拓扑检查分析服务参数类：
-        - TopologyValidatorJobsParameter
+  - 新增拓扑检查分析服务参数类：
+    - TopologyValidatorJobsParameter
 
-    - 新增叠加分析服务相关接口, 新增的接口如下：
-        - getOverlayGeoJobs
-        - getOverlayGeoJob
-        - addOverlayGeoJob
-        - getOverlayGeoJobState
+  - 新增叠加分析服务相关接口, 新增的接口如下：
+    - getOverlayGeoJobs
+    - getOverlayGeoJob
+    - addOverlayGeoJob
+    - getOverlayGeoJobState
 
-    - 新增叠加分析服务参数类：
-        - OverlayGeoJobParameter
+  - 新增叠加分析服务参数类：
+    - OverlayGeoJobParameter
 
-    - 新增属性汇总分析服务相关接口, 新增的接口如下：
-        - getSummaryAttributesJob
-        - getSummaryAttributesJobs
-        - addSummaryAttributesJob
-        - getSummaryAttributesJobState
+  - 新增属性汇总分析服务相关接口, 新增的接口如下：
+    - getSummaryAttributesJob
+    - getSummaryAttributesJobs
+    - addSummaryAttributesJob
+    - getSummaryAttributesJobState
 
-    - 新增属性汇总分析服务参数类：
-        - SummaryAttributesJobsParameter
+  - 新增属性汇总分析服务参数类：
+    - SummaryAttributesJobsParameter
 
-    - CommontypesConversion新增toProcessingParam接口
+  - CommontypesConversion新增toProcessingParam接口
 
-    - 单对象查询分析新增支持自定义绘制范围进行分析
-        - SingleObjectQueryJobsParameter新增geometryQuery参数
+  - 单对象查询分析新增支持自定义绘制范围进行分析
+    - SingleObjectQueryJobsParameter新增geometryQuery参数
 
-    - 矢量裁剪分析新增支持自定义绘制范围进行分析
-        - VectorClipJobsParameter新增geometryClip参数
-
+  - 矢量裁剪分析新增支持自定义绘制范围进行分析
+    - VectorClipJobsParameter新增geometryClip参数
 
 - 新增d3图层： [d3Layer](https://github.com/SuperMap/Leaflet.D3SvgOverlay)(不包含在最终包中，需额外引入)
 - 新增客户端标签专题图图层：LabelThemeLayer
@@ -163,50 +149,49 @@
 
 - 分布式分析服务(ProcessingService)接口变更
 
-    - 新增缓冲区分析服务相关接口, 新增的接口如下：
-        - getBuffersJobs
-        - getBuffersJob
-        - addBuffersJob
-        - getBuffersJobState
+  - 新增缓冲区分析服务相关接口, 新增的接口如下：
+    - getBuffersJobs
+    - getBuffersJob
+    - addBuffersJob
+    - getBuffersJobState
 
-    - 新增缓冲区分析服务参数类：
-        - BuffersAnalystJobsParameter
+  - 新增缓冲区分析服务参数类：
+    - BuffersAnalystJobsParameter
 
-    - 新增拓扑检查分析服务相关接口, 新增的接口如下：
-        - getTopologyValidatorJobs
-        - getTopologyValidatorJob
-        - addTopologyValidatorJob
-        - getTopologyValidatorJobState
+  - 新增拓扑检查分析服务相关接口, 新增的接口如下：
+    - getTopologyValidatorJobs
+    - getTopologyValidatorJob
+    - addTopologyValidatorJob
+    - getTopologyValidatorJobState
 
-    - 新增拓扑检查分析服务参数类：
-        - TopologyValidatorJobsParameter
+  - 新增拓扑检查分析服务参数类：
+    - TopologyValidatorJobsParameter
 
-    - 新增叠加分析服务相关接口, 新增的接口如下：
-        - getOverlayGeoJobs
-        - getOverlayGeoJob
-        - addOverlayGeoJob
-        - getOverlayGeoJobState
+  - 新增叠加分析服务相关接口, 新增的接口如下：
+    - getOverlayGeoJobs
+    - getOverlayGeoJob
+    - addOverlayGeoJob
+    - getOverlayGeoJobState
 
-    - 新增叠加分析服务参数类：
-        - OverlayGeoJobParameter
+  - 新增叠加分析服务参数类：
+    - OverlayGeoJobParameter
 
-    - 新增属性汇总分析服务相关接口, 新增的接口如下：
-        - getSummaryAttributesJob
-        - getSummaryAttributesJobs
-        - addSummaryAttributesJob
-        - getSummaryAttributesJobState
+  - 新增属性汇总分析服务相关接口, 新增的接口如下：
+    - getSummaryAttributesJob
+    - getSummaryAttributesJobs
+    - addSummaryAttributesJob
+    - getSummaryAttributesJobState
 
-    - 新增属性汇总分析服务参数类：
-        - SummaryAttributesJobsParameter
+  - 新增属性汇总分析服务参数类：
+    - SummaryAttributesJobsParameter
 
-    - CommontypesConversion新增toProcessingParam接口
+  - CommontypesConversion新增toProcessingParam接口
 
-    - 单对象查询分析新增支持自定义绘制范围进行分析
-        - SingleObjectQueryJobsParameter新增geometryQuery参数
+  - 单对象查询分析新增支持自定义绘制范围进行分析
+    - SingleObjectQueryJobsParameter新增geometryQuery参数
 
-    - 矢量裁剪分析新增支持自定义绘制范围进行分析
-        - VectorClipJobsParameter新增geometryClip参数
-
+  - 矢量裁剪分析新增支持自定义绘制范围进行分析
+    - VectorClipJobsParameter新增geometryClip参数
 
 - 新增客户端标签专题图图层: Label
 - 新增 SuperMap.CORS , SuperMap.RequestTimeout两个配置
@@ -223,50 +208,49 @@
 
 - 分布式分析服务(ProcessingService)接口变更
 
-    - 新增缓冲区分析服务相关接口, 新增的接口如下：
-        - getBuffersJobs
-        - getBuffersJob
-        - addBuffersJob
-        - getBuffersJobState
+  - 新增缓冲区分析服务相关接口, 新增的接口如下：
+    - getBuffersJobs
+    - getBuffersJob
+    - addBuffersJob
+    - getBuffersJobState
 
-    - 新增缓冲区分析服务参数类：
-        - BuffersAnalystJobsParameter
+  - 新增缓冲区分析服务参数类：
+    - BuffersAnalystJobsParameter
 
-    - 新增拓扑检查分析服务相关接口, 新增的接口如下：
-        - getTopologyValidatorJobs
-        - getTopologyValidatorJob
-        - addTopologyValidatorJob
-        - getTopologyValidatorJobState
+  - 新增拓扑检查分析服务相关接口, 新增的接口如下：
+    - getTopologyValidatorJobs
+    - getTopologyValidatorJob
+    - addTopologyValidatorJob
+    - getTopologyValidatorJobState
 
-    - 新增拓扑检查分析服务参数类：
-        - TopologyValidatorJobsParameter
+  - 新增拓扑检查分析服务参数类：
+    - TopologyValidatorJobsParameter
 
-    - 新增叠加分析服务相关接口, 新增的接口如下：
-        - getOverlayGeoJobs
-        - getOverlayGeoJob
-        - addOverlayGeoJob
-        - getOverlayGeoJobState
+  - 新增叠加分析服务相关接口, 新增的接口如下：
+    - getOverlayGeoJobs
+    - getOverlayGeoJob
+    - addOverlayGeoJob
+    - getOverlayGeoJobState
 
-    - 新增叠加分析服务参数类：
-        - OverlayGeoJobParameter
+  - 新增叠加分析服务参数类：
+    - OverlayGeoJobParameter
 
-    - 新增属性汇总分析服务相关接口, 新增的接口如下：
-        - getSummaryAttributesJob
-        - getSummaryAttributesJobs
-        - addSummaryAttributesJob
-        - getSummaryAttributesJobState
+  - 新增属性汇总分析服务相关接口, 新增的接口如下：
+    - getSummaryAttributesJob
+    - getSummaryAttributesJobs
+    - addSummaryAttributesJob
+    - getSummaryAttributesJobState
 
-    - 新增属性汇总分析服务参数类：
-        - SummaryAttributesJobsParameter
+  - 新增属性汇总分析服务参数类：
+    - SummaryAttributesJobsParameter
 
-    - CommontypesConversion新增toProcessingParam接口
+  - CommontypesConversion新增toProcessingParam接口
 
-    - 单对象查询分析新增支持自定义绘制范围进行分析
-        - SingleObjectQueryJobsParameter新增geometryQuery参数
+  - 单对象查询分析新增支持自定义绘制范围进行分析
+    - SingleObjectQueryJobsParameter新增geometryQuery参数
 
-    - 矢量裁剪分析新增支持自定义绘制范围进行分析
-        - VectorClipJobsParameter新增geometryClip参数
-
+  - 矢量裁剪分析新增支持自定义绘制范围进行分析
+    - VectorClipJobsParameter新增geometryClip参数
 
 - 新增三维单值专题图图层: UniqueTheme3DLayer
 - 新增三维分段专题图图层: RangeTheme3DLayer
@@ -274,23 +258,22 @@
 - 新增 SuperMap.CORS , SuperMap.RequestTimeout两个配置
 - 新增iServer服务相关service
 
-     - AddressMatchService
-     - ChartService
-     - DataFlowService
-     - FeatureService
-     - FieldService
-     - GridCellInfosService
-     - LayerInfoService
-     - MapService
-     - MeasureService
-     - ThemeService
-     - QueryService
-     - ProcessingService
-     - NetworkAnalystService
-     - NetworkAnalyst3DService
-     - SpatialAnalystService
-     - TrafficTransferAnalystService
-
+    - AddressMatchService
+    - ChartService
+    - DataFlowService
+    - FeatureService
+    - FieldService
+    - GridCellInfosService
+    - LayerInfoService
+    - MapService
+    - MeasureService
+    - ThemeService
+    - QueryService
+    - ProcessingService
+    - NetworkAnalystService
+    - NetworkAnalyst3DService
+    - SpatialAnalystService
+    - TrafficTransferAnalystService
 
 - RankTheme3DLayer更名为RangeTheme3DLayer
 - GraphThemeLayer ， RangeThemeLayer ，RankSymbolThemeLayer， UniqueThemeLayer， GeoFeatureThemeLayer去掉destroy方法
@@ -303,50 +286,49 @@
 
 - 分布式分析服务(ProcessingService)接口变更
 
-    - 新增缓冲区分析服务相关接口, 新增的接口如下：
-        - getBuffersJobs
-        - getBuffersJob
-        - addBuffersJob
-        - getBuffersJobState
+  - 新增缓冲区分析服务相关接口, 新增的接口如下：
+    - getBuffersJobs
+    - getBuffersJob
+    - addBuffersJob
+    - getBuffersJobState
 
-    - 新增缓冲区分析服务参数类：
-        - BuffersAnalystJobsParameter
+  - 新增缓冲区分析服务参数类：
+    - BuffersAnalystJobsParameter
 
-    - 新增拓扑检查分析服务相关接口, 新增的接口如下：
-        - getTopologyValidatorJobs
-        - getTopologyValidatorJob
-        - addTopologyValidatorJob
-        - getTopologyValidatorJobState
+  - 新增拓扑检查分析服务相关接口, 新增的接口如下：
+    - getTopologyValidatorJobs
+    - getTopologyValidatorJob
+    - addTopologyValidatorJob
+    - getTopologyValidatorJobState
 
-    - 新增拓扑检查分析服务参数类：
-        - TopologyValidatorJobsParameter
+  - 新增拓扑检查分析服务参数类：
+    - TopologyValidatorJobsParameter
 
-    - 新增叠加分析服务相关接口, 新增的接口如下：
-        - getOverlayGeoJobs
-        - getOverlayGeoJob
-        - addOverlayGeoJob
-        - getOverlayGeoJobState
+  - 新增叠加分析服务相关接口, 新增的接口如下：
+    - getOverlayGeoJobs
+    - getOverlayGeoJob
+    - addOverlayGeoJob
+    - getOverlayGeoJobState
 
-    - 新增叠加分析服务参数类：
-        - OverlayGeoJobParameter
+  - 新增叠加分析服务参数类：
+    - OverlayGeoJobParameter
 
-    - 新增属性汇总分析服务相关接口, 新增的接口如下：
-        - getSummaryAttributesJob
-        - getSummaryAttributesJobs
-        - addSummaryAttributesJob
-        - getSummaryAttributesJobState
+  - 新增属性汇总分析服务相关接口, 新增的接口如下：
+    - getSummaryAttributesJob
+    - getSummaryAttributesJobs
+    - addSummaryAttributesJob
+    - getSummaryAttributesJobState
 
-    - 新增属性汇总分析服务参数类：
-        - SummaryAttributesJobsParameter
+  - 新增属性汇总分析服务参数类：
+    - SummaryAttributesJobsParameter
 
-    - CommontypesConversion新增toProcessingParam接口
+  - CommontypesConversion新增toProcessingParam接口
 
-    - 单对象查询分析新增支持自定义绘制范围进行分析
-        - SingleObjectQueryJobsParameter新增geometryQuery参数
+  - 单对象查询分析新增支持自定义绘制范围进行分析
+    - SingleObjectQueryJobsParameter新增geometryQuery参数
 
-    - 矢量裁剪分析新增支持自定义绘制范围进行分析
-        - VectorClipJobsParameter新增geometryClip参数
-
+  - 矢量裁剪分析新增支持自定义绘制范围进行分析
+    - VectorClipJobsParameter新增geometryClip参数
 
 ## Fixed
 
@@ -440,12 +422,12 @@
 
 - 发布npm项目
 
-    - iclient-common: [https://www.npmjs.com/package/@supermap/iclient-common](https://www.npmjs.com/package/@supermap/iclient-common)
-    - iclient-leaflet: [https://www.npmjs.com/package/@supermap/iclient-leaflet](https://www.npmjs.com/package/@supermap/iclient-leaflet)
-    - iclient-openlayers: [https://www.npmjs.com/package/@supermap/iclient-openlayers](https://www.npmjs.com/package/@supermap/iclient-openlayers)
-    - iclient-mapboxgl: [https://www.npmjs.com/package/@supermap/iclient-mapboxgl](https://www.npmjs.com/package/@supermap/iclient-mapboxgl)
-    - iclient-classic: [https://www.npmjs.com/package/@supermap/iclient-classic](https://www.npmjs.com/package/@supermap/iclient-classic)
+  - iclient-common: [https://www.npmjs.com/package/@supermap/iclient-common](https://www.npmjs.com/package/@supermap/iclient-common)
+  - iclient-leaflet: [https://www.npmjs.com/package/@supermap/iclient-leaflet](https://www.npmjs.com/package/@supermap/iclient-leaflet)
+  - iclient-openlayers: [https://www.npmjs.com/package/@supermap/iclient-openlayers](https://www.npmjs.com/package/@supermap/iclient-openlayers)
+  - iclient-mapboxgl: [https://www.npmjs.com/package/@supermap/iclient-mapboxgl](https://www.npmjs.com/package/@supermap/iclient-mapboxgl)
+  - iclient-classic: [https://www.npmjs.com/package/@supermap/iclient-classic](https://www.npmjs.com/package/@supermap/iclient-classic)
 
-# 9.0.0 (2017-09-13) #
+# 9.0.0 (2017-09-13)
 
 SuperMap iClient for JavaScript 9D 云GIS网络客户端开发平台

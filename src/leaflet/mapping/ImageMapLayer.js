@@ -4,9 +4,10 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用Image资源出图
+ * @category iServer Map
  * @extends L.Layer{@linkdoc-leaflet/#Layer}
  * @example
- *      L.superMap.imageMapLayer(url).addTo(map);
+ *      L.supermap.imageMapLayer(url).addTo(map);
  * @param url -{string} 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param options -{Object} 图层可选参数。如：<br>
  *        layersID - {number} 如果有layersID，则是在使用专题图 <br>

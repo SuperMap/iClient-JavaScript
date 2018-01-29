@@ -12,7 +12,6 @@ import {VectorFeatureType} from './VectorFeatureType';
 /**
  * @class L.supermap.VectorGrid
  * @classdesc 矢量瓦片图层基类
- * @private
  * @extends L.GridLayer{@linkdoc-leaflet/#gridlayer}
  * @param options - {Object} 矢量瓦片图层基类参数。如：<br>
  *        vectorTileLayerStyles - {Object} 矢量网片图层风格。<br>
