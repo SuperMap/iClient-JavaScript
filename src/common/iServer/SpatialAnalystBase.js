@@ -13,7 +13,6 @@ import {GeoJSON} from '../format/GeoJSON';
  */
 export class SpatialAnalystBase extends CommonServiceBase {
 
-
     constructor(url, options) {
         super(url, options);
         /**
@@ -32,7 +31,6 @@ export class SpatialAnalystBase extends CommonServiceBase {
         super.destroy();
         this.format = null;
     }
-
 
     /**
      * @function SuperMap.SpatialAnalystBase.prototype.serviceProcessCompleted
@@ -71,7 +69,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
             return null;
         }
         //批量叠加分析时结果这样处理
-        if(result.result){
+        if(result.result && result.result.resultGeometry){
             result = result.result
         }
         var geoJSONFormat = new GeoJSON();

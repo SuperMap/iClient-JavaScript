@@ -3964,7 +3964,7 @@ var SpatialAnalystBase = exports.SpatialAnalystBase = function (_CommonServiceBa
                 return null;
             }
             //批量叠加分析时结果这样处理
-            if (result.result) {
+            if (result.result && result.result.resultGeometry) {
                 result = result.result;
             }
             var geoJSONFormat = new _GeoJSON.GeoJSON();
@@ -21056,16 +21056,16 @@ var GeometryOverlayAnalystParameters = exports.GeometryOverlayAnalystParameters 
 
         var _this = _possibleConstructorReturn(this, (GeometryOverlayAnalystParameters.__proto__ || Object.getPrototypeOf(GeometryOverlayAnalystParameters)).call(this, options));
 
-        if (options.operateGeometry) {
+        if (options && options.operateGeometry) {
             _this.operateGeometry = options.operateGeometry;
         }
-        if (options.sourceGeometry) {
+        if (options && options.sourceGeometry) {
             _this.sourceGeometry = options.sourceGeometry;
         }
-        if (options.operateGeometries) {
+        if (options && options.operateGeometries) {
             _this.operateGeometries = options.operateGeometries;
         }
-        if (options.sourceGeometries) {
+        if (options && options.sourceGeometries) {
             _this.sourceGeometries = options.sourceGeometries;
         }
 
@@ -80993,7 +80993,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -81117,9 +81117,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 

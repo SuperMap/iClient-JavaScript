@@ -350,7 +350,7 @@ describe('leaflet_UniqueThemeLayer', function () {
         ];
         expect(uniqueThemeLayer).not.toBeNull();
         expect(uniqueThemeLayer.options.isHoverAble).toBeTruthy();
-        expect(uniqueThemeLayer.options.name).toBe("ThemeLayer");
+        expect(uniqueThemeLayer.name).toBe("ThemeLayer");
         expect(uniqueThemeLayer.options.opacity).toEqual(0.8);
         expect(uniqueThemeLayer.style).not.toBeNull();
         expect(uniqueThemeLayer.highlightStyle).not.toBeNull();

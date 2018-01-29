@@ -32,17 +32,16 @@ export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
     constructor(options) {
         super(options);
-
-        if (options.operateGeometry) {
+        if (options && options.operateGeometry) {
             this.operateGeometry = options.operateGeometry;
         }
-        if (options.sourceGeometry) {
+        if (options && options.sourceGeometry) {
             this.sourceGeometry = options.sourceGeometry;
         }
-        if (options.operateGeometries) {
+        if (options && options.operateGeometries) {
             this.operateGeometries = options.operateGeometries;
         }
-        if (options.sourceGeometries) {
+        if (options && options.sourceGeometries) {
             this.sourceGeometries = options.sourceGeometries;
         }
 

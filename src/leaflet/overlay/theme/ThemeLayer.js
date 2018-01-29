@@ -28,7 +28,7 @@ export var ThemeLayer = L.Layer.extend({
     initialize: function (name, options) {
         L.Util.setOptions(this, options);
         this.name = name;
-        this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
+        this.id = options && options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         this.features = [];
         this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
         this.levelRenderer = new LevelRenderer();
