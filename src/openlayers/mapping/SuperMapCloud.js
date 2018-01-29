@@ -5,11 +5,6 @@ import ol from 'openlayers';
  * @classdesc 超图云地图图层源。
  * @param opt_options - {Object} 可选参数：如：<br>
  *        url - {string} 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
- *        attributions - {string} 版权描述信息。<br>
- *        cacheSize - {number} 缓冲大小。<br>
- *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
- *        maxZoom - {Object} 最大缩放级别。<br>
- *        opaque - {boolean} 是否透明。
  * @extends ol.source.XYZ{@linkdoc-openlayers/ol.source.XYZ}
  */
 export class SuperMapCloud extends ol.source.XYZ {
@@ -37,4 +32,5 @@ export class SuperMapCloud extends ol.source.XYZ {
         });
     }
 }
+
 ol.source.SuperMapCloud = SuperMapCloud;

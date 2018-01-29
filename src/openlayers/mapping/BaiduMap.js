@@ -5,11 +5,6 @@ import ol from 'openlayers';
  * @classdesc 百度地图图层源。
  * @param opt_options - {Object} 创建地图参数可选参数：<br>
  *        url - {string} 服务地址。<br>
- *        attributions - {string} 版权描述信息。<br>
- *        cacheSize - {number} 缓冲大小。<br>
- *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
- *        maxZoom - {Object} 最大缩放级别。<br>
- *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 export class BaiduMap extends ol.source.TileImage {
@@ -73,4 +68,5 @@ export class BaiduMap extends ol.source.TileImage {
     }
 
 }
+
 ol.source.BaiduMap = BaiduMap;

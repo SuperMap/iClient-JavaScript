@@ -14,11 +14,18 @@ import {Util} from '../core/Util';
  * @classdesc SuperMap iServer TileImage图层源。
  * @param options - {Object} 可选参数。如：<br>
  *        url - {string} 服务地址。<br>
- *        attributions - {string} 版权描述信息。<br>
- *        cacheSize - {number} 缓冲大小。<br>
- *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
- *        maxZoom - {Object} 最大缩放级别。<br>
- *        opaque - {boolean} 是否透明。
+ *        tileGrid - {@linkdoc-openlayers/ol.tilegrid.TileGrid} 瓦片网格对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务类型。<br>
+ *        redirect - {boolean} 是否重定向，默认为false。<br>
+ *        transparent - {boolean} 图片是否透明，默认为true。<br>
+ *        _cache - {boolean} 是否使用缓存，默认为true。<br>
+ *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图图片。例如：{"epsgCode":3857}。<br>
+ *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
+ *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
+ *        clipRegion - {@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
+ *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
+ *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
+ *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 export class TileSuperMapRest extends ol.source.TileImage {
@@ -213,7 +220,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            return layerUrl +encodeURI( "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            return layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
         }
 
     }
