@@ -1,8 +1,4 @@
-
-
-
-* Next release *
-
+# *Next release*
 
 ## API changes
 
