@@ -3144,7 +3144,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.ServiceBase
- * @private
  * @description L.supermap服务基类
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
@@ -3179,6 +3178,7 @@ var ServiceBase = exports.ServiceBase = _leaflet2["default"].Evented.extend({
     }
 
 });
+_leaflet2["default"].supermap.ServiceBase = ServiceBase;
 
 /***/ }),
 /* 9 */
@@ -5551,6 +5551,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器。
+ * @category Format
  * @extends SuperMap.Format.JSON。
  */
 var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
@@ -10331,6 +10332,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Graph
  * @classdesc 统计专题要素基类。
+ * @category Visualization Theme
  * @description 此类定义了统计专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
  *              统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.Graph::setting> 的基础属性只有 7 个，
  *              它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
@@ -12082,6 +12084,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @name SecurityManager
  * @memberOf SuperMap
  * @namespace
+ * @category Security
  * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
  *  > 使用说明：
  *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
@@ -16098,6 +16101,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
+ * @category iPortal/Online
  * @param url - {string} iPortal服务地址
  */
 var IPortalServiceBase = exports.IPortalServiceBase = function () {
@@ -20076,6 +20080,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.wmtsLayer
  * @classdesc wmts图层类
+ * @category OGC
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} wmts图层地址
  * @param options -{Object} wmts图层可选参数。如：<br>
@@ -20734,6 +20739,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
+ * @category Format
  * @param options - {Object} 可选参数。<br>
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
@@ -20836,6 +20842,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
+ * @category Format
  * @extends SuperMap.Format
  */
 var JSONFormat = exports.JSONFormat = function (_Format) {
@@ -21157,6 +21164,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.BufferAnalystParameters
  * @classdesc 缓冲区分析参数基类。
+ * @category iServer
  * @param options - {Object} 参数。如:</br>
  *        bufferSetting - {@link SuperMap.BufferSetting} 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
  */
@@ -21226,6 +21234,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *             当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
  *             所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
  *             其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
+ * @category iServer Data
  * @param options - {Object} 参数。如:</br>
  *         alias - {string} 数据源别名。</br>
  *         connect - {boolean} 数据源是否自动连接数据。</br>
@@ -26422,6 +26431,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
  * @private
  * @extends L.supermap.ThemeLayer
+ * @category Visualization Graphic
  * @param name - {string} 专题图名
  * @param options - {Object} 需要设置得参数对象。如：<br>
  *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
@@ -26742,6 +26752,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
  *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
+ * @category Visualization Graphic
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
  * @param attributes - {Object} 要素属性
@@ -26955,6 +26966,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.TimeFlowControl
  * @classdesc 时间管理类。
+ * @category  Control
  * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
@@ -27196,6 +27208,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.iManager
  * @classdesc iManager服务类。
+ * @category iManager
  * @param serviceUrl - {string} iManager首页地址。
  *
  */
@@ -27340,6 +27353,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.iPortal
  * @classdesc 对接SuperMap iPortal 基础服务
+ * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
  * @param iportalUrl -{string} 地址
  *
@@ -27470,6 +27484,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Online
  * @classdesc 对接SuperMap Online 所有基础服务
+ * @category iPortal/Online
  * @example
  * var online=new SuperMap.Online();
  * var services = online.queryDatas(param);
@@ -27588,6 +27603,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
+ * @category ElasticSearch
  * @param url - {string} ElasticSearch服务地址。
  * @param options - {Object} 可选参数。如:</br>
  *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>
@@ -28340,6 +28356,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.baiduTileLayer
  * @classdesc 百度地图图层。
+ * @category ThirdPartyMap
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 切片地址
  * @param options -{Object} 切片参数。如：<br>
@@ -28421,6 +28438,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.cloudTileLayer
  * @classdesc 超图云服务图层。
+ * @category ThirdPartyMap
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 服务地址，默认为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}
  * @param options -{Object} 图层可选参数。如：<br>
@@ -28499,6 +28517,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.tiandituTileLayer
  * @classdesc 天地图图层类。
+ * @category ThirdPartyMap
  * @extends L.supermap.wmtsLayer
  * @param options -{Object} 切片图层参数。如：<br>
  *        url - {string} 地图地址。<br>
@@ -28584,9 +28603,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用TileImage资源出图.
+ * @category iServer Map
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
- *      L.superMap.tiledMapLayer(url).addTo(map);
+ *      L.supermap.tiledMapLayer(url).addTo(map);
  * @param url -{string} 影像图层地址
  * @param options -{Object} 影像图层参数。如：<br>
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
@@ -28970,6 +28990,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.graphThemeLayer
  * @classdesc 统计专题图图层。
+ * @category Visualization Theme
  * @extends L.supermap.ThemeLayer
  * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
@@ -29471,6 +29492,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.labelThemeLayer
  * @classdesc 标签专题图。
+ * @category Visualization Theme
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param name - {string} 图层名
  * @param options - {Object} 图层参数<br>
@@ -30345,6 +30367,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.rangeThemeLayer
  * @classdesc 范围分段专题图。
+ * @category Visualization Theme
  * @description 范围分段专题图对数据（<{@link SuperMap.Feature.Vector}>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
  *            分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @extends L.supermap.GeoFeatureThemeLayer
@@ -30454,6 +30477,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.unicodeMarker
  * @classdesc Unicode字符图标。
+ * @category Visualization Marker
  * @extends L.Path{@linkdoc-leaflet/#Path}
  * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng}} 经纬度坐标
  * @param options -{Object} 符号参数。<br>
@@ -30621,6 +30645,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.uniqueThemeLayer
  * @classdesc 客户端单值专题图
+ * @category Visualization Theme
  * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格<br>
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends L.supermap.GeoFeatureThemeLayer
@@ -30808,6 +30833,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.dataFlowService
  * @classdesc 实时数据服务类
+ * @category  iServer DataFlow
  * @extends L.supermap.ServiceBase
  * @param url - {string} 实时数据服务地址
  * @param options - {Object} 加载实时数据可选参数。如：<br>
@@ -30957,6 +30983,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.featureService
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
+ * @category  iServer Data
  * @example
  *      L.supermap.featureService(url)
  *      .getFeaturesByIDs(param,function(result){
@@ -31200,6 +31227,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class  L.supermap.mapService
  * @classdesc 地图信息服务类
+ * @category  iServer Map
  * @extends L.supermap.ServiceBase
  * @param url -{string} 地图服务地址
  * @param options -{Object} 地图服务信息相关参数。如：<br>
@@ -32234,6 +32262,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
+ * @category  Control
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
  *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
@@ -32719,6 +32748,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.iManagerCreateNodeParam
  * @classdesc iManager 创建节点参数。
+ * @category iManager
  * @param params - {Object} iManager创建节点参数。
  *
  */
@@ -32764,6 +32794,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.iManagerServiceBase
  * @classdesc iManager服务基类(有权限限制的类需要实现此类)。
+ * @category iManager
  * @param url - {string} iManager首页地址，如：http://localhost:8390/imanager。
  */
 var IManagerServiceBase = exports.IManagerServiceBase = function () {
@@ -32851,6 +32882,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.iPortalMap
  * @classdesc iPortal地图服务类
+ * @category iPortal/Online
  * @param mapUrl -{string}  地图地址
  * @param params -{Object}  服务参数
  * @extends SuperMap.iPortalServiceBase
@@ -32974,6 +33006,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.iPortalMapsQueryParam
  * @classdesc iPortal地图资源查询参数
+ * @category iPortal/Online
  * @param params -{Object} iPortal地图资源查询具体参数
  *
  */
@@ -33031,6 +33064,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.iPortalService
  * @classdesc iPortal服务
+ * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
  * @param seviceUrl -{string} 服务地址
  * @param params -{Object} 服务请求参数
@@ -33148,6 +33182,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.iPortalServicesQueryParam
  * @classdesc iPortal服务查询参数
+ * @category iPortal/Online
  * @param params -{Object} 服务参数
  *
  */
@@ -33198,6 +33233,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.AreaSolarRadiationParameters
  * @classdesc 地区太阳辐射参数类。
+ * @category iServer
  * @param options -{Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。</br>
  *        targetDatasourceName - {string}  指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
@@ -35273,6 +35309,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.EditFeaturesParameters
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
+ * @category iServer Data
  * @param options - {Object} 可选参数。如:</br>
  *        features - {Array<Object>} 当前需要创建或者是修改的要素集。feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。</br>
  *        returnContent - {boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
@@ -45912,6 +45949,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.OnlineData
  * @classdesc Online myData服务
+ * @category iPortal/Online
  * @param serviceRootUrl -{string} 服务根地址
  * @param options -{string} 服务相关参数
  */
@@ -46138,6 +46176,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.OnlineServiceBase
  * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
+ * @category iPortal/Online
  * @param options -{Object} 服务参数
  */
 var OnlineServiceBase = exports.OnlineServiceBase = function () {
@@ -46241,6 +46280,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.RankSymbol
  * @classdesc 符号专题要素基类。
+ * @category Visualization Theme
  * @description 此类定义了符号专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
  * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.RankSymbol::setting> 的基础属性只有 5 个，
  * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
@@ -54990,6 +55030,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @constant L.supermap.vectorTileFormat
+ * @category Visualization TileVector
  * @classdesc 矢量瓦片格式
  */
 var VectorTileFormat = exports.VectorTileFormat = {
@@ -55495,6 +55536,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.ThemeLayer
  * @classdesc 专题图层基类，调用建议使用其子类实现类。
+ * @category Visualization Graphic
  * @private
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param name - {string} 专题图图层名称
@@ -56361,7 +56403,7 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2["default"].Path.extend({
         stroke: true,
         fontFamily: "Arial Unicode MS Regular",
         fontSize: 14,
-        fontWeight: 'bold',
+        fontWeight: 'normal',
         textAlign: 'center',
         offsetX: 1,
         offsetY: 1
@@ -56469,7 +56511,7 @@ _CanvasRenderer.CanvasRenderer.include({
         this._drawnLayers[layer._leaflet_id] = layer;
 
         ctx.fillRect(0, 0, size.x, size.y);
-        ctx.font = [options.fontWeight ? options.fontWeight : "bold", options.fontSize ? options.fontSize : "14px", options.fontFamily ? options.fontFamily : "Arial Unicode MS Regular,Microsoft Yahei"].join(" ");
+        ctx.font = [options.fontWeight ? options.fontWeight : "normal", options.fontSize ? options.fontSize : "14px", options.fontFamily ? options.fontFamily : "Arial Unicode MS Regular,Microsoft Yahei"].join(" ");
         ctx.textAlign = options.textAlign;
         ctx.lineWidth = options.weight;
         ctx.fillStyle = options.fillColor;
@@ -56520,7 +56562,7 @@ _SVGRenderer.SVGRenderer.include({
         path.setAttribute('text-anchor', options.textAlign === 'center' ? 'middle' : options.textAlign);
         path.style.fontSize = options.fontSize;
         path.style.fontFamily = options.fontFamily;
-        path.style.fontWeight = options.fontWeight || "bold";
+        path.style.fontWeight = options.fontWeight || "normal";
         path.style.glyphOrientationVertical = options.rotation || '';
         if (options.stroke) {
             path.setAttribute('stroke', options.color);
@@ -57990,6 +58032,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.control.changeTileVersion
  * @classdesc 版本切换控件,支持IE10及以上
+ * @category  Control
  * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
  * L.supermap.control.changeTileVersion({
@@ -58362,6 +58405,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.control.logo
  * @classdesc Logo控件。
+ * @category  Control
  * @description map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
  * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
@@ -58476,9 +58520,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用Image资源出图
+ * @category iServer Map
  * @extends L.Layer{@linkdoc-leaflet/#Layer}
  * @example
- *      L.superMap.imageMapLayer(url).addTo(map);
+ *      L.supermap.imageMapLayer(url).addTo(map);
  * @param url -{string} 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param options -{Object} 图层可选参数。如：<br>
  *        layersID - {number} 如果有layersID，则是在使用专题图 <br>
@@ -58938,6 +58983,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.webmap
  * @classdesc 对接iPortal/Online地图类。
+ * @category iPortal/Online
  * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
  * @param id - {number}iPortal/Online地图id。
  * @param options - {Object} 可选参数。如：<br>
@@ -60161,6 +60207,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.dataFlowLayer
  * @classdesc 实时数据图层源
+ * @category  iServer DataFlow
  * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
  * @param url - {string} 实时数据图层服务地址
  * @param options - {Object} 设置图层参数。如：<br>
@@ -60331,6 +60378,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.echartsLayer
  * @classdesc 百度ECharts图层类。
+ * @category  Visualization ECharts
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>
@@ -60661,6 +60709,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
+ * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
  * @param graphics - {Object} 图形对象
  * @param options - {Object} 可选参数。如：<br>
@@ -60813,6 +60862,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.mapVLayer
  * @classdesc MapV图层
+ * @category Visualization MapV
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param dataSet - {mapv.DataSet} MapV图层数据集
  * @param mapVOptions - {Object} MapV图层参数
@@ -61085,6 +61135,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.rankSymbolThemeLayer
  * @classdesc 符号专题图图层。
+ * @category Visualization Theme
  * @description 符号专题图通过为每个要素绘制符号大小来反映其对应的专题值的大小；它只能表示单个个字段属性信息。
  *            符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。
  *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。
@@ -61184,6 +61235,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.tiledVectorLayer
  * @classdesc SuperMap iServer的矢量瓦片图层
+ * @category Visualization TileVector
  * @extends L.supermap.VectorGrid
  * @example
  *      L.supermap.tiledVectorLayer(url).addTo(map);
@@ -61686,6 +61738,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.turfLayer
  * @classdesc Turf图层
+ * @category Visualization Turf
  * @extends L.Layer{@linkdoc-leaflet/#geojson}
  * @param options - {Object} 可选参数。如：<br>
  *        attribution - {string} 版权信息。
@@ -62004,6 +62057,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.addressMatchService
  * @constructs L.supermap.addressMatchService
  * @classdesc 地址匹配服务
+ * @category  iServer AddressMatch
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.addressMatchService(url,options)
@@ -62097,6 +62151,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.chartService
  * @classdesc 海图服务。
+ * @category  iServer Chart
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.chartService(url)
@@ -62210,6 +62265,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
+ * @category iServer Data
  * @extends L.supermap.ServiceBase
  * @example
  *   L.supermap.fieldService(url).getFields(function(result){
@@ -62343,6 +62399,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.gridCellInfosService
  * @classdesc 数据栅格查询服务
+ * @category  iServer Data
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.gridCellInfosService(url)
@@ -62414,6 +62471,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.layerInfoService
  * @classdesc 图层信息类
+ * @category  iServer Map
  * @extends L.supermap.ServiceBase
  * @example
  * L.supermap.layerInfoService(url).getLayersInfo(function(result){
@@ -62574,6 +62632,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.measureService
  * @classdesc 量算服务服务类
+ * @category  iServer Map
  * @augments L.supermap.ServiceBase
  * @example
  * 用法：
@@ -62677,6 +62736,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.networkAnalyst3DService
  * @classdesc 3D网络分析服务类
+ * @category  iServer NetworkAnalyst3D
  * @extends L.supermap.ServiceBase
  * @example
  * L.supermap.networkAnalyst3DService(url)
@@ -62829,6 +62889,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.networkAnalystService
  * @classdesc 网络分析服务类
+ * @category  iServer NetworkAnalyst
  * @augments  L.supermap.ServiceBase
  * @example
  * L.supermap.networkAnalystService(url)
@@ -63172,6 +63233,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.processingService
  * @classdesc 分布式分析服务类
+ * @category  iServer ProcessingService
  * @extends  L.supermap.ServiceBase
  * @example
  * L.supermap.processingService(url)
@@ -64010,6 +64072,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class  L.supermap.queryService
  * @classdesc 地图查询服务类。
+ * @category  iServer Map
  * @extends L.supermap.ServiceBase
  * @param url - {string} 地图查询服务访问地址。
  * @param - options - {Object} 服务交互时所需的可选参数。如：<br>
@@ -64187,6 +64250,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.spatialAnalystService
  * @classdesc 空间分析服务类。
+ * @category  iServer SpatialAnalyst
  * @description 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @extends L.supermap.ServiceBase
  * @example
@@ -64659,6 +64723,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.themeService
  * @classdesc 专题图服务类
+ * @category  iServer Map
  * @extends L.supermap.ServiceBase
  * @example
  * L.supermap.themeService(url,{
@@ -64730,6 +64795,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类
+ * @category  iServer TrafficTransferAnalyst
  * @example
  * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *   //doSomething
@@ -65478,6 +65544,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Format.WKT
  * @classdesc 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
  *      的实例。
+ * @category Format
  * @extends SuperMap.Format
  * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
@@ -65926,6 +65993,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.AddressMatchService
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @category iServer
  * @param options - {Object} 参数。
  * @param url {string} 地址匹配服务地址。
  */
@@ -66070,6 +66138,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.AreaSolarRadiationService
  * @classdesc 地区太阳辐射服务类。
+ * @category iServer
  * @param url - {string} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
  * @param options - {Object} 参数。如:</br>
  * eventListeners - {Object} 需要被注册的监听器对象。
@@ -76083,6 +76152,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.OnlineQueryDatasParameter
  * @classdesc myDatas服务资源查询参数
+ * @category iPortal/Online
  * @param options -{Object} 查询参数
  */
 var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () {
@@ -76251,6 +76321,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Bar
  * @classdesc 柱状图 。
+ * @category Visualization Theme
  * @description 图表 Bar 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
  *              width - {number} 专题要素（图表）宽度，必设参数。</br>
  *              height - {number} 专题要素（图表）高度，必设参数。</br>
@@ -76640,6 +76711,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Bar3D
  * @classdesc 三维柱状图 。
+ * @category Visualization Theme
  * @extends SuperMap.Feature.Theme.Graph
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
@@ -77093,6 +77165,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
+ * @category Visualization Theme
  * @description 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
  *            codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
  *            maxR - {number} 圆形的最大半径。<br>
@@ -77286,6 +77359,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Line
  * @classdesc 折线图。
+ * @category Visualization Theme
  * @description 图表 Line 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>）可设属性如下：<br>
  *              width - {number} 专题要素（图表）宽度，必设参数。<br>
  *              height - {number} 专题要素（图表）高度，必设参数。<br>
@@ -77633,6 +77707,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Pie
  * @classdesc 饼图。
+ * @category Visualization Theme
  * @description 图表 Pie 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
  * width - {number} 专题要素（图表）宽度，必设参数。</br>
  * height - {number} 专题要素（图表）高度，必设参数。</br>
@@ -77871,6 +77946,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Point
  * @classdesc 点状图。
+ * @category Visualization Theme
  * @description 图表 Point 配置对象 chartsSetting(SuperMap.Layer.Graph::chartsSetting) 可设属性如下：</br>
  * width - {number} 专题要素（图表）宽度，必设参数。</br>
  * height - {number} 专题要素（图表）高度，必设参数。</br>
@@ -78183,6 +78259,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Ring
  * @classdesc 环状图。
+ * @category Visualization Theme
  * @description 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  * 图表 Ring 配置对象 chartsSetting（SuperMap.Layer.Graph::chartsSetting） 可设属性如下：</br>
  * width - {number} 专题要素（图表）宽度，必设参数。</br>
@@ -78458,6 +78535,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Vector
  * @classdesc 矢量专题要素类。
+ * @category Visualization Theme
  * @extends SuperMap.Feature.Theme
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
  * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
@@ -80426,6 +80504,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
+ * @category Security
  * @param options - {Object} 参数。如：<br>
  *        name - {string} 申请服务名称。<br>
  *        serviceIds - {number}服务ID。<br>
@@ -80491,6 +80570,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @category Security
  * @param type - {string} 服务器类型
  * @param options - {Object} 服务器信息相关可选参数。如：<br>
  *        server - {string} 服务器地址,如：http://supermapiserver:8090/iserver<br>
@@ -80579,6 +80659,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
+ * @category Security
  * @param options - {Object} token申请参数。
  */
 var TokenServiceParameter = exports.TokenServiceParameter = function () {
@@ -80706,6 +80787,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.CartoCSS
  * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象。
+ * @category Style
  * @param cartoStr - {string} CartoCSS样式表字符串
  * @example
  * var cartocss = "@provinceLineColor:#ddd;
@@ -85194,6 +85276,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
+ * @category Style
  * @param options -{Object} 可选参数。如：<br>
  *         fill - {boolean} 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
  *         fillColor - {string} 十六进制填充颜色。默认值为 "#000000"。<br>
@@ -86854,7 +86937,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.VectorGrid
  * @classdesc 矢量瓦片图层基类
- * @private
  * @extends L.GridLayer{@linkdoc-leaflet/#gridlayer}
  * @param options - {Object} 矢量瓦片图层基类参数。如：<br>
  *        vectorTileLayerStyles - {Object} 矢量网片图层风格。<br>
@@ -94191,7 +94273,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -94315,9 +94397,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -94613,7 +94695,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 501 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 502 */

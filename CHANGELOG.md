@@ -42,6 +42,7 @@
 
 - 修复客户端专题图无法加载 `L.Polygon` 的问题
 - 修改 `L.superMap.imageMapLayer` 的出图方式为整张image出图
+- 修改矢量瓦片字体默认粗体的问题
 
 ### for OpenLayers
 

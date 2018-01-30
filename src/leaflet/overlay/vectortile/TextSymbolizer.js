@@ -30,7 +30,7 @@ export var TextSymbolizer = L.Path.extend({
         stroke: true,
         fontFamily: "Arial Unicode MS Regular",
         fontSize: 14,
-        fontWeight: 'bold',
+        fontWeight: 'normal',
         textAlign: 'center',
         offsetX: 1,
         offsetY: 1
@@ -140,7 +140,7 @@ CanvasRenderer.include({
 
         ctx.fillRect(0, 0, size.x, size.y);
         ctx.font = [
-            options.fontWeight ? options.fontWeight : "bold",
+            options.fontWeight ? options.fontWeight : "normal",
             options.fontSize ? options.fontSize : "14px",
             options.fontFamily ? options.fontFamily : "Arial Unicode MS Regular,Microsoft Yahei"
         ].join(" ");
@@ -195,7 +195,7 @@ SVGRenderer.include({
         path.setAttribute('text-anchor', options.textAlign === 'center' ? 'middle' : options.textAlign);
         path.style.fontSize = options.fontSize;
         path.style.fontFamily = options.fontFamily;
-        path.style.fontWeight = options.fontWeight || "bold";
+        path.style.fontWeight = options.fontWeight || "normal";
         path.style.glyphOrientationVertical = options.rotation||'';
         if (options.stroke) {
             path.setAttribute('stroke', options.color);
