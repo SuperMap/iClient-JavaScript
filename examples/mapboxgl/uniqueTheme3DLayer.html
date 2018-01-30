@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'/>
-    <title>土地利用类型单值专题图(3D)</title>
+    <title data-i18n="resources.title_uniqueTheme3DLayer">土地利用类型单值专题图(3D)</title>
     <meta name="viewport" content="width=device-width,initial-scale=0.5,maximum-scale=1,user-scalable=no"/>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <style>
@@ -99,13 +99,13 @@
 
             // 显示图例
             showLegend: true,
-            legendTitle: "土地利用类型",
+            legendTitle: resources.text_landUseType,
             legendOrientation: 'vertical'
         });
         themeLayer.setHighlightStyleOptions({callback: highlightCallback}).setData(data).addTo(map);
         map.easeTo({
             pitch: 60,
-            bearing: 0,
+            bearing: 0
         })
     }
 
@@ -116,8 +116,8 @@
             popup.remove();
         }
         if (ft && ft.properties) {
-            var content = "<span>土地类型: " + ft.properties[themeField] + "</span><br>";
-            content += "<span>土地面积: " + ft.properties["AREA"] + "平方公里</span><br>";
+            var content = "<span>" + resources.text_landType + ": " + ft.properties[themeField] + "</span><br>";
+            content += "<span>" + resources.text_landArea + ": " + ft.properties["AREA"] + " " + resources.text_squareKilometre + "</span><br>";
             popup.addTo(map);
             popup.setLngLat(evt.lngLat);
             popup.setHTML(content);

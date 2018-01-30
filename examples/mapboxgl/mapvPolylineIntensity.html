@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 
-    <title>强度线</title>
+    <title data-i18n="resources.title_mapvPolylineIntensity">强度线</title>
     <style>
         body {
             margin: 0;
@@ -55,9 +55,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-        .setLngLat(map.getCenter())
-        .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
-        .addTo(map);
+            .setLngLat(map.getCenter())
+            .setHTML(resources.text_iClient9)
+            .addTo(map);
 
     map.on('load', function () {
         var randomCount = 1000;

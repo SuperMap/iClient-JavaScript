@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>地物编辑</title>
+    <title data-i18n="resources.title_editFeature">地物编辑</title>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
     <style>
@@ -51,7 +51,7 @@
         featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.features).addTo(map);
             resultLayer.on("mousemove", function (e) {
-                e.layer.bindPopup("首都：" + e.layer.feature.properties.CAPITAL).openPopup();
+                e.layer.bindPopup(resources.text_capital + "：" + e.layer.feature.properties.CAPITAL).openPopup();
             });
             resultLayer.on("mouseout", function (e) {
                 e.layer.closePopup();
@@ -65,11 +65,11 @@
             var me = this;
             me._div = L.DomUtil.create('div', 'panel panel-primary');
             me._div.innerHTML = "<div class='panel-heading'>" +
-                "<h5 class='panel-title text-center'>编辑</h5></div><div class='panel-body content'>" +
-                "<input type='button' class='btn btn-default' value='添加地物' onclick='addMarker()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value='撤销添加' onclick='revocationMarker()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value='提交添加' onclick='commit()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value='清除结果' onclick='clearLayer()'/></div>";
+                "<h5 class='panel-title text-center'>" + resources.text_edit + "</h5></div><div class='panel-body content'>" +
+                "<input type='button' class='btn btn-default' value=" + resources.btn_addMarker + " onclick='addMarker()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value=" + resources.btn_undoAdd + " onclick='revocationMarker()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value=" + resources.text_input_value_submit + " onclick='commit()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value=" + resources.text_input_value_clear + " onclick='clearLayer()'/></div>";
 
             handleMapEvent(me._div, me._map);
             return me._div;
@@ -98,7 +98,7 @@
         direction: 'right'
     });
     var pointerMoveHandler = function (evt) {
-        tooltip.setContent("选择并删除要素。");
+        tooltip.setContent(resources.text_selectMarkerToDelete);
         tooltip.setLatLng(evt.latlng);
         tooltip.addTo(map);
     };
@@ -138,7 +138,7 @@
             featureGroup.clearLayers();
             marker = null;
         } else {
-            widgets.alert.showAlert("没有可撤回的要素。",false);
+            widgets.alert.showAlert(resources.msg_noRevocableMarker, false);
         }
     }
 
@@ -162,11 +162,11 @@
                     map.removeLayer(resultLayer);
                     resultLayer = null;
                     initFeature();
-                    widgets.alert.showAlert("提交成功",true);
+                    widgets.alert.showAlert(resources.msg_submitSuccess, true);
                 }
             });
         } else {
-            widgets.alert.showAlert("请先添加地物",false);
+            widgets.alert.showAlert(resources.msg_addMarker, false);
         }
     }
 
@@ -188,10 +188,10 @@
                 map.removeLayer(resultLayer);
                 resultLayer = null;
                 initFeature();
-                widgets.alert.showAlert("删除成功",true);
+                widgets.alert.showAlert(resources.text_deleteSuccess, true);
                 closeClearListener();
             } else {
-                widgets.alert.showAlert("删除失败",false);
+                widgets.alert.showAlert(resources.msg_deleteFailed, false);
             }
         });
     }

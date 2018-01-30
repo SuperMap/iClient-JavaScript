@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset='utf-8'/>
-    <title>开普敦的士路线图</title>
+    <title data-i18n="resources.title_taxiRoutesOfCapeTown">开普敦的士路线图</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
     <style>
         body {
@@ -26,7 +26,7 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts Echarts-gl</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu +" ECharts Echarts-gl</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
 

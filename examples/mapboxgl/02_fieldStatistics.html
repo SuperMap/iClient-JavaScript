@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>数据集字段查询统计</title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <title data-i18n="resources.title_fieldStatistics">数据集字段查询统计</title>
     <style>
         #popup {
             position: absolute;
@@ -25,19 +23,20 @@
     <div id="popup">
         <div id="popup-content">
             <div style="line-height: 35px;">
-                <div id="tableName"><strong>图层</strong>（continent_T@World）&nbsp;&nbsp;&nbsp;<strong>字段</strong></div>
+                <div id="tableName"><strong data-i18n="resources.text_layer">图层</strong>（continent_T@World）&nbsp;&nbsp;&nbsp;<strong
+                        data-i18n="resources.text_field">字段</strong></div>
                 <div>
-                    <div style="line-height: 35px;"><strong>统计结果：</strong>
+                    <div style="line-height: 35px;"><strong data-i18n="resources.text_statisticResult">统计结果：</strong>
                         <div>
                             <table id="trafficRes" class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <td>平均值</td>
-                                    <td>最大值</td>
-                                    <td>最小值</td>
-                                    <td>标准差</td>
-                                    <td>和</td>
-                                    <td>方差</td>
+                                    <td data-i18n="resources.text_averageValue">平均值</td>
+                                    <td data-i18n="resources.text_maxValue">最大值</td>
+                                    <td data-i18n="resources.text_minValue">最小值</td>
+                                    <td data-i18n="resources.text_standardDeviation">标准差</td>
+                                    <td data-i18n="resources.text_sum">和</td>
+                                    <td data-i18n="resources.text_variance">方差</td>
                                 </tr>
                                 <tr>
                                     <td id="AVERAGE"></td>
@@ -56,6 +55,8 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 <script>
     var map, currentData, layersName = [],
         baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World Map",

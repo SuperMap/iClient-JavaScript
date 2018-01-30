@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SuperMap 地图信息</title>
+    <title data-i18n="resources.title_mapService">SuperMap 地图信息</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -57,9 +57,9 @@
 
     function callback(serviceResult) {
         var result = serviceResult.result;
-        var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-        innerHTML += "地图名：" + JSON.stringify(result.name) + "<br>";
-        innerHTML += "中心点:" + JSON.stringify(result.center) + "<br>";
+        var innerHTML = "(" + resources.text_mapInfoPrint + ")" + "<br><br>";
+        innerHTML += resources.text_mapName + "：" + JSON.stringify(result.name) + "<br>";
+        innerHTML += resources.text_center + ":" + JSON.stringify(result.center) + "<br>";
         innerHTML += "Bounds:" + JSON.stringify(result.bounds) + "<br>";
         new mapboxgl.Popup({closeOnClick: false})
             .setLngLat([-96, 37.8])

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>单值专题图</title>
+    <title data-i18n="resources.title_themeUnique">单值专题图</title>
     <style>
         body, #map {
             position: absolute;
@@ -19,8 +19,6 @@
             font-size: 14px;
         }
     </style>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -28,7 +26,7 @@
     <div id="infoBox" class="panel panel-primary infoPane"
          style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
         <div class="panel-heading">
-            <h5 class='panel-title text-center'>属性表</h5>
+            <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable">属性表</h5>
         </div>
         <div id="infoContent" class="panel-body content">
         </div>
@@ -36,61 +34,61 @@
     <div class="panel panel-primary legend" style="width:272px;margin-top: 400px;position: absolute;float:right">
         <div id="mapLegend" class="panel-heading">
             <h5 class='panel-title text-center'>
-                <span>图例</span>
+                <span data-i18n="resources.text_legend">图例</span>
             </h5>
         </div>
         <div class="panel-body text-center">
             <table>
                 <tr>
-                    <td class="legendItemHeader">土地类型</td>
-                    <td class="legendItemValue">颜色</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_landType">土地类型</td>
+                    <td class="legendItemValue" data-i18n="resources.text_color">颜色</td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">草地</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_grassland">草地</td>
                     <td class="legendItemValue" style="background: #C1FFC1"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">城市</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_city">城市</td>
                     <td class="legendItemValue" style="background: #CD7054"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">灌丛</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_shrub">灌丛</td>
                     <td class="legendItemValue" style="background: #7CCD7C"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">旱地</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_dryLand">旱地</td>
                     <td class="legendItemValue" style="background: #EE9A49"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">湖泊水库</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_lakeReservoir">湖泊水库</td>
                     <td class="legendItemValue" style="background: #8EE5EE"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">经济林</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_economicForest">经济林</td>
                     <td class="legendItemValue" style="background: #548B54"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">沙漠</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_desert">沙漠</td>
                     <td class="legendItemValue" style="background: #DEB887"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">水浇地</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_irrigatedLand">水浇地</td>
                     <td class="legendItemValue" style="background: #E0FFFF"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">水田</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_paddyField">水田</td>
                     <td class="legendItemValue" style="background: #388E8E"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">用材林</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_timberForest">用材林</td>
                     <td class="legendItemValue" style="background: #556B2F"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">沼泽</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_swamp">沼泽</td>
                     <td class="legendItemValue" style="background: #2F4F4F"></td>
                 </tr>
                 <tr>
-                    <td class="legendItemHeader">缺省风格</td>
+                    <td class="legendItemHeader" data-i18n="resources.text_DefaultStyle">缺省风格</td>
                     <td class="legendItemValue" style="background: #ABABAB"></td>
                 </tr>
             </table>
@@ -98,7 +96,8 @@
     </div>
 </div>
 
-
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var themeLayer,
@@ -153,7 +152,7 @@
         var result = getFeaturesEventArgs.result;
         var feas = [];
         if (result && result.features) {
-            var features = result.features
+            var features = result.features;
             var IHFeas = []; //岛洞多面
             for (var i = 0, len = features.length; i < len; i++) {
                 var feature = features[i];
@@ -281,8 +280,8 @@
                 if (fea) {
                     document.getElementById("infoContent").innerHTML = "";
                     document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
-                    document.getElementById("infoContent").innerHTML += "土地类型: " + fea.attributes.LANDTYPE + "<br/>";
-                    document.getElementById("infoContent").innerHTML += "面积: " + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
+                    document.getElementById("infoContent").innerHTML += resources.text_landType + ": " + fea.attributes.LANDTYPE + "<br/>";
+                    document.getElementById("infoContent").innerHTML += resources.text_area + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
                 }
             }
             else {
@@ -497,3 +496,4 @@
 </script>
 </body>
 </html>
+

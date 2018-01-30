@@ -181,10 +181,12 @@ var exampleConfig = {
                     fileName: "04_overlayAnalystService"
                 }, {
                     name: "地形曲率计算",
+                    name_en: "discrete point interpolation",
                     thumbnail: "mb_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
                 }, {
                     name: "栅格代数运算",
+                    name_en: "terrain curvature calculation",
                     thumbnail: "mb_mathExpressionAnalysisService.png",
                     fileName: "04_mathExpressionAnalysisService"
                 }, {
@@ -621,7 +623,7 @@ var exampleConfig = {
                 }, {
                     name: "卷帘控件",
                     name_en: "Swipe between maps",
-                    thumbnail: "control_swipeBetweenMaps.png",
+                    thumbnail: "control_swipeBetween  nMaps.png",
                     fileName: "control_swipeBetweenMaps"
                 }]
             }

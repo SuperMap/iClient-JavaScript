@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SuperMap 地图信息</title>
+    <title data-i18n="resources.title_mapService">SuperMap 地图信息</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -24,9 +24,9 @@
     function mapService() {
         L.supermap.mapService(url).getMapInfo(function (serviceResult) {
             var result = serviceResult.result;
-            var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-            innerHTML += "地图名：" + JSON.stringify(result.name, null, 2) + "<br>";
-            innerHTML += "中心点:" + JSON.stringify(result.center, null, 2) + "<br>";
+            var innerHTML = "("+resources.text_mapInfoPrint+")" + "<br><br>";
+            innerHTML += resources.text_mapName+"：" + JSON.stringify(result.name, null, 2) + "<br>";
+            innerHTML +=  resources.text_center+":" + JSON.stringify(result.center, null, 2) + "<br>";
             innerHTML += "Bounds:" + JSON.stringify(result.bounds, null, 2) + "<br>";
             infoWin = L.popup({maxWidth: 400})
                 .setLatLng(map.getCenter())

@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>数据集栅格查询</title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_getGridCellInfos">数据集栅格查询</title>
     <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<h5 style=" position: absolute; display: block; margin-left: 60px; z-index: 100;">请点击需要查询的格网区域。</h5>
+<h5 data-i18n="resources.text_clickGridCellToQuery"
+    style=" position: absolute; display: block; margin-left: 60px; z-index: 100;">请点击需要查询的格网区域。</h5>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../js/include-web.js"></script>
 <script>
     var map,
         baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World Map/zxyTileImage.png?z={z}&x={x}&y={y}",
@@ -59,7 +60,7 @@
                 return;
             }
             var result = serviceResult.result;
-            var innerHTML = "栅格查询结果: " + "<br>" + "column: " + result.column + "<br>";
+            var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + result.column + "<br>";
             innerHTML += "row: " + result.row + "<br>";
             innerHTML += "value: " + result.value + "<br>";
             new mapboxgl.Popup().setLngLat([x, y]).setHTML(innerHTML).addTo(map);

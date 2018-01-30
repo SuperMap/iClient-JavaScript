@@ -25,7 +25,7 @@
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}';
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
@@ -162,13 +162,13 @@
     ];
 
     var schema = [
-        {name: 'date', index: 0, text: '日'},
-        {name: 'AQIindex', index: 1, text: 'AQI指数'},
+        {name: 'date', index: 0, text: "日"},
+        {name: 'AQIindex', index: 1, text: resources.text_AQIindex},
         {name: 'PM25', index: 2, text: 'PM2.5'},
         {name: 'PM10', index: 3, text: 'PM10'},
-        {name: 'CO', index: 4, text: '一氧化碳（CO）'},
-        {name: 'NO2', index: 5, text: '二氧化氮（NO2）'},
-        {name: 'SO2', index: 6, text: '二氧化硫（SO2）'}
+        {name: 'CO', index: 4, text: resources.text_CO},
+        {name: 'NO2', index: 5, text: resources.text_NO2},
+        {name: 'SO2', index: 6, text: resources.text_SO2}
     ];
 
     var dataMap = {"北京市": dataBJ, "广州市": dataGZ, "上海市": dataSH};
@@ -215,7 +215,7 @@
                 formatter: function (obj) {
                     var value = obj.value;
                     return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-                        + obj.seriesName + ' ' + value[0] + '日：'
+                        + obj.seriesName + ' ' +resources.text_day1+ value[0] + resources.text_day2
                         + value[7]
                         + '</div>'
                         + schema[1].text + '：' + value[1] + '<br>'
@@ -228,7 +228,7 @@
             },
             xAxis: {
                 type: 'value',
-                name: '日期',
+                name: resources.text_data,
                 nameGap: 16,
                 nameTextStyle: {
                     color: '#fff',
@@ -246,7 +246,7 @@
             },
             yAxis: {
                 type: 'value',
-                name: 'AQI指数',
+                name: resources.text_AQIindex,
                 nameLocation: 'end',
                 nameGap: 20,
                 nameTextStyle: {
@@ -273,7 +273,7 @@
                     itemHeight: 80,
                     calculable: true,
                     precision: 0.1,
-                    text: ['圆形大小：PM2.5'],
+                    text: [resources.text_roundSize],
                     textGap: 20,
                     textStyle: {
                         color: '#fff'
@@ -304,7 +304,7 @@
                     itemWidth: 20,
                     calculable: true,
                     precision: 0.1,
-                    text: ['明暗：二氧化硫'],
+                    text: [resources.text_SO2text],
                     textGap: 20,
                     textStyle: {
                         color: '#fff'

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>数据集Buffer查询</title>
+    <title data-i18n="resources.title_getFeatureByBuffer">数据集Buffer查询</title>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 </head>
@@ -71,7 +71,7 @@
             bufferDistance: 30,
             geometry: queryBufferGeometry
         });
-        new mapboxgl.Popup().setText('缓冲距离 = 30').setLngLat([0, 0]).addTo(map);
+        new mapboxgl.Popup().setText(resources.text_bufferDistance+' = 30').setLngLat([0, 0]).addTo(map);
         new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam, function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",

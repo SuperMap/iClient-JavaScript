@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>方形图</title>
+    <title data-i18n="resources.title_cellMap">方形图</title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
 </head>
@@ -13,8 +13,8 @@
     var map, echartsLayer,
         mapUrl = host + "/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}",
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+            "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+            + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
 
 
     var COLORS = ["#070093", "#1c3fbf", "#1482e5", "#70b4eb", "#b4e0f3", "#ffffff"];

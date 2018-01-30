@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>高效率点图层</title>
+    <title data-i18n="resources.title_graphicLayer">高效率点图层</title>
     <script type="text/javascript" include="randomcolor" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -49,7 +49,7 @@
         L.supermap.graphicLayer(graphics, {
             handleClick: function (graphic) {
                 L.popup().setLatLng(graphic.getLatLng())
-                    .setContent('<p>经纬度是：<br>' + graphic.getLatLng().lng + ',<br>' + graphic.getLatLng().lat + '</p>')
+                    .setContent('<p>' + resources.text_latLng + '：<br>' + graphic.getLatLng().lng + ',<br>' + graphic.getLatLng().lat + '</p>')
                     .openOn(map);
             }
         }).addTo(map);

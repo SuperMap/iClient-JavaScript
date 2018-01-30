@@ -25,7 +25,7 @@
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}';
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
@@ -63,7 +63,7 @@
 
         var option = {
             title: {
-                subtext: '纯属虚构'
+                subtext: resources.text_fictitiouData
             },
             tooltip: {
                 trigger: 'axis'
@@ -85,7 +85,7 @@
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                data: [resources.text_monday, resources.text_tuesday, resources.text_wednesday, resources.text_thursday, resources.text_friday, resources.text_saturday, resources.text_sunday]
             },
             yAxis: {
                 type: 'value',
@@ -116,7 +116,7 @@
                                 label: {
                                     normal: {
                                         position: 'start',
-                                        formatter: '最大值'
+                                        formatter: resources.text_maxValue
                                     }
                                 },
                                 type: 'max',
@@ -147,7 +147,7 @@
                                 label: {
                                     normal: {
                                         position: 'start',
-                                        formatter: '最小值'
+                                        formatter: resources.text_minValue
                                     }
                                 },
                                 type: 'min',

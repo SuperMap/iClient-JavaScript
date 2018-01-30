@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>网络分析服务-多旅行商分析(质检巡查)</title>
+    <title data-i18n="resources.title_findTSPPathsService">网络分析服务-多旅行商分析(质检巡查)</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -33,9 +33,9 @@
         var marker5 = L.marker([-4850, 3760]).addTo(map);
         var marker6 = L.marker([-2700, 8000]).addTo(map);
         //为配送点添加弹窗
-        marker4.bindPopup("零售站一");
-        marker5.bindPopup("零售站二");
-        marker6.bindPopup("零售站三");
+        marker4.bindPopup(resources.text_retailStation1);
+        marker5.bindPopup(resources.text_retailStation2);
+        marker6.bindPopup(resources.text_retailStation3);
 
         //创建多旅行商分析服务实例
         findTSPPathsService = L.supermap.networkAnalystService(serviceUrl);

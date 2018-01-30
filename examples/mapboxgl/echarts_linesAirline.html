@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset='utf-8'/>
-    <title>世界飞机航线图</title>
+    <title data-i18n="resources.title_linesAirline">世界飞机航线图</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <style>
@@ -24,7 +24,7 @@
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({

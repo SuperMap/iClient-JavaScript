@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>通勤图</title>
+    <title data-i18n="resources.title_mapvCsvcar">通勤图</title>
     <style>
         body {
             margin: 0;
@@ -52,9 +52,9 @@
         zoom: 11
     });
     new mapboxgl.Popup({closeOnClick: false})
-        .setLngLat(map.getCenter())
-        .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
-        .addTo(map);
+            .setLngLat(map.getCenter())
+            .setHTML(resources.text_iClient9)
+            .addTo(map);
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');

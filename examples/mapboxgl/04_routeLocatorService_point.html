@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>空间分析服务-里程定点</title>
+    <title data-i18n="resources.title_routeLocatorPoint">空间分析服务-里程定点</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 </head>
@@ -116,7 +116,7 @@
                 },
             });
             //todo 待确认，是否作了相应的坐标转换
-            var innerHTML = "查询到的里程为 " + routeLocatorParameters_point.measure + " 的点";
+            var innerHTML = resources.msg_queryMileagePoint1 + routeLocatorParameters_point.measure + resources.msg_queryMileagePoint2;
             new mapboxgl.Popup().setLngLat(point).setHTML(innerHTML).addTo(map);
         });
     }

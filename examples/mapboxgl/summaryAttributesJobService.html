@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>属性汇总分析</title>
-    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
+    <title data-i18n="resources.title_summaryAttributesJobService">属性汇总分析</title>
     <style>
         .mb-popup {
             position: absolute;
             top: 10px;
             right: 10px;
         }
+
         .mb-echarts {
             position: absolute;
             top: 30px;
@@ -25,42 +24,52 @@
 <div id="popup" class="mb-popup" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title'>属性汇总分析</h3>
+            <h3 class='panel-title' data-i18n="resources.title_summaryAttributesJobService">属性汇总分析</h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
-                <span class='input-group-addon'>输入数据<span title="必填字段" style="color: red;"> * </span>　</span>
-                <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R'/></div>
+                <span class='input-group-addon'><span data-i18n="resources.text_inputData">输入数据</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
+                <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R'/>
+            </div>
             <p></p>
+
             <div class='input-group'>
-                <span class='input-group-addon'>分组字段　　</span>
+                <span class='input-group-addon' data-i18n="resources.text_groupField">分组字段　　</span>
                 <input id='groupField' type='text' class='form-control' value='borough'/>
             </div>
             <p></p>
+
             <div class='input-group'>
-                <span class='input-group-addon'>属性字段</span>
+                <span class='input-group-addon' data-i18n="resources.text_attributeField">属性字段</span>
                 <input id='attributeField' type='text' class='form-control' value='LocationID'/>
-            </div><p></p>
+            </div>
+            <p></p>
+
             <div class='input-group'>
-                <span class='input-group-addon'>统计模式</span>
+                <span class='input-group-addon' data-i18n="resources.text_statisticModes">统计模式</span>
                 <input id='statisticModes' type='text' class='form-control' value='sum'/>
-            </div><p></p>
+            </div>
+            <p></p>
+
             <div align='right'>
-                <input type='button' id='btn' class='btn btn-primary' value='汇总'/>
+                <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.btn_summary"/>
             </div>
         </div>
     </div>
 </div>
 <div id="echarts" class="mb-echarts"></div>
+<script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
 <script>
     var map,
-        baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
-        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
+            baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
+            mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+            processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
     map = new mapboxgl.Map({
         container: 'map',
@@ -107,7 +116,7 @@
     }
 
     function summaryAttributesJobs() {
-        var summaryAttributesJobsParameter = new  SuperMap.SummaryAttributesJobsParameter({
+        var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
             datasetName: $('#datasetName').val(),
             groupField: $('#groupField').val(),
             attributeField: $('#attributeField').val(),
@@ -117,7 +126,7 @@
             if (serviceResult.error) {
                 widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error;
-                widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -135,7 +144,7 @@
                         var names = [];
                         var data1 = [];
                         var data2 = [];
-                        for (var i = 0;i < result.length;i++){
+                        for (var i = 0; i < result.length; i++) {
                             names.push(result[i].properties.BOROUGH);
                             data1.push(parseFloat(result[i].properties.RECORDCOUNT));
                             data2.push(parseFloat(result[i].properties.SUM_LOCATIONID0));
@@ -154,8 +163,8 @@
                             backgroundColor: '#0E2A43',
                             legend: {
                                 bottom: 20,
-                                textStyle:{
-                                    color:'#fff',
+                                textStyle: {
+                                    color: '#fff',
                                 },
                                 data: ['RECORDCOUNT', 'SUM_LOCATIONID0']
                             },
@@ -166,19 +175,19 @@
                                 containLabel: true
                             },
                             tooltip: {
-                                show:"true",
+                                show: "true",
                                 trigger: 'axis',
                                 axisPointer: { // 坐标轴指示器，坐标轴触发有效
                                     type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                                 }
                             },
-                            xAxis:  {
+                            xAxis: {
                                 type: 'value',
-                                axisTick : {show: false},
+                                axisTick: {show: false},
                                 axisLine: {
                                     show: false,
-                                    lineStyle:{
-                                        color:'#fff',
+                                    lineStyle: {
+                                        color: '#fff',
                                     }
                                 },
                                 splitLine: {
@@ -189,57 +198,57 @@
                                 {
                                     type: 'category',
                                     data: names,
-                                    axisTick : {show: false},
+                                    axisTick: {show: false},
                                     axisLine: {
                                         show: true,
-                                        lineStyle:{
-                                            color:'#fff',
+                                        lineStyle: {
+                                            color: '#fff',
                                         }
                                     }
                                 },
                                 {
                                     type: 'category',
                                     data: names,
-                                    axisLine: {show:false},
-                                    axisTick: {show:false},
-                                    axisLabel: {show:false},
-                                    splitArea: {show:false},
-                                    splitLine: {show:false}
+                                    axisLine: {show: false},
+                                    axisTick: {show: false},
+                                    axisLabel: {show: false},
+                                    splitArea: {show: false},
+                                    splitLine: {show: false}
                                 }
                             ],
                             series: [
                                 {
                                     name: 'RECORDCOUNT',
                                     type: 'bar',
-                                    itemStyle:{
+                                    itemStyle: {
                                         normal: {
                                             show: true,
                                             color: '#5de3e1',
-                                            barBorderRadius:50,
-                                            borderWidth:0,
-                                            borderColor:'#333',
+                                            barBorderRadius: 50,
+                                            borderWidth: 0,
+                                            borderColor: '#333',
                                         }
                                     },
                                     data: data1,
-                                    barGap:'0%',
-                                    barCategoryGap:'50%'
+                                    barGap: '0%',
+                                    barCategoryGap: '50%'
                                 },
                                 {
                                     name: 'SUM_LOCATIONID0',
                                     type: 'bar',
-                                    yAxisIndex:1,
-                                    itemStyle:{
+                                    yAxisIndex: 1,
+                                    itemStyle: {
                                         normal: {
                                             show: true,
                                             color: '#277ace',
-                                            barBorderRadius:50,
-                                            borderWidth:0,
-                                            borderColor:'#333',
+                                            barBorderRadius: 50,
+                                            borderWidth: 0,
+                                            borderColor: '#333',
                                         }
                                     },
                                     data: data2,
-                                    barGap:'0%',
-                                    barCategoryGap:'50%'
+                                    barGap: '0%',
+                                    barCategoryGap: '50%'
                                 }
                             ]
                         };

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>网络分析服务-最佳路径分析</title>
+    <title data-i18n="resources.title_findPath">网络分析服务-最佳路径分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -32,11 +32,11 @@
     function findPathProcess() {
         //添加站点
         var marker1 = L.marker([-3000, 4000]).addTo(map);
-        marker1.bindPopup("站点一");
+        marker1.bindPopup(resources.text_site1);
         var marker2 = L.marker([-2500, 5500]).addTo(map);
-        marker2.bindPopup("站点二");
+        marker2.bindPopup(resources.text_site2);
         var marker3 = L.marker([-4000, 6900]).addTo(map);
-        marker3.bindPopup("站点三");
+        marker3.bindPopup(resources.text_site3);
 
         //创建最佳路径分析服务实例
         findPathService = L.supermap.networkAnalystService(serviceUrl);

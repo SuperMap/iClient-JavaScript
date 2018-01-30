@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>单对象查询分析</title>
-    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="draw" src="../../dist/include-mapboxgl.js"></script>
+    <title data-i18n="resources.title_singleObjectQueryJobService">单对象查询分析</title>
     <style>
         .mb-popup {
             position: absolute;
@@ -18,57 +16,67 @@
 <div id="popup" class="mb-popup" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title'>单对象查询分析</h3>
+            <h3 class='panel-title' data-i18n="resources.title_singleObjectQueryJobService">单对象查询分析</h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
-                <span class='input-group-addon'>源数据集<span title="必填字段" style="color: red;"> * </span>　</span>
+                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset">源数据集</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <input id='datasetName' type='text' class='form-control'
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
+
             <div class='input-group'>
-                <span class='input-group-addon'>查询对象模式<span title="必填字段" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><sapn data-i18n="resources.text_queryObjectMode">查询对象模式</sapn><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <select class='form-control' id='queryMode' name='queryMode'>
-                    <option value='DATASET' selected>数据集</option>
+                    <option value='DATASET' selected data-i18n="resources.text_dataset">数据集</option>
                     <option value='GEOJSON'>Geojson</option>
                 </select>
             </div>
             <p></p>
+
             <div class='input-group' id='datasetDiv'>
-                <span class='input-group-addon'>查询对象数据集<span title="必填字段" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectDataset">查询对象数据集</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <input id='datasetQuery' type='text' class='form-control'
                        value='samples_processing_singleRegion_R'/>
             </div>
             <p></p>
+
             <div class='input-group'>
-                <span class='input-group-addon'>空间查询模式<span title="必填字段" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode">空间查询模式</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <select class='form-control' id='mode' name='mode'>
-                    <option value='CONTAIN'>包含</option>
-                    <option value='CROSS'>交叉</option>
-                    <option value='DISJOINT'>分离</option>
-                    <option value='IDENTITY'>重合</option>
-                    <option value='INTERSECT' selected>相交</option>
-                    <option value='OVERLAP'>叠加</option>
-                    <option value='TOUCH'>邻接</option>
-                    <option value='WITHIN'>被包含</option>
+                    <option value='CONTAIN' data-i18n="resources.text_contain">包含</option>
+                    <option value='CROSS' data-i18n="resources.text_cross">交叉</option>
+                    <option value='DISJOINT' data-i18n="resources.text_disjoint">分离</option>
+                    <option value='IDENTITY' data-i18n="resources.text_Identity">重合</option>
+                    <option value='INTERSECT' selected data-i18n="resources.text_intersect">相交</option>
+                    <option value='OVERLAP' data-i18n="resources.text_overlap">叠加</option>
+                    <option value='TOUCH' data-i18n="resources.text_touch">邻接</option>
+                    <option value='WITHIN' data-i18n="resources.text_within">被包含</option>
                 </select>
             </div>
             <p></p>
+
             <div align='right'>
-                <input type='button' id='btn' class='btn btn-primary' value='查询'/>
+                <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_query"/>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="draw" src="../../dist/include-mapboxgl.js"></script>
 <script>
     var map,
-        baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
-        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
+            baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
+            mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+            processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
     map = new mapboxgl.Map({
         container: 'map',
@@ -119,7 +127,7 @@
             if ($('#msg_container')[0]) {
                 $('#msg_container').remove();
             }
-           widgets.loader.showLoader();
+            widgets.loader.showLoader();
             if (map.getLayer("singleLayer")) {
                 map.removeLayer("singleLayer");
                 map.removeSource("singleSource");
@@ -154,8 +162,8 @@
         if ($("#queryMode").val() === "GEOJSON") {
             var result = draw.getAll();
             if (result.features.length < 1) {
-               widgets.loader.removeLoader();
-               widgets.alert.showAlert("创建失败!<br>" + "请绘制查询范围!", false);
+                widgets.loader.removeLoader();
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + resources.msg_drawQueryBounds, false);
                 return;
             } else {
                 points = result.features[0].geometry.coordinates[0];
@@ -170,9 +178,9 @@
         });
         processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
-               widgets.loader.removeLoader();
+                widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-               widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -193,14 +201,12 @@
                             "minzoom": 0,
                             "maxzoom": 22
                         });
-                       widgets.loader.removeLoader();
+                        widgets.loader.removeLoader();
                     });
                 }
             });
         });
     }
-
-
 </script>
 
 </body>

@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>点聚合分析</title>
-    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <title data-i18n="resources.title_SummaryMeshJobService">点聚合分析</title>
     <style>
         .mb-popup {
             position: absolute;
@@ -15,49 +13,58 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="mb-popup" style='width:350px'>
+<div id="popup" class="mb-popup" data-i18n="[style]resources.style_width350px">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">点聚合分析</h3>
+            <h3 class="panel-title" data-i18n="resources.title_SummaryMeshJobService">点聚合分析</h3>
         </div>
         <div class="panel-body">
             <div class="input-group">
-                <span class="input-group-addon">输入数据<span title="必填字段" style="color: red;"> * </span>　</span>
+                <span class="input-group-addon"><span data-i18n="resources.text_inputData">输入数据</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <input id="datasetName" type="text" class="form-control"
                        value="samples_newyork_taxi_2013-01_14k"/>
             </div>
             <p>
+
             <div class="input-group">
-                <span class="input-group-addon">聚合类型<span title="必填字段" style="color: red;"> * </span>　</span>
+                <span class="input-group-addon"><span data-i18n="resources.text_polymerizationType">聚合类型</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <select class="form-control" id="type" name="clientType">
-                    <option value="SUMMARYMESH" selected="selected">网格面聚合</option>
-                    <option value="SUMMARYREGION">多边形聚合</option>
+                    <option value="SUMMARYMESH" data-i18n="resources.text_polymerizationMesh" selected="selected">
+                        网格面聚合
+                    </option>
+                    <option value="SUMMARYREGION" data-i18n="resources.text_polymerizationRegion">多边形聚合</option>
                 </select>
             </div>
             <p>
                 <div id="summarymeshS">
                     <div class="input-group">
-                        <span class="input-group-addon">网格面类型<span title="必填字段" style="color: red;"> * </span></span>
+                        <span class="input-group-addon"><span
+                                data-i18n="resources.text_meshSurfaceType">网格面类型</span><span
+                                data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                         <select class="form-control" id="meshType" name="clientType">
-                            <option value="0" selected="selected">四边形网格</option>
-                            <option value="1">六边形网格</option>
+                            <option value="0" selected="selected" data-i18n="resources.text_4grid">四边形网格</option>
+                            <option value="1" data-i18n="resources.text_6grid">六边形网格</option>
                         </select>
                     </div>
             <p>
+
             <div class="input-group">
-                <span class="input-group-addon">分析范围　　</span>
+                <span class="input-group-addon" data-i18n="resources.text_analysisRange">分析范围　　</span>
                 <input id="query" type="text" class="form-control" value="-74.150, 40.550, -73.750, 40.950"/>
             </div>
             <p>
+
             <div class="input-group">
-                <span class="input-group-addon">分辨率<span title="必填字段" style="color: red;"> * </span>　　</span>
+                <span class="input-group-addon"><span data-i18n="resources.text_resolution">分辨率</span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　</span>
                 <input id="resolution" type="text" class="form-control" value="100"/>
             </div>
             <p>
         </div>
         <div id="summaryregionS" style="display: none">
             <div class="input-group">
-                <span class="input-group-addon">聚合面数据集</span>
+                <span class="input-group-addon" data-i18n="resources.text_regionDataset">聚合面数据集</span>
                 <select class="form-control" id="regionDataset" name="clientType">
                     <option value="samples_processing_newyorkZone_R" selected="selected">
                         samples_processing_newyorkZone_R
@@ -69,30 +76,33 @@
             <p>
         </div>
         <div class="input-group">
-            <span class="input-group-addon">统计模式　　</span>
+            <span class="input-group-addon" data-i18n="resources.text_statisticModes">统计模式　　</span>
             <input id="statisticModes" type="text" class="form-control" value="max"/>
         </div>
         <p>
+
         <div class="input-group">
-            <span class="input-group-addon">权重值字段　</span>
+            <span class="input-group-addon" data-i18n="resources.text_weightField">权重值字段　</span>
             <input id="fields" type="text" class="form-control" value="col7"/>
         </div>
         <p>
+
         <div align="right">
-            <input type="button" id='btn' class="btn btn-primary" value="聚合"/>
+            <input type="button" id='btn' class="btn btn-primary" data-i18n="[value]resources.btn_polymerization"/>
         </div>
     </div>
 </div>
-</div>
+<script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 <script>
     var map,
-        baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
-        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
+            baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
+            mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+            processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
     map = new mapboxgl.Map({
         container: 'map',
@@ -154,7 +164,7 @@
         if ($('#msg_container')[0]) {
             $('#msg_container').remove();
         }
-       widgets.loader.showLoader();
+        widgets.loader.showLoader();
         if (map.getLayer("summaryLayer")) {
             map.removeLayer("summaryLayer");
             map.removeSource("summarySource");
@@ -171,9 +181,9 @@
         });
         processingService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
             if (serviceResult.error) {
-               widgets.loader.removeLoader();
+                widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-               widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed+"<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -195,7 +205,7 @@
                             "maxzoom": 22
                         });
 
-                       widgets.loader.removeLoader();
+                        widgets.loader.removeLoader();
                     });
                 }
             });

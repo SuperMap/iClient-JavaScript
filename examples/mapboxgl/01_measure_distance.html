@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>距离测量</title>
+    <title data-i18n="resources.title_measureDistance">距离测量</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -56,12 +56,12 @@
 
     function measureDistance(e) {
         if (!e.features) {
-            widgets.alert.showAlert("没有获取到数据,请重新绘制", false);
+            widgets.alert.showAlert(resources.msg_noDataRedraw, false);
         }
         var param = new SuperMap.MeasureParameters(e.features[0]);
         new mapboxgl.supermap.MeasureService(url).measureDistance(param, function (serviceResult) {
             var distance = serviceResult.result.distance;
-            widgets.alert.showAlert(distance + "米", true);
+            widgets.alert.showAlert(distance + resources.msg_m, true);
         });
     }
 

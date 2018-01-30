@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>数据集ID查询</title>
+    <title data-i18n="resources.title_getFeatureByIDs">数据集ID查询</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -34,7 +34,7 @@
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("ID: " + feature.properties.SMID +
-                            "<br>" + "国家：" + feature.properties.COUNTRY);
+                            "<br>" + resources.text_country + "：" + feature.properties.COUNTRY);
                     }
                 }).addTo(map);
             });

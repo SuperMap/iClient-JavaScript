@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>空间分析服务-点定里程</title>
+    <title data-i18n="resources.title_routeCalculateMeasure">空间分析服务-点定里程</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -61,7 +61,7 @@
                 routeCalculateMeasureService = L.supermap.spatialAnalystService(serviceUrl);
                 routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCalculateServiceResult) {
                     if (routeCalculateServiceResult.result && routeCalculateServiceResult.result.measure) {
-                        marker.bindTooltip("查询获取的M值为:" + routeCalculateServiceResult.result.measure + "", {
+                        marker.bindTooltip(resources.msg_MByQuery + routeCalculateServiceResult.result.measure + "", {
                             direction: "top",
                             offset: L.point(0, -5)
                         }).openTooltip();

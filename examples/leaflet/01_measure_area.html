@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>测量服务-距离</title>
+    <title data-i18n="resources.title_measureArea">测量服务-面积</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -30,7 +30,7 @@
         L.supermap
             .measureService(url)
             .measureArea(areaMeasureParam, function (serviceResult) {
-                var content = "面积： " + serviceResult.result.area + "  平方米";
+                var content = resources.text_area + serviceResult.result.area +resources.msg_sqm;
                 polygon.bindPopup(content).openPopup(polygon.getCenter());
             });
 

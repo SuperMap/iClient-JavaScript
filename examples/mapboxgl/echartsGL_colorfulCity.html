@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>五彩城市建筑</title>
+    <title data-i18n="resources.title_colorfulCity">五彩城市建筑</title>
     <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript" include="echarts,echarts-gl" src="../../dist/include-mapboxgl.js"></script>
 </head>
@@ -13,7 +13,7 @@
     var map, myChart,
         mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts Echarts-gl</a>";
+            "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts Echarts-gl</a>";
 
     myChart = echarts.init(document.getElementById("map"));
     myChart.showLoading();

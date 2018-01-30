@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>网络分析服务-最近设施分析</title>
+    <title data-i18n="resources.title_closestFacilitiesService">网络分析服务-最近设施分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -31,18 +31,18 @@
     function findClosetFacilitiesProcess() {
         //添加设施点
         var marker1 = L.marker([-3500, 2500]).addTo(map);
-        marker1.bindPopup("设施点一");
+        marker1.bindPopup(resources.text_facilityPoint1);
         var marker2 = L.marker([-2500, 5500]).addTo(map);
-        marker2.bindPopup("设施点二");
+        marker2.bindPopup(resources.text_facilityPoint2);
         var marker3 = L.marker([-4000, 7000]).addTo(map);
-        marker3.bindPopup("设施点三");
+        marker3.bindPopup(resources.text_facilityPoint3);
         //添加事件点
         var myIcon = L.icon({
             iconUrl: '../img/marker.png',
             iconSize: [44, 30]
         });
         var marker4 = L.marker([-3700, 5000], {icon: myIcon}).addTo(map);
-        marker4.bindPopup("事件点");
+        marker4.bindPopup(resources.text_input_value_eventPoint);
         //创建最近设施分析服务实例
         findClosetFacilitiesService = L.supermap.networkAnalystService(serviceUrl);
         //创建最近设施分析参数实例

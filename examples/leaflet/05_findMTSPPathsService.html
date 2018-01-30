@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>网络分析服务-多旅行商分析(物流配送)</title>
+    <title data-i18n="resources.title_findMTSPPathsServiceLogistics">网络分析服务-多旅行商分析(物流配送)</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -34,9 +34,9 @@
         var marker2 = L.marker([-2500, 5500]).addTo(map);
         var marker3 = L.marker([-3500, 2500]).addTo(map);
         //为配送点添加弹窗
-        marker1.bindPopup("配送中心点一");
-        marker2.bindPopup("配送中心点二");
-        marker3.bindPopup("配送中心点三");
+        marker1.bindPopup(resources.text_distributionCentre1);
+        marker2.bindPopup(resources.text_distributionCentre2);
+        marker3.bindPopup(resources.text_distributionCentre3);
 
         //添加配送目的地
         var myIcon = L.icon({
@@ -46,8 +46,8 @@
         var marker4 = L.marker([-5000, 5000], {icon: myIcon}).addTo(map);
         var marker5 = L.marker([-2800, 8000], {icon: myIcon}).addTo(map);
         //为配送点添加弹窗
-        marker4.bindPopup("配送目的地一");
-        marker5.bindPopup("配送目的地二");
+        marker4.bindPopup(resources.text_destination1);
+        marker5.bindPopup(resources.text_destination2);
 
         //创建多旅行商分析服务实例
         findMTSPPathsService = L.supermap.networkAnalystService(serviceUrl);

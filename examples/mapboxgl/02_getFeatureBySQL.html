@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <title>数据集SQL查询</title>
+    <title data-i18n="resources.title_getFeatureBySQL">数据集SQL查询</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
     <style>
@@ -84,7 +84,7 @@
             map.on('click', 'queryDatas', function (e) {
                 new mapboxgl.Popup()
                     .setLngLat(e.features[0].geometry.center)
-                    .setHTML(e.features[0].properties.SMID + "<br>" + "国家：" + e.features[0].properties.COUNTRY)
+                    .setHTML(e.features[0].properties.SMID + "<br>" + resources.text_country + "：" + e.features[0].properties.COUNTRY)
                     .addTo(map);
             });
         });

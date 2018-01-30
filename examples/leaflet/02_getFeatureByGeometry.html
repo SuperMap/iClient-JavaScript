@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>数据集几何查询</title>
+    <title data-i18n="resources.title_getFeatureByGeometry">数据集几何查询</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -26,7 +26,7 @@
     function query() {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]], {color: 'red'});
         polygon.addTo(map);
-        polygon.bindPopup('空间查询模式：INTERSECT').openPopup();
+        polygon.bindPopup(resources.text_boundsQueryMode+'：INTERSECT').openPopup();
         var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: polygon,
@@ -37,7 +37,7 @@
             .getFeaturesByGeometry(geometryParam, function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
-                        layer.bindPopup("国家：" + feature.properties.COUNTRY);
+                        layer.bindPopup(resources.text_country + "：" + feature.properties.COUNTRY);
                     }
                 }).addTo(map);
             });

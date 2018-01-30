@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>空间分析服务-点定里程</title>
+    <title data-i18n="resources.title_routeCalculateMeasure">空间分析服务-点定里程</title>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 </head>
@@ -120,7 +120,7 @@
                 },
             });
 
-            var innerHTML = "查询获取的M值为:" + routeCaculateServiceResult.result.measure;
+            var innerHTML = resources.msg_MByQuery + routeCaculateServiceResult.result.measure;
             new mapboxgl.Popup().setLngLat(point).setHTML(innerHTML).addTo(map);
         });
     }
