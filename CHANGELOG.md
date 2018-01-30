@@ -48,6 +48,7 @@
 
 - 修复 `ol.source.DataFlow` 修改传入父类参数无效的问题
 - 修复 `ol.source.DataFlow` 的 `dataUpdated` 事件返回参数为空的问题
+- 修复 `ol.source.Graphic` 在高分辨率屏下显示错位的问题
 
 ### for MapboxGL
 
@@ -413,6 +414,7 @@
 - 修复在线编辑及范例页侧边栏不能滚动问题
 - 新增英文版API
 - 修复jsdocs 中接口名包含search的链接无法跳转的问题
+- 修订部分注释
 
 ## Code Quality
 

@@ -59564,7 +59564,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
             var height = this.map.getSize()[1] * pixelRatio;
             var context = _Util.Util.createCanvasContext2D(mapWidth, mapHeight);
             var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = _openlayers2.default.render.toContext(context, { size: [mapWidth, mapHeight], pixelRatio: pixelRatio });
+            var vectorContext = _openlayers2.default.render.toContext(context, { size: [mapWidth, mapHeight], pixelRatio: 1 });
             var graphics = this.getGraphicsInExtent(extent);
             var me = this;
             graphics.map(function (graphic) {

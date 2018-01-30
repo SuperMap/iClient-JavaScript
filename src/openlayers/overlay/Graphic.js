@@ -39,7 +39,7 @@ export class Graphic extends ol.source.ImageCanvas {
             var height = this.map.getSize()[1] * pixelRatio;
             var context = Util.createCanvasContext2D(mapWidth, mapHeight);
             var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = ol.render.toContext(context, {size: [mapWidth, mapHeight], pixelRatio: pixelRatio});
+            var vectorContext = ol.render.toContext(context, {size: [mapWidth, mapHeight], pixelRatio: 1});
             var graphics = this.getGraphicsInExtent(extent);
             var me = this;
             graphics.map(function (graphic) {
