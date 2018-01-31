@@ -1,6 +1,6 @@
 import L from "leaflet";
 import '../core/Base';
-import turf from '@turf/turf';
+import * as turf from '@turf/turf';
 
 /**
  * @class L.supermap.turfLayer

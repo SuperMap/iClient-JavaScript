@@ -1,5 +1,5 @@
 import ol from 'openlayers';
-import turf from '@turf/turf';
+import * as turf from '@turf/turf';
 
 /**
  * @class ol.source.Turf

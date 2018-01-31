@@ -60018,7 +60018,9 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _turf = __webpack_require__(476);
 
-var _turf2 = _interopRequireDefault(_turf);
+var turf = _interopRequireWildcard(_turf);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60198,7 +60200,7 @@ var Turf = exports.Turf = function (_ol$source$Vector) {
     _createClass(Turf, [{
         key: 'process',
         value: function process(type, args, callback, addFeaturesToMap) {
-            var result = _turf2.default[type.split('.')[1]].apply(this, this.parse(type, args));
+            var result = turf[type.split('.')[1]].apply(this, this.parse(type, args));
             var features = null;
             try {
                 features = new _openlayers2.default.format.GeoJSON().readFeatures(result);
