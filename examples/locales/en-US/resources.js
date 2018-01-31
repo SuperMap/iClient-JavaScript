@@ -113,7 +113,7 @@ window.resources = {
         "dituhui": "dituhui",
         "support": "Technical Resource Center",
         "tel": "Tel: ",
-        "sns": " WebGIS Chinese Technical QQ Group",
+        "sns": " WebGIS Chinese Technical QQ Group: ",
         "sns_tips": " (click to join)",
         "contact": "Contact us: ",
         "join": "Join us: SuperMap Web Client Team",

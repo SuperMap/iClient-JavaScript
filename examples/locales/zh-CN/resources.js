@@ -113,7 +113,7 @@ window.resources = {
         "dituhui": "地图慧",
         "support": "超图技术资源中心",
         "tel": "电话：",
-        "sns": "WebGIS中文技术圈 QQ群",
+        "sns": "WebGIS中文技术圈 QQ群：",
         "sns_tips": "（点击链接加入群）",
         "contact": "联系我们：",
         "join": "加入我们： 超图Web客户端团队 ",
