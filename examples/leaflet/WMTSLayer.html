@@ -10,6 +10,7 @@
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+
     var res = [];
     for (var i = 0; i < 22; i++) {
         res.push(165664.43905455674 / (Math.pow(2, i)));
@@ -31,9 +32,11 @@
             style: "default",
             tilematrixSet: "Custom_China",
             format: "image/png",
+            requestEncoding: 'REST',
             attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         }
     ).addTo(map);
+
 </script>
 </body>
 </html>

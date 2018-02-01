@@ -19,7 +19,8 @@ import "../core/Base";
  *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
- *        tileProxy - {string} 启用托管地址
+ *        tileProxy - {string} 启用托管地址。
+ *        requestEncoding - {string} KVP或者REST的请求方式，默认是KVP。
  */
 export var WMTSLayer = L.TileLayer.extend({
 
@@ -31,6 +32,7 @@ export var WMTSLayer = L.TileLayer.extend({
         tileSize: 256,
         matrixIds: null,
         layer: '',
+        requestEncoding: 'KVP',
         attribution: "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
@@ -38,6 +40,26 @@ export var WMTSLayer = L.TileLayer.extend({
     initialize: function (url, options) { // (String, Object)
         this._url = url;
         L.setOptions(this, options);
+
+        var opt = this.options;
+        if (opt.requestEncoding === "REST") {
+
+            var formatSuffixMap = {
+                "image/png": "png",
+                "image/png8": "png",
+                "image/png24": "png",
+                "image/png32": "png",
+                "png": "png",
+                "image/jpeg": "jpg",
+                "image/jpg": "jpg",
+                "jpeg": "jpg",
+                "jpg": "jpg"
+            };
+            this.formatSuffix = "." + (formatSuffixMap[opt.format] || opt.format.split("/").pop() || "png");
+        } else {
+
+            opt.requestEncoding = "KVP";
+        }
     },
 
     /**
@@ -49,7 +71,9 @@ export var WMTSLayer = L.TileLayer.extend({
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();
         var ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
+
         var url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
+
         var obj = {
             service: 'WMTS',
             request: 'GetTile',
@@ -66,9 +90,14 @@ export var WMTSLayer = L.TileLayer.extend({
         };
 
         if (this.options.tileProxy) {
-            url = this.options.tileProxy + encodeURIComponent(url + L.Util.getParamString(obj, url));
-        } else {
+            url = this.options.tileProxy + url;
+        }
+
+        if (this.options.requestEncoding === 'KVP') {
             url += L.Util.getParamString(obj, url);
+        } else if (this.options.requestEncoding === 'REST') {
+            var params = "/" + obj.layer + "/" + obj.style + "/" + obj.tilematrixSet + "/" + obj.tilematrix + "/" + obj.tilerow + "/" + obj.tilecol + this.formatSuffix;
+            url += params;
         }
         return url;
     }
