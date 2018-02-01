@@ -7,11 +7,26 @@
 - `L.supermap.webmap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVE" 格式 json 数据
 
 - 客户端专题图新增支持 `L.CircleMarker` `L.Circle`
+
 - 客户端专题图 `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置改参数为true , `addFeatures` 方法可添加底图坐标要素
-- `L.supermap.wmtsLayer` 和 `L.supermap.tiandituTileLayer` 新增 `options.tileProxy` 参数
+
+- `L.supermap.wmtsLayer` , `L.supermap.tiandituTileLayer` , `L.supermap.baiduTileLayer` , `L.supermap.cloudTileLayer` , `L.supermap.imageMapLayer` , `L.supermap.tiledMapLayer` 新增 `options.tileProxy` 参数，支持获取代理服务下相关底图数据
+
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+
 - `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
+
 - `L.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
+
+- `L.supermap.spatialAnalystService` 新增 `geometrybatchAnalysis` 接口，支持几何要素批量空间分析
+
+- 几何要素叠加分析新增支持多个要素进行分析
+
+    - `SuperMap.SpatialAnalystBase` 类 `serviceProcessCompleted` 接口支持处理批量返回结果
+
+    - `GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数
+
+- `L.supermap.ThemeLayer` 及其子类新增 `options.id`参数
 
 ### for OpenLayers
 
@@ -21,7 +36,19 @@
 
 - `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
 
+- `ol.source.Tianditu` , `ol.source.BaiduMap` , `ol.source.SuperMapCloud` , `ol.source.ImageSuperMapRest` , `ol.source.TileSuperMapRest` 新增 `options.tileProxy` 参数，支持获取代理服务下相关底图数据
+
 - `ol.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
+
+- `ol.supermap.SpatialAnalystService` 新增 `geometrybatchAnalysis` 接口，支持几何要素批量空间分析
+
+- 几何要素叠加分析新增支持多个要素进行分析
+
+    - `SuperMap.SpatialAnalystBase` 类 `serviceProcessCompleted` 接口支持处理批量返回结果
+
+    - `GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数
+
+- `ol.source.Theme` 及其子类新增 `options.id`参数
 
 ### for MapboxGL
 
@@ -30,6 +57,18 @@
 - `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
 
 - `mapboxgl.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
+
+- `mapboxgl.supermap.SpatialAnalystService` 新增 `geometrybatchAnalysis` 接口，支持几何要素批量空间分析
+
+- 几何要素叠加分析新增支持多个要素进行分析
+
+    - `SuperMap.SpatialAnalystBase` 类 `serviceProcessCompleted` 接口支持处理批量返回结果
+
+    - `GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数
+
+- `mapboxgl.supermap.ThemeLayer` 类新增 `options.id`参数
+
+- `mapboxgl.supermap.ThemeLayer` 类新增 `moveTo`接口，支持调整专题图层显示顺序
 
 ### Classic
 
@@ -60,9 +99,21 @@
 
 ### for Leaflet
 
+- 新增几何要素批量空间分析示例
+
+- 新增批量几何要素叠加分析示例
+
 ### for OpenLayers
 
+- 新增几何要素批量空间分析示例
+
+- 新增批量几何要素叠加分析示例
+
 ### for MapboxGL
+
+- 新增几何要素批量空间分析示例
+
+- 新增批量几何要素叠加分析示例
 
 ### Classic
 

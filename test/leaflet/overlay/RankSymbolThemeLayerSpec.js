@@ -51,6 +51,7 @@ describe('leaflet_RankSymbolThemeLayer', function () {
         expect(rankSymbolThemeLayer).not.toBeNull();
         expect(rankSymbolThemeLayer.chartsType).toBe("Circle");
         expect(rankSymbolThemeLayer.name).toBe("ThemeLayer");
+        expect(rankSymbolThemeLayer.id).not.toBeNull();
         expect(rankSymbolThemeLayer.themeField).toBe("CON2009");
         expect(rankSymbolThemeLayer.symbolType).toBe("Circle");
         expect(rankSymbolThemeLayer.features.length).toEqual(0);

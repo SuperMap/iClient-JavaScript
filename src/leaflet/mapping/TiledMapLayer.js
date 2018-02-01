@@ -24,6 +24,7 @@ import * as Util from "../core/Util";
  *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
+ *        tileProxy - {string} 启用托管地址
  */
 export var TiledMapLayer = L.TileLayer.extend({
 
@@ -82,6 +83,10 @@ export var TiledMapLayer = L.TileLayer.extend({
         var scale = this.getScaleFromCoords(coords);
         var layerUrl = this._getLayerUrl();
         var tileUrl = layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
+        //支持代理
+        if (this.options.tileProxy) {
+            tileUrl = this.options.tileProxy + encodeURIComponent(tileUrl);
+        }
         return tileUrl;
     },
 

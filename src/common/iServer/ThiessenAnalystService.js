@@ -3,7 +3,6 @@ import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {DatasetThiessenAnalystParameters} from './DatasetThiessenAnalystParameters';
 import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParameters';
-import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ThiessenAnalystService
@@ -88,24 +87,6 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    }
-
-    /**
-     * @function SuperMap.ThiessenAnalystService.prototype.toGeoJSONResult
-     * @description 将含有geometry的数据转换为geojson格式。
-     * @result - {Object} 服务器返回的结果对象。
-     */
-    toGeoJSONResult(result) {
-        if (!result) {
-            return result;
-        }
-
-        result = super.toGeoJSONResult(result);
-        if (result.regions) {
-            var geoJSONFormat = new GeoJSON();
-            result.regions = JSON.parse(geoJSONFormat.write(result.regions));
-        }
-        return result;
     }
 }
 

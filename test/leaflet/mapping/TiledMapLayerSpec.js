@@ -52,6 +52,17 @@ describe('leaflet_TiledMapLayer', function () {
         var scale = tiledMapLayerObject.getScale(1);
         expect(scale).toBe(3.3803271432053105e-9);
     });
+    it("getTileUrl_tileProxy", function () {
+        var tempOptions = {
+            tileProxy: 'tileProxy'
+        };
+        var tiledMapLayerObject = L.supermap.tiledMapLayer(url, tempOptions).addTo(map);
+        // tiledMapLayerObject._crs = map.options.crs;
+        expect(tiledMapLayerObject).not.toBeNull();
+        var coords = L.point(1, 4);
+        var tileUrl = tiledMapLayerObject.getTileUrl(coords);
+        expect(tileUrl).toBe('tileProxyhttp%3A%2F%2Flocalhost%3A8090%2Fiserver%2Fservices%2Fmap-china400%2Frest%2Fmaps%2FChina%2FtileImage.png%3Fwidth%3D256%26height%3D256%26redirect%3Dfalse%26transparent%3Dfalse%26cacheEnabled%3Dtrue%26origin%3D%257B%2522x%2522%3A-20037508.342789244%2C%2522y%2522%3A20037508.342789244%257D%26overlapDisplayed%3Dfalse%26scale%3D3.3803271432053105e-9%26x%3D1%26y%3D4');
+    });
 
     it('changeTilesVersion', function () {
         var sourceUrl = "http://117.122.248.69:8090//iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces";

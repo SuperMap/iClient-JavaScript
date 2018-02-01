@@ -29,10 +29,10 @@ export class Tianditu extends ol.source.WMTS {
         }
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
-                html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-                "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-                "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            });
+            html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
+            "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
+            "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        });
         options.layerType = options.layerType || "vec";
         options.layerType = options.isLabel ? ol.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
         options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";
@@ -41,7 +41,8 @@ export class Tianditu extends ol.source.WMTS {
         }
         options.url = options.url.replace("{layer}", options.layerType).replace("{proj}", options.matrixSet);
         var tileGrid = options.tileGrid || ol.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857');
-        super({
+
+        var superOptions = {
             version: options.version || '1.0.0',
             format: options.format || 'tiles',
             dimensions: options.dimensions || {},
@@ -55,12 +56,26 @@ export class Tianditu extends ol.source.WMTS {
             opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: ol.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-            tileLoadFunction: options.tileLoadFunction,
             url: options.url,
             urls: options.urls,
             projection: options.projection || 'EPSG:3857',
             wrapX: options.wrapX
-        })
+        };
+        //需要代理时走自定义 tileLoadFunction，否则走默认的tileLoadFunction
+        if (options.tileProxy) {
+            superOptions.tileLoadFunction = tileLoadFunction;
+        }
+        super(superOptions);
+
+        if (options.tileProxy) {
+            this.tileProxy = options.tileProxy;
+        }
+        //需要代理时，走以下代码
+        var me = this;
+        function tileLoadFunction(imageTile, src) {
+            //支持代理
+            imageTile.getImage().src = me.tileProxy + encodeURIComponent(src);
+        }
     }
 
     /**
@@ -121,4 +136,5 @@ export class Tianditu extends ol.source.WMTS {
         return tileGird;
     }
 }
+
 ol.source.Tianditu = Tianditu;

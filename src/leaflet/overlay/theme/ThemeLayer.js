@@ -17,20 +17,19 @@ export var ThemeLayer = L.Layer.extend({
     options: {
         //要素坐标是否和地图坐标系一致，默认为false，要素默认是经纬度坐标。
         alwaysMapCRS: false,
-        name: null,
+        id: CommonUtil.createUniqueID("themeLayer_"),
         opacity: 1,
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
-        TFEvents: null,
+        TFEvents: [],
         attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function (name, options) {
         L.Util.setOptions(this, options);
         this.name = name;
-        this.id = options && options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         this.features = [];
-        this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
+        this.TFEvents = this.options.TFEvents;
         this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];
     },
@@ -415,7 +414,7 @@ export var ThemeLayer = L.Layer.extend({
         this.container = L.DomUtil.create("div", className, parentContainer);
 
         var originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
-        this.container.id = this.id;
+        this.container.id = this.options.id;
         this.container.style[originProp] = '50% 50%';
 
         this.container.style.position = "absolute";

@@ -32,7 +32,6 @@ export class Theme extends ol.source.ImageCanvas {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
-
         super({
             attributions: options.attributions || new ol.Attribution({
                 html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
@@ -44,6 +43,7 @@ export class Theme extends ol.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
+        this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
             var mapWidth = size[0] * pixelRatio;
@@ -63,7 +63,7 @@ export class Theme extends ol.source.ImageCanvas {
                 this.redrawThematicFeatures(extent);
                 this.notFirst = true;
             }
-            this.div.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
+            this.div.id = this.id;
             this.div.className = "themeLayer";
             this.div.style.width = mapWidth + "px";
             this.div.style.height = mapHeight + "px";

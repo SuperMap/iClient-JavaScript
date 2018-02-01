@@ -44,7 +44,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
             //批量分析时会返回多个结果
             if (Util.isArray(result)) {
                 for (var i = 0; i < result.length; i++) {
-                    result[i] =  me.toGeoJSONResult(result[i])
+                    result[i] = me.toGeoJSONResult(result[i])
                 }
                 analystResult = result;
 
@@ -69,7 +69,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
             return null;
         }
         //批量叠加分析时结果这样处理
-        if(result.result && result.result.resultGeometry){
+        if (result.result && result.result.resultGeometry) {
             result = result.result
         }
         var geoJSONFormat = new GeoJSON();
@@ -84,6 +84,9 @@ export class SpatialAnalystBase extends CommonServiceBase {
         }
         if (result.resultGeometry) {
             result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+        }
+        if (result.regions) {
+            result.regions = JSON.parse(geoJSONFormat.write(result.regions));
         }
 
         return result;

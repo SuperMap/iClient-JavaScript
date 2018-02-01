@@ -28,7 +28,8 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
  *        className - {string} 自定义dom元素的className。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
- *        updateInterval - {number} 平移时图层延迟刷新间隔时间。
+ *        updateInterval - {number} 平移时图层延迟刷新间隔时间。<br>
+ *        tileProxy - {string} 启用托管地址
  */
 
 export var ImageMapLayer = Layer.extend({
@@ -166,7 +167,12 @@ export var ImageMapLayer = Layer.extend({
         var serviceUrl = this._url;
         imageUrl = serviceUrl + "/image.png" + imageUrl;
         imageUrl = this._appendCredential(imageUrl);
+        //支持代理
+        if (this.options.tileProxy) {
+            imageUrl = this.options.tileProxy + encodeURIComponent(imageUrl);
+        }
         return imageUrl;
+
     },
 
     //获取请求图片宽高以及请求范围参数

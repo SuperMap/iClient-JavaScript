@@ -63,7 +63,9 @@ export class TileSuperMapRest extends ol.source.TileImage {
             cacheEnabled: options.cacheEnabled,
             layersID: options.layersID
         });
-
+        if (options.tileProxy) {
+            this.tileProxy = options.tileProxy;
+        }
         this.options = options;
         this._url = options.url;
         //当前切片在切片集中的index
@@ -220,7 +222,13 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            return layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            var url = layerUrl +encodeURI( "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            //支持代理
+            if (me.tileProxy) {
+                url = me.tileProxy + encodeURIComponent(url);
+            }
+
+            return url;
         }
 
     }

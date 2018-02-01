@@ -76,6 +76,7 @@ describe('leaflet_GraphThemeLayer', function () {
         expect(chartsSetting.showShadow).toBeTruthy();
         expect(barThemeLayer.options.isOverLay).toBeFalsy();
         expect(barThemeLayer.name).toBe("BarThemeLayer");
+        expect(barThemeLayer.id).not.toBeNull();
         expect(barThemeLayer.themeFields.length).toEqual(5);
         barThemeLayer.clear();
     });
@@ -583,6 +584,7 @@ describe('leaflet_GraphThemeLayer', function () {
         expect(graphThemeLayer.features.length).toEqual(31);
         expect(graphThemeLayer.options.isOverLay).toBeTruthy();
         expect(graphThemeLayer.name).toBe("BarThemeLayer");
+        expect(graphThemeLayer.id).not.toBeNull();
         expect(graphThemeLayer.themeFields.length).toEqual(5);
         var chartsSetting = graphThemeLayer.chartsSetting;
         expect(chartsSetting.axisXLabels.length).toEqual(5);

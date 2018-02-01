@@ -121,6 +121,11 @@ describe('leaflet_ImageMapLayer', function () {
         expect(imageLayer.getImageUrl()).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false");
     });
 
+    it('getImageUrl_tilePoxy', function () {
+        imageLayer = L.supermap.imageMapLayer(url, {tileProxy: 'tileProxy'});
+        expect(imageLayer.getImageUrl()).not.toBeNull();
+        expect(imageLayer.getImageUrl()).toBe("tileProxyhttp%3A%2F%2Flocalhost%3A8090%2Fiserver%2Fservices%2Fmap-world%2Frest%2Fmaps%2FWorld%2Fimage.png%3F%26redirect%3Dfalse%26transparent%3Dfalse%26cacheEnabled%3Dtrue%26overlapDisplayed%3Dfalse");
+    });
 
     it('update_zoomIn', function (done) {
         imageLayer = L.supermap.imageMapLayer(url).addTo(map);

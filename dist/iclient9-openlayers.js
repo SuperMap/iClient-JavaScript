@@ -4183,7 +4183,7 @@ var _REST = __webpack_require__(2);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4286,6 +4286,9 @@ var SpatialAnalystBase = exports.SpatialAnalystBase = function (_CommonServiceBa
             }
             if (result.resultGeometry) {
                 result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+            }
+            if (result.regions) {
+                result.regions = JSON.parse(geoJSONFormat.write(result.regions));
             }
 
             return result;
@@ -5785,6 +5788,120 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.NetworkAnalystServiceBase = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+var _REST = __webpack_require__(2);
+
+var _CommonServiceBase2 = __webpack_require__(5);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.NetworkAnalystServiceBase
+ * @classdesc 网络分析服务基类。
+ * @description 网络分析服务基类。
+ * @extends SuperMap.CommonServiceBase
+ * @param url - {string} 网络分析服务地址
+ * @param options - {Object} 网络分析可选参数。如：<br>
+ *        format - {{@link SuperMap.DataFormat}} 查询结果返回格式
+ *
+ */
+var NetworkAnalystServiceBase = exports.NetworkAnalystServiceBase = function (_CommonServiceBase) {
+    _inherits(NetworkAnalystServiceBase, _CommonServiceBase);
+
+    function NetworkAnalystServiceBase(url, options) {
+        _classCallCheck(this, NetworkAnalystServiceBase);
+
+        /**
+         * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{SuperMap.DataFormat}
+         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+         *              参数格式为"ISERVER","GEOJSON"
+         * @default "GEOJSON"
+         */
+        var _this = _possibleConstructorReturn(this, (NetworkAnalystServiceBase.__proto__ || Object.getPrototypeOf(NetworkAnalystServiceBase)).call(this, url, options));
+
+        _this.format = _REST.DataFormat.GEOJSON;
+
+        _this.CLASS_NAME = "SuperMap.NetworkAnalystServiceBase";
+        return _this;
+    }
+
+    /**
+     * @function SuperMap.NetworkAnalystServiceBase.prototype.destroy
+     * @description 释放资源，将引用的资源属性置空。
+     */
+
+
+    _createClass(NetworkAnalystServiceBase, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(NetworkAnalystServiceBase.prototype.__proto__ || Object.getPrototypeOf(NetworkAnalystServiceBase.prototype), 'destroy', this).call(this);
+            this.format = null;
+        }
+
+        /**
+         * @function SuperMap.NetworkAnalystServiceBase.prototype.serviceProcessCompleted
+         * @description 分析完成，执行此方法。
+         * @param result - {Object} 服务器返回的结果对象。
+         */
+
+    }, {
+        key: 'serviceProcessCompleted',
+        value: function serviceProcessCompleted(result) {
+            var me = this,
+                analystResult;
+            result = _Util.Util.transformResult(result);
+            if (result && me.format === _REST.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+                analystResult = me.toGeoJSONResult(result);
+            }
+            if (!analystResult) {
+                analystResult = result;
+            }
+            me.events.triggerEvent("processCompleted", { result: analystResult });
+        }
+
+        /**
+         * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
+         * @description 将含有geometry的数据转换为geojson格式。只处理结果中的路由，由子类实现
+         * @param result - {Object} 服务器返回的结果对象。
+         * @return{Object} geojson对象
+         */
+
+    }, {
+        key: 'toGeoJSONResult',
+        value: function toGeoJSONResult(result) {
+            // eslint-disable-line no-unused-vars
+            return null;
+        }
+    }]);
+
+    return NetworkAnalystServiceBase;
+}(_CommonServiceBase2.CommonServiceBase);
+
+_SuperMap.SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.GeoJSON = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -6655,120 +6772,6 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
 }(_JSON.JSONFormat);
 
 _SuperMap.SuperMap.Format.GeoJSON = GeoJSON;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.NetworkAnalystServiceBase = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _Util = __webpack_require__(1);
-
-var _REST = __webpack_require__(2);
-
-var _CommonServiceBase2 = __webpack_require__(5);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.NetworkAnalystServiceBase
- * @classdesc 网络分析服务基类。
- * @description 网络分析服务基类。
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 网络分析服务地址
- * @param options - {Object} 网络分析可选参数。如：<br>
- *        format - {{@link SuperMap.DataFormat}} 查询结果返回格式
- *
- */
-var NetworkAnalystServiceBase = exports.NetworkAnalystServiceBase = function (_CommonServiceBase) {
-    _inherits(NetworkAnalystServiceBase, _CommonServiceBase);
-
-    function NetworkAnalystServiceBase(url, options) {
-        _classCallCheck(this, NetworkAnalystServiceBase);
-
-        /**
-         * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{SuperMap.DataFormat}
-         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-         *              参数格式为"ISERVER","GEOJSON"
-         * @default "GEOJSON"
-         */
-        var _this = _possibleConstructorReturn(this, (NetworkAnalystServiceBase.__proto__ || Object.getPrototypeOf(NetworkAnalystServiceBase)).call(this, url, options));
-
-        _this.format = _REST.DataFormat.GEOJSON;
-
-        _this.CLASS_NAME = "SuperMap.NetworkAnalystServiceBase";
-        return _this;
-    }
-
-    /**
-     * @function SuperMap.NetworkAnalystServiceBase.prototype.destroy
-     * @description 释放资源，将引用的资源属性置空。
-     */
-
-
-    _createClass(NetworkAnalystServiceBase, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(NetworkAnalystServiceBase.prototype.__proto__ || Object.getPrototypeOf(NetworkAnalystServiceBase.prototype), 'destroy', this).call(this);
-            this.format = null;
-        }
-
-        /**
-         * @function SuperMap.NetworkAnalystServiceBase.prototype.serviceProcessCompleted
-         * @description 分析完成，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'serviceProcessCompleted',
-        value: function serviceProcessCompleted(result) {
-            var me = this,
-                analystResult;
-            result = _Util.Util.transformResult(result);
-            if (result && me.format === _REST.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
-                analystResult = me.toGeoJSONResult(result);
-            }
-            if (!analystResult) {
-                analystResult = result;
-            }
-            me.events.triggerEvent("processCompleted", { result: analystResult });
-        }
-
-        /**
-         * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
-         * @description 将含有geometry的数据转换为geojson格式。只处理结果中的路由，由子类实现
-         * @param result - {Object} 服务器返回的结果对象。
-         * @return{Object} geojson对象
-         */
-
-    }, {
-        key: 'toGeoJSONResult',
-        value: function toGeoJSONResult(result) {
-            // eslint-disable-line no-unused-vars
-            return null;
-        }
-    }]);
-
-    return NetworkAnalystServiceBase;
-}(_CommonServiceBase2.CommonServiceBase);
-
-_SuperMap.SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase;
 
 /***/ }),
 /* 16 */
@@ -13278,7 +13281,7 @@ var _REST = __webpack_require__(2);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14264,7 +14267,7 @@ var _CommonServiceBase2 = __webpack_require__(5);
 
 var _QueryParameters = __webpack_require__(33);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 var _REST = __webpack_require__(2);
 
@@ -28260,7 +28263,8 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
         }
         options.url = options.url.replace("{layer}", options.layerType).replace("{proj}", options.matrixSet);
         var tileGrid = options.tileGrid || _openlayers2.default.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857');
-        return _possibleConstructorReturn(this, (Tianditu.__proto__ || Object.getPrototypeOf(Tianditu)).call(this, {
+
+        var superOptions = {
             version: options.version || '1.0.0',
             format: options.format || 'tiles',
             dimensions: options.dimensions || {},
@@ -28274,12 +28278,28 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
             opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: _openlayers2.default.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-            tileLoadFunction: options.tileLoadFunction,
             url: options.url,
             urls: options.urls,
             projection: options.projection || 'EPSG:3857',
             wrapX: options.wrapX
-        }));
+        };
+        //需要代理时走自定义 tileLoadFunction，否则走默认的tileLoadFunction
+        if (options.tileProxy) {
+            superOptions.tileLoadFunction = tileLoadFunction;
+        }
+
+        var _this = _possibleConstructorReturn(this, (Tianditu.__proto__ || Object.getPrototypeOf(Tianditu)).call(this, superOptions));
+
+        if (options.tileProxy) {
+            _this.tileProxy = options.tileProxy;
+        }
+        //需要代理时，走以下代码
+        var me = _this;
+        function tileLoadFunction(imageTile, src) {
+            //支持代理
+            imageTile.getImage().src = me.tileProxy + encodeURIComponent(src);
+        }
+        return _this;
     }
 
     /**
@@ -54626,6 +54646,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
             state: options.state
         }));
 
+        _this.id = options.id ? options.id : _iclientCommon.CommonUtil.createUniqueID("themeLayer_");
+
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             // eslint-disable-line no-unused-vars
             var mapWidth = size[0] * pixelRatio;
@@ -54645,7 +54667,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
                 this.redrawThematicFeatures(extent);
                 this.notFirst = true;
             }
-            this.div.id = options.id ? options.id : _iclientCommon.CommonUtil.createUniqueID("themeLayer_");
+            this.div.id = this.id;
             this.div.className = "themeLayer";
             this.div.style.width = mapWidth + "px";
             this.div.style.height = mapHeight + "px";
@@ -57181,7 +57203,8 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
         var url = options.url !== undefined ? options.url : "http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
         var hidpi = options.hidpi || (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI) > 1;
         url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
-        return _possibleConstructorReturn(this, (BaiduMap.__proto__ || Object.getPrototypeOf(BaiduMap)).call(this, {
+
+        var _this = _possibleConstructorReturn(this, (BaiduMap.__proto__ || Object.getPrototypeOf(BaiduMap)).call(this, {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: crossOrigin,
@@ -57194,20 +57217,34 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
             wrapX: options.wrapX,
             tilePixelRatio: hidpi ? 2 : 1,
             tileGrid: tileGrid,
-            tileUrlFunction: function tileUrlFunction(tileCoord, pixelRatio, projection) {
-                // eslint-disable-line no-unused-vars
-                return url.replace("{z}", tileCoord[0].toString()).replace("{x}", tileCoord[1].toString()).replace("{y}", function () {
-                    var y = tileCoord[2];
-                    return y.toString();
-                }).replace("{-y}", function () {
-                    var z = tileCoord[0];
-                    var range = tileGrid.getFullTileRange(z);
-                    _openlayers2.default.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
-                    var y = range.getHeight() + tileCoord[2];
-                    return y.toString();
-                });
-            }
+            tileUrlFunction: tileUrlFunction
         }));
+
+        if (options.tileProxy) {
+            _this.tileProxy = options.tileProxy;
+        }
+        var me = _this;
+
+        function tileUrlFunction(tileCoord, pixelRatio, projection) {
+            // eslint-disable-line no-unused-vars
+            var tempUrl = url.replace("{z}", tileCoord[0].toString()).replace("{x}", tileCoord[1].toString()).replace("{y}", function () {
+                var y = tileCoord[2];
+                return y.toString();
+            }).replace("{-y}", function () {
+                var z = tileCoord[0];
+                var range = tileGrid.getFullTileRange(z);
+                _openlayers2.default.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
+                var y = range.getHeight() + tileCoord[2];
+                return y.toString();
+            });
+
+            //支持代理
+            if (me.tileProxy) {
+                tempUrl = me.tileProxy + encodeURIComponent(tempUrl);
+            }
+            return tempUrl;
+        }
+        return _this;
     }
 
     /**
@@ -57379,14 +57416,6 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
             layerUrl += "tileversion=" + options.tileversion;
         }
 
-        /*
-         * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
-         * @param tileCoord - {Object} 瓦片坐标系
-         * @param pixelRatio - {Object} 像素密度
-         * @param projection - {string} 投影参考系
-         * @description 瓦片地址参数
-         * @return {string} 返回瓦片地址参数
-         */
         var _this = _possibleConstructorReturn(this, (ImageSuperMapRest.__proto__ || Object.getPrototypeOf(ImageSuperMapRest)).call(this, {
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -57408,13 +57437,33 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
             layersID: options.layersID
         }));
 
+        if (options.tileProxy) {
+            _this.tileProxy = options.tileProxy;
+        }
+        var me = _this;
+
+        /*
+         * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
+         * @param tileCoord - {Object} 瓦片坐标系
+         * @param pixelRatio - {Object} 像素密度
+         * @param projection - {string} 投影参考系
+         * @description 瓦片地址参数
+         * @return {string} 返回瓦片地址参数
+         */
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!this.tileGrid) {
                 this.tileGrid = this.getTileGridForProjection(projection);
             }
             var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
             var tileSize = _openlayers2.default.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
+            var url = encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
+
+            //支持代理
+            if (me.tileProxy) {
+                url = me.tileProxy + encodeURIComponent(url);
+            }
+
+            return url;
         }
         return _this;
     }
@@ -57558,17 +57607,34 @@ var SuperMapCloud = exports.SuperMapCloud = function (_ol$source$XYZ) {
         var mapType = options.mapType || 'web';
         var url = options.url || 'http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
         url = url.replace('{mapName}', mapName).replace('{type}', mapType);
-        return _possibleConstructorReturn(this, (SuperMapCloud.__proto__ || Object.getPrototypeOf(SuperMapCloud)).call(this, {
+
+        var superOptions = {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
             opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: options.maxZoom || 18,
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-            tileLoadFunction: options.tileLoadFunction,
             url: url,
             wrapX: options.wrapX
-        }));
+        };
+        //需要代理时走自定义 tileLoadFunction，否则走默认的tileLoadFunction
+        if (options.tileProxy) {
+            superOptions.tileLoadFunction = tileLoadFunction;
+        }
+
+        var _this = _possibleConstructorReturn(this, (SuperMapCloud.__proto__ || Object.getPrototypeOf(SuperMapCloud)).call(this, superOptions));
+
+        if (options.tileProxy) {
+            _this.tileProxy = options.tileProxy;
+        }
+        //需要代理时，走以下代码
+        var me = _this;
+        function tileLoadFunction(imageTile, src) {
+            //支持代理
+            imageTile.getImage().src = me.tileProxy + encodeURIComponent(src);
+        }
+        return _this;
     }
 
     return SuperMapCloud;
@@ -57664,6 +57730,9 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             layersID: options.layersID
         }));
 
+        if (options.tileProxy) {
+            _this.tileProxy = options.tileProxy;
+        }
         _this.options = options;
         _this._url = options.url;
         //当前切片在切片集中的index
@@ -57822,7 +57891,13 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             var scale = _Util.Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = _openlayers2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            return layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            var url = layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            //支持代理
+            if (me.tileProxy) {
+                url = me.tileProxy + encodeURIComponent(url);
+            }
+
+            return url;
         }
 
         return _this;
@@ -64446,7 +64521,7 @@ exports.WKT = exports.GeoJSON = exports.JSONFormat = exports.Format = undefined;
 
 var _Format = __webpack_require__(85);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 var _JSON = __webpack_require__(86);
 
@@ -64895,26 +64970,6 @@ var BufferAnalystService = exports.BufferAnalystService = function (_SpatialAnal
                 failure: me.serviceProcessFailed
             });
         }
-
-        /**
-         * @method SuperMap.BufferAnalystService.prototype.toGeoJSONResult
-         * @description 将含有geometry的数据转换为geojson格式。
-         * @param result - {Object} 服务器返回的结果对象。
-         */
-        // toGeoJSONResult(result) {
-        //     if (!result) {
-        //         return result;
-        //     }
-        //
-        //     var analystResult = super.toGeoJSONResult(result);
-        //     if (analystResult.resultGeometry) {
-        //         var geoJSONFormat = new GeoJSON();
-        //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-        //     }
-        //     return result;
-        // }
-
-
     }]);
 
     return BufferAnalystService;
@@ -65041,7 +65096,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _BurstPipelineAnalystParameters = __webpack_require__(143);
 
@@ -65265,7 +65320,7 @@ var _QueryParameters = __webpack_require__(33);
 
 var _ChartQueryParameters = __webpack_require__(145);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65473,7 +65528,7 @@ var _Util = __webpack_require__(1);
 
 var _ComputeWeightMatrixParameters = __webpack_require__(148);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66392,7 +66447,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FacilityAnalystStreamParameters = __webpack_require__(158);
 
@@ -66958,9 +67013,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FindClosestFacilitiesParameters = __webpack_require__(164);
 
@@ -67148,11 +67203,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FindLocationParameters = __webpack_require__(165);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67312,11 +67367,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FindMTSPPathsParameters = __webpack_require__(166);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67494,11 +67549,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FindPathParameters = __webpack_require__(167);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67670,11 +67725,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FindServiceAreasParameters = __webpack_require__(168);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67848,11 +67903,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _FindTSPPathsParameters = __webpack_require__(169);
 
-var _GeoJSON = __webpack_require__(14);
+var _GeoJSON = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73055,8 +73110,6 @@ var _DatasetThiessenAnalystParameters = __webpack_require__(153);
 
 var _GeometryThiessenAnalystParameters = __webpack_require__(91);
 
-var _GeoJSON = __webpack_require__(14);
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -73157,27 +73210,6 @@ var ThiessenAnalystService = exports.ThiessenAnalystService = function (_Spatial
                 success: me.serviceProcessCompleted,
                 failure: me.serviceProcessFailed
             });
-        }
-
-        /**
-         * @function SuperMap.ThiessenAnalystService.prototype.toGeoJSONResult
-         * @description 将含有geometry的数据转换为geojson格式。
-         * @result - {Object} 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'toGeoJSONResult',
-        value: function toGeoJSONResult(result) {
-            if (!result) {
-                return result;
-            }
-
-            result = _get(ThiessenAnalystService.prototype.__proto__ || Object.getPrototypeOf(ThiessenAnalystService.prototype), 'toGeoJSONResult', this).call(this, result);
-            if (result.regions) {
-                var geoJSONFormat = new _GeoJSON.GeoJSON();
-                result.regions = JSON.parse(geoJSONFormat.write(result.regions));
-            }
-            return result;
         }
     }]);
 
@@ -73638,7 +73670,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _UpdateEdgeWeightParameters = __webpack_require__(237);
 
@@ -73790,7 +73822,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _UpdateTurnNodeWeightParameters = __webpack_require__(238);
 
@@ -74255,7 +74287,7 @@ var _MeasureParameters = __webpack_require__(194);
 
 var _MeasureService = __webpack_require__(353);
 
-var _NetworkAnalystServiceBase = __webpack_require__(15);
+var _NetworkAnalystServiceBase = __webpack_require__(14);
 
 var _OutputSetting = __webpack_require__(19);
 
@@ -91705,7 +91737,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -91829,9 +91861,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -92125,7 +92157,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 473 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","F:\\codes\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"F:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 474 */

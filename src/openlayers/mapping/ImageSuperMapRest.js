@@ -140,6 +140,11 @@ export class ImageSuperMapRest extends ol.source.TileImage {
             layersID: options.layersID
         });
 
+        if (options.tileProxy) {
+            this.tileProxy = options.tileProxy;
+        }
+        var me = this;
+
         /*
          * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
          * @param tileCoord - {Object} 瓦片坐标系
@@ -156,7 +161,14 @@ export class ImageSuperMapRest extends ol.source.TileImage {
                 tileCoord, this.tmpExtent_);
             var tileSize = ol.size.toSize(
                 this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
+            var url = encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
+
+            //支持代理
+            if (me.tileProxy) {
+                url = me.tileProxy + encodeURIComponent(url);
+            }
+
+            return url;
         }
     }
 

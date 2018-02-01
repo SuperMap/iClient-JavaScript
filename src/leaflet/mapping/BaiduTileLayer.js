@@ -12,6 +12,7 @@ import L from "leaflet";
  *        bounds - {[L.LatLngBounds]{@linkdoc-leaflet/#latlngbounds}} 显示范围 <br>
  *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
  *        attribution - {string} 版权信息 <br>
+ *        tileProxy - {string} 启用托管地址
  */
 export var BaiduTileLayer = L.TileLayer.extend({
 
@@ -47,13 +48,18 @@ export var BaiduTileLayer = L.TileLayer.extend({
      * @return {string} 切片地址
      */
     getTileUrl: function (coords) {
-        return L.Util.template(this.url, {
+        var url = L.Util.template(this.url, {
             num: Math.abs((coords.x + coords.y) % 8) + 1,
             x: coords.x,
             y: -coords.y - 1,
             z: this._getZoomForUrl(),
             styles: this.options.retina ? 'ph' : 'pl'
-        })
+        });
+        //支持代理
+        if (this.options.tileProxy) {
+            url = this.options.tileProxy + encodeURIComponent(url);
+        }
+        return url;
     }
 });
 export var baiduTileLayer = function (url, options) {

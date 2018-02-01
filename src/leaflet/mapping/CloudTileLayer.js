@@ -47,8 +47,24 @@ export var CloudTileLayer = L.TileLayer.extend({
     initialize: function (url, options) {
         L.setOptions(this, options);
         var cloudURL = url || this.defaultURL;
-        this._url = cloudURL + "?map=" + this.options.mapName + "&type=" + this.options.type + "&x={x}&y={y}&z={z}";
+        this._url = cloudURL + "?map=" + this.options.mapName + "&type=" + this.options.type;
         L.stamp(this);
+    },
+
+    /**
+     * @function L.supermap.cloudTileLayer.prototype.getTileUrl
+     * @description 获取切片地址
+     * @param coords - {Object} 行列号
+     * @return {string} 切片地址
+     */
+    getTileUrl: function (coords) {
+        var layerUrl = this._url;
+        var tileUrl = layerUrl + "&x=" + coords.x + "&y=" + coords.y + "&z=" + coords.z;
+        //支持代理
+        if (this.options.tileProxy) {
+            tileUrl = this.options.tileProxy + encodeURIComponent(tileUrl);
+        }
+        return tileUrl;
     }
 });
 export var cloudTileLayer = function (url, options) {

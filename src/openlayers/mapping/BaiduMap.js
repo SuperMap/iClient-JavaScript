@@ -34,22 +34,35 @@ export class BaiduMap extends ol.source.TileImage {
             wrapX: options.wrapX,
             tilePixelRatio: hidpi ? 2 : 1,
             tileGrid: tileGrid,
-            tileUrlFunction: function (tileCoord, pixelRatio, projection) { // eslint-disable-line no-unused-vars
-                return url.replace("{z}", tileCoord[0].toString())
-                    .replace("{x}", tileCoord[1].toString())
-                    .replace("{y}", function () {
-                        var y = tileCoord[2];
-                        return y.toString();
-                    })
-                    .replace("{-y}", function () {
-                        var z = tileCoord[0];
-                        var range = tileGrid.getFullTileRange(z);
-                        ol.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
-                        var y = range.getHeight() + tileCoord[2];
-                        return y.toString();
-                    });
-            }
+            tileUrlFunction: tileUrlFunction
         });
+
+        if (options.tileProxy) {
+            this.tileProxy = options.tileProxy;
+        }
+        var me = this;
+
+        function tileUrlFunction(tileCoord, pixelRatio, projection) { // eslint-disable-line no-unused-vars
+            var tempUrl = url.replace("{z}", tileCoord[0].toString())
+                .replace("{x}", tileCoord[1].toString())
+                .replace("{y}", function () {
+                    var y = tileCoord[2];
+                    return y.toString();
+                })
+                .replace("{-y}", function () {
+                    var z = tileCoord[0];
+                    var range = tileGrid.getFullTileRange(z);
+                    ol.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
+                    var y = range.getHeight() + tileCoord[2];
+                    return y.toString();
+                });
+
+            //支持代理
+            if (me.tileProxy) {
+                tempUrl = me.tileProxy + encodeURIComponent(tempUrl);
+            }
+            return tempUrl;
+        }
     }
 
     /**
