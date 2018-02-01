@@ -20,11 +20,12 @@
 </head>
 <body>
 <div id='map'></div>
-<script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts"
+        src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({
@@ -52,120 +53,117 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    map.on('load', function () {
-        $.get('../data/weibo.json', function (weiboData) {
-            weiboData = weiboData.map(function (serieData, idx) {
-                var px = serieData[0] / 1000;
-                var py = serieData[1] / 1000;
-                var res = [
-                    [px, py]
-                ];
+    $.get('../data/weibo.json', function (weiboData) {
+        weiboData = weiboData.map(function (serieData, idx) {
+            var px = serieData[0] / 1000;
+            var py = serieData[1] / 1000;
+            var res = [
+                [px, py]
+            ];
 
-                for (var i = 2; i < serieData.length; i += 2) {
-                    var dx = serieData[i] / 1000;
-                    var dy = serieData[i + 1] / 1000;
-                    var x = px + dx;
-                    var y = py + dy;
-                    res.push([x.toFixed(2), y.toFixed(2), 1]);
+            for (var i = 2; i < serieData.length; i += 2) {
+                var dx = serieData[i] / 1000;
+                var dy = serieData[i + 1] / 1000;
+                var x = px + dx;
+                var y = py + dy;
+                res.push([x.toFixed(2), y.toFixed(2), 1]);
 
-                    px = x;
-                    py = y;
+                px = x;
+                py = y;
+            }
+            return res;
+        });
+
+        var echartslayer = new EchartsLayer(map);
+        echartslayer.chart.setOption(option = {
+
+            GLMap: {
+                roam: true
+            },
+            coordinateSystem: 'GLMap',
+            title: {
+                text: resources.text_weiboChina,
+                subtext: 'From ThinkGIS',
+                sublink: 'http://www.thinkgis.cn/public/sina',
+                left: 'center',
+                top: 'top',
+                textStyle: {
+                    color: '#fff'
                 }
-                return res;
-            });
-
-            var echartslayer = new EchartsLayer(map);
-            echartslayer.chart.setOption(option = {
-
-                GLMap: {
-                    roam: true
+            },
+            tooltip: {},
+            legend: {
+                left: 'left',
+                top: 'bottom',
+                data: [resources.text_strong, resources.text_middle, resources.text_weak],
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            geo: {
+                name: resources.text_strong,
+                type: 'scatter',
+                map: 'GLMap',
+                label: {
+                    emphasis: {
+                        show: false
+                    }
                 },
+                itemStyle: {
+                    normal: {
+                        areaColor: '#323c48',
+                        borderColor: '#111'
+                    },
+                    emphasis: {
+                        areaColor: '#2a333d'
+                    }
+                }
+            },
+            series: [{
+                name: resources.text_weak,
+                type: 'scatter',
                 coordinateSystem: 'GLMap',
-                title: {
-                    text: resources.text_weiboChina,
-                    subtext: 'From ThinkGIS',
-                    sublink: 'http://www.thinkgis.cn/public/sina',
-                    left: 'center',
-                    top: 'top',
-                    textStyle: {
-                        color: '#fff'
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(37, 140, 249, 0.8)',
+                        color: 'rgba(37, 140, 249, 0.8)'
                     }
                 },
-                tooltip: {},
-                legend: {
-                    left: 'left',
-                    top: 'bottom',
-                    data: [resources.text_strong, resources.text_middle, resources.text_weak],
-                    textStyle: {
-                        color: '#ccc'
+                data: weiboData[0]
+            }, {
+                name: resources.text_middle,
+                type: 'scatter',
+                coordinateSystem: 'GLMap',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(14, 241, 242, 0.8)',
+                        color: 'rgba(14, 241, 242, 0.8)'
                     }
                 },
-                geo: {
-                    name: resources.text_strong,
-                    type: 'scatter',
-                    map: 'GLMap',
-                    label: {
-                        emphasis: {
-                            show: false
-                        }
-                    },
-                    itemStyle: {
-                        normal: {
-                            areaColor: '#323c48',
-                            borderColor: '#111'
-                        },
-                        emphasis: {
-                            areaColor: '#2a333d'
-                        }
+                data: weiboData[1]
+            }, {
+                name: resources.text_strong,
+                type: 'scatter',
+                coordinateSystem: 'GLMap',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(255, 255, 255, 0.8)',
+                        color: 'rgba(255, 255, 255, 0.8)'
                     }
                 },
-                series: [{
-                    name: resources.text_weak,
-                    type: 'scatter',
-                    coordinateSystem: 'GLMap',
-                    symbolSize: 1,
-                    large: true,
-                    itemStyle: {
-                        normal: {
-                            shadowBlur: 2,
-                            shadowColor: 'rgba(37, 140, 249, 0.8)',
-                            color: 'rgba(37, 140, 249, 0.8)'
-                        }
-                    },
-                    data: weiboData[0]
-                }, {
-                    name: resources.text_middle,
-                    type: 'scatter',
-                    coordinateSystem: 'GLMap',
-                    symbolSize: 1,
-                    large: true,
-                    itemStyle: {
-                        normal: {
-                            shadowBlur: 2,
-                            shadowColor: 'rgba(14, 241, 242, 0.8)',
-                            color: 'rgba(14, 241, 242, 0.8)'
-                        }
-                    },
-                    data: weiboData[1]
-                }, {
-                    name: resources.text_strong,
-                    type: 'scatter',
-                    coordinateSystem: 'GLMap',
-                    symbolSize: 1,
-                    large: true,
-                    itemStyle: {
-                        normal: {
-                            shadowBlur: 2,
-                            shadowColor: 'rgba(255, 255, 255, 0.8)',
-                            color: 'rgba(255, 255, 255, 0.8)'
-                        }
-                    },
-                    data: weiboData[2]
-                }]
-            });
+                data: weiboData[2]
+            }]
         });
     });
-
 </script>
 
 </body>

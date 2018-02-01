@@ -24,8 +24,8 @@
 <script type="text/javascript">
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
 
@@ -55,44 +55,42 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     var uploadedDataURL = "../data/hangzhou-tracks.json";
 
-    map.on('load', function () {
-        $.get(uploadedDataURL, function (data) {
-            var points = [].concat.apply([], data.map(function (track) {
-                return track.map(function (seg) {
-                    return seg.coord.concat([1]);
-                });
-            }));
+    $.get(uploadedDataURL, function (data) {
+        var points = [].concat.apply([], data.map(function (track) {
+            return track.map(function (seg) {
+                return seg.coord.concat([1]);
+            });
+        }));
 
-            option = {
-                GLMap: {
-                    roam: true
-                },
+        option = {
+            GLMap: {
+                roam: true
+            },
+            coordinateSystem: 'GLMap',
+            visualMap: {
+                show: false,
+                top: 'top',
+                min: 0,
+                max: 5,
+                seriesIndex: 0,
+                calculable: true,
+                inRange: {
+                    color: ['blue', 'blue', 'green', 'yellow', 'red']
+                }
+            },
+
+            series: [{
+                type: 'heatmap',
                 coordinateSystem: 'GLMap',
-                visualMap: {
-                    show: false,
-                    top: 'top',
-                    min: 0,
-                    max: 5,
-                    seriesIndex: 0,
-                    calculable: true,
-                    inRange: {
-                        color: ['blue', 'blue', 'green', 'yellow', 'red']
-                    }
-                },
+                data: points,
+                pointSize: 5,
+                blurSize: 6
+            }]
+        };
 
-                series: [{
-                    type: 'heatmap',
-                    coordinateSystem: 'GLMap',
-                    data: points,
-                    pointSize: 5,
-                    blurSize: 6
-                }]
-            };
+        var echartslayer = new EchartsLayer(map);
+        echartslayer.chart.setOption(option);
 
-            var echartslayer = new EchartsLayer(map);
-            echartslayer.chart.setOption(option);
-
-        });
     });
 </script>
 </body>

@@ -24,8 +24,8 @@
 <script type="text/javascript">
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
 
@@ -55,55 +55,52 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     var uploadedDataURL = "../data/changchunBus.json";
 
-    map.on('load', function () {
-        $.get(uploadedDataURL, function (data) {
+    $.get(uploadedDataURL, function (data) {
+        option = {
+            GLMap: {
+                roam: true
+            },
+            coordinateSystem: 'GLMap',
+            geo: {
+                map: 'GLMap',
+            },
 
-            option = {
-                GLMap: {
-                    roam: true
+            series: [{
+                type: 'lines',
+                polyline: true,
+                data: data,
+                silent: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 0.2,
+                        width: 1
+                    }
                 },
+                progressiveThreshold: 500,
+                progressive: 100
+            }, {
+
+                type: 'lines',
                 coordinateSystem: 'GLMap',
-                geo: {
-                    map: 'GLMap',
+                polyline: true,
+                data: data,
+                lineStyle: {
+                    normal: {
+                        width: 0.2
+                    }
                 },
+                effect: {
+                    constantSpeed: 40,
+                    show: true,
+                    trailLength: 0.02,
+                    symbolSize: 2
+                },
+                zlevel: 1
+            }]
+        };
+        var echartslayer = new EchartsLayer(map);
+        echartslayer.chart.setOption(option);
 
-                series: [{
-                    type: 'lines',
-                    polyline: true,
-                    data: data,
-                    silent: true,
-                    lineStyle: {
-                        normal: {
-                            opacity: 0.2,
-                            width: 1
-                        }
-                    },
-                    progressiveThreshold: 500,
-                    progressive: 100
-                }, {
-
-                    type: 'lines',
-                    coordinateSystem: 'GLMap',
-                    polyline: true,
-                    data: data,
-                    lineStyle: {
-                        normal: {
-                            width: 0.2
-                        }
-                    },
-                    effect: {
-                        constantSpeed: 40,
-                        show: true,
-                        trailLength: 0.02,
-                        symbolSize: 2
-                    },
-                    zlevel: 1
-                }]
-            };
-            var echartslayer = new EchartsLayer(map);
-            echartslayer.chart.setOption(option);
-
-        });
     });
 </script>
 </body>

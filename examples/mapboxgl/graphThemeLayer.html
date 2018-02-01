@@ -112,11 +112,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    map.on("load", function () {
-        bindEvent();
-        initFeaterDatasAddStyles();
-        createBarThemeLayer();
-    });
+    bindEvent();
+    initFeaterDatasAddStyles();
+    createBarThemeLayer();
 
     function bindEvent() {
         $("[data-toggle='tooltip']").on("mouseover", function () {

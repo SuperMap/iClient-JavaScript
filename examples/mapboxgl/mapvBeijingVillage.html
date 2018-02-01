@@ -25,7 +25,7 @@
 <div id="map"></div>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({
@@ -58,20 +58,18 @@
             .setHTML(resources.text_iClient9)
             .addTo(map);
 
-    map.on('load', function () {
-        $.get('../data/beijing-village.json', function (data) {
+    $.get('../data/beijing-village.json', function (data) {
 
-            var dataSet = new mapv.DataSet(data);
+        var dataSet = new mapv.DataSet(data);
 
-            var options = {
-                fillStyle: 'rgba(255, 80, 53, 0.8)',
-                strokeStyle: 'rgba(250, 255, 53, 0.8)',
-                size: 3,
-                lineWidth: 1,
-                draw: 'simple'
-            };
-            new mapboxgl.supermap.MapvLayer(map, dataSet, options);
-        });
+        var options = {
+            fillStyle: 'rgba(255, 80, 53, 0.8)',
+            strokeStyle: 'rgba(250, 255, 53, 0.8)',
+            size: 3,
+            lineWidth: 1,
+            draw: 'simple'
+        };
+        new mapboxgl.supermap.MapvLayer(map, dataSet, options);
     });
 
 

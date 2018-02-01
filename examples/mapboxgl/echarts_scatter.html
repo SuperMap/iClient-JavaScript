@@ -24,8 +24,8 @@
 <script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}';
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
@@ -184,165 +184,161 @@
         }
     };
 
-
-    map.on('load', function () {
-
-        option = {
-            backgroundColor: '#404a59',
-            color: [
-                '#dd4444'
-            ],
-            legend: {
-                y: 'top',
-                data: ['北京市'],
+    option = {
+        backgroundColor: '#404a59',
+        color: [
+            '#dd4444'
+        ],
+        legend: {
+            y: 'top',
+            data: ['北京市'],
+            textStyle: {
+                color: '#fff',
+                fontSize: 16
+            },
+            selectedMode: 'single'
+        },
+        grid: {
+            x: '10%',
+            x2: 150,
+            y: '18%',
+            y2: '10%'
+        },
+        tooltip: {
+            padding: 10,
+            backgroundColor: '#222',
+            borderColor: '#777',
+            borderWidth: 1,
+            formatter: function (obj) {
+                var value = obj.value;
+                return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+                    + obj.seriesName + ' ' + resources.text_day1 + value[0] + resources.text_day2
+                    + value[7]
+                    + '</div>'
+                    + schema[1].text + '：' + value[1] + '<br>'
+                    + schema[2].text + '：' + value[2] + '<br>'
+                    + schema[3].text + '：' + value[3] + '<br>'
+                    + schema[4].text + '：' + value[4] + '<br>'
+                    + schema[5].text + '：' + value[5] + '<br>'
+                    + schema[6].text + '：' + value[6] + '<br>';
+            }
+        },
+        xAxis: {
+            type: 'value',
+            name: resources.text_data,
+            nameGap: 16,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            max: 31,
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: resources.text_AQIindex,
+            nameLocation: 'end',
+            nameGap: 20,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 16
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        visualMap: [
+            {
+                left: 'right',
+                top: '5%',
+                dimension: 2,
+                min: 0,
+                max: 250,
+                itemWidth: 20,
+                itemHeight: 80,
+                calculable: true,
+                precision: 0.1,
+                text: [resources.text_roundSize],
+                textGap: 20,
                 textStyle: {
-                    color: '#fff',
-                    fontSize: 16
+                    color: '#fff'
                 },
-                selectedMode: 'single'
-            },
-            grid: {
-                x: '10%',
-                x2: 150,
-                y: '18%',
-                y2: '10%'
-            },
-            tooltip: {
-                padding: 10,
-                backgroundColor: '#222',
-                borderColor: '#777',
-                borderWidth: 1,
-                formatter: function (obj) {
-                    var value = obj.value;
-                    return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-                        + obj.seriesName + ' ' +resources.text_day1+ value[0] + resources.text_day2
-                        + value[7]
-                        + '</div>'
-                        + schema[1].text + '：' + value[1] + '<br>'
-                        + schema[2].text + '：' + value[2] + '<br>'
-                        + schema[3].text + '：' + value[3] + '<br>'
-                        + schema[4].text + '：' + value[4] + '<br>'
-                        + schema[5].text + '：' + value[5] + '<br>'
-                        + schema[6].text + '：' + value[6] + '<br>';
-                }
-            },
-            xAxis: {
-                type: 'value',
-                name: resources.text_data,
-                nameGap: 16,
-                nameTextStyle: {
-                    color: '#fff',
-                    fontSize: 14
+                inRange: {
+                    symbolSize: [10, 70]
                 },
-                max: 31,
-                splitLine: {
-                    show: false
+                outOfRange: {
+                    symbolSize: [10, 70],
+                    color: ['rgba(255,255,255,.2)']
                 },
-                axisLine: {
-                    lineStyle: {
-                        color: '#eee'
-                    }
-                }
-            },
-            yAxis: {
-                type: 'value',
-                name: resources.text_AQIindex,
-                nameLocation: 'end',
-                nameGap: 20,
-                nameTextStyle: {
-                    color: '#fff',
-                    fontSize: 16
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: '#eee'
-                    }
-                },
-                splitLine: {
-                    show: false
-                }
-            },
-            visualMap: [
-                {
-                    left: 'right',
-                    top: '5%',
-                    dimension: 2,
-                    min: 0,
-                    max: 250,
-                    itemWidth: 20,
-                    itemHeight: 80,
-                    calculable: true,
-                    precision: 0.1,
-                    text: [resources.text_roundSize],
-                    textGap: 20,
-                    textStyle: {
-                        color: '#fff'
-                    },
+                controller: {
                     inRange: {
-                        symbolSize: [10, 70]
+                        color: ['#c23531']
                     },
                     outOfRange: {
-                        symbolSize: [10, 70],
-                        color: ['rgba(255,255,255,.2)']
-                    },
-                    controller: {
-                        inRange: {
-                            color: ['#c23531']
-                        },
-                        outOfRange: {
-                            color: ['#444']
-                        }
+                        color: ['#444']
                     }
+                }
+            },
+            {
+                left: 'right',
+                bottom: '5%',
+                dimension: 6,
+                min: 0,
+                max: 50,
+                itemHeight: 80,
+                itemWidth: 20,
+                calculable: true,
+                precision: 0.1,
+                text: [resources.text_SO2text],
+                textGap: 20,
+                textStyle: {
+                    color: '#fff'
                 },
-                {
-                    left: 'right',
-                    bottom: '5%',
-                    dimension: 6,
-                    min: 0,
-                    max: 50,
-                    itemHeight: 80,
-                    itemWidth: 20,
-                    calculable: true,
-                    precision: 0.1,
-                    text: [resources.text_SO2text],
-                    textGap: 20,
-                    textStyle: {
-                        color: '#fff'
-                    },
+                inRange: {
+                    colorLightness: [1, 0.5]
+                },
+                outOfRange: {
+                    color: ['rgba(255,255,255,.2)']
+                },
+                controller: {
                     inRange: {
-                        colorLightness: [1, 0.5]
+                        color: ['#c23531']
                     },
                     outOfRange: {
-                        color: ['rgba(255,255,255,.2)']
-                    },
-                    controller: {
-                        inRange: {
-                            color: ['#c23531']
-                        },
-                        outOfRange: {
-                            color: ['#444']
-                        }
+                        color: ['#444']
                     }
                 }
-            ],
-            series: [
-                {
-                    name: '北京市',
-                    type: 'scatter',
-                    itemStyle: itemStyle,
-                    data: dataBJ
-                }
-            ]
-        };
-        div = document.createElement('div');
-        chart = echarts.init(div, '', {
-            width: 450,
-            height: 350
-        });
-
-        chart.setOption(option);
-        query();
+            }
+        ],
+        series: [
+            {
+                name: '北京市',
+                type: 'scatter',
+                itemStyle: itemStyle,
+                data: dataBJ
+            }
+        ]
+    };
+    div = document.createElement('div');
+    chart = echarts.init(div, '', {
+        width: 450,
+        height: 350
     });
+
+    chart.setOption(option);
+    query();
 
     function query() {
         var sqlParam = new SuperMap.QueryBySQLParameters({

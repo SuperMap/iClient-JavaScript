@@ -101,8 +101,8 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var themeLayer,
-            baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            dataUrl = host + "/iserver/services/data-jingjin/rest/data";
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        dataUrl = host + "/iserver/services/data-jingjin/rest/data";
     var attribution = "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span> with <span>© <a href='https://www.mapbox.com' target='_blank'>MapBox</a></span>";
     var map = new mapboxgl.Map({
         container: 'map',
@@ -130,23 +130,21 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    map.on('load', function () {
-        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new SuperMap.FilterParameter({
-            name: "Jingjin",
-            attributeFilter: "SMID > -1"
-        });
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            toIndex: 500,
-            datasetNames: ["Jingjin:Landuse_R"]
-        });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
-            eventListeners: {"processCompleted": processCompleted}
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+    getFeatureParam = new SuperMap.FilterParameter({
+        name: "Jingjin",
+        attributeFilter: "SMID > -1"
     });
+    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        toIndex: 500,
+        datasetNames: ["Jingjin:Landuse_R"]
+    });
+    getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+        format: SuperMap.DataFormat.ISERVER,
+        eventListeners: {"processCompleted": processCompleted}
+    });
+    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;
@@ -176,100 +174,100 @@
 
     function addThemeLayer() {
         themeLayer = new mapboxgl.supermap.UniqueThemeLayer("ThemeLayer",
-                {
-                    map: map,
-                    attributions: " ",
-                    style: {
-                        shadowBlur: 3,
-                        shadowColor: "#000000",
-                        shadowOffsetX: 1,
-                        shadowOffsetY: 1,
-                        fillColor: "#FFFFFF"
-                    },
-                    isHoverAble: true,
-                    highlightStyle: {
-                        stroke: true,
-                        strokeWidth: 2,
-                        strokeColor: 'blue',
-                        fillColor: "#00F5FF",
-                        fillOpacity: 0.2
-                    },
-                    themeField: "LANDTYPE",
-                    styleGroups: [
-                        {
-                            value: "草地",
-                            style: {
-                                fillColor: "#C1FFC1"
-                            }
-                        },
-                        {
-                            value: "城市",
-                            style: {
-                                fillColor: "#CD7054"
-                            }
-                        },
-                        {
-                            value: "灌丛",
-                            style: {
-                                fillColor: "#7CCD7C"
-                            }
-                        },
-                        {
-                            value: "旱地",
-                            style: {
-                                fillColor: "#EE9A49"
-                            }
-                        },
-                        {
-                            value: "湖泊水库",
-                            style: {
-                                fillColor: "#8EE5EE"
-                            }
-                        },
-                        {
-                            value: "经济林",
-                            style: {
-                                fillColor: "#548B54"
-                            }
-                        },
-                        {
-                            value: "沙漠",
-                            style: {
-                                fillColor: "#DEB887"
-                            }
-                        },
-                        {
-                            value: "水浇地",
-                            style: {
-                                fillColor: "#E0FFFF"
-                            }
-                        },
-                        {
-                            value: "水田",
-                            style: {
-                                fillColor: "#388E8E"
-                            }
-                        },
-                        {
-                            value: "用材林",
-                            style: {
-                                fillColor: "#556B2F"
-                            }
-                        },
-                        {
-                            value: "沼泽",
-                            style: {
-                                fillColor: "#2F4F4F"
-                            }
-                        },
-                        {
-                            value: "缺省风格",
-                            style: {
-                                fillColor: "#ABABAB"
-                            }
+            {
+                map: map,
+                attributions: " ",
+                style: {
+                    shadowBlur: 3,
+                    shadowColor: "#000000",
+                    shadowOffsetX: 1,
+                    shadowOffsetY: 1,
+                    fillColor: "#FFFFFF"
+                },
+                isHoverAble: true,
+                highlightStyle: {
+                    stroke: true,
+                    strokeWidth: 2,
+                    strokeColor: 'blue',
+                    fillColor: "#00F5FF",
+                    fillOpacity: 0.2
+                },
+                themeField: "LANDTYPE",
+                styleGroups: [
+                    {
+                        value: "草地",
+                        style: {
+                            fillColor: "#C1FFC1"
                         }
-                    ]
-                });
+                    },
+                    {
+                        value: "城市",
+                        style: {
+                            fillColor: "#CD7054"
+                        }
+                    },
+                    {
+                        value: "灌丛",
+                        style: {
+                            fillColor: "#7CCD7C"
+                        }
+                    },
+                    {
+                        value: "旱地",
+                        style: {
+                            fillColor: "#EE9A49"
+                        }
+                    },
+                    {
+                        value: "湖泊水库",
+                        style: {
+                            fillColor: "#8EE5EE"
+                        }
+                    },
+                    {
+                        value: "经济林",
+                        style: {
+                            fillColor: "#548B54"
+                        }
+                    },
+                    {
+                        value: "沙漠",
+                        style: {
+                            fillColor: "#DEB887"
+                        }
+                    },
+                    {
+                        value: "水浇地",
+                        style: {
+                            fillColor: "#E0FFFF"
+                        }
+                    },
+                    {
+                        value: "水田",
+                        style: {
+                            fillColor: "#388E8E"
+                        }
+                    },
+                    {
+                        value: "用材林",
+                        style: {
+                            fillColor: "#556B2F"
+                        }
+                    },
+                    {
+                        value: "沼泽",
+                        style: {
+                            fillColor: "#2F4F4F"
+                        }
+                    },
+                    {
+                        value: "缺省风格",
+                        style: {
+                            fillColor: "#ABABAB"
+                        }
+                    }
+                ]
+            });
 
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', function (e) {

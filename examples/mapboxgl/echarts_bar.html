@@ -24,8 +24,8 @@
 <script type="text/javascript">
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}';
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
@@ -59,59 +59,56 @@
         map.addImage('positionPoint', image);
     });
 
-    map.on('load', function () {
-
-        option = {
-            legend: {
-                data: [resources.text_rainfall, resources.text_runoff],
-                align: 'left'
-            },
-            toolbox: {
-                feature: {
-                    magicType: {
-                        type: ['stack', 'tiled']
-                    },
-                    saveAsImage: {
-                        pixelRatio: 2
-                    }
+    option = {
+        legend: {
+            data: [resources.text_rainfall, resources.text_runoff],
+            align: 'left'
+        },
+        toolbox: {
+            feature: {
+                magicType: {
+                    type: ['stack', 'tiled']
+                },
+                saveAsImage: {
+                    pixelRatio: 2
                 }
-            },
-            tooltip: {},
-            xAxis: {
-                data: [resources.text_monday, resources.text_tuesday, resources.text_wednesday, resources.text_thursday, resources.text_friday, resources.text_saturday, resources.text_sunday],
-                silent: false,
-                splitLine: {
-                    show: false
-                }
-            },
-            yAxis: {},
-            series: [{
-                name: 'bar',
-                type: 'bar',
-                animationDelay: function (idx) {
-                    return idx * 10;
-                }
-            }, {
-                name: 'bar2',
-                type: 'bar',
-                animationDelay: function (idx) {
-                    return idx * 10 + 100;
-                }
-            }],
-            animationEasing: 'elasticOut',
-            animationDelayUpdate: function (idx) {
-                return idx * 5;
             }
-        };
+        },
+        tooltip: {},
+        xAxis: {
+            data: [resources.text_monday, resources.text_tuesday, resources.text_wednesday, resources.text_thursday, resources.text_friday, resources.text_saturday, resources.text_sunday],
+            silent: false,
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {},
+        series: [{
+            name: 'bar',
+            type: 'bar',
+            animationDelay: function (idx) {
+                return idx * 10;
+            }
+        }, {
+            name: 'bar2',
+            type: 'bar',
+            animationDelay: function (idx) {
+                return idx * 10 + 100;
+            }
+        }],
+        animationEasing: 'elasticOut',
+        animationDelayUpdate: function (idx) {
+            return idx * 5;
+        }
+    };
 
-        div = document.createElement('div');
-        chart = echarts.init(div, '', {
-            width: 500,
-            height: 300
-        });
-        chart.setOption(option);
-        query();
+    div = document.createElement('div');
+    chart = echarts.init(div, '', {
+        width: 500,
+        height: 300
     });
+    chart.setOption(option);
+    query();
 
     function query() {
         var sqlParam = new SuperMap.QueryBySQLParameters({
@@ -156,7 +153,7 @@
                     data2.push(data * (Math.random() + 1.5));
                 }
 
-                    chart.setOption({
+                chart.setOption({
                     title: {
                         text: e.features[0].properties.NAME,
                         subtext: resources.text_fictitiouData

@@ -52,9 +52,8 @@
         zoom: 7
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.on('load', function () {
-        buildThemeLayer();
-    });
+
+    buildThemeLayer();
 
     function buildThemeLayer() {
         var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({

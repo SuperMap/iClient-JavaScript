@@ -20,11 +20,12 @@
 </head>
 <body>
 <div id='map'></div>
-<script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts"
+        src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
-        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({
@@ -52,56 +53,54 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    map.on('load', function () {
-        $.get('../data/flights.json', function (data) {
-            function getAirportCoord(idx) {
-                return [data.airports[idx][3], data.airports[idx][4]];
-            }
+    $.get('../data/flights.json', function (data) {
+        function getAirportCoord(idx) {
+            return [data.airports[idx][3], data.airports[idx][4]];
+        }
 
-            var routes = data.routes.map(function (airline) {
-                return [
-                    getAirportCoord(airline[1]),
-                    getAirportCoord(airline[2])
-                ];
-            });
+        var routes = data.routes.map(function (airline) {
+            return [
+                getAirportCoord(airline[1]),
+                getAirportCoord(airline[2])
+            ];
+        });
 
-            var echartslayer = new EchartsLayer(map);
-            echartslayer.chart.setOption(option = {
-                title: {
-                    text: 'World Flights',
-                    left: 'center',
-                    textStyle: {
-                        color: '#eee'
-                    }
-                },
+        var echartslayer = new EchartsLayer(map);
+        echartslayer.chart.setOption(option = {
+            title: {
+                text: 'World Flights',
+                left: 'center',
+                textStyle: {
+                    color: '#eee'
+                }
+            },
 
-                tooltip: {
-                    formatter: function (param) {
-                        var route = data.routes[param.dataIndex];
-                        return data.airports[route[1]][1] + ' > ' + data.airports[route[
+            tooltip: {
+                formatter: function (param) {
+                    var route = data.routes[param.dataIndex];
+                    return data.airports[route[1]][1] + ' > ' + data.airports[route[
                             2]][1];
+                }
+            },
+            GLMap: {
+                roam: true
+            },
+            series: [{
+                type: 'lines',
+                coordinateSystem: 'GLMap',
+                data: routes,
+                large: true,
+                largeThreshold: 100,
+                lineStyle: {
+                    normal: {
+                        opacity: 0.05,
+                        width: 0.5,
+                        curveness: 0.3
                     }
                 },
-                GLMap: {
-                    roam: true
-                },
-                series: [{
-                    type: 'lines',
-                    coordinateSystem: 'GLMap',
-                    data: routes,
-                    large: true,
-                    largeThreshold: 100,
-                    lineStyle: {
-                        normal: {
-                            opacity: 0.05,
-                            width: 0.5,
-                            curveness: 0.3
-                        }
-                    },
-                    // 设置混合模式为叠加
-                    blendMode: 'lighter'
-                }]
-            });
+                // 设置混合模式为叠加
+                blendMode: 'lighter'
+            }]
         });
     });
 

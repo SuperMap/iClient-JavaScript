@@ -105,10 +105,8 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    map.on("load", function () {
-        echartsLayer = new EchartsLayer(map);
-        echartsLayer.chart.setOption(option);
-    });
+    echartsLayer = new EchartsLayer(map);
+    echartsLayer.chart.setOption(option);
 
     //自定义渲染：
     function renderItem(params, api) {
@@ -142,9 +140,9 @@
         var key = lngIndex + '-' + latIndex;
 
         return coords[key] || (coords[key] = api.coord([
-            +(latExtent[0] + lngIndex * cellSizeCoord[0]).toFixed(6),
-            +(lngExtent[0] + latIndex * cellSizeCoord[1]).toFixed(6)
-        ]));
+                +(latExtent[0] + lngIndex * cellSizeCoord[0]).toFixed(6),
+                +(lngExtent[0] + latIndex * cellSizeCoord[1]).toFixed(6)
+            ]));
     }
 
 

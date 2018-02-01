@@ -60,10 +60,8 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    map.on('load', function () {
-        initThemeLayer();
-        initLegendView();
-    });
+    initThemeLayer();
+    initLegendView();
 
     function initThemeLayer() {
         themeLayer = new mapboxgl.supermap.LabelThemeLayer("labelThemeLayer", {

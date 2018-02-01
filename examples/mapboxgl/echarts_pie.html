@@ -61,108 +61,106 @@
 
     var categoryDataMap = {
         "北京市": [
-            {value: 335, name: resources.text_class+'A'},
-            {value: 679, name: resources.text_class+'B'},
-            {value: 1299, name: resources.text_class+'C'}
+            {value: 335, name: resources.text_class + 'A'},
+            {value: 679, name: resources.text_class + 'B'},
+            {value: 1299, name: resources.text_class + 'C'}
         ],
         "广州市": [
-            {value: 117, name: resources.text_class+'A'},
-            {value: 1267, name: resources.text_class+'B'},
-            {value: 1048, name: resources.text_class+'C'}
+            {value: 117, name: resources.text_class + 'A'},
+            {value: 1267, name: resources.text_class + 'B'},
+            {value: 1048, name: resources.text_class + 'C'}
         ], "上海市": [
-            {value: 475, name:  resources.text_class+'A'},
-            {value: 1450, name:  resources.text_class+'B'},
-            {value: 875, name:  resources.text_class+'C'}
+            {value: 475, name: resources.text_class + 'A'},
+            {value: 1450, name: resources.text_class + 'B'},
+            {value: 875, name: resources.text_class + 'C'}
         ]
     };
     var dataMap = {
         "北京市": [
-            {value: 335, name: resources.text_commodity+'A'},
-            {value: 310, name: resources.text_commodity+'B'},
-            {value: 234, name: resources.text_commodity+'C'},
-            {value: 135, name: resources.text_commodity+'D'},
-            {value: 1048, name: resources.text_commodity+'E'},
-            {value: 251, name: resources.text_commodity+'F'}
+            {value: 335, name: resources.text_commodity + 'A'},
+            {value: 310, name: resources.text_commodity + 'B'},
+            {value: 234, name: resources.text_commodity + 'C'},
+            {value: 135, name: resources.text_commodity + 'D'},
+            {value: 1048, name: resources.text_commodity + 'E'},
+            {value: 251, name: resources.text_commodity + 'F'}
         ],
         "广州市": [
-            {value: 117, name: resources.text_commodity+'A'},
-            {value: 284, name: resources.text_commodity+'B'},
-            {value: 768, name: resources.text_commodity+'C'},
-            {value: 215, name: resources.text_commodity+'D'},
-            {value: 901, name: resources.text_commodity+'E'},
-            {value: 148, name: resources.text_commodity+'F'}
+            {value: 117, name: resources.text_commodity + 'A'},
+            {value: 284, name: resources.text_commodity + 'B'},
+            {value: 768, name: resources.text_commodity + 'C'},
+            {value: 215, name: resources.text_commodity + 'D'},
+            {value: 901, name: resources.text_commodity + 'E'},
+            {value: 148, name: resources.text_commodity + 'F'}
         ], "上海市": [
-            {value: 475, name: resources.text_commodity+'A'},
-            {value: 29, name: resources.text_commodity+'B'},
-            {value: 430, name: resources.text_commodity+'C'},
-            {value: 981, name: resources.text_commodity+'D'},
-            {value: 732, name: resources.text_commodity+'E'},
-            {value: 143, name: resources.text_commodity+'F'}
+            {value: 475, name: resources.text_commodity + 'A'},
+            {value: 29, name: resources.text_commodity + 'B'},
+            {value: 430, name: resources.text_commodity + 'C'},
+            {value: 981, name: resources.text_commodity + 'D'},
+            {value: 732, name: resources.text_commodity + 'E'},
+            {value: 143, name: resources.text_commodity + 'F'}
         ]
     };
-    map.on('load', function () {
 
-        var option = {
-            title: {
-                text: resources.text_beijingCommoditySales,
-                subtext: resources.text_fictitiouData,
-                textStyle: {
-                    color: '#fff',
-                    fontSize: 16
-                }
+    var option = {
+        title: {
+            text: resources.text_beijingCommoditySales,
+            subtext: resources.text_fictitiouData,
+            textStyle: {
+                color: '#fff',
+                fontSize: 16
+            }
+        },
+        backgroundColor: '#404a59',
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'right',
+            y: 'bottom',
+            textStyle: {
+                color: '#fff',
+                fontSize: 12
             },
-            backgroundColor: '#404a59',
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b}: {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                x: 'right',
-                y: 'bottom',
-                textStyle: {
-                    color: '#fff',
-                    fontSize: 12
+            data: [resources.text_commodity + 'A', resources.text_commodity + 'B', resources.text_commodity + 'C', resources.text_commodity + 'D', resources.text_commodity + 'E', resources.text_commodity + 'F']
+        },
+        series: [
+            {
+                name: resources.text_commodityClass,
+                type: 'pie',
+                selectedMode: 'single',
+                radius: [0, '30%'],
+
+                label: {
+                    normal: {
+                        position: 'inner'
+                    }
                 },
-                data: [resources.text_commodity+'A', resources.text_commodity+'B', resources.text_commodity+'C', resources.text_commodity+'D', resources.text_commodity+'E', resources.text_commodity+'F']
-            },
-            series: [
-                {
-                    name: resources.text_commodityClass,
-                    type: 'pie',
-                    selectedMode: 'single',
-                    radius: [0, '30%'],
-
-                    label: {
-                        normal: {
-                            position: 'inner'
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: false
-                        }
-                    },
-                    data: categoryDataMap['北京市']
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
                 },
-                {
-                    name: resources.text_commodity,
-                    type: 'pie',
-                    radius: ['40%', '55%'],
-                    data: dataMap['北京市']
-                }
-            ]
-        };
+                data: categoryDataMap['北京市']
+            },
+            {
+                name: resources.text_commodity,
+                type: 'pie',
+                radius: ['40%', '55%'],
+                data: dataMap['北京市']
+            }
+        ]
+    };
 
-        div = document.createElement('div');
+    div = document.createElement('div');
 
-        chart = echarts.init(div, '', {
-            width: 650,
-            height: 400
-        });
-        chart.setOption(option);
-        query();
+    chart = echarts.init(div, '', {
+        width: 650,
+        height: 400
     });
+    chart.setOption(option);
+    query();
 
 
     function query() {

@@ -73,8 +73,8 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var themeLayer,
-            baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            dataUrl = host + "/iserver/services/data-jingjin/rest/data";
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        dataUrl = host + "/iserver/services/data-jingjin/rest/data";
     var attribution = "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span> with <span>© <a href='https://www.mapbox.com' target='_blank'>MapBox</a></span>";
     var map = new mapboxgl.Map({
         container: 'map',
@@ -102,23 +102,21 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    map.on('load', function () {
-        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new SuperMap.FilterParameter({
-            name: "Jingjin",
-            attributeFilter: "SMID > -1"
-        });
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            toIndex: 500,
-            datasetNames: ["Jingjin:BaseMap_R"]
-        });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
-            eventListeners: {"processCompleted": processCompleted}
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+    getFeatureParam = new SuperMap.FilterParameter({
+        name: "Jingjin",
+        attributeFilter: "SMID > -1"
     });
+    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        toIndex: 500,
+        datasetNames: ["Jingjin:BaseMap_R"]
+    });
+    getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+        format: SuperMap.DataFormat.ISERVER,
+        eventListeners: {"processCompleted": processCompleted}
+    });
+    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;
@@ -132,61 +130,61 @@
 
     function addThemeLayer() {
         themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
-                {
-                    map: map,
-                    attributions: " ",
-                    opacity: 0.8,
-                    style: {
-                        shadowBlur: 16,
-                        shadowColor: "#000000",
-                        fillColor: "#FFFFFF"
+            {
+                map: map,
+                attributions: " ",
+                opacity: 0.8,
+                style: {
+                    shadowBlur: 16,
+                    shadowColor: "#000000",
+                    fillColor: "#FFFFFF"
+                },
+                isHoverAble: true,
+                highlightStyle: {
+                    stroke: true,
+                    strokeWidth: 4,
+                    strokeColor: 'blue',
+                    fillColor: "#00EEEE",
+                    fillOpacity: 0.8
+                },
+                themeField: "POP_DENSITY99",
+                styleGroups: [
+                    {
+                        start: 0,
+                        end: 0.02,
+                        style: {
+                            color: '#FDE2CA'
+                        }
                     },
-                    isHoverAble: true,
-                    highlightStyle: {
-                        stroke: true,
-                        strokeWidth: 4,
-                        strokeColor: 'blue',
-                        fillColor: "#00EEEE",
-                        fillOpacity: 0.8
+                    {
+                        start: 0.02,
+                        end: 0.04,
+                        style: {
+                            color: '#FACE9C'
+                        }
                     },
-                    themeField: "POP_DENSITY99",
-                    styleGroups: [
-                        {
-                            start: 0,
-                            end: 0.02,
-                            style: {
-                                color: '#FDE2CA'
-                            }
-                        },
-                        {
-                            start: 0.02,
-                            end: 0.04,
-                            style: {
-                                color: '#FACE9C'
-                            }
-                        },
-                        {
-                            start: 0.04,
-                            end: 0.06,
-                            style: {
-                                color: '#F09C42'
-                            }
-                        },
-                        {
-                            start: 0.06,
-                            end: 0.1,
-                            style: {
-                                color: '#D0770B'
-                            }
-                        },
-                        {
-                            start: 0.1,
-                            end: 0.2,
-                            style: {
-                                color: '#945305'
-                            }
-                        }]
-                });
+                    {
+                        start: 0.04,
+                        end: 0.06,
+                        style: {
+                            color: '#F09C42'
+                        }
+                    },
+                    {
+                        start: 0.06,
+                        end: 0.1,
+                        style: {
+                            color: '#D0770B'
+                        }
+                    },
+                    {
+                        start: 0.1,
+                        end: 0.2,
+                        style: {
+                            color: '#945305'
+                        }
+                    }]
+            });
 
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', function (e) {

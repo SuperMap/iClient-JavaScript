@@ -26,7 +26,7 @@
 <div id="map"></div>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({
@@ -55,41 +55,39 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML(resources.text_iClient9)
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient9)
+        .addTo(map);
 
-    map.on('load', function () {
-        var randomCount = 1000;
+    var randomCount = 1000;
 
-        var data = [];
+    var data = [];
 
-        var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
+    var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
 
-        // 构造数据
-        while (randomCount--) {
-            var cityCenter1 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-            var cityCenter2 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-            data.push({
-                geometry: {
-                    type: 'LineString',
-                    coordinates: [[cityCenter1.lng - 1 + Math.random() * 1, cityCenter1.lat - 1 + Math.random() * 1], [cityCenter2.lng - 1 + Math.random() * 1, cityCenter2.lat - 1 + Math.random() * 1]]
-                },
-                count: 30 * Math.random()
-            });
-        }
+    // 构造数据
+    while (randomCount--) {
+        var cityCenter1 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+        var cityCenter2 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+        data.push({
+            geometry: {
+                type: 'LineString',
+                coordinates: [[cityCenter1.lng - 1 + Math.random() * 1, cityCenter1.lat - 1 + Math.random() * 1], [cityCenter2.lng - 1 + Math.random() * 1, cityCenter2.lat - 1 + Math.random() * 1]]
+            },
+            count: 30 * Math.random()
+        });
+    }
 
-        var dataSet = new mapv.DataSet(data);
+    var dataSet = new mapv.DataSet(data);
 
-        var options = {
-            strokeStyle: 'rgba(255, 250, 50, 0.3)',
-            shadowColor: 'rgba(255, 250, 50, 1)',
-            shadowBlur: 20,
-            lineWidth: 0.7,
-            draw: 'simple'
-        };
-        new mapboxgl.supermap.MapvLayer(map, dataSet, options);
-    });
+    var options = {
+        strokeStyle: 'rgba(255, 250, 50, 0.3)',
+        shadowColor: 'rgba(255, 250, 50, 1)',
+        shadowBlur: 20,
+        lineWidth: 0.7,
+        draw: 'simple'
+    };
+    new mapboxgl.supermap.MapvLayer(map, dataSet, options);
 
 </script>
 </body>
