@@ -45,7 +45,7 @@
 
             inputScript("../js/utils.js");
             inputScript("../js/localization.js");
-            document.writeln("<script>$().ready(function(){Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();});}) </script>");
+            document.writeln("<script>Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();}); </script>");
             jQueryInclude = true;
         }
 

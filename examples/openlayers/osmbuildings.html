@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>openlayers 建筑立体效果</title>
+    <title data-i18n="resources.title_osmBuildings">openlayers 建筑立体效果</title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" include="osmbuildings" src="../../dist/include-openlayers.js"></script>
     <style>
@@ -82,7 +82,7 @@
         }),
         overlays: [overlay]
     });
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
+    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China";
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
@@ -106,7 +106,7 @@
 
         function bindPopup(evt) {
             var name = getFeatureNameById(evt.feature);
-            name = name || "<span style='color:red'>无数据</span>";
+            name = name || "<span style='color:red'>" + resources.text_noData + "</span>";
             content.innerHTML = name;
             overlay.setPosition([evt.lat, evt.lon]);
             closer.onclick = function () {

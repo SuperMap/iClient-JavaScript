@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>单值专题图</title>
-    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_themeUnique">单值专题图</title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style type="text/css">
         .legendItemHeader,
@@ -20,7 +19,7 @@
         <div id="infoBox" class="panel panel-primary infoPane"
              style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
             <div class="panel-heading">
-                <h5 class='panel-title text-center'>属性表</h5>
+                <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable">属性表</h5>
             </div>
             <div id="infoContent" class="panel-body content">
             </div>
@@ -28,61 +27,61 @@
         <div class="panel panel-primary legend" style="width:272px;margin-top: 400px;position: absolute;float:right">
             <div id="mapLegend" class="panel-heading">
                 <h5 class='panel-title text-center'>
-                    <span>图例</span>
+                    <span data-i18n="resources.text_legend">图例</span>
                 </h5>
             </div>
             <div class="panel-body text-center">
                 <table>
                     <tr>
-                        <td class="legendItemHeader">土地类型</td>
-                        <td class="legendItemValue">颜色</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_landType">土地类型</td>
+                        <td class="legendItemValue" data-i18n="resources.text_color">颜色</td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">草地</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_grassland">草地</td>
                         <td class="legendItemValue" style="background: #C1FFC1"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">城市</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_city">城市</td>
                         <td class="legendItemValue" style="background: #CD7054"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">灌丛</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_shrub">灌丛</td>
                         <td class="legendItemValue" style="background: #7CCD7C"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">旱地</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_dryLand">旱地</td>
                         <td class="legendItemValue" style="background: #EE9A49"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">湖泊水库</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_lakeReservoir">湖泊水库</td>
                         <td class="legendItemValue" style="background: #8EE5EE"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">经济林</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_economicForest">经济林</td>
                         <td class="legendItemValue" style="background: #548B54"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">沙漠</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_desert">沙漠</td>
                         <td class="legendItemValue" style="background: #DEB887"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">水浇地</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_irrigatedLand">水浇地</td>
                         <td class="legendItemValue" style="background: #E0FFFF"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">水田</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_paddyField">水田</td>
                         <td class="legendItemValue" style="background: #388E8E"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">用材林</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_timberForest">用材林</td>
                         <td class="legendItemValue" style="background: #556B2F"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">沼泽</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_swamp">沼泽</td>
                         <td class="legendItemValue" style="background: #2F4F4F"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">缺省风格</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_DefaultStyle">缺省风格</td>
                         <td class="legendItemValue" style="background: #ABABAB"></td>
                     </tr>
                 </table>
@@ -90,17 +89,18 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, options, themeLayer, themeSource,
-            baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            url2 = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/data-jingjin/rest/data",
-            extent = [104.07, 30.54, 119.51, 42.31];
+        baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url2 = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/data-jingjin/rest/data",
+        extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                    .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -154,99 +154,99 @@
             // 岛洞多面要素必需在其他要素之前添加
             feas = IHFeas.concat(feas);
             themeSource = new ol.source.Unique("ThemeLayer", {
-                        map: map,
-                        attributions: " ",
+                map: map,
+                attributions: " ",
+                style: {
+                    shadowBlur: 3,
+                    shadowColor: "#000000",
+                    shadowOffsetX: 1,
+                    shadowOffsetY: 1,
+                    fillColor: "#FFFFFF"
+                },
+                isHoverAble: true,
+                highlightStyle: {
+                    stroke: true,
+                    strokeWidth: 2,
+                    strokeColor: 'blue',
+                    fillColor: "#00F5FF",
+                    fillOpacity: 0.2
+                },
+                themeField: "LANDTYPE",
+                styleGroups: [
+                    {
+                        value: "草地",
                         style: {
-                            shadowBlur: 3,
-                            shadowColor: "#000000",
-                            shadowOffsetX: 1,
-                            shadowOffsetY: 1,
-                            fillColor: "#FFFFFF"
-                        },
-                        isHoverAble: true,
-                        highlightStyle: {
-                            stroke: true,
-                            strokeWidth: 2,
-                            strokeColor: 'blue',
-                            fillColor: "#00F5FF",
-                            fillOpacity: 0.2
-                        },
-                        themeField: "LANDTYPE",
-                        styleGroups: [
-                            {
-                                value: "草地",
-                                style: {
-                                    fillColor: "#C1FFC1"
-                                }
-                            },
-                            {
-                                value: "城市",
-                                style: {
-                                    fillColor: "#CD7054"
-                                }
-                            },
-                            {
-                                value: "灌丛",
-                                style: {
-                                    fillColor: "#7CCD7C"
-                                }
-                            },
-                            {
-                                value: "旱地",
-                                style: {
-                                    fillColor: "#EE9A49"
-                                }
-                            },
-                            {
-                                value: "湖泊水库",
-                                style: {
-                                    fillColor: "#8EE5EE"
-                                }
-                            },
-                            {
-                                value: "经济林",
-                                style: {
-                                    fillColor: "#548B54"
-                                }
-                            },
-                            {
-                                value: "沙漠",
-                                style: {
-                                    fillColor: "#DEB887"
-                                }
-                            },
-                            {
-                                value: "水浇地",
-                                style: {
-                                    fillColor: "#E0FFFF"
-                                }
-                            },
-                            {
-                                value: "水田",
-                                style: {
-                                    fillColor: "#388E8E"
-                                }
-                            },
-                            {
-                                value: "用材林",
-                                style: {
-                                    fillColor: "#556B2F"
-                                }
-                            },
-                            {
-                                value: "沼泽",
-                                style: {
-                                    fillColor: "#2F4F4F"
-                                }
-                            },
-                            {
-                                value: "缺省风格",
-                                style: {
-                                    fillColor: "#ABABAB"
-                                }
-                            }
-                        ]
-                    });
+                            fillColor: "#C1FFC1"
+                        }
+                    },
+                    {
+                        value: "城市",
+                        style: {
+                            fillColor: "#CD7054"
+                        }
+                    },
+                    {
+                        value: "灌丛",
+                        style: {
+                            fillColor: "#7CCD7C"
+                        }
+                    },
+                    {
+                        value: "旱地",
+                        style: {
+                            fillColor: "#EE9A49"
+                        }
+                    },
+                    {
+                        value: "湖泊水库",
+                        style: {
+                            fillColor: "#8EE5EE"
+                        }
+                    },
+                    {
+                        value: "经济林",
+                        style: {
+                            fillColor: "#548B54"
+                        }
+                    },
+                    {
+                        value: "沙漠",
+                        style: {
+                            fillColor: "#DEB887"
+                        }
+                    },
+                    {
+                        value: "水浇地",
+                        style: {
+                            fillColor: "#E0FFFF"
+                        }
+                    },
+                    {
+                        value: "水田",
+                        style: {
+                            fillColor: "#388E8E"
+                        }
+                    },
+                    {
+                        value: "用材林",
+                        style: {
+                            fillColor: "#556B2F"
+                        }
+                    },
+                    {
+                        value: "沼泽",
+                        style: {
+                            fillColor: "#2F4F4F"
+                        }
+                    },
+                    {
+                        value: "缺省风格",
+                        style: {
+                            fillColor: "#ABABAB"
+                        }
+                    }
+                ]
+            });
             themeSource.addFeatures(feas);
             //专题图层 mousemove 事件
             themeSource.on('mousemove', function (e) {
@@ -257,8 +257,8 @@
                     if (fea) {
                         document.getElementById("infoContent").innerHTML = "";
                         document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
-                        document.getElementById("infoContent").innerHTML += "土地类型: " + fea.attributes.LANDTYPE + "<br/>";
-                        document.getElementById("infoContent").innerHTML += "面积: " + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
+                        document.getElementById("infoContent").innerHTML += resources.text_landType+": " + fea.attributes.LANDTYPE + "<br/>";
+                        document.getElementById("infoContent").innerHTML += resources.text_area + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
                     }
                 }
                 else {

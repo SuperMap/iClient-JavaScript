@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>iPortal SecurityManager使用示例</title>
-    <script type="text/javascript" include="jquery,bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_iPortalSecurity">iPortal SecurityManager使用示例</title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 
     <style>
@@ -15,40 +14,40 @@
 <body style=" margin: 0;overflow: auto;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div class="container">
     <div class="page-header">
-        <h4>iPortal SecurityManager使用示例</h4>
+        <h4 data-i18n="resources.title_iPortalSecurity">iPortal SecurityManager使用示例</h4>
     </div>
     <div class="row">
         <table class="table table-bordered col-md-6">
             <thead>
             <tr>
-                <th class="text-center">功能</th>
-                <th class="text-center">示例</th>
+                <th class="text-center" data-i18n="resources.text_function">功能</th>
+                <th class="text-center" data-i18n="resources.text_instance">示例</th>
             </tr>
             </thead>
             <tbody>
             <!--登录-->
             <tr>
-                <td class="text-center text-success">登录</td>
+                <td class="text-center text-success" data-i18n="resources.text_login">登录</td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="loginUrl_iportal" class="col-md-2 control-label">服务地址</label>
+                                    <label for="loginUrl_iportal" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress">服务地址</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="loginUrl_iportal"
-                                               placeholder="服务域名/IP+端口">
+                                               data-i18n="[placeholder]resources.text_input_tips_serviceDomainName">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="username_iportal" class="col-md-2 control-label">用户名</label>
+                                    <label for="username_iportal" class="col-md-2 control-label" data-i18n="resources.text_userName">用户名</label>
 
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="username_login">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password_iportal" class="col-md-2 control-label">密码</label>
+                                    <label for="password_iportal" class="col-md-2 control-label" data-i18n="resources.text_password">密码</label>
 
                                     <div class="col-md-8">
                                         <input type="password" class="form-control" id="password_login">
@@ -56,8 +55,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="loginPortal()">登录</a>
-                                        <a class="btn btn-success" onclick="logoutPortal()">登出</a>
+                                        <a class="btn btn-success" onclick="loginPortal()" data-i18n="resources.text_login">登录</a>
+                                        <a class="btn btn-success" onclick="logoutPortal()" data-i18n="resources.text_logout">登出</a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -68,68 +67,68 @@
 
             <!--token 申请-->
             <tr>
-                <td class="text-center text-success">token申请</td>
+                <td class="text-center text-success" data-i18n="resources.text_applyForToken">token申请</td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="serviceUrlToken_iportal" class="col-md-2 control-label">服务地址</label>
+                                    <label for="serviceUrlToken_iportal" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress">服务地址</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="serviceUrlToken_iportal"
-                                               placeholder="服务域名/IP+端口">
+                                               data-i18n="[placeholder]resources.text_input_tips_serviceDomainName">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="username_iportal" class="col-md-2 control-label">用户名</label>
+                                    <label for="username_iportal" class="col-md-2 control-label" data-i18n="resources.text_userName">用户名</label>
 
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="username_iportal">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password_iportal" class="col-md-2 control-label">密码</label>
+                                    <label for="password_iportal" class="col-md-2 control-label" data-i18n="resources.text_password">密码</label>
 
                                     <div class="col-md-8">
                                         <input type="password" class="form-control" id="password_iportal">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="clientType_iportal" class="col-md-2 control-label">客户端标识</label>
+                                    <label for="clientType_iportal" class="col-md-2 control-label" data-i18n="resources.text_clientID">客户端标识</label>
 
                                     <div class="col-md-8">
                                         <select class="form-control" id="clientType_iportal" name="clientType">
                                             <option value="Referer" selected="selected">HTTP Referer</option>
-                                            <option value="IP">客户端IP</option>
-                                            <option value="RequestIP">当前请求的IP</option>
-                                            <option value="NONE">无客户端限制</option>
+                                            <option value="IP" data-i18n="resources.text_clientIP">客户端IP</option>
+                                            <option value="RequestIP" data-i18n="resources.text_currentRequestIP">当前请求的IP</option>
+                                            <option value="NONE" data-i18n="resources.text_noClientLimit">无客户端限制</option>
 
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="referer_iportal" class="col-md-2 control-label">Referer/IP/空</label>
+                                    <label for="referer_iportal" class="col-md-2 control-label" data-i18n="resources.text_refererIPEmpty">Referer/IP/空</label>
 
                                     <div class="col-md-8">
                                         <input class="form-control" id="referer_iportal">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="expiration_iportal" class="col-md-2 control-label">有效期</label>
+                                    <label for="expiration_iportal" class="col-md-2 control-label" data-i18n="resources.text_termValid">有效期</label>
 
                                     <div class="col-md-8">
                                         <select class="form-control" id="expiration_iportal" name="expiration">
-                                            <option value="60" selected="selected">1小时</option>
-                                            <option value="1440">1天</option>
-                                            <option value="10080">1星期</option>
-                                            <option value="43200">1月</option>
-                                            <option value="525600">1年</option>
+                                            <option value="60" selected="selected" data-i18n="resources.text_oneHour">1小时</option>
+                                            <option value="1440" data-i18n="resources.text_oneDay">1天</option>
+                                            <option value="10080" data-i18n="resources.text_oneWeek">1星期</option>
+                                            <option value="43200" data-i18n="resources.text_oneMonth">1月</option>
+                                            <option value="525600" data-i18n="resources.text_oneYear">1年</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="generatePortalToken()">申请token</a>
+                                        <a class="btn btn-success" onclick="generatePortalToken()" data-i18n="resources.text_applyForToken">申请token</a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -139,13 +138,13 @@
             </tr>
             <!-- 注册token -->
             <tr>
-                <td class="text-center text-success">token授权访问私有服务</td>
+                <td class="text-center text-success" data-i18n="resources.text_tokenAuthorized">token授权访问私有服务</td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="tokenServiceUrl_iportal" class="col-md-2 control-label">服务地址</label>
+                                    <label for="tokenServiceUrl_iportal" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress">服务地址</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="tokenServiceUrl_iportal"
                                                placeholder="http://localhost:8090/web/services/32">
@@ -159,7 +158,7 @@
                                 </div>
 
                                 <div class="col-md-12 text-center">
-                                    <a class="btn btn-success" onclick="registerPortalTokenAndRequestService()">访问</a>
+                                    <a class="btn btn-success" onclick="registerPortalTokenAndRequestService()" data-i18n="resources.text_accessing">访问</a>
                                 </div>
                             </fieldset>
                         </form>
@@ -168,16 +167,16 @@
             </tr>
             <!-- 注册key -->
             <tr>
-                <td class="text-center text-success">key授权访问私有map服务</td>
+                <td class="text-center text-success" data-i18n="resources.text_keyAuthorized">key授权访问私有map服务</td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="serviceUrl_iportal" class="col-md-2 control-label">服务地址</label>
+                                    <label for="serviceUrl_iportal" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress">服务地址</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="serviceUrl_iportal"
-                                               placeholder="iPortal私有地图服务地址">
+                                               data-i18n="[placeholder]resources.text_iPortalServicesAddress">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -188,7 +187,7 @@
                                 </div>
 
                                 <div class="col-md-12 text-center">
-                                    <a class="btn btn-success" onclick="registerPortalKeyAndRequestService()">访问</a>
+                                    <a class="btn btn-success" onclick="registerPortalKeyAndRequestService()" data-i18n="resources.text_accessing">访问</a>
                                 </div>
                             </fieldset>
                         </form>
@@ -197,13 +196,13 @@
             </tr>
             <!-- 出图 -->
             <tr>
-                <td class="text-center text-success">key授权出图</td>
+                <td class="text-center text-success" data-i18n="resources.text_keyAuthorizedGetMap">key授权出图</td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="serviceUrlMap_iportal" class="col-md-2 control-label">服务地址</label>
+                                    <label for="serviceUrlMap_iportal" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress">服务地址</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="serviceUrlMap_iportal">
                                     </div>
@@ -216,7 +215,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12  text-center">
-                                        <a class="btn btn-success" onclick="showMapWithPortalKey()">出图</a>
+                                        <a class="btn btn-success" onclick="showMapWithPortalKey()" data-i18n="resources.text_getMap">出图</a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -237,6 +236,7 @@
         </table>
     </div>
 </div>
+<script type="text/javascript" include="jquery,bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
 <script>
 
     //若示例与SuperMap iPortal不在同一域下，欲查看示例效果请打开该句注释
@@ -262,7 +262,7 @@
         }
         SuperMap.SecurityManager.loginiPortal(loginUrl, userName, password).then(function (result) {
             if (result.succeed)
-            widgets.alert.showAlert("登录成功",true);
+                widgets.alert.showAlert(resources.msg_loginSuccess, true);
         });
     }
 
@@ -271,7 +271,7 @@
         var loginUrl = $("#loginUrl_iportal").val();
         SuperMap.SecurityManager.logoutiPortal(loginUrl).then(function (succeed) {
             if (succeed) {
-                widgets.alert.showAlert("登出成功",true);
+                widgets.alert.showAlert(resources.msg_logoutSuccess, true);
             }
         });
     }
@@ -301,7 +301,7 @@
             ip: referer,
             expiration: expiration
         })).then(function (result) {
-            widgets.alert.showAlert(result,true);
+            widgets.alert.showAlert(result, true);
         });
     }
 
@@ -319,9 +319,9 @@
         var iPortalService = new SuperMap.iPortalService(serviceUrl);
         iPortalService.load().then(function (json) {
             if (json && json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error),false);
+                widgets.alert.showAlert(JSON.stringify(json.error), false);
             } else {
-                widgets.alert.showAlert("proxiedUrl:" + iPortalService.proxiedUrl,true);
+                widgets.alert.showAlert("proxiedUrl:" + iPortalService.proxiedUrl, true);
             }
 
         });
@@ -355,9 +355,9 @@
             serverType: SuperMap.ServerType.IPORTAL
         }).getMapInfo(function (json) {
             if (json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error),false);
+                widgets.alert.showAlert(JSON.stringify(json.error), false);
             } else {
-                widgets.alert.showAlert(JSON.stringify(json.result),true);
+                widgets.alert.showAlert(JSON.stringify(json.result), true);
             }
         });
     }
@@ -404,7 +404,7 @@
 
     function checkUrl(url) {
         if (url === "") {
-            widgets.alert.showAlert("请填写URL",false);
+            widgets.alert.showAlert(resources.msg_fillInURL, false);
             return false;
         }
         return true;

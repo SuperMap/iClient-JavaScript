@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>图表专题图</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_graphThemeLayer">图表专题图</title>
     <script src='../data/chinaConsumptionLevel.js'></script>
     <style>
         .editPane {
@@ -32,6 +30,10 @@
             background-size: 100%;
         }
 
+        .btn {
+            margin-bottom: 5px !important;
+        }
+
         #bar {
             background-image: url("../img/bar.png");
         }
@@ -54,6 +56,10 @@
 
         #ring {
             background-image: url("../img/ring.png");
+        }
+
+        .btn {
+            margin-bottom: 10px;
         }
 
         .ol-popup {
@@ -100,19 +106,21 @@
 </div>
 <div class="editPane" role="group" aria-label="...">
     <button type='button' class='btn btn-default graph active' id='bar' data-toggle='tooltip' data-placement='bottom'
-            title='柱状图'></button>
+            data-i18n="[title]resources.title_GraphBar"></button>
     <button type='button' class='btn btn-default graph' id='bar3d' data-toggle='tooltip' data-placement='bottom'
-            title='3D柱状图'></button>
+            data-i18n="[title]resources.title_GraphBar3D"></button>
     <button type='button' class='btn btn-default graph' id='ling' data-toggle='tooltip' data-placement='bottom'
-            title='折线图'></button>
+            data-i18n="[title]resources.title_GraphLine"></button>
     <button type='button' class='btn btn-default graph' id='point' data-toggle='tooltip' data-placement='bottom'
-            title='点图'></button>
+            data-i18n="[title]resources.title_GraphPoint"></button>
     <button type='button' class='btn btn-default graph' id='pie' data-toggle='tooltip' data-placement='bottom'
-            title='扇形图'></button>
+            data-i18n="[title]resources.title_GraphPie"></button>
     <button type='button' class='btn btn-default graph' id='ring' data-toggle='tooltip' data-placement='bottom'
-            title='环形图'></button>
+            data-i18n="[title]resources.title_GraphRing"></button>
 </div>
 <div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 <script type="text/javascript">
     var map, themeSource,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
@@ -156,11 +164,11 @@
     });
 
     function bindEvent() {
-        $("[data-toggle='tooltip']").on("mouseover",function () {
+        $("[data-toggle='tooltip']").on("mouseover", function () {
             $("[data-toggle='tooltip']").tooltip();
         });
 
-        $("[data-toggle='tooltip']").on("mouseout",function () {
+        $("[data-toggle='tooltip']").on("mouseout", function () {
             $("[data-toggle='tooltip']").tooltip("hide");
         });
 
@@ -457,24 +465,24 @@
 
             // 弹窗内容
             var contentHTML = "<div style='color: #000; background-color: #fff'>";
-            contentHTML += "省级行政区名称:<br><strong>" + fea.attributes.NAME + "</strong>";
+            contentHTML += resources.text_Name + "<br><strong>" + fea.attributes.NAME + "</strong>";
 
             contentHTML += "<hr style='margin: 3px'>";
             switch (info.field) {
                 case "CON2009":
-                    contentHTML += "09年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "09" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2010":
-                    contentHTML += "10年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "10" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2011":
-                    contentHTML += "11年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "11" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2012":
-                    contentHTML += "12年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "12" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2013":
-                    contentHTML += "13年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "13" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 default:
                     contentHTML += "No Data";

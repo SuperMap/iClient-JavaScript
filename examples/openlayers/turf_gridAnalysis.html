@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Turf 格网分析</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_turfGridAnalysis">Turf 格网分析</title>
     <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
     <style>
         .editPane {
             position: absolute;
             right: 10px;
             top: 10px;
-            width: 420px;
+            width: 480px;
             text-align: center;
             background: #FFF;
             z-index: 1000;
@@ -39,63 +38,64 @@
 </div>
 <div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>创建格网</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_createGrid">创建格网</h5></div>
     <div class='panel-body' id='gridsBody'>
         <div class='input-group'>
-            <span class='input-group-addon'>格网分析类型<span title='必填字段' style='color: red;'> * </span></span>
+            <span class='input-group-addon'><span data-i18n="resources.text_gridAnalysisType">格网分析类型</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
             <select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>
-                <option value='hexGrid' selected>蜂巢格网</option>
-                <option value='pointGrid'>点格网</option>
-                <option value='squareGrid'>方形格网</option>
-                <option value='triangleGrid'>三角格网</option>
+                <option value='hexGrid' selected data-i18n="resources.text_hexGrid">蜂巢格网</option>
+                <option value='pointGrid' data-i18n="resources.text_pointGrid">点格网</option>
+                <option value='squareGrid' data-i18n="resources.text_squareGrid">方形格网</option>
+                <option value='triangleGrid' data-i18n="resources.text_triangleGrid">三角格网</option>
             </select>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'>单元格网大小<span title='必填字段' style='color: red;'> * </span></span>
+            <span class='input-group-addon'><span data-i18n="resources.text_unitGridSize">单元格网大小</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
             <input id='cellSize' type='text' class='form-control' value='50'/>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'>格网单元大小单位<span title='必填字段' style='color: red;'> * </span></span>
+            <span class='input-group-addon'><span data-i18n="resources.text_gridUnitSizeUnit">格网单元大小单位</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
             <select class='form-control' id='units' name='mode'>
-                <option value='degrees'>度</option>
-                <option value='radians'>弧度</option>
-                <option value='miles' selected>英里</option>
-                <option value='kilometers'>千米</option>
+                <option value='degrees' data-i18n="resources.text_degrees">度</option>
+                <option value='radians' data-i18n="resources.text_radians">弧度</option>
+                <option value='miles' selected data-i18n="resources.text_miles">英里</option>
+                <option value='kilometers' data-i18n="resources.text_kilometers">千米</option>
             </select>
         </div>
         <p></p>
         <div id='squareGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon'>是否调整宽度和高度以适应bbox的尺寸</span>
+            <span class='input-group-addon' data-i18n="resources.text_adjustSize">是否调整宽度和高度以适应bbox的尺寸</span>
             <span class='form-control'>
                 <input id='completelyWithin' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div id='pointGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon'>调整点到格网中心位置</span>
+            <span class='input-group-addon' data-i18n="resources.text_adjustPoint">调整点到格网中心位置</span>
             <span class='form-control'>
                 <input id='iscentered' type='checkbox'>
-                </span><span class='input-group-addon'>创建范围为多边形</span>
+                </span><span class='input-group-addon' data-i18n="resources.text_returnedByTriangle">创建范围为多边形</span>
             <span class='form-control'><input id='isbboxIsMask' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div id='hexGridChoic' class='input-group'>
-            <span class='input-group-addon'>是否以三角形的形式返回</span>
+            <span class='input-group-addon' data-i18n="resources.text_adjustPoint">是否以三角形的形式返回</span>
             <span class='form-control'>
                 <input id='triangles' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div align='right' class='input-group'>
-            <input type='button' id='createGridBtn' class='btn btn-primary' value='对当前绘制范围创建格网'/>&nbsp
-            <input type='button' id='clearGridBtn' class='btn btn-primary' value='清除'/>
+            <input type='button' id='createGridBtn' class='btn btn-primary' data-i18n="[value]resources.btn_createGrid"/>&nbsp
+            <input type='button' id='clearGridBtn' class='btn btn-primary' data-i18n="[value]resources.text_input_value_clear"/>
         </div>
     </div>
 </div>
 </body>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
@@ -185,7 +185,7 @@
                         return;
                 }
             } else {
-                widgets.alert.showAlert("并按住ctrl + 鼠标左键，在地图上绘出需要分析范围。", true);
+                widgets.alert.showAlert(resources.msg_drawAnalysisRegion, true);
             }
         });
 
@@ -193,7 +193,7 @@
             //是否有需要删除的提示框
             widgets.alert.clearAlert();
             if (vector.getSource().getFeatures().length === 0 && turfSource.getFeatures().length == 0) {
-                widgets.alert.showAlert("没有数据可删除", false);
+                widgets.alert.showAlert(resources.msg_noDataToDelete, false);
                 return;
             }
             bbox = null;
@@ -222,7 +222,7 @@
 
     //鼠标移动监听事件
     var pointerMoveHandler = function (evt) {
-        var helpMsg = '按住ctrl + 点击鼠标左键，绘制创建格网区域';
+        var helpMsg = resources.msg_drawMeshRegion;
 
         helpTooltipElement.innerHTML = helpMsg;
         helpTooltip.setPosition(evt.coordinate);

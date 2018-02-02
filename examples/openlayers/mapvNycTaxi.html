@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <script type="text/javascript" include="jquery,dat-gui" src="../js/include-web.js"></script>
     <script type="text/javascript" include="mapv" src="../../dist/include-openlayers.js"></script>
-    <title>纽约出租车上车点</title>
-
+    <title data-i18n="resources.title_mapvNyvTaxi">纽约出租车上车点</title>
     <style type="text/css">
         #loading {
             position: absolute;
@@ -34,7 +32,8 @@
 <div id="popup" class="ol-popup" style='width:20%'>
 </div>
 <div id="map" style="width: 100%;height:100%"></div>
-<div id="loading">纽约出租车145万上车点数据加载中...</div>
+<div id="loading" data-i18n="resources.text_loadingData">纽约出租车145万上车点数据加载中...</div>
+<script type="text/javascript" include="jquery,dat-gui" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map = new ol.Map({
         target: 'map',
@@ -60,10 +59,10 @@
         var dataSet = mapv.csv.getDataSet(csvstr);
 
         dataSet.initGeometry(function (data) {
-            data ={
+            data = {
                 type: 'Point',
-                coordinates: ol.proj.transform([parseFloat(data.lng),parseFloat(data.lat)], 'EPSG:4326', 'EPSG:3857')
-            } ;
+                coordinates: ol.proj.transform([parseFloat(data.lng), parseFloat(data.lat)], 'EPSG:4326', 'EPSG:3857')
+            };
             return data;
         });
 
@@ -74,10 +73,12 @@
             fillStyle: 'rgba(250, 50, 50, 0.8)',
             draw: 'simple'
         };
-        var options = {map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: [
-            new ol.Attribution({
-                html: " 数据来源 <a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(纽约出租车上车点)</a>  © 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
-            })]};
+        var options = {
+            map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: [
+                new ol.Attribution({
+                    html: resources.text_dataSources + "<a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2017 " + resources.title_3baidu + " MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                })]
+        };
         var layer = new ol.layer.Image({
             source: new ol.source.Mapv(options)
         });
@@ -93,6 +94,7 @@
         popup.appendChild(gui.domElement);
         gui.add(options, 'size', 0.1, 10).onFinishChange(finished);
         gui.addColor(options, 'fillStyle').onChange(finished);
+
         function finished() {
             layer.getSource().update(options);
         }

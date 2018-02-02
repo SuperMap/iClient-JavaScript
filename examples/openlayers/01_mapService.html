@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SuperMap 地图信息</title>
+    <title data-i18n="resources.title_mapService">SuperMap 地图信息</title>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
@@ -16,7 +16,7 @@
             border: 1px solid #cccccc;
             bottom: 12px;
             left: -50px;
-            min-width: 300px;
+            min-width: 380px;
         }
 
         .ol-popup:after, .ol-popup:before {
@@ -60,7 +60,8 @@
             duration: 250
         }
     }));
-    var map, url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World";
+    var map,
+        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -85,9 +86,9 @@
         new ol.supermap.MapService(url, {
             "projection": "4326"
         }).getMapInfo(function (serviceResult) {
-            var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-            innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
-            innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
+            var innerHTML = "(" + resources.text_mapInfoPrint + ")" + "<br><br>";
+            innerHTML += resources.text_mapName + "：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
+            innerHTML += resources.text_center + ":" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
             innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
             content.innerHTML = innerHTML;
             overlay.setPosition([0, 0]);

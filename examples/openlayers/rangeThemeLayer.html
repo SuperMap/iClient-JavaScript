@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>分段专题图</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_popDensityRange">分段专题图</title>
     <style type="text/css">
         .legendItemHeader,
         .legendItemValue {
@@ -20,7 +18,7 @@
         <div id="infoBox" class="panel panel-primary infoPane"
              style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
             <div class="panel-heading">
-                <h5 class='panel-title text-center'>属性表</h5>
+                <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable">属性表</h5>
             </div>
             <div id="infoContent" class="panel-body content">
             </div>
@@ -28,17 +26,17 @@
         <div class="panel panel-primary legend" style="width:272px;margin-top: 400px;position: absolute;float:right">
             <div id="mapLegend" class="panel-heading">
                 <h5 class='panel-title text-center'>
-                    <span>图例</span>
+                    <span data-i18n="resources.text_legend">图例</span>
                 </h5>
             </div>
             <div class="panel-body text-center">
                 <table>
                     <tr>
-                        <td class="legendItemHeader">人口密度(1999年)</td>
-                        <td class="legendItemValue">颜色</td>
+                        <td class="legendItemHeader" data-i18n="resources.text_populationDensity">人口密度(1999年)</td>
+                        <td class="legendItemValue" data-i18n="resources.text_color">颜色</td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">0    - 0.02</td>
+                        <td class="legendItemHeader">0 - 0.02</td>
                         <td class="legendItemValue" style="background: #FDE2CA"></td>
                     </tr>
                     <tr>
@@ -54,7 +52,7 @@
                         <td class="legendItemValue" style="background: #D0770B"></td>
                     </tr>
                     <tr>
-                        <td class="legendItemHeader">0.1  - 0.2</td>
+                        <td class="legendItemHeader">0.1 - 0.2</td>
                         <td class="legendItemValue" style="background: #945305"></td>
                     </tr>
                 </table>
@@ -62,6 +60,8 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 <script type="text/javascript">
     var map, themeSource
     baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
@@ -178,8 +178,8 @@
                 if (fea) {
                     document.getElementById("infoContent").innerHTML = "";
                     document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
-                    document.getElementById("infoContent").innerHTML += "行政区名:" + fea.attributes.NAME + "<br/>";
-                    document.getElementById("infoContent").innerHTML += "人口密度:" + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + "<br/>";
+                    document.getElementById("infoContent").innerHTML += resources.text_districtName + fea.attributes.NAME + "<br/>";
+                    document.getElementById("infoContent").innerHTML += resources.text_densityOfPopulation + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + "<br/>";
                 }
             }
             else {
@@ -202,7 +202,7 @@
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 </script>
 </body>

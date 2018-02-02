@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>叠加分析</title>
-    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_overlayAnalyst">叠加分析</title>
     <style>
         .ol-popup {
             position: absolute;
@@ -18,49 +16,54 @@
 <div id="popup" class="ol-popup" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title'>叠加分析</h3>
+            <h3 class='panel-title' data-i18n="resources.text_overlayAnalyst">叠加分析</h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
-                <span class='input-group-addon'>源数据集<span title="必填字段" style="color: red;"> * </span>　</span>
+                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset">源数据集</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <input id='datasetName' type='text' class='form-control'
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon'>叠加对象数据集<span title="必填字段" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_overlayDataset">叠加对象数据集</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <input id='datasetOverlay' type='text' class='form-control'
                        value='samples_processing_newyorkResidential_R'/>
             </div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon'>叠加分析模式<span title="必填字段" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_analystMode">叠加分析模式</span><span
+                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <select class='form-control' id='mode' name='mode'>
-                    <option value='clip' selected>裁剪</option>
-                    <option value='intersect'>相交</option>
-                    <option value='erase'>擦除</option>
-                    <option value='union'>合并</option>
-                    <option value='update'>更新</option>
-                    <option value='identity'>同一</option>
-                    <option value='xor'>对称差分析</option>
+                    <option value='clip' selected data-i18n="resources.text_clip">裁剪</option>
+                    <option value='intersect' data-i18n="resources.text_intersect">相交</option>
+                    <option value='erase' data-i18n="resources.text_erase">擦除</option>
+                    <option value='union' data-i18n="resources.text_union">合并</option>
+                    <option value='update' data-i18n="resources.text_update">更新</option>
+                    <option value='identity' data-i18n="resources.text_identity">同一</option>
+                    <option value='xor' data-i18n="resources.text_xor">对称差分析</option>
                 </select>
             </div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon'>源数据集保留字段</span>
+                <span class='input-group-addon' data-i18n="resources.text_retainedFieldSource">源数据集保留字段</span>
                 <input id='srcFields' type='text' class='form-control' value='LocationID'/>
             </div>
             <p></p>
             <div class='input-group' id='overlayField' style='display: none'>
-                <span class='input-group-addon'>叠加数据集保留字段</span>
+                <span class='input-group-addon' data-i18n="resources.text_retainedFieldOverlay">叠加数据集保留字段</span>
                 <input id='overlayFields' type='text' class='form-control' value='type'/>
             </div>
             <p></p>
             <div align='right'>
-                <input type='button' id='btn' class='btn btn-primary' value='分析'/>
+                <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_analyst"/>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var layer,
@@ -131,7 +134,7 @@
             if (serviceResult.error) {
                 widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {

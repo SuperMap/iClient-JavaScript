@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>修改图形</title>
-    <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_modifyFeatures">修改图形</title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
@@ -17,10 +16,11 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <div id="popup" class="ol-popup">
     <div class="btn-group" role="group" aria-label="...">
-        <button id="modify" value='Modify' type="button" class="btn btn-default">修改</button>
-        <button id="none" value='None' type="button" class="btn btn-default">无修改</button>
+        <button id="modify" value='Modify' type="button" class="btn btn-default" data-i18n="resources.btn_modify">修改</button>
+        <button id="none" value='None' type="button" class="btn btn-default" data-i18n="resources.btn_notModify">无修改</button>
     </div>
 </div>
+<script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, select, modify, source, baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
             url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";

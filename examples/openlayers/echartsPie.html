@@ -34,49 +34,49 @@
     map.addOverlay(popup);
     var categoryDataMap = {
         "北京市": [
-            {value: 335, name: '类目A'},
-            {value: 679, name: '类目B'},
-            {value: 1299, name: '类目C'}
+            {value: 335, name: resources.text_class+'A'},
+            {value: 679, name: resources.text_class+'B'},
+            {value: 1299, name: resources.text_class+'C'}
         ],
         "广州市": [
-            {value: 117, name: '类目A'},
-            {value: 1267, name: '类目B'},
-            {value: 1048, name: '类目C'}
+            {value: 117, name: resources.text_class+'A'},
+            {value: 1267, name: resources.text_class+'B'},
+            {value: 1048, name: resources.text_class+'C'}
         ], "上海市": [
-            {value: 475, name: '类目A'},
-            {value: 1450, name: '类目B'},
-            {value: 875, name: '类目C'}
+            {value: 475, name: resources.text_class+'A'},
+            {value: 1450, name: resources.text_class+'B'},
+            {value: 875, name: resources.text_class+'C'}
         ]
     }
     var dataMap = {
         "北京市": [
-            {value: 335, name: '商品A'},
-            {value: 310, name: '商品B'},
-            {value: 234, name: '商品C'},
-            {value: 135, name: '商品D'},
-            {value: 1048, name: '商品E'},
-            {value: 251, name: '商品F'}
+            {value: 335, name: resources.text_commodity+'A'},
+            {value: 310, name: resources.text_commodity+'B'},
+            {value: 234, name: resources.text_commodity+'C'},
+            {value: 135, name: resources.text_commodity+'D'},
+            {value: 1048, name: resources.text_commodity+'E'},
+            {value: 251, name: resources.text_commodity+'F'}
         ],
         "广州市": [
-            {value: 117, name: '商品A'},
-            {value: 284, name: '商品B'},
-            {value: 768, name: '商品C'},
-            {value: 215, name: '商品D'},
-            {value: 901, name: '商品E'},
-            {value: 148, name: '商品F'}
+            {value: 117, name: resources.text_commodity+'A'},
+            {value: 284, name: resources.text_commodity+'B'},
+            {value: 768, name: resources.text_commodity+'C'},
+            {value: 215, name: resources.text_commodity+'D'},
+            {value: 901, name: resources.text_commodity+'E'},
+            {value: 148, name: resources.text_commodity+'F'}
         ], "上海市": [
-            {value: 475, name: '商品A'},
-            {value: 29, name: '商品B'},
-            {value: 430, name: '商品C'},
-            {value: 981, name: '商品D'},
-            {value: 732, name: '商品E'},
-            {value: 143, name: '商品F'}
+            {value: 475, name: resources.text_commodity+'A'},
+            {value: 29, name: resources.text_commodity+'B'},
+            {value: 430, name: resources.text_commodity+'C'},
+            {value: 981, name: resources.text_commodity+'D'},
+            {value: 732, name: resources.text_commodity+'E'},
+            {value: 143, name: resources.text_commodity+'F'}
         ]
     }
     var option = {
         title: {
-            text: '北京市商品销量',
-            subtext: '纯属虚构',
+            text: resources.text_beijingCommoditySales,
+            subtext: resources.text_fictitiouData,
             textStyle: {
                 color: '#fff',
                 fontSize: 16
@@ -95,11 +95,11 @@
                 color: '#fff',
                 fontSize: 12
             },
-            data: ['商品A', '商品B', '商品C', '商品D', '商品E', '商品F']
+            data: [resources.text_commodity+'A', resources.text_commodity+'B', resources.text_commodity+'C', resources.text_commodity+'D', resources.text_commodity+'E', resources.text_commodity+'F']
         },
         series: [
             {
-                name: '商品类目',
+                name: resources.text_commodityClass,
                 type: 'pie',
                 selectedMode: 'single',
                 radius: [0, '30%'],
@@ -117,7 +117,7 @@
                 data: categoryDataMap['北京市']
             },
             {
-                name: '商品',
+                name: resources.text_commodity,
                 type: 'pie',
                 radius: ['40%', '55%'],
                 data: dataMap['北京市']
@@ -173,15 +173,15 @@
                     }
                     chart.setOption({
                         title: {
-                            text: city + '商品销量',
+                            text: city + resources.text_commoditySales,
                         },
                         series: [
                             {
-                                name: '商品类目',
+                                name: resources.text_commodityClass,
                                 data: categoryDataMap[city]
                             },
                             {
-                                name: '商品',
+                                name: resources.text_commodity,
                                 data: dataMap[city]
                             }
                         ]

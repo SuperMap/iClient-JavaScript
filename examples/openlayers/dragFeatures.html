@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>拖拽图形</title>
-    <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_dragFeatures">拖拽图形</title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
@@ -17,13 +16,17 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <div id="popup" class="ol-popup">
     <div class="btn-group" role="group" aria-label="...">
-        <button id="drag" value='Drag' type="button" class="btn btn-default">拖拽</button>
-        <button id="none" value='None' type="button" class="btn btn-default">无拖拽</button>
+        <button id="drag" value='Drag' type="button" class="btn btn-default" data-i18n="resources.btn_drag">拖拽</button>
+        <button id="none" value='None' type="button" class="btn btn-default"
+                data-i18n="resources.text_input_value_notDrag">无拖拽
+        </button>
     </div>
 </div>
+<script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var map, select, drag, source, baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
-            url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";
+    var map, select, drag, source,
+        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
+        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})

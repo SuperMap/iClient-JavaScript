@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>客户端标签专题图</title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_labelThemeLayer">客户端标签专题图</title>
     <style type="text/css">
         .legend td {
             width: 60px;
@@ -78,12 +76,12 @@
             <div class="panel-body text-center">
                 <table>
                     <tr>
-                        <td>优</td>
-                        <td>良</td>
-                        <td>轻度污染</td>
-                        <td>中度污染</td>
-                        <td>重度污染</td>
-                        <td>严重污染</td>
+                        <td data-i18n="resources.text_great">优</td>
+                        <td data-i18n="resources.text_good">良</td>
+                        <td data-i18n="resources.text_mildPollution">轻度污染</td>
+                        <td data-i18n="resources.text_moderatePollution">中度污染</td>
+                        <td data-i18n="resources.text_heavyPollution">重度污染</td>
+                        <td data-i18n="resources.text_severePollution">严重污染</td>
                     </tr>
                     <tr>
                         <td style='background: #6ACD06'></td>
@@ -110,6 +108,8 @@
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
 </div>
+<script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 <script type="text/javascript" src="../data/themeLableData.js"></script>
 <script type="text/javascript">
 
@@ -269,7 +269,7 @@
             "<td>" +
             "<div id='textID' style='text-align: left;font-size: 19px;text-shadow: 1px 1px 0 #ffffff;'>" + feature.attributes.quality + "</div>" +
             "<div style='font-size:10px;width:150px;'>" + feature.attributes.time_point + "</div>" +
-            "<div style=' font-weight:lighter; font-size:14px;'>当前城市：" + feature.attributes.area + "</div>" +
+            "<div style=' font-weight:lighter; font-size:14px;'>" + resources.text_currentCity + "：" + feature.attributes.area + "</div>" +
             "</td>" +
             "</tr> </tbody></table>" +
             "<table style='width:100%;font-size: 10px;border: 0 solid black;padding: 0;margin: 0;border-spacing: 0;'>" +

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>距离测量</title>
+    <title data-i18n="resources.title_measureDistance">距离测量</title>
     <script type="text/javascript" include="bootstrap,jquery,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 </head>
@@ -10,7 +10,7 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
     var map, interaction, vectorLayer, feature,
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World";
+        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World";
 
     map = new ol.Map({
         target: 'map',
@@ -46,12 +46,11 @@
     interaction.on('drawend', function () {
         var distanceMeasureParam = new SuperMap.MeasureParameters(feature.getGeometry());
         new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam, function (serviceResult) {
-            widgets.alert.showAlert(serviceResult.result.distance + "米",true);
+            widgets.alert.showAlert(serviceResult.result.distance + resources.msg_m, true);
         });
     });
 
     map.addInteraction(interaction);
-
 
 
 </script>

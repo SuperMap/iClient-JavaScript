@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>地物编辑</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_editFeature">地物编辑</title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .editPane {
@@ -72,15 +71,20 @@
 <div>
     <div class="panel panel-primary editPane" id="editPane">
         <div class='panel-heading'>
-            <h5 class='panel-title text-center'>编辑单个要素</h5></div>
+            <h5 class='panel-title text-center' data-i18n="resources.text_editSingle">编辑单个要素</h5></div>
         <div class='panel-body content'>
-            <input type='button' class='btn btn-default' value='添加地物' onclick='addMarker()'/>&nbsp;
-            <input type='button' class='btn btn-default' value='撤销添加' onclick='revocationMarker()'/>
-            <input type='button' class='btn btn-default' value='提交添加' onclick='commit()'/>&nbsp;
-            <input type='button' class='btn btn-default' value='清除结果' onclick='clearLayer()'/>
+            <input type='button' class='btn btn-default' data-i18n="[value]resources.btn_addMarker"
+                   onclick='addMarker()'/>&nbsp;
+            <input type='button' class='btn btn-default' data-i18n="[value]resources.btn_undoAdd"
+                   onclick='revocationMarker()'/>
+            <input type='button' class='btn btn-default' data-i18n="[value]resources.text_input_value_submit"
+                   onclick='commit()'/>&nbsp;
+            <input type='button' class='btn btn-default' data-i18n="[value]resources.text_input_value_clear"
+                   onclick='clearLayer()'/>
         </div>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var map, id = [], pointFeature, vectorSource, resultLayer, editFeaturesService, alertDiv,
         addPointsSource, addPointsLayer,
@@ -210,7 +214,7 @@
             map.removeOverlay(overlay);
         }
         if (isclearPoint) {
-            helpTooltipElement.innerHTML = "请选择需要删除的要素。";
+            helpTooltipElement.innerHTML = resources.text_selectMarkerToDelete;
             helpTooltip.setPosition(e.coordinate);
             helpTooltipElement.classList.remove('hidden');
             map.addOverlay(helpTooltip);
@@ -224,7 +228,7 @@
         if (isclearPoint) {
             closeSelectListener();
         }
-       widgets.alert.clearAlert();
+        widgets.alert.clearAlert();
         var xmax = 120, xmin = 100, ymax = 50, ymin = 20,
             point = [Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)];
         if (!pointFeature) {
@@ -267,12 +271,12 @@
             addPointsSource.clear();
             pointFeature = null;
         } else {
-           widgets.alert.showAlert("没有可撤回的要素。",false);
+            widgets.alert.showAlert(resources.msg_noRevocableMarker, false);
         }
     }
 
     function commit() {
-       widgets.alert.clearAlert();
+        widgets.alert.clearAlert();
         if (isclearPoint) {
             closeSelectListener();
         }
@@ -291,16 +295,16 @@
                     vectorSource.clear();
                     pointFeature = null;
                     initFeature();
-                   widgets.alert.showAlert("提交成功",true);
+                    widgets.alert.showAlert(resources.msg_submitSuccess, true);
                 }
             });
         } else {
-           widgets.alert.showAlert("请先添加要素",false);
+            widgets.alert.showAlert(resources.msg_noMarkerToSubmit, false);
         }
     }
 
     function clearLayer() {
-       widgets.alert.clearAlert();
+        widgets.alert.clearAlert();
         isclearPoint = true;
         map.on('click', selectListener);
     }
@@ -320,9 +324,9 @@
                     vectorSource.clear();
                     isclearPoint = false;
                     closeSelectListener();
-                   widgets.alert.showAlert("删除成功",true);
+                    widgets.alert.showAlert(resources.text_deleteSuccess, true);
                 } else {
-                   widgets.alert.showAlert("删除失败",false)
+                    widgets.alert.showAlert(resources.msg_deleteFailed, false)
                 }
             });
         }, {

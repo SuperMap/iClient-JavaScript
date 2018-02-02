@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>批量几何空间分析</title>
+    <title data-i18n="resources.title_geometryBatchAnalystService">批量几何空间分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -238,10 +238,10 @@
 
             var bufferPop = new mapboxgl.Popup()
                 .setLngLat([117.15, 40.45])
-                .setHTML("<h4>缓冲分析结果</h4>");
+                .setHTML("<h4>" + resources.text_bufferAnalystResult + "</h4>");
             var overlayPop = new mapboxgl.Popup()
                 .setLngLat([116.35, 39.75])
-                .setHTML("<h4>叠加分析结果</h4>");
+                .setHTML("<h4>" + resources.text_overlayAnalystResult + "</h4>");
 
 
             map.on('mouseenter', 'bufferResultLayer_line', function (e) {
@@ -249,7 +249,7 @@
                 map.getCanvas().style.cursor = 'pointer';
 
                 bufferPop.setLngLat([117.5, 40.25])
-                    .setHTML("<h4>缓冲分析结果</h4>")
+                    .setHTML("<h4>" + resources.text_bufferAnalystResult + "</h4>")
                     .addTo(map);
             });
             map.on('mouseleave', 'bufferResultLayer_line', function () {
@@ -261,7 +261,7 @@
                 map.getCanvas().style.cursor = 'pointer';
 
                 bufferPop.setLngLat([117, 40])
-                    .setHTML("<h4>缓冲分析结果</h4>")
+                    .setHTML("<h4>" + resources.text_bufferAnalystResult + "</h4>")
                     .addTo(map);
             });
             map.on('mouseleave', 'bufferResultLayer_point', function () {
@@ -273,7 +273,7 @@
                 map.getCanvas().style.cursor = 'pointer';
 
                 overlayPop.setLngLat([116.5, 39.5])
-                    .setHTML("<h4>叠加分析结果</h4>")
+                    .setHTML("<h4>" + resources.text_overlayAnalystResult + "</h4>")
                     .addTo(map);
             });
             map.on('mouseleave', 'overlayResultLayer', function () {

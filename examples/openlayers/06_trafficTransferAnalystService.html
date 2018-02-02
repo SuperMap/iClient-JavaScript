@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>交通换乘分析服务</title>
+    <title data-i18n="resources.title_trafficTransfer">交通换乘分析服务</title>
     <script type="text/javascript" include="bootstrap-css,jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
@@ -50,8 +50,8 @@
     var map, startMarker, endMarker, container, content, tempMarker,
         stopSourceLayer, roadSourceLayer, tempMarkerSourceLayer, tempRedSourceLayer,
         info, paths = {transSolutions: null, solutions: null},
-        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
+        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
@@ -106,7 +106,7 @@
                 return;
             }
             var solution, lines, line, dispStatus = "block";
-            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>起点：省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;终点：中安大厦<br/>乘车方案（最少时间）</div>").appendTo(content);
+            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>" + resources.text_startPoint + "省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + resources.text_endPoint + "中安大厦<br/>" + resources.text_trafficTransferScheme + "（" + resources.text_minTime + "）</div>").appendTo(content);
             for (var i = 0, iLen = transSolutions.length; i < iLen; i++) {
                 solution = transSolutions[i];
                 //显示方案头
@@ -125,7 +125,7 @@
                         title += " → ";
                     }
                 }
-                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>方案" + (i + 1) + "：</span>" + title + "</div>").appendTo(content);
+                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>" + resources.text_scheme + (i + 1) + "：</span>" + title + "</div>").appendTo(content);
                 if (i !== 0) {
                     dispStatus = "none";
                 }
@@ -218,13 +218,13 @@
             var tr2 = $("<tr></tr>");
             if (item.isWalking) {
                 $("<td class='step_transfer' ></td>").appendTo(tr2);
-                $("<td>步行至:<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
-                $("<td>" + parseInt(item.distance) + "米</td>").appendTo(tr2);
+                $("<td>" + resources.text_walkTO + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
+                $("<td>" + parseInt(item.distance) + resources.msg_m + "</td>").appendTo(tr2);
             } else {
                 var otherLines = transSolutions[indexX].linesItems[indexY],
                     links = "";
                 if (otherLines && otherLines.lineItems.length > 1) {
-                    links = "</br>还可乘坐:"
+                    links = "</br>" + resources.text_alsoRide;
                     for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
                         var line = otherLines.lineItems[oti];
                         if (item.lineName !== line.lineName) {
@@ -241,8 +241,8 @@
                         pointStr += ",";
                     }
                 }
-                $("<td>乘坐<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>, 在<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>下车" + links + "</td>").appendTo(tr2);
-                $("<td>" + item.passStopCount + "站</td>").appendTo(tr2);
+                $("<td>" + resources.text_ride + "<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>" + resources.text_debus1 + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>" + resources.text_debus2 + links + "</td>").appendTo(tr2);
+                $("<td>" + item.passStopCount + resources.text_stops + "</td>").appendTo(tr2);
                 indexY++;
             }
             tr2.appendTo(table);

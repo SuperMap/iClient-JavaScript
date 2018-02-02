@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Turf 分类分析</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_turfClassificationAnalysis">Turf 分类分析</title>
     <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
@@ -83,11 +82,11 @@
 </div>
 <div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>分类分析</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_classificationAnalysis">分类分析</h5></div>
     <div class='panel-body content' id='classificationBody'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>分类分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_classificationAnalysisType">分类分析类型</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
                 <select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>
                     <option value='nearestOption' selected>nearestAnalyze</option>
                 </select>
@@ -96,6 +95,7 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         nearestDataUrl = host + "/iserver/services/map-china400/rest/maps/China_4326",
@@ -158,7 +158,7 @@
 
     //鼠标移动监听事件
     var pointerMoveHandler = function (evt) {
-        var helpMsg = '点击地图，查找离点击位置最近的飞机场';
+        var helpMsg = resources.msg_findAirport;
 
         helpTooltipElement.innerHTML = helpMsg;
         helpTooltip.setPosition(evt.coordinate);
@@ -178,11 +178,11 @@
         widgets.alert.clearAlert();
         //判断是否分析超出地图范围
         if (!extentPolygon.intersectsCoordinate(e.coordinate)) {
-            widgets.alert.showAlert("超出分析范围。", false);
+            widgets.alert.showAlert(resources.msg_beyondScope, false);
             return;
         }
         if (!classificationAnalyst.sourcePoints || classificationAnalyst.sourcePoints.features.length === 0) {
-            widgets.alert.showAlert("数据加载中，请耐心等待。", true);
+            widgets.alert.showAlert(resources.text_loadingData, true);
             return;
         }
         clearLayer();
@@ -309,7 +309,7 @@
             }, function (result) {
                 var latlng = [result.geometry.coordinates[0], result.geometry.coordinates[1]];
 
-                var innerHtml = "离该点最近的机场为" + result.properties.NAME;
+                var innerHtml = resources.msg_nearestAirport + result.properties.NAME;
                 classificationAnalyst.content.innerHTML = innerHtml;
                 classificationAnalyst.overlay.setPosition(result.geometry.coordinates);
 

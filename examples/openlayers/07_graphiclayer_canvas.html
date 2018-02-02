@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_graphiclayerCanvas">canvas渲染</title>
     <script type="text/javascript" include="randomcolor" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
-    <title>canvas渲染</title>
     <style>
         .ol-popup {
             position: absolute;
@@ -114,7 +114,7 @@
                     onClick: function (graphic) {
                         if (graphic) {
                             var coords = graphic.getGeometry().getCoordinates();
-                            content.innerHTML = "坐标为:[" + coords[0] + "," + coords[1] + "]";
+                            content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
                             overlay.setPosition(graphic.getGeometry().getCoordinates());
                             return;
                         }

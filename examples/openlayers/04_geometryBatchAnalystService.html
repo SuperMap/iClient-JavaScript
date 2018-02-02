@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>批量几何空间分析</title>
+    <title data-i18n="resources.title_geometryBatchAnalystService">批量几何空间分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
@@ -251,21 +251,21 @@
                 map.forEachFeatureAtPixel(e.pixel, function (feature) {
                     if (feature.getProperties().analystType === "buffer_line") {
                         map.getTargetElement().style.cursor = 'pointer';
-                        var contentHTML = "缓冲区分析结果";
+                        var contentHTML = resources.text_bufferAnalystResult;
                         content.innerHTML = contentHTML;
                         overlay.setPosition([117.5, 40.25]);
                         map.addOverlay(overlay);
                         isShowPop = true;
                     } else if (feature.getProperties().analystType === "buffer_point") {
                         map.getTargetElement().style.cursor = 'pointer';
-                        var contentHTML = "缓冲区分析结果";
+                        var contentHTML = resources.text_bufferAnalystResult;
                         content.innerHTML = contentHTML;
                         overlay.setPosition([117, 40]);
                         map.addOverlay(overlay);
                         isShowPop = true;
                     } else if (feature.getProperties().analystType === "overlay") {
                         map.getTargetElement().style.cursor = 'pointer';
-                        var contentHTML = "叠加分析结果";
+                        var contentHTML = resources.text_overlayAnalystResult;
                         content.innerHTML = contentHTML;
                         overlay.setPosition([116.5, 39.5]);
                         map.addOverlay(overlay);

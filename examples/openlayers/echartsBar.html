@@ -34,7 +34,7 @@
     map.addOverlay(popup);
     var option = {
         legend: {
-            data: ['降雨量', '径流量'],
+            data: [resources.text_rainfall, resources.text_runoff],
             align: 'left'
         },
         toolbox: {
@@ -50,7 +50,7 @@
         backgroundColor: '#fff',
         tooltip: {},
         xAxis: {
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            data: [resources.text_monday, resources.text_tuesday, resources.text_wednesday, resources.text_thursday, resources.text_friday, resources.text_saturday, resources.text_sunday],
             silent: false,
             splitLine: {
                 show: false
@@ -125,15 +125,15 @@
                     chart.setOption({
                         title: {
                             text: city,
-                            subtext: '数据纯属虚构'
+                            subtext: resources.text_fictitiouData
                         },
                         series: [
                             {
-                                name: '降雨量',
+                                name: resources.text_rainfall,
                                 data: data1,
                             },
                             {
-                                name: '径流量',
+                                name: resources.text_runoff,
                                 data: data2,
                             }
                         ],

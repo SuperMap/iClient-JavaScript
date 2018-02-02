@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>批量叠加分析</title>
+    <title data-i18n="resources.title_geometryOverlayBatchAnalystService">批量叠加分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
@@ -187,7 +187,7 @@
                 map.forEachFeatureAtPixel(e.pixel, function (feature) {
                     if (feature.getProperties().isResultLayer) {
                         map.getTargetElement().style.cursor = 'pointer';
-                        var contentHTML = "批量叠加分析结果";
+                        var contentHTML = resources.text_overlayBatchAnalystResult;
                         content.innerHTML = contentHTML;
                         overlay.setPosition([117,40]);
                         map.addOverlay(overlay);

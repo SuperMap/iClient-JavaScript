@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>空间分析服务-里程定点</title>
+    <title data-i18n="resources.title_routeLocatorPoint">空间分析服务-里程定点</title>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
@@ -144,7 +144,7 @@
                     source: vectorSource,
                 });
                 map.addLayer(resultLayer);
-                var innerHTML = "查询到的里程为 " + routeLocatorParameters_point.measure + " 的点";
+                var innerHTML = resources.msg_queryMileagePoint1 + routeLocatorParameters_point.measure + resources.msg_queryMileagePoint2;
                 content.innerHTML = innerHTML;
                 overlay.setPosition([routeLocateServiceResult.result.resultGeometry.geometry.coordinates[0], routeLocateServiceResult.result.resultGeometry.geometry.coordinates[1]]);
             });

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>批量叠加分析</title>
+    <title data-i18n="resources.title_geometryOverlayBatchAnalystService">批量叠加分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -99,7 +99,7 @@
                 style: overlayResultStyle
             }).addTo(map);
             resultLayer.on("mousemove", function (e) {
-                e.layer.bindPopup('<h4>批量叠加分析结果</h4>').openPopup();
+                e.layer.bindPopup('<h4>' + resources.text_overlayBatchAnalystResult + '</h4>').openPopup();
             });
             resultLayer.on("mouseout", function (e) {
                 e.layer.closePopup();

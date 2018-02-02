@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>面积测量</title>
+    <title data-i18n="resources.title_measureArea">面积测量</title>
     <script type="text/javascript" include="bootstrap,jquery,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 </head>
@@ -43,7 +43,7 @@
     interaction.on('drawend', function () {
         var areaMeasureParam = new SuperMap.MeasureParameters(feature.getGeometry());
         new ol.supermap.MeasureService(url).measureArea(areaMeasureParam, function (serviceResult) {
-            widgets.alert.showAlert(serviceResult.result.area + "平方米", true);
+            widgets.alert.showAlert(serviceResult.result.area + resources.msg_sqm, true);
         });
     });
 
