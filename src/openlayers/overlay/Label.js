@@ -11,6 +11,7 @@ import {GeoFeature} from './theme/GeoFeature';
 
 /**
  * @class ol.source.Label
+ * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
  * @param name - {string} 名称
  * @param opt_options -{Object} 参数。

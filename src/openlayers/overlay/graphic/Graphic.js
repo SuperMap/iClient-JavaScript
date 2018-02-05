@@ -2,6 +2,7 @@ import ol from 'openlayers';
 
 /**
  * @class ol.Graphic
+ * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类。
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}

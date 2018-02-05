@@ -3,6 +3,7 @@ import {Util} from '../core/Util';
 
 /**
  * @class ol.source.Graphic
+ * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
  * @param options -{Object} 图形参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}

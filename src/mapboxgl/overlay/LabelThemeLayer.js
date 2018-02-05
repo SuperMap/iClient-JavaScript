@@ -12,6 +12,7 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 
 /**
  * @class mapboxgl.supermap.LabelThemeLayer
+ * @category  Visualization Theme
  * @classdesc  标签专题图层。
  * @param name - {string} 图层名。
  * @param opt_options -{Object} 参数

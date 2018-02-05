@@ -10,6 +10,7 @@ import {
 
 /**
  * @class mapboxgl.supermap.LayerInfoService
+ * @category  iServer Map
  * @classdesc 图层信息服务类
  * @extends mapboxgl.supermap.ServiceBase
  * @example

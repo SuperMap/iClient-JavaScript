@@ -2,6 +2,7 @@ import ol from 'openlayers';
 
 /**
  * @class ol.source.BaiduMap
+ * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
  * @param opt_options - {Object} 创建地图参数可选参数：<br>
  *        url - {string} 服务地址。<br>

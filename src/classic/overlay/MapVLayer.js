@@ -3,6 +3,7 @@ import {MapVRenderer} from './mapv/MapVRenderer';
 
 /**
  * @class SuperMap.Layer.MapVLayer
+ * @category  Visualization MapV
  * @classdesc MapV图层。
  * @extends SuperMap.Layer
  * @param name - {string} 图层名

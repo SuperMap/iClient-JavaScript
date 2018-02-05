@@ -2,6 +2,7 @@ import ol from 'openlayers';
 
 /**
  * @class ol.source.Tianditu
+ * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
  * @param opt_options - {Object} 参数。
  *        url - {string} 服务地址。<br>

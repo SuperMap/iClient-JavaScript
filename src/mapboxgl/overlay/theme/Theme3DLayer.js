@@ -3,6 +3,7 @@ import '../../core/Base';
 
 /**
  * @class mapboxgl.supermap.Theme3DLayer
+ * @category  Visualization Theme
  * @classdesc 三维专题图基类,不能直接实例化
  * @param  id -{string} 专题图图层id
  * @param  layerOptions -{Object} 专题图图层配置项<br>

@@ -4,6 +4,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
 
 /**
  * @class SuperMap.REST.AddressMatchService
+ * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @extends SuperMap.REST.CommonServiceBase
  * @param url - {string} 服务地址

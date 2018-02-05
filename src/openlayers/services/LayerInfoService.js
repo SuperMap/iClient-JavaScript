@@ -9,6 +9,7 @@ import {
 
 /**
  * @class ol.supermap.LayerInfoService
+ * @category  iServer Map
  * @classdesc 图层信息服务类
  * @extends ol.supermap.ServiceBase
  * @example

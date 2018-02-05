@@ -28,6 +28,7 @@ ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.supermap.WebMap
+ * @category  iPortal/Online
  * @classdesc 对接iPortal/Online地图类。
  * @param id - {string} iPortal|Online 地图ID
  * @param options - {Object} 参数。如：<br>

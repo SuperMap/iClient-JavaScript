@@ -13,6 +13,7 @@ import {SummaryAttributesJobsService} from '@supermap/iclient-common/iServer/Sum
 
 /**
  * @class SuperMap.REST.ProcessingService
+ * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
  * @augments SuperMap.CommonServiceBase
  * @example

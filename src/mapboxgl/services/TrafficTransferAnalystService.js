@@ -7,6 +7,7 @@ import {StopQueryService, TransferPathService, TransferSolutionService} from '@s
 /**
  * @class mapboxgl.supermap.TrafficTransferAnalystService
  * @extends mapboxgl.supermap.ServiceBase
+ * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类
  * @example
  *      new mapboxgl.supermap.TrafficTransferAnalystService(url)

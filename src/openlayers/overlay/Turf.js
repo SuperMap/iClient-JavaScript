@@ -3,6 +3,7 @@ import * as turf from '@turf/turf';
 
 /**
  * @class ol.source.Turf
+ * @category  Visualization Turf
  * @classdesc Turf.js图层源。
  * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}

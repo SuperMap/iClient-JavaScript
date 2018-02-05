@@ -7,6 +7,7 @@ ol.supermap.control = ol.supermap.control || {};
 
 /**
  * @class ol.supermap.control.ChangeTileVersion
+ * @category  Control
  * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置
  * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
  * @param options -{options} 可选参数。如：<br>

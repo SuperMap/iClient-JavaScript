@@ -4,6 +4,7 @@ import {MapvRenderer} from "./mapv/MapvRenderer";
 
 /**
  * @class mapboxgl.supermap.MapvLayer
+ * @category  Visualization MapV
  * @classdesc Mapv图层
  * @param map - {Object} 地图
  * @param dataSet -{Object} 数据集

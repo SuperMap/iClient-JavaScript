@@ -6,6 +6,7 @@ ol.supermap.control = ol.supermap.control || {};
 
 /**
  * @class ol.supermap.control.Logo
+ * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
  * @example

@@ -5,6 +5,7 @@ import {FeatureTheme} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.RankSymbolThemeLayer
+ * @category  Visualization Theme
  * @classdesc 等级符号专题图层。
  * @param name - {string} 图层名。
  * @param symbolType -{string} 符号类型。

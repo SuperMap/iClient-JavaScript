@@ -4,6 +4,7 @@ import {Graph} from './Graph';
 
 /**
  * @class ol.source.RankSymbol
+ * @category  Visualization Theme
  * @classdesc 等级符号专题图图层源。
  * @param name - {string} 专题图层名
  * @param symbolType -{string} 标志类型

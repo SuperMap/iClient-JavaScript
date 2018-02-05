@@ -4,6 +4,7 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 
 /**
  * @class mapboxgl.supermap.RangeTheme3DLayer
+ * @category  Visualization Theme
  * @classdesc 三维分段专题图
  * @param  id -{string} 专题图图层id
  * @param  layerOptions -{Object} 专题图图层配置项,参数继承自Theme3DLayer,新增参数如下：<br>

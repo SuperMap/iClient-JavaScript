@@ -3,6 +3,7 @@ import {DataFlowService} from "../services/DataFlowService";
 
 /**
  * @class ol.source.DataFlow
+ * @category  iServer DataFlow
  * @classdesc 实时数据图层源。
  * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}

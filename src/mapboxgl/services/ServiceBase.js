@@ -3,6 +3,7 @@ import '../core/Base';
 
 /**
  * @class mapboxgl.supermap.ServiceBase
+ * @category  iServer
  * @description mapboxgl.supermap服务基类
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>

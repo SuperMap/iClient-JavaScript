@@ -4,6 +4,7 @@ import {Theme} from './theme/Theme';
 
 /**
  * @class ol.source.Graph
+ * @category  Visualization Theme
  * @classdesc 统计专题图图层基类。
  * @param chartsType -{string} 图表类别
  * @param name - {string} 图层名称

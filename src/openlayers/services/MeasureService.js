@@ -5,7 +5,8 @@ import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.MeasureService
- * @classdesc 距离测量服务
+ * @category  iServer Map
+ * @classdesc 测量服务
  * @extends ol.supermap.ServiceBase
  * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>

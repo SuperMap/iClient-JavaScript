@@ -4,6 +4,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
 
 /**
  * @class ol.supermap.AddressMatchService
+ * @category  iServer AddressMatch
  * @classdesc 地址匹配服务
  * @example
  *      new ol.supermap.AddressMatchService(url,options)

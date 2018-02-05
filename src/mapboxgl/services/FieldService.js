@@ -6,6 +6,7 @@ import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common'
 
 /**
  * @class mapboxgl.supermap.FieldService
+ * @category  iServer Data
  * @classdesc 字段服务类
  * @example
  *      new mapboxgl.supermap.FieldService(url).getFields(function(result){

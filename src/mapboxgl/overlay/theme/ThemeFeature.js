@@ -5,6 +5,7 @@ import {Util} from '../../core/Util';
 
 /**
  * @class mapboxgl.supermap.ThemeFeature
+ * @category  Visualization Theme
  * @classdesc 专题图要素类
  * @param geometry - {Object} 专题图要素几何对象，geojson格式。
  * @param attributes - {Object} 几何对象属性

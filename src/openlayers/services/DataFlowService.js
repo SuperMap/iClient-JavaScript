@@ -4,6 +4,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.DataFlowService
+ * @category  iServer DataFlow
  * @classdesc 实时数据服务
  * @extends ol.supermap.ServiceBase
  * @example

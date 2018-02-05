@@ -14,6 +14,7 @@ import {ServiceBase} from './ServiceBase';
 /**
  * @class ol.supermap.FeatureService
  * @constructs ol.supermap.FeatureService
+ * @category  iServer Data
  * @classdesc 数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
  * @example
  *      new ol.supermap.FeatureService(url)

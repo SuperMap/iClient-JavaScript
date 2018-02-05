@@ -11,6 +11,7 @@ import {Util} from '../core/Util';
 
 /**
  * @class ol.source.ImageSuperMapRest
+ * @category iServer Map
  * @classdesc SuperMap iServer Image图层源。
  * @param options - {Object} 服务参数：<br>
  *        url - {string} 服务地址。<br>

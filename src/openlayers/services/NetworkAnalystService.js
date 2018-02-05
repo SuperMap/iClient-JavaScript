@@ -18,6 +18,7 @@ import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.NetworkAnalystService
+ * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类
  * @extends ol.supermap.ServiceBase
  * @example

@@ -5,6 +5,7 @@ import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.ThemeService
+ * @category  iServer Map
  * @classdesc 专题图服务类
  * @extends mapboxgl.supermap.ServiceBase
  * @example

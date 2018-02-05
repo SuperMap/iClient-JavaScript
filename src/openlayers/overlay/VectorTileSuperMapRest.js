@@ -17,6 +17,7 @@ ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.source.VectorTileSuperMapRest
+ * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
  * @param options -{Object} 参数。
  * @extends ol.source.VectorTile{@linkdoc-openlayers/ol.source.VectorTile}

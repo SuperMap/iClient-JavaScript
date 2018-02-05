@@ -11,6 +11,7 @@ import {Theme} from './theme/ThemeLayer';
 
 /**
  * @class mapboxgl.supermap.GraphThemeLayer
+ * @category  Visualization Theme
  * @classdesc 统计专题图层。
  * @param name - {string} 图层名。
  * @param chartsType -{string} 图表类别

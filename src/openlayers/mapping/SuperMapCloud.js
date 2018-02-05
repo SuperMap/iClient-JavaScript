@@ -2,6 +2,7 @@ import ol from 'openlayers';
 
 /**
  * @class ol.source.SuperMapCloud
+ * @category  ThirdPartyMap
  * @classdesc 超图云地图图层源。
  * @param opt_options - {Object} 可选参数：如：<br>
  *        url - {string} 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>

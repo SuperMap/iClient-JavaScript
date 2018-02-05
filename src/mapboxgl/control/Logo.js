@@ -4,6 +4,7 @@ import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
 
 /**
  * @class mapboxgl.supermap.LogoControl
+ * @category  Control
  * @classdesc Logo控件。默认不显示</br>
  *
  * @example

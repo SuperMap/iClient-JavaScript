@@ -11,6 +11,7 @@ import {Util} from '../core/Util';
 
 /**
  * @class ol.source.TileSuperMapRest
+ * @category iServer Map
  * @classdesc SuperMap iServer TileImage图层源。
  * @param options - {Object} 可选参数。如：<br>
  *        url - {string} 服务地址。<br>

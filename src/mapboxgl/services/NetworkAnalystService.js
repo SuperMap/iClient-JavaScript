@@ -19,6 +19,7 @@ import {
 
 /**
  * @class mapboxgl.supermap.NetworkAnalystService
+ * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类
  * @extends mapboxgl.supermap.ServiceBase
  * @example
