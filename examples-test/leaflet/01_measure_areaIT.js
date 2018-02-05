@@ -10,6 +10,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-popup-content', 10000);
         /*check the info showing in leaflet-popup is equal to our expectation*/
         var areaInfo = '面积：\ 3323393352194.927\ 平方米';
+        console.log(browser.expect.element('.leaflet-popup-content').text);
         browser.expect.element('.leaflet-popup-content').text.to.equal(areaInfo);
         browser.click('.leaflet-popup-close-button', function () {
             browser.pause(1000);

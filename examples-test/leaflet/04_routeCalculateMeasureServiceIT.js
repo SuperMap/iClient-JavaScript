@@ -16,6 +16,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-tooltip-pane', 10000);
         browser.waitForElementPresent('.leaflet-tooltip.leaflet-zoom-animated.leaflet-tooltip-top', 10000);
         var info = "查询获取的M值为:627.9307113458588";
+        concole.log(browser.expect.element('.leaflet-tooltip.leaflet-zoom-animated.leaflet-tooltip-top').text);
         browser.expect.element('.leaflet-tooltip.leaflet-zoom-animated.leaflet-tooltip-top').text.to.equal(info);
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
