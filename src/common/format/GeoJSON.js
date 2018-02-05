@@ -16,6 +16,7 @@ import {GeometryType} from '../REST';
 /**
  * @class SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器。
+ * @category Format
  * @extends SuperMap.Format.JSON。
  */
 export class GeoJSON extends JSONFormat {

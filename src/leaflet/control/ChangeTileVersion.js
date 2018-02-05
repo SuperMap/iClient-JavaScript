@@ -6,6 +6,7 @@ import {MapService} from "../services/MapService";
 /**
  * @class L.supermap.control.changeTileVersion
  * @classdesc 版本切换控件,支持IE10及以上
+ * @category  Control
  * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
  * L.supermap.control.changeTileVersion({

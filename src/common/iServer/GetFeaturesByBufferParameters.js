@@ -6,6 +6,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GetFeaturesByBufferParameters
+ * @category  iServer Data
  * @classdesc 数据服务中数据集缓冲区查询参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        bufferDistance - {number} buffer 距离，单位与所查询图层对应的数据集单位相同。</br>

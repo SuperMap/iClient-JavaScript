@@ -4,6 +4,7 @@ import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
 
 /**
  * @class SuperMap.GeoRelationAnalystService
+ * @category  iServer SpatialAnalyst
  * @classdesc
  * 空间关系分析服务类。
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。

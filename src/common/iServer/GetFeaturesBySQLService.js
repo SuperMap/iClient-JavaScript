@@ -5,6 +5,7 @@ import {GetFeaturesBySQLParameters} from './GetFeaturesBySQLParameters';
 /**
  * @class SuperMap.GetFeaturesBySQLService
  * @constructs SuperMap.GetFeaturesBySQLService
+ * @category  iServer Data
  * @classdesc
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。

@@ -8,6 +8,7 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
 /**
  * @class L.supermap.graphThemeLayer
  * @classdesc 统计专题图图层。
+ * @category Visualization Theme
  * @extends L.supermap.ThemeLayer
  * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。

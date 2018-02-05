@@ -5,6 +5,7 @@ import {ThemeGraphTextFormat} from '../REST';
 
 /**
  * @class SuperMap.ThemeGraphText
+ * @category  iServer Map Theme
  * @classdesc 统计图文字标注风格类。
  * @param options - {Object} 可选参数。<br>
  *        graphTextDisplayed - {boolean} 是否显示统计图上的文字标注。<br>

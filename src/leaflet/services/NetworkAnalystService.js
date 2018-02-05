@@ -19,6 +19,7 @@ import {
 /**
  * @class L.supermap.networkAnalystService
  * @classdesc 网络分析服务类
+ * @category  iServer NetworkAnalyst
  * @augments  L.supermap.ServiceBase
  * @example
  * L.supermap.networkAnalystService(url)

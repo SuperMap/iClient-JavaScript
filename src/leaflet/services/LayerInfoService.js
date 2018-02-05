@@ -14,6 +14,7 @@ import {
 /**
  * @class L.supermap.layerInfoService
  * @classdesc 图层信息类
+ * @category  iServer Map
  * @extends L.supermap.ServiceBase
  * @example
  * L.supermap.layerInfoService(url).getLayersInfo(function(result){

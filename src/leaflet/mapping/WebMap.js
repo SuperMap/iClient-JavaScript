@@ -32,6 +32,7 @@ import "@supermap/iclient-common/style/supermapol-icons.css";
 /**
  * @class L.supermap.webmap
  * @classdesc 对接iPortal/Online地图类。
+ * @category iPortal/Online
  * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
  * @param id - {number}iPortal/Online地图id。
  * @param options - {Object} 可选参数。如：<br>

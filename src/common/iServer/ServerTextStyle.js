@@ -5,6 +5,7 @@ import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ServerTextStyle
+ * @category  iServer Map Theme
  * @classdesc 服务端文本风格类
  * @description 该类用于定义文本风格的相关属性。
  * @param options - {Object} 可选参数。如：<br>

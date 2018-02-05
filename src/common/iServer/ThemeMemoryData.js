@@ -2,6 +2,7 @@
 
 /**
  * @class SuperMap.ThemeMemoryData
+ * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。
  * @param srcData - {Array} 原始值数组。
  * @param targetData - {Array} 外部值数组。

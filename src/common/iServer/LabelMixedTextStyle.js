@@ -4,6 +4,7 @@ import {ServerTextStyle} from './ServerTextStyle';
 
 /**
  * @class SuperMap.LabelMixedTextStyle
+ * @category  iServer Map Theme 
  * @classdesc 标签文本复合风格类。
  * @description 该类主要用于对标签专题图中标签的文本内容进行风格设置。通过该类用户可以使标签的文字显示不同的风格，
  *              比如文本 “喜马拉雅山”，通过本类可以将前三个字用红色显示，后两个字用蓝色显示。

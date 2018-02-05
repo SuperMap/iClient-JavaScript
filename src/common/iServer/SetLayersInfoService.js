@@ -5,6 +5,7 @@ import './SetLayersInfoParameters';
 
 /**
  * @class SuperMap.SetLayersInfoService
+ * @category  iServer Map
  * @classdesc  设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，<br>
  *                当 isTempLayers 为 false的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行对临时图层的编辑。<br>
  *                该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。

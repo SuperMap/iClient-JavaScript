@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.UpdateEdgeWeightParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 边的耗费权重更新服务参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        edgeId - {string} 所在边的id。<br>

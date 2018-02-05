@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.StopQueryParameters
+ * @category  iServer TrafficTransferAnalyst
  * @classdesc 站点查询参数类。
  * @param options - {Object} 可选参数。
  */

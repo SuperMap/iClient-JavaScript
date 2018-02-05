@@ -4,6 +4,7 @@ import '../core/Base';
 /**
  * @class L.supermap.unicodeMarker
  * @classdesc Unicode字符图标。
+ * @category Visualization Marker
  * @extends L.Path{@linkdoc-leaflet/#Path}
  * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng}} 经纬度坐标
  * @param options -{Object} 符号参数。<br>

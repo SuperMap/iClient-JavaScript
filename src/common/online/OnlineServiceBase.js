@@ -7,6 +7,7 @@ import {FetchRequest} from '../util/FetchRequest';
 /**
  * @class SuperMap.OnlineServiceBase
  * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
+ * @category iPortal/Online
  * @param options -{Object} 服务参数
  */
 export class OnlineServiceBase {

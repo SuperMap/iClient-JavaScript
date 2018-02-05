@@ -6,6 +6,7 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.GetFeaturesServiceBase
+ * @category  iServer Data
  * @classdesc 数据服务中数据集查询服务基类。获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，URL

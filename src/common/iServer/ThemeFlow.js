@@ -4,6 +4,7 @@ import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeFlow
+ * @category  iServer Map Theme
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
  *              通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
  * @param options - {Object} 可选参数。如：<br>

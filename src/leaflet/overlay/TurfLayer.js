@@ -5,6 +5,7 @@ import * as turf from '@turf/turf';
 /**
  * @class L.supermap.turfLayer
  * @classdesc Turf图层
+ * @category Visualization Turf
  * @extends L.Layer{@linkdoc-leaflet/#geojson}
  * @param options - {Object} 可选参数。如：<br>
  *        attribution - {string} 版权信息。

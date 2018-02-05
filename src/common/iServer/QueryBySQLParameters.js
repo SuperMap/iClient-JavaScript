@@ -4,6 +4,7 @@ import {QueryParameters} from './QueryParameters';
 
 /**
  * @class SuperMap.QueryBySQLParameters
+ * @category  iServer Map
  * @classdesc SQL 查询参数类。
  *               该类用于设置 SQL 查询的相关参数。
  * @extends SuperMap.QueryParameters

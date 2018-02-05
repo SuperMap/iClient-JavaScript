@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 转向耗费权重更新服务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         nodeId - {string} 转向结点的id。<br>

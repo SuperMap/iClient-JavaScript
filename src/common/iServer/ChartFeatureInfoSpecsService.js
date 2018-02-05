@@ -4,6 +4,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.ChartFeatureInfoSpecsService
+ * @category  iServer Chart
  * @classdesc 海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。<br>
  *              用户可以通过两种方式获取查询结果：<br>
  *              一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；<br>

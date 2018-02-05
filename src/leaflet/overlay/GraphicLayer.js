@@ -4,6 +4,7 @@ import '../core/Base';
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
+ * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
  * @param graphics - {Object} 图形对象
  * @param options - {Object} 可选参数。如：<br>

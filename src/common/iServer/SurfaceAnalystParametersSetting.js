@@ -4,6 +4,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.SurfaceAnalystParametersSetting
+ * @category  iServer SpatialAnalyst
  * @classdesc
  * 表面分析参数设置类。
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。

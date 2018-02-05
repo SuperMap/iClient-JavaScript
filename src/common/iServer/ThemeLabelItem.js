@@ -4,6 +4,7 @@ import {ServerTextStyle} from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeLabelItem
+ * @category  iServer Map Theme
  * @classdesc 分段标签专题图的子项。
  * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression <br>
  *              字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，<br>

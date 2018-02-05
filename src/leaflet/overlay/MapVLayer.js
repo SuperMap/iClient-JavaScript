@@ -5,6 +5,7 @@ import {MapVRenderer} from "./mapv/MapVRenderer";
 /**
  * @class L.supermap.mapVLayer
  * @classdesc MapV图层
+ * @category Visualization MapV
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param dataSet - {mapv.DataSet} MapV图层数据集
  * @param mapVOptions - {Object} MapV图层参数

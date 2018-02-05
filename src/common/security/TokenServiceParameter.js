@@ -5,6 +5,7 @@ import {ClientType} from '../REST';
 /**
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
+ * @category Security
  * @param options - {Object} token申请参数。
  */
 export class TokenServiceParameter {

@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.SetLayerInfoParameters
+ * @category  iServer Map
  * @classdesc 设置图层信息参数类.
  * @param options -{Object} 可选参数。如：<br>
  *         resourceID -{string} 临时图层的资源ID。<br>

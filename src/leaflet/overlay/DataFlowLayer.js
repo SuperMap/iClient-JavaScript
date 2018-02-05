@@ -5,6 +5,7 @@ import {DataFlowService} from "../services/DataFlowService";
 /**
  * @class L.supermap.dataFlowLayer
  * @classdesc 实时数据图层源
+ * @category  iServer DataFlow
  * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
  * @param url - {string} 实时数据图层服务地址
  * @param options - {Object} 设置图层参数。如：<br>

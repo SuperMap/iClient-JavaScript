@@ -6,6 +6,7 @@ import {FetchRequest} from '../util/FetchRequest';
 /**
  * @class SuperMap.Online
  * @classdesc 对接SuperMap Online 所有基础服务
+ * @category iPortal/Online
  * @example
  * var online=new SuperMap.Online();
  * var services = online.queryDatas(param);

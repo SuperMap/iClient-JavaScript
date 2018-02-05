@@ -4,6 +4,7 @@ import {TimeControlBase} from './TimeControlBase';
 /**
  * @class SuperMap.TimeFlowControl
  * @classdesc 时间管理类。
+ * @category  Control
  * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)

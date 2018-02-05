@@ -5,6 +5,7 @@ import {ThemeParameters} from './ThemeParameters';
 
 /**
  * @class SuperMap.ThemeService
+ * @category  iServer Map Theme
  * @classdesc 专题图服务类。
  * @extends SuperMap.CommonServiceBase
  * @example

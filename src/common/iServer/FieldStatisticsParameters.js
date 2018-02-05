@@ -4,6 +4,7 @@ import {FieldParameters} from './FieldParameters';
 
 /**
  * @class SuperMap.FieldStatisticsParameters
+ * @category  iServer Data
  * @classdesc 字段统计信息查询参数类。
  * @param options - {Object} 可选参数。如:<br>
  *         datasource - {string} 数据源名称。<br>

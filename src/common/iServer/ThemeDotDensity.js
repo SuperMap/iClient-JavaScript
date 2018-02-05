@@ -5,6 +5,7 @@ import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeDotDensity
+ * @category  iServer Map Theme
  * @classdesc 点密度专题图。<br>
  * @description
  *              点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。<br>

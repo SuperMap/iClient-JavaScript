@@ -4,6 +4,7 @@ import './TransferLine';
 
 /**
  * @class SuperMap.TransferPathParameters
+ * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘线路查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        transferLines -{Array<{@link SuperMap.TransferLine}>} 本换乘分段内可乘车的路线集合。</br>

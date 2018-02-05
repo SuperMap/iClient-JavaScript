@@ -6,6 +6,7 @@ import {GeoDecodingParameter} from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
+ * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param options - {Object} 参数。
  * @param url {string} 地址匹配服务地址。

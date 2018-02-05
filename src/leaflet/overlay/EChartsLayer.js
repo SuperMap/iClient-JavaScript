@@ -5,6 +5,7 @@ import echarts from "echarts";
 /**
  * @class L.supermap.echartsLayer
  * @classdesc 百度ECharts图层类。
+ * @category  Visualization ECharts
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>

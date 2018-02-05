@@ -5,6 +5,7 @@ import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.Vector
+ * @category  iServer Map
  * @classdesc UGC 矢量图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：

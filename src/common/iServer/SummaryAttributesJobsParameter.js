@@ -4,6 +4,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
+ * @category  iServer ProcessingService
  * @classdesc 属性汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>

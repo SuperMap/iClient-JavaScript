@@ -6,6 +6,7 @@ import {Util} from "../../commontypes/Util";
 /**
  * @class SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
+ * @category ElasticSearch
  * @param url - {string} ElasticSearch服务地址。
  * @param options - {Object} 可选参数。如:</br>
  *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>

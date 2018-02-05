@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GeoDecodingParameter
+ * @category  iServer AddressMatch
  * @classdesc 地理反向匹配参数类。
  * @param options - {Object}可选参数。如:<br>
  *        x - {number} 查询位置的横坐标。<br>

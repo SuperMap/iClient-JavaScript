@@ -5,6 +5,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.NetworkAnalystServiceBase
+ * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务基类。
  * @description 网络分析服务基类。
  * @extends SuperMap.CommonServiceBase

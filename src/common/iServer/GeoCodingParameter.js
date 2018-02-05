@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GeoCodingParameter
+ * @category  iServer AddressMatch
  * @classdesc 地理正向匹配参数类。
  * @param options - {Object} 可选参数。如:</br>
  *         address - {string} 地点关键词。</br>

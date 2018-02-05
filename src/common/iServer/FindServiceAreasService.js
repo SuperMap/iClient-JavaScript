@@ -6,6 +6,7 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindServiceAreasService
+ * @category  iServer NetworkAnalyst
  * @classdesc 服务区分析服务类。<br>
  *               服务区分析是以指定服务站点为中心，<br>
  *               在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>

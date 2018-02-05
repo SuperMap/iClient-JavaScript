@@ -4,6 +4,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThemeGraduatedSymbolStyle
+ * @category  iServer Map Theme
  * @classdesc 等级符号专题图正负零值显示风格类
  * @param options - {Object} 可选参数。如：<br>
  *        negativeDisplayed - {boolean} 是否显示负值。默认为 false。<br>

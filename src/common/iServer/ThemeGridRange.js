@@ -6,6 +6,7 @@ import {RangeMode, ColorGradientType} from '../REST';
 
 /**
  * @class SuperMap.ThemeGridRange
+ * @category  iServer Map Theme
  * @classdesc 栅格分段专题图。
  * @description 栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。<br>
  *              栅格分段专题图一般用来反映连续分布现象的数量或程度特征。比如某年的全国降水量分布图，将各气象站点的观测值经过内插之后生成的栅格数据进行分段显示。<br>

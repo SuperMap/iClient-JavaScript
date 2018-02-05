@@ -6,6 +6,7 @@ import {Graph} from './Graph';
 /**
  * @class SuperMap.Feature.Theme.Ring
  * @classdesc 环状图。
+ * @category Visualization Theme
  * @description 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  * 图表 Ring 配置对象 chartsSetting（SuperMap.Layer.Graph::chartsSetting） 可设属性如下：</br>
  * width - {number} 专题要素（图表）宽度，必设参数。</br>

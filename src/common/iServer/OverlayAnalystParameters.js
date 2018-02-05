@@ -4,6 +4,7 @@ import {OverlayOperationType} from '../REST';
 
 /**
  * @class SuperMap.OverlayAnalystParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
  * @param options - {Object} 叠加分析参数。
  */

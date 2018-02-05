@@ -4,6 +4,7 @@ import {Events} from '../commontypes/Events';
 /**
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
+ * @category  Control
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
  *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>

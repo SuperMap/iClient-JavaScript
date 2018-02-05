@@ -18,6 +18,7 @@ import {
 /**
  * @class L.supermap.processingService
  * @classdesc 分布式分析服务类
+ * @category  iServer ProcessingService
  * @extends  L.supermap.ServiceBase
  * @example
  * L.supermap.processingService(url)

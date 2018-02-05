@@ -8,6 +8,7 @@ import {Graph} from './Graph';
 /**
  * @class SuperMap.Feature.Theme.Bar
  * @classdesc 柱状图 。
+ * @category Visualization Theme
  * @description 图表 Bar 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
  *              width - {number} 专题要素（图表）宽度，必设参数。</br>
  *              height - {number} 专题要素（图表）高度，必设参数。</br>

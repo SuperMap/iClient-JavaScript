@@ -4,6 +4,7 @@ import './ThemeMemoryData';
 
 /**
  * @class SuperMap.Theme
+ * @category  iServer Map Theme
  * @classdesc 专题图基类。
  * @param  type - {string} 专题图类型。
  * @param options - {Object} 可选参数。如：<br>

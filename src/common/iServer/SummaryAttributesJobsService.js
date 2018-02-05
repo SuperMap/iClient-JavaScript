@@ -4,6 +4,7 @@ import {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
 
 /**
  * @class SuperMap.SummaryAttributesJobsService
+ * @category  iServer ProcessingService
  * @classdesc 属性汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 汇总统计分析服务地址。

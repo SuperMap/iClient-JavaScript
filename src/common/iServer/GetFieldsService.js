@@ -4,6 +4,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.GetFieldsService
+ * @category  iServer Data
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 可選参数。如:</br>

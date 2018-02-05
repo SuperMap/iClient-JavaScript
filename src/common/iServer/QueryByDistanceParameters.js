@@ -4,6 +4,7 @@ import {QueryParameters} from './QueryParameters';
 
 /**
  * @class SuperMap.QueryByDistanceParameters
+ * @category  iServer Map
  * @classdesc Distance 查询参数类。
  *               该类用于设置 Distance 查询的相关参数。
  * @extends SuperMap.QueryParameters

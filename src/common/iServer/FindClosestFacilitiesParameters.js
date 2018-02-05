@@ -4,6 +4,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindClosestFacilitiesParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 最近设施分析参数类。
  * @param options - {Object} 可选参数。如:</br>
  *         event - {Object/integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。

@@ -4,6 +4,7 @@ import {TransferPreference, TransferTactic} from '../REST';
 
 /**
  * @class SuperMap.TransferSolutionParameters
+ * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        solutionCount - {boolean} 乘车方案的数量。默认为6。</br>

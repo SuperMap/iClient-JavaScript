@@ -4,6 +4,7 @@ import './DataReturnOption';
 
 /**
  * @class SuperMap.GenerateSpatialDataParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc 动态分段操作参数类。通过该类可以为动态分段提供参数信息。
  * @param options - {Object} 可选参数。如:</br>
  *        routeTable - {string} 路由数据集。</br>

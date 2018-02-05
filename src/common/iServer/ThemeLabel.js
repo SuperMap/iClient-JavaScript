@@ -12,6 +12,7 @@ import {LabelOverLengthMode} from '../REST';
 
 /**
  * @class SuperMap.ThemeLabel
+ * @category  iServer Map Theme
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
  * @param  options - {Object} 可选参数。如：<br>

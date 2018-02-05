@@ -10,6 +10,7 @@ import {FunctionExt} from '../commontypes/BaseTypes';
 
 /**
  * @class SuperMap.CommonServiceBase
+ * @category  iServer 
  * @classdesc 对接iServer各种服务的Service的基类。
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>

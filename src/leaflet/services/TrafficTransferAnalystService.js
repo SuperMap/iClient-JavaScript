@@ -6,6 +6,7 @@ import {StopQueryService, TransferPathService, TransferSolutionService} from '@s
 /**
  * @class L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类
+ * @category  iServer TrafficTransferAnalyst
  * @example
  * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *   //doSomething

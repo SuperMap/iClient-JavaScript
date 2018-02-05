@@ -4,6 +4,7 @@ import {Point} from '../commontypes/geometry/Point';
 
 /**
  * @class SuperMap.PointWithMeasure
+ * @category  iServer SpatialAnalyst
  * @classdesc 路由点类。路由点是指具有线性度量值(Measure)的二维地理坐标点。
  * @param options - {Object} 可选参数。如:</br>
  *        measure - {number}度量值，即路由对象属性值 M。</br>

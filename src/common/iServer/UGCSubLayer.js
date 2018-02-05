@@ -7,6 +7,7 @@ import '../REST';
 
 /**
  * @class SuperMap.UGCSubLayer
+ * @category  iServer Map
  * @classdesc 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
  * @extends SuperMap.UGCMapLayer
  * @param options - {Object} 可选参数。如：<br>

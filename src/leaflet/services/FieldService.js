@@ -6,6 +6,7 @@ import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from
 /**
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
+ * @category iServer Data
  * @extends L.supermap.ServiceBase
  * @example
  *   L.supermap.fieldService(url).getFields(function(result){

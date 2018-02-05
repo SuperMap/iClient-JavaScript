@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FieldParameters
+ * @category  iServer Data
  * @classdesc 字段信息查询参数类。
  * @param options - {Object} 可选参数。如:<br>
  *         datasource - {string} 数据源名称。<br>

@@ -4,6 +4,7 @@ import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridUniqueItem
+ * @category  iServer Map Theme
  * @classdesc 栅格单值专题图子项类。<br>
  *              栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
  * @param options - {Object} 可选参数。如：<br>

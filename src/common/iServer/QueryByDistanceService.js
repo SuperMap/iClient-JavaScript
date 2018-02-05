@@ -6,7 +6,8 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.QueryByDistanceService
- * @description Distance查询服务类。
+ * @category  iServer Map
+ * @classdesc Distance查询服务类。
  * @extends SuperMap.QueryService
  * @example
  * var myQueryByDistService = new SuperMap.QueryByDistanceService(url, {

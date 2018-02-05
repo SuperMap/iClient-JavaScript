@@ -5,6 +5,7 @@ import {OutputType} from "../REST";
 
 /**
  * @class SuperMap.OutputSetting
+ * @category  iServer ProcessingService
  * @classdesc 分布式分析输出类型设置类
  * @param options - {Object} 必填参数。<br>
  *         type -{{@link SuperMap.OutputType}} 输出类型。 <br>

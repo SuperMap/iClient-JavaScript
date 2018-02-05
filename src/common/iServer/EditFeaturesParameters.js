@@ -5,7 +5,9 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.EditFeaturesParameters
+ * @category  iServer Data
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
+ * @category iServer Data
  * @param options - {Object} 可选参数。如:</br>
  *        features - {Array<Object>} 当前需要创建或者是修改的要素集。feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。</br>
  *        returnContent - {boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>

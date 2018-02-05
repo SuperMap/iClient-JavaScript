@@ -6,6 +6,7 @@ import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParame
 
 /**
  * @class SuperMap.ThiessenAnalystService
+ * @category  iServer SpatialAnalyst
  * @classdesc
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。

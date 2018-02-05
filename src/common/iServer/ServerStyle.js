@@ -4,6 +4,7 @@ import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ServerStyle
+ * @category  iServer Map Theme
  * @classdesc 服务端矢量要素风格类。
  * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  * @param options - {Object} 可选参数。如：<br>

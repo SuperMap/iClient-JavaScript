@@ -6,6 +6,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @name SecurityManager
  * @memberOf SuperMap
  * @namespace
+ * @category Security
  * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
  *  > 使用说明：
  *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或

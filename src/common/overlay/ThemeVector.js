@@ -24,6 +24,7 @@ import {LonLat} from '../commontypes/LonLat';
 /**
  * @class SuperMap.Feature.Theme.Vector
  * @classdesc 矢量专题要素类。
+ * @category Visualization Theme
  * @extends SuperMap.Feature.Theme
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
  * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。

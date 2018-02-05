@@ -4,6 +4,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindMTSPPathsParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 多旅行商分析参数类
  * @param options - {Object} 可选参数。如:<br>
  *        centers - {Array<Object>|Array<number>} 配送中心集合，必设字段。点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>

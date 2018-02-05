@@ -4,6 +4,7 @@ import "../core/Base";
 /**
  * @class L.supermap.cloudTileLayer
  * @classdesc 超图云服务图层。
+ * @category ThirdPartyMap
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 服务地址，默认为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}
  * @param options -{Object} 图层可选参数。如：<br>

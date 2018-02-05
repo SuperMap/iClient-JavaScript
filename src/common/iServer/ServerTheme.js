@@ -11,6 +11,7 @@ import {UGCSubLayer} from './UGCSubLayer';
 
 /**
  * @class SuperMap.ServerTheme
+ * @category  iServer Map Theme
  * @classdesc UGC 专题图图层类。
  * @extends SuperMap.UGCSubLayer
  * @param theme - {SuperMap.Theme} 专题图对象。

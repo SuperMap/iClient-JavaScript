@@ -5,6 +5,7 @@ import {ClientType} from '../REST';
 /**
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
+ * @category Security
  * @param options - {Object} 参数。如：<br>
  *        name - {string} 申请服务名称。<br>
  *        serviceIds - {number}服务ID。<br>

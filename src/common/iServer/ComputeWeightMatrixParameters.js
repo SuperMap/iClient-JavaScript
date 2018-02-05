@@ -4,6 +4,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.ComputeWeightMatrixParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 耗费矩阵分析参数类。根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  * @param options - {Object} 可选参数。如：<br>
  *         isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>

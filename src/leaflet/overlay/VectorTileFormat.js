@@ -3,6 +3,7 @@ import '../core/Base';
 
 /**
  * @constant L.supermap.vectorTileFormat
+ * @category Visualization TileVector
  * @classdesc 矢量瓦片格式
  */
 export var VectorTileFormat = {

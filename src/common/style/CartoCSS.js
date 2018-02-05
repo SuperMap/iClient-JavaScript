@@ -4,6 +4,7 @@ import toPairs from 'lodash.topairs';
 /**
  * @class SuperMap.CartoCSS
  * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象。
+ * @category Style
  * @param cartoStr - {string} CartoCSS样式表字符串
  * @example
  * var cartocss = "@provinceLineColor:#ddd;

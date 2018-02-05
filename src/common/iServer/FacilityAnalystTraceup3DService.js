@@ -4,6 +4,7 @@ import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DPara
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DService
+ * @category  iServer NetworkAnalyst3D
  * @classdesc 上游追踪资源服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>

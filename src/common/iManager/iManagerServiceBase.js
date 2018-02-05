@@ -5,6 +5,7 @@ import {FetchRequest} from '../util/FetchRequest';
 /**
  * @class SuperMap.iManagerServiceBase
  * @classdesc iManager服务基类(有权限限制的类需要实现此类)。
+ * @category iManager
  * @param url - {string} iManager首页地址，如：http://localhost:8390/imanager。
  */
 export class IManagerServiceBase {

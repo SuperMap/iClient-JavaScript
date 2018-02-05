@@ -7,6 +7,7 @@ import {Graph} from './Graph';
 /**
  * @class SuperMap.Feature.Theme.Bar3D
  * @classdesc 三维柱状图 。
+ * @category Visualization Theme
  * @extends SuperMap.Feature.Theme.Graph
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。

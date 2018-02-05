@@ -7,6 +7,7 @@ import {RankSymbol} from './RankSymbol';
 /**
  * @class SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
+ * @category Visualization Theme
  * @description 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
  *            codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
  *            maxR - {number} 圆形的最大半径。<br>

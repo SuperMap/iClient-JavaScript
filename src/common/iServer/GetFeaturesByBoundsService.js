@@ -4,6 +4,7 @@ import {GetFeaturesByBoundsParameters} from './GetFeaturesByBoundsParameters';
 
 /**
  * @class SuperMap.GetFeaturesByBoundsService
+ * @category  iServer Data
  * @classdesc 数据集范围查询服务类,查询与指定范围对象符合一定空间关系的矢量要素。
  * @description 数据集范围查询服务类构造函数。
  * @extends SuperMap.GetFeaturesServiceBase

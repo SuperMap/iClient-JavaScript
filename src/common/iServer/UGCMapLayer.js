@@ -5,6 +5,7 @@ import './OverlapDisplayedOptions';
 
 /**
  * @class SuperMap.UGCMapLayer
+ * @category  iServer Map
  * @classdesc UGC 地图图层类。
  * @extends SuperMap.UGCLayer
  * @param options - {Object} 可选参数。如：<br>

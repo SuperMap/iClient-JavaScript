@@ -4,6 +4,7 @@ import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeGraphItem
+ * @category  iServer Map Theme
  * @classdesc 统计专题图子项类
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {string} 专题图子项的名称。<br>

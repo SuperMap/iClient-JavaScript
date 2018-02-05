@@ -5,6 +5,7 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindTSPPathsService
+ * @category  iServer NetworkAnalyst
  * @classdesc 旅行商分析服务类<br>
  *               旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  *               旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。

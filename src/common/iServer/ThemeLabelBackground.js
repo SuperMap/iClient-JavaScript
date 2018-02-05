@@ -5,6 +5,7 @@ import {LabelBackShape} from '../REST';
 
 /**
  * @class SuperMap.ThemeLabelBackground
+ * @category  iServer Map Theme
  * @classdesc 标签背景风格类。通过该类可以设置标签的背景形状和风格。
  * @param options - {Object} 可选参数。如：<br>
  *        labelBackShape - {{@link SuperMap.LabelBackShape}} 标签专题图中标签背景风格。<br>

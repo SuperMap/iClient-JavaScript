@@ -4,6 +4,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.MapService
+ * @category  iServer Map
  * @classdesc 地图信息服务类。
  * @extends SuperMap.CommonServiceBase
  * @example

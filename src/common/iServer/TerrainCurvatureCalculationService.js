@@ -4,6 +4,7 @@ import {TerrainCurvatureCalculationParameters} from './TerrainCurvatureCalculati
 
 /**
  * @class SuperMap.TerrainCurvatureCalculationService
+ * @category  iServer SpatialAnalyst
  * @classdesc 地形曲率计算服务类。
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如</br>

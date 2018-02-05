@@ -6,6 +6,7 @@ import {ShapeFactory} from './feature/ShapeFactory';
 /**
  * @class SuperMap.Feature.Theme.Graph
  * @classdesc 统计专题要素基类。
+ * @category Visualization Theme
  * @description 此类定义了统计专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
  *              统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.Graph::setting> 的基础属性只有 7 个，
  *              它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。

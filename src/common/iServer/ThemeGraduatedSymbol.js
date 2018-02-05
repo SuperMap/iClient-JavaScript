@@ -8,6 +8,7 @@ import {GraduatedMode} from '../REST';
 
 /**
  * @class SuperMap.ThemeGraduatedSymbol
+ * @category  iServer Map Theme
  * @classdesc 等级符号专题图。
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>

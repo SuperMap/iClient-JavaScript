@@ -7,6 +7,7 @@ import {Geometry} from '../commontypes/Geometry';
 
 /**
  * @class SuperMap.DatasetSurfaceAnalystParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc 数据集表面分析参数类。该类对数据集表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做数据集表面分析的数据源中数据集的名称。</br>

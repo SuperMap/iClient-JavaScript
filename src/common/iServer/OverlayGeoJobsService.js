@@ -4,6 +4,7 @@ import {OverlayGeoJobParameter} from './OverlayGeoJobParameter';
 
 /**
  * @class SuperMap.OverlayGeoJobsService
+ * @category  iServer ProcessingService
  * @classdesc 叠加分析任务类。
  * @param url -{string} 叠加分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>

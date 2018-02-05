@@ -4,6 +4,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
+ * @category  iServer ProcessingService
  * @classdesc 叠加分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>

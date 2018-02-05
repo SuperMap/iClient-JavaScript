@@ -6,6 +6,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 /**
  * @class L.supermap.dataFlowService
  * @classdesc 实时数据服务类
+ * @category  iServer DataFlow
  * @extends L.supermap.ServiceBase
  * @param url - {string} 实时数据服务地址
  * @param options - {Object} 加载实时数据可选参数。如：<br>

@@ -4,6 +4,7 @@ import "../core/Base";
 /**
  * @class L.supermap.wmtsLayer
  * @classdesc wmts图层类
+ * @category OGC
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} wmts图层地址
  * @param options -{Object} wmts图层可选参数。如：<br>

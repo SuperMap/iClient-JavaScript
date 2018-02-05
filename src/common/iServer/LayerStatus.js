@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.LayerStatus
+ * @category  iServer Map Theme 
  * @classdesc 子图层显示参数类。
  * @description 该类存储了各个子图层的名字和是否可见的状态。
  * @param options - {Object} 可选参数。如：<br>

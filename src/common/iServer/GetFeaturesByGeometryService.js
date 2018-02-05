@@ -4,6 +4,7 @@ import {GetFeaturesByGeometryParameters} from './GetFeaturesByGeometryParameters
 
 /**
  * @class SuperMap.GetFeaturesByGeometryService
+ * @category  iServer Data
  * @classdesc 数据集几何查询服务类,查询与指定几何对象符合一定空间关系的矢量要素。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；

@@ -4,6 +4,7 @@ import {FacilityAnalystUpstream3DParameters} from './FacilityAnalystUpstream3DPa
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DService
+ * @category  iServer NetworkAnalyst3D
  * @classdesc 上游关键设施查找资源服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>

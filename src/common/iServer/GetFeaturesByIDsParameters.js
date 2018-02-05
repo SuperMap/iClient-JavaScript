@@ -5,6 +5,7 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
 
 /**
  * @class SuperMap.GetFeaturesByIDsParameters
+ * @category  iServer Data
  * @classdesc ID查询参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        IDs - {Array<integer>} 所要查询指定的元素ID信息。</br>

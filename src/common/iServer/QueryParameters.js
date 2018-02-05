@@ -5,6 +5,7 @@ import {GeometryType, QueryOption} from '../REST';
 
 /**
  * @class SuperMap.QueryParameters
+ * @category  iServer Map
  * @classdesc 查询参数基类。距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  * @param options - {Object} 可选参数。如：<br>
  *         customParams - {string} 自定义参数，供扩展使用。<br>

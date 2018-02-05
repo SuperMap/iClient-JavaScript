@@ -4,6 +4,7 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
 
 /**
  * @class SuperMap.TransportationAnalystParameter
+ * @category  iServer NetworkAnalyst
  * @classdesc 交通网络分析通用参数类。
  * @description该类主要用来提供交通网络分析所需的通用参数。
  * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。

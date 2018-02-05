@@ -381,20 +381,20 @@ export var ImageMapLayer = Layer.extend({
         var newUrl = url, credential, value;
         switch (this.options.serverType) {
             case ServerType.IPORTAL:
-                value = SecurityManager.getToken(url);
+                value = SecurityManager.getToken(this._url);
                 credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
-                    value = SecurityManager.getKey(url);
+                    value = SecurityManager.getKey(this._url);
                     credential = value ? new Credential(value, "key") : null;
                 }
                 break;
             case ServerType.ONLINE:
-                value = SecurityManager.getKey(url);
+                value = SecurityManager.getKey(this._url);
                 credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 //iserver or others
-                value = SecurityManager.getToken(url);
+                value = SecurityManager.getToken(this._url);
                 credential = value ? new Credential(value, "token") : null;
                 break;
         }

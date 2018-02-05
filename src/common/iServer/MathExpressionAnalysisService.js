@@ -5,6 +5,7 @@ import {MathExpressionAnalysisParameters} from './MathExpressionAnalysisParamete
 
 /**
  * @class SuperMap.MathExpressionAnalysisService
+ * @category  iServer SpatialAnalyst
  * @classdesc 栅格代数运算服务类。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。

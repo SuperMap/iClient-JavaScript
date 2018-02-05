@@ -5,6 +5,7 @@ import './Route';
 
 /**
  * @class SuperMap.RouteLocatorParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc
  * 路由对象定位空间对象的参数类。
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数

@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThemeGraphSize
+ * @category  iServer Map Theme
  * @classdesc 统计专题图符号尺寸类。
  * @param  options - {Object} 可选参数。如：<br>
  *         maxGraphSize - {number}统计图中显示的最大图表尺寸基准值。<br>

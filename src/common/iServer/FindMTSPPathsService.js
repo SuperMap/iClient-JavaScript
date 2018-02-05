@@ -6,6 +6,7 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindMTSPPathsService
+ * @category  iServer NetworkAnalyst
  * @classdesc 多旅行商分析服务类<br>
  *               多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。<br>
  *               查找经济有效的配送路径，并给出相应的行走路线。<br>

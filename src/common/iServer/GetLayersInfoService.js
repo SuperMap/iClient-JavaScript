@@ -8,6 +8,7 @@ import {Vector} from './Vector';
 
 /**
  * @class SuperMap.GetLayersInfoService
+ * @category  iServer Data
  * @classdesc 获取图层信息服务类构造函数。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>

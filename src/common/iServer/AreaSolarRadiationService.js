@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AreaSolarRadiationService
+ * @category  iServer SpatialAnalyst
  * @classdesc 地区太阳辐射服务类。
  * @param url - {string} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
  * @param options - {Object} 参数。如:</br>

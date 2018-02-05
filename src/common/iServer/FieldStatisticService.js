@@ -5,6 +5,7 @@ import './FieldStatisticsParameters';
 
 /**
  * @class SuperMap.FieldStatisticService
+ * @category  iServer Data
  * @classdesc 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为:http://localhost:8090/iserver/services/data-world/rest/data 即可。

@@ -14,7 +14,8 @@ import {GeometryType} from '../REST';
 /**
  * @private
  * @class SuperMap.ServerGeometry
- * @description 服务端几何对象类。
+ * @category  iServer  
+ * @classdesc 服务端几何对象类。
  * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
  * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
  */

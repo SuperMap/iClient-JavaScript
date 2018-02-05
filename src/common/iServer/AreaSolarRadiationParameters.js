@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AreaSolarRadiationParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc 地区太阳辐射参数类。
  * @param options -{Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。</br>

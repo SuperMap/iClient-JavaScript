@@ -12,6 +12,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
 
 /**
  * @class SuperMap.ThemeGraph
+ * @category  iServer Map Theme
  * @classdesc 统计专题图类。
  * @extends SuperMap.Theme
  * @param options - {Object} 参数。<br>

@@ -5,6 +5,7 @@ import {SecurityManager} from '../security/SecurityManager';
 
 /**
  * @class SuperMap.DataFlowService
+ * @category  iServer DataFlow
  * @classdesc 实时数据服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 实时数据服务地址

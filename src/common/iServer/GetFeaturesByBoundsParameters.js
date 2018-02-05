@@ -6,6 +6,7 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
 
 /**
  * @class SuperMap.GetFeaturesByBoundsParameters
+ * @category  iServer Data
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {Object} 用于查询的范围对象。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>

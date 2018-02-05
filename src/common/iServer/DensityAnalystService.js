@@ -5,6 +5,7 @@ import {DensityKernelAnalystParameters} from './DensityKernelAnalystParameters';
 
 /**
  * @class SuperMap.DensityAnalystService
+ * @category  iServer SpatialAnalyst
  * @classdesc
  *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
  *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。目前提供1种密度分析：核密度分析（Kernel）。

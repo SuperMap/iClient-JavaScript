@@ -5,6 +5,7 @@ import './FilterParameter';
 
 /**
  * @class SuperMap.GetFeaturesBySQLParameters
+ * @category  iServer Data
  * @classdesc 数据服务中数据集SQL查询参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        queryParameter - {{@link SuperMap.FilterParameter}} 查询过滤条件参数。</br>

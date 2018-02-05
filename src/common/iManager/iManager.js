@@ -5,6 +5,7 @@ import {IManagerCreateNodeParam} from './iManagerCreateNodeParam';
 /**
  * @class SuperMap.iManager
  * @classdesc iManager服务类。
+ * @category iManager
  * @param serviceUrl - {string} iManager首页地址。
  *
  */

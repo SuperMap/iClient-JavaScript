@@ -5,6 +5,7 @@ import {ServerTextStyle} from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeGraphAxes
+ * @category  iServer Map Theme
  * @classdesc 统计专题图坐标轴样式类。
  * @param  options - {Object} 可选参数。<br>
  *         axesColor - {{@link SuperMap.ServerColor}} 坐标轴颜色。<br>

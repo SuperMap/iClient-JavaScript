@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.BurstPipelineAnalystParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 爆管分析参数类。
  * @param options - {Object} 可选参数。如：<br>
  *         sourceNodeIDs - {Array<number>} 指定的设施点ID数组。<br>

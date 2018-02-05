@@ -15,6 +15,7 @@ import './LabelThemeCell';
 
 /**
  * @class SuperMap.ThemeParameters
+ * @category  iServer Map Theme
  * @classdesc 专题图参数类。
  *               该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
  * @param options - {Object} 可选参数。如：<br>

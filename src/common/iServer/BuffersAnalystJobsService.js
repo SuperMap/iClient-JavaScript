@@ -4,6 +4,7 @@ import {BuffersAnalystJobsParameter} from './BuffersAnalystJobsParameter';
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
+ * @category  iServer SpatialAnalyst
  * @classdesc 缓冲区分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 缓冲区分析服务地址。

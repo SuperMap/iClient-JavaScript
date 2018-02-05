@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FindLocationParameters
+ * @category  iServer NetworkAnalyst
  * @classdesc 选址分区分析参数类。
  * @param options - {Object} 可选参数。如:<br>
  *        expectedSupplyCenterCount - {integer} 期望用于最终设施选址的资源供给中心数量，必设字段。<br>

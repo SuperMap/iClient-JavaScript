@@ -5,6 +5,7 @@ import './OnlineResources';
 /**
  * @class SuperMap.OnlineQueryDatasParameter
  * @classdesc myDatas服务资源查询参数
+ * @category iPortal/Online
  * @param options -{Object} 查询参数
  */
 export class OnlineQueryDatasParameter {

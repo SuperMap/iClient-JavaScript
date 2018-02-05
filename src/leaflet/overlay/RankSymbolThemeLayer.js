@@ -6,6 +6,7 @@ import {GraphThemeLayer} from './GraphThemeLayer';
 /**
  * @class L.supermap.rankSymbolThemeLayer
  * @classdesc 符号专题图图层。
+ * @category Visualization Theme
  * @description 符号专题图通过为每个要素绘制符号大小来反映其对应的专题值的大小；它只能表示单个个字段属性信息。
  *            符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。
  *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。

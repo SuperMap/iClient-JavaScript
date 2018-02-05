@@ -3,6 +3,7 @@ import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DParameters
+ * @category  iServer NetworkAnalyst3D
  * @classdesc 上游追踪资源参数类。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如:<br>

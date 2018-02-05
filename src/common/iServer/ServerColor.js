@@ -2,6 +2,7 @@
 
 /**
  * @class SuperMap.ServerColor
+ * @category  iServer Map Theme
  * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
  * @param options - {Object} 可选参数。如：<br>
  *        red - {number}获取或设置红色值,默认值为255。<br>

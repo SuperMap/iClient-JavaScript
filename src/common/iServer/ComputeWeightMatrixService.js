@@ -5,6 +5,7 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
 
 /**
  * @class SuperMap.ComputeWeightMatrixService
+ * @category  iServer NetworkAnalyst
  * @classdesc 耗费矩阵分析服务类。<br>
  *               耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  *               用来存储指定的任意两点间的资源消耗。

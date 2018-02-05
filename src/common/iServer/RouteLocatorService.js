@@ -5,6 +5,7 @@ import {RouteLocatorParameters} from './RouteLocatorParameters';
 
 /**
  * @class SuperMap.RouteLocatorService
+ * @category  iServer SpatialAnalyst 
  * @classdesc 路由对象定位空间对象的服务类。
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如</br>

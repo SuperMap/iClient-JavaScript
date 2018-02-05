@@ -6,6 +6,7 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindPathService
+ * @category  iServer NetworkAnalyst
  * @classdesc 最佳路径分析服务类。<br>
  *               最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，<br>
  *               顺序访问这些节点从而求解起止点之间阻抗最小的路经。<br>

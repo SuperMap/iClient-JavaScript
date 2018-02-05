@@ -6,6 +6,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationKrigingAnalystParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc 克吕金插值分析参数类。
  * @description 通过该类可以设置克吕金插值分析所需的参数。
  * 克吕金（Kriging）法为地统计学上一种空间数据内插处理方法，主要的目的是利用各数据点间变异数（variance）的大小来推求某一未知点与各已知点的权重关系，

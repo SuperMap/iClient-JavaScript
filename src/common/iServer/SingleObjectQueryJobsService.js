@@ -4,6 +4,7 @@ import {SingleObjectQueryJobsParameter} from './SingleObjectQueryJobsParameter';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
+ * @category  iServer ProcessingService
  * @classdesc 单对象查询分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 单对象空间查询分析服务地址。

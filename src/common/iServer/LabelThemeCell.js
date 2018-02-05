@@ -5,6 +5,7 @@ import {LabelMatrixCell} from './LabelMatrixCell';
 
 /**
  * @class SuperMap.LabelThemeCell
+ * @category  iServer Map Theme 
  * @classdesc 专题图类型的矩阵标签元素类。
  * @description 该类继承自 {@link SuperMap.LabelMatrixCell}类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
  *              矩阵标签专题图是标签专题图（{@link SuperMap.ThemeLabel}）的一种，其中矩阵标签中的填充元素又可分为图片类型（{@link SuperMap.LabelImageCell}）、

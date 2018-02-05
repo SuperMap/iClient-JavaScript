@@ -3,6 +3,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.TilesetsService
+ * @category  iServer Map
  * @classdesc 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 地图服务地址。URL应为：<br>

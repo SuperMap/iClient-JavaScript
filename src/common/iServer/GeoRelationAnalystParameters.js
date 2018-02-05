@@ -5,6 +5,7 @@ import './FilterParameter';
 
 /**
  * @class SuperMap.GeoRelationAnalystParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc
  * 空间关系分析服务参数类。使用该类可以为空间关系分析服务提供所需的参数信息。
  * @param options - {Object} 可选参数。如:</br>

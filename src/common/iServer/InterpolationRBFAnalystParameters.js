@@ -4,6 +4,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationRBFAnalystParameters
+ * @category  iServer SpatialAnalyst
  * @classdesc 样条插值（径向基函数插值法）分析参数类。
  * @extends SuperMap.InterpolationAnalystParameters
  * @param options - {Object} 可选参数。如：</br>

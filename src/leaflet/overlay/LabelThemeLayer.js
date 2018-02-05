@@ -6,6 +6,7 @@ import {GeometryVector, Bounds, GeoText, CommonUtil as Util} from '@supermap/icl
 /**
  * @class L.supermap.labelThemeLayer
  * @classdesc 标签专题图。
+ * @category Visualization Theme
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param name - {string} 图层名
  * @param options - {Object} 图层参数<br>

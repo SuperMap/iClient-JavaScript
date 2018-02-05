@@ -7,6 +7,7 @@ import {FetchRequest, Unit, ServerType, Credential, SecurityManager} from '@supe
 /**
  * @class L.supermap.tiledVectorLayer
  * @classdesc SuperMap iServer的矢量瓦片图层
+ * @category Visualization VectorTile
  * @extends L.supermap.VectorGrid
  * @example
  *      L.supermap.tiledVectorLayer(url).addTo(map);

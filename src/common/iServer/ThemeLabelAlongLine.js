@@ -4,6 +4,7 @@ import {AlongLineDirection} from '../REST';
 
 /**
  * @class SuperMap.ThemeLabelAlongLine
+ * @category  iServer Map Theme
  * @classdesc 标签沿线标注样式类。
  * @param options - {Object} 可选参数。如：<br>
  *        isAlongLine - {boolean} 是否沿线显示文本。<br>

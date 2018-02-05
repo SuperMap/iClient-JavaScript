@@ -5,6 +5,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
+ * @category  iServer ProcessingService
  * @classdesc 单对象空间查询分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>

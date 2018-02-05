@@ -5,6 +5,7 @@ import {BufferDistance} from './BufferDistance';
 
 /**
  * @class SuperMap.BufferSetting
+ * @category  iServer SpatialAnalyst
  * @classdesc 缓冲区分析通用设置类。
  * @param options - {Object} 缓冲区分析设置可选参数。如：<br>
  *         endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。<br>

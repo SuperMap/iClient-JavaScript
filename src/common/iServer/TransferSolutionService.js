@@ -5,6 +5,7 @@ import {TransferSolutionParameters} from './TransferSolutionParameters';
 
 /**
  * @class SuperMap.TransferSolutionService
+ * @category  iServer TrafficTransferAnalyst
  * @classdesc
  * 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取。

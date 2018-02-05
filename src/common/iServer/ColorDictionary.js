@@ -4,6 +4,7 @@ import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ColorDictionary
+ * @category  iServer Map Theme
  * @classdesc 颜色对照表类。
  * @description 颜色对照表中的键名为具体的高程值，键值表示该高程值要显示的颜色。对于栅格图层中高程值小于颜色对照表中高程最
  *                小值的点使用颜色对照表中高程最小值对应的颜色，对于栅格图层中高程值大于颜色对照表中高程最大值的点使用颜色对

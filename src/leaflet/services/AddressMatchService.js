@@ -7,6 +7,7 @@ import {AddressMatchService as CommonMatchAddressService} from '@supermap/iclien
  * @class L.supermap.addressMatchService
  * @constructs L.supermap.addressMatchService
  * @classdesc 地址匹配服务
+ * @category  iServer AddressMatch
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.addressMatchService(url,options)

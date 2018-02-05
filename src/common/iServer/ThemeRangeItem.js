@@ -4,6 +4,7 @@ import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeRangeItem
+ * @category  iServer Map Theme
  * @classdesc 范围分段专题图子项类。
  * @description 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。

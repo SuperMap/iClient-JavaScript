@@ -6,7 +6,8 @@ import {SecurityManager} from '../security/SecurityManager';
 
 /**
  * @class SuperMap.ProcessingServiceBase
- * @description 分布式分析服务基类
+ * @category  iServer ProcessingService
+ * @classdesc 分布式分析服务基类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 分布式分析服务地址。
  * @param options - {Object} 参数。如：<br>

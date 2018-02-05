@@ -5,6 +5,7 @@ import {LabelMixedTextStyle} from './LabelMixedTextStyle';
 
 /**
  * @class SuperMap.ThemeLabelText
+ * @category  iServer Map Theme
  * @classdesc 标签中文本风格类。
  *              通过该类可以设置标签中的文本字体大小和显示风格。
  * @param options - {Object} 可选参数。如：<br>

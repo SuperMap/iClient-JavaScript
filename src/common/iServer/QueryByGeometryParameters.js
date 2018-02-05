@@ -5,6 +5,7 @@ import {SpatialQueryMode} from '../REST';
 
 /**
  * @class SuperMap.QueryByGeometryParameters
+ * @category  iServer Map
  * @classdesc Geometry 查询参数类。
  *               该类用于设置 Geometry查询的相关参数。
  * @extends SuperMap.QueryParameters

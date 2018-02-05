@@ -3,6 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GetFeaturesParametersBase
+ * @category  iServer Data
  * @classdesc 要素查询参数基类
  * @param options - {Object} 参数。如：<br>
  *        datasetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
