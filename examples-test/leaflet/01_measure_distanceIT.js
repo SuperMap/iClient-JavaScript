@@ -11,7 +11,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
         browser.waitForElementPresent('.leaflet-popup-content', 10000);
         /*check the info showing in leaflet-popup is equal to our expectation*/
-        var distanceInfo = '距离：\ 2115093.3333095424\ 米';
+        var distanceInfo = '距离：2115093.3333095424米';
         browser.expect.element('.leaflet-popup-content').text.to.equal(distanceInfo);
         browser.click('.leaflet-popup-close-button', function () {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);

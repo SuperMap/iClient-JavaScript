@@ -32,7 +32,7 @@
         L.supermap
             .measureService(url)
             .measureDistance(distanceMeasureParam, function (serviceResult) {
-                var content = resources.text_distance+"： " + serviceResult.result.distance + resources.msg_m;
+                var content = resources.text_distance+"：" + serviceResult.result.distance + resources.msg_m;
                 marker1.bindPopup(content).openPopup(marker1.getLatLng());
             });
 

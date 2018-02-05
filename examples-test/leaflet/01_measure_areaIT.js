@@ -9,8 +9,7 @@ module.exports = {
         browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane canvas', 10000);
         browser.waitForElementPresent('.leaflet-popup-content', 10000);
         /*check the info showing in leaflet-popup is equal to our expectation*/
-        var areaInfo = '面积：\ 3323393352194.927\ 平方米';
-        console.log(browser.expect.element('.leaflet-popup-content').text);
+        var areaInfo = '面积：3323393352194.927平方米';
         browser.expect.element('.leaflet-popup-content').text.to.equal(areaInfo);
         browser.click('.leaflet-popup-close-button', function () {
             browser.pause(1000);
