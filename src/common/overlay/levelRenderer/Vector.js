@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Vector
+ * @category Visualization Theme
  * LevelRenderer 二维向量类
  *
  */

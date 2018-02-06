@@ -5,6 +5,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicBrokenLine
+ * @category Visualization Theme
  * 折线(ic)。
  *
  * Inherits from:

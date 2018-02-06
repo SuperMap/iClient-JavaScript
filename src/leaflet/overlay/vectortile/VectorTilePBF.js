@@ -7,6 +7,7 @@ import {FetchRequest} from '@supermap/iclient-common';
 /**
  * @class L.supermap.VectorTilePBF
  * @classdesc 矢量瓦片PBF(MVT)表述出图
+ * @category Visualization VectorTile
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param url - {string} 矢量瓦片PBF(MVT)表述出图服务地址

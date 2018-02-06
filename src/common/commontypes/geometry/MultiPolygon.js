@@ -4,6 +4,7 @@ import {Collection} from './Collection';
 /**
  * @class SuperMap.Geometry.MultiPolygon
  * @classdesc 几何对象多多边形类。
+ * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
  * @param  components - {Array<SuperMap.Geometry.Polygon>} 形成 MultiPolygon 的多边形数组。
  * @example

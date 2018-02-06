@@ -4,6 +4,7 @@ import {Collection} from './Collection';
 /**
  * @class SuperMap.Geometry.MultiPoint
  * @classdesc 几何对象多点类。
+ * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
  * @param components - {Array<SuperMap.Geometry.Point>} 点对象数组。
  * @example

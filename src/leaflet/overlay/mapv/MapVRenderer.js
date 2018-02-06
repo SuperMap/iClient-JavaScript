@@ -6,6 +6,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @class L.supermap.MapVRenderer
  * @classdesc 地图渲染类
+ * @category Visualization MapV
  * @private
  * @extends mapv.BaseLayer
  * @param map - {L.map} 待渲染的地图

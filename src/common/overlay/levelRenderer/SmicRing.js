@@ -3,6 +3,7 @@ import {Shape} from './Shape';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicRing
+ * @category Visualization Theme
  * 圆环。
  *
  * Inherits from:

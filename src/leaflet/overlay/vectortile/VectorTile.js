@@ -11,6 +11,7 @@ import {VectorTileFormat} from '../VectorTileFormat';
 /**
  * @class L.supermap.VectorTile
  * @classdesc 矢量瓦片图层基类
+ * @category Visualization VectorTile
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 矢量瓦片类构造可选参数。如：<br>

@@ -6,6 +6,7 @@ import {Transformable} from './Transformable';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Group
+ * @category Visualization Theme
  * Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
  *
  * Inherits from:

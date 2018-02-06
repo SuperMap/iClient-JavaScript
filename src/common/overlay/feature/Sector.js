@@ -4,6 +4,7 @@ import {ShapeParameters} from './ShapeParameters';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters.Sector
+ * @category Visualization Theme
  * 扇形参数对象。
  *
  * Inherits:

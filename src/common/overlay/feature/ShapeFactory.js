@@ -20,6 +20,7 @@ import {Util} from '../../commontypes/Util';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeFactory
+ * @category Visualization Theme
  * 图形工厂类。
  *
  * 目前支持创建的图形有：

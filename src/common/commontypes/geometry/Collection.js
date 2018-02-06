@@ -8,7 +8,7 @@ import {Util} from '../Util';
  * @classdesc 几何对象集合类，存储在本地的 components 属性中（可作为参数传递给构造函数）。<br>
  *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>
  *            getArea和getLength函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
- *
+ * @category BaseTypes Geometry
  * @extends SuperMap.Geometry
  * @param components - {SuperMap.Geometry[]}几何对象数组。
  * @example

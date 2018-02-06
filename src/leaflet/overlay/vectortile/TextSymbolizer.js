@@ -6,6 +6,7 @@ import {SVGRenderer} from './SVGRenderer';
 /**
  * @class L.supermap.TextSymbolizer
  * @classdesc 文本符号类
+ * @category Visualization VectorTile
  * @private
  * @extends L.Path{@linkdoc-leaflet/#path}
  * @param feature - {L.feature} 要素

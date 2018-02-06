@@ -2,6 +2,7 @@ import {SuperMap} from '../../SuperMap';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters
+ * @category Visualization Theme
  * 图形参数基类，此类不可实例化
  */
 export class ShapeParameters {

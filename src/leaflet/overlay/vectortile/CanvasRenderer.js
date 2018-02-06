@@ -4,6 +4,7 @@ import L from "leaflet";
  * @class L.supermap.CanvasRenderer
  * @private
  * @classdesc 画布渲染器
+ * @category Visualization VectorTile
  * @extends L.Canvas{@linkdoc-leaflet/#canvas}
  * @param tileCoord - {Object} 切片坐标系
  * @param tileSize - {number}切片大小

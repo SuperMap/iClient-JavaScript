@@ -8,6 +8,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Painter
+ * @category Visualization Theme
  * Painter 绘图模块。
  */
 export class Painter {

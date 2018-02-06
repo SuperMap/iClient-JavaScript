@@ -5,6 +5,7 @@ import {Bounds} from '../Bounds';
 /**
  * @class  SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
+ * @category BaseTypes Geometry
  * @param  x - {float} 矩形左下角点的横坐标。
  * @param y - {float} 矩形左下角点的纵坐标。
  * @param width - {float} 矩形的宽度。

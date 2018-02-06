@@ -4,6 +4,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicSector
+ * @category Visualization Theme
  * 扇形。
  *
  * Inherits from:

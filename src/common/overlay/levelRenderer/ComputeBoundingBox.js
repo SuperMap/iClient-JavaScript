@@ -4,6 +4,7 @@ import {Vector} from './Vector';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.ComputeBoundingBox
+ * @category Visualization Theme
  * LevelRenderer 工具-图形 Bounds 计算
  *
  */

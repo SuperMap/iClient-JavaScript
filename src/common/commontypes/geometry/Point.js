@@ -6,6 +6,7 @@ import {Util} from '../Util';
 /**
  * @class SuperMap.Geometry.Point
  * @classdesc 点几何对象类。
+ * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
  * @param  x - {float} x-坐标
  * @param y - {float} y-坐标

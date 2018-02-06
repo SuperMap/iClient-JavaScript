@@ -5,6 +5,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Handler
+ * @category Visualization Theme
  * Handler 控制模块。
  *
  * Inherits from:

@@ -3,6 +3,7 @@ import {Config} from './Config';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Log
+ * @category Visualization Theme
  * LevelRenderer 工具-日志
  *
  */

@@ -6,6 +6,7 @@ import {FetchRequest} from '@supermap/iclient-common';
 /**
  * @class L.supermap.VectorTileJSON
  * @classdesc iServer 矢量瓦片json表述出图
+ * @category Visualization VectorTile
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param url - {string} 矢量瓦片json表述服务地址

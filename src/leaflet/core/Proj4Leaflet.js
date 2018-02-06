@@ -17,6 +17,7 @@ L.Proj._isProj4Obj = function (a) {
  * @class L.Proj.Projection
  * @private
  * @classdesc Proj投影定义类
+ * @category Projection
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param code - {number}地理编码
  * @param def - {string} 定位
@@ -84,6 +85,7 @@ L.Proj.Projection = L.Class.extend({
 /**
  * @class L.Proj.CRS
  * @classdesc 基于Proj4坐标系统扩展类
+ * @category Projection
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param srsCode -{string} proj srsCode。
  * @param options -{Object} options。可选参数：<br>

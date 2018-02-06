@@ -3,6 +3,7 @@ import {Shape} from './Shape';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicPoint
+ * @category Visualization Theme
  * 点。
  *
  * Inherits from:

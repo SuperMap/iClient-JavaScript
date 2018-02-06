@@ -3,6 +3,7 @@ import L from "leaflet";
 /**
  * @class L.supermap.PolyBase
  * @classdesc 多边形基类
+ * @category Visualization VectorTile
  * @private
  */
 //@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}

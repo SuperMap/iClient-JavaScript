@@ -7,6 +7,7 @@ import {Util} from '../../commontypes/Util';
 /**
  * @private
  * @class  SuperMap.Feature.Theme
+ * @category Visualization Theme
  * 专题要素基类，此类不可实例化。
  */
 export class Theme {

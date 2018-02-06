@@ -4,6 +4,7 @@ import {ShapeParameters} from './ShapeParameters';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters.Point
+ * @category Visualization Theme
  * 点参数对象。
  *
  * Inherits:

@@ -5,6 +5,7 @@ import {Curve} from './Curve';
 /**
  * @class SuperMap.Geometry.LineString
  * @classdesc 几何对象线串类。
+ * @category BaseTypes Geometry
  * @param points - {Array<SuperMap.Geometry.Point>} 用来生成线串的点数组。
  * @extends {SuperMap.Geometry.Curve}
  *

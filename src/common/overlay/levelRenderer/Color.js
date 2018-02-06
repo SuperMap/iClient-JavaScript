@@ -3,6 +3,7 @@ import {Util} from './Util';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Color
+ * @category Visualization Theme
  * LevelRenderer 工具-颜色辅助类
  *
  */

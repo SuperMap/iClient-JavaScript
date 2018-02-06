@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Http
+ * @category Visualization Theme
  * LevelRenderer 工具-Http
  *
  */

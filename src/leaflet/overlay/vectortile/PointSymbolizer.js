@@ -4,6 +4,7 @@ import L from "leaflet";
 /**
  * @class L.supermap.PointSymbolizer
  * @classdesc 点符号类
+ * @category Visualization VectorTile
  * @private
  * @extends L.CircleMarker{@linkdoc-leaflet/#circlemarker}
  * @param feature - {L.feature} 点要素

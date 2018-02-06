@@ -4,6 +4,7 @@ import '../../core/Base';
 /**
  * @constant L.supermap.CartoStyleMap
  * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
+ * @category Style
  * @private
  */
 export var CartoStyleMap = {

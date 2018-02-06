@@ -6,7 +6,7 @@ import {LineString, Polygon, GeoText, GeometryPoint, GeometryVector as Vector} f
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
  *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
- * @category Visualization Graphic
+ * @category Visualization Theme
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
  * @param attributes - {Object} 要素属性

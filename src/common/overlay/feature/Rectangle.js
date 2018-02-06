@@ -4,6 +4,7 @@ import {ShapeParameters} from './ShapeParameters';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters.Rectangle
+ * @category Visualization Theme
  * 矩形参数对象。
  *
  * Inherits:

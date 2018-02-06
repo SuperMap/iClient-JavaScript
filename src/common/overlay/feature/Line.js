@@ -4,6 +4,7 @@ import {ShapeParameters} from './ShapeParameters';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters.Line
+ * @category Visualization Theme
  * 线参数对象。
  *
  * Inherits:

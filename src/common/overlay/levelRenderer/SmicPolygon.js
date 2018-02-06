@@ -5,6 +5,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicPolygon
+ * @category Visualization Theme
  * 多边形。
  *
  * Inherits from:

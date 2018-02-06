@@ -4,10 +4,9 @@ import {ShapeParameters} from './ShapeParameters';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters.Circle
- * 圆形参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 圆形参数对象。
+ * @category Visualization Theme
+ * @extends SuperMap.Feature.ShapeParameters
  */
 
 

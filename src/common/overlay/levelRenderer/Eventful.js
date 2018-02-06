@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Eventful
+ * @category Visualization Theme
  * 事件分发器超类，所有支持事件处理的类均是此类的子类。
  *
  * 此类不可实例化。

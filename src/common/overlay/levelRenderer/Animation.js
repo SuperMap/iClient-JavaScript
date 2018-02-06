@@ -7,7 +7,8 @@ import {Util as CommonUtil} from "../../commontypes/Util";
 /**
  * @private
  * @class SuperMap.LevelRenderer.Animation
- * @classdesc 动画主类, 调度和管理所有动画控制器。
+ * @classdesc 动画主类, 调度和管理所有动画控制器
+ * @category Visualization Theme。
  * @extends SuperMap.LevelRenderer.Eventful
  */
 export class Animation extends Eventful {

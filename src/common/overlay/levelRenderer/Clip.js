@@ -3,6 +3,7 @@ import {Easing as AEasing} from './Easing';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Animation.Clip
+ * @category Visualization Theme
  * 动画片段
  *
  */

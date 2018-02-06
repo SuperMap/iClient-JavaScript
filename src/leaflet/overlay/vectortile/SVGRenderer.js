@@ -3,6 +3,7 @@ import L from "leaflet";
 /**
  * @class L.supermap.SVGRenderer
  * @classdesc 矢量图层缩放渲染器类
+ * @category Visualization VectorTile
  * @private
  * @extends L.SVG{@linkdoc-leaflet/#svg}
  * @param tileCoord - {Object} 切片坐标系

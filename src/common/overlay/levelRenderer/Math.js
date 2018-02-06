@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Math
+ * @category Visualization Theme
  * LevelRenderer 工具-数学辅助类
  *
  */

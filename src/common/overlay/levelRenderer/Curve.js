@@ -3,6 +3,7 @@ import {Vector} from './Vector';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Curve
+ * @category Visualization Theme
  * LevelRenderer 工具-曲线
  *
  */

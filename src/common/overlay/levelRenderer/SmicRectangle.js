@@ -3,6 +3,7 @@ import {Shape} from './Shape';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicRectangle
+ * @category Visualization Theme
  * 矩形。
  *
  * Inherits from:

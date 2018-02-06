@@ -3,6 +3,7 @@ import {Shape} from './Shape';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicCircle
+ * @category Visualization Theme
  * 圆形
  *
  * Inherits from:

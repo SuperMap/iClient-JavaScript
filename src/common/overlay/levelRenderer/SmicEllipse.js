@@ -3,6 +3,7 @@ import {Shape} from './Shape';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicEllipse
+ * @category Visualization Theme
  * 椭圆。
  *
  * Inherits from:

@@ -4,6 +4,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicText
+ * @category Visualization Theme
  * 文本。
  *
  * Inherits from:

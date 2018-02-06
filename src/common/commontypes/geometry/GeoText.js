@@ -10,6 +10,7 @@ import '../LonLat';
 /**
  * @class SuperMap.Geometry.GeoText
  * @classdesc 文本标签类。
+ * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
  * @param x {float} x-坐标，必设参数。
  * @param y {float} y-坐标，必设参数。

@@ -1,8 +1,10 @@
 import L from "leaflet";
 
 /**
- * @constant L.CRS.BaiduCRS
+ * @name L.CRS.BaiduCRS
  * @description 百度的坐标对象
+ * @namespace
+ * @category Projection
  */
 export var BaiduCRS = L.CRS.Baidu = L.extend({}, L.CRS.EPSG3857, {
     code: 'Baidu',
@@ -23,8 +25,10 @@ for (let i = 1; i < 19; i++) {
 }
 
 /**
- * @constant L.CRS.TianDiTu_WGS84CRS
+ * @name L.CRS.TianDiTu_WGS84CRS
  * @description 天地图WGS84坐标对象
+ * @namespace
+ * @category Projection
  */
 export var TianDiTu_WGS84CRS = L.CRS.TianDiTu_WGS84 = L.Proj.CRS("EPSG:4326",{
     origin: [-180, 90],
@@ -38,8 +42,10 @@ for (let i = 1; i < 19; i++) {
 }
 
 /**
- * @constant L.CRS.TianDiTu_MercatorCRS
+ * @name L.CRS.TianDiTu_MercatorCRS
  * @description 天地图墨卡托坐标对象
+ * @category Projection
+ * @namespace
  */
 export var TianDiTu_MercatorCRS = L.CRS.TianDiTu_Mercator = L.Proj.CRS("EPSG:3857",{
     origin: [-20037508.3427892, 20037508.3427892],

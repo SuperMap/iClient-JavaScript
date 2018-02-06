@@ -7,6 +7,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape
+ * @category Visualization Theme
  * 图形（shape）基类。
  *
  * Inherits from:

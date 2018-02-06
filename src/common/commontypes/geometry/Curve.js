@@ -4,6 +4,7 @@ import {MultiPoint} from './MultiPoint';
 /**
  * @class SuperMap.Geometry.Curve
  * @classdesc 几何对象曲线类。
+ * @category BaseTypes Geometry
  * @extends SuperMap.Geometry.MultiPoint
  * @param components - {Array<SuperMap.Geometry.Point>}几何对象数组。
  * @example

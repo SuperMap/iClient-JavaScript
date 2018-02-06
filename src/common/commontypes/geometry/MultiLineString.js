@@ -6,6 +6,7 @@ import './LineString';
 /**
  * @class SuperMap.Geometry.MultiLineString
  * @classdesc 几何对象多线类。
+ * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
  * @param components - {Array<SuperMap.Geometry.LineString>} LineString数组。
  * @example

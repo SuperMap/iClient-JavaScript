@@ -7,6 +7,7 @@ import './LinearRing';
 /**
  * @class SuperMap.Geometry.Polygon
  * @classdesc  多边形几何对象类。
+ * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
  * @param components - {Array<SuperMap.Geometry.LinearRing>} 用来生成多边形的线环数组。
  * @example

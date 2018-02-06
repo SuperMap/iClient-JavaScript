@@ -3,6 +3,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Transformable
+ * @category Visualization Theme
  * 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。
  *
  * 此类不可实例化。

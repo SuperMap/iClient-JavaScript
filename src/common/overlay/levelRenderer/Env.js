@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Env
+ * @category Visualization Theme
  * 环境识别
  *
  */

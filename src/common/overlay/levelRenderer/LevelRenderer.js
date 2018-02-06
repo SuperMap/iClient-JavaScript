@@ -5,6 +5,7 @@ import {Render} from './Render';
 /**
  * @private
  * @class  SuperMap.LevelRenderer
+ * @category Visualization Theme
  * LevelRenderer 渲染器。
  *
  */

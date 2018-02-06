@@ -4,6 +4,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicIsogon
+ * @category Visualization Theme
  * 正多边形。
  *
  * Inherits from:

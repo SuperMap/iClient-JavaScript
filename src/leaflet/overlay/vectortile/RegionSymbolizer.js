@@ -5,6 +5,7 @@ import {PolyBase} from './SymbolizerPolyBase';
 /**
  * @class L.supermap.RegionSymbolizer
  * @classdesc 面符号类
+ * @category Visualization VectorTile
  * @private
  * @extends L.Polygon{@linkdoc-leaflet/#polygon}
  * @param feature - {L.feature} 面要素

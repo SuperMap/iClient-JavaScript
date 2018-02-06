@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Event
+ * @category Visualization Theme
  * LevelRenderer 工具-事件辅助类
  *
  */

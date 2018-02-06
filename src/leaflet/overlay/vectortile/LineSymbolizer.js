@@ -5,6 +5,7 @@ import {PolyBase} from './SymbolizerPolyBase';
 /**
  * @class L.supermap.LineSymbolizer
  * @classdesc 线符号类
+ * @category Visualization VectorTile
  * @private
  * @extends L.Polyline{@linkdoc-leaflet/#polyline}
  * @param feature - {L.feature} 线要素

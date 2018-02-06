@@ -4,6 +4,7 @@ import {SUtil} from './SUtil';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicStar
+ * @category Visualization Theme
  * n 角星（n>3）。
  *
  * Inherits from:

@@ -3,6 +3,7 @@ import L from "leaflet";
 /**
  * @class L.supermap.Symbolizer
  * @description 符号类
+ * @category Visualization VectorTile
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param feature — {L.feature} 要素

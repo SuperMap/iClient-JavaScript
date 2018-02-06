@@ -4,6 +4,7 @@ import {ShapeParameters} from './ShapeParameters';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters.Polygon
+ * @category Visualization Theme
  * 面参数对象。
  *
  * Inherits:

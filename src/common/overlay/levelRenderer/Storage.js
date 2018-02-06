@@ -4,6 +4,7 @@ import {Group} from './Group';
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Storage
+ * @category Visualization Theme
  * 内容（图像）仓库 (M) 。
  */
 export class Storage {

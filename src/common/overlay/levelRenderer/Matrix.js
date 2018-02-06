@@ -1,6 +1,7 @@
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Matrix
+ * @category Visualization Theme
  * LevelRenderer 工具-3x2矩阵操作类
  *
  */
