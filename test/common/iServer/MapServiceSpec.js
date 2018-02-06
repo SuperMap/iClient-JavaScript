@@ -39,7 +39,7 @@ describe('MapService', function () {
     it('success:processAsync', function (done) {
         var getMapService = initMapService_RegisterListener();
         expect(getMapService).not.toBeNull();
-        expect(getMapService.url).toEqual(worldMapURL + ".json");
+        expect(getMapService.url).toEqual(worldMapURL);
         getMapService.processAsync();
         setTimeout(function () {
             try {
