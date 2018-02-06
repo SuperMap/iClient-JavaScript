@@ -7,7 +7,7 @@ import {
     CommonUtil,
     ServerGeometry
 } from '@supermap/iclient-common';
-import {Util} from '../core/Util';
+import { Util } from '../core/Util';
 
 /**
  * @class ol.source.TileSuperMapRest
@@ -72,25 +72,25 @@ export class TileSuperMapRest extends ol.source.TileImage {
         //当前切片在切片集中的index
         this.tileSetsIndex = -1;
         this.tempIndex = -1;
-
+        var me = this;
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
                 case ServerType.IPORTAL:
-                    value = SecurityManager.getToken(url);
+                    value = SecurityManager.getToken(me._url);
                     credential = value ? new Credential(value, "token") : null;
                     if (!credential) {
-                        value = SecurityManager.getKey(url);
+                        value = SecurityManager.getKey(me._url);
                         credential = value ? new Credential(value, "key") : null;
                     }
                     break;
                 case ServerType.ONLINE:
-                    value = SecurityManager.getKey(url);
+                    value = SecurityManager.getKey(me._url);
                     credential = value ? new Credential(value, "key") : null;
                     break;
                 default:
                     //iserver or others
-                    value = SecurityManager.getToken(url);
+                    value = SecurityManager.getToken(me._url);
                     credential = value ? new Credential(value, "token") : null;
                     break;
             }
@@ -115,7 +115,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
 
             //设置切片原点
             if (this.origin) {
-                params["origin"] = JSON.stringify({x: this.origin[0], y: this.origin[1]});
+                params["origin"] = JSON.stringify({ x: this.origin[0], y: this.origin[1] });
             }
 
             if (options.prjCoordSys) {
@@ -187,8 +187,6 @@ export class TileSuperMapRest extends ol.source.TileImage {
             return params.join('&');
         }
 
-        var me = this;
-
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 if (me.extent) {
@@ -223,7 +221,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            var url = layerUrl +encodeURI( "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            var url = layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
             //支持代理
             if (me.tileProxy) {
                 url = me.tileProxy + encodeURIComponent(url);
@@ -247,7 +245,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
         if (!this.tileSets) {
             return;
         }
-        this.dispatchEvent({type: 'tilesetsinfoloaded', value: {tileVersions: this.tileSets.tileVersions}});
+        this.dispatchEvent({ type: 'tilesetsinfoloaded', value: { tileVersions: this.tileSets.tileVersions } });
         this.changeTilesVersion();
     }
 
@@ -289,7 +287,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var result = me.mergeTileVersionParam(name);
             if (result) {
                 me.tileSetsIndex = me.tempIndex;
-                me.dispatchEvent({type: 'tileversionschanged', value: {tileVersion: tileVersions[me.tempIndex]}});
+                me.dispatchEvent({ type: 'tileversionschanged', value: { tileVersion: tileVersions[me.tempIndex] } });
             }
         }
     }
@@ -390,12 +388,12 @@ export class TileSuperMapRest extends ol.source.TileImage {
             tileSize: tileSize
         });
         return new ol.tilegrid.TileGrid({
-                extent: extent,
-                minZoom: minZoom,
-                origin: origin,
-                resolutions: tilegrid.getResolutions(),
-                tileSize: tilegrid.getTileSize()
-            }
+            extent: extent,
+            minZoom: minZoom,
+            origin: origin,
+            resolutions: tilegrid.getResolutions(),
+            tileSize: tilegrid.getTileSize()
+        }
         );
     }
 }

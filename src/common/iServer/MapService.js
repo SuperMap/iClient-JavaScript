@@ -38,8 +38,6 @@ export class MapService extends CommonServiceBase {
         }
         var me = this;
 
-        me.url += ".json";
-
         if (me.projection) {
             var arr = me.projection.split(":");
             if (arr instanceof Array) {

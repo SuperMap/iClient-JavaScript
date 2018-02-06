@@ -9,7 +9,7 @@ import {GetGridCellInfosService} from '@supermap/iclient-common';
  * @classdesc 数据栅格查询服务
  * @extends mapboxgl.supermap.ServiceBase
  * @example
- *      new mapboxgl.superMap.GridCellInfosService(url)
+ *      new mapboxgl.supermap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })

@@ -42,7 +42,7 @@ import {Util} from '../../commontypes/Util';
  *
  *
  * 用于符号专题图：
- * 圆形 -  参数对象：<Supermap.Feature.ShapeParameters.Cilcle>
+ * 圆形 -  参数对象：<SuperMap.Feature.ShapeParameters.Cilcle>
  */
 export class ShapeFactory {
 

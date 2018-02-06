@@ -80,14 +80,16 @@
 ### for Leaflet
 
 - 修复客户端专题图无法加载 `L.Polygon` 的问题
-- 修改 `L.superMap.imageMapLayer` 的出图方式为整张image出图
+- 修改 `L.supermap.imageMapLayer` 的出图方式为整张image出图
 - 修改矢量瓦片字体默认粗体的问题
+- 修改 `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 通过 `key` `token` 授权失败的问题
 
 ### for OpenLayers
 
 - 修复 `ol.source.DataFlow` 修改传入父类参数无效的问题
 - 修复 `ol.source.DataFlow` 的 `dataUpdated` 事件返回参数为空的问题
 - 修复 `ol.source.Graphic` 在高分辨率屏下显示错位的问题
+- 修改 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 通过 `key` `token` 授权失败的问题
 
 ### for MapboxGL
 

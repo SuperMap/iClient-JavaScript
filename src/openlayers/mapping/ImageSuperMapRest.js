@@ -42,7 +42,7 @@ export class ImageSuperMapRest extends ol.source.TileImage {
         var layerUrl = options.url + "/image.png?";
         options.serverType = options.serverType || ServerType.ISERVER;
         //为url添加安全认证信息片段
-        layerUrl = appendCredential(layerUrl, options.serverType);
+        layerUrl = appendCredential(options.url,layerUrl, options.serverType);
 
         /*
          * @function ol.source.ImageSuperMapRest.prototype.appendCredential
@@ -51,24 +51,24 @@ export class ImageSuperMapRest extends ol.source.TileImage {
          * @param serverType - {Object} 服务类型
          * @return {string} 添加生成后的新地址
          */
-        function appendCredential(url, serverType) {
+        function appendCredential(id,url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
                 case ServerType.IPORTAL:
-                    value = SecurityManager.getToken(url);
+                    value = SecurityManager.getToken(id);
                     credential = value ? new Credential(value, "token") : null;
                     if (!credential) {
-                        value = SecurityManager.getKey(url);
+                        value = SecurityManager.getKey(id);
                         credential = value ? new Credential(value, "key") : null;
                     }
                     break;
                 case ServerType.ONLINE:
-                    value = SecurityManager.getKey(url);
+                    value = SecurityManager.getKey(id);
                     credential = value ? new Credential(value, "key") : null;
                     break;
                 default:
                     //iserver or others
-                    value = SecurityManager.getToken(url);
+                    value = SecurityManager.getToken(id);
                     credential = value ? new Credential(value, "token") : null;
                     break;
             }
