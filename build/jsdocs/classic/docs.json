@@ -2,6 +2,7 @@
     "opts": {
         "recurse": true,
         "template": "../template",
+        "configPath": "../classic",
         "destination": "./docs/classic"
     },
     "disqus":"",

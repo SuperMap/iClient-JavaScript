@@ -1,0 +1,1 @@
+{"ElasticSearch":{"default":["SuperMap.ElasticSearch"]},"Visualization":{"default":[],"MapV":{"default":["SuperMap.Layer.MapVLayer"]}},"iServer":{"default":[],"AddressMatch":{"default":["SuperMap.REST.AddressMatchService"]},"ProcessingService":{"default":["SuperMap.REST.ProcessingService"]}}}

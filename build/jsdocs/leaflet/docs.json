@@ -3,6 +3,7 @@
     "opts": {
         "recurse": true,
         "template": "../template",
+        "configPath": "../leaflet",
         "destination": "./docs/leaflet"
     },
     "disqus":"",
@@ -20,8 +21,6 @@
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
         "include": [
             "src/common","src/leaflet"
-           // "src/leaflet/mapping/BaiduTileLayer.js"
-           // "src/common/util/FetchRequest.js"
         ],
         "exclude": [
             "src/common/overlay/feature","src/common/overlay/levelRenderer"

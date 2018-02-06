@@ -1,0 +1,128 @@
+{
+    "iServer": {
+        "name": "iServer",
+        "content": {
+            "Map": {
+                "name": "地图",
+                "name_en": "Map",
+                "content": {
+                    "Theme": {
+                        "name": "Theme",
+                        "name_en": "专题图"
+                    }
+                }
+            },
+            "Data": {
+                "name": "数据",
+                "name_en": "Data"
+            },
+            "SpatialAnalyst": {
+                "name": "空间分析",
+                "name_en": "SpatialAnalyst"
+            },
+            "NetworkAnalyst": {
+                "name": "网络分析",
+                "name_en": "NetworkAnalyst"
+            },
+            "NetworkAnalyst3D": {
+                "name": "3D网络分析",
+                "name_en": "NetworkAnalyst3D"
+            },
+            "TrafficTransferAnalyst": {
+                "name": "交通换乘",
+                "name_en": "TrafficTransferAnalyst"
+            },
+            "Chart": {
+                "name": "海图",
+                "name_en": "Chart"
+            },
+            "ProcessingService": {
+                "name": "分布式分析",
+                "name_en": "ProcessingService"
+            },
+            "AddressMatch": {
+                "name": "地址匹配",
+                "name_en": "AddressMatch"
+            },
+            "DataFlow": {
+                "name": "实时数据",
+                "name_en": "DataFlow"
+            }
+        }
+    },
+    "iPortal/Online": {
+        "name": "iPortal/Online"
+    },
+    "iManager": {
+        "name": "iManager"
+    },
+    "ElasticSearch": {
+        "name": "ElasticSearch"
+    },
+    "Visualization": {
+        "name": "可视化",
+        "content": {
+            "ECharts": {
+                "name": "ECharts"
+            },
+            "Graphic": {
+                "name": "高性能点图层",
+                "name_en": "Graphic"
+            },
+            "Theme": {
+                "name": "客户端专题图",
+                "name_en": "Theme"
+            },
+            "MapV": {
+                "name": "MapV"
+            },
+            "VectorTile": {
+                "name": "矢量瓦片",
+                "name_en": "VectorTile"
+            },
+            "Turf": {
+                "name": "Turf"
+            },
+            "Marker": {
+                "name": "Marker"
+            }
+        }
+    },
+    "Control": {
+        "name": "控件",
+        "name_en": "Control"
+    },
+    "Security": {
+        "name": "安全",
+        "name_en": "Security"
+    },
+    "OGC": {
+        "name": "OGC"
+    },
+    "ThirdPartyMap": {
+        "name": "互联网地图",
+        "name_en": "ThirdPartyMap"
+    },
+    "Projection": {
+        "name": "投影",
+        "name_en": "Projection"
+    },
+    "Format": {
+        "name": "格式",
+        "name_en": "Format"
+    },
+    "Style": {
+        "name": "样式",
+        "name_en": "Style"
+    },
+    "BaseTypes": {
+        "name": "基础类",
+        "name_en": "BaseTypes",
+        "content": {
+            "Geometry": {
+                "name": "几何要素",
+                "name_en": "Geometry"
+            }
+        }
+    }
+}

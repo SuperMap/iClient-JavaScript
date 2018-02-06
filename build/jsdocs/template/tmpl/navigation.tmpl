@@ -1,28 +1,88 @@
 <?js
 var self = this;
-?>
-<div class="navigation">
-    <div class="search">
-        <input id="searchBox" type="text" class="form-control input-sm" placeholder="Search Documentations">
-    </div>
-    <ul class="list">
-    <?js
-    this.nav.forEach(function (item) {
+//nav格式:
+//{
+//   iServer:{
+//       Map:[],
+//        Data:[],
+//        default:[]  //在根目录下的文件
+//    }，
+//    iManager：{
+//        default:[]
+//    }
+//}
+
+//navOrder:
+//{
+//   "iServer": { 
+//        "name":"iServer",//显示值
+//        "content":{ //子目录内容
+//         "Map": {"name":"地图"} 
+//          "Data": {"name":"数据"}
+//      }
+//    },
+//    "iManager": {"name":"iManager"},
+//}
+
+function build(nav,navOrder,level){
+     if(!nav){
+         return;
+     }
+     
+    //根据order来决定构建的sidebar顺序
+    for(order in navOrder){ 
+        if(order === 'name'||order === 'name_en'){
+            continue;
+        }
+        var subOrder = navOrder[order];
+        if(order === 'content'){
+            build(nav,subOrder,level);
+            continue;
+        }
+        //增加default分类，因为nav中将默认根分类下的类放到default里
+        subOrder['default']=[];
+        
+        var subNav = nav[order];
+        if( Object.prototype.toString.call(subNav)=='[object Array]'){
+            for(item in subNav){ 
+                var li = navMap[subNav[item]];
+                if(li){
+                    buildLi(navMap[subNav[item]]);
+                }else if(language&&language==='en'){
+                    console.log('not found:'+subNav[item]);
+                }
+                
+            }
+        } else if(subNav){
+            ?>
+            <li class="treeview" >
+            <a> <?js  var value=subOrder.name;if(language&&language==='en'&&subOrder.name_en){ value=subOrder.name_en } ?><?js=  value  ?> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i> </span></a>
+            <ul class="treeview-menu">
+            <?js
+              build(subNav,subOrder,level+1);
+            ?>
+            </ul>
+            </li>
+            <?js
+        }
+    }
+}
+function buildLi(obj){
     ?>
-        <li class="item" data-name="<?js= item.longname ?>">
+     <li class="item" data-name="<?js= obj.longname ?>">
             <span class="title">
-                <?js= self.linkto(item.longname, item.longname) ?>
-                <?js if (item.type === 'namespace') { ?>
-                <span class="static">static</span>
+                <?js= self.linkto(obj.longname, obj.longname) ?>
+                <?js if (obj.type === 'namespace') { ?>
+                <span class="static">s</span>
                 <?js } ?>
             </span>
             <ul class="members itemMembers">
             <?js
-            if (item.members.length) {
+            if (obj.members.length) {
             ?>
             <span class="subtitle">Members</span>
             <?js
-                item.members.forEach(function (v) {
+                obj.members.forEach(function (v) {
             ?>
                 <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
@@ -32,11 +92,11 @@ var self = this;
             </ul>
             <ul class="typedefs itemMembers">
             <?js
-            if (item.typedefs.length) {
+            if (obj.typedefs.length) {
             ?>
             <span class="subtitle">Typedefs</span>
             <?js
-                item.typedefs.forEach(function (v) {
+                obj.typedefs.forEach(function (v) {
             ?>
                 <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
@@ -46,12 +106,12 @@ var self = this;
             </ul>
             <ul class="methods itemMembers">
             <?js
-            if (item.methods.length) {
+            if (obj.methods.length) {
             ?>
             <span class="subtitle">Methods</span>
             <?js
 
-                item.methods.forEach(function (v) {
+                obj.methods.forEach(function (v) {
             ?>
                 <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
@@ -61,11 +121,11 @@ var self = this;
             </ul>
             <ul class="events itemMembers">
             <?js
-            if (item.events.length) {
+            if (obj.events.length) {
             ?>
             <span class="subtitle">Events</span>
             <?js
-                item.events.forEach(function (v) {
+                obj.events.forEach(function (v) {
             ?>
                 <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
@@ -74,6 +134,31 @@ var self = this;
             ?>
             </ul>
         </li>
-    <?js }); ?>
+<?js
+}
+?>
+
+ 
+    <div class="sidebar-wrapper main-sidebar">
+        <!-- Inner sidebar -->
+        <div class="sidebar" style='height:100%'>
+         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" title="fold">
+            <div class="fa  fa-bars fold"></div>
+        </a>
+    <div class="search">
+        <input id="searchBox" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <div style='width: 100%;position: absolute;top: 50px;bottom: 0px;left: 0px;'>
+    <div style='height:100%;overflow:auto'>
+            <ul class="sidebar-menu tree list" data-widget='tree'>
+                <?js
+                var language = this.language;
+                var navMap = this.navMap;
+                build(this.categories,this.navOrder,0);
+                ?>
+ 
+    </li>
     </ul>
-</div>
+    </div>
+     </div>
+    
