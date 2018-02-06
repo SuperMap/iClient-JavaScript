@@ -119,6 +119,8 @@
 
 ## Web Site &amp;&amp; Docs
 
+- API 侧边栏分类显示
+
 ### for Leaflet
 
 ### for OpenLayers

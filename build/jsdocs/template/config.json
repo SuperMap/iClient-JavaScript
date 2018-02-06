@@ -61,6 +61,7 @@
     },
     "Visualization": {
         "name": "可视化",
+        "name_en": "Visualization",
         "content": {
             "ECharts": {
                 "name": "ECharts"

@@ -2,7 +2,8 @@
 
 /**
  * @class L.supermap.ServiceBase
- * @description L.supermap服务基类
+ * @classdesc L.supermap服务基类
+ * @category  iServer
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
  *        proxy - {string} 服务代理地址<br>
