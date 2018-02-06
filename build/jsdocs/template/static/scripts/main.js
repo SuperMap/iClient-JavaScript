@@ -21,7 +21,6 @@ $(function () {
             li.hide();
             li.removeClass('pushmenu-search-found', false);
             li.removeClass('active');
-            console.log("!!!!!!!!!!!!!");
             var start = new Date();
             li.each(function () {
                 var el=$(this);
@@ -44,7 +43,6 @@ $(function () {
                 }
 
             });
-            console.log(new Date() - start);
 
             $('.sidebar-menu li.pushmenu-search-found.treeview').each(function () {
                 var el=$(this);
