@@ -1,83 +1,91 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_findPath">网络分析服务-最佳路径分析</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var map, findPathService, findPathParameter,
-        baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
-    //最佳路径分析必须按照指定顺序对站点进行访问
-    map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
-            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
-            origin: L.point(48.4, -55.58)
-        }),
-        center: [-3600, 5000],
-        maxZoom: 18,
-        zoom: 2
-    });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
-        .addTo(map)
-        .once("load", function () {
-            findPathProcess();
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var map, findPathService, findPathParameter,
+            baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+        //最佳路径分析必须按照指定顺序对站点进行访问
+        map = L.map('map', {
+            crs: L.CRS.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3600, 5000],
+            maxZoom: 18,
+            zoom: 2
         });
+        L.supermap.tiledMapLayer(baseUrl, { noWrap: true })
+            .addTo(map)
+            .once("load", function () {
+                findPathProcess();
+            });
 
-    function findPathProcess() {
-        //添加站点
-        var marker1 = L.marker([-3000, 4000]).addTo(map);
-        marker1.bindPopup(resources.text_site1);
-        var marker2 = L.marker([-2500, 5500]).addTo(map);
-        marker2.bindPopup(resources.text_site2);
-        var marker3 = L.marker([-4000, 6900]).addTo(map);
-        marker3.bindPopup(resources.text_site3);
+        function findPathProcess() {
+            //添加站点
+            var marker1 = L.marker([-3000, 4000]).addTo(map);
+            marker1.bindPopup(resources.text_site1);
+            var marker2 = L.marker([-2500, 5500]).addTo(map);
+            marker2.bindPopup(resources.text_site2);
+            var marker3 = L.marker([-4000, 6900]).addTo(map);
+            marker3.bindPopup(resources.text_site3);
 
-        //创建最佳路径分析服务实例
-        findPathService = L.supermap.networkAnalystService(serviceUrl);
-        //创建最佳路径分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
-            returnEdgeFeatures: true,
-            returnEdgeGeometry: true,
-            returnEdgeIDs: true,
-            returnNodeFeatures: true,
-            returnNodeGeometry: true,
-            returnNodeIDs: true,
-            returnPathGuides: true,
-            returnRoutes: true
-        });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
-            resultSetting: resultSetting,
-            weightFieldName: "length"
-        });
-        findPathParameter = new SuperMap.FindPathParameters({
-            isAnalyzeById: false,
-            nodes: [L.latLng(-3000, 4000), L.latLng(-2500, 5500), L.latLng(-4000, 6900)],
-            hasLeastEdgeCount: false,
-            parameter: analystParameter
-        });
-        var myIcon = L.icon({
-            iconUrl: "../img/walk.png",
-            iconSize: [20, 20]
-        });
-        //进行查找
-        findPathService.findPath(findPathParameter, function (serviceResult) {
-            var result = serviceResult.result;
-            result.pathList.map(function (result) {
-                L.polyline(result.route).addTo(map);
-                L.geoJSON(result.pathGuideItems, {
-                    pointToLayer: function (geoPoints, latlng) {
-                        L.marker(latlng, {icon: myIcon}).addTo(map);
-                    }
-                }).addTo(map);
-            })
-        });
-    }
-</script>
+            //创建最佳路径分析服务实例
+            findPathService = L.supermap.networkAnalystService(serviceUrl);
+            //创建最佳路径分析参数实例
+            var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+                returnEdgeFeatures: true,
+                returnEdgeGeometry: true,
+                returnEdgeIDs: true,
+                returnNodeFeatures: true,
+                returnNodeGeometry: true,
+                returnNodeIDs: true,
+                returnPathGuides: true,
+                returnRoutes: true
+            });
+            var analystParameter = new SuperMap.TransportationAnalystParameter({
+                resultSetting: resultSetting,
+                weightFieldName: "length"
+            });
+            findPathParameter = new SuperMap.FindPathParameters({
+                isAnalyzeById: false,
+                nodes: [L.point(4000, -3000), L.point(5500, -2500), L.point(6900, -4000)],
+                parameter: analystParameter
+            });
+            var myIcon = L.icon({
+                iconUrl: "../img/walk.png",
+                iconSize: [20, 20]
+            });
+            //进行查找
+            findPathService.findPath(findPathParameter, function (serviceResult) {
+                var result = serviceResult.result;
+                result.pathList.map(function (result) {
+                    L.geoJSON(result.route).addTo(map);
+                    L.geoJSON(result.pathGuideItems, {
+                        pointToLayer: function (geoPoints, latlng) {
+                            L.marker(latlng, { icon: myIcon }).addTo(map);
+                        },
+                        filter: function (geoJsonFeature) {
+                            if (geoJsonFeature.geometry && geoJsonFeature.geometry.type === 'Point') {
+                                return true;
+                            }
+                            return false;
+                        }
+                    }).addTo(map);
+                })
+            });
+        }
+    </script>
 </body>
+
 </html>
