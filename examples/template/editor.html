@@ -26,12 +26,11 @@
 <div class="content-wrapper edit-container">
 
     <section class="content">
-        <span class="fa  fa-compress" id="showCodeBtn">&nbsp;源码</span>
+        <span class="fa  fa-compress" id="showCodeBtn" data-i18n="editor.source"></span>
         <div class="pane" id="codePane" style="display: none">
-            <div class="codePaneTool">
-                源代码编辑器
-                <div class="fa fa-play-circle-o editorBtn" id="runBtn" onclick="run()">&nbsp;运行</div>
-                <div class="fa fa-undo editorBtn" id="resetBtn" onclick="refresh()">&nbsp;重置</div>
+            <div class="codePaneTool"><span data-i18n="editor.title"></span>
+                <div class="fa fa-play-circle-o editorBtn" id="runBtn" onclick="run()" data-i18n="editor.run"></div>
+                <div class="fa fa-undo editorBtn" id="resetBtn" onclick="refresh()" data-i18n="editor.reset"></div>
             </div>
             <div id="editor">
 

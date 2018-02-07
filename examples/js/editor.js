@@ -11,6 +11,7 @@ function initPage() {
     initSideBar();
     initEditor();
     screenResize();
+    Localization.localize();
 }
 
 function initSideBar() {
@@ -67,7 +68,7 @@ function loadExampleHtml() {
         url: mapUrl,
         async: false,
         error: function (error) {
-            alert("请在服务器环境下运行示范程序！");
+            alert(resources.editor.envTips);
             html = "";
         }
     }).responseText;
@@ -105,9 +106,15 @@ function loadPreview(content) {
     iframeDocument.open();
     iframeDocument.write(content);
     iframeDocument.close();
-    iframeDocument.addEventListener('load', function () {
+    var doc = document;
+    iFrame.addEventListener('load', function () {
         mapHeight();
+        setTimeout(function () {
+            doc.title = iframeDocument.title;
+        }, 100);
+
     });
+
     mapHeight();
 }
 
@@ -168,7 +175,7 @@ function bindEvents() {
     $("#showCodeBtn").click(function () {
         if (expand) {
             //编辑器和预览宽度5:7
-            $(this).text(" 展开");
+            $(this).text(resources.editor.expand);
             $(this).addClass("fa-arrows-alt");
             $(this).removeClass(" fa-compress");
             codePane.show(10, function () {
@@ -178,7 +185,7 @@ function bindEvents() {
             });
         } else {
             //预览独占一行
-            $(this).text(" 源码");
+            $(this).text(resources.editor.source);
             $(this).addClass(" fa-compress");
             $(this).removeClass("fa-arrows-alt");
             codePane.hide(200, function () {

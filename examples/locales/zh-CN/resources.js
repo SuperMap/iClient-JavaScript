@@ -121,6 +121,14 @@ window.resources = {
         "join_tips2": "，附上您的简历哦）",
         "copyright": "版权所有 © 2000-2018 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074"
     },
+    "editor":{
+        "expand":" 展开",
+        "source":" 源码",
+        "title":"源代码编辑器",
+        "run":" 运行",
+        "reset":" 重置",
+        "envTips":"请在服务器环境下运行示范程序!"
+    },
     "resources": {
         "title_tiledMapLayer4326": "SuperMap REST 地图服务底图",
         "title_tiledMapLayer3857": "SuperMap REST 地图服务底图",

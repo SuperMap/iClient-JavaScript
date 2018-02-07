@@ -121,6 +121,14 @@ window.resources = {
         "join_tips2": " and attach your resume)",
         "copyright": "Copyright © 2000-2018 SuperMap Software Co., Ltd. All rights reserved"
     },
+    "editor":{
+        "expand":" Expand",
+        "source":" Source",
+        "title":"Source Code Editor",
+        "run":" Run",
+        "reset":" Reset",
+        "envTips":"Please run the program in server environment!"
+    },
     "resources": {
         "title_tiledMapLayer4326": "base map of SuperMap REST map",
         "title_tiledMapLayer3857": "base map of SuperMap REST map",

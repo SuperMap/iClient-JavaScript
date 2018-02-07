@@ -95,7 +95,8 @@ html, body, .wrapper {
     position: absolute;
     top: 4px;
     right: 0;
-    width: 54px;
+    padding: 0 10px;
+    min-width: 54px;
     height: 30px;
     line-height: 30px;
     margin: 4px;
