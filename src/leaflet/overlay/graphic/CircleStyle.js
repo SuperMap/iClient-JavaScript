@@ -4,7 +4,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.circleStyle
  * @classdesc 圆形要素风格
- * @category Graphic
+ * @category Visualization Graphic
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 圆形要素风格参数。如：<br>
  *        stroke - {boolean} 是否描边<br>

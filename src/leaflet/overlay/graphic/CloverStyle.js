@@ -4,7 +4,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.cloverStyle
  * @classdesc 三叶草要素风格
- * @category Graphic
+ * @category Visualization Graphic
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 三叶草形要素风格参数。如：<br>
  *        angle - {number} 三叶草每个扇叶的圆心角,默认为30，单位弧度。<br>

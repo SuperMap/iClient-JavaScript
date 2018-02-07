@@ -4,7 +4,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.graphic
  * @classdesc 图形类。
- * @category Graphic
+ * @category Visualization Graphic
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 图形参数
  */

@@ -14,7 +14,7 @@ import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
  * @class SuperMap.Format.WKT
  * @classdesc 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
  *      的实例。
- * @category Format
+ * @category BaseTypes Format
  * @extends SuperMap.Format
  * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */

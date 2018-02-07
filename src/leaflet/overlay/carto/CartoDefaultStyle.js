@@ -4,7 +4,7 @@ import '../../core/Base';
 /**
  * @constant L.supermap.DefaultStyle
  * @description 这个style对应的是默认设置
- * @category Style
+ * @category BaseTypes Style
  * @private
  */
 export var DefaultStyle = {

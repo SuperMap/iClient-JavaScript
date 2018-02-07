@@ -232,11 +232,7 @@ function buildNav(members, view, templatePath) {
 function sortNav(members) {
     var merged = members.namespaces.concat(members.classes);
     merged.sort(function (a, b) {
-        if (a.longname.toLowerCase > b.longname.toLowerCase)
-            return 1;
-        if (a.longname.toLowerCase < b.longname.toLowerCase)
-            return -1;
-        return 0;
+        return a.longname.toLowerCase() > b.longname.toLowerCase()
     });
     return merged;
 }

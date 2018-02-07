@@ -4,7 +4,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
- * @category Format
+ * @category BaseTypes Format
  * @param options - {Object} 可选参数。<br>
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */

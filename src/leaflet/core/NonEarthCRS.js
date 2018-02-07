@@ -6,7 +6,7 @@ L.Projection = {};
  * @private
  * @class L.Projection.NonProjection
  * @classdesc 平面无投影对象
- * @category Projection
+ * @category BaseTypes Projection
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param bounds - {L.bounds} 坐标范围
  */
@@ -32,7 +32,7 @@ export var nonProjection = function (bounds) {
 /**
  * @class L.CRS.NonEarthCRS
  * @classdesc 平面无投影坐标类
- * @category Projection
+ * @category BaseTypes Projection
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 构建平面无投影坐标对象参数<br>
  *        origin - {Object} 原点<br>

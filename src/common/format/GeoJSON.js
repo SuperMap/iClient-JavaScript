@@ -16,7 +16,7 @@ import {GeometryType} from '../REST';
 /**
  * @class SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器。
- * @category Format
+ * @category BaseTypes Format
  * @extends SuperMap.Format.JSON。
  */
 export class GeoJSON extends JSONFormat {
@@ -368,7 +368,8 @@ export class GeoJSON extends JSONFormat {
      *     如果type为"Geometry",输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。 <br>
      *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
      */
-    read(json, type, filter) {
+    
+     read(json, type, filter) {
         type = (type) ? type : "FeatureCollection";
         var results = null;
         var obj = null;

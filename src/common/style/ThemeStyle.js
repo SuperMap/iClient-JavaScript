@@ -4,7 +4,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
- * @category Style
+ * @category BaseTypes Style
  * @param options -{Object} 可选参数。如：<br>
  *         fill - {boolean} 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
  *         fillColor - {string} 十六进制填充颜色。默认值为 "#000000"。<br>

@@ -7,7 +7,7 @@ import {CartoStyleMap, ServerStyleMap, CompOpMap} from './CartoStyleMap';
 /**
  * @class L.supermap.CartoCSSToLeaflet
  * @classdesc CartoCSS样式转Leaflet样式类
- * @category Style
+ * @category BaseTypes Style
  * @param url - {String} 地图服务地址
  * @private
  */
