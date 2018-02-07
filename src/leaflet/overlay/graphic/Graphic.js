@@ -5,7 +5,6 @@ import '../../core/Base';
  * @class L.supermap.graphic
  * @classdesc 图形类。
  * @category Graphic
- * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 图形参数
  */
@@ -13,8 +12,10 @@ export var Graphic = L.Class.extend({
 
     initialize: function (options) {
         options = options || {};
-        this._latlng = L.latLng(options._latlng.lat, options._latlng.lng);
-        this._canvas = options._canvas;
+
+        var latlng = options.latlng || options._latlng;
+        this._latlng = L.latLng(latlng.lat, latlng.lng);
+        this._style = options.style || options._canvas;
     },
 
     /**
@@ -27,12 +28,13 @@ export var Graphic = L.Class.extend({
     },
 
     /**
+     * @deprecated
      * @function L.supermap.graphic.prototype.setCanvas
-     * @description 设置画布
+     * @description 设置画布,已弃用该设置，请使用setStyle接口
      * @param canvas - {Object} 传入需要设置的画布
      */
     setCanvas: function (canvas) {
-        this._canvas = canvas;
+        this._style = canvas;
     },
 
     /**
@@ -44,11 +46,29 @@ export var Graphic = L.Class.extend({
     },
 
     /**
+     * @deprecated
      * @function L.supermap.graphic.prototype.getCanvas
-     * @description 获取画布
+     * @description 获取画布，已弃用该设置，请使用getStyle接口
      */
     getCanvas: function () {
-        return this._canvas;
+        return this._style;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.setStyle
+     * @description 设置样式
+     * @param canvas - {HTMLCanvasElement} 传入需要设置的画布
+     */
+    setStyle: function (canvas) {
+        this._style = canvas;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.getStyle
+     * @description 获取样式
+     */
+    getStyle: function () {
+        return this._style;
     }
 
 });

@@ -284,12 +284,12 @@ var exampleConfig = {
                     name_en: "kernel density",
                     thumbnail: "l_densityKernelAnalystService.png",
                     fileName: "04_densityKernelAnalystService"
-                },{
+                }, {
                     name: "几何对象批量空间分析",
                     name_en: "batchAnalyst_geometry",
                     thumbnail: "l_geometryBatchAnalystService.png",
                     fileName: "04_geometryBatchAnalystService"
-                },{
+                }, {
                     name: "几何对象批量叠加分析",
                     name_en: "overlayBatchAnalyst_geometry",
                     thumbnail: "l_geometryOverlayBatchAnalystService.png",
@@ -564,12 +564,19 @@ var exampleConfig = {
             "graphicLayer": {
                 name: "高效率点图层",
                 name_en: "high efficiency point layer",
-                content: [{
-                    name: "随机点",
-                    name_en: "random points",
-                    thumbnail: "l_graphicLayer.png",
-                    fileName: "12_graphicLayer"
-                }]
+                content: [
+                    {
+                        name: "随机点",
+                        name_en: "random points",
+                        thumbnail: "l_graphicLayer.png",
+                        fileName: "12_graphicLayer"
+                    }, {
+                        name: "随机点(三叶草)",
+                        name_en: "random points(clover)",
+                        thumbnail: "l_graphicLayerClover.png",
+                        fileName: "12_graphicLayerClover"
+                    }
+                ]
             },
             // "D3Theme": {
             //     name: "D3-单值专题图",

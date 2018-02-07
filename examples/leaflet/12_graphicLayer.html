@@ -28,6 +28,8 @@
         var graphics = [];
         var e = 45;
         var randomCircleStyles = [];
+
+        //创建圆的样式
         for (var i = 0; i < colorCount; i++) {
             randomCircleStyles.push(L.supermap.circleStyle({
                 color: colors[i],
@@ -39,13 +41,16 @@
             }));
         }
 
+        //设置每个点的经纬度和传入圆的样式
         for (var i = 0; i < count; ++i) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[i] = L.supermap.graphic({
-                _latlng: L.latLng(coordinates[0], coordinates[1]),
-                _canvas: randomCircleStyles[Math.floor(Math.random() * colorCount)].getCanvas()
+                latlng: L.latLng(coordinates[0], coordinates[1]),
+                style: randomCircleStyles[Math.floor(Math.random() * colorCount)].getStyle()
             });
         }
+
+        //绘制图层
         L.supermap.graphicLayer(graphics, {
             handleClick: function (graphic) {
                 L.popup().setLatLng(graphic.getLatLng())
@@ -55,6 +60,7 @@
         }).addTo(map);
     }
 
+    //生成随机颜色
     function getRandomColors(count) {
         return randomColor({
             luminosity: 'bright',

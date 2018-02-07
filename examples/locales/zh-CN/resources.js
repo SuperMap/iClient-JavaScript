@@ -366,6 +366,7 @@ window.resources = {
         "title_findMTSPPathsServiceLogistics":"网络分析服务-多旅行商分析(物流配送)",
         "title_findTSPPathsService":"网络分析服务-多旅行商分析(质检巡查)",
         "title_graphicLayer":"高效率点图层",
+        "title_graphicLayerClovers":"高效率点图层(三叶草)",
         "title_heatMap":"热力图",
         "title_heatMapNY":"纽约出租车上车点热力图",
         "title_markerCluster":"点聚合",

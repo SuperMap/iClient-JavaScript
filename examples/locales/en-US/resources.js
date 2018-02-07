@@ -366,6 +366,7 @@ window.resources = {
         "title_findMTSPPathsServiceLogistics":"multi-traveler - logistics",
         "title_findTSPPathsService":"traveler - quality inspection",
         "title_graphicLayer":"high efficiency point layer",
+        "title_graphicLayerClovers":"high efficiency point layer(clover)",
         "title_heatMap":"heat map",
         "title_heatMapNY":"New York taxi car point",
         "title_markerCluster":"marker cluster",

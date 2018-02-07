@@ -28,6 +28,10 @@
 
 - `L.supermap.ThemeLayer` 及其子类新增 `options.id`参数
 
+- 废弃 `L.supermap.graphic` 类的 `setCanvas` 和 `getCanvas` 接口，改用 `setStyle` 和 `getStyle` 接口
+
+- 废弃 `L.supermap.circleStyle` 类的 `getCanvas` 接口，改用 `getStyle` 接口
+
 ### for OpenLayers
 
 - `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVE" 格式 json 数据
@@ -104,6 +108,8 @@
 - 新增几何要素批量空间分析示例
 
 - 新增批量几何要素叠加分析示例
+
+- 新增可视化随机三叶草示例
 
 ### for OpenLayers
 

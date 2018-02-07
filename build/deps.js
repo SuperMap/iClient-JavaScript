@@ -403,6 +403,7 @@ deps = {
                 "src": [
                     "./src/leaflet/overlay/GraphicLayer.js",
                     "./src/leaflet/overlay/graphic/CircleStyle.js",
+                    "./src/leaflet/overlay/graphic/CloverStyle.js",
                     "./src/leaflet/overlay/graphic/Graphic.js"
                 ],
                 "modules": [{
@@ -417,6 +418,10 @@ deps = {
                     "name": "L.supermap.graphic",
                     "des": "高效率点",
                     "des_en": "graphic"
+                }, {
+                    "name": "L.supermap.cloverStyle",
+                    "des": "高效率点(三叶草)",
+                    "des_en": "clover"
                 }]
             },
 

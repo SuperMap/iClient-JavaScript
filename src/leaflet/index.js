@@ -277,7 +277,7 @@ import {
     CartoCSSToLeaflet, DefaultStyle,
     CartoStyleMap, ServerStyleMap, CompOpMap,
 
-    CircleStyle, circleStyle, Graphic, graphic,
+    CircleStyle, circleStyle, Graphic, graphic, CloverStyle, cloverStyle,
     MapVRenderer,
     GeoFeatureThemeLayer, ThemeFeature, themeFeature, ThemeLayer,
 
@@ -593,7 +593,7 @@ export {
     CartoCSSToLeaflet, DefaultStyle,
     CartoStyleMap, ServerStyleMap, CompOpMap,
 
-    CircleStyle, circleStyle, Graphic, graphic,
+    CircleStyle, circleStyle, Graphic, graphic, CloverStyle, cloverStyle,
     MapVRenderer,
     GeoFeatureThemeLayer, ThemeFeature, themeFeature, ThemeLayer,
 

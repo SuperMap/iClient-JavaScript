@@ -5,20 +5,19 @@ import '../../core/Base';
  * @class L.supermap.circleStyle
  * @classdesc 圆形要素风格
  * @category Graphic
- * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 圆形要素风格参数。如：<br>
- *        stroke - {boolean}
- *        color - {string} 颜色
- *        weight - {number}宽带
- *        opacity - {number}透明度
- *        lineCap - {string} 线帽形状
- *        lineJoin - {string} 线条交汇边角形状
- *        fill - {boolean} 是否填充
- *        fillColor - {string} 填充色
- *        fillOpacity - {number}填充透明度
- *        fillRule - {string} 填充形状
- *        radius - {number}半径
+ *        stroke - {boolean} 是否描边<br>
+ *        color - {string} 颜色<br>
+ *        weight - {number} 线宽<br>
+ *        opacity - {number} 透明度<br>
+ *        lineCap - {string} 线帽形状<br>
+ *        lineJoin - {string} 线条交汇边角形状<br>
+ *        fill - {boolean} 是否填充<br>
+ *        fillColor - {string} 填充色<br>
+ *        fillOpacity - {number}填充透明度<br>
+ *        fillRule - {string} 填充形状<br>
+ *        radius - {number} 半径
  */
 export var CircleStyle = L.Class.extend({
 
@@ -47,10 +46,19 @@ export var CircleStyle = L.Class.extend({
     },
 
     /**
+     * @deprecated
      * @function L.supermap.circleStyle.prototype.getCanvas
-     * @description 获取画布
+     * @description 获取画布,已弃用该设置，请使用getStyle接口
      */
     getCanvas: function () {
+        return this._canvas;
+    },
+
+    /**
+     * @function L.supermap.circleStyle.prototype.getStyle
+     * @description 获取画布
+     */
+    getStyle: function () {
         return this._canvas;
     },
 
