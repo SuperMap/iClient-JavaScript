@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>leaflet 建筑立体效果</title>
+    <title data-i18n="resources.title_osmBuildingsLeaflet">leaflet 建筑立体效果</title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -32,7 +32,7 @@
 
         function bindPopup(evt) {
             var name = getFeatureNameById(evt.feature);
-            name = name || "<span style='color:red'>无数据</span>";
+            name = name || "<span style='color:red'>" + resources.text_noData + "</span>";
             L.popup().setContent(name).setLatLng(L.latLng(evt.lat, evt.lon)).openOn(map);
         }
 

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>ECharts LineMarker with OpenLayers</title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="echarts" src="../../dist/include-openlayers.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd">
 </div>
 <div id="infoControl"
      style=" position: absolute;top: 10px;right: 5px;text-align: left;background: white;color: #333;box-shadow: 0 3px 14px rgba(0,0,0,0.4);"></div>
+<script type="text/javascript" src="../js/include-web.js"></script>
+<script type="text/javascript" include="echarts" src="../../dist/include-openlayers.js"></script>
 <script type="text/javascript">
     var resultLayer;
     var map = new ol.Map({
@@ -24,25 +24,25 @@
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
-                url: (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/世界地图_Gray",
+                url: (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/世界地图_Gray",
             }),
             projection: 'EPSG:4326'
         })]
     });
     var option = {
         title: {
-            text: '北京市未来一周气温变化',
+            text: window.resources.text_Beijing + window.resources.text_nextWeekTemperature,
             textStyle: {
                 color: '#404a59',
                 fontSize: 16
             },
-            subtext: '纯属虚构'
+            subtext: window.resources.text_fictitiouData
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['最高气温', '最低气温']
+            data: [window.resources.text_maxTemperature, window.resources.text_minTemperature]
         },
         toolbox: {
             show: true,
@@ -58,7 +58,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            data: [window.resources.text_monday, window.resources.text_tuesday, window.resources.text_wednesday, window.resources.text_thursday, window.resources.text_friday, window.resources.text_saturday, window.resources.text_sunday]
         },
         yAxis: {
             type: 'value',
@@ -68,13 +68,13 @@
         },
         series: [
             {
-                name: '最高气温',
+                name: window.resources.text_maxTemperature,
                 type: 'line',
                 data: [11, 11, 15, 13, 12, 13, 10],
                 markPoint: {
                     data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
+                        {type: 'max', name: window.resources.text_maxValue},
+                        {type: 'min', name: window.resources.text_minValue}
                     ]
                 },
                 markLine: {
@@ -89,7 +89,7 @@
                             label: {
                                 normal: {
                                     position: 'start',
-                                    formatter: '最大值'
+                                    formatter: window.resources.text_maxValue
                                 }
                             },
                             type: 'max',
@@ -99,13 +99,13 @@
                 }
             },
             {
-                name: '最低气温',
+                name: window.resources.text_minTemperature,
                 type: 'line',
                 data: [1, -2, 2, 5, 3, 2, 0],
                 markPoint: {
                     data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
+                        {type: 'max', name: window.resources.text_maxValue},
+                        {type: 'min', name: window.resources.text_minValue}
                     ]
                 },
                 markLine: {
@@ -120,7 +120,7 @@
                             label: {
                                 normal: {
                                     position: 'start',
-                                    formatter: '最小值'
+                                    formatter: window.resources.text_minValue
                                 }
                             },
                             type: 'min',
@@ -142,6 +142,7 @@
     });
     map.addControl(control);
     query();
+
     function query() {
         clearLayer();
         var queryService = new ol.supermap.QueryService("http://support.supermap.com:8090/iserver/services/map-china400/rest/maps/China");
@@ -184,15 +185,15 @@
                     }
                     chart.setOption({
                         title: {
-                            text: city + '未来一周气温变化',
+                            text: city + window.resources.text_nextWeekTemperature,
                         },
                         series: [
                             {
-                                name: '最高气温',
+                                name: window.resources.text_maxTemperature,
                                 data: [10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10)],
                             },
                             {
-                                name: '最低气温',
+                                name: window.resources.text_minTemperature,
                                 data: [8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10)],
 
                             }
@@ -203,6 +204,7 @@
             });
         });
     }
+
     function clearLayer() {
         if (resultLayer) {
             map.removeLayer(resultLayer);
@@ -211,3 +213,4 @@
 </script>
 </body>
 </html>
+

@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>图层切换</title>
+    <title data-i18n="resources.title_layerSwitchControl">图层切换</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
     <style>
-        .leaflet-control-layers.leaflet-control{
+        .leaflet-control-layers.leaflet-control {
             margin-right: 60px;
         }
     </style>
@@ -16,8 +16,8 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
 
-    var BJ = L.marker([39.830660058696104, 116.92866163503169]).bindPopup('北京市'),
-        CD = L.marker([30.40,104.04]).bindPopup('成都市');
+    var BJ = L.marker([39.830660058696104, 116.92866163503169]).bindPopup(resources.text_beijingCity),
+        CD = L.marker([30.40, 104.04]).bindPopup(resources.text_chengdu);
     var cities = L.layerGroup([BJ, CD]);
     var China = L.supermap.tiledMapLayer(host + '/iserver/services/map-china400/rest/maps/China', {noWrap: true});
     var ChinaDark = L.supermap.tiledMapLayer(host + '/iserver/services/map-china400/rest/maps/ChinaDark', {noWrap: true});

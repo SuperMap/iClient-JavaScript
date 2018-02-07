@@ -18,52 +18,65 @@
         maxZoom: 18,
         zoom: 5
     });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var commodity = [
+        resources.text_commodity + "A",
+        resources.text_commodity + "B",
+        resources.text_commodity + "C",
+        resources.text_commodity + "D",
+        resources.text_commodity + "E",
+        resources.text_commodity + "F"
+    ];
+    var textClass = [
+        resources.text_class + "A",
+        resources.text_class + "B",
+        resources.text_class + "C"
+    ];
     var categoryDataMap = {
         "北京市": [
-            {value: 335, name: '类目A'},
-            {value: 679, name: '类目B'},
-            {value: 1299, name: '类目C'}
+            {value: 335, name: textClass[0]},
+            {value: 679, name: textClass[1]},
+            {value: 1299, name: textClass[2]}
         ],
         "广州市": [
-            {value: 117, name: '类目A'},
-            {value: 1267, name: '类目B'},
-            {value: 1048, name: '类目C'}
+            {value: 117, name: textClass[0]},
+            {value: 1267, name: textClass[1]},
+            {value: 1048, name: textClass[2]}
         ], "上海市": [
-            {value: 475, name: '类目A'},
-            {value: 1450, name: '类目B'},
-            {value: 875, name: '类目C'}
+            {value: 475, name: textClass[0]},
+            {value: 1450, name:textClass[1]},
+            {value: 875, name:textClass[2]}
         ]
     };
     var dataMap = {
         "北京市": [
-            {value: 335, name: '商品A'},
-            {value: 310, name: '商品B'},
-            {value: 234, name: '商品C'},
-            {value: 135, name: '商品D'},
-            {value: 1048, name: '商品E'},
-            {value: 251, name: '商品F'}
+            {value: 335, name:commodity[0]},
+            {value: 310, name:commodity[1]},
+            {value: 234, name:commodity[2]},
+            {value: 135, name:commodity[3]},
+            {value: 1048,name:commodity[4]},
+            {value: 251, name:commodity[5]}
         ],
         "广州市": [
-            {value: 117, name: '商品A'},
-            {value: 284, name: '商品B'},
-            {value: 768, name: '商品C'},
-            {value: 215, name: '商品D'},
-            {value: 901, name: '商品E'},
-            {value: 148, name: '商品F'}
+            {value: 117, name: commodity[0]},
+            {value: 284, name:commodity[1]},
+            {value: 768, name: commodity[2]},
+            {value: 215, name:commodity[3]},
+            {value: 901, name: commodity[4]},
+            {value: 148, name: commodity[5]}
         ], "上海市": [
-            {value: 475, name: '商品A'},
-            {value: 29, name: '商品B'},
-            {value: 430, name: '商品C'},
-            {value: 981, name: '商品D'},
-            {value: 732, name: '商品E'},
-            {value: 143, name: '商品F'}
+            {value: 475, name: commodity[0]},
+            {value: 29, name: commodity[1]},
+            {value: 430, name: commodity[2]},
+            {value: 981, name:commodity[3]},
+            {value: 732, name:commodity[4]},
+            {value: 143, name:commodity[5]}
         ]
     };
-    L.supermap.tiledMapLayer(url).addTo(map);
     var option = {
         title: {
-            text: '北京市商品销量',
-            subtext: '纯属虚构',
+            text: resources.text_beijingCommoditySales,
+            subtext: resources.text_fictitiou,
             textStyle: {
                 color: '#fff',
                 fontSize: 16
@@ -82,11 +95,11 @@
                 color: '#fff',
                 fontSize: 12
             },
-            data: ['商品A', '商品B', '商品C', '商品D', '商品E', '商品F']
+            data:commodity
         },
         series: [
             {
-                name: '商品类目',
+                name: resources.text_commodityClass,
                 type: 'pie',
                 selectedMode: 'single',
                 radius: [0, '30%'],
@@ -104,7 +117,7 @@
                 data: categoryDataMap['北京市']
             },
             {
-                name: '商品',
+                name: resources.text_commodity,
                 type: 'pie',
                 radius: ['40%', '55%'],
                 data: dataMap['北京市']
@@ -137,36 +150,36 @@
         });
 
         L.supermap
-            .queryService(url2)
-            .queryBySQL(param, function (serviceResult) {
-                serviceResult.result.recordsets.map(function (record) {
-                    resultLayer = L.geoJSON(record.features, {
-                        coordsToLatLng: function (coords) {
-                            var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
-                            latlng.alt = coords[2];
-                            return latlng;
-                        }
-                    }).on('click', function (e) {
-                        var city = e.layer.feature.properties.NAME;
-                        chart.setOption({
-                            title: {
-                                text: city + '商品销量'
-                            },
-                            series: [
-                                {
-                                    name: '商品类目',
-                                    data: categoryDataMap[city]
+                .queryService(url2)
+                .queryBySQL(param, function (serviceResult) {
+                    serviceResult.result.recordsets.map(function (record) {
+                        resultLayer = L.geoJSON(record.features, {
+                            coordsToLatLng: function (coords) {
+                                var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+                                latlng.alt = coords[2];
+                                return latlng;
+                            }
+                        }).on('click', function (e) {
+                            var city = e.layer.feature.properties.NAME;
+                            chart.setOption({
+                                title: {
+                                    text: city + resources.text_commoditySales
                                 },
-                                {
-                                    name: '商品',
-                                    data: dataMap[city]
-                                }
-                            ]
-                        });
-                        map.panTo(e.latlng);
-                    }, {maxWidth: 700}).addTo(map);
-                })
-            });
+                                series: [
+                                    {
+                                        name: resources.text_commodityClass,
+                                        data: categoryDataMap[city]
+                                    },
+                                    {
+                                        name: resources.text_commodity,
+                                        data: dataMap[city]
+                                    }
+                                ]
+                            });
+                            map.panTo(e.latlng);
+                        }, {maxWidth: 700}).addTo(map);
+                    })
+                });
     }
 
     function clearLayer() {
@@ -176,16 +189,16 @@
     }
 
     L.DomEvent
-        .on(div, 'mouseover', function () {
-            map.dragging.disable();
-            map.scrollWheelZoom.disable();
-            map.doubleClickZoom.disable();
-        })
-        .on(div, 'mouseout', function () {
-            map.dragging.enable();
-            map.scrollWheelZoom.enable();
-            map.doubleClickZoom.enable();
-        })
+            .on(div, 'mouseover', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            })
+            .on(div, 'mouseout', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            })
 </script>
 </body>
 </html>

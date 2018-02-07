@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Online SecurityManager使用示例</title>
-    <script type="text/javascript" include="bootstrap-css,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <title data-i18n="resources.title_onlineSecurity">Online SecurityManager使用示例</title>
     <style>
         .panel {
             margin-bottom: 0;
@@ -14,29 +12,29 @@
 <body style=" margin: 0;overflow: auto;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div class="container">
     <div class="page-header">
-        <h4>Online SecurityManager使用示例</h4>
+        <h4 data-i18n="resources.title_onlineSecurity">Online SecurityManager使用示例</h4>
     </div>
     <div class="row">
         <table class="table table-bordered col-md-8">
             <thead>
             <tr>
-                <th class="text-center">功能</th>
-                <th class="text-center">示例</th>
+                <th class="text-center" data-i18n="resources.text_function">功能</th>
+                <th class="text-center" data-i18n="resources.text_instance">示例</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td class="text-center text-success">登录</td>
+                <td class="text-center text-success" data-i18n="resources.text_login">登录</td>
                 <td>
                     <div class="col-md-12 text-center">
-                        <a class="btn btn-success" onclick="loginOnline()">登录</a>
+                        <a class="btn btn-success" onclick="loginOnline()" data-i18n="resources.text_login">登录</a>
                     </div>
                 </td>
             </tr>
 
             <!-- 注册key -->
             <tr>
-                <td class="text-center text-success">key授权访问私有服务</td>
+                <td class="text-center text-success" data-i18n="resources.text_keyAuthorizedService">key授权访问私有服务</td>
                 <td>
                     <div class="col-md-12">
                         <div class="panel panel-default">
@@ -44,7 +42,8 @@
                                 <form class="form-horizontal">
                                     <fieldset>
                                         <div class="form-group">
-                                            <label for="serviceUrl_online" class="col-md-2 control-label">服务地址</label>
+                                            <label for="serviceUrl_online" class="col-md-2 control-label"
+                                                   data-i18n="resources.text_serviceAddress">服务地址</label>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" id="serviceUrl_online">
                                             </div>
@@ -57,7 +56,9 @@
                                         </div>
 
                                         <div class="col-md-12 text-center">
-                                            <a class="btn btn-success" onclick="registerOnlineKeyAndRequestService()">访问</a>
+                                            <a class="btn btn-success"
+                                               onclick="registerOnlineKeyAndRequestService()"
+                                               data-i18n="resources.text_accessing">访问</a>
                                         </div>
                                     </fieldset>
                                 </form>
@@ -68,7 +69,7 @@
             </tr>
             <!-- 出图 -->
             <tr>
-                <td class="text-center text-success">key授权出图</td>
+                <td class="text-center text-success" data-i18n="resources.text_keyAuthorizedGetMap">key授权出图</td>
                 <td>
                     <div class="col-md-12">
                         <div class="panel panel-default">
@@ -76,7 +77,9 @@
                                 <form class="form-horizontal">
                                     <fieldset>
                                         <div class="form-group">
-                                            <label for="serviceUrlMap_online" class="col-md-2 control-label">服务地址</label>
+                                            <label for="serviceUrlMap_online"
+                                                   class="col-md-2 control-label"
+                                                   data-i18n="resources.text_serviceAddress">服务地址</label>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" id="serviceUrlMap_online">
                                             </div>
@@ -89,7 +92,8 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-12  text-center">
-                                                <a class="btn btn-success" onclick="showMapWithOnlineKey()">出图</a>
+                                                <a class="btn btn-success" onclick="showMapWithOnlineKey()"
+                                                   data-i18n="resources.text_getMap">出图</a>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -112,6 +116,8 @@
         </table>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap-css,jquery,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script>
     //若示例与SuperMap Online不在同一域下，欲查看示例效果请打开该句注释
     //SuperMap.Support.cors = false;
@@ -141,9 +147,9 @@
             serverType: SuperMap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error),false);
+                widgets.alert.showAlert(JSON.stringify(json.error), false);
             } else {
-                widgets.alert.showAlert(JSON.stringify(json.result),true);
+                widgets.alert.showAlert(JSON.stringify(json.result), true);
             }
         });
     }
@@ -190,7 +196,7 @@
 
     function checkUrl(url) {
         if (url === "") {
-            widgets.alert.showAlert("请填写URL",false);
+            widgets.alert.showAlert(resources.msg_fillInURL, false);
             return false;
         }
         return true;

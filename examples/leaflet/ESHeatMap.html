@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>热力/格网图</title>
+    <title data-i18n="resources.title_ESHeatMap">热力/格网图</title>
     <script type="text/javascript" include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select,geohash"
             src="../js/include-web.js"></script>
     <style>
@@ -11,7 +11,8 @@
         }
 
         .form-group label {
-            width: 90px;
+            width: 100px;
+            padding-right: 5px;
         }
 
         .tips {
@@ -40,8 +41,8 @@
         info.onAdd = function () {
             var popup = L.DomUtil.create('div');
             popup.innerHTML = "<div class='btn-group' role='group' aria-label='...'>" +
-                    "<button  value='grid' type='button' class='btn btn-default'>格网图</button>" +
-                    "<button value='heatmap' type='button' class='btn btn-default'>热力图</button></div>"
+                    "<button  value='grid' type='button' class='btn btn-default'>"+resources.btn_grid+"</button>" +
+                    "<button value='heatmap' type='button' class='btn btn-default'>"+resources.title_heatMap+"</button></div>"
             handleMapEvent(popup, map);
             return popup;
         };
@@ -360,7 +361,7 @@
             me._div = L.DomUtil.create('div', 'panel panel-primary controlPane');
             me._div.style.width = "300px";
             var titleDiv = $("<div class='panel-heading text-center' id='toggle' style='cursor: pointer'>" +
-                    "<span class='panel-title text-center'>控制台</span>&nbsp;" +
+                    "<span class='panel-title text-center'>"+resources.text_console+"</span>&nbsp;" +
                     "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
 
             var contentDiv = $("<div class='panel-body content center-block' style='font-size: 14px'></div>").appendTo(me._div);
@@ -369,30 +370,30 @@
 
             var defaultOption = getDefaultControlOptions();
 
-            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >起始时间</label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >"+resources.text_startTime+":  "+"</label>" +
                     "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
                     "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >终止时间</label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >"+resources.text_finishTime+":  "+"</label>" +
                     "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
                     "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='speed' >刷新步长(ms)</label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='speed' >"+resources.text_refreshStepSize+":  "+"</label>" +
                     "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
                     "' value='" + defaultOption.speed + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='frequency' >刷新频率(ms)</label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='frequency' >"+resources.text_refreshFrequency+":  "+"</label>" +
                     "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
                     "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
 
             var progressDiv = $("<div class='form-group'><div class='form-horizontal text-center'><div class='form-group'>" +
-                    "<label  for='progress'>当前时间：</label><span class='form-control-static' id='progress'>未开始</span>" +
+                    "<label  for='progress'>"+resources.text_currentTime+"</label><span class='form-control-static' id='progress'>"+resources.text_noStart+"</span>" +
                     "</div></div></div>").appendTo(contentDiv);
 
             var controlDiv = $("<section><div class='form-inline text-center'>" +
-                    "<input id='start' type='button'  class='btn btn-default text-center' value='开始'/>&nbsp;" +
-                    "<input id='pause' type='button'  class='btn btn-default text-center' value='暂停'/>&nbsp;" +
-                    "<input id='stop' type='button'  class='btn btn-default text-center' value='停止'/>" +
+                    "<input id='start' type='button'  class='btn btn-default text-center' value="+resources.btn_start+">&nbsp;" +
+                    "<input id='pause' type='button'  class='btn btn-default text-center' value="+resources.btn_pause+">&nbsp;" +
+                    "<input id='stop' type='button'  class='btn btn-default text-center' value="+resources.btn_stop+">" +
                     "</div></section>").appendTo(contentDiv);
 
 

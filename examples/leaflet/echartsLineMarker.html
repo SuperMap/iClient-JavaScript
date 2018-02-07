@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>ECharts Line-Marker with Leaflet</title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../js/include-web.js"></script>
 <script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
@@ -22,13 +22,14 @@
     L.supermap.tiledMapLayer(url, {zoomControl: false}).addTo(map);
     var option = {
         title: {
-            subtext: '纯属虚构'
+            subtext: resources.text_fictitiou
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['最高气温', '最低气温']
+            //data:["最高气温"]
+            data:[resources.text_maxTemperature,resources.text_minTemperature]
         },
         toolbox: {
             show: true,
@@ -44,7 +45,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            data: [resources.text_monday,resources.text_tuesday,resources.text_wednesday,resources.text_thursday,resources.text_friday,resources.text_saturday,resources.text_sunday]
         },
         yAxis: {
             type: 'value',
@@ -54,18 +55,18 @@
         },
         series: [
             {
-                name: '最高气温',
+                name: resources.text_maxTemperature,
                 type: 'line',
                 data: [11, 11, 15, 13, 12, 13, 10],
                 markPoint: {
                     data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
+                        {type: 'max', name:resources.text_max},
+                        {type: 'min', name:resources.text_min}
                     ]
                 },
                 markLine: {
                     data: [
-                        {type: 'average', name: '平均值'},
+                        {type: 'average', name:resources.text_averageValue},
                         [{
                             symbol: 'none',
                             x: '90%',
@@ -75,28 +76,28 @@
                             label: {
                                 normal: {
                                     position: 'start',
-                                    formatter: '最大值'
+                                    formatter:resources.text_max
                                 }
                             },
                             type: 'max',
-                            name: '最高点'
+                            name: resources.text_maxHighDot
                         }]
                     ]
                 }
             },
             {
-                name: '最低气温',
+                name:resources.text_minTemperature,
                 type: 'line',
                 data: [1, -2, 2, 5, 3, 2, 0],
                 markPoint: {
                     data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
+                        {type: 'max', name:resources.text_max},
+                        {type: 'min', name:resources.text_min}
                     ]
                 },
                 markLine: {
                     data: [
-                        {type: 'average', name: '平均值'},
+                        {type: 'average', name:resources.text_averageValue},
                         [{
                             symbol: 'none',
                             x: '90%',
@@ -106,11 +107,11 @@
                             label: {
                                 normal: {
                                     position: 'start',
-                                    formatter: '最小值'
+                                    formatter: resources.text_min
                                 }
                             },
                             type: 'min',
-                            name: '最低点'
+                            name: resources.text_minLowDot
                         }]
                     ]
                 }
@@ -138,37 +139,37 @@
         });
 
         L.supermap
-            .queryService(url2)
-            .queryBySQL(param, function (serviceResult) {
-                serviceResult.result.recordsets.map(function (record) {
-                    resultLayer = L.geoJSON(record.features, {
-                        coordsToLatLng: function (coords) {
-                            var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
-                            latlng.alt = coords[2];
-                            return latlng;
-                        }
-                    }).bindPopup(function (layer) {
-                        var city = layer.feature.properties.NAME;
-                        chart.setOption({
-                            title: {
-                                text: city + '未来一周气温变化'
-                            },
-                            series: [
-                                {
-                                    name: '最高气温',
-                                    data: [10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10)],
+                .queryService(url2)
+                .queryBySQL(param, function (serviceResult) {
+                    serviceResult.result.recordsets.map(function (record) {
+                        resultLayer = L.geoJSON(record.features, {
+                            coordsToLatLng: function (coords) {
+                                var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+                                latlng.alt = coords[2];
+                                return latlng;
+                            }
+                        }).bindPopup(function (layer) {
+                            var city = layer.feature.properties.NAME;
+                            chart.setOption({
+                                title: {
+                                    text: city+resources.text_nextWeekTemperature,
                                 },
-                                {
-                                    name: '最低气温',
-                                    data: [8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10)],
+                                series: [
+                                    {
+                                        name: resources.text_maxTemperature,
+                                        data: [10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10)],
+                                    },
+                                    {
+                                        name:resources.text_minTemperature,
+                                        data: [8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10)],
 
-                                }
-                            ]
-                        });
-                        return chart.getDom();
-                    }, {maxWidth: 700}).addTo(map);
-                })
-            });
+                                    }
+                                ]
+                            });
+                            return chart.getDom();
+                        }, {maxWidth: 700}).addTo(map);
+                    })
+                });
     }
 
     function clearLayer() {

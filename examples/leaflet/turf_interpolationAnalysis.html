@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Turf 插值分析</title>
+    <title data-i18n="resources.title_turfInterpolationAnalysis">Turf 插值分析</title>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
 </head>
@@ -39,19 +39,19 @@
             me._div.style.width = '420px';
             me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>插值分析</h5></div>
+        <h5 class='panel-title text-center'>` + resources.text_interpolationAnalysis + `</h5></div>
     <div class='panel-body content' id='interpolationBody'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <span class='input-group-addon'>` + resources.text_interpolationAnalysisType + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
                 <select class='form-control' id='interpolationAnalyzeType' name='interpolationAnalyzeType'>
                     <option value='tinOption' selected>tin</option>
                 </select>
             </div>
         </div>
         <div class='input-group' id="tinBody">
-            <input type='button' class='btn btn-primary' id='createTinBtn' value='创建Tin'/>&nbsp;
-            <input type='button' class='btn btn-primary' id='clearTinBtn' value='清除结果'/>&nbsp;
+            <input type='button' class='btn btn-primary' id='createTinBtn' value='` + resources.btn_createTin + `'/>&nbsp;
+            <input type='button' class='btn btn-primary' id='clearTinBtn' value='` + resources.btn_clearTin + `'/>&nbsp;
         </div>
     </div>`;
             handleMapEvent(me._div, me._map);
@@ -70,7 +70,7 @@
             if (interpolationAnalyst.sourcePoints) {
                 interpolationAnalyst.creatTin();
             } else {
-                widgets.alert.showAlert("分析数据加载中，请耐心等待。", true);
+                widgets.alert.showAlert(resources.text_loadingData, true);
                 return;
             }
         });
@@ -137,7 +137,7 @@
 
         creatTin: function () {
             if (turfLayer.getLayers().length > 0) {
-                widgets.alert.showAlert("图层已创建，请勿重复创建。", false);
+                widgets.alert.showAlert(resources.msg_layerCreated, false);
                 return;
             }
             turfLayer.process("Interpolation.tin", {
@@ -179,7 +179,6 @@
             map.doubleClickZoom.enable();
         });
     }
-
 
 
 </script>

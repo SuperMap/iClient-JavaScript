@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>等级符号专题图</title>
+    <title data-i18n="resources.text_graduatedSymbol">等级符号专题图</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -20,7 +20,7 @@
     function init() {
         // 统计图模块要求浏览器支持 Canvas 渲染
         if (!document.createElement('canvas').getContext) {
-            alert("您的浏览器不支持 Canvas，请升级！");
+            alert(resources.msg_supportCanvas);
             return;
         }
 
@@ -104,11 +104,11 @@
             var info = e.target.dataInfo;
             // 弹窗内容
             var contentHTML = "<div style='color: #000; background-color: #fff'>";
-            contentHTML += "省级行政区名称:<br><strong>" + fea.attributes.NAME + "</strong>";
+            contentHTML += resources.text_Name + "<br><strong>" + fea.attributes.NAME + "</strong>";
             contentHTML += "<hr style='margin: 3px'>";
             switch (info.field) {
                 case "CON2009":
-                    contentHTML += "09年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    contentHTML += resources.text_consumptionLevel1 + "09" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 default:
                     contentHTML += "No Data";

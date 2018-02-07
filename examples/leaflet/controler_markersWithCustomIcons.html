@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>自定义图标</title>
+    <title data-i18n="resources.title_markersWithCustomIcons">自定义图标</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 </head>
@@ -14,7 +14,7 @@
         baseUrl = host + "/iserver/services/map-world/rest/maps/World";
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
-        center: {lon:116.92866163503169 , lat: 39.830660058696104},
+        center: {lon: 116.92866163503169, lat: 39.830660058696104},
         maxZoom: 18,
         zoom: 5
     });
@@ -22,13 +22,13 @@
     var greenIcon = L.icon({
         iconUrl: '../img/leaf-green.png',
         shadowUrl: '../img/leaf-shadow.png',
-        iconSize:     [38, 95],
-        shadowSize:   [50, 64],
-        iconAnchor:   [22, 94],
+        iconSize: [38, 95],
+        shadowSize: [50, 64],
+        iconAnchor: [22, 94],
         shadowAnchor: [4, 62],
-        popupAnchor:  [-3, -76]
+        popupAnchor: [-3, -76]
     });
-    L.marker([39.830660058696104, 116.92866163503169], {icon: greenIcon}).bindPopup("北京市").addTo(map);
+    L.marker([39.830660058696104, 116.92866163503169], {icon: greenIcon}).bindPopup(resources.text_beijingCity).addTo(map);
     L.supermap.tiledMapLayer(baseUrl).addTo(map);
 </script>
 </body>

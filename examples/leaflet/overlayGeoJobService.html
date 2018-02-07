@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>叠加分析</title>
+    <title data-i18n="resources.title_overlayAnalyst">叠加分析</title>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -30,48 +30,48 @@
     bindClick();
 
 
-    function  initForm() {
+    function initForm() {
         info = L.control({position: 'topright'});
         info.onAdd = function () {
             var popup = L.DomUtil.create('div');
             popup.style.width = '350px';
             popup.innerHTML = "<div class='panel panel-default'>" +
                 "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>叠加分析</h3>" +
+                "<h3 class='panel-title'>" + resources.text_overlayAnalyst + "</h3>" +
                 "</div>" +
                 "<div class='panel-body'>" +
                 "<div class='input-group'>" +
-                "<span class='input-group-addon'>源数据集<span title='必填字段' style='color: red;'> * </span>　</span>" +
+                "<span class='input-group-addon'>" + resources.text_sourceDataset + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span>　</span>" +
                 "<input id='datasetName' type='text' class='form-control' " +
                 "value='samples_processing_newyorkZone_R'/>" +
                 "</div><p></p>" +
                 "<div class='input-group'>" +
-                "<span class='input-group-addon'>叠加对象数据集<span title='必填字段' style='color: red;'> * </span></span>" +
+                "<span class='input-group-addon'>" + resources.text_overlayDataset + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span></span>" +
                 "<input id='datasetOverlay' type='text' class='form-control' " +
                 "value='samples_processing_newyorkResidential_R'/>" +
                 "</div><p></p>" +
                 "<div class='input-group'>" +
-                "<span class='input-group-addon'>叠加分析模式<span title='必填字段' style='color: red;'> * </span></span>" +
+                "<span class='input-group-addon'>" + resources.text_analystMode + "<span title='" + resources.text_requiredField + "' style='color: red;'> * </span></span>" +
                 "<select class='form-control' id='mode' name='mode'>" +
-                "<option value='clip' selected>裁剪</option>" +
-                "<option value='intersect'>相交</option>" +
-                "<option value='erase'>擦除</option>" +
-                "<option value='union'>合并</option>" +
-                "<option value='update'>更新</option>" +
-                "<option value='identity'>同一</option>" +
-                "<option value='xor'>对称差分析</option>" +
+                "<option value='clip' selected>" + resources.text_clip + "</option>" +
+                "<option value='intersect'>" + resources.text_intersect + "</option>" +
+                "<option value='erase'>" + resources.text_erase + "</option>" +
+                "<option value='union'>" + resources.text_union + "</option>" +
+                "<option value='update'>" + resources.text_update + "</option>" +
+                "<option value='identity'>" + resources.text_identity + "</option>" +
+                "<option value='xor'>" + resources.text_xor + "</option>" +
                 "</select>" +
                 "</div><p></p>" +
                 "<div class='input-group'>" +
-                "<span class='input-group-addon'>源数据集保留字段</span>" +
+                "<span class='input-group-addon'>" + resources.text_retainedFieldSource + "</span>" +
                 "<input id='srcFields' type='text' class='form-control' value='LocationID'/>" +
                 "</div><p></p>" +
                 "<div class='input-group' id='overlayField' style='display: none'>" +
-                "<span class='input-group-addon'>叠加数据集保留字段</span>" +
+                "<span class='input-group-addon'>" + resources.text_retainedFieldOverlay + "</span>" +
                 "<input id='overlayFields' type='text' class='form-control' value='type'/>" +
                 "</div><p></p>" +
                 "<div align='right'>" +
-                "<input type='button' id='btn' class='btn btn-primary' value='分析'/>" +
+                "<input type='button' id='btn' class='btn btn-primary' value='" + resources.text_analyst + "'/>" +
                 "</div></div></div>";
             handleMapEvent(popup, this._map);
             return popup;
@@ -79,7 +79,7 @@
         info.addTo(map);
         $("#mode").change(function () {
             var mode = $(this).val();
-            if (mode =="update" ||mode =="clip"||mode =="erase"){
+            if (mode == "update" || mode == "clip" || mode == "erase") {
                 $("#overlayField").hide();
             } else {
                 $("#overlayField").show();
@@ -88,7 +88,7 @@
 
     }
 
-    function bindClick(){
+    function bindClick() {
         $('#btn').on('click', function () {
             widgets.alert.clearAlert();
             widgets.loader.showLoader();
@@ -100,18 +100,18 @@
     }
 
     function overlayGeoJobs() {
-        var overlayGeoJobParameter = new  SuperMap.OverlayGeoJobParameter({
+        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
             datasetName: $('#datasetName').val(),
             datasetOverlay: $('#datasetOverlay').val(),
             mode: $('#mode option:selected').attr('value'),
             srcFields: $('#srcFields').val(),
             overlayFields: $('#overlayFields').val()
         });
-        processingService.addOverlayGeoJob(overlayGeoJobParameter,function (serviceResult) {
+        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -128,6 +128,7 @@
             });
         });
     }
+
     function handleMapEvent(div, map) {
         if (!div || !map) {
             return;

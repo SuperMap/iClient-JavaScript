@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Turf.js测量分析</title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_turfMeasurement">Turf.js测量分析</title>
+    <script type="text/javascript" include="bootstrap,bootstrap-select,widgets.alert"
+            src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
-<script type="text/javascript" include="bootstrap,bootstrap-select,widgets.alert" src="../js/include-web.js"></script>
+
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
@@ -44,7 +45,7 @@
             me._div.style.width = '350px';
             me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>京深路卧龙岗隧道路段</h5>
+        <h5 class='panel-title text-center'>` + resources.text_Jingshen + `</h5>
     </div>
     <div class='panel panel-body chooseItems' style="margin-bottom:0px;padding-bottom: 0px">
                 <select class='form-control' id='menuSelect' >
@@ -65,7 +66,7 @@
     <hr/>
                 <div class='panel-body' id='params' style="padding-top: 0px">
                 <div class='input-group'>
-                <span class='input-group-addon'>距离单位</span>
+                <span class='input-group-addon'>` + resources.text_distanceUnit + `</span>
                 <select class='form-control' id='unitSelect' name='unitSelect'>
                 <option value='kilometers' selected = "selected">kilometers</option>
                 <option value='miles'>miles</option>
@@ -75,17 +76,17 @@
                 </div>
                 <p></p>
                 <div class='input-group'>
-                <span class='input-group-addon'>距起点距离</span>
-                <input id='distance' type='text' class='form-control' placeholder="距离"  val="0.5"/>
+                <span class='input-group-addon'>` + resources.text_distanceToStart + `</span>
+                <input id='distance' type='text' class='form-control' placeholder="` + resources.text_distance + `"  val="0.5"/>
                 </div>
                 <p></p>
                 <div class='input-group'>
-                <span class='input-group-addon'>方位</span>
-                <input id='bearing' type='text' class='form-control' placeholder="-180度到180度之间"/>
+                <span class='input-group-addon'>` + resources.text_position + `</span>
+                <input id='bearing' type='text' class='form-control' placeholder="` + resources.text_positionRange + `"/>
                 </div>
                 <p></p>
                 <div align='right' class='input-group'>
-                <input type='button' id='calc' class='btn btn-primary' value='点击生成对应结果'/>
+                <input type='button' id='calc' class='btn btn-primary' value='` + resources.btn_getResult + `'/>
                 </div>
                 </div>
                 </div>`
@@ -125,190 +126,190 @@
             baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
             //第一个隐藏右侧菜单
 
-                choose = $('#menuSelect').children('option:selected').val();
-                reset();
+            choose = $('#menuSelect').children('option:selected').val();
+            reset();
 
-                //对应菜单显示
-                if (choose === 'along') {
-                    $('.panel-heading>h5').text('京深路卧龙岗隧道路段');
-                    drawLine();
-                    setCenter();
-                    setAlongIcon();
-                    clearControl();
-                    $('.input-group:eq(0)').show();
-                    $('.input-group:eq(1)').show();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('距起点距离');
-                    $('.input-group:eq(1)>input').val("0.5");
+            //对应菜单显示
+            if (choose === 'along') {
+                $('.panel-heading>h5').text(resources.text_Jingshen);
+                drawLine();
+                setCenter();
+                setAlongIcon();
+                clearControl();
+                $('.input-group:eq(0)').show();
+                $('.input-group:eq(1)').show();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('.input-group:eq(1)>span').text(resources.text_distanceToStart);
+                $('.input-group:eq(1)>input').val("0.5");
 
-                    $('.input-group:eq(1)>input').focusout(function () {
-                        val = $('.input-group:eq(1)>input').val();
-                        var unit = $('#unitSelect').children('option:selected').val();
-                        if ((unit === 'kilometers' && val > 1.1753172567467551) || (unit === 'miles' && val > 0.7303085417726581) || (unit === 'degrees' && val > 0.010566564943528475) || (unit === 'radians' && val > 0.00018442134893248942)) {
-                            widgets.alert.showAlert('超出全程距离范围,请重新填写', false, 260);
-                            $('.input-group:eq(1)>input').val('');
-                        }
-                        else {
-                            widgets.alert.clearAlert();
-                        }
-                    });
+                $('.input-group:eq(1)>input').focusout(function () {
+                    val = $('.input-group:eq(1)>input').val();
+                    var unit = $('#unitSelect').children('option:selected').val();
+                    if ((unit === 'kilometers' && val > 1.1753172567467551) || (unit === 'miles' && val > 0.7303085417726581) || (unit === 'degrees' && val > 0.010566564943528475) || (unit === 'radians' && val > 0.00018442134893248942)) {
+                        widgets.alert.showAlert(resources.text_beyondDistance, false, 260);
+                        $('.input-group:eq(1)>input').val('');
+                    }
+                    else {
+                        widgets.alert.clearAlert();
+                    }
+                });
 
-                    $('#calc').val('点击生成对应的点');
-                }
-                else if (choose === 'area') {
-                    widgets.alert.showAlert('使用左侧绘图控件绘制面,点击右侧按钮进行计算', true, 500);
-                    $('.panel-heading>h5').text('面积测量');
-                    clearControl();
-                    setDefaultCenter(39.90455699411283, 116.407283, 11);
-                    drawController(false, false, true);
-                    drawing();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('点击计算当前图层面积');
-                }
-                else if (choose === 'bbox') {
-                    $('.panel-heading>h5').text('京深路卧龙岗隧道路段的bounds');
-                    setDefaultCenter(39.70182899926848, 116.11948400050001, 11);
-                    drawLine();
-                    setCenter();
-                    clearControl();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('点击生成bounds');
-                }
-                else if (choose === 'destination') {
-                    $('.panel-heading>h5').text('从北京计算出到目标点的位置');
-                    setDefaultCenter(39.90455699411283, 116.407283, 7);
-                    $('.input-group:eq(0)').show();
-                    $('.input-group:eq(1)').show();
-                    $('.input-group:eq(2)').show();
-                    $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('距起点距离');
-                    $('.input-group:eq(1)>input').unbind('focusout').val("0.5");
-                    $('.input-group:eq(2)>span').text('方位');
-                    $('.input-group:eq(2)>input').attr('placeholder', '请输入[-180,180]范围内的值');
-                    setDestinationIcon();
-                    clearControl();
-                    $('#calc').val('点击显示目标点');
-                }
-                else if (choose === 'distance') {
-                    $('.panel-heading>h5').text('京津两点之间的距离');
-                    setDefaultCenter(39.80771500024742, 116.72499999899998, 8);
-                    clearControl();
-                    setDistanceIcon();
-                    $('.input-group:eq(0)').show();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('计算两点间的距离');
-                }
-                else if (choose === 'midpoint') {
-                    $('.panel-heading>h5').text('获取京津之间的中点');
-                    setDefaultCenter(39.90455699411283, 116.407283, 7);
-                    clearControl();
-                    setMidpointIcon();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('获取京津之间的中点');
-                }
-                else if (choose === 'greatCircle') {
-                    $('.panel-heading>h5').text('北京到布拉格的大圆航线');
-                    isUseWorldMap(1);
-                    clearControl();
-                    setDefaultCenter(40, 112, 3);
-                    setGreatCircleIcon();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('计算大圆航线');
-                }
-                else if (choose === 'square') {
-                    widgets.alert.showAlert('使用左侧绘制控件绘制矩形，点击右侧按钮计算最小外切正方形', true, 500);
-                    $('.panel-heading>h5').text('最小外切正方形');
-                    setDefaultCenter(39.70914100034369, 116.11697300062501, 14);
-                    clearControl();
-                    drawController(false, false, false, false, true);
-                    drawing();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('生成最小外切正方形');
-                }
-                else if (choose === 'center') {
-                    $('.panel-heading>h5').text('北京周边景区中心');
-                    setDefaultCenter(39.93393099410061, 116.38035099999959, 12);
-                    clearControl();
-                    setCenterIcon();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getPoint);
+            }
+            else if (choose === 'area') {
+                widgets.alert.showAlert(resources.msg_drawTurfPolygon, true, 500);
+                $('.panel-heading>h5').text(resources.text_measureArea);
+                clearControl();
+                setDefaultCenter(39.90455699411283, 116.407283, 11);
+                drawController(false, false, true);
+                drawing();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getArea);
+            }
+            else if (choose === 'bbox') {
+                $('.panel-heading>h5').text(resources.text_JingshenBounds);
+                setDefaultCenter(39.70182899926848, 116.11948400050001, 11);
+                drawLine();
+                setCenter();
+                clearControl();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getBounds);
+            }
+            else if (choose === 'destination') {
+                $('.panel-heading>h5').text(resources.text_pointToTarget);
+                setDefaultCenter(39.90455699411283, 116.407283, 7);
+                $('.input-group:eq(0)').show();
+                $('.input-group:eq(1)').show();
+                $('.input-group:eq(2)').show();
+                $('.input-group:eq(3)').show();
+                $('.input-group:eq(1)>span').text(resources.text_distanceToStart);
+                $('.input-group:eq(1)>input').unbind('focusout').val("0.5");
+                $('.input-group:eq(2)>span').text(resources.text_position);
+                $('.input-group:eq(2)>input').attr('placeholder', resources.text_positionRange);
+                setDestinationIcon();
+                clearControl();
+                $('#calc').val(resources.text_getTargetPoint);
+            }
+            else if (choose === 'distance') {
+                $('.panel-heading>h5').text(resources.text_distanceBetween);
+                setDefaultCenter(39.80771500024742, 116.72499999899998, 8);
+                clearControl();
+                setDistanceIcon();
+                $('.input-group:eq(0)').show();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getDistance);
+            }
+            else if (choose === 'midpoint') {
+                $('.panel-heading>h5').text(resources.text_middlePointBetween);
+                setDefaultCenter(39.90455699411283, 116.407283, 7);
+                clearControl();
+                setMidpointIcon();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getMiddlePoint);
+            }
+            else if (choose === 'greatCircle') {
+                $('.panel-heading>h5').text(resources.text_bigRoundRoute);
+                isUseWorldMap(1);
+                clearControl();
+                setDefaultCenter(40, 112, 3);
+                setGreatCircleIcon();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getRoute);
+            }
+            else if (choose === 'square') {
+                widgets.alert.showAlert(resources.msg_externalTangentSquare, true, 500);
+                $('.panel-heading>h5').text(resources.text_externalTangentSquare);
+                setDefaultCenter(39.70914100034369, 116.11697300062501, 14);
+                clearControl();
+                drawController(false, false, false, false, true);
+                drawing();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getExternalTangentSquare);
+            }
+            else if (choose === 'center') {
+                $('.panel-heading>h5').text(resources.text_scenicSpotsCenter);
+                setDefaultCenter(39.93393099410061, 116.38035099999959, 12);
+                clearControl();
+                setCenterIcon();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
 
 
-                    $('#calc').val('获取景区中心');
-                }
-                else if (choose === 'bezier') {
-                    $('.panel-heading>h5').text('白河的贝塞尔曲线');
-                    setDefaultCenter(40.676116230453765, 116.55439124389999, 12);
-                    clearControl();
-                    whiteRiver();
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').show();
-                    $('#calc').val('生成bezier曲线');
-                }
-                else if (choose === 'buffer') {
-                    $('.panel-heading>h5').text('buffer缓冲区');
-                    widgets.alert.showAlert('使用左侧控件标记一个点', true);
-                    clearControl();
-                    setDefaultCenter(40, 116.83, 9);
-                    drawController(false, false, false, false, false, false, true);
-                    drawing();
+                $('#calc').val(resources.text_getScenicSpotCenter);
+            }
+            else if (choose === 'bezier') {
+                $('.panel-heading>h5').text(resources.text_bezier);
+                setDefaultCenter(40.676116230453765, 116.55439124389999, 12);
+                clearControl();
+                whiteRiver();
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').show();
+                $('#calc').val(resources.text_getBezier);
+            }
+            else if (choose === 'buffer') {
+                $('.panel-heading>h5').text(resources.text_buffer);
+                widgets.alert.showAlert(resources.msg_markPoint, true);
+                clearControl();
+                setDefaultCenter(40, 116.83, 9);
+                drawController(false, false, false, false, false, false, true);
+                drawing();
 
-                    $('.input-group:eq(0)').show();//单位
-                    $('.input-group:eq(1)').show();//步长
-                    $('.input-group:eq(2)').show();//半径
-                    $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('步长');//步长
-                    $('.input-group:eq(1)>input').unbind('focusout').val("1");
-                    $('.input-group:eq(2)>span').text('半径');//半径
-                    $('.input-group:eq(2)>input').val("10");
-                    $('#calc').val('生成标记点缓冲区');
-                }
-                else if (choose === 'circle') {
-                    $('.panel-heading>h5').text('圆多边形');
-                    widgets.alert.showAlert('请先点击左侧控件标记一个点', true);
-                    clearControl();
-                    setDefaultCenter(40, 116.83, 9);
-                    drawController(false, false, false, false, false, false, true);
-                    drawing();
-                    $('.title').show();
-                    $('.title>span').text('circle');
-                    $('.area').hide();
-                    $('.input-group:eq(0)').show();//单位
-                    $('.input-group:eq(1)').show();//步长
-                    $('.input-group:eq(2)').show();//半径
-                    $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('步长');//步长
-                    $('.input-group:eq(1)>input').unbind('focusout').val("10");
-                    $('.input-group:eq(2)>span').text('半径');//半径
-                    $('.input-group:eq(2)>input').val("10");
-                    $('#calc').val('生成圆多边形');
-                }
-                else {
-                    widgets.alert.showAlert('方法不存在', false);
-                }
-                showPanel();
+                $('.input-group:eq(0)').show();//单位
+                $('.input-group:eq(1)').show();//步长
+                $('.input-group:eq(2)').show();//半径
+                $('.input-group:eq(3)').show();
+                $('.input-group:eq(1)>span').text(resources.text_step);//步长
+                $('.input-group:eq(1)>input').unbind('focusout').val("1");
+                $('.input-group:eq(2)>span').text(resources.text_radius);//半径
+                $('.input-group:eq(2)>input').val("10");
+                $('#calc').val(resources.text_getBuffer);
+            }
+            else if (choose === 'circle') {
+                $('.panel-heading>h5').text(resources.text_polygon);
+                widgets.alert.showAlert(resources.msg_markPoint, true);
+                clearControl();
+                setDefaultCenter(40, 116.83, 9);
+                drawController(false, false, false, false, false, false, true);
+                drawing();
+                $('.title').show();
+                $('.title>span').text('circle');
+                $('.area').hide();
+                $('.input-group:eq(0)').show();//单位
+                $('.input-group:eq(1)').show();//步长
+                $('.input-group:eq(2)').show();//半径
+                $('.input-group:eq(3)').show();
+                $('.input-group:eq(1)>span').text(resources.text_step);//步长
+                $('.input-group:eq(1)>input').unbind('focusout').val("10");
+                $('.input-group:eq(2)>span').text(resources.text_radius);//半径
+                $('.input-group:eq(2)>input').val("10");
+                $('#calc').val(resources.text_getPolygon);
+            }
+            else {
+                widgets.alert.showAlert(resources.msg_noMethod, false);
+            }
+            showPanel();
         });
 
 
@@ -343,7 +344,7 @@
                 "circle": circle,
             };
             if (!meths[choose]) {
-                widgets.alert.showAlert('选择非法，请重新选择', false);
+                widgets.alert.showAlert(resources.msg_illegal, false);
             }
             meths[choose]();
         });
@@ -534,7 +535,7 @@
     function reset() {
         $('.chooseItems').show();
         hidePanel();
-        $('.panel-heading>h5').text('测量');
+        $('.panel-heading>h5').text(resources.text_measure);
         $('#unitSelect option:first').prop("selected", 'selected');
         $('#distance').val('');
         $('#bearing').val('');
@@ -595,7 +596,7 @@
         if (reg.test(num)) {
             return 1;
         } else {
-            widgets.alert.showAlert('非法输入,请重新输入', false, 260)
+            widgets.alert.showAlert(resources.msg_illegalFillIn, false, 260)
         }
     }
 
@@ -603,7 +604,7 @@
     function isInRange(val) {
         // return val >= -180 && val <= 180;
         if (val < -180 || val > 180) {
-            widgets.alert.showAlert('请输入[-180,180]范围内的值', false, 260);
+            widgets.alert.showAlert(resources.msg_inputValue, false, 260);
         }
         else {
             return 1;
@@ -614,7 +615,7 @@
     function greatThanZero(steps) {
         var reg = /^[1-9]\d*(\.\d+)?$/g;
         if (!reg.test(steps)) {
-            widgets.alert.showAlert('步长必须大于0', false);
+            widgets.alert.showAlert(resources.msg_stepSize, false);
         }
     }
 
@@ -636,7 +637,7 @@
             }
         }
         else {
-            widgets.alert.showAlert('请选择单位', false, 260);
+            widgets.alert.showAlert(resources.msg_selectUnit, false, 260);
         }
     }
 
@@ -649,14 +650,14 @@
                 resultLayer.process("Measurement.area", {
                     "geojson": polygon
                 }, function (e) {
-                    result = e + '平方米';
+                    result = e + resources.msg_sqm;
                     widgets.alert.showAlert(result, true);
                     $(" input[ id='area' ] ").val(result);
                 });
             });
         }
         else {
-            widgets.alert.showAlert('请画出图层', false, 260);
+            widgets.alert.showAlert(resources.msg_drawLayer, false, 260);
         }
     }
 
@@ -694,7 +695,7 @@
             }
         }
         else {
-            widgets.alert.showAlert('请选择单位', false, 260)
+            widgets.alert.showAlert(resources.msg_selectUnit, false, 260)
         }
     }
 
@@ -728,7 +729,7 @@
             unit = inUnits[unit];
         }
         else {
-            widgets.alert.showAlert('请选择单位', false, 260)
+            widgets.alert.showAlert(resources.msg_selectUnit, false, 260)
         }
 
     }
@@ -744,7 +745,7 @@
             layer.setIcon(L.icon({
                 iconUrl: '../img/marker-gold.png',
                 iconSize: [20, 20],
-            })).bindPopup('中心点');
+            })).bindPopup(resources.text_center);
         })
 
     }
@@ -791,7 +792,7 @@
             layer.setIcon(L.icon({
                 iconUrl: '../img/marker-gold.png',
                 iconSize: [30, 30],
-            })).bindPopup('中心点');
+            })).bindPopup(resources.text_center);
         });
     }
 
@@ -829,11 +830,11 @@
                     });
                 });
             } else {
-                widgets.alert.showAlert('填入数据不完善或错误', false, 260);
+                widgets.alert.showAlert(resources.msg_incorrectInfo, false, 260);
             }
         }
         else {
-            widgets.alert.showAlert('请选择单位', false, 260);
+            widgets.alert.showAlert(resources.msg_selectUnit, false, 260);
         }
 
     }
@@ -859,7 +860,7 @@
             });
         }
         else {
-            widgets.alert.showAlert('填入数据不完善或错误', false, 260);
+            widgets.alert.showAlert(resources.msg_incorrectInfo, false, 260);
         }
     }
 

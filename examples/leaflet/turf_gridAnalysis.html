@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Turf 格网分析</title>
+    <title data-i18n="resources.title_turfGridAnalysis">Turf 格网分析</title>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
     <style>
@@ -48,59 +48,59 @@
             me._div.style.width = '420px';
             me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>创建格网</h5></div>
+        <h5 class='panel-title text-center'>` + resources.text_createGrid + `</h5></div>
     <div class='panel-body' id='gridsBody'>
         <div class='input-group'>
-            <span class='input-group-addon'>格网分析类型<span title='必填字段' style='color: red;'> * </span></span>
+            <span class='input-group-addon'>` + resources.text_gridAnalysisType + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
             <select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>
-                <option value='hexGrid' selected>蜂巢格网</option>
-                <option value='pointGrid'>点格网</option>
-                <option value='squareGrid'>方形格网</option>
-                <option value='triangleGrid'>三角格网</option>
+                <option value='hexGrid' selected>` + resources.text_hexGrid + `</option>
+                <option value='pointGrid'>` + resources.text_pointGrid + `</option>
+                <option value='squareGrid'>` + resources.text_squareGrid + `</option>
+                <option value='triangleGrid'>` + resources.text_triangleGrid + `</option>
             </select>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'>单元格网大小<span title='必填字段' style='color: red;'> * </span></span>
+            <span class='input-group-addon'>` + resources.text_unitGridSize + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
             <input id='cellSize' type='text' class='form-control' value='50'/>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'>格网单元大小单位<span title='必填字段' style='color: red;'> * </span></span>
+            <span class='input-group-addon'>` + resources.text_gridUnitSizeUnit + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
             <select class='form-control' id='units' name='mode'>
-                <option value='degrees'>度</option>
-                <option value='radians'>弧度</option>
-                <option value='miles' selected>英里</option>
-                <option value='kilometers'>千米</option>
+                <option value='degrees'>` + resources.text_degrees + `</option>
+                <option value='radians'>` + resources.text_radians + `</option>
+                <option value='miles' selected>` + resources.text_miles + `</option>
+                <option value='kilometers'>` + resources.text_kilometers + `</option>
             </select>
         </div>
         <p></p>
         <div id='squareGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon'>是否调整宽度和高度以适应bbox的尺寸</span>
+            <span class='input-group-addon'>` + resources.text_adjustSize + `</span>
             <span class='form-control'>
                 <input id='completelyWithin' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div id='pointGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon'>调整点到格网中心位置</span>
+            <span class='input-group-addon'>` + resources.text_adjustPoint + `</span>
             <span class='form-control'>
                 <input id='iscentered' type='checkbox'>
-                </span><span class='input-group-addon'>创建范围为多边形</span>
+                </span><span class='input-group-addon'>` + resources.text_creationRange + `</span>
             <span class='form-control'><input id='isbboxIsMask' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div id='hexGridChoic' class='input-group'>
-            <span class='input-group-addon'>是否以三角形的形式返回</span>
+            <span class='input-group-addon'>` + resources.text_returnedByTriangle + `</span>
             <span class='form-control'>
                 <input id='triangles' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div align='right' class='input-group'>
-            <input type='button' id='createGridBtn' class='btn btn-primary' value='对当前绘制范围创建格网'/>&nbsp
-            <input type='button' id='clearGridBtn' class='btn btn-primary' value='清除'/>
+            <input type='button' id='createGridBtn' class='btn btn-primary' value='` + resources.btn_createGrid + `'/>&nbsp
+            <input type='button' id='clearGridBtn' class='btn btn-primary' value='` + resources.text_input_value_clear + `'/>
         </div>
     </div>
 </div>`;
@@ -166,7 +166,7 @@
                         break;
                 }
             } else {
-                widgets.alert.showAlert("请先使用左上角绘图工具在地图上绘出分析范围。", false);
+                widgets.alert.showAlert(resources.msg_drawAnalystRange, false);
             }
         });
 
@@ -174,7 +174,7 @@
             //是否有需要删除的提示框
             widgets.alert.clearAlert();
             if (gridAnalyst.editableLayers.getLayers().length === 0 && turfLayer.getLayers().length == 0) {
-                widgets.alert.showAlert("没有数据可删除", false);
+                widgets.alert.showAlert(resources.msg_noDataToDelete, false);
                 return;
             }
             bbox = null;
@@ -195,13 +195,13 @@
         var layer = e.layer;
         var layerBounds = layer._bounds;
         if (!bounds.contains(layerBounds)) {
-            widgets.alert.showAlert("超出分析范围,请在地图范围内绘制。", false);
+            widgets.alert.showAlert(resources.msg_beyondScope, false);
             return;
         }
 
         map.fire("viewreset");
         if (gridAnalyst.editableLayers.getLayers().length > 0) {
-            widgets.alert.showAlert("已有分析范围，请勿重复绘制。", false);
+            widgets.alert.showAlert(resources.msg_dontRedraw, false);
             return;
         }
         tooltip.removeFrom(map);
@@ -218,7 +218,7 @@
         direction: 'right'
     });
     var pointerMoveHandler = function (evt) {
-        var helpMsg = '请先使用左上角绘图工具在地图上绘出分析范围。';
+        var helpMsg = resources.msg_drawAnalystRange;
         if (helpMsg) {
             tooltip.setContent(helpMsg);
             tooltip.setLatLng(evt.latlng);
@@ -282,7 +282,7 @@
             gridAnalyst.drawControl = new L.Control.Draw(options);
             gridAnalyst.drawControl.setDrawingOptions({
                 tooltip: {
-                    start: '点击并拖动鼠标绘制矩形分析范围。'
+                    start: resources.msg_clickDrawAnalystRange
                 }
             });
             map.addControl(gridAnalyst.drawControl);

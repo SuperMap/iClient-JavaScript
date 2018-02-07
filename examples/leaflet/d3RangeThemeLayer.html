@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>D3分段专题图</title>
+    <title data-i18n="resources.title_rangeThemeLayer">D3分段专题图</title>
     <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript" include="d3,d3Layer" src="../../dist/include-leaflet.js"></script>
     <style type="text/css">
@@ -19,8 +19,8 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, resultLayer,
-            baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            url = host + "/iserver/services/data-jingjin/rest/data";
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url = host + "/iserver/services/data-jingjin/rest/data";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -67,18 +67,18 @@
             var d3Layer = L.supermap.d3Layer(function (sel, proj) {
                 var upd = sel.selectAll('path').data(serviceResult.result.features.features);
                 upd.enter()
-                        .append('path')
-                        .attr('d', proj.pathFromGeojson)
-                        .attr('fill', function (feature) {
-                            var pop = parseFloat(feature.properties.POP_DENSITY99);
-                            for (var i = 0; i < rangeStyles.length; i++) {
-                                var rangeStyle = rangeStyles[i];
-                                if (pop >= rangeStyle['start'] && pop <= rangeStyle['end']) {
-                                    return rangeStyle['color'];
-                                }
+                    .append('path')
+                    .attr('d', proj.pathFromGeojson)
+                    .attr('fill', function (feature) {
+                        var pop = parseFloat(feature.properties.POP_DENSITY99);
+                        for (var i = 0; i < rangeStyles.length; i++) {
+                            var rangeStyle = rangeStyles[i];
+                            if (pop >= rangeStyle['start'] && pop <= rangeStyle['end']) {
+                                return rangeStyle['color'];
                             }
-                        })
-                        .attr('fill-opacity', '0.8')
+                        }
+                    })
+                    .attr('fill-opacity', '0.8')
             });
             d3Layer.addTo(map);
             initLegendView();
@@ -90,15 +90,15 @@
         var legendView = L.control({position: 'bottomright'});
         legendView.onAdd = function () {
             this._div = L.DomUtil.create('div', 'panel panel-primary legend ');
-            var title = "<div class='panel-heading'><h5 class='panel-title text-center'>图例</h5></div>";
+            var title = "<div class='panel-heading'><h5 class='panel-title text-center'>" + resources.text_legend + "</h5></div>";
             $(title + "<div class='panel-body text-center' ><table>" +
-                    "<tr><td class='legendItemHeader'>人口密度(1999年)</td><td class='legendItemValue'>颜色</td></tr>" +
-                    "<tr> <td class='legendItemHeader'>0    - 0.02</td> <td class='legendItemValue' style='background: #FDE2CA'></td></tr>" +
-                    "<tr> <td class='legendItemHeader'>0.02 - 0.04</td> <td class='legendItemValue' style='background: #FACE9C'></td> </tr>" +
-                    "<tr> <td class='legendItemHeader'>0.04 - 0.06</td> <td class='legendItemValue' style='background: #F09C42'></td> </tr>" +
-                    "<tr> <td class='legendItemHeader'>0.06 - 0.1</td> <td class='legendItemValue' style='background: #D0770B'></td> </tr>" +
-                    "<tr> <td class='legendItemHeader'>0.1  - 0.2</td> <td class='legendItemValue' style='background: #945305'></td> </tr>" +
-                    "</table></div>"
+                "<tr><td class='legendItemHeader'>" + resources.text_populationDensity + "</td><td class='legendItemValue'>" + resources.text_color + "</td></tr>" +
+                "<tr> <td class='legendItemHeader'>0    - 0.02</td> <td class='legendItemValue' style='background: #FDE2CA'></td></tr>" +
+                "<tr> <td class='legendItemHeader'>0.02 - 0.04</td> <td class='legendItemValue' style='background: #FACE9C'></td> </tr>" +
+                "<tr> <td class='legendItemHeader'>0.04 - 0.06</td> <td class='legendItemValue' style='background: #F09C42'></td> </tr>" +
+                "<tr> <td class='legendItemHeader'>0.06 - 0.1</td> <td class='legendItemValue' style='background: #D0770B'></td> </tr>" +
+                "<tr> <td class='legendItemHeader'>0.1  - 0.2</td> <td class='legendItemValue' style='background: #945305'></td> </tr>" +
+                "</table></div>"
             ).appendTo(this._div);
             handleMapEvent(this._div, this._map);
             return this._div;

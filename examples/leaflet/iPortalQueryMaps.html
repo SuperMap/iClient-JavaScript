@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>iPortal 地图列表</title>
-    <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <title data-i18n="resources.title_iPortalQueryMaps">iPortal 地图列表</title>
     <style>* {
         margin: 0;
         padding: 0;
@@ -117,7 +115,7 @@
 <body style=" margin: 0;overflow: auto;background: #F2F2F2;width: 100%;height:100%;position: absolute;top: 0;">
 <div class="container" style="margin-bottom: 100px">
     <div class="page-header">
-        <h4>iPortal QueryMaps使用示例</h4>
+        <h4 data-i18n="resources.title_iPortalQueryMaps1">iPortal QueryMaps使用示例</h4>
     </div>
     <div class="col-md-10">
         <div class="row">
@@ -143,6 +141,8 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8091/iportal
     var iPortalUrl = "http://support.supermap.com.cn:8092";
@@ -198,7 +198,7 @@
                     "</a>" +
                     "<div>" +
                     "<p class='mapDetails'>" + mapsData.content[i].title + "</p>" +
-                    "<p class='mapDetails'>" + '创建于：' + createTime + "<span class='mapTime'>" + "</span>" + "</p>" +
+                    "<p class='mapDetails'>" + resources.text_createdIn + createTime + "<span class='mapTime'>" + "</span>" + "</p>" +
                     "<div class='mapUserDetails'>" +
                     "<div class='textEllipsis'>" +
                     "<span class='glyphicon glyphicon-user'>" + "</span>" + "&nbsp;" + mapsData.content[i].userName +

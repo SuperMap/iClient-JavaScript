@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>航班监控</title>
+    <title data-i18n="resources.title_planesMonitor">航班监控</title>
     <script type="text/javascript"
             include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select,geohash,randomcolor,widgets.alert"
             src="../js/include-web.js"></script>
@@ -12,7 +12,7 @@
         }
 
         .form-group label {
-            width: 90px;
+            width: 100px;
         }
 
         .tips {
@@ -239,10 +239,10 @@
 
         if (!content) return;
         var latlng = L.latLng(content.y, content.x);
-        var labelContent = "航班： " + content.ident + "<br>" +
-            "始发地： " + content.origin + "/" + content.originLabel + "<br>" +
-            "目的地： " + content.destination + "/" + content.destinationLabel + "<br>" +
-            "时间： " + content.datetime;
+        var labelContent = resources.text_flight + "： " + content.ident + "<br>" +
+            resources.text_startPoint + content.origin + "/" + content.originLabel + "<br>" +
+            resources.text_endPoint + content.destination + "/" + content.destinationLabel + "<br>" +
+            resources.text_time + "： " + content.datetime;
         if (planeLabels[content.ident]) {
             planeLabels[content.ident].remove();
         }
@@ -357,7 +357,7 @@
             me._div = L.DomUtil.create('div', 'panel panel-primary controlPane');
             me._div.style.width = "300px";
             var titleDiv = $("<div class='panel-heading text-center' id='toggle' style='cursor: pointer'>" +
-                "<span class='panel-title text-center'>控制台</span>&nbsp;" +
+                "<span class='panel-title text-center'>" + resources.text_console + "</span>&nbsp;" +
                 "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
 
             var contentDiv = $("<div class='panel-body content center-block' style='font-size: 14px'></div>").appendTo(me._div);
@@ -365,12 +365,12 @@
             var optionsDiv = $("<div class='' id='options'></div>").appendTo(contentDiv);
 
             $("<div class='form-group'><label class='text-right' for='flightIds'  >" +
-                "航班号<span style='color:red'>*</span></label>" +
+                resources.text_flightNumber + "<span style='color:red'>*</span></label>" +
                 "<select class='selectpicker ' id='flightIds' multiple " +
                 "data-actions-box='true' " +
-                "data-select-all-Text='全选' " +
-                "data-deselect-all-Text='反选' " +
-                "title='请选择'>" +
+                "data-select-all-Text='" + resources.text_allSelect + "' " +
+                "data-deselect-all-Text='" + resources.text_deSelectAll + "' " +
+                "title='" + resources.text_select + "'>" +
                 initSelectOpitons() +
                 "</select></div><hr/>").appendTo(optionsDiv);
 
@@ -385,30 +385,30 @@
 
             var defaultOption = getDefaultControlOptions();
 
-            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >起始时间<span style='color:red'>*</span></label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >" + resources.text_startTime + "<span style='color:red'>*</span></label>" +
                 "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
                 "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >终止时间<span style='color:red'>*</span></label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >" + resources.text_finishTime + "<span style='color:red'>*</span></label>" +
                 "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
                 "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='speed' >刷新步长(ms)</label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='speed' >" + resources.text_refreshStepSize + "(ms)</label>" +
                 "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
                 "' value='" + defaultOption.speed + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='frequency' >刷新频率(ms)</label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='frequency' >" + resources.text_refreshFrequency + "(ms)</label>" +
                 "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
                 "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
 
             var progressDiv = $("<div class='form-group'><div class='form-horizontal text-center'><div class='form-group'>" +
-                "<label  for='progress'>当前时间：</label><span class='form-control-static' id='progress'>未开始</span>" +
+                "<label  for='progress'>" + resources.text_currentTime + "</label><span class='form-control-static' id='progress'>" + resources.text_noStart + "</span>" +
                 "</div></div></div>").appendTo(contentDiv);
 
             var controlDiv = $("<section><div class='form-inline text-center'>" +
-                "<input id='start' type='button'  class='btn btn-default text-center' value='开始'/>&nbsp;" +
-                "<input id='pause' type='button'  class='btn btn-default text-center' value='暂停'/>&nbsp;" +
-                "<input id='stop' type='button'  class='btn btn-default text-center' value='停止'/>" +
+                "<input id='start' type='button'  class='btn btn-default text-center' value='" + resources.btn_start + "'/>&nbsp;" +
+                "<input id='pause' type='button'  class='btn btn-default text-center' value='" + resources.btn_pause + "'/>&nbsp;" +
+                "<input id='stop' type='button'  class='btn btn-default text-center' value='" + resources.btn_stop + "'/>" +
                 "</div></section>").appendTo(contentDiv);
 
 
