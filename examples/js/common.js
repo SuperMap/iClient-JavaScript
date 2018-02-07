@@ -79,6 +79,7 @@
     function localize() {
         var lang = utils.getLanguage();
         var pathname = window.location.pathname.replace("/en/", "/");
+        var hash = window.location.hash;
         var href = window.location.origin + pathname;
         if (lang === "en-US") {
             if (getVersion()) {
@@ -92,10 +93,10 @@
             }
 
         }
-        if ((window.location.origin + window.location.pathname) === href) {
+        if ((window.location.origin + window.location.pathname+hash) === href+hash) {
             return;
         }
-        window.location = href;
+        window.location = href+hash;
     }
 
     function getCommonScriptPath() {
