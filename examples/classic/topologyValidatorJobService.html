@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_topologyValidatorJobService">拓扑检查分析</title>
+    <title data-i18n="resources.title_topologyValidatorJobService"></title>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
     <style>
         .control {
@@ -21,43 +21,38 @@
 <div id="control" class="control" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title' data-i18n="resources.title_topologyValidatorJobService">拓扑检查分析</h3>
+            <h3 class='panel-title' data-i18n="resources.title_topologyValidatorJobService"></h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_inputData">输入数据</span><span
+                <span class='input-group-addon'><span data-i18n="resources.text_inputData"></span><span
                         data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <input id='datasetName' type='text' class='form-control'
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
                 <span class='input-group-addon'><span
-                        data-i18n="resources.text_topologyValidatorRule">拓扑检查规则</span><span
+                        data-i18n="resources.text_topologyValidatorRule"></span><span
                         data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <select class='form-control' id='rule' name='rule'>
-                    <option value='REGIONNOOVERLAP' data-i18n="resources.btn_regionNoOverlap">面数据集内部无交叠</option>
-                    <option value='REGIONNOOVERLAPWITH' data-i18n="resources.btn_regionNoOverlapWith">面数据集与面数据集无交叠
-                    </option>
-                    <option value='REGIONCONTAINEDBYREGION' data-i18n="resources.btn_regionContainedByRegion">
-                        面数据集被面数据集包含
-                    </option>
-                    <option value='REGIONCOVEREDBYREGION' selected data-i18n="resources.btn_regionCoveredByRegion">
-                        面数据集被面数据集覆盖
-                    </option>
-                    <option value='LINENOOVERLAP' data-i18n="resources.btn_lineNoOverlap">线数据集内部无交叠</option>
-                    <option value='LINENOOVERLAPWITH' data-i18n="resources.btn_lineNoOverlapWith">线数据集与线数据集无交叠</option>
-                    <option value='POINTNOIDENTICAL' data-i18n="resources.btn_pointNoIdentical">点数据集内部无重复点</option>
+                    <option value='REGIONNOOVERLAP' data-i18n="resources.btn_regionNoOverlap"></option>
+                    <option value='REGIONNOOVERLAPWITH' data-i18n="resources.btn_regionNoOverlapWith"></option>
+                    <option value='REGIONCONTAINEDBYREGION' data-i18n="resources.btn_regionContainedByRegion"></option>
+                    <option value='REGIONCOVEREDBYREGION' selected data-i18n="resources.btn_regionCoveredByRegion"></option>
+                    <option value='LINENOOVERLAP' data-i18n="resources.btn_lineNoOverlap"></option>
+                    <option value='LINENOOVERLAPWITH' data-i18n="resources.btn_lineNoOverlapWith"></option>
+                    <option value='POINTNOIDENTICAL' data-i18n="resources.btn_pointNoIdentical"></option>
                 </select>
             </div>
             <p></p>
             <div class='input-group' id='datasetTopologyDiv'>
-                <span class='input-group-addon'><span data-i18n="resources.text_topologyValidatorDataset">拓扑检查数据集</span><span
+                <span class='input-group-addon'><span data-i18n="resources.text_topologyValidatorDataset"></span><span
                         data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <input id='datasetTopology' type='text' class='form-control'
                        value='samples_processing_newyorkResidential_R'/></div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon' data-i18n="resources.text_tolerance">容限</span>
+                <span class='input-group-addon' data-i18n="resources.text_tolerance"></span>
                 <input id='tolerance' type='text' class='form-control' value='0.000001'/>
             </div>
             <p></p>

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_SummaryRegionJobService">区域汇总分析</title>
+    <title data-i18n="resources.title_SummaryRegionJobService"></title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
@@ -17,41 +17,40 @@
 <div id="popup" class="ol-popup" style='width: 500px'>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title" data-i18n="resources.title_SummaryRegionJobService">区域汇总分析</h3>
+            <h3 class="panel-title" data-i18n="resources.title_SummaryRegionJobService"></h3>
         </div>
         <div class="panel-body">
             <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_inputData">输入数据</span><span
+                <span class="input-group-addon"><span data-i18n="resources.text_inputData"></span><span
                         data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　　　　</span>
                 <input id="datasetName" type="text" class="form-control"
                        value="samples_processing_newyorkZone_R"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_summaryType">汇总类型</span><span
+                <span class="input-group-addon"><span data-i18n="resources.text_summaryType"></span><span
                         data-i18n="[title]resources.text_requiredField"
                         style="color: red;"> * </span>　　　　　</span>
                 <div>
                     <select class="form-control" id="type" name="clientType">
-                        <option value="SUMMARYMESH" selected="selected" data-i18n="resources.text_summaryMesh">网格面汇总
-                        </option>
-                        <option value="SUMMARYREGION" data-i18n="resources.text_summaryRegion">多边形汇总</option>
+                        <option value="SUMMARYMESH" selected="selected" data-i18n="resources.text_summaryMesh"></option>
+                        <option value="SUMMARYREGION" data-i18n="resources.text_summaryRegion"></option>
                     </select>
                 </div>
             </div>
             <p>
             <div id="meshTypeS" class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_meshSurfaceType">网格面汇总类型<span
+                <span class="input-group-addon" data-i18n="resources.text_meshSurfaceType"><span
                         data-i18n="[title]resources.text_requiredField"
                         style="color: red;"> * </span>　　</span>
                 <select class="form-control" id="meshType" name="clientType">
-                    <option value="0" selected="selected" data-i18n="resources.text_4grid">四边形网格</option>
-                    <option value="1" data-i18n="resources.text_6grid">六边形网格</option>
+                    <option value="0" selected="selected" data-i18n="resources.text_4grid"></option>
+                    <option value="1" data-i18n="resources.text_6grid"></option>
                 </select>
             </div>
             <p>
             <div id="regionDatasetS" class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_summaryDataset">汇总数据集</span><span
+                <span class="input-group-addon"><span data-i18n="resources.text_summaryDataset"></span><span
                         data-i18n="[title]resources.text_requiredField"
                         style="color: red;"> * </span>　　</span>
                 <input id="regionDataset" type="text" class="form-control"
@@ -59,17 +58,17 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_analysisRange">分析范围　　　　　</span>
+                <span class="input-group-addon" data-i18n="resources.text_analysisRange"></span>
                 <input id="query" type="text" class="form-control" value="-74.050,40.650,-73.850,40.850"/>
             </div>
             <p>
             <p>
             <div class="input-group">
-                <span class="input-group-addon" data-i18n="resources.text_statisticStandardField">以标准属性字段统计</span>
+                <span class="input-group-addon" data-i18n="resources.text_statisticStandardField"></span>
                 <span class="form-control">
                     <input id="standardSummaryFields" type="checkbox">
                 </span>
-                <span class="input-group-addon" data-i18n="resources.text_statisticWeightField">以权重字段统计　</span>
+                <span class="input-group-addon" data-i18n="resources.text_statisticWeightField"></span>
                 <span class="form-control">
                     <input id="weightedSummaryFields" type="checkbox">
                 </span>
@@ -78,7 +77,7 @@
                 <div id="standardS" style="display: none">
                     <div class="input-group">
                         <span class="input-group-addon"><span
-                                data-i18n="resources.text_statisticAttrFieldMode">属性字段统计模式</span><span
+                                data-i18n="resources.text_statisticAttrFieldMode"></span><span
                                 data-i18n="[title]resources.text_requiredField"
                                 style="color: red;"> * </span>　</span>
                         <input id="standardStatisticModes" type="text" class="form-control"
@@ -86,7 +85,7 @@
                     </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_AttrFieldName">属性字段名</span><span
+                <span class="input-group-addon"><span data-i18n="resources.text_AttrFieldName"></span><span
                         data-i18n="[title]resources.text_requiredField"
                         style="color: red;"> * </span>　　　　</span>
                 <input id="standardFields" type="text" class="form-control"
@@ -97,7 +96,7 @@
         <div id="weightS" style="display: none">
             <div class="input-group">
                 <span class="input-group-addon"><span
-                        data-i18n="resources.text_statisticWeightFieldMode">权重字段统计模式</span><span
+                        data-i18n="resources.text_statisticWeightFieldMode"></span><span
                         data-i18n="[title]resources.text_requiredField"
                         style="color: red;"> * </span>　</span>
                 <input id="weightedStatisticModes" type="text" class="form-control"
@@ -105,7 +104,7 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon"><span data-i18n="resources.text_weightFieldName">权重字段名</span><span
+                <span class="input-group-addon"><span data-i18n="resources.text_weightFieldName"></span><span
                         data-i18n="[title]resources.text_requiredField"
                         style="color: red;"> * </span>　　　　</span>
                 <input id="weightedFields" type="text" class="form-control"
@@ -115,12 +114,12 @@
         </div>
 
         <div id="resolutionS" class="input-group">
-            <span class="input-group-addon" data-i18n="resources.text_gridSize">网格大小　　　　　</span>
+            <span class="input-group-addon" data-i18n="resources.text_gridSize"></span>
             <input id="resolution" type="text" class="form-control" value="100"/>
         </div>
         <p>
         <div id="meshSizeUnitS" class="input-group">
-            <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit">网格大小单位　　　</span>
+            <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit"></span>
             <select class="form-control" id="meshSizeUnit" name="clientType">
                 <option value="Meter" selected="selected">Meter</option>
                 <option value="Kilometer">Kilometer</option>
@@ -131,7 +130,7 @@
         </div>
         <p>
         <div class="input-group">
-            <span class="input-group-addon" data-i18n="resources.text_lengthAndArea">是否统计长度或面积</span>
+            <span class="input-group-addon" data-i18n="resources.text_lengthAndArea"></span>
             <span class="form-control">
                     <input id="sumShape" type="checkbox" checked>
                 </span>

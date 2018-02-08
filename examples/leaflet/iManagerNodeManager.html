@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_nodeManagementUseExample">iManager 节点管理使用示例</title>
+    <title data-i18n="resources.title_nodeManagementUseExample"></title>
 
     <style>
         .panel {
@@ -17,27 +17,27 @@
 <body style=" margin: 0;overflow: auto;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div class="container">
     <div class="page-header">
-        <h4 data-i18n="resources.title_nodeManagementUseExample">iManager 节点管理使用示例</h4>
+        <h4 data-i18n="resources.title_nodeManagementUseExample"></h4>
     </div>
     <div class="row">
         <table class="table table-bordered col-md-6">
             <thead>
             <tr>
-                <th class="text-center" data-i18n="resources.text_function">功能</th>
-                <th class="text-center" data-i18n="resources.text_instance">示例</th>
+                <th class="text-center" data-i18n="resources.text_function"></th>
+                <th class="text-center" data-i18n="resources.text_instance"></th>
             </tr>
             </thead>
             <tbody>
             <!--登录-->
             <tr>
-                <td class="text-center text-success" data-i18n="resources.text_login">登录</td>
+                <td class="text-center text-success" data-i18n="resources.text_login"></td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
                                     <label for="loginUrl_iManager" class="col-md-2 control-label"
-                                           data-i18n="resources.text_serviceAddress">服务地址</label>
+                                           data-i18n="resources.text_serviceAddress"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="loginUrl_iManager"
                                                data-i18n="[placeholder]resources.text_iManagerAddress">
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="username_iManager" class="col-md-2 control-label"
-                                           data-i18n="resources.text_userName">用户名</label>
+                                           data-i18n="resources.text_userName"></label>
 
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="username_iManager" value="admin">
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password_iManager" class="col-md-2 control-label"
-                                           data-i18n="resources.text_password">密码</label>
+                                           data-i18n="resources.text_password"></label>
 
                                     <div class="col-md-8">
                                         <input type="password" class="form-control" id="password_iManager"
@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
                                         <a class="btn btn-success" onclick="loginManager()"
-                                           data-i18n="resources.text_login">登录</a>
+                                           data-i18n="resources.text_login"></a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -74,7 +74,7 @@
 
             <!--token 获取iServer列表-->
             <tr>
-                <td class="text-center text-success" data-i18n="resources.text_getIserverlist">获取iServer列表</td>
+                <td class="text-center text-success" data-i18n="resources.text_getIserverlist"></td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
@@ -88,10 +88,10 @@
                                                     <div><span>id</span></div>
                                                 </th>
                                                 <th rowspan="1" colspan="1" style="width: 150px;">
-                                                    <div><span data-i18n="resources.text_name">名称</span></div>
+                                                    <div><span data-i18n="resources.text_name"></span></div>
                                                 </th>
                                                 <th rowspan="1" colspan="1" style="width: 150px;">
-                                                    <div><span data-i18n="resources.text_address">地址</span></div>
+                                                    <div><span data-i18n="resources.text_address"></span></div>
                                                 </th>
                                             </tr>
                                             </thead>
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
                                         <a class="btn btn-success" onclick="iServerList()"
-                                           data-i18n="resources.text_gain">获取</a>
+                                           data-i18n="resources.text_gain"></a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -115,13 +115,13 @@
 
             <!--token 启动节点-->
             <tr>
-                <td class="text-center text-success" data-i18n="resources.text_activateNode">启动节点</td>
+                <td class="text-center text-success" data-i18n="resources.text_activateNode"></td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="start_node_ids" class="col-md-2 control-label" data-i18n="resources.text_nodeID">节点id</label>
+                                    <label for="start_node_ids" class="col-md-2 control-label" data-i18n="resources.text_nodeID"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="start_node_ids"
                                                data-i18n="[placeholder]resources.text_nodeIDNeedToActivate">
@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="startNodes()" data-i18n="resources.btn_startup">启动</a>
+                                        <a class="btn btn-success" onclick="startNodes()" data-i18n="resources.btn_startup"></a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -140,13 +140,13 @@
 
             <!--token 停止节点-->
             <tr>
-                <td class="text-center text-success" data-i18n="resources.text_stopNode">停止节点</td>
+                <td class="text-center text-success" data-i18n="resources.text_stopNode"></td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="stop_node_ids" class="col-md-2 control-label" data-i18n="resources.text_nodeID">>节点id</label>
+                                    <label for="stop_node_ids" class="col-md-2 control-label" data-i18n="resources.text_nodeID"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="stop_node_ids"
                                                data-i18n="[placeholder]resources.text_nodeIDNeedToStop">
@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="stopNodes()" data-i18n="resources.btn_stop">停止</a>
+                                        <a class="btn btn-success" onclick="stopNodes()" data-i18n="resources.btn_stop"></a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -165,20 +165,20 @@
 
             <!--创建iServer-->
             <tr>
-                <td class="text-center text-success" data-i18n="resources.text_createiServer">创建iServer</td>
+                <td class="text-center text-success" data-i18n="resources.text_createiServer"></td>
                 <td>
                     <div class="col-md-10 col-md-offset-1">
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="create_nodeName" class="col-md-2 control-label" data-i18n="resources.text_nodeName">节点名称</label>
+                                    <label for="create_nodeName" class="col-md-2 control-label" data-i18n="resources.text_nodeName"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="create_nodeName"
                                                data-i18n="[placeholder]resources.text_input_tips_nodeName">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="create_physicalMachineName" class="col-md-2 control-label" data-i18n="resources.text_physicalMachine">物理机名称</label>
+                                    <label for="create_physicalMachineName" class="col-md-2 control-label" data-i18n="resources.text_physicalMachine"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="create_physicalMachineName"
                                                data-i18n="[placeholder]resources.text_input_tips_physicalMachine">
@@ -186,7 +186,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="createIServer()" data-i18n="resources.btn_create">创建</a>
+                                        <a class="btn btn-success" onclick="createIServer()" data-i18n="resources.btn_create"></a>
                                     </div>
                                 </div>
                             </fieldset>

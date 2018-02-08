@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_singleObjectQueryJobService">单对象查询分析</title>
+    <title data-i18n="resources.title_singleObjectQueryJobService"></title>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
@@ -24,39 +24,39 @@
 <div id="popup" class="ol-popup" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title' data-i18n="resources.title_singleObjectQueryJobService">单对象查询分析</h3>
+            <h3 class='panel-title' data-i18n="resources.title_singleObjectQueryJobService"></h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset">源数据集</span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
+                <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
                 <input id='datasetName' type='text' class='form-control'
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectMode">查询对象模式</span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectMode"></span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <select class='form-control' id='queryMode' name='queryMode'>
-                    <option value='DATASET' selected data-i18n="resources.text_dataset">数据集</option>
+                    <option value='DATASET' selected data-i18n="resources.text_dataset"></option>
                     <option value='GEOJSON'>Geojson</option>
                 </select>
             </div>
             <p></p>
             <div class='input-group' id='datasetDiv'>
-                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectDataset">查询对象数据集</span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_queryObjectDataset"></span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <input id='datasetQuery' type='text' class='form-control'
                        value='samples_processing_singleRegion_R'/>
             </div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode">空间查询模式</span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_boundsQueryMode"></span><span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
                 <select class='form-control' id='mode' name='mode'>
-                    <option value='CONTAIN' data-i18n="resources.text_contain">包含</option>
-                    <option value='CROSS' data-i18n="resources.text_cross">交叉</option>
-                    <option value='DISJOINT' data-i18n="resources.text_disjoint">分离</option>
-                    <option value='IDENTITY' data-i18n="resources.text_Identity">重合</option>
-                    <option value='INTERSECT' selected data-i18n="resources.text_intersect">相交</option>
-                    <option value='OVERLAP' data-i18n="resources.text_overlap">叠加</option>
-                    <option value='TOUCH' data-i18n="resources.text_touch">邻接</option>
-                    <option value='WITHIN' data-i18n="resources.text_within">被包含</option>
+                    <option value='CONTAIN' data-i18n="resources.text_contain"></option>
+                    <option value='CROSS' data-i18n="resources.text_cross"></option>
+                    <option value='DISJOINT' data-i18n="resources.text_disjoint"></option>
+                    <option value='IDENTITY' data-i18n="resources.text_Identity"></option>
+                    <option value='INTERSECT' selected data-i18n="resources.text_intersect"></option>
+                    <option value='OVERLAP' data-i18n="resources.text_overlap"></option>
+                    <option value='TOUCH' data-i18n="resources.text_touch"></option>
+                    <option value='WITHIN' data-i18n="resources.text_within"></option>
                 </select>
             </div>
             <p></p>
@@ -68,9 +68,9 @@
 </div>
 <div id="draw" class="ol-draw">
     <div class="btn-group" role="group" aria-label="...">
-        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default" data-i18n="resources.text_input_value_drawPolygon">绘面</button>
+        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default" data-i18n="resources.text_input_value_drawPolygon"></button>
         <br>
-        <button id="clear" value='Clear' type="button" class="btn btn-default" data-i18n="resources.text_input_value_clear">清除</button>
+        <button id="clear" value='Clear' type="button" class="btn btn-default" data-i18n="resources.text_input_value_clear"></button>
     </div>
 </div>
 <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>

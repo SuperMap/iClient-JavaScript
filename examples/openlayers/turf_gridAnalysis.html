@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_turfGridAnalysis">Turf 格网分析</title>
+    <title data-i18n="resources.title_turfGridAnalysis"></title>
     <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
     <style>
         .editPane {
@@ -38,51 +38,51 @@
 </div>
 <div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center' data-i18n="resources.text_createGrid">创建格网</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_createGrid"></h5></div>
     <div class='panel-body' id='gridsBody'>
         <div class='input-group'>
-            <span class='input-group-addon'><span data-i18n="resources.text_gridAnalysisType">格网分析类型</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
+            <span class='input-group-addon'><span data-i18n="resources.text_gridAnalysisType"></span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
             <select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>
-                <option value='hexGrid' selected data-i18n="resources.text_hexGrid">蜂巢格网</option>
-                <option value='pointGrid' data-i18n="resources.text_pointGrid">点格网</option>
-                <option value='squareGrid' data-i18n="resources.text_squareGrid">方形格网</option>
-                <option value='triangleGrid' data-i18n="resources.text_triangleGrid">三角格网</option>
+                <option value='hexGrid' selected data-i18n="resources.text_hexGrid"></option>
+                <option value='pointGrid' data-i18n="resources.text_pointGrid"></option>
+                <option value='squareGrid' data-i18n="resources.text_squareGrid"></option>
+                <option value='triangleGrid' data-i18n="resources.text_triangleGrid"></option>
             </select>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'><span data-i18n="resources.text_unitGridSize">单元格网大小</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
+            <span class='input-group-addon'><span data-i18n="resources.text_unitGridSize"></span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
             <input id='cellSize' type='text' class='form-control' value='50'/>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'><span data-i18n="resources.text_gridUnitSizeUnit">格网单元大小单位</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
+            <span class='input-group-addon'><span data-i18n="resources.text_gridUnitSizeUnit"></span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
             <select class='form-control' id='units' name='mode'>
-                <option value='degrees' data-i18n="resources.text_degrees">度</option>
-                <option value='radians' data-i18n="resources.text_radians">弧度</option>
-                <option value='miles' selected data-i18n="resources.text_miles">英里</option>
-                <option value='kilometers' data-i18n="resources.text_kilometers">千米</option>
+                <option value='degrees' data-i18n="resources.text_degrees"></option>
+                <option value='radians' data-i18n="resources.text_radians"></option>
+                <option value='miles' selected data-i18n="resources.text_miles"></option>
+                <option value='kilometers' data-i18n="resources.text_kilometers"></option>
             </select>
         </div>
         <p></p>
         <div id='squareGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon' data-i18n="resources.text_adjustSize">是否调整宽度和高度以适应bbox的尺寸</span>
+            <span class='input-group-addon' data-i18n="resources.text_adjustSize"></span>
             <span class='form-control'>
                 <input id='completelyWithin' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div id='pointGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon' data-i18n="resources.text_adjustPoint">调整点到格网中心位置</span>
+            <span class='input-group-addon' data-i18n="resources.text_adjustPoint"></span>
             <span class='form-control'>
                 <input id='iscentered' type='checkbox'>
-                </span><span class='input-group-addon' data-i18n="resources.text_returnedByTriangle">创建范围为多边形</span>
+                </span><span class='input-group-addon' data-i18n="resources.text_returnedByTriangle"></span>
             <span class='form-control'><input id='isbboxIsMask' type='checkbox'>
                 </span>
         </div>
         <p></p>
         <div id='hexGridChoic' class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_adjustPoint">是否以三角形的形式返回</span>
+            <span class='input-group-addon' data-i18n="resources.text_adjustPoint"></span>
             <span class='form-control'>
                 <input id='triangles' type='checkbox'>
                 </span>

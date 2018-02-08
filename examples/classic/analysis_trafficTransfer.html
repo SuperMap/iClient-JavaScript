@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title data-i18n="resources.title_trafficTransfer">公交换乘服务</title>
+    <title data-i18n="resources.title_trafficTransfer"></title>
     <style type="text/css">
         body {
             margin: 0;
@@ -33,7 +33,7 @@
 <body>
 <div id="toolbar" class="panel panel-primary toolbar">
     <div class='panel-heading'><h5 class='panel-title text-center' data-i18n="resources.text_trafficTransfer">
-        公交换乘服务</h5></div>
+    </h5></div>
     <div class='panel'>
         <div class='input-group'>
             <div id='result' style="width: 360px" class='container'></div>
@@ -555,7 +555,7 @@
                 var otherLines = transSolutions[indexX].linesItems[indexY],
                     links = "";
                 if (otherLines && otherLines.lineItems.length > 1) {
-                    links = "</br>"+resources.text_alsoRide;
+                    links = "</br>" + resources.text_alsoRide;
                     for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
                         var line = otherLines.lineItems[oti];
                         if (item.lineName !== line.lineName) {
