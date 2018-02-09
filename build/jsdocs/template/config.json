@@ -7,8 +7,8 @@
                 "name_en": "Map",
                 "content": {
                     "Theme": {
-                        "name": "Theme",
-                        "name_en": "专题图"
+                        "name": "专题图",
+                        "name_en": "Theme"
                     }
                 }
             },

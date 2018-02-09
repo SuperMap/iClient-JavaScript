@@ -181,12 +181,12 @@ var exampleConfig = {
                     fileName: "04_overlayAnalystService"
                 }, {
                     name: "地形曲率计算",
-                    name_en: "discrete point interpolation",
+                    name_en: "terrain curvature calculation",
                     thumbnail: "mb_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
                 }, {
                     name: "栅格代数运算",
-                    name_en: "terrain curvature calculation",
+                    name_en: "math expression",
                     thumbnail: "mb_mathExpressionAnalysisService.png",
                     fileName: "04_mathExpressionAnalysisService"
                 }, {

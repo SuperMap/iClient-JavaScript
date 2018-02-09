@@ -6,7 +6,7 @@ import '../REST';
 
 /**
  * @class SuperMap.Image
- * @category  iServer Data
+ * @category  iServer Map
  * @classdesc UGC 影像图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：<br>
