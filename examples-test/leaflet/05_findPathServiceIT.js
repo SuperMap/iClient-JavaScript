@@ -16,7 +16,7 @@ module.exports = {
             this.assert.equal(result.value.length, 34, "expect Number of marker to be 34, actual is " + result.value.length);
         });
         browser.elements('tag name', 'path', function (result) {
-            this.assert.equal(result.value.length, 31, "expect Number of findPathService path to be 31, actual is " + result.value.length);
+            this.assert.equal(result.value.length, 1, "expect Number of findPathService path to be 31, actual is " + result.value.length);
         });
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
