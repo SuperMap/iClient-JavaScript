@@ -66,10 +66,10 @@
             me._div = L.DomUtil.create('div', 'panel panel-primary');
             me._div.innerHTML = "<div class='panel-heading'>" +
                 "<h5 class='panel-title text-center'>" + resources.text_edit + "</h5></div><div class='panel-body content'>" +
-                "<input type='button' class='btn btn-default' value=" + resources.btn_addMarker + " onclick='addMarker()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value=" + resources.btn_undoAdd + " onclick='revocationMarker()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value=" + resources.text_input_value_submit + " onclick='commit()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value=" + resources.text_input_value_clear + " onclick='clearLayer()'/></div>";
+                "<input type='button' class='btn btn-default' value='" + resources.btn_addMarker + "' onclick='addMarker()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value='" + resources.btn_undoAdd + "' onclick='revocationMarker()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value='" + resources.text_input_value_submit + "' onclick='commit()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value='" + resources.text_input_value_clear + "' onclick='clearLayer()'/></div>";
 
             handleMapEvent(me._div, me._map);
             return me._div;

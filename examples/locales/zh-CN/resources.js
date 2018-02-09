@@ -132,6 +132,8 @@ window.resources = {
     "resources": {
         "title_tiledMapLayer4326": "SuperMap REST 地图服务底图",
         "title_tiledMapLayer3857": "SuperMap REST 地图服务底图",
+        "title_imageMapLayer3857":"SuperMap REST 地图服务底图(image)",
+        "title_imageMapLayer4326":"SuperMap REST 地图服务底图(image)",
         "title_addressMatchService": "地址匹配服务",
         "title_bufferAnalyst1": "缓冲区分析一",
         "title_bufferAnalyst2": "缓冲区分析二",
@@ -240,6 +242,7 @@ window.resources = {
         "title_symbolExtendProperty":"自定义属性",
         "title_symbolGeometricQuery":"几何查询",
         "title_anchored":"自适应信息框",
+        "title_customPopup":"自定义信息框",
         "title_infoWindow":"第三方信息框",
         "title_shadowPopup":"带阴影弹窗",
         "title_simplePopup":"简易信息框",
@@ -447,7 +450,7 @@ window.resources = {
         "title_vectorTileLayerNatural":"SuperMap REST 淡雅绿风格矢量底图",
         "title_vectorTileLayerNight":"SuperMap REST 月夜风格矢量底图",
         "title_vectorTileLayerNormal":"SuperMap REST 矢量瓦片",
-
+        "title_iportalWebMap":"SuperMap iPortal地图",
 
 
         "text_code": "正向匹配",
@@ -700,11 +703,11 @@ window.resources = {
         "text_commandCar": "指挥车",
         "text_airportForceDeployment": "机场兵力部署",
         "text_satelliteCustomAttr": "卫星自定义属性",
+        "text_orientation": "方向",
         "text_Chongqing": "重庆",
         "text_Nanchang": "南昌",
         "text_Beijing": "北京",
         "text_Yinchuan": "银川",
-        "text_orientation": "方向",
         "text_seep1": "速度",
         "text_height": "高度",
         "text_time": "时间",
@@ -840,9 +843,9 @@ window.resources = {
         "text_heatMapColorSection": "热点图颜色分段配置",
         "text_colorSection": "颜色分段配置",
         "text_temperatureRange": "温度范围",
+        "text_colorGrad":"颜色渐变",
         "text_heatMapColorManual": "热点图颜色手动配置",
         "text_inputColor": "请输入颜色值",
-        "text_chooseColor": "请选择颜色值",
         "text_addedColor": "已添加颜色值",
         "text_country": "国家",
         "text_capital": "首都",
@@ -1057,7 +1060,13 @@ window.resources = {
         "text_querypoint":"查询点",
         "text_beyondDistance":"超出全程距离范围,请重新填写",
         "text_measure":"测量",
-
+        "text_attrAnimation":"属性动画",
+        "text_flickerAnimation":"闪烁动画",
+        "text_growthAnimation": "生长动画",
+        "text_revolveAnimation":"旋转动画",
+        "text_proportionAnimation":"比例动画",
+        "text_SHAnimation":"显隐动画",
+        "text_pathAnimation":"路径动画",
 
 
         "btn_overlayAnalyst": "叠加分析",
@@ -1224,7 +1233,6 @@ window.resources = {
         "btn_create":"创建",
 
 
-
         "msg_addPath": "请生成路径，用于缓冲区分析",
         "msg_bufferAnalyst": "请先做缓冲区分析，以得到查询的范围",
         "msg_eventPoint": "请选择事件点！",
@@ -1330,6 +1338,9 @@ window.resources = {
         "set_style":"top: -23px;left: 86px;",
         "style_width420px": 'width: 420px',
         "style_width350px": 'width: 350px',
+        "style_heatMapWidth":"width: 280px",
+        "style_plotAnimation": "width: 120px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;",
+
 
 
 

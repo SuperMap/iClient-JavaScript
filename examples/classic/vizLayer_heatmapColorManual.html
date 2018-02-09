@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-<div id="toolbar" class="panel panel-primary">
+<div id="toolbar" class="panel panel-primary" data-i18n="[style]resources.style_heatMapWidth">
     <div class='panel-heading'>
         <h5 class='panel-title text-center' data-i18n="resources.text_heatMapColorManual"></h5></div>
     <div class='panel-body content'>
@@ -70,13 +70,17 @@
                 </select>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon' style="width:112px;height: 16px;" data-i18n="resources.text_radius"></span>
+                <span class='input-group-addon' style="width:112px;height: 16px;"
+                      data-i18n="resources.text_inputColor"></span>
                 <input type="text" class='form-control' id="cp1text" value="" style=" width:102px;"/>
-                <span class='input-group-addon'><img src='./images/colorpicker.png' id="cp1" style="cursor:pointer"/></span>
+                <span class='input-group-addon'><img src='./images/colorpicker.png' id="cp1"
+                                                     style="cursor:pointer"/></span>
             </div>
         </div>
-        <input type="button" class="btn btn-default" id="btn1" data-i18n="[value]resources.btn_startDraw" onclick="createHeatPoints()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearHeatPoints()"/>
+        <input type="button" class="btn btn-default" id="btn1" data-i18n="[value]resources.btn_startDraw"
+               onclick="createHeatPoints()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
+               onclick="clearHeatPoints()"/>
     </div>
 </div>
 <div class="row panel panel-primary" id="colorList">
@@ -186,7 +190,7 @@
         if (severColor.value.match(/rgb()/)) {
             for (var i = 0; i < color.length; i++) {
                 if (severColor.value == color[i]) {
-                    widgets.alert.showAlert(resources.msg_repeatedAdditions,false);
+                    widgets.alert.showAlert(resources.msg_repeatedAdditions, false);
                     return;
                     $("#colorList").css("display", "block");
                 }

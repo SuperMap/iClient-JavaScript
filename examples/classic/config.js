@@ -149,7 +149,7 @@ var exampleConfig = {
                     fileName: "overlay_ombreStyleLayer"
                 }, {
                     name: "矢量图层数据点击事件",
-                    name_en: "Vector layer data event",
+                    name_en: "vector layer data event",
                     thumbnail: "overlay_vectorDataEvent.png",
                     fileName: "overlay_vectorDataEvent"
                 }, {
@@ -598,12 +598,12 @@ var exampleConfig = {
                     fileName: "analysis_interpolationAnalystByIDW"
                 }, {
                     name: "克吕金插值分析",
-                    name_en: "Kriging interpolation",
+                    name_en: "kriging interpolation",
                     thumbnail: "analysis_interpolationAnalystByKriging.png",
                     fileName: "analysis_interpolationAnalystByKriging"
                 }, {
                     name: "径向基函数插值分析",
-                    name_en: "KrigingUniversal interpolation",
+                    name_en: "kriging universal interpolation",
                     thumbnail: "analysis_interpolationAnalystByRBF.png",
                     fileName: "analysis_interpolationAnalystByRBF"
                 }, {

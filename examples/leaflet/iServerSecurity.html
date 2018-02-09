@@ -26,21 +26,24 @@
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="loginUrl_iserver" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress"></label>
+                                    <label for="loginUrl_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_serviceAddress" style="width:26.666667%;"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="loginUrl_iserver"
                                                data-i18n="[placeholder]resources.text_iServerAddress">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="username_login" class="col-md-2 control-label" data-i18n="resources.text_userName"></label>
+                                    <label for="username_login" class="col-md-2 control-label"
+                                           data-i18n="resources.text_userName" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="username_login">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password_login" class="col-md-2 control-label" data-i18n="resources.text_password"></label>
+                                    <label for="password_login" class="col-md-2 control-label"
+                                           data-i18n="resources.text_password" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <input type="password" class="form-control" id="password_login">
@@ -48,8 +51,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="loginiServer()" data-i18n="resources.text_login"></a>
-                                        <a class="btn btn-success" onclick="logoutiServer()" data-i18n="resources.text_logout"></a>
+                                        <a class="btn btn-success" onclick="loginiServer()"
+                                           data-i18n="resources.text_login"></a>
+                                        <a class="btn btn-success" onclick="logoutiServer()"
+                                           data-i18n="resources.text_logout"></a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -66,52 +71,60 @@
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="serviceUrlToken_iserver" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress"></label>
+                                    <label for="serviceUrlToken_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_serviceAddress" style="width:26.666667%;"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="serviceUrlToken_iserver"
                                                data-i18n="[placeholder]resources.text_iServerAddress">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="username_iserver" class="col-md-2 control-label" data-i18n="resources.text_userName"></label>
+                                    <label for="username_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_userName" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="username_iserver">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password_iserver" class="col-md-2 control-label" data-i18n="resources.text_password"></label>
+                                    <label for="password_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_password" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <input type="password" class="form-control" id="password_iserver">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="clientType_iserver" class="col-md-2 control-label"  data-i18n="resources.text_clientID"></label>
+                                    <label for="clientType_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_clientID" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <select class="form-control" id="clientType_iserver" name="clientType">
                                             <option value="Referer" selected="selected">HTTP Referer</option>
                                             <option value="IP" data-i18n="resources.text_clientIP"></option>
-                                            <option value="RequestIP" data-i18n="resources.text_currentRequestIP"></option>
+                                            <option value="RequestIP"
+                                                    data-i18n="resources.text_currentRequestIP"></option>
                                             <option value="NONE" data-i18n="resources.text_noClientLimit"></option>
 
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="referer_iserver" class="col-md-2 control-label" data-i18n="resources.text_refererIPEmpty"></label>
+                                    <label for="referer_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_refererIPEmpty" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <input class="form-control" id="referer_iserver">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="expiration_iserver" class="col-md-2 control-label" data-i18n="resources.text_termValid"></label>
+                                    <label for="expiration_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_termValid" style="width:26.666667%;"></label>
 
                                     <div class="col-md-8">
                                         <select class="form-control" id="expiration_iserver" name="expiration">
-                                            <option value="60" selected="selected" data-i18n="resources.text_oneHour"></option>
+                                            <option value="60" selected="selected"
+                                                    data-i18n="resources.text_oneHour"></option>
                                             <option value="1440" data-i18n="resources.text_oneDay"></option>
                                             <option value="10080" data-i18n="resources.text_oneWeek"></option>
                                             <option value="43200" data-i18n="resources.text_oneMonth"></option>
@@ -121,7 +134,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
-                                        <a class="btn btn-success" onclick="generateiServerToken()" data-i18n="resources.text_applyToken"></a>
+                                        <a class="btn btn-success" onclick="generateiServerToken()"
+                                           data-i18n="resources.text_applyToken"></a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -138,21 +152,23 @@
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="tokenServiceUrl_iserver" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress"></label>
+                                    <label for="tokenServiceUrl_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_serviceAddress" style="width:26.666667%;"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="tokenServiceUrl_iserver"
                                                placeholder="http://localhost:8090/web/services/32">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="token_iserver" class="col-md-2 control-label">token</label>
+                                    <label for="token_iserver" class="col-md-2 control-label" style="width:26.666667%;">Token</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="token_iserver">
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 text-center">
-                                    <a class="btn btn-success" onclick="registeriServerTokenAndRequestService()" data-i18n="resources.text_accessing"></a>
+                                    <a class="btn btn-success" onclick="registeriServerTokenAndRequestService()"
+                                       data-i18n="resources.text_accessing"></a>
                                 </div>
                             </fieldset>
                         </form>
@@ -168,20 +184,22 @@
                         <form class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">
-                                    <label for="serviceUrlMap_iserver" class="col-md-2 control-label" data-i18n="resources.text_serviceAddress"></label>
+                                    <label for="serviceUrlMap_iserver" class="col-md-2 control-label"
+                                           data-i18n="resources.text_serviceAddress" style="width:26.666667%;"></label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="serviceUrlMap_iserver">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="mapToken_iserver" class="col-md-2 control-label">token</label>
+                                    <label for="mapToken_iserver" class="col-md-2 control-label" style="width:26.666667%;">Token</label>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" id="mapToken_iserver">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12  text-center">
-                                        <a class="btn btn-success" onclick="showMapWithToken()" data-i18n="resources.text_getMap"></a>
+                                        <a class="btn btn-success" onclick="showMapWithToken()"
+                                           data-i18n="resources.text_getMap"></a>
                                     </div>
                                 </div>
                             </fieldset>

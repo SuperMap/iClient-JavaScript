@@ -71,8 +71,7 @@
         <h5 class='panel-title text-center' data-i18n="resources.title_plotGOAnimation"></h5></div>
     <div class='panel-body content'>
         <div class='input-group' style="margin-top:15px;margin-left: 10px;">
-            <select class="search-query form-control" id="SLT" style="width: 120px;height: 30px; margin-bottom: 0;
-            border-bottom-right-radius: 4px; border-top-right-radius: 4px;"></select>&nbsp;&nbsp;
+            <select class="search-query form-control" id="SLT" data-i18n="[style]resources.style_plotAnimation"></select>&nbsp;&nbsp;
             <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createAnimation"
                    onclick="createAnimation()"/>&nbsp;&nbsp;
             <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="play()"/>&nbsp;&nbsp;
@@ -138,7 +137,8 @@
     var sitDataLayers;
     var plottingEdit;
     var drawGraphicObjects = [];
-    var item = ["属性动画", "闪烁动画", "生长动画", "旋转动画", "比例动画", "显隐动画", "路径动画"], select, animationtype;
+    var item = [resources.text_attrAnimation, resources.text_flickerAnimation, resources.text_growthAnimation, resources.text_revolveAnimation, resources.text_proportionAnimation, resources.text_SHAnimation, resources.text_pathAnimation],
+        select, animationtype;
     var goAnimationManager;
 
     init();
