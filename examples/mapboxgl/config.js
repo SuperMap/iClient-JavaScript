@@ -623,7 +623,7 @@ var exampleConfig = {
                 }, {
                     name: "卷帘控件",
                     name_en: "Swipe between maps",
-                    thumbnail: "control_swipeBetween  nMaps.png",
+                    thumbnail: "control_swipeBetweenMaps.png",
                     fileName: "control_swipeBetweenMaps"
                 }]
             }
