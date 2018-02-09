@@ -6,19 +6,8 @@ import '../core/Base';
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {Object} 图形对象
- * @param options - {Object} 可选参数。如：<br>
- *        stroke - {boolean} <br>
- *        color - {string} 颜色<br>
- *        weight - {number} 线宽<br>
- *        opacity - {number}透明度 <br>
- *        lineCap - {string} 线帽形状<br>
- *        lineJoin - {string} 线条交汇边角形状<br>
- *        fill - {boolean} 是否填充<br>
- *        fillColor - {string} 填充色<br>
- *        fillOpacity - {number}填充透明度<br>
- *        fillRule - {string} 填充规则<br>
- *        radius - {number}半径
+ * @param graphics - {Array<L.supermap.Graphic>} 图形对象
+ * @param options - {Object} 图层参数，暂时为空
  */
 export var GraphicLayer = L.Path.extend({
 
@@ -63,7 +52,8 @@ export var GraphicLayer = L.Path.extend({
         },
 
         _updatePath: function () {
-            this._renderer._drawGraphics(this._getGraphicsInBounds());
+            var graphics = this._getGraphicsInBounds();
+            this._renderer._drawGraphics(graphics);
         },
 
         _project: function () {
@@ -99,11 +89,20 @@ export var GraphicLayer = L.Path.extend({
             var me = this;
             var graphics = me._getGraphicsInBounds();
             for (var i = 0; i < graphics.length; i++) {
+                var p1, p2, bounds;
                 var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
-                var canvas = graphics[i].getCanvas();
-                var p1 = L.point(center.x - canvas.width / 2, center.y - canvas.height / 2),
-                    p2 = L.point(center.x + canvas.width / 2, center.y + canvas.height / 2),
-                    bounds = L.bounds(p1, p2);
+                var style = graphics[i].getStyle();
+                if (style.img) {
+                    var anchor = style.anchor;
+                    p1 = L.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
+                    p2 = L.point(center.x + style.img.width / 2, center.y + style.img.height / 2);
+                    p1 = calculateOffset(p1, anchor);
+                    p2 = calculateOffset(p2, anchor);
+                } else {
+                    p1 = L.point(center.x - style.width / 2, center.y - style.height / 2);
+                    p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
+                }
+                bounds = L.bounds(p1, p2);
                 if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
                     return me.options.handleClick.call(me, graphics[i]);
                 }
@@ -113,19 +112,71 @@ export var GraphicLayer = L.Path.extend({
 );
 
 L.Canvas.include({
+
     _drawGraphics: function (graphics) {
         var me = this;
         me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.map(function (graphic) {
-            var canvas = graphic.getCanvas();
-            var pt = me._map.latLngToLayerPoint(graphic.getLatLng());
-            var p0 = pt.x - canvas.width / 2;
-            var p1 = pt.y - canvas.height / 2;
-            me._ctx.drawImage(canvas, p0, p1);
-            return graphic;
+        graphics.forEach(function (graphic) {
+            var style = graphic.getStyle();
+            if (style.img) { //绘制图片
+                me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
+            } else {//绘制canvas
+                me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
+            }
         })
+    },
+
+    _drawCanvas: function (ctx, style, latLng) {
+
+        var canvas = style;
+        var pt = this._map.latLngToLayerPoint(latLng);
+        var p0 = pt.x - canvas.width / 2;
+        var p1 = pt.y - canvas.height / 2;
+        var width = canvas.width;
+        var height = canvas.height;
+
+        ctx.drawImage(canvas, p0, p1, width, height);
+    },
+
+    _drawImage: function (ctx, style, latLng) {
+        //设置图片的大小
+        var width, height;
+        if (style.size) {
+            var size = style.size;
+            width = size[0];
+            height = size[1];
+        } else {
+            width = style.img.width;
+            height = style.img.height;
+        }
+        //设置偏移
+        var pt = this._coordinateToPoint(latLng);
+        pt = calculateOffset(pt, style.anchor);
+
+        ctx.drawImage(style.img, pt[0], pt[1], width, height);
+    },
+
+    _coordinateToPoint: function (coordinate) {
+        if (!this._map) {
+            return coordinate;
+        }
+        var coor = coordinate;
+        if (L.Util.isArray(coordinate)) {
+            coor = L.latLng(coordinate[0], coordinate[1]);
+        } else if (coordinate instanceof L.LatLng) {
+            coor = L.latLng(coordinate.lat, coordinate.lng);
+        }
+        var point = this._map.latLngToLayerPoint(coor);
+        return [point.x, point.y];
     }
+
 });
+
+function calculateOffset(point, anchor) {
+    var pt = L.point(point),
+        ac = L.point(anchor);
+    return [pt.x - ac.x, pt.y - ac.y];
+}
 
 export var graphicLayer = function (graphics, options) {
     return new GraphicLayer(graphics, options);

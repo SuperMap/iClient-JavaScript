@@ -17,7 +17,7 @@ import {
     CartoStyleMap, ServerStyleMap, CompOpMap
 } from './carto';
 import {
-    CloverStyle, cloverStyle, CircleStyle, circleStyle, Graphic, graphic
+    ImageStyle, imageStyle, CloverStyle, cloverStyle, CircleStyle, circleStyle, Graphic, graphic
 } from './graphic' ;
 import {MapVRenderer} from './mapv';
 import {
@@ -59,7 +59,7 @@ export {
     CartoStyleMap, ServerStyleMap, CompOpMap
 };
 export {
-    CloverStyle, cloverStyle,CircleStyle, circleStyle, Graphic, graphic
+    ImageStyle, imageStyle, CloverStyle, cloverStyle, CircleStyle, circleStyle, Graphic, graphic
 };
 export {MapVRenderer};
 export {GeoFeatureThemeLayer, ThemeFeature, themeFeature, ThemeLayer};

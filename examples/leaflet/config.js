@@ -566,15 +566,20 @@ var exampleConfig = {
                 name_en: "high efficiency point layer",
                 content: [
                     {
-                        name: "随机点",
-                        name_en: "random points",
+                        name: "纽约出租车18万点",
+                        name_en: "points of 180K NY taxis",
                         thumbnail: "l_graphicLayer.png",
                         fileName: "12_graphicLayer"
                     }, {
-                        name: "随机点(三叶草)",
+                        name: "随机点-三叶草",
                         name_en: "random points(clover)",
                         thumbnail: "l_graphicLayerClover.png",
                         fileName: "12_graphicLayerClover"
+                    }, {
+                        name: "纽约18万出租车-符号绘制",
+                        name_en: "picture drawing of 180K NY taxis",
+                        thumbnail: "l_graphicLayerImage.png",
+                        fileName: "12_graphicLayerImage"
                     }
                 ]
             },

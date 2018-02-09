@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title data-i18n="resources.title_graphicLayerTaxi"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, imagePath = '../img/taxi.png';
+    map = L.map('map', {
+        preferCanvas: true,
+        center: [40.74650, -73.89109999999999],
+        maxZoom: 18,
+        zoom: 12
+    });
+    var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    L.supermap.tiledMapLayer(url).addTo(map);
+    addGraphicLayer();
+
+    function addGraphicLayer() {
+        //将数据可视化展示
+        $.get('../data/nyc_taxi.json', function (nycData) {
+            var count = nycData.features.length;
+            var graphics = [];
+            var imageStyles = [];
+            //创建图片的样式
+            var img = new Image();
+            img.src = imagePath;
+            img.onload = function () {
+                imageStyles.push(L.supermap.imageStyle({
+                    img: img,
+                    anchor: [16, 16]
+                }));
+
+                //设置每个点的经纬度和图片的样式
+                for (var i = 0; i < count; ++i) {
+                    var coordinates = nycData.features[i].geometry.coordinates;
+                    if (coordinates[0] === coordinates[1]) {
+                        continue;
+                    }
+                    graphics[i] = L.supermap.graphic({
+                        latlng: L.latLng(coordinates[1], coordinates[0]),
+                        style: imageStyles[0].getStyle()
+                    });
+                }
+                //绘制图层
+                L.supermap.graphicLayer(graphics).addTo(map);
+            };
+        })
+    }
+</script>
+</body>
+</html>

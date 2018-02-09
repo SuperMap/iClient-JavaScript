@@ -4,7 +4,7 @@
 
 ### for Leaflet
 
-- `L.supermap.webmap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVE" 格式 json 数据
+- `L.supermap.webmap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据
 
 - 客户端专题图新增支持 `L.CircleMarker` `L.Circle`
 
@@ -34,7 +34,7 @@
 
 ### for OpenLayers
 
-- `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVE" 格式 json 数据
+- `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
@@ -110,6 +110,8 @@
 - 新增批量几何要素叠加分析示例
 
 - 新增可视化随机三叶草示例
+
+- 新增可视化纽约出租车18万点图片示例
 
 ### for OpenLayers
 
