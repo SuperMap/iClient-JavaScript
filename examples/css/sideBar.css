@@ -113,12 +113,12 @@ a.sidebar-toggle {
 .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > span:not(.pull-right),
 .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
     border-radius: 0;
-    width: 220px;
+    width: 230px;
 }
 
 /*侧边栏收起后向右展开时一级菜单箭头的位置*/
 .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > .pull-right-container {
-    left: 220px !important;
+    left: 230px !important;
 }
 
 .sidebar-mini.sidebar-collapse .sidebar-menu > li > .treeview-menu {
@@ -180,6 +180,24 @@ li.menuTitle a {
         width: 26px;
         height: 36px;
         left: 100%;
+    }
+    /*侧边栏滚动设置 start*/
+    #sidebar-menu > li:hover .sidebar-title-bar {
+        position: static;
+    }
+
+    .sidebar-collapse #sidebar-menu > li:hover .sidebar-title-bar {
+        position: static;
+    }
+
+    #sidebar-menu > li:hover > ul {
+        position: static;
+        height: auto;
+    }
+
+    .sidebar-collapse #sidebar-menu > li:hover > ul {
+        position: static;
+        overflow-y: auto;
     }
 }
 

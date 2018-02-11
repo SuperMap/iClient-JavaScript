@@ -23,7 +23,7 @@ function sidebarScrollFix() {
         $titleBar.css({
             "top": ($(this).offset().top - $(window).scrollTop()) + "px",
             //fix由于侧边栏滚动条宽度引起的减少的宽度
-            "width": "223px"
+            "width": "233px"
         });
 
         //如果底部空间不够，动态增加侧边栏高度
@@ -44,12 +44,12 @@ function sidebarScrollFix() {
 
         //fix小尺寸屏幕下二级菜单高度高于窗口高度时显示不全的情况
         var $activeList = $(this).children('ul');
-        var activeListOffsetBottom = $(window).height() - visibleOffsetTop - $(this).height();
+        var activeListOffsetBottom = $activeList.height() - visibleOffsetTop;    //Math.abs($(window).height() - visibleOffsetTop - $(this).height());
         var requireActiveListHeight = $activeList.height();
         if (activeListOffsetBottom < requireActiveListHeight) {
             $activeList.css({"height": activeListOffsetBottom});
             //滚动条样式
-            $activeList.addClass('scroll-list');
+           $activeList.addClass('scroll-list');
         }
 
     }, function (evt) {
