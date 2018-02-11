@@ -44,12 +44,12 @@ function sidebarScrollFix() {
 
         //fix小尺寸屏幕下二级菜单高度高于窗口高度时显示不全的情况
         var $activeList = $(this).children('ul');
-        var activeListOffsetBottom = $activeList.height() - visibleOffsetTop;    //Math.abs($(window).height() - visibleOffsetTop - $(this).height());
+        var activeListOffsetBottom = Math.abs($(window).height() - visibleOffsetTop - $(this).height());
         var requireActiveListHeight = $activeList.height();
         if (activeListOffsetBottom < requireActiveListHeight) {
-            $activeList.css({"height": activeListOffsetBottom});
+            $activeList.css({"height": requireActiveListHeight});
             //滚动条样式
-           $activeList.addClass('scroll-list');
+            $activeList.addClass('scroll-list');
         }
 
     }, function (evt) {
