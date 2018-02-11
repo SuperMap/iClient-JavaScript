@@ -270,12 +270,12 @@ var exampleConfig = {
                     name_en: "kernel density",
                     thumbnail: "ol_densityAnalystService.png",
                     fileName: "04_densityKernelAnalystService"
-                },{
+                }, {
                     name: "几何对象批量空间分析",
                     name_en: "batchAnalyst_geometry",
                     thumbnail: "ol_geometryBatchAnalystService.png",
                     fileName: "04_geometryBatchAnalystService"
-                },{
+                }, {
                     name: "几何对象批量叠加分析",
                     name_en: "overlayBatchAnalyst_geometry",
                     thumbnail: "ol_geometryOverlayBatchAnalystService.png",
@@ -514,15 +514,20 @@ var exampleConfig = {
                 name: "高效率点图层",
                 name_en: "high efficiency point layer",
                 content: [{
-                    name: "canvas渲染",
+                    name: "纽约出租车18万点-canvas渲染",
                     name_en: "canvas rendering",
                     thumbnail: "graphiclayer_canvas.png",
                     fileName: "07_graphiclayer_canvas"
                 }, {
-                    name: "webgl渲染",
+                    name: "纽约出租车18万点-webgl渲染",
                     name_en: "webgl rendering",
                     thumbnail: "graphiclayer_webgl.png",
                     fileName: "07_graphiclayer_webgl"
+                }, {
+                    name: "纽约18万出租车-符号绘制",
+                    name_en: "picture drawing of 180K NY taxis",
+                    thumbnail: "graphiclayer_image.png",
+                    fileName: "07_graphiclayer_image"
                 }]
             },
             "ECharts": {
