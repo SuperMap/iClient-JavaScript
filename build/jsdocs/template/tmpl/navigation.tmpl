@@ -56,7 +56,7 @@ function build(nav,navOrder,level){
         } else if(subNav){
             ?>
             <li class="treeview" >
-            <a> <?js  var value=subOrder.name;if(language&&language==='en'&&subOrder.name_en){ value=subOrder.name_en } ?><?js=  value  ?> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i> </span></a>
+            <a> <?js  var value=subOrder.name;if(language&&language==='en'&&subOrder.name_en){ value=subOrder.name_en } ?><?js=  value  ?> <span class="pull-right-container"><i class="glyphicon glyphicon-menu-right"></i> </span></a>
             <ul class="treeview-menu">
             <?js
               build(subNav,subOrder,level+1);
@@ -143,7 +143,7 @@ function buildLi(obj){
         <!-- Inner sidebar -->
         <div class="sidebar" style='height:100%'>
          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" title="fold">
-            <div class="fa  fa-bars fold"></div>
+            <div class="glyphicon glyphicon-menu-hamburger"></div>
         </a>
     <div class="search">
         <input id="searchBox" type="text" class="form-control input-sm" placeholder="Search Documentations">

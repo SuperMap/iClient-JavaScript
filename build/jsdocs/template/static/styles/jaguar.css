@@ -154,11 +154,14 @@ li {
 .main h4.name span.type {
   margin-left: 5px;
 }
-.main h4.name span.glyphicon {
+.main h4.name span.glyphicon, span .glyphicon{
   display: inline-block;
   vertical-align: middle;
   color: #e1e1e1;
   margin-left: 7px;
+}
+.sidebar-menu li>a>.pull-right-container{
+  top:30%;
 }
 .main h4.name span.returnType {
   margin-left: 3px;
