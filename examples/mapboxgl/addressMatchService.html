@@ -196,10 +196,6 @@
             var img = new Image();
             img.src = '../img/marker-icon.png';
 
-            img.addEventListener('click', function () {
-                window.alert(marker.properties.message);
-            });
-
             var marker = new mapboxgl.Marker(img).setLngLat([item.location.x, item.location.y]);
             decodeMarkers.push(marker);
 

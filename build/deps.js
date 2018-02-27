@@ -463,7 +463,7 @@ deps = {
                     "des": "等级符号专题图图层",
                     "des_en": "rank symbol thematic map layer"
                 }, {
-                    "name": "L.supermap.garphThemeLayer",
+                    "name": "L.supermap.graphThemeLayer",
                     "des": "统计专题图图层",
                     "des_en": "statistical thematic map layer"
                 }, {
@@ -1106,7 +1106,7 @@ deps = {
                     "./src/mapboxgl/overlay/LabelThemeLayer.js"
                 ],
                 "modules": [{
-                    "name": "mapboxgl.supermap.RankTheme3DLayer",
+                    "name": "mapboxgl.supermap.RangeTheme3DLayer",
                     "des": "三维分段专题图",
                     "des_en": "3D range thematic map layer"
                 }, {
