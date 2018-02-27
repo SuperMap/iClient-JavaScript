@@ -44,7 +44,7 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象。
-     * @param features - {Object} 待填加得要素
+     * @param features - {Array<mapboxgl.supermap.ThemeFeature>} 待添加的要素
      */
     addFeatures(features) {
         //数组

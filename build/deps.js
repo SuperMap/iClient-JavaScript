@@ -1070,6 +1070,17 @@ deps = {
             "description": "数据可视化效果扩展",
             "description_en": "data visualization extension",
 
+            "HeatMap": {
+                "name": "HeatMap",
+                "src": [
+                    "./src/mapboxgl/overlay/HeatMapLayer.js",
+                ],
+                "modules": [{
+                    "name": "mapboxgl.supermap.HeatMapLayer",
+                    "des": "热力图图层",
+                    "des_en": "HeatMap layer"
+                }]
+            },
             "Mapv": {
                 "name": "Mapv",
                 "src": [

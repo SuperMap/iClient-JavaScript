@@ -292,6 +292,16 @@ var exampleConfig = {
         name: "可视化",
         name_en: "visualization",
         content: {
+            "heat": {
+                name: "热力图",
+                name_en: "heat map",
+                content: [{
+                    name: "随机点热点图",
+                    name_en: "random points",
+                    thumbnail: "mb_heatMapLayer.png",
+                    fileName: "heatMapLayer"
+                }]
+            },
             "VectorTileLayer": {
                 name: "矢量瓦片",
                 name_en: "vector tile",

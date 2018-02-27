@@ -23,7 +23,6 @@ import {
  */
 export class Theme {
 
-
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         /**
@@ -42,6 +41,12 @@ export class Theme {
          * @description 图层透明度
          */
         this.opacity = 1;
+
+        /**
+         * @member mapboxgl.supermap.ThemeLayer.prototype.visibility - {boolean}
+         * @description 图层是否可见，默认为 true。
+         */
+        this.visibility = true;
 
         /**
          * @member mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating -{boolean}
@@ -108,6 +113,28 @@ export class Theme {
                 features[i].destroy();
             }
         }
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThemeLayer.prototype.setVisibility
+     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @param visibility - {boolean} 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     */
+    setVisibility(visibility) {
+        if (visibility !== this.visibility) {
+            this.visibility = visibility;
+            this.display(visibility);
+            this.redrawThematicFeatures(this.map.getBounds());
+        }
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThemeLayer.prototype.display
+     * @description 临时隐藏或者显示图层。通过对CSS控制产生即时效果，重新渲染失效。一般用 setVisibility 方法来动态控制图层的显示和隐藏。
+     * @param display - {boolean}
+     */
+    display(display) {
+        this.div.style.display = display ? "block" : "none";
     }
 
     /**
@@ -346,7 +373,7 @@ export class Theme {
     }
 
     moveEndEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.div.style.transform = '';
@@ -355,7 +382,7 @@ export class Theme {
     }
 
     moveStartEvent(e) {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.startPitch = this.map.getPitch();
@@ -367,7 +394,7 @@ export class Theme {
     }
 
     moveEvent(e) {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             this.redrawThematicFeatures(this.map.getBounds());
             return;
         }
@@ -386,7 +413,7 @@ export class Theme {
     }
 
     zoomStartEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.zooming = true;
@@ -394,7 +421,7 @@ export class Theme {
     }
 
     zoomEndEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.zooming = false;
@@ -402,14 +429,14 @@ export class Theme {
     }
 
     rotateStartEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.rotating = true;
     }
 
     rotateEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         if (this.map.getPitch() !== 0) {
@@ -422,7 +449,7 @@ export class Theme {
     }
 
     rotateEndEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.rotating = false;
@@ -430,7 +457,7 @@ export class Theme {
     }
 
     dragEndEvent() {
-        if (this.loadWhileAnimating) {
+        if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this._hide();
