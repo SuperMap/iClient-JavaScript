@@ -106,7 +106,7 @@
                 return;
             }
             var solution, lines, line, dispStatus = "block";
-            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>" + resources.text_startPoint + "省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + resources.text_endPoint + "中安大厦<br/>" + resources.text_trafficTransferScheme + "（" + resources.text_minTime + "）</div>").appendTo(content);
+            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>" + resources.text_startPoint + "：" + "省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + resources.text_endPoint + "：" + "中安大厦<br/>" + resources.text_trafficTransferScheme + "（" + resources.text_minTime + "）</div>").appendTo(content);
             for (var i = 0, iLen = transSolutions.length; i < iLen; i++) {
                 solution = transSolutions[i];
                 //显示方案头

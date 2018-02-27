@@ -240,8 +240,8 @@
         if (!content) return;
         var latlng = L.latLng(content.y, content.x);
         var labelContent = resources.text_flight + "： " + content.ident + "<br>" +
-            resources.text_startPoint + content.origin + "/" + content.originLabel + "<br>" +
-            resources.text_endPoint + content.destination + "/" + content.destinationLabel + "<br>" +
+            resources.text_startPoint + "： " + content.origin + "/" + content.originLabel + "<br>" +
+            resources.text_endPoint + "： " + content.destination + "/" + content.destinationLabel + "<br>" +
             resources.text_time + "： " + content.datetime;
         if (planeLabels[content.ident]) {
             planeLabels[content.ident].remove();

@@ -76,7 +76,7 @@
                 return;
             }
             var solution, lines, line, dispStatus = "block";
-            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>"+resources.text_startPoint+"省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+resources.text_endPoint+"中安大厦<br/>"+resources.text_trafficTransferScheme+"（"+resources.text_minTime+"）</div>").appendTo(this._div);
+            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>" + resources.text_startPoint + "：" + "省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + resources.text_endPoint + "：" + "中安大厦<br/>" + resources.text_trafficTransferScheme + "（" + resources.text_minTime + "）</div>").appendTo(this._div);
             for (var i = 0, iLen = transSolutions.length; i < iLen; i++) {
                 solution = transSolutions[i];
                 //显示方案头
@@ -95,7 +95,7 @@
                         title += " → ";
                     }
                 }
-                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>"+resources.text_scheme + (i + 1) + "：</span>" + title + "</div>").appendTo(this._div);
+                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>" + resources.text_scheme + (i + 1) + "：</span>" + title + "</div>").appendTo(this._div);
                 if (i !== 0) {
                     dispStatus = "none";
                 }
@@ -125,7 +125,7 @@
         L.supermap.trafficTransferAnalystService(serviceUrl)
             .analysisTransferSolution(params, function (serviceResult) {
                 if (serviceResult.error) {
-                    alert(resources.msg_errorMsg+":" + serviceResult.error.errorMsg);
+                    alert(resources.msg_errorMsg + ":" + serviceResult.error.errorMsg);
                 }
                 transferSolutionsSucceed(serviceResult.result);
             });
@@ -180,13 +180,13 @@
             var tr2 = $("<tr></tr>");
             if (item.isWalking) {
                 $("<td class='step_transfer' ></td>").appendTo(tr2);
-                $("<td>"+resources.text_walkTO+"<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
-                $("<td>" + parseInt(item.distance) + resources.msg_m+"</td>").appendTo(tr2);
+                $("<td>" + resources.text_walkTO + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
+                $("<td>" + parseInt(item.distance) + resources.msg_m + "</td>").appendTo(tr2);
             } else {
                 var otherLines = transSolutions[indexX].linesItems[indexY],
                     links = "";
                 if (otherLines && otherLines.lineItems.length > 1) {
-                    links = "</br>"+resources.text_alsoRide;
+                    links = "</br>" + resources.text_alsoRide;
                     for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
                         var line = otherLines.lineItems[oti];
                         if (item.lineName !== line.lineName) {
@@ -203,8 +203,8 @@
                         pointStr += ",";
                     }
                 }
-                $("<td>"+resources.text_ride+"<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>, "+resources.text_debus1+"<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>"+resources.text_debus2 + links + "</td>").appendTo(tr2);
-                $("<td>" + item.passStopCount + resources.text_stops+"</td>").appendTo(tr2);
+                $("<td>" + resources.text_ride + "<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>, " + resources.text_debus1 + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>" + resources.text_debus2 + links + "</td>").appendTo(tr2);
+                $("<td>" + item.passStopCount + resources.text_stops + "</td>").appendTo(tr2);
                 indexY++;
             }
             tr2.appendTo(table);

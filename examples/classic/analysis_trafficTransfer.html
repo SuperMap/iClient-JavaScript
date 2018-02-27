@@ -70,7 +70,7 @@
     //起点搜索文本提示信息框
     function addStartSugText() {
         var inputDiv = $("<div class='start_end_input'></div>")
-        $("<span>" + resources.text_startPoint + "</span>").appendTo(inputDiv);
+        $("<span>" + resources.text_startPoint + "：" + "</span>").appendTo(inputDiv);
         var input = $("<input type='search' width='60px' id='startInput' value='省汽修' text='26,3111.42533851,-5527.73795456'></input>");
         var p = new SuperMap.Geometry.Point(3111.42533851, -5527.73795456);
         startLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(p.x, p.y), iconstart));
@@ -216,7 +216,7 @@
     //终点搜索文本提示信息框
     function addEndSugText() {
         var inputDiv = $("<div class='start_end_input'></div>")
-        $("<span>" + resources.text_endPoint + "</span>").appendTo(inputDiv);
+        $("<span>" + resources.text_endPoint + "：" + "</span>").appendTo(inputDiv);
         var input = $("<input type='search' width='60px' id='endInput' value='中安大厦' text='180,6055.3431955,-4270.0725196'></input>");
         var p = new SuperMap.Geometry.Point(6055.3431955, -4270.0725196);
         startLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(p.x, p.y), iconend));
