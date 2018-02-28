@@ -310,19 +310,18 @@ export class MapvRenderer extends BaseLayer {
         this._show();
     }
 
-    moveStartEvent(e) {
+    moveStartEvent() {
         this.startPitch = this.map.getPitch();
         this.startBearing = this.map.getBearing();
-        if (e.originalEvent) {
-            this.startMoveX = e.originalEvent.pageX;
-            this.startMoveY = e.originalEvent.pageY;
-        }
+        var startMovePoint = this.map.project(new mapboxgl.LngLat(0, 0));
+        this.startMoveX = startMovePoint.x;
+        this.startMoveY = startMovePoint.y;
         if (this.animation) {
             this.stopAniamation = true;
         }
     }
 
-    moveEvent(e) {
+    moveEvent() {
         if (this.rotating || this.zooming) {
             return;
         }
@@ -332,8 +331,9 @@ export class MapvRenderer extends BaseLayer {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
-        var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
-        var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+        var endMovePoint = this.map.project(new mapboxgl.LngLat(0, 0));
+        var tMoveX = endMovePoint.x - this.startMoveX;
+        var tMoveY = endMovePoint.y - this.startMoveY;
         var canvas = this.getContext().canvas;
         canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
     }

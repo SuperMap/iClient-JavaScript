@@ -52222,20 +52222,19 @@ var Theme = function () {
         }
     }, {
         key: 'moveStartEvent',
-        value: function moveStartEvent(e) {
+        value: function moveStartEvent() {
             if (this.loadWhileAnimating || !this.visibility) {
                 return;
             }
             this.startPitch = this.map.getPitch();
             this.startBearing = this.map.getBearing();
-            if (e.originalEvent) {
-                this.startMoveX = e.originalEvent.pageX;
-                this.startMoveY = e.originalEvent.pageY;
-            }
+            var startMovePoint = this.map.project(new _mapboxGl2.default.LngLat(0, 0));
+            this.startMoveX = startMovePoint.x;
+            this.startMoveY = startMovePoint.y;
         }
     }, {
         key: 'moveEvent',
-        value: function moveEvent(e) {
+        value: function moveEvent() {
             if (this.loadWhileAnimating || !this.visibility) {
                 this.redrawThematicFeatures(this.map.getBounds());
                 return;
@@ -52249,8 +52248,9 @@ var Theme = function () {
             this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
             var tPitch = this.map.getPitch() - this.startPitch;
             var tBearing = -this.map.getBearing() + this.startBearing;
-            var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
-            var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+            var endMovePoint = this.map.project(new _mapboxGl2.default.LngLat(0, 0));
+            var tMoveX = endMovePoint.x - this.startMoveX;
+            var tMoveY = endMovePoint.y - this.startMoveY;
             this.div.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
         }
     }, {
@@ -53289,20 +53289,19 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
         }
     }, {
         key: '_moveStartEvent',
-        value: function _moveStartEvent(e) {
+        value: function _moveStartEvent() {
             if (this.loadWhileAnimating || !this.visibility) {
                 return;
             }
             this.startPitch = this.map.getPitch();
             this.startBearing = this.map.getBearing();
-            if (e.originalEvent) {
-                this.startMoveX = e.originalEvent.pageX;
-                this.startMoveY = e.originalEvent.pageY;
-            }
+            var startMovePoint = this.map.project(new _mapboxGl2.default.LngLat(0, 0));
+            this.startMoveX = startMovePoint.x;
+            this.startMoveY = startMovePoint.y;
         }
     }, {
         key: '_moveEvent',
-        value: function _moveEvent(e) {
+        value: function _moveEvent() {
             if (this.loadWhileAnimating || !this.visibility) {
                 this.refresh();
                 return;
@@ -53316,8 +53315,9 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
             this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
             var tPitch = this.map.getPitch() - this.startPitch;
             var tBearing = -this.map.getBearing() + this.startBearing;
-            var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
-            var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+            var endMovePoint = this.map.project(new _mapboxGl2.default.LngLat(0, 0));
+            var tMoveX = endMovePoint.x - this.startMoveX;
+            var tMoveY = endMovePoint.y - this.startMoveY;
             this.rootCanvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
         }
     }, {
@@ -80575,20 +80575,19 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
         }
     }, {
         key: 'moveStartEvent',
-        value: function moveStartEvent(e) {
+        value: function moveStartEvent() {
             this.startPitch = this.map.getPitch();
             this.startBearing = this.map.getBearing();
-            if (e.originalEvent) {
-                this.startMoveX = e.originalEvent.pageX;
-                this.startMoveY = e.originalEvent.pageY;
-            }
+            var startMovePoint = this.map.project(new _mapboxGl2.default.LngLat(0, 0));
+            this.startMoveX = startMovePoint.x;
+            this.startMoveY = startMovePoint.y;
             if (this.animation) {
                 this.stopAniamation = true;
             }
         }
     }, {
         key: 'moveEvent',
-        value: function moveEvent(e) {
+        value: function moveEvent() {
             if (this.rotating || this.zooming) {
                 return;
             }
@@ -80598,8 +80597,9 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
             this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
             var tPitch = this.map.getPitch() - this.startPitch;
             var tBearing = -this.map.getBearing() + this.startBearing;
-            var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
-            var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+            var endMovePoint = this.map.project(new _mapboxGl2.default.LngLat(0, 0));
+            var tMoveX = endMovePoint.x - this.startMoveX;
+            var tMoveY = endMovePoint.y - this.startMoveY;
             var canvas = this.getContext().canvas;
             canvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
         }
@@ -82298,7 +82298,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -82422,9 +82422,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 

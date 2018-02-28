@@ -640,19 +640,18 @@ export class HeatMapLayer {
         this._show();
     }
 
-    _moveStartEvent(e) {
+    _moveStartEvent() {
         if (this.loadWhileAnimating || !this.visibility) {
             return;
         }
         this.startPitch = this.map.getPitch();
         this.startBearing = this.map.getBearing();
-        if (e.originalEvent) {
-            this.startMoveX = e.originalEvent.pageX;
-            this.startMoveY = e.originalEvent.pageY;
-        }
+        var startMovePoint = this.map.project(new mapboxgl.LngLat(0, 0));
+        this.startMoveX = startMovePoint.x;
+        this.startMoveY = startMovePoint.y;
     }
 
-    _moveEvent(e) {
+    _moveEvent() {
         if (this.loadWhileAnimating || !this.visibility) {
             this.refresh();
             return;
@@ -666,8 +665,9 @@ export class HeatMapLayer {
         this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
-        var tMoveX = this.startMoveX && e.originalEvent ? e.originalEvent.pageX - this.startMoveX : 0;
-        var tMoveY = this.startMoveY && e.originalEvent ? e.originalEvent.pageY - this.startMoveY : 0;
+        var endMovePoint = this.map.project(new mapboxgl.LngLat(0, 0));
+        var tMoveX = endMovePoint.x - this.startMoveX;
+        var tMoveY = endMovePoint.y - this.startMoveY;
         this.rootCanvas.style.transform = 'rotateX(' + tPitch + 'deg)' + ' rotateZ(' + tBearing + 'deg)' + ' translate3d(' + tMoveX + 'px, ' + tMoveY + 'px, 0px)';
     }
 
