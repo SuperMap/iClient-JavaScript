@@ -55,7 +55,7 @@
             pointRadius: 2
         },
         url1 = host + "/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图",
-        url2 = host + "/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R/",
+        url2 = host + "/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/BaseMap_R/",
         url3 = host + "/iserver/services/data-jingjin/rest/data/";
     init();
 
@@ -170,7 +170,7 @@
             getFeaturesByGeometryService,
             geometry = drawGeometryArgs.feature.geometry;
         getFeaturesByGeometryParams = new SuperMap.REST.GetFeaturesByGeometryParameters({
-            datasetNames: ["Jingjin:Landuse_R"],
+            datasetNames: ["Jingjin:BaseMap_R"],
             spatialQueryMode: SuperMap.REST.SpatialQueryMode.INTERSECT,
             geometry: geometry
         });

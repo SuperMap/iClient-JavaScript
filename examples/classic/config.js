@@ -990,9 +990,9 @@ var exampleConfig = {
         name: "动态标绘",
         name_en: "plot",
         content: {
-            "plot": {
+            "basic": {
                 name: "标绘",
-                name_en: "plot",
+                name_en: "basic",
                 content: [{
                     name: "动态标绘",
                     name_en: "dynamic plot",
@@ -1084,11 +1084,6 @@ var exampleConfig = {
                     name_en: "high-performance plot",
                     thumbnail: "plot_plotSymbolPerformance.png",
                     fileName: "plot_plotSymbolPerformance"
-                }, {
-                    name: "态势图上传下载",
-                    name_en: "plot symbol file upload and download",
-                    thumbnail: "plot_filetransfer.png",
-                    fileName: "plot_filetransfer"
                 }, {
                     name: "态势推演",
                     name_en: "situation deduction",

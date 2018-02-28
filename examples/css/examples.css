@@ -46,9 +46,9 @@ h3.category-title {
 }
 
 #charts-list .chart:hover, #charts-list .chart:focus {
-    transform: scale(1.1);
+    transform: scale(1.1) translateZ(0);
     z-index: 100;
-    -webkit-transform: scale(1.1);
+    -webkit-transform: scale(1.1) translateZ(0);
     transition-duration: .4s;
     box-shadow: 1px 1px 6px rgba(150, 150, 150, 0.6);
     -webkit-box-shadow: 1px 1px 6px rgba(150, 150, 150, 0.6);

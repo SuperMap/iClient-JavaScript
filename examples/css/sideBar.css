@@ -4,7 +4,9 @@
     z-index: 900;
     height: 100%;
 }
-
+.sidebar-menu{
+    overflow: visible;
+}
 .sidebar {
     height: 100% !important;
     overflow: hidden;

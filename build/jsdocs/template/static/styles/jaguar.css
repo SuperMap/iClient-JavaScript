@@ -381,9 +381,10 @@ a.sidebar-toggle {
  
 }
 
-.sidebar-mini.sidebar-collapse .main-sidebar {
+.sidebar-mini.sidebar-collapse .main-sidebar{
   transform: translate(-50px, 0);
 }
+
 .main-sidebar {
   position: fixed;
   z-index: 900;
@@ -402,4 +403,12 @@ footer {
   font-family: "freight-text-pro", Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: 0.8em;
   color: gray;
+}
+@media (max-width: 767px){
+  .main-sidebar{
+    transform: translate(-250px, 0);
+  }
+  .content-wrapper{
+    margin-left: 26px !important;
+  }
 }
