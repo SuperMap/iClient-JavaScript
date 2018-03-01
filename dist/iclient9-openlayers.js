@@ -5952,7 +5952,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Format.GeoJSON
  * @classdesc  GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器。
- * @category Format
+ * @category BaseTypes Format
  * @extends SuperMap.Format.JSON。
  */
 var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
@@ -6297,7 +6297,6 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
      *     如果type为"Geometry",输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。 <br>
      *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
      */
-
 
     _createClass(GeoJSON, [{
         key: 'read',
@@ -9079,7 +9078,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  *
  * 用于符号专题图：
- * 圆形 -  参数对象：<Supermap.Feature.ShapeParameters.Cilcle>
+ * 圆形 -  参数对象：<SuperMap.Feature.ShapeParameters.Cilcle>
  */
 var ShapeFactory = exports.ShapeFactory = function () {
 
@@ -20626,7 +20625,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
- * @category Format
+ * @category BaseTypes Format
  * @param options - {Object} 可选参数。<br>
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
@@ -20729,7 +20728,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
- * @category Format
+ * @category BaseTypes Format
  * @extends SuperMap.Format
  */
 var JSONFormat = exports.JSONFormat = function (_Format) {
@@ -37323,7 +37322,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Grid
- * @category  iServer Data
+ * @category  iServer Map
  * @classdesc UGC 栅格图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：<br>
@@ -37556,7 +37555,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Image
- * @category  iServer Data
+ * @category  iServer Map
  * @classdesc UGC 影像图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：<br>
@@ -58033,6 +58032,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
         _this.tileSetsIndex = -1;
         _this.tempIndex = -1;
         var me = _this;
+
         function appendCredential(url, serverType) {
             var newUrl = url,
                 credential,
@@ -58070,9 +58070,9 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             var me = this,
                 params = {};
 
-            params["redirect"] = options.redirect === true;
+            params["redirect"] = options.redirect !== undefined ? options.redirect : true;
             //切片是否透明
-            params["transparent"] = options.transparent === true;
+            params["transparent"] = options.transparent !== undefined ? options.transparent : true;
             params["cacheEnabled"] = !(options.cacheEnabled === false);
             params["_cache"] = params["cacheEnabled"];
 
@@ -61361,7 +61361,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 数据栅格查询服务
  * @extends ol.supermap.ServiceBase
  * @example
- *      new ol.superMap.GridCellInfosService(url)
+ *      new ol.supermap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
@@ -64484,7 +64484,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Format.WKT
  * @classdesc 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
  *      的实例。
- * @category Format
+ * @category BaseTypes Format
  * @extends SuperMap.Format
  * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
@@ -79755,7 +79755,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.CartoCSS
  * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象。
- * @category Style
+ * @category BaseTypes Style
  * @param cartoStr - {string} CartoCSS样式表字符串
  * @example
  * var cartocss = "@provinceLineColor:#ddd;
@@ -84244,7 +84244,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
- * @category Style
+ * @category BaseTypes Style
  * @param options -{Object} 可选参数。如：<br>
  *         fill - {boolean} 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
  *         fillColor - {string} 十六进制填充颜色。默认值为 "#000000"。<br>
@@ -92138,7 +92138,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -92262,9 +92262,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -92558,7 +92558,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 473 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","F:\\codes\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"F:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 474 */

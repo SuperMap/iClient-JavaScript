@@ -7,7 +7,7 @@ import {
     CommonUtil,
     ServerGeometry
 } from '@supermap/iclient-common';
-import { Util } from '../core/Util';
+import {Util} from '../core/Util';
 
 /**
  * @class ol.source.TileSuperMapRest
@@ -73,6 +73,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
         this.tileSetsIndex = -1;
         this.tempIndex = -1;
         var me = this;
+
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
@@ -107,15 +108,15 @@ export class TileSuperMapRest extends ol.source.TileImage {
         function getAllRequestParams() {
             var me = this, params = {};
 
-            params["redirect"] = options.redirect === true;
+            params["redirect"] = options.redirect !== undefined ? options.redirect : true;
             //切片是否透明
-            params["transparent"] = options.transparent === true;
+            params["transparent"] = options.transparent !== undefined ? options.transparent : true;
             params["cacheEnabled"] = !(options.cacheEnabled === false);
             params["_cache"] = params["cacheEnabled"];
 
             //设置切片原点
             if (this.origin) {
-                params["origin"] = JSON.stringify({ x: this.origin[0], y: this.origin[1] });
+                params["origin"] = JSON.stringify({x: this.origin[0], y: this.origin[1]});
             }
 
             if (options.prjCoordSys) {
@@ -245,7 +246,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
         if (!this.tileSets) {
             return;
         }
-        this.dispatchEvent({ type: 'tilesetsinfoloaded', value: { tileVersions: this.tileSets.tileVersions } });
+        this.dispatchEvent({type: 'tilesetsinfoloaded', value: {tileVersions: this.tileSets.tileVersions}});
         this.changeTilesVersion();
     }
 
@@ -287,7 +288,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
             var result = me.mergeTileVersionParam(name);
             if (result) {
                 me.tileSetsIndex = me.tempIndex;
-                me.dispatchEvent({ type: 'tileversionschanged', value: { tileVersion: tileVersions[me.tempIndex] } });
+                me.dispatchEvent({type: 'tileversionschanged', value: {tileVersion: tileVersions[me.tempIndex]}});
             }
         }
     }
@@ -388,12 +389,12 @@ export class TileSuperMapRest extends ol.source.TileImage {
             tileSize: tileSize
         });
         return new ol.tilegrid.TileGrid({
-            extent: extent,
-            minZoom: minZoom,
-            origin: origin,
-            resolutions: tilegrid.getResolutions(),
-            tileSize: tilegrid.getTileSize()
-        }
+                extent: extent,
+                minZoom: minZoom,
+                origin: origin,
+                resolutions: tilegrid.getResolutions(),
+                tileSize: tilegrid.getTileSize()
+            }
         );
     }
 }
