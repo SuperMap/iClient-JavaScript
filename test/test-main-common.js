@@ -93,6 +93,7 @@ require('./common/format/WKTSpec.js');
 require('./common/style/CartoCSSSpec.js');
 
 /**common -- security**/
+require('./common/security/KeyServiceParameterSpec.js');
 require('./common/security/SecurityManagerSpec.js');
 
 /**common -- commonTypes**/

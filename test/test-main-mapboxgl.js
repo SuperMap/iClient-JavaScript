@@ -2,6 +2,7 @@
 require('./mapboxgl/control/LogoSpec.js');
 
 /*mapboxgl -- overlay*/
+require('./mapboxgl/overlay/mapv/MapvDataSetSpec.js');
 require('./mapboxgl/overlay/GraphThemeLayerSpec.js');
 require('./mapboxgl/overlay/LabelThemeLayerSpec.js');
 require('./mapboxgl/overlay/MapvLayerSpec.js');
