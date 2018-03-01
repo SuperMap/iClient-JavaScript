@@ -16,6 +16,7 @@ li {
 }
 ::-webkit-scrollbar {
   width: 6px;
+  height: 10px;
   background-color: transparent;
   padding-top: 50px;
 }
@@ -48,9 +49,9 @@ li {
 .main-sidebar .search {
   padding: 10px 15px;
 }
-.main-sidebar .search input {
-}
+
 .main-sidebar .list {
+  height: 100%;
   padding: 5px 5px 0 5px;
   position: relative;
   overflow: auto;
