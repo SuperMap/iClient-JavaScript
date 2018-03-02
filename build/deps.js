@@ -1094,6 +1094,17 @@ deps = {
                     "des_en": "mapV layer"
                 }]
             },
+            "Three": {
+                "name": "three",
+                "src": [
+                    "./src/mapboxgl/overlay/ThreeLayer.js"
+                ],
+                "modules": [{
+                    "name": "mapboxgl.supermap.ThreeLayer",
+                    "des": "ThreeJS 图层",
+                    "des_en": "ThreeJS layer"
+                }]
+            },
             "ThemeLayer": {
                 "name": "ThemeLayer",
                 "src": [

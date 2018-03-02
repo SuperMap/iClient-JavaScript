@@ -95,6 +95,7 @@
     "selenium-server": "^2.53.1",
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
+    "three": "^0.90.0",
     "uglify-js": "^3.0.15",
     "url-loader": "^0.5.9",
     "watchify": "^3.9.0",

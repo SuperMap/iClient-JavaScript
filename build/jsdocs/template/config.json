@@ -86,6 +86,9 @@
             },
             "Marker": {
                 "name": "Marker"
+            },
+            "Three": {
+                "name": "Three"
             }
         }
     },

@@ -34,7 +34,7 @@ li {
   height: 100%;
   padding-top: 0px;
   background-color: #3c8dbc;
-  
+
 }
 .main-sidebar .applicationName {
   margin: 0;
@@ -358,7 +358,9 @@ li {
   margin-bottom: 5px;
   list-style-type: disc;
 }
-
+.treeview > a{
+    cursor: pointer;
+}
 a.sidebar-toggle {
   width: 100%;
   height: 36px;
@@ -379,7 +381,7 @@ a.sidebar-toggle {
   text-align: center;
   color: white !important;
   line-height: 36px;
- 
+
 }
 
 .sidebar-mini.sidebar-collapse .main-sidebar{

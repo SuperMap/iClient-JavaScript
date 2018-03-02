@@ -6,5 +6,7 @@ export {Range} from './RangeThemeLayer';
 export {RankSymbol} from './RankSymbolThemeLayer';
 export {UniqueTheme3DLayer} from './UniqueTheme3DLayer';
 export {Unique} from './UniqueThemeLayer';
+export {ThreeLayer} from './ThreeLayer';
 export * from './mapv';
 export * from './theme';
+export * from './threejs';

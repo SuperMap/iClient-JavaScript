@@ -10,6 +10,7 @@ require('./mapboxgl/overlay/RangeThemeLayerSpec.js');
 require('./mapboxgl/overlay/RangeTheme3DLayerSpec.js');
 require('./mapboxgl/overlay/UniqueThemeLayerSpec.js');
 require('./mapboxgl/overlay/UniqueTheme3DLayerSpec.js');
+require('./mapboxgl/overlay/ThreeLayerSpec.js');
 
 /*mapboxgl -- services*/
 require('./mapboxgl/services/AddressMatchServiceSpec.js');
@@ -41,6 +42,3 @@ require('./mapboxgl/services/TerrainCurvatureCalculateSpec.js');
 require('./mapboxgl/services/ThemeServiceSpec.js');
 require('./mapboxgl/services/ThiessenAnalysisSpec.js');
 require('./mapboxgl/services/TrafficTransferAnalystServiceSpec.js');
-
-
-
