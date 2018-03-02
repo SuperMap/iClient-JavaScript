@@ -387,7 +387,7 @@ export class MapvRenderer extends BaseLayer {
      * @description 渲染绘制
      */
     draw() {
-        this.canvasLayer.draw();
+        this._canvasUpdate();
     }
 
     _hide() {

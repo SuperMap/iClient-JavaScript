@@ -81213,7 +81213,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
     }, {
         key: 'draw',
         value: function draw() {
-            this.canvasLayer.draw();
+            this._canvasUpdate();
         }
     }, {
         key: '_hide',

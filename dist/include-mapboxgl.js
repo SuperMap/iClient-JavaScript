@@ -55,7 +55,7 @@
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
-            inputScript("../../dist/iclient9-mapboxgl.min.js");
+            inputScript("../../dist/iclient9-mapboxgl.js");
         }
         if (inArray(includes, 'proj4')) {
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");
