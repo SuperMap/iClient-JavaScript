@@ -31,7 +31,7 @@
             return;
         }
         var version = getVersion();
-        var versionText = version ? "" + version : "";
+        var versionText = version ? "" + version : "&nbsp;";
         $('#version').html(versionText);
     }
 
