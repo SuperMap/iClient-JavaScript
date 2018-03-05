@@ -4,7 +4,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.ClipParameter
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst Interpolation
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param options - {Object} 参数。<br>

@@ -5,7 +5,7 @@ import {StopQueryParameters} from './StopQueryParameters'
 
 /**
  * @class SuperMap.StopQueryService
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferStops
  * @classdesc
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取

@@ -4,7 +4,7 @@ import {VectorClipJobsParameter} from './VectorClipJobsParameter';
 
 /**
  * @class SuperMap.VectorClipJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 矢量裁剪分析服务地址。

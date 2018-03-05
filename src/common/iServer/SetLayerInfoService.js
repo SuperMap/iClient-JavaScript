@@ -5,7 +5,7 @@ import './SetLayerInfoParameters';
 
 /**
  * @class SuperMap.SetLayerInfoService
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc 设置图层信息服务类。可以实现临时图层中子图层的修改
  *              该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  * @extends SuperMap.CommonServiceBase

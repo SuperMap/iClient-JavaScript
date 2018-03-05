@@ -4,7 +4,7 @@ import {UpdateEdgeWeightParameters} from './UpdateEdgeWeightParameters';
 
 /**
  * @class SuperMap.UpdateEdgeWeightService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 更新边的边的耗费权重服务
  * @extends SuperMap.NetworkAnalystServiceBase
  * @example

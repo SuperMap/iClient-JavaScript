@@ -15,7 +15,7 @@ import {
 /**
  * @class  L.supermap.queryService
  * @classdesc 地图查询服务类。
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @extends L.supermap.ServiceBase
  * @param url - {string} 地图查询服务访问地址。
  * @param - options - {Object} 服务交互时所需的可选参数。如：<br>

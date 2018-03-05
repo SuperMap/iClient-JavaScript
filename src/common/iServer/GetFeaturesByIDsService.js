@@ -4,7 +4,7 @@ import {GetFeaturesByIDsParameters} from './GetFeaturesByIDsParameters';
 
 /**
  * @class SuperMap.GetFeaturesByIDsService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
  *              URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>

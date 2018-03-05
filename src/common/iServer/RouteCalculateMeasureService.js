@@ -5,7 +5,7 @@ import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters
 
 /**
  * @class SuperMap.RouteCalculateMeasureService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc
  * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
  *      指定点的M值。通过该类支持的事件的监听函数参数获取

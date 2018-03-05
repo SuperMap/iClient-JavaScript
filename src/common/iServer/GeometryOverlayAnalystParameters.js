@@ -5,7 +5,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GeometryOverlayAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc
  * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
  * @param options - {Object} 可选参数。如:</br>

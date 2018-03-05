@@ -5,7 +5,7 @@ import {Geometry, MeasureService as CommonMeasureService} from '@supermap/iclien
 
 /**
  * @class mapboxgl.supermap.MeasureService
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 测量服务
  * @extends mapboxgl.supermap.ServiceBase
  * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。

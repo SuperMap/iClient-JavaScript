@@ -4,7 +4,7 @@ import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
 
 /**
  * @class SuperMap.GetFeaturesByBufferService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集缓冲区查询服务类。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；

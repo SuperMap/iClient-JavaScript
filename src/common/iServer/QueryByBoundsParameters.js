@@ -4,7 +4,7 @@ import {QueryParameters} from './QueryParameters';
 
 /**
  * @class SuperMap.QueryByBoundsParameters
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
  * @extends SuperMap.QueryParameters
  * @param options - {Object} 可选参数。如：<br>

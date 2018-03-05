@@ -5,7 +5,7 @@ import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
 
 /**
  * @class SuperMap.GenerateSpatialDataService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GenerateSpatialData
  * @classdesc
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。

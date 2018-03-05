@@ -4,7 +4,7 @@ import {TopologyValidatorJobsParameter} from './TopologyValidatorJobsParameter';
 
 /**
  * @class SuperMap.TopologyValidatorJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 拓扑检查分析服务地址。

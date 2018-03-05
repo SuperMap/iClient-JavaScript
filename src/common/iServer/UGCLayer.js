@@ -5,7 +5,7 @@ import '../REST';
 
 /**
  * @class SuperMap.UGCLayer
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc UGC 图层类。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {{@link SuperMap.Bounds}} 图层范围。<br>

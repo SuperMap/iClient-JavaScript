@@ -4,7 +4,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindServiceAreasParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst ServiceArea
  * @classdesc 服务区分析参数类.<br>
  *              服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *              例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>

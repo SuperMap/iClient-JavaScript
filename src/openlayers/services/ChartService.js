@@ -5,7 +5,7 @@ import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.ChartService
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图服务。
  * @extends ol.supermap.ServiceBase
  * @example

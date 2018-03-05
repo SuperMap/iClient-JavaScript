@@ -4,7 +4,7 @@ import './Route';
 
 /**
  * @class SuperMap.RouteCalculateMeasureParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  * @param options - {Object} 可选参数。如:</br>
  *        sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>

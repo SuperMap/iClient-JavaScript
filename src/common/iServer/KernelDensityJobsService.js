@@ -4,7 +4,7 @@ import {KernelDensityJobParameter} from './KernelDensityJobParameter';
 
 /**
  * @class SuperMap.KernelDensityJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 核密度分析服务地址。

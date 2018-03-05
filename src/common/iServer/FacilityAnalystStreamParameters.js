@@ -3,7 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FacilityAnalystStreamParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst UpstreamCirticalFaclilities
  * @classdesc 上游/下游关键设施查找资源参数类。
  * @param options - {Object} 可选参数。如:<br>
  *         sourceNodeIDs - {Array<number>} 指定的设施点ID数组，可以为空。<br>

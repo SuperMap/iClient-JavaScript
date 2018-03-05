@@ -5,7 +5,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>

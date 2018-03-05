@@ -5,7 +5,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.KernelDensityJobParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 密度分析任务参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName - {string} 数据集名。<br>

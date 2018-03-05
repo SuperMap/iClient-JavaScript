@@ -4,7 +4,7 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
 
 /**
  * @class SuperMap.GeometrySurfaceAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc
  * 几何对象表面分析参数类。该类对几何对象表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>

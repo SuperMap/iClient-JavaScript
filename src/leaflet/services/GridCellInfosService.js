@@ -6,7 +6,7 @@ import {GetGridCellInfosService, GetGridCellInfosParameters} from '@supermap/icl
 /**
  * @class L.supermap.gridCellInfosService
  * @classdesc 数据栅格查询服务
- * @category  iServer Data
+ * @category  iServer Data Grid
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.gridCellInfosService(url)

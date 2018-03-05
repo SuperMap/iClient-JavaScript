@@ -3,7 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.TransferLine
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
  * @param options - {Object} 可选参数。如:</br>
  *        lineID - {string} 乘车路线名称。</br>

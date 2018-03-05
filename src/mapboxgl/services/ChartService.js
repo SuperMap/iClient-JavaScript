@@ -6,7 +6,7 @@ import {Bounds, DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} fro
 
 /**
  * @class mapboxgl.supermap.ChartService
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图服务。
  * @extends mapboxgl.supermap.ServiceBase
  * @example

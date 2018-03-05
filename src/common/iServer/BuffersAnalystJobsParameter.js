@@ -5,7 +5,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
- * @category  iServer SpatialAnalyst
+ * @category  iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>

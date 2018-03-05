@@ -4,7 +4,7 @@ import {FacilityAnalystSinks3DParameters} from './FacilityAnalystSinks3DParamete
 
 /**
  * @class SuperMap.FacilityAnalystSinks3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D Sinks
  * @classdesc  最近设施分析服务类(汇查找资源)<br>
  *                最近设施分析是指在网络上给定一个事件点和一组设施点，
  *                查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。

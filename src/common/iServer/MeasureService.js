@@ -7,7 +7,7 @@ import {MeasureMode} from '../REST';
 
 /**
  * @class SuperMap.MeasureService
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 量算服务类。
  *              该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  * @extends SuperMap.CommonServiceBase

@@ -3,7 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.SupplyCenter
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst Location
  * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
  * @param options - {Object} 可选参数。如：<br>
  *        maxWeight - {number}资源供给中心的最大耗费值，必设参数。<br>

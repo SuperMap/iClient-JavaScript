@@ -7,7 +7,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GetFeaturesByGeometryParameters
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可选参数。如:</br>
  *         geometry - {Object} 用于查询的几何对象。</br>

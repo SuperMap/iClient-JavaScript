@@ -4,7 +4,7 @@ import {UGCLayer} from './UGCLayer';
 
 /**
  * @class  SuperMap.OverlapDisplayedOptions
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc 地图压盖过滤显示选项。
  * @description 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，
  * 该类可以分别控制各种类型的对象的压盖显示情况，进而很好地处理地图中各种类型对象的压盖显示问题。

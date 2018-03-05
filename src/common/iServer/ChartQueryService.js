@@ -8,7 +8,7 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ChartQueryService
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。<br>
  *      用户可以通过两种方式获取查询结果:<br>
  *      1.通过 AsyncResponder 类获取（推荐使用）；<br>

@@ -5,7 +5,7 @@ import {PixelFormat} from '../REST';
 
 /**
  * @class SuperMap.InterpolationAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 插值分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        bounds - {Object} 插值分析的范围，用于确定结果栅格数据集的范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>

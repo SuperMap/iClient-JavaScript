@@ -6,7 +6,7 @@ import {FilterParameter} from './FilterParameter';
 
 /**
  * @class SuperMap.DatasetBufferAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc  数据集缓冲区分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        dataset - {string} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。</br>

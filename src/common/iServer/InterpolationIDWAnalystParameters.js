@@ -4,7 +4,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationIDWAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 反距离加权插值（IDW）分析参数类。
  * @param options - {Object}可选参数。如:</br>
  *        power - {number}距离权重计算的幂次。</br>

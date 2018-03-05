@@ -3,7 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GetGridCellInfosParameters
- * @category  iServer Data
+ * @category  iServer Data Grid
  * @classdesc 数据服务栅格查询参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        datasetName - {string} 数据集名称。</br>

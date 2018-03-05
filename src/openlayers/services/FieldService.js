@@ -5,7 +5,7 @@ import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common'
 
 /**
  * @class ol.supermap.FieldService
- * @category  iServer Data
+ * @category  iServer Data Field
  * @classdesc 字段服务类
  * @example
  *      new ol.supermap.FieldService(url).getFields(function(result){

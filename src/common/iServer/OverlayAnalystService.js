@@ -6,7 +6,7 @@ import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParamete
 
 /**
  * @class SuperMap.OverlayAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。

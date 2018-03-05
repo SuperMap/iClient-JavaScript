@@ -7,7 +7,7 @@ import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} 
 /**
  * @class L.supermap.measureService
  * @classdesc 量算服务服务类
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @augments L.supermap.ServiceBase
  * @example
  * 用法：

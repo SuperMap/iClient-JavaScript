@@ -3,7 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThiessenAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 泰森多边形分析参数基类。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {Object} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>

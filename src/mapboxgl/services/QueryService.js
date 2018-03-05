@@ -12,7 +12,7 @@ import {
 
 /**
  * @class mapboxgl.supermap.QueryService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL查询，几何查询，距离查询
  * @extends mapboxgl.supermap.ServiceBase

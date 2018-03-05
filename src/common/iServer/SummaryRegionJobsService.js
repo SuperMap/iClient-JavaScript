@@ -4,7 +4,7 @@ import {SummaryRegionJobParameter} from './SummaryRegionJobParameter';
 
 /**
  * @class SuperMap.SummaryRegionJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 区域汇总分析服务地址。

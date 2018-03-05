@@ -4,7 +4,7 @@ import {Unit} from '../REST';
 
 /**
  * @class SuperMap.MeasureParameters
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 量算参数类。
  * @param geometry - {Object} 要量算的几何对象。<br>
  *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>

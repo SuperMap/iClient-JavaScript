@@ -5,7 +5,7 @@ import './LinkItem';
 
 /**
  * @class SuperMap.FilterParameter
- * @category  iServer Data
+ * @category  iServer
  * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。
  * @param options - {Object} 可选参数。如:<br>
  *        attributeFilter - {string} 属性过滤条件。</br>

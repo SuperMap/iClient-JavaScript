@@ -5,7 +5,7 @@ import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.MeasureService
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 测量服务
  * @extends ol.supermap.ServiceBase
  * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。

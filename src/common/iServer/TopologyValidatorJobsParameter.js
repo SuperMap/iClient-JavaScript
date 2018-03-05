@@ -5,7 +5,7 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>

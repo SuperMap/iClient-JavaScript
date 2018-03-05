@@ -6,7 +6,7 @@ import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters
 
 /**
  * @class SuperMap.BufferAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析服务类
  * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取

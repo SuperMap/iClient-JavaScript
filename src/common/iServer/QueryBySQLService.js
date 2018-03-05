@@ -5,7 +5,7 @@ import {QueryBySQLParameters} from './QueryBySQLParameters';
 
 /**
  * @class SuperMap.QueryBySQLService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  * @extends SuperMap.QueryService
  * @example

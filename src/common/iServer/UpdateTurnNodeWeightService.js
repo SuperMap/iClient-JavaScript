@@ -4,7 +4,7 @@ import {UpdateTurnNodeWeightParameters} from './UpdateTurnNodeWeightParameters';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务类
  * @extends SuperMap.NetworkAnalystServiceBase
  * @example

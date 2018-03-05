@@ -48,7 +48,7 @@ function build(nav,navOrder,level){
                 var li = navMap[subNav[item]];
                 if(li){
                     buildLi(navMap[subNav[item]]);
-                }else if(language&&language==='en'){
+                }else{
                     console.log('not found:'+subNav[item]);
                 }
                 

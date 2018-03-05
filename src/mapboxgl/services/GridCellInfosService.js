@@ -5,7 +5,7 @@ import {GetGridCellInfosService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.GridCellInfosService
- * @category  iServer Data
+ * @category  iServer Data Grid
  * @classdesc 数据栅格查询服务
  * @extends mapboxgl.supermap.ServiceBase
  * @example

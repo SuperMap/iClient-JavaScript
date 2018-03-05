@@ -7,7 +7,7 @@ import {DataFormat} from '../REST';
 
 /**
  * @class SuperMap.QueryService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc 查询服务基类。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；

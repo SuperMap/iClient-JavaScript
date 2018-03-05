@@ -5,7 +5,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GeometryBufferAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param options - {Object} 可选参数。如:</br>

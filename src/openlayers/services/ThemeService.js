@@ -4,7 +4,7 @@ import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.ThemeService
- * @category  iServer Map
+ * @category  iServer Map Theme
  * @classdesc 专题图服务类
  * @extends ol.supermap.ServiceBase
  * @example

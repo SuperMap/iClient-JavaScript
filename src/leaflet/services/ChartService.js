@@ -7,7 +7,7 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
 /**
  * @class L.supermap.chartService
  * @classdesc 海图服务。
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.chartService(url)

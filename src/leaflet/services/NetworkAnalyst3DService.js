@@ -12,7 +12,7 @@ import {
 /**
  * @class L.supermap.networkAnalyst3DService
  * @classdesc 3D网络分析服务类
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D
  * @extends L.supermap.ServiceBase
  * @example
  * L.supermap.networkAnalyst3DService(url)

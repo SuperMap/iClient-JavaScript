@@ -5,7 +5,7 @@ import {QueryByBoundsParameters} from './QueryByBoundsParameters';
 
 /**
  * @class SuperMap.QueryByBoundsService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Bounds 查询服务类。
  * @augments SuperMap.QueryService
  * @example

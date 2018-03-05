@@ -10,8 +10,8 @@ import {
 
 /**
  * @class mapboxgl.supermap.LayerInfoService
- * @category  iServer Map
- * @classdesc 图层信息服务类
+ * @category  iServer Map Layer
+ * @classdesc 图层信息服务类 
  * @extends mapboxgl.supermap.ServiceBase
  * @example
  *      new mapboxgl.supermap.LayerInfoService(url).getLayersInfo(function(result){

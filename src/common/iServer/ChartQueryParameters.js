@@ -4,7 +4,7 @@ import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
 
 /**
  * @class SuperMap.ChartQueryParameters
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询和海图范围查询两类，通过属性queryMode指定查询模式。
  *              必设属性有：queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
  * @param options - {Object} 可选参数。如：<br>

@@ -8,7 +8,7 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
 
 /**
  * @class SuperMap.SurfaceAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc
  * 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。

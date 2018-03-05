@@ -5,7 +5,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.EditFeaturesParameters
- * @category  iServer Data
+ * @category  iServer Data Feature
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @category iServer Data
  * @param options - {Object} 可选参数。如:</br>

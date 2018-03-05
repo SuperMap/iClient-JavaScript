@@ -4,7 +4,7 @@ import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
 
 /**
  * @class SuperMap.SummaryMeshJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务类。
  * @param url -{string} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>

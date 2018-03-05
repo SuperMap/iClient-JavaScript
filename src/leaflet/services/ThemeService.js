@@ -6,7 +6,7 @@ import {ThemeService as SuperMapThemeService} from '@supermap/iclient-common';
 /**
  * @class L.supermap.themeService
  * @classdesc 专题图服务类
- * @category  iServer Map
+ * @category  iServer Map Theme
  * @extends L.supermap.ServiceBase
  * @example
  * L.supermap.themeService(url,{

@@ -6,7 +6,7 @@ import {EditFeaturesParameters} from './EditFeaturesParameters';
 
 /**
  * @class SuperMap.EditFeaturesService
- * @category  iServer Data
+ * @category  iServer Data Feature
  * @classdesc 数据服务中数据集添加、更新、删除服务类。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>

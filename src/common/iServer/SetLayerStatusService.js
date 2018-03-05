@@ -5,7 +5,7 @@ import {SetLayerStatusParameters} from './SetLayerStatusParameters';
 
 /**
  * @class SuperMap.SetLayerStatusService
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。<br>
  *                用户获取服务端返回的各子图层显示状态有两种方式：<br>
  *                一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>

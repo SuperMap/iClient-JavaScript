@@ -10,7 +10,7 @@ import {
 
 /**
  * @class ol.supermap.NetworkAnalyst3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D
  * @classdesc 3D网络分析服务类
  * @extends ol.supermap.ServiceBase
  * @example

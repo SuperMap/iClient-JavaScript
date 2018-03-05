@@ -7,7 +7,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc 数据集叠加分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>

@@ -6,7 +6,7 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.QueryByDistanceService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Distance查询服务类。
  * @extends SuperMap.QueryService
  * @example
