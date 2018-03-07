@@ -533,6 +533,11 @@ var exampleConfig = {
                     name_en: "picture drawing of 180K NY taxis",
                     thumbnail: "graphiclayer_image.png",
                     fileName: "07_graphiclayer_image"
+                }, {
+                    name: "随机点-三叶草",
+                    name_en: "random points(clover)",
+                    thumbnail: "graphiclayer_clover.png",
+                    fileName: "07_graphiclayer_clover"
                 }]
             },
             "ECharts": {

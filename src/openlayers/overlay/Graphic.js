@@ -1,5 +1,13 @@
 import ol from 'openlayers';
-import {Util} from '../core/Util';
+import {
+    Util
+} from '../core/Util';
+import {
+    HitCloverShape
+} from './graphic/HitCloverShape';
+import {
+    CloverShape
+} from './graphic/CloverShape';
 
 /**
  * @class ol.source.Graphic
@@ -23,13 +31,16 @@ export class Graphic extends ol.source.ImageCanvas {
         this.graphics_ = options.graphics;
         this.map = options.map;
         this.highLightStyle = options.highLightStyle;
+        this.hitGraphicLayer = null;
+
 
         var me = this;
         if (options.onClick) {
             me.map.on('click', function (e) {
                 var coordinate = e.coordinate;
                 var resolution = e.frameState.viewState.resolution;
-                me.forEachFeatureAtCoordinate(coordinate, resolution, options.onClick);
+                var pixel = e.pixel;
+                me.forEachFeatureAtCoordinate(coordinate, resolution, options.onClick,pixel);
             });
         }
 
@@ -40,7 +51,10 @@ export class Graphic extends ol.source.ImageCanvas {
             var height = this.map.getSize()[1] * pixelRatio;
             var context = Util.createCanvasContext2D(mapWidth, mapHeight);
             var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = ol.render.toContext(context, {size: [mapWidth, mapHeight], pixelRatio: 1});
+            var vectorContext = ol.render.toContext(context, {
+                size: [mapWidth, mapHeight],
+                pixelRatio: 1
+            });
             var graphics = this.getGraphicsInExtent(extent);
             var me = this;
             graphics.map(function (graphic) {
@@ -137,7 +151,7 @@ export class Graphic extends ol.source.ImageCanvas {
      * @param resolution -{number} 分辨率
      * @param callback -{function} 回调函数
      */
-    forEachFeatureAtCoordinate(coordinate, resolution, callback) {
+    forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
         var graphics = this.getGraphicsInExtent();
         for (var i = graphics.length - 1; i > 0; i--) {
             var center = graphics[i].getGeometry().getCoordinates();
@@ -150,12 +164,61 @@ export class Graphic extends ol.source.ImageCanvas {
             extent[1] = center[1] - image.getAnchor()[1] * resolution;
             extent[3] = center[1] + image.getAnchor()[1] * resolution;
             if (ol.extent.containsCoordinate(extent, coordinate)) {
-                this.selected = graphics[i];
-                this.changed();
+                if (graphics[i].getStyle() instanceof CloverShape) {
+                    if (this.hitGraphicLayer) {
+                        this.map.removeLayer(this.hitGraphicLayer);
+                        this.hitGraphicLayer = null;
+                    }
+                    var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
+                    //点击点与中心点的角度
+                    evtPixel = evtPixel || [0, 0];
+                    var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0])) / Math.PI * 180;
+                    angle = angle > 0 ? angle : 360 + angle;
+                    //确定扇叶
+                    var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
+                    //扇叶的起始角度
+                    var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
+                    //渲染参数
+                    var opts = {
+                        stroke: new ol.style.Stroke({
+                            color: "#ff0000",
+                            width: 1
+                        }),
+                        fill: new ol.style.Fill({
+                            color: "#0099ff"
+                        }),
+                        radius: image.getRadius(),
+                        angle: image.getAngle(),
+                        eAngle: sAngle + image.getAngle(),
+                        sAngle: sAngle
+                    };
+                    if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape) {
+                        opts.stroke = this.highLightStyle.getStroke();
+                        opts.fill = this.highLightStyle.getFill();
+                        opts.radius = this.highLightStyle.getRadius();
+                        opts.angle = this.highLightStyle.getAngle();
+                    }
+                    var hitGraphic = new ol.Graphic(new ol.geom.Point(center));
+                    hitGraphic.setStyle(new HitCloverShape(opts));
+                    this.hitGraphicLayer = new ol.layer.Image({
+                        source: new ol.source.Graphic({
+                            map: this.map,
+                            graphics: [hitGraphic]
+                        })
+                    });
+                    this.map.addLayer(this.hitGraphicLayer);
+                } else {
+                    this.selected = graphics[i];
+                    this.changed();
+                }
                 callback(graphics[i]);
                 return;
             }
             this.selected = null;
+            if (this.hitGraphicLayer) {
+                this.map.removeLayer(this.hitGraphicLayer);
+                this.hitGraphicLayer = null;
+            }
             this.changed();
         }
         callback();

@@ -102,7 +102,7 @@ deps = {
             //AddressService
             "./src/common/iServer/AddressMatchService.js",
             //DataFlowService
-            "./src/common/iServer/DataFlowService.js",
+            "./src/common/iServer/DataFlowService.js"
         ],
         "graph": [
             "./src/common/iServer/Bar.js",
@@ -459,7 +459,7 @@ deps = {
                     './src/leaflet/overlay/RangeThemeLayer.js',
                     './src/leaflet/overlay/RankSymbolThemeLayer.js',
                     './src/leaflet/overlay/GraphThemeLayer.js',
-                    './src/leaflet/overlay/LabelThemeLayer.js',
+                    './src/leaflet/overlay/LabelThemeLayer.js'
                 ],
                 "modules": [{
                     "name": "L.supermap.uniqueThemeLayer",
@@ -544,7 +544,7 @@ deps = {
                     "des": "logo控件",
                     "des_en": "logo control"
                 }]
-            },
+            }
         }
 
     },
@@ -849,7 +849,7 @@ deps = {
                     "./src/openlayers/overlay/Range.js",
                     "./src/openlayers/overlay/RankSymbol.js",
                     "./src/openlayers/overlay/Graph.js",
-                    "./src/openlayers/overlay/Label.js",
+                    "./src/openlayers/overlay/Label.js"
                 ],
                 "modules": [{
                     "name": "ol.source.Unique",
@@ -876,7 +876,7 @@ deps = {
             "Mapv": {
                 "name": "Mapv",
                 "src": [
-                    "./src/openlayers/overlay/Mapv.js",
+                    "./src/openlayers/overlay/Mapv.js"
                 ],
                 "modules": [{
                     "name": "ol.source.Mapv",
@@ -887,7 +887,7 @@ deps = {
             "Turf": {
                 "name": "Turf",
                 "src": [
-                    "./src/openlayers/overlay/Turf.js",
+                    "./src/openlayers/overlay/Turf.js"
                 ],
                 "modules": [{
                     "name": "ol.source.Turf",
@@ -939,7 +939,7 @@ deps = {
                     "./src/mapboxgl/services/LayerInfoService.js",
                     "./src/mapboxgl/services/ChartService.js",
                     "./src/mapboxgl/services/QueryService.js",
-                    "./src/mapboxgl/services/MeasureService.js",
+                    "./src/mapboxgl/services/MeasureService.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.LayerInfoService",
@@ -1021,7 +1021,7 @@ deps = {
             "Theme": {
                 "name": "服务器专题图服务",
                 "src": [
-                    "./src/mapboxgl/services/ThemeService.js",
+                    "./src/mapboxgl/services/ThemeService.js"
 
                 ],
                 "modules": [{
@@ -1078,14 +1078,14 @@ deps = {
             "TrafficTransferAnalyst": {
                 "name": "交通换乘服务",
                 "src": [
-                    "./src/mapboxgl/services/TrafficTransferAnalystService.js",
+                    "./src/mapboxgl/services/TrafficTransferAnalystService.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.TrafficTransferAnalystService",
                     "des": "交通换乘服务",
                     "des_en": "traffic transfer analyst service"
                 }]
-            },
+            }
         },
         "Overlay": {
             "title": "可视化",
@@ -1095,7 +1095,7 @@ deps = {
             "HeatMap": {
                 "name": "HeatMap",
                 "src": [
-                    "./src/mapboxgl/overlay/HeatMapLayer.js",
+                    "./src/mapboxgl/overlay/HeatMapLayer.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.HeatMapLayer",
@@ -1108,7 +1108,7 @@ deps = {
                 "src": [
                     "./src/mapboxgl/overlay/MapvLayer.js",
                     "./src/mapboxgl/overlay/mapv/MapvDataSet.js",
-                    "./src/mapboxgl/overlay/mapv/MapExtend.js",
+                    "./src/mapboxgl/overlay/mapv/MapExtend.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",
@@ -1228,7 +1228,7 @@ deps = {
                     "des": "ElasticSearch服务",
                     "des_en": "ElasticSearch service"
                 }]
-            },
+            }
         },
         "Overlay": {
             "title": "可视化",

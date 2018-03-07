@@ -78,7 +78,9 @@ export class Graphic extends ol.Object {
     setStyle(style) {
         this.style_ = style;
         this.styleFunction_ = !style ?
-            undefined : ol.Graphic.createStyleFunction(new ol.style.Style({image: style}));
+            undefined : ol.Graphic.createStyleFunction(new ol.style.Style({
+                image: style
+            }));
         this.changed();
     }
 

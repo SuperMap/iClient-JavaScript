@@ -2267,6 +2267,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.OutputSetting
+ * @category  iServer ProcessingService
  * @classdesc 分布式分析输出类型设置类
  * @param options - {Object} 必填参数。<br>
  *         type -{{@link SuperMap.OutputType}} 输出类型。 <br>
@@ -2365,7 +2366,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ProcessingServiceBase
- * @description 分布式分析服务基类
+ * @category  iServer ProcessingService
+ * @classdesc 分布式分析服务基类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 分布式分析服务地址。
  * @param options - {Object} 参数。如：<br>
@@ -2566,6 +2568,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.CommonServiceBase
+ * @category  iServer 
  * @classdesc 对接iServer各种服务的Service的基类。
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
@@ -4182,6 +4185,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @name SecurityManager
  * @memberOf SuperMap
  * @namespace
+ * @category Security
  * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
  *  > 使用说明：
  *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
@@ -4600,6 +4604,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Layer.MapVLayer
+ * @category  Visualization MapV
  * @classdesc MapV图层。
  * @extends SuperMap.Layer
  * @param name - {string} 图层名
@@ -4889,6 +4894,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.REST.AddressMatchService
+ * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @extends SuperMap.REST.CommonServiceBase
  * @param url - {string} 服务地址
@@ -5005,6 +5011,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.REST.ProcessingService
+ * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
  * @augments SuperMap.CommonServiceBase
  * @example
@@ -5954,6 +5961,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.TimeFlowControl
  * @classdesc 时间管理类。
+ * @category  Control
  * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
@@ -6197,6 +6205,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
+ * @category ElasticSearch
  * @param url - {string} ElasticSearch服务地址。
  * @param options - {Object} 可选参数。如:</br>
  *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>
@@ -8057,6 +8066,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
+ * @category  Control
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
  *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
@@ -8544,6 +8554,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
+ * @category BaseTypes Format
  * @param options - {Object} 可选参数。<br>
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
@@ -8646,6 +8657,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
+ * @category BaseTypes Format
  * @extends SuperMap.Format
  */
 var JSONFormat = exports.JSONFormat = function (_Format) {
@@ -8976,6 +8988,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.AddressMatchService
+ * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param options - {Object} 参数。
  * @param url {string} 地址匹配服务地址。
@@ -9114,6 +9127,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
+ * @category  iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -9265,6 +9279,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
+ * @category  iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 缓冲区分析服务地址。
@@ -9362,10 +9377,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.DatasourceConnectionInfo
+ * @category  iServer Data
  * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
  *             当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
  *             所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
  *             其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
+ * @category iServer Data
  * @param options - {Object} 参数。如:</br>
  *         alias - {string} 数据源别名。</br>
  *         connect - {boolean} 数据源是否自动连接数据。</br>
@@ -9520,6 +9537,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GeoCodingParameter
+ * @category  iServer AddressMatch
  * @classdesc 地理正向匹配参数类。
  * @param options - {Object} 可选参数。如:</br>
  *         address - {string} 地点关键词。</br>
@@ -9625,6 +9643,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GeoDecodingParameter
+ * @category  iServer AddressMatch
  * @classdesc 地理反向匹配参数类。
  * @param options - {Object}可选参数。如:<br>
  *        x - {number} 查询位置的横坐标。<br>
@@ -9748,6 +9767,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.KernelDensityJobParameter
+ * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 密度分析任务参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName - {string} 数据集名。<br>
@@ -9929,6 +9949,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.KernelDensityJobsService
+ * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 核密度分析服务地址。
@@ -10025,6 +10046,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
+ * @category  iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -10161,6 +10183,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.OverlayGeoJobsService
+ * @category  iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务类。
  * @param url -{string} 叠加分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -10262,6 +10285,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
+ * @category  iServer ProcessingService Query
  * @classdesc 单对象空间查询分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -10392,6 +10416,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
+ * @category  iServer ProcessingService Query
  * @classdesc 单对象查询分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 单对象空间查询分析服务地址。
@@ -10487,6 +10512,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
+ * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
@@ -10613,6 +10639,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryAttributesJobsService
+ * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 汇总统计分析服务地址。
@@ -10710,6 +10737,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
+ * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
@@ -10892,6 +10920,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryMeshJobsService
+ * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务类。
  * @param url -{string} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -10993,6 +11022,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
+ * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -11218,6 +11248,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryRegionJobsService
+ * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 区域汇总分析服务地址。
@@ -11315,6 +11346,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
+ * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -11446,6 +11478,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TopologyValidatorJobsService
+ * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 拓扑检查分析服务地址。
@@ -11543,6 +11576,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.VectorClipJobsParameter
+ * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -11672,6 +11706,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.VectorClipJobsService
+ * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 矢量裁剪分析服务地址。

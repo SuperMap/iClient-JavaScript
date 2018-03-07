@@ -1339,7 +1339,7 @@ window.resources = {
         "style_width420px": 'width: 420px',
         "style_width350px": 'width: 350px',
         "style_heatMapWidth":"width: 280px",
-        "style_plotAnimation": "width: 120px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;",
+        "style_plotAnimation": "width: 120px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;"
 
 
 

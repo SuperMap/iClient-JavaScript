@@ -16,7 +16,7 @@ export class StyleUtils {
      * @function ol.supermap.StyleUtils.getValidStyleFromLayerInfo
      * @description 通过图层信息获取有效的样式
      * @param layerInfo - {Object} 图层信息
-     * @param feature - {ol.Feature}{@linkdoc-openlayers/ol.Feature} 要素
+     * @param feature - [{ol.Feature}]{@linkdoc-openlayers/ol.Feature} 要素
      * @param url - {string} 图层数据地址
      * @return {ol.style.Style} 返回图层样式
      */

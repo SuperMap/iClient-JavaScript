@@ -1,3 +1,4 @@
 ﻿# Ignore files 
 src/classic/libs/*
 src/common/style/CartoCSS.js
+test

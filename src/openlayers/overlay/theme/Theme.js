@@ -22,10 +22,10 @@ import {ThemeFeature} from './ThemeFeature';
  *        opacity - {number} 图层透明的。</br>
  *        attributions - {string|Object} 版权信息。 </br>
  *        logo - {string} Logo</br>
- *        projection - {@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
  *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
  *        resolutions - {Array} 分辨率数组。</br>
- *        state - {@linkdoc-openlayers/ol.source.html#.State} 资源状态。
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export class Theme extends ol.source.ImageCanvas {
