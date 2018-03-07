@@ -1,4 +1,3 @@
-/*
 export {
     SuperMap,
     DataFormat,
@@ -231,4 +230,4 @@ export {
 export * from './control';
 export * from './core';
 export * from './overlay';
-export * from './services';*/
+export * from './services';
