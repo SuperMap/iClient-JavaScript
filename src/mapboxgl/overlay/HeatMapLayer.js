@@ -22,16 +22,12 @@ import {
  *        useGeoUnit - {boolean} 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
  */
 
-export class HeatMapLayer {
+export class HeatMapLayer extends mapboxgl.Evented {
 
     constructor(name, options) {
-        if (options) {
-            if (!options.map) {
-                mapboxgl.Evented.prototype.fire("error", {error: new Error('缺少必传参数 map 。')});
-                return;
-            }
-        }
+        super();
 
+        var _options = options ? options : {}
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.name - {string}
          * @description 图层名字
@@ -42,19 +38,19 @@ export class HeatMapLayer {
          * @member mapboxgl.supermap.HeatMapLayer.prototype.id - {string}
          * @description 热力图图层id
          */
-        this.id = options.id ? options.id : CommonUtil.createUniqueID("HeatMapLayer_");
+        this.id = _options.id ? _options.id : CommonUtil.createUniqueID("HeatMapLayer_");
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.map - {mapboxgl.Map}
          * @description 热力图图层map
          */
-        this.map = options.map;
+        this.map = _options.map ? _options.map : null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.loadWhileAnimating - {boolean}
          * @description 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
          */
-        this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
+        this.loadWhileAnimating = _options.loadWhileAnimating === undefined ? true : _options.loadWhileAnimating;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.visibility - {boolean}
@@ -65,19 +61,19 @@ export class HeatMapLayer {
          * @member mapboxgl.supermap.HeatMapLayer.prototype.opacity - {number}
          * @description 图层透明度，取值范围[0,1]
          */
-        this.opacity = options.opacity ? options.opacity : 1;
+        this.opacity = _options.opacity ? _options.opacity : 1;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.colors - {Array<string>}
          * @description 颜色线性渐变数组,颜色值必须为canvas所支。默认为['blue','cyan','lime','yellow','red']。
          */
-        this.colors = options.colors ? options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
+        this.colors = _options.colors ? _options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.useGeoUnit - {boolean}
          * @description 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
          */
-        this.useGeoUnit = options.useGeoUnit ? options.useGeoUnit : false;
+        this.useGeoUnit = _options.useGeoUnit ? _options.useGeoUnit : false;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.radius - {number}
@@ -85,7 +81,20 @@ export class HeatMapLayer {
          *              热点显示的时候以精确点为中心点开始往四周辐射衰减，
          *              其衰减半径和权重值成比列。
          */
-        this.radius = options.radius ? options.radius : 50;
+        this.radius = _options.radius ? _options.radius : 50;
+
+        /**
+         * @member mapboxgl.supermap.HeatMapLayer.prototype.featureWeight - {string}
+         * @description 对应feature.attributes中的热点权重字段名称，feature.attributes中权重参数的类型为float
+         * @example
+         * //例如：
+         * //feature.attributes中表示权重的字段为height,则在HeatMapLayer的featureWeight参数赋值为"height"
+         * feature1.attributes.height = 7.0;
+         * feature2.attributes.height = 6.0;
+         * var heatMapLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
+         * heatMapLayer.addFeatures([feature1,feature2]);
+         */
+        this.featureWeight = _options.featureWeight ? _options.featureWeight : null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.features - {Array<SuperMap.Feature.Vector>}
@@ -104,19 +113,6 @@ export class HeatMapLayer {
          * @description 设置权重最小值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
          */
         this.minWeight = null;
-
-        /**
-         * @member mapboxgl.supermap.HeatMapLayer.prototype.featureWeight - {string}
-         * @description 对应feature.attributes中的热点权重字段名称，feature.attributes中权重参数的类型为float
-         * @example
-         * //例如：
-         * //feature.attributes中表示权重的字段为height,则在HeatMapLayer的featureWeight参数赋值为"height"
-         * feature1.attributes.height = 7.0;
-         * feature2.attributes.height = 6.0;
-         * var heatMapLayer = new SuperMap.Layer.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
-         * heatMapLayer.addFeatures([feature1,feature2]);
-         */
-        this.featureWeight = null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.EVENT_TYPES
@@ -167,6 +163,17 @@ export class HeatMapLayer {
          */
         this.maxHeight = null;
 
+    }
+
+    /**
+     * @function mapboxgl.supermap.HeatMapLayer.prototype.onAdd
+     * @description 向底图添加该图层
+     */
+    onAdd(map) {
+        this.map = map;
+        if (this.features.length === 0) {
+            return;
+        }
         //创建热力图绘制容器
         this._createCanvasContainer();
 
@@ -182,18 +189,6 @@ export class HeatMapLayer {
         this.map.on('move', this._moveEvent.bind(this));
         this.map.on('moveend', this._moveEndEvent.bind(this));
         this.map.on('remove', this.removeFromMap.bind(this));
-
-    }
-
-    /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.addToMap
-     * @description 向底图添加该图层
-     */
-    addToMap() {
-        if (this.features.length === 0) {
-            return;
-        }
-        this.mapContainer.appendChild(this.rootCanvas);
         this.refresh();
     }
 
@@ -224,6 +219,8 @@ export class HeatMapLayer {
         CommonUtil.modifyDOMElement(this.rootCanvas, null, null, null,
             "absolute", null, null, this.opacity);
         this.canvasContext = this.rootCanvas.getContext('2d');
+
+        this.mapContainer.appendChild(this.rootCanvas);
     }
 
     /**
@@ -248,12 +245,15 @@ export class HeatMapLayer {
      *          }
      *      ]
      *   };
-     * var heatMapLayer = new SuperMap.Layer.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
+     * var heatMapLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
      * heatMapLayer.addFeatures(geojson);
+     * map.addLayer(heatMapLayer);
      */
     addFeatures(features) {
         this.features = this.toiClientFeature(features);
-        mapboxgl.Evented.prototype.fire(this.EVENT_TYPES[0], {features: features, succeed: true});
+        this.fire(this.EVENT_TYPES[0], {features: features, succeed: true});
+        //支持更新features，刷新底图
+        this.refresh();
     }
 
     /**
@@ -282,7 +282,7 @@ export class HeatMapLayer {
                 null, null, null, opacity);
 
             if (this.map !== null) {
-                mapboxgl.Evented.prototype.fire('changelayer', {layer: this, property: "opacity"});
+                this.fire('changelayer', {layer: this, property: "opacity"});
             }
         }
     }
@@ -304,6 +304,7 @@ export class HeatMapLayer {
      * @function mapboxgl.supermap.HeatMapLayer.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
      * @param bounds - {mapboxgl.LngLatBounds} 当前显示范围
+     * @private
      */
     convertFastToPixelPoints(bounds) {
         var data = [], x, y, k, resolution, maxTemp, minTemp, maxWeightTemp;
@@ -324,10 +325,9 @@ export class HeatMapLayer {
         for (var i = 0; i < this.features.length; i++) {
             var feature = this.features[i];
             var point = feature.geometry;
-            //过滤，只显示当前范围,mapboxgl旋转获取得bounds不适
-            // var mapBounds = new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
-            // if (mapBounds.contains(point.x, point.y)) {
-            //var pixelPoint = this.getViewPortPxFromLonLat(new SuperMap.LonLat(point.x,point.y));
+
+            //可通过bounds过滤需绘制的features以优化性能，但mapboxgl旋转获取得bounds不适
+
             var pixelPoint = this.getPixelXY(new LonLat(point.x, point.y));
             if (this.featureWeight) {
                 pixelPoint.weight = feature.attributes[this.featureWeight];//point.value;
@@ -347,7 +347,6 @@ export class HeatMapLayer {
             k = pixelPoint.weight;
 
             data.push([x, y, k]);
-            // }
         }
 
         //无最大权重设置
@@ -368,6 +367,7 @@ export class HeatMapLayer {
      * @function mapboxgl.supermap.HeatMapLayer.prototype.draw
      * @description 绘制热点图
      * @param data -{Array} convertToPixelPoints方法计算出的点
+     * @private
      */
     draw(data, maxWeight) {
         if (this.maxHeight > 0 && this.maxWidth > 0) {
@@ -392,12 +392,12 @@ export class HeatMapLayer {
 
     }
 
-
     /**
      * @function mapboxgl.supermap.HeatMapLayer.prototype.colorize
      * @description 根据渐变色重置热点图rgb值
      * @param pixels 像素RGBA值
      * @param gradient 渐变canvas.getImageData.data
+     * @private
      */
     colorize(pixels, gradient) {
         for (var i = 0, j; i < pixels.length; i += 4) {
@@ -414,6 +414,7 @@ export class HeatMapLayer {
      * @function mapboxgl.supermap.HeatMapLayer.drawCircle
      * @description 绘制热点半径圆
      * @param r -{number} 热点半径
+     * @private
      */
     drawCircle(r) {
         var blur = r / 2;
@@ -435,7 +436,8 @@ export class HeatMapLayer {
 
     /**
      * @function mapboxgl.supermap.HeatMapLayer.createGradient
-     * @description 根据this.canvasColors设置渐变并getImageData
+     * @description 根据this.colors设置渐变并getImageData
+     * @private
      */
     createGradient() {
         var colors = this.colors;
@@ -518,7 +520,7 @@ export class HeatMapLayer {
         }
         var succeed = heatPointsFailedRemoved.length == 0 ? true : false;
         //派发删除features成功的事件
-        mapboxgl.Evented.prototype.fire(this.EVENT_TYPES[1], {features: heatPointsFailedRemoved, succeed: succeed});
+        this.fire(this.EVENT_TYPES[1], {features: heatPointsFailedRemoved, succeed: succeed});
         this.refresh();
     }
 

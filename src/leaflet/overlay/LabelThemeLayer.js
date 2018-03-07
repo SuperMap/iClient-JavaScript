@@ -78,9 +78,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
         this.getPxBoundsMode = 0;
     },
     /**
-     * @function L.supermap.ThemeLayer.prototype.onAdd
+     * @function L.supermap.LabelThemeLayer.prototype.onAdd
      * @description 添加专题图
      * @param map - {L.map} 要添加的地图
+     * @private
      */
     onAdd: function (map) {
         GeoFeatureThemeLayer.prototype.onAdd.call(this, map);

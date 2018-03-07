@@ -68,6 +68,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.onAdd
      * @description 添加专题图
      * @param map - {L.map} 要添加的地图
+     * @private
      */
     onAdd: function (map) {
         var me = this;

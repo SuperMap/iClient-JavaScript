@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热点图</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, heatMapLayer,
+        url = host + "/iserver/services/map-world/rest/maps/World";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: {lon: 0, lat: 0},
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+
+    initEditView();
+
+    function initEditView() {
+        var infoView = L.control({position: 'topright'});
+        infoView.onAdd = function () {
+            var me = this;
+            me._div = L.DomUtil.create('div', 'editPane');
+            me._div.style.width = '236px';
+            me._div.innerHTML = `<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center' data-i18n="resources.text_heatMapLayer">热点图</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon' data-i18n="resources.text_countsDraw">热点数量：</span>
+                <input type='text' class='form-control' id='heatNums' value='200'/>
+            </div>
+        </div>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon' data-i18n="resources.text_radius">热点半径：</span>
+                <input class='form-control' style='width: 50px' value='50' id='heatradius'/>
+                <select class='form-control' style='width:auto' id='radiusUnit'>
+                    <option value='px'>px</option>
+                    <option value='degree'>degree</option>
+                </select>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="开始绘制"
+               onclick="createHeatPoints()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" value="清除"
+               onclick="clearHeatPoints()"/>
+    </div>
+</div>`;
+            handleMapEvent(me._div, me._map);
+            return me._div;
+        };
+        infoView.addTo(map);
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+
+    function createHeatPoints() {
+        clearHeatPoints();
+        heatMapLayer = L.supermap.heatMapLayer(
+            "heatMap",
+            {
+                "map": map,
+                "id": "heatmap",
+                "radius": 45,
+//            设置图层透明度：（参数方式）
+//              "opacity": 0.5,
+                //featureWeight指定以哪个属性值为热力权重值创建热力图：
+                "featureWeight": "value",
+            }
+        );
+        var num = parseInt(document.getElementById('heatNums').value);
+        var radius = parseInt(document.getElementById('heatradius').value);
+        var unit = document.getElementById("radiusUnit").value,
+            useGeoRadius = false;
+        if ("degree" == unit) {
+            //使用热力半径单位使用地理单位
+            heatMapLayer.useGeoUnit = true;
+            useGeoRadius = true;
+        } else {
+            //使用热力半径单位不使用地理单位
+            heatMapLayer.useGeoUnit = false;
+        }
+        heatMapLayer.radius = radius;
+
+        var features = [];
+
+        for (var i = 0; i < num; i++) {
+            var geometry = L.point(Math.random() * 340 - 170, Math.random() * 160 - 80);
+            var attributions = {
+                "value": Math.random() * 9,
+                "geoRadius": useGeoRadius ? radius : null
+            };
+            features[i] = L.supermap.heatMapFeature(geometry, attributions);
+            //参数为geojson格式:
+            /*features[i] = {
+                "type": "feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        Math.random() * 340 - 170,
+                        Math.random() * 160 - 80]
+                },
+                "properties": {
+                    "value": Math.random() * 9,
+                    "geoRadius": useGeoRadius ? radius : null
+                }
+            };*/
+        }
+
+        //参数为geojson格式:
+        /* var heatPoints = {
+             "type": "FeatureCollection",
+             "features": features
+         };
+         //加载geoJson格式数据：
+         heatMapLayer.addFeatures(heatPoints);*/
+
+        //加载heatMapFeature格式数据：
+        heatMapLayer.addFeatures(features);
+        heatMapLayer.addTo(map);
+//        map.addLayer(heatMapLayer);
+        //设置图层透明度：（函数方式）
+//        heatMapLayer.setOpacity(0.5);
+    }
+
+    function clearHeatPoints() {
+        if (heatMapLayer) {
+            map.removeLayer(heatMapLayer);
+            heatMapLayer = null;
+        }
+    }
+</script>
+</body>
+</html>

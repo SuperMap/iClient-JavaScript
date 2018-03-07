@@ -13,7 +13,8 @@ import ol from 'openlayers';
  *        style - {string} 图层风格。<br>
  *        format - {string} 格式。<br>
  *        isLabel - {boolean} 是否是标注图层<br>
- *        opaque - {boolean} 是否透明。
+ *        opaque - {boolean} 是否透明。<br>
+ *        tileProxy - {string} 代理地址
  * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
  */
 export class Tianditu extends ol.source.WMTS {

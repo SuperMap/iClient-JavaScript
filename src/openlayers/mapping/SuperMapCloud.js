@@ -6,6 +6,7 @@ import ol from 'openlayers';
  * @classdesc 超图云地图图层源。
  * @param opt_options - {Object} 可选参数：如：<br>
  *        url - {string} 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
+ *        tileProxy - {string} 代理地址址
  * @extends ol.source.XYZ{@linkdoc-openlayers/ol.source.XYZ}
  */
 export class SuperMapCloud extends ol.source.XYZ {

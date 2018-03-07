@@ -387,6 +387,17 @@ deps = {
             "description": "数据可视化效果扩展",
             "description_en": "data visualization extension",
 
+            "HeatMap": {
+                "name": "HeatMap",
+                "src": [
+                    "./src/leaflet/overlay/HeatMapLayer.js",
+                ],
+                "modules": [{
+                    "name": "L.supermap.heatMapLayer",
+                    "des": "热力图图层",
+                    "des_en": "HeatMap layer"
+                }]
+            },
             "EChartsLayer": {
                 "name": "ECharts地图图层",
                 "src": [
@@ -798,6 +809,17 @@ deps = {
             "description": "数据可视化效果扩展",
             "description_en": "data visualization extension",
 
+            "HeatMap": {
+                "name": "HeatMap",
+                "src": [
+                    "./src/openlayers/overlay/HeatMap.js",
+                ],
+                "modules": [{
+                    "name": "ol.source.HeatMapSource",
+                    "des": "热力图图层",
+                    "des_en": "HeatMap layer"
+                }]
+            },
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [

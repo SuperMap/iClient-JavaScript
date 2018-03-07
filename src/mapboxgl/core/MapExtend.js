@@ -20,7 +20,7 @@ export var MapExtend = function () {
             this.fire('error', {error: new Error('A layer with this id already exists.')});
             return;
         }
-        addLayer(layer);
+        addLayer(layer, this);
         this.overlayLayersManager[layer.id] = layer;
         return this;
     };
@@ -72,8 +72,8 @@ export var MapExtend = function () {
         return this;
     };
 
-    function addLayer(layer) {
-        layer.addToMap();
+    function addLayer(layer, map) {
+        layer.onAdd(map);
     }
 
     /**
@@ -104,7 +104,7 @@ export var MapExtend = function () {
         // var beforeLayer;
         if (beforeLayerID) {
             var beforeLayer = document.getElementById(beforeLayerID);
-            if(!beforeLayer){
+            if (!beforeLayer) {
                 mapboxgl.Evented.prototype.fire("error", {error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)});
             }
         }

@@ -539,6 +539,11 @@ var exampleConfig = {
                     name_en: "heat map - NY taxi car point",
                     thumbnail: "l_heatmap_nyc.png",
                     fileName: "12_heatMap_NY"
+                },{
+                    name: "随机点热点图",
+                    name_en: "random points",
+                    thumbnail: "l_heatMapLayer.png",
+                    fileName: "heatMapLayer"
                 }]
             },
             "animate": {

@@ -488,6 +488,11 @@ var exampleConfig = {
                     name_en: "random points",
                     thumbnail: "ol_heatmap.png",
                     fileName: "07_HeatMap"
+                },{
+                    name: "随机点热点图",
+                    name_en: "random points",
+                    thumbnail: "ol_heatMapLayer.png",
+                    fileName: "heatMapLayer"
                 }]
             },
             "cluster": {

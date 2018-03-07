@@ -10,6 +10,7 @@ import {TileVectorLayer, tiledVectorLayer} from './TileVectorLayer';
 import {TurfLayer, turfLayer} from './TurfLayer';
 import {UnicodeMarker, unicodeMarker} from './UnicodeMarker';
 import {UniqueThemeLayer, uniqueThemeLayer} from './UniqueThemeLayer';
+import {HeatMapLayer, heatMapLayer, HeatMapFeature, heatMapFeature} from './HeatMapLayer';
 import {VectorTileFormat} from './VectorTileFormat';
 
 import {
@@ -52,6 +53,7 @@ export {TileVectorLayer, tiledVectorLayer};
 export {TurfLayer, turfLayer};
 export {UnicodeMarker, unicodeMarker};
 export {UniqueThemeLayer, uniqueThemeLayer};
+export {HeatMapLayer, heatMapLayer,HeatMapFeature,heatMapFeature};
 export {VectorTileFormat};
 
 export {

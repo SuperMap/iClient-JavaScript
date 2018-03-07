@@ -6,6 +6,7 @@ import ol from 'openlayers';
  * @classdesc 百度地图图层源。
  * @param opt_options - {Object} 创建地图参数可选参数：<br>
  *        url - {string} 服务地址。<br>
+ *        tileProxy - {string} 代理地址
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 export class BaiduMap extends ol.source.TileImage {

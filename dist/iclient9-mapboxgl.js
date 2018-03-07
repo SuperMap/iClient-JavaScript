@@ -6501,7 +6501,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FilterParameter
- * @category  iServer Data
+ * @category  iServer
  * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。
  * @param options - {Object} 可选参数。如:<br>
  *        attributeFilter - {string} 属性过滤条件。</br>
@@ -11511,7 +11511,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.InterpolationAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 插值分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        bounds - {Object} 插值分析的范围，用于确定结果栅格数据集的范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
@@ -11716,7 +11716,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.QueryParameters
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc 查询参数基类。距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  * @param options - {Object} 可选参数。如：<br>
  *         customParams - {string} 自定义参数，供扩展使用。<br>
@@ -12946,7 +12946,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FacilityAnalyst3DParameters
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D
  * @classdesc 最近设施分析参数基类。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *               设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，
  *               超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起
@@ -13034,7 +13034,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GetFeaturesParametersBase
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 要素查询参数基类
  * @param options - {Object} 参数。如：<br>
  *        datasetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
@@ -13146,7 +13146,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesServiceBase
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集查询服务基类。获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，URL
@@ -14012,7 +14012,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.DataReturnOption
- * @category  iServer Data
+ * @category  iServer SpatialAnalyst
  * @classdesc 数据返回设置类。
  * @param options - {Object} 可选参数。如：<br>
  *         expectCount - {number} 设置返回的最大记录数，小于或者等于0时表示返回所有记录数。<br>
@@ -14113,7 +14113,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc 查询服务基类。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
@@ -14321,7 +14321,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.UGCSubLayer
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
  * @extends SuperMap.UGCMapLayer
  * @param options - {Object} 可选参数。如：<br>
@@ -16027,7 +16027,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.JoinItem
- * @category  iServer Map
+ * @category  iServer
  * @classdesc 连接信息类。
  * 该类用于矢量数据集与外部表的连接。外部表可以为另一个矢量数据集（其中纯属性数据集中没有空间几何信息）所对应的 DBMS 表，也可以是用户自建的业务表。需要注意的是，矢量数据集与外部表必须属于同一数据源。表之间的联系的建立有两种方式，一种是连接（join），一种是关联（link）。连接，实际上是依据相同的字段将一个外部表追加到指定的表；而关联是基于一个相同的字段定义了两个表格之间的联系，但不是实际的追加。用于连接两个表的字段的名称不一定相同，但类型必须一致。当两个表格之间建立了连接，通过对主表进行操作，可以对外部表进行查询，制作专题图以及分析等。当两个表格之间是一对一或多对一的关系时，可以使用 join 连接。当为多对一的关系时，允许指定多个字段之间的关联。(注意：SuperMap.JoinItem 目前支持左连接和内连接，不支持全连接和右连接，UDB 引擎不支持内连接。并且用于建立连接的两个表必须在同一个数据源下。)
  * @param options - {Object} 可選参数。如:</br>
@@ -16460,7 +16460,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SurfaceAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc 表面分析提取操作参数类。
  * @description 通过该类可以为进行表面分析提供参数信息，包括表面分析的方法提取等值线、提取等值面和中间结果的分辨率，
  * {@link SuperMap.DatasetSurfaceAnalystParameters} 和 {@link SuperMap.GeometrySurfaceAnalystParameters} 继承自该类。
@@ -17137,7 +17137,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.ThiessenAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 泰森多边形分析参数基类。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {Object} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
@@ -20731,7 +20731,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BufferAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析参数基类。
  * @param options - {Object} 参数。如:</br>
  *        bufferSetting - {@link SuperMap.BufferSetting} 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
@@ -20968,7 +20968,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GeometryBufferAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param options - {Object} 可选参数。如:</br>
@@ -21090,7 +21090,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GeometryOverlayAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc
  * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
  * @param options - {Object} 可选参数。如:</br>
@@ -21246,7 +21246,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GeometryThiessenAnalystParameters
  * @constructs SuperMap.GeometryThiessenAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 几何对象泰森多边形分析参数类。对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
  * @param options - {Object} 可选参数。如:</br>
  *         points - {Array<Object>} 使用点数组进行分析时使用的几何对象。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
@@ -21342,7 +21342,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.OverlayAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
  * @param options - {Object} 叠加分析参数。
  */
@@ -22652,7 +22652,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.UGCLayer
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc UGC 图层类。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {{@link SuperMap.Bounds}} 图层范围。<br>
@@ -29435,7 +29435,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.AreaSolarRadiationParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SolarradiationAnalyst
  * @classdesc 地区太阳辐射参数类。
  * @param options -{Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。</br>
@@ -29633,7 +29633,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BufferDistance
- * @category iServer SpatialAnalyst
+ * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析的缓冲距离类。通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
  * @param options - {Object} 缓冲区分析可选参数。如：<br>
  *         exp - {string} 以数值型的字段表达式作为缓冲区分析的距离值。<br>
@@ -29705,7 +29705,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BufferSetting
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst Buffer
  * @classdesc 缓冲区分析通用设置类。
  * @param options - {Object} 缓冲区分析设置可选参数。如：<br>
  *         endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。<br>
@@ -29813,7 +29813,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
- * @category  iServer SpatialAnalyst
+ * @category  iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -29957,7 +29957,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BurstPipelineAnalystParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst BurstAnalyse
  * @classdesc 爆管分析参数类。
  * @param options - {Object} 可选参数。如：<br>
  *         sourceNodeIDs - {Array<number>} 指定的设施点ID数组。<br>
@@ -30045,7 +30045,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.ChartQueryFilterParameter
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
  * @param options - {Object} 可选参数。如：<br>
  *        isQueryPoint - {boolean} 是否查询点。<br>
@@ -30160,7 +30160,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.ChartQueryParameters
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询和海图范围查询两类，通过属性queryMode指定查询模式。
  *              必设属性有：queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
  * @param options - {Object} 可选参数。如：<br>
@@ -30319,7 +30319,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.ClipParameter
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst Interpolation
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param options - {Object} 参数。<br>
@@ -30555,7 +30555,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.ComputeWeightMatrixParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst WeightMatrix
  * @classdesc 耗费矩阵分析参数类。根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  * @param options - {Object} 可选参数。如：<br>
  *         isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
@@ -30650,7 +30650,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.DatasetBufferAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc  数据集缓冲区分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        dataset - {string} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。</br>
@@ -30949,7 +30949,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc 数据集叠加分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>
@@ -31144,7 +31144,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.DatasetSurfaceAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc 数据集表面分析参数类。该类对数据集表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做数据集表面分析的数据源中数据集的名称。</br>
@@ -31279,7 +31279,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.DatasetThiessenAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst ThiessenAnalyst
  * @classdesc 数据集泰森多边形分析参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        filterQueryParameter - {@link SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
@@ -31383,7 +31383,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.DensityKernelAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst DensityAnalyst
  * @classdesc 核密度分析参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
@@ -31526,7 +31526,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.EditFeaturesParameters
- * @category  iServer Data
+ * @category  iServer Data Feature
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @category iServer Data
  * @param options - {Object} 可选参数。如:</br>
@@ -31675,7 +31675,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystSinks3DParameters
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D Sinks
  * @classdesc 最近设施分析参数类(汇查找资源)。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *              设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟
  *              能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、
@@ -31746,7 +31746,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystSources3DParameters
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D Sources 
  * @classdesc 最近设施分析参数类(源查找资源)。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *               设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分
  *               钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍
@@ -31811,7 +31811,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FacilityAnalystStreamParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst UpstreamCirticalFaclilities
  * @classdesc 上游/下游关键设施查找资源参数类。
  * @param options - {Object} 可选参数。如:<br>
  *         sourceNodeIDs - {Array<number>} 指定的设施点ID数组，可以为空。<br>
@@ -31909,7 +31909,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystTracedown3DParameters
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D TraceDownResult 
  * @classdesc 下游追踪资源参数类。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如:<br>
@@ -31978,7 +31978,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DParameters
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D TraceUpResult
  * @classdesc 上游追踪资源参数类。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如:<br>
@@ -32048,7 +32048,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DParameters
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D UpstreamCirticalFaclilities 
  * @classdesc 上游关键设施查找资源参数类。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如:<br>
@@ -32119,7 +32119,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FieldParameters
- * @category  iServer Data
+ * @category  iServer Data Field
  * @classdesc 字段信息查询参数类。
  * @param options - {Object} 可选参数。如:<br>
  *         datasource - {string} 数据源名称。<br>
@@ -32196,7 +32196,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FieldStatisticsParameters
- * @category  iServer Data
+ * @category  iServer Data Field
  * @classdesc 字段统计信息查询参数类。
  * @param options - {Object} 可选参数。如:<br>
  *         datasource - {string} 数据源名称。<br>
@@ -32277,7 +32277,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FindClosestFacilitiesParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析参数类。
  * @param options - {Object} 可选参数。如:</br>
  *         event - {Object/integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
@@ -32399,7 +32399,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FindLocationParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst Location
  * @classdesc 选址分区分析参数类。
  * @param options - {Object} 可选参数。如:<br>
  *        expectedSupplyCenterCount - {integer} 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
@@ -32502,7 +32502,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FindMTSPPathsParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst MTSPPath
  * @classdesc 多旅行商分析参数类
  * @param options - {Object} 可选参数。如:<br>
  *        centers - {Array<Object>|Array<number>} 配送中心集合，必设字段。点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
@@ -32610,7 +32610,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FindPathParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst Path 
  * @classdesc 最佳路径分析参数类。最佳路径是在网络数据集中指定一些结点，按照顺序访问结点从而求解起止点之间阻抗最小的路径。
  *              例如如果要顺序访问1、2、3、4四个结点，则需要分别找到1、2结点间的最佳路径 R1—2，2、3间的最佳路径 R2—3和3、4结点间的最佳路径 R3—4，
  *              顺序访问1、2、3、4四个结点的最佳路径就是 R= R1—2 + R2—3 + R3—4。
@@ -32715,7 +32715,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FindServiceAreasParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst ServiceArea
  * @classdesc 服务区分析参数类.<br>
  *              服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *              例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>
@@ -32833,7 +32833,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.FindTSPPathsParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst TSPPath
  * @classdesc 旅行商分析参数类
  *              旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  *              旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
@@ -32932,7 +32932,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GenerateSpatialDataParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GenerateSpatialData
  * @classdesc 动态分段操作参数类。通过该类可以为动态分段提供参数信息。
  * @param options - {Object} 可选参数。如:</br>
  *        routeTable - {string} 路由数据集。</br>
@@ -33310,7 +33310,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GeoRelationAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GeorelationAnalyst
  * @classdesc
  * 空间关系分析服务参数类。使用该类可以为空间关系分析服务提供所需的参数信息。
  * @param options - {Object} 可选参数。如:</br>
@@ -33452,7 +33452,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GeometrySurfaceAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc
  * 几何对象表面分析参数类。该类对几何对象表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>
@@ -33552,7 +33552,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByBoundsParameters
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {Object} 用于查询的范围对象。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
@@ -33721,7 +33721,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByBufferParameters
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集缓冲区查询参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        bufferDistance - {number} buffer 距离，单位与所查询图层对应的数据集单位相同。</br>
@@ -33877,7 +33877,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByGeometryParameters
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可选参数。如:</br>
  *         geometry - {Object} 用于查询的几何对象。</br>
@@ -34040,7 +34040,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByIDsParameters
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc ID查询参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        IDs - {Array<integer>} 所要查询指定的元素ID信息。</br>
@@ -34167,7 +34167,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesBySQLParameters
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集SQL查询参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        queryParameter - {{@link SuperMap.FilterParameter}} 查询过滤条件参数。</br>
@@ -34270,7 +34270,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GetGridCellInfosParameters
- * @category  iServer Data
+ * @category  iServer Data Grid
  * @classdesc 数据服务栅格查询参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        datasetName - {string} 数据集名称。</br>
@@ -34370,7 +34370,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Grid
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc UGC 栅格图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：<br>
@@ -34603,7 +34603,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Image
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc UGC 影像图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：<br>
@@ -34746,7 +34746,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.InterpolationIDWAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 反距离加权插值（IDW）分析参数类。
  * @param options - {Object}可选参数。如:</br>
  *        power - {number}距离权重计算的幂次。</br>
@@ -34873,7 +34873,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.InterpolationKrigingAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 克吕金插值分析参数类。
  * @description 通过该类可以设置克吕金插值分析所需的参数。
  * 克吕金（Kriging）法为地统计学上一种空间数据内插处理方法，主要的目的是利用各数据点间变异数（variance）的大小来推求某一未知点与各已知点的权重关系，
@@ -35127,7 +35127,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.InterpolationRBFAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 样条插值（径向基函数插值法）分析参数类。
  * @extends SuperMap.InterpolationAnalystParameters
  * @param options - {Object} 可选参数。如：</br>
@@ -35290,7 +35290,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.KernelDensityJobParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 密度分析任务参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName - {string} 数据集名。<br>
@@ -36055,7 +36055,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.LinkItem
  * @constructs SuperMap.LinkItem
- * @category  iServer Map
+ * @category  iServer 
  * @classdesc 关联信息类。
  * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
  *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。使用LinkItem时，
@@ -36225,7 +36225,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.MathExpressionAnalysisParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GridMathAnalyst
  * @classdesc 栅格代数运算参数类
  * @param options - {Object} 可选参数。如：</br>
  *        dataset - {string} 要用来做栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
@@ -36392,7 +36392,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.MeasureParameters
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 量算参数类。
  * @param geometry - {Object} 要量算的几何对象。<br>
  *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
@@ -36489,7 +36489,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class  SuperMap.OverlapDisplayedOptions
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc 地图压盖过滤显示选项。
  * @description 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，
  * 该类可以分别控制各种类型的对象的压盖显示情况，进而很好地处理地图中各种类型对象的压盖显示问题。
@@ -36656,7 +36656,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -36925,7 +36925,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryByBoundsParameters
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
  * @extends SuperMap.QueryParameters
  * @param options - {Object} 可选参数。如：<br>
@@ -37028,7 +37028,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryByDistanceParameters
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Distance 查询参数类。
  *               该类用于设置 Distance 查询的相关参数。
  * @extends SuperMap.QueryParameters
@@ -37163,7 +37163,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryByGeometryParameters
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Geometry 查询参数类。
  *               该类用于设置 Geometry查询的相关参数。
  * @extends SuperMap.QueryParameters
@@ -37279,7 +37279,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryBySQLParameters
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc SQL 查询参数类。
  *               该类用于设置 SQL 查询的相关参数。
  * @extends SuperMap.QueryParameters
@@ -37364,7 +37364,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.RouteCalculateMeasureParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  * @param options - {Object} 可选参数。如:</br>
  *        sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
@@ -37464,7 +37464,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.RouteLocatorParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst RouteLocator
  * @classdesc
  * 路由对象定位空间对象的参数类。
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
@@ -37782,7 +37782,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SetLayerInfoParameters
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc 设置图层信息参数类.
  * @param options -{Object} 可选参数。如：<br>
  *         resourceID -{string} 临时图层的资源ID。<br>
@@ -37862,7 +37862,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SetLayerStatusParameters
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc 子图层显示控制参数类,该类存储了各子图层是否可见的状态。<br>
  *               注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
  * @param options - {Object} 可选参数。如：<br>
@@ -37966,7 +37966,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SetLayersInfoParameters
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc 设置图层信息参数类
  * @param options -{Object} 可选参数。如：<br>
  *        isTempLayers -{boolean} 是否是临时图层。<br>
@@ -38047,7 +38047,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService Query
  * @classdesc 单对象空间查询分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -38170,7 +38170,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.StopQueryParameters
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferStops
  * @classdesc 站点查询参数类。
  * @param options - {Object} 可选参数。
  */
@@ -38238,7 +38238,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
@@ -38361,7 +38361,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
@@ -38540,7 +38540,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -38760,7 +38760,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SurfaceAnalystParametersSetting
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc
  * 表面分析参数设置类。
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
@@ -38888,7 +38888,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TerrainCurvatureCalculationParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 地形曲率计算参数类。
  * @param options - {Object} 可选参数。如</br>
  *        dataset - {string} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
@@ -41022,7 +41022,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -41146,7 +41146,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TransferLine
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
  * @param options - {Object} 可选参数。如:</br>
  *        lineID - {string} 乘车路线名称。</br>
@@ -41291,7 +41291,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TransferPathParameters
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferPaths
  * @classdesc 交通换乘线路查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        transferLines -{Array<{@link SuperMap.TransferLine}>} 本换乘分段内可乘车的路线集合。</br>
@@ -41381,7 +41381,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TransferSolutionParameters
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        solutionCount - {boolean} 乘车方案的数量。默认为6。</br>
@@ -41669,7 +41669,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.UGCMapLayer
- * @category  iServer Map
+ * @category  iServer Map Layer
  * @classdesc UGC 地图图层类。
  * @extends SuperMap.UGCLayer
  * @param options - {Object} 可选参数。如：<br>
@@ -41820,7 +41820,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.UpdateEdgeWeightParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 边的耗费权重更新服务参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        edgeId - {string} 所在边的id。<br>
@@ -41915,7 +41915,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightParameters
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         nodeId - {string} 转向结点的id。<br>
@@ -42018,7 +42018,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Vector
- * @category  iServer Map
+ * @category  iServer Map TileFeature
  * @classdesc UGC 矢量图层类。
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：
@@ -42124,7 +42124,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.VectorClipJobsParameter
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
@@ -52734,6 +52734,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 /**
  * @class mapboxgl.supermap.HeatMapLayer
  * @description 热力图层类
@@ -52748,63 +52752,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        useGeoUnit - {boolean} 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
  */
 
-var HeatMapLayer = exports.HeatMapLayer = function () {
+var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
+    _inherits(HeatMapLayer, _mapboxgl$Evented);
+
     function HeatMapLayer(name, options) {
         _classCallCheck(this, HeatMapLayer);
 
-        if (options) {
-            if (!options.map) {
-                _mapboxGl2.default.Evented.prototype.fire("error", { error: new Error('缺少必传参数 map 。') });
-                return;
-            }
-        }
+        var _this = _possibleConstructorReturn(this, (HeatMapLayer.__proto__ || Object.getPrototypeOf(HeatMapLayer)).call(this));
 
+        var _options = options ? options : {};
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.name - {string}
          * @description 图层名字
          */
-        this.name = name;
+        _this.name = name;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.id - {string}
          * @description 热力图图层id
          */
-        this.id = options.id ? options.id : _iclientCommon.CommonUtil.createUniqueID("HeatMapLayer_");
+        _this.id = _options.id ? _options.id : _iclientCommon.CommonUtil.createUniqueID("HeatMapLayer_");
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.map - {mapboxgl.Map}
          * @description 热力图图层map
          */
-        this.map = options.map;
+        _this.map = _options.map ? _options.map : null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.loadWhileAnimating - {boolean}
          * @description 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
          */
-        this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
+        _this.loadWhileAnimating = _options.loadWhileAnimating === undefined ? true : _options.loadWhileAnimating;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.visibility - {boolean}
          * @description 图层显示状态属性，初始化默认为 true
          */
-        this.visibility = true;
+        _this.visibility = true;
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.opacity - {number}
          * @description 图层透明度，取值范围[0,1]
          */
-        this.opacity = options.opacity ? options.opacity : 1;
+        _this.opacity = _options.opacity ? _options.opacity : 1;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.colors - {Array<string>}
          * @description 颜色线性渐变数组,颜色值必须为canvas所支。默认为['blue','cyan','lime','yellow','red']。
          */
-        this.colors = options.colors ? options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
+        _this.colors = _options.colors ? _options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.useGeoUnit - {boolean}
          * @description 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
          */
-        this.useGeoUnit = options.useGeoUnit ? options.useGeoUnit : false;
+        _this.useGeoUnit = _options.useGeoUnit ? _options.useGeoUnit : false;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.radius - {number}
@@ -52812,25 +52814,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          *              热点显示的时候以精确点为中心点开始往四周辐射衰减，
          *              其衰减半径和权重值成比列。
          */
-        this.radius = options.radius ? options.radius : 50;
-
-        /**
-         * @member mapboxgl.supermap.HeatMapLayer.prototype.features - {Array<SuperMap.Feature.Vector>}
-         * @description 热点信息数组，记录存储图层上添加的所有热点信息。
-         */
-        this.features = [];
-
-        /**
-         * @member mapboxgl.supermap.HeatMapLayer.prototype.maxWeight - {number}
-         * @description 设置权重最大值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最大值绘制热点图。
-         */
-        this.maxWeight = null;
-
-        /**
-         * @member mapboxgl.supermap.HeatMapLayer.prototype.minWeight - {number}
-         * @description 设置权重最小值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
-         */
-        this.minWeight = null;
+        _this.radius = _options.radius ? _options.radius : 50;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.featureWeight - {string}
@@ -52840,10 +52824,28 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          * //feature.attributes中表示权重的字段为height,则在HeatMapLayer的featureWeight参数赋值为"height"
          * feature1.attributes.height = 7.0;
          * feature2.attributes.height = 6.0;
-         * var heatMapLayer = new SuperMap.Layer.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
+         * var heatMapLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
          * heatMapLayer.addFeatures([feature1,feature2]);
          */
-        this.featureWeight = null;
+        _this.featureWeight = _options.featureWeight ? _options.featureWeight : null;
+
+        /**
+         * @member mapboxgl.supermap.HeatMapLayer.prototype.features - {Array<SuperMap.Feature.Vector>}
+         * @description 热点信息数组，记录存储图层上添加的所有热点信息。
+         */
+        _this.features = [];
+
+        /**
+         * @member mapboxgl.supermap.HeatMapLayer.prototype.maxWeight - {number}
+         * @description 设置权重最大值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最大值绘制热点图。
+         */
+        _this.maxWeight = null;
+
+        /**
+         * @member mapboxgl.supermap.HeatMapLayer.prototype.minWeight - {number}
+         * @description 设置权重最小值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
+         */
+        _this.minWeight = null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.EVENT_TYPES
@@ -52861,69 +52863,70 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          *         参数类型：{features: features, succeed: succeed}
          * featuresdrawcompleted - 热点图渲染完成时触发，没有额外属性。
          */
-        this.EVENT_TYPES = ["featuresadded", "featuresremoved", "featuresdrawcompleted"];
+        _this.EVENT_TYPES = ["featuresadded", "featuresremoved", "featuresdrawcompleted"];
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.supported - {boolean}
          * @description 当前浏览器是否支持canvas绘制，默认为false。
          *              决定了热点图是否可用，内部判断使用。
          */
-        this.supported = false;
+        _this.supported = false;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.rootCanvas - {Object}
          * @description 热点图主绘制面板。
          */
-        this.rootCanvas = null;
+        _this.rootCanvas = null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.canvasContext - {Object}
          * @description 热点图主绘制对象。
          */
-        this.canvasContext = null;
+        _this.canvasContext = null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.maxWidth - {number}
          * @description 当前绘制面板宽度。和当前 map 窗口宽度一致。
          */
-        this.maxWidth = null;
+        _this.maxWidth = null;
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.maxHeight - {number}
          * @description 当前绘制面板宽度。和当前 map 窗口高度一致。
          */
-        this.maxHeight = null;
+        _this.maxHeight = null;
 
-        //创建热力图绘制容器
-        this._createCanvasContainer();
-
-        //绑定图层事件与Map同步
-        this.map.on('resize', this._resizeEvent.bind(this));
-        this.map.on('zoomstart', this._zoomStartEvent.bind(this));
-        this.map.on('zoomend', this._zoomEndEvent.bind(this));
-        this.map.on('rotatestart', this._rotateStartEvent.bind(this));
-        this.map.on('rotate', this._rotateEvent.bind(this));
-        this.map.on('rotateend', this._rotateEndEvent.bind(this));
-        this.map.on('dragend', this._dragEndEvent.bind(this));
-        this.map.on('movestart', this._moveStartEvent.bind(this));
-        this.map.on('move', this._moveEvent.bind(this));
-        this.map.on('moveend', this._moveEndEvent.bind(this));
-        this.map.on('remove', this.removeFromMap.bind(this));
+        return _this;
     }
 
     /**
-     * @function mapboxgl.supermap.HeatMapLayer.prototype.addToMap
+     * @function mapboxgl.supermap.HeatMapLayer.prototype.onAdd
      * @description 向底图添加该图层
      */
 
 
     _createClass(HeatMapLayer, [{
-        key: 'addToMap',
-        value: function addToMap() {
+        key: 'onAdd',
+        value: function onAdd(map) {
+            this.map = map;
             if (this.features.length === 0) {
                 return;
             }
-            this.mapContainer.appendChild(this.rootCanvas);
+            //创建热力图绘制容器
+            this._createCanvasContainer();
+
+            //绑定图层事件与Map同步
+            this.map.on('resize', this._resizeEvent.bind(this));
+            this.map.on('zoomstart', this._zoomStartEvent.bind(this));
+            this.map.on('zoomend', this._zoomEndEvent.bind(this));
+            this.map.on('rotatestart', this._rotateStartEvent.bind(this));
+            this.map.on('rotate', this._rotateEvent.bind(this));
+            this.map.on('rotateend', this._rotateEndEvent.bind(this));
+            this.map.on('dragend', this._dragEndEvent.bind(this));
+            this.map.on('movestart', this._moveStartEvent.bind(this));
+            this.map.on('move', this._moveEvent.bind(this));
+            this.map.on('moveend', this._moveEndEvent.bind(this));
+            this.map.on('remove', this.removeFromMap.bind(this));
             this.refresh();
         }
 
@@ -52959,6 +52962,8 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
             this.rootCanvas.height = this.maxHeight = parseInt(mapCanvas.height);
             _iclientCommon.CommonUtil.modifyDOMElement(this.rootCanvas, null, null, null, "absolute", null, null, this.opacity);
             this.canvasContext = this.rootCanvas.getContext('2d');
+
+            this.mapContainer.appendChild(this.rootCanvas);
         }
 
         /**
@@ -52983,15 +52988,18 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          *          }
          *      ]
          *   };
-         * var heatMapLayer = new SuperMap.Layer.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
+         * var heatMapLayer = new mapboxgl.supermap.HeatMapLayer("heatmaplayer",{"featureWeight":"height"});
          * heatMapLayer.addFeatures(geojson);
+         * map.addLayer(heatMapLayer);
          */
 
     }, {
         key: 'addFeatures',
         value: function addFeatures(features) {
             this.features = this.toiClientFeature(features);
-            _mapboxGl2.default.Evented.prototype.fire(this.EVENT_TYPES[0], { features: features, succeed: true });
+            this.fire(this.EVENT_TYPES[0], { features: features, succeed: true });
+            //支持更新features，刷新底图
+            this.refresh();
         }
 
         /**
@@ -53025,7 +53033,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
                 _iclientCommon.CommonUtil.modifyDOMElement(this.rootCanvas, null, null, null, null, null, null, opacity);
 
                 if (this.map !== null) {
-                    _mapboxGl2.default.Evented.prototype.fire('changelayer', { layer: this, property: "opacity" });
+                    this.fire('changelayer', { layer: this, property: "opacity" });
                 }
             }
         }
@@ -53050,6 +53058,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          * @function mapboxgl.supermap.HeatMapLayer.prototype.convertFastToPixelPoints
          * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
          * @param bounds - {mapboxgl.LngLatBounds} 当前显示范围
+         * @private
          */
 
     }, {
@@ -53080,10 +53089,9 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
             for (var i = 0; i < this.features.length; i++) {
                 var feature = this.features[i];
                 var point = feature.geometry;
-                //过滤，只显示当前范围,mapboxgl旋转获取得bounds不适
-                // var mapBounds = new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
-                // if (mapBounds.contains(point.x, point.y)) {
-                //var pixelPoint = this.getViewPortPxFromLonLat(new SuperMap.LonLat(point.x,point.y));
+
+                //可通过bounds过滤需绘制的features以优化性能，但mapboxgl旋转获取得bounds不适
+
                 var pixelPoint = this.getPixelXY(new _iclientCommon.LonLat(point.x, point.y));
                 if (this.featureWeight) {
                     pixelPoint.weight = feature.attributes[this.featureWeight]; //point.value;
@@ -53103,7 +53111,6 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
                 k = pixelPoint.weight;
 
                 data.push([x, y, k]);
-                // }
             }
 
             //无最大权重设置
@@ -53123,6 +53130,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          * @function mapboxgl.supermap.HeatMapLayer.prototype.draw
          * @description 绘制热点图
          * @param data -{Array} convertToPixelPoints方法计算出的点
+         * @private
          */
 
     }, {
@@ -53154,6 +53162,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          * @description 根据渐变色重置热点图rgb值
          * @param pixels 像素RGBA值
          * @param gradient 渐变canvas.getImageData.data
+         * @private
          */
 
     }, {
@@ -53173,6 +53182,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
          * @function mapboxgl.supermap.HeatMapLayer.drawCircle
          * @description 绘制热点半径圆
          * @param r -{number} 热点半径
+         * @private
          */
 
     }, {
@@ -53197,7 +53207,8 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
 
         /**
          * @function mapboxgl.supermap.HeatMapLayer.createGradient
-         * @description 根据this.canvasColors设置渐变并getImageData
+         * @description 根据this.colors设置渐变并getImageData
+         * @private
          */
 
     }, {
@@ -53294,7 +53305,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
             }
             var succeed = heatPointsFailedRemoved.length == 0 ? true : false;
             //派发删除features成功的事件
-            _mapboxGl2.default.Evented.prototype.fire(this.EVENT_TYPES[1], { features: heatPointsFailedRemoved, succeed: succeed });
+            this.fire(this.EVENT_TYPES[1], { features: heatPointsFailedRemoved, succeed: succeed });
             this.refresh();
         }
 
@@ -53480,7 +53491,7 @@ var HeatMapLayer = exports.HeatMapLayer = function () {
     }]);
 
     return HeatMapLayer;
-}();
+}(_mapboxGl2.default.Evented);
 
 _mapboxGl2.default.supermap.HeatMapLayer = HeatMapLayer;
 
@@ -56137,7 +56148,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.ChartService
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图服务。
  * @extends mapboxgl.supermap.ServiceBase
  * @example
@@ -56460,7 +56471,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.FeatureService
- * @category  iServer Data
+ * @category  iServer Data Feature
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
  * @example
  *      new mapboxgl.supermap.FeatureService(url)
@@ -56746,7 +56757,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.FieldService
- * @category  iServer Data
+ * @category  iServer Data Field
  * @classdesc 字段服务类
  * @example
  *      new mapboxgl.supermap.FieldService(url).getFields(function(result){
@@ -56894,7 +56905,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.GridCellInfosService
- * @category  iServer Data
+ * @category  iServer Data Grid
  * @classdesc 数据栅格查询服务
  * @extends mapboxgl.supermap.ServiceBase
  * @example
@@ -56984,8 +56995,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.LayerInfoService
- * @category  iServer Map
- * @classdesc 图层信息服务类
+ * @category  iServer Map Layer
+ * @classdesc 图层信息服务类 
  * @extends mapboxgl.supermap.ServiceBase
  * @example
  *      new mapboxgl.supermap.LayerInfoService(url).getLayersInfo(function(result){
@@ -57269,7 +57280,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.MeasureService
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 测量服务
  * @extends mapboxgl.supermap.ServiceBase
  * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
@@ -57388,7 +57399,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.NetworkAnalyst3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D
  * @classdesc 3D网络分析服务类
  * @extends mapboxgl.supermap.ServiceBase
  * @example
@@ -58938,7 +58949,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.QueryService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL查询，几何查询，距离查询
  * @extends mapboxgl.supermap.ServiceBase
@@ -59687,8 +59698,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class mapboxgl.supermap.ThemeService
- * @category  iServer Map
- * @classdesc 专题图服务类
+ * @category  iServer Map Theme
+ * @classdesc 专题图服务类 
  * @extends mapboxgl.supermap.ServiceBase
  * @example
  *      new mapboxgl.supermap.ThemeService(url,{
@@ -61044,7 +61055,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.AreaSolarRadiationService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SolarradiationAnalyst
  * @classdesc 地区太阳辐射服务类。
  * @param url - {string} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
  * @param options - {Object} 参数。如:</br>
@@ -61163,7 +61174,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.BufferAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析服务类
  * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取
@@ -61290,7 +61301,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
- * @category  iServer SpatialAnalyst
+ * @category  iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 缓冲区分析服务地址。
@@ -61392,7 +61403,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.BurstPipelineAnalystService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst BurstAnalyse
  * @classdesc 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
  * @extends SuperMap.NetworkAnalystServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -61505,7 +61516,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ChartFeatureInfoSpecsService
- * @category  iServer Chart
+ * @category  iServer Map Chart
  * @classdesc 海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。<br>
  *              用户可以通过两种方式获取查询结果：<br>
  *              一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；<br>
@@ -61616,7 +61627,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ChartQueryService
- * @category  iServer Chart
+ *  @category  iServer Map Chart
  * @classdesc 海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。<br>
  *      用户可以通过两种方式获取查询结果:<br>
  *      1.通过 AsyncResponder 类获取（推荐使用）；<br>
@@ -61825,7 +61836,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ComputeWeightMatrixService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst WeightMatrix
  * @classdesc 耗费矩阵分析服务类。<br>
  *               耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  *               用来存储指定的任意两点间的资源消耗。
@@ -62260,7 +62271,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.DensityAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst DensityAnalyst
  * @classdesc
  *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
  *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。目前提供1种密度分析：核密度分析（Kernel）。
@@ -62386,7 +62397,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.EditFeaturesService
- * @category  iServer Data
+ * @category  iServer Data Feature
  * @classdesc 数据服务中数据集添加、更新、删除服务类。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
@@ -62537,7 +62548,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystSinks3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D Sinks
  * @classdesc  最近设施分析服务类(汇查找资源)<br>
  *                最近设施分析是指在网络上给定一个事件点和一组设施点，
  *                查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -62648,7 +62659,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystSources3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D Sources
  * @classdesc 最近设施分析服务类(源查找资源) <br>
  *               最近设施分析是指在网络上给定一个事件点和一组设施点，
  *               查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -62752,7 +62763,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystStreamService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst UpstreamCirticalFaclilities 
  * @classdesc 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  * @extends SuperMap.NetworkAnalystServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -62872,7 +62883,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystTracedown3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D TraceDownResult
  * @classdesc 下游追踪资源服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -62972,7 +62983,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D TraceUpResult
  * @classdesc 上游追踪资源服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -63081,7 +63092,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DService
- * @category  iServer NetworkAnalyst3D
+ * @category  iServer FacilityAnalyst3D UpstreamCirticalFaclilities
  * @classdesc 上游关键设施查找资源服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -63183,7 +63194,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FieldStatisticService
- * @category  iServer Data
+ * @category  iServer Data Field
  * @classdesc 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为:http://localhost:8090/iserver/services/data-world/rest/data 即可。
@@ -63325,7 +63336,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FindClosestFacilitiesService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析服务类。<br>
  *               最近设施分析是指在网络上给定一个事件点和一组设施点，
  *               查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -63516,7 +63527,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FindLocationService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst Location
  * @classdesc 选址分区分析服务类。
  *               选址分区分析是为了确定一个或多个待建设施的最佳或最优位置，使得设施可以用一种最经济有效的方式为需求方提供服务或者商品。
  *               选址分区不仅仅是一个选址过程，还要将需求点的需求分配到相应的新建设施的服务区中，因此称之为选址与分区。
@@ -63681,7 +63692,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FindMTSPPathsService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst MTSPPath
  * @classdesc 多旅行商分析服务类<br>
  *               多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。<br>
  *               查找经济有效的配送路径，并给出相应的行走路线。<br>
@@ -63864,7 +63875,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FindPathService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst Path
  * @classdesc 最佳路径分析服务类。<br>
  *               最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，<br>
  *               顺序访问这些节点从而求解起止点之间阻抗最小的路经。<br>
@@ -64041,7 +64052,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FindServiceAreasService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst ServiceArea
  * @classdesc 服务区分析服务类。<br>
  *               服务区分析是以指定服务站点为中心，<br>
  *               在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
@@ -64220,7 +64231,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.FindTSPPathsService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst TSPPath
  * @classdesc 旅行商分析服务类<br>
  *               旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  *               旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
@@ -64404,7 +64415,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GenerateSpatialDataService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GenerateSpatialData
  * @classdesc
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
@@ -64560,7 +64571,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GeoRelationAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GeorelationAnalyst
  * @classdesc
  * 空间关系分析服务类。
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
@@ -64703,7 +64714,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GeometryBatchAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst BatchAnalyst
  * @classdesc 批量空间分析服务类
  * @description 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  *              叠加分析结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.OverlayAnalystEventArgs>}; 获取的结果数据包括 originResult 、result 两种，
@@ -64868,7 +64879,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByBoundsService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集范围查询服务类,查询与指定范围对象符合一定空间关系的矢量要素。
  * @description 数据集范围查询服务类构造函数。
  * @extends SuperMap.GetFeaturesServiceBase
@@ -64963,7 +64974,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByBufferService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集缓冲区查询服务类。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
@@ -65060,7 +65071,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByGeometryService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集几何查询服务类,查询与指定几何对象符合一定空间关系的矢量要素。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
@@ -65154,7 +65165,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFeaturesByIDsService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
  *              URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
@@ -65249,7 +65260,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GetFeaturesBySQLService
  * @constructs SuperMap.GetFeaturesBySQLService
- * @category  iServer Data
+ * @category  iServer Data FeatureResults
  * @classdesc
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
@@ -65346,7 +65357,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetFieldsService
- * @category  iServer Data
+ * @category  iServer Data Field
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 可選参数。如:</br>
@@ -65468,7 +65479,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetGridCellInfosService
- * @category  iServer Data
+ * @category  iServer Data Grid
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息。
  * @param url - {string} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param options - {Object} 可選参数。如:</br>
@@ -65683,7 +65694,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.GetLayersInfoService
- * @category  iServer Data
+ * @category  iServer Map Layer
  * @classdesc 获取图层信息服务类构造函数。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
@@ -65872,7 +65883,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.InterpolationAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc
  * 插值分析服务类
  * 插值分析可以将有限的采样点数据，通过插值算法对采样点周围的数值情况进行预测，可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，还可以反映区域的数值分布。目前SuperMap iServer的插值功能提供从点数据集插值得到栅格数据集的功能，支持以下常用的内插方法，包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
@@ -66021,7 +66032,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.InterpolationDensityAnalystParameters
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 点密度差值分析参数类。
  * @param options - {Object} 可选参数。如:</br>
  *        bounds - {Object} 插值分析的范围，用于确定结果栅格数据集的范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
@@ -66113,7 +66124,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.KernelDensityJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 核密度分析服务地址。
@@ -66365,7 +66376,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.MathExpressionAnalysisService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst GridMathAnalyst
  * @classdesc 栅格代数运算服务类。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
@@ -66483,7 +66494,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.MeasureService
- * @category  iServer Map
+ * @category  iServer Map Measure
  * @classdesc 量算服务类。
  *              该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  * @extends SuperMap.CommonServiceBase
@@ -66635,7 +66646,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.OverlayAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
@@ -66767,7 +66778,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.OverlayGeoJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务类。
  * @param url -{string} 叠加分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -66875,7 +66886,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryByBoundsService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Bounds 查询服务类。
  * @augments SuperMap.QueryService
  * @example
@@ -66984,7 +66995,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryByDistanceService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Distance查询服务类。
  * @extends SuperMap.QueryService
  * @example
@@ -67091,7 +67102,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryByGeometryService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc Geometry查询服务类。
  * @extends SuperMap.QueryService
  * @example
@@ -67203,7 +67214,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.QueryBySQLService
- * @category  iServer Map
+ * @category  iServer Map QueryResults
  * @classdesc SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  * @extends SuperMap.QueryService
  * @example
@@ -67320,7 +67331,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.RouteCalculateMeasureService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc
  * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
  *      指定点的M值。通过该类支持的事件的监听函数参数获取
@@ -67487,7 +67498,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.RouteLocatorService
- * @category  iServer SpatialAnalyst 
+ * @category  iServer SpatialAnalyst RouteLocator
  * @classdesc 路由对象定位空间对象的服务类。
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如</br>
@@ -67812,7 +67823,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SetLayerInfoService
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc 设置图层信息服务类。可以实现临时图层中子图层的修改
  *              该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  * @extends SuperMap.CommonServiceBase
@@ -67913,7 +67924,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SetLayerStatusService
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。<br>
  *                用户获取服务端返回的各子图层显示状态有两种方式：<br>
  *                一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>
@@ -68102,7 +68113,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SetLayersInfoService
- * @category  iServer Map
+ * @category  iServer Map TempLayersSet
  * @classdesc  设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，<br>
  *                当 isTempLayers 为 false的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行对临时图层的编辑。<br>
  *                该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
@@ -68263,7 +68274,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService Query
  * @classdesc 单对象查询分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 单对象空间查询分析服务地址。
@@ -68367,7 +68378,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.StopQueryService
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferStops
  * @classdesc
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
@@ -68480,7 +68491,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryAttributesJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 汇总统计分析服务地址。
@@ -68582,7 +68593,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryMeshJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务类。
  * @param url -{string} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -68688,7 +68699,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryRegionJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 区域汇总分析服务地址。
@@ -68782,7 +68793,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SupplyCenter
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst Location
  * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
  * @param options - {Object} 可选参数。如：<br>
  *        maxWeight - {number}资源供给中心的最大耗费值，必设参数。<br>
@@ -68907,7 +68918,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SurfaceAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst SurfaceAnalyst
  * @classdesc
  * 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
@@ -69040,7 +69051,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TerrainCurvatureCalculationService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 地形曲率计算服务类。
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如</br>
@@ -69458,7 +69469,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ThiessenAnalystService
- * @category  iServer SpatialAnalyst
+ * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
@@ -69587,7 +69598,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TilesetsService
- * @category  iServer Map
+ * @category  iServer Map Tilesets
  * @classdesc 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 地图服务地址。URL应为：<br>
@@ -69681,7 +69692,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TopologyValidatorJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 拓扑检查分析服务地址。
@@ -69785,7 +69796,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TransferPathService
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
  *            返回结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
@@ -69896,7 +69907,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TransferSolutionService
- * @category  iServer TrafficTransferAnalyst
+ * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc
  * 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取。
@@ -70027,7 +70038,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.UpdateEdgeWeightService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 更新边的边的耗费权重服务
  * @extends SuperMap.NetworkAnalystServiceBase
  * @example
@@ -70180,7 +70191,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
- * @category  iServer NetworkAnalyst
+ * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务类
  * @extends SuperMap.NetworkAnalystServiceBase
  * @example
@@ -70331,7 +70342,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.VectorClipJobsService
- * @category  iServer ProcessingService
+ * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{string} 矢量裁剪分析服务地址。
@@ -80636,7 +80647,7 @@ var MapExtend = exports.MapExtend = function () {
             this.fire('error', { error: new Error('A layer with this id already exists.') });
             return;
         }
-        addLayer(layer);
+        addLayer(layer, this);
         this.overlayLayersManager[layer.id] = layer;
         return this;
     };
@@ -80688,8 +80699,8 @@ var MapExtend = exports.MapExtend = function () {
         return this;
     };
 
-    function addLayer(layer) {
-        layer.addToMap();
+    function addLayer(layer, map) {
+        layer.onAdd(map);
     }
 
     /**

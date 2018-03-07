@@ -47,6 +47,7 @@ require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
 require('./leaflet/overlay/TileVectorLayerSpec.js');
 require('./leaflet/overlay/UniqueThemeLayerSpec.js');
 require('./leaflet/overlay/DataFlowlayerSpec.js');
+require('./leaflet/overlay/HeatMapLayerSpec.js');
 
 /*leaflet -- mapping*/
 require('./leaflet/mapping/TiledMapLayerSpec.js');
