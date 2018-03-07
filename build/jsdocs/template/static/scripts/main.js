@@ -1,7 +1,7 @@
 $(function () {
     $('.navigationDiv').load("nav.html .main-sidebar", null, function () {
-        var height=$('.sidebar').height();
-        $('.main-sidebar #categories').css('height',height-50+'px');
+        var height = $('.sidebar').height();
+        $('.main-sidebar #categories').css('height', height - 50 + 'px');
         // Search Items
         $('#searchBox').on('keyup', function (e) {
 
@@ -86,5 +86,11 @@ $(function () {
 
         $(window).on('resize', _onResize);
         _onResize();
+
+
+        $('a[href^="http"]').each(function () {
+            $(this).attr('target', "_blank");
+        })
+
     });
 });
