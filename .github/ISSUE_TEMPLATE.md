@@ -13,16 +13,21 @@
 
 ----------
 
+<!--
 ## If this is a bug [如果这是一个缺陷]
+-->
 ### Actual Behavior [当前现象]
 
 ### Expected Behavior [期望现象]
 
 ### Example of reproducing the issue [重现现象的例子]
-  + *For example: Screenshot or Online demo[例如，截图或线上实例 (JSFiddle/JSBin/Codepen)]*
+<!-- 
+For example: Screenshot or Online demo[例如，截图或线上实例 (JSFiddle/JSBin/Codepen)]
+-->
 
 ----------
-
+<!--
 ## If this is a feature request [如果这是一个需求]
+-->
 ### What is motivation or use case for changing the behavior? [需求的场景和目的是什么？]
 
