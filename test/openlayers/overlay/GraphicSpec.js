@@ -5,7 +5,7 @@ require('../../../src/common/util/FetchRequest');
 url = "http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China_4326";
 describe('openlayers_GraphicLayer', function () {
     var originalTimeout;
-    var testDiv, map, graphicLayer, graphicSource;
+    var testDiv, map, graphicLayer;
     var FetchRequest = SuperMap.FetchRequest;
     var coors = [
         [-35.16, 38.05],
@@ -66,11 +66,11 @@ describe('openlayers_GraphicLayer', function () {
                 graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
                 graphics[j].setStyle(randomCircleStyles);
             }
-            var clone=graphics[0].clone();
+            var clone = graphics[0].clone();
             expect(clone.getId()).toEqual(graphics[0].getId());
             expect(clone.getGeometry()).toEqual(graphics[0].getGeometry());
             expect(clone.getStyle()).toEqual(graphics[0].getStyle());
-            clone.destory();
+            clone.destroy();
             graphicLayer = new ol.layer.Image({
                 source: new ol.source.Graphic({
                     graphics: graphics,
@@ -212,28 +212,27 @@ describe('openlayers_GraphicLayer', function () {
             })
             expect(hitCloverShape.getSAngle()).toEqual(30);
             expect(hitCloverShape.getEAngle()).toEqual(60);
-            graphicSource = new ol.source.Graphic({
-                graphics: graphics,
-                map: map,
-                onclick: function (result) {
-                    console.log(result);
-                },
-                highLightStyle: hitCloverShape
-            })
             graphicLayer = new ol.layer.Image({
-                source: graphicSource
+                source: new ol.source.Graphic({
+                    graphics: graphics,
+                    map: map,
+                    onclick: function (result) {
+                        console.log(result);
+                    },
+                    highLightStyle: hitCloverShape
+                })
             });
             map.addLayer(graphicLayer);
         });
         setTimeout(function () {
             expect(1).not.toBeNull();
-            graphicSource.forEachFeatureAtCoordinate(coors[2], 1, function (result) {
+            graphicLayer.getSource().forEachFeatureAtCoordinate(coors[2], 1, function (result) {
                 console.log(result);
             });
-            graphicSource.forEachFeatureAtCoordinate(coors[1], 1, function (result) {
+            graphicLayer.getSource().forEachFeatureAtCoordinate(coors[1], 1, function (result) {
                 console.log(result);
             });
-            graphicSource.forEachFeatureAtCoordinate([-126.16, 39.05], 1, function (result) {
+            graphicLayer.getSource().forEachFeatureAtCoordinate([-126.16, 39.05], 1, function (result) {
                 console.log(result);
             });
             map.removeLayer(graphicLayer);
