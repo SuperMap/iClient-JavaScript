@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_graphicLayerClovers"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 50px;
+        }
+
+        .ol-popup:after,
+        .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="ol-popup">
+        <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript">
+        var url = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090") +
+            "/iserver/services/map-china400/rest/maps/China_4326";
+        //初始化各种参数
+        var count = 180000;
+        var graphics = [];
+        var e = 60;
+        var clovers = [];
+        var radius = [10, 14, 18];
+        var styles = [{
+            angle: 60,
+            count: 3
+        }, {
+            angle: 45,
+            count: 4
+        }, {
+            angle: 30,
+            count: 6
+        }];
+        //三叶草样式的种类
+        var randCount = 9;
+        var symbolCount = radius.length * styles.length;
+
+
+        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+            var mapJSONObj = serviceResult.result;
+            var container = document.getElementById('popup');
+            var content = document.getElementById('popup-content');
+            var overlay = new ol.Overlay(({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
+            }));
+            var map = new ol.Map({
+                target: 'map',
+                controls: ol.control.defaults({
+                        attributionOptions: {
+                            collapsed: false
+                        }
+                    })
+                    .extend([new ol.supermap.control.Logo()]),
+                view: new ol.View({
+                    center: [0, 0],
+                    zoom: 3,
+                    projection: 'EPSG:4326'
+                }),
+                overlays: [overlay],
+                renderer: ['canvas']
+            });
+            var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+            var layer = new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest(options)
+            });
+            map.addLayer(layer);
+
+
+            //创建三叶草样式
+            for (var i = 0; i < radius.length; i++) {
+                for (var j = 0; j < styles.length; j++) {
+                    clovers.push(
+
+                        new ol.style.CloverShape({
+                            radius: radius[i],
+                            angle: styles[j].angle,
+                            count: styles[j].count,
+                            stroke: new ol.style.Stroke({
+                                color: "rgba(0,166,0,1)",
+                            }),
+                            fill: new ol.style.Fill({
+                                color: "rgba(0,166,0,1)",
+                            }),
+                        })
+                    );
+                }
+            }
+
+            //设置每个点的经纬度和传入三叶草样式
+            for (var i = 0; i < count; ++i) {
+                var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+                graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
+                graphics[i].setStyle(clovers[Math.floor(Math.random() * randCount)]);
+                var pointVector = graphics[i];
+                pointVector.style = {
+                    image: clovers[i % symbolCount]
+                };
+                graphics.push(pointVector);
+            }
+
+            map.once('postrender', function () {
+                var graphicLayer = new ol.layer.Image({
+                    source: new ol.source.Graphic({
+                        graphics: graphics,
+                        map: map,
+                        onClick: function (graphic) {
+                            if (graphic) {
+                                var coords = graphic.getGeometry().getCoordinates();
+                                content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
+                                overlay.setPosition(graphic.getGeometry().getCoordinates());
+                                return;
+                            }
+                            overlay.setPosition(undefined);
+                        }
+                    })
+                });
+                map.addLayer(graphicLayer);
+            })
+        });
+    </script>
+</body>
+
+</html>
