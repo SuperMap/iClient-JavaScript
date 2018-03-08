@@ -1,3 +1,7 @@
 # Package Files #
 /node_modules
 /.idea
+/test/testcoverage
+/.history
+/docs
+/examples-test/reports
