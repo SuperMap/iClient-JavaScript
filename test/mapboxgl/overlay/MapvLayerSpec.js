@@ -80,8 +80,8 @@ describe('mapboxgl_MapVLayer', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
-        document.body.removeChild(testDiv);
-        mapv = null;
+        window.document.body.removeChild(testDiv);
+        mapv.remove();
     });
 
     it('initialize', (done) => {
