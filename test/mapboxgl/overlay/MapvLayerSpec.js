@@ -81,7 +81,7 @@ describe('mapboxgl_MapVLayer', () => {
     });
     afterAll(() => {
         window.document.body.removeChild(testDiv);
-        map.remove();
+        map.remove(); 
     });
 
     it('initialize', (done) => {

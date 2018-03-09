@@ -75,7 +75,7 @@ describe('mapboxgl_HeatMapLayer', () => {
     afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.removeLayer("heatmap");
-        map.removeLayer("heatmap_2");
+        map.removeLayer("heatmap_2"); 
     });
 
     it('initialize', () => {
