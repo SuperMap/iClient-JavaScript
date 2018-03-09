@@ -1,41 +1,44 @@
-﻿require('../../../src/common/iServer/FindClosestFacilitiesService');
+﻿﻿import {FindClosestFacilitiesService} from '../../../src/common/iServer/FindClosestFacilitiesService';
+import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
-var serviceFailedEventArgsSystem = null;
-var serviceSucceedEventArgsSystem = null;
 var url = GlobeParameter.networkAnalystURL;
+var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
+var initFindClosestFacilitiesService = () => {
+    return new FindClosestFacilitiesService(url, options);
+};
+var findClosestFacilitiesServiceCompleted = (serviceSucceedEventArgs) => {
+    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+};
+var findClosestFacilitiesServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processFailed': findClosestFacilitiesServiceFailed,
         'processCompleted': findClosestFacilitiesServiceCompleted
     }
 };
-function initFindClosestFacilitiesService() {
-    return new SuperMap.FindClosestFacilitiesService(url, options);
-}
-function findClosestFacilitiesServiceCompleted(serviceSucceedEventArgs) {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-}
-function findClosestFacilitiesServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('FindClosestFacilitiesService', function () {
+describe('FindClosestFacilitiesService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync:return:true', function (done) {
-        var facilityPoints = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync:return:true', (done) => {
+        var facilityPoints = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var eventPoint = new SuperMap.Geometry.Point(159.6100397551, -116.6278394459);
-        var analystParameter = new SuperMap.TransportationAnalystParameter();
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting();
+        var eventPoint = new Point(159.6100397551, -116.6278394459);
+        var analystParameter = new TransportationAnalystParameter();
+        var resultSetting = new TransportationAnalystResultSetting();
         resultSetting.returnEdgeFeatures = true;
         resultSetting.returnEdgeGeometry = true;
         resultSetting.returnEdgeIDs = true;
@@ -45,7 +48,7 @@ describe('FindClosestFacilitiesService', function () {
         resultSetting.returnPathGuides = true;
         resultSetting.returnRoutes = true;
         analystParameter.resultSetting = resultSetting;
-        var parameter = new SuperMap.FindClosestFacilitiesParameters();
+        var parameter = new FindClosestFacilitiesParameters();
         parameter.isAnalyzeById = false;
         parameter.event = eventPoint;
         parameter.facilities = facilityPoints;
@@ -53,7 +56,7 @@ describe('FindClosestFacilitiesService', function () {
         parameter.parameter = analystParameter;
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.facilityPathList;
                 expect(closestFacilitiesService).not.toBeNull();
@@ -79,29 +82,27 @@ describe('FindClosestFacilitiesService', function () {
     });
 
     // isAnalyzeById
-    it('processAsync_isAnalyzeById', function (done) {
-        var transReSetting = new SuperMap.TransportationAnalystResultSetting();
-        with (transReSetting) {
-            returnEdgeFeatures = true;
-            returnEdgeIDs = true;
-            returnNodeFeatures = true;
-            returnNodeIDs = true;
-        }
-        var transAnaParams = new SuperMap.TransportationAnalystParameter();
+    it('processAsync_isAnalyzeById', (done) => {
+        var transReSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeIDs: true
+        });
+        var transAnaParams = new TransportationAnalystParameter();
         transAnaParams.resultSetting = transReSetting;
-        var facilitiesParams = new SuperMap.FindClosestFacilitiesParameters();
-        with (facilitiesParams) {
-            event = 4602;
-            facilities = [4529, 4530];
-            isAnalyzeById = true;
-            expectFacilityCount = 2;
-            fromEvent = true;
-            maxWeight = 30;
-            parameter = transAnaParams
-        }
+        var facilitiesParams = new FindClosestFacilitiesParameters({
+            event: 4602,
+            facilities: [4529, 4530],
+            isAnalyzeById: true,
+            expectFacilityCount: 2,
+            fromEvent: true,
+            maxWeight: 30,
+            parameter: transAnaParams
+        });
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync(facilitiesParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceSucceedEventArgsSystem).not.toBeNull();
                 closestFacilitiesService.destroy();
@@ -120,29 +121,27 @@ describe('FindClosestFacilitiesService', function () {
     });
 
     //参数为空
-    it('processAsync_parameterNull', function (done) {
-        var transReSetting = new SuperMap.TransportationAnalystResultSetting();
-        with (transReSetting) {
-            returnEdgeFeatures = true;
-            returnEdgeIDs = true;
-            returnNodeFeatures = true;
-            returnNodeIDs = true;
-        }
-        var transAnaParams = new SuperMap.TransportationAnalystParameter();
+    it('processAsync_parameterNull', (done) => {
+        var transReSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeIDs: true
+        });
+        var transAnaParams = new TransportationAnalystParameter();
         transAnaParams.resultSetting = transReSetting;
-        var facilitiesParams = new SuperMap.FindClosestFacilitiesParameters();
-        with (facilitiesParams) {
-            event = 4602;
-            facilities = [4529, 4530];
-            isAnalyzeById = true;
-            expectFacilityCount = 2;
-            fromEvent = true;
-            maxWeight = 30;
-            parameter = transAnaParams
-        }
+        var facilitiesParams = new FindClosestFacilitiesParameters({
+            event: 4602,
+            facilities: [4529, 4530],
+            isAnalyzeById: true,
+            expectFacilityCount: 2,
+            fromEvent: true,
+            maxWeight: 30,
+            parameter: transAnaParams
+        });
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceSucceedEventArgsSystem.result.facilityPathList).toBeNull();
                 closestFacilitiesService.destroy();
@@ -156,31 +155,27 @@ describe('FindClosestFacilitiesService', function () {
         }, 2000);
     });
 
-    it('fail_processAsync', function (done) {
-        var transReSetting = new SuperMap.TransportationAnalystResultSetting();
-        with (transReSetting) {
-            returnEdgeFeatures = true;
-            returnEdgeIDs = true;
-            returnNodeFeatures = true;
-            returnNodeIDs = true;
-        }
-
-        var transAnaParams = new SuperMap.TransportationAnalystParameter();
+    it('fail_processAsync', (done) => {
+        var transReSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeIDs: true
+        });
+        var transAnaParams = new TransportationAnalystParameter();
         transAnaParams.resultSetting = transReSetting;
-
-        var facilitiesParams = new SuperMap.FindClosestFacilitiesParameters();
-        with (facilitiesParams) {
-            event = 4602;
-            facilities = "facil”";
-            isAnalyzeById = true;
-            expectFacilityCount = 2;
-            fromEvent = true;
-            maxWeight = 30;
-            parameter = transAnaParams
-        }
+        var facilitiesParams = new FindClosestFacilitiesParameters({
+            event: 4602,
+            facilities: "facil”",
+            isAnalyzeById: true,
+            expectFacilityCount: 2,
+            fromEvent: true,
+            maxWeight: 30,
+            parameter: transAnaParams
+        });
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync(facilitiesParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceSucceedEventArgsSystem.result.facilityPathList).toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
