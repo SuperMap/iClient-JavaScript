@@ -1,4 +1,28 @@
-require('../../../src/leaflet/services/ThemeService');
+import {themeService} from '../../../src/leaflet/services/ThemeService';
+import {ThemeParameters} from '../../../src/common/iServer/ThemeParameters';
+import {ThemeDotDensity} from '../../../src/common/iServer/ThemeDotDensity';
+import {ServerStyle} from '../../../src/common/iServer/ServerStyle';
+import {ThemeFlow} from '../../../src/common/iServer/ThemeFlow';
+import {ThemeGraduatedSymbol} from '../../../src/common/iServer/ThemeGraduatedSymbol';
+import {ThemeGraduatedSymbolStyle} from '../../../src/common/iServer/ThemeGraduatedSymbolStyle';
+import {ServerColor} from '../../../src/common/iServer/ServerColor';
+import {ThemeGraph} from '../../../src/common/iServer/ThemeGraph';
+import {ThemeGraphItem} from '../../../src/common/iServer/ThemeGraphItem';
+import {ThemeGraphAxes} from '../../../src/common/iServer/ThemeGraphAxes';
+import {ThemeGraphSize} from '../../../src/common/iServer/ThemeGraphSize';
+import {ThemeGraphText} from '../../../src/common/iServer/ThemeGraphText';
+import {ServerTextStyle} from '../../../src/common/iServer/ServerTextStyle';
+import {ThemeGridRangeItem} from '../../../src/common/iServer/ThemeGridRangeItem';
+import {ThemeGridRange} from '../../../src/common/iServer/ThemeGridRange';
+import {ThemeLabelItem} from '../../../src/common/iServer/ThemeLabelItem';
+import {ThemeLabel} from '../../../src/common/iServer/ThemeLabel';
+import {LabelThemeCell} from '../../../src/common/iServer/LabelThemeCell';
+import {ThemeLabelBackground} from '../../../src/common/iServer/ThemeLabelBackground';
+import {ThemeRangeItem} from '../../../src/common/iServer/ThemeRangeItem';
+import {ThemeRange} from '../../../src/common/iServer/ThemeRange';
+import {ThemeUniqueItem} from '../../../src/common/iServer/ThemeUniqueItem';
+import {ThemeUnique} from '../../../src/common/iServer/ThemeUnique';
+import {RangeMode} from '../../../src/common/REST';
 
 var WorldURL = GlobeParameter.WorldURL;      //ThemeDotDensity, ThemeLable
 var ChinaURL = GlobeParameter.ChinaURL;      //ThemeGraduatedSymbol, ThemeRange, ThemeUnique
@@ -6,7 +30,7 @@ var jingjinPopulationURL = GlobeParameter.jingjinMapURL + "/maps/京津地区人
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_ThemeService', function () {
+describe('leaflet_ThemeService', () => {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -19,22 +43,22 @@ describe('leaflet_ThemeService', function () {
     });
 
     // 点密度专题图
-    it('successEvent:ThemeDotDensity', function (done) {
-        var themeDotDensity = new SuperMap.ThemeDotDensity({
+    it('successEvent:ThemeDotDensity', (done) => {
+        var themeDot = new ThemeDotDensity({
             dotExpression: 'Pop_1994',
             value: 5000000,
-            style: new SuperMap.ServerStyle({
+            style: new ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        var themeDotDensityParameters = new SuperMap.ThemeParameters({
-            themes: [themeDotDensity],
+        var themeDotDensityParameters = new ThemeParameters({
+            themes: [themeDot],
             datasetNames: ['Countries'],
             dataSourceNames: ['World']
         });
-        var themeDotDensityService = L.supermap.themeService(WorldURL, options);
-        themeDotDensityService.getThemeInfo(themeDotDensityParameters, function (result) {
+        var themeDotDensityService = themeService(WorldURL, options);
+        themeDotDensityService.getThemeInfo(themeDotDensityParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {
@@ -65,30 +89,30 @@ describe('leaflet_ThemeService', function () {
     });
 
     // 等级符号专题图
-    it('successEvent:ThemeGraduatedSymbol', function (done) {
-        var themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
+    it('successEvent:ThemeGraduatedSymbol', (done) => {
+        var themeGraduatedSymbol = new ThemeGraduatedSymbol({
             expression: 'SMAREA',
             baseValue: 3000000000000,
             graduatedMode: 'CONSTANT',
-            flow: new SuperMap.ThemeFlow({
+            flow: new ThemeFlow({
                 flowEnabled: true
             }),
-            style: new SuperMap.ThemeGraduatedSymbolStyle({
-                positiveStyle: new SuperMap.ServerStyle({
+            style: new ThemeGraduatedSymbolStyle({
+                positiveStyle: new ServerStyle({
                     markerSize: 50,
                     markerSymbolID: 0,
-                    lineColor: new SuperMap.ServerColor(255, 165, 0),
-                    fillBackColor: new SuperMap.ServerColor(255, 0, 0)
+                    lineColor: new ServerColor(255, 165, 0),
+                    fillBackColor: new ServerColor(255, 0, 0)
                 })
             })
         });
-        var themeGraduatedSymbolParameters = new SuperMap.ThemeParameters({
+        var themeGraduatedSymbolParameters = new ThemeParameters({
             themes: [themeGraduatedSymbol],
             datasetNames: ['China_Province_pg'],
             dataSourceNames: ['China']
         });
-        var themeGraduatedSymbolService = L.supermap.themeService(ChinaURL, options);
-        themeGraduatedSymbolService.getThemeInfo(themeGraduatedSymbolParameters, function (result) {
+        var themeGraduatedSymbolService = themeService(ChinaURL, options);
+        themeGraduatedSymbolService.getThemeInfo(themeGraduatedSymbolParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {
@@ -119,39 +143,39 @@ describe('leaflet_ThemeService', function () {
     });
 
     // 统计专题图
-    it('successEvent:ThemeGraph', function (done) {
-        var themeGraph = new SuperMap.ThemeGraph({
+    it('successEvent:ThemeGraph', (done) => {
+        var themeGraph = new ThemeGraph({
             items: [
-                new SuperMap.ThemeGraphItem({
+                new ThemeGraphItem({
                     caption: "1992-1995人口增长率",
                     graphExpression: "Pop_Rate95",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(92, 73, 234),
+                    uniformStyle: new ServerStyle({
+                        fillForeColor: new ServerColor(92, 73, 234),
                         lineWidth: 0.1
                     })
                 }),
-                new SuperMap.ThemeGraphItem({
+                new ThemeGraphItem({
                     caption: "1995-1999人口增长率",
                     graphExpression: "Pop_Rate99",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(211, 111, 240),
+                    uniformStyle: new ServerStyle({
+                        fillForeColor: new ServerColor(211, 111, 240),
                         lineWidth: 0.1
                     })
                 })
             ],
             barWidth: 0.03,
             graduatedMode: "SQUAREROOT",
-            graphAxes: new SuperMap.ThemeGraphAxes({
+            graphAxes: new ThemeGraphAxes({
                 axesDisplayed: true
             }),
-            graphSize: new SuperMap.ThemeGraphSize({
+            graphSize: new ThemeGraphSize({
                 maxGraphSize: 1,
                 minGraphSize: 0.35
             }),
-            graphText: new SuperMap.ThemeGraphText({
+            graphText: new ThemeGraphText({
                 graphTextDisplayed: true,
                 graphTextFormat: "VALUE",
-                graphTextStyle: new SuperMap.ServerTextStyle({
+                graphTextStyle: new ServerTextStyle({
                     sizeFixed: true,
                     fontHeight: 9,
                     fontWidth: 5
@@ -159,13 +183,13 @@ describe('leaflet_ThemeService', function () {
             }),
             graphType: "BAR3D"
         });
-        var themeGraphParameters = new SuperMap.ThemeParameters({
+        var themeGraphParameters = new ThemeParameters({
             themes: [themeGraph],
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]
         });
-        var themeGraphService = L.supermap.themeService(jingjinPopulationURL, options);
-        themeGraphService.getThemeInfo(themeGraphParameters, function (result) {
+        var themeGraphService = themeService(jingjinPopulationURL, options);
+        themeGraphService.getThemeInfo(themeGraphParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {
@@ -196,54 +220,54 @@ describe('leaflet_ThemeService', function () {
     });
 
     // 栅格分段专题图
-    it('successEvent:ThemeGridRange', function (done) {
-        var themeGridRangeItem1 = new SuperMap.ThemeGridRangeItem({
+    it('successEvent:ThemeGridRange', (done) => {
+        var themeGridRangeItem1 = new ThemeGridRangeItem({
                 start: -4,
                 end: 120,
-                color: new SuperMap.ServerColor(198, 244, 240)
+                color: new ServerColor(198, 244, 240)
             }),
-            themeGridRangeItem2 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem2 = new ThemeGridRangeItem({
                 start: 120,
                 end: 240,
-                color: new SuperMap.ServerColor(176, 244, 188)
+                color: new ServerColor(176, 244, 188)
             }),
-            themeGridRangeItem3 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem3 = new ThemeGridRangeItem({
                 start: 240,
                 end: 360,
-                color: new SuperMap.ServerColor(218, 251, 178)
+                color: new ServerColor(218, 251, 178)
             }),
-            themeGridRangeItem4 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem4 = new ThemeGridRangeItem({
                 start: 360,
                 end: 480,
-                color: new SuperMap.ServerColor(220, 236, 145)
+                color: new ServerColor(220, 236, 145)
             }),
-            themeGridRangeItem5 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem5 = new ThemeGridRangeItem({
                 start: 480,
                 end: 600,
-                color: new SuperMap.ServerColor(96, 198, 66)
+                color: new ServerColor(96, 198, 66)
             }),
-            themeGridRangeItem6 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem6 = new ThemeGridRangeItem({
                 start: 600,
                 end: 720,
-                color: new SuperMap.ServerColor(20, 142, 53)
+                color: new ServerColor(20, 142, 53)
             }),
-            themeGridRange = new SuperMap.ThemeGridRange({
+            themeGridRange = new ThemeGridRange({
                 reverseColor: false,
-                rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+                rangeMode: RangeMode.EQUALINTERVAL,
                 items: [
                     themeGridRangeItem1, themeGridRangeItem2,
                     themeGridRangeItem3, themeGridRangeItem4,
                     themeGridRangeItem5, themeGridRangeItem6,
                 ]
             });
-        var themeGridRangeParameters = new SuperMap.ThemeParameters({
+        var themeGridRangeParameters = new ThemeParameters({
             datasetNames: ["JingjinTerrain"],
             dataSourceNames: ["Jingjin"],
             joinItems: null,
             themes: [themeGridRange]
         });
-        var themeGridRangeService = L.supermap.themeService(jingjinPopulationURL, options);
-        themeGridRangeService.getThemeInfo(themeGridRangeParameters, function (result) {
+        var themeGridRangeService = themeService(jingjinPopulationURL, options);
+        themeGridRangeService.getThemeInfo(themeGridRangeParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {
@@ -273,42 +297,42 @@ describe('leaflet_ThemeService', function () {
     });
 
     // 标签专题图
-    it('successEvent:ThemeLable', function (done) {
-        var style1 = new SuperMap.ServerTextStyle({
+    it('successEvent:ThemeLable', (done) => {
+        var style1 = new ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(100, 20, 50),
+            foreColor: new ServerColor(100, 20, 50),
             sizeFixed: true,
             bold: true
 
         });
-        var style2 = new SuperMap.ServerTextStyle({
+        var style2 = new ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(250, 0, 0),
+            foreColor: new ServerColor(250, 0, 0),
             sizeFixed: true,
             bold: true
         });
-        var themeLabelItem1 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem1 = new ThemeLabelItem({
             start: 0.0,
             end: 7800000,
             style: style1
         });
-        var themeLabelItem2 = new SuperMap.ThemeLabelItem({
+        var themeLabelItem2 = new ThemeLabelItem({
             start: 7800000,
             end: 15000000,
             style: style2
         });
-        var themeLabel = new SuperMap.ThemeLabel({
+        var themeLabel = new ThemeLabel({
             matrixCells: [
-                [new SuperMap.LabelThemeCell({
-                    themeLabel: new SuperMap.ThemeLabel({
+                [new LabelThemeCell({
+                    themeLabel: new ThemeLabel({
                         labelExpression: "CAP_POP",
                         rangeExpression: "CAP_POP",
                         numericPrecision: 0,
                         items: [themeLabelItem1]
                     })
                 })],
-                [new SuperMap.LabelThemeCell({
-                    themeLabel: new SuperMap.ThemeLabel({
+                [new LabelThemeCell({
+                    themeLabel: new ThemeLabel({
                         labelExpression: "CAPITAL",
                         rangeExpression: "SmID",
                         numericPrecision: 0,
@@ -316,22 +340,22 @@ describe('leaflet_ThemeService', function () {
                     })
                 })]
             ],
-            background: new SuperMap.ThemeLabelBackground({
-                backStyle: new SuperMap.ServerStyle({
-                    fillForeColor: new SuperMap.ServerColor(179, 209, 193),
+            background: new ThemeLabelBackground({
+                backStyle: new ServerStyle({
+                    fillForeColor: new ServerColor(179, 209, 193),
                     fillOpaqueRate: 60,
                     lineWidth: 0.1
                 }),
                 labelBackShape: "RECT"
             })
         });
-        var themeLableParameters = new SuperMap.ThemeParameters({
+        var themeLableParameters = new ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["Capitals"],
             dataSourceNames: ["World"]
         });
-        var themeLableService = L.supermap.themeService(WorldURL, options);
-        themeLableService.getThemeInfo(themeLableParameters, function (result) {
+        var themeLableService = themeService(WorldURL, options);
+        themeLableService.getThemeInfo(themeLableParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {
@@ -361,38 +385,38 @@ describe('leaflet_ThemeService', function () {
     });
 
     // 范围分段专题图
-    it('successEvent:ThemeRange', function (done) {
-        var themeRangeItem1 = new SuperMap.ThemeRangeItem({
+    it('successEvent:ThemeRange', (done) => {
+        var themeRangeItem1 = new ThemeRangeItem({
             start: 0,
             end: 500000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(211, 255, 250),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ServerStyle({
+                fillForeColor: new ServerColor(211, 255, 250),
+                lineColor: new ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        var themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem2 = new ThemeRangeItem({
             start: 500000000000,
             end: 1000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(178, 218, 199),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ServerStyle({
+                fillForeColor: new ServerColor(178, 218, 199),
+                lineColor: new ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        var themeRange = new SuperMap.ThemeRange({
+        var themeRange = new ThemeRange({
             rangeExpression: "SMAREA",
             rangeMode: "EQUALINTERVAL",
             items: [themeRangeItem1, themeRangeItem2]
         });
-        var themeRangeParameters = new SuperMap.ThemeParameters({
+        var themeRangeParameters = new ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             joinItems: null,
             themes: [themeRange]
         });
-        var themeRangeService = L.supermap.themeService(ChinaURL, options);
-        themeRangeService.getThemeInfo(themeRangeParameters, function (result) {
+        var themeRangeService = themeService(ChinaURL, options);
+        themeRangeService.getThemeInfo(themeRangeParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {
@@ -421,38 +445,38 @@ describe('leaflet_ThemeService', function () {
         }, 3000)
     });
 
-    it('successEvent:ThemeUnique', function (done) {
-        var style1 = new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(248, 203, 249),
-                lineColor: new SuperMap.ServerColor(255, 255, 255),
+    it('successEvent:ThemeUnique', (done) => {
+        var style1 = new ServerStyle({
+                fillForeColor: new ServerColor(248, 203, 249),
+                lineColor: new ServerColor(255, 255, 255),
                 lineWidth: 0.1
             }),
-            style2 = new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(196, 255, 189),
-                lineColor: new SuperMap.ServerColor(255, 255, 255),
+            style2 = new ServerStyle({
+                fillForeColor: new ServerColor(196, 255, 189),
+                lineColor: new ServerColor(255, 255, 255),
                 lineWidth: 0.1
             });
-        var themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({
+        var themeUniqueIteme1 = new ThemeUniqueItem({
                 unique: "黑龙江省",
                 style: style1
             }),
-            themeUniqueIteme2 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme2 = new ThemeUniqueItem({
                 unique: "湖北省",
                 style: style2
             });
         var themeUniqueItemes = [themeUniqueIteme1, themeUniqueIteme2];
-        var themeUnique = new SuperMap.ThemeUnique({
+        var themeUnique = new ThemeUnique({
             uniqueExpression: "Name",
             items: themeUniqueItemes,
             defaultStyle: style1
         });
-        var themeUniqueParameters = new SuperMap.ThemeParameters({
+        var themeUniqueParameters = new ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             themes: [themeUnique]
         });
-        var themeUniqueService = L.supermap.themeService(ChinaURL, options);
-        themeUniqueService.getThemeInfo(themeUniqueParameters, function (result) {
+        var themeUniqueService = themeService(ChinaURL, options);
+        themeUniqueService.getThemeInfo(themeUniqueParameters, (result) => {
             serviceResult = result
         });
         setTimeout(function () {

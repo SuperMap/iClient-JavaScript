@@ -1,24 +1,26 @@
-require('../../../src/leaflet/services/AddressMatchService');
+import {addressMatchService} from '../../../src/leaflet/services/AddressMatchService';
+import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
+import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_AddressMatchService', function () {
+describe('leaflet_AddressMatchService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:code', function (done) {
-        var geoCodingParams = new SuperMap.GeoCodingParameter({
+    it('successEvent:code', (done) => {
+        var geoCodingParams = new GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
             toIndex: 10,
@@ -26,11 +28,11 @@ describe('leaflet_AddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var geoCodingService = L.supermap.addressMatchService(addressMatchURL, options);
-        geoCodingService.code(geoCodingParams, function (result) {
+        var geoCodingService = addressMatchService(addressMatchURL, options);
+        geoCodingService.code(geoCodingParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(geoCodingService).not.toBeNull();
                 expect(geoCodingService.options.serverType).toBe("iServer");
@@ -55,8 +57,8 @@ describe('leaflet_AddressMatchService', function () {
         }, 5000)
     });
 
-    it('successEvent:decode', function (done) {
-        var GeoDecodingParams = new SuperMap.GeoDecodingParameter({
+    it('successEvent:decode', (done) => {
+        var GeoDecodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
             y: 39.92311315752059,
             fromIndex: 0,
@@ -66,11 +68,11 @@ describe('leaflet_AddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var GeoDecodingService = L.supermap.addressMatchService(addressMatchURL, options);
-        GeoDecodingService.decode(GeoDecodingParams, function (result) {
+        var GeoDecodingService = addressMatchService(addressMatchURL, options);
+        GeoDecodingService.decode(GeoDecodingParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(GeoDecodingService).not.toBeNull();
                 expect(GeoDecodingService.options.serverType).toBe("iServer");
@@ -95,8 +97,8 @@ describe('leaflet_AddressMatchService', function () {
         }, 5000)
     });
 
-    it('failEvent:code_AddressNull', function (done) {
-        var geoCodingParams = new SuperMap.GeoCodingParameter({
+    it('failEvent:code_AddressNull', (done) => {
+        var geoCodingParams = new GeoCodingParameter({
             address: null,
             fromIndex: 0,
             toIndex: 10,
@@ -104,11 +106,11 @@ describe('leaflet_AddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var geoCodingService = L.supermap.addressMatchService(addressMatchURL, options);
-        geoCodingService.code(geoCodingParams, function (result) {
+        var geoCodingService = addressMatchService(addressMatchURL, options);
+        geoCodingService.code(geoCodingParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(geoCodingService).not.toBeNull();
                 expect(geoCodingService.options.serverType).toBe("iServer");
@@ -129,8 +131,8 @@ describe('leaflet_AddressMatchService', function () {
         }, 5000);
     });
 
-    it('failEvent:decode_LocationInvalid', function (done) {
-        var GeoDecodingParams = new SuperMap.GeoDecodingParameter({
+    it('failEvent:decode_LocationInvalid', (done) => {
+        var GeoDecodingParams = new GeoDecodingParameter({
             fromIndex: 0,
             toIndex: 5,
             filters: '北京市,海淀区',
@@ -138,11 +140,11 @@ describe('leaflet_AddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var geoDecodingService = L.supermap.addressMatchService(addressMatchURL, options);
-        geoDecodingService.decode(GeoDecodingParams, function (result) {
+        var geoDecodingService = addressMatchService(addressMatchURL, options);
+        geoDecodingService.decode(GeoDecodingParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(geoDecodingService).not.toBeNull();
                 expect(geoDecodingService.options.serverType).toBe("iServer");

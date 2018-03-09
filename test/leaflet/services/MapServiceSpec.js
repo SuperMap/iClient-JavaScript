@@ -1,27 +1,27 @@
-require('../../../src/leaflet/services/MapService');
+import {mapService} from '../../../src/leaflet/services/MapService';
 
 var url = GlobeParameter.ChinaURL;
-describe('leaflet_MapService', function () {
+describe('leaflet_MapService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('initialize', function () {
+    it('initialize', () => {
         var options = {
             projection: 'EPSG:3857'
         };
-        var mapService = L.supermap.mapService(url, options);
-        expect(mapService.options.projection).toBe('EPSG:3857');
-        expect(mapService.url).toEqual(url);
+        var service = mapService(url, options);
+        expect(service.options.projection).toBe('EPSG:3857');
+        expect(service.url).toEqual(url);
     });
 
-    it('getMapInfo', function () {
-        L.supermap.mapService(url).getMapInfo(function (serviceResult) {
+    it('getMapInfo', () => {
+        mapService(url).getMapInfo((serviceResult) => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result).not.toBeNull();

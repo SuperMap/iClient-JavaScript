@@ -1,22 +1,23 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_routeCalculateMeasure', function () {
+describe('leaflet_SpatialAnalystService_routeCalculateMeasure', ()=> {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(()=> {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(()=> {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('routeCalculateMeasure', function (done) {
+    it('routeCalculateMeasure', (done)=> {
         var pointsList = [];
         var routeObj = [
             [4020.0045221720466, -4377.027184298267, 0],
@@ -30,17 +31,17 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', function () {
             pointsList.push([routeObj[i][1], routeObj[i][0], routeObj[i][2]])
         }
         var routeLine = L.polyline(pointsList);
-        var routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
+        var routeCalculateMeasureParams = new RouteCalculateMeasureParameters({
             "sourceRoute": routeLine,   //必选,路由类型                                   
             "point": L.point(routeObj[4][0], routeObj[4][1]),            //必选
             "tolerance": 10,
             "isIgnoreGap": false
         });
-        var routeCalculateMeasureService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (result) {
+        var routeCalculateMeasureService = spatialAnalystService(spatialAnalystURL, options);
+        routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(routeCalculateMeasureService).not.toBeNull();
                 expect(routeCalculateMeasureService.options.serverType).toBe('iServer');

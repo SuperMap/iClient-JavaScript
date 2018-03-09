@@ -1,25 +1,27 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
-var request = require('request');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {InterpolationKrigingAnalystParameters} from '../../../src/common/iServer/InterpolationKrigingAnalystParameters';
+import {PixelFormat} from '../../../src/common/REST';
+import request from 'request';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
+describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "Interpolation_UnvsKriging_lfTest";
-    it('interpolationAnalysis_Kriging_Universal', function () {
-        var interpolationAnalystParameters = new SuperMap.InterpolationKrigingAnalystParameters({
+    it('interpolationAnalysis_Kriging_Universal', () => {
+        var interpolationAnalystParameters = new InterpolationKrigingAnalystParameters({
             // 用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
             // 插值分析结果数据集的名称
@@ -27,7 +29,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
             // 插值分析结果数据源的名称
             outputDatasourceName: "Interpolation",
             // 结果栅格数据集存储的像素格式
-            pixelFormat: SuperMap.PixelFormat.DOUBLE,
+            pixelFormat: PixelFormat.DOUBLE,
             // 属性过滤条件
             filterQueryParameter: {
                 attributeFilter: ""
@@ -50,8 +52,8 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
             searchMode: "KDTREE_FIXED_COUNT",
             bounds: L.bounds([-2640403.63, 1873792.1], [3247669.39, 5921501.4])
         });
-        var interpolationAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (result) {
+        var interpolationAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, (result) => {
             serviceResult = result;
             try {
                 expect(interpolationAnalystService).not.toBeNull();
@@ -71,7 +73,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.dataspatialAnalystURL + resultDataset;
         request.delete(testResult);
         done();

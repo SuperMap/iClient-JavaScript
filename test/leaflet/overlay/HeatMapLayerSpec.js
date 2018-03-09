@@ -1,11 +1,12 @@
-require('../../../src/leaflet/overlay/HeatMapLayer');
+import {heatMapLayer} from '../../../src/leaflet/overlay/HeatMapLayer';
+import {heatMapFeature} from '../../../src/leaflet/overlay/HeatMapLayer';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 
 var url = GlobeParameter.worldMapURL;
-var heatMapLayer;
-describe('leaflet_HeatMapLayer', function () {
+describe('leaflet_HeatMapLayer', () => {
     var originalTimeout;
-    var testDiv, map;
-    beforeAll(function () {
+    var testDiv, map, heatLayer;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -14,7 +15,6 @@ describe('leaflet_HeatMapLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         map = L.map('map', {
             preferCanvas: true,
             crs: L.CRS.EPSG4326,
@@ -22,13 +22,12 @@ describe('leaflet_HeatMapLayer', function () {
             maxZoom: 18,
             zoom: 1
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        tiledMapLayer(url).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-
-        heatMapLayer = L.supermap.heatMapLayer(
+        heatLayer = heatMapLayer(
             "heatMap",
             {
                 "map": map,
@@ -51,30 +50,30 @@ describe('leaflet_HeatMapLayer', function () {
                 }
             }]
         };
-        heatMapLayer.addFeatures(heatPoints);
-        heatMapLayer.addTo(map);
+        heatLayer.addFeatures(heatPoints);
+        heatLayer.addTo(map);
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         map.remove();
         window.document.body.removeChild(testDiv);
     });
 
-    it('initialize', function () {
-        expect(heatMapLayer).not.toBeNull();
-        expect(heatMapLayer.id).toBe("heatmap");
-        expect(heatMapLayer.radius).toEqual(45);
-        expect(heatMapLayer.featureWeight).toBe("value");
-        expect(heatMapLayer.features.length).toEqual(1);
-        expect(heatMapLayer.colors.length).toEqual(5);
-        expect(heatMapLayer.opacity).toEqual(1);
-        expect(heatMapLayer.useGeoUnit).toBeFalsy();
+    it('initialize', () => {
+        expect(heatLayer).not.toBeNull();
+        expect(heatLayer.id).toBe("heatmap");
+        expect(heatLayer.radius).toEqual(45);
+        expect(heatLayer.featureWeight).toBe("value");
+        expect(heatLayer.features.length).toEqual(1);
+        expect(heatLayer.colors.length).toEqual(5);
+        expect(heatLayer.opacity).toEqual(1);
+        expect(heatLayer.useGeoUnit).toBeFalsy();
     });
 
-    it("toiClientFeature()_test add HeatMapFeature_Test", function () {
-        var features1 = new L.supermap.heatMapFeature(L.point(0, 0), {"value": 2});
+    it("toiClientFeature, add HeatMapFeature", () => {
+        var features1 = new heatMapFeature(L.point(0, 0), {"value": 2});
         expect(features1).not.toBeNull();
         expect(features1.geometry.x).not.toBeNull(0);
         expect(features1.geometry.y).not.toBeNull(0);
@@ -82,10 +81,10 @@ describe('leaflet_HeatMapLayer', function () {
         var vectorFeature = features1.toFeature();
         expect(vectorFeature).not.toBeNull();
         expect(vectorFeature.CLASS_NAME).toBe("SuperMap.Feature.Vector");
-        var features2 = new L.supermap.heatMapFeature(L.latLng(1, 1), {"value": 4});
-        var features3 = new L.supermap.heatMapFeature(L.circleMarker(L.latLng(2, 2)), {"value": 8});
+        var features2 = new heatMapFeature(L.latLng(1, 1), {"value": 4});
+        var features3 = new heatMapFeature(L.circleMarker(L.latLng(2, 2)), {"value": 8});
 
-        var toiClientFeature = heatMapLayer.toiClientFeature([features1, features2, features3]);
+        var toiClientFeature = heatLayer.toiClientFeature([features1, features2, features3]);
         expect(toiClientFeature).not.toBeNull();
         expect(toiClientFeature.length).toEqual(3);
         expect(toiClientFeature[0].CLASS_NAME).toBe("SuperMap.Feature.Vector");
@@ -93,7 +92,7 @@ describe('leaflet_HeatMapLayer', function () {
         expect(toiClientFeature[2].CLASS_NAME).toBe("SuperMap.Feature.Vector");
     });
 
-    it("addFeatures() , removeFeatures() ,removeAllFeatures() test", function () {
+    it("addFeatures, removeFeatures, removeAllFeatures", () => {
         var heatPoints = {
             "type": "FeatureCollection",
             "features": [{
@@ -126,40 +125,40 @@ describe('leaflet_HeatMapLayer', function () {
             }]
         };
         //测试addFeatures
-        heatMapLayer.addFeatures(heatPoints);
-        expect(heatMapLayer.features.length).toEqual(3);
+        heatLayer.addFeatures(heatPoints);
+        expect(heatLayer.features.length).toEqual(3);
         //测试removeFeatures
         var removeFeatures = [];
-        heatMapLayer.removeFeatures(removeFeatures);
-        expect(heatMapLayer.features.length).toEqual(3);
+        heatLayer.removeFeatures(removeFeatures);
+        expect(heatLayer.features.length).toEqual(3);
 
-        heatMapLayer.removeFeatures(heatMapLayer.features[0]);
-        expect(heatMapLayer.features.length).toEqual(2);
+        heatLayer.removeFeatures(heatLayer.features[0]);
+        expect(heatLayer.features.length).toEqual(2);
 
-        removeFeatures.push(heatMapLayer.features[0]);
-        heatMapLayer.removeFeatures(removeFeatures);
-        expect(heatMapLayer.features.length).toEqual(1);
+        removeFeatures.push(heatLayer.features[0]);
+        heatLayer.removeFeatures(removeFeatures);
+        expect(heatLayer.features.length).toEqual(1);
 
         removeFeatures = [];
-        removeFeatures.push(heatMapLayer.features[0]);
-        heatMapLayer.removeFeatures(removeFeatures);
-        expect(heatMapLayer.features.length).toEqual(0);
+        removeFeatures.push(heatLayer.features[0]);
+        heatLayer.removeFeatures(removeFeatures);
+        expect(heatLayer.features.length).toEqual(0);
 
         //测试removeAllFeatures
-        heatMapLayer.addFeatures(heatPoints);
-        heatMapLayer.removeFeatures(heatMapLayer.features);
-        expect(heatMapLayer.features.length).toEqual(0);
+        heatLayer.addFeatures(heatPoints);
+        heatLayer.removeFeatures(heatLayer.features);
+        expect(heatLayer.features.length).toEqual(0);
 
     });
 
-    it("getLocalXY_test", function () {
-        var pixelPoint = heatMapLayer.getLocalXY(L.point(0, 0));
+    it("getLocalXY", () => {
+        var pixelPoint = heatLayer.getLocalXY(L.point(0, 0));
         expect(pixelPoint).not.toBeNull();
     });
 
-    it("setOpacity_test", function () {
-        heatMapLayer.setOpacity(0.5);
-        var opacity = heatMapLayer.rootCanvas.style.opacity;
+    it("setOpacity", () => {
+        heatLayer.setOpacity(0.5);
+        var opacity = heatLayer.rootCanvas.style.opacity;
         expect(opacity).toBe('0.5');
     });
 });

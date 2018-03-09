@@ -1,3 +1,30 @@
+/*leaflet -- control*/
+require('./leaflet/control/ChangeTileVersionSpec.js');
+
+/*leaflet -- core*/
+require('./leaflet/core/NonEarthCRSSpec.js');
+
+/*leaflet -- mapping*/
+require('./leaflet/mapping/ImageMapLayerSpec.js');
+require('./leaflet/mapping/TiledMapLayerSpec.js');
+require('./leaflet/mapping/TileLayer.WMTSSpec.js');
+require('./leaflet/mapping/WebMapSpec.js');
+
+/*leaflet -- overlay*/
+require('./leaflet/overlay/DataFlowlayerSpec.js');
+require('./leaflet/overlay/EchartsLayerSpec.js');
+require('./leaflet/overlay/GraphicLayerSpec.js');
+require('./leaflet/overlay/GraphThemeLayerSpec.js');
+require('./leaflet/overlay/HeatMapLayerSpec.js');
+require('./leaflet/overlay/LabelThemeLayerSpec.js');
+require('./leaflet/overlay/mapVLayerSpec.js');
+require('./leaflet/overlay/RangeThemeLayerSpec.js');
+require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
+require('./leaflet/overlay/TileVectorLayerSpec.js');
+require('./leaflet/overlay/UniqueThemeLayerSpec.js');
+require('./leaflet/overlay/vectortile/PointSymbolizerSpec.js');
+require('./leaflet/overlay/vectortile/TextSymbolizerSpec.js');
+
 /**leaflet -- services**/
 require('./leaflet/services/AddressMatchServiceSpec.js');
 require('./leaflet/services/BufferAnalysisSpec.js');
@@ -33,29 +60,3 @@ require('./leaflet/services/TerrainCurvatureCalculateSpec.js');
 require('./leaflet/services/ThemeServiceSpec.js');
 require('./leaflet/services/ThiessenAnalysisSpec.js');
 require('./leaflet/services/TrafficTransferAnalystServiceSpec.js');
-
-/*leaflet -- overlay*/
-require('./leaflet/overlay/vectortile/PointSymbolizerSpec.js');
-require('./leaflet/overlay/vectortile/TextSymbolizerSpec.js');
-require('./leaflet/overlay/EchartsLayerSpec.js');
-require('./leaflet/overlay/GraphicLayerSpec.js');
-require('./leaflet/overlay/GraphThemeLayerSpec.js');
-require('./leaflet/overlay/LabelThemeLayerSpec.js');
-require('./leaflet/overlay/mapVLayerSpec.js');
-require('./leaflet/overlay/RangeThemeLayerSpec.js');
-require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
-require('./leaflet/overlay/TileVectorLayerSpec.js');
-require('./leaflet/overlay/UniqueThemeLayerSpec.js');
-require('./leaflet/overlay/DataFlowlayerSpec.js');
-require('./leaflet/overlay/HeatMapLayerSpec.js');
-
-/*leaflet -- mapping*/
-require('./leaflet/mapping/TiledMapLayerSpec.js');
-require('./leaflet/mapping/ImageMapLayerSpec.js');
-require('./leaflet/mapping/WebMapSpec.js');
-
-/*leaflet -- control*/
-require('./leaflet/control/ChangeTileVersionSpec.js');
-
-/*leaflet -- core*/
-require('./leaflet/core/NonEarthCRSSpec.js');

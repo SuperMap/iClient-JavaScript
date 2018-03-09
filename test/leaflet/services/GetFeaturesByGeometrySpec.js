@@ -1,35 +1,36 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_FeatureService_getFeaturesByGeometry', function () {
+describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:getFeaturesByGeometry_returnContent=true', function (done) {
+    it('successEvent:getFeaturesByGeometry_returnContent=true', (done) => {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]]);
-        var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
             returnContent: true,
             datasetNames: ["World:Countries"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
@@ -77,19 +78,19 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', function () {
         }, 2000)
     });
 
-    it('successEvent:getFeaturesByGeometry_returnContent=false', function (done) {
+    it('successEvent:getFeaturesByGeometry_returnContent=false', (done) => {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]]);
-        var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
             returnContent: false,
             datasetNames: ["World:Countries"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
@@ -110,19 +111,19 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByGeometry_datasetNotExist', function (done) {
-        var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
+    it('failEvent:getFeaturesByGeometry_datasetNotExist', (done) => {
+        var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: "SMID>0"
             },
             datasetNames: ["World1:Countries"]
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");
@@ -142,16 +143,16 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByGeometry_queryParamsNull', function (done) {
-        var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
+    it('failEvent:getFeaturesByGeometry_queryParamsNull', (done) => {
+        var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
             queryParameter: null,
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesByGeometryService.options.serverType).toBe("iServer");

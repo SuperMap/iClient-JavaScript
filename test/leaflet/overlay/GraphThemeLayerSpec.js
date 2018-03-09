@@ -1,14 +1,16 @@
-require('../../../src/leaflet/overlay/GraphThemeLayer');
-require('../../resources/chinaConsumptionLevel');
+import {graphThemeLayer} from '../../../src/leaflet/overlay/GraphThemeLayer';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {themeFeature} from '../../../src/leaflet/overlay/theme/ThemeFeature';
+import '../../resources/chinaConsumptionLevel';
 
 var options = {
     isOverLay: true
 };
 var url = GlobeParameter.China4326URL;
-describe('leaflet_GraphThemeLayer', function () {
+describe('leaflet_GraphThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -23,22 +25,22 @@ describe('leaflet_GraphThemeLayer', function () {
             maxZoom: 18,
             zoom: 0
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        tiledMapLayer(url).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize', function () {
-        var barThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", {isOverLay: false}).addTo(map);
+    it('initialize', () => {
+        var barThemeLayer = graphThemeLayer("BarThemeLayer", "Bar", {isOverLay: false}).addTo(map);
         barThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         barThemeLayer.chartsSetting = {
             width: 240,
@@ -81,23 +83,23 @@ describe('leaflet_GraphThemeLayer', function () {
         barThemeLayer.clear();
     });
 
-    it('setChartsType', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.chartsSetting = {
+    it('setChartsType', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000]
         };
-        expect(graphThemeLayer.chartsType).toBe("Bar");
-        graphThemeLayer.setChartsType("Line");
-        expect(graphThemeLayer.chartsType).toBe("Line");
-        graphThemeLayer.clear();
+        expect(themeLayer.chartsType).toBe("Bar");
+        themeLayer.setChartsType("Line");
+        expect(themeLayer.chartsType).toBe("Line");
+        themeLayer.clear();
     });
 
-    it('addFeatures_point', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('addFeatures_point', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -113,7 +115,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -125,11 +127,11 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        var LayerFeatures = graphThemeLayer.features;
+        themeLayer.addFeatures(features);
+        var LayerFeatures = themeLayer.features;
         expect(LayerFeatures.length).toBeGreaterThan(0);
         expect(LayerFeatures[0].geometry.y).toEqual(39.904557);
         expect(LayerFeatures[0].geometry.x).toEqual(116.407283);
@@ -142,27 +144,27 @@ describe('leaflet_GraphThemeLayer', function () {
             CON2013: 33337,
             NAME: "北京市"
         }));
-        var shape1 = graphThemeLayer.getShapesByFeatureID();
-        var shape2 = graphThemeLayer.getShapesByFeatureID(LayerFeatures[0].id);
+        var shape1 = themeLayer.getShapesByFeatureID();
+        var shape2 = themeLayer.getShapesByFeatureID(LayerFeatures[0].id);
         expect(shape1.length).toEqual(17);
         expect(shape2.length).toEqual(5);
-        var weightFieldValue = graphThemeLayer.getWeightFieldValue(LayerFeatures[0], "CON2009", 0);
+        var weightFieldValue = themeLayer.getWeightFieldValue(LayerFeatures[0], "CON2009", 0);
         expect(weightFieldValue).toEqual(22023);
-        var weightFieldValue2 = graphThemeLayer.getWeightFieldValue(LayerFeatures[0], "CON2007", 10);
+        var weightFieldValue2 = themeLayer.getWeightFieldValue(LayerFeatures[0], "CON2007", 10);
         expect(weightFieldValue2).toEqual(10);
-        var weightFieldValue3 = graphThemeLayer.getWeightFieldValue(LayerFeatures[0], "CON2007");
+        var weightFieldValue3 = themeLayer.getWeightFieldValue(LayerFeatures[0], "CON2007");
         expect(weightFieldValue3).toEqual(0);
-        graphThemeLayer.features[0].geometry.x = 39;
-        var redraw = graphThemeLayer.redraw();
-        expect(graphThemeLayer.features[0].geometry.x).toEqual(39);
+        themeLayer.features[0].geometry.x = 39;
+        var redraw = themeLayer.redraw();
+        expect(themeLayer.features[0].geometry.x).toEqual(39);
         expect(redraw).toBeTruthy();
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
-    it('isQuadrilateralOverLap', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('isQuadrilateralOverLap', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000]
@@ -170,34 +172,34 @@ describe('leaflet_GraphThemeLayer', function () {
         var quadrilateral, quadrilateral2;
         quadrilateral = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
         quadrilateral2 = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
-        var isPointInPoly = graphThemeLayer.isQuadrilateralOverLap(quadrilateral, quadrilateral2);
+        var isPointInPoly = themeLayer.isQuadrilateralOverLap(quadrilateral, quadrilateral2);
         expect(isPointInPoly).toBeTruthy();
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     // 此方法为iclient8的私有方法,不支持leaflet对象,此处测试传入iclient对象的情况
-    it('isPointInPoly', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('isPointInPoly', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000]
         };
         var point = {"x": 2, "y": 5};
         var polygon = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
-        var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
+        var isPointInPoly = themeLayer.isPointInPoly(point, polygon);
         expect(isPointInPoly).toBeTruthy();
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     //overlayWeightField默认为空
-    it('drawCharts_overlayWeightField = null', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", {
+    it('drawCharts_overlayWeightField = null', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", {
             isOverLay: false
         }).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -213,19 +215,19 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        graphThemeLayer.drawCharts();
-        expect(graphThemeLayer).not.toBeNull();
-        graphThemeLayer.clear();
+        themeLayer.drawCharts();
+        expect(themeLayer).not.toBeNull();
+        themeLayer.clear();
     });
 
     //overlayWeightField = "CON2013"
-    it('drawCharts_overlayWeightField != null', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", {
+    it('drawCharts_overlayWeightField != null', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", {
             isOverLay: false
         }).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.overlayWeightField = "CON2013";
-        graphThemeLayer.chartsSetting = {
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.overlayWeightField = "CON2013";
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -241,16 +243,16 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        graphThemeLayer.drawCharts();
-        expect(graphThemeLayer).not.toBeNull();
-        graphThemeLayer.clear();
+        themeLayer.drawCharts();
+        expect(themeLayer).not.toBeNull();
+        themeLayer.clear();
     });
 
     //从专题图中删除 feature。删除所有传递进来的某一个矢量要素。
-    it('removeFeatures', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('removeFeatures', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -266,7 +268,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -278,45 +280,45 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        expect(graphThemeLayer.features.length).toEqual(31);
-        expect(graphThemeLayer.features[0].data.NAME).toEqual("北京市");
-        var removeFeature = graphThemeLayer.features[0];
-        graphThemeLayer.removeFeatures(removeFeature);
-        expect(graphThemeLayer).not.toBeNull();
-        expect(graphThemeLayer.features.length).toEqual(30);
-        expect(graphThemeLayer.features[0].data.NAME).toEqual("天津市");
-        graphThemeLayer.clear();
+        themeLayer.addFeatures(features);
+        expect(themeLayer.features.length).toEqual(31);
+        expect(themeLayer.features[0].data.NAME).toEqual("北京市");
+        var removeFeature = themeLayer.features[0];
+        themeLayer.removeFeatures(removeFeature);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.features.length).toEqual(30);
+        expect(themeLayer.features[0].data.NAME).toEqual("天津市");
+        themeLayer.clear();
     });
 
-    it('clearCache', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('clearCache', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000]
         };
-        graphThemeLayer.charts = [1, 2, 3];
-        graphThemeLayer.cache = {'name': 'ONETWO'};
-        expect(graphThemeLayer.charts.length).toEqual(3);
-        expect(graphThemeLayer.cache).toEqual(Object({
+        themeLayer.charts = [1, 2, 3];
+        themeLayer.cache = {'name': 'ONETWO'};
+        expect(themeLayer.charts.length).toEqual(3);
+        expect(themeLayer.cache).toEqual(Object({
             name: "ONETWO"
         }));
-        graphThemeLayer.clearCache();
-        expect(graphThemeLayer.charts.length).toEqual(0);
-        expect(graphThemeLayer.cache).toEqual(Object({}));
+        themeLayer.clearCache();
+        expect(themeLayer.charts.length).toEqual(0);
+        expect(themeLayer.cache).toEqual(Object({}));
     });
 
     //测试其父类“/theme/ThemeLayer”中的接口
     //销毁addFeatures_point方法添加的所有要素
-    it('destroyFeatures', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('destroyFeatures', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -332,7 +334,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -344,21 +346,21 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        graphThemeLayer.destroyFeatures(undefined);
-        expect(graphThemeLayer).not.toBeNull();
-        expect(graphThemeLayer.features.length).toEqual(0);
-        graphThemeLayer.clear();
+        themeLayer.addFeatures(features);
+        themeLayer.destroyFeatures(undefined);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.features.length).toEqual(0);
+        themeLayer.clear();
     });
 
     //查看当前图层中的有效数据
-    it('getFeatures', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('getFeatures', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -374,7 +376,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -386,24 +388,24 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        var clonedFeatures = graphThemeLayer.getFeatures();
+        themeLayer.addFeatures(features);
+        var clonedFeatures = themeLayer.getFeatures();
         expect(clonedFeatures).not.toBeNull();
         expect(clonedFeatures.length).toEqual(31);
         for (var i = 0; i < clonedFeatures.length; i++) {
             expect(clonedFeatures[i].CLASS_NAME).toEqual("SuperMap.Feature.Vector");
         }
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     //在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature
-    it('getFeatureBy', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('getFeatureBy', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -419,7 +421,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -431,24 +433,24 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        var resultFeatures = graphThemeLayer.getFeatures();
+        themeLayer.addFeatures(features);
+        var resultFeatures = themeLayer.getFeatures();
         var id = resultFeatures[0].id;
-        var result = graphThemeLayer.getFeatureBy("id", id);
+        var result = themeLayer.getFeatureBy("id", id);
         expect(result).not.toBeNull();
         expect(result.id).toEqual(id);
         expect(result.attributes.NAME).toEqual("北京市");
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     //通过给定一个 id，返回对应的矢量要素
-    it('getFeatureById', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('getFeatureById', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -464,7 +466,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -476,24 +478,24 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        var resultFeatures = graphThemeLayer.getFeatures();
+        themeLayer.addFeatures(features);
+        var resultFeatures = themeLayer.getFeatures();
         var id = resultFeatures[0].id;
-        var result = graphThemeLayer.getFeatureById(id);
+        var result = themeLayer.getFeatureById(id);
         expect(result).not.toBeNull();
         expect(result.id).toEqual(id);
         expect(result.attributes.NAME).toEqual("北京市");
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     // 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-    it('getFeaturesByAttribute', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('getFeaturesByAttribute', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -509,7 +511,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -521,31 +523,31 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        var result = graphThemeLayer.getFeaturesByAttribute("NAME", "北京市");
+        themeLayer.addFeatures(features);
+        var result = themeLayer.getFeaturesByAttribute("NAME", "北京市");
         expect(result).not.toBeNull();
         expect(result.length).toEqual(1);
         expect(result[0].attributes.NAME).toEqual("北京市");
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     //设置图层的不透明度,取值[0-1]之间。
-    it('setOpacity', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.setOpacity(0.5);
-        expect(graphThemeLayer).not.toBeNull();
-        expect(graphThemeLayer.options.opacity).toEqual(0.5);
-        graphThemeLayer.clear();
+    it('setOpacity', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+        themeLayer.setOpacity(0.5);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.options.opacity).toEqual(0.5);
+        themeLayer.clear();
     });
 
     //添加专题图
-    it('onAdd', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
+    it('onAdd', () => {
+        var themeLayer = graphThemeLayer("BarThemeLayer", "Bar", options);
+        themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        themeLayer.chartsSetting = {
             width: 240,
             height: 100,
             codomain: [0, 40000],
@@ -561,7 +563,7 @@ describe('leaflet_GraphThemeLayer', function () {
             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
         };
-        expect(graphThemeLayer.features.length).toEqual(0);
+        expect(themeLayer.features.length).toEqual(0);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
@@ -573,20 +575,20 @@ describe('leaflet_GraphThemeLayer', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
+            var fea = themeFeature(geometry, atrributes);
             features.push(fea);
         }
-        graphThemeLayer.addFeatures(features);
-        graphThemeLayer.onAdd(map);
-        expect(graphThemeLayer).not.toBeNull();
-        expect(graphThemeLayer.chartsType).toBe("Bar");
-        expect(graphThemeLayer.charts.length).toEqual(31);
-        expect(graphThemeLayer.features.length).toEqual(31);
-        expect(graphThemeLayer.options.isOverLay).toBeTruthy();
-        expect(graphThemeLayer.name).toBe("BarThemeLayer");
-        expect(graphThemeLayer.id).not.toBeNull();
-        expect(graphThemeLayer.themeFields.length).toEqual(5);
-        var chartsSetting = graphThemeLayer.chartsSetting;
+        themeLayer.addFeatures(features);
+        themeLayer.onAdd(map);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.chartsType).toBe("Bar");
+        expect(themeLayer.charts.length).toEqual(31);
+        expect(themeLayer.features.length).toEqual(31);
+        expect(themeLayer.options.isOverLay).toBeTruthy();
+        expect(themeLayer.name).toBe("BarThemeLayer");
+        expect(themeLayer.id).not.toBeNull();
+        expect(themeLayer.themeFields.length).toEqual(5);
+        var chartsSetting = themeLayer.chartsSetting;
         expect(chartsSetting.axisXLabels.length).toEqual(5);
         expect(chartsSetting.axisYLabels.length).toEqual(5);
         expect(chartsSetting.axisYTick).toEqual(4);
@@ -600,11 +602,11 @@ describe('leaflet_GraphThemeLayer', function () {
         expect(chartsSetting.barShadowStyle).not.toBeNull();
         expect(chartsSetting.height).toEqual(100);
         expect(chartsSetting.width).toEqual(240);
-        graphThemeLayer.clear();
+        themeLayer.clear();
     });
 
     //测其父类“/common/overlay/Bar”中的接口
-    it('Bar', function () {
+    it('Bar', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -617,7 +619,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var chartsSettingForBarCommon = {
@@ -661,7 +663,7 @@ describe('leaflet_GraphThemeLayer', function () {
             ["#FF9900", "#A2945E"]];
 
         themeLayerOptions.chartsSetting = chartsSettingForBar;
-        var themeLayer = L.supermap.graphThemeLayer("BarLayer", "Bar", themeLayerOptions);
+        var themeLayer = graphThemeLayer("BarLayer", "Bar", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -675,7 +677,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //另一组参数
-    it('Bar_xShapeBlank = undefined', function () {
+    it('Bar_xShapeBlank = undefined', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -688,7 +690,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var chartsSettingForBarCommon = {
@@ -731,7 +733,7 @@ describe('leaflet_GraphThemeLayer', function () {
             ["#FF9900", "#A2945E"]];
 
         themeLayerOptions.chartsSetting = chartsSettingForBar;
-        var themeLayer = L.supermap.graphThemeLayer("BarLayer", "Bar", themeLayerOptions);
+        var themeLayer = graphThemeLayer("BarLayer", "Bar", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -747,7 +749,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //测其父类“/common/overlay/Bar3D”中的接口
-    it('Bar3D', function () {
+    it('Bar3D', () => {
         var themeLayerOptions = {
             map: map,
             isOverLay: true,
@@ -791,7 +793,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
 
         themeLayerOptions.chartsSetting = chartsSettingForBar3D;
-        var themeLayer = L.supermap.graphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
+        var themeLayer = graphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -804,7 +806,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         themeLayer.addFeatures(features);
@@ -825,7 +827,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //另一组参数
-    it('Bar3D_xShapeBlank = undefined', function () {
+    it('Bar3D_xShapeBlank = undefined', () => {
         var themeLayerOptions = {
             map: map,
             isOverLay: true,
@@ -869,7 +871,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
 
         themeLayerOptions.chartsSetting = chartsSettingForBar3D;
-        var themeLayer = L.supermap.graphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
+        var themeLayer = graphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -882,7 +884,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         themeLayer.addFeatures(features);
@@ -901,7 +903,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //测其父类“/common/overlay/Line”中的接口
-    it('Line', function () {
+    it('Line', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -914,7 +916,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -952,7 +954,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
         chartsSettingForLine.pointStyle.fillColor = "#9966CC";
         themeLayerOptions.chartsSetting = chartsSettingForLine;
-        var themeLayer = L.supermap.graphThemeLayer("LineLayer", "Line", themeLayerOptions);
+        var themeLayer = graphThemeLayer("LineLayer", "Line", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -969,7 +971,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //另一组参数
-    it('Line_xShapeBlank = undefined', function () {
+    it('Line_xShapeBlank = undefined', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -982,7 +984,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1012,7 +1014,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
         chartsSettingForLine.pointStyle.fillColor = "#9966CC";
         themeLayerOptions.chartsSetting = chartsSettingForLine;
-        var themeLayer = L.supermap.graphThemeLayer("LineLayer", "Line", themeLayerOptions);
+        var themeLayer = graphThemeLayer("LineLayer", "Line", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -1030,7 +1032,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //测其父类“/common/overlay/Point”中的接口
-    it('Point', function () {
+    it('Point', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -1043,7 +1045,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1081,7 +1083,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
         chartsSettingForPoint.pointStyle.fillColor = "#D8361B";
         themeLayerOptions.chartsSetting = chartsSettingForPoint;
-        var themeLayer = L.supermap.graphThemeLayer("PiontLayer", "Point", themeLayerOptions);
+        var themeLayer = graphThemeLayer("PiontLayer", "Point", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -1099,7 +1101,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //另一组参数
-    it('Point_xShapeBlank = undefined', function () {
+    it('Point_xShapeBlank = undefined', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -1112,7 +1114,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1142,7 +1144,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
         chartsSettingForPoint.pointStyle.fillColor = "#D8361B";
         themeLayerOptions.chartsSetting = chartsSettingForPoint;
-        var themeLayer = L.supermap.graphThemeLayer("PiontLayer", "Point", themeLayerOptions);
+        var themeLayer = graphThemeLayer("PiontLayer", "Point", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -1161,7 +1163,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //测其父类“/common/overlay/Pie”中的接口 一组参数
-    it('Pie', function () {
+    it('Pie', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -1174,7 +1176,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1185,7 +1187,7 @@ describe('leaflet_GraphThemeLayer', function () {
             opacity: 0.9,
             chartsSetting: {},
         };
-        chartsSettingForPie = {
+        var chartsSettingForPie = {
             width: 240,
             height: 100,
             codomain: [0, 40000],       // 允许图表展示的值域范围，此范围外的数据将不制作图表
@@ -1204,7 +1206,7 @@ describe('leaflet_GraphThemeLayer', function () {
             backgroundRadius: [5, 5, 5, 5],        // 背景框圆角参数
         };
         themeLayerOptions.chartsSetting = chartsSettingForPie;
-        var themeLayer = L.supermap.graphThemeLayer("PieLayer", "Pie", themeLayerOptions);
+        var themeLayer = graphThemeLayer("PieLayer", "Pie", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -1219,7 +1221,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //另一组参数
-    it('Pie_sectorStyleByFields = undefined', function () {
+    it('Pie_sectorStyleByFields = undefined', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -1232,7 +1234,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1243,7 +1245,7 @@ describe('leaflet_GraphThemeLayer', function () {
             opacity: 0.9,
             chartsSetting: {},
         };
-        chartsSettingForPie = {
+        var chartsSettingForPie = {
             width: 240,
             height: 100,
             codomain: [0, 40000],       // 允许图表展示的值域范围，此范围外的数据将不制作图表
@@ -1259,7 +1261,7 @@ describe('leaflet_GraphThemeLayer', function () {
             sectorClickAble: true
         };
         themeLayerOptions.chartsSetting = chartsSettingForPie;
-        var themeLayer = L.supermap.graphThemeLayer("PieLayer", "Pie", themeLayerOptions);
+        var themeLayer = graphThemeLayer("PieLayer", "Pie", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -1273,7 +1275,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //测其父类“/common/overlay/Ring”中的接口
-    it('Ring', function () {
+    it('Ring', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -1286,7 +1288,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1297,7 +1299,7 @@ describe('leaflet_GraphThemeLayer', function () {
             opacity: 0.9,
             chartsSetting: {},
         };
-        chartsSettingForRing = {
+        var chartsSettingForRing = {
             width: 240,
             height: 100,
             codomain: [0, 40000],       // 允许图表展示的值域范围，此范围外的数据将不制作图表
@@ -1318,7 +1320,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
         chartsSettingForRing.innerRingRadius = 20;
         themeLayerOptions.chartsSetting = chartsSettingForRing;
-        var themeLayer = L.supermap.graphThemeLayer("RingLayer", "Ring", themeLayerOptions);
+        var themeLayer = graphThemeLayer("RingLayer", "Ring", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();
@@ -1333,7 +1335,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //另一组参数
-    it('Ring_sectorStyleByFields = undefined', function () {
+    it('Ring_sectorStyleByFields = undefined', () => {
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
@@ -1346,7 +1348,7 @@ describe('leaflet_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = themeFeature(geo, attrs);
             features.push(fea);
         }
         var themeLayerOptions = {
@@ -1357,7 +1359,7 @@ describe('leaflet_GraphThemeLayer', function () {
             opacity: 0.9,
             chartsSetting: {},
         };
-        chartsSettingForRing = {
+        var chartsSettingForRing = {
             width: 240,
             height: 100,
             codomain: [0, 40000],       // 允许图表展示的值域范围，此范围外的数据将不制作图表
@@ -1374,7 +1376,7 @@ describe('leaflet_GraphThemeLayer', function () {
         };
         chartsSettingForRing.innerRingRadius = 20;
         themeLayerOptions.chartsSetting = chartsSettingForRing;
-        var themeLayer = L.supermap.graphThemeLayer("RingLayer", "Ring", themeLayerOptions);
+        var themeLayer = graphThemeLayer("RingLayer", "Ring", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         expect(themeLayer).not.toBeNull();

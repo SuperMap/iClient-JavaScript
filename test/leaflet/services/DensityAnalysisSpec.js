@@ -1,27 +1,28 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
-var request = require('request');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
+import request from 'request';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
+describe('leaflet_SpatialAnalystService_densityAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "KernelDensity_leafletTest";
     //点密度分析
-    it('densityAnalysis', function (done) {
-        var densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+    it('densityAnalysis', (done) => {
+        var densityAnalystParameters = new DensityKernelAnalystParameters({
             //指定数据集
             dataset: "Railway@Changchun",
             //指定范围
@@ -33,11 +34,11 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
             resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
-        var densityAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        densityAnalystService.densityAnalysis(densityAnalystParameters, function (densityServiceResult) {
+        var densityAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        densityAnalystService.densityAnalysis(densityAnalystParameters, (densityServiceResult) => {
             serviceResult = densityServiceResult;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(densityAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -58,7 +59,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

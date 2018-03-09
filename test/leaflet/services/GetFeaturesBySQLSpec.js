@@ -1,24 +1,25 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_FeatureService_getFeaturesBySQL', function () {
+describe('leaflet_FeatureService_getFeaturesBySQL', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:getFeaturesBySQL_returnContent=true', function (done) {
-        var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+    it('successEvent:getFeaturesBySQL_returnContent=true', (done) => {
+        var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
             returnContent: true,
             queryParameter: {
                 name: "Countries@World",
@@ -26,11 +27,11 @@ describe('leaflet_FeatureService_getFeaturesBySQL', function () {
             },
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
                 expect(getFeaturesBySQLService.options.serverType).toBe("iServer");
@@ -76,8 +77,8 @@ describe('leaflet_FeatureService_getFeaturesBySQL', function () {
         }, 2000)
     });
 
-    it('successEvent:getFeaturesBySQL_returnContent=false', function (done) {
-        var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+    it('successEvent:getFeaturesBySQL_returnContent=false', (done) => {
+        var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
             returnContent: false,
             queryParameter: {
                 name: "Countries@World",
@@ -85,11 +86,11 @@ describe('leaflet_FeatureService_getFeaturesBySQL', function () {
             },
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesBySQLService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
@@ -110,19 +111,19 @@ describe('leaflet_FeatureService_getFeaturesBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesBySQL_datasetNotExist', function (done) {
-        var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+    it('failEvent:getFeaturesBySQL_datasetNotExist', (done) => {
+        var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: "SMID>0"
             },
             datasetNames: ["World1:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
                 expect(getFeaturesBySQLService.options.serverType).toBe("iServer");
@@ -142,16 +143,16 @@ describe('leaflet_FeatureService_getFeaturesBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesBySQL_queryParameterNull', function (done) {
-        var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+    it('failEvent:getFeaturesBySQL_queryParameterNull', (done) => {
+        var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
             queryParameter: null,
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
                 expect(getFeaturesBySQLService.options.serverType).toBe("iServer");

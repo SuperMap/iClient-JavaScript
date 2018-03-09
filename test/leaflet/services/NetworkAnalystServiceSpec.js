@@ -1,33 +1,47 @@
-require('../../../src/leaflet/services/NetworkAnalystService');
+import {networkAnalystService} from '../../../src/leaflet/services/NetworkAnalystService';
+import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
+import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
+import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
+import {FindMTSPPathsParameters} from '../../../src/common/iServer/FindMTSPPathsParameters';
+import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
+import {UpdateEdgeWeightParameters} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import {UpdateTurnNodeWeightParameters} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
+import {SupplyCenterType} from '../../../src/common/REST';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_NetworkAnalystService', function () {
+describe('leaflet_NetworkAnalystService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //爆管分析服务
-    it('burstPipelineAnalyst', function (done) {
-        var burstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
+    it('burstPipelineAnalyst', (done) => {
+        var burstPipelineAnalystParams = new BurstPipelineAnalystParameters({
             sourceNodeIDs: [84, 85],
             edgeID: 310,
             isUncertainDirectionValid: false
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.burstPipelineAnalyst(burstPipelineAnalystParameters, function (result) {
+        var service = networkAnalystService(url, options);
+        service.burstPipelineAnalyst(burstPipelineAnalystParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -47,17 +61,17 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //耗费矩阵分析服务
-    it('computeWeightMatrix', function (done) {
-        var computeWeightMatrixParameters = new SuperMap.ComputeWeightMatrixParameters({
+    it('computeWeightMatrix', (done) => {
+        var computeWeightMatrixParams = new ComputeWeightMatrixParameters({
             //nodes: [2,6,9],
             isAnalyzeById: true,
             nodes: [84, 85],
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.computeWeightMatrix(computeWeightMatrixParameters, function (result) {
+        var service = networkAnalystService(url, options);
+        service.computeWeightMatrix(computeWeightMatrixParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -78,8 +92,8 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //最近设施分析服务  isAnalyzeById 为 true,
-    it('findClosestFacilities_isAnalyzeById:true', function (done) {
-        var findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
+    it('findClosestFacilities_isAnalyzeById:true', (done) => {
+        var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: 2,
             //要查找的设施点数量。默认值为1
@@ -88,11 +102,11 @@ describe('leaflet_NetworkAnalystService', function () {
             facilities: [1, 6, 52],
             isAnalyzeById: true,
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findClosestFacilities(findClosetFacilitiesParameter, function (result) {
+        var service = networkAnalystService(url, options);
+        service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -113,9 +127,9 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //最近设施分析服务  isAnalyzeById 为 false,
-    it('findClosestFacilities', function (done) {
+    it('findClosestFacilities', (done) => {
         //创建最近设施分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -125,12 +139,12 @@ describe('leaflet_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             turnWeightField: "TurnCost",
             weightFieldName: "length"  //length,time
         });
-        var findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
+        var findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: L.latLng(-3700, 5000),
             //要查找的设施点数量。默认值为1
@@ -141,11 +155,11 @@ describe('leaflet_NetworkAnalystService', function () {
             isAnalyzeById: false,
             parameter: analystParameter
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findClosestFacilities(findClosetFacilitiesParameter, function (result) {
+        var service = networkAnalystService(url, options);
+        service.findClosestFacilities(findClosetFacilitiesParameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -207,60 +221,60 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //选址分区分析服务
-    it('findLocation', function (done) {
-        var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER,
-            supplyCenterType_NULL = SuperMap.SupplyCenterType.NULL,
-            supplyCenterType_FIXEDCENTER = SuperMap.SupplyCenterType.FIXEDCENTER;
-        var supplyCenters = [new SuperMap.SupplyCenter({
+    it('findLocation', (done) => {
+        var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER,
+            supplyCenterType_NULL = SupplyCenterType.NULL,
+            supplyCenterType_FIXEDCENTER = SupplyCenterType.FIXEDCENTER;
+        var supplyCenters = [new SupplyCenter({
             maxWeight: 500,             // 资源供给中心的最大耗费值,必设参数
             nodeID: 139,                // 资源供给中心点的结点 ID 号,必设参数
             resourceValue: 100,         // 资源供给中心能提供的最大服务量或商品数量,必设参数
             type: supplyCenterType_OPTIONALCENTER      //选址分区中资源中心的类型包括固定中心和可选中心两种
         }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 1358,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 2972,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 5523,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 1161,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 4337,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 5732,
                 resourceValue: 100,
                 type: supplyCenterType_NULL
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 663,
                 resourceValue: 100,
                 type: supplyCenterType_FIXEDCENTER
             })
         ];
-        var findLocationParameters = new SuperMap.FindLocationParameters({
+        var findLocationParams = new FindLocationParameters({
             // 期望用于最终设施选址的资源供给中心数量,必设字段
             expectedSupplyCenterCount: 8,
             // 是否从中心点开始分配资源。默认为 false
@@ -273,11 +287,11 @@ describe('leaflet_NetworkAnalystService', function () {
             // 资源供给中心集合,必设字段
             supplyCenters: supplyCenters
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findLocation(findLocationParameters, function (result) {
+        var service = networkAnalystService(url, options);
+        service.findLocation(findLocationParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -315,8 +329,8 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //最佳路径分析服务
-    it('findPath', function (done) {
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+    it('findPath', (done) => {
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -326,21 +340,21 @@ describe('leaflet_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findPathParameter = new SuperMap.FindPathParameters({
+        var findPathParameter = new FindPathParameters({
             isAnalyzeById: false,
             nodes: [L.latLng(-3000, 4000), L.latLng(-2500, 5500), L.latLng(-4000, 6900)],
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findPath(findPathParameter, function (result) {
+        var service = networkAnalystService(url, options);
+        service.findPath(findPathParameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -396,9 +410,9 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //旅行商分析服务
-    it('findTSPPaths', function (done) {
+    it('findTSPPaths', (done) => {
         //创建多旅行商分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -408,11 +422,11 @@ describe('leaflet_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findTSPPathsParameter = new SuperMap.FindTSPPathsParameters({
+        var findTSPPathsParameter = new FindTSPPathsParameters({
             //是否指定终止点,
             endNodeAssigned: false,
             isAnalyzeById: false,
@@ -420,11 +434,11 @@ describe('leaflet_NetworkAnalystService', function () {
             nodes: [L.latLng(-1000, 3000), L.latLng(-4850, 3760), L.latLng(-2700, 8000)],
             parameter: analystParameter
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findTSPPaths(findTSPPathsParameter, function (result) {
+        var service = networkAnalystService(url, options);
+        service.findTSPPaths(findTSPPathsParameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -478,8 +492,8 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //多旅行商分析服务
-    it('findMTSPPaths', function (done) {
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+    it('findMTSPPaths', (done) => {
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -489,22 +503,22 @@ describe('leaflet_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
+        var findMTSPPathsParameter = new FindMTSPPathsParameters({
             centers: [L.latLng(-5500, 6000), L.latLng(-2500, 5500), L.latLng(-3500, 2500)],
             isAnalyzeById: false,
             nodes: [L.latLng(-5000, 5000), L.latLng(-2800, 8000)],
             hasLeastTotalCost: true,
             parameter: analystParameter
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findMTSPPaths(findMTSPPathsParameter, function (result) {
+        var service = networkAnalystService(url, options);
+        service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -562,9 +576,9 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //服务区分析服务
-    it('findServiceAreas', function (done) {
+    it('findServiceAreas', (done) => {
         var marker = L.marker([-3375, 5605]);
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -574,21 +588,21 @@ describe('leaflet_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findServiceAreasParameters = new SuperMap.FindServiceAreasParameters({
+        var findServiceAreasParams = new FindServiceAreasParameters({
             centers: [marker.getLatLng()],
             isAnalyzeById: false,
             parameter: analystParameter
         });
-        findServiceAreasParameters.weights = [400 + Math.random() * 100];
-        var service = L.supermap.networkAnalystService(url, options);
-        service.findServiceAreas(findServiceAreasParameters, function (result) {
+        findServiceAreasParams.weights = [400 + Math.random() * 100];
+        var service = networkAnalystService(url, options);
+        service.findServiceAreas(findServiceAreasParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -647,19 +661,19 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //更新边的耗费权重服务
-    it('updateEdgeWeight', function (done) {
-        var UpdateEdgeWeightParameters = new SuperMap.UpdateEdgeWeightParameters({
+    it('updateEdgeWeight', (done) => {
+        var updateEdgeWeightParams = new UpdateEdgeWeightParameters({
             edgeId: "20",
             edgeWeight: "30",
             fromNodeId: "26",
             toNodeId: "109",
             weightField: "time"
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.updateEdgeWeight(UpdateEdgeWeightParameters, function (result) {
+        var service = networkAnalystService(url, options);
+        service.updateEdgeWeight(updateEdgeWeightParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -675,8 +689,8 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //转向耗费权重更新服务
-    it('updateTurnNodeWeight', function (done) {
-        var parameters = new SuperMap.UpdateTurnNodeWeightParameters({
+    it('updateTurnNodeWeight', (done) => {
+        var parameters = new UpdateTurnNodeWeightParameters({
             //转向结点的id
             nodeId: "106",
             //耗费权重
@@ -688,11 +702,11 @@ describe('leaflet_NetworkAnalystService', function () {
             //转向结点的耗费字段
             weightField: "TurnCost"
         });
-        var service = L.supermap.networkAnalystService(url, options);
-        service.updateTurnNodeWeight(parameters, function (result) {
+        var service = networkAnalystService(url, options);
+        service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

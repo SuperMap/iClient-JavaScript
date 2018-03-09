@@ -1,33 +1,34 @@
-require('../../../src/leaflet/services/QueryService');
+import {queryService} from '../../../src/leaflet/services/QueryService';
+import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_QueryService_queryByBounds', function () {
+describe('leaflet_QueryService_queryByBounds', ()=> {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(()=> {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(()=> {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:queryByBounds_returnContent=true', function (done) {
+    it('successEvent:queryByBounds_returnContent=true', (done)=> {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParams = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World"},
             bounds: polygon.getBounds()
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -36,14 +37,14 @@ describe('leaflet_QueryService_queryByBounds', function () {
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.customResponse).toBeNull();
-                expect(serviceResult.result.currentCount).toEqual(38);
-                expect(serviceResult.result.totalCount).toEqual(38);
+                expect(serviceResult.result.currentCount).toBeGreaterThan(0);
+                expect(serviceResult.result.totalCount).toEqual(serviceResult.result.currentCount);
                 expect(serviceResult.result.recordsets.length).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets[0].datasetName).toBe("Capitals@World");
                 expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(16);
                 expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(16);
                 expect(serviceResult.result.recordsets[0].features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.recordsets[0].features.features.length).toEqual(38);
+                expect(serviceResult.result.recordsets[0].features.features.length).toEqual(serviceResult.result.totalCount);
                 for (var i = 0; i < serviceResult.result.recordsets[0].features.features.length; i++) {
                     expect(serviceResult.result.recordsets[0].features.features[i].type).toBe("Feature");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
@@ -79,9 +80,9 @@ describe('leaflet_QueryService_queryByBounds', function () {
         }, 2000)
     });
 
-    it('successEvent:queryByBounds_customsResult=true', function (done) {
+    it('successEvent:queryByBounds_customsResult=true', (done)=> {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParams = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World"},
             bounds: polygon.getBounds(),
             customParams: null,
@@ -91,11 +92,11 @@ describe('leaflet_QueryService_queryByBounds', function () {
         queryByBoundsParams.startRecord = 0;
         queryByBoundsParams.holdTime = 10;
         queryByBoundsParams.returnCustomResult = true;
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -119,17 +120,17 @@ describe('leaflet_QueryService_queryByBounds', function () {
     });
 
 
-    it('failEvent:queryByBounds_layerNotExist', function (done) {
+    it('failEvent:queryByBounds_layerNotExist', (done)=> {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParams = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World1"},
             bounds: polygon.getBounds()
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");
@@ -150,17 +151,17 @@ describe('leaflet_QueryService_queryByBounds', function () {
     });
 
 
-    it('failEvent:queryByBounds_queryParamsNull', function (done) {
+    it('failEvent:queryByBounds_queryParamsNull', (done)=> {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParams = new QueryByBoundsParameters({
             queryParams: null,
             bounds: polygon.getBounds()
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByBoundsService).not.toBeNull();
                 expect(queryByBoundsService.options.serverType).toBe("iServer");

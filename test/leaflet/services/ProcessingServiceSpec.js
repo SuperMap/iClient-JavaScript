@@ -1,19 +1,28 @@
-require('../../../src/leaflet/services/ProcessingService');
-require('../../../src/common/util/FetchRequest');
-require('../../../src/common/security/SecurityManager');
+import {processingService} from '../../../src/leaflet/services/ProcessingService';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import {SecurityManager} from '../../../src/common/security/SecurityManager';
+import {KernelDensityJobParameter} from '../../../src/common/iServer/KernelDensityJobParameter';
+import {SummaryMeshJobParameter} from '../../../src/common/iServer/SummaryMeshJobParameter';
+import {SingleObjectQueryJobsParameter} from '../../../src/common/iServer/SingleObjectQueryJobsParameter';
+import {SummaryRegionJobParameter} from '../../../src/common/iServer/SummaryRegionJobParameter';
+import {VectorClipJobsParameter} from '../../../src/common/iServer/VectorClipJobsParameter';
+import {OverlayGeoJobParameter} from '../../../src/common/iServer/OverlayGeoJobParameter';
+import {BuffersAnalystJobsParameter} from '../../../src/common/iServer/BuffersAnalystJobsParameter';
+import {TopologyValidatorJobsParameter} from '../../../src/common/iServer/TopologyValidatorJobsParameter';
+import {OutputSetting} from '../../../src/common/iServer/OutputSetting';
+import {DatasourceConnectionInfo} from '../../../src/common/iServer/DatasourceConnectionInfo';
 
 
-describe('leaflet_ProcessingService', function () {
-    var token, url, processingService, FetchRequest;
-    beforeEach(function () {
+describe('leaflet_ProcessingService', () => {
+    var token, url, service;
+    beforeEach(() => {
         token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..';
-        SuperMap.SecurityManager.registerToken('http://supermapiserver:8090/iserver', token);
+        SecurityManager.registerToken('http://supermapiserver:8090/iserver', token);
         url = 'http://supermapiserver:8090/iserver/services/distributedanalyst/rest/v1/jobs';
-        processingService = L.supermap.processingService(url);
-        FetchRequest = SuperMap.FetchRequest;
+        service = processingService(url);
     });
 
-    xit('bug记录', function () {
+    xit('bug记录', () => {
         console.log("1、query应该为L.Bounds对象,不应该处理为字符串,且当不设置query时不应该报错(query不是必填参数),应该默认查询当前全部范围");
         console.log("2、bounds应该为L.Bounds对象,不应该处理为字符串,且当不设置bounds时不应该报错(bounds不是必填参数),应该默认查询当前全部范围");
         console.log("3、SummaryRegionJobsService的参数类中standardFields默认值应该为空字符串'', 此时代码中默认的是average");
@@ -21,16 +30,16 @@ describe('leaflet_ProcessingService', function () {
     });
 
     /*KernelDensityJobsService*/
-    it('getKernelDensityJobs_processCompleted', function (done) {
+    it('getKernelDensityJobs_processCompleted', (done) => {
         var id = id_kernelDensityJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/density") {
                 var escapedJson = "[" + kernelDensityJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getKernelDensityJobs(function (result) {
+        service.getKernelDensityJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.KernelDensityJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -69,21 +78,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\kernelDensity.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getKernelDensityJob', function (done) {
+    it('getKernelDensityJob', (done) => {
         var id = id_kernelDensityJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/density" + "/" + id) {
                 var escapedJson = kernelDensityJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getKernelDensityJob(id, function (result) {
+        service.getKernelDensityJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.KernelDensityJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -121,29 +130,29 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\kernelDensity.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
     // addKernelDensityJob中有bug,当不设置query或者设置为L.Bounds对象时会报错, 待开发修改后需要补充测试
-    it('addKernelDensityJob, getKernelDensityJobState', function (done) {
+    it('addKernelDensityJob, getKernelDensityJobState', (done) => {
         var id = id_kernelDensityJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/density.json?token=" + token) {
                 var escapedJson = kernelDensityJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/density/" + id) {
                 var escapedJson = kernelDensityJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
+        var kernelDensityJobParams = new KernelDensityJobParameter({
             datasetName: "samples_newyork_taxi_2013-01_14k",   //必填参数, 源数据集
             method: "0",               //必填参数, 分析方法, 0代表简单点密度, 1代表核密度分析
             meshType: "0",             //必填参数, 网格面类型, 0代表格网, 1代表蜂窝面,即六边形
@@ -155,7 +164,7 @@ describe('leaflet_ProcessingService', function () {
             radiusUnit: 'Meter',       //选填参数, 搜索半径单位
             areaUnit: 'SquareMeter'    //选填参数, 面积单位，密度的分母单位
         });
-        processingService.addKernelDensityJob(kernelDensityJobParameter, function (result) {
+        service.addKernelDensityJob(kernelDensityJobParams, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.KernelDensityJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -194,7 +203,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getKernelDensityJobState
-            var kernelDensityJobState = processingService.getKernelDensityJobState(id);
+            var kernelDensityJobState = service.getKernelDensityJobState(id);
             expect(kernelDensityJobState.elapsedTime).toEqual(0);
             expect(kernelDensityJobState.endState).toBeTruthy();
             expect(kernelDensityJobState.startTime).toEqual(1511147376620);
@@ -203,16 +212,16 @@ describe('leaflet_ProcessingService', function () {
             expect(kernelDensityJobState.errorStackTrace).toBeNull();
             expect(kernelDensityJobState.publisherelapsedTime).toEqual(4945);
             expect(kernelDensityJobState.runState).toBe("FINISHED");
-            kernelDensityJobParameter.destroy();
-            processingService.destroy();
+            kernelDensityJobParams.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*SummaryMeshJobsService*/
-    it('getSummaryMeshJobs_processCompleted', function (done) {
+    it('getSummaryMeshJobs_processCompleted', (done) => {
         var id = id_summaryMeshJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/aggregatepoints") {
                 // 转义后的json字符串
                 var escapedJson = "[" + summaryMeshJob_get + "]";
@@ -220,7 +229,7 @@ describe('leaflet_ProcessingService', function () {
             }
             return Promise.resolve();
         });
-        processingService.getSummaryMeshJobs(function (result) {
+        service.getSummaryMeshJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryMeshJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -255,21 +264,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.outputPath).toBe("D:\\summaryMesh.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getSummaryMeshJob', function (done) {
+    it('getSummaryMeshJob', (done) => {
         var id = id_summaryMeshJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/aggregatepoints/" + id) {
                 var escapedJson = summaryMeshJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getSummaryMeshJob(id, function (result) {
+        service.getSummaryMeshJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryMeshJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -303,22 +312,22 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.outputPath).toBe("D:\\summaryMesh.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
     // addSummaryMeshJob中有bug, 当不设置query或者或者设置为L.Bounds对象时会报错, 待开发修改后需要补充测试
-    it('addSummaryMeshJob, getSummaryMeshJobState', function (done) {
+    it('addSummaryMeshJob, getSummaryMeshJobState', (done) => {
         var id = id_summaryMeshJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/aggregatepoints.json?token=" + token) {
                 var escapedJson = summaryMeshJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/aggregatepoints/" + id) {
                 var escapedJson = summaryMeshJob_get;
                 return Promise.resolve(new Response(escapedJson));
@@ -326,7 +335,7 @@ describe('leaflet_ProcessingService', function () {
             return Promise.resolve();
         });
         // 四边形网格面聚合
-        var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
+        var summaryMeshJobParams = new SummaryMeshJobParameter({
             datasetName: "samples_newyork_taxi_2013-01_14k",  //必填参数, 源数据集
             query: "-74.15,40.55,-73.75,40.95",               //选填参数,分析范围
             resolution: 100,              //网格大小
@@ -334,7 +343,7 @@ describe('leaflet_ProcessingService', function () {
             meshType: 0,                  //网格面汇总类型
             fields: "col7"                //权重值字段
         });
-        processingService.addSummaryMeshJob(summaryMeshJobParameter, function (result) {
+        service.addSummaryMeshJob(summaryMeshJobParams, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryMeshJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -369,7 +378,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getSummaryMeshJobState
-            var summaryMeshJobState = processingService.getSummaryMeshJobState(id);
+            var summaryMeshJobState = service.getSummaryMeshJobState(id);
             expect(summaryMeshJobState.elapsedTime).toEqual(16078);
             expect(summaryMeshJobState.endState).toBeTruthy();
             expect(summaryMeshJobState.startTime).toEqual(1511324256079);
@@ -378,23 +387,23 @@ describe('leaflet_ProcessingService', function () {
             expect(summaryMeshJobState.errorStackTrace).toBeNull();
             expect(summaryMeshJobState.publisherelapsedTime).toEqual(8547);
             expect(summaryMeshJobState.runState).toBe("FINISHED");
-            summaryMeshJobParameter.destroy();
-            processingService.destroy();
+            summaryMeshJobParams.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*SingleObjectQueryJobsService*/
-    it('getQueryJobs_processCompleted', function (done) {
+    it('getQueryJobs_processCompleted', (done) => {
         var id = id_singleObjectQueryJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/query") {
                 var escapedJson = "[" + singleObjectQueryJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getQueryJobs(function (result) {
+        service.getQueryJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SingleObjectQueryJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -430,21 +439,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.outputPath).toBe("D:\\spatialQueryGeo.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getQueryJob', function (done) {
+    it('getQueryJob', (done) => {
         var id = id_singleObjectQueryJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/query/" + id) {
                 var escapedJson = singleObjectQueryJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getQueryJob(id, function (result) {
+        service.getQueryJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SingleObjectQueryJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -479,34 +488,34 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.outputPath).toBe("D:\\spatialQueryGeo.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('addQueryJob, getQueryJobState', function (done) {
+    it('addQueryJob, getQueryJobState', (done) => {
         var id = id_singleObjectQueryJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/query.json?token=" + token) {
                 var escapedJson = singleObjectQueryJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/query/" + id) {
                 var escapedJson = singleObjectQueryJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var singleObjectQueryJobParameter = new SuperMap.SingleObjectQueryJobsParameter({
+        var singleObjectQueryJobParameter = new SingleObjectQueryJobsParameter({
             datasetName: "samples_processing_newyorkZone_R",    //必填参数, 源数据集
             datasetQuery: "samples_processing_singleRegion_R",  //必填参数, 查询对象数据集
             geometryQuery: null,                                //查询对象所在的几何对象
             mode: "INTERSECT"                                   //必填参数, 查询对象模式
         });
-        processingService.addQueryJob(singleObjectQueryJobParameter, function (result) {
+        service.addQueryJob(singleObjectQueryJobParameter, (result) => {
             var id = "22e7b725_77df_4ba4_a8a2_a042b66e9fbd";
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SingleObjectQueryJobsService");
@@ -543,7 +552,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getQueryJobState
-            var queryJobState = processingService.getQueryJobState(id);
+            var queryJobState = service.getQueryJobState(id);
             expect(queryJobState.elapsedTime).toEqual(19047);
             expect(queryJobState.endState).toBeTruthy();
             expect(queryJobState.startTime).toEqual(1511324147985);
@@ -553,22 +562,22 @@ describe('leaflet_ProcessingService', function () {
             expect(queryJobState.publisherelapsedTime).toEqual(7797);
             expect(queryJobState.runState).toBe("FINISHED");
             singleObjectQueryJobParameter.destroy();
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*SummaryRegionJobsService*/
-    it('getSummaryRegionJobs_processCompleted', function (done) {
+    it('getSummaryRegionJobs_processCompleted', (done) => {
         var id = id_summaryRegionJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/summaryregion") {
                 var escapedJson = "[" + summaryRegionJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getSummaryRegionJobs(function (result) {
+        service.getSummaryRegionJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryRegionJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -613,21 +622,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.outputPath).toBe("D:\\summaryRegion.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getSummaryRegionJob', function (done) {
+    it('getSummaryRegionJob', (done) => {
         var id = id_summaryRegionJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/summaryregion/" + id) {
                 var escapedJson = summaryRegionJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getSummaryRegionJob(id, function (result) {
+        service.getSummaryRegionJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryRegionJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -671,7 +680,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.outputPath).toBe("D:\\summaryRegion.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
@@ -679,23 +688,23 @@ describe('leaflet_ProcessingService', function () {
     // addSummaryRegionJob中有bug, 当不设置query或者或者设置为L.Bounds对象时会报错, 待开发修改后需要补充测试
     // 参数standardFields默认值应该为空, 此时代码中默认的是average, 待开发修改后需要回归
     // 参数类在destroy的时候 regionDataset 未置空,待开发修改后需要回归
-    it('addSummaryRegionJob, getSummaryRegionJobState', function (done) {
+    it('addSummaryRegionJob, getSummaryRegionJobState', (done) => {
         var id = id_summaryRegionJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/summaryregion.json?token=" + token) {
                 var escapedJson = summaryRegionJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/summaryregion/" + id) {
                 var escapedJson = summaryRegionJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
+        var summaryRegionJobParams = new SummaryRegionJobParameter({
             datasetName: "samples_processing_newyorkZone_R",  //必填参数, 源数据集
             sumShape: false,                                  //是否统计长度或面积
             query: "-74.05,40.65,-73.85,40.85",               //选填参数,分析范围
@@ -710,7 +719,7 @@ describe('leaflet_ProcessingService', function () {
             meshSizeUnit: "METER",                  //网格大小单位
             type: "SUMMARYMESH"                      //汇总类型,默认为网格面汇总("SUMMARYMESH")
         });
-        processingService.addSummaryRegionJob(summaryRegionJobParameter, function (result) {
+        service.addSummaryRegionJob(summaryRegionJobParams, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryRegionJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -755,7 +764,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getSummaryRegionJobState
-            var summaryRegionJobState = processingService.getSummaryRegionJobState(id);
+            var summaryRegionJobState = service.getSummaryRegionJobState(id);
             expect(summaryRegionJobState.elapsedTime).toEqual(48125);
             expect(summaryRegionJobState.endState).toBeTruthy();
             expect(summaryRegionJobState.startTime).toEqual(1511341652407);
@@ -764,23 +773,23 @@ describe('leaflet_ProcessingService', function () {
             expect(summaryRegionJobState.errorStackTrace).toBeNull();
             expect(summaryRegionJobState.publisherelapsedTime).toEqual(15141);
             expect(summaryRegionJobState.runState).toBe("FINISHED");
-            summaryRegionJobParameter.destroy();
-            processingService.destroy();
+            summaryRegionJobParams.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*VectorClipJobsService*/
-    it('getVectorClipJobs_processCompleted', function (done) {
+    it('getVectorClipJobs_processCompleted', (done) => {
         var id = id_vectorClipJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/vectorclip") {
                 var escapedJson = "[" + vectorClipJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getVectorClipJobs(function (result) {
+        service.getVectorClipJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.VectorClipJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -817,21 +826,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\vectorClipAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getVectorClipJob', function (done) {
+    it('getVectorClipJob', (done) => {
         var id = id_vectorClipJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/vectorclip/" + id) {
                 var escapedJson = vectorClipJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getVectorClipJob(id, function (result) {
+        service.getVectorClipJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.VectorClipJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -867,34 +876,34 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\vectorClipAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('addVectorClipJob, getVectorClipJobState', function (done) {
+    it('addVectorClipJob, getVectorClipJobState', (done) => {
         var id = id_vectorClipJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/vectorclip.json?token=" + token) {
                 var escapedJson = vectorClipJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/vectorclip/" + id) {
                 var escapedJson = vectorClipJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var vectorClipJobParameter = new SuperMap.VectorClipJobsParameter({
+        var vectorClipJobParameter = new VectorClipJobsParameter({
             datasetName: "samples_processing_newyorkZone_R",   //必填参数, 源数据集
             datasetVectorClip: "samples_processing_singleRegion_R",  //必填参数, 裁剪对象数据集
             mode: "clip"                                   //必填参数, 裁剪分析模式
 
         });
-        processingService.addVectorClipJob(vectorClipJobParameter, function (result) {
+        service.addVectorClipJob(vectorClipJobParameter, (result) => {
             var id = "b84dcccd_489a_495d_8a02_2c4c684bb4a9";
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.VectorClipJobsService");
@@ -932,7 +941,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getVectorClipJobState
-            var vectorClipJobState = processingService.getVectorClipJobState(id);
+            var vectorClipJobState = service.getVectorClipJobState(id);
             expect(vectorClipJobState.elapsedTime).toEqual(18063);
             expect(vectorClipJobState.endState).toBeTruthy();
             expect(vectorClipJobState.startTime).toEqual(1511324088094);
@@ -942,22 +951,22 @@ describe('leaflet_ProcessingService', function () {
             expect(vectorClipJobState.publisherelapsedTime).toEqual(7016);
             expect(vectorClipJobState.runState).toBe("FINISHED");
             vectorClipJobParameter.destroy();
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*OverlayGeoJobsService*/
-    it('getOverlayGeoJobs_processCompleted', function (done) {
+    it('getOverlayGeoJobs_processCompleted', (done) => {
         var id = id_overlayGeoJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/overlay") {
                 var escapedJson = "[" + overlayGeoJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getOverlayGeoJobs(function (result) {
+        service.getOverlayGeoJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.OverlayGeoJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -995,21 +1004,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\overlayAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getOverlayGeoJob', function (done) {
+    it('getOverlayGeoJob', (done) => {
         var id = id_overlayGeoJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/overlay/" + id) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getOverlayGeoJob(id, function (result) {
+        service.getOverlayGeoJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.OverlayGeoJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1046,35 +1055,35 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\overlayAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('addOverlayGeoJob, getOverlayGeoJobsState', function (done) {
+    it('addOverlayGeoJob, getOverlayGeoJobsState', (done) => {
         var id = id_overlayGeoJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/overlay.json?token=" + token) {
                 var escapedJson = overlayGeoJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/overlay/" + id) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
+        var overlayGeoJobParams = new OverlayGeoJobParameter({
             datasetName: "samples_processing_newyorkZone_R",      //必填参数, 源数据集
             datasetOverlay: "samples_processing_singleRegion_R",  //必填参数, 叠加对象所在的数据集名称
             mode: "clip",                                         //必填参数, 叠加分析模式
             srcFields: "LocationID",                               //选填参数, 输入数据需要保留的字段
             overlayFields: "type"          //叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效
         });
-        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (result) {
+        service.addOverlayGeoJob(overlayGeoJobParams, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.OverlayGeoJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1112,7 +1121,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getOverlayGeoJobsState
-            var overlayGeoJobState = processingService.getoverlayGeoJobState(id);
+            var overlayGeoJobState = service.getoverlayGeoJobState(id);
             expect(overlayGeoJobState.elapsedTime).toEqual(19078);
             expect(overlayGeoJobState.endState).toBeTruthy();
             expect(overlayGeoJobState.startTime).toEqual(1511325446907);
@@ -1121,48 +1130,48 @@ describe('leaflet_ProcessingService', function () {
             expect(overlayGeoJobState.errorStackTrace).toBeNull();
             expect(overlayGeoJobState.publisherelapsedTime).toEqual(9281);
             expect(overlayGeoJobState.runState).toBe("FINISHED");
-            overlayGeoJobParameter.destroy();
-            processingService.destroy();
+            overlayGeoJobParams.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*测试outputsetting为MONGODB*/
-    xit('addOverlayGeoJob, getOverlayGeoJobsState', function (done) {
+    xit('mongoDB_addOverlayGeoJob, getOverlayGeoJobsState', (done) => {
         var id = id_overlayGeoJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/overlay.json?token=" + token) {
                 var escapedJson = overlayGeoJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/overlay/" + id) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var output = new SuperMap.OutputSetting({
+        var output = new OutputSetting({
             type: "MONGODB",
             datasetName: "analystResult",
-            datasourceInfo: new SuperMap.DatasourceConnectionInfo({
+            datasourceInfo: new DatasourceConnectionInfo({
                 server: "mongodb://127.0.0.1:27010/",
                 dataBase: "Overlaybase",
                 engineType: "MONGODB",
                 alias: "OverlayTest"
             })
         });
-        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
+        var overlayGeoJobParams = new OverlayGeoJobParameter({
             datasetName: "samples_processing_newyorkZone_R",      //必填参数, 源数据集
             datasetOverlay: "samples_processing_singleRegion_R",  //必填参数, 叠加对象所在的数据集名称
             mode: "clip",                                         //必填参数, 叠加分析模式
             srcFields: "LocationID",                               //选填参数, 输入数据需要保留的字段
-            overlayFields: "type" ,         //叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效
+            overlayFields: "type",         //叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效
             output: output
         });
-        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (result) {
+        service.addOverlayGeoJob(overlayGeoJobParams, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.OverlayGeoJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1203,7 +1212,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getOverlayGeoJobsState
-            var overlayGeoJobState = processingService.getoverlayGeoJobState(id);
+            var overlayGeoJobState = service.getoverlayGeoJobState(id);
             expect(overlayGeoJobState.elapsedTime).toEqual(19078);
             expect(overlayGeoJobState.endState).toBeTruthy();
             expect(overlayGeoJobState.startTime).toEqual(1511325446907);
@@ -1212,23 +1221,23 @@ describe('leaflet_ProcessingService', function () {
             expect(overlayGeoJobState.errorStackTrace).toBeNull();
             expect(overlayGeoJobState.publisherelapsedTime).toEqual(9281);
             expect(overlayGeoJobState.runState).toBe("FINISHED");
-            overlayGeoJobParameter.destroy();
-            processingService.destroy();
+            overlayGeoJobParams.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*BuffersAnalystJobsService*/
-    it('getBuffersJobs_processCompleted', function (done) {
+    it('getBuffersJobs_processCompleted', (done) => {
         var id = id_buffersAnalystJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/buffers") {
                 var escapedJson = "[" + buffersAnalystJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getBuffersJobs(function (result) {
+        service.getBuffersJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.BuffersAnalystJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1266,21 +1275,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\buffers.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getBuffersJob', function (done) {
+    it('getBuffersJob', (done) => {
         var id = id_buffersAnalystJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/buffers/" + id) {
                 var escapedJson = buffersAnalystJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getBuffersJob(id, function (result) {
+        service.getBuffersJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.BuffersAnalystJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1317,29 +1326,29 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\buffers.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
     // addBuffersJob中有bug,当不设置bounds或者设置为L.Bounds()对象时会报错, 待开发修改后需要补充测试
-    it('addBuffersJob, getBuffersJobState', function (done) {
+    it('addBuffersJob, getBuffersJobState', (done) => {
         var id = id_buffersAnalystJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/buffers.json?token=" + token) {
                 var escapedJson = buffersAnalystJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/buffers/" + id) {
                 var escapedJson = buffersAnalystJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var buffersJobParameter = new SuperMap.BuffersAnalystJobsParameter({
+        var buffersJobParameter = new BuffersAnalystJobsParameter({
             datasetName: "samples_processing_newyorkPoint_P",   //必填参数, 源数据集
             bounds: "-74.15,40.55,-73.75,40.95", //此处应该为L.Bounds(L.point(-74.342308, 40.576233), L.point(-73.58014699999998, 40.901577))
             distance: "15",     //缓冲区半径
@@ -1347,7 +1356,7 @@ describe('leaflet_ProcessingService', function () {
             distanceUnit: "Meter",     //缓冲距离单位
             dissolveField: "pickup_longitude"    //融合字段, 根据字段值对缓冲区结果面对象进行融合
         });
-        processingService.addBuffersJob(buffersJobParameter, function (result) {
+        service.addBuffersJob(buffersJobParameter, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.BuffersAnalystJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1385,7 +1394,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             // getBuffersJobState
-            var buffersJobState = processingService.getBuffersJobState(id);
+            var buffersJobState = service.getBuffersJobState(id);
             expect(buffersJobState.elapsedTime).toEqual(0);
             expect(buffersJobState.endState).toBeTruthy();
             expect(buffersJobState.startTime).toEqual(1511242637097);
@@ -1395,22 +1404,22 @@ describe('leaflet_ProcessingService', function () {
             expect(buffersJobState.publisherelapsedTime).toEqual(6922);
             expect(buffersJobState.runState).toBe("FINISHED");
             buffersJobParameter.destroy();
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
     /*TopologyValidatorJobsService*/
-    it('getTopologyValidatorJobs_processCompleted', function (done) {
+    it('getTopologyValidatorJobs_processCompleted', (done) => {
         var id = id_topologyValidatorJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/topologyvalidator") {
                 var escapedJson = "[" + topologyValidatorJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getTopologyValidatorJobs(function (result) {
+        service.getTopologyValidatorJobs((result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.TopologyValidatorJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1447,21 +1456,21 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\topology.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('getTopologyValidatorJob', function (done) {
+    it('getTopologyValidatorJob', (done) => {
         var id = id_topologyValidatorJob;
-        spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/topologyvalidator/" + id) {
                 var escapedJson = topologyValidatorJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        processingService.getTopologyValidatorJob(id, function (result) {
+        service.getTopologyValidatorJob(id, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.TopologyValidatorJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1497,34 +1506,34 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\topology.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
 
-    it('addTopologyValidatorJob, getTopologyValidatorJobState', function (done) {
+    it('addTopologyValidatorJob, getTopologyValidatorJobState', (done) => {
         var id = id_topologyValidatorJob;
-        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
             if (testUrl === url + "/spatialanalyst/topologyvalidator.json?token=" + token) {
                 var escapedJson = topologyValidatorJob_post;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
             if (newResourceLocationURL === url + "/spatialanalyst/topologyvalidator/" + id) {
                 var escapedJson = topologyValidatorJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        var topologyValidatorJobParameter = new SuperMap.TopologyValidatorJobsParameter({
+        var topologyValidatorJobParameter = new TopologyValidatorJobsParameter({
             datasetName: "samples_processing_newyorkZone_R",   //必填参数, 源数据集
             datasetTopology: "samples_processing_newyorkResidential_R",   //必填参数, 拓扑检查对象所在的数据集名称
             tolerance: "0.000001",                      //容限
             rule: "RegionCoveredByRegion"               //必填参数, 拓扑检查模式
         });
-        processingService.addTopologyValidatorJob(topologyValidatorJobParameter, function (result) {
+        service.addTopologyValidatorJob(topologyValidatorJobParameter, (result) => {
             expect(result.type).toBe("processCompleted");
             expect(result.object.CLASS_NAME).toBe("SuperMap.TopologyValidatorJobsService");
             expect(result.object.format).toBe("GEOJSON");
@@ -1561,7 +1570,7 @@ describe('leaflet_ProcessingService', function () {
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
             //  getTopologyValidatorJobState
-            var topologyValidatorJobState = processingService.getTopologyValidatorJobState(id);
+            var topologyValidatorJobState = service.getTopologyValidatorJobState(id);
             expect(topologyValidatorJobState.elapsedTime).toEqual(20243);
             expect(topologyValidatorJobState.endState).toBeTruthy();
             expect(topologyValidatorJobState.startTime).toEqual(1510728379505);
@@ -1571,11 +1580,9 @@ describe('leaflet_ProcessingService', function () {
             expect(topologyValidatorJobState.publisherelapsedTime).toEqual(3113);
             expect(topologyValidatorJobState.runState).toBe("FINISHED");
             topologyValidatorJobParameter.destroy();
-            processingService.destroy();
+            service.destroy();
             done();
         });
     });
-
-
 });
 

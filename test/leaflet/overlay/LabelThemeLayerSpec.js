@@ -1,10 +1,13 @@
-require('../../../src/leaflet/overlay/LabelThemeLayer');
-require('../../resources/themeLabelData');
+import {labelThemeLayer} from '../../../src/leaflet/overlay/LabelThemeLayer';
+import {themeFeature} from '../../../src/leaflet/overlay/theme/ThemeFeature';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
+import {Bounds} from '../../../src/common/commonTypes/Bounds';
+import '../../resources/themeLabelData';
 
 var url = GlobeParameter.China4326URL;
 var themeLayer;
-
-function addThemeFeatures() {
+var addThemeFeatures = () => {
     var labelFeatures = [];
     var feat;
     for (var i = 0; i < themeData.length; i++) {
@@ -12,16 +15,16 @@ function addThemeFeatures() {
         var lng = parseFloat(lonlat[0]);
         var lat = parseFloat(lonlat[1]);
         var text = themeData[i].aqi;
-        feat = L.supermap.themeFeature([lat, lng, text], themeData[i]);
+        feat = themeFeature([lat, lng, text], themeData[i]);
         labelFeatures.push(feat);
     }
     themeLayer.addFeatures(labelFeatures);
 }
 
-describe('leaflet_LabelThemeLayer', function () {
+describe('leaflet_LabelThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -36,13 +39,13 @@ describe('leaflet_LabelThemeLayer', function () {
             maxZoom: 18,
             zoom: 3
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        tiledMapLayer(url).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        themeLayer = L.supermap.labelThemeLayer("ThemeLayer").addTo(map);
-        themeLayer.style = new SuperMap.ThemeStyle({
+        themeLayer = labelThemeLayer("ThemeLayer").addTo(map);
+        themeLayer.style = new ThemeStyle({
             labelRect: true,
             fontColor: "#000000",
             fontWeight: "bolder",
@@ -101,16 +104,16 @@ describe('leaflet_LabelThemeLayer', function () {
         ];
         addThemeFeatures();
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         themeLayer = null;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize', function () {
+    it('initialize', () => {
         expect(themeLayer).not.toBeNull();
         expect(themeLayer.themeField).toEqual("aqi");
         expect(themeLayer.defaultStyle).not.toBeNull();
@@ -123,7 +126,7 @@ describe('leaflet_LabelThemeLayer', function () {
         expect(themeLayer.styleGroups.length).toEqual(6);
     });
 
-    it('redrawThematicFeatures', function () {
+    it('redrawThematicFeatures', () => {
         var bounds = L.bounds([-180, -90], [180, 90]);
         themeLayer.redrawThematicFeatures(bounds);
         expect(themeLayer).not.toBeNull();
@@ -139,7 +142,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素,原参数数据往右上方避让
-    it('getDrawnLabels', function () {
+    it('getDrawnLabels', () => {
         var labelFeatures = themeLayer.labelFeatures;
         labelFeatures[0].style.minZoomLevel = 0;
         var feas = themeLayer.getDrawnLabels(labelFeatures);
@@ -158,7 +161,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     // 根据用户数据（feature）设置专题要素的 Style
-    it('getStyleByData', function () {
+    it('getStyleByData', () => {
         var feat = themeLayer.labelFeatures[0];
         var themeStyle = themeLayer.getStyleByData(feat);
         expect(themeStyle).not.toBeNull();
@@ -168,7 +171,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     // 设置标签要素的Style
-    it('setLabelsStyle', function () {
+    it('setLabelsStyle', () => {
         var labelFeatures = themeLayer.labelFeatures;
         labelFeatures[0].geometry.bsInfo.w = 40;
         labelFeatures[0].geometry.bsInfo.w = 30;
@@ -182,7 +185,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //设置标签要素的Style
-    it('setStyle', function () {
+    it('setStyle', () => {
         var feat = themeLayer.labelFeatures[0];
         themeLayer.groupField = "aqi";
         var feature = themeLayer.setStyle(feat);
@@ -195,7 +198,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //获取标签要素的像素坐标
-    it('getLabelPxLocation', function () {
+    it('getLabelPxLocation', () => {
         var feature = themeLayer.labelFeatures[0];
         feature.style.labelXOffset = 1;
         feature.style.labelYOffset = 1;
@@ -206,7 +209,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //获得标签要素的最终范围 默认getPxBoundsMode = 0
-    it('calculateLabelBounds getPxBoundsMode = 0', function () {
+    it('calculateLabelBounds getPxBoundsMode = 0', () => {
         var feature = themeLayer.labelFeatures[0];
         feature.style.labelXOffset = 1;
         feature.style.labelYOffset = 1;
@@ -221,7 +224,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //获得标签要素的最终范围 getPxBoundsMode = 1
-    it('calculateLabelBounds_getPxBoundsMode = 1', function () {
+    it('calculateLabelBounds_getPxBoundsMode = 1', () => {
         themeLayer.getPxBoundsMode = 1;
         var feature = themeLayer.labelFeatures[0];
         feature.style.labelXOffset = 1;
@@ -237,7 +240,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //获得标签要素的最终范围的另一种算法
-    it('calculateLabelBounds2', function () {
+    it('calculateLabelBounds2', () => {
         var feature = themeLayer.labelFeatures[0];
         var location = themeLayer.getLabelPxLocation(feature);
         feature.style.fontStyle = "italic";
@@ -308,7 +311,7 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等 要求：getPxBoundsMode = 1
-    it('getLabelInfo', function () {
+    it('getLabelInfo', () => {
         var feature = themeLayer.labelFeatures[0];
         var location = feature.geometry.getCentroid();
         var style = feature.style;
@@ -322,9 +325,9 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //旋转bounds
-    it('rotationBounds', function () {
+    it('rotationBounds', () => {
         var feature = themeLayer.labelFeatures[0];
-        var bounds = new SuperMap.Bounds(50, 30, 30, 50);
+        var bounds = new Bounds(50, 30, 30, 50);
         var rotationCenterPoi = themeLayer.getLabelPxLocation(feature);
         var angle = feature.style.labelRotation;
         var boundsQuad = themeLayer.rotationBounds(bounds, rotationCenterPoi, angle);
@@ -337,8 +340,8 @@ describe('leaflet_LabelThemeLayer', function () {
     });
 
     //获取避让的信息
-    it('getAvoidInfo', function () {
-        var bounds = new SuperMap.Bounds(35, 40, 40, 10);
+    it('getAvoidInfo', () => {
+        var bounds = new Bounds(35, 40, 40, 10);
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},

@@ -1,34 +1,35 @@
-require('../../../src/leaflet/services/QueryService');
+import {queryService} from '../../../src/leaflet/services/QueryService';
+import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_QueryService_queryByDistance', function () {
+describe('leaflet_QueryService_queryByDistance', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:queryByDistance_returnContent=true', function (done) {
+    it('successEvent:queryByDistance_returnContent=true', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
-        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParams = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World"},
             distance: 10,
             geometry: circleMarker
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
-        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryByDistanceService).not.toBeNull();
                 expect(queryByDistanceService.options.serverType).toBe("iServer");
@@ -50,25 +51,23 @@ describe('leaflet_QueryService_queryByDistance', function () {
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
-                expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
-                    CAPITAL: "河内",
-                    CAPITAL_CH: "河内",
-                    CAPITAL_EN: "Hanoi",
-                    CAPITAL_LO: "Hà Nội",
-                    CAP_POP: "1431270.0",
-                    COUNTRY: "越南",
-                    COUNTRY_CH: "越南",
-                    COUNTRY_EN: "Vietnam",
-                    ID: 167,
-                    POP: "1431270.0",
-                    SmGeometrySize: "16",
-                    SmID: "167",
-                    SmLibTileID: "1",
-                    SmUserID: "0",
-                    SmX: "105.82000238598519",
-                    SmY: "21.030003066242273",
-                    USERID: "0"
-                }));
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_CH).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_EN).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_LO).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAP_POP).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_CH).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_EN).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.ID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.POP).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmGeometrySize).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmLibTileID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmUserID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmX).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmY).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.USERID).not.toBeUndefined();
                 queryByDistanceService.destroy();
                 done();
             } catch (exception) {
@@ -80,19 +79,19 @@ describe('leaflet_QueryService_queryByDistance', function () {
         }, 2000)
     });
 
-    it('successEvent:queryByDistance_returnContent=false', function (done) {
+    it('successEvent:queryByDistance_returnContent=false', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
-        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParams = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World"},
             distance: 10,
             geometry: circleMarker,
             returnContent: false
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
-        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryByDistanceService).not.toBeNull();
                 expect(queryByDistanceService.options.serverType).toBe("iServer");
@@ -114,18 +113,18 @@ describe('leaflet_QueryService_queryByDistance', function () {
         }, 2000);
     });
 
-    it('failEvent:queryByDistance_layerNotExist', function (done) {
+    it('failEvent:queryByDistance_layerNotExist', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
-        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParams = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World1"},
             distance: 10,
             geometry: circleMarker
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
-        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryByDistanceService).not.toBeNull();
                 expect(queryByDistanceService.options.serverType).toBe("iServer");
@@ -145,18 +144,18 @@ describe('leaflet_QueryService_queryByDistance', function () {
         }, 2000);
     });
 
-    it('failEvent:queryByDistance_queryParamsNull', function (done) {
+    it('failEvent:queryByDistance_queryParamsNull', (done) => {
         var circleMarker = L.circleMarker([30, 104]);
-        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParams = new QueryByDistanceParameters({
             queryParams: null,
             distance: 10,
             geometry: circleMarker
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
-        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryByDistanceService).not.toBeNull();
                 expect(queryByDistanceService.options.serverType).toBe("iServer");

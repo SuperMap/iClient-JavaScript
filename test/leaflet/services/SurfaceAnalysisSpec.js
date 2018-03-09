@@ -1,33 +1,37 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {DatasetSurfaceAnalystParameters} from '../../../src/common/iServer/DatasetSurfaceAnalystParameters';
+import {SurfaceAnalystParametersSetting} from '../../../src/common/iServer/SurfaceAnalystParametersSetting';
+import {SmoothMethod} from '../../../src/common/REST';
+
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_surfaceAnalysis', function () {
+describe('leaflet_SpatialAnalystService_surfaceAnalysis', ()=> {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(()=> {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(()=> {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('surfaceAnalysis', function (done) {
+    it('surfaceAnalysis', (done)=> {
         var region = L.polygon([
             [4010338, 0],
             [4010338, 1063524],
             [3150322, 1063524],
             [3150322, 0]
         ]);
-        var surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
-            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+        var surfaceAnalystParameters = new DatasetSurfaceAnalystParameters({
+            extractParameter: new SurfaceAnalystParametersSetting({
                 datumValue: 0,
                 interval: 2,
                 resampleTolerance: 0,
-                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothMethod: SmoothMethod.BSPLINE,
                 smoothness: 3,
                 clipRegion: region
             }),
@@ -35,12 +39,12 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', function () {
             resolution: 3000,
             zValueFieldName: "AVG_TMP"
         });
-        var surfaceAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (result) {
+        var surfaceAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, (result)=> {
             serviceResult = result;
 
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(surfaceAnalystService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");

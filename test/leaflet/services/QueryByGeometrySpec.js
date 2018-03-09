@@ -1,36 +1,37 @@
-require('../../../src/leaflet/services/QueryService');
+import {queryService} from '../../../src/leaflet/services/QueryService';
+import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_QueryService_queryByGeometry', function () {
+describe('leaflet_QueryService_queryByGeometry', ()=> {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(()=> {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(()=> {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:queryByGeometry_returnContent=true', function (done) {
+    it('successEvent:queryByGeometry_returnContent=true', (done)=> {
         var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
-        var queryByGeometryParams = new SuperMap.QueryByGeometryParameters({
+        var queryByGeometryParams = new QueryByGeometryParameters({
             customParams: null,
             expectCount: 5,
             startRecord: 1,
             queryParams: {name: "Capitals@World"},
             geometry: polygon
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
-        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByGeometryService).not.toBeNull();
                 expect(queryByGeometryService.options.serverType).toBe("iServer");
@@ -52,25 +53,23 @@ describe('leaflet_QueryService_queryByGeometry', function () {
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
-                expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
-                    CAPITAL: "达累斯萨拉姆",
-                    CAPITAL_CH: "达累斯萨拉姆",
-                    CAPITAL_EN: "Dar es Salaam",
-                    CAPITAL_LO: "Dodoma",
-                    CAP_POP: "2698652.0",
-                    COUNTRY: "坦桑尼亚",
-                    COUNTRY_CH: "坦桑尼亚",
-                    COUNTRY_EN: "Tanzania",
-                    ID: 49,
-                    POP: "2698652.0",
-                    SmGeometrySize: "16",
-                    SmID: "49",
-                    SmLibTileID: "1",
-                    SmUserID: "0",
-                    SmX: "39.253347298189766",
-                    SmY: "-6.817356064000194",
-                    USERID: "0"
-                }));
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_CH).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_EN).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_LO).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAP_POP).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_CH).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_EN).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.ID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.POP).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmGeometrySize).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmLibTileID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmUserID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmX).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmY).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.USERID).not.toBeUndefined();
                 queryByGeometryService.destroy();
                 done();
             } catch (exception) {
@@ -82,9 +81,9 @@ describe('leaflet_QueryService_queryByGeometry', function () {
         }, 2000)
     });
 
-    it('successEvent:queryByGeometry_returnContent=false', function (done) {
+    it('successEvent:queryByGeometry_returnContent=false', (done)=> {
         var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
-        var queryByGeometryParams = new SuperMap.QueryByGeometryParameters({
+        var queryByGeometryParams = new QueryByGeometryParameters({
             customParams: null,
             expectCount: 10,
             startRecord: 1,
@@ -92,11 +91,11 @@ describe('leaflet_QueryService_queryByGeometry', function () {
             geometry: polygon,
             returnContent: false
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
-        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByGeometryService).not.toBeNull();
                 expect(queryByGeometryService.options.serverType).toBe("iServer");
@@ -118,17 +117,17 @@ describe('leaflet_QueryService_queryByGeometry', function () {
         }, 2000);
     });
 
-    it('failEvent:queryByGeometry_layerNotExist', function (done) {
+    it('failEvent:queryByGeometry_layerNotExist', (done)=> {
         var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
-        var queryByGeometryParams = new SuperMap.QueryByGeometryParameters({
+        var queryByGeometryParams = new QueryByGeometryParameters({
             queryParams: {name: "Capitals@World1"},
             geometry: polygon
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
-        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByGeometryService).not.toBeNull();
                 expect(queryByGeometryService.options.serverType).toBe("iServer");
@@ -148,17 +147,17 @@ describe('leaflet_QueryService_queryByGeometry', function () {
         }, 2000);
     });
 
-    it('failEvent:queryByGeometry_queryParamsNull', function (done) {
+    it('failEvent:queryByGeometry_queryParamsNull', (done)=> {
         var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]]);
-        var queryByGeometryParams = new SuperMap.QueryByGeometryParameters({
+        var queryByGeometryParams = new QueryByGeometryParameters({
             queryParams: null,
             geometry: polygon
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
-        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(()=> {
             try {
                 expect(queryByGeometryService).not.toBeNull();
                 expect(queryByGeometryService.options.serverType).toBe("iServer");

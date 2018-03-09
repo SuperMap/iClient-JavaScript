@@ -1,13 +1,12 @@
-require('../../../src/leaflet/mapping/WebMap');
-require('../../../src/common/util/FetchRequest');
+import {webMap} from '../../../src/leaflet/mapping/WebMap';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
-describe('leaflet_WebMap', function () {
+describe('leaflet_WebMap', () => {
     var originalTimeout;
     var testDiv;
     var server = "http://supermapiserver";
-    var webMap;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    var map;
+    beforeEach(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -19,16 +18,17 @@ describe('leaflet_WebMap', function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
-        webMap = null;
+    afterEach(() => {
+        map = null;
         window.document.body.removeChild(testDiv);
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('getResolutionsFromScales', function () {
-        webMap = L.supermap.webmap();
-        var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7], units = "meter";
-        var resolutions = webMap.getResolutionsFromScales(scales, 96, units);
+    it('getResolutionsFromScales', () => {
+        map = webMap();
+        var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7],
+            units = "meter";
+        var resolutions = map.getResolutionsFromScales(scales, 96, units);
         expect(resolutions.length).toEqual(5);
         expect(resolutions[0]).toEqual(78271.5169628125);
         expect(resolutions[1]).toEqual(39135.75848140625);
@@ -37,20 +37,20 @@ describe('leaflet_WebMap', function () {
         expect(resolutions[4]).toEqual(4891.969810175781);
     });
 
-    it('initialize_SUPERMAP_REST', function (done) {
+    it('initialize_SUPERMAP_REST', (done) => {
         var id = 55;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_SUPERMAP_REST;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toEqual(55);
-            expect(webMap.layers.length).toEqual(0);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toEqual(55);
+            expect(map.layers.length).toEqual(0);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(3);
             expect(mapInfo.center.x).toEqual(12947612.637209);
             expect(mapInfo.center.y).toEqual(4849929.4446858);
@@ -79,24 +79,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("http://supermapiserver:8092/services/../resources/thumbnail/map55.png");
             expect(mapInfo.title).toBe("China");
             expect(mapInfo.userName).toBe("testH");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('initialize_TIANDITU_VEC', function (done) {
+    it('initialize_TIANDITU_VEC', (done) => {
         var id = 568205813;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_TIANDITU_VEC;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(1.1691682145618E7);
             expect(mapInfo.center.y).toEqual(4191132.2395179);
@@ -125,24 +125,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map568205813.png");
             expect(mapInfo.title).toBe("天地图-地图");
             expect(mapInfo.userName).toBe("361143");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000);
     });
 
-    it('initialize_TIANDITU_IMG', function (done) {
+    it('initialize_TIANDITU_IMG', (done) => {
         var id = 567946816;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_TIANDITU_IMG;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(1.2091862266267E7);
             expect(mapInfo.center.y).toEqual(4204912.9392719);
@@ -171,24 +171,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map567946816.png");
             expect(mapInfo.title).toBe("天地图-影像");
             expect(mapInfo.userName).toBe("361143");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000);
     });
 
-    it('initialize_TIANDITU_TER', function (done) {
+    it('initialize_TIANDITU_TER', (done) => {
         var id = 2048499925;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_TIANDITU_TER;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(1.1964671051224E7);
             expect(mapInfo.center.y).toEqual(4322320.2146969);
@@ -217,24 +217,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map2048499925.png");
             expect(mapInfo.title).toBe("天地图-地形");
             expect(mapInfo.userName).toBe("361143");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000);
     });
 
-    it('initialize_BAIDU', function (done) {
+    it('initialize_BAIDU', (done) => {
         var id = 1123771109;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_BAIDU;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(1.2094541100772E7);
             expect(mapInfo.center.y).toEqual(4430210.0261344);
@@ -263,25 +263,25 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map1123771109.png");
             expect(mapInfo.title).toBe("百度地图");
             expect(mapInfo.userName).toBe("361143");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000);
     });
 
-    it('initialize_WMS', function (done) {
+    it('initialize_WMS', (done) => {
         var id = 419;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_WMS;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toEqual(419);
-            expect(webMap.layers.length).toEqual(0);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toEqual(419);
+            expect(map.layers.length).toEqual(0);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(3.5001335163543E-11);
             expect(mapInfo.center.y).toEqual(-1.7998047496803E-11);
@@ -310,25 +310,25 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map419.png");
             expect(mapInfo.title).toBe("world-wms");
             expect(mapInfo.userName).toBe("48372");
-            expect(webMap.options.server).toBe("http://supermapiserver");
+            expect(map.options.server).toBe("http://supermapiserver");
             done();
         }, 1000)
     });
 
-    it('initialize_WMTS', function (done) {
+    it('initialize_WMTS', (done) => {
         var id = 612;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_WMTS;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toEqual(612);
-            expect(webMap.layers.length).toEqual(0);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toEqual(612);
+            expect(map.layers.length).toEqual(0);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(0);
             expect(mapInfo.center.y).toEqual(-4.9737991503207e-13);
@@ -357,24 +357,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map612.png");
             expect(mapInfo.title).toBe("wmts-china");
             expect(mapInfo.userName).toBe("180065");
-            expect(webMap.options.server).toBe("http://supermapiserver");
+            expect(map.options.server).toBe("http://supermapiserver");
             done();
         }, 1000)
     });
 
-    it('initialize_CLOUD', function (done) {
+    it('initialize_CLOUD', (done) => {
         var id = 359319824;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_CLOUD;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(1.2375596515534E7);
             expect(mapInfo.center.y).toEqual(4341888.0939903);
@@ -403,24 +403,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map359319824.png");
             expect(mapInfo.title).toBe("高德地图");
             expect(mapInfo.userName).toBe("361143");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('CLOUD add FEATURE_LAYER', function (done) {
+    it('CLOUD add FEATURE_LAYER', (done) => {
         var id = 840;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_FEATURE_LAYER;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(13372201.86498);
             expect(mapInfo.center.y).toEqual(3541144.0539951);
@@ -444,24 +444,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map840.png");
             expect(mapInfo.title).toBe("DEMO1-副本");
             expect(mapInfo.userName).toBe("328215");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('SUPERMAP_REST add MARKER_LAYER', function (done) {
+    it('SUPERMAP_REST add MARKER_LAYER', (done) => {
         var id = 370;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_MARKER_LAYER;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(121.48414689911492);
             expect(mapInfo.center.y).toEqual(31.240839876776977);
@@ -486,24 +486,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map370.png");
             expect(mapInfo.title).toBe("未命名地图");
             expect(mapInfo.userName).toBe("10235");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('createThemeLayer_HeatLayer', function (done) {
+    it('createThemeLayer_HeatLayer', (done) => {
         var id = 2489;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_HeatThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(12964847.348465);
             expect(mapInfo.center.y).toEqual(4890489.673789);
@@ -519,7 +519,7 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.layers[0].type).toBeNull();
             expect(mapInfo.layers[0].identifier).toBe("THEME");
             expect(mapInfo.layers[0].layerType).toBe("FEATURE_LAYER");
-            expect(mapInfo.layers[0].url).toBe("http://supermapol/iserver/services/map_ShiLiShuJu/rest/maps/北京市高等院校@公众数据")
+            expect(mapInfo.layers[0].url).toBe("http://supermapol/iserver/services/map_ShiLiShuJu/rest/maps/北京市高等院校@公众数据");
             expect(mapInfo.layers[0].themeSettings).not.toBeNull();
             expect(mapInfo.level).toEqual(6);
             expect(mapInfo.sourceType).toBe("MAPVIEWER");
@@ -528,24 +528,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1765.png");
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('createThemeLayer_UniqueLayer', function (done) {
+    it('createThemeLayer_UniqueLayer', (done) => {
         var id = 1765;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_UniqueThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(12964847.348465);
             expect(mapInfo.center.y).toEqual(4890489.673789);
@@ -570,24 +570,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1765.png");
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('createThemeLayer_RangeLayer', function (done) {
+    it('createThemeLayer_RangeLayer', (done) => {
         var id = 1959;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_RangeThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(12955280.513852);
             expect(mapInfo.center.y).toEqual(4851954.7330724);
@@ -611,24 +611,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1959.png");
             expect(mapInfo.title).toBe("北京三级甲等医院");
             expect(mapInfo.userName).toBe("10047");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('createThemeLayer_VectorThemeLayer', function (done) {
+    it('createThemeLayer_VectorThemeLayer', (done) => {
         var id = 1765;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_VectorThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
             expect(mapInfo.center.x).toEqual(12964847.348465);
             expect(mapInfo.center.y).toEqual(4890489.673789);
@@ -653,24 +653,24 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapol/services/../resources/thumbnail/map1765.png");
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });
 
-    it('createThemeLayer_LabelLayer', function (done) {
+    it('createThemeLayer_LabelLayer', (done) => {
         var id = 2489;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_LabelThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = L.supermap.webmap(id, {server: server});
-        setTimeout(function () {
-            expect(webMap.id).toBe(id);
-            var mapInfo = webMap.mapInfo;
+        map = webMap(id, {server: server});
+        setTimeout(() => {
+            expect(map.id).toBe(id);
+            var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(4);
             expect(mapInfo.center.x).toEqual(11556632.936703);
             expect(mapInfo.center.y).toEqual(3923218.8401182);
@@ -694,7 +694,7 @@ describe('leaflet_WebMap', function () {
             expect(mapInfo.thumbnail).toBe("https://supermapoltest/services/../resources/thumbnail/map2489.png");
             expect(mapInfo.title).toBe("九寨沟地震分布");
             expect(mapInfo.userName).toBe("599184");
-            expect(webMap.options.server).toBe(server);
+            expect(map.options.server).toBe(server);
             done();
         }, 1000)
     });

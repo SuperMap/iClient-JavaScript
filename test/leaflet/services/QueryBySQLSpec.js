@@ -1,34 +1,35 @@
-require('../../../src/leaflet/services/QueryService');
+import {queryService} from '../../../src/leaflet/services/QueryService';
+import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
 
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_QueryService_queryBySQL', function () {
+describe('leaflet_QueryService_queryBySQL', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:queryBySQL_returnContent=true', function (done) {
-        var queryBySQLParams = new SuperMap.QueryBySQLParameters({
+    it('successEvent:queryBySQL_returnContent=true', (done) => {
+        var queryBySQLParams = new QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World",
                 attributeFilter: "SMID < 10"
             }
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
-        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -50,25 +51,23 @@ describe('leaflet_QueryService_queryBySQL', function () {
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
-                expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
-                    CAPITAL: "巴西利亚",
-                    CAPITAL_CH: "巴西利亚",
-                    CAPITAL_EN: "Brasilia",
-                    CAPITAL_LO: "Brasília",
-                    CAP_POP: "2207718.0",
-                    COUNTRY: "巴西",
-                    COUNTRY_CH: "巴西",
-                    COUNTRY_EN: "Brazil",
-                    ID: 1,
-                    POP: "2207718.0",
-                    SmGeometrySize: "16",
-                    SmID: "1",
-                    SmLibTileID: "1",
-                    SmUserID: "0",
-                    SmX: "-47.8977476573595",
-                    SmY: "-15.792110943058866",
-                    USERID: "0"
-                }));
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_CH).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_EN).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAPITAL_LO).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.CAP_POP).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_CH).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.COUNTRY_EN).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.ID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.POP).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmGeometrySize).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmLibTileID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmUserID).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmX).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.SmY).not.toBeUndefined();
+                expect(serviceResult.result.recordsets[0].features.features[0].properties.USERID).not.toBeUndefined();
                 queryBySQLService.destroy();
                 done();
             } catch (exception) {
@@ -80,19 +79,19 @@ describe('leaflet_QueryService_queryBySQL', function () {
         }, 2000)
     });
 
-    it('successEvent:queryBySQL_returnContent=false', function (done) {
-        var queryBySQLParams = new SuperMap.QueryBySQLParameters({
+    it('successEvent:queryBySQL_returnContent=false', (done) => {
+        var queryBySQLParams = new QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World",
                 attributeFilter: "SMID < 10"
             },
             returnContent: false
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
-        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -114,8 +113,8 @@ describe('leaflet_QueryService_queryBySQL', function () {
         }, 2000);
     });
 
-    it('successEvent:queryBySQL_customsResult=true', function (done) {
-        var queryBySQLParams = new SuperMap.QueryBySQLParameters({
+    it('successEvent:queryBySQL_customsResult=true', (done) => {
+        var queryBySQLParams = new QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World",
                 attributeFilter: "SMID < 10"
@@ -123,11 +122,11 @@ describe('leaflet_QueryService_queryBySQL', function () {
             returnContent: false,
             returnCustomResult: true
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
-        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -150,18 +149,18 @@ describe('leaflet_QueryService_queryBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:queryBySQL_layerNotExist', function (done) {
-        var queryBySQLParams = new SuperMap.QueryBySQLParameters({
+    it('failEvent:queryBySQL_layerNotExist', (done) => {
+        var queryBySQLParams = new QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World1",
                 attributeFilter: "SMID < 10"
             }
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
-        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
@@ -181,15 +180,15 @@ describe('leaflet_QueryService_queryBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:queryBySQL_queryParamsNull', function (done) {
-        var queryBySQLParams = new SuperMap.QueryBySQLParameters({
+    it('failEvent:queryBySQL_queryParamsNull', (done) => {
+        var queryBySQLParams = new QueryBySQLParameters({
             queryParams: null
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
-        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryBySQLService).not.toBeNull();
                 expect(queryBySQLService.options.serverType).toBe("iServer");
