@@ -26520,11 +26520,9 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _ThemeLayer = __webpack_require__(281);
+var _ThemeLayer = __webpack_require__(282);
 
 var _CommontypesConversion = __webpack_require__(37);
-
-var _ThemeFeature = __webpack_require__(114);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -26584,18 +26582,11 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
      * @param features - {SuperMap.ServerFeature|L.supermap.themeFeature} 待填加的要素
      */
     addFeatures: function addFeatures(features) {
-        //数组
-        if (!_leaflet2["default"].Util.isArray(features)) {
-            features = [features];
-        }
         var me = this;
         me.fire("beforefeaturesadded", { features: features });
 
-        for (var i = 0, len = features.length; i < len; i++) {
-            var feature = features[i];
-            feature = me._createFeature(feature);
-            me.features.push(feature);
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
 
         if (!me.isCustomSetMaxCacheCount) {
             me.maxCacheCount = me.features.length * 5;
@@ -26807,24 +26798,6 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
             }
         }
         return list;
-    },
-
-    _createFeature: function _createFeature(feature) {
-        if (feature instanceof _ThemeFeature.ThemeFeature) {
-            feature = feature.toFeature();
-        } else if (!(feature instanceof _iclientCommon.GeometryVector)) {
-            feature = new _iclientCommon.ServerFeature.fromJson(feature).toFeature();
-        }
-        if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
-            var attrs = {},
-                fieldNames = feature.fieldNames,
-                filedValues = feature.filedValues;
-            for (var i = 0; i < fieldNames.length; i++) {
-                attrs[fieldNames[i]] = filedValues[i];
-            }
-            feature.attributes = attrs;
-        }
-        return feature;
     }
 
 });
@@ -26836,103 +26809,10 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.themeFeature = exports.ThemeFeature = undefined;
-
-var _leaflet = __webpack_require__(2);
-
-var _leaflet2 = _interopRequireDefault(_leaflet);
-
-__webpack_require__(4);
-
-var _iclientCommon = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-/**
- * @class L.supermap.themeFeature
- * @classdesc 客户端专题图要素类。
- *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
- * @category Visualization Theme
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
- * @param attributes - {Object} 要素属性
- */
-var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
-
-    initialize: function initialize(geometry, attributes) {
-        this.geometry = geometry;
-        this.attributes = attributes;
-    },
-
-    /**
-     * @function L.supermap.themeFeature.prototype.toFeature
-     * @description 转为内部矢量要素
-     * @return {SuperMap.Feature.Vector} 内部矢量要素
-     */
-    toFeature: function toFeature() {
-        var geometry = this.geometry;
-        var points = [];
-        if (geometry instanceof _leaflet2["default"].Polygon) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new _iclientCommon.Polygon(points);
-        } else if (geometry instanceof _leaflet2["default"].Polyline) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new _iclientCommon.LineString(points);
-        } else if (geometry.length === 3) {
-            geometry = new _iclientCommon.GeoText(geometry[1], geometry[0], geometry[2]);
-        } else {
-            if (geometry instanceof _leaflet2["default"].LatLng) {
-                points = [geometry.lng, geometry.lat];
-            } else if (geometry instanceof _leaflet2["default"].Point) {
-                points = [geometry.x, geometry.y];
-            } else if (geometry instanceof _leaflet2["default"].CircleMarker) {
-                var latLng = geometry.getLatLng();
-                points = [latLng.lng, latLng.lat];
-            } else {
-                points = geometry;
-            }
-            if (points.length === 2) {
-                geometry = new _iclientCommon.GeometryPoint(points[0], points[1]);
-            }
-        }
-        return new _iclientCommon.GeometryVector(geometry, this.attributes);
-    },
-
-    /**
-     * @function L.supermap.themeFeature.prototype.reverseLatLngs
-     * @description 坐标反转
-     * @param latlngs - {L.latlng} 坐标值
-     */
-    reverseLatLngs: function reverseLatLngs(latlngs) {
-        if (!_leaflet2["default"].Util.isArray(latlngs)) {
-            latlngs = [latlngs];
-        }
-        for (var i = 0; i < latlngs.length; i++) {
-            latlngs[i] = [latlngs[i].lng, latlngs[i].lat];
-        }
-        return latlngs;
-    }
-});
-var themeFeature = exports.themeFeature = function themeFeature(geometry, attributes) {
-    return new ThemeFeature(geometry, attributes);
-};
-
-_leaflet2["default"].supermap.themeFeature = themeFeature;
-
-/***/ }),
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var parseCode = __webpack_require__(475);
-var extend = __webpack_require__(119);
+var extend = __webpack_require__(118);
 var projections = __webpack_require__(476);
 var deriveConstants = __webpack_require__(472);
 
@@ -26966,7 +26846,7 @@ Projection.projections.start();
 module.exports = Projection;
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26978,7 +26858,7 @@ module.exports = function (a, e, sinphi) {
 };
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27002,7 +26882,7 @@ module.exports = function (ml, e0, e1, e2, e3) {
 };
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27019,7 +26899,7 @@ module.exports = function (eccent, sinphi) {
 };
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27039,6 +26919,36 @@ module.exports = function (destination, source) {
   }
   return destination;
 };
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 /***/ }),
 /* 120 */
@@ -29109,9 +29019,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _ThemeFeature = __webpack_require__(114);
-
-var _ThemeLayer = __webpack_require__(281);
+var _ThemeLayer = __webpack_require__(282);
 
 var _CommontypesConversion = __webpack_require__(37);
 
@@ -29177,19 +29085,12 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
      * @param features - {L.features} 待添加得要素
      */
     addFeatures: function addFeatures(features) {
-        //数组
-        if (!_leaflet2["default"].Util.isArray(features)) {
-            features = [features];
-        }
-
         var me = this;
         me.fire("beforefeaturesadded", { features: features });
 
-        for (var i = 0, len = features.length; i < len; i++) {
-            var feature = features[i];
-            feature = me._createFeature(feature);
-            me.features.push(feature);
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
+
         //绘制专题要素
         if (!me.renderer) {
             return;
@@ -29569,25 +29470,8 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
                 me.renderer.addShape(shapes[_j]);
             }
         }
-    },
-
-    _createFeature: function _createFeature(feature) {
-        if (feature instanceof _ThemeFeature.ThemeFeature) {
-            feature = feature.toFeature();
-        } else if (!(feature instanceof _iclientCommon.GeometryVector)) {
-            feature = new _iclientCommon.ServerFeature.fromJson(feature).toFeature();
-        }
-        if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
-            var attrs = {},
-                fieldNames = feature.fieldNames,
-                filedValues = feature.filedValues;
-            for (var i = 0; i < fieldNames.length; i++) {
-                attrs[fieldNames[i]] = filedValues[i];
-            }
-            feature.attributes = attrs;
-        }
-        return feature;
     }
+
 });
 var graphThemeLayer = exports.graphThemeLayer = function graphThemeLayer(name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);
@@ -55864,6 +55748,99 @@ _leaflet2["default"].supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.themeFeature = exports.ThemeFeature = undefined;
+
+var _leaflet = __webpack_require__(2);
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+__webpack_require__(4);
+
+var _iclientCommon = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+/**
+ * @class L.supermap.themeFeature
+ * @classdesc 客户端专题图要素类。
+ *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
+ * @category Visualization Theme
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
+ * @param attributes - {Object} 要素属性
+ */
+var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
+
+    initialize: function initialize(geometry, attributes) {
+        this.geometry = geometry;
+        this.attributes = attributes;
+    },
+
+    /**
+     * @function L.supermap.themeFeature.prototype.toFeature
+     * @description 转为内部矢量要素
+     * @return {SuperMap.Feature.Vector} 内部矢量要素
+     */
+    toFeature: function toFeature() {
+        var geometry = this.geometry;
+        var points = [];
+        if (geometry instanceof _leaflet2["default"].Polygon) {
+            points = this.reverseLatLngs(geometry.getLatLngs());
+            geometry = new _iclientCommon.Polygon(points);
+        } else if (geometry instanceof _leaflet2["default"].Polyline) {
+            points = this.reverseLatLngs(geometry.getLatLngs());
+            geometry = new _iclientCommon.LineString(points);
+        } else if (geometry.length === 3) {
+            geometry = new _iclientCommon.GeoText(geometry[1], geometry[0], geometry[2]);
+        } else {
+            if (geometry instanceof _leaflet2["default"].LatLng) {
+                points = [geometry.lng, geometry.lat];
+            } else if (geometry instanceof _leaflet2["default"].Point) {
+                points = [geometry.x, geometry.y];
+            } else if (geometry instanceof _leaflet2["default"].CircleMarker) {
+                var latLng = geometry.getLatLng();
+                points = [latLng.lng, latLng.lat];
+            } else {
+                points = geometry;
+            }
+            if (points.length === 2) {
+                geometry = new _iclientCommon.GeometryPoint(points[0], points[1]);
+            }
+        }
+        return new _iclientCommon.GeometryVector(geometry, this.attributes);
+    },
+
+    /**
+     * @function L.supermap.themeFeature.prototype.reverseLatLngs
+     * @description 坐标反转
+     * @param latlngs - {L.latlng} 坐标值
+     */
+    reverseLatLngs: function reverseLatLngs(latlngs) {
+        if (!_leaflet2["default"].Util.isArray(latlngs)) {
+            latlngs = [latlngs];
+        }
+        for (var i = 0; i < latlngs.length; i++) {
+            latlngs[i] = [latlngs[i].lng, latlngs[i].lat];
+        }
+        return latlngs;
+    }
+});
+var themeFeature = exports.themeFeature = function themeFeature(geometry, attributes) {
+    return new ThemeFeature(geometry, attributes);
+};
+
+_leaflet2["default"].supermap.themeFeature = themeFeature;
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.ThemeLayer = undefined;
 
 var _leaflet = __webpack_require__(2);
@@ -55871,6 +55848,8 @@ var _leaflet = __webpack_require__(2);
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
+
+var _ThemeFeature = __webpack_require__(281);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -56280,6 +56259,39 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         return [point.x, point.y];
     },
 
+    /**
+     * @function L.supermap.ThemeLayer.prototype.toFeature
+     * @description 转为 iClient 要素
+     * @param feature -{L.supermap.themeFeature|SuperMap.ServerFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型、iServer服务器返回数据格式 和 GeoJOSN 规范数据类型
+     */
+    toFeature: function toFeature(features) {
+        if (_iclientCommon.CommonUtil.isArray(features)) {
+            var featuresTemp = [];
+            for (var i = 0; i < features.length; i++) {
+                //L.supermap.themeFeature 数据类型
+                if (features[i] instanceof _ThemeFeature.ThemeFeature) {
+                    featuresTemp.push(features[i].toFeature());
+                    continue;
+                }
+                // 若是 GeometryVector 直接返回
+                if (features[i] instanceof _iclientCommon.GeometryVector) {
+                    featuresTemp.push(features[i]);
+                    continue;
+                }
+                //iServer服务器返回数据格式
+                featuresTemp.push(new _iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+            }
+            return featuresTemp;
+        }
+        //GeoJOSN 规范数据类型
+        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
+            var format = new _iclientCommon.GeoJSON();
+            return format.read(features, "FeatureCollection");
+        }
+
+        throw new Error('features\'s type is not be supported.');
+    },
+
     _initContainer: function _initContainer() {
         var parentContainer = this.getPane();
         var animated = this._map.options.zoomAnimation && _leaflet2["default"].Browser.any3d;
@@ -56351,7 +56363,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 });
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56510,7 +56522,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2["default"].Canvas.extend
 });
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56643,7 +56655,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
 });
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56695,7 +56707,7 @@ var PolyBase = exports.PolyBase = {
 };
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56714,9 +56726,9 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _Symbolizer = __webpack_require__(82);
 
-var _CanvasRenderer = __webpack_require__(282);
+var _CanvasRenderer = __webpack_require__(283);
 
-var _SVGRenderer = __webpack_require__(283);
+var _SVGRenderer = __webpack_require__(284);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -56929,7 +56941,7 @@ _SVGRenderer.SVGRenderer.include({
 });
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57651,7 +57663,7 @@ function getMinNorthing(zoneLetter) {
 }
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57664,7 +57676,7 @@ module.exports = function (phi, sphi, cphi, en) {
 };
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57685,15 +57697,15 @@ module.exports = function (array) {
 };
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var globals = __webpack_require__(473);
-var parseProj = __webpack_require__(291);
-var wkt = __webpack_require__(294);
+var parseProj = __webpack_require__(292);
+var wkt = __webpack_require__(295);
 
 function defs(name) {
   /*global console*/
@@ -57738,7 +57750,7 @@ globals(defs);
 module.exports = defs;
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57746,19 +57758,19 @@ module.exports = defs;
 
 var proj4 = __webpack_require__(469);
 proj4.defaultDatum = 'WGS84'; //default datum
-proj4.Proj = __webpack_require__(115);
+proj4.Proj = __webpack_require__(114);
 proj4.WGS84 = new proj4.Proj('WGS84');
 proj4.Point = __webpack_require__(459);
-proj4.toPoint = __webpack_require__(288);
-proj4.defs = __webpack_require__(289);
-proj4.transform = __webpack_require__(293);
-proj4.mgrs = __webpack_require__(286);
+proj4.toPoint = __webpack_require__(289);
+proj4.defs = __webpack_require__(290);
+proj4.transform = __webpack_require__(294);
+proj4.mgrs = __webpack_require__(287);
 proj4.version = __webpack_require__(504).version;
 __webpack_require__(474)(proj4);
 module.exports = proj4;
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57895,7 +57907,7 @@ module.exports = function (defData) {
 };
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58033,7 +58045,7 @@ exports.inverse = function (p) {
 exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58045,8 +58057,8 @@ var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
 var datum_transform = __webpack_require__(471);
 var adjust_axis = __webpack_require__(460);
-var proj = __webpack_require__(115);
-var toPoint = __webpack_require__(288);
+var proj = __webpack_require__(114);
+var toPoint = __webpack_require__(289);
 module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
@@ -58112,7 +58124,7 @@ module.exports = function transform(source, dest, point) {
 };
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58121,7 +58133,7 @@ module.exports = function transform(source, dest, point) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var D2R = 0.01745329251994329577;
-var extend = __webpack_require__(119);
+var extend = __webpack_require__(118);
 
 function mapit(obj, key, v) {
   obj[key] = v.map(function (aa) {
@@ -58307,36 +58319,6 @@ module.exports = function (wkt, self) {
   cleanWKT(obj.output);
   return extend(self, obj.output);
 };
-
-/***/ }),
-/* 295 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var g;
-
-// This works in non-strict mode
-g = function () {
-	return this;
-}();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
-} catch (e) {
-	// This works if the window reference is available
-	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
 
 /***/ }),
 /* 296 */
@@ -59290,7 +59272,7 @@ var _jsonsql = __webpack_require__(453);
 
 var _jsonsql2 = _interopRequireDefault(_jsonsql);
 
-var _proj = __webpack_require__(290);
+var _proj = __webpack_require__(291);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -59320,7 +59302,7 @@ var _LabelThemeLayer = __webpack_require__(130);
 
 var _FeatureService = __webpack_require__(136);
 
-var _ThemeFeature = __webpack_require__(114);
+var _ThemeFeature = __webpack_require__(281);
 
 var _UnicodeMarker = __webpack_require__(132);
 
@@ -86876,7 +86858,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _proj = __webpack_require__(290);
+var _proj = __webpack_require__(291);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -87874,7 +87856,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _Symbolizer = __webpack_require__(82);
 
-var _SymbolizerPolyBase = __webpack_require__(284);
+var _SymbolizerPolyBase = __webpack_require__(285);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -88119,7 +88101,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _Symbolizer = __webpack_require__(82);
 
-var _SymbolizerPolyBase = __webpack_require__(284);
+var _SymbolizerPolyBase = __webpack_require__(285);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -88173,13 +88155,13 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _SVGRenderer = __webpack_require__(283);
+var _SVGRenderer = __webpack_require__(284);
 
-var _CanvasRenderer = __webpack_require__(282);
+var _CanvasRenderer = __webpack_require__(283);
 
 var _VectorTile = __webpack_require__(447);
 
-var _TextSymbolizer = __webpack_require__(285);
+var _TextSymbolizer = __webpack_require__(286);
 
 var _VectorTileFormat = __webpack_require__(279);
 
@@ -88422,7 +88404,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _VectorFeatureType = __webpack_require__(83);
 
-var _TextSymbolizer = __webpack_require__(285);
+var _TextSymbolizer = __webpack_require__(286);
 
 var _PointSymbolizer = __webpack_require__(444);
 
@@ -90616,14 +90598,14 @@ function keys(object) {
 var toPairs = createToPairs(keys);
 
 module.exports = toPairs;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(295)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(119)))
 
 /***/ }),
 /* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(global) {
 
 var apply = Function.prototype.apply;
 
@@ -90674,8 +90656,12 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(502);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
+// On some exotic environments, it's not clear which object `setimmeidate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
+exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || typeof global !== "undefined" && global.clearImmediate || undefined && undefined.clearImmediate;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(119)))
 
 /***/ }),
 /* 457 */
@@ -91555,7 +91541,7 @@ process.umask = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var mgrs = __webpack_require__(286);
+var mgrs = __webpack_require__(287);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -91725,7 +91711,7 @@ module.exports = function (es) {
 "use strict";
 
 
-var pj_mlfn = __webpack_require__(287);
+var pj_mlfn = __webpack_require__(288);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function (arg, es, en) {
@@ -92107,8 +92093,8 @@ exports['us-ft'] = { to_meter: 1200 / 3937 };
 "use strict";
 
 
-var proj = __webpack_require__(115);
-var transform = __webpack_require__(293);
+var proj = __webpack_require__(114);
+var transform = __webpack_require__(294);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -92674,7 +92660,7 @@ module.exports = function (source, dest, point) {
 
 var Datum = __webpack_require__(465);
 var Ellipsoid = __webpack_require__(466);
-var extend = __webpack_require__(119);
+var extend = __webpack_require__(118);
 var datum = __webpack_require__(470);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
@@ -92756,7 +92742,7 @@ module.exports = function (defs) {
 "use strict";
 
 
-var projs = [__webpack_require__(292), __webpack_require__(499), __webpack_require__(498), __webpack_require__(497), __webpack_require__(496), __webpack_require__(493), __webpack_require__(487), __webpack_require__(485), __webpack_require__(479), __webpack_require__(486), __webpack_require__(477), __webpack_require__(484), __webpack_require__(480), __webpack_require__(481), __webpack_require__(494), __webpack_require__(492), __webpack_require__(490), __webpack_require__(495), __webpack_require__(491), __webpack_require__(482), __webpack_require__(500), __webpack_require__(478)];
+var projs = [__webpack_require__(293), __webpack_require__(499), __webpack_require__(498), __webpack_require__(497), __webpack_require__(496), __webpack_require__(493), __webpack_require__(487), __webpack_require__(485), __webpack_require__(479), __webpack_require__(486), __webpack_require__(477), __webpack_require__(484), __webpack_require__(480), __webpack_require__(481), __webpack_require__(494), __webpack_require__(492), __webpack_require__(490), __webpack_require__(495), __webpack_require__(491), __webpack_require__(482), __webpack_require__(500), __webpack_require__(478)];
 module.exports = function (proj4) {
   projs.forEach(function (proj) {
     proj4.Proj.projections.add(proj);
@@ -92770,9 +92756,9 @@ module.exports = function (proj4) {
 "use strict";
 
 
-var defs = __webpack_require__(289);
-var wkt = __webpack_require__(294);
-var projStr = __webpack_require__(291);
+var defs = __webpack_require__(290);
+var wkt = __webpack_require__(295);
+var projStr = __webpack_require__(292);
 function testObj(code) {
   return typeof code === 'string';
 }
@@ -92853,7 +92839,7 @@ exports.start = function () {
 
 var EPSLN = 1.0e-10;
 var msfnz = __webpack_require__(45);
-var qsfnz = __webpack_require__(118);
+var qsfnz = __webpack_require__(117);
 var adjust_lon = __webpack_require__(7);
 var asinz = __webpack_require__(44);
 exports.init = function () {
@@ -92984,9 +92970,9 @@ var e0fn = __webpack_require__(55);
 var e1fn = __webpack_require__(56);
 var e2fn = __webpack_require__(57);
 var e3fn = __webpack_require__(58);
-var gN = __webpack_require__(116);
+var gN = __webpack_require__(115);
 var asinz = __webpack_require__(44);
-var imlfn = __webpack_require__(117);
+var imlfn = __webpack_require__(116);
 exports.init = function () {
   this.sin_p12 = Math.sin(this.lat0);
   this.cos_p12 = Math.cos(this.lat0);
@@ -93170,10 +93156,10 @@ var e0fn = __webpack_require__(55);
 var e1fn = __webpack_require__(56);
 var e2fn = __webpack_require__(57);
 var e3fn = __webpack_require__(58);
-var gN = __webpack_require__(116);
+var gN = __webpack_require__(115);
 var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(54);
-var imlfn = __webpack_require__(117);
+var imlfn = __webpack_require__(116);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
 exports.init = function () {
@@ -93269,7 +93255,7 @@ exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 
 var adjust_lon = __webpack_require__(7);
-var qsfnz = __webpack_require__(118);
+var qsfnz = __webpack_require__(117);
 var msfnz = __webpack_require__(45);
 var iqsfnz = __webpack_require__(461);
 /*
@@ -93392,7 +93378,7 @@ var msfnz = __webpack_require__(45);
 var mlfn = __webpack_require__(59);
 var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(54);
-var imlfn = __webpack_require__(117);
+var imlfn = __webpack_require__(116);
 var EPSLN = 1.0e-10;
 exports.init = function () {
 
@@ -93760,7 +93746,7 @@ exports.names = ["Krovak", "krovak"];
 var HALF_PI = Math.PI / 2;
 var FORTPI = Math.PI / 4;
 var EPSLN = 1.0e-10;
-var qsfnz = __webpack_require__(118);
+var qsfnz = __webpack_require__(117);
 var adjust_lon = __webpack_require__(7);
 /*
   reference
@@ -94826,7 +94812,7 @@ var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(54);
 var mlfn = __webpack_require__(59);
 var EPSLN = 1.0e-10;
-var gN = __webpack_require__(116);
+var gN = __webpack_require__(115);
 var MAX_ITER = 20;
 exports.init = function () {
   /* Place parameters in static storage for common use
@@ -94949,7 +94935,7 @@ var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(54);
 var pj_enfn = __webpack_require__(462);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(287);
+var pj_mlfn = __webpack_require__(288);
 var pj_inv_mlfn = __webpack_require__(463);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
@@ -95364,7 +95350,7 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(292);
+var tmerc = __webpack_require__(293);
 exports.dependsOn = 'tmerc';
 exports.init = function () {
   if (!this.zone) {
@@ -95940,7 +95926,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(295), __webpack_require__(458)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(119), __webpack_require__(458)))
 
 /***/ }),
 /* 503 */
@@ -95952,7 +95938,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 504 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 505 */

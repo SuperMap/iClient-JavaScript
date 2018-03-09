@@ -52,14 +52,9 @@ export class GeoFeature extends Theme {
      * @param features - {Object} 要素对象
      */
     addFeatures(features) {
-        //数组
-        if (!(CommonUtil.isArray(features))) {
-            features = [features];
-        }
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
-        for (var i = 0, len = features.length; i < len; i++) {
-            this.features.push(this.toiClientFeature(features[i]));
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }

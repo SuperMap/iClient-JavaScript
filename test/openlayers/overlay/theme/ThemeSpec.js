@@ -235,7 +235,7 @@ describe('openlayers_Theme', () => {
     }];
 
     it("initialize", () => {
-        var iClientFeatures = Theme.prototype.toiClientFeature(features);
+        var iClientFeatures = Theme.prototype.toFeature(features);
         var theme = new Theme("ThemeLayer", {
             map: map,
             features: iClientFeatures,

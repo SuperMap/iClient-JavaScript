@@ -1,7 +1,6 @@
 import L from "leaflet";
 import '../core/Base';
-import {Bounds, LonLat, GeometryVector, CommonUtil, ServerFeature, FeatureTheme} from '@supermap/iclient-common';
-import {ThemeFeature} from './theme/ThemeFeature';
+import {Bounds, LonLat, CommonUtil, FeatureTheme} from '@supermap/iclient-common';
 import {ThemeLayer} from './theme/ThemeLayer';
 import {CommontypesConversion} from '../core/CommontypesConversion';
 
@@ -65,19 +64,12 @@ export var GraphThemeLayer = ThemeLayer.extend({
      * @param features - {L.features} 待添加得要素
      */
     addFeatures: function (features) {
-        //数组
-        if (!(L.Util.isArray(features))) {
-            features = [features];
-        }
-
         var me = this;
         me.fire("beforefeaturesadded", {features: features});
 
-        for (var i = 0, len = features.length; i < len; i++) {
-            var feature = features[i];
-            feature = me._createFeature(feature);
-            me.features.push(feature);
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
+
         //绘制专题要素
         if (!me.renderer) {
             return;
@@ -413,7 +405,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
         var crs = this._map.options.crs;
-        if(this.options.alwaysMapCRS ){
+        if (this.options.alwaysMapCRS) {
             mapBounds = L.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
         }
         mapBounds = CommontypesConversion.toSuperMapBounds(mapBounds);
@@ -466,25 +458,8 @@ export var GraphThemeLayer = ThemeLayer.extend({
                 me.renderer.addShape(shapes[j]);
             }
         }
-    },
-
-    _createFeature: function (feature) {
-        if (feature instanceof ThemeFeature) {
-            feature = feature.toFeature();
-        } else if (!(feature instanceof GeometryVector)) {
-            feature = new ServerFeature.fromJson(feature).toFeature();
-        }
-        if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
-            var attrs = {},
-                fieldNames = feature.fieldNames,
-                filedValues = feature.filedValues;
-            for (var i = 0; i < fieldNames.length; i++) {
-                attrs[fieldNames[i]] = filedValues[i];
-            }
-            feature.attributes = attrs;
-        }
-        return feature;
     }
+
 });
 export var graphThemeLayer = function (name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);

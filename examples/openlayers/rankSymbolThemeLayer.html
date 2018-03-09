@@ -52,7 +52,14 @@
                 var attrs = {};
                 attrs.NAME = provinceInfo[0];
                 attrs.CON2009 = provinceInfo[3];
-                var fea = new ol.supermap.ThemeFeature(geo, attrs);
+                //ThemeFeature 格式类型
+                // var fea = new ol.supermap.ThemeFeature(geo, attrs);
+                //支持传入 ol.Feature 格式类型：
+                var fea = new ol.Feature({
+                    geometry: geo,
+                    Properties: attrs
+                });
+
                 features.push(fea);
             }
 

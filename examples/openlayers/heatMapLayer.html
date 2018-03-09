@@ -97,14 +97,12 @@
         );
         var num = parseInt(document.getElementById('heatNums').value);
         var radius = parseInt(document.getElementById('heatradius').value);
-        var unit = document.getElementById("radiusUnit").value,
-            useGeoRadius = false;
+        var unit = document.getElementById("radiusUnit").value;
         if ("degree" == unit) {
-            //使用热力半径单位使用地理单位
+            //热力半径单位使用地理单位
             heatMapSource.useGeoUnit = true;
-            useGeoRadius = true;
         } else {
-            //使用热力半径单位不使用地理单位
+            //热力半径单位不使用用地理单位
             heatMapSource.useGeoUnit = false;
         }
         heatMapSource.radius = radius;
@@ -116,7 +114,6 @@
                 geometry: new ol.geom.Point([Math.random() * 340 - 170, Math.random() * 160 - 80]),
                 Properties: {
                     "value": Math.random() * 9,
-                    "geoRadius": useGeoRadius ? radius : null
                 }
             });
             /*参数为geojson格式:

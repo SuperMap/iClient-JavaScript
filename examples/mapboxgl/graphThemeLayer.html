@@ -175,21 +175,47 @@
 
     function initFeaterDatasAddStyles() {
         //创建附着要素
-        features = [];
+//        features = [];
+        var feas = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
             var provinceInfo = chinaConsumptionLevel[i];
-            var geo = new mapboxgl.LngLat(provinceInfo[1], provinceInfo[2]);
-            var attrs = {};
-            attrs.NAME = provinceInfo[0];
-            attrs.CON2009 = provinceInfo[3];
-            attrs.CON2010 = provinceInfo[4];
-            attrs.CON2011 = provinceInfo[5];
-            attrs.CON2012 = provinceInfo[6];
-            attrs.CON2013 = provinceInfo[7];
-            var fea = new mapboxgl.supermap.ThemeFeature(geo, attrs);
-            features.push(fea);
+            //支持传入 mapboxgl.supermap.ThemeFeature 类型：
+            /* var geo = new mapboxgl.LngLat(provinceInfo[1], provinceInfo[2]);
+             var attrs = {};
+             attrs.NAME = provinceInfo[0];
+             attrs.CON2009 = provinceInfo[3];
+             attrs.CON2010 = provinceInfo[4];
+             attrs.CON2011 = provinceInfo[5];
+             attrs.CON2012 = provinceInfo[6];
+             attrs.CON2013 = provinceInfo[7];
+             var fea = new mapboxgl.supermap.ThemeFeature(geo, attrs);
+             features.push(fea);*/
+
+            //支持 传入 GeoJOSN 规范数据类型：
+            var fea = {
+                "type": "feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [provinceInfo[1], provinceInfo[2]]
+                },
+                "properties": {
+                    "NAME": provinceInfo[0],
+                    "CON2009": provinceInfo[3],
+                    "CON2010": provinceInfo[4],
+                    "CON2011": provinceInfo[5],
+                    "CON2012": provinceInfo[6],
+                    "CON2013": provinceInfo[7],
+                }
+            };
+
+            feas.push(fea);
         }
+
+        features = {
+            "type": "FeatureCollection",
+            "features": feas
+        };
 
         //Bar add Bar3D chartsSetting
         chartsSettingForBarAddBar3DCommon = {
@@ -379,24 +405,24 @@
 
             // 弹窗内容
             var contentHTML = "<div style='color: #000; background-color: #fff'>";
-            contentHTML += resources.text_Name+"<br><strong>" + fea.attributes.NAME + "</strong>";
+            contentHTML += resources.text_Name + "<br><strong>" + fea.attributes.NAME + "</strong>";
 
             contentHTML += "<hr style='margin: 3px'>";
             switch (info.field) {
                 case "CON2009":
-                    contentHTML += resources.text_consumptionLevel1 + "09" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（"+resources.text_yuan+"）";
+                    contentHTML += resources.text_consumptionLevel1 + "09" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2010":
-                    contentHTML += resources.text_consumptionLevel1 + "10" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（"+resources.text_yuan+"）";
+                    contentHTML += resources.text_consumptionLevel1 + "10" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2011":
-                    contentHTML += resources.text_consumptionLevel1 + "11" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（"+resources.text_yuan+"）";
+                    contentHTML += resources.text_consumptionLevel1 + "11" + resources.text_consumptionLevel2 + "<br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2012":
-                    contentHTML += resources.text_consumptionLevel1 + "12" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（"+resources.text_yuan+"）";
+                    contentHTML += resources.text_consumptionLevel1 + "12" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 case "CON2013":
-                    contentHTML += resources.text_consumptionLevel1 + "13" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（"+resources.text_yuan+"）";
+                    contentHTML += resources.text_consumptionLevel1 + "13" + resources.text_consumptionLevel2 + " <br/><strong>" + info.value + "</strong>（" + resources.text_yuan + "）";
                     break;
                 default:
                     contentHTML += "No Data";

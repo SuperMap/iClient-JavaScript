@@ -56,17 +56,12 @@ export class Graph extends Theme {
      * @param features - {Object} 待填加得要素
      */
     addFeatures(features) {
-        //数组
-        if (!(CommonUtil.isArray(features))) {
-            features = [features];
-        }
         var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
         if (ret === false) {
             return;
         }
-        for (var i = 0, len = features.length; i < len; i++) {
-            this.features.push(this.toiClientFeature(features[i]));
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
         //绘制专题要素
         if (this.renderer) {
             this.changed();

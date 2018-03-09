@@ -3,9 +3,13 @@ import {Util} from '../../core/Util';
 import {
     CommonUtil,
     ServerFeature,
-    GeometryVector as Vector,
+    GeometryVector,
+    GeoJSON as GeoJSONFormat,
     LonLat,
     GeometryPoint,
+    LineString,
+    LinearRing,
+    Polygon,
     GeoText,
     LevelRenderer
 } from '@supermap/iclient-common';
@@ -493,19 +497,72 @@ export class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.Theme.prototype.toiClientFeature
+     * @function ol.source.Theme.prototype.toFeature
      * @description 转为 iClient 要素
-     * @param feature 待转要素
+     * @param feature -{ol.supermap.ThemeFeature|SuperMap.ServerFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、iServer服务器返回数据格式  GeoJOSN 规范数据类型，以及ol.Feature
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
-    toiClientFeature(feature) {
-        if (feature instanceof ThemeFeature) {
-            return feature.toFeature();
+    toFeature(features) {
+        if (CommonUtil.isArray(features)) {
+            var featuresTemp = [];
+            for (let i = 0; i < features.length; i++) {
+                //mapboxgl.supermap.ThemeFeature 类型
+                if (features[i] instanceof ThemeFeature) {
+                    featuresTemp.push(features[i].toFeature());
+                    continue;
+                }
+                //ol.Feature 数据类型
+                if (features[i] instanceof ol.Feature) {
+                    featuresTemp.push(this._toFeature(features[i]));
+                    continue;
+                }
+                // 若是 GeometryVector 直接返回
+                if (features[i] instanceof GeometryVector) {
+                    featuresTemp.push(features[i]);
+                    continue;
+                }
+                //iServer服务器返回数据格式
+                featuresTemp.push(new ServerFeature.fromJson(features[i]).toFeature());
+            }
+            return featuresTemp;
         }
-        if (feature instanceof Vector) {
-            return feature;
+        //GeoJOSN 规范数据类型
+        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
+            var format = new GeoJSONFormat();
+            return format.read(features, "FeatureCollection");
         }
-        return new ServerFeature.fromJson(feature).toFeature();
+        throw new Error(`features's type is not be supported.`);
+    }
+
+    _toFeature(feature) {
+        var geometry,
+            attributes = feature.getProperties()["Properties"] ? feature.getProperties()["Properties"] : {};
+        //热点图支支持传入点对象要素
+        if (feature.getGeometry() instanceof ol.geom.Point) {
+            geometry = new GeometryPoint(feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]);
+            //固定属性字段为 "Properties"
+        }
+        if (geometry instanceof ol.geom.LineString) {
+            let coords = geometry.getCoordinates();
+            let points = [];
+            for (let i = 0; i < coords.length; i++) {
+                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
+            }
+            geometry = new LineString(points);
+        }
+        if (geometry instanceof ol.geom.Polygon) {
+            let coords = geometry.getCoordinates();
+            let points = [];
+            for (let i = 0; i < coords.length; i++) {
+                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
+            }
+            var linearRings = new LinearRing(points);
+            geometry = new Polygon([linearRings]);
+        }
+        if (geometry.length === 3) {
+            geometry = new GeoText(geometry[0], geometry[1], geometry[2]);
+        }
+        return new GeometryVector(geometry, attributes);
     }
 
 }

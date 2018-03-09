@@ -47,17 +47,12 @@ export class Graph extends Theme {
      * @param features - {Array<mapboxgl.supermap.ThemeFeature>} 待添加的要素
      */
     addFeatures(features) {
-        //数组
-        if (!(CommonUtil.isArray(features))) {
-            features = [features];
-        }
         var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
         if (ret === false) {
             return;
         }
-        for (var i = 0, len = features.length; i < len; i++) {
-            this.features.push(this.toiClientFeature(features[i]));
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
         //绘制专题要素
         if (this.renderer) {
             this.redrawThematicFeatures(this.map.getBounds());
@@ -230,7 +225,7 @@ export class Graph extends Theme {
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param featureID - {number} 要素ID。
      */
-    getShapesByFeatureID (featureID) {
+    getShapesByFeatureID(featureID) {
         var list = [];
         var shapeList = this.renderer.getAllShapes();
         if (!featureID) {

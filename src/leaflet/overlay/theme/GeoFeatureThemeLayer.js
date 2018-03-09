@@ -2,13 +2,10 @@ import L from "leaflet";
 import {
     CommonUtil,
     ShapeFactory,
-    ServerFeature,
-    ThemeVector,
-    GeometryVector
+    ThemeVector
 } from '@supermap/iclient-common';
 import {ThemeLayer} from './ThemeLayer';
 import {CommontypesConversion} from '../../core/CommontypesConversion';
-import {ThemeFeature} from './ThemeFeature';
 
 /**
  * @function L.supermap.GeoFeatureThemeLayer
@@ -66,18 +63,11 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @param features - {SuperMap.ServerFeature|L.supermap.themeFeature} 待填加的要素
      */
     addFeatures: function (features) {
-        //数组
-        if (!(L.Util.isArray(features))) {
-            features = [features];
-        }
         var me = this;
         me.fire("beforefeaturesadded", {features: features});
 
-        for (var i = 0, len = features.length; i < len; i++) {
-            var feature = features[i];
-            feature = me._createFeature(feature);
-            me.features.push(feature);
-        }
+        //转换 features 形式
+        this.features = this.toFeature(features);
 
         if (!me.isCustomSetMaxCacheCount) {
             me.maxCacheCount = me.features.length * 5;
@@ -288,24 +278,6 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
             }
         }
         return list;
-    },
-
-    _createFeature: function (feature) {
-        if (feature instanceof ThemeFeature) {
-            feature = feature.toFeature();
-        } else if (!(feature instanceof GeometryVector)) {
-            feature = new ServerFeature.fromJson(feature).toFeature();
-        }
-        if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
-            var attrs = {},
-                fieldNames = feature.fieldNames,
-                filedValues = feature.filedValues;
-            for (var i = 0; i < fieldNames.length; i++) {
-                attrs[fieldNames[i]] = filedValues[i];
-            }
-            feature.attributes = attrs;
-        }
-        return feature;
     }
 
 });

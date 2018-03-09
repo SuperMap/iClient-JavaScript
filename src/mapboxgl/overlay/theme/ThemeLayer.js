@@ -4,6 +4,8 @@ import {ThemeFeature} from './ThemeFeature';
 import {
     ServerFeature,
     LonLat,
+    GeoJSON as GeoJSONFormat,
+    GeometryVector,
     GeometryPoint as Point,
     GeoText,
     LevelRenderer,
@@ -361,15 +363,37 @@ export class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.ThemeLayer.prototype.toiClientFeature
+     * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素
-     * @param feature 待转要素
+     * @param feature -{mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型、iServer服务器返回数据格式 和 GeoJOSN 规范数据类型
      */
-    toiClientFeature(feature) {
-        if (feature instanceof ThemeFeature) {
-            return feature.toFeature();
+    toFeature(features) {
+        if (CommonUtil.isArray(features)) {
+            var featuresTemp = [];
+            for (let i = 0; i < features.length; i++) {
+                //mapboxgl.supermap.ThemeFeature 类型
+                if (features[i] instanceof ThemeFeature) {
+                    featuresTemp.push(features[i].toFeature());
+                    continue;
+                }
+                // 若是 GeometryVector 直接返回
+                if (features[i] instanceof GeometryVector) {
+                    featuresTemp.push(features[i]);
+                    continue;
+                }
+                //iServer服务器返回数据格式
+                featuresTemp.push(new ServerFeature.fromJson(features[i]).toFeature());
+            }
+            return featuresTemp;
         }
-        return new ServerFeature.fromJson(feature).toFeature();
+
+        //GeoJOSN 规范数据类型
+        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
+            var format = new GeoJSONFormat();
+            return format.read(features, "FeatureCollection");
+        }
+
+        throw new Error(`features's type is not be supported.`);
     }
 
     moveEndEvent() {

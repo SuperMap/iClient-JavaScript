@@ -1,5 +1,13 @@
 import L from "leaflet";
-import {CommonUtil, GeometryPoint as Point, GeoText, LevelRenderer} from '@supermap/iclient-common';
+import {
+    CommonUtil,
+    GeometryPoint as Point, ServerFeature,
+    GeoJSON as GeoJSONFormat,
+    GeometryVector,
+    GeoText,
+    LevelRenderer
+} from '@supermap/iclient-common';
+import {ThemeFeature} from './ThemeFeature';
 
 /**
  * @class L.supermap.ThemeLayer
@@ -407,6 +415,39 @@ export var ThemeLayer = L.Layer.extend({
         }
         var point = this._map.latLngToContainerPoint(!this.options.alwaysMapCRS ? L.latLng(coor.y, coor.x) : this._map.options.crs.unproject(coor));
         return [point.x, point.y];
+    },
+
+    /**
+     * @function L.supermap.ThemeLayer.prototype.toFeature
+     * @description 转为 iClient 要素
+     * @param feature -{L.supermap.themeFeature|SuperMap.ServerFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型、iServer服务器返回数据格式 和 GeoJOSN 规范数据类型
+     */
+    toFeature: function (features) {
+        if (CommonUtil.isArray(features)) {
+            var featuresTemp = [];
+            for (let i = 0; i < features.length; i++) {
+                //L.supermap.themeFeature 数据类型
+                if (features[i] instanceof ThemeFeature) {
+                    featuresTemp.push(features[i].toFeature());
+                    continue;
+                }
+                // 若是 GeometryVector 直接返回
+                if (features[i] instanceof GeometryVector) {
+                    featuresTemp.push(features[i]);
+                    continue;
+                }
+                //iServer服务器返回数据格式
+                featuresTemp.push(new ServerFeature.fromJson(features[i]).toFeature());
+            }
+            return featuresTemp;
+        }
+        //GeoJOSN 规范数据类型
+        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
+            var format = new GeoJSONFormat();
+            return format.read(features, "FeatureCollection");
+        }
+
+        throw new Error(`features's type is not be supported.`);
     },
 
     _initContainer: function () {

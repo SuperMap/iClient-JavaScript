@@ -32,6 +32,18 @@
 
 - 废弃 `L.supermap.circleStyle` 类的 `getCanvas` 接口，改用 `getStyle` 接口
 
+- 新增热力图层：
+
+    - `L.supermap.heatMapLayer`
+
+- `L.supermap.ThemeLayer` 及其子类支持传入 GeoJOSN 规范数据类型
+
+- 废弃 `L.supermap.graphThemeLaye` 类的 `_createFeature` 接口
+
+- 废弃 `L.supermap.GeoFeatureThemeLayer` 类的 `_createFeature` 接口
+
+- `L.supermap.ThemeLayer` 类新增 `toFeature` 接口
+
 ### for OpenLayers
 
 - `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据
@@ -54,6 +66,12 @@
 
 - `ol.source.Theme` 及其子类新增 `options.id`参数
 
+- 新增热力图资源：
+
+    - `ol.supermap.HeatMapSource`
+    
+- 废弃 `ol.source.Theme` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
+
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -73,6 +91,14 @@
 - `mapboxgl.supermap.ThemeLayer` 类新增 `options.id`参数
 
 - `mapboxgl.supermap.ThemeLayer` 类新增 `moveTo`接口，支持调整专题图层显示顺序
+
+- 新增热力图层：
+
+    - `mapboxgl.supermap.HeatMapLayer`
+
+- `mapboxgl.supermap.ThemeLayer` 类新增 `setVisibility`接口，支持设置图层的显示和隐藏
+
+- 废弃 `mapboxgl.supermap.ThemeLayer` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
 
 ### Classic
 
@@ -452,6 +478,7 @@
 - 新增图表专题图示例
 - 新增客户端标签专题图示例
 - 修复实时数据服务示例效率
+- 新增热力图示例
 
 ### for OpenLayers
 
@@ -460,12 +487,14 @@
 - 新增turf示例
 - 新增图表专题图示例
 - 新增客户端标签专题图示例
+- 新增热力图示例
 
 ### for MapboxGL
 
 - 新增二维客户端专题图示例
 - 新增iServer服务示例
 - 新增ECharts GL示例
+- 新增热力图示例
 
 ### Classic
 

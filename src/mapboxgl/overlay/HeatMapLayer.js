@@ -485,8 +485,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
      * @param feature - {GeoJson} 待转的geojson要素
      */
     toiClientFeature(feature) {
-        var format = new GeoJSONFormat();
         if (["FeatureCollection", "Feature", "Geometry"].indexOf(feature.type) != -1) {
+            var format = new GeoJSONFormat();
             return format.read(feature, "FeatureCollection");
         }
     }

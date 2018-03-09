@@ -110,14 +110,12 @@
         var heatPoints = [];
         var num = parseInt(document.getElementById('heatNums').value);
         var radius = parseInt(document.getElementById('heatradius').value);
-        var unit = document.getElementById("radiusUnit").value,
-            useGeoRadius = false;
+        var unit = document.getElementById("radiusUnit").value;
         if ("degree" == unit) {
-            //使用热力半径单位使用地理单位
+            //热力半径单位使用地理单位
             heatMapLayer.useGeoUnit = true;
-            useGeoRadius = true;
-        }else {
-            //使用热力半径单位不使用地理单位
+        } else {
+            //热力半径单位不使用用地理单位
             heatMapLayer.useGeoUnit = false;
         }
         heatMapLayer.radius = radius;
@@ -137,7 +135,6 @@
                     },
                     "properties": {
                         "value": Math.random() * 9,
-                        "geoRadius": useGeoRadius ? radius : null
                     }
                 };
         }

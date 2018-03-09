@@ -76,16 +76,10 @@ export class GeoFeature extends Theme {
      * @param features - {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} 要素对象
      */
     addFeatures(features) {
-        //数组
-        if (!(Util.isArray(features))) {
-            features = [features];
-        }
-
         mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
+        //转换 features 形式
+        this.features = this.toFeature(features);
 
-        for (var i = 0, len = features.length; i < len; i++) {
-            this.features.push(this.toiClientFeature(features[i]));
-        }
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }
