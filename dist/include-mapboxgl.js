@@ -54,6 +54,9 @@
             inputScript("https://cdn.bootcss.com/echarts/3.8.0/echarts.min.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
+        if (inArray(includes, 'three')) {
+            inputScript("https://cdn.bootcss.com/three.js/90/three.min.js");
+        }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             inputScript("../../dist/iclient9-mapboxgl.js");
         }

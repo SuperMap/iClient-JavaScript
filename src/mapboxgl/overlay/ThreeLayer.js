@@ -32,8 +32,13 @@ const {
  * @extends mapboxgl.Evented{@linkdoc-mapboxgl/#evented}
  * @example
  *  var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
- *  //重写draw实现模型绘制
- *  threeLayer.draw = function (gl, scene, camera) {
+ *  //模型绘制
+ *  threeLayer.on("initialized", draw);
+ *  threeLayer.addTo(map);
+ *
+ *  function draw() {
+ *        var scene=threeLayer.getScene();
+ *            camera=threeLayer.getCamera();
  *        var light = new THREE.PointLight(0xffffff);
  *        camera.add(light);
  *        var material = new THREE.MeshPhongMaterial({color: 0xff0000});
@@ -42,8 +47,6 @@ const {
  *        //模型添加到3D场景
  *        scene.add(mesh);
  *  }
- *  threeLayer.addTo(map);
- *
  *
  * 叠加模型可以通过两种方式：<br>
  *          1.调用threeLayer.toThreeMesh直接将地理坐标转换成threejs 3D模型（适用于挤压模型，如城市建筑），然后添加到3D场景
@@ -72,8 +75,8 @@ export class ThreeLayer extends mapboxgl.Evented {
             return null;
         }
         let center = this.getCoordinatesCenter(coordinates);
-        let centerPoint = this.lngLatToThreeVector3(center);
-        let outer = coordinates.map(coords => this.lngLatToThreeVector3({
+        let centerPoint = this.lngLatToPosition(center);
+        let outer = coordinates.map(coords => this.lngLatToPosition({
             lng: coords[0],
             lat: coords[1]
         }).sub(centerPoint));
@@ -107,40 +110,139 @@ export class ThreeLayer extends mapboxgl.Evented {
         });
         let bufferGeometry = new BufferGeometry().fromGeometry(geometry);
         let mesh = new Mesh(bufferGeometry, material);
-        let center = this.lngLatToThreeVector3(this.getCoordinatesCenter(coords));
+        let center = this.lngLatToPosition(this.getCoordinatesCenter(coords));
         mesh.position.set(center.x, center.y, -targetAmount);
         return mesh;
     }
 
     /**
-     * @function mapboxgl.supermap.ThreeLayer.prototype.setPosition
-     * @description 设置threejs mesh对象的坐标（经纬度）
-     * @param mesh -{THREE.Mesh} threejs Mesh对象。参考：[THREE.Mesh]{@link https://threejs.org/docs/index.html#api/objects/Mesh}<br>
-     *                           Mesh对象可以通过本图层的[toThreeMesh]{@link mapboxgl.supermap.ThreeLayer.prototype.toThreeMesh}得到，<br>
-     *                           也可以是ThreeJS的其他[THREE.Mesh]{@link https://threejs.org/docs/index.html#api/objects/Mesh}及子类对象
-     * @param coordinate -{Array<number>} 坐标点
+     * @function mapboxgl.supermap.ThreeLayer.prototype.addObject
+     * @description 设置threejs 3D对象的坐标（经纬度）
+     * @param object3D -{THREE.Object3D} threejs 3D对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+     * @param coordinate -{Array<number>|Object} 添加的three对象坐标（经纬度）
      * @return {this} this
      */
-    setPosition(mesh, coordinate) {
-        if (!mesh || !coordinate) {
+    addObject(object3D, coordinate) {
+        if (coordinate && object3D) {
+            this.setPosition(object3D, coordinate);
+        }
+        this.renderer && this.renderer.scene.add(object3D);
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThreeLayer.prototype.getScene
+     * @description 获取threejs 场景对象
+     * @return {THREE.Scene} threejs 场景对象,参考：[THREE.Scene]{@link https://threejs.org/docs/index.html#api/scenes/Scene}
+     */
+    getScene() {
+        return this.renderer.scene;
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThreeLayer.prototype.getCamera
+     * @description 获取threejs 相机
+     * @return {THREE.Camera} threejs 相机。参考：[THREE.Camera]{@link https://threejs.org/docs/index.html#api/cameras/Camera}
+     */
+    getCamera() {
+        return this.renderer.camera;
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThreeLayer.prototype.getThreeRenderer
+     * @description 获取threejs renderer
+     * @return {THREE.WebGLRenderer|THREE.CanvasRenderer} threejs renderer。参考：
+     *                      [THREE.WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
+     *                      [THREE.CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
+     */
+    getThreeRenderer() {
+        return this.renderer.context;
+    }
+
+    // /**
+    //  * @function mapboxgl.supermap.ThreeLayer.prototype.getObject
+    //  * @description 根据条件获取添加到场景中的对象
+    //  * @return {THREE.Object3D} threejs 3D对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+    //  */
+    // getObject(conditions) {
+    //     if(!conditions){
+    //         return;
+    //     }
+    //     var scene = this.getScene();
+    //     var objects = scene.children;
+    //     for(let obj of objects ){
+    //         for(let condition of conditions ){
+    //                 obj[condition]
+    //         }
+    //     }
+    // }
+
+
+    /**
+     * @function mapboxgl.supermap.ThreeLayer.prototype.clearMesh
+     * @description 清除所有threejs mesh对象
+     * @return {this} this
+     */
+    clearMesh() {
+        let scene = this.renderer.scene;
+        if (!scene) {
             return this;
         }
-
-        var pos = this.lngLatToThreeVector3(coordinate);
-        mesh.position.set(pos.x, pos.y, pos.z);
+        for (let i = scene.children.length - 1; i >= 0; i--) {
+            if (scene.children[i] instanceof THREE.Mesh) {
+                scene.remove(scene.children[i]);
+            }
+        }
         return this;
     }
 
     /**
-     * @function mapboxgl.supermap.ThreeLayer.prototype.lngLatToThreeVector3
+     * @function mapboxgl.supermap.ThreeLayer.prototype.clearAll
+     * @description 清除所有threejs 对象
+     * @param clearCamera -{boolean} 是否同时清除相机
+     * @return {this} this
+     */
+    clearAll(clearCamera) {
+        let scene = this.renderer.scene;
+        if (!scene) {
+            return this;
+        }
+        for (let i = scene.children.length - 1; i >= 0; i--) {
+            if (!clearCamera && scene.children[i] instanceof THREE.Camera) {
+                continue;
+            }
+            scene.remove(scene.children[i]);
+        }
+        return this;
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThreeLayer.prototype.setPosition
+     * @description 设置threejs 3D对象的坐标（经纬度）
+     * @param object3D -{THREE.Object3D} threejs 3D对象，参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+     * @param coordinate -{Array<number>|Object} 添加的three对象坐标（经纬度）
+     * @return {this} this
+     */
+    setPosition(object3D, coordinate) {
+        if (!object3D || !coordinate) {
+            return this;
+        }
+
+        var pos = this.lngLatToPosition(coordinate);
+        object3D.position.set(pos.x, pos.y, pos.z);
+        return this;
+    }
+
+
+    /**
+     * @function mapboxgl.supermap.ThreeLayer.prototype.lngLatToPosition
      * @description 经纬度转threejs 3D失量对象
      * @param lngLat -{Array<number>|Object} 经纬度坐标
      * @return {THREE.Vector3} threejs 3D失量对象。参考：[THREE.Vector3]{@link https://threejs.org/docs/index.html#api/math/Vector3}
      */
-    lngLatToThreeVector3(lngLat) {
+    lngLatToPosition(lngLat) {
         let zoom = Transform.projection.nativeMaxZoom;
         let point = Transform.lngLatToPoint(lngLat, zoom);
-        return new Vector3(point.x, point.y, zoom);
+        return new Vector3(point.x, point.y, -0);
     }
 
     /**
@@ -223,10 +325,10 @@ export class ThreeLayer extends mapboxgl.Evented {
         me._map = map;
         me.renderer.setMap(map);
         me.renderer.render();
-
+        this._moving = false;
         //three mbgl 联动(仅联动相机,不执行重绘操作)
-        me._map.on('move', this.renderScene.bind(me));
-        me._map.on('resize', this.resize.bind(me));
+        me._map.on('move', this._update.bind(me));
+        me._map.on('resize', this._resize.bind(me));
 
         return this;
     }
@@ -255,8 +357,8 @@ export class ThreeLayer extends mapboxgl.Evented {
      */
     remove() {
         let map = this._map, me = this;
-        map.off('move', me.renderScene.bind(me));
-        map.off('resize', me.resize.bind(me));
+        map.off('move', me._update.bind(me));
+        map.off('resize', me._resize.bind(me));
         me.renderer.remove();
         me._map = null;
     }
@@ -272,15 +374,9 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @return {this} this
      * @example
      *  var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
-     *  //重写draw实现模型绘制
+     *  //可以通过重写draw实现模型绘制
      *  threeLayer.draw = function (gl, scene, camera) {
-     *        var light = new THREE.PointLight(0xffffff);
-     *        camera.add(light);
-     *        var material = new THREE.MeshPhongMaterial({color: 0xff0000});
-     *        //根据坐标点转换成模型
-     *        var mesh = this.toThreeMesh(feature.geometry.coordinates, 10, material, true);
-     *        //模型添加到3D场景
-     *        scene.add(mesh);
+     *        //TODO 绘制操作
      *  }
      *  threeLayer.addTo(map);
      */
@@ -295,19 +391,37 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @return {this} this
      */
     renderScene() {
-        //this.renderer.prepare();
         this.renderer.renderScene();
+        /**
+         * renderScene 事件，场景渲染后触发
+         * @event mapboxgl.supermap.ThreeLayer#renderScene
+         * @type {Object}
+         * @property {string} type  - renderScene
+         * @property {Object} target  - layer
+         */
         this.fire("renderScene");
         return this;
     }
 
-    /**
-     * @function mapboxgl.supermap.ThreeLayer.prototype.resize
-     * @description 重置图层大小
-     * @return {this} this
-     */
-    resize() {
+    _resize() {
         this.renderer.resize();
+    }
+
+    _update() {
+        if (!this._moving) {
+            this._moving = !!1;
+            this.renderScene();
+            this._moving = !!0;
+            /**
+             * move事件，地图移动时触发
+             * @event mapboxgl.supermap.ThreeLayer#move
+             * @type {Object}
+             * @property {string} type  - move
+             * @property {Object} target  - layer
+             */
+            this.fire('move');
+        }
+        return this;
     }
 
 }

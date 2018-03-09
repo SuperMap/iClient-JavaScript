@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>mapboxgl threejs buildings</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+<script type="text/javascript" include="three" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript" src="./js/ThreeApplication.js"></script>
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
+
+    var map, threeLayer;
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v9',
+        center: [104.0712824591451, 30.560567575197524],
+        zoom: 17.42,
+        pitch: 60,
+        bearing: 28
+    });
+
+    addThreeLayer();
+
+    function addThreeLayer() {
+
+        //gl参数表示使用webgl渲染，forceRefresh强制不断刷新three的场景
+        threeLayer = new mapboxgl.supermap.ThreeLayer('three', 'gl', {forceRefresh: true});
+        threeLayer.on("initialized", render);
+
+        function render() {
+            var renderer = threeLayer.getThreeRenderer(),
+                scene = threeLayer.getScene(),
+                camera = threeLayer.getCamera();
+
+            this.light = new THREE.PointLight(0xeeeeee, 0.8);
+            this.light.position.copy(camera.position);
+            scene.add(this.light);
+            scene.add(new THREE.AmbientLight(0x333333));
+
+            ThreeApplication
+                .register(renderer, scene, camera)
+                .setTargetLayer(threeLayer)
+                .setPosition([104.071092, 30.560304])
+                .start();
+        }
+
+        //均匀光照，与相机位置同步
+        threeLayer.on("move", function () {
+            threeLayer.light.position.copy(threeLayer.renderer.camera.position);
+        });
+
+        threeLayer.addTo(map);
+    }
+
+</script>
+
+</body>
+</html>

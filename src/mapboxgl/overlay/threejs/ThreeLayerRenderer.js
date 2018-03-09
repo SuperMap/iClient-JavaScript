@@ -22,21 +22,15 @@ const {
 const RADIAN = Math.PI / 180;
 
 
-const RequestAnimateFrame = (function () {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame;
-})();
+const frame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame;
 
-const CancelAnimateFrame = (function () {
-    return window.cancelAnimationFrame ||
-        window.webkitCancelAnimationFrame ||
-        window.mozCancelAnimationFrame ||
-        window.oCancelAnimationFrame ||
-        window.msCancelAnimationFrame;
-})();
+const cancel = window.cancelAnimationFrame ||
+    window.mozCancelAnimationFrame ||
+    window.webkitCancelAnimationFrame ||
+    window.msCancelAnimationFrame;
 
 /**
  * @private
@@ -57,6 +51,11 @@ export class ThreeLayerRenderer {
         this._layer = layer;
         this.renderer = renderer || "gl";
         this.options = options;
+
+        var layerOpt = this._layer.options;
+        this.forceRefresh = layerOpt != null
+            ? layerOpt.forceRefresh
+            : false;
     }
 
     setMap(map) {
@@ -69,8 +68,22 @@ export class ThreeLayerRenderer {
             return;
         }
         this.prepare();
-        this._layer.fire("prepare");
+        /**
+         * initialized事件, 初始化好three后触发
+         * @event mapboxgl.supermap.ThreeLayer#prepare
+         * @type {Object}
+         * @property {string} type  - prepare
+         * @property {Object} target  - layer
+         */
+        this._layer.fire("initialized");
         this._layer && this._layer.draw(this.context, this.scene, this.camera);
+        /**
+         * draw绘制事件, 调用提供给外部绘制的接口后触发
+         * @event mapboxgl.supermap.ThreeLayer#draw
+         * @type {Object}
+         * @property {string} type  - draw
+         * @property {Object} target  - layer
+         */
         this._layer.fire("draw");
         this.renderScene();
     }
@@ -82,20 +95,27 @@ export class ThreeLayerRenderer {
 
     //渲染场景（模型已经添加到图层）
     renderScene() {
-        this.locationCamera();
-        this.renderFrame();
+        let me = this;
+        me.locationCamera();
+        me.animationFrame = this.renderFrame(function () {
+            me.animationFrame = null;
+            me.context && me.context.render(me.scene, me.camera);
+        });
     }
 
-
-    renderFrame() {
-        var me = this;
-
-        function renderAnimateFrame() {
-            me.animationFrame = RequestAnimateFrame(renderAnimateFrame);
-            me.context && me.context.render(me.scene, me.camera);
+    renderFrame(fn) {
+        var render;
+        if (this.forceRefresh) {
+            render = function () {
+                fn && typeof fn === "function" && fn();
+                return frame(render);
+            }
+        } else {
+            render = function () {
+                fn && typeof fn === "function" && fn();
+            }
         }
-
-        renderAnimateFrame();
+        return frame(render);
     }
 
     resize() {
@@ -119,6 +139,13 @@ export class ThreeLayerRenderer {
         if (!this.canvas) {
             this._initContainer();
             this._initThreeRenderer();
+            /**
+             * rendererinitialized事件，初始化three渲染器后触发
+             * @event mapboxgl.supermap.ThreeLayer#rendererinitialized
+             * @type {Object}
+             * @property {string} type  - rendererinitialized
+             * @property {Object} target  - layer
+             */
             this._layer.fire("rendererinitialized");
         } else {
             this.clear(this.context);
@@ -130,9 +157,15 @@ export class ThreeLayerRenderer {
         return {width: container.clientWidth, height: container.clientHeight};
     }
 
+    cancelFrame() {
+        if (this.animationFrame != null) {
+            cancel(this.animationFrame);
+        }
+    }
+
     remove() {
         if (this.animationFrame != null) {
-            CancelAnimateFrame(this.animationFrame);
+            cancel(this.animationFrame);
         }
         this.container.removeChild(this.canvas);
         this.container.parentNode.removeChild(this.container);
@@ -250,6 +283,7 @@ export class ThreeLayerRenderer {
             context = new WebGLRenderer({
                 'canvas': this.canvas,
                 'alpha': true,
+                'antialias': true,
                 'preserveDrawingBuffer': true
             }, this.options);
         } else {

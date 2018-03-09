@@ -1,0 +1,596 @@
+{
+  "locations": [
+    {
+      "name": "truck",
+      "slug": "reception",
+      "objRoom": "obj/rooms/reception.js",
+      "obj360": [
+        "truck"
+      ],
+      "light": 2,
+      "camera": {
+        "position": {
+          "x": -52.40,
+          "z": 47.45,
+          "y": 2.00
+        },
+        "lookAt": {
+          "x": -52.03,
+          "z": 46.93,
+          "y": 1.76
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "truck_butBody",
+          "mediaId": "00",
+          "opacity": 0.8,
+          "doubleSide": false,
+          "opacityHighLight": 0.5,
+          "colorHighlight": "#ff00ff"
+        },
+        {
+          "fileName": "truck_roadtosaydnaya_button",
+          "mediaId": "08",
+          "opacity": 0.8,
+          "doubleSide": false,
+          "opacityHighLight": 0.5,
+          "colorHighlight": "#ff00ff"
+        }
+      ],
+      "sound": {
+        "ambient": "truck"
+      }
+    },
+    {
+      "name": "room1",
+      "slug": "solitary-1",
+      "objRoom": "obj/rooms/solitary-ac.js",
+      "obj360": [
+        "isoCell01"
+      ],
+      "light": 3.5,
+      "camera": {
+        "position": {
+          "x": 0.98,
+          "y": 1.2,
+          "z": 0.9
+        },
+        "lookAt": {
+          "x": 0.88,
+          "y": 1.33,
+          "z": 0.72
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "isoCell01_butHatch",
+          "mediaId": "01",
+          "opacity": 0.7
+        },
+        {
+          "fileName": "isoCell01_butPipe",
+          "mediaId": "02",
+          "opacity": 0.5
+        }
+      ],
+      "sound": {
+        "ambient": "jamal_and_samer_solitary"
+      }
+    },
+    {
+      "name": "room2",
+      "slug": "solitary-2",
+      "objRoom": "obj/rooms/solitary-d.js",
+      "obj360": [
+        "isoCell02"
+      ],
+      "light": 3.5,
+      "camera": {
+        "position": {
+          "x": 0.83,
+          "y": 0.53,
+          "z": 1.19
+        },
+        "lookAt": {
+          "x": 0.98,
+          "y": 0.98,
+          "z": 0.81
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "isoCell02butDoor",
+          "mediaId": "03",
+          "opacity": 0.5
+        }
+      ],
+      "sound": {
+        "ambient": "salam_solitary"
+      }
+    },
+    {
+      "name": "room3",
+      "slug": "solitary-3",
+      "objRoom": "obj/rooms/solitary-e.js",
+      "obj360": [
+        "isoCell03"
+      ],
+      "light": 3.5,
+      "camera": {
+        "position": {
+          "x": 1.45,
+          "y": 1.2,
+          "z": 1.58
+        },
+        "lookAt": {
+          "x": 1.26,
+          "y": 1.35,
+          "z": 0.89
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "isoCell03_butBowl",
+          "mediaId": "04",
+          "isGrey": true
+        }
+      ],
+      "sound": {
+        "ambient": "anas_solitary"
+      }
+    },
+    {
+      "name": "room4",
+      "slug": "group-cell-1",
+      "objRoom": "obj/rooms/groupcell-a-c.js",
+      "obj360": [
+        "groupCell01"
+      ],
+      "light": 1,
+      "camera": {
+        "position": {
+          "x": 3.87,
+          "y": 1.60,
+          "z": 3.28
+        },
+        "lookAt": {
+          "x": 4.45,
+          "y": 1.40,
+          "z": 2.8
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "groupcell01_tellingtime_button",
+          "mediaId": "13",
+          "opacity": 0.5
+        }
+      ],
+      "sound": {
+        "ambient": "jamal_and_samer_group"
+      }
+    },
+    {
+      "name": "room5",
+      "slug": "group-cell-2",
+      "objRoom": "obj/rooms/groupcell-d.js",
+      "obj360": [
+        "groupCell02"
+      ],
+      "light": 1,
+      "camera": {
+        "position": {
+          "x": 6.37,
+          "y": 1.0,
+          "z": 1.95
+        },
+        "lookAt": {
+          "x": 6.0,
+          "y": 1.0,
+          "z": 1.85
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+        {
+          "name": "blanket",
+          "x": 5.48,
+          "z": 6.1,
+          "y": 0.37,
+          "angle": 0
+        },
+        {
+          "name": "blanket",
+          "x": 5.48,
+          "z": 6.1,
+          "y": 0.50,
+          "angle": 43
+        },
+        {
+          "name": "blanket",
+          "x": 5.48,
+          "z": 6.1,
+          "y": 0.62,
+          "angle": 5
+        },
+        {
+          "name": "blanket",
+          "x": 5.48,
+          "z": 6.1,
+          "y": 0.75,
+          "angle": 15
+        },
+        {
+          "name": "blanket",
+          "x": 5.48,
+          "z": 6.1,
+          "y": 0.90,
+          "angle": 35
+        },
+        {
+          "name": "blanket",
+          "x": 5.48,
+          "z": 6.1,
+          "y": 0.75,
+          "angle": 15
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 0.39,
+          "angle": 0
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 0.54,
+          "angle": 15
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 0.64,
+          "angle": 75
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 0.75,
+          "angle": 25
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 0.84,
+          "angle": 5
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 0.94,
+          "angle": 65
+        },
+        {
+          "name": "blanket",
+          "x": 0.72,
+          "z": 6.1,
+          "y": 1.08,
+          "angle": 120
+        }
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "groupCell02_tile_button",
+          "mediaId": "07",
+          "opacity": 0.3
+        }
+      ],
+      "sound": {
+        "ambient": "salam_group"
+      }
+    },
+    {
+      "name": "room6",
+      "slug": "group-cell-3",
+      "objRoom": "obj/rooms/groupcell-e.js",
+      "obj360": [
+        "groupCell03"
+      ],
+      "light": 1,
+      "camera": {
+        "position": {
+          "x": 2.53,
+          "y": 1.70,
+          "z": 3.90
+        },
+        "lookAt": {
+          "x": 2.06,
+          "y": 1.70,
+          "z": 3.80
+        },
+        "fov": 35,
+        "minPolar": 0,
+        "maxPolar": "PI"
+      },
+      "objects": [
+        {
+          "name": "blanket",
+          "x": 0.76,
+          "z": 0.63,
+          "y": 0.4,
+          "angle": 0
+        },
+        {
+          "name": "blanket",
+          "x": 0.76,
+          "z": 0.63,
+          "y": 0.51,
+          "angle": 25
+        },
+        {
+          "name": "blanket",
+          "x": 0.76,
+          "z": 0.63,
+          "y": 0.6,
+          "angle": -115
+        },
+        {
+          "name": "blanket",
+          "x": 0.76,
+          "z": 0.63,
+          "y": 0.86,
+          "angle": 30
+        },
+        {
+          "name": "blanket",
+          "x": 1.55,
+          "z": 0.57,
+          "y": 0.36,
+          "angle": 10
+        },
+        {
+          "name": "blanket",
+          "x": 1.55,
+          "z": 0.57,
+          "y": 0.47,
+          "angle": -65
+        },
+        {
+          "name": "blanket",
+          "x": 1.55,
+          "z": 0.57,
+          "y": 0.58,
+          "angle": 25
+        },
+        {
+          "name": "blanket",
+          "x": 1.55,
+          "z": 0.57,
+          "y": 0.67,
+          "angle": 35
+        },
+        {
+          "name": "blanket",
+          "x": 1.55,
+          "z": 0.57,
+          "y": 0.75,
+          "angle": 65
+        },
+        {
+          "name": "blanket",
+          "x": 1.55,
+          "z": 0.57,
+          "y": 0.85,
+          "angle": -34
+        },
+        {
+          "name": "blanket",
+          "x": 1.54,
+          "z": 0.58,
+          "y": 0.94,
+          "angle": -48
+        }
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "groupCell03_toilette_button",
+          "mediaId": "06",
+          "opacity": 0.3
+        },
+        {
+          "fileName": "groupcell03_tileblanket_button",
+          "mediaId": "14",
+          "opacity": 0.5,
+          "doubleSide": false,
+          "opacityHighLight": 0.8
+        }
+      ],
+      "sound": {
+        "ambient": "anas_group"
+      }
+    },
+    {
+      "name": "circulation",
+      "slug": "corridor",
+      "objRoom": "obj/rooms/corridor.js",
+      "obj360": [
+        "corridor"
+      ],
+      "light": 1,
+      "camera": {
+        "position": {
+          "x": 0,
+          "y": 1.75,
+          "z": 0
+        },
+        "lookAt": {
+          "x": 0,
+          "y": 1.95,
+          "z": 1
+        },
+        "fov": 35,
+        "minPolar": 1.59,
+        "maxPolar": 1.59
+      },
+      "bodies": [
+        {
+          "name": "bodyStandA",
+          "x": -29.89,
+          "z": -8.39,
+          "y": 0.85,
+          "angle": 95
+        },
+        {
+          "name": "bodyStandB",
+          "x": -28.84,
+          "z": -8.32,
+          "y": 0.9,
+          "angle": 130
+        },
+        {
+          "name": "bodyStandA",
+          "x": 34.93,
+          "z": -15.58,
+          "y": 0.85,
+          "angle": 95
+        },
+        {
+          "name": "bodyStandB",
+          "x": 34.24,
+          "z": -16.36,
+          "y": 0.9,
+          "angle": 130
+        },
+        {
+          "name": "bodyStandA",
+          "x": 12.8,
+          "z": 30.35,
+          "y": 0.85,
+          "angle": 95
+        },
+        {
+          "name": "bodyStandB",
+          "x": 12.74,
+          "z": 29.65,
+          "y": 0.9,
+          "angle": 130
+        }
+      ],
+      "objects": [
+        {
+          "name": "corridor_torture_tools",
+          "x": 0,
+          "z": 0,
+          "y": 0,
+          "angle": 0
+        }
+      ],
+      "interactiveObjects": [
+        {
+          "fileName": "corridor_welcomepartybrahimi_button",
+          "mediaId": "12",
+          "opacity": 0.8,
+          "doubleSide": false,
+          "opacityHighLight": 0.8,
+          "colorHighlight": "#ff00ff",
+          "labelOffset": {
+            "x": 0,
+            "y": -50
+          }
+        },
+        {
+          "fileName": "corridor_soundsilence_button",
+          "mediaId": "11",
+          "opacity": 0.001,
+          "opacityHighLight": 0.4,
+          "colorHighlight": "#ff00ff",
+          "labelOffset": {
+            "x": 20,
+            "y": -30
+          }
+        },
+        {
+          "fileName": "corridor_walkthroughdulab_button",
+          "mediaId": "10",
+          "opacity": 0.8,
+          "doubleSide": false,
+          "opacityHighLight": 0.8,
+          "colorHighlight": "#ff00ff",
+          "labelOffset": {
+            "x": 20,
+            "y": 0
+          }
+        },
+        {
+          "fileName": "corridor_butApex",
+          "mediaId": "09",
+          "opacity": 1.0,
+          "opacityHighLight": 0.4,
+          "labelOffset": {
+            "x": -170,
+            "y": 10
+          }
+        }
+      ],
+      "sound": {
+        "ambient": "corridor"
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "name": "Samer",
+      "slug": "a"
+    },
+    {
+      "name": "Diab",
+      "slug": "b"
+    },
+    {
+      "name": "Jamal",
+      "slug": "c"
+    },
+    {
+      "name": "Salam",
+      "slug": "d"
+    },
+    {
+      "name": "Anas",
+      "slug": "e"
+    }
+  ]
+}

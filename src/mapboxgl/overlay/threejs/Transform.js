@@ -18,37 +18,47 @@ function rad(angle) {
 export var Projection = {
 
     R: 6378137,
-    MAX_LATITUDE: 85.0511287798,
     minZoom: 0,
     maxZoom: 22,
     nativeMaxZoom: 19,
 
+    RAD: Math.PI / 180,
+    METERS_PER_DEGREE: 6378137 * Math.PI / 180,
+    MAX_LATITUDE: 85.0511287798,
+
     project: function (lngLat) {
+        const rad = this.RAD,
+            metersPerDegree = this.METERS_PER_DEGREE,
+            max = this.MAX_LATITUDE;
+
         let ll = (lngLat instanceof Array)
             ? {lng: lngLat[0], lat: lngLat[1]}
             : {lng: lngLat.lng, lat: lngLat.lat};
 
-        let d = Math.PI / 180,
-            max = this.MAX_LATITUDE,
-            lat = Math.max(Math.min(max, ll.lat), -max),
-            sin = Math.sin(lat * d);
+        let lng = ll.lng, lat = Math.max(Math.min(max, ll.lat), -max);
+        let c;
+        if (lat === 0) {
+            c = 0;
+        } else {
+            c = Math.log(Math.tan((90 + lat) * rad / 2)) / rad;
+        }
+        return {x: lng * metersPerDegree, y: c * metersPerDegree};
 
-        return {
-            x: this.R * ll.lng * d,
-            y: this.R * Math.log((1 + sin) / (1 - sin)) / 2
-        };
     },
 
     unproject: function (point) {
-        var d = 180 / Math.PI;
-        var pt = point;
-        if (point instanceof Array) {
-            pt = {x: point[0], y: point[1]};
+        const x = point.x,
+            y = point.y;
+        const rad = this.RAD,
+            metersPerDegree = this.METERS_PER_DEGREE;
+        let c;
+        if (y === 0) {
+            c = 0;
+        } else {
+            c = y / metersPerDegree;
+            c = (2 * Math.atan(Math.exp(c * rad)) - Math.PI / 2) / rad;
         }
-        return {
-            lng: pt.x * d / this.R,
-            lat: (2 * Math.atan(Math.exp(pt.y / this.R)) - (Math.PI / 2)) * d
-        }
+        return {lng: wrap(x / metersPerDegree, -180, 180), lat: wrap(c, -this.MAX_LATITUDE, this.MAX_LATITUDE)};
     },
 
     locate: function (lngLat, dx, dy) {
@@ -90,7 +100,14 @@ export var Projection = {
             }
             this.resolutions = resolutions;
         }
-        return this.resolutions[Math.ceil(zoom)];
+        let z = (zoom | 0), length = this.resolutions.length;
+        z = z < 0 ? 0 : z > length - 1 ? length - 1 : z;
+        const res = this.resolutions[z];
+        if ((zoom | 0) === zoom && z !== length - 1) {
+            const next = this.resolutions[z + 1];
+            return res + (next - res) * (zoom - z);
+        }
+        return res;
     }
 };
 

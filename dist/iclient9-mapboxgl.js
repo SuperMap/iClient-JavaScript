@@ -52417,35 +52417,45 @@ function rad(angle) {
 var Projection = exports.Projection = {
 
     R: 6378137,
-    MAX_LATITUDE: 85.0511287798,
     minZoom: 0,
     maxZoom: 22,
     nativeMaxZoom: 19,
 
+    RAD: Math.PI / 180,
+    METERS_PER_DEGREE: 6378137 * Math.PI / 180,
+    MAX_LATITUDE: 85.0511287798,
+
     project: function project(lngLat) {
+        var rad = this.RAD,
+            metersPerDegree = this.METERS_PER_DEGREE,
+            max = this.MAX_LATITUDE;
+
         var ll = lngLat instanceof Array ? { lng: lngLat[0], lat: lngLat[1] } : { lng: lngLat.lng, lat: lngLat.lat };
 
-        var d = Math.PI / 180,
-            max = this.MAX_LATITUDE,
-            lat = Math.max(Math.min(max, ll.lat), -max),
-            sin = Math.sin(lat * d);
-
-        return {
-            x: this.R * ll.lng * d,
-            y: this.R * Math.log((1 + sin) / (1 - sin)) / 2
-        };
+        var lng = ll.lng,
+            lat = Math.max(Math.min(max, ll.lat), -max);
+        var c = void 0;
+        if (lat === 0) {
+            c = 0;
+        } else {
+            c = Math.log(Math.tan((90 + lat) * rad / 2)) / rad;
+        }
+        return { x: lng * metersPerDegree, y: c * metersPerDegree };
     },
 
     unproject: function unproject(point) {
-        var d = 180 / Math.PI;
-        var pt = point;
-        if (point instanceof Array) {
-            pt = { x: point[0], y: point[1] };
+        var x = point.x,
+            y = point.y;
+        var rad = this.RAD,
+            metersPerDegree = this.METERS_PER_DEGREE;
+        var c = void 0;
+        if (y === 0) {
+            c = 0;
+        } else {
+            c = y / metersPerDegree;
+            c = (2 * Math.atan(Math.exp(c * rad)) - Math.PI / 2) / rad;
         }
-        return {
-            lng: pt.x * d / this.R,
-            lat: (2 * Math.atan(Math.exp(pt.y / this.R)) - Math.PI / 2) * d
-        };
+        return { lng: wrap(x / metersPerDegree, -180, 180), lat: wrap(c, -this.MAX_LATITUDE, this.MAX_LATITUDE) };
     },
 
     locate: function locate(lngLat, dx, dy) {
@@ -52488,7 +52498,15 @@ var Projection = exports.Projection = {
             }
             this.resolutions = resolutions;
         }
-        return this.resolutions[Math.ceil(zoom)];
+        var z = zoom | 0,
+            length = this.resolutions.length;
+        z = z < 0 ? 0 : z > length - 1 ? length - 1 : z;
+        var res = this.resolutions[z];
+        if ((zoom | 0) === zoom && z !== length - 1) {
+            var next = this.resolutions[z + 1];
+            return res + (next - res) * (zoom - z);
+        }
+        return res;
     }
 };
 
@@ -55165,8 +55183,13 @@ var Vector3 = THREE.Vector3,
  * @extends mapboxgl.Evented{@linkdoc-mapboxgl/#evented}
  * @example
  *  var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
- *  //重写draw实现模型绘制
- *  threeLayer.draw = function (gl, scene, camera) {
+ *  //模型绘制
+ *  threeLayer.on("initialized", draw);
+ *  threeLayer.addTo(map);
+ *
+ *  function draw() {
+ *        var scene=threeLayer.getScene();
+ *            camera=threeLayer.getCamera();
  *        var light = new THREE.PointLight(0xffffff);
  *        camera.add(light);
  *        var material = new THREE.MeshPhongMaterial({color: 0xff0000});
@@ -55175,8 +55198,6 @@ var Vector3 = THREE.Vector3,
  *        //模型添加到3D场景
  *        scene.add(mesh);
  *  }
- *  threeLayer.addTo(map);
- *
  *
  * 叠加模型可以通过两种方式：<br>
  *          1.调用threeLayer.toThreeMesh直接将地理坐标转换成threejs 3D模型（适用于挤压模型，如城市建筑），然后添加到3D场景
@@ -55217,9 +55238,9 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
                 return null;
             }
             var center = this.getCoordinatesCenter(coordinates);
-            var centerPoint = this.lngLatToThreeVector3(center);
+            var centerPoint = this.lngLatToPosition(center);
             var outer = coordinates.map(function (coords) {
-                return _this2.lngLatToThreeVector3({
+                return _this2.lngLatToPosition({
                     lng: coords[0],
                     lat: coords[1]
                 }).sub(centerPoint);
@@ -55257,46 +55278,162 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
             });
             var bufferGeometry = new BufferGeometry().fromGeometry(geometry);
             var mesh = new Mesh(bufferGeometry, material);
-            var center = this.lngLatToThreeVector3(this.getCoordinatesCenter(coords));
+            var center = this.lngLatToPosition(this.getCoordinatesCenter(coords));
             mesh.position.set(center.x, center.y, -targetAmount);
             return mesh;
         }
 
         /**
+         * @function mapboxgl.supermap.ThreeLayer.prototype.addObject
+         * @description 设置threejs 3D对象的坐标（经纬度）
+         * @param object3D -{THREE.Object3D} threejs 3D对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+         * @param coordinate -{Array<number>|Object} 添加的three对象坐标（经纬度）
+         * @return {this} this
+         */
+
+    }, {
+        key: "addObject",
+        value: function addObject(object3D, coordinate) {
+            if (coordinate && object3D) {
+                this.setPosition(object3D, coordinate);
+            }
+            this.renderer && this.renderer.scene.add(object3D);
+        }
+
+        /**
+         * @function mapboxgl.supermap.ThreeLayer.prototype.getScene
+         * @description 获取threejs 场景对象
+         * @return {THREE.Scene} threejs 场景对象,参考：[THREE.Scene]{@link https://threejs.org/docs/index.html#api/scenes/Scene}
+         */
+
+    }, {
+        key: "getScene",
+        value: function getScene() {
+            return this.renderer.scene;
+        }
+
+        /**
+         * @function mapboxgl.supermap.ThreeLayer.prototype.getCamera
+         * @description 获取threejs 相机
+         * @return {THREE.Camera} threejs 相机。参考：[THREE.Camera]{@link https://threejs.org/docs/index.html#api/cameras/Camera}
+         */
+
+    }, {
+        key: "getCamera",
+        value: function getCamera() {
+            return this.renderer.camera;
+        }
+
+        /**
+         * @function mapboxgl.supermap.ThreeLayer.prototype.getThreeRenderer
+         * @description 获取threejs renderer
+         * @return {THREE.WebGLRenderer|THREE.CanvasRenderer} threejs renderer。参考：
+         *                      [THREE.WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
+         *                      [THREE.CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
+         */
+
+    }, {
+        key: "getThreeRenderer",
+        value: function getThreeRenderer() {
+            return this.renderer.context;
+        }
+
+        // /**
+        //  * @function mapboxgl.supermap.ThreeLayer.prototype.getObject
+        //  * @description 根据条件获取添加到场景中的对象
+        //  * @return {THREE.Object3D} threejs 3D对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+        //  */
+        // getObject(conditions) {
+        //     if(!conditions){
+        //         return;
+        //     }
+        //     var scene = this.getScene();
+        //     var objects = scene.children;
+        //     for(let obj of objects ){
+        //         for(let condition of conditions ){
+        //                 obj[condition]
+        //         }
+        //     }
+        // }
+
+
+        /**
+         * @function mapboxgl.supermap.ThreeLayer.prototype.clearMesh
+         * @description 清除所有threejs mesh对象
+         * @return {this} this
+         */
+
+    }, {
+        key: "clearMesh",
+        value: function clearMesh() {
+            var scene = this.renderer.scene;
+            if (!scene) {
+                return this;
+            }
+            for (var i = scene.children.length - 1; i >= 0; i--) {
+                if (scene.children[i] instanceof THREE.Mesh) {
+                    scene.remove(scene.children[i]);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * @function mapboxgl.supermap.ThreeLayer.prototype.clearAll
+         * @description 清除所有threejs 对象
+         * @param clearCamera -{boolean} 是否同时清除相机
+         * @return {this} this
+         */
+
+    }, {
+        key: "clearAll",
+        value: function clearAll(clearCamera) {
+            var scene = this.renderer.scene;
+            if (!scene) {
+                return this;
+            }
+            for (var i = scene.children.length - 1; i >= 0; i--) {
+                if (!clearCamera && scene.children[i] instanceof THREE.Camera) {
+                    continue;
+                }
+                scene.remove(scene.children[i]);
+            }
+            return this;
+        }
+
+        /**
          * @function mapboxgl.supermap.ThreeLayer.prototype.setPosition
-         * @description 设置threejs mesh对象的坐标（经纬度）
-         * @param mesh -{THREE.Mesh} threejs Mesh对象。参考：[THREE.Mesh]{@link https://threejs.org/docs/index.html#api/objects/Mesh}<br>
-         *                           Mesh对象可以通过本图层的[toThreeMesh]{@link mapboxgl.supermap.ThreeLayer.prototype.toThreeMesh}得到，<br>
-         *                           也可以是ThreeJS的其他[THREE.Mesh]{@link https://threejs.org/docs/index.html#api/objects/Mesh}及子类对象
-         * @param coordinate -{Array<number>} 坐标点
+         * @description 设置threejs 3D对象的坐标（经纬度）
+         * @param object3D -{THREE.Object3D} threejs 3D对象，参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象
+         * @param coordinate -{Array<number>|Object} 添加的three对象坐标（经纬度）
          * @return {this} this
          */
 
     }, {
         key: "setPosition",
-        value: function setPosition(mesh, coordinate) {
-            if (!mesh || !coordinate) {
+        value: function setPosition(object3D, coordinate) {
+            if (!object3D || !coordinate) {
                 return this;
             }
 
-            var pos = this.lngLatToThreeVector3(coordinate);
-            mesh.position.set(pos.x, pos.y, pos.z);
+            var pos = this.lngLatToPosition(coordinate);
+            object3D.position.set(pos.x, pos.y, pos.z);
             return this;
         }
 
         /**
-         * @function mapboxgl.supermap.ThreeLayer.prototype.lngLatToThreeVector3
+         * @function mapboxgl.supermap.ThreeLayer.prototype.lngLatToPosition
          * @description 经纬度转threejs 3D失量对象
          * @param lngLat -{Array<number>|Object} 经纬度坐标
          * @return {THREE.Vector3} threejs 3D失量对象。参考：[THREE.Vector3]{@link https://threejs.org/docs/index.html#api/math/Vector3}
          */
 
     }, {
-        key: "lngLatToThreeVector3",
-        value: function lngLatToThreeVector3(lngLat) {
+        key: "lngLatToPosition",
+        value: function lngLatToPosition(lngLat) {
             var zoom = _threejs.Transform.projection.nativeMaxZoom;
             var point = _threejs.Transform.lngLatToPoint(lngLat, zoom);
-            return new Vector3(point.x, point.y, zoom);
+            return new Vector3(point.x, point.y, -0);
         }
 
         /**
@@ -55394,10 +55531,10 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
             me._map = map;
             me.renderer.setMap(map);
             me.renderer.render();
-
+            this._moving = false;
             //three mbgl 联动(仅联动相机,不执行重绘操作)
-            me._map.on('move', this.renderScene.bind(me));
-            me._map.on('resize', this.resize.bind(me));
+            me._map.on('move', this._update.bind(me));
+            me._map.on('resize', this._resize.bind(me));
 
             return this;
         }
@@ -55436,8 +55573,8 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
         value: function remove() {
             var map = this._map,
                 me = this;
-            map.off('move', me.renderScene.bind(me));
-            map.off('resize', me.resize.bind(me));
+            map.off('move', me._update.bind(me));
+            map.off('resize', me._resize.bind(me));
             me.renderer.remove();
             me._map = null;
         }
@@ -55453,15 +55590,9 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
          * @return {this} this
          * @example
          *  var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
-         *  //重写draw实现模型绘制
+         *  //可以通过重写draw实现模型绘制
          *  threeLayer.draw = function (gl, scene, camera) {
-         *        var light = new THREE.PointLight(0xffffff);
-         *        camera.add(light);
-         *        var material = new THREE.MeshPhongMaterial({color: 0xff0000});
-         *        //根据坐标点转换成模型
-         *        var mesh = this.toThreeMesh(feature.geometry.coordinates, 10, material, true);
-         *        //模型添加到3D场景
-         *        scene.add(mesh);
+         *        //TODO 绘制操作
          *  }
          *  threeLayer.addTo(map);
          */
@@ -55482,22 +55613,39 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
     }, {
         key: "renderScene",
         value: function renderScene() {
-            //this.renderer.prepare();
             this.renderer.renderScene();
+            /**
+             * renderScene 事件，场景渲染后触发
+             * @event mapboxgl.supermap.ThreeLayer#renderScene
+             * @type {Object}
+             * @property {string} type  - renderScene
+             * @property {Object} target  - layer
+             */
             this.fire("renderScene");
             return this;
         }
-
-        /**
-         * @function mapboxgl.supermap.ThreeLayer.prototype.resize
-         * @description 重置图层大小
-         * @return {this} this
-         */
-
     }, {
-        key: "resize",
-        value: function resize() {
+        key: "_resize",
+        value: function _resize() {
             this.renderer.resize();
+        }
+    }, {
+        key: "_update",
+        value: function _update() {
+            if (!this._moving) {
+                this._moving = !!1;
+                this.renderScene();
+                this._moving = !!0;
+                /**
+                 * move事件，地图移动时触发
+                 * @event mapboxgl.supermap.ThreeLayer#move
+                 * @type {Object}
+                 * @property {string} type  - move
+                 * @property {Object} target  - layer
+                 */
+                this.fire('move');
+            }
+            return this;
         }
     }]);
 
@@ -81356,13 +81504,9 @@ var Color = THREE.Color,
 
 var RADIAN = Math.PI / 180;
 
-var RequestAnimateFrame = function () {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
-}();
+var frame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
-var CancelAnimateFrame = function () {
-    return window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || window.msCancelAnimationFrame;
-}();
+var cancel = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
 
 /**
  * @private
@@ -81385,6 +81529,9 @@ var ThreeLayerRenderer = exports.ThreeLayerRenderer = function () {
         this._layer = layer;
         this.renderer = renderer || "gl";
         this.options = options;
+
+        var layerOpt = this._layer.options;
+        this.forceRefresh = layerOpt != null ? layerOpt.forceRefresh : false;
     }
 
     _createClass(ThreeLayerRenderer, [{
@@ -81402,8 +81549,22 @@ var ThreeLayerRenderer = exports.ThreeLayerRenderer = function () {
                 return;
             }
             this.prepare();
-            this._layer.fire("prepare");
+            /**
+             * initialized事件, 初始化好three后触发
+             * @event mapboxgl.supermap.ThreeLayer#prepare
+             * @type {Object}
+             * @property {string} type  - prepare
+             * @property {Object} target  - layer
+             */
+            this._layer.fire("initialized");
             this._layer && this._layer.draw(this.context, this.scene, this.camera);
+            /**
+             * draw绘制事件, 调用提供给外部绘制的接口后触发
+             * @event mapboxgl.supermap.ThreeLayer#draw
+             * @type {Object}
+             * @property {string} type  - draw
+             * @property {Object} target  - layer
+             */
             this._layer.fire("draw");
             this.renderScene();
         }
@@ -81419,20 +81580,28 @@ var ThreeLayerRenderer = exports.ThreeLayerRenderer = function () {
     }, {
         key: "renderScene",
         value: function renderScene() {
-            this.locationCamera();
-            this.renderFrame();
+            var me = this;
+            me.locationCamera();
+            me.animationFrame = this.renderFrame(function () {
+                me.animationFrame = null;
+                me.context && me.context.render(me.scene, me.camera);
+            });
         }
     }, {
         key: "renderFrame",
-        value: function renderFrame() {
-            var me = this;
-
-            function renderAnimateFrame() {
-                me.animationFrame = RequestAnimateFrame(renderAnimateFrame);
-                me.context && me.context.render(me.scene, me.camera);
+        value: function renderFrame(fn) {
+            var _render;
+            if (this.forceRefresh) {
+                _render = function render() {
+                    fn && typeof fn === "function" && fn();
+                    return frame(_render);
+                };
+            } else {
+                _render = function _render() {
+                    fn && typeof fn === "function" && fn();
+                };
             }
-
-            renderAnimateFrame();
+            return frame(_render);
         }
     }, {
         key: "resize",
@@ -81460,6 +81629,13 @@ var ThreeLayerRenderer = exports.ThreeLayerRenderer = function () {
             if (!this.canvas) {
                 this._initContainer();
                 this._initThreeRenderer();
+                /**
+                 * rendererinitialized事件，初始化three渲染器后触发
+                 * @event mapboxgl.supermap.ThreeLayer#rendererinitialized
+                 * @type {Object}
+                 * @property {string} type  - rendererinitialized
+                 * @property {Object} target  - layer
+                 */
                 this._layer.fire("rendererinitialized");
             } else {
                 this.clear(this.context);
@@ -81472,10 +81648,17 @@ var ThreeLayerRenderer = exports.ThreeLayerRenderer = function () {
             return { width: container.clientWidth, height: container.clientHeight };
         }
     }, {
+        key: "cancelFrame",
+        value: function cancelFrame() {
+            if (this.animationFrame != null) {
+                cancel(this.animationFrame);
+            }
+        }
+    }, {
         key: "remove",
         value: function remove() {
             if (this.animationFrame != null) {
-                CancelAnimateFrame(this.animationFrame);
+                cancel(this.animationFrame);
             }
             this.container.removeChild(this.canvas);
             this.container.parentNode.removeChild(this.container);
@@ -81607,6 +81790,7 @@ var ThreeLayerRenderer = exports.ThreeLayerRenderer = function () {
                 context = new WebGLRenderer({
                     'canvas': this.canvas,
                     'alpha': true,
+                    'antialias': true,
                     'preserveDrawingBuffer': true
                 }, this.options);
             } else {
