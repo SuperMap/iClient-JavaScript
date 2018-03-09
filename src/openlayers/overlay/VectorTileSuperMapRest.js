@@ -287,7 +287,7 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             extent: extent,
             resolutions: resolutions
         });
-        // options.projection = 'EPSG:' + mapJSONObj.prjCoordSys.epsgCode;
+        //options.projection = 'EPSG:' + mapJSONObj.prjCoordSys.epsgCode;
         return options;
     }
 }

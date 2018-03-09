@@ -152,7 +152,6 @@
         });
         map.addLayer(layer);
         initThemeLayer();
-        initLegendView();
     });
 
     function initThemeLayer() {
@@ -245,11 +244,6 @@
             labelFeatures.push(feat);
         }
         themeSource.addFeatures(labelFeatures);
-    }
-
-    //图例
-    function initLegendView() {
-        document.getElementById("mapLegend").style.display = "block";
     }
 
     //图层信息框
