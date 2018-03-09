@@ -1,29 +1,30 @@
-require('../../../src/leaflet/services/GridCellInfosService');
+import {gridCellInfosService} from '../../../src/leaflet/services/GridCellInfosService';
+import {GetGridCellInfosParameters} from '../../../src/common/iServer/GetGridCellInfosParameters';
 
 var url = GlobeParameter.dataServiceURL;
-describe('leaflet_GridCellInfosService', function () {
+describe('leaflet_GridCellInfosService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('initialize', function () {
-        var gridCellInfosService = L.supermap.gridCellInfosService(url);
-        expect(gridCellInfosService.url).toEqual(url);
+    it('initialize', () => {
+        var gridCellInfoService = gridCellInfosService(url);
+        expect(gridCellInfoService.url).toEqual(url);
     });
 
-    it('getGridCellInfos', function () {
-        var params = new SuperMap.GetGridCellInfosParameters({
+    it('getGridCellInfos', () => {
+        var params = new GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: 4,
             Y: 20
         });
-        L.supermap.gridCellInfosService(url).getGridCellInfos(params, function (serviceResult) {
+        gridCellInfosService(url).getGridCellInfos(params, (serviceResult) => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.succeed).toBeTruthy();

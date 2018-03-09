@@ -1,34 +1,35 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {GetFeaturesByBoundsParameters} from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_FeatureService_getFeaturesByBounds', function () {
+describe('leaflet_FeatureService_getFeaturesByBounds', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:getFeaturesByBounds_returnContent=true', function (done) {
+    it('successEvent:getFeaturesByBounds_returnContent=true', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBoundsParams = new SuperMap.GetFeaturesByBoundsParameters({
+        var getFeaturesByBoundsParams = new GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getBounds(),
             returnContent: true
         });
-        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
+        var getFeaturesByBoundsService = featureService(dataServiceURL, options);
+        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
                 expect(getFeaturesByBoundsService.options.serverType).toBe("iServer");
@@ -75,18 +76,18 @@ describe('leaflet_FeatureService_getFeaturesByBounds', function () {
         }, 2000)
     });
 
-    it('successEvent:getFeaturesByBounds_returnContent=false', function (done) {
+    it('successEvent:getFeaturesByBounds_returnContent=false', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBoundsParams = new SuperMap.GetFeaturesByBoundsParameters({
+        var getFeaturesByBoundsParams = new GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getBounds(),
             returnContent: false
         });
-        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
+        var getFeaturesByBoundsService = featureService(dataServiceURL, options);
+        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
                 expect(getFeaturesByBoundsService.options.serverType).toBe("iServer");
@@ -108,17 +109,17 @@ describe('leaflet_FeatureService_getFeaturesByBounds', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByBounds_datasetNotExist', function (done) {
+    it('failEvent:getFeaturesByBounds_datasetNotExist', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBoundsParams = new SuperMap.GetFeaturesByBoundsParameters({
+        var getFeaturesByBoundsParams = new GetFeaturesByBoundsParameters({
             datasetNames: ["World1:Capitals"],
             bounds: polygon.getBounds()
         });
-        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
+        var getFeaturesByBoundsService = featureService(dataServiceURL, options);
+        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBoundsService).not.toBeNull();
                 expect(getFeaturesByBoundsService.options.serverType).toBe("iServer");
@@ -130,7 +131,6 @@ describe('leaflet_FeatureService_getFeaturesByBounds', function () {
                 getFeaturesByBoundsService.destroy();
                 done();
             } catch (exception) {
-
                 console.log("leafletGetFeaturesByBoundsService_'failEvent:datasetNotExist'案例失败：" + exception.name + ":" + exception.message);
                 getFeaturesByBoundsService.destroy();
                 expect(false).toBeTruthy();

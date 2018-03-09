@@ -1,22 +1,24 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {RouteLocatorParameters} from '../../../src/common/iServer/RouteLocatorParameters';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_routeLocate', function () {
+
+describe('leaflet_SpatialAnalystService_routeLocate', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('routeLocate', function (done) {
+    it('routeLocate', (done) => {
         var pointsList = [
             [-4377.027184298267, 4020.0045221720466, 0],
             [-4381.569363260499, 4057.0600591960642, 37.33288381391519],
@@ -26,18 +28,18 @@ describe('leaflet_SpatialAnalystService_routeLocate', function () {
             [-4382.389670274902, 4247.756955878764, 228.1071814489743]
         ];
         var routeLine = L.polyline(pointsList);
-        var routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
+        var routeLocatorParameters_line = new RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "LINE",
             "startMeasure": 10,
             "endMeasure": 800,
             "isIgnoreGap": true
         });
-        var routeLocatorService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        routeLocatorService.routeLocate(routeLocatorParameters_line, function (result) {
+        var routeLocatorService = spatialAnalystService(spatialAnalystURL, options);
+        routeLocatorService.routeLocate(routeLocatorParameters_line, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(routeLocatorService).not.toBeNull();
                 expect(routeLocatorService.options.serverType).toBe('iServer');

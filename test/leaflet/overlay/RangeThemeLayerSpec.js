@@ -1,10 +1,12 @@
-require('../../../src/leaflet/overlay/RangeThemeLayer');
+import {rangeThemeLayer} from '../../../src/leaflet/overlay/RangeThemeLayer';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图";
-describe('leaflet_RangeThemeLayer', function () {
+describe('leaflet_RangeThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -19,33 +21,33 @@ describe('leaflet_RangeThemeLayer', function () {
             maxZoom: 18,
             zoom: 7
         });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        tiledMapLayer(baseUrl).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('getStyleByData', function () {
-        var rangeThemeLayer = L.supermap.rangeThemeLayer("ThemeLayer", {
+    it('getStyleByData', () => {
+        var themeLayer = rangeThemeLayer("ThemeLayer", {
             // 开启 hover 高亮效果
             isHoverAble: true,
             opacity: 0.8
         });
-        rangeThemeLayer.style = new SuperMap.ThemeStyle({
+        themeLayer.style = new ThemeStyle({
             shadowBlur: 16,
             shadowColor: "#000000",
             fillColor: "#FFFFFF"
         });
         // hover 高亮样式
-        rangeThemeLayer.highlightStyle = new SuperMap.ThemeStyle({
+        themeLayer.highlightStyle = new ThemeStyle({
             stroke: true,
             strokeWidth: 4,
             strokeColor: 'blue',
@@ -53,9 +55,9 @@ describe('leaflet_RangeThemeLayer', function () {
             fillOpacity: 0.8
         });
         // 用于单值专题图的属性字段名称
-        rangeThemeLayer.themeField = "POP_DENSITY99";
+        themeLayer.themeField = "POP_DENSITY99";
         // 风格数组，设定值对应的样式
-        rangeThemeLayer.styleGroups = [{
+        themeLayer.styleGroups = [{
             start: 0,
             end: 0.02,
             style: {
@@ -109,7 +111,7 @@ describe('leaflet_RangeThemeLayer', function () {
             id: "SuperMap.Feature.Vector_466"
         };
         feature.data = feature.attributes;
-        var result = rangeThemeLayer.getStyleByData(feature);
+        var result = themeLayer.getStyleByData(feature);
         expect(result).not.toBeNull();
         expect(result.fill).toBeTruthy();
         expect(result.fontSize).toBe(12);

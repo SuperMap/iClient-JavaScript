@@ -1,26 +1,27 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
-var request = require('request');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
+import request from 'request';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
-
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', function () {
+
+describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "MathExpressionAnalysis_leafletTest";
-    it('mathExpressionAnalysis', function (done) {
-        var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+    it('mathExpressionAnalysis', (done) => {
+        var mathExpressionAnalysisParams = new MathExpressionAnalysisParameters({
             //指定数据集,必设
             dataset: "JingjinTerrain@Jingjin",
             //要执行的栅格运算代数表达式,必设
@@ -31,11 +32,11 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', function () {
             resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
-        var mathExpressionAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        mathExpressionAnalystService.densityAnalysis(mathExpressionAnalysisParameters, function (result) {
+        var mathExpressionAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        mathExpressionAnalystService.densityAnalysis(mathExpressionAnalysisParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(mathExpressionAnalystService).not.toBeNull();
                 expect(mathExpressionAnalystService.options.serverType).toBe('iServer');

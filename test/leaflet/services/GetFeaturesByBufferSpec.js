@@ -1,25 +1,26 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {GetFeaturesByBufferParameters} from '../../../src/common/iServer/GetFeaturesByBufferParameters';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_FeatureService_getFeaturesByBuffer', function () {
+describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:getFeaturesByBuffer_returnContent=true', function (done) {
+    it('successEvent:getFeaturesByBuffer_returnContent=true', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
+        var getFeaturesByBufferParams = new GetFeaturesByBufferParameters({
             returnContent: true,
             datasetNames: ["World:Capitals"],
             attributeFilter: "SMID>0",
@@ -28,11 +29,11 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', function () {
             fromIndex: 0,
             toIndex: 19
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -79,20 +80,20 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', function () {
         }, 2000)
     });
 
-    it('successEvent:getFeaturesByBuffer_returnContent=false', function (done) {
+    it('successEvent:getFeaturesByBuffer_returnContent=false', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
+        var getFeaturesByBufferParams = new GetFeaturesByBufferParameters({
             returnContent: false,
             datasetNames: ["World:Capitals"],
             attributeFilter: "SMID>0",
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -114,19 +115,19 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByBuffer_datasetNotExist', function (done) {
+    it('failEvent:getFeaturesByBuffer_datasetNotExist', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
+        var getFeaturesByBufferParams = new GetFeaturesByBufferParameters({
             datasetNames: ["World1:Capitals"],
             attributeFilter: "SMID>0",
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");
@@ -146,19 +147,19 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByBuffer_datasetNamesNull', function (done) {
+    it('failEvent:getFeaturesByBuffer_datasetNamesNull', (done) => {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
-        var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
+        var getFeaturesByBufferParams = new GetFeaturesByBufferParameters({
             datasetNames: null,
             attributeFilter: "SMID>0",
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesByBufferService.options.serverType).toBe("iServer");

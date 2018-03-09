@@ -1,23 +1,26 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
+import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
 
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1, id2;
 var originFeature = null;
-describe('leaflet_FeatureService_editFeatures_Region', function () {
+
+describe('leaflet_FeatureService_editFeatures_Region', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     // 增加REGION要素，returnContent为true
-    it('successEvent:add_REGION', function (done) {
+    it('successEvent:add_REGION', (done) => {
         var addFeatureResult_REGION = null;
         var polygon = L.polygon([[38.837029131724, 118.05408801141], [38.606951847395, 117.80757663534], [38.530259419285, 118.43207212138], [38.837029131724, 118.05408801141]]);
-        var addFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var addFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             features: polygon,
@@ -25,11 +28,11 @@ describe('leaflet_FeatureService_editFeatures_Region', function () {
             returnContent: true,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeatureResult_REGION = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_REGION.type).toBe("processCompleted");
@@ -53,10 +56,10 @@ describe('leaflet_FeatureService_editFeatures_Region', function () {
     });
 
     // 增加REGION要素，returnContent为false
-    it('successEvent:add_returnContent=false', function (done) {
+    it('successEvent:add_returnContent=false', (done) => {
         var addFeatureResult = null;
         var polygon = L.polygon([[37.837029131724, 117.05408801141], [37.606951847395, 116.80757663534], [37.530259419285, 117.43207212138], [37.837029131724, 117.05408801141]]);
-        var addFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var addFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             features: polygon,
@@ -64,11 +67,11 @@ describe('leaflet_FeatureService_editFeatures_Region', function () {
             returnContent: false,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeatureResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult.type).toBe("processCompleted");
@@ -94,19 +97,19 @@ describe('leaflet_FeatureService_editFeatures_Region', function () {
     });
 
     //  批量删除要素
-    it('successEvent:delete', function (done) {
+    it('successEvent:delete', (done) => {
         var deleteFeatureResult = null;
-        var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var deleteFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             IDs: [id1, id2],
             editType: "delete"
         });
-        var deleteFeaturesService = L.supermap.featureService(editServiceURL);
-        deleteFeaturesService.editFeatures(deleteFeaturesParams, function (result) {
+        var deleteFeaturesService = featureService(editServiceURL);
+        deleteFeaturesService.editFeatures(deleteFeaturesParams, (result) => {
             deleteFeatureResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(deleteFeaturesService).not.toBeNull();
                 expect(deleteFeatureResult).not.toBeNull();
@@ -128,18 +131,18 @@ describe('leaflet_FeatureService_editFeatures_Region', function () {
 
     // 更新要素
     // 首先确认从服务器上获取一个有效要素
-    it('getFeatureForUpdate', function (done) {
+    it('getFeatureForUpdate', (done) => {
         var getFeatureResult = null;
-        var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
+        var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             returnContent: true,
             datasetNames: ["Jingjin:Landuse_R"],
             IDs: [1]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(editServiceURL);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = featureService(editServiceURL);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             getFeatureResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             if (getFeatureResult != null) {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeatureResult.type).toBe("processCompleted");
@@ -157,22 +160,22 @@ describe('leaflet_FeatureService_editFeatures_Region', function () {
         }, 4000)
     });
     // 将上面获取的要素update
-    it('successEvent:update', function (done) {
+    it('successEvent:update', (done) => {
         var updateFeatureResult = null;
         if (originFeature != null) {
             var random = parseInt(Math.random() * 10000000);
             originFeature.properties.LANDTYPE = "用材林" + random;
-            var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
+            var updateFeaturesParams = new EditFeaturesParameters({
                 dataSourceName: "Jingjin",
                 dataSetName: "Landuse_R",
                 features: originFeature,
                 editType: "update"
             });
-            var updateFeaturesService = L.supermap.featureService(editServiceURL);
-            updateFeaturesService.editFeatures(updateFeaturesParams, function (result) {
+            var updateFeaturesService = featureService(editServiceURL);
+            updateFeaturesService.editFeatures(updateFeaturesParams, (result) => {
                 updateFeatureResult = result
             });
-            setTimeout(function () {
+            setTimeout(() => {
                 if (updateFeatureResult != null) {
                     try {
                         console.log(updateFeatureResult);

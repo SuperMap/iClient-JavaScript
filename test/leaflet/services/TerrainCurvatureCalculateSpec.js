@@ -1,32 +1,33 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
-var request = require('request');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {TerrainCurvatureCalculationParameters} from '../../../src/common/iServer/TerrainCurvatureCalculationParameters';
+import request from 'request';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () {
+describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', ()=> {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(()=> {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(()=> {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "TerrainCurvature_leafletTest";
-    it('terrainCurvatureCalculate', function (done) {
-        var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+    it('terrainCurvatureCalculate', (done)=> {
+        var terrainCurvatureCalculationParams = new TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: resultDataset,
             deleteExistResultDataset: true
         });
-        var terrainCurvatureCalculationService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (result) {
+        var terrainCurvatureCalculationService = spatialAnalystService(spatialAnalystURL, options);
+        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParams, (result)=> {
             serviceResult = result;
             try {
                 expect(terrainCurvatureCalculationService).not.toBeNull();
@@ -49,7 +50,7 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done)=> {
         var testResult = GlobeParameter.datajingjinURL + resultDataset;
         request.delete(testResult);
         done();

@@ -1,10 +1,13 @@
-require('../../../src/leaflet/overlay/GraphicLayer');
+import {graphicLayer} from '../../../src/leaflet/overlay/GraphicLayer';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {circleStyle} from '../../../src/leaflet/overlay/graphic/CircleStyle';
+import {graphic} from '../../../src/leaflet/overlay/graphic/Graphic';
 
 var url = "http://supermapiserver:8090/iserver/services/map-world/rest/maps/World";
-describe('leaflet_GraphicLayer', function () {
+describe('leaflet_GraphicLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -21,27 +24,27 @@ describe('leaflet_GraphicLayer', function () {
             maxZoom: 18,
             zoom: 1
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        tiledMapLayer(url).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         map.remove();
         window.document.body.removeChild(testDiv);
     });
 
-    it('initialize', function (done) {
+    it('initialize', (done) => {
         var colorCount = 5, count = 5;
         var graphics = [];
         var e = 45;
         var randomCircleStyles = [];
         for (var i = 0; i < colorCount; i++) {
-            randomCircleStyles.push(L.supermap.circleStyle({
+            randomCircleStyles.push(circleStyle({
                 color: '#3388ff',
                 opacity: 1,
                 radius: 2,
@@ -52,29 +55,28 @@ describe('leaflet_GraphicLayer', function () {
         }
         for (var j = 0; j < count; ++j) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-            graphics[j] = L.supermap.graphic({
+            graphics[j] = graphic({
                 _latlng: L.latLng(coordinates[0], coordinates[1]),
                 _canvas: randomCircleStyles[Math.floor(Math.random() * colorCount)].getCanvas()
             });
         }
-        var graphicLayer = L.supermap.graphicLayer(graphics).addTo(map);
-
-        setTimeout(function () {
-            expect(graphicLayer.graphics.length).toEqual(count);
-            for (var i = 0; i < graphicLayer.graphics.length; i++) {
-                expect(graphicLayer.graphics[i]._canvas).not.toBeNull();
-                expect(graphicLayer.graphics[i]._latlng).not.toBeNull();
+        var layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            expect(layer.graphics.length).toEqual(count);
+            for (var i = 0; i < layer.graphics.length; i++) {
+                expect(layer.graphics[i]._canvas).not.toBeNull();
+                expect(layer.graphics[i]._latlng).not.toBeNull();
             }
-            var isContainsPoint = graphicLayer._containsPoint();
+            var isContainsPoint = layer._containsPoint();
             expect(isContainsPoint).not.toBe("false");
             //map.remove()时，canvas渲染的场景下render会先移除canvas的ctx，而path的移除会有重绘操作。
             //从而引起刷新延迟会报错，故在此移除重绘
-            graphicLayer.on('remove', function () {
-                var requestAnimId = map.getRenderer(graphicLayer)._redrawRequest;
+            layer.on('remove', () => {
+                var requestAnimId = map.getRenderer(layer)._redrawRequest;
                 (requestAnimId != null) && L.Util.cancelAnimFrame(requestAnimId);
                 done();
             });
-            graphicLayer.remove();
+            layer.remove();
         }, 1000)
     });
 });

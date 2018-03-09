@@ -1,10 +1,10 @@
-var TextSymbolizer = require('../../../../src/leaflet/overlay/vectortile/TextSymbolizer').TextSymbolizer;
-var SVGRenderer = require('../../../../src/leaflet/overlay/vectortile/SVGRenderer').SVGRenderer;
-var CanvasRenderer = require('../../../../src/leaflet/overlay/vectortile/CanvasRenderer').CanvasRenderer;
+import {TextSymbolizer} from '../../../../src/leaflet/overlay/vectortile/TextSymbolizer';
+import {SVGRenderer} from '../../../../src/leaflet/overlay/vectortile/SVGRenderer';
+import {CanvasRenderer} from '../../../../src/leaflet/overlay/vectortile/CanvasRenderer';
 
-describe('leaflet_TextSymbolizer', function () {
+describe('leaflet_TextSymbolizer', () => {
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -18,10 +18,10 @@ describe('leaflet_TextSymbolizer', function () {
             zoom: 10
         });
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
-    it('initialize', function () {
+    it('initialize', () => {
         var feature1 = {
             geometry: [{x: 10, y: 10, type: "Point"}],
             id: "1",
@@ -85,8 +85,8 @@ describe('leaflet_TextSymbolizer', function () {
     });
 
     //SVGRenderer
-    it('render_svgRenderer', function () {
-        var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
+    it('render_svgRenderer', () => {
+        var svgRender = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
         var feature1 = {
             geometry: [{x: 10, y: 10, type: "Point"}],
             type: "Feature",
@@ -106,7 +106,7 @@ describe('leaflet_TextSymbolizer', function () {
             interactive: true,
         };
         var textSymbolizer1 = new TextSymbolizer(feature1);
-        textSymbolizer1.render(svgRenderer, style);
+        textSymbolizer1.render(svgRender, style);
         expect(textSymbolizer1.options).not.toBeNull();
         expect(textSymbolizer1.options.interactive).toBeTruthy();
         expect(textSymbolizer1.properties.texts[0]).toEqual("test");
@@ -120,7 +120,7 @@ describe('leaflet_TextSymbolizer', function () {
         expect(textSymbolizer1._renderer._tileCoord.x).toEqual(1686);
         expect(textSymbolizer1._renderer._tileCoord.y).toEqual(755);
         var textSymbolizer2 = new TextSymbolizer(feature2);
-        textSymbolizer2.render(svgRenderer, style);
+        textSymbolizer2.render(svgRender, style);
         expect(textSymbolizer2.options).not.toBeNull();
         expect(textSymbolizer2.options.interactive).toBeTruthy();
         expect(textSymbolizer2.properties).not.toBeNull();
@@ -132,8 +132,8 @@ describe('leaflet_TextSymbolizer', function () {
         expect(textSymbolizer2._renderer).not.toBeNull();
     });
 
-    it('makeInteractive_svgRenderer', function () {
-        var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
+    it('makeInteractive_svgRenderer', () => {
+        var svgRender = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
             type: "Feature",
@@ -146,13 +146,13 @@ describe('leaflet_TextSymbolizer', function () {
         };
         var textSymbolizer1 = new TextSymbolizer(feature);
         spyOn(textSymbolizer1, '_updateBounds').and.callThrough();
-        textSymbolizer1.render(svgRenderer, style);
+        textSymbolizer1.render(svgRender, style);
         textSymbolizer1.makeInteractive();
         expect(textSymbolizer1._updateBounds).toHaveBeenCalled();
     });
 
-    it('updateStyle_svgRenderer', function () {
-        var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
+    it('updateStyle_svgRenderer', () => {
+        var svgRender = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
             type: "Feature",
@@ -165,14 +165,14 @@ describe('leaflet_TextSymbolizer', function () {
         };
         var textSymbolizer1 = new TextSymbolizer(feature);
         spyOn(textSymbolizer1, '_updateBounds').and.callThrough();
-        textSymbolizer1.render(svgRenderer, style);
-        textSymbolizer1.updateStyle(svgRenderer, style);
+        textSymbolizer1.render(svgRender, style);
+        textSymbolizer1.updateStyle(svgRender, style);
         expect(textSymbolizer1._updateBounds).toHaveBeenCalled();
     });
 
     //CanvasRenderer
-    it('render, makeInteractive, updateStyle', function () {
-        var canvasRenderer = new CanvasRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256}, {interactive: true});
+    it('render, makeInteractive, updateStyle', () => {
+        var canvasRender = new CanvasRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256}, {interactive: true});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
             type: "Feature",
@@ -183,17 +183,15 @@ describe('leaflet_TextSymbolizer', function () {
         var style = {
             interactive: true,
         };
-        canvasRenderer.addTo(map);
-
+        canvasRender.addTo(map);
         var textSymbolizer1 = new TextSymbolizer(feature);
-
         spyOn(textSymbolizer1, '_updateBounds').and.callThrough();
-        textSymbolizer1.render(canvasRenderer, style);
+        textSymbolizer1.render(canvasRender, style);
         textSymbolizer1.makeInteractive();
-        textSymbolizer1.updateStyle(canvasRenderer, style);
+        textSymbolizer1.updateStyle(canvasRender, style);
         expect(textSymbolizer1._updateBounds).toHaveBeenCalled();
         expect(textSymbolizer1._updateBounds.calls.count()).toEqual(2);
-        var tileCoord = canvasRenderer.getCoord();
+        var tileCoord = canvasRender.getCoord();
         expect(tileCoord).not.toBeNull();
         expect(tileCoord.x).toEqual(1686);
         expect(tileCoord.y).toEqual(755);

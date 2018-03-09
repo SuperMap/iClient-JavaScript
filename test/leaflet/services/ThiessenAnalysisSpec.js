@@ -1,30 +1,31 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
-describe('leaflet_SpatialAnalystService_thiessenAnalysis', function () {
+describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('thiessenAnalysis', function (done) {
-        var dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+    it('thiessenAnalysis', (done) => {
+        var dsThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
-        var thiessenAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, function (result) {
+        var thiessenAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(thiessenAnalystService).not.toBeNull();
                 expect(thiessenAnalystService.options.serverType).toBe('iServer');

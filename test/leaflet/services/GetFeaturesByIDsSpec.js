@@ -1,33 +1,34 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_FeatureService_getFeaturesByIDs', function () {
+describe('leaflet_FeatureService_getFeaturesByIDs', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:getFeaturesByIDs_returnContent=true', function (done) {
-        var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
+    it('successEvent:getFeaturesByIDs_returnContent=true', (done) => {
+        var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             returnContent: true,
             datasetNames: ["World:Capitals"],
             IDs: [1, 2, 3]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -74,17 +75,17 @@ describe('leaflet_FeatureService_getFeaturesByIDs', function () {
         }, 2000)
     });
 
-    it('successEvent:getFeaturesByIDs_returnContent=false', function (done) {
-        var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
+    it('successEvent:getFeaturesByIDs_returnContent=false', (done) => {
+        var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             returnContent: false,
             datasetNames: ["World:Capitals"],
             IDs: [1, 2, 3]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -106,16 +107,16 @@ describe('leaflet_FeatureService_getFeaturesByIDs', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByIDs_datasetNotExist', function (done) {
-        var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
+    it('failEvent:getFeaturesByIDs_datasetNotExist', (done) => {
+        var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             datasetNames: ["World1:Capitals"],
             IDs: [1, 2, 3]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");
@@ -135,15 +136,15 @@ describe('leaflet_FeatureService_getFeaturesByIDs', function () {
         }, 2000);
     });
 
-    it('failEvent:getFeaturesByIDs_datasetNamesNull', function (done) {
-        var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
+    it('failEvent:getFeaturesByIDs_datasetNamesNull', (done) => {
+        var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             datasetNames: null
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesByIDsService.options.serverType).toBe("iServer");

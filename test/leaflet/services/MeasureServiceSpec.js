@@ -1,29 +1,30 @@
-require('../../../src/leaflet/services/MeasureService');
+import {measureService} from '../../../src/leaflet/services/MeasureService';
+import {MeasureParameters} from '../../../src/common/iServer/MeasureParameters';
 
 var url = GlobeParameter.WorldURL;
-describe('leaflet_MeasureService', function () {
+describe('leaflet_MeasureService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('initialize', function () {
+    it('initialize', () => {
         var options = {
             serverType: 'iServer'
         };
-        var measureService = L.supermap.measureService(url, options);
-        expect(measureService.options.serverType).toBe('iServer');
-        expect(measureService.url).toEqual(url);
+        var service = measureService(url, options);
+        expect(service.options.serverType).toBe('iServer');
+        expect(service.url).toEqual(url);
     });
 
-    it('measureDistance_line', function () {
+    it('measureDistance_line', () => {
         var line = L.polyline([[25, 102], [40, 116]]);
-        var params = new SuperMap.MeasureParameters(line);
-        L.supermap.measureService(url).measureDistance(params, function (serviceResult) {
+        var params = new MeasureParameters(line);
+        measureService(url).measureDistance(params, (serviceResult) => {
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.area).toEqual(-1);
             expect(serviceResult.result.distance).toBeGreaterThan(0);
@@ -36,10 +37,10 @@ describe('leaflet_MeasureService', function () {
         });
     });
 
-    it('measureDistance_polygon', function () {
+    it('measureDistance_polygon', () => {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var params = new SuperMap.MeasureParameters(polygon);
-        L.supermap.measureService(url).measureDistance(params, function (serviceResult) {
+        var params = new MeasureParameters(polygon);
+        measureService(url).measureDistance(params, (serviceResult) => {
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.area).toEqual(-1);
             expect(serviceResult.result.distance).toBeGreaterThan(0);
@@ -52,10 +53,10 @@ describe('leaflet_MeasureService', function () {
         });
     });
 
-    it('measureArea_line', function () {
+    it('measureArea_line', () => {
         var line = L.polyline([[25, 102], [40, 116]]);
-        var params = new SuperMap.MeasureParameters(line);
-        L.supermap.measureService(url).measureArea(params, function (serviceResult) {
+        var params = new MeasureParameters(line);
+        measureService(url).measureArea(params, (serviceResult) => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processFailed");
             expect(serviceResult.error).not.toBeNull();
@@ -67,10 +68,10 @@ describe('leaflet_MeasureService', function () {
         });
     });
 
-    it('measureDistance_polygon', function () {
+    it('measureDistance_polygon', () => {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var params = new SuperMap.MeasureParameters(polygon);
-        L.supermap.measureService(url).measureArea(params, function (serviceResult) {
+        var params = new MeasureParameters(polygon);
+        measureService(url).measureArea(params, (serviceResult) => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.area).toBeGreaterThan(0);
@@ -84,10 +85,10 @@ describe('leaflet_MeasureService', function () {
         });
     });
 
-    it('measure_DISTANCE', function () {
+    it('measure_DISTANCE', () => {
         var line = L.polyline([[25, 102], [40, 116]]);
-        var params = new SuperMap.MeasureParameters(line);
-        L.supermap.measureService(url).measure("DISTANCE", params, function (serviceResult) {
+        var params = new MeasureParameters(line);
+        measureService(url).measure("DISTANCE", params, (serviceResult) => {
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.area).toEqual(-1);
             expect(serviceResult.result.distance).toBeGreaterThan(0);
@@ -100,10 +101,10 @@ describe('leaflet_MeasureService', function () {
         });
     });
 
-    it('measure_AREA', function () {
+    it('measure_AREA', () => {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var params = new SuperMap.MeasureParameters(polygon);
-        L.supermap.measureService(url).measure("AREA", params, function (serviceResult) {
+        var params = new MeasureParameters(polygon);
+        measureService(url).measure("AREA", params, (serviceResult) => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");
             expect(serviceResult.result.area).toBeGreaterThan(0);

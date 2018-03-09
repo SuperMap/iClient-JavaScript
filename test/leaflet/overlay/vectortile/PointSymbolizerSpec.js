@@ -1,10 +1,10 @@
-var PointSymbolizer = require('../../../../src/leaflet/overlay/vectortile/PointSymbolizer').PointSymbolizer;
-var SVGRenderer = require('../../../../src/leaflet/overlay/vectortile/SVGRenderer').SVGRenderer;
-var img = require('../../../resources/img/baiduTileTest.png');
+import {PointSymbolizer} from '../../../../src/leaflet/overlay/vectortile/PointSymbolizer';
+import {SVGRenderer} from '../../../../src/leaflet/overlay/vectortile/SVGRenderer';
+import '../../../resources/img/baiduTileTest.png';
 
-describe('leaflet_PointSymbolizer', function () {
+describe('leaflet_PointSymbolizer', () => {
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -18,11 +18,11 @@ describe('leaflet_PointSymbolizer', function () {
             zoom: 10
         });
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('initialize', function () {
+    it('initialize', () => {
         var feature1 = {
             geometry: [{x: 10, y: 10, type: "Point"}],
             id: "1",
@@ -87,7 +87,7 @@ describe('leaflet_PointSymbolizer', function () {
         expect(pointSymbolizer2._point.y).toEqual(-15);
     });
 
-    it('updateStyle_svgRenderer', function () {
+    it('updateStyle_svgRenderer', () => {
         var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
@@ -106,7 +106,7 @@ describe('leaflet_PointSymbolizer', function () {
         expect(pointSymbolizer1._updateBounds).toHaveBeenCalled();
     });
 
-    it('_getImage_Null', function () {
+    it('_getImage_Null', () => {
         var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
@@ -125,7 +125,7 @@ describe('leaflet_PointSymbolizer', function () {
         expect(img).toBeNull();
     });
 
-    it('_getImage', function () {
+    it('_getImage', () => {
         var svgRenderer = new SVGRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
@@ -145,5 +145,4 @@ describe('leaflet_PointSymbolizer', function () {
         expect(image).not.toBeNull();
         expect(image.currentSrc).toContain("data:image/png");
     });
-
 });

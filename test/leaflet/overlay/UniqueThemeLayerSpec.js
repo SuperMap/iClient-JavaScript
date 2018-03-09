@@ -1,12 +1,19 @@
-require('../../../src/leaflet/overlay/UniqueThemeLayer');
+import {uniqueThemeLayer} from '../../../src/leaflet/overlay/UniqueThemeLayer';
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {Geometry} from '../../../src/common/commontypes/Geometry';
+import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {DataFormat} from '../../../src/common/REST';
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
     dataUrl = GlobeParameter.editServiceURL_leaflet;
 var features = [];
-describe('leaflet_UniqueThemeLayer', function () {
+describe('leaflet_UniqueThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -21,23 +28,23 @@ describe('leaflet_UniqueThemeLayer', function () {
             maxZoom: 18,
             zoom: 6
         });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        tiledMapLayer(baseUrl).addTo(map);
 
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('prepareFeaturesToAdd', function (done) {
-        function concatAttributes(fieldNames, filedValues) {
+    it('prepareFeaturesToAdd', (done) => {
+        var concatAttributes = (fieldNames, filedValues) => {
             var attr = {};
             for (var i = 0; i < fieldNames.length; i++) {
                 attr[fieldNames[i]] = filedValues[i];
@@ -45,8 +52,8 @@ describe('leaflet_UniqueThemeLayer', function () {
             return attr;
         }
 
-        function islandHoleHandlerForFeature(feature) {
-            if (feature.geometry instanceof SuperMap.Geometry.MultiPolygon && feature.geometry.components.length > 1) {
+        var islandHoleHandlerForFeature = (feature) => {
+            if (feature.geometry instanceof Geometry.MultiPolygon && feature.geometry.components.length > 1) {
                 feature.geometry = islandHoleHandlerForMultiPolygon(feature.geometry);
             }
             return feature;
@@ -64,8 +71,8 @@ describe('leaflet_UniqueThemeLayer', function () {
              * Returns:
              * {<SuperMap.Geometry.MultiPolygon>} 处理后的多面。
              */
-            function islandHoleHandlerForMultiPolygon(multiPolygon) {
-                if (!(multiPolygon instanceof SuperMap.Geometry.MultiPolygon) || multiPolygon.components.length < 2) {
+            var islandHoleHandlerForMultiPolygon = (multiPolygon) => {
+                if (!(multiPolygon instanceof Geometry.MultiPolygon) || multiPolygon.components.length < 2) {
                     return multiPolygon;
                 }
                 var mPTmp = multiPolygon.clone();
@@ -165,7 +172,7 @@ describe('leaflet_UniqueThemeLayer', function () {
                     for (var n = 0, len6 = geoP.length; n < len6; n++) {
                         newLineRings.push(componentsPolygons[geoP[n]].components[0]);
                     }
-                    var newGeoPolygon = new SuperMap.Geometry.Polygon(newLineRings);
+                    var newGeoPolygon = new Geometry.Polygon(newLineRings);
                     newComponents.push(newGeoPolygon)
                 }
 
@@ -188,7 +195,7 @@ describe('leaflet_UniqueThemeLayer', function () {
              * Returns:
              * {Array} 无重复元素的数组。
              */
-            function delRepeatInArray(arr) {
+            var delRepeatInArray = (arr) => {
                 var newArray = [];
                 var provisionalTable = {};
                 for (var i = 0, a; (a = arr[i]) != null; i++) {
@@ -211,7 +218,7 @@ describe('leaflet_UniqueThemeLayer', function () {
              * Returns:
              * {Boolean} 点是否在多边形内。
              */
-            function isPointInPoly(pt, poly) {
+            var isPointInPoly = (pt, poly) => {
                 for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
                     ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
                     && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
@@ -220,8 +227,8 @@ describe('leaflet_UniqueThemeLayer', function () {
             }
         }
 
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: new FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
@@ -229,10 +236,10 @@ describe('leaflet_UniqueThemeLayer', function () {
             datasetNames: ["Jingjin:Landuse_R"]
         });
         var getServiceResult = null;
-        L.supermap.featureService(dataUrl).getFeaturesBySQL(getFeatureBySQLParams, function (serviceResult) {
+        featureService(dataUrl).getFeaturesBySQL(getFeatureBySQLParams, (serviceResult) => {
             getServiceResult = serviceResult;
-        }, SuperMap.DataFormat.ISERVER);
-        setTimeout(function () {
+        }, DataFormat.ISERVER);
+        setTimeout(() => {
             expect(getServiceResult).not.toBeNull();
             var result = getServiceResult.result;
             if (result && result.features) {
@@ -260,14 +267,14 @@ describe('leaflet_UniqueThemeLayer', function () {
         }, 6000);
     });
 
-    it('addFeatures', function (done) {
+    it('addFeatures', (done) => {
         //initialize
-        var uniqueThemeLayer = L.supermap.uniqueThemeLayer("ThemeLayer", {
+        var themeLayer = uniqueThemeLayer("ThemeLayer", {
             isHoverAble: true,
             opacity: 0.8
         }).addTo(map);
         // 图层基础样式
-        uniqueThemeLayer.style = new SuperMap.ThemeStyle({
+        themeLayer.style = new ThemeStyle({
             shadowBlur: 3,
             shadowColor: "#000000",
             shadowOffsetX: 1,
@@ -275,7 +282,7 @@ describe('leaflet_UniqueThemeLayer', function () {
             fillColor: "#FFFFFF"
         });
         // hover 高亮样式
-        uniqueThemeLayer.highlightStyle = new SuperMap.ThemeStyle({
+        themeLayer.highlightStyle = new ThemeStyle({
             stroke: true,
             strokeWidth: 2,
             strokeColor: 'blue',
@@ -283,9 +290,9 @@ describe('leaflet_UniqueThemeLayer', function () {
             fillOpacity: 0.2
         });
         // 用于单值专题图的属性字段名称
-        uniqueThemeLayer.themeField = "LANDTYPE";
+        themeLayer.themeField = "LANDTYPE";
         // 风格数组，设定值对应的样式
-        uniqueThemeLayer.styleGroups = [
+        themeLayer.styleGroups = [
             {
                 value: "草地",
                 style: {
@@ -348,42 +355,42 @@ describe('leaflet_UniqueThemeLayer', function () {
                 }
             }
         ];
-        expect(uniqueThemeLayer).not.toBeNull();
-        expect(uniqueThemeLayer.options.isHoverAble).toBeTruthy();
-        expect(uniqueThemeLayer.name).toBe("ThemeLayer");
-        expect(uniqueThemeLayer.id).not.toBeNull();
-        expect(uniqueThemeLayer.options.opacity).toEqual(0.8);
-        expect(uniqueThemeLayer.style).not.toBeNull();
-        expect(uniqueThemeLayer.highlightStyle).not.toBeNull();
-        expect(uniqueThemeLayer.styleGroups.length).toEqual(12);
-        expect(uniqueThemeLayer.themeField).toBe("LANDTYPE");
-        expect(uniqueThemeLayer.features.length).toEqual(0);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.options.isHoverAble).toBeTruthy();
+        expect(themeLayer.name).toBe("ThemeLayer");
+        expect(themeLayer.id).not.toBeNull();
+        expect(themeLayer.options.opacity).toEqual(0.8);
+        expect(themeLayer.style).not.toBeNull();
+        expect(themeLayer.highlightStyle).not.toBeNull();
+        expect(themeLayer.styleGroups.length).toEqual(12);
+        expect(themeLayer.themeField).toBe("LANDTYPE");
+        expect(themeLayer.features.length).toEqual(0);
         // addFeatures
         if (features.length != 0) {
-            uniqueThemeLayer.addFeatures(features);
-            setTimeout(function () {
+            themeLayer.addFeatures(features);
+            setTimeout(() => {
                 try {
-                    expect(uniqueThemeLayer.features.length).toBeGreaterThan(0);
+                    expect(themeLayer.features.length).toBeGreaterThan(0);
                     // getCacheCount
-                    var cacheCount = uniqueThemeLayer.getCacheCount();
+                    var cacheCount = themeLayer.getCacheCount();
                     expect(cacheCount).toBeGreaterThan(0);
                     // setMaxCacheCount
-                    expect(uniqueThemeLayer.maxCacheCount).toBeGreaterThan(10);
-                    uniqueThemeLayer.setMaxCacheCount(10);
-                    expect(uniqueThemeLayer.maxCacheCount).toEqual(10);
+                    expect(themeLayer.maxCacheCount).toBeGreaterThan(10);
+                    themeLayer.setMaxCacheCount(10);
+                    expect(themeLayer.maxCacheCount).toEqual(10);
                     // getShapesByFeatureID
-                    var shape1 = uniqueThemeLayer.getShapesByFeatureID();
-                    var shape2 = uniqueThemeLayer.getShapesByFeatureID(features[0].ID);
+                    var shape1 = themeLayer.getShapesByFeatureID();
+                    var shape2 = themeLayer.getShapesByFeatureID(features[0].ID);
                     expect(shape1.length).toBeGreaterThan(0);
                     expect(shape2.length).toEqual(0);
                     // redraw
-                    var isRedraw = uniqueThemeLayer.redraw();
+                    var isRedraw = themeLayer.redraw();
                     expect(isRedraw).toBeTruthy();
                     // removeFeatures
-                    uniqueThemeLayer.removeFeatures(features);
-                    uniqueThemeLayer.removeAllFeatures();
-                    expect(uniqueThemeLayer.features.length).toEqual(0);
-                    uniqueThemeLayer.clear();
+                    themeLayer.removeFeatures(features);
+                    themeLayer.removeAllFeatures();
+                    expect(themeLayer.features.length).toEqual(0);
+                    themeLayer.clear();
                     done();
                 } catch (exception) {
                     console.log("'addFeatures'案例失败：" + exception.name + ":" + exception.message);

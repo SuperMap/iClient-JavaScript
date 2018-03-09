@@ -1,12 +1,15 @@
-require('../../../src/leaflet/overlay/UniqueThemeLayer');
-require('../../resources/chinaConsumptionLevel');
+import {rankSymbolThemeLayer} from '../../../src/leaflet/overlay/RankSymbolThemeLayer';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {ChartType} from '../../../src/common/REST';
+import {themeFeature} from '../../../src/leaflet/overlay/theme/ThemeFeature';
+import '../../resources/chinaConsumptionLevel';
 
 var China4326URL = GlobeParameter.China4326URL;
 
-describe('leaflet_RankSymbolThemeLayer', function () {
+describe('leaflet_RankSymbolThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -21,25 +24,25 @@ describe('leaflet_RankSymbolThemeLayer', function () {
             maxZoom: 18,
             zoom: 2
         });
-        L.supermap.tiledMapLayer(China4326URL).addTo(map);
+        tiledMapLayer(China4326URL).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('addFeatures', function () {
+    it('addFeatures', () => {
         //initialize
-        var rankSymbolThemeLayer = L.supermap.rankSymbolThemeLayer("ThemeLayer", SuperMap.ChartType.CIRCLE);
-        rankSymbolThemeLayer.themeField = "CON2009";
-        rankSymbolThemeLayer.symbolSetting = {
+        var themeLayer = rankSymbolThemeLayer("ThemeLayer", ChartType.CIRCLE);
+        themeLayer.themeField = "CON2009";
+        themeLayer.symbolSetting = {
             codomain: [0, 40000],
             maxR: 100,
             minR: 0,
@@ -47,32 +50,32 @@ describe('leaflet_RankSymbolThemeLayer', function () {
             fillColor: "#FFA500",
             circleHoverStyle: {fillOpacity: 1}
         };
-        rankSymbolThemeLayer.addTo(map);
-        expect(rankSymbolThemeLayer).not.toBeNull();
-        expect(rankSymbolThemeLayer.chartsType).toBe("Circle");
-        expect(rankSymbolThemeLayer.name).toBe("ThemeLayer");
-        expect(rankSymbolThemeLayer.id).not.toBeNull();
-        expect(rankSymbolThemeLayer.themeField).toBe("CON2009");
-        expect(rankSymbolThemeLayer.symbolType).toBe("Circle");
-        expect(rankSymbolThemeLayer.features.length).toEqual(0);
+        themeLayer.addTo(map);
+        expect(themeLayer).not.toBeNull();
+        expect(themeLayer.chartsType).toBe("Circle");
+        expect(themeLayer.name).toBe("ThemeLayer");
+        expect(themeLayer.id).not.toBeNull();
+        expect(themeLayer.themeField).toBe("CON2009");
+        expect(themeLayer.symbolType).toBe("Circle");
+        expect(themeLayer.features.length).toEqual(0);
         //addFeatures
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             var provinceInfo = chinaConsumptionLevel[i];
             var geo = L.point(provinceInfo[1], provinceInfo[2]);
             var attrs = {NAME: provinceInfo[0], CON2009: provinceInfo[3]};
-            var feature = L.supermap.themeFeature(geo, attrs);
+            var feature = themeFeature(geo, attrs);
             features.push(feature);
         }
-        rankSymbolThemeLayer.addFeatures(features);
-        expect(rankSymbolThemeLayer.features.length).toBeGreaterThan(0);
-        rankSymbolThemeLayer.clear();
+        themeLayer.addFeatures(features);
+        expect(themeLayer.features.length).toBeGreaterThan(0);
+        themeLayer.clear();
     });
 
-    it('setSymbolType', function () {
-        var rankSymbolThemeLayer = L.supermap.rankSymbolThemeLayer("ThemeLayer", SuperMap.ChartType.BAR);
-        rankSymbolThemeLayer.themeField = "CON2009";
-        rankSymbolThemeLayer.symbolSetting = {
+    it('setSymbolType', () => {
+        var themeLayer = rankSymbolThemeLayer("ThemeLayer", ChartType.BAR);
+        themeLayer.themeField = "CON2009";
+        themeLayer.symbolSetting = {
             codomain: [0, 40000],
             maxR: 100,
             minR: 0,
@@ -80,12 +83,12 @@ describe('leaflet_RankSymbolThemeLayer', function () {
             fillColor: "#FFA500",
             circleHoverStyle: {fillOpacity: 1}
         };
-        expect(rankSymbolThemeLayer.chartsType).toBe('Bar');
-        expect(rankSymbolThemeLayer.symbolType).toBe('Bar');
+        expect(themeLayer.chartsType).toBe('Bar');
+        expect(themeLayer.symbolType).toBe('Bar');
         //setSymbolType
-        rankSymbolThemeLayer.setSymbolType('Circle');
-        expect(rankSymbolThemeLayer.chartsType).toBe('Bar');
-        expect(rankSymbolThemeLayer.symbolType).toBe('Circle');
-        rankSymbolThemeLayer.clear();
+        themeLayer.setSymbolType('Circle');
+        expect(themeLayer.chartsType).toBe('Bar');
+        expect(themeLayer.symbolType).toBe('Circle');
+        themeLayer.clear();
     });
 });

@@ -1,24 +1,32 @@
-require('../../../src/leaflet/services/SpatialAnalystService');
-var request = require('request');
+import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalystService';
+import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
+import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
+import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {BufferEndType} from '../../../src/common/REST';
+import {DataReturnMode} from '../../../src/common/REST';
+import request from 'request';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_SpatialAnalystService_bufferAnalysis', function () {
+describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('bufferAnalysis_byGeometry', function (done) {
+    it('bufferAnalysis_byGeometry', (done) => {
         var pointsList = [
             [-4690.000, 2823.940],
             [-4690.301, 3448.940],
@@ -55,20 +63,20 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', function () {
             [-4261.485, 8554.893]
         ];
         var roadLine = L.polyline(pointsList, {color: 'red'});
-        var geoBufferAnalystParams = new SuperMap.GeometryBufferAnalystParameters({
+        var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
-                leftDistance: new SuperMap.BufferDistance({value: 250}),
-                rightDistance: new SuperMap.BufferDistance({value: 250}),
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
+                leftDistance: new BufferDistance({value: 250}),
+                rightDistance: new BufferDistance({value: 250}),
                 semicircleLineSegment: 10
             })
         });
-        var bufferAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (result) {
+        var bufferAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(bufferAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -97,30 +105,30 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     var resultDataset = "bufferAnalystByDatasets_leafletTest";
-    it('bufferAnalysis_byDatasets', function (done) {
-        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    it('bufferAnalysis_byDatasets', (done) => {
+        var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10
             }),
-            resultSetting: new SuperMap.DataReturnOption({
+            resultSetting: new DataReturnOption({
                 expectCount: 2000,
                 dataset: resultDataset,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
+                dataReturnMode: DataReturnMode.DATASET_ONLY,
                 deleteExistResultDataset: true
             })
         });
-        var spatialAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL);
-        spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (result) {
+        var bufferAnalystService = spatialAnalystService(spatialAnalystURL);
+        bufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe('processCompleted');
             expect(serviceResult.result.succeed).toBeTruthy();
@@ -130,7 +138,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

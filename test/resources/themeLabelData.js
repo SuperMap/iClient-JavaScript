@@ -1,4 +1,4 @@
-var themeData=[
+var themeData = [
     {
         "aqi": 13,
         "area": "山南",

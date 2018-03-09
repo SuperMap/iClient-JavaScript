@@ -1,4 +1,5 @@
-require('../../../src/leaflet/services/FieldService');
+import {fieldService} from '../../../src/leaflet/services/FieldService';
+import {FieldStatisticsParameters} from '../../../src/common/iServer/FieldStatisticsParameters';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var params = {
@@ -6,25 +7,25 @@ var params = {
     dataset: "continent_T"
 };
 
-describe('leaflet_FieldService', function () {
+describe('leaflet_FieldService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //字段查询服务 成功事件
-    it('successEvent:getFields', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL);
-        getFieldsService.getFields(params, function (result) {
+    it('successEvent:getFields', (done) => {
+        var getFieldsService = fieldService(dataServiceURL);
+        getFieldsService.getFields(params, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFieldsService).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -47,15 +48,15 @@ describe('leaflet_FieldService', function () {
     });
 
     //字段查询服务 失败事件
-    it('failEvent:getFields_dataSourceNotExist', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL);
+    it('failEvent:getFields_dataSourceNotExist', (done) => {
+        var getFieldsService = fieldService(dataServiceURL);
         getFieldsService.getFields({
             datasource: "World1",
             dataset: "continent_T"
-        }, function (result) {
+        }, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFieldsService).not.toBeNull();
                 expect(serviceResult.type).toBe("processFailed");
@@ -77,18 +78,18 @@ describe('leaflet_FieldService', function () {
     });
 
     //字段统计服务 成功事件
-    it('successEvent:getFieldStatisticsInfo', function (done) {
-        var getFieldStatisticsInfoParams = new SuperMap.FieldStatisticsParameters({
+    it('successEvent:getFieldStatisticsInfo', (done) => {
+        var getFieldStatisticsInfoParams = new FieldStatisticsParameters({
             datasource: "World",
             dataset: "continent_T",
             fieldName: "SmID",
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
-        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL);
-        getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
+        var getFieldStatisticsInfoService = fieldService(dataServiceURL);
+        getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFieldStatisticsInfoService).not.toBeNull();
                 expect(getFieldStatisticsInfoService.currentStatisticResult.fieldName).toBe("SmID");
@@ -118,18 +119,18 @@ describe('leaflet_FieldService', function () {
     });
 
     //字段查询服务 失败事件
-    it('failEvent:getFieldStatisticsInfo_dataSourceNotExist', function (done) {
-        var getFieldStatisticsInfoParams = new SuperMap.FieldStatisticsParameters({
+    it('failEvent:getFieldStatisticsInfo_dataSourceNotExist', (done) => {
+        var getFieldStatisticsInfoParams = new FieldStatisticsParameters({
             datasource: "World1",
             dataset: "continent_T",
             fieldName: "SmID",
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
-        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL);
-        getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
+        var getFieldStatisticsInfoService = fieldService(dataServiceURL);
+        getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFieldStatisticsInfoService).not.toBeNull();
                 expect(getFieldStatisticsInfoService.currentStatisticResult.fieldName).toBe("SmID");

@@ -1,13 +1,13 @@
-require('../../../src/leaflet/overlay/MapVLayer');
+import {mapVLayer} from '../../../src/leaflet/overlay/MapVLayer';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 
-var mapv = require('mapv');
-window.mapv = mapv;
+window.mapv = require('mapv');
 
 var url = GlobeParameter.ChinaURL;
-describe('leaflet_MapVLayer', function () {
+describe('leaflet_MapVLayer', () => {
     var originalTimeout;
-    var testDiv, map, mapvLayer;
-    beforeAll(function () {
+    var testDiv, map, layer;
+    beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -20,10 +20,10 @@ describe('leaflet_MapVLayer', function () {
             center: [32, 109],
             zoom: 4,
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        tiledMapLayer(url).addTo(map);
 
     });
-    beforeEach(function () {
+    beforeEach(() => {
         var randomCount = 1000;
         var data = [];
         var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南",
@@ -56,32 +56,32 @@ describe('leaflet_MapVLayer', function () {
             draw: 'honeycomb'
         };
         //创建MapV图层
-        mapvLayer = L.supermap.mapVLayer(dataSet, options).addTo(map);
+        layer = mapVLayer(dataSet, options).addTo(map);
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-        mapvLayer.remove();
+        layer.remove();
     });
-    afterAll(function () {
+    afterAll(() => {
         document.body.removeChild(testDiv);
         map.remove();
         mapv = null;
     });
 
-    it('initialize', function (done) {
-        expect(mapvLayer).not.toBeNull();
-        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(20);
-        expect(mapvLayer.mapVOptions.draw).toBe("honeycomb");
+    it('initialize', (done) => {
+        expect(layer).not.toBeNull();
+        expect(layer.mapVOptions.shadowBlur).toEqual(20);
+        expect(layer.mapVOptions.draw).toBe("honeycomb");
         //判断是否返回期望的maplayer
-        expect(mapvLayer.renderer).not.toBeNull();
-        expect(mapvLayer.renderer.context).toBe("2d");
-        expect(mapvLayer.renderer.canvasLayer).not.toBeNull();
+        expect(layer.renderer).not.toBeNull();
+        expect(layer.renderer.context).toBe("2d");
+        expect(layer.renderer.canvasLayer).not.toBeNull();
         done();
     });
 
-    it('addData', function () {
+    it('addData', () => {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -93,35 +93,35 @@ describe('leaflet_MapVLayer', function () {
         var tempoption = {
             shadowBlur: 30
         }
-        mapvLayer.addData(dataset, tempoption);
-        expect(mapvLayer.dataSet).not.toBeNull();
-        expect(mapvLayer.dataSet._data[1000].count).toEqual(111);
-        expect(mapvLayer.dataSet._data[1000].geometry.coordinates[0]).toEqual(109);
-        expect(mapvLayer.dataSet._data[1000].geometry.coordinates[1]).toEqual(32);
-        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(30);
+        layer.addData(dataset, tempoption);
+        expect(layer.dataSet).not.toBeNull();
+        expect(layer.dataSet._data[1000].count).toEqual(111);
+        expect(layer.dataSet._data[1000].geometry.coordinates[0]).toEqual(109);
+        expect(layer.dataSet._data[1000].geometry.coordinates[1]).toEqual(32);
+        expect(layer.mapVOptions.shadowBlur).toEqual(30);
     });
 
-    it('getData', function () {
-        var dataset = mapvLayer.getData()
+    it('getData', () => {
+        var dataset = layer.getData();
         expect(dataset._data.length).toEqual(1000);
     });
 
     //删除数据
-    it('removeData', function (done) {
-        var filter = function (data) {
-            if (mapvLayer.dataSet._data.indexOf(data) === 2) {
+    it('removeData', (done) => {
+        var filter = (data) => {
+            if (layer.dataSet._data.indexOf(data) === 2) {
                 return true
             }
             return false;
         }
-        mapvLayer.removeData(filter);
-        setTimeout(function () {
-            expect(mapvLayer.dataSet._data.length).toEqual(999);
+        layer.removeData(filter);
+        setTimeout(() => {
+            expect(layer.dataSet._data.length).toEqual(999);
             done();
         }, 6000);
     });
 
-    it('update', function () {
+    it('update', () => {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -134,47 +134,47 @@ describe('leaflet_MapVLayer', function () {
             shadowBlur: 40
         }
         var opt = {data: dataset, options: tempoption};
-        mapvLayer.update(opt);
-        expect(mapvLayer.dataSet._data.length).toEqual(1);
-        expect(mapvLayer.dataSet._data[0].count).toEqual(111);
-        expect(mapvLayer.dataSet._data[0].geometry.coordinates[0]).toEqual(109);
-        expect(mapvLayer.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
-        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(40);
+        layer.update(opt);
+        expect(layer.dataSet._data.length).toEqual(1);
+        expect(layer.dataSet._data[0].count).toEqual(111);
+        expect(layer.dataSet._data[0].geometry.coordinates[0]).toEqual(109);
+        expect(layer.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
+        expect(layer.mapVOptions.shadowBlur).toEqual(40);
     });
 
-    it('clearData', function () {
-        mapvLayer.clearData();
-        expect(mapvLayer.dataSet._data.length).toEqual(0);
+    it('clearData', () => {
+        layer.clearData();
+        expect(layer.dataSet._data.length).toEqual(0);
     });
 
-    it('draw, redraw', function () {
-        mapvLayer.draw();
-        expect(mapvLayer.canvas.width).toEqual(500);
-        expect(mapvLayer.canvas.style.width).toBe('500px');
-        mapvLayer.redraw();
-        expect(mapvLayer.canvas.width).toEqual(500);
-        expect(mapvLayer.canvas.style.width).toBe('500px');
+    it('draw, redraw', () => {
+        layer.draw();
+        expect(layer.canvas.width).toEqual(500);
+        expect(layer.canvas.style.width).toBe('500px');
+        layer.redraw();
+        expect(layer.canvas.width).toEqual(500);
+        expect(layer.canvas.style.width).toBe('500px');
     });
 
-    it('setZIndex', function () {
-        mapvLayer.setZIndex(2);
-        expect(mapvLayer.canvas.style.zIndex).toEqual('2');
+    it('setZIndex', () => {
+        layer.setZIndex(2);
+        expect(layer.canvas.style.zIndex).toEqual('2');
     });
 
-    it('getCanvas', function () {
-        var canvas = mapvLayer.getCanvas();
+    it('getCanvas', () => {
+        var canvas = layer.getCanvas();
         expect(canvas).not.toBeNull();
-        expect(mapvLayer.canvas.width).toEqual(500);
-        expect(mapvLayer.canvas.height).toEqual(500);
+        expect(layer.canvas.width).toEqual(500);
+        expect(layer.canvas.height).toEqual(500);
     });
 
-    it('getContainer', function () {
-        var container = mapvLayer.getContainer();
+    it('getContainer', () => {
+        var container = layer.getContainer();
         expect(container).not.toBeNull();
     });
 
-    it('getTopLeft', function () {
-        var topLeft = mapvLayer.getTopLeft();
+    it('getTopLeft', () => {
+        var topLeft = layer.getTopLeft();
         expect(topLeft).not.toBeNull();
         expect(topLeft.lng).toEqual(87.01171875);
         expect(topLeft.lat).toEqual(48.63290858589535);

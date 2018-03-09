@@ -1,10 +1,10 @@
-require('../../../src/leaflet/mapping/ImageMapLayer');
+import {imageMapLayer} from '../../../src/leaflet/mapping/ImageMapLayer';
 
 var url = GlobeParameter.WorldURL;
-describe('leaflet_ImageMapLayer', function () {
+describe('leaflet_ImageMapLayer', () => {
     var originalTimeout;
-    var testDiv, map, imageLayer;
-    beforeAll(function () {
+    var testDiv, map, imageLayer, imageLayer1;
+    beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -18,22 +18,22 @@ describe('leaflet_ImageMapLayer', function () {
             maxZoom: 18,
             zoom: 1
         });
-        imageLayer = L.supermap.imageMapLayer(url).addTo(map);
+        imageLayer = imageMapLayer(url).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         imageLayer = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize', function () {
+    it('initialize', () => {
         var tempOptions = {
             layersID: null,
             redirect: false,
@@ -54,7 +54,7 @@ describe('leaflet_ImageMapLayer', function () {
             attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
             updateInterval: 150
         };
-        imageLayer = L.supermap.imageMapLayer(url, tempOptions);
+        imageLayer = imageMapLayer(url, tempOptions);
         expect(imageLayer).not.toBeNull();
         expect(imageLayer.options.layersID).toBeNull();
         expect(imageLayer.options.redirect).toBeFalsy();
@@ -77,28 +77,28 @@ describe('leaflet_ImageMapLayer', function () {
 
     });
 
-    it('getOpacity', function () {
+    it('getOpacity', () => {
         var tempOptions = {
             opacity: 0.5,
             zIndex: 1
         };
-        imageLayer = L.supermap.imageMapLayer(url, tempOptions);
+        imageLayer = imageMapLayer(url, tempOptions);
         var opacity = imageLayer.getOpacity();
         expect(opacity).not.toBeNull();
         expect(opacity).toBe(tempOptions.opacity);
     });
 
-    it('setOpacity', function () {
+    it('setOpacity', () => {
         var opacity = 0.9;
-        imageLayer = L.supermap.imageMapLayer(url);
+        imageLayer = imageMapLayer(url);
         expect(imageLayer.setOpacity(opacity)).not.toBeNull();
         expect(imageLayer.getOpacity()).toBe(opacity);
     });
 
 
-    it('bringToFront', function (done) {
-        imageLayer1 = L.supermap.imageMapLayer(url).addTo(map);
-        imageLayer1.on('load', function () {
+    it('bringToFront', (done) => {
+        imageLayer1 = imageMapLayer(url).addTo(map);
+        imageLayer1.on('load', () => {
             expect(imageLayer1.bringToFront()).not.toBeNull();
             expect(imageLayer1.options.position).toBe("front");
             done();
@@ -106,38 +106,37 @@ describe('leaflet_ImageMapLayer', function () {
     });
 
 
-    it('bringToBack', function (done) {
-        imageLayer1 = L.supermap.imageMapLayer(url).addTo(map);
-        imageLayer1.on('load', function () {
+    it('bringToBack', (done) => {
+        imageLayer1 = imageMapLayer(url).addTo(map);
+        imageLayer1.on('load', () => {
             expect(imageLayer1.bringToBack()).not.toBeNull();
             expect(imageLayer1.options.position).toBe("back");
             done();
         });
     });
 
-    it('getImageUrl', function () {
-        imageLayer = L.supermap.imageMapLayer(url).addTo(map);
+    it('getImageUrl', () => {
+        imageLayer = imageMapLayer(url).addTo(map);
         expect(imageLayer.getImageUrl()).not.toBeNull();
-        expect(imageLayer.getImageUrl()).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false");
+        expect(imageLayer.getImageUrl()).toBe(url + "/image.png?&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false");
     });
 
-    it('getImageUrl_tilePoxy', function () {
-        imageLayer = L.supermap.imageMapLayer(url, {tileProxy: 'tileProxy'});
+    it('getImageUrl_tilePoxy', () => {
+        imageLayer = imageMapLayer(url, {tileProxy: 'tileProxy'});
         expect(imageLayer.getImageUrl()).not.toBeNull();
-        expect(imageLayer.getImageUrl()).toBe("tileProxyhttp%3A%2F%2Flocalhost%3A8090%2Fiserver%2Fservices%2Fmap-world%2Frest%2Fmaps%2FWorld%2Fimage.png%3F%26redirect%3Dfalse%26transparent%3Dfalse%26cacheEnabled%3Dtrue%26overlapDisplayed%3Dfalse");
     });
 
-    it('update_zoomIn', function (done) {
-        imageLayer = L.supermap.imageMapLayer(url).addTo(map);
+    it('update_zoomIn', (done) => {
+        imageLayer = imageMapLayer(url).addTo(map);
         var oldUrl, newUrl;
-        imageLayer.on('load', function () {
+        imageLayer.on('load', () => {
             oldUrl = imageLayer._currentImage._url;
-            expect(oldUrl).toBe('http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-19567879.241005123%2C%22y%22%3A-19567879.24100514%7D%2C%22rightTop%22%3A%7B%22x%22%3A19567879.241005123%2C%22y%22%3A19567879.241005138%7D%7D&width=500&height=500&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false');
+            expect(oldUrl).toBe(url + '/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-19567879.241005123%2C%22y%22%3A-19567879.24100514%7D%2C%22rightTop%22%3A%7B%22x%22%3A19567879.241005123%2C%22y%22%3A19567879.241005138%7D%7D&width=500&height=500&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false');
             map.zoomIn();
             imageLayer.off('load');
-            imageLayer.on('load', function () {
+            imageLayer.on('load', () => {
                 newUrl = imageLayer._currentImage._url;
-                expect(newUrl).toBe('http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-9783939.620502561%2C%22y%22%3A-9783939.620502561%7D%2C%22rightTop%22%3A%7B%22x%22%3A9783939.620502561%2C%22y%22%3A9783939.620502565%7D%7D&width=500&height=500&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false');
+                expect(newUrl).toBe(url + '/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-9783939.620502561%2C%22y%22%3A-9783939.620502561%7D%2C%22rightTop%22%3A%7B%22x%22%3A9783939.620502561%2C%22y%22%3A9783939.620502565%7D%7D&width=500&height=500&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false');
                 expect(oldUrl).not.toEqual(newUrl);
                 done();
             });

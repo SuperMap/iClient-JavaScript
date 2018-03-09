@@ -1,23 +1,24 @@
-require('../../../src/leaflet/services/FeatureService');
+import {featureService} from '../../../src/leaflet/services/FeatureService';
+import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
 
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1, id2, id3;
 
-describe('leaflet_FeatureService_editFeatures_Point', function () {
+describe('leaflet_FeatureService_editFeatures_Point', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     // 增加一个点要素，returnContent为true
-    it('successEvent:add_POINT', function (done) {
+    it('successEvent:add_POINT', (done) => {
         var addFeatureResult_POINT = null;
         var marker = L.circleMarker([38.837029131724, 118.05408801141]);
-        var addFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var addFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Neighbor_P",
             features: marker,
@@ -25,11 +26,11 @@ describe('leaflet_FeatureService_editFeatures_Point', function () {
             returnContent: true,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeatureResult_POINT = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_POINT.type).toBe("processCompleted");
@@ -53,11 +54,11 @@ describe('leaflet_FeatureService_editFeatures_Point', function () {
     });
 
     // 批量增加点要素，isUseBatch为true
-    it('successEvent:add_isUseBatch=true', function (done) {
+    it('successEvent:add_isUseBatch=true', (done) => {
         var addFeaturesResult = null;
         var marker1 = L.circleMarker([40, 120]);
         var marker2 = L.circleMarker([51, 100]);
-        var addFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var addFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Neighbor_P",
             features: [marker1, marker2],
@@ -65,11 +66,11 @@ describe('leaflet_FeatureService_editFeatures_Point', function () {
             returnContent: false,
             isUseBatch: true
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL);
-        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, (result) => {
             addFeaturesResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeaturesResult.type).toBe("processCompleted");
@@ -95,19 +96,19 @@ describe('leaflet_FeatureService_editFeatures_Point', function () {
     });
 
     // 批量删除点要素
-    it('successEvent:delete', function (done) {
+    it('successEvent:delete', (done) => {
         var deletePointsResult = null;
-        var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var deleteFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Neighbor_P",
             IDs: [id1, id2, id3],
             editType: "delete"
         });
-        var deletePointsService = L.supermap.featureService(editServiceURL);
-        deletePointsService.editFeatures(deleteFeaturesParams, function (result) {
+        var deletePointsService = featureService(editServiceURL);
+        deletePointsService.editFeatures(deleteFeaturesParams, (result) => {
             deletePointsResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(deletePointsService).not.toBeNull();
                 expect(deletePointsResult).not.toBeNull();
@@ -128,19 +129,19 @@ describe('leaflet_FeatureService_editFeatures_Point', function () {
     });
 
     // 失败事件：features为空
-    it('failEvent:add_featuresNull', function (done) {
+    it('failEvent:add_featuresNull', (done) => {
         var featuresNullResult = null;
-        var nullFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var nullFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Neighbor_P",
             features: [],
             editType: "add"
         });
-        var nullFeaturesService = L.supermap.featureService(editServiceURL);
-        nullFeaturesService.editFeatures(nullFeaturesParams, function (result) {
+        var nullFeaturesService = featureService(editServiceURL);
+        nullFeaturesService.editFeatures(nullFeaturesParams, (result) => {
             featuresNullResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(nullFeaturesService).not.toBeNull();
                 expect(featuresNullResult.type).toBe("processFailed");

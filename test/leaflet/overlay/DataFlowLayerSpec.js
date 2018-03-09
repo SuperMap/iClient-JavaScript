@@ -1,14 +1,16 @@
-﻿require('../../../src/leaflet/overlay/DataFlowLayer');
-require('../../../src/common/security/SecurityManager');
+﻿﻿import {dataFlowService} from '../../../src/leaflet/services/DataFlowService';
+import {dataFlowLayer} from '../../../src/leaflet/overlay/DataFlowLayer';
+import {SecurityManager} from '../../../src/common/security/SecurityManager';
+import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 
-wsHost = "ws:\//" + "117.122.248.69:8800";
+var wsHost = "ws:\//" + "117.122.248.69:8800";
 var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
 var urlMap = "http://117.122.248.69:8090/iserver/services/map-china400/rest/maps/China";
-describe('leaflet_DataFlowLayer', function () {
+describe('leaflet_DataFlowLayer', () => {
     var originalTimeout;
     var testDiv, map;
     var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -17,7 +19,7 @@ describe('leaflet_DataFlowLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
-        SuperMap.SecurityManager.registerToken(urlDataFlow, token);
+        SecurityManager.registerToken(urlDataFlow, token);
         map = L.map('map', {
             preferCanvas: true,
             crs: L.CRS.EPSG3857,
@@ -25,28 +27,28 @@ describe('leaflet_DataFlowLayer', function () {
             maxZoom: 18,
             zoom: 12
         });
-        L.supermap.tiledMapLayer(urlMap).addTo(map);
+        tiledMapLayer(urlMap).addTo(map);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
 
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    xit('bug', function () {
+    xit('bug', () => {
         console.log('1、destroy分支走不进去');
         console.log('2、unBroadcast的if分支条件缺少!');
         console.log("3、setGeometry、setExcludeField方法报错:Failed to execute 'send' on 'WebSocket: Still in CONNECTING state'");
     });
 
-    it('broadcast_Point', function (done) {
-        function broadcast_Point() {
+    it('broadcast_Point', (done) => {
+        var broadcast_Point = (flowService) => {
             var feature = {
                 geometry: {
                     coordinates: [116.69801217000008, 39.86826211908377],
@@ -56,15 +58,15 @@ describe('leaflet_DataFlowLayer', function () {
                 type: "Feature",
                 properties: {id: 1, time: new Date()}
             };
-            dataFlowService.broadcast(feature);
+            flowService.broadcast(feature);
         }
 
-        var dataFlowLayer;
-        var dataFlowService;
+        var layer;
+        var service;
         var timer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
-                style: function () {
+            layer = dataFlowLayer(urlDataFlow, {
+                style: () => {
                     return {
                         fillColor: "red",
                         fillOpacity: 1,
@@ -73,24 +75,24 @@ describe('leaflet_DataFlowLayer', function () {
                     };
                 }
             });
-            dataFlowLayer.addTo(map);
-            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-            dataFlowService.initBroadcast();
-            dataFlowService.on('broadcastSocketConnected', function (e) {
-                var dataFlow = dataFlowService.dataFlow;
+            layer.addTo(map);
+            service = dataFlowService(urlDataFlow);
+            service.initBroadcast();
+            service.on('broadcastSocketConnected', (e) => {
+                var dataFlow = service.dataFlow;
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
                 expect(dataFlow.EVENT_TYPES.length).toEqual(8);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
                 expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
-                timer = window.setInterval(broadcast_Point, 1000);
+                timer = window.setInterval(broadcast_Point(service), 1000);
             });
 
-            setTimeout(function () {
-                expect(dataFlowLayer.idCache).not.toBeNull();
-                expect(dataFlowLayer.url).toBe(urlDataFlow);
-                expect(dataFlowLayer.options).not.toBeNull();
-                expect(dataFlowService).not.toBeNull();
-                expect(dataFlowService._events.broadcastSocketConnected.length).toEqual(1);
+            setTimeout(() => {
+                expect(layer.idCache).not.toBeNull();
+                expect(layer.url).toBe(urlDataFlow);
+                expect(layer.options).not.toBeNull();
+                expect(service).not.toBeNull();
+                expect(service._events.broadcastSocketConnected.length).toEqual(1);
                 done();
             }, 4000)
         }
@@ -98,19 +100,19 @@ describe('leaflet_DataFlowLayer', function () {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (dataFlowService) {
-                dataFlowService.unSubscribe();
-                dataFlowService.unBroadcast();
-                dataFlowService.destroy();
+            if (service) {
+                service.unSubscribe();
+                service.unBroadcast();
+                service.destroy();
             }
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
         }
     });
 
-    it('broadcast_LineString', function (done) {
-        function broadcast_LineString() {
+    it('broadcast_LineString', (done) => {
+        var broadcast_LineString = (flowService) => {
             var feature = {
                 geometry: {
                     coordinates: [[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708]],
@@ -120,42 +122,42 @@ describe('leaflet_DataFlowLayer', function () {
                 type: "Feature",
                 properties: {id: 2, time: new Date()}
             };
-            dataFlowService.broadcast(feature);
+            flowService.broadcast(feature);
         }
 
-        var dataFlowLayer;
-        var dataFlowService;
+        var layer;
+        var service;
         var timer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
-            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-            dataFlowService.initBroadcast();
-            dataFlowService.on('broadcastSocketConnected', function (e) {
-                timer = window.setInterval(broadcast_LineString, 1000);
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
+            service = dataFlowService(urlDataFlow);
+            service.initBroadcast();
+            service.on('broadcastSocketConnected', (e) => {
+                timer = window.setInterval(broadcast_LineString(service), 1000);
             });
-            setTimeout(function () {
-                expect(dataFlowService).not.toBeNull();
+            setTimeout(() => {
+                expect(service).not.toBeNull();
                 done();
             }, 4000)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (dataFlowService) {
-                dataFlowService.unSubscribe();
-                dataFlowService.unBroadcast();
-                dataFlowService.destroy();
+            if (service) {
+                service.unSubscribe();
+                service.unBroadcast();
+                service.destroy();
             }
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
     });
 
-    it('broadcast_Polygon', function (done) {
-        function broadcast_Polygon() {
+    it('broadcast_Polygon', (done) => {
+        var broadcast_Polygon = (flowService) => {
             var feature = {
                 geometry: {
                     coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
@@ -165,45 +167,45 @@ describe('leaflet_DataFlowLayer', function () {
                 type: "Feature",
                 properties: {id: 3, time: new Date()}
             };
-            dataFlowService.broadcast(feature);
+            flowService.broadcast(feature);
         }
 
-        var dataFlowLayer;
-        var dataFlowService;
+        var layer;
+        var service;
         var timer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
-            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-            dataFlowService.initBroadcast();
-            dataFlowService.on('broadcastSocketConnected', function (e) {
-                timer = window.setInterval(broadcast_Polygon, 1000);
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
+            service = dataFlowService(urlDataFlow);
+            service.initBroadcast();
+            service.on('broadcastSocketConnected', (e) => {
+                timer = window.setInterval(broadcast_Polygon(service), 1000);
             });
-            setTimeout(function () {
-                expect(dataFlowService).not.toBeNull();
-                dataFlowService.unSubscribe();
-                dataFlowService.unBroadcast();
-                dataFlowService.destroy();
+            setTimeout(() => {
+                expect(service).not.toBeNull();
+                service.unSubscribe();
+                service.unBroadcast();
+                service.destroy();
                 done();
             }, 4000)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (dataFlowService) {
-                dataFlowService.unSubscribe();
-                dataFlowService.unBroadcast();
-                dataFlowService.destroy();
+            if (service) {
+                service.unSubscribe();
+                service.unBroadcast();
+                service.destroy();
             }
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
     });
 
-    it('broadcast_MultiPolygon', function (done) {
-        function broadcast_MultiPolygon() {
+    it('broadcast_MultiPolygon', (done) => {
+        var broadcast_MultiPolygon = (flowService) => {
             var feature = {
                 geometry: {
                     coordinates: [[[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8765100055449]]], [[[115.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [115.381741960923, 39.8765100055449]]]],
@@ -213,115 +215,115 @@ describe('leaflet_DataFlowLayer', function () {
                 type: "Feature",
                 properties: {id: 4, time: new Date()}
             };
-            dataFlowService.broadcast(feature);
+            flowService.broadcast(feature);
         }
 
-        var dataFlowLayer;
-        var dataFlowService;
+        var layer;
+        var service;
         var timer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
-            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-            dataFlowService.initBroadcast();
-            dataFlowService.on('broadcastSocketConnected', function (e) {
-                timer = window.setInterval(broadcast_MultiPolygon, 1000);
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
+            service = dataFlowService(urlDataFlow);
+            service.initBroadcast();
+            service.on('broadcastSocketConnected', (e) => {
+                timer = window.setInterval(broadcast_MultiPolygon(service), 1000);
             });
-            setTimeout(function () {
-                expect(dataFlowService).not.toBeNull();
-                dataFlowService.unSubscribe();
-                dataFlowService.unBroadcast();
-                dataFlowService.destroy();
+            setTimeout(() => {
+                expect(service).not.toBeNull();
+                service.unSubscribe();
+                service.unBroadcast();
+                service.destroy();
                 done();
             }, 4000)
         } finally {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (dataFlowService) {
-                dataFlowService.unSubscribe();
-                dataFlowService.unBroadcast();
-                dataFlowService.destroy();
+            if (service) {
+                service.unSubscribe();
+                service.unBroadcast();
+                service.destroy();
             }
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
     });
 
-    it('onRemove', function (done) {
-        var dataFlowLayer;
+    it('onRemove', (done) => {
+        var layer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
-            dataFlowLayer.onRemove(map);
-            setTimeout(function () {
-                expect(dataFlowLayer).not.toBeNull();
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
+            layer.onRemove(map);
+            setTimeout(() => {
+                expect(layer).not.toBeNull();
                 done();
             }, 4000)
         } finally {
 
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
     });
 
-    xit('setExcludeField', function (done) {
-        var dataFlowLayer;
+    xit('setExcludeField', (done) => {
+        var layer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
-            dataFlowLayer.setExcludeField("id");
-            setTimeout(function () {
-                expect(dataFlowLayer).not.toBeNull();
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
+            layer.setExcludeField("id");
+            setTimeout(() => {
+                expect(layer).not.toBeNull();
                 done();
             }, 4000)
         } finally {
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
     });
 
-    xit('setGeometry', function (done) {
-        var dataFlowLayer;
+    xit('setGeometry', (done) => {
+        var layer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
             var geometry = {
                 coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
                 type: "Polygon"
             };
-            dataFlowLayer.setGeometry(geometry);
-            setTimeout(function () {
-                expect(dataFlowLayer).not.toBeNull();
+            layer.setGeometry(geometry);
+            setTimeout(() => {
+                expect(layer).not.toBeNull();
                 done();
             }, 4000)
         } finally {
 
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
     });
 
-    xit('destroy', function () {
-        var dataFlowLayer;
+    xit('destroy', () => {
+        var layer;
         try {
-            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-            dataFlowLayer.addTo(map);
-            dataFlowLayer.destroy();
+            layer = dataFlowLayer(urlDataFlow);
+            layer.addTo(map);
+            layer.destroy();
         } finally {
             if (timer) {
                 window.clearInterval(timer);
             }
-            if (dataFlowLayer) {
-                dataFlowLayer.remove();
+            if (layer) {
+                layer.remove();
             }
 
         }
