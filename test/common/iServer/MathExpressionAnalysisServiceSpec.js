@@ -1,5 +1,6 @@
-require('../../../src/common/iServer/MathExpressionAnalysisService');
-var request = require('request');
+import {MathExpressionAnalysisService} from '../../../src/common/iServer/MathExpressionAnalysisService';
+import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
+import request from 'request';
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
@@ -10,33 +11,33 @@ var options = {
         'processCompleted': MathExpressionAnalysisServiceCompleted
     }
 };
-function initMathExpressionAnalysisService() {
-    return new SuperMap.MathExpressionAnalysisService(spatialAnalystURL, options);
+var initMathExpressionAnalysisService = () => {
+    return new MathExpressionAnalysisService(spatialAnalystURL, options);
 }
-function MathExpressionAnalysisServiceCompleted(getMapStatusEventArgs) {
+var MathExpressionAnalysisServiceCompleted = (getMapStatusEventArgs) => {
     analystEventArgsSystem = getMapStatusEventArgs;
 }
-function MathExpressionAnalysisServiceFailed(serviceFailedEventArgs) {
+var MathExpressionAnalysisServiceFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('MathExpressionAnalysisService', function () {
+describe('MathExpressionAnalysisService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "MathExpression_commonTest";
     //通过的情况
-    it('pass:processAsync', function (done) {
+    it('pass:processAsync', (done) => {
         var mathExpressionAnalysisService = initMathExpressionAnalysisService();
         expect(mathExpressionAnalysisService).not.toBeNull();
         expect(mathExpressionAnalysisService.url).toEqual(spatialAnalystURL);
-        var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+        var mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
             dataset: "JingjinTerrain@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",
             targetDatasource: "Jingjin",
@@ -45,7 +46,7 @@ describe('MathExpressionAnalysisService', function () {
         });
         mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
         mathExpressionAnalysisService.events.on({"processCompleted": MathExpressionAnalysisServiceCompleted});
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var mathExpressionAnalysisResult = analystEventArgsSystem.result;
                 expect(mathExpressionAnalysisResult).not.toBeNull();
@@ -66,10 +67,10 @@ describe('MathExpressionAnalysisService', function () {
         }, 10000);
     });
 
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var mathExpressionAnalysisService = initMathExpressionAnalysisService();
         expect(mathExpressionAnalysisService).not.toBeNull();
-        var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+        var mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
             dataset: "XX@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",
             targetDatasource: "XX",
@@ -78,7 +79,7 @@ describe('MathExpressionAnalysisService', function () {
         });
         mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
         mathExpressionAnalysisService.events.on({"processFailed": MathExpressionAnalysisServiceFailed});
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -97,7 +98,7 @@ describe('MathExpressionAnalysisService', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datajingjinURL + resultDataset;
         request.delete(testResult);
         done();

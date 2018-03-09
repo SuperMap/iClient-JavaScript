@@ -5,8 +5,7 @@ describe('Route', function () {
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        routeLocatorEventArgsSystem = null,
-            serviceFailedEventArgsSystem = null;
+        var routeLocatorEventArgsSystem = null, serviceFailedEventArgsSystem = null;
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;

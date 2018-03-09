@@ -1,22 +1,23 @@
-require('../../../src/mapboxgl/services/AddressMatchService');
-var mapboxgl = require('mapbox-gl');
+import {AddressMatchService} from '../../../src/mapboxgl/services/AddressMatchService';
+import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
+import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
-describe('mapboxgl_AddressMatchService', function () {
+describe('mapboxgl_AddressMatchService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //正向匹配，成功事件
-    it('code_successEvent', function (done) {
-        var geoCodingParams = new SuperMap.GeoCodingParameter({
+    it('code_successEvent', (done) => {
+        var geoCodingParams = new GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
             toIndex: 10,
@@ -24,11 +25,11 @@ describe('mapboxgl_AddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var service = new mapboxgl.supermap.AddressMatchService(addressMatchURL);
-        service.code(geoCodingParams, function (result) {
+        var service = new AddressMatchService(addressMatchURL);
+        service.code(geoCodingParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -51,8 +52,8 @@ describe('mapboxgl_AddressMatchService', function () {
     });
 
     //反向匹配，成功事件
-    it('decode_successEvent', function (done) {
-        var geoDecodingParams = new SuperMap.GeoDecodingParameter({
+    it('decode_successEvent', (done) => {
+        var geoDecodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
             y: 39.92311315752059,
             fromIndex: 0,
@@ -62,11 +63,11 @@ describe('mapboxgl_AddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var service = new mapboxgl.supermap.AddressMatchService(addressMatchURL);
-        service.decode(geoDecodingParams, function (result) {
+        var service = new AddressMatchService(addressMatchURL);
+        service.decode(geoDecodingParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -89,8 +90,8 @@ describe('mapboxgl_AddressMatchService', function () {
     });
 
     //正向匹配，失败事件
-    it('code_failEvent', function (done) {
-        var geoCodingParams = new SuperMap.GeoCodingParameter({
+    it('code_failEvent', (done) => {
+        var geoCodingParams = new GeoCodingParameter({
             address: null,
             fromIndex: 0,
             toIndex: 10,
@@ -98,11 +99,11 @@ describe('mapboxgl_AddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var service = new mapboxgl.supermap.AddressMatchService(addressMatchURL);
-        service.code(geoCodingParams, function (result) {
+        var service = new AddressMatchService(addressMatchURL);
+        service.code(geoCodingParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -121,8 +122,8 @@ describe('mapboxgl_AddressMatchService', function () {
     });
 
     //反向匹配，失败事件
-    it('decode_failEvent', function (done) {
-        var geoDecodingParams = new SuperMap.GeoDecodingParameter({
+    it('decode_failEvent', (done) => {
+        var geoDecodingParams = new GeoDecodingParameter({
             fromIndex: 0,
             toIndex: 5,
             filters: '北京市,海淀区',
@@ -130,11 +131,11 @@ describe('mapboxgl_AddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var service = new mapboxgl.supermap.AddressMatchService(addressMatchURL);
-        service.decode(geoDecodingParams, function (result) {
+        var service = new AddressMatchService(addressMatchURL);
+        service.decode(geoDecodingParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -152,6 +153,5 @@ describe('mapboxgl_AddressMatchService', function () {
             }
         }, 5000)
     });
-
 });
 

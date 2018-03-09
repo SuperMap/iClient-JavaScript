@@ -1,4 +1,5 @@
 require('../../../src/common/commontypes/Bounds');
+require('../../../src/common/commontypes/LonLat');
 
 describe('Bounds', function () {
     it('constructor, clone, equals, toString, toArray', function () {

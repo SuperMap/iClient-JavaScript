@@ -1,30 +1,31 @@
-﻿require('../../../src/common/iServer/EditFeaturesService');
+﻿﻿import {EditFeaturesService} from '../../../src/common/iServer/EditFeaturesService';
+import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
+import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
+import {EditType} from '../../../src/common/REST';
 
 var editServiceURL = GlobeParameter.editServiceURL;
 var id1;
-describe('EditFeaturesService', function () {
+describe('EditFeaturesService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     // 成功：增加一个REGION要素，returnContent为true
-    it('successEvent:addFeature_returnContent=true', function (done) {
-        var addFeatureFailedEventArgsSystem = null;
-        var addFeatureSuccessEventArgsSystem = null;
-
-        function addFeatureFailed(serviceFailedEventArgs) {
+    it('successEvent:addFeature_returnContent=true', (done) => {
+        var addFeatureFailedEventArgsSystem = null, addFeatureSuccessEventArgsSystem = null;
+        var addFeatureFailed = (serviceFailedEventArgs) => {
             addFeatureFailedEventArgsSystem = serviceFailedEventArgs;
-        }
-
-        function addFeatureCompleted(editFeaturesEventArgs) {
+        };
+        var addFeatureCompleted = (editFeaturesEventArgs) => {
             addFeatureSuccessEventArgsSystem = editFeaturesEventArgs;
-        }
-
+        };
         var addFeatureOptions = {
             eventListeners: {
                 'processCompleted': addFeatureCompleted,
@@ -32,28 +33,28 @@ describe('EditFeaturesService', function () {
             }
         };
         var pointList = [],
-            p1 = new SuperMap.Geometry.Point(118.05408801141, 38.837029131724),
-            p2 = new SuperMap.Geometry.Point(117.80757663534, 38.606951847395),
-            p3 = new SuperMap.Geometry.Point(118.43207212138, 38.530259419285);
+            p1 = new Point(118.05408801141, 38.837029131724),
+            p2 = new Point(117.80757663534, 38.606951847395),
+            p3 = new Point(118.43207212138, 38.530259419285);
         pointList.push(p1);
         pointList.push(p2);
         pointList.push(p3);
         pointList.push(p1);
-        var linearRing = new SuperMap.Geometry.LinearRing(pointList);
-        var polygon = new SuperMap.Geometry.Polygon([linearRing]);
+        var linearRing = new LinearRing(pointList);
+        var polygon = new Polygon([linearRing]);
         var features = {
             fieldNames: [],
             fieldValues: [],
             geometry: polygon
         };
-        var addFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var addFeaturesParams = new EditFeaturesParameters({
             features: [features],
-            editType: SuperMap.EditType.ADD,
+            editType: EditType.ADD,
             returnContent: true
         });
-        var addFeatureService = new SuperMap.EditFeaturesService(editServiceURL, addFeatureOptions);
+        var addFeatureService = new EditFeaturesService(editServiceURL, addFeatureOptions);
         addFeatureService.processAsync(addFeaturesParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var serviceResult = addFeatureSuccessEventArgsSystem.result;
                 expect(addFeatureService).not.toBeNull();
@@ -81,18 +82,14 @@ describe('EditFeaturesService', function () {
     });
 
     // 更新要素
-    it('successEvent:updateFeatures', function (done) {
-        var updateFailedEventArgsSystem = null;
-        var updateSuccessEventArgsSystem = null;
-
-        function updateFeaturesFailed(serviceFailedEventArgs) {
+    it('successEvent:updateFeatures', (done) => {
+        var updateFailedEventArgsSystem = null, updateSuccessEventArgsSystem = null;
+        var updateFeaturesFailed = (serviceFailedEventArgs) => {
             updateFailedEventArgsSystem = serviceFailedEventArgs;
-        }
-
-        function updateFeaturesCompleted(editFeaturesEventArgs) {
+        };
+        var updateFeaturesCompleted = (editFeaturesEventArgs) => {
             updateSuccessEventArgsSystem = editFeaturesEventArgs;
-        }
-
+        };
         var updateFeaturesOptions = {
             eventListeners: {
                 'processCompleted': updateFeaturesCompleted,
@@ -100,28 +97,28 @@ describe('EditFeaturesService', function () {
             }
         };
         var pointList = [],
-            p1 = new SuperMap.Geometry.Point(118.05, 38.83),
-            p2 = new SuperMap.Geometry.Point(117.80, 38.60),
-            p3 = new SuperMap.Geometry.Point(118.43, 38.53);
+            p1 = new Point(118.05, 38.83),
+            p2 = new Point(117.80, 38.60),
+            p3 = new Point(118.43, 38.53);
         pointList.push(p1);
         pointList.push(p2);
         pointList.push(p3);
         pointList.push(p1);
-        var linearRing = new SuperMap.Geometry.LinearRing(pointList);
-        var polygonUpdate = new SuperMap.Geometry.Polygon([linearRing]);
+        var linearRing = new LinearRing(pointList);
+        var polygonUpdate = new Polygon([linearRing]);
         var features = {
             fieldNames: [],
             fieldValues: [],
             geometry: polygonUpdate
         };
         polygonUpdate.id = id1;
-        var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var updateFeaturesParams = new EditFeaturesParameters({
             features: [features],
-            editType: SuperMap.EditType.UPDATE
+            editType: EditType.UPDATE
         });
-        var updateFeaturesService = new SuperMap.EditFeaturesService(editServiceURL, updateFeaturesOptions);
+        var updateFeaturesService = new EditFeaturesService(editServiceURL, updateFeaturesOptions);
         updateFeaturesService.processAsync(updateFeaturesParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(updateFeaturesService).not.toBeNull();
                 expect(updateFeaturesService.isInTheSameDomain).toBeFalsy();
@@ -143,33 +140,29 @@ describe('EditFeaturesService', function () {
     });
 
     // 删除要素
-    it('successEvent:deleteFeature', function (done) {
-        var deleteFailedEventArgsSystem = null;
-        var deleteSuccessEventArgsSystem = null;
-
-        function deleteFeaturesFailed(serviceFailedEventArgs) {
+    it('successEvent:deleteFeature', (done) => {
+        var deleteFailedEventArgsSystem = null, deleteSuccessEventArgsSystem = null;
+        var deleteFeaturesFailed = (serviceFailedEventArgs) => {
             deleteFailedEventArgsSystem = serviceFailedEventArgs;
-        }
-
-        function deleteFeaturesCompleted(editFeaturesEventArgs) {
+        };
+        var deleteFeaturesCompleted = (editFeaturesEventArgs) => {
             deleteSuccessEventArgsSystem = editFeaturesEventArgs;
-        }
-
+        };
         var deleteFeaturesOptions = {
             eventListeners: {
                 'processCompleted': deleteFeaturesCompleted,
                 'processFailed': deleteFeaturesFailed
             }
         };
-        var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
+        var deleteFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             IDs: [id1],
-            editType: SuperMap.EditType.DELETE
+            editType: EditType.DELETE
         });
-        var deleteFeaturesService = new SuperMap.EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
         deleteFeaturesService.processAsync(deleteFeaturesParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(deleteFailedEventArgsSystem).toBeNull();
                 expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
@@ -191,32 +184,28 @@ describe('EditFeaturesService', function () {
     });
 
     // 失败事件
-    it('failEvent:addFeatures_noParameters', function (done) {
-        var noParamsFailedEventArgsSystem = null;
-        var noParamsSuccessEventArgsSystem = null;
-
-        function noParamsFailed(serviceFailedEventArgs) {
+    it('failEvent:addFeatures_noParameters', (done) => {
+        var noParamsFailedEventArgsSystem = null, noParamsSuccessEventArgsSystem = null;
+        var noParamsFailed = (serviceFailedEventArgs) => {
             noParamsFailedEventArgsSystem = serviceFailedEventArgs;
-        }
-
-        function noParamsCompleted(editFeaturesEventArgs) {
+        };
+        var noParamsCompleted = (editFeaturesEventArgs) => {
             noParamsSuccessEventArgsSystem = editFeaturesEventArgs;
-        }
-
+        };
         var noParamsOptions = {
             eventListeners: {
                 'processCompleted': noParamsCompleted,
                 'processFailed': noParamsFailed
             }
         };
-        var noParams = new SuperMap.EditFeaturesParameters({
+        var noParams = new EditFeaturesParameters({
             features: null,
-            editType: SuperMap.EditType.ADD,
+            editType: EditType.ADD,
             returnContent: true
         });
-        var noParamsService = new SuperMap.EditFeaturesService(editServiceURL, noParamsOptions);
+        var noParamsService = new EditFeaturesService(editServiceURL, noParamsOptions);
         noParamsService.processAsync(noParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(noParamsSuccessEventArgsSystem).toBeNull();
                 expect(noParamsFailedEventArgsSystem).not.toBeNull();

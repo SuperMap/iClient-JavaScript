@@ -3,6 +3,13 @@
 var stopQueryServiceEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
+
+function succeed(event) {
+    stopQueryServiceEventArgsSystem = event;
+}
+function failed(event) {
+    serviceFailedEventArgsSystem = event;
+}
 function initStopQueryService() {
     return new SuperMap.StopQueryService(trafficTransferURL, {
         eventListeners: {
@@ -10,12 +17,6 @@ function initStopQueryService() {
             processFailed: failed
         }
     });
-}
-function succeed(event) {
-    stopQueryServiceEventArgsSystem = event;
-}
-function failed(event) {
-    serviceFailedEventArgsSystem = event;
 }
 
 describe('StopQueryService', function () {

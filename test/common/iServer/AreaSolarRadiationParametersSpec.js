@@ -1,7 +1,7 @@
-var AreaSolarRadiationParameters = require('../../../src/common/iServer/AreaSolarRadiationParameters').AreaSolarRadiationParameters;
+import {AreaSolarRadiationParameters} from '../../../src/common/iServer/AreaSolarRadiationParameters';
 
-describe('AreaSolarRadiationParameters', function () {
-    it('constructor, destroy', function () {
+describe('AreaSolarRadiationParameters', () => {
+    it('constructor, destroy', () => {
         var options = {
             dataset: "JingjinTerrain@Jingjin",
             targetDatasourceName: "Jingjin",
@@ -36,7 +36,7 @@ describe('AreaSolarRadiationParameters', function () {
         expect(parameters.deleteExistResultDataset).toBeTruthy();
     });
 
-    it('toObject', function () {
+    it('toObject', () => {
         var options = {
             dataset: "JingjinTerrain@Jingjin",
             targetDatasourceName: "Jingjin",
@@ -51,7 +51,7 @@ describe('AreaSolarRadiationParameters', function () {
             hourEnd: 18,
         };
         var parameters = new AreaSolarRadiationParameters(options);
-        new SuperMap.AreaSolarRadiationParameters.toObject(options, parameters);
+        new AreaSolarRadiationParameters.toObject(options, parameters);
         expect(parameters).not.toBeNull();
         expect(parameters.parameter).not.toBeNull();
         expect(parameters.parameter.latitude).toEqual(90);

@@ -1,7 +1,7 @@
-var ChartQueryFilterParameter = require('../../../src/common/iServer/ChartQueryFilterParameter').ChartQueryFilterParameter;
+import {ChartQueryFilterParameter} from '../../../src/common/iServer/ChartQueryFilterParameter';
 
-describe('ChartQueryFilterParameter', function () {
-    it('constructor, destroy', function () {
+describe('ChartQueryFilterParameter', () => {
+    it('constructor, destroy', () => {
         var options = {
             isQueryPoint: true,
             isQueryLine: true,
@@ -22,7 +22,7 @@ describe('ChartQueryFilterParameter', function () {
         expect(parameter.attributeFilter).toBeNull();
     });
 
-    it('toJson',function () {
+    it('toJson', () => {
         var options = {
             isQueryPoint: true,
             isQueryLine: true,

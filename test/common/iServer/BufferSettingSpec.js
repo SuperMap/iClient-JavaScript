@@ -1,18 +1,20 @@
-﻿require('../../../src/common/iServer/BufferSetting');
+﻿﻿import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
+import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
+import {BufferEndType} from '../../../src/common/REST';
 
-describe('BufferSetting', function () {
-    it('constructor_default', function () {
-        var bufferSetting = new SuperMap.BufferSetting();
+describe('BufferSetting', () => {
+    it('constructor_default', () => {
+        var bufferSetting = new BufferSetting();
         expect(bufferSetting).not.toBeNull();
         expect(bufferSetting.leftDistance).not.toBeNull();
         expect(bufferSetting.rightDistance).not.toBeNull();
-        expect(bufferSetting.endType).toEqual(SuperMap.BufferEndType.FLAT);
+        expect(bufferSetting.endType).toEqual(BufferEndType.FLAT);
         expect(bufferSetting.semicircleLineSegment).toEqual(4);
 
         bufferSetting.semicircleLineSegment = 5;
-        bufferSetting.endType = SuperMap.BufferEndType.ROUND;
+        bufferSetting.endType = BufferEndType.ROUND;
         bufferSetting.leftDistance.value = 150;
-        expect(bufferSetting.endType).toEqual(SuperMap.BufferEndType.ROUND);
+        expect(bufferSetting.endType).toEqual(BufferEndType.ROUND);
         expect(bufferSetting.leftDistance.value).toEqual(150);
         expect(bufferSetting.semicircleLineSegment).toEqual(5);
         bufferSetting.destroy();
@@ -22,16 +24,16 @@ describe('BufferSetting', function () {
         expect(bufferSetting.semicircleLineSegment).toBeNull();
     });
 
-    it('constructor_leftDistance', function () {
-        var bufferSetting = new SuperMap.BufferSetting({
-            leftDistance: new SuperMap.BufferDistance({
+    it('constructor_leftDistance', () => {
+        var bufferSetting = new BufferSetting({
+            leftDistance: new BufferDistance({
                 value: 200
             })
         });
         expect(bufferSetting).not.toBeNull();
         expect(bufferSetting.leftDistance).not.toBeNull();
         expect(bufferSetting.rightDistance).not.toBeNull();
-        expect(bufferSetting.endType).toEqual(SuperMap.BufferEndType.FLAT);
+        expect(bufferSetting.endType).toEqual(BufferEndType.FLAT);
         expect(bufferSetting.semicircleLineSegment).toEqual(4);
         bufferSetting.destroy();
     });

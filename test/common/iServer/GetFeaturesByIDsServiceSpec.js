@@ -1,38 +1,39 @@
-﻿require('../../../src/common/iServer/GetFeaturesByIDsService');
+﻿﻿import {GetFeaturesByIDsService} from '../../../src/common/iServer/GetFeaturesByIDsService';
+import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
 
+var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeatureEventArgsSystem = null;
-var dataServiceURL = GlobeParameter.dataServiceURL;
+var getFeaturesByIDsFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var getFeaturesByIDsCompleted = (getFeaturesEventArgs) => {
+    getFeatureEventArgsSystem = getFeaturesEventArgs;
+};
 var options = {
     eventListeners: {
         processCompleted: getFeaturesByIDsCompleted,
         processFailed: getFeaturesByIDsFailed
     }
 };
-function initGetFeaturesByIDsService() {
-    return new SuperMap.GetFeaturesByIDsService(dataServiceURL, options);
-}
-function getFeaturesByIDsFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function getFeaturesByIDsCompleted(getFeaturesEventArgs) {
-    getFeatureEventArgsSystem = getFeaturesEventArgs;
-}
+var initGetFeaturesByIDsService = () => {
+    return new GetFeaturesByIDsService(dataServiceURL, options);
+};
 
-describe('GetFeaturesByIDsService', function () {
+describe('GetFeaturesByIDsService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //不直接返回查询结果
-    it('processAsync_returnContent:false', function (done) {
+    it('processAsync_returnContent:false', (done) => {
         var getFeaturesByIDsService = initGetFeaturesByIDsService();
-        var getFeaturesByIDsParameters = new SuperMap.GetFeaturesByIDsParameters({
+        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
             returnContent: false,
             datasetNames: ["World:Capitals"],
             fromIndex: 0,
@@ -41,7 +42,7 @@ describe('GetFeaturesByIDsService', function () {
             IDs: [1, 2, 3]
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result;
                 expect(getFeaturesByIDsService).not.toBeNull();
@@ -65,9 +66,9 @@ describe('GetFeaturesByIDsService', function () {
         }, 2000);
     });
 
-    it('processAsync_returnContent:true', function (done) {
+    it('processAsync_returnContent:true', (done) => {
         var getFeaturesByIDsService = initGetFeaturesByIDsService();
-        var getFeaturesByIDsParameters = new SuperMap.GetFeaturesByIDsParameters({
+        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
             returnContent: true,
             datasetNames: ["World:Capitals"],
             fromIndex: 0,
@@ -75,7 +76,7 @@ describe('GetFeaturesByIDsService', function () {
             IDs: [1, 2, 3]
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByIDsService).not.toBeNull();
@@ -97,13 +98,13 @@ describe('GetFeaturesByIDsService', function () {
     });
 
     //测试没有传入参数时的情况
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var getFeaturesByIDsService = initGetFeaturesByIDsService();
-        var getFeaturesByIDsParameters = new SuperMap.GetFeaturesByIDsParameters({
+        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
             IDs: []
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();
@@ -124,9 +125,9 @@ describe('GetFeaturesByIDsService', function () {
     });
 
     //查询目标图层不存在情况
-    it('processAsync_LayerNotExist', function (done) {
+    it('processAsync_LayerNotExist', (done) => {
         var getFeaturesByIDsService = initGetFeaturesByIDsService();
-        var getFeaturesByIDsParameters = new SuperMap.GetFeaturesByIDsParameters({
+        var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
             returnContent: false,
             datasetNames: ["World:CapitalsNotExsit"],
             fromIndex: 0,
@@ -134,7 +135,7 @@ describe('GetFeaturesByIDsService', function () {
             IDs: [1, 2, 3]
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();

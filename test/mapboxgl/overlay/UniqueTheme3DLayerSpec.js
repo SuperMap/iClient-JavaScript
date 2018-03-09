@@ -1,12 +1,16 @@
-require('../../../src/mapboxgl/overlay/RangeTheme3DLayer');
-var mapboxgl = require('mapbox-gl');
+import {UniqueTheme3DLayer} from '../../../src/mapboxgl/overlay/UniqueTheme3DLayer';
+import {GetFeaturesBySQLService} from '../../../src/common/iServer/GetFeaturesBySQLService';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {DataFormat} from '../../../src/common/REST';
+import mapboxgl from 'mapbox-gl';
 
 var dataUrl = GlobeParameter.editServiceURL_leaflet;
 var themeField = "LANDTYPE";
-describe('mapboxgl_UniqueTheme3DLayer', function () {
+describe('mapboxgl_UniqueTheme3DLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -38,39 +42,39 @@ describe('mapboxgl_UniqueTheme3DLayer', function () {
             zoom: 7
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize', function (done) {
+    it('initialize', (done) => {
         var themeLayer;
-        map.on('load', function () {
-            var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-                queryParameter: new SuperMap.FilterParameter({
+        map.on('load', () => {
+            var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+                queryParameter: new FilterParameter({
                     name: "Jingjin",
                     attributeFilter: "SMID > -1"
                 }),
                 toIndex: 500,
                 datasetNames: ["Jingjin:Landuse_R"]
             });
-            var queryFeatures = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+            var queryFeatures = new GetFeaturesBySQLService(dataUrl, {
                 eventListeners: {
-                    processCompleted: function (serviceResult) {
+                    processCompleted: (serviceResult) => {
                         if (serviceResult.error) {
                             alert("error:" + JSON.stringify(serviceResult.error));
                             return;
                         }
                         var result = serviceResult.result;
                         if (result.features) {
-                            themeLayer = new mapboxgl.supermap.UniqueTheme3DLayer("uniqueTheme3DLayer", {
+                            themeLayer = new UniqueTheme3DLayer("uniqueTheme3DLayer", {
                                 height: 6000,
                                 enableHighlight: true,
                                 themeField: themeField,
@@ -91,10 +95,10 @@ describe('mapboxgl_UniqueTheme3DLayer', function () {
                         }
                     }
                 },
-                format: SuperMap.DataFormat.GEOJSON
+                format: DataFormat.GEOJSON
             });
             queryFeatures.processAsync(getFeatureBySQLParams);
-            setTimeout(function () {
+            setTimeout(() => {
                 expect(themeLayer).not.toBeNull();
                 expect(themeLayer.colorStops.length).toEqual(11);
                 expect(themeLayer.data.type).toBe("FeatureCollection");

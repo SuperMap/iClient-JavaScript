@@ -5,6 +5,12 @@ var serviceCompletedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
+function succeed(event) {
+    serviceCompletedEventArgsSystem = event;
+}
+function failed(event) {
+    serviceFailedEventArgsSystem = event;
+}
 function initTransferSolutionService() {
     return new SuperMap.TransferSolutionService(trafficTransferURL, {
         eventListeners: {
@@ -12,12 +18,6 @@ function initTransferSolutionService() {
             processFailed: failed
         }
     });
-}
-function succeed(event) {
-    serviceCompletedEventArgsSystem = event;
-}
-function failed(event) {
-    serviceFailedEventArgsSystem = event;
 }
 
 describe('TransferSolutionService', function () {

@@ -1,11 +1,10 @@
-require('../../../src/mapboxgl/control/Logo');
-var mapboxgl = require('mapbox-gl');
-window.mapboxgl = mapboxgl;
+import {Logo} from '../../../src/mapboxgl/control/Logo';
+import mapboxgl from 'mapbox-gl';
 
-describe('mapboxgl_Logo', function () {
+describe('mapboxgl_Logo', () => {
     var url = 'http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China';
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -37,14 +36,14 @@ describe('mapboxgl_Logo', function () {
             zoom: 3
         });
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('constructor, onAdd', function () {
+    it('constructor, onAdd', () => {
         //default options
-        var logo = new mapboxgl.supermap.LogoControl();
+        var logo = new Logo();
         expect(logo).not.toBeNull();
         expect(logo.imageUrl).toBeNull();
         expect(logo.link).toBeNull();
@@ -57,7 +56,7 @@ describe('mapboxgl_Logo', function () {
             width: 20,
             height: 20
         };
-        var logo1 = new mapboxgl.supermap.LogoControl(options1);
+        var logo1 = new Logo(options1);
         expect(logo1.imageUrl).toBe("http://test.com/test.png");
         expect(logo1.width).toEqual(20);
         expect(logo1.height).toEqual(20);
@@ -69,7 +68,7 @@ describe('mapboxgl_Logo', function () {
             imageUrl: "http://test.com/test.png",
             width: 20
         };
-        var logo2 = new mapboxgl.supermap.LogoControl(options2);
+        var logo2 = new Logo(options2);
         expect(logo2.imageUrl).toBe("http://test.com/test.png");
         expect(logo2.width).toEqual(20);
         expect(logo2.height).toBeNull();

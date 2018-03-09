@@ -1,34 +1,34 @@
-require('../../../src/common/iServer/GetGridCellInfosService');
+import {GetGridCellInfosService} from '../../../src/common/iServer/GetGridCellInfosService';
+import {GetGridCellInfosParameters} from '../../../src/common/iServer/GetGridCellInfosParameters';
 
-var eventCompleted,
-    eventFailed;
 var dataServiceURL = GlobeParameter.dataServiceURL;
-function initGetGridCellInfosService(url) {
-    return new SuperMap.GetGridCellInfosService(url, {
+var eventCompleted, eventFailed;
+var queryCompleted = (event) => {
+    eventCompleted = event;
+};
+var queryError = (event) => {
+    eventFailed = event;
+};
+var initGetGridCellInfosService = (url) => {
+    return new GetGridCellInfosService(url, {
         eventListeners: {
             "processCompleted": queryCompleted,
             "processFailed": queryError
         }
     });
-}
-function queryCompleted(event) {
-    eventCompleted = event;
-}
-function queryError(event) {
-    eventFailed = event;
-}
+};
 
-describe('GetGridCellInfosService', function () {
+describe('GetGridCellInfosService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var getGridCellInfosService = initGetGridCellInfosService(dataServiceURL);
         expect(getGridCellInfosService.CLASS_NAME).toEqual("SuperMap.GetGridCellInfosService");
         expect(getGridCellInfosService.EVENT_TYPES.length).toEqual(2);
@@ -47,21 +47,21 @@ describe('GetGridCellInfosService', function () {
         expect(getGridCellInfosService.eventListeners).toBeNull();
     });
 
-    it('success:processAsync', function (done) {
-        var queryParam = new SuperMap.GetGridCellInfosParameters({
+    it('success:processAsync', (done) => {
+        var queryParam = new GetGridCellInfosParameters({
             datasetName: "LandCover",
             dataSourceName: "World",
             X: "110",
             Y: "50"
         });
-        var myService = new SuperMap.GetGridCellInfosService(dataServiceURL, {
+        var myService = new GetGridCellInfosService(dataServiceURL, {
             eventListeners: {
                 "processCompleted": queryCompleted,
                 "processFailed": queryError
             }
         });
         myService.processAsync(queryParam);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(myService.url).toEqual(dataServiceURL + "/datasources/World/datasets/LandCover/gridValue.json?x=110&y=50");
                 myService.destroy();
@@ -77,9 +77,9 @@ describe('GetGridCellInfosService', function () {
         }, 2000);
     });
 
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var url = dataServiceURL + "/datasources/World/datasets";
-        var myService = new SuperMap.GetGridCellInfosService(url, {
+        var myService = new GetGridCellInfosService(url, {
             eventListeners: {
                 "processCompleted": queryCompleted,
                 "processFailed": queryError
@@ -88,7 +88,7 @@ describe('GetGridCellInfosService', function () {
             Y: 50
         });
         myService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect((myService.processAsync()) === undefined).toBeTruthy();
                 myService.destroy();
@@ -102,8 +102,8 @@ describe('GetGridCellInfosService', function () {
         }, 2000)
     });
 
-    it('getDatasetInfoCompleted', function () {
-        var myService = new SuperMap.GetGridCellInfosService(dataServiceURL, {
+    it('getDatasetInfoCompleted', () => {
+        var myService = new GetGridCellInfosService(dataServiceURL, {
             eventListeners: {
                 "processCompleted": queryCompleted,
                 "processFailed": queryError
@@ -119,14 +119,14 @@ describe('GetGridCellInfosService', function () {
         expect(myService.datasetType).toBe("GRID");
     });
 
-    it('getDatasetInfoFailed', function () {
+    it('getDatasetInfoFailed', () => {
         var myService = initGetGridCellInfosService(dataServiceURL);
         var result = {};
         myService.getDatasetInfoFailed(result);
         expect(result).not.toBeNull();
     });
 
-    it('queryGridInfos', function () {
+    it('queryGridInfos', () => {
         var url = dataServiceURL + "/datasources/World/datasets/LandCover.json";
         var myService = initGetGridCellInfosService(url);
         myService.X = "110";

@@ -1,47 +1,49 @@
-﻿require('../../../src/common/iServer/GetFeaturesBySQLService');
+﻿﻿import {GetFeaturesBySQLService} from '../../../src/common/iServer/GetFeaturesBySQLService';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
 
+var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeaturesEventArgsSystem = null;
-var dataServiceURL = GlobeParameter.dataServiceURL;
+var getFeaturesBySQLFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var getFeaturesBySQLCompleted = (getFeaturesEventArgs) => {
+    getFeaturesEventArgsSystem = getFeaturesEventArgs;
+};
 var options = {
     eventListeners: {
         processCompleted: getFeaturesBySQLCompleted,
         processFailed: getFeaturesBySQLFailed
     }
 };
-function initGetFeaturesBySQLService() {
-    return new SuperMap.GetFeaturesBySQLService(dataServiceURL, options);
-}
-function getFeaturesBySQLFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function getFeaturesBySQLCompleted(getFeaturesEventArgs) {
-    getFeaturesEventArgsSystem = getFeaturesEventArgs;
-}
+var initGetFeaturesBySQLService = () => {
+    return new GetFeaturesBySQLService(dataServiceURL, options);
+};
 
-describe('GetFeaturesBySQLService', function () {
+describe('GetFeaturesBySQLService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //不直接返回查询结果
-    it('processAsync_returnContent:false', function (done) {
+    it('processAsync_returnContent:false', (done) => {
         var getFeaturesBySQLService = initGetFeaturesBySQLService();
-        var getFeaturesBySQLParameters = new SuperMap.GetFeaturesBySQLParameters({
+        var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
             datasetNames: ["World:Countries"],
-            queryParameter: new SuperMap.FilterParameter({
+            queryParameter: new FilterParameter({
                 attributeFilter: "SmID>0",
                 name: "Countries@World"
             }),
             returnContent: false
         });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeaturesEventArgsSystem.result;
                 expect(getFeaturesBySQLService).not.toBeNull();
@@ -68,11 +70,11 @@ describe('GetFeaturesBySQLService', function () {
     });
 
     //直接返回查询结果
-    it('processAsync_returnContent:true', function (done) {
+    it('processAsync_returnContent:true', (done) => {
         var getFeaturesBySQLService = initGetFeaturesBySQLService();
-        var getFeaturesBySQLParameters = new SuperMap.GetFeaturesBySQLParameters({
+        var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
             datasetNames: ["World:Countries"],
-            queryParameter: new SuperMap.FilterParameter({
+            queryParameter: new FilterParameter({
                 attributeFilter: "SMID<10",
                 name: "Countries@World",
             }),
@@ -81,7 +83,7 @@ describe('GetFeaturesBySQLService', function () {
             toIndex: 10
         });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeaturesEventArgsSystem.result.features;
                 expect(getFeaturesBySQLService).not.toBeNull();
@@ -103,16 +105,16 @@ describe('GetFeaturesBySQLService', function () {
     });
 
     //测试没有传入参数时的情况
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var getFeaturesBySQLService = initGetFeaturesBySQLService();
-        var getFeaturesBySQLParameters = new SuperMap.GetFeaturesBySQLParameters({
+        var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
             datasetNames: ["World:Countries"],
             returnContent: true,
             fromIndex: 2,
             toIndex: 10
         });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();
@@ -133,11 +135,11 @@ describe('GetFeaturesBySQLService', function () {
     });
 
     //查询目标图层不存在情况
-    it('processAsync_LayerNotExist', function (done) {
+    it('processAsync_LayerNotExist', (done) => {
         var getFeaturesBySQLService = initGetFeaturesBySQLService();
-        var getFeaturesBySQLParameters = new SuperMap.GetFeaturesBySQLParameters({
+        var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
             datasetNames: ["World:Countriess"],
-            queryParameter: new SuperMap.FilterParameter({
+            queryParameter: new FilterParameter({
                 attributeFilter: "SMID<10",
                 name: "Countries@World"
             }),
@@ -146,7 +148,7 @@ describe('GetFeaturesBySQLService', function () {
             toIndex: 10
         });
         getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesBySQLService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();

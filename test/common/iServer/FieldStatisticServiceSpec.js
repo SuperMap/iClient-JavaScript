@@ -1,46 +1,46 @@
-﻿require('../../../src/common/iServer/FieldStatisticService');
+﻿﻿import {FieldStatisticService} from '../../../src/common/iServer/FieldStatisticService';
+import {StatisticMode} from '../../../src/common/REST';
 
-var serviceFailedEventArgsSystem = null;
-var fieldStatisticEventArgsSystem = null;
 var dataServiceURL = GlobeParameter.dataServiceURL;
+var serviceFailedEventArgsSystem = null, fieldStatisticEventArgsSystem = null;
+var initFieldStatisticService = () => {
+    return new FieldStatisticService(dataServiceURL, options);
+};
+var fieldStatisticCompleted = (getFeaturesEventArgs) => {
+    fieldStatisticEventArgsSystem = getFeaturesEventArgs;
+};
+var fieldStatisticFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processCompleted': fieldStatisticCompleted,
         'processFailed': fieldStatisticFailed
     }
 };
-function initFieldStatisticService() {
-    return new SuperMap.FieldStatisticService(dataServiceURL, options);
-}
-function fieldStatisticCompleted(getFeaturesEventArgs) {
-    fieldStatisticEventArgsSystem = getFeaturesEventArgs;
-}
-function fieldStatisticFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('FieldStatisticService', function () {
+describe('FieldStatisticService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //存在对应数据源数据集返回查询结果
-    it('success:processAsync', function (done) {
+    it('success:processAsync', (done) => {
         var fieldStatisticService = initFieldStatisticService();
         expect(fieldStatisticService).not.toBeNull();
         expect(fieldStatisticService.url).toBe(dataServiceURL);
         fieldStatisticService.dataset = "Countries";
         fieldStatisticService.datasource = "World";
         fieldStatisticService.field = "SmID";
-        fieldStatisticService.statisticMode = SuperMap.StatisticMode.AVERAGE;
+        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
         fieldStatisticService.events.on({'processCompleted': fieldStatisticCompleted});
         fieldStatisticService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(fieldStatisticEventArgsSystem).not.toBeNull();
                 expect(fieldStatisticEventArgsSystem.result.mode).toBe("AVERAGE");
@@ -63,15 +63,15 @@ describe('FieldStatisticService', function () {
     });
 
     //错误数据集，查询错误
-    it('processAsync_datasetsWrong', function (done) {
+    it('processAsync_datasetsWrong', (done) => {
         var fieldStatisticService = initFieldStatisticService();
         fieldStatisticService.dataset = "NoDataset";
         fieldStatisticService.datasource = "World";
         fieldStatisticService.field = "NotIDThis";
-        fieldStatisticService.statisticMode = SuperMap.StatisticMode.AVERAGE;
+        fieldStatisticService.statisticMode = StatisticMode.AVERAGE;
         fieldStatisticService.events.on({'processFailed': fieldStatisticFailed});
         fieldStatisticService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();

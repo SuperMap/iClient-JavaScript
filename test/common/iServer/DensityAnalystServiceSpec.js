@@ -1,44 +1,43 @@
-require('../../../src/common/iServer/DensityAnalystService');
-var request = require('request');
+import {DensityAnalystService} from '../../../src/common/iServer/DensityAnalystService';
+import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
+import request from 'request';
 
+
+var url = GlobeParameter.spatialAnalystURL_Changchun;
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var url = GlobeParameter.spatialAnalystURL_Changchun;
+var initDensityAnalystService = () => {
+    return new DensityAnalystService(url, options);
+};
+var analyzeCompleted = (analyseEventArgs) => {
+    analystEventArgsSystem = analyseEventArgs;
+};
+var analyzeFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
 
-function initDensityAnalystService() {
-    return new SuperMap.DensityAnalystService(url, options);
-}
-
-function analyzeCompleted(analyseEventArgs) {
-    analystEventArgsSystem = analyseEventArgs;
-}
-
-function analyzeFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-
-describe('DensityAnalystService', function () {
+describe('DensityAnalystService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         serviceFailedEventArgsSystem = null;
         analystEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "KernelDensity_commonTest";
     //成功事件
-    it('SuccessEvent', function (done) {
+    it('SuccessEvent', (done) => {
         var densityAnalystService = initDensityAnalystService();
         expect(densityAnalystService).not.toBeNull();
         expect(densityAnalystService.url).toEqual(url);
-        var densityKernelAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+        var densityKernelAnalystParameters = new DensityKernelAnalystParameters({
             dataset: "Railway@Changchun",
             //用于进行核密度分析的测量值的字段名称
             fieldName: "SmLength",
@@ -48,7 +47,7 @@ describe('DensityAnalystService', function () {
         });
         densityAnalystService.processAsync(densityKernelAnalystParameters);
         densityAnalystService.events.on({"processCompleted": analyzeCompleted});
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(analystEventArgsSystem.type).toEqual("processCompleted");
                 var serviceResult = analystEventArgsSystem.result;
@@ -69,11 +68,11 @@ describe('DensityAnalystService', function () {
     });
 
     //失败事件
-    it('FailedEvent', function (done) {
+    it('FailedEvent', (done) => {
         var densityAnalystService = initDensityAnalystService();
         expect(densityAnalystService).not.toBeNull();
         expect(densityAnalystService.url).toEqual(url);
-        var densityKernelAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+        var densityKernelAnalystParameters = new DensityKernelAnalystParameters({
             dataset: "xx@Changchun",
             //用于进行核密度分析的测量值的字段名称
             fieldName: "SmLength",
@@ -82,7 +81,7 @@ describe('DensityAnalystService', function () {
         });
         densityAnalystService.processAsync(densityKernelAnalystParameters);
         densityAnalystService.events.on({"processFailed": analyzeFailed});
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.type).toEqual("processFailed");
                 var serviceResult = serviceFailedEventArgsSystem;
@@ -103,7 +102,7 @@ describe('DensityAnalystService', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

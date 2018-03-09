@@ -1,12 +1,10 @@
-require('../../../../src/mapboxgl/overlay/mapv/MapvDataSet');
-var mapboxgl = require('mapbox-gl');
-window.mapboxgl = mapboxgl;
+import {MapvDataSet} from '../../../../src/mapboxgl/overlay/mapv/MapvDataSet'
 
-describe('mapboxgl_MapvDataSet', function () {
-    it('getPoint', function () {
+describe('mapboxgl_MapvDataSet', () => {
+    it('getPoint', () => {
         var point = [106.540545, 29.531714];
-        var mapvDataSet = mapboxgl.supermap.MapvDataSet;
-        var dataset = mapvDataSet.getPoint(point);
+        var mapvDataSets = MapvDataSet;
+        var dataset = mapvDataSets.getPoint(point);
         expect(dataset).not.toBeNull();
         expect(dataset._data.length).toEqual(1);
         var data = dataset._data[0];
@@ -17,7 +15,7 @@ describe('mapboxgl_MapvDataSet', function () {
         data = null;
     });
 
-    it('getPoints', function () {
+    it('getPoints', () => {
         var points = [{
             "geometry": {
                 "type": "Point",
@@ -29,8 +27,8 @@ describe('mapboxgl_MapvDataSet', function () {
                 "coordinates": [106.63530472117604, 29.492206977571094]
             }
         }];
-        var mapvDataSet = mapboxgl.supermap.MapvDataSet;
-        var dataset = mapvDataSet.getPoints(points);
+        var mapvDataSets = MapvDataSet;
+        var dataset = mapvDataSets.getPoints(points);
         expect(dataset).not.toBeNull();
         expect(dataset._data.length).toEqual(2);
         expect(dataset._data[0].geometry.type).toEqual('Point');
@@ -43,7 +41,7 @@ describe('mapboxgl_MapvDataSet', function () {
         expect(dataset._data[1].geometry.coordinates[1]).toEqual(29.492206977571094);
     });
 
-    it('getCurveLines', function () {
+    it('getCurveLines', () => {
         var startPoint = [10, 20];
         var linePoints = [{
             "geometry": {
@@ -56,8 +54,8 @@ describe('mapboxgl_MapvDataSet', function () {
                 "coordinates": [101, 29]
             }
         }];
-        var mapvDataSet = mapboxgl.supermap.MapvDataSet;
-        var dataset = mapvDataSet.getCurveLines(startPoint, linePoints);
+        var mapvDataSets = MapvDataSet;
+        var dataset = mapvDataSets.getCurveLines(startPoint, linePoints);
         expect(dataset).not.toBeNull();
         expect(dataset._data.length).toEqual(2);
         for (var i = 0; i < dataset._data.length; i++) {
@@ -70,7 +68,7 @@ describe('mapboxgl_MapvDataSet', function () {
         }
     });
 
-    it('getCurveDynamicPoints', function () {
+    it('getCurveDynamicPoints', () => {
         var point = [10, 20];
         var endPoints = [{
             "geometry": {
@@ -83,8 +81,8 @@ describe('mapboxgl_MapvDataSet', function () {
                 "coordinates": [101, 29]
             }
         }];
-        var mapvDataSet = mapboxgl.supermap.MapvDataSet;
-        var dataset = mapvDataSet.getCurveDynamicPoints(point, endPoints);
+        var mapvDataSets = MapvDataSet;
+        var dataset = mapvDataSets.getCurveDynamicPoints(point, endPoints);
         expect(dataset).not.toBeNull();
         expect(dataset._data.length).toBeGreaterThan(0);
         for (var i = 0; i < dataset._data.length; i++) {

@@ -1,47 +1,46 @@
-﻿require('../../../src/common/iServer/MapService');
+﻿﻿import {MapService} from '../../../src/common/iServer/MapService';
 
+var worldMapURL = GlobeParameter.worldMapURL;
+//初始化注册事件监听器的Services
 var getMapStatusEventArgsSystem = null;
 var serviceFailedEventArgsSystem = null;
-var worldMapURL = GlobeParameter.worldMapURL;
-
-//初始化注册事件监听器的Services
-function initMapService_RegisterListener() {
-    return new SuperMap.MapService(worldMapURL, {
+var GetMapStatusCompleted = (getMapStatusEventArgs) => {
+    getMapStatusEventArgsSystem = getMapStatusEventArgs;
+};
+var GetMapStatusFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var initMapService_RegisterListener = () => {
+    return new MapService(worldMapURL, {
             eventListeners: {'processFailed': GetMapStatusFailed, 'processCompleted': GetMapStatusCompleted}
         }
     );
-}
-function GetMapStatusCompleted(getMapStatusEventArgs) {
-    getMapStatusEventArgsSystem = getMapStatusEventArgs;
-}
-function GetMapStatusFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
+};
 
-describe('MapService', function () {
+describe('MapService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor_token', function () {
-        var getMapService = new SuperMap.MapService(worldMapURL, {token: 88888});
+    it('constructor_token', () => {
+        var getMapService = new MapService(worldMapURL, {token: 88888});
         expect(getMapService).not.toBeNull();
         expect(getMapService.token).toEqual(88888);
         getMapService.destroy();
     });
 
     //通过的情况
-    it('success:processAsync', function (done) {
+    it('success:processAsync', (done) => {
         var getMapService = initMapService_RegisterListener();
         expect(getMapService).not.toBeNull();
         expect(getMapService.url).toEqual(worldMapURL);
         getMapService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getMapStatusResult = getMapStatusEventArgsSystem.result;
                 expect(getMapStatusEventArgsSystem).not.toBeNull();
@@ -68,12 +67,12 @@ describe('MapService', function () {
         }, 2000);
     });
 
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var mapServiceURL = GlobeParameter.mapServiceURL;
-        var getMapService = new SuperMap.MapService(mapServiceURL + "MapNameError");
+        var getMapService = new MapService(mapServiceURL + "MapNameError");
         getMapService.events.on({'processFailed': GetMapStatusFailed});
         getMapService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(404);
@@ -88,19 +87,3 @@ describe('MapService', function () {
         }, 2000);
     })
 });
-
-/*
- function boundsEqual(jsonObject,bounds,tolerance){
- if(!(jsonObject && bounds)) {
- return false;
- }
- if(tolerance == undefined ){
- tolerance=1.0E-6;
- }
- Math
- if(Math.abs(jsonObject.left - bounds.left) <tolerance  && Math.abs(jsonObject.bottom - bounds.bottom) <tolerance  && Math.abs(jsonObject.right - bounds.right)  <tolerance &&  Math.abs(jsonObject.top - bounds.top) <tolerance ){
- return true;
- }else{
- return false;
- }
- }*/

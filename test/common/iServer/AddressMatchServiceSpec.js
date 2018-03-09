@@ -1,19 +1,21 @@
-require('../../../src/common/iServer/AddressMatchService');
+import {AddressMatchService} from '../../../src/common/iServer/AddressMatchService';
+import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
+import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
 
 var addressMatchURL_code = GlobeParameter.addressMatchURL_code;
 var addressMatchURL_decode = GlobeParameter.addressMatchURL_decode;
-describe('AddressMatchService', function () {
+describe('AddressMatchService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
-        var addressMatchService = new SuperMap.AddressMatchService(addressMatchURL_code);
+    it('constructor, destroy', () => {
+        var addressMatchService = new AddressMatchService(addressMatchURL_code);
         expect(addressMatchService).not.toBeNull();
         expect(addressMatchService.url).toEqual(addressMatchURL_code);
         expect(addressMatchService.isInTheSameDomain).toBeFalsy();
@@ -25,21 +27,18 @@ describe('AddressMatchService', function () {
         expect(addressMatchService.url).toBeNull();
     });
 
-    it('code', function (done) {
+    it('code', (done) => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
+        var codeFailed = (serviceFailedEventArgs) => {
+            codingFailedEventArgs = serviceFailedEventArgs;
+        };
+        var codeCompleted = (analyseEventArgs) => {
+            codingSuccessEventArgs = analyseEventArgs;
+        };
         var options = {
             eventListeners: {"processCompleted": codeCompleted, 'processFailed': codeFailed}
         };
-
-        function codeFailed(serviceFailedEventArgs) {
-            codingFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function codeCompleted(analyseEventArgs) {
-            codingSuccessEventArgs = analyseEventArgs;
-        }
-
-        var GeoCodingParams = new SuperMap.GeoCodingParameter({
+        var GeoCodingParams = new GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
             toIndex: 10,
@@ -47,9 +46,9 @@ describe('AddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var addressCodeService = new SuperMap.AddressMatchService(addressMatchURL_code, options);
+        var addressCodeService = new AddressMatchService(addressMatchURL_code, options);
         addressCodeService.code(addressMatchURL_code, GeoCodingParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(addressCodeService).not.toBeNull();
                 expect(codingSuccessEventArgs).not.toBeNull();
@@ -73,21 +72,18 @@ describe('AddressMatchService', function () {
         }, 5000)
     });
 
-    it('decode', function (done) {
+    it('decode', (done) => {
         var decodingFailedEventArgs = null, decodingSuccessEventArgs = null;
+        var decodeFailed = (serviceFailedEventArgs) => {
+            decodingFailedEventArgs = serviceFailedEventArgs;
+        };
+        var decodeCompleted = (analyseEventArgs) => {
+            decodingSuccessEventArgs = analyseEventArgs;
+        };
         var options = {
             eventListeners: {"processCompleted": decodeCompleted, 'processFailed': decodeFailed}
         };
-
-        function decodeFailed(serviceFailedEventArgs) {
-            decodingFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function decodeCompleted(analyseEventArgs) {
-            decodingSuccessEventArgs = analyseEventArgs;
-        }
-
-        var GeoDeCodingParams = new SuperMap.GeoDecodingParameter({
+        var GeoDeCodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
             y: 39.92311315752059,
             fromIndex: 0,
@@ -97,9 +93,9 @@ describe('AddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var addressDeCodeService = new SuperMap.AddressMatchService(addressMatchURL_decode, options);
+        var addressDeCodeService = new AddressMatchService(addressMatchURL_decode, options);
         addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(addressDeCodeService).not.toBeNull();
                 expect(decodingSuccessEventArgs).not.toBeNull();

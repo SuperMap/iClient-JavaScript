@@ -1,32 +1,33 @@
-require('../../../src/mapboxgl/services/GridCellInfosService');
-var mapboxgl = require('mapbox-gl');
+import {GridCellInfosService} from '../../../src/mapboxgl/services/GridCellInfosService';
+import {GetGridCellInfosParameters} from '../../../src/common/iServer/GetGridCellInfosParameters';
 
 var url = GlobeParameter.dataServiceURL;
+
 //数据栅格查询服务
-describe('mapboxgl_GridCellInfosService', function () {
+describe('mapboxgl_GridCellInfosService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('getGridCellInfos', function (done) {
-        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
+    it('getGridCellInfos', (done) => {
+        var getGridCellInfosParam = new GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: 4,
             Y: 20
         });
-        var service = new mapboxgl.supermap.GridCellInfosService(url);
-        service.getGridCellInfos(getGridCellInfosParam, function (result) {
+        var service = new GridCellInfosService(url);
+        service.getGridCellInfos(getGridCellInfosParam, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

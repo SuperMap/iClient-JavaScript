@@ -1,24 +1,25 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {RouteLocatorParameters} from '../../../src/common/iServer/RouteLocatorParameters';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
+
+describe('mapboxgl_SpatialAnalystService_routeLocate', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //路由定位 里程定点
-    it('routeLocate_point', function (done) {
+    it('routeLocate_point', (done) => {
         var piontLists = [
             [116.2143386597, 39.8959419733, 0],
             [116.217501999125, 39.896670999665, 282.3879789906],
@@ -36,18 +37,18 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
                 "coordinates": piontLists
             }
         };
-        var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+        var routeLocatorParameters_point = new RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "POINT",
             "measure": 6753,
             "offset": 0,
             "isIgnoreGap": true
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.routeLocate(routeLocatorParameters_point, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.routeLocate(routeLocatorParameters_point, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -67,7 +68,7 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
     });
 
     //路由定位 里程定线
-    it('routeLocate_line', function (done) {
+    it('routeLocate_line', (done) => {
         var piontLists = [
             [116.2143386597, 39.8959419733, 0],
             [116.217501999125, 39.896670999665, 282.3879789906],
@@ -85,18 +86,18 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
                 "coordinates": piontLists
             }
         };
-        var routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
+        var routeLocatorParameters_line = new RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "LINE",
             "startMeasure": 1123,
             "endMeasure": 4489,
             "isIgnoreGap": true
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.routeLocate(routeLocatorParameters_line, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.routeLocate(routeLocatorParameters_line, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

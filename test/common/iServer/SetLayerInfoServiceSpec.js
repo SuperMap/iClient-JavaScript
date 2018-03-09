@@ -1,10 +1,19 @@
 require('../../../src/common/iServer/SetLayerInfoService');
 require('../../resources/LayersInfo');
 
+var url = GlobeParameter.WorldURL;
 var setLayerFailedEventArgsSystem = null;
 var setLayerEventArgsSystem = null;
 var id;
-var url = GlobeParameter.WorldURL;
+
+function setLayerInfoCompleted(result) {
+    setLayerEventArgsSystem = result;
+}
+
+function setLayerFailed(result) {
+    setLayerFailedEventArgsSystem = result;
+}
+
 var options = {
     eventListeners: {
         "processCompleted": setLayerInfoCompleted,
@@ -14,14 +23,6 @@ var options = {
 
 function initSetLayerInfoService(url) {
     return new SuperMap.SetLayerInfoService(url, options);
-}
-
-function setLayerInfoCompleted(result) {
-    setLayerEventArgsSystem = result;
-}
-
-function setLayerFailed(result) {
-    setLayerFailedEventArgsSystem = result;
 }
 
 describe('SetLayerInfoService', function () {

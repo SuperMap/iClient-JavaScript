@@ -1,57 +1,59 @@
-﻿require('../../../src/common/iServer/GeoRelationAnalystService');
-
-var completedEventArgsSystem, failedEventArgsSystem;
+﻿﻿import {GeoRelationAnalystService} from '../../../src/common/iServer/GeoRelationAnalystService';
+import {GeoRelationAnalystParameters} from '../../../src/common/iServer/GeoRelationAnalystParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {SpatialRelationType} from '../../../src/common/REST';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
+var completedEventArgsSystem, failedEventArgsSystem;
+var initGeoRelationAnalystService = () => {
+    return new GeoRelationAnalystService(url, options);
+};
+var generateSpatialDataCompleted = (completedEventArgs) => {
+    completedEventArgsSystem = completedEventArgs;
+};
+var generateSpatialDataFailed = (failedEventArgs) => {
+    failedEventArgsSystem = failedEventArgs;
+};
 var options = {
     eventListeners: {
         processCompleted: generateSpatialDataCompleted,
         processFailed: generateSpatialDataFailed
     }
 };
-function initGeoRelationAnalystService() {
-    return new SuperMap.GeoRelationAnalystService(url, options);
-}
-function generateSpatialDataCompleted(completedEventArgs) {
-    completedEventArgsSystem = completedEventArgs;
-}
-function generateSpatialDataFailed(failedEventArgs) {
-    failedEventArgsSystem = failedEventArgs;
-}
 
-describe('GeoRelationAnalystService', function () {
+describe('GeoRelationAnalystService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //空间关系分析服务，比较返回结果
-    it('returnFeature', function (done) {
-        var referenceFilter = new SuperMap.FilterParameter({
+    it('returnFeature', (done) => {
+        var referenceFilter = new FilterParameter({
             name: "Frame_R@Changchun",
             attributeFilter: "SMID>0"
         });
-        var sourceFilter = new SuperMap.FilterParameter({
+        var sourceFilter = new FilterParameter({
             attributeFilter: "SMID>0"
         });
-        var datasetGeoRelationParameters = new SuperMap.GeoRelationAnalystParameters({
+        var datasetGeoRelationParameters = new GeoRelationAnalystParameters({
             dataset: "Park@Changchun",
             startRecord: 0,
             expectCount: 20,
             sourceFilter: sourceFilter,
             referenceFilter: referenceFilter,
-            spatialRelationType: SuperMap.SpatialRelationType.INTERSECT,
+            spatialRelationType: SpatialRelationType.INTERSECT,
             isBorderInside: true,
             returnFeature: true,
             returnGeoRelatedOnly: true
         });
         var datasetRelationService = initGeoRelationAnalystService();
         datasetRelationService.processAsync(datasetGeoRelationParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(datasetRelationService).not.toBeNull();
                 expect(completedEventArgsSystem.result).not.toBeNull();
@@ -73,25 +75,25 @@ describe('GeoRelationAnalystService', function () {
     });
 
     //空间关系分析服务，比较返回结果
-    it('success:processAsync', function (done) {
-        var referenceFilter = new SuperMap.FilterParameter({name: "Frame_R@Changchun", attributeFilter: "SMID>0"});
-        var sourceFilter = new SuperMap.FilterParameter({
+    it('success:processAsync', (done) => {
+        var referenceFilter = new FilterParameter({name: "Frame_R@Changchun", attributeFilter: "SMID>0"});
+        var sourceFilter = new FilterParameter({
             attributeFilter: "SMID>0"
         });
-        var datasetGeoRelationParameters = new SuperMap.GeoRelationAnalystParameters({
+        var datasetGeoRelationParameters = new GeoRelationAnalystParameters({
             dataset: "Park@Changchun",
             startRecord: 0,
             expectCount: 5,
             sourceFilter: sourceFilter,
             referenceFilter: referenceFilter,
-            spatialRelationType: SuperMap.SpatialRelationType.INTERSECT,
+            spatialRelationType: SpatialRelationType.INTERSECT,
             isBorderInside: true,
             returnFeature: false,
             returnGeoRelatedOnly: true
         });
         var datasetRelationService = initGeoRelationAnalystService();
         datasetRelationService.processAsync(datasetGeoRelationParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(datasetRelationService).not.toBeNull();
                 expect(completedEventArgsSystem.result).not.toBeNull();
@@ -113,23 +115,23 @@ describe('GeoRelationAnalystService', function () {
     });
 
     //空间关系分析服务，比较返回结果
-    it('fail:processAsync', function (done) {
-        var referenceFilter = new SuperMap.FilterParameter({attributeFilter: "SMID>0"});
-        var sourceFilter = new SuperMap.FilterParameter({
+    it('fail:processAsync', (done) => {
+        var referenceFilter = new FilterParameter({attributeFilter: "SMID>0"});
+        var sourceFilter = new FilterParameter({
             attributeFilter: "SMID>0"
         });
-        var datasetGeoRelationParameters = new SuperMap.GeoRelationAnalystParameters({
+        var datasetGeoRelationParameters = new GeoRelationAnalystParameters({
             dataset: "Park@Changchun",
             sourceFilter: sourceFilter,
             referenceFilter: referenceFilter,
-            spatialRelationType: SuperMap.SpatialRelationType.INTERSECT,
+            spatialRelationType: SpatialRelationType.INTERSECT,
             isBorderInside: true,
             returnFeature: false,
             returnGeoRelatedOnly: true
         });
         var datasetRelationService = initGeoRelationAnalystService();
         datasetRelationService.processAsync(datasetGeoRelationParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(failedEventArgsSystem).not.toBeNull();
                 expect(failedEventArgsSystem.error).not.toBeNull();

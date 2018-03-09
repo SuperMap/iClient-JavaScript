@@ -1,8 +1,8 @@
-﻿require('../../../src/common/iServer/BufferDistance');
+﻿﻿import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
 
-describe('BufferDistance', function () {
-    it('constructor_default', function () {
-        var bufferDistance = new SuperMap.BufferDistance();
+describe('BufferDistance', () => {
+    it('constructor_default', () => {
+        var bufferDistance = new BufferDistance();
         expect(bufferDistance).not.toBeNull();
         expect(bufferDistance.value).toEqual(100);
         expect(bufferDistance.exp).toBeNull();
@@ -10,8 +10,8 @@ describe('BufferDistance', function () {
         expect(bufferDistance.value).toBeNull();
         expect(bufferDistance.exp).toBeNull();
     });
-    it('constructor_value', function () {
-        var bufferDistance = new SuperMap.BufferDistance({
+    it('constructor_value', () => {
+        var bufferDistance = new BufferDistance({
             value: 200
         });
         expect(bufferDistance).not.toBeNull();

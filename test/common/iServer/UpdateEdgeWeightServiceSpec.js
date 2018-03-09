@@ -5,6 +5,15 @@ var serviceCompletedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
 var networkAnalystURL = GlobeParameter.networkAnalystURL;
+
+function updateEdgeWeightFailed(serviceFailedEventArgs) {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+}
+
+function updateEdgeWeightCompleted(serviceCompletedEventArgs) {
+    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+}
+
 function initUpdateEdgeWeightService_RegisterListener() {
     return new SuperMap.UpdateEdgeWeightService(networkAnalystURL,
         {
@@ -14,12 +23,6 @@ function initUpdateEdgeWeightService_RegisterListener() {
             }
         }
     );
-}
-function updateEdgeWeightFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function updateEdgeWeightCompleted(serviceCompletedEventArgs) {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
 }
 
 describe('UpdateEdgeWeightService', function () {

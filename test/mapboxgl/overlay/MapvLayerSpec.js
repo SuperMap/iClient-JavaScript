@@ -1,14 +1,14 @@
-require('../../../src/mapboxgl/overlay/MapvLayer');
-var mapboxgl = require('mapbox-gl');
-var mapv = require('mapv');
-window.mapv = mapv;
-window.mapboxgl = mapboxgl;
+import {MapvLayer} from '../../../src/mapboxgl/overlay/MapvLayer';
+import mapboxgl from 'mapbox-gl';
+
+window.mapv = require('mapv');
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
-describe('mapboxgl_MapVLayer', function () {
+
+describe('mapboxgl_MapVLayer', () => {
     var originalTimeout;
     var testDiv, map, mapvLayer;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -39,7 +39,7 @@ describe('mapboxgl_MapVLayer', function () {
             center: [112, 37.94],
             zoom: 3
         });
-        map.on('load', function () {
+        map.on('load', () => {
             var randomCount = 1000;
             var data = [];
             var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
@@ -68,24 +68,24 @@ describe('mapboxgl_MapVLayer', function () {
                 max: 30,
                 draw: 'intensity'
             };
-            mapvLayer = new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+            mapvLayer = new MapvLayer(map, dataSet, options);
         });
 
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         document.body.removeChild(testDiv);
         mapv = null;
     });
 
-    it('initialize', function (done) {
-        setTimeout(function () {
+    it('initialize', (done) => {
+        setTimeout(() => {
             expect(mapvLayer).not.toBeNull();
             expect(mapvLayer.canvas).not.toBeNull();
             expect(mapvLayer.map).not.toBeNull();
@@ -97,18 +97,18 @@ describe('mapboxgl_MapVLayer', function () {
         }, 6000);
     });
 
-    it('getTopLeft', function () {
+    it('getTopLeft', () => {
         var topLeft = mapvLayer.getTopLeft();
         expect(topLeft).not.toBeNull();
     });
 
-    it('show', function () {
+    it('show', () => {
         var thisMapvlayer = mapvLayer.show();
         expect(thisMapvlayer).not.toBeNull();
         expect(thisMapvlayer.renderer.canvasLayer.canvas.style.display).toBe('block');
     });
 
-    it('hide', function () {
+    it('hide', () => {
         var thisMapvlayer = mapvLayer.hide();
         expect(thisMapvlayer).not.toBeNull();
         expect(thisMapvlayer.renderer.canvasLayer.canvas.style.display).toBe('none');

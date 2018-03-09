@@ -2,8 +2,17 @@ require('../../../src/common/iServer/SetLayerStatusService');
 
 var setLayersStatusEvtArgs = null;
 var setLayersStatusFaildEvtArgs = null;
+var url = GlobeParameter.WorldURL;
 
-function initSetLayerStatusService(url) {
+function setLayerStatusCompleted(result) {
+    setLayersStatusEvtArgs = result;
+}
+
+function setLayerStatusFailed(result) {
+    setLayersStatusFaildEvtArgs = result;
+}
+
+function initSetLayerStatusService() {
     return new SuperMap.SetLayerStatusService(url, {
         eventListeners: {
             processCompleted: setLayerStatusCompleted,
@@ -11,14 +20,8 @@ function initSetLayerStatusService(url) {
         }
     });
 }
-function setLayerStatusCompleted(result) {
-    setLayersStatusEvtArgs = result;
-}
-function setLayerStatusFailed(result) {
-    setLayersStatusFaildEvtArgs = result;
-}
 
-describe('testSetLayerStatusService_processAsync', function () {
+describe('SetLayerStatusService_processAsync', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -32,13 +35,7 @@ describe('testSetLayerStatusService_processAsync', function () {
     });
 
     it('constructor, destroy', function () {
-        var url = GlobeParameter.WorldURL;
-        var setLayerStatusService = new SuperMap.SetLayerStatusService(url,
-            {
-                eventListeners: {
-                    "processCompleted": this.setLayerComplted
-                }
-            });
+        var setLayerStatusService = initSetLayerStatusService();
         expect(setLayerStatusService.mapUrl).toEqual(url);
         expect(setLayerStatusService.events).not.toBeNull();
         expect(setLayerStatusService.eventListeners).not.toBeNull();
@@ -50,8 +47,7 @@ describe('testSetLayerStatusService_processAsync', function () {
     });
 
     it('getMapName', function () {
-        var url = GlobeParameter.WorldURL;
-        var setLayerStatusService = new SuperMap.SetLayerStatusService(url);
+        var setLayerStatusService = initSetLayerStatusService();
         var name = setLayerStatusService.getMapName(url);
         expect(name).toEqual("World");
         setLayerStatusService.destroy();
@@ -59,8 +55,7 @@ describe('testSetLayerStatusService_processAsync', function () {
 
     //processAsync没有参数的时候
     it('processAsync_noParams', function (done) {
-        var worldURL = GlobeParameter.WorldURL;
-        var setLayerStatusService = new SuperMap.SetLayerStatusService(worldURL);
+        var setLayerStatusService = initSetLayerStatusService();
         setLayerStatusService.processAsync();
 
         setTimeout(function () {
@@ -74,13 +69,12 @@ describe('testSetLayerStatusService_processAsync', function () {
                 setLayerStatusService.destroy();
                 done();
             }
-        })
+        }, 3000)
     });
 
     //processAsyn有参数，没有resourceID属性
     it('processAsync_resourceID_null', function (done) {
-        var url = GlobeParameter.WorldURL;
-        var setLayerStatusService = initSetLayerStatusService(url);
+        var setLayerStatusService = initSetLayerStatusService();
         var setLayerStatusParams = new SuperMap.SetLayerStatusParameters();
         var layerStatus = new SuperMap.LayerStatus();
         layerStatus.layerName = "super";
@@ -90,8 +84,8 @@ describe('testSetLayerStatusService_processAsync', function () {
         setLayerStatusService.processAsync(setLayerStatusParams);
 
         function processCompleted(createTempLayerEventArgs) {
-            setLayerStatusService.events.un({"processCompleted": processCompleted});
-            _resourceID = createTempLayerEventArgs.result.newResourceID;
+            setLayerStatusService.events.on({"processCompleted": processCompleted});
+            var resourceID = createTempLayerEventArgs.result.newResourceID;
             try {
                 expect(setLayersStatusEvtArgs.result).not.toBeNull();
                 expect(setLayerStatusService.lastparams).not.toBeNull();

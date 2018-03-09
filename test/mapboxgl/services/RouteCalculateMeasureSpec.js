@@ -1,24 +1,25 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', function () {
+
+describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //路由测量计算
-    it('routeCalculateMeasure', function (done) {
+    it('routeCalculateMeasure', (done) => {
         var piontLists = [
             [116.2143386597, 39.8959419733, 0],
             [116.217501999125, 39.896670999665, 282.3879789906],
@@ -46,17 +47,17 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', function () {
                 "coordinates": point
             }
         };
-        var routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
+        var routeCalculateMeasureParameters = new RouteCalculateMeasureParameters({
             "sourceRoute": routeLine,   //必选,路由类型
             "point": pointGeometryData,            //必选
             "tolerance": 10,
             "isIgnoreGap": false
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.routeCalculateMeasure(routeCalculateMeasureParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.routeCalculateMeasure(routeCalculateMeasureParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

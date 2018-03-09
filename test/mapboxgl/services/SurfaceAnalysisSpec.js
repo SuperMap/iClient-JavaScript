@@ -1,44 +1,46 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
-require('../../../src/common/util/FetchRequest');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {DatasetSurfaceAnalystParameters} from '../../../src/common/iServer/DatasetSurfaceAnalystParameters';
+import {SurfaceAnalystParametersSetting} from '../../../src/common/iServer/SurfaceAnalystParametersSetting';
+import { DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {SmoothMethod} from '../../../src/common/REST';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var url = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
+describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', () => {
     var serviceResult = null;
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         serviceResult = null;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //表面分析
-    it('surfaceAnalysis', function (done) {
-        var datasetSurfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
+    it('surfaceAnalysis', (done) => {
+        var datasetSurfaceAnalystParams = new DatasetSurfaceAnalystParameters({
             dataset: "SamplesP@Interpolation",
             //获取或设置用于提取操作的字段名称
             zValueFieldName: "AVG_TMP",
             //获取或设置表面分析参数
-            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+            extractParameter: new SurfaceAnalystParametersSetting({
                 datumValue: 0,
                 interval: 2,
                 resampleTolerance: 0,
-                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothMethod: SmoothMethod.BSPLINE,
                 smoothness: 3,
                 clipRegion: null
             }),
             resolution: 3000,
-            resultSetting: new SuperMap.DataReturnOption({expectCount: 1})
+            resultSetting: new DataReturnOption({expectCount: 1})
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        var service = new SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
             var expectParams = "{'resolution':3000,'extractParameter':{'clipRegion':null,'datumValue':0,'expectedZValues':null,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
@@ -46,7 +48,7 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });
-        service.surfaceAnalysis(datasetSurfaceAnalystParameters, function (result) {
+        service.surfaceAnalysis(datasetSurfaceAnalystParams, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
             expect(serviceResult).not.toBeNull();
@@ -68,7 +70,7 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
             expect(recordset.fieldCaptions.length).toEqual(11);
             expect(recordset.fieldTypes.length).toEqual(11);
             expect(recordset.fields.length).toEqual(11);
-            datasetSurfaceAnalystParameters.destroy();
+            datasetSurfaceAnalystParams.destroy();
             done();
         });
     });

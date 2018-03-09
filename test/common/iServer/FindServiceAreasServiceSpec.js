@@ -1,44 +1,45 @@
-﻿require('../../../src/common/iServer/FindServiceAreasService');
+﻿﻿import {FindServiceAreasService} from '../../../src/common/iServer/FindServiceAreasService';
+import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
-var serviceFailedEventArgsSystem = null;
-var serviceSucceedEventArgsSystem = null;
-
-//服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
-;
+//服务初始化时注册事件监听函数
+var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
+var initFindServiceAreasService = () => {
+    return new FindServiceAreasService(url, options);
+};
+var findServiceAreasServiceCompleted = (serviceSucceedEventArgs) => {
+    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+};
+var findServiceAreasServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processFailed': findServiceAreasServiceFailed,
         'processCompleted': findServiceAreasServiceCompleted
     }
 };
-function initFindServiceAreasService() {
-    return new SuperMap.FindServiceAreasService(url, options);
-}
-function findServiceAreasServiceCompleted(serviceSucceedEventArgs) {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-}
-function findServiceAreasServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('FindServiceAreasService', function () {
+describe('FindServiceAreasService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //基本测试
-    it('processAsync:default', function (done) {
-        var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync:default', (done) => {
+        var centerArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -48,11 +49,11 @@ describe('FindServiceAreasService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new FindServiceAreasParameters({
             isAnalyzeById: false,
             centers: centerArray,
             weights: weightArray,
@@ -62,7 +63,7 @@ describe('FindServiceAreasService', function () {
         });
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList != null).toBeTruthy();
@@ -85,12 +86,12 @@ describe('FindServiceAreasService', function () {
     });
 
     //设置返回信息的有效性
-    it('processAsync_returnInformationInvalid', function (done) {
-        var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_returnInformationInvalid', (done) => {
+        var centerArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -100,11 +101,11 @@ describe('FindServiceAreasService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new FindServiceAreasParameters({
             isAnalyzeById: false,
             centers: centerArray,
             weights: weightArray,
@@ -115,7 +116,7 @@ describe('FindServiceAreasService', function () {
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList).not.toBeNull();
@@ -141,12 +142,12 @@ describe('FindServiceAreasService', function () {
     });
 
     //id为空
-    it('processAsync_isAnalystById', function (done) {
-        var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_isAnalystById', (done) => {
+        var centerArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -156,11 +157,11 @@ describe('FindServiceAreasService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new FindServiceAreasParameters({
             isAnalyzeById: true,
             centers: centerArray,
             weights: weightArray,
@@ -171,7 +172,7 @@ describe('FindServiceAreasService', function () {
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -191,12 +192,12 @@ describe('FindServiceAreasService', function () {
     });
 
     //参数错误
-    it('processAsync_paramsWrong', function (done) {
-        var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_paramsWrong', (done) => {
+        var centerArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -206,11 +207,11 @@ describe('FindServiceAreasService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "TurnCost1"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new FindServiceAreasParameters({
             isAnalyzeById: false,
             centers: centerArray,
             weights: weightArray,
@@ -221,7 +222,7 @@ describe('FindServiceAreasService', function () {
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -241,11 +242,11 @@ describe('FindServiceAreasService', function () {
     });
 
     //参数为空
-    it('processAsync_parameterNull', function (done) {
+    it('processAsync_parameterNull', (done) => {
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync();
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -263,12 +264,12 @@ describe('FindServiceAreasService', function () {
     });
 
     //AnalyzeById_null
-    it('processAsync_AnalyzeById_wrong', function (done) {
-        var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_AnalyzeById_wrong', (done) => {
+        var centerArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
         var weightArray = [1, 2];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -278,11 +279,11 @@ describe('FindServiceAreasService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new FindServiceAreasParameters({
             isAnalyzeById: "AnalyzeById",
             centers: centerArray,
             weights: weightArray,
@@ -292,7 +293,7 @@ describe('FindServiceAreasService', function () {
         });
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();

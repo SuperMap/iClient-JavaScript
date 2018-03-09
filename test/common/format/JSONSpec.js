@@ -38,25 +38,25 @@ describe('JSON', function () {
 
     it("write_array", function () {
         var jsonFormat = new SuperMap.Format.JSON();
-        jsonString = jsonFormat.write(POINTSARRAY, pretty);
+        var jsonString = jsonFormat.write(POINTSARRAY, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
     it("write_boolean", function () {
         var jsonFormat = new SuperMap.Format.JSON();
-        jsonString = jsonFormat.write(BOOLEANOBJ, pretty);
+        var jsonString = jsonFormat.write(BOOLEANOBJ, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
     it("write_date", function () {
         var jsonFormat = new SuperMap.Format.JSON();
-        jsonString = jsonFormat.write(DATE, pretty);
+        var jsonString = jsonFormat.write(DATE, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
     it("write_number", function () {
         var jsonFormat = new SuperMap.Format.JSON();
-        jsonString = jsonFormat.write(POINTSARRAY, pretty);
+        var jsonString = jsonFormat.write(POINTSARRAY, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 });

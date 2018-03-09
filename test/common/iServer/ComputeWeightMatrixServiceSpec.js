@@ -1,40 +1,44 @@
-﻿require('../../../src/common/iServer/ComputeWeightMatrixService');
-require('../../../src/common/commontypes/geometry/Point');
-var serviceFailedEventArgsSystem = null;
-//服务初始化时注册事件监听函数
+﻿﻿import {ComputeWeightMatrixService} from '../../../src/common/iServer/ComputeWeightMatrixService';
+import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+
 var url = GlobeParameter.networkAnalystURL;
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var initComputeWeightMatrixService_RegisterListener = () => {
+    return new ComputeWeightMatrixService(url, options);
+};
+var ComputeWeightMatrixServiceCompleted = (getFeaturesEventArgs) => {
+    serviceCompletedEventArgsSystem = getFeaturesEventArgs;
+};
+var ComputeWeightMatrixServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processCompleted': ComputeWeightMatrixServiceCompleted,
         'processFailed': ComputeWeightMatrixServiceFailed
     }
 };
-function initComputeWeightMatrixService_RegisterListener() {
-    return new SuperMap.ComputeWeightMatrixService(url, options);
-}
-function ComputeWeightMatrixServiceCompleted(getFeaturesEventArgs) {
-    serviceCompletedEventArgsSystem = getFeaturesEventArgs;
-}
-function ComputeWeightMatrixServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('ComputeWeightMatrixService', function () {
+describe('ComputeWeightMatrixService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_return:true', function (done) {
+    it('processAsync_return:true', (done) => {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -44,18 +48,18 @@ describe('ComputeWeightMatrixService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.ComputeWeightMatrixParameters({
+        var parameter = new ComputeWeightMatrixParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             parameter: analystParameter
         });
         computeWeightMatrixService.processAsync(parameter);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(computeWeightMatrixService).not.toBeNull();
                 expect(serviceCompletedEventArgsSystem.result).not.toBeNull();
@@ -82,12 +86,12 @@ describe('ComputeWeightMatrixService', function () {
     });
 
     //id为空
-    it('processAsync_isAnalyzeById:null', function (done) {
+    it('processAsync_isAnalyzeById:null', (done) => {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -97,17 +101,17 @@ describe('ComputeWeightMatrixService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.ComputeWeightMatrixParameters({
+        var parameter = new ComputeWeightMatrixParameters({
             isAnalyzeById: true,
             nodes: nodeArray,
             parameter: analystParameter
         });
         computeWeightMatrixService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.erroeMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -125,12 +129,12 @@ describe('ComputeWeightMatrixService', function () {
     });
 
     //参数错误
-    it('processAsync_parametersWrong', function (done) {
+    it('processAsync_parametersWrong', (done) => {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -140,17 +144,17 @@ describe('ComputeWeightMatrixService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "TurnCost1"
         });
-        var parameter = new SuperMap.FindPathParameters({
+        var parameter = new FindPathParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             parameter: analystParameter
         });
         computeWeightMatrixService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -168,11 +172,11 @@ describe('ComputeWeightMatrixService', function () {
     });
 
     //测试参数为空时的健壮性
-    it('processAsync:parametersNull', function (done) {
+    it('processAsync:parametersNull', (done) => {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         computeWeightMatrixService.processAsync();
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -187,11 +191,11 @@ describe('ComputeWeightMatrixService', function () {
         }, 4000)
     });
 
-    it('processAsync_isAnalyzeByIdInvalid', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_isAnalyzeByIdInvalid', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -201,18 +205,18 @@ describe('ComputeWeightMatrixService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.ComputeWeightMatrixParameters({
+        var parameter = new ComputeWeightMatrixParameters({
             isAnalyzeById: 2,
             nodes: nodeArray,
             parameter: analystParameter
         });
-        computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
+        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         computeWeightMatrixService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();

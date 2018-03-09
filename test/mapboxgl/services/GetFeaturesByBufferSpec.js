@@ -1,42 +1,42 @@
-require('../../../src/mapboxgl/services/FeatureService');
-var mapboxgl = require('mapbox-gl');
-require('../../../src/common/util/FetchRequest');
+import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
+import {GetFeaturesByBufferParameters} from '../../../src/common/iServer/GetFeaturesByBufferParameters';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var url = "http://supermap:8090/iserver/services/data-world/rest/data";
-describe('mapboxgl_FeatureService_getFeaturesByBuffer', function () {
+
+describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
     var serviceResult = null;
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         serviceResult = null;
     });
 
     //数据集Buffer查询服务
-    it('getFeaturesByBuffer_geometry', function (done) {
+    it('getFeaturesByBuffer_geometry', (done) => {
         var queryBufferGeometry = {
             "type": "Polygon",
             "coordinates": [[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]
         };
-        var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
+        var bufferParam = new GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 10,
             geometry: queryBufferGeometry,
             fromIndex: 1,
             toIndex: 3
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=1&toIndex=3");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(getFeasByBuffer));
         });
-        service.getFeaturesByBuffer(bufferParam, function (testResult) {
+        service.getFeaturesByBuffer(bufferParam, (testResult) => {
             serviceResult = testResult;
             expect(service).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");

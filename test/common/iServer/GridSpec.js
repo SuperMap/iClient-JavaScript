@@ -1,10 +1,11 @@
-var Grid = require('../../../src/common/iServer/Grid').Grid;
-var ServerColor = require('../../../src/common/iServer/ServerColor').ServerColor;
-var ServerStyle = require('../../../src/common/iServer/ServerStyle').ServerStyle;
-var ColorDictionary = require('../../../src/common/iServer/ColorDictionary').ColorDictionary;
+import {Grid} from '../../../src/common/iServer/Grid';
+import {ServerColor} from '../../../src/common/iServer/ServerColor';
+import {ServerStyle} from '../../../src/common/iServer/ServerStyle';
+import {ColorDictionary} from '../../../src/common/iServer/ColorDictionary';
+import {GridType} from '../../../src/common/REST';
 
-describe('Grid', function () {
-    it('constructor, destroy', function () {
+describe('Grid', () => {
+    it('constructor, destroy', () => {
         var options = {
             brightness: 10,
             colorGradientType: false,
@@ -17,7 +18,7 @@ describe('Grid', function () {
         grid.destroy();
     });
 
-    it('fromJson, toServerJSONObject', function () {
+    it('fromJson, toServerJSONObject', () => {
         var grid = new Grid();
         var jsonObject = {
             "color": "#a0559c",

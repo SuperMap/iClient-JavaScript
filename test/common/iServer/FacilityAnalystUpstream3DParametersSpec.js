@@ -1,7 +1,7 @@
-var FacilityAnalystUpstream3DParameters = require('../../../src/common/iServer/FacilityAnalystUpstream3DParameters').FacilityAnalystUpstream3DParameters;
+import {FacilityAnalystUpstream3DParameters} from '../../../src/common/iServer/FacilityAnalystUpstream3DParameters';
 
-describe('FacilityAnalystUpstream3DParameters', function () {
-    it('constructor,destroy', function () {
+describe('FacilityAnalystUpstream3DParameters', () => {
+    it('constructor,destroy', () => {
         var options = {
             edgeID: 84,
             nodeID: 25,

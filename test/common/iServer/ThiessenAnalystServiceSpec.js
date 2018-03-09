@@ -3,6 +3,12 @@
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
 var spatialAnalystURL_Changchun = GlobeParameter.spatialAnalystURL_Changchun;
+function analyzeFailed(serviceFailedEventArgs) {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+}
+function analyzeCompleted(analyseEventArgs) {
+    analystEventArgsSystem = analyseEventArgs;
+}
 function initThiessenAnalystService() {
     return new SuperMap.ThiessenAnalystService(spatialAnalystURL_Changchun,
         {
@@ -11,12 +17,6 @@ function initThiessenAnalystService() {
                 'processFailed': analyzeFailed
             }
         });
-}
-function analyzeFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function analyzeCompleted(analyseEventArgs) {
-    analystEventArgsSystem = analyseEventArgs;
 }
 
 describe('ThiessenAnalystService', function () {

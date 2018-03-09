@@ -1,30 +1,32 @@
-require('../../../src/mapboxgl/services/FieldService');
-var mapboxgl = require('mapbox-gl');
+import {FieldService} from '../../../src/mapboxgl/services/FieldService';
+import {FieldParameters} from '../../../src/common/iServer/FieldParameters';
+import {FieldStatisticsParameters} from '../../../src/common/iServer/FieldStatisticsParameters';
+import {StatisticMode} from '../../../src/common/REST';
 
 var url = GlobeParameter.dataServiceURL;
-describe('mapboxgl_FieldService', function () {
+describe('mapboxgl_FieldService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //字段查询服务
-    it('getFields', function (done) {
-        var fieldParameters = new SuperMap.FieldParameters({
+    it('getFields', (done) => {
+        var fieldParameters = new FieldParameters({
             datasource: "World",
             dataset: "continent_T"
         });
-        var service = new mapboxgl.supermap.FieldService(url);
-        service.getFields(fieldParameters, function (result) {
+        var service = new FieldService(url);
+        service.getFields(fieldParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -45,26 +47,26 @@ describe('mapboxgl_FieldService', function () {
     });
 
     //字段统计服务
-    it('getFieldStatisticsInfo', function (done) {
-        var fieldStatisticsParameters = new SuperMap.FieldStatisticsParameters({
+    it('getFieldStatisticsInfo', (done) => {
+        var fieldStatisticsParameters = new FieldStatisticsParameters({
             datasource: "World",
             dataset: "Countries",
             fieldName: "SmID",
             //字段统计方法类型
             statisticMode: [
-                SuperMap.StatisticMode.MAX,
-                SuperMap.StatisticMode.MIN,
-                SuperMap.StatisticMode.SUM,
-                SuperMap.StatisticMode.AVERAGE,
-                SuperMap.StatisticMode.STDDEVIATION,
-                SuperMap.StatisticMode.VARIANCE
+                StatisticMode.MAX,
+                StatisticMode.MIN,
+                StatisticMode.SUM,
+                StatisticMode.AVERAGE,
+                StatisticMode.STDDEVIATION,
+                StatisticMode.VARIANCE
             ]
         });
-        var service = new mapboxgl.supermap.FieldService(url);
-        service.getFieldStatisticsInfo(fieldStatisticsParameters, function (result) {
+        var service = new FieldService(url);
+        service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();

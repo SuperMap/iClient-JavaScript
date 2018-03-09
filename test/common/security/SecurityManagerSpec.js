@@ -44,7 +44,7 @@ describe('SecurityManager', function () {
 
     it("getServerInfo", function () {
         var url = "http://localhost:8093";
-        serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
             server: url
         });
         SuperMap.SecurityManager.registerServers(serverInfo);

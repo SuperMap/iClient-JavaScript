@@ -1,32 +1,33 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
+import {GeometryThiessenAnalystParameters} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', function () {
+describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //泰森多边形分析 数据集泰森多边形
-    it('thiessenAnalysis_byDataset', function (done) {
-        var datasetThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+    it('thiessenAnalysis_byDataset', (done) => {
+        var datasetThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
             dataset: "Town_P@Jingjin"
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.thiessenAnalysis(datasetThiessenAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.thiessenAnalysis(datasetThiessenAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -54,7 +55,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', function () {
     });
 
     //泰森多边形分析 几何泰森多边形
-    it('thiessenAnalysis_byGeometry', function (done) {
+    it('thiessenAnalysis_byGeometry', (done) => {
         var pointsList = [{
             "type": "Feature",
             "geometry": {
@@ -86,14 +87,14 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', function () {
                 "coordinates": [116.6003285499, 39.8970574832]
             }
         }];
-        var gThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
+        var gThiessenAnalystParameters = new GeometryThiessenAnalystParameters({
             points: pointsList
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.thiessenAnalysis(gThiessenAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.thiessenAnalysis(gThiessenAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

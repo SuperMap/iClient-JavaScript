@@ -1,44 +1,45 @@
-﻿require('../../../src/common/iServer/FindTSPPathsService');
-
-var serviceFailedEventArgsSystem = null;
-var serviceSucceedEventArgsSystem = null;
+﻿﻿import {FindTSPPathsService} from '../../../src/common/iServer/FindTSPPathsService';
+import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
 //服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
+var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
+var initFindTSPPathService = () => {
+    return new FindTSPPathsService(url, options);
+};
+var findTSPPathServiceCompleted = (serviceSucceedEventArgs) => {
+    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+};
+var findTSPPathServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processFailed': findTSPPathServiceFailed,
         'processCompleted': findTSPPathServiceCompleted
     }
 };
-function initFindTSPPathService() {
-    return new SuperMap.FindTSPPathsService(url, options);
-}
-function findTSPPathServiceCompleted(serviceSucceedEventArgs) {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-}
-function findTSPPathServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-
-describe('FindTSPPathsService', function () {
+describe('FindTSPPathsService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //测试正常情况
-    it('processAsync_default', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(5627.7550668827, -3627.4849836293),
-            new SuperMap.Geometry.Point(5018.1469160422, -4638.5424045354),
-            new SuperMap.Geometry.Point(6133.2837773358, -4645.9766502774)
+    it('processAsync_default', (done) => {
+        var nodeArray = [new Point(5627.7550668827, -3627.4849836293),
+            new Point(5018.1469160422, -4638.5424045354),
+            new Point(6133.2837773358, -4645.9766502774)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -48,11 +49,11 @@ describe('FindTSPPathsService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindTSPPathsParameters({
+        var parameter = new FindTSPPathsParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             endNodeAssigned: false,
@@ -60,7 +61,7 @@ describe('FindTSPPathsService', function () {
         });
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.tspPathList;
                 expect(analystResult).not.toBeNull();
@@ -113,11 +114,11 @@ describe('FindTSPPathsService', function () {
     });
 
     //id为空
-    it('processAsync_isAnalyzeById:null', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_isAnalyzeById:null', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -127,11 +128,11 @@ describe('FindTSPPathsService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindTSPPathsParameters({
+        var parameter = new FindTSPPathsParameters({
             isAnalyzeById: true,
             nodes: nodeArray,
             endNodeAssigned: false,
@@ -139,7 +140,7 @@ describe('FindTSPPathsService', function () {
         });
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -158,11 +159,11 @@ describe('FindTSPPathsService', function () {
     });
 
     //参数错误
-    it('processAsync_parameterWrong', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_parameterWrong', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -172,11 +173,11 @@ describe('FindTSPPathsService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "TurnCost1"
         });
-        var parameter = new SuperMap.FindTSPPathsParameters({
+        var parameter = new FindTSPPathsParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             endNodeAssigned: false,
@@ -184,7 +185,7 @@ describe('FindTSPPathsService', function () {
         });
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -203,10 +204,10 @@ describe('FindTSPPathsService', function () {
     });
 
     //参数为空
-    it('processAsync_parameterNull', function (done) {
+    it('processAsync_parameterNull', (done) => {
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -223,12 +224,12 @@ describe('FindTSPPathsService', function () {
     });
 
     //AnalyzeById_wrong
-    it('processAsync_AnalyzeById_wrong', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(5627.7550668827, -3627.4849836293),
-            new SuperMap.Geometry.Point(5018.1469160422, -4638.5424045354),
-            new SuperMap.Geometry.Point(6133.2837773358, -4645.9766502774)
+    it('processAsync_AnalyzeById_wrong', (done) => {
+        var nodeArray = [new Point(5627.7550668827, -3627.4849836293),
+            new Point(5018.1469160422, -4638.5424045354),
+            new Point(6133.2837773358, -4645.9766502774)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -238,11 +239,11 @@ describe('FindTSPPathsService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindTSPPathsParameters({
+        var parameter = new FindTSPPathsParameters({
             isAnalyzeById: "AnalyzeById",
             nodes: nodeArray,
             endNodeAssigned: false,
@@ -250,7 +251,7 @@ describe('FindTSPPathsService', function () {
         });
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);

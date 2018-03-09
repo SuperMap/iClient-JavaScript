@@ -3,11 +3,10 @@ var mapboxgl = require('mapbox-gl');
 window.mapboxgl = mapboxgl;
 
 var url = GlobeParameter.worldMapURL;
-var heatMapLayer;
-describe('mapboxgl_HeatMapLayer', function () {
+describe('mapboxgl_HeatMapLayer', () => {
     var originalTimeout;
-    var testDiv, map;
-    beforeAll(function () {
+    var testDiv, map, heatLayer;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -39,7 +38,8 @@ describe('mapboxgl_HeatMapLayer', function () {
             center: [0, 0],
             zoom: 1
         });
-        heatMapLayer = new mapboxgl.supermap.HeatMapLayer(
+
+        heatLayer = new mapboxgl.supermap.HeatMapLayer(
             "heatMap",
             {
                 "map": map,
@@ -62,34 +62,34 @@ describe('mapboxgl_HeatMapLayer', function () {
                 }
             }]
         };
-        heatMapLayer.addFeatures(heatPoints);
-        map.addLayer(heatMapLayer);
+        heatLayer.addFeatures(heatPoints);
+        map.addLayer(heatLayer);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.removeLayer("heatmap");
         map.removeLayer("heatmap_2");
     });
 
-    it('initialize', function () {
-        expect(heatMapLayer).not.toBeNull();
-        expect(heatMapLayer.id).toBe("heatmap");
-        expect(heatMapLayer.radius).toEqual(45);
-        expect(heatMapLayer.featureWeight).toBe("value");
-        expect(heatMapLayer.features.length).toEqual(1);
-        expect(heatMapLayer.colors.length).toEqual(5);
-        expect(heatMapLayer.opacity).toEqual(1);
-        expect(heatMapLayer.useGeoUnit).toBeFalsy();
+    it('initialize', () => {
+        expect(heatLayer).not.toBeNull();
+        expect(heatLayer.id).toBe("heatmap");
+        expect(heatLayer.radius).toEqual(45);
+        expect(heatLayer.featureWeight).toBe("value");
+        expect(heatLayer.features.length).toEqual(1);
+        expect(heatLayer.colors.length).toEqual(5);
+        expect(heatLayer.opacity).toEqual(1);
+        expect(heatLayer.useGeoUnit).toBeFalsy();
     });
 
-    it("toiClientFeature()_test", function () {
+    it("toiClientFeature", () => {
         var heatPoints = {
             "type": "FeatureCollection",
             "features": [{
@@ -104,13 +104,13 @@ describe('mapboxgl_HeatMapLayer', function () {
             }]
         };
 
-        var toiClientFeature = heatMapLayer.toiClientFeature(heatPoints);
+        var toiClientFeature = heatLayer.toiClientFeature(heatPoints);
         expect(toiClientFeature).not.toBeNull();
         expect(toiClientFeature.length).toEqual(1);
         expect(toiClientFeature[0].CLASS_NAME).toBe("SuperMap.Feature.Vector");
     });
 
-    it("addFeatures() , removeFeatures() ,removeAllFeatures() test", function () {
+    it("addFeatures, removeFeatures, removeAllFeatures", () => {
         var heatPoints = {
             "type": "FeatureCollection",
             "features": [{
@@ -143,40 +143,40 @@ describe('mapboxgl_HeatMapLayer', function () {
             }]
         };
         //测试addFeatures
-        heatMapLayer.addFeatures(heatPoints);
-        expect(heatMapLayer.features.length).toEqual(3);
+        heatLayer.addFeatures(heatPoints);
+        expect(heatLayer.features.length).toEqual(3);
         //测试removeFeatures
         var removeFeatures = [];
-        heatMapLayer.removeFeatures(removeFeatures);
-        expect(heatMapLayer.features.length).toEqual(3);
+        heatLayer.removeFeatures(removeFeatures);
+        expect(heatLayer.features.length).toEqual(3);
 
-        heatMapLayer.removeFeatures(heatMapLayer.features[0]);
-        expect(heatMapLayer.features.length).toEqual(2);
+        heatLayer.removeFeatures(heatLayer.features[0]);
+        expect(heatLayer.features.length).toEqual(2);
 
-        removeFeatures.push(heatMapLayer.features[0]);
-        heatMapLayer.removeFeatures(removeFeatures);
-        expect(heatMapLayer.features.length).toEqual(1);
+        removeFeatures.push(heatLayer.features[0]);
+        heatLayer.removeFeatures(removeFeatures);
+        expect(heatLayer.features.length).toEqual(1);
 
         removeFeatures = [];
-        removeFeatures.push(heatMapLayer.features[0]);
-        heatMapLayer.removeFeatures(removeFeatures);
-        expect(heatMapLayer.features.length).toEqual(0);
+        removeFeatures.push(heatLayer.features[0]);
+        heatLayer.removeFeatures(removeFeatures);
+        expect(heatLayer.features.length).toEqual(0);
 
         //测试removeAllFeatures
-        heatMapLayer.addFeatures(heatPoints);
-        heatMapLayer.removeFeatures(heatMapLayer.features);
-        expect(heatMapLayer.features.length).toEqual(0);
+        heatLayer.addFeatures(heatPoints);
+        heatLayer.removeFeatures(heatLayer.features);
+        expect(heatLayer.features.length).toEqual(0);
 
     });
 
-    it("setOpacity_test", function () {
-        heatMapLayer.setOpacity(0.5);
-        var opacity = heatMapLayer.rootCanvas.style.opacity;
+    it("setOpacity", () => {
+        heatLayer.setOpacity(0.5);
+        var opacity = heatLayer.rootCanvas.style.opacity;
         expect(opacity).toBe('0.5');
     });
 
 
-    it("moveTo_test", function () {
+    it("moveTo", () => {
         var heatMapLayer2 = new mapboxgl.supermap.HeatMapLayer(
             "heatMap",
             {
@@ -203,40 +203,39 @@ describe('mapboxgl_HeatMapLayer', function () {
         heatMapLayer2.addFeatures(heatPoints);
         map.addLayer(heatMapLayer2);
 
-        var children = heatMapLayer.rootCanvas.parentNode.children;
+        var children = heatLayer.rootCanvas.parentNode.children;
         var heatMapLayerIndexBefore, heatMapLayerIndexAfter;
         for (var i = 0; i < children.length; i++) {
-            if (heatMapLayer.rootCanvas === children[i]) {
+            if (heatLayer.rootCanvas === children[i]) {
                 heatMapLayerIndexBefore = i;
             }
         }
 
-        heatMapLayer.moveTo("heatmap_2");
+        heatLayer.moveTo("heatmap_2");
 
         for (var i = 0; i < children.length; i++) {
-            if (heatMapLayer.rootCanvas === children[i]) {
+            if (heatLayer.rootCanvas === children[i]) {
                 heatMapLayerIndexAfter = i;
             }
         }
 
         expect(heatMapLayerIndexBefore).toEqual(heatMapLayerIndexAfter);
-        heatMapLayer.moveTo("heatmap_2", false);
+        heatLayer.moveTo("heatmap_2", false);
         for (var i = 0; i < children.length; i++) {
-            if (heatMapLayer.rootCanvas === children[i]) {
+            if (heatLayer.rootCanvas === children[i]) {
                 heatMapLayerIndexAfter = i;
             }
         }
         expect(heatMapLayerIndexBefore).not.toEqual(heatMapLayerIndexAfter);
     });
 
-    it("setVisibility_test", function () {
-        heatMapLayer.setVisibility(false);
-        expect(heatMapLayer.visibility).toBeFalsy();
+    it("setVisibility", () => {
+        heatLayer.setVisibility(false);
+        expect(heatLayer.visibility).toBeFalsy();
     });
 
-    it("removeFeatures_test", function () {
-        heatMapLayer.removeFeatures(heatMapLayer.features);
-        expect(heatMapLayer.features.length).toBeFalsy();
+    it("removeFeatures", () => {
+        heatLayer.removeFeatures(heatLayer.features);
+        expect(heatLayer.features.length).toBeFalsy();
     });
-
 });

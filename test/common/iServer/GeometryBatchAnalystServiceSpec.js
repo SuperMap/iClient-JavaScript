@@ -1,108 +1,120 @@
-require('../../../src/common/iServer/GeometryBatchAnalystService');
-var request = require('request');
+import {GeometryBatchAnalystService} from '../../../src/common/iServer/GeometryBatchAnalystService';
+import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import {GeometryOverlayAnalystParameters} from '../../../src/common/iServer/GeometryOverlayAnalystParameters';
+import {GeometrySurfaceAnalystParameters} from '../../../src/common/iServer/GeometrySurfaceAnalystParameters';
+import {InterpolationIDWAnalystParameters} from '../../../src/common/iServer/InterpolationIDWAnalystParameters';
+import {SurfaceAnalystParametersSetting} from '../../../src/common/iServer/SurfaceAnalystParametersSetting';
+import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
+import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {LineString} from '../../../src/common/commontypes/geometry/LineString';
+import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
+import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
+import {BufferEndType} from '../../../src/common/REST';
+import {OverlayOperationType} from '../../../src/common/REST';
+import {SmoothMethod} from '../../../src/common/REST';
+import {SurfaceAnalystMethod} from '../../../src/common/REST';
 
+var url = GlobeParameter.spatialAnalystURL;
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var url = GlobeParameter.spatialAnalystURL;
+var initGeometryBatchAnalystService = () => {
+    return new GeometryBatchAnalystService(url, options);
+};
+var analyzeFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var analyzeCompleted = (analyseEventArgs) => {
+    analystEventArgsSystem = analyseEventArgs;
+};
 var options = {
     eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
 
-function initGeometryBatchAnalystService() {
-    return new SuperMap.GeometryBatchAnalystService(url, options);
-}
-
-function analyzeFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-
-function analyzeCompleted(analyseEventArgs) {
-    analystEventArgsSystem = analyseEventArgs;
-}
-
-describe("GeometryBatchAnalystServiceTest", function () {
+describe("GeometryBatchAnalystServiceTest", () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         serviceFailedEventArgsSystem = null;
         analystEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('GeometryBatchAnalystService', function (done) {
+    it('GeometryBatchAnalystService', (done) => {
         var geometryBatchAnalystService = initGeometryBatchAnalystService();
         //缓冲区分析参数：
         var bufferBatchAnalystParameter = {
             analystName: "buffer",
-            param: new SuperMap.GeometryBufferAnalystParameters({
-                sourceGeometry: new SuperMap.Geometry.Point(7884.79277012316, 5072.18865322196),
-                bufferSetting: new SuperMap.BufferSetting({
-                    endType: SuperMap.BufferEndType.ROUND,
-                    leftDistance: new SuperMap.BufferDistance({value: 300}),
+            param: new GeometryBufferAnalystParameters({
+                sourceGeometry: new Point(7884.79277012316, 5072.18865322196),
+                bufferSetting: new BufferSetting({
+                    endType: BufferEndType.ROUND,
+                    leftDistance: new BufferDistance({value: 300}),
                     semicircleLineSegment: 5
                 })
             })
         };
         //叠加分析参数：
-        var points = [new SuperMap.Geometry.Point(47.9909960608, 382.4873382105),
-            new SuperMap.Geometry.Point(47.9909960608, 437.8615644344),
-            new SuperMap.Geometry.Point(170.3545301069, 437.8615644344),
-            new SuperMap.Geometry.Point(170.3545301069, 382.4873382105)];
-        var sourceGeometry = new SuperMap.Geometry.LineString(points);
-        var points1 = [new SuperMap.Geometry.Point(111.4687675858, 353.8548114800),
-            new SuperMap.Geometry.Point(111.4687675858, 408.1485649972),
-            new SuperMap.Geometry.Point(208.9814293754, 408.1485649972),
-            new SuperMap.Geometry.Point(208.9814293754, 353.8548114800)];
-        var operateGeometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points1));
+        var points = [new Point(47.9909960608, 382.4873382105),
+            new Point(47.9909960608, 437.8615644344),
+            new Point(170.3545301069, 437.8615644344),
+            new Point(170.3545301069, 382.4873382105)];
+        var sourceGeometry = new LineString(points);
+        var points1 = [new Point(111.4687675858, 353.8548114800),
+            new Point(111.4687675858, 408.1485649972),
+            new Point(208.9814293754, 408.1485649972),
+            new Point(208.9814293754, 353.8548114800)];
+        var operateGeometry = new Polygon(new LinearRing(points1));
 
         var OverlayBatchAnalystParameters = {
             analystName: "overlay",
-            param: new SuperMap.GeometryOverlayAnalystParameters({
+            param: new GeometryOverlayAnalystParameters({
                 sourceGeometry: sourceGeometry,
                 operateGeometry: operateGeometry,
-                operation: SuperMap.OverlayOperationType.CLIP
+                operation: OverlayOperationType.CLIP
             })
         };
 
         //表面分析参数
-        var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
+        var surfaceAnalystParameters = new SurfaceAnalystParametersSetting({
             datumValue: -3,
             interval: 0.5,
             resampleTolerance: 0.7,
-            smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+            smoothMethod: SmoothMethod.BSPLINE,
             smoothness: 3
         });
-        var GeometrySurfaceAnalystParameters = {
+        var geometrySurfaceAnalystParams = {
             analystName: "isoline",
-            param: new SuperMap.GeometrySurfaceAnalystParameters({
+            param: new GeometrySurfaceAnalystParameters({
                 extractParameter: surfaceAnalystParameters,
-                points: [new SuperMap.Geometry.Point(-4000, 2000),
-                    new SuperMap.Geometry.Point(-4500, 2000),
-                    new SuperMap.Geometry.Point(-3000, 3000),
-                    new SuperMap.Geometry.Point(-3000, 2000),
-                    new SuperMap.Geometry.Point(-2500, 2500),
-                    new SuperMap.Geometry.Point(-2000, 2000),
-                    new SuperMap.Geometry.Point(-2000, 3000),
-                    new SuperMap.Geometry.Point(-2000, 2000),
-                    new SuperMap.Geometry.Point(2000, 4000),
-                    new SuperMap.Geometry.Point(0, 0)
+                points: [new Point(-4000, 2000),
+                    new Point(-4500, 2000),
+                    new Point(-3000, 3000),
+                    new Point(-3000, 2000),
+                    new Point(-2500, 2500),
+                    new Point(-2000, 2000),
+                    new Point(-2000, 3000),
+                    new Point(-2000, 2000),
+                    new Point(2000, 4000),
+                    new Point(0, 0)
                 ],
                 resolution: 3000,
                 zValues: [-3, -2, 0, -1, -3, 0, 1, 0, 1, 1],
-                surfaceAnalystMethod: SuperMap.SurfaceAnalystMethod.ISOLINE,
-                resultSetting: new SuperMap.DataReturnOption({
+                surfaceAnalystMethod: SurfaceAnalystMethod.ISOLINE,
+                resultSetting: new DataReturnOption({
                     expectCount: 1
                 })
             })
         };
 
         //插值分析：
-        var interpolationIDWAnalystParameters = {
+        var interpolationIDWAnalystParams = {
             analystName: "interpolationidw",
-            param: new SuperMap.InterpolationIDWAnalystParameters({
+            param: new InterpolationIDWAnalystParameters({
                 InterpolationAnalystType: "geometry",
                 power: 2,
                 searchMode: "KDTREE_FIXED_RADIUS",
@@ -159,10 +171,10 @@ describe("GeometryBatchAnalystServiceTest", function () {
             })
         };*/
 
-        var geometryBatchAnalystParameters = [bufferBatchAnalystParameter, OverlayBatchAnalystParameters, GeometrySurfaceAnalystParameters, interpolationIDWAnalystParameters];
+        var geometryBatchAnalystParameters = [bufferBatchAnalystParameter, OverlayBatchAnalystParameters, geometrySurfaceAnalystParams, interpolationIDWAnalystParams];
         geometryBatchAnalystService.processAsync(geometryBatchAnalystParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var bfMode = analystEventArgsSystem.result;
                 expect(bfMode).not.toBeNull();

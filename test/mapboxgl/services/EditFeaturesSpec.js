@@ -1,22 +1,22 @@
-require('../../../src/mapboxgl/services/FeatureService');
-var mapboxgl = require('mapbox-gl');
+import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
+import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
 
 var url = GlobeParameter.dataServiceURL;
 var id;
-describe('mapboxgl_FeatureService_editFeatures', function () {
+describe('mapboxgl_FeatureService_editFeatures', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //添加要素
-    it('add', function (done) {
+    it('add', (done) => {
         var pointFeature = {
             "type": "Feature",
             "geometry": {
@@ -29,18 +29,18 @@ describe('mapboxgl_FeatureService_editFeatures', function () {
             "type": "FeatureCollection",
             "features": [pointFeature]
         };
-        var addFeatureParams = new SuperMap.EditFeaturesParameters({
+        var addFeatureParams = new EditFeaturesParameters({
             features: marker,
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",
             returnContent: true
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        service.editFeatures(addFeatureParams, function (result) {
+        var service = new FeatureService(url);
+        service.editFeatures(addFeatureParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -62,18 +62,18 @@ describe('mapboxgl_FeatureService_editFeatures', function () {
     });
 
     //删除要素
-    it('delete', function (done) {
-        var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
+    it('delete', (done) => {
+        var deleteFeatureParams = new EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [id],
             editType: "delete"
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        service.editFeatures(deleteFeatureParams, function (result) {
+        var service = new FeatureService(url);
+        service.editFeatures(deleteFeatureParams, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

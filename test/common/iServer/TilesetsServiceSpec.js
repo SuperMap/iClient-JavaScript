@@ -4,6 +4,15 @@ require('../../../src/common/util/FetchRequest');
 var serviceFailedEventArgsSystem = null;
 var serviceCompletedEventArgsSystem = null;
 var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+
+function analyzeFailed(serviceFailedEventArgs) {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+}
+
+function analyzeCompleted(analyseCompletedEventArgs) {
+    serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
+}
+
 function initTilesetsService_Register() {
     return new SuperMap.TilesetsService(tileSetsURL,
         {
@@ -12,12 +21,6 @@ function initTilesetsService_Register() {
                 'processFailed': analyzeFailed
             }
         });
-}
-function analyzeFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function analyzeCompleted(analyseCompletedEventArgs) {
-    serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
 }
 
 describe('TilesetsService', function () {

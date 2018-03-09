@@ -1,36 +1,50 @@
-var mapboxgl = require('mapbox-gl');
-require('../../../src/mapboxgl/services/NetworkAnalystService');
+import {NetworkAnalystService} from '../../../src/mapboxgl/services/NetworkAnalystService';
+import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import {ComputeWeightMatrixParameters} from '../../../src/common/iServer/ComputeWeightMatrixParameters';
+import {FindClosestFacilitiesParameters} from '../../../src/common/iServer/FindClosestFacilitiesParameters';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
+import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
+import {FindTSPPathsParameters} from '../../../src/common/iServer/FindTSPPathsParameters';
+import {FindMTSPPathsParameters} from '../../../src/common/iServer/FindMTSPPathsParameters';
+import {FindServiceAreasParameters} from '../../../src/common/iServer/FindServiceAreasParameters';
+import {UpdateEdgeWeightParameters} from '../../../src/common/iServer/UpdateEdgeWeightParameters';
+import {UpdateTurnNodeWeightParameters} from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
+import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
+import {SupplyCenterType} from '../../../src/common/REST';
+import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.networkAnalystURL;
 var options = {
     serverType: 'iServer'
 };
 
-describe('mapboxgl_NetworkAnalystService', function () {
+describe('mapboxgl_NetworkAnalystService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //爆管分析服务
-    it('burstPipelineAnalyst', function (done) {
-        var burstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
+    it('burstPipelineAnalyst', (done) => {
+        var burstPipelineAnalystParameters = new BurstPipelineAnalystParameters({
             sourceNodeIDs: [84, 85],
             nodeID: 85,
             isUncertainDirectionValid: false
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
+        var service = new NetworkAnalystService(url, options);
         // spyOn(service,'burstPipelineAnalyst').and.callFake();
-        service.burstPipelineAnalyst(burstPipelineAnalystParameters, function (result) {
+        service.burstPipelineAnalyst(burstPipelineAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.options.serverType).toBe('iServer');
@@ -50,17 +64,17 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     //耗费矩阵分析服务
-    it('computeWeightMatrix', function (done) {
-        var computeWeightMatrixParameters = new SuperMap.ComputeWeightMatrixParameters({
+    it('computeWeightMatrix', (done) => {
+        var computeWeightMatrixParameters = new ComputeWeightMatrixParameters({
             //是否通过节点 ID 指定路径分析的结点，默认为 false，即通过坐标点指定。
             isAnalyzeById: true,
             nodes: [84, 85],
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.computeWeightMatrix(computeWeightMatrixParameters, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.computeWeightMatrix(computeWeightMatrixParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -78,10 +92,10 @@ describe('mapboxgl_NetworkAnalystService', function () {
             }
         }, 5000)
     });
-    
+
     //选址分区分析服务
-    it('findLocation', function (done) {
-        var findLocationParameters = new SuperMap.FindLocationParameters({
+    it('findLocation', (done) => {
+        var findLocationParameters = new FindLocationParameters({
             //期望用于最终设施选址的资源供给中心数量，必设字段
             expectedSupplyCenterCount: 1,
             //是否从中心点开始分配资源。默认为 false
@@ -103,11 +117,11 @@ describe('mapboxgl_NetworkAnalystService', function () {
             //阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
             weightName: "length"
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.findLocation(findLocationParameters, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.findLocation(findLocationParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -139,8 +153,8 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     //最佳路径分析服务
-    it('findPath', function (done) {
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+    it('findPath', (done) => {
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -150,21 +164,21 @@ describe('mapboxgl_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findPathParameters = new SuperMap.FindPathParameters({
+        var findPathParameters = new FindPathParameters({
             isAnalyzeById: false,
             nodes: [new mapboxgl.Point(4000, -3000), new mapboxgl.Point(5500, -2500), new mapboxgl.Point(6900, -4000)],
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.findPath(findPathParameters, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.findPath(findPathParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -222,9 +236,9 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     //旅行商分析服务
-    it('findTSPPaths', function (done) {
+    it('findTSPPaths', (done) => {
         //创建多旅行商分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -234,11 +248,11 @@ describe('mapboxgl_NetworkAnalystService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var findTSPPathsParameters = new SuperMap.FindTSPPathsParameters({
+        var findTSPPathsParameters = new FindTSPPathsParameters({
             //是否指定终止点
             endNodeAssigned: false,
             isAnalyzeById: false,
@@ -246,11 +260,11 @@ describe('mapboxgl_NetworkAnalystService', function () {
             nodes: [new mapboxgl.Point(3000, -1000), new mapboxgl.Point(3760, -4850), new mapboxgl.Point(8000, -2700)],
             parameter: analystParameter
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.findTSPPaths(findTSPPathsParameters, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.findTSPPaths(findTSPPathsParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -294,18 +308,18 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     // 多旅行商分析服务
-    it('findMTSPPaths', function (done) {
-        var findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
+    it('findMTSPPaths', (done) => {
+        var findMTSPPathsParameter = new FindMTSPPathsParameters({
             centers: [new mapboxgl.Point(6000, -5500), new mapboxgl.Point(5500, -2500), new mapboxgl.Point(2500, -3500)],
             isAnalyzeById: false,
             nodes: [new mapboxgl.Point(5000, -5000), new mapboxgl.Point(6500, -3200)],
             hasLeastTotalCost: true,
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.findMTSPPaths(findMTSPPathsParameter, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.findMTSPPaths(findMTSPPathsParameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -327,28 +341,28 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     //服务区分析服务
-    it('findServiceAreas', function (done) {
+    it('findServiceAreas', (done) => {
         var point = new mapboxgl.Point(5605, -3375);
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new FindServiceAreasParameters({
             centers: [point],
             isAnalyzeById: false,
             parameter: analystParameter
         });
         parameter.weights = [400 + Math.random() * 100];
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.findServiceAreas(parameter, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.findServiceAreas(parameter, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -380,19 +394,19 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     //更新边的耗费权重服务
-    it('updateEdgeWeight', function (done) {
-        var updateEdgeWeightParameters = new SuperMap.UpdateEdgeWeightParameters({
+    it('updateEdgeWeight', (done) => {
+        var updateEdgeWeightParameters = new UpdateEdgeWeightParameters({
             edgeId: "20",
             edgeWeight: "30",
             fromNodeId: "26",
             toNodeId: "109",
             weightField: "time"
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.updateEdgeWeight(updateEdgeWeightParameters, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.updateEdgeWeight(updateEdgeWeightParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -408,8 +422,8 @@ describe('mapboxgl_NetworkAnalystService', function () {
     });
 
     //转向耗费权重更新服务
-    it('updateTurnNodeWeight', function (done) {
-        var parameters = new SuperMap.UpdateTurnNodeWeightParameters({
+    it('updateTurnNodeWeight', (done) => {
+        var parameters = new UpdateTurnNodeWeightParameters({
             //转向结点的id
             nodeId: "106",
             //耗费权重
@@ -421,11 +435,11 @@ describe('mapboxgl_NetworkAnalystService', function () {
             //转向结点的耗费字段
             weightField: "TurnCost"
         });
-        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
-        service.updateTurnNodeWeight(parameters, function (result) {
+        var service = new NetworkAnalystService(url, options);
+        service.updateTurnNodeWeight(parameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

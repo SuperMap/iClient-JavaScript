@@ -1,15 +1,16 @@
-var ClipParameter = require('../../../src/common/iServer/ClipParameter').ClipParameter;
+import {ClipParameter} from '../../../src/common/iServer/ClipParameter';
+import {Geometry} from '../../../src/common/commontypes/Geometry';
 
-describe('ClipParameter', function () {
-    it('constructor, destroy', function () {
-        var points = [new SuperMap.Geometry.Point(111.4687675858, 353.8548114800),
-            new SuperMap.Geometry.Point(111.4687675858, 408.1485649972),
-            new SuperMap.Geometry.Point(208.9814293754, 408.1485649972),
-            new SuperMap.Geometry.Point(208.9814293754, 353.8548114800)];
+describe('ClipParameter', () => {
+    it('constructor, destroy', () => {
+        var points = [new Geometry.Point(111.4687675858, 353.8548114800),
+            new Geometry.Point(111.4687675858, 408.1485649972),
+            new Geometry.Point(208.9814293754, 408.1485649972),
+            new Geometry.Point(208.9814293754, 353.8548114800)];
         var options = {
             clipDatasetName: "testDataset",
             clipDatasourceName: "testDatasource",
-            clipRegion: new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points)),
+            clipRegion: new Geometry.Polygon(new Geometry.LinearRing(points)),
             isExactClip: false
         };
         var parameter = new ClipParameter(options);
@@ -25,15 +26,15 @@ describe('ClipParameter', function () {
         expect(parameter.isExactClip).toBeNull();
     });
 
-    it('toJSON', function () {
-        var points = [new SuperMap.Geometry.Point(111.4687675858, 353.8548114800),
-            new SuperMap.Geometry.Point(111.4687675858, 408.1485649972),
-            new SuperMap.Geometry.Point(208.9814293754, 408.1485649972),
-            new SuperMap.Geometry.Point(208.9814293754, 353.8548114800)];
+    it('toJSON', () => {
+        var points = [new Geometry.Point(111.4687675858, 353.8548114800),
+            new Geometry.Point(111.4687675858, 408.1485649972),
+            new Geometry.Point(208.9814293754, 408.1485649972),
+            new Geometry.Point(208.9814293754, 353.8548114800)];
         var options = {
             clipDatasetName: "testDataset",
             clipDatasourceName: "testDatasource",
-            clipRegion: new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points)),
+            clipRegion: new Geometry.Polygon(new Geometry.LinearRing(points)),
             isClipInRegion: true,
             isExactClip: false
         };

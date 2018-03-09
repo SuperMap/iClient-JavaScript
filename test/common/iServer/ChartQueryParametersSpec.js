@@ -1,11 +1,12 @@
-var ChartQueryParameters = require('../../../src/common/iServer/ChartQueryParameters').ChartQueryParameters;
-var ChartQueryFilterParameter = require('../../../src/common/iServer/ChartQueryFilterParameter').ChartQueryFilterParameter;
+import {ChartQueryParameters} from '../../../src/common/iServer/ChartQueryParameters';
+import {ChartQueryFilterParameter} from '../../../src/common/iServer/ChartQueryFilterParameter';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
 
-describe('ChartQueryParameters', function () {
-    it('constructor, destroy', function () {
+describe('ChartQueryParameters', () => {
+    it('constructor, destroy', () => {
         var options = {
             queryMode: "ChartAttributeQuery",
-            bounds: new SuperMap.Bounds(-180, -90, 180, 90),
+            bounds: new Bounds(-180, -90, 180, 90),
         };
         var parameter = new ChartQueryParameters(options);
         expect(parameter).not.toBeNull();
@@ -25,10 +26,10 @@ describe('ChartQueryParameters', function () {
         expect(parameter.expectCount).toBeNull();
     });
 
-    it('getVariablesJson', function () {
+    it('getVariablesJson', () => {
         var options = {
             queryMode: "ChartAttributeQuery",
-            bounds: new SuperMap.Bounds(-180, -90, 180, 90),
+            bounds: new Bounds(-180, -90, 180, 90),
             chartLayerNames: ["testLayer0", "testLayer1", "testLayer2"],
             chartQueryFilterParameters: [
                 new ChartQueryFilterParameter({isQueryPoint: true}),

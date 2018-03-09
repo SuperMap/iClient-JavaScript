@@ -1,35 +1,35 @@
-require('../../../src/mapboxgl/services/FeatureService');
-var mapboxgl = require('mapbox-gl');
+import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
+import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 
 var url = GlobeParameter.dataServiceURL;
-describe('mapboxgl_FeatureService_getFeaturesByGeometry', function () {
+describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //数据集几何查询服务类
-    it('getFeaturesByGeometry', function (done) {
+    it('getFeaturesByGeometry', (done) => {
         var queryPolygonGeometry = {
             "type": "Polygon",
             "coordinates": [[[0, 0], [-10, 30], [-30, 0], [0, 0]]]
         };
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+        var geometryParam = new GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: queryPolygonGeometry,
             spatialQueryMode: "INTERSECT"
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        service.getFeaturesByGeometry(geometryParam, function (result) {
+        var service = new FeatureService(url);
+        service.getFeaturesByGeometry(geometryParam, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

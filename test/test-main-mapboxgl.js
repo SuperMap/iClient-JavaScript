@@ -4,14 +4,14 @@ require('./mapboxgl/control/LogoSpec.js');
 /*mapboxgl -- overlay*/
 require('./mapboxgl/overlay/mapv/MapvDataSetSpec.js');
 require('./mapboxgl/overlay/GraphThemeLayerSpec.js');
+require('./mapboxgl/overlay/HeatMapLayerSpec.js');
 require('./mapboxgl/overlay/LabelThemeLayerSpec.js');
 require('./mapboxgl/overlay/MapvLayerSpec.js');
 require('./mapboxgl/overlay/RangeThemeLayerSpec.js');
 require('./mapboxgl/overlay/RangeTheme3DLayerSpec.js');
+require('./mapboxgl/overlay/ThreeLayerSpec.js');
 require('./mapboxgl/overlay/UniqueThemeLayerSpec.js');
 require('./mapboxgl/overlay/UniqueTheme3DLayerSpec.js');
-require('./mapboxgl/overlay/ThreeLayerSpec.js');
-require('./mapboxgl/overlay/HeatMapLayerSpec.js');
 
 /*mapboxgl -- services*/
 require('./mapboxgl/services/AddressMatchServiceSpec.js');

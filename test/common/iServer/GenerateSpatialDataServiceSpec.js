@@ -1,48 +1,48 @@
-﻿require('../../../src/common/iServer/GenerateSpatialDataService');
-var request = require('request');
-require('../../../src/common/util/FetchRequest');
+﻿﻿import {GenerateSpatialDataService} from '../../../src/common/iServer/GenerateSpatialDataService';
+import {GenerateSpatialDataParameters} from '../../../src/common/iServer/GenerateSpatialDataParameters';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {DataReturnMode} from '../../../src/common/REST';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
-var completedEventArgsSystem, failedEventArgsSystem;
 var url = "http://supermap:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+var completedEventArgsSystem, failedEventArgsSystem;
+var initGenerateSpatialDataService = () => {
+    return new GenerateSpatialDataService(url, options);
+};
+var generateSpatialDataCompleted = (completedEventArgs) => {
+    completedEventArgsSystem = completedEventArgs;
+};
+var generateSpatialDataFailed = (failedEventArgs) => {
+    failedEventArgsSystem = failedEventArgs;
+};
 var options = {
     eventListeners: {
         processCompleted: generateSpatialDataCompleted,
         processFailed: generateSpatialDataFailed
     }
 };
-function initGenerateSpatialDataService() {
-    return new SuperMap.GenerateSpatialDataService(url, options);
-}
-function generateSpatialDataCompleted(completedEventArgs) {
-    completedEventArgsSystem = completedEventArgs;
-}
-function generateSpatialDataFailed(failedEventArgs) {
-    failedEventArgsSystem = failedEventArgs;
-}
 
-
-describe('GenerateSpatialDataService', function () {
+describe('GenerateSpatialDataService', () => {
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         completedEventArgsSystem = null;
         failedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     // 点事件表数据集动态分段, DATASET_ONLY
-    it('processAsync_PointEventTable_DATASET_ONLY', function (done) {
+    it('processAsync_PointEventTable_DATASET_ONLY', (done) => {
         var resultDataset_Point_DATASET = "GenerateSpatial_Point_DS_Test";
-        var dataRtnOption = new SuperMap.DataReturnOption({
+        var dataRtnOption = new DataReturnOption({
             dataset: resultDataset_Point_DATASET,
             deleteExistResultDataset: true,
-            dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+            dataReturnMode: DataReturnMode.DATASET_ONLY
         });
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        var generateSpatialDataParameters = new GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "PointEventTabDT@Changchun",
@@ -55,7 +55,7 @@ describe('GenerateSpatialDataService', function () {
             dataReturnOption: dataRtnOption
         });
         var generateSpatialDataService = initGenerateSpatialDataService();
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
             var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'eventTable':\"PointEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"measure\",'measureStartField':null,'measureEndField':null,'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':1000,'dataset':\"GenerateSpatial_Point_DS_Test\",'dataReturnMode':\"DATASET_ONLY\",'deleteExistResultDataset':true}}";
@@ -65,7 +65,7 @@ describe('GenerateSpatialDataService', function () {
             return Promise.resolve(new Response(escapedJson));
         });
         generateSpatialDataService.processAsync(generateSpatialDataParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(generateSpatialDataService).not.toBeNull();
             expect(completedEventArgsSystem).not.toBeNull();
             expect(failedEventArgsSystem).toBeNull();
@@ -85,15 +85,15 @@ describe('GenerateSpatialDataService', function () {
     });
 
     // 线事件表数据集动态分段, DATASET_ONLY
-    it('processAsync_LinearEventTable_DATASET_ONLY', function (done) {
+    it('processAsync_LinearEventTable_DATASET_ONLY', (done) => {
         var resultDataset_Linear_DATASET = "GenerateSpatial_Linear_DS_Test";
         var generateSpatialDataService = initGenerateSpatialDataService();
-        var dataRtnOption = new SuperMap.DataReturnOption({
+        var dataRtnOption = new DataReturnOption({
             dataset: resultDataset_Linear_DATASET,
             deleteExistResultDataset: true,
-            dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+            dataReturnMode: DataReturnMode.DATASET_ONLY
         });
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        var generateSpatialDataParameters = new GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -105,7 +105,7 @@ describe('GenerateSpatialDataService', function () {
             errorInfoField: "",
             dataReturnOption: dataRtnOption
         });
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
             var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'eventTable':\"LinearEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"\",'measureStartField':\"LineMeasureFrom\",'measureEndField':\"LineMeasureTo\",'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':1000,'dataset':\"GenerateSpatial_Linear_DS_Test\",'dataReturnMode':\"DATASET_ONLY\",'deleteExistResultDataset':true}}";
@@ -115,7 +115,7 @@ describe('GenerateSpatialDataService', function () {
             return Promise.resolve(new Response(escapedJson));
         });
         generateSpatialDataService.processAsync(generateSpatialDataParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(generateSpatialDataService).not.toBeNull();
             expect(completedEventArgsSystem).not.toBeNull();
             expect(failedEventArgsSystem).toBeNull();
@@ -132,14 +132,14 @@ describe('GenerateSpatialDataService', function () {
     });
 
     // 点事件表数据集动态分段,并设置期望返回记录数2。
-    it('processAsync_PointEventTable_RECORDSET_ONLY', function (done) {
-        var dataRtnOption = new SuperMap.DataReturnOption({
+    it('processAsync_PointEventTable_RECORDSET_ONLY', (done) => {
+        var dataRtnOption = new DataReturnOption({
             expectCount: 2,
             dataset: "",
             deleteExistResultDataset: true,
-            dataReturnMode: SuperMap.DataReturnMode.RECORDSET_ONLY
+            dataReturnMode: DataReturnMode.RECORDSET_ONLY
         });
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        var generateSpatialDataParameters = new GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "PointEventTabDT@Changchun",
@@ -152,7 +152,7 @@ describe('GenerateSpatialDataService', function () {
             dataReturnOption: dataRtnOption
         });
         var generateSpatialDataService = initGenerateSpatialDataService();
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
             var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'eventTable':\"PointEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"measure\",'measureStartField':null,'measureEndField':null,'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':2,'dataset':\"\",'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true}}";
@@ -162,7 +162,7 @@ describe('GenerateSpatialDataService', function () {
             return Promise.resolve(new Response(escapedJson));
         });
         generateSpatialDataService.processAsync(generateSpatialDataParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(generateSpatialDataService).not.toBeNull();
             expect(completedEventArgsSystem.type).toBe("processCompleted");
             var generateSpatialDataResult = completedEventArgsSystem.result;
@@ -180,15 +180,15 @@ describe('GenerateSpatialDataService', function () {
     });
 
     // 线事件表数据集动态分段,并设置期望返回记录数2。
-    it('processAsync_LinearEventTable_RECORDSET_ONLY', function (done) {
+    it('processAsync_LinearEventTable_RECORDSET_ONLY', (done) => {
         var generateSpatialDataService = initGenerateSpatialDataService();
-        var dataRtnOption = new SuperMap.DataReturnOption({
+        var dataRtnOption = new DataReturnOption({
             expectCount: 2,
             dataset: "",
             deleteExistResultDataset: true,
-            dataReturnMode: SuperMap.DataReturnMode.RECORDSET_ONLY
+            dataReturnMode: DataReturnMode.RECORDSET_ONLY
         });
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        var generateSpatialDataParameters = new GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -200,7 +200,7 @@ describe('GenerateSpatialDataService', function () {
             errorInfoField: "",
             dataReturnOption: dataRtnOption
         });
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/RouteDT_road@Changchun/linearreferencing/generatespatialdata.json?returnContent=true");
             var expectParams = "{'routeTable':\"RouteDT_road@Changchun\",'routeIDField':\"RouteID\",'eventTable':\"LinearEventTabDT@Changchun\",'eventRouteIDField':\"RouteID\",'measureField':\"\",'measureStartField':\"LineMeasureFrom\",'measureEndField':\"LineMeasureTo\",'measureOffsetField':\"\",'errorInfoField':\"\",'retainedFields':null,'dataReturnOption':{'expectCount':2,'dataset':\"\",'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true}}";
@@ -210,7 +210,7 @@ describe('GenerateSpatialDataService', function () {
             return Promise.resolve(new Response(escapedJson));
         });
         generateSpatialDataService.processAsync(generateSpatialDataParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             var generateSpatialDataResult = completedEventArgsSystem.result.recordset.features;
             expect(generateSpatialDataService).not.toBeNull();
             expect(generateSpatialDataResult).not.toBeNull();
@@ -224,13 +224,13 @@ describe('GenerateSpatialDataService', function () {
 
     // 点事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称。
     // deleteExistResultDataset=false时期望失败，但其实成功了，iserver中此处未走checkDatasetExist逻辑，不知是预期还是错误。
-    //xit('PointEventTable_deleteExistResultDataset=false', function (done) {
-    //    var dataRtnOption = new SuperMap.DataReturnOption({
+    //xit('PointEventTable_deleteExistResultDataset=false', (done)=> {
+    //    var dataRtnOption = new DataReturnOption({
     //        dataset: resultDataset_Point_DATASET,
     //        deleteExistResultDataset: false,
-    //        dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+    //        dataReturnMode: DataReturnMode.DATASET_ONLY
     //    });
-    //    var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+    //    var generateSpatialDataParameters = new GenerateSpatialDataParameters({
     //        routeTable: "RouteDT_road@Changchun",
     //        routeIDField: "RouteID",
     //        eventTable: "PointEventTabDT@Changchun",
@@ -244,7 +244,7 @@ describe('GenerateSpatialDataService', function () {
     //    });
     //    var generateSpatialDataService = initGenerateSpatialDataService();
     //    generateSpatialDataService.processAsync(generateSpatialDataParameters);
-    //    setTimeout(function () {
+    //    setTimeout(()=> {
     //        try {
     //            expect(completedEventArgsSystem).toBeNull();
     //            expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -267,15 +267,15 @@ describe('GenerateSpatialDataService', function () {
 
     // 线事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称。
     // deleteExistResultDataset=false时期望失败，但其实成功了，iserver中此处未走checkDatasetExist逻辑，不知是预期还是错误。
-    //xit('LinearEventTable_deleteExistResultDataset_false', function (done) {
+    //xit('LinearEventTable_deleteExistResultDataset_false', (done)=> {
     //    var generateSpatialDataService = initGenerateSpatialDataService();
-    //    var dataRtnOption = new SuperMap.DataReturnOption({
+    //    var dataRtnOption = new DataReturnOption({
     //        expectCount: 2000,
     //        dataset: "generateSpatialData",
     //        deleteExistResultDataset: false,
-    //        dataReturnMode: SuperMap.DataReturnMode.DATASET_AND_RECORDSET
+    //        dataReturnMode: DataReturnMode.DATASET_AND_RECORDSET
     //    });
-    //    var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+    //    var generateSpatialDataParameters = new GenerateSpatialDataParameters({
     //        routeTable: "RouteDT_road@Changchun",
     //        routeIDField: "RouteID",
     //        eventTable: "LinearEventTabDT@Changchun",
@@ -288,7 +288,7 @@ describe('GenerateSpatialDataService', function () {
     //        dataReturnOption: dataRtnOption
     //    });
     //    generateSpatialDataService.processAsync(generateSpatialDataParameters);
-    //    setTimeout(function () {
+    //    setTimeout(()=> {
     //        try {
     //            expect(failedEventArgsSystem.error.code).toEqual(400);
     //            expect(failedEventArgsSystem.error.errorMsg).not.toBeNull();

@@ -1,53 +1,57 @@
-﻿require('../../../src/common/iServer/MeasureService');
+﻿﻿import {MeasureService} from '../../../src/common/iServer/MeasureService';
+import {MeasureParameters} from '../../../src/common/iServer/MeasureParameters';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {LineString} from '../../../src/common/commontypes/geometry/LineString';
+import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
+import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
+import {MeasureMode} from '../../../src/common/REST';
+import {Unit} from '../../../src/common/REST';
 
-var measureEventArgsSystem = null,
-    serviceFailedEventArgsSystem = null;
 var mapServiceURL = GlobeParameter.mapServiceURL;
 var worldMapURL = mapServiceURL + "World Map";
-
-//跨域下的测试
-function initMeasureService() {
-    return new SuperMap.MeasureService(worldMapURL);
+var measureEventArgsSystem = null,
+    serviceFailedEventArgsSystem = null;
+var measureCompleted = (measureEventArgs) => {
+    measureEventArgsSystem = measureEventArgs;
+};
+var measureFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var initMeasureService = () => {
+    return new MeasureService(worldMapURL);
 }
-//注册监听器对象，面积量算
-function initMeasureService_RegisterListener() {
-    return new SuperMap.MeasureService(worldMapURL, {
+var initMeasureService_RegisterListener = () => {
+    return new MeasureService(worldMapURL, {
         eventListeners: {
             'processCompleted': measureCompleted,
             'processFailed': measureFailed
         },
-        measureMode: SuperMap.MeasureMode.AREA
+        measureMode: MeasureMode.AREA
     });
 }
-function measureCompleted(measureEventArgs) {
-    measureEventArgsSystem = measureEventArgs;
-}
-function measureFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('MeasureService', function () {
+describe('MeasureService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         measureEventArgsSystem = null;
         serviceFailedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_distance', function (done) {
+    it('processAsync_distance', (done) => {
         var measureService = initMeasureService();
-        var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10)];
-        var geometry = new SuperMap.Geometry.LineString(points);
-        var measureParameters = new SuperMap.MeasureParameters(geometry);
+        var points = [new Point(0, 0), new Point(10, 10)];
+        var geometry = new LineString(points);
+        var measureParameters = new MeasureParameters(geometry);
         expect(measureService).not.toBeNull();
         expect(measureService.url).toEqual(worldMapURL);
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var measureResult = measureEventArgsSystem.result;
                 expect(measureResult).not.toBeNull();
@@ -74,17 +78,17 @@ describe('MeasureService', function () {
     });
 
     //反向测试用例，输入点进行距离量算
-    it('fail0:processAsync_distance', function (done) {
+    it('fail0:processAsync_distance', (done) => {
         var measureService = initMeasureService();
-        var point = new SuperMap.Geometry.Point(0, 0);
-        var measureParameters = new SuperMap.MeasureParameters(point);
+        var point = new Point(0, 0);
+        var measureParameters = new MeasureParameters(point);
         measureService.events.on({
             'processCompleted': measureCompleted,
             'processFailed': measureFailed
         });
         measureService.processAsync(measureParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.succeed).toBeFalsy();
@@ -106,11 +110,11 @@ describe('MeasureService', function () {
     });
 
     //反向测试用例，输入距离单位枚举值错误
-    it('fail1:processAsync_distance', function (done) {
+    it('fail1:processAsync_distance', (done) => {
         var measureService = initMeasureService();
-        var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(0, 0)];
-        var geometry = new SuperMap.Geometry.LineString(points);
-        var measureParameters = new SuperMap.MeasureParameters(geometry);
+        var points = [new Point(0, 0), new Point(0, 0)];
+        var geometry = new LineString(points);
+        var measureParameters = new MeasureParameters(geometry);
         measureParameters.unit = "error";
         measureService.events.on({
             'processCompleted': measureCompleted,
@@ -118,7 +122,7 @@ describe('MeasureService', function () {
         });
         measureService.processAsync(measureParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.succeed).toBeFalsy();
@@ -140,19 +144,19 @@ describe('MeasureService', function () {
     });
 
     //area
-    it('processAsync_area', function (done) {
+    it('processAsync_area', (done) => {
         var measureService = initMeasureService_RegisterListener();
         var points = [
-            new SuperMap.Geometry.Point(0, 0),
-            new SuperMap.Geometry.Point(10, 10),
-            new SuperMap.Geometry.Point(10, 0),
-            new SuperMap.Geometry.Point(0, 0)
+            new Point(0, 0),
+            new Point(10, 10),
+            new Point(10, 0),
+            new Point(0, 0)
         ];
-        var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));
-        var measureParameters = new SuperMap.MeasureParameters(geometry);
+        var geometry = new Polygon(new LinearRing(points));
+        var measureParameters = new MeasureParameters(geometry);
         measureService.processAsync(measureParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var measureResult = measureEventArgsSystem.result;
                 expect(measureResult).not.toBeNull();
@@ -173,18 +177,18 @@ describe('MeasureService', function () {
     });
 
     //反向测试用例，传入的点无法构成面
-    it('fail:processAsync_area', function (done) {
+    it('fail:processAsync_area', (done) => {
         var measureService = initMeasureService_RegisterListener();
         var points = [
-            new SuperMap.Geometry.Point(0, 0),
-            new SuperMap.Geometry.Point(10, 10),
-            new SuperMap.Geometry.Point(0, 0)
+            new Point(0, 0),
+            new Point(10, 10),
+            new Point(0, 0)
         ];
-        var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));
-        var measureParameters = new SuperMap.MeasureParameters(geometry);
+        var geometry = new Polygon(new LinearRing(points));
+        var measureParameters = new MeasureParameters(geometry);
         measureService.processAsync(measureParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var measureResult = measureEventArgsSystem.result;
                 expect(measureResult).not.toBeNull();
@@ -205,14 +209,14 @@ describe('MeasureService', function () {
     });
 
     //反向测试用例，传入线进行面积量算
-    it('fail1_processAsync_area', function (done) {
+    it('fail1_processAsync_area', (done) => {
         var measureService = initMeasureService_RegisterListener();
-        var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10)];
-        var geometry = new SuperMap.Geometry.LineString(points);
-        var measureParameters = new SuperMap.MeasureParameters(geometry);
+        var points = [new Point(0, 0), new Point(10, 10)];
+        var geometry = new LineString(points);
+        var measureParameters = new MeasureParameters(geometry);
         measureService.processAsync(measureParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.succeed).toBeFalsy();
@@ -234,16 +238,16 @@ describe('MeasureService', function () {
     });
 
     //反向测试用例，地图名错误，无法调用回调函数
-    it('fail2_processAsync_area', function (done) {
-        var measureService = new SuperMap.MeasureService(worldMapURL + "_Error", {measureMode: SuperMap.MeasureMode.AREA});
-        var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10), new SuperMap.Geometry.Point(10, 0)];
-        //服务端缺陷,new SuperMap.Geometry.Point(20, 20),new SuperMap.Geometry.Point(0, 0)
-        var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));
-        var measureParameters = new SuperMap.MeasureParameters(geometry, {unit: SuperMap.Unit.KILOMETER});
+    it('fail2_processAsync_area', (done) => {
+        var measureService = new MeasureService(worldMapURL + "_Error", {measureMode: MeasureMode.AREA});
+        var points = [new Point(0, 0), new Point(10, 10), new Point(10, 0)];
+        //服务端缺陷,new Point(20, 20),new Point(0, 0)
+        var geometry = new Polygon(new LinearRing(points));
+        var measureParameters = new MeasureParameters(geometry, {unit: Unit.KILOMETER});
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.succeed).toBeFalsy();

@@ -1,25 +1,26 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {DatasetOverlayAnalystParameters} from '../../../src/common/iServer/DatasetOverlayAnalystParameters';
+import {OverlayOperationType} from '../../../src/common/REST';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_overlayAnalysis', function () {
+describe('mapboxgl_SpatialAnalystService_overlayAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //叠加分析
-    it('overlayAnalysis', function (done) {
-        var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
+    it('overlayAnalysis', (done) => {
+        var datasetOverlayAnalystParameters = new DatasetOverlayAnalystParameters({
             //叠加分析中源数据集的名称
             sourceDataset: "BaseMap_R@Jingjin",
             //叠加分析中操作数据集的名称
@@ -27,10 +28,10 @@ describe('mapboxgl_SpatialAnalystService_overlayAnalysis', function () {
             //容限
             tolerance: 0,
             //叠加操作枚举值
-            operation: SuperMap.OverlayOperationType.UNION
+            operation: OverlayOperationType.UNION
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.overlayAnalysis(datasetOverlayAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.overlayAnalysis(datasetOverlayAnalystParameters, (result) => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();

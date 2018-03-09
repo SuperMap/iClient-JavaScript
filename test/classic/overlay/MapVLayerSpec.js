@@ -1,12 +1,15 @@
-require('../../../src/classic/overlay/MapVLayer');
+import {MapVLayer} from '../../../src/classic/overlay/MapVLayer';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
+import {LonLat} from '../../../src/common/commontypes/LonLat';
+
 var mapv = require('mapv');
 window.mapv = mapv;
 
 var url = GlobeParameter.ChinaURL;
-describe('classic_MapVLayer', function () {
+describe('classic_MapVLayer', () => {
     var originalTimeout;
     var testDiv, map, baseLayer, mapvLayer;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -15,29 +18,19 @@ describe('classic_MapVLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.Attribution(),
-                new SuperMap.Control.ScaleLine(),
-                new SuperMap.Control.Zoom(),
-                new SuperMap.Control.Navigation({
-                    dragPanOptions: {
-                        enableKinetic: true
-                    }
-                })]
-        });
+        map = new SuperMap.Map("map");
         baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
             units: "m",
             transparent: true,
             cacheEnabled: true
         }, {maxResolution: "auto"});
-        baseLayer.events.on({"layerInitialized": addLayer});
-        function addLayer() {
+        var addLayer = () => {
             map.addLayers([baseLayer]);
-            map.setCenter(new SuperMap.LonLat(104, 34.7), 2);
+            map.setCenter(new LonLat(104, 34.7), 2);
         }
+        baseLayer.events.on({"layerInitialized": addLayer()});
     });
-    beforeEach(function () {
+    beforeEach(() => {
         //创建mapVLayer
         var randomCount = 1000;
         var data = [];
@@ -70,22 +63,21 @@ describe('classic_MapVLayer', function () {
             gradient: {0.25: "rgb(0,0,255)", 0.55: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)"},
             draw: 'honeycomb'
         };
-        mapvLayer = new SuperMap.Layer.MapVLayer("mapv", {dataSet: dataSet, options: options});
+        mapvLayer = new MapVLayer("mapv", {dataSet: dataSet, options: options});
         map.addLayer(mapvLayer);
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         mapvLayer.destroy();
     });
-    afterAll(function () {
+    afterAll(() => {
         document.body.removeChild(testDiv);
-        //map.destroy();
         mapv = null;
     });
 
-    it('constructor', function () {
+    it('constructor', () => {
         expect(mapvLayer).not.toBeNull();
         expect(mapvLayer.options.shadowBlur).toEqual(20);
         expect(mapvLayer.options.draw).toBe("honeycomb");
@@ -99,7 +91,7 @@ describe('classic_MapVLayer', function () {
         expect(mapvLayer.renderer.canvasLayer.minScale).toEqual(590591790);
     });
 
-    it('addData', function () {
+    it('addData', () => {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -119,12 +111,12 @@ describe('classic_MapVLayer', function () {
         expect(mapvLayer.options.shadowBlur).toEqual(30);
     });
 
-    it('getData', function () {
+    it('getData', () => {
         var dataset = mapvLayer.getData()
         expect(dataset._data.length).toEqual(1000);
     });
 
-    it('setData', function () {
+    it('setData', () => {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -144,12 +136,12 @@ describe('classic_MapVLayer', function () {
         expect(mapvLayer.options.shadowBlur).toEqual(40);
     });
 
-    it('clearData', function () {
+    it('clearData', () => {
         mapvLayer.clearData();
         expect(mapvLayer.dataSet._data.length).toEqual(0);
     });
 
-    it('destroy', function () {
+    it('destroy', () => {
         mapvLayer.destroy();
         expect(mapvLayer.dataSet).toBeNull();
         expect(mapvLayer.options).toBeNull();
@@ -161,28 +153,28 @@ describe('classic_MapVLayer', function () {
     });
 
     //方法引用错误
-    xit('removeData', function (done) {
-        var filter = function (data) {
+    xit('removeData', (done) => {
+        var filter = (data) => {
             if (mapvLayer.dataSet._data.indexOf(data) === 2) {
                 return true
             }
             return false;
         }
         mapvLayer.removeData(filter);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(mapvLayer.dataSet._data.length).toEqual(999);
             done();
         }, 5000);
     });
 
-    xit('setMap', function () {
+    xit('setMap', () => {
         mapvLayer.setMap(map);
         expect(mapvLayer).not.toBeNull();
         expect(mapvLayer.dataSet._data.length).toEqual(1000);
     });
 
-    xit('moveTo', function () {
-        var bounds = new SuperMap.Bounds(-180, -90, 180, 90);
+    xit('moveTo', () => {
+        var bounds = new Bounds(-180, -90, 180, 90);
         mapvLayer.moveTo(bounds, false, true);
         expect(mapvLayer).not.toBeNull();
         expect(mapvLayer.maxExtent.CLASS_NAME).toEqual("SuperMap.Bounds");
@@ -192,8 +184,8 @@ describe('classic_MapVLayer', function () {
         expect(mapvLayer.maxExtent.top).toEqual(90);
     });
 
-    xit('transferToMapLatLng', function () {
-        var latlng = new SuperMap.LonLat(104, 34.7);
+    xit('transferToMapLatLng', () => {
+        var latlng = new LonLat(104, 34.7);
         mapvLayer.transferToMapLatLng(latlng);
         expect(mapvLayer).not.toBeNull();
     });

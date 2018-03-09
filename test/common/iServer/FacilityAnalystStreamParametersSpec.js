@@ -1,7 +1,7 @@
-var FacilityAnalystStreamParameters = require('../../../src/common/iServer/FacilityAnalystStreamParameters').FacilityAnalystStreamParameters;
+import {FacilityAnalystStreamParameters} from '../../../src/common/iServer/FacilityAnalystStreamParameters';
 
-describe('FacilityAnalystStreamParameters', function () {
-    it('constructor', function () {
+describe('FacilityAnalystStreamParameters', () => {
+    it('constructor', () => {
         var options = {
             sourceNodeIDs: [84, 85],
             nodeID: 85,

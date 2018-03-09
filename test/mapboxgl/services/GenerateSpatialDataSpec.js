@@ -1,27 +1,29 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
-var request = require('request');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {GenerateSpatialDataParameters} from '../../../src/common/iServer/GenerateSpatialDataParameters';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {DataReturnMode} from '../../../src/common/REST';
+import request from 'request';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
+describe('mapboxgl_SpatialAnalystService_generateSpatialData', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "GenerateSpatialData_mapboxglTest";
     //动态分段分析
-    it('generateSpatialData', function (done) {
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+    it('generateSpatialData', (done) => {
+        var generateSpatialDataParameters = new GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -32,18 +34,18 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
             measureEndField: "LineMeasureTo",  //只有当事件为线事件的时候该属性才有意义
             measureOffsetField: "",
             errorInfoField: "",
-            dataReturnOption: new SuperMap.DataReturnOption({
+            dataReturnOption: new DataReturnOption({
                 expectCount: 1000,
                 dataset: resultDataset,
                 deleteExistResultDataset: true,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+                dataReturnMode: DataReturnMode.DATASET_ONLY
             })
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.generateSpatialData(generateSpatialDataParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.generateSpatialData(generateSpatialDataParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -59,7 +61,7 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

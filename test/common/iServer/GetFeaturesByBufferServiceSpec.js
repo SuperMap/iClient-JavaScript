@@ -1,39 +1,40 @@
-﻿require('../../../src/common/iServer/GetFeaturesByBufferService');
-
-var serviceFailedEventArgsSystem = null;
-var getFeaturesEventArgsSystem = null;
+﻿﻿import {GetFeaturesByBufferService} from '../../../src/common/iServer/GetFeaturesByBufferService';
+import {GetFeaturesByBufferParameters} from '../../../src/common/iServer/GetFeaturesByBufferParameters';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
+var serviceFailedEventArgsSystem = null;
+var getFeaturesEventArgsSystem = null;
+var initGetFeaturesByBufferService = () => {
+    return new GetFeaturesByBufferService(dataServiceURL, options);
+};
+var getFeaturesByBufferFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var getFeaturesByBufferCompleted = (getFeaturesEventArgs) => {
+    getFeaturesEventArgsSystem = getFeaturesEventArgs;
+};
 var options = {
     eventListeners: {
         processCompleted: getFeaturesByBufferCompleted,
         processFailed: getFeaturesByBufferFailed
     }
 };
-function initGetFeaturesByBufferService() {
-    return new SuperMap.GetFeaturesByBufferService(dataServiceURL, options);
-}
-function getFeaturesByBufferFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function getFeaturesByBufferCompleted(getFeaturesEventArgs) {
-    getFeaturesEventArgsSystem = getFeaturesEventArgs;
-}
 
-describe('GetFeaturesByBufferService', function () {
+describe('GetFeaturesByBufferService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //不直接返回查询结果
-    it('processAsync_returnContent:false', function (done) {
-        var geometry = new SuperMap.Geometry.Point(7.25, 18.75);
-        var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
+    it('processAsync_returnContent:false', (done) => {
+        var geometry = new Point(7.25, 18.75);
+        var getFeaturesByBufferParameters = new GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 30,
             attributeFilter: "SMID>0",
@@ -42,7 +43,7 @@ describe('GetFeaturesByBufferService', function () {
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeaturesEventArgsSystem.result;
                 expect(getFeaturesByBufferService).not.toBeNull();
@@ -69,9 +70,9 @@ describe('GetFeaturesByBufferService', function () {
     });
 
     //直接返回查询结果
-    it('processAsync_returnContent:true', function (done) {
-        var geometry = new SuperMap.Geometry.Point(7.25, 18.75);
-        var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
+    it('processAsync_returnContent:true', (done) => {
+        var geometry = new Point(7.25, 18.75);
+        var getFeaturesByBufferParameters = new GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 30,
             attributeFilter: "SMID>0",
@@ -82,7 +83,7 @@ describe('GetFeaturesByBufferService', function () {
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeaturesEventArgsSystem.result.features;
                 expect(getFeaturesByBufferService).not.toBeNull();
@@ -113,12 +114,12 @@ describe('GetFeaturesByBufferService', function () {
     });
 
     //测试没有传入参数时的情况
-    it('processAsync_noParams', function (done) {
-        var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
+    it('processAsync_noParams', (done) => {
+        var getFeaturesByBufferParameters = new GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 30,
             attributeFilter: "SMID>0",
-            //geometry:new SuperMap.Geometry.Point(7.25,18.75)，
+            //geometry:new Point(7.25,18.75)，
             fields: ["SMID"],
             fromIndex: 0,
             toIndex: 19,
@@ -126,7 +127,7 @@ describe('GetFeaturesByBufferService', function () {
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
@@ -147,9 +148,9 @@ describe('GetFeaturesByBufferService', function () {
     });
 
     //测试目标图层不存在
-    it('processAsync_LayerNotExist', function (done) {
-        var geometry = new SuperMap.Geometry.Point(7.25, 18.75);
-        var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
+    it('processAsync_LayerNotExist', (done) => {
+        var geometry = new Point(7.25, 18.75);
+        var getFeaturesByBufferParameters = new GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitalss"],
             bufferDistance: 30,
             attributeFilter: "SMID>0",
@@ -160,7 +161,7 @@ describe('GetFeaturesByBufferService', function () {
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem).not.toBeNull();

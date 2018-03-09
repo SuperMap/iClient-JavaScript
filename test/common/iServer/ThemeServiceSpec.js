@@ -8,12 +8,15 @@ var mapServiceURL = GlobeParameter.mapServiceURL,
 function themeCompleted(themeEventArgs) {
     themeEventArgsSystem = themeEventArgs;
 }
+
 function themeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
+
 function initThemeService() {
     return new SuperMap.ThemeService(themeURL);
 }
+
 function initThemeService_RegisterListener() {
     return new SuperMap.ThemeService(themeURL,
         {
@@ -36,43 +39,43 @@ describe('ThemeService', function () {
 
     it('processAsync_Range', function (done) {
         var themeService = initThemeService();
-        themeRange = new SuperMap.ThemeRange({
-            rangeExpression: "POP_1994",
-            rangeParameter: 3,
-            rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
-        });
-        style1 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(250, 105, 25),
-            lineWidth: 0.05
-        });
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
-            style: style1,
-            visible: true,
-            start: -5,
-            caption: "item1",
-            end: 8609844.5
-        });
-        style2 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(114, 15, 205),
-            lineWidth: 0.02
-        });
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
-            style: style2,
-            visible: true,
-            start: 8609844.5,
-            caption: "item2",
-            end: 28609844.5
-        });
-        themeRangeItem3 = new SuperMap.ThemeRangeItem({
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(67, 78, 127),
-                lineWidth: 0.01
+        var themeRange = new SuperMap.ThemeRange({
+                rangeExpression: "POP_1994",
+                rangeParameter: 3,
+                rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
             }),
-            visible: true,
-            start: 28609844.5,
-            caption: "item3",
-            end: 15028139690,
-        });
+            style1 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(250, 105, 25),
+                lineWidth: 0.05
+            }),
+            themeRangeItem1 = new SuperMap.ThemeRangeItem({
+                style: style1,
+                visible: true,
+                start: -5,
+                caption: "item1",
+                end: 8609844.5
+            }),
+            style2 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(114, 15, 205),
+                lineWidth: 0.02
+            }),
+            themeRangeItem2 = new SuperMap.ThemeRangeItem({
+                style: style2,
+                visible: true,
+                start: 8609844.5,
+                caption: "item2",
+                end: 28609844.5
+            }),
+            themeRangeItem3 = new SuperMap.ThemeRangeItem({
+                style: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(67, 78, 127),
+                    lineWidth: 0.01
+                }),
+                visible: true,
+                start: 28609844.5,
+                caption: "item3",
+                end: 15028139690,
+            });
         themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
         expect(themeService).not.toBeNull();
         expect(themeService.url).toEqual(themeURL + "/tempLayersSet.json?");
@@ -110,33 +113,33 @@ describe('ThemeService', function () {
 
     it('processAsync_Range_1', function (done) {
         var themeService = initThemeService_RegisterListener();
-        themeRange = new SuperMap.ThemeRange({
+        var themeRange = new SuperMap.ThemeRange({
             rangeExpression: "POP_1994",
             rangeParameter: 2,
             rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
         });
-        style1 = new SuperMap.ServerStyle();
+        var style1 = new SuperMap.ServerStyle();
         style1.fillForeColor = new SuperMap.ServerColor();
         style1.fillForeColor.blue = 0;
         style1.fillForeColor.green = 50;
         style1.fillForeColor.red = 20;
         style1.lineColor = new SuperMap.ServerColor();
         style1.lineColor = style1.fillForeColor;
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem1 = new SuperMap.ThemeRangeItem({
             style: style1,
             visible: true,
             start: -1,
             caption: "item1",
             end: 104069844.5
         });
-        style2 = new SuperMap.ServerStyle();
+        var style2 = new SuperMap.ServerStyle();
         style2.fillForeColor = new SuperMap.ServerColor();
         style2.fillForeColor.blue = 25;
         style2.fillForeColor.green = 250;
         style2.fillForeColor.red = 100;
         style2.lineColor = new SuperMap.ServerColor();
         style2.lineColor = style2.fillForeColor;
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem2 = new SuperMap.ThemeRangeItem({
             style: style2,
             visible: true,
             start: 104069844.5,
@@ -177,7 +180,7 @@ describe('ThemeService', function () {
 
     it('processAsync_Range_UrlLarge', function (done) {
         var themeService = initThemeService();
-        themeRange = new SuperMap.ThemeRange({
+        var themeRange = new SuperMap.ThemeRange({
             rangeExpression: "POP_1994",
             rangeParameter: 6,
             rangeMode: SuperMap.RangeMode.QUANTILE
@@ -185,7 +188,7 @@ describe('ThemeService', function () {
         var themeRangeIteme1 = new SuperMap.ThemeRangeItem();
         themeRangeIteme1.start = 0.0;
         themeRangeIteme1.end = 59973;
-        style1 = new SuperMap.ServerStyle();
+        var style1 = new SuperMap.ServerStyle();
         style1.fillForeColor = new SuperMap.ServerColor();
         style1.fillForeColor.blue = 232;
         style1.fillForeColor.green = 227;
@@ -197,7 +200,7 @@ describe('ThemeService', function () {
         var themeRangeIteme2 = new SuperMap.ThemeRangeItem();
         themeRangeIteme2.start = 59973;
         themeRangeIteme2.end = 1097234;
-        style2 = new SuperMap.ServerStyle();
+        var style2 = new SuperMap.ServerStyle();
         style2.fillForeColor = new SuperMap.ServerColor();
         style2.fillForeColor.blue = 50;
         style2.fillForeColor.green = 20;
@@ -209,7 +212,7 @@ describe('ThemeService', function () {
         var themeRangeIteme3 = new SuperMap.ThemeRangeItem();
         themeRangeIteme3.start = 1097234;
         themeRangeIteme3.end = 5245515;
-        style3 = new SuperMap.ServerStyle();
+        var style3 = new SuperMap.ServerStyle();
         style3.fillForeColor = new SuperMap.ServerColor();
         style3.fillForeColor.blue = 189;
         style3.fillForeColor.green = 113;
@@ -221,7 +224,7 @@ describe('ThemeService', function () {
         var themeRangeIteme4 = new SuperMap.ThemeRangeItem();
         themeRangeIteme4.start = 5245515;
         themeRangeIteme4.end = 17250390;
-        style4 = new SuperMap.ServerStyle();
+        var style4 = new SuperMap.ServerStyle();
         style4.fillForeColor = new SuperMap.ServerColor();
         style4.fillForeColor.blue = 186;
         style4.fillForeColor.green = 196;
@@ -233,7 +236,7 @@ describe('ThemeService', function () {
         var themeRangeIteme5 = new SuperMap.ThemeRangeItem();
         themeRangeIteme5.start = 17250390;
         themeRangeIteme5.end = 894608700;
-        style5 = new SuperMap.ServerStyle();
+        var style5 = new SuperMap.ServerStyle();
         style5.fillForeColor = new SuperMap.ServerColor();
         style5.fillForeColor.blue = 116;
         style5.fillForeColor.green = 167;
@@ -245,7 +248,7 @@ describe('ThemeService', function () {
         var themeRangeIteme6 = new SuperMap.ThemeRangeItem();
         themeRangeIteme6.start = 894608700;
         themeRangeIteme6.end = 1.84467E+19;
-        style6 = new SuperMap.ServerStyle();
+        var style6 = new SuperMap.ServerStyle();
         style6.fillForeColor = new SuperMap.ServerColor();
         style6.fillForeColor.blue = 81;
         style6.fillForeColor.green = 81;
@@ -289,37 +292,37 @@ describe('ThemeService', function () {
 
     it('processAsync_Graph', function (done) {
         var themeService = initThemeService();
-        themeGraph = new SuperMap.ThemeGraph({
-            barWidth: 2,
-            graphType: SuperMap.ThemeGraphType.PIE,
-            flow: new SuperMap.ThemeFlow({
-                flowEnabled: false,
-                leaderLineDisplayed: false
+        var themeGraph = new SuperMap.ThemeGraph({
+                barWidth: 2,
+                graphType: SuperMap.ThemeGraphType.PIE,
+                flow: new SuperMap.ThemeFlow({
+                    flowEnabled: false,
+                    leaderLineDisplayed: false
+                }),
+                graphAxes: new SuperMap.ThemeGraphAxes({
+                    axesTextDisplayed: false
+                }),
+                graphSize: new SuperMap.ThemeGraphSize({
+                    maxGraphSize: 100,
+                    minGraphSize: 10
+                }),
+                graphText: new SuperMap.ThemeGraphText(),
+                offset: new SuperMap.ThemeOffset({
+                    offsetFixed: false
+                })
             }),
-            graphAxes: new SuperMap.ThemeGraphAxes({
-                axesTextDisplayed: false
+            uniformStyle1 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(120, 120, 110)
             }),
-            graphSize: new SuperMap.ThemeGraphSize({
-                maxGraphSize: 100,
-                minGraphSize: 10
+            uniformStyle2 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(250, 105, 85)
             }),
-            graphText: new SuperMap.ThemeGraphText(),
-            offset: new SuperMap.ThemeOffset({
-                offsetFixed: false
-            })
-        });
-        uniformStyle1 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(120, 120, 110)
-        });
-        uniformStyle2 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(250, 105, 85)
-        });
-        themeGraphItem1 = new SuperMap.ThemeGraphItem({
-            caption: "SQMI", graphExpression: "SQMI", uniformStyle: uniformStyle1
-        });
-        themeGraphItem2 = new SuperMap.ThemeGraphItem({
-            caption: "SQKM", graphExpression: "SQKM", uniformStyle: uniformStyle2
-        });
+            themeGraphItem1 = new SuperMap.ThemeGraphItem({
+                caption: "SQMI", graphExpression: "SQMI", uniformStyle: uniformStyle1
+            }),
+            themeGraphItem2 = new SuperMap.ThemeGraphItem({
+                caption: "SQKM", graphExpression: "SQKM", uniformStyle: uniformStyle2
+            });
         themeGraph.items = new Array(themeGraphItem1, themeGraphItem2);
         var themeParameters = new SuperMap.ThemeParameters({
             datasetNames: new Array("Countries"),
@@ -355,12 +358,12 @@ describe('ThemeService', function () {
 
     it('processAsync_JoinItem', function (done) {
         var themeService = initThemeService_RegisterListener();
-        joinItem = new SuperMap.JoinItem({
+        var joinItem = new SuperMap.JoinItem({
             foreignTableName: "Capitals",
             joinFilter: "Countries.Country = Capitals.Country",
             joinType: SuperMap.JoinType.LEFTJOIN
         });
-        themeRange = new SuperMap.ThemeRange({
+        var themeRange = new SuperMap.ThemeRange({
             rangeExpression: "Cap_Pop",
             rangeParameter: 3,
             rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
@@ -372,7 +375,7 @@ describe('ThemeService', function () {
         style1.fillForeColor.red = 255;
         style1.lineColor = new SuperMap.ServerColor();
         style1.lineColor = style1.fillForeColor;
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem1 = new SuperMap.ThemeRangeItem({
             style: style1,
             visible: true,
             start: 0,
@@ -386,7 +389,7 @@ describe('ThemeService', function () {
         style2.fillForeColor.red = 100;
         style2.lineColor = new SuperMap.ServerColor();
         style2.lineColor = style2.fillForeColor;
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem2 = new SuperMap.ThemeRangeItem({
             style: style2,
             visible: true,
             start: 500000,
@@ -400,7 +403,7 @@ describe('ThemeService', function () {
         style3.fillForeColor.red = 40;
         style3.lineColor = new SuperMap.ServerColor();
         style3.lineColor = style3.fillForeColor;
-        themeRangeItem3 = new SuperMap.ThemeRangeItem({
+        var themeRangeItem3 = new SuperMap.ThemeRangeItem({
             style: style3,
             visible: true,
             start: 5000000,
@@ -441,30 +444,30 @@ describe('ThemeService', function () {
 
     it('processAsync_Unique', function (done) {
         var themeService = initThemeService();
-        themeUnique = new SuperMap.ThemeUnique({
+        var themeUnique = new SuperMap.ThemeUnique({
             uniqueExpression: "CONTINENT"
         });
-        style1 = new SuperMap.ServerStyle({
+        var style1 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(250, 105, 25),
             lineWidth: 0.05
         });
-        themeUniqueItem1 = new SuperMap.ThemeUniqueItem({
+        var themeUniqueItem1 = new SuperMap.ThemeUniqueItem({
             style: style1,
             visible: true,
             unique: "亚洲",
             caption: "亚洲"
         });
-        style2 = new SuperMap.ServerStyle({
+        var style2 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(114, 15, 205),
             lineWidth: 0.02
         });
-        themeUniqueItem2 = new SuperMap.ThemeUniqueItem({
+        var themeUniqueItem2 = new SuperMap.ThemeUniqueItem({
             style: style2,
             visible: true,
             unique: "欧洲",
             caption: "欧洲"
         });
-        themeUniqueItem3 = new SuperMap.ThemeUniqueItem({
+        var themeUniqueItem3 = new SuperMap.ThemeUniqueItem({
             style: new SuperMap.ServerStyle({
                 fillForeColor: new SuperMap.ServerColor(67, 78, 127),
                 lineWidth: 0.01
@@ -473,7 +476,7 @@ describe('ThemeService', function () {
             unique: "非洲",
             caption: "非洲"
         });
-        themeUniqueItem4 = new SuperMap.ThemeUniqueItem({
+        var themeUniqueItem4 = new SuperMap.ThemeUniqueItem({
             style: new SuperMap.ServerStyle({
                 fillForeColor: new SuperMap.ServerColor(57, 48, 113),
                 lineWidth: 0.01
@@ -519,55 +522,55 @@ describe('ThemeService', function () {
 
     it('processAsync_Unique_0', function (done) {
         var themeService = initThemeService();
-        themeUnique = new SuperMap.ThemeUnique({
-            uniqueExpression: "SmID"
-        });
-        style1 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(250, 105, 25),
-            lineWidth: 0.05,
-            markerSize: 10,
-            markerSymbolID: 1
-        });
-        themeUniqueItem1 = new SuperMap.ThemeUniqueItem({
-            style: style1,
-            visible: true,
-            unique: "1",
-            caption: "ARCTIC  OCEAN"
-        });
-        style2 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(114, 15, 205),
-            lineWidth: 0.02,
-            markerSize: 14,
-            markerSymbolID: 59
-        });
-        themeUniqueItem2 = new SuperMap.ThemeUniqueItem({
-            style: style2,
-            visible: true,
-            unique: "2",
-            caption: "PACIFIC   OCEAN"
-        });
-        themeUniqueItem3 = new SuperMap.ThemeUniqueItem({
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(67, 78, 127),
-                lineWidth: 0.01,
-                markerSize: 15,
-                markerSymbolID: 66
+        var themeUnique = new SuperMap.ThemeUnique({
+                uniqueExpression: "SmID"
             }),
-            visible: true,
-            unique: "3",
-            caption: "ATLANTIC   OCEAN"
-        });
-        themeUniqueItem4 = new SuperMap.ThemeUniqueItem({
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(57, 48, 113),
-                lineWidth: 0.01,
-                markerSize: 12,
-                markerSymbolID: 11
+            style1 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(250, 105, 25),
+                lineWidth: 0.05,
+                markerSize: 10,
+                markerSymbolID: 1
             }),
-            visible: true,
-            unique: "4",
-            caption: "INDIAN OCEAN"
-        });
+            themeUniqueItem1 = new SuperMap.ThemeUniqueItem({
+                style: style1,
+                visible: true,
+                unique: "1",
+                caption: "ARCTIC  OCEAN"
+            }),
+            style2 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(114, 15, 205),
+                lineWidth: 0.02,
+                markerSize: 14,
+                markerSymbolID: 59
+            }),
+            themeUniqueItem2 = new SuperMap.ThemeUniqueItem({
+                style: style2,
+                visible: true,
+                unique: "2",
+                caption: "PACIFIC   OCEAN"
+            }),
+            themeUniqueItem3 = new SuperMap.ThemeUniqueItem({
+                style: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(67, 78, 127),
+                    lineWidth: 0.01,
+                    markerSize: 15,
+                    markerSymbolID: 66
+                }),
+                visible: true,
+                unique: "3",
+                caption: "ATLANTIC   OCEAN"
+            }),
+            themeUniqueItem4 = new SuperMap.ThemeUniqueItem({
+                style: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(57, 48, 113),
+                    lineWidth: 0.01,
+                    markerSize: 12,
+                    markerSymbolID: 11
+                }),
+                visible: true,
+                unique: "4",
+                caption: "INDIAN OCEAN"
+            });
         //南美洲默认风格
         themeUnique.items = new Array(themeUniqueItem1, themeUniqueItem2, themeUniqueItem3, themeUniqueItem4);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
@@ -621,7 +624,7 @@ describe('ThemeService', function () {
                 labelBackShape: SuperMap.LabelBackShape.NONE
             })
         });
-        text = new SuperMap.ThemeLabelText({
+        var text = new SuperMap.ThemeLabelText({
             uniformStyle: new SuperMap.ServerTextStyle({
                 sizeFixed: true,
                 foreColor: new SuperMap.ServerColor(220, 15, 205)
@@ -665,6 +668,8 @@ describe('ThemeService', function () {
     //分段标签专题图
     it('processAsync_Label_range_1', function (done) {
         var themeService = initThemeService();
+        var themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4;
+        var style1, style2;
         var themeLabel = new SuperMap.ThemeLabel({
             //alongLine: false,
             labelExpression: "smid",//smid    COUNTRY
@@ -763,7 +768,7 @@ describe('ThemeService', function () {
         var themeLabelIteme1 = new SuperMap.ThemeLabelItem();
         themeLabelIteme1.start = 0;
         themeLabelIteme1.end = 59973;
-        style1 = new SuperMap.ServerTextStyle();
+        var style1 = new SuperMap.ServerTextStyle();
         style1.fontHeight = 5;
         style1.fontWidth = 5;
         style1.foreColor = new SuperMap.ServerColor();
@@ -777,7 +782,7 @@ describe('ThemeService', function () {
         var themeLabelIteme2 = new SuperMap.ThemeLabelItem();
         themeLabelIteme2.start = 59973;
         themeLabelIteme2.end = 1097234;
-        style2 = new SuperMap.ServerTextStyle();
+        var style2 = new SuperMap.ServerTextStyle();
         style2.fontHeight = 5;
         style2.fontWidth = 5;
         style2.foreColor = new SuperMap.ServerColor();
@@ -791,7 +796,7 @@ describe('ThemeService', function () {
         var themeLabelIteme3 = new SuperMap.ThemeLabelItem();
         themeLabelIteme3.start = 1097234;
         themeLabelIteme3.end = 5245515;
-        style3 = new SuperMap.ServerTextStyle();
+        var style3 = new SuperMap.ServerTextStyle();
         style3.fontHeight = 5;
         style3.fontWidth = 5;
         style3.foreColor = new SuperMap.ServerColor();
@@ -805,7 +810,7 @@ describe('ThemeService', function () {
         var themeLabelIteme4 = new SuperMap.ThemeLabelItem();
         themeLabelIteme4.start = 5245515;
         themeLabelIteme4.end = 17250390;
-        style4 = new SuperMap.ServerTextStyle();
+        var style4 = new SuperMap.ServerTextStyle();
         style4.fontHeight = 5;
         style4.fontWidth = 5;
         style4.foreColor = new SuperMap.ServerColor();
@@ -819,7 +824,7 @@ describe('ThemeService', function () {
         var themeLabelIteme5 = new SuperMap.ThemeLabelItem();
         themeLabelIteme5.start = 17250390;
         themeLabelIteme5.end = 894608700;
-        style5 = new SuperMap.ServerTextStyle();
+        var style5 = new SuperMap.ServerTextStyle();
         style5.fontHeight = 5;
         style5.fontWidth = 5;
         style5.foreColor = new SuperMap.ServerColor();
@@ -833,7 +838,7 @@ describe('ThemeService', function () {
         var themeLabelIteme6 = new SuperMap.ThemeLabelItem();
         themeLabelIteme6.start = 894608700;
         themeLabelIteme6.end = 1.84467E+19;
-        style6 = new SuperMap.ServerTextStyle();
+        var style6 = new SuperMap.ServerTextStyle();
         style6.fontHeight = 5;
         style6.fontWidth = 5;
         style6.foreColor = new SuperMap.ServerColor();
@@ -951,10 +956,10 @@ describe('ThemeService', function () {
     //使用内存数据制作统一风格标签专题图
     it('processAsync_Label__WithMemortData', function (done) {
         var themeService = initThemeService();
-        srcData = new Array("亚洲", "欧洲", "非洲", "北美洲", "南美洲");
-        targetData = new Array("亚洲国家", "欧洲国家", "非洲国家", "北美洲国家", "南美洲国家");
-        themeMemoryData = new SuperMap.ThemeMemoryData(srcData, targetData);
-        themeLabel = new SuperMap.ThemeLabel({
+        var srcData = new Array("亚洲", "欧洲", "非洲", "北美洲", "南美洲");
+        var targetData = new Array("亚洲国家", "欧洲国家", "非洲国家", "北美洲国家", "南美洲国家");
+        var themeMemoryData = new SuperMap.ThemeMemoryData(srcData, targetData);
+        var themeLabel = new SuperMap.ThemeLabel({
             labelExpression: "CONTINENT",
             labelOverLengthMode: SuperMap.LabelOverLengthMode.NEWLINE,
             maxLabelLength: 6,
@@ -970,7 +975,7 @@ describe('ThemeService', function () {
             }),
             memoryData: themeMemoryData
         });
-        text = new SuperMap.ThemeLabelText({
+        var text = new SuperMap.ThemeLabelText({
             uniformStyle: new SuperMap.ServerTextStyle({
                 sizeFixed: true,
                 foreColor: new SuperMap.ServerColor(220, 15, 205)
@@ -1012,8 +1017,8 @@ describe('ThemeService', function () {
 
     //使用内存数据制作范围分段专题图
     it('processAsync_Range_withMemoryData', function (done) {
-        var themeService = initThemeService(),
-            themeRange = new SuperMap.ThemeRange({
+        var themeService = initThemeService();
+        var themeRange = new SuperMap.ThemeRange({
                 rangeExpression: "POP_1994",
                 rangeParameter: 3,
                 rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL

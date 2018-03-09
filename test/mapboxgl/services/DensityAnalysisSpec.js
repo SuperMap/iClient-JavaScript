@@ -1,27 +1,27 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
-var request = require('request');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {DensityKernelAnalystParameters} from '../../../src/common/iServer/DensityKernelAnalystParameters';
+import request from 'request';
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
+describe('mapboxgl_SpatialAnalystService_densityAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "KernelDensity_mapboxglTest";
     //点密度分析, 删除重复的数据集
-    it('densityAnalysis_deleteExistResultDataset:true', function (done) {
-        var densityKernelAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+    it('densityAnalysis_deleteExistResultDataset:true', (done)=> {
+        var densityKernelAnalystParameters = new DensityKernelAnalystParameters({
             dataset: "Railway@Changchun",
             //用于进行核密度分析的测量值的字段名称
             fieldName: "SmLength",
@@ -29,11 +29,11 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
             //删除重复的数据集
             deleteExistResultDataset: true
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.densityAnalysis(densityKernelAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.densityAnalysis(densityKernelAnalystParameters, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -50,8 +50,8 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
     });
 
     //点密度分析, 不删除重复的数据集(默认), 本测试的resultGridName需要是一个已经存在的数据集
-    it('densityAnalysis_deleteExistResultDataset:false', function (done) {
-        var densityKernelAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+    it('densityAnalysis_deleteExistResultDataset:false', (done)=> {
+        var densityKernelAnalystParameters = new DensityKernelAnalystParameters({
             dataset: "Railway@Changchun",
             //用于进行核密度分析的测量值的字段名称
             fieldName: "SmLength",
@@ -59,11 +59,11 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
             //不删除重复的数据集
             deleteExistResultDataset: false
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.densityAnalysis(densityKernelAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.densityAnalysis(densityKernelAnalystParameters, (result)=> {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -80,7 +80,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done)=> {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

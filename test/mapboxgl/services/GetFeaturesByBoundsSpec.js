@@ -1,39 +1,40 @@
-require('../../../src/mapboxgl/services/FeatureService');
-var mapboxgl = require('mapbox-gl');
-require('../../../src/common/util/FetchRequest');
+import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
+import {GetFeaturesByBoundsParameters} from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import mapboxgl from 'mapbox-gl';
 
 var url = "http://supermap:8090/iserver/services/data-world/rest/data";
-describe('mapboxgl_FeatureService_getFeaturesByBounds', function () {
+
+describe('mapboxgl_FeatureService_getFeaturesByBounds', () => {
     var serviceResult = null;
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         serviceResult = null;
     });
     //数据集Bounds查询服务
-    it('getFeaturesByBounds', function (done) {
+    it('getFeaturesByBounds', (done) => {
         var sw = new mapboxgl.LngLat(-20, -20);
         var ne = new mapboxgl.LngLat(20, 20);
         var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
-        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+        var boundsParam = new GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: lngLatBounds,
             fromIndex: 1,
             toIndex: 3
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        var service = new FeatureService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/featureResults.json?returnContent=true&fromIndex=1&toIndex=3");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(getFeasByBounds));
         });
-        service.getFeaturesByBounds(boundsParam, function (testResult) {
+        service.getFeaturesByBounds(boundsParam, (testResult) => {
             serviceResult = testResult;
             expect(service).not.toBeNull();
             expect(serviceResult.type).toBe("processCompleted");

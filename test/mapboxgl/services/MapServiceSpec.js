@@ -1,28 +1,29 @@
-require('../../../src/mapboxgl/services/MapService');
-var mapboxgl = require('mapbox-gl');
+import {MapService} from '../../../src/mapboxgl/services/MapService';
+import {ServerType} from '../../../src/common/REST';
+
 var url = GlobeParameter.WorldURL;
 var options = {
-    serverType: SuperMap.ServerType.ISERVER
+    serverType: ServerType.ISERVER
 };
-describe('mapboxgl_MapService', function () {
+describe('mapboxgl_MapService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //地图信息查询服务
-    it('getMapInfo', function (done) {
-        var service = new mapboxgl.supermap.MapService(url, options);
-        service.getMapInfo(function (result) {
+    it('getMapInfo', (done) => {
+        var service = new MapService(url, options);
+        service.getMapInfo((result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -51,12 +52,12 @@ describe('mapboxgl_MapService', function () {
     });
 
     //切片列表信息查询服务
-    it('getTilesets', function (done) {
-        var service = new mapboxgl.supermap.MapService(url, options);
-        service.getTilesets(function (result) {
+    it('getTilesets', (done) => {
+        var service = new MapService(url, options);
+        service.getTilesets((result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

@@ -1,30 +1,31 @@
-require('../../../src/mapboxgl/services/FeatureService');
-var mapboxgl = require('mapbox-gl');
+import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
+import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+
 var url = GlobeParameter.dataServiceURL;
 
-describe('mapboxgl_FeatureService_getFeaturesByIDs', function () {
+describe('mapboxgl_FeatureService_getFeaturesByIDs', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //数据集ID查询服务
-    it('getFeaturesByIDs', function (done) {
-        var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+    it('getFeaturesByIDs', (done) => {
+        var idsParam = new GetFeaturesByIDsParameters({
             IDs: [247],
             datasetNames: ["World:Countries"]
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        service.getFeaturesByIDs(idsParam, function (result) {
+        var service = new FeatureService(url);
+        service.getFeaturesByIDs(idsParam, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

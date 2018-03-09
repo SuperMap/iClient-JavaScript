@@ -1,33 +1,34 @@
-require('../../../src/mapboxgl/services/FeatureService');
-var mapboxgl = require('mapbox-gl');
+import {FeatureService} from '../../../src/mapboxgl/services/FeatureService';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
 
 var url = GlobeParameter.dataServiceURL;
-describe('mapboxgl_FeatureService_getFeaturesBySQL', function () {
+
+describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //数据集SQL查询服务
-    it('getFeaturesBySQL', function (done) {
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+    it('getFeaturesBySQL', (done) => {
+        var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: "SMID = 247"
             },
             datasetNames: ["World:Countries"]
         });
-        var service = new mapboxgl.supermap.FeatureService(url);
-        service.getFeaturesBySQL(sqlParam, function (result) {
+        var service = new FeatureService(url);
+        service.getFeaturesBySQL(sqlParam, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

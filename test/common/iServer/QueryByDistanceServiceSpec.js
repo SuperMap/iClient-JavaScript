@@ -119,6 +119,7 @@ describe('QueryByBoundsService', function () {
     });
 
     it('fail:processAsync', function (done) {
+        var failedResult;
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
         var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
             customParams: null,

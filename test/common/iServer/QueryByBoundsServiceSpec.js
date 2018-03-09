@@ -24,7 +24,7 @@ function QueryByBoundsCompleted(serviceCompletedEventArgs) {
     serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
 }
 
-describe('testQueryByBoundsService_processAsync', function () {
+describe('QueryByBoundsService_processAsync', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -62,7 +62,6 @@ describe('testQueryByBoundsService_processAsync', function () {
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
-        returnCustomResult = false;
         queryByBoundsService.processAsync(queryByBoundsParameters);
         setTimeout(function () {
             try {
@@ -142,7 +141,6 @@ describe('testQueryByBoundsService_processAsync', function () {
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
-        returnCustomResult = false;
         queryByBoundsService.processAsync(queryByBoundsParameters);
 
         setTimeout(function () {

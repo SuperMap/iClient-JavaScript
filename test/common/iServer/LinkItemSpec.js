@@ -1,7 +1,7 @@
-require('../../../src/common/iServer/LinkItem');
+import {LinkItem} from '../../../src/common/iServer/LinkItem';
 
-describe('LinkItem', function () {
-    it('constructor, destroy', function () {
+describe('LinkItem', () => {
+    it('constructor, destroy', () => {
         var options = {
             foreignKeys: ["test1", "test2"],
             foreignTable: "test",
@@ -10,7 +10,7 @@ describe('LinkItem', function () {
             name: "test",
             primaryKeys: ["test1", "test2"]
         };
-        var linkItem = new SuperMap.LinkItem(options);
+        var linkItem = new LinkItem(options);
         expect(linkItem.foreignKeys.length).toBe(2);
         expect(linkItem.foreignTable).toBe("test");
         expect(linkItem.linkFields.length).toBe(2);

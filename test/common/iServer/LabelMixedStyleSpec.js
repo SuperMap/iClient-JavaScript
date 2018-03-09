@@ -1,9 +1,9 @@
-var LabelMixedTextStyle = require('../../../src/common/iServer/LabelMixedTextStyle').LabelMixedTextStyle;
-var ServerTextStyle = require('../../../src/common/iServer/ServerTextStyle').ServerTextStyle;
-var ServerColor = require('../../../src/common/iServer/ServerColor').ServerColor;
+import {LabelMixedTextStyle} from '../../../src/common/iServer/LabelMixedTextStyle';
+import {ServerTextStyle} from '../../../src/common/iServer/ServerTextStyle';
+import {ServerColor} from '../../../src/common/iServer/ServerColor';
 
-describe('LabelMixedTextStyle', function () {
-    it('constructor, destroy', function () {
+describe('LabelMixedTextStyle', () => {
+    it('constructor, destroy', () => {
         var options = {
             defaultStyle: new ServerTextStyle(),
             //文本的分隔符
@@ -35,21 +35,21 @@ describe('LabelMixedTextStyle', function () {
         expect(labelMixedTextStyle.styles).toBeNull();
     });
 
-    it('fromJson', function () {
+    it('fromJson', () => {
         var obj = {
             text: "this is a test",
             styles: [
                 {backColor: new ServerColor(250, 105, 25)}
             ]
         };
-        var newStyle = SuperMap.LabelMixedTextStyle.fromObj(obj);
+        var newStyle = LabelMixedTextStyle.fromObj(obj);
         expect(newStyle).not.toBeNull();
         expect(newStyle.styles.length).toEqual(1);
         expect(newStyle.styles[0].backColor.blue).toEqual(25);
         expect(newStyle.styles[0].backColor.green).toEqual(105);
         expect(newStyle.styles[0].backColor.red).toEqual(250);
         //没有参数obj时，自动return 
-        var result = SuperMap.LabelMixedTextStyle.fromObj();
+        var result = LabelMixedTextStyle.fromObj();
         expect(result).toBeUndefined();
     });
 });

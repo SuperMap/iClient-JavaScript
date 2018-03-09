@@ -1,41 +1,48 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var request = require('request');
-var mapboxgl = require('mapbox-gl');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
+import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
+import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {BufferEndType} from '../../../src/common/REST';
+import {DataReturnMode} from '../../../src/common/REST';
+import request from 'request';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
+describe('mapboxgl_SpatialAnalystService_bufferAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //缓冲区数据集分析  isAttributeRetained 默认为 true
-    it('bufferAnalysis_isAttributeRetained:true', function (done) {
-        var bufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    it('bufferAnalysis_isAttributeRetained:true', (done) => {
+        var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
-            filterQueryParameter: new SuperMap.FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
                 leftDistance: {value: 200},
                 rightDistance: {value: 200},
                 semicircleLineSegment: 10
             })
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.bufferAnalysis(bufferAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -67,27 +74,27 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     //缓冲区数据集分析  isAttributeRetained 为 false
-    it('bufferAnalysis_isAttributeRetained:false', function (done) {
-        var bufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    it('bufferAnalysis_isAttributeRetained:false', (done) => {
+        var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
-            filterQueryParameter: new SuperMap.FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
             //是否将缓冲区与源记录集中的对象合并后返回
             isUnion: true,
             //是否保留进行缓冲区分析的对象的字段属性
             isAttributeRetained: false,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
                 leftDistance: {value: 200},
                 rightDistance: {value: 200},
                 semicircleLineSegment: 10
             })
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.bufferAnalysis(bufferAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -120,29 +127,29 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
 
     var resultDataset = "BufferAnalystByDatasets_mbglTest";
     //缓冲区数据集分析  返回值为数据集
-    it('bufferAnalysis_DATASET_ONLY', function (done) {
-        var bufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    it('bufferAnalysis_DATASET_ONLY', (done) => {
+        var bufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
-            filterQueryParameter: new SuperMap.FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            filterQueryParameter: new FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
                 leftDistance: {value: 200},
                 rightDistance: {value: 200},
                 semicircleLineSegment: 10
             }),
-            resultSetting: new SuperMap.DataReturnOption({
+            resultSetting: new DataReturnOption({
                 expectCount: 2000,
                 dataset: resultDataset,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
+                dataReturnMode: DataReturnMode.DATASET_ONLY,
                 deleteExistResultDataset: true
             })
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.bufferAnalysis(bufferAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.bufferAnalysis(bufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -162,7 +169,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     //缓冲区分析 几何对象缓冲区分析
-    it('bufferAnalysis_byGeometry', function (done) {
+    it('bufferAnalysis_byGeometry', (done) => {
         var pointList = [
             [116.1916654036, 39.8888542507],
             [116.2031567225, 39.8888542507],
@@ -180,22 +187,22 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
                 "coordinates": pointList
             }
         };
-        var goBufferAnalystParameters = new SuperMap.GeometryBufferAnalystParameters({
+        var goBufferAnalystParameters = new GeometryBufferAnalystParameters({
             sourceGeometry: geometryLine,
             sourceGeometrySRID: 4326,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
-                leftDistance: new SuperMap.BufferDistance({value: 300}),
-                rightDistance: new SuperMap.BufferDistance({value: 300}),
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
+                leftDistance: new BufferDistance({value: 300}),
+                rightDistance: new BufferDistance({value: 300}),
                 radiusUnit: "METER",
                 semicircleLineSegment: 10
             })
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.bufferAnalysis(goBufferAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.bufferAnalysis(goBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -221,7 +228,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datajingjinURL + resultDataset;
         request.delete(testResult);
         done();

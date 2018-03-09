@@ -1,13 +1,15 @@
-require('../../../src/mapboxgl/overlay/GraphThemeLayer');
-require('../../resources/chinaConsumptionLevel');
-var mapboxgl = require('mapbox-gl');
+import {Graph} from '../../../src/mapboxgl/overlay/GraphThemeLayer';
+import {ThemeFeature} from '../../../src/mapboxgl/overlay/theme/ThemeFeature';
+import '../../resources/chinaConsumptionLevel';
+import mapboxgl from 'mapbox-gl';
+
 window.mapboxgl = mapboxgl;
 
 var url = GlobeParameter.China4326URL;
-describe('mapboxgl_GraphThemeLayer', function () {
+describe('mapboxgl_GraphThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -39,20 +41,20 @@ describe('mapboxgl_GraphThemeLayer', function () {
             zoom: 3
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize', function () {
-        var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar",
+    it('initialize', () => {
+        var graphThemeLayer = new Graph("GraphThemeLayer", "Bar",
             {
                 map: map,
                 themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
@@ -106,8 +108,8 @@ describe('mapboxgl_GraphThemeLayer', function () {
         graphThemeLayer.clear();
     });
 
-    it('setChartsType', function () {
-        var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar",
+    it('setChartsType', () => {
+        var graphThemeLayer = new Graph("GraphThemeLayer", "Bar",
             {
                 map: map,
                 chartsSetting: {
@@ -122,7 +124,7 @@ describe('mapboxgl_GraphThemeLayer', function () {
         graphThemeLayer.clear();
     });
 
-    it('addFeatures, removeFeatures, getShapesByFeatureID', function () {
+    it('addFeatures, removeFeatures, getShapesByFeatureID', () => {
         var graphThemeLayer;
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
@@ -136,10 +138,10 @@ describe('mapboxgl_GraphThemeLayer', function () {
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = new mapboxgl.supermap.ThemeFeature(geo, attrs);
+            var fea = new ThemeFeature(geo, attrs);
             features.push(fea);
         }
-        graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar",
+        graphThemeLayer = new Graph("GraphThemeLayer", "Bar",
             {
                 map: map,
                 attributions: " ",
@@ -209,8 +211,8 @@ describe('mapboxgl_GraphThemeLayer', function () {
     });
 
     // 此方法为iclient8的私有方法,不支持mapboxgl对象,此处测试传入iclient对象的情况
-    it('isQuadrilateralOverLap, isPointInPoly', function () {
-        var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar",
+    it('isQuadrilateralOverLap, isPointInPoly', () => {
+        var graphThemeLayer = new Graph("GraphThemeLayer", "Bar",
             {
                 map: map,
                 themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
@@ -233,8 +235,8 @@ describe('mapboxgl_GraphThemeLayer', function () {
 
     });
 
-    it('drawCharts', function () {
-        var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar", {
+    it('drawCharts', () => {
+        var graphThemeLayer = new Graph("GraphThemeLayer", "Bar", {
             map: map,
             isOverLay: false,
             overlayWeightField: "pop_1991",
@@ -266,8 +268,8 @@ describe('mapboxgl_GraphThemeLayer', function () {
         graphThemeLayer.clear();
     });
 
-    it('clearCache', function () {
-        var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar", {
+    it('clearCache', () => {
+        var graphThemeLayer = new Graph("GraphThemeLayer", "Bar", {
             map: map,
             isOverLay: false,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],

@@ -1,31 +1,35 @@
-require('../../../src/mapboxgl/services/QueryService');
-var mapboxgl = require('mapbox-gl');
+import {QueryService} from '../../../src/mapboxgl/services/QueryService';
+import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
+import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
+import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
+import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
+import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.WorldURL;
 
-describe('mapboxgl_QueryService', function () {
+describe('mapboxgl_QueryService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //地图bounds查询
-    it('queryByBounds', function (done) {
-        var param = new SuperMap.QueryByBoundsParameters({
+    it('queryByBounds', (done) => {
+        var param = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: new mapboxgl.LngLatBounds([0, 0], [60, 39])
         });
-        var queryService = new mapboxgl.supermap.QueryService(url);
-        queryService.queryByBounds(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryByBounds(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -58,17 +62,17 @@ describe('mapboxgl_QueryService', function () {
     });
 
     //地图距离查询服务
-    it('queryByDistance', function (done) {
-        var param = new SuperMap.QueryByDistanceParameters({
+    it('queryByDistance', (done) => {
+        var param = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
             distance: 10,
             geometry: new mapboxgl.LngLat(104, 30)
         });
-        var queryService = new mapboxgl.supermap.QueryService(url);
-        queryService.queryByDistance(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryByDistance(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -101,18 +105,18 @@ describe('mapboxgl_QueryService', function () {
     });
 
     //地图SQL查询服务
-    it('queryBySQL', function (done) {
-        var param = new SuperMap.QueryBySQLParameters({
+    it('queryBySQL', (done) => {
+        var param = new QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World.1",
                 attributeFilter: "SMID < 10"
             }
         });
-        var queryService = new mapboxgl.supermap.QueryService(url);
-        queryService.queryBySQL(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryBySQL(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -145,7 +149,7 @@ describe('mapboxgl_QueryService', function () {
     });
 
     //地图几何查询服务
-    it('queryByGeometry', function (done) {
+    it('queryByGeometry', (done) => {
         var geo = {
             'type': 'Feature',
             'geometry': {
@@ -153,15 +157,15 @@ describe('mapboxgl_QueryService', function () {
                 'coordinates': [[[0, 0], [-30, 0], [-10, 30], [0, 0]]],
             }
         };
-        var param = new SuperMap.QueryByGeometryParameters({
+        var param = new QueryByGeometryParameters({
             queryParams: {name: "Capitals@World.1"},
             geometry: geo
         });
-        var queryService = new mapboxgl.supermap.QueryService(url);
-        queryService.queryByGeometry(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryByGeometry(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

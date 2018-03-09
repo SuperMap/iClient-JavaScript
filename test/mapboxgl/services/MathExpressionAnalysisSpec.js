@@ -1,38 +1,39 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
-var mapboxgl = require('mapbox-gl');
-var request = require('request');
+import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
+import {MathExpressionAnalysisParameters} from '../../../src/common/iServer/MathExpressionAnalysisParameters';
+import request from 'request';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', function () {
+
+describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "MathExpression_mapboxglTest";
     //栅格代数运算, 删除已有的数据集
-    it('mathExpressionAnalysis_deleteExistResultDataset:true', function (done) {
-        var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+    it('mathExpressionAnalysis_deleteExistResultDataset:true', (done) => {
+        var mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
             dataset: "JingjinTerrain@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",
             targetDatasource: "Jingjin",
             resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.mathExpressionAnalysis(mathExpressionAnalysisParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.mathExpressionAnalysis(mathExpressionAnalysisParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -49,8 +50,8 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', function () {
     });
 
     //栅格代数运算, 不删除重复的数据集(默认), 本测试的resultGridName需要是一个已经存在的数据集
-    it('mathExpressionAnalysis_deleteExistResultDataset:false', function (done) {
-        var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+    it('mathExpressionAnalysis_deleteExistResultDataset:false', (done) => {
+        var mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
             dataset: "JingjinTerrain@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",
             targetDatasource: "Jingjin",
@@ -58,11 +59,11 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', function () {
             //如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除
             deleteExistResultDataset: false
         });
-        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
-        service.mathExpressionAnalysis(mathExpressionAnalysisParameters, function (result) {
+        var service = new SpatialAnalystService(url, options);
+        service.mathExpressionAnalysis(mathExpressionAnalysisParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -79,7 +80,7 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datajingjinURL + resultDataset;
         request.delete(testResult);
         done();

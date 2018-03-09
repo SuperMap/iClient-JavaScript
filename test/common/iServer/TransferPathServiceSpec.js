@@ -4,6 +4,12 @@ var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
+function succeed(event) {
+    analystEventArgsSystem = event;
+}
+function failed(event) {
+    serviceFailedEventArgsSystem = event;
+}
 var options = {
     eventListeners: {
         "processCompleted": succeed,
@@ -12,12 +18,6 @@ var options = {
 };
 function initTransferPathService() {
     return new SuperMap.TransferPathService(trafficTransferURL, options);
-}
-function succeed(event) {
-    analystEventArgsSystem = event;
-}
-function failed(event) {
-    serviceFailedEventArgsSystem = event;
 }
 
 describe('TransferPathService', function () {

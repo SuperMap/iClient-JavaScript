@@ -1,34 +1,34 @@
-require('../../../src/common/iServer/GetLayersInfoService');
+import {GetLayersInfoService} from '../../../src/common/iServer/GetLayersInfoService';
 
 var serviceFailedEventArgsSystem = null;
 var getFieldsEventArgsSystem = null;
+var initGetLayersInfoService = (url) => {
+    return new GetLayersInfoService(url, options);
+};
+var getLayersInfoServiceCompleted = (result) => {
+    getFieldsEventArgsSystem = result;
+};
+var getLayersInfoServiceFailed = (result) => {
+    serviceFailedEventArgsSystem = result;
+};
 var options = {
     eventListeners: {
         processCompleted: getLayersInfoServiceCompleted,
         processFailed: getLayersInfoServiceFailed
     }
 };
-function initGetLayersInfoService(url) {
-    return new SuperMap.GetLayersInfoService(url, options);
-}
-function getLayersInfoServiceCompleted(result) {
-    getFieldsEventArgsSystem = result;
-}
-function getLayersInfoServiceFailed(result) {
-    serviceFailedEventArgsSystem = result;
-}
 
-describe('GetLayersInfoService', function () {
+describe('GetLayersInfoService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var vectorURL = GlobeParameter.vectorURL;
         var getLayersInfoService = initGetLayersInfoService(vectorURL);
         expect(getLayersInfoService).not.toBeNull();
@@ -37,11 +37,11 @@ describe('GetLayersInfoService', function () {
         expect(getLayersInfoService.eventListeners).toBeNull();
     });
 
-    it('processAsync_Vector', function (done) {
+    it('processAsync_Vector', (done) => {
         var vectorURL = GlobeParameter.vectorURL;
         var getLayersInfoService = initGetLayersInfoService(vectorURL);
         getLayersInfoService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = getFieldsEventArgsSystem.result;
                 expect(analystResult).not.toBeNull();
@@ -57,11 +57,11 @@ describe('GetLayersInfoService', function () {
         }, 2000);
     });
 
-    it('processAsync_image', function (done) {
+    it('processAsync_image', (done) => {
         var imageURL = GlobeParameter.imageURL;
         var getLayersInfoService = initGetLayersInfoService(imageURL);
         getLayersInfoService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = getFieldsEventArgsSystem.result;
                 expect(analystResult).not.toBeNull();
@@ -77,11 +77,11 @@ describe('GetLayersInfoService', function () {
         }, 2000);
     });
 
-    it('processAsync_grid', function (done) {
+    it('processAsync_grid', (done) => {
         var gridURL = GlobeParameter.gridURL;
         var getLayersInfoService = initGetLayersInfoService(gridURL);
         getLayersInfoService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = getFieldsEventArgsSystem.result;
                 expect(analystResult).not.toBeNull();

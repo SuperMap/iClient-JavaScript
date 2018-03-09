@@ -1,30 +1,32 @@
-require('../../../src/mapboxgl/services/TrafficTransferAnalystService');
-var mapboxgl = require('mapbox-gl');
+import {TrafficTransferAnalystService} from '../../../src/mapboxgl/services/TrafficTransferAnalystService';
+import {StopQueryParameters} from '../../../src/common/iServer/StopQueryParameters';
+import {TransferPathParameters} from '../../../src/common/iServer/TransferPathParameters';
+import {TransferSolutionParameters} from '../../../src/common/iServer/TransferSolutionParameters';
 
 var url = GlobeParameter.trafficTransferURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_TrafficTransferAnalystService', function () {
+describe('mapboxgl_TrafficTransferAnalystService', () => {
     var serviceResult = null;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         serviceResult = null;
     });
 
     //站点查询服务 返回坐标
-    it('queryStop_returnPosition:true', function (done) {
-        var stopQueryParameters = new SuperMap.StopQueryParameters({
+    it('queryStop_returnPosition:true', (done) => {
+        var stopQueryParameters = new StopQueryParameters({
             keyWord: "人民",
             returnPosition: true
         });
-        var service = new mapboxgl.supermap.TrafficTransferAnalystService(url, options);
-        service.queryStop(stopQueryParameters, function (result) {
+        var service = new TrafficTransferAnalystService(url, options);
+        service.queryStop(stopQueryParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
             expect(service.options.serverType).toBe('iServer');
@@ -40,13 +42,13 @@ describe('mapboxgl_TrafficTransferAnalystService', function () {
     }, 10000);
 
     //站点查询服务 不返回坐标
-    it('queryStop_returnPosition:false', function (done) {
-        var stopQueryParameters = new SuperMap.StopQueryParameters({
+    it('queryStop_returnPosition:false', (done) => {
+        var stopQueryParameters = new StopQueryParameters({
             keyWord: "人民",
             returnPosition: false
         });
-        var service = new mapboxgl.supermap.TrafficTransferAnalystService(url, options);
-        service.queryStop(stopQueryParameters, function (result) {
+        var service = new TrafficTransferAnalystService(url, options);
+        service.queryStop(stopQueryParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
             expect(service.options.serverType).toBe('iServer');
@@ -61,13 +63,13 @@ describe('mapboxgl_TrafficTransferAnalystService', function () {
     }, 10000);
 
     //交通换乘线路查询服务 按ID进行查询
-    it('analysisTransferPath_ID', function (done) {
-        var transferPathParameters = new SuperMap.TransferPathParameters({
+    it('analysisTransferPath_ID', (done) => {
+        var transferPathParameters = new TransferPathParameters({
             points: [175, 164],
             transferLines: [{"lineID": 27, "startStopIndex": 7, "endStopIndex": 9}]
         });
-        var service = new mapboxgl.supermap.TrafficTransferAnalystService(url, options);
-        service.analysisTransferPath(transferPathParameters, function (result) {
+        var service = new TrafficTransferAnalystService(url, options);
+        service.analysisTransferPath(transferPathParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
             expect(service.options.serverType).toBe('iServer');
@@ -96,13 +98,13 @@ describe('mapboxgl_TrafficTransferAnalystService', function () {
     }, 10000);
 
     //交通换乘线路查询服务  按坐标进行查询
-    it('analysisTransferPath_position', function (done) {
-        var transferPathParameters = new SuperMap.TransferPathParameters({
+    it('analysisTransferPath_position', (done) => {
+        var transferPathParameters = new TransferPathParameters({
             points: [{x: 4941, y: -3566}, {x: 5308, y: -3935}],
             transferLines: [{"lineID": 27, "startStopIndex": 7, "endStopIndex": 9}]
         });
-        var service = new mapboxgl.supermap.TrafficTransferAnalystService(url, options);
-        service.analysisTransferPath(transferPathParameters, function (result) {
+        var service = new TrafficTransferAnalystService(url, options);
+        service.analysisTransferPath(transferPathParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
             expect(service.options.serverType).toBe('iServer');
@@ -130,8 +132,8 @@ describe('mapboxgl_TrafficTransferAnalystService', function () {
     }, 10000);
 
     //交通换乘方案查询服务
-    it('analysisTransferSolution', function (done) {
-        var transferSolutionParameters = new SuperMap.TransferSolutionParameters({
+    it('analysisTransferSolution', (done) => {
+        var transferSolutionParameters = new TransferSolutionParameters({
             solutionCount: 3,
             //交通换乘策略类型: 时间最短、距离最短、最少换乘、最少步行:transferTactic
             //乘车偏好枚举:transferPreference
@@ -139,8 +141,8 @@ describe('mapboxgl_TrafficTransferAnalystService', function () {
             walkingRatio: 5,
             points: [175, 179]
         });
-        var service = new mapboxgl.supermap.TrafficTransferAnalystService(url, options);
-        service.analysisTransferSolution(transferSolutionParameters, function (result) {
+        var service = new TrafficTransferAnalystService(url, options);
+        service.analysisTransferSolution(transferSolutionParameters, (result) => {
             serviceResult = result;
             expect(service).not.toBeNull();
             expect(service.options.serverType).toBe('iServer');

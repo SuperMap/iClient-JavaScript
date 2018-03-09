@@ -1,65 +1,67 @@
-﻿require('../../../src/common/iServer/FindLocationService');
+﻿﻿import {FindLocationService} from '../../../src/common/iServer/FindLocationService';
+import {FindLocationParameters} from '../../../src/common/iServer/FindLocationParameters';
+import {SupplyCenter} from '../../../src/common/iServer/SupplyCenter'
+import {SupplyCenterType} from '../../../src/common/REST';
 
-var serviceFailedEventArgsSystem = null;
-var serviceSucceedEventArgsSystem = null;
-//服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
+//服务初始化时注册事件监听函数
+var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
+var initFindLocationService_RegisterListener = () => {
+    return new FindLocationService(url, options);
+};
+var findLocationServiceCompleted = (serviceSucceedEventArgs) => {
+    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+};
+var findLocationServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processFailed': findLocationServiceFailed,
         'processCompleted': findLocationServiceCompleted
     }
 };
-function initFindLocationService_RegisterListener() {
-    return new SuperMap.FindLocationService(url, options);
-}
-function findLocationServiceCompleted(serviceSucceedEventArgs) {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-}
-function findLocationServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('FindLocationService', function () {
+describe('FindLocationService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync:default', function (done) {
+    it('processAsync:default', (done) => {
         var expectedSupplyCenterCount = 1,
             turnWeightField = "TurnCost",
             weightName = "length";
-        var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER;
+        var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER;
         var supplyCenters = [
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 139,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
 
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 1358,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
 
             })];
-        var parameter = new SuperMap.FindLocationParameters({
+        var parameter = new FindLocationParameters({
             expectedSupplyCenterCount: expectedSupplyCenterCount,
             isFromCenter: false,
             supplyCenters: supplyCenters,
             turnWeightField: turnWeightField,
             weightName: weightName
         });
-        findLocationService = initFindLocationService_RegisterListener();
+        var findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.demandResults).not.toBeNull();
@@ -103,36 +105,36 @@ describe('FindLocationService', function () {
     });
 
     //isFromCenter为true的情况
-    it('processAsync_isFromCenter:true', function (done) {
+    it('processAsync_isFromCenter:true', (done) => {
         var expectedSupplyCenterCount = 1;
         // var nodeDemandField = "Demand";
         var turnWeightField = "TurnCost";
         var weightName = "length";
-        var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER;
+        var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER;
         var supplyCenters = [
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 139,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 1358,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
 
             })];
-        var parameter = new SuperMap.FindLocationParameters({
+        var parameter = new FindLocationParameters({
             expectedSupplyCenterCount: expectedSupplyCenterCount,
             isFromCenter: true,
             supplyCenters: supplyCenters,
             turnWeightField: turnWeightField,
             weightName: weightName
         });
-        findLocationService = initFindLocationService_RegisterListener();
+        var findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.demandResults).not.toBeNull();
@@ -176,26 +178,26 @@ describe('FindLocationService', function () {
     });
 
     //参数错误
-    it('processAsync_parameterWrong', function (done) {
+    it('processAsync_parameterWrong', (done) => {
         var expectedSupplyCenterCount = 1,
             turnWeightField = "TurnCost1",
             weightName = "length";
-        var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER;
+        var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER;
         var supplyCenters = [
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 139,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
 
             }),
-            new SuperMap.SupplyCenter({
+            new SupplyCenter({
                 maxWeight: 500,
                 nodeID: 1358,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
             })];
-        var parameter = new SuperMap.FindLocationParameters({
+        var parameter = new FindLocationParameters({
             expectedSupplyCenterCount: expectedSupplyCenterCount,
             isFromCenter: true,
             supplyCenters: supplyCenters,
@@ -204,7 +206,7 @@ describe('FindLocationService', function () {
         });
         var findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -224,10 +226,10 @@ describe('FindLocationService', function () {
     });
 
     //参数为空
-    it('processAsync_parameterNull', function (done) {
+    it('processAsync_parameterNull', (done) => {
         var findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 findLocationService.destroy();

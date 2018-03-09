@@ -1,10 +1,10 @@
-var Image = require('../../../src/common/iServer/Image').UGCImage;
-var ServerStyle = require('../../../src/common/iServer/ServerStyle').ServerStyle;
-var ServerColor = require('../../../src/common/iServer/ServerColor').ServerColor;
+import {UGCImage} from '../../../src/common/iServer/Image';
+import {ServerStyle} from '../../../src/common/iServer/ServerStyle';
+import {ServerColor} from '../../../src/common/iServer/ServerColor';
 
 describe('Image', function () {
     it('constructor, destroy', function () {
-        var image = new Image();
+        var image = new UGCImage();
         expect(image.CLASS_NAME).toEqual("SuperMap.Image");
         expect(image.brightness).toBeNull();
         expect(image.colorSpaceType).toBeNull();
@@ -16,11 +16,11 @@ describe('Image', function () {
     });
 
     it('fromJson, toServerJSONObject', function () {
-        var image = new Image();
+        var image = new UGCImage();
         var jsonObject = {
             "color": "#a0559c"
         };
-        image.transparentColor = new ServerColor(100,120,60);
+        image.transparentColor = new ServerColor(100, 120, 60);
         image.fromJson(jsonObject);
         expect(image.color).toEqual("#a0559c");
         var newJsonObject = image.toServerJSONObject();

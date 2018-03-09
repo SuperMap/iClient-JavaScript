@@ -1,42 +1,45 @@
-﻿require('../../../src/common/iServer/FindPathService');
+﻿﻿import {FindPathService} from '../../../src/common/iServer/FindPathService';
+import {FindPathParameters} from '../../../src/common/iServer/FindPathParameters';
+import {TransportationAnalystParameter} from '../../../src/common/iServer/TransportationAnalystParameter';
+import {TransportationAnalystResultSetting} from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
-var serviceFailedEventArgsSystem = null;
-var serviceSucceedEventArgsSystem = null;
-
-//服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
+//服务初始化时注册事件监听函数
+var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
+
+var initFindPathService = () => {
+    return new FindPathService(url, options);
+};
+var findPathServiceCompleted = (serviceSucceedEventArgs) => {
+    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
+};
+var findPathServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
 var options = {
     eventListeners: {
         'processFailed': findPathServiceFailed,
         'processCompleted': findPathServiceCompleted
     }
 };
-function initFindPathService() {
-    return new SuperMap.FindPathService(url, options);
-}
-function findPathServiceCompleted(serviceSucceedEventArgs) {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-}
-function findPathServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
 
-describe('FindPathService', function () {
+describe('FindPathService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //基本测试
-    it('processAsync:default', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync:default', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -46,11 +49,11 @@ describe('FindPathService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindPathParameters({
+        var parameter = new FindPathParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             hasLeastEdgeCount: false,
@@ -58,7 +61,7 @@ describe('FindPathService', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
                 expect(analystResult).not.toBeNull();
@@ -88,11 +91,11 @@ describe('FindPathService', function () {
     });
 
     //设置返回信息的有效性
-    it('processAsync_returnInformationInvalid', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_returnInformationInvalid', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -102,11 +105,11 @@ describe('FindPathService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindPathParameters({
+        var parameter = new FindPathParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             hasLeastEdgeCount: true,
@@ -114,7 +117,7 @@ describe('FindPathService', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
                 expect(analystResult != null).toBeTruthy();
@@ -138,11 +141,11 @@ describe('FindPathService', function () {
     });
 
     //id为空
-    it('processAsync_isAnalyzeById but Null', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_isAnalyzeById but Null', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -152,11 +155,11 @@ describe('FindPathService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindPathParameters({
+        var parameter = new FindPathParameters({
             isAnalyzeById: true,
             nodes: nodeArray,
             hasLeastEdgeCount: true,
@@ -164,7 +167,7 @@ describe('FindPathService', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -184,11 +187,11 @@ describe('FindPathService', function () {
     });
 
     //参数错误
-    it('processAsync_parameterWrong', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('processAsync_parameterWrong', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: false,
             returnEdgeGeometry: false,
             returnEdgeIDs: false,
@@ -198,11 +201,11 @@ describe('FindPathService', function () {
             returnPathGuides: false,
             returnRoutes: false
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "TurnCost1"
         });
-        var parameter = new SuperMap.FindPathParameters({
+        var parameter = new FindPathParameters({
             isAnalyzeById: false,
             nodes: nodeArray,
             hasLeastEdgeCount: true,
@@ -210,7 +213,7 @@ describe('FindPathService', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -230,10 +233,10 @@ describe('FindPathService', function () {
     });
 
     //参数为空
-    it('processAsync_parameterNull', function (done) {
+    it('processAsync_parameterNull', (done) => {
         var findPathService = initFindPathService();
         findPathService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -251,11 +254,11 @@ describe('FindPathService', function () {
     });
 
     //AnalyzeById_null
-    it('AnalyzeById_null', function (done) {
-        var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
-            new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
+    it('AnalyzeById_null', (done) => {
+        var nodeArray = [new Point(119.6100397551, -122.6278394459),
+            new Point(171.9035599945, -113.2491141857)
         ];
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -265,11 +268,11 @@ describe('FindPathService', function () {
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var parameter = new SuperMap.FindPathParameters({
+        var parameter = new FindPathParameters({
             isAnalyzeById: "AnalyzeById",
             nodes: nodeArray,
             hasLeastEdgeCount: false,
@@ -277,7 +280,7 @@ describe('FindPathService', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg !== null).toBeTruthy();

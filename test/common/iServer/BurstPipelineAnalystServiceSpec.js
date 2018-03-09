@@ -1,42 +1,42 @@
-require('../../../src/common/iServer/BurstPipelineAnalystService');
-require('../../../src/common/util/FetchRequest');
+import {BurstPipelineAnalystService} from '../../../src/common/iServer/BurstPipelineAnalystService';
+import {BurstPipelineAnalystParameters} from '../../../src/common/iServer/BurstPipelineAnalystParameters';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
-var serviceFailedEventArgsSystem = null,
-    serviceCompletedEventArgsSystem = null;
 var url = "http://supermap:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var initBurstPipelineAnalystService = () => {
+    return new BurstPipelineAnalystService(url, options);
+};
+var analyzeFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var analyzeCompleted = (analyseEventArgs) => {
+    serviceCompletedEventArgsSystem = analyseEventArgs;
+};
 var options = {
     eventListeners: {
         "processCompleted": analyzeCompleted,
         'processFailed': analyzeFailed
     }
 };
-function initBurstPipelineAnalystService() {
-    return new SuperMap.BurstPipelineAnalystService(url, options);
-}
-function analyzeFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function analyzeCompleted(analyseEventArgs) {
-    serviceCompletedEventArgsSystem = analyseEventArgs;
-}
-describe('BurstPipelineAnalystService', function () {
+
+describe('BurstPipelineAnalystService', () => {
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceFailedEventArgsSystem = null;
         serviceCompletedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor_default', function () {
-        var burstPipelineAnalystService = new SuperMap.BurstPipelineAnalystService();
+    it('constructor_default', () => {
+        var burstPipelineAnalystService = new BurstPipelineAnalystService();
         expect(burstPipelineAnalystService).not.toBeNull();
         expect(burstPipelineAnalystService.CLASS_NAME).toBe("SuperMap.BurstPipelineAnalystService");
-        var burstPipelineAnalystParams = new SuperMap.BurstPipelineAnalystParameters();
+        var burstPipelineAnalystParams = new BurstPipelineAnalystParameters();
         expect(burstPipelineAnalystParams.sourceNodeIDs).toBeNull();
         expect(burstPipelineAnalystParams.edgeID).toBeNull();
         expect(burstPipelineAnalystParams.nodeID).toBeNull();
@@ -45,10 +45,10 @@ describe('BurstPipelineAnalystService', function () {
         burstPipelineAnalystParams.destroy();
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
         burstPipelineAnalystService.events.on({"processCompleted": analyzeCompleted});
-        var burstPipelineAnalystParams = new SuperMap.BurstPipelineAnalystParameters();
+        var burstPipelineAnalystParams = new BurstPipelineAnalystParameters();
         burstPipelineAnalystParams.edgeID = 124;
         burstPipelineAnalystParams.isUncertainDirectionValid = true;
         expect(burstPipelineAnalystParams.sourceNodeIDs).toBeNull();
@@ -66,10 +66,10 @@ describe('BurstPipelineAnalystService', function () {
     });
 
     //参数不存在, 直接返回, 此处不应该直接返回,应该报错？待与开发协商
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
         burstPipelineAnalystService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceCompletedEventArgsSystem).toBeNull();
             expect(serviceFailedEventArgsSystem).toBeNull();
             burstPipelineAnalystService.destroy();
@@ -78,15 +78,15 @@ describe('BurstPipelineAnalystService', function () {
     });
 
     //正确返回结果
-    it('processAsync_success', function (done) {
+    it('processAsync_success', (done) => {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
-        var burstPipelineAnalystParams = new SuperMap.BurstPipelineAnalystParameters({
+        var burstPipelineAnalystParams = new BurstPipelineAnalystParameters({
             sourceNodeIDs: [1, 2],
             edgeID: 3434,
             nodeID: null,
             isUncertainDirectionValid: true
         });
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('GET');
             expect(testUrl).toBe(url + "/burstAnalyse.json?");
             expect(params.edgeID).toEqual(3434);
@@ -98,7 +98,7 @@ describe('BurstPipelineAnalystService', function () {
             return Promise.resolve(new Response(escapedJson));
         });
         burstPipelineAnalystService.processAsync(burstPipelineAnalystParams);
-        setTimeout(function () {
+        setTimeout(() => {
             var analystResult = serviceCompletedEventArgsSystem.result;
             expect(analystResult).not.toBeNull();
             expect(analystResult.succeed).toBeTruthy();

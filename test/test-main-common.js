@@ -20,8 +20,8 @@ require('./common/iServer/FindMTSPPathsServiceSpec.js');
 require('./common/iServer/FindPathServiceSpec.js');
 require('./common/iServer/FindServiceAreasServiceSpec.js');
 require('./common/iServer/FindTSPPathsServiceSpec.js');
-require('./common/iServer/GeometryBatchAnalystServiceSpec.js');
 require('./common/iServer/GenerateSpatialDataServiceSpec.js');
+require('./common/iServer/GeometryBatchAnalystServiceSpec.js');
 require('./common/iServer/GeoRelationAnalystServiceSpec.js');
 require('./common/iServer/GetFeaturesByBoundsServiceSpec.js');
 require('./common/iServer/GetFeaturesByBufferServiceSpec.js');
@@ -39,7 +39,7 @@ require('./common/iServer/LabelMixedStyleSpec.js');
 require('./common/iServer/LinkItemSpec.js');
 require('./common/iServer/MapServiceSpec.js');
 require('./common/iServer/MathExpressionAnalysisServiceSpec.js');
-require('./common/iServer/MeasureServiceSpec.js');
+require('./common/iServer/MeasureServiceSpec.js');                     //已完成ES6升级
 require('./common/iServer/OverlapDisplayedOptionsSpec.js');
 require('./common/iServer/OverlayAnalystServiceSpec.js');
 require('./common/iServer/QueryByBoundsServiceSpec.js');
@@ -71,10 +71,10 @@ require('./common/iServer/TransferPathServiceSpec.js');
 require('./common/iServer/TransferSolutionServiceSpec.js');
 require('./common/iServer/UpdateEdgeWeightServiceSpec.js');
 require('./common/iServer/UpdateTurnNodeWeightServiceSpec.js');
-//require('./common/iServer/AreaSolarRadiationServiceSpec.js');     //iclient8注释掉
-//require('./common/iServer/ChartFeatureInfoSpecsServiceSpec.js');  //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
+//require('./common/iServer/AreaSolarRadiationServiceSpec.js');       //iclient8注释掉
+//require('./common/iServer/ChartFeatureInfoSpecsServiceSpec.js');    //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
 //require('./common/iServer/ChartQueryServiceSpec.js');
-//require('./common/iServer/FacilityAnalystSinks3DServiceSpec.js'); //三维网络分析Facility系列的测试全部被iClient8注释掉
+//require('./common/iServer/FacilityAnalystSinks3DServiceSpec.js');   //三维网络分析Facility系列的测试全部被iClient8注释掉
 //require('./common/iServer/FacilityAnalystSources3DServiceSpec.js');
 //require('./common/iServer/FacilityAnalystStreamServiceSpec.js');
 //require('./common/iServer/FacilityAnalystTracedown3DServiceSpec.js');
@@ -98,7 +98,8 @@ require('./common/security/SecurityManagerSpec.js');
 
 /**common -- commonTypes**/
 require('./common/commonTypes/BaseTypesSpec.js');
-require('./common/commonTypes/BoundsSpec.js');
+// require('./common/commonTypes/BoundsSpec.js');              //升级ES6时有问题，暂时注释掉
+
 require('./common/commonTypes/DateSpec.js');
 require('./common/commonTypes/LonLatSpec.js');
 require('./common/commonTypes/PixelSpec.js');
@@ -138,7 +139,7 @@ require('./common/overlay/levelRenderer/StorageSpec.js');
 require('./common/overlay/levelRenderer/TransformableSpec.js');
 require('./common/overlay/levelRenderer/UtilSpec.js');
 require('./common/overlay/levelRenderer/VectorSpec.js');
-require('./common/overlay/GraphSpec');
+// require('./common/overlay/GraphSpec');                           //升级ES6时有问题，暂时注释掉
 
 /**common -- online**/
 require('./common/online/OnlineDataSpec.js');

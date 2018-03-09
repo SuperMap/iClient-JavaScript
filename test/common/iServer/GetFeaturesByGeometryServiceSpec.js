@@ -1,49 +1,52 @@
-﻿require('../../../src/common/iServer/GetFeaturesByGeometryService');
+﻿﻿import {GetFeaturesByGeometryService} from '../../../src/common/iServer/GetFeaturesByGeometryService';
+import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {SpatialQueryMode} from '../../../src/common/REST';
 
+var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeatureEventArgsSystem = null;
-var dataServiceURL = GlobeParameter.dataServiceURL;
+var initGetFeaturesByGeometryService = () => {
+    return new GetFeaturesByGeometryService(dataServiceURL, options);
+};
+var getFeaturesByGeometryFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var getFeaturesByGeometryCompleted = (getFeaturesEventArgs) => {
+    getFeatureEventArgsSystem = getFeaturesEventArgs;
+};
 var options = {
     eventListeners: {
         processCompleted: getFeaturesByGeometryCompleted,
         processFailed: getFeaturesByGeometryFailed
     }
 };
-function initGetFeaturesByGeometryService() {
-    return new SuperMap.GetFeaturesByGeometryService(dataServiceURL, options);
-}
-function getFeaturesByGeometryFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function getFeaturesByGeometryCompleted(getFeaturesEventArgs) {
-    getFeatureEventArgsSystem = getFeaturesEventArgs;
-}
 
-describe('GetFeaturesByGeometryService', function () {
+describe('GetFeaturesByGeometryService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //不直接返回查询结果
-    it('processAsync_returnContent:false', function (done) {
-        var point = new SuperMap.Geometry.Point(112, 36);
-        var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
+    it('processAsync_returnContent:false', (done) => {
+        var point = new Point(112, 36);
+        var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
             returnContent: false,
             datasetNames: ["World:Countries"],
             fields: ["SMID"],
             fromIndex: 0,
             toIndex: -1,
-            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            spatialQueryMode: SpatialQueryMode.INTERSECT,
             geometry: point
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result;
                 expect(getFeaturesByGeometryService).not.toBeNull();
@@ -68,17 +71,17 @@ describe('GetFeaturesByGeometryService', function () {
     });
 
     //直接返回结果情况
-    it('processAsync_returnContent:true', function (done) {
+    it('processAsync_returnContent:true', (done) => {
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
-        var point = new SuperMap.Geometry.Point(112, 36);
-        var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
+        var point = new Point(112, 36);
+        var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             toIndex: -1,
-            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            spatialQueryMode: SpatialQueryMode.INTERSECT,
             geometry: point
         });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByGeometryService).not.toBeNull();
@@ -100,18 +103,18 @@ describe('GetFeaturesByGeometryService', function () {
     });
 
     //具有attributeFilter直接返回结果情况
-    it('processAsync_returnContent_withAttributeFilter', function (done) {
+    it('processAsync_returnContent_withAttributeFilter', (done) => {
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
-        var point = new SuperMap.Geometry.Point(112, 36);
-        var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
+        var point = new Point(112, 36);
+        var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             toIndex: -1,
             attributeFilter: "SMID<100",
-            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            spatialQueryMode: SpatialQueryMode.INTERSECT,
             geometry: point
         });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByGeometryService).not.toBeNull();
@@ -132,16 +135,16 @@ describe('GetFeaturesByGeometryService', function () {
     });
 
     //测试没有传入参数时的情况
-    it('processAsync_noParams', function (done) {
-        var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
+    it('processAsync_noParams', (done) => {
+        var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
             returnContent: false,
             datasetNames: ["World:Capitals"],
             toIndex: -1,
-            spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN
+            spatialQueryMode: SpatialQueryMode.CONTAIN
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();
@@ -162,18 +165,18 @@ describe('GetFeaturesByGeometryService', function () {
     });
 
     //查询目标图层不存在情况
-    it('processAsync_LayerNotExist', function (done) {
-        var point = new SuperMap.Geometry.Point(112, 36);
-        var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
+    it('processAsync_LayerNotExist', (done) => {
+        var point = new Point(112, 36);
+        var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
             returnContent: false,
             datasetNames: ["World:CountriesNotExsit"],
             toIndex: -1,
-            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            spatialQueryMode: SpatialQueryMode.INTERSECT,
             geometry: point
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();

@@ -1,7 +1,7 @@
-var LabelImageCell = require('../../../src/common/iServer/LabelImageCell').LabelImageCell;
+import {LabelImageCell} from '../../../src/common/iServer/LabelImageCell';
 
-describe('LabelImageCell', function () {
-    it('constructor, destroy', function () {
+describe('LabelImageCell', () => {
+    it('constructor, destroy', () => {
         var labelImageCell = new LabelImageCell({pathField: "test"});
         expect(labelImageCell.CLASS_NAME).toEqual("SuperMap.LabelImageCell");
         expect(labelImageCell.pathField).toEqual("test");

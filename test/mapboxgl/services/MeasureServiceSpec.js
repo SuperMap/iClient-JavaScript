@@ -1,24 +1,25 @@
-require('../../../src/mapboxgl/services/MeasureService');
-var mapboxgl = require('mapbox-gl');
+import {MeasureService} from '../../../src/mapboxgl/services/MeasureService';
+import {MeasureParameters} from '../../../src/common/iServer/MeasureParameters';
 
 var url = GlobeParameter.WorldURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_MeasureService', function () {
+
+describe('mapboxgl_MeasureService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //测距, 成功事件
-    it('success:measureDistance', function (done) {
+    it('success:measureDistance', (done) => {
         var line = {
             "type": "Feature",
             "geometry": {
@@ -29,12 +30,12 @@ describe('mapboxgl_MeasureService', function () {
                 ]
             }
         };
-        var measureParameters = new SuperMap.MeasureParameters(line);
-        var service = new mapboxgl.supermap.MeasureService(url, options);
-        service.measureDistance(measureParameters, function (result) {
+        var measureParameters = new MeasureParameters(line);
+        var service = new MeasureService(url, options);
+        service.measureDistance(measureParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -53,7 +54,7 @@ describe('mapboxgl_MeasureService', function () {
     });
 
     //测距:失败事件
-    it('fail:measureDistance', function (done) {
+    it('fail:measureDistance', (done) => {
         var line = {
             "type": "Feature",
             "geometry": {
@@ -63,12 +64,12 @@ describe('mapboxgl_MeasureService', function () {
                 ]
             }
         };
-        var measureParameters = new SuperMap.MeasureParameters(line);
-        var service = new mapboxgl.supermap.MeasureService(url, options);
-        service.measureDistance(measureParameters, function (result) {
+        var measureParameters = new MeasureParameters(line);
+        var service = new MeasureService(url, options);
+        service.measureDistance(measureParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -85,7 +86,7 @@ describe('mapboxgl_MeasureService', function () {
     });
 
     //测面积成功事件
-    it('measureArea_success_test', function (done) {
+    it('measureArea_success_test', (done) => {
         var geo = {
             'type': 'Feature',
             'geometry': {
@@ -96,12 +97,12 @@ describe('mapboxgl_MeasureService', function () {
                     [0, 0]]]
             }
         };
-        var measureParameters = new SuperMap.MeasureParameters(geo);
-        var service = new mapboxgl.supermap.MeasureService(url, options);
-        service.measureArea(measureParameters, function (result) {
+        var measureParameters = new MeasureParameters(geo);
+        var service = new MeasureService(url, options);
+        service.measureArea(measureParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -120,7 +121,7 @@ describe('mapboxgl_MeasureService', function () {
     });
 
     //测面积失败事件
-    it('measureArea_success_test', function (done) {
+    it('measureArea_success_test', (done) => {
         var geo = {
             'type': 'Feature',
             'geometry': {
@@ -128,12 +129,12 @@ describe('mapboxgl_MeasureService', function () {
                 'coordinates': [[[0, 0], [0, 0]]]
             }
         };
-        var measureParameters = new SuperMap.MeasureParameters(geo);
-        var service = new mapboxgl.supermap.MeasureService(url, options);
-        service.measureArea(measureParameters, function (result) {
+        var measureParameters = new MeasureParameters(geo);
+        var service = new MeasureService(url, options);
+        service.measureArea(measureParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
