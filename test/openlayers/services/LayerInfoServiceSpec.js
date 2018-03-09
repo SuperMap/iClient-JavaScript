@@ -1,30 +1,34 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/LayerInfoService');
-require('../../resources/LayersInfo');
+import {LayerInfoService} from '../../../src/openlayers/services/LayerInfoService';
+import {LayerStatus} from '../../../src/common/iServer/LayerStatus';
+import {SetLayerStatusParameters} from '../../../src/common/iServer/SetLayerStatusParameters';
+import {SetLayersInfoParameters} from '../../../src/common/iServer/SetLayersInfoParameters';
+import {SetLayerInfoParameters} from '../../../src/common/iServer/SetLayerInfoParameters';
+import '../../resources/LayersInfo';
+
 var url = GlobeParameter.WorldURL;
 var options = {
     serverType: 'iServer'
 };
 var id;
-describe('openlayers_LayerInfoService', function () {
+describe('openlayers_LayerInfoService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //获取图层信息服务
-    it('getLayersInfo', function (done) {
-        var layerService = new ol.supermap.LayerInfoService(url, options);
-        layerService.getLayersInfo(function (result) {
+    it('getLayersInfo', (done) => {
+        var layerService = new LayerInfoService(url, options);
+        layerService.getLayersInfo((result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(layerService).not.toBeNull();
                 expect(layerService.options.serverType).toBe('iServer');
@@ -61,8 +65,8 @@ describe('openlayers_LayerInfoService', function () {
     });
 
     //子图层显示控制服务
-    it('setLayerStatus', function (done) {
-        var layerStatus = [new SuperMap.LayerStatus({
+    it('setLayerStatus', (done) => {
+        var layerStatus = [new LayerStatus({
             layerName: "continent_T@World",
             isVisible: true,
             //图层显示 SQL 过滤条件
@@ -74,7 +78,7 @@ describe('openlayers_LayerInfoService', function () {
                 fieldValuesDisplayMode: "DISABLE"//为DISPLAY时，表示只显示以上设置的相应属性值的要素
             }
         })];
-        var setLayerStatusParameters = new SuperMap.SetLayerStatusParameters({
+        var setLayerStatusParameters = new SetLayerStatusParameters({
             //获取或设置图层可见状态
             layerStatusList: layerStatus,
             //获取或设置资源在服务端保存的时间
@@ -82,11 +86,11 @@ describe('openlayers_LayerInfoService', function () {
             //获取或设置资源服务 ID
             //resourceID:"46ce0e03314040d8a4a2060145d142d7_722ef5d56efe4faa90e03e81d96a7547"
         });
-        var layerInfoService = new ol.supermap.LayerInfoService(url, options);
-        layerInfoService.setLayerStatus(setLayerStatusParameters, function (result) {
+        var layerInfoService = new LayerInfoService(url, options);
+        layerInfoService.setLayerStatus(setLayerStatusParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(layerInfoService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -104,17 +108,17 @@ describe('openlayers_LayerInfoService', function () {
     });
 
     //新建临时图层   isTempLayers=false
-    it('setLayersInfo_newTempLayer', function (done) {
+    it('setLayersInfo_newTempLayer', (done) => {
         var layers = layersInfo;
-        var setLayersInfoParameters = new SuperMap.SetLayersInfoParameters({
+        var setLayersInfoParameters = new SetLayersInfoParameters({
             isTempLayers: false,
             layersInfo: layers
         });
-        var service = new ol.supermap.LayerInfoService(url);
-        service.setLayersInfo(setLayersInfoParameters, function (result) {
+        var service = new LayerInfoService(url);
+        service.setLayersInfo(setLayersInfoParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -134,19 +138,19 @@ describe('openlayers_LayerInfoService', function () {
     });
 
     //修改临时图层的信息 isTempLayers=true
-    it('setLayersInfo_isTempLayer', function (done) {
+    it('setLayersInfo_isTempLayer', (done) => {
         var layers = layersInfo;
         layers.description = "test";
-        var setLayersInfoParameters = new SuperMap.SetLayersInfoParameters({
+        var setLayersInfoParameters = new SetLayersInfoParameters({
             isTempLayers: true,
             resourceID: id,
             layersInfo: layers
         });
-        var service = new ol.supermap.LayerInfoService(url);
-        service.setLayersInfo(setLayersInfoParameters, function (result) {
+        var service = new LayerInfoService(url);
+        service.setLayersInfo(setLayersInfoParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -165,19 +169,19 @@ describe('openlayers_LayerInfoService', function () {
     });
 
     //设置图层信息服务  并实现临时图层中子图层的修改
-    it('setLayerInfo', function (done) {
+    it('setLayerInfo', (done) => {
         var layers = layerInfo;
         layers.description = "this is a test";
-        var setLayerInfoParameters = new SuperMap.SetLayerInfoParameters({
+        var setLayerInfoParameters = new SetLayerInfoParameters({
             tempLayerName: "continent_T@World.1@@World Map",
             resourceID: id,
             layerInfo: layers
         });
-        var service = new ol.supermap.LayerInfoService(url);
-        service.setLayerInfo(setLayerInfoParameters, function (result) {
+        var service = new LayerInfoService(url);
+        service.setLayerInfo(setLayerInfoParameters, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

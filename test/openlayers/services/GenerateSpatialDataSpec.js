@@ -1,22 +1,24 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/SpatialAnalystService');
-var request = require('request');
+import request from 'request';
+import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
+import {GenerateSpatialDataParameters} from '../../../src/common/iServer/GenerateSpatialDataParameters';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {DataReturnMode} from '../../../src/common/REST';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
-describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
-    beforeEach(function () {
+describe('openlayers_SpatialAnalystService_generateSpatialData', () => {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResults = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "GenerateSpatialData_openlayersTest";
-    it('generateSpatialData', function (done) {
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+    it('generateSpatialData', (done) => {
+        var generateSpatialDataParameters = new GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -26,18 +28,18 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
             measureEndField: "LineMeasureTo",
             measureOffsetField: "",
             errorInfoField: "",
-            dataReturnOption: new SuperMap.DataReturnOption({
+            dataReturnOption: new DataReturnOption({
                 expectCount: 1000,
                 dataset: resultDataset,
                 deleteExistResultDataset: true,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+                dataReturnMode: DataReturnMode.DATASET_ONLY
             })
         });
-        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        spatialAnalystService.generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
+        var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.generateSpatialData(generateSpatialDataParameters, (serviceResult) => {
             serviceResults = serviceResult;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
@@ -46,7 +48,7 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

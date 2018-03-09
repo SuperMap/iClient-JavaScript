@@ -1,13 +1,15 @@
 // 开发代码有bug，因为用的静态方法，所以一旦设置了客户端样式就会一直保留，其它变量也可能有未被清除掉的现象。
 // 本测试待开发改好bug后需要调整测顺序，验证出图结果。
 // 目前一旦将使用客户端样式的测试放到最前面，则会影响后续测试。
-var ol = require('openlayers');
-require('../../../../src/openlayers/overlay/vectortile/VectorTileStyles');
+import ol from 'openlayers';
+import {VectorTileStyles} from '../../../../src/openlayers/overlay/vectortile/VectorTileStyles';
+import {MapService} from '../../../../src/openlayers/services/MapService';
+import {VectorTileSuperMapRest} from '../../../../src/openlayers/overlay/VectorTileSuperMapRest';
 
 var url = GlobeParameter.ChinaURL;
-describe('openlayers_VectorTileStyles', function () {
-    var testDiv, map, mapView, vectorTileStyles;
-    beforeAll(function () {
+describe('openlayers_VectorTileStyles', () => {
+    var testDiv, map, mapView, vectorTileStyles, originalTimeout;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -26,23 +28,29 @@ describe('openlayers_VectorTileStyles', function () {
         mapView = map.getView();
 
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('getFeatureStyle_default', function (done) {
+    xit('bug log', () => {
+        console.log('开发代码有bug，因为用的静态方法，所以一旦设置了客户端样式就会一直保留，其它变量也可能有未被清除掉的现象。' +
+            '本测试待开发改好bug后需要调整测顺序，验证出图结果。' +
+            '目前一旦将使用客户端样式的测试放到最前面，则会影响后续测试。');
+    });
+
+    it('getFeatureStyle_default', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         // featureJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureJSON = {
             "type": "Feature",
@@ -60,7 +68,7 @@ describe('openlayers_VectorTileStyles', function () {
         };
         var feature = (new ol.format.GeoJSON()).readFeature(featureJSON);
         var style = vectorTileStyles.getFeatureStyle(feature);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(style).not.toBeNull();
             expect(style.length).toEqual(1);
             expect(style[0].getStroke().getColor()).toBe("rgba(232, 212, 85, 1)");
@@ -73,24 +81,24 @@ describe('openlayers_VectorTileStyles', function () {
     });
 
     // 下面将上述测试显示在div中
-    it('constructor_donotNeedServerCartoCss=true_inDiv', function (done) {
+    it('constructor_donotNeedServerCartoCss=true_inDiv', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView,
             donotNeedServerCartoCss: true
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         var style = vectorTileStyles.getFeatureStyle;
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        new MapService(url).getMapInfo((serviceResult) => {
             var vectorLayer;
-            var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+            var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
             vectorLayer = new ol.layer.VectorTile({
-                source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
+                source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
             map.addLayer(vectorLayer);
-            setTimeout(function () {
+            setTimeout(() => {
                 expect(style).not.toBeNull();
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
@@ -99,7 +107,7 @@ describe('openlayers_VectorTileStyles', function () {
         });
     });
 
-    it('getFeatureStyle_donotNeedServerCartoCss = false', function (done) {
+    it('getFeatureStyle_donotNeedServerCartoCss = false', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView,
@@ -140,7 +148,7 @@ describe('openlayers_VectorTileStyles', function () {
                 })
             })
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         // featureJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureJSON = {
             "type": "Feature",
@@ -158,7 +166,7 @@ describe('openlayers_VectorTileStyles', function () {
         };
         var feature = (new ol.format.GeoJSON()).readFeature(featureJSON);
         var style = vectorTileStyles.getFeatureStyle(feature);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(style).not.toBeNull();
             expect(style.length).toEqual(1);
             expect(style[0].getStroke().getColor()).toBe("rgba(232, 212, 85, 1)");
@@ -171,23 +179,23 @@ describe('openlayers_VectorTileStyles', function () {
     });
 
     // 下面将上述测试显示在div中
-    it('constructor_default_inDiv', function (done) {
+    it('constructor_default_inDiv', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView
         };
-        vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        vectorTileStyles = new VectorTileStyles(stylesOptions);
         var style = vectorTileStyles.getFeatureStyle;
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        new MapService(url).getMapInfo((serviceResult) => {
             var vectorLayer;
-            var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+            var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
             vectorLayer = new ol.layer.VectorTile({
-                source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
+                source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
             map.addLayer(vectorLayer);
-            setTimeout(function () {
+            setTimeout(() => {
                 expect(style).not.toBeNull();
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
@@ -196,13 +204,13 @@ describe('openlayers_VectorTileStyles', function () {
         });
     });
 
-    it('getFeatureStyle_donotNeedServerCartoCss = true', function (done) {
+    it('getFeatureStyle_donotNeedServerCartoCss = true', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView,
             donotNeedServerCartoCss: true
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         // featureLineJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureLineJSON = {
             "type": "Feature",
@@ -220,7 +228,7 @@ describe('openlayers_VectorTileStyles', function () {
         };
         var featureLine = (new ol.format.GeoJSON()).readFeature(featureLineJSON);
         var styleLine = vectorTileStyles.getFeatureStyle(featureLine);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(styleLine).not.toBeNull();
             expect(styleLine.getStroke().getColor()).toBe("rgba(232,212,85,1)");
             expect(styleLine.getStroke().getWidth()).toEqual(3.77952);
@@ -244,7 +252,7 @@ describe('openlayers_VectorTileStyles', function () {
         };
         var featureRegion = (new ol.format.GeoJSON()).readFeature(featureRegionJSON);
         var styleRegion = vectorTileStyles.getFeatureStyle(featureRegion);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(styleRegion).not.toBeNull();
             expect(styleRegion.getFill().getColor()).toBe("rgba(255,255,255,1)");
             expect(styleRegion.getStroke().getColor()).toBe("rgba(120,113,102,0)");
@@ -257,7 +265,7 @@ describe('openlayers_VectorTileStyles', function () {
     });
 
     // 下面将上述测试显示在div中
-    it('constructor_donotNeedServerCartoCss=false_inDiv', function (done) {
+    it('constructor_donotNeedServerCartoCss=false_inDiv', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView,
@@ -298,18 +306,18 @@ describe('openlayers_VectorTileStyles', function () {
                 })
             })
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         var style = vectorTileStyles.getFeatureStyle;
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        new MapService(url).getMapInfo((serviceResult) => {
             var vectorLayer;
-            var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+            var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
             vectorLayer = new ol.layer.VectorTile({
-                source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
+                source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
             map.addLayer(vectorLayer);
-            setTimeout(function () {
+            setTimeout(() => {
                 expect(style).not.toBeNull();
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
@@ -318,14 +326,14 @@ describe('openlayers_VectorTileStyles', function () {
         });
     });
 
-    it('getFeatureStyle_cartoCss', function (done) {
+    it('getFeatureStyle_cartoCss', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView,
             donotNeedServerCartoCss: true,
             cartoCss: initClientCssStr()
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         // featureLineJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内四环左边的线对象
         var featureLineJSON = {
             "type": "Feature",
@@ -343,7 +351,7 @@ describe('openlayers_VectorTileStyles', function () {
         };
         var featureLine = (new ol.format.GeoJSON()).readFeature(featureLineJSON);
         var styleLine = vectorTileStyles.getFeatureStyle(featureLine);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(styleLine).not.toBeNull();
             expect(styleLine.getStroke().getColor()).toBe("rgba(232,212,85,1)");
             expect(styleLine.getStroke().getWidth()).toEqual(3.77952);
@@ -367,7 +375,7 @@ describe('openlayers_VectorTileStyles', function () {
         };
         var featureRegion = (new ol.format.GeoJSON()).readFeature(featureRegionJSON);
         var styleRegion = vectorTileStyles.getFeatureStyle(featureRegion);
-        setTimeout(function () {
+        setTimeout(() => {
             expect(styleRegion).not.toBeNull();
             expect(styleRegion.length).toEqual(1);
             expect(styleRegion[0].getFill().getColor()).toBe("rgba(8, 48, 75, 1)");
@@ -381,25 +389,25 @@ describe('openlayers_VectorTileStyles', function () {
     });
 
     // 下面将上述测试显示在div中
-    it('constructor_cartoCss_inDiv', function (done) {
+    it('constructor_cartoCss_inDiv', (done) => {
         var stylesOptions = {
             url: url,
             view: mapView,
             donotNeedServerCartoCss: true,
             cartoCss: initClientCssStr()
         };
-        var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
+        var vectorTileStyles = new VectorTileStyles(stylesOptions);
         var style = vectorTileStyles.getFeatureStyle;
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        new MapService(url).getMapInfo((serviceResult) => {
             var vectorLayer;
-            var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+            var vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
             vectorTileOptions.returnAttributes = false;
             vectorLayer = new ol.layer.VectorTile({
-                source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
+                source: new VectorTileSuperMapRest(vectorTileOptions),
                 style: style
             });
             map.addLayer(vectorLayer);
-            setTimeout(function () {
+            setTimeout(() => {
                 expect(style).not.toBeNull();
                 expect(vectorTileStyles).not.toBeNull();
                 map.removeLayer(vectorLayer);
@@ -408,7 +416,7 @@ describe('openlayers_VectorTileStyles', function () {
         });
     });
 
-    function initClientCssStr() {
+    var initClientCssStr = () => {
         var cartoCss = "@waterColor:rgb(2,16,25);" +
             "@roadColora:rgb(18,117,142);" +
             "@roadColorb:rgb(0,0,0);" +

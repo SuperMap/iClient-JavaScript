@@ -1,9 +1,10 @@
-var ol = require('openlayers');
-var RankSymbol = require('../../../src/openlayers/overlay/RankSymbol').RankSymbol;
+import ol from 'openlayers';
+import {RankSymbol} from '../../../src/openlayers/overlay/RankSymbol';
+import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
 
-describe('openlayers_RankSymbol', function () {
-    var testDiv, map;
-    beforeAll(function () {
+describe('openlayers_RankSymbol', () => {
+    var testDiv, map, originalTimeout;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -14,8 +15,6 @@ describe('openlayers_RankSymbol', function () {
         window.document.body.appendChild(testDiv);
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 4,
@@ -24,18 +23,18 @@ describe('openlayers_RankSymbol', function () {
             }),
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var themeSource = new RankSymbol("test", "Circle", {
             map: map,
             attributions: " ",
@@ -61,7 +60,7 @@ describe('openlayers_RankSymbol', function () {
         expect(themeSource.themeField).toBeNull();
     });
 
-    it('setSymbolType', function (done) {
+    it('setSymbolType', (done) => {
         var chinaConsumptionLevel = [
             ["北京市", 116.407283, 39.904557, 22023, 24982, 27760, 30350, 33337],
             ["天津市", 117.215268, 39.120963, 15200, 17852, 20624, 22984, 26261],
@@ -89,11 +88,11 @@ describe('openlayers_RankSymbol', function () {
             var attrs = {};
             attrs.NAME = provinceInfo[0];
             attrs.CON2009 = provinceInfo[3];
-            var fea = new ol.supermap.ThemeFeature(geo, attrs);
+            var fea = new ThemeFeature(geo, attrs);
             features.push(fea);
         }
         themeSource.addFeatures(features);
-        setTimeout(function () {
+        setTimeout(() => {
             themeSource.setSymbolType("Point");
             expect(themeSource.symbolType).toEqual("Point");
             themeSource.destroy();
@@ -101,7 +100,7 @@ describe('openlayers_RankSymbol', function () {
         }, 5000);
     });
 
-    it('createThematicFeature', function (done) {
+    it('createThematicFeature', (done) => {
         var chinaConsumptionLevel = [
             ["北京市", 116.407283, 39.904557, 22023, 24982, 27760, 30350, 33337],
             ["天津市", 117.215268, 39.120963, 15200, 17852, 20624, 22984, 26261],
@@ -125,10 +124,10 @@ describe('openlayers_RankSymbol', function () {
             var attrs = {};
             attrs.NAME = provinceInfo[0];
             attrs.CON2009 = provinceInfo[3];
-            var fea = new ol.supermap.ThemeFeature(geo, attrs);
+            var fea = new ThemeFeature(geo, attrs);
             features.push(fea);
         }
-        setTimeout(function () {
+        setTimeout(() => {
             var result = themeSource.createThematicFeature(features[0]);
             expect(result).toBeFalsy();
             done();

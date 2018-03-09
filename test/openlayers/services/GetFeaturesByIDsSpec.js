@@ -1,31 +1,32 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/FeatureService');
+import {FeatureService} from '../../../src/openlayers/services/FeatureService';
+import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
-describe('openlayers_FeatureService_getFeaturesByIDs', function () {
+describe('openlayers_FeatureService_getFeaturesByIDs', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //数据集ID查询服务
-    it('getFeaturesByIDs', function (done) {
-        var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+    it('getFeaturesByIDs', (done) => {
+        var idsParam = new GetFeaturesByIDsParameters({
             IDs: [246, 247],
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesByIDService = new ol.supermap.FeatureService(featureServiceURL, options);
-        getFeaturesByIDService.getFeaturesByIDs(idsParam, function (result) {
+        var getFeaturesByIDService = new FeatureService(featureServiceURL, options);
+        getFeaturesByIDService.getFeaturesByIDs(idsParam, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByIDService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

@@ -1,7 +1,8 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/control/ChangeTileVersion');
+import ol from 'openlayers';
+import {ChangeTileVersion} from '../../../src/openlayers/control/ChangeTileVersion';
+import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 
-describe('openlayers_ChangeTileVersion', function () {
+describe('openlayers_ChangeTileVersion', () => {
     var map, baseLayer;
     var tileVersions = [
         {
@@ -40,8 +41,8 @@ describe('openlayers_ChangeTileVersion', function () {
             }
 
         }];
-    beforeAll(function () {
-        testDiv = window.document.createElement("div");
+    beforeAll(() => {
+        var testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
         testDiv.style.marginLeft = "8px";
@@ -52,15 +53,13 @@ describe('openlayers_ChangeTileVersion', function () {
         var url = GlobeParameter.China4326URL;
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [104.79, 33.03],
                 zoom: 4,
                 projection: 'EPSG:4326'
             })
         });
-        baseLayer = new ol.source.TileSuperMapRest({
+        baseLayer = new TileSuperMapRest({
             origin: [-180, 90],
             url: url,
             wrapX: true
@@ -71,12 +70,12 @@ describe('openlayers_ChangeTileVersion', function () {
         }));
     });
 
-    it("initialize", function () {
+    it("initialize", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var result = new ol.supermap.control.ChangeTileVersion(options);
+        var result = new ChangeTileVersion(options);
         expect(result).not.toBeNull();
         expect(result.firstLoad).toBeTruthy();
         expect(result.options.collapsed).toBeTruthy();
@@ -86,11 +85,11 @@ describe('openlayers_ChangeTileVersion', function () {
         expect(result.options.tooltip).toBe("top");
     });
 
-    it("setLayer", function () {
+    it("setLayer", () => {
         var options = {
             orientation: "horizontal"
         };
-        var changeTileVersion = new ol.supermap.control.ChangeTileVersion(options);
+        var changeTileVersion = new ChangeTileVersion(options);
         changeTileVersion.setLayer(baseLayer);
         expect(changeTileVersion).not.toBeNull();
         expect(changeTileVersion.firstLoad).toBeTruthy();
@@ -101,33 +100,33 @@ describe('openlayers_ChangeTileVersion', function () {
         expect(changeTileVersion.options.tooltip).toBe("top");
     });
 
-    it("removeLayer", function () {
+    it("removeLayer", () => {
         var options = {
             orientation: "horizontal"
         };
-        var changeTileVersion = new ol.supermap.control.ChangeTileVersion(options);
+        var changeTileVersion = new ChangeTileVersion(options);
         changeTileVersion.removeLayer();
         expect(changeTileVersion.options.layer).toBeNull();
     });
 
-    it("tilesVersion", function () {
+    it("tilesVersion", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
+        var changetileversion = new ChangeTileVersion(options);
         var version = '63477488-e91e-41a1-b029-c1c7b476a64d';
         changetileversion.update(tileVersions);
         changetileversion.tilesVersion(version);
         expect(tileVersions[0].name).toBe(version);
     });
 
-    it("getValue", function () {
+    it("getValue", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
+        var changetileversion = new ChangeTileVersion(options);
         changetileversion.update(tileVersions);
         var result = changetileversion.getValue();
         expect(result).not.toBeNull();
@@ -135,12 +134,12 @@ describe('openlayers_ChangeTileVersion', function () {
 
     });
 
-    it("nextTilesVersion", function () {
+    it("nextTilesVersion", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
+        var changetileversion = new ChangeTileVersion(options);
         changetileversion.update(tileVersions);
         changetileversion.nextTilesVersion();
         expect(changetileversion).not.toBeNull();
@@ -148,12 +147,12 @@ describe('openlayers_ChangeTileVersion', function () {
         expect(changetileversion.getValue()).toBe('0');
     });
 
-    it("lastTilesVersion", function () {
+    it("lastTilesVersion", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
+        var changetileversion = new ChangeTileVersion(options);
         changetileversion.update(tileVersions);
         changetileversion.lastTilesVersion();
         expect(changetileversion).not.toBeNull();
@@ -161,23 +160,23 @@ describe('openlayers_ChangeTileVersion', function () {
 
     });
 
-    it("setContent", function () {
+    it("setContent", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
+        var changetileversion = new ChangeTileVersion(options);
         var version = tileVersions[0];
         changetileversion.setContent(version);
         expect(changetileversion.tooltip.innerHTML).toBe("V1");
     });
 
-    it("getVersion", function () {
+    it("getVersion", () => {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
+        var changetileversion = new ChangeTileVersion(options);
         changetileversion.update(tileVersions);
         var result = changetileversion.getVersion();
         expect(result).toBe('63477488-e91e-41a1-b029-c1c7b476a64d');

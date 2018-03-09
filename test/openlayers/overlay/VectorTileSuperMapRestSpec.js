@@ -1,11 +1,12 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/overlay/VectorTileSuperMapRest');
+import ol from 'openlayers';
+import {VectorTileSuperMapRest} from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
+import {MapService} from '../../../src/openlayers/services/MapService';
 
 var url = GlobeParameter.ChinaURL;
-describe('openlayers_VectorTileSuperMapRest', function () {
+describe('openlayers_VectorTileSuperMapRest', () => {
     var originalTimeout;
     var testDiv, map, vectorTileOptions, vectorTileSource;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -14,37 +15,35 @@ describe('openlayers_VectorTileSuperMapRest', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        new MapService(url).getMapInfo((serviceResult) => {
             map = new ol.Map({
                 target: 'map',
-                controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                    .extend([new ol.supermap.control.Logo()]),
                 view: new ol.View({
                     center: [12957388, 4853991],
                     zoom: 11
                 })
             });
-            vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-            vectorTileSource = new ol.source.VectorTileSuperMapRest(vectorTileOptions);
+            vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+            vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
             var vectorLayer = new ol.layer.VectorTile({
                 source: vectorTileSource
             });
             map.addLayer(vectorLayer);
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('initialize', function (done) {
-        setTimeout(function () {
+    it('initialize', (done) => {
+        setTimeout(() => {
             try {
                 expect(vectorTileOptions).not.toBeNull();
                 expect(vectorTileOptions.serverType).toBe("ISERVER");
@@ -59,32 +58,31 @@ describe('openlayers_VectorTileSuperMapRest', function () {
         }, 6000);
     });
 
-    /*it('serverType of iportal', function () {
-     var iportaoUrl = "http://support.supermap.com.cn:8092/web/maps/44";
-     var vectorTileOptions,vectorTilesource;
+    xit('serverType of iportal', () => {
+        var iportaoUrl = "http://support.supermap.com.cn:8092/web/maps/44";
+        var vectorTileOptions, vectorTilesource;
 
-     new ol.supermap.MapService(iportaoUrl).getMapInfo(function (serviceResult) {
-     vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(iportaoUrl, serviceResult.result);
-     vectorTilesource =  new ol.source.VectorTileSuperMapRest(vectorTileOptions);
-     var vectorLayer = new ol.layer.VectorTile({
-     source: vectorTilesource
-     });
-     map.addLayer(vectorLayer);
-     });
+        new MapService(iportaoUrl).getMapInfo((serviceResult) => {
+            vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(iportaoUrl, serviceResult.result);
+            vectorTilesource = new VectorTileSuperMapRest(vectorTileOptions);
+            var vectorLayer = new ol.layer.VectorTile({
+                source: vectorTilesource
+            });
+            map.addLayer(vectorLayer);
+        });
+        setTimeout(() => {
+            try {
+                expect(vectorTileOptions).not.toBeNull();
+                expect(vectorTileOptions.serverType).toBe("IPORTAL");
+                expect(vectorTileOptions.crossOrigin).toBe("anonymous");
 
-     setTimeout(function () {
-     try {
-     expect(vectorTileOptions).not.toBeNull();
-     expect(vectorTileOptions.serverType).toBe("IPORTAL");
-     expect(vectorTileOptions.crossOrigin).toBe("anonymous");
-
-     expect(vectorTilesource).not.toBeNull();
-     expect(vectorTilesource.urls.length).toBe(1);
-     done();
-     }catch(exception) {
-     console.log("'constructor and static test'案例失败：" + exception.name + ":" + exception.message);
-     expect(false).toBeTruthy();
-     }
-     },6000);
-     });*/
+                expect(vectorTilesource).not.toBeNull();
+                expect(vectorTilesource.urls.length).toBe(1);
+                done();
+            } catch (exception) {
+                console.log("'constructor and static test'案例失败：" + exception.name + ":" + exception.message);
+                expect(false).toBeTruthy();
+            }
+        }, 6000);
+    });
 });

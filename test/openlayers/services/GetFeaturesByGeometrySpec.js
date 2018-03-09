@@ -1,33 +1,35 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/FeatureService');
+import ol from 'openlayers';
+import {FeatureService} from '../../../src/openlayers/services/FeatureService';
+import {GetFeaturesByGeometryParameters} from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
-describe('openlayers_FeatureService_getFeaturesByGeometry', function () {
+describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //数据集几何查询服务类
-    it('getFeaturesByGeometry', function (done) {
+    it('getFeaturesByGeometry', (done) => {
         var polygon = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+        var geometryParam = new GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        var getFeaturesByGeometryService = new ol.supermap.FeatureService(featureServiceURL, options);
-        getFeaturesByGeometryService.getFeaturesByGeometry(geometryParam, function (result) {
+        var getFeaturesByGeometryService = new FeatureService(featureServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(geometryParam, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

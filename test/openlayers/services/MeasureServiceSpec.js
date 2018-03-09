@@ -1,30 +1,31 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/MeasureService');
+import ol from 'openlayers';
+import {MeasureService} from '../../../src/openlayers/services/MeasureService';
+import {MeasureParameters} from '../../../src/common/iServer/MeasureParameters';
 
 var url = GlobeParameter.mapServiceURL + "World";
 var options = {
     serverType: 'iServer'
 };
-describe('openlayers_MeasureService', function () {
+describe('openlayers_MeasureService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //测距, 成功事件
-    it('success:measureDistance', function (done) {
+    it('success:measureDistance', (done) => {
         var geometry = new ol.geom.LineString([[0, 0], [10, 10]]);
-        var distanceMeasureParam = new SuperMap.MeasureParameters(geometry);
-        var service = new ol.supermap.MeasureService(url, options);
-        service.measureDistance(distanceMeasureParam, function (result) {
+        var distanceMeasureParam = new MeasureParameters(geometry);
+        var service = new MeasureService(url, options);
+        service.measureDistance(distanceMeasureParam, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -43,14 +44,14 @@ describe('openlayers_MeasureService', function () {
     });
 
     //测距, 失败事件
-    it('fail:measureDistance', function (done) {
+    it('fail:measureDistance', (done) => {
         var geometry = new ol.geom.LineString([[0, 0]]);
-        var distanceMeasureParam = new SuperMap.MeasureParameters(geometry);
-        var service = new ol.supermap.MeasureService(url, options);
-        service.measureDistance(distanceMeasureParam, function (result) {
+        var distanceMeasureParam = new MeasureParameters(geometry);
+        var service = new MeasureService(url, options);
+        service.measureDistance(distanceMeasureParam, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -67,14 +68,14 @@ describe('openlayers_MeasureService', function () {
     });
 
     //测面积, 成功事件
-    it('success:measureArea', function (done) {
+    it('success:measureArea', (done) => {
         var geometry = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
-        var areaMeasureParam = new SuperMap.MeasureParameters(geometry);
-        var service = new ol.supermap.MeasureService(url, options);
-        service.measureArea(areaMeasureParam, function (result) {
+        var areaMeasureParam = new MeasureParameters(geometry);
+        var service = new MeasureService(url, options);
+        service.measureArea(areaMeasureParam, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -93,14 +94,14 @@ describe('openlayers_MeasureService', function () {
     });
 
     //测面积, 失败事件
-    it('fail:measureArea', function (done) {
+    it('fail:measureArea', (done) => {
         var geometry = new ol.geom.Polygon([[[0, 0]]]);
-        var areaMeasureParam = new SuperMap.MeasureParameters(geometry);
-        var service = new ol.supermap.MeasureService(url, options);
-        service.measureArea(areaMeasureParam, function (result) {
+        var areaMeasureParam = new MeasureParameters(geometry);
+        var service = new MeasureService(url, options);
+        service.measureArea(areaMeasureParam, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

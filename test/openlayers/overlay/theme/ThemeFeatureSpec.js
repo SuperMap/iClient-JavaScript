@@ -1,9 +1,11 @@
-var ol = require('openlayers');
-require('../../../../src/openlayers/overlay/theme/ThemeFeature');
+import ol from 'openlayers';
+import {ThemeFeature} from '../../../../src/openlayers/overlay/theme/ThemeFeature';
+import {TileSuperMapRest} from '../../../../src/openlayers/mapping/TileSuperMapRest';
+import {Vector} from '../../../../src/common/commontypes/Vector';
 
-describe('openlayers_ThemeFeature', function () {
-    var originalTimeout, map;
-    beforeAll(function () {
+describe('openlayers_ThemeFeature', () => {
+    var originalTimeout, map, testDiv;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -16,8 +18,6 @@ describe('openlayers_ThemeFeature', function () {
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -26,32 +26,32 @@ describe('openlayers_ThemeFeature', function () {
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: baseUrl
             })
         });
         map.addLayer(layer);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it("toFeature", function () {
+    it("toFeature", () => {
         var geo = new ol.geom.Point([116.407283, 39.904557]);
         var attrs = {};
         attrs.NAME = "北京市";
         attrs.CON2009 = 22023;
-        var themeFeature = new ol.supermap.ThemeFeature(geo, attrs);
+        var themeFeature = new ThemeFeature(geo, attrs);
         var result = themeFeature.toFeature();
         expect(result).not.toBeNull();
-        expect(result instanceof SuperMap.Feature.Vector).toBeTruthy();
+        expect(result instanceof Vector).toBeTruthy();
         expect(result.geometry).not.toBeNull();
         expect(result.attributes).not.toBeNull();
         expect(result.attributes.NAME).toBe('北京市');

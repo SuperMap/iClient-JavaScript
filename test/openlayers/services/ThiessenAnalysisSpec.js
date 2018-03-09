@@ -1,28 +1,30 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/SpatialAnalystService');
+import ol from 'openlayers';
+import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
+import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
+import {GeometryThiessenAnalystParameters} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
-describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
-    beforeEach(function () {
+describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResults = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //数据集泰森多边形
-    it('thiessenAnalysis_datasets', function (done) {
-        var dThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+    it('thiessenAnalysis_datasets', (done) => {
+        var dThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
-        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        spatialAnalystService.thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
+        var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.thiessenAnalysis(dThiessenAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
@@ -31,7 +33,7 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
     });
 
     //几何泰森多边形
-    it('thiessenAnalysis_geometry', function (done) {
+    it('thiessenAnalysis_geometry', (done) => {
         //创建几何泰森多边形参数
         var pointsList = [
             new ol.geom.Point([5238.998556, -1724.229865]),
@@ -45,15 +47,15 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
             new ol.geom.Point([5472.712382, -2189.15344]),
             new ol.geom.Point([5752.716961, -2425.40363])
         ];
-        var gThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
+        var gThiessenAnalystParameters = new GeometryThiessenAnalystParameters({
             points: pointsList
         });
         //创建泰森多边形服务实例
-        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        spatialAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.thiessenAnalysis(gThiessenAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();

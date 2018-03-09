@@ -1,41 +1,41 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/FeatureService');
-require('../../../src/common/util/FetchRequest');
+import ol from 'openlayers';
+import {FeatureService} from '../../../src/openlayers/services/FeatureService';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import {GetFeaturesByBoundsParameters} from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
 
 var featureServiceURL = "http://supermap:8090/iserver/services/data-world/rest/data";
 var options = {
     serverType: 'iServer'
 };
-describe('openlayers_FeatureService_getFeaturesByBounds', function () {
+describe('openlayers_FeatureService_getFeaturesByBounds', () => {
     var serviceResult = null;
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         serviceResult = null;
     });
 
     //数据集Bounds查询服务
-    it('getFeaturesByBounds', function (done) {
+    it('getFeaturesByBounds', (done) => {
         var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
-        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+        var boundsParam = new GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getExtent(),
             fromIndex: 1,
             toIndex: 3
         });
-        var getFeaturesByBoundsService = new ol.supermap.FeatureService(featureServiceURL, options);
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        var getFeaturesByBoundsService = new FeatureService(featureServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(featureServiceURL + "/featureResults.json?returnContent=true&fromIndex=1&toIndex=3");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(getFeasByBounds));
         });
-        getFeaturesByBoundsService.getFeaturesByBounds(boundsParam, function (testResult) {
+        getFeaturesByBoundsService.getFeaturesByBounds(boundsParam, (testResult) => {
             serviceResult = testResult;
             expect(getFeaturesByBoundsService).not.toBeNull();
             expect(getFeaturesByBoundsService.options.serverType).toBe('iServer');

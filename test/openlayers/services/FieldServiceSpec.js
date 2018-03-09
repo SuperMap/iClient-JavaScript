@@ -1,33 +1,35 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/FieldService');
+import {FieldService} from '../../../src/openlayers/services/FieldService';
+import {FieldParameters} from '../../../src/common/iServer/FieldParameters';
+import {FieldStatisticsParameters} from '../../../src/common/iServer/FieldStatisticsParameters';
+import {StatisticMode} from '../../../src/common/REST';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
-describe('openlayers_FieldService', function () {
+describe('openlayers_FieldService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //字段查询服务成功事件
-    it('success:getFields', function (done) {
-        var fieldParameters = new SuperMap.FieldParameters({
+    it('success:getFields', (done) => {
+        var fieldParameters = new FieldParameters({
             datasource: "World",
             dataset: "continent_T"
         });
-        var service = new ol.supermap.FieldService(url, options);
-        service.getFields(fieldParameters, function (result) {
+        var service = new FieldService(url, options);
+        service.getFields(fieldParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -48,16 +50,16 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段查询服务失败事件
-    it('fail:getFields', function (done) {
-        var fieldParameters = new SuperMap.FieldParameters({
+    it('fail:getFields', (done) => {
+        var fieldParameters = new FieldParameters({
             datasource: "World1",
             dataset: "continent_T"
         });
-        var service = new ol.supermap.FieldService(url, options);
-        service.getFields(fieldParameters, function (result) {
+        var service = new FieldService(url, options);
+        service.getFields(fieldParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -78,26 +80,26 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段统计服务成功事件
-    it('success:getFieldStatisticsInfo', function (done) {
-        var fieldStatisticsParameters = new SuperMap.FieldStatisticsParameters({
+    it('success:getFieldStatisticsInfo', (done) => {
+        var fieldStatisticsParameters = new FieldStatisticsParameters({
             datasource: "World",
             dataset: "Countries",
             fieldName: "SmID",
             //字段统计方法类型
             statisticMode: [
-                SuperMap.StatisticMode.MAX,
-                SuperMap.StatisticMode.MIN,
-                SuperMap.StatisticMode.SUM,
-                SuperMap.StatisticMode.AVERAGE,
-                SuperMap.StatisticMode.STDDEVIATION,
-                SuperMap.StatisticMode.VARIANCE
+                StatisticMode.MAX,
+                StatisticMode.MIN,
+                StatisticMode.SUM,
+                StatisticMode.AVERAGE,
+                StatisticMode.STDDEVIATION,
+                StatisticMode.VARIANCE
             ]
         });
-        var service = new ol.supermap.FieldService(url, options);
-        service.getFieldStatisticsInfo(fieldStatisticsParameters, function (result) {
+        var service = new FieldService(url, options);
+        service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();
@@ -126,26 +128,26 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段统计服务失败事件
-    it('fail:getFieldStatisticsInfo', function (done) {
-        var fieldStatisticsParameters = new SuperMap.FieldStatisticsParameters({
+    it('fail:getFieldStatisticsInfo', (done) => {
+        var fieldStatisticsParameters = new FieldStatisticsParameters({
             datasource: "World1",
             dataset: "Countries",
             fieldName: "SmID",
             //字段统计方法类型
             statisticMode: [
-                SuperMap.StatisticMode.MAX,
-                SuperMap.StatisticMode.MIN,
-                SuperMap.StatisticMode.SUM,
-                SuperMap.StatisticMode.AVERAGE,
-                SuperMap.StatisticMode.STDDEVIATION,
-                SuperMap.StatisticMode.VARIANCE
+                StatisticMode.MAX,
+                StatisticMode.MIN,
+                StatisticMode.SUM,
+                StatisticMode.AVERAGE,
+                StatisticMode.STDDEVIATION,
+                StatisticMode.VARIANCE
             ]
         });
-        var service = new ol.supermap.FieldService(url, options);
-        service.getFieldStatisticsInfo(fieldStatisticsParameters, function (result) {
+        var service = new FieldService(url, options);
+        service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();

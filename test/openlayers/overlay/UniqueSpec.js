@@ -1,9 +1,10 @@
-var ol = require('openlayers');
-var Unique = require('../../../src/openlayers/overlay/Unique').Unique;
+import ol from 'openlayers';
+import {Unique} from '../../../src/openlayers/overlay/Unique';
+import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
 
-describe('openlayers_Unique', function () {
+describe('openlayers_Unique', () => {
     var testDiv, map, opt_options;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -14,8 +15,6 @@ describe('openlayers_Unique', function () {
         window.document.body.appendChild(testDiv);
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [110.85, 39.79],
                 zoom: 4,
@@ -26,7 +25,7 @@ describe('openlayers_Unique', function () {
         opt_options = {
             map: map,
             attributions: " ",
-            style: new SuperMap.ThemeStyle({
+            style: new ThemeStyle({
                 labelRect: true,
                 fontColor: "#000000",
                 fontWeight: "bolder",
@@ -75,10 +74,10 @@ describe('openlayers_Unique', function () {
             }
         };
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var unique = new Unique('testUniqueLayer', opt_options);
         expect(unique).not.toBeNull();
         expect(unique.themeField).toEqual("aqi");
@@ -94,7 +93,7 @@ describe('openlayers_Unique', function () {
         expect(unique.styleGroups).toBeNull();
     });
 
-    it('createThematicFeature, getStyleByData', function () {
+    it('createThematicFeature, getStyleByData', () => {
         var feature = {
             attributes: {
                 aqi: 25,
@@ -102,7 +101,7 @@ describe('openlayers_Unique', function () {
                 co: 1.365,
             },
             geometry: [90, 30, 10],
-            style: new SuperMap.ThemeStyle({
+            style: new ThemeStyle({
                 labelRect: true,
                 fontColor: "#000000",
                 fontWeight: "bolder",

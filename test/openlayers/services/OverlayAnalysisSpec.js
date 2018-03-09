@@ -1,28 +1,29 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/SpatialAnalystService');
+import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
+import {DatasetOverlayAnalystParameters} from '../../../src/common/iServer/DatasetOverlayAnalystParameters';
+import {OverlayOperationType} from '../../../src/common/REST';
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
-describe('openlayers_SpatialAnalystService_overlayAnalysis', function () {
-    beforeEach(function () {
+describe('openlayers_SpatialAnalystService_overlayAnalysis', () => {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResults = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //叠加分析
-    it('overlayAnalysis', function (done) {
-        var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
+    it('overlayAnalysis', (done) => {
+        var datasetOverlayAnalystParameters = new DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
             tolerance: 0,
-            operation: SuperMap.OverlayOperationType.UNION
+            operation: OverlayOperationType.UNION
         });
-        var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
-        spatialAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
+        var spatialAnalystService = new SpatialAnalystService(sampleServiceUrl);
+        spatialAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, (serviceResult) => {
             serviceResults = serviceResult;
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

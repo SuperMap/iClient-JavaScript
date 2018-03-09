@@ -1,32 +1,36 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/QueryService');
+import ol from 'openlayers';
+import {QueryService} from '../../../src/openlayers/services/QueryService';
+import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
+import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
+import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
+import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
 
 var url = GlobeParameter.WorldURL;
 
-describe('openlayers_QueryService', function () {
+describe('openlayers_QueryService', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //地图bounds查询
-    it('queryByBounds', function (done) {
-        polygon = new ol.geom.Polygon([[[0, 0], [60, 0], [60, 39], [0, 39], [0, 0]]]);
-        var param = new SuperMap.QueryByBoundsParameters({
+    it('queryByBounds', (done) => {
+        var polygon = new ol.geom.Polygon([[[0, 0], [60, 0], [60, 39], [0, 39], [0, 0]]]);
+        var param = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: polygon.getExtent()
         });
-        var queryService = new ol.supermap.QueryService(url);
-        queryService.queryByBounds(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryByBounds(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -59,18 +63,18 @@ describe('openlayers_QueryService', function () {
     });
 
     //地图距离查询服务
-    it('queryByDistance', function (done) {
-        point = new ol.geom.Point([104, 30]);
-        var param = new SuperMap.QueryByDistanceParameters({
+    it('queryByDistance', (done) => {
+        var point = new ol.geom.Point([104, 30]);
+        var param = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
             distance: 10,
             geometry: point
         });
-        var queryService = new ol.supermap.QueryService(url);
-        queryService.queryByDistance(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryByDistance(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -103,18 +107,18 @@ describe('openlayers_QueryService', function () {
     });
 
     //地图SQL查询服务
-    it('queryBySQL', function (done) {
-        var param = new SuperMap.QueryBySQLParameters({
+    it('queryBySQL', (done) => {
+        var param = new QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World.1",
                 attributeFilter: "SMID < 10"
             }
         });
-        var queryService = new ol.supermap.QueryService(url);
-        queryService.queryBySQL(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryBySQL(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -147,17 +151,17 @@ describe('openlayers_QueryService', function () {
     });
 
     //地图几何查询服务
-    it('queryByGeometry', function (done) {
+    it('queryByGeometry', (done) => {
         var polygon = new ol.geom.Polygon([[[0, 0], [-30, 0], [-10, 30], [0, 0]]]);
-        var param = new SuperMap.QueryByGeometryParameters({
+        var param = new QueryByGeometryParameters({
             queryParams: {name: "Capitals@World.1"},
             geometry: polygon
         });
-        var queryService = new ol.supermap.QueryService(url);
-        queryService.queryByGeometry(param, function (result) {
+        var queryService = new QueryService(url);
+        queryService.queryByGeometry(param, (result) => {
             serviceResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();

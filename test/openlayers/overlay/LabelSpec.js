@@ -1,11 +1,15 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/overlay/Label');
-require('../../resources/themeLabelData');
+import ol from 'openlayers';
+import {Label} from '../../../src/openlayers/overlay/Label';
+import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
+import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
+import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
+import '../../resources/themeLabelData';
 
 var url = GlobeParameter.China4326URL;
 var themeSource;
 
-function addFeatures() {
+var addFeatures = () => {
     var labelFeatures = [];
     var feat;
     for (var i = 0; i < themeData.length; i++) {
@@ -13,16 +17,16 @@ function addFeatures() {
         var lng = parseFloat(lonlat[0]);
         var lat = parseFloat(lonlat[1]);
         var text = themeData[i].aqi;
-        feat = new ol.supermap.ThemeFeature([lng, lat, text], themeData[i]);
+        feat = new ThemeFeature([lng, lat, text], themeData[i]);
         labelFeatures.push(feat);
     }
     themeSource.addFeatures(labelFeatures);
 }
 
-describe('openlayers_Label', function () {
+describe('openlayers_Label', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -33,8 +37,6 @@ describe('openlayers_Label', function () {
         window.document.body.appendChild(testDiv);
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [110.85, 39.79],
                 zoom: 4,
@@ -42,19 +44,19 @@ describe('openlayers_Label', function () {
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: url
             })
         });
         map.addLayer(layer);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        themeSource = new ol.source.Label("labelThemeLayer", {
+        themeSource = new Label("labelThemeLayer", {
             map: map,
             attributions: " ",
-            style: new SuperMap.ThemeStyle({
+            style: new ThemeStyle({
                 labelRect: true,
                 fontColor: "#000000",
                 fontWeight: "bolder",
@@ -119,14 +121,14 @@ describe('openlayers_Label', function () {
         });
         map.addLayer(themeLayer);
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         expect(themeSource).not.toBeNull();
         expect(themeSource.defaultStyle).not.toBeNull();
         //此时还没有添加features所以长度应该为0
@@ -141,9 +143,9 @@ describe('openlayers_Label', function () {
     });
 
     //创建专题要素
-    it('createThematicFeature', function (done) {
+    it('createThematicFeature', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feature = themeSource.labelFeatures[0];
             var thematicFeature = themeSource.createThematicFeature(feature);
             expect(themeSource.features.length).toBeGreaterThan(0);
@@ -157,9 +159,9 @@ describe('openlayers_Label', function () {
     });
 
     //重绘所有专题要素
-    it('redrawThematicFeatures', function (done) {
+    it('redrawThematicFeatures', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var bounds = [-180, -90, 90, 180];
             themeSource.redrawThematicFeatures(bounds);
             expect(themeSource).not.toBeNull();
@@ -173,32 +175,32 @@ describe('openlayers_Label', function () {
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素
-    it('getDrawnLabels', function (done) {
+    it('getDrawnLabels', (done) => {
         addFeatures();
-        setTimeout(function () {
-                var labelFeatures = themeSource.labelFeatures;
-                labelFeatures[0].style.minZoomLevel = 4;
-                var feas = themeSource.getDrawnLabels(labelFeatures);
-                expect(feas).not.toBeNull();
-                expect(feas.length).toBeGreaterThan(0);
-                for (var i = 0; i < feas.length; i++) {
-                    expect(feas[i].CLASS_NAME).toEqual("SuperMap.Feature.Vector");
-                    expect(feas[i].attributes).not.toBeNull();
-                    expect(feas[i].geometry).not.toBeNull();
-                    expect(feas[i].geometry.CLASS_NAME).toEqual("SuperMap.Geometry.GeoText");
-                    expect(feas[i].geometry.bounds).not.toBeNull();
-                    expect(feas[i].geometry.id).not.toBeNull();
-                    expect(feas[i].style).not.toBeNull();
-                    expect(feas[i].id).toContain("SuperMap.Feature_");
-                    done();
-                }
+        setTimeout(() => {
+            var labelFeatures = themeSource.labelFeatures;
+            labelFeatures[0].style.minZoomLevel = 4;
+            var feas = themeSource.getDrawnLabels(labelFeatures);
+            expect(feas).not.toBeNull();
+            expect(feas.length).toBeGreaterThan(0);
+            for (var i = 0; i < feas.length; i++) {
+                expect(feas[i].CLASS_NAME).toEqual("SuperMap.Feature.Vector");
+                expect(feas[i].attributes).not.toBeNull();
+                expect(feas[i].geometry).not.toBeNull();
+                expect(feas[i].geometry.CLASS_NAME).toEqual("SuperMap.Geometry.GeoText");
+                expect(feas[i].geometry.bounds).not.toBeNull();
+                expect(feas[i].geometry.id).not.toBeNull();
+                expect(feas[i].style).not.toBeNull();
+                expect(feas[i].id).toContain("SuperMap.Feature_");
+                done();
+            }
         }, 2000)
     });
 
     //根据用户数据（feature）设置专题要素的 Style
-    it('getStyleByData', function (done) {
+    it('getStyleByData', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feat = themeSource.labelFeatures[0];
             var featStyle = themeSource.getStyleByData(feat);
             expect(featStyle).not.toBeNull();
@@ -211,9 +213,9 @@ describe('openlayers_Label', function () {
     });
 
     //设置标签要素的Style
-    it('setLabelsStyle', function (done) {
+    it('setLabelsStyle', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var labelFeatures = themeSource.labelFeatures;
             var labelFeas = themeSource.setLabelsStyle(labelFeatures);
             expect(labelFeas).not.toBeNull();
@@ -232,9 +234,9 @@ describe('openlayers_Label', function () {
     });
 
     //设置标签要素的Style
-    it('setStyle', function (done) {
+    it('setStyle', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feat = themeSource.labelFeatures[0];
             var feature = themeSource.setStyle(feat);
             expect(feature).not.toBeNull();
@@ -250,9 +252,9 @@ describe('openlayers_Label', function () {
     });
 
     //获取标签要素的像素坐标
-    it('getLabelPxLocation', function (done) {
+    it('getLabelPxLocation', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feature = themeSource.labelFeatures[0];
             feature.style.labelXOffset = 1;
             feature.style.labelYOffset = 1;
@@ -265,9 +267,9 @@ describe('openlayers_Label', function () {
     });
 
     //获得标签要素的最终范围 默认getPxBoundsMode = 0
-    it('calculateLabelBounds_getPxBoundsMode = 0', function (done) {
+    it('calculateLabelBounds_getPxBoundsMode = 0', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feature = themeSource.labelFeatures[0];
             var location = themeSource.getLabelPxLocation(feature);
             var boundsQuad = themeSource.calculateLabelBounds(feature, location);
@@ -283,9 +285,9 @@ describe('openlayers_Label', function () {
 
 
     //获得标签要素的最终范围   getPxBoundsMode = 1
-    it('calculateLabelBounds_getPxBoundsMode = 1', function (done) {
+    it('calculateLabelBounds_getPxBoundsMode = 1', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             themeSource.getPxBoundsMode = 1;
             var feature = themeSource.labelFeatures[0];
             feature.style.labelXOffset = 1;
@@ -303,9 +305,9 @@ describe('openlayers_Label', function () {
     });
 
     //获得标签要素的最终范围的另一种算法
-    it('calculateLabelBounds2', function (done) {
+    it('calculateLabelBounds2', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feature = themeSource.labelFeatures[0];
             var location = themeSource.getLabelPxLocation(feature);
             feature.style.fontStyle = "italic";
@@ -378,9 +380,9 @@ describe('openlayers_Label', function () {
     });
 
     //根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等
-    it('getLabelInfo', function (done) {
+    it('getLabelInfo', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feature = themeSource.labelFeatures[0];
             var location = feature.geometry.getCentroid();
             var style = feature.style;
@@ -395,11 +397,11 @@ describe('openlayers_Label', function () {
     });
 
     //旋转bounds
-    it('rotationBounds', function (done) {
+    it('rotationBounds', (done) => {
         addFeatures();
-        setTimeout(function () {
+        setTimeout(() => {
             var feature = themeSource.labelFeatures[0];
-            var bounds = new SuperMap.Bounds(50, 30, 30, 50);
+            var bounds = new Bounds(50, 30, 30, 50);
             var rotationCenterPoi = themeSource.getLabelPxLocation(feature);
             var angle = feature.style.labelRotation;
             var boundsQuad = themeSource.rotationBounds(bounds, rotationCenterPoi, angle);
@@ -414,7 +416,7 @@ describe('openlayers_Label', function () {
     });
 
     //获取一个点绕旋转中心顺时针旋转后的位置  (此方法用于屏幕坐标)
-    it('getRotatedLocation', function () {
+    it('getRotatedLocation', () => {
         var x = 10, y = 10, rx = 15, ry = 10, angle = 5;
         var location = themeSource.getRotatedLocation(x, y, rx, ry, angle);
         expect(location).not.toBeNull();
@@ -423,8 +425,8 @@ describe('openlayers_Label', function () {
     });
 
     //获取避让的信息 quadrilateral.length = 5
-    it('getAvoidInfo_quadrilateral.length = 5', function () {
-        var bounds = new SuperMap.Bounds(35, 40, 40, 45);
+    it('getAvoidInfo_quadrilateral.length = 5', () => {
+        var bounds = new Bounds(35, 40, 40, 45);
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},
@@ -439,8 +441,8 @@ describe('openlayers_Label', function () {
     });
 
     // 获取避让的信息 quadrilateral.length != 5
-    it('getAvoidInfo_quadrilateral.length != 5', function () {
-        var bounds = new SuperMap.Bounds(35, 40, 40, 45);
+    it('getAvoidInfo_quadrilateral.length != 5', () => {
+        var bounds = new Bounds(35, 40, 40, 45);
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},
@@ -450,7 +452,7 @@ describe('openlayers_Label', function () {
     });
 
     //判断两个四边形是否有压盖  原数据quadLen = 5 && quad2Len = 5，此处另测 ！= 5 的情况
-    it('isQuadrilateralOverLap_quadLen != 5', function () {
+    it('isQuadrilateralOverLap_quadLen != 5', () => {
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},

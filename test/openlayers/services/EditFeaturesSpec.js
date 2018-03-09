@@ -1,5 +1,8 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/FeatureService');
+import ol from 'openlayers';
+import {FeatureService} from '../../../src/openlayers/services/FeatureService';
+import {EditFeaturesParameters} from '../../../src/common/iServer/EditFeaturesParameters';
+import {GetFeaturesByIDsParameters} from '../../../src/common/iServer/GetFeaturesByIDsParameters';
+
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var options = {
@@ -7,35 +10,35 @@ var options = {
 };
 var id, id1, id2;
 var originFeature = null, updateFeature = null;
-describe('openlayers_FeatureService_editFeatures', function () {
+describe('openlayers_FeatureService_editFeatures', () => {
     var serviceResult;
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //地物编辑服务 添加一个地物
-    it('addFeature', function (done) {
+    it('addFeature', (done) => {
         var marker = new ol.Feature(new ol.geom.Point([118.05408801141, 58.837029131724]));
         marker.setProperties({POP: 1, CAPITAL: 'test'});
         updateFeature = marker;
-        var addFeatureParams = new SuperMap.EditFeaturesParameters({
+        var addFeatureParams = new EditFeaturesParameters({
             features: marker,
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",
             returnContent: true
         });
-        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
-        featureService.editFeatures(addFeatureParams, function (result) {
+        var featureService = new FeatureService(featureServiceURL, options);
+        featureService.editFeatures(addFeatureParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(featureService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -59,12 +62,12 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     //地物编辑服务 批量添加地物   isUseBatch为true
-    it('addFeatures_isUseBatch:true', function (done) {
+    it('addFeatures_isUseBatch:true', (done) => {
         var marker = new ol.Feature(new ol.geom.Point([100, 58]));
         var marker1 = new ol.Feature(new ol.geom.Point([120, 42]));
         marker.setProperties({POP: 1, CAPITAL: 'test'});
         marker1.setProperties({POP: 1, CAPITAL: 'test'});
-        var addFeatureParams = new SuperMap.EditFeaturesParameters({
+        var addFeatureParams = new EditFeaturesParameters({
             features: [marker, marker1],
             dataSourceName: "World",
             dataSetName: "Capitals",
@@ -72,11 +75,11 @@ describe('openlayers_FeatureService_editFeatures', function () {
             returnContent: true,
             isUseBatch: true
         });
-        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
-        featureService.editFeatures(addFeatureParams, function (result) {
+        var featureService = new FeatureService(featureServiceURL, options);
+        featureService.editFeatures(addFeatureParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(featureService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -104,18 +107,18 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     //地物编辑服务 删除地物
-    it('deleteFeatures', function (done) {
-        var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
+    it('deleteFeatures', (done) => {
+        var deleteFeatureParams = new EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [id, id1, id2],
             editType: "delete"
         });
-        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
-        featureService.editFeatures(deleteFeatureParams, function (result) {
+        var featureService = new FeatureService(featureServiceURL, options);
+        featureService.editFeatures(deleteFeatureParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(featureService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -135,19 +138,19 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     //地物编辑服务 删除地物失败事件
-    it('deleteFeature_failed', function (done) {
+    it('deleteFeature_failed', (done) => {
         id = id + 3;
-        var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
+        var deleteFeatureParams = new EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [id],
             editType: "delete"
         });
-        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
-        featureService.editFeatures(deleteFeatureParams, function (result) {
+        var featureService = new FeatureService(featureServiceURL, options);
+        featureService.editFeatures(deleteFeatureParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(featureService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -165,18 +168,18 @@ describe('openlayers_FeatureService_editFeatures', function () {
 
     //更新地物
     // 首先确认从服务器上获取一个有效要素
-    it('getFeatureForUpdate', function (done) {
+    it('getFeatureForUpdate', (done) => {
         var getFeatureResult = null;
-        var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
+        var getFeaturesByIDsParams = new GetFeaturesByIDsParameters({
             returnContent: true,
             datasetNames: ["Jingjin:Landuse_R"],
             IDs: [1]
         });
-        var getFeaturesByIDsService = new ol.supermap.FeatureService(editServiceURL);
-        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = new FeatureService(editServiceURL);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, (result) => {
             getFeatureResult = result
         });
-        setTimeout(function () {
+        setTimeout(() => {
             if (getFeatureResult != null) {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeatureResult.type).toBe("processCompleted");
@@ -193,23 +196,23 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     // 将上面获取的要素update
-    it('updateFeature', function (done) {
+    it('updateFeature', (done) => {
         var updateFeatureResult = null;
         if (originFeature != null) {
             var random = parseInt(Math.random() * 10000000);
             originFeature.properties.LANDTYPE = "用材林" + random;
             var data = new ol.format.GeoJSON().readFeatures(originFeature);
-            var updateFeaturesService = new ol.supermap.FeatureService(editServiceURL);
-            var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
+            var updateFeaturesService = new FeatureService(editServiceURL);
+            var updateFeaturesParams = new EditFeaturesParameters({
                 dataSourceName: "Jingjin",
                 dataSetName: "Landuse_R",
                 features: data,
                 editType: "update"
             });
-            updateFeaturesService.editFeatures(updateFeaturesParams, function (result) {
+            updateFeaturesService.editFeatures(updateFeaturesParams, (result) => {
                 updateFeatureResult = result
             });
-            setTimeout(function () {
+            setTimeout(() => {
                 try {
                     expect(updateFeaturesService).not.toBeNull();
                     expect(updateFeatureResult).not.toBeNull();

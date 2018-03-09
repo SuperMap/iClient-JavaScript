@@ -1,17 +1,21 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/core/Util.js');
+import {Util} from '../../../src/openlayers/core/Util.js';
+import {MultiPolygon} from '../../../src/common/commontypes/geometry/MultiPolygon';
+import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
+import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
 
-describe('openlayers_Util', function () {
+describe('openlayers_Util', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('toGeoJSON', function () {
+    it('toGeoJSON', () => {
         var smObj = [{
             attributes: {
                 SmArea: "1.6060069623493825E15",
@@ -46,7 +50,7 @@ describe('openlayers_Util', function () {
             searchValues: "",
             type: "REGION"
         }];
-        var result = ol.supermap.Util.toGeoJSON(smObj);
+        var result = Util.toGeoJSON(smObj);
         expect(result).not.toBeNull();
         expect(typeof result).toBe('object');
         expect(result.type).not.toBeNull();
@@ -59,7 +63,7 @@ describe('openlayers_Util', function () {
         expect(result.features[0].properties.type).toBe("REGION");
     });
 
-    it('toSuperMapGeometry', function () {
+    it('toSuperMapGeometry', () => {
         var geoJSON = {
             "type": "FeatureCollection",
             "features": [{
@@ -79,39 +83,39 @@ describe('openlayers_Util', function () {
                 }
             }]
         };
-        var result = ol.supermap.Util.toSuperMapGeometry(geoJSON);
+        var result = Util.toSuperMapGeometry(geoJSON);
         expect(result).not.toBeNull();
-        expect(result instanceof SuperMap.Geometry.MultiPolygon).toBeTruthy();
+        expect(result instanceof MultiPolygon).toBeTruthy();
         expect(result.id).not.toBeNull();
         expect(result.components).not.toBeNull();
         expect(result.components.length).toBe(1);
         var polygon = result.components[0];
-        expect(polygon instanceof SuperMap.Geometry.Polygon).toBeTruthy();
+        expect(polygon instanceof Polygon).toBeTruthy();
         expect(polygon.components).not.toBeNull();
         expect(polygon.components.length).toBe(1);
         var lineString = polygon.components[0];
-        expect(lineString instanceof SuperMap.Geometry.LinearRing).toBeTruthy();
+        expect(lineString instanceof LinearRing).toBeTruthy();
         expect(lineString.components).not.toBeNull();
         expect(lineString.components.length).toBe(3);
         var point = lineString.components[0];
-        expect(point instanceof SuperMap.Geometry.Point).toBeTruthy();
+        expect(point instanceof Point).toBeTruthy();
         expect(point.x).toBe(-2);
         expect(point.y).toBe(258);
     });
 
-    it('resolutionToScale', function () {
+    it('resolutionToScale', () => {
         var resolution = 76.43702828517625;
         var dpi = 96;
         var mapUnit = "METER";
-        var result = ol.supermap.Util.resolutionToScale(resolution, dpi, mapUnit);
+        var result = Util.resolutionToScale(resolution, dpi, mapUnit);
         expect(result).toBe(0.000003461454994642238);
     });
 
-    it('toSuperMapBounds', function () {
+    it('toSuperMapBounds', () => {
         var bounds = [-2640403.6321084504, 1873792.1034850003, 3247669.390292245, 5921501.395578556];
-        var result = ol.supermap.Util.toSuperMapBounds(bounds);
+        var result = Util.toSuperMapBounds(bounds);
         expect(result).not.toBeNull();
-        expect(result instanceof SuperMap.Bounds).toBeTruthy();
+        expect(result instanceof Bounds).toBeTruthy();
         expect(result.bottom).toBe(1873792.103485);
         expect(result.left).toBe(-2640403.6321085);
         expect(result.right).toBe(3247669.3902922);
@@ -119,41 +123,41 @@ describe('openlayers_Util', function () {
     });
 
 
-    it('scaleToResolution', function () {
+    it('scaleToResolution', () => {
         var scale = 0.000003461454994642238;
         var dpi = 96;
         var mapUnit = "METER";
-        var result = ol.supermap.Util.scaleToResolution(scale, dpi, mapUnit);
+        var result = Util.scaleToResolution(scale, dpi, mapUnit);
         expect(result).not.toBeNull();
         expect(result).toBe(76.43702828517624);
     });
 
 
-    it('getMeterPerMapUnit', function () {
+    it('getMeterPerMapUnit', () => {
         var mapUnit = "METER";
-        var result = ol.supermap.Util.getMeterPerMapUnit(mapUnit);
+        var result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(1);
         mapUnit = "DEGREE";
-        result = ol.supermap.Util.getMeterPerMapUnit(mapUnit);
+        result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(111319.49079327358);
         mapUnit = "KILOMETER";
-        result = ol.supermap.Util.getMeterPerMapUnit(mapUnit);
+        result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(0.001);
         mapUnit = "INCH";
-        result = ol.supermap.Util.getMeterPerMapUnit(mapUnit);
+        result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(39.37007886725774);
         mapUnit = "FOOT";
-        result = ol.supermap.Util.getMeterPerMapUnit(mapUnit);
+        result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(0.3048);
     });
 
-    it('isArray', function () {
+    it('isArray', () => {
         var obj = ["metaData", "-2107465189", "1.0"];
-        var result = ol.supermap.Util.isArray(obj);
+        var result = Util.isArray(obj);
         expect(result).toBeTruthy();
     });
 
-    it('Csv2GeoJSON', function () {
+    it('Csv2GeoJSON', () => {
         var csv = `type,lon,lat
                 Point,106.472739,29.561524
                 ↵Point,106.471445,29.563047
@@ -169,7 +173,7 @@ describe('openlayers_Util', function () {
             deleteDoubleQuotes: true,
             firstLineTitles: true
         };
-        var result = ol.supermap.Util.Csv2GeoJSON(csv, option);
+        var result = Util.Csv2GeoJSON(csv, option);
         expect(typeof result).toBe('object');
         expect(result.type).toBe("FeatureCollection");
         expect(result.features).not.toBeNull();
@@ -186,10 +190,10 @@ describe('openlayers_Util', function () {
         expect(JSON.stringify(feature.geometry.coordinates)).toBe("[106.472739,29.561524]");
     });
 
-    it('createCanvasContext2D', function () {
+    it('createCanvasContext2D', () => {
         var opt_width = 360;
         var opt_height = 580;
-        var result = ol.supermap.Util.createCanvasContext2D(opt_width, opt_height);
+        var result = Util.createCanvasContext2D(opt_width, opt_height);
         expect(result).not.toBeNull();
         expect(result instanceof CanvasRenderingContext2D).toBeTruthy();
         expect(result.canvas).not.toBeNull();

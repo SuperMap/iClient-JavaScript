@@ -1,32 +1,37 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/SpatialAnalystService');
+import ol from 'openlayers';
+import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
+import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
+import {QueryService} from '../../../src/openlayers/services/QueryService';
+import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+
 
 var originalTimeout, serviceResults;
 var changchunBaseUrl = GlobeParameter.tileSetsURL;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
 
-describe('openlayers_SpatialAnalystService_routeCalculateMeasure', function () {
-    beforeEach(function () {
+describe('openlayers_SpatialAnalystService_routeCalculateMeasure', () => {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResults = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //点定里程
-    it('routeCalculateMeasure', function (done) {
-        queryBySQLService = new ol.supermap.QueryService(changchunBaseUrl);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+    it('routeCalculateMeasure', (done) => {
+        var queryBySQLService = new QueryService(changchunBaseUrl);
+        var queryBySQLParams = new QueryBySQLParameters({
             queryParams: [
-                new SuperMap.FilterParameter({
+                new FilterParameter({
                     name: "RouteDT_road@Changchun",
                     attributeFilter: "RouteID=1690"
                 })
             ]
         });
-        queryBySQLService.queryBySQL(queryBySQLParams, function (SQLQueryServiceResult) {
+        queryBySQLService.queryBySQL(queryBySQLParams, (SQLQueryServiceResult) => {
             var queryBySQLResult = SQLQueryServiceResult.result.recordsets[0].features;
             //将形成路由的点提出来，为了构造下面点定里程服务sourceRoute
             var pointsList = [];
@@ -38,18 +43,18 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', function () {
             //在组成路由的点中选取一个查询点(数组中第8个点),并添加到地图上
             var point = new ol.geom.Point([routeObj[7][0], routeObj[7][1]]);
             //点定里程服务
-            routeCalculateMeasureService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-            routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
+            var routeCalculateMeasureService = new SpatialAnalystService(changchunServiceUrl);
+            var routeCalculateMeasureParameters = new RouteCalculateMeasureParameters({
                 "sourceRoute": routeLine,   //必选,路由类型
                 "point": point,            //必选
                 "tolerance": 10,
                 "isIgnoreGap": false
             });
-            routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCaculateServiceResult) {
+            routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, (routeCaculateServiceResult) => {
                 serviceResults = routeCaculateServiceResult;
             });
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();

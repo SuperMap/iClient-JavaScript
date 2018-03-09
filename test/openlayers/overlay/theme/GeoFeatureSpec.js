@@ -1,9 +1,9 @@
-var ol = require('openlayers');
-require('../../../../src/openlayers/overlay/theme/GeoFeature');
+import ol from 'openlayers';
+import {GeoFeature} from '../../../../src/openlayers/overlay/theme/GeoFeature';
 
-describe('openlayers_GeoFeature', function () {
-    var originalTimeout, map;
-    beforeAll(function () {
+describe('openlayers_GeoFeature', () => {
+    var originalTimeout, map, testDiv;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -16,8 +16,6 @@ describe('openlayers_GeoFeature', function () {
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -32,14 +30,14 @@ describe('openlayers_GeoFeature', function () {
         });
         map.addLayer(layer);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
@@ -237,8 +235,8 @@ describe('openlayers_GeoFeature', function () {
         "ID": 1
     }];
 
-    it("initialize, destroy", function () {
-        var geoFeature = new ol.source.GeoFeature("ThemeLayer", {
+    it("initialize, destroy", () => {
+        var geoFeature = new GeoFeature("ThemeLayer", {
             map: map,
             features: features,
             style: {
@@ -302,8 +300,8 @@ describe('openlayers_GeoFeature', function () {
         expect(geoFeature.isAllowFeatureStyle).toBeNull();
     });
 
-    it("removeAllFeatures", function () {
-        var geoFeature = new ol.source.GeoFeature("ThemeLayer", {
+    it("removeAllFeatures", () => {
+        var geoFeature = new GeoFeature("ThemeLayer", {
             map: map,
             features: features,
             style: {
@@ -363,8 +361,8 @@ describe('openlayers_GeoFeature', function () {
         expect(geoFeature.cacheFields.length).toBe(0)
     });
 
-    it("clear", function () {
-        var geoFeature = new ol.source.GeoFeature("ThemeLayer", {
+    it("clear", () => {
+        var geoFeature = new GeoFeature("ThemeLayer", {
             map: map,
             features: features,
             style: {

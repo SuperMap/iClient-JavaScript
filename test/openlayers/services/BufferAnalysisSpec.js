@@ -1,46 +1,54 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/SpatialAnalystService');
-var request = require('request');
+import ol from 'openlayers';
+import request from 'request';
+import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
+import {DatasetBufferAnalystParameters} from '../../../src/common/iServer/DatasetBufferAnalystParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {BufferSetting} from '../../../src/common/iServer/BufferSetting';
+import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
+import {GeometryBufferAnalystParameters} from '../../../src/common/iServer/GeometryBufferAnalystParameters';
+import {BufferDistance} from '../../../src/common/iServer/BufferDistance';
+import {BufferEndType} from '../../../src/common/REST';
+import {DataReturnMode} from '../../../src/common/REST';
 
 var originalTimeout, serviceResult;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
 
-describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
-    beforeEach(function () {
+describe('openlayers_SpatialAnalystService_bufferAnalysis', () => {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResult = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "BufferAnalystByDatasets_olTest";
     //缓冲区分析
-    it('bufferAnalysis_byDataset_DATASET_ONLY', function (done) {
-        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    it('bufferAnalysis_byDataset_DATASET_ONLY', (done) => {
+        var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10
             }),
-            resultSetting: new SuperMap.DataReturnOption({
+            resultSetting: new DataReturnOption({
                 expectCount: 2000,
                 dataset: resultDataset,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
+                dataReturnMode: DataReturnMode.DATASET_ONLY,
                 deleteExistResultDataset: true
             })
         });
-        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (result) {
+        var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe('processCompleted');
             expect(serviceResult.result.succeed).toBeTruthy();
@@ -50,24 +58,24 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     //缓冲区分析
-    it('bufferAnalysis_byDataset_RECORDSET_ONLY', function (done) {
-        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    it('bufferAnalysis_byDataset_RECORDSET_ONLY', (done) => {
+        var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10
             })
         });
-        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (result) {
+        var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceResult).not.toBeNull();
             expect(serviceResult.type).toBe('processCompleted');
             expect(serviceResult.result.recordset.features).not.toBeNull();
@@ -75,7 +83,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
         }, 8000);
     });
 
-    it('bufferAnalysis_byGeometry', function (done) {
+    it('bufferAnalysis_byGeometry', (done) => {
         var pointsList = [
             [2823.940, -4690.000],
             [3448.940, -4690.301],
@@ -112,20 +120,20 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
             [8554.893, -4261.485]
         ];
         var roadLine = new ol.geom.LineString(pointsList);
-        var geoBufferAnalystParams = new SuperMap.GeometryBufferAnalystParameters({
+        var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
-                leftDistance: new SuperMap.BufferDistance({value: 250}),
-                rightDistance: new SuperMap.BufferDistance({value: 250}),
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
+                leftDistance: new BufferDistance({value: 250}),
+                rightDistance: new BufferDistance({value: 250}),
                 semicircleLineSegment: 10
             })
         });
-        var bufferAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (result) {
+        var bufferAnalystService = new SpatialAnalystService(changchunServiceUrl);
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, (result) => {
             serviceResult = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(bufferAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -151,7 +159,7 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
         }, 8000);
     });
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datachangchunURL + resultDataset;
         request.delete(testResult);
         done();

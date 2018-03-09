@@ -1,9 +1,10 @@
-var ol = require('openlayers');
-require('../../../../src/openlayers/overlay/theme/Theme');
+import ol from 'openlayers';
+import {Theme} from '../../../../src/openlayers/overlay/theme/Theme';
+import {TileSuperMapRest} from '../../../../src/openlayers/mapping/TileSuperMapRest';
 
-describe('openlayers_Theme', function () {
-    var originalTimeout, map;
-    beforeAll(function () {
+describe('openlayers_Theme', () => {
+    var originalTimeout, map, testDiv;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -16,8 +17,6 @@ describe('openlayers_Theme', function () {
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -26,20 +25,20 @@ describe('openlayers_Theme', function () {
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: baseUrl
             })
         });
         map.addLayer(layer);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
@@ -235,9 +234,9 @@ describe('openlayers_Theme', function () {
         "ID": 1
     }];
 
-    it("initialize", function () {
-        var iClientFeatures = ol.source.Theme.prototype.toiClientFeature(features);
-        var theme = new ol.source.Theme("ThemeLayer", {
+    it("initialize", () => {
+        var iClientFeatures = Theme.prototype.toiClientFeature(features);
+        var theme = new Theme("ThemeLayer", {
             map: map,
             features: iClientFeatures,
             style: {

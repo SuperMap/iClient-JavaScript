@@ -1,14 +1,11 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/mapping/WebMap');
-require('../../../src/common/util/FetchRequest');
+import {WebMap} from '../../../src/openlayers/mapping/WebMap';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import '../../resources/WebMap.js';
 
-describe('openlayers_WebMap', function () {
-    var originalTimeout;
-    var testDiv;
+describe('openlayers_WebMap', () => {
+    var originalTimeout, testDiv, webMap;
     var server = "http://supermapiserver";
-    var webMap;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -20,23 +17,23 @@ describe('openlayers_WebMap', function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         webMap = null;
         window.document.body.removeChild(testDiv);
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('initialize_SUPERMAP_REST', function (done) {
+    it('initialize_SUPERMAP_REST', (done) => {
         var id = 55;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_SUPERMAP_REST;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -75,17 +72,17 @@ describe('openlayers_WebMap', function () {
         }, 1000)
     });
 
-    it('initialize_TIANDITU_VEC', function (done) {
+    it('initialize_TIANDITU_VEC', (done) => {
         var id = 568205813;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_TIANDITU_VEC;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -124,17 +121,17 @@ describe('openlayers_WebMap', function () {
         }, 1000);
     });
 
-    it('initialize_TIANDITU_IMG', function (done) {
+    it('initialize_TIANDITU_IMG', (done) => {
         var id = 567946816;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_TIANDITU_IMG;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -173,17 +170,17 @@ describe('openlayers_WebMap', function () {
         }, 1000);
     });
 
-    it('initialize_TIANDITU_TER', function (done) {
+    it('initialize_TIANDITU_TER', (done) => {
         var id = 2048499925;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_TIANDITU_TER;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -222,17 +219,17 @@ describe('openlayers_WebMap', function () {
         }, 1000);
     });
 
-    it('initialize_BAIDU', function (done) {
+    it('initialize_BAIDU', (done) => {
         var id = 1123771109;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_BAIDU;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -271,17 +268,17 @@ describe('openlayers_WebMap', function () {
         }, 1000);
     });
 
-    it('initialize_WMS', function (done) {
+    it('initialize_WMS', (done) => {
         var id = 419;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_WMS;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toEqual(419);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -320,17 +317,17 @@ describe('openlayers_WebMap', function () {
         }, 1000)
     });
 
-    it('initialize_CLOUD', function (done) {
+    it('initialize_CLOUD', (done) => {
         var id = 359319824;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_CLOUD;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -369,17 +366,17 @@ describe('openlayers_WebMap', function () {
         }, 1000)
     });
 
-    it('CLOUD add FEATURE_LAYER', function (done) {
+    it('CLOUD add FEATURE_LAYER', (done) => {
         var id = 840;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_FEATURE_LAYER;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -413,17 +410,17 @@ describe('openlayers_WebMap', function () {
         }, 2000)
     });
 
-    it('SUPERMAP_REST add MARKER_LAYER', function (done) {
+    it('SUPERMAP_REST add MARKER_LAYER', (done) => {
         var id = 370;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_MARKER_LAYER;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -458,17 +455,17 @@ describe('openlayers_WebMap', function () {
         }, 2000)
     });
 
-    it('createThemeLayer_VectorThemeLayer', function (done) {
+    it('createThemeLayer_VectorThemeLayer', (done) => {
         var id = 2489;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_VectorThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -503,17 +500,17 @@ describe('openlayers_WebMap', function () {
         }, 2000)
     });
 
-    it('createThemeLayer_LabelLayer', function (done) {
+    it('createThemeLayer_LabelLayer', (done) => {
         var id = 2489;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_LabelThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toBe(id);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -548,9 +545,10 @@ describe('openlayers_WebMap', function () {
     });
 
     //有缺陷，待修改
-    xit('getResolutionsFromScales', function () {
-        webMap = new ol.supermap.WebMap();
-        var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7], units = "meter";
+    xit('getResolutionsFromScales', () => {
+        webMap = new WebMap();
+        var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7],
+            units = "meter";
         var resolutions = webMap.getResolutionsFromScales(scales, 96, units);
         expect(resolutions.length).toEqual(5);
         expect(resolutions[0]).toEqual(78271.5169628125);
@@ -560,17 +558,17 @@ describe('openlayers_WebMap', function () {
         expect(resolutions[4]).toEqual(4891.969810175781);
     });
     //没有走入分支
-    xit('initialize_WMTS', function (done) {
+    xit('initialize_WMTS', (done) => {
         var id = 612;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_WMTS;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap.id).toEqual(612);
             expect(webMap.credentialKey).toBe("key");
             expect(webMap.credentialValue).toBeUndefined();
@@ -610,51 +608,51 @@ describe('openlayers_WebMap', function () {
         }, 2000)
     });
     //没有走入分支
-    xit('createThemeLayer_HeatLayer', function (done) {
+    xit('createThemeLayer_HeatLayer', (done) => {
         var id = 1765;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_HeatThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap).not.toBeNull();
             webMap = null;
             done();
         }, 1000)
     });
     //没有走入分支
-    xit('createThemeLayer_UniqueLayer', function (done) {
+    xit('createThemeLayer_UniqueLayer', (done) => {
         var id = 1765;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_UniqueThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap).not.toBeNull();
             webMap = null;
             done();
         }, 1000)
     });
     //没有走入分支
-    xit('createThemeLayer_RangeLayer', function (done) {
+    xit('createThemeLayer_RangeLayer', (done) => {
         var id = 1959;
-        spyOn(FetchRequest, 'get').and.callFake(function (url) {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
                 var escapedJson = webMap_RangeThemeLayer;
                 return Promise.resolve(new Response(escapedJson));
             }
             return Promise.resolve();
         });
-        webMap = new ol.supermap.WebMap(id, {server: server});
-        setTimeout(function () {
+        webMap = new WebMap(id, {server: server});
+        setTimeout(() => {
             expect(webMap).not.toBeNull();
             webMap = null;
             done();

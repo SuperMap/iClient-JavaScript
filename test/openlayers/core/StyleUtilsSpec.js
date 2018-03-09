@@ -1,33 +1,36 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/core/StyleUtils.js');
-require('../../resources/china_cartoCSS.js');
-require('../../resources/china_layers.js');
-require('../../resources/iPortal_maps.js');
-require('fetch-ie8');
+import ol from 'openlayers';
+import {StyleUtils} from '../../../src/openlayers/core/StyleUtils.js';
+import {Util} from '../../../src/openlayers/core/Util.js';
+import {CartoCSS} from '../../../src/common/style/CartoCSS.js';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import '../../resources/china_cartoCSS.js';
+import '../../resources/china_layers.js';
+import '../../resources/iPortal_maps.js';
+import 'fetch-ie8';
+
 var fetch = window.fetch;
-var StyleUtils = ol.supermap.StyleUtils;
 var layersInfo, cartoCSSShaders, iPortalLayersInfo;
 var mapUrl = GlobeParameter.ChinaURL;
-describe('openlayers_StyleUtils', function () {
+describe('openlayers_StyleUtils', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    beforeAll(function () {
+    beforeAll(() => {
         layersInfo = initLayersInfo();
         cartoCSSShaders = initCartoCSSShaders();
         iPortalLayersInfo = initIPortalLayersInfo();
     });
 
     //测试从图层信息中获取style
-    it('getValidStyleFromLayerInfo_point', function (done) {
+    it('getValidStyleFromLayerInfo_point', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "China_PreCenCity_pt@China";
                 var layerInfo = getLayerInfo(layerName);
@@ -52,10 +55,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从图层信息中获取style
-    it('getValidStyleFromLayerInfo_polyLine', function (done) {
+    it('getValidStyleFromLayerInfo_polyLine', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "Main_Road_L@China#1#1";
                 var layerInfo = getLayerInfo(layerName);
@@ -81,10 +84,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从图层信息中获取style
-    it('getValidStyleFromLayerInfo_polygon', function (done) {
+    it('getValidStyleFromLayerInfo_polygon', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1686&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "World_Division_pl@China";
                 var layerInfo = getLayerInfo(layerName);
@@ -114,10 +117,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从图层信息中获取style
-    it('getValidStyleFromLayerInfo_text1', function (done) {
+    it('getValidStyleFromLayerInfo_text1', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1689&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "District_pt@POI_Other#2";
                 var layerInfo = getLayerInfo(layerName);
@@ -143,10 +146,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从图层信息中获取style
-    it('getValidStyleFromLayerInfo_text2', function (done) {
+    it('getValidStyleFromLayerInfo_text2', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=28&y=13&width=256&height=256&scale=5.408523429128511e-8";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "World_Ocean_txt@China";
                 var layerInfo = getLayerInfo(layerName);
@@ -172,10 +175,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_point1', function (done) {
+    it('getStyleFromCarto_point1', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "China_PreCenCity_pt@China";
                 var feature = getFeature(layerName, features);
@@ -200,10 +203,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_point2', function (done) {
+    it('getStyleFromCarto_point2', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1687&y=774&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "Airport_pt@POI_Other";
                 var feature = getFeature(layerName, features);
@@ -228,10 +231,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_polyLine', function (done) {
+    it('getStyleFromCarto_polyLine', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "Main_Road_L@China#1#1";
                 var feature = getFeature(layerName, features);
@@ -257,10 +260,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_polygon', function (done) {
+    it('getStyleFromCarto_polygon', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1686&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "World_Division_pl@China";
                 var feature = getFeature(layerName, features);
@@ -287,10 +290,10 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_text', function (done) {
+    it('getStyleFromCarto_text', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1689&y=775&width=256&height=256&scale=0.00000346145499464224";
         var request = requestFeature(tileFeatureUrl);
-        request.then(function (features) {
+        request.then((features) => {
             try {
                 var layerName = "District_pt@POI_Other#2";
                 var feature = getFeature(layerName, features);
@@ -330,11 +333,11 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从iPortalLayers中获取style
-    it('getStyleFromiPortalStyle_point', function (done) {
+    it('getStyleFromiPortalStyle_point', (done) => {
         var key = 'iPortalMaps44';
         var tileFormat = new ol.format.GeoJSON();
         var layerFeatures = iPortalLayersInfo[key][2].features;
-        var features = tileFormat.readFeatures(ol.supermap.Util.toGeoJSON(layerFeatures));
+        var features = tileFormat.readFeatures(Util.toGeoJSON(layerFeatures));
         try {
             var feature = features[0];
             var iPortalStyle = iPortalLayersInfo[key][2].style;
@@ -357,11 +360,11 @@ describe('openlayers_StyleUtils', function () {
     });
 
     //测试从iPortalLayers中获取style
-    it('getStyleFromiPortalStyle_polyLine', function (done) {
+    it('getStyleFromiPortalStyle_polyLine', (done) => {
         var key = 'iPortalMaps47';
         var tileFormat = new ol.format.GeoJSON();
         var layerFeatures = iPortalLayersInfo[key][3].features;
-        var features = tileFormat.readFeatures(ol.supermap.Util.toGeoJSON(layerFeatures));
+        var features = tileFormat.readFeatures(Util.toGeoJSON(layerFeatures));
         try {
             var feature = features[0];
             var iPortalStyle = iPortalLayersInfo[key][3].style;
@@ -386,7 +389,7 @@ describe('openlayers_StyleUtils', function () {
     });
 });
 
-function initLayersInfo() {
+var initLayersInfo = () => {
     var layersInfo = {};
     var layers = ChinaLayersInfo.subLayers.layers;
     for (var j = 0, len1 = layers.length; j < len1; j++) {
@@ -394,9 +397,9 @@ function initLayersInfo() {
         layersInfo[layers[j].name] = layers[j];
     }
     return layersInfo;
-}
+};
 
-function initCartoCSSShaders() {
+var initCartoCSSShaders = () => {
     var cartoCss;
     if (ChinaCartoCSS.style && ChinaCartoCSS.type === 'cartoCSS') {
         cartoCss = ChinaCartoCSS.style;
@@ -411,9 +414,9 @@ function initCartoCSSShaders() {
         //将zoom转化为scale，以免引起混淆
         cartoCss = cartoCss.replace(/\[zoom/gi, "[scale");
     }
-    var cartoShadersArray = new SuperMap.CartoCSS(cartoCss).getShaders();
+    var cartoShadersArray = new CartoCSS(cartoCss).getShaders();
     var cartoShaders = {};
-    cartoShadersArray.map(function (cartoShader) {
+    cartoShadersArray.map((cartoShader) => {
         cartoShaders[cartoShader.elements[0].clean] = cartoShaders[cartoShader.elements[0].clean] || {};
         cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] =
             cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] || [];
@@ -422,7 +425,7 @@ function initCartoCSSShaders() {
     return cartoShaders;
 }
 
-function initIPortalLayersInfo() {
+var initIPortalLayersInfo = () => {
     iPortalLayersInfo = {};
     iPortalLayersInfo['iPortalMaps44'] = iPortalMaps44.layers;
 
@@ -431,7 +434,7 @@ function initIPortalLayersInfo() {
 }
 
 //解析测试用layerInfo
-function getLayerInfo(layerName) {
+var getLayerInfo = (layerName) => {
     if (layersInfo === undefined) {
         return null;
     }
@@ -461,7 +464,7 @@ function getLayerInfo(layerName) {
     return layerInfo_simple;
 }
 
-function getFeature(layerName, features) {
+var getFeature = (layerName, features) => {
     for (var key in features) {
         var feature = features[key];
         if (feature.getProperties().layerName === layerName) {
@@ -470,7 +473,7 @@ function getFeature(layerName, features) {
     }
 }
 
-function getShader(layerName) {
+var getShader = (layerName) => {
     var layer = layerName.replace(/@/g, '___').replace(/#/g, '___');
     if (cartoCSSShaders) {
         return cartoCSSShaders[layer]['__default__'][0];
@@ -478,35 +481,35 @@ function getShader(layerName) {
 }
 
 //请求tileFeature获取测试用ol feature对象
-function requestFeature(url) {
+var requestFeature = (url) => {
     var tileFormat = new ol.format.GeoJSON();
     return fetch(url, {method: 'GET', timeout: 10000})
-        .then(function (response) {
+        .then((response) => {
             return response.json();
-        }).then(function (tileFeatureJson) {
+        }).then((tileFeatureJson) => {
             var features = [];
-            tileFeatureJson.recordsets.map(function (recordset) {
-                recordset.features.map(function (feature) {
+            tileFeatureJson.recordsets.map((recordset) => {
+                recordset.features.map((feature) => {
                     var points = [];
                     var startIndex = 0;
                     for (var i = 0; i < feature.geometry.parts.length; i++) {
                         var partPointsLength = feature.geometry.parts[i] * 2;
                         for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
-                            points.push(new SuperMap.Geometry.Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
+                            points.push(new Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
                         }
                         startIndex += partPointsLength;
                     }
                     feature.geometry.points = points;
                 })
             });
-            tileFeatureJson.recordsets.map(function (recordset) {
-                recordset.features.map(function (feature) {
+            tileFeatureJson.recordsets.map((recordset) => {
+                recordset.features.map((feature) => {
                     feature.layerName = recordset.layerName;
                     feature.type = feature.geometry.type;
                     features.push(feature);
                 })
             });
-            features = tileFormat.readFeatures(ol.supermap.Util.toGeoJSON(features));
+            features = tileFormat.readFeatures(Util.toGeoJSON(features));
             return features;
         });
 }

@@ -1,28 +1,30 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/SpatialAnalystService');
+import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
+import {GeoRelationAnalystParameters} from '../../../src/common/iServer/GeoRelationAnalystParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {SpatialRelationType} from '../../../src/common/REST';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
-describe('openlayers_SpatialAnalystService_geoRelationAnalysis', function () {
-    beforeEach(function () {
+describe('openlayers_SpatialAnalystService_geoRelationAnalysis', () => {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceResults = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //空间关系分析
-    it('geoRelationAnalysis', function (done) {
-        var geoRelationAnalystParameters = new SuperMap.GeoRelationAnalystParameters({
+    it('geoRelationAnalysis', (done) => {
+        var geoRelationAnalystParameters = new GeoRelationAnalystParameters({
             dataset: "Park@Changchun",
             startRecord: 0,
             expectCount: 5,
             //空间关系分析中的源数据集查询参数
-            sourceFilter: new SuperMap.FilterParameter({attributeFilter: "SMID>0"}),
-            referenceFilter: new SuperMap.FilterParameter({name: "Frame_R@Changchun", attributeFilter: "SMID>0"}),
-            spatialRelationType: SuperMap.SpatialRelationType.INTERSECT,
+            sourceFilter: new FilterParameter({attributeFilter: "SMID>0"}),
+            referenceFilter: new FilterParameter({name: "Frame_R@Changchun", attributeFilter: "SMID>0"}),
+            spatialRelationType: SpatialRelationType.INTERSECT,
             //位于面边线上的点是否被面包含
             isBorderInside: true,
             //是否返回Feature信息
@@ -30,11 +32,11 @@ describe('openlayers_SpatialAnalystService_geoRelationAnalysis', function () {
             returnGeoRelatedOnly: true
 
         });
-        var service = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
-        service.geoRelationAnalysis(geoRelationAnalystParameters, function (result) {
+        var service = new SpatialAnalystService(changchunServiceUrl);
+        service.geoRelationAnalysis(geoRelationAnalystParameters, (result) => {
             serviceResults = result;
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(service).not.toBeNull();
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toEqual("processCompleted");

@@ -1,9 +1,10 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/overlay/Range');
+import ol from 'openlayers';
+import {Range} from '../../../src/openlayers/overlay/Range';
+import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 
-describe('openlayers_Range', function () {
+describe('openlayers_Range', () => {
     var originalTimeout, map, testDiv;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -16,8 +17,6 @@ describe('openlayers_Range', function () {
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -26,20 +25,20 @@ describe('openlayers_Range', function () {
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: baseUrl
             })
         });
         map.addLayer(layer);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
@@ -238,8 +237,8 @@ describe('openlayers_Range', function () {
         "ID": 1
     }];
 
-    it("initialize and destroy", function () {
-        var range = new ol.source.Range("ThemeLayer", {
+    it("initialize and destroy", () => {
+        var range = new Range("ThemeLayer", {
             map: map,
             style: {
                 shadowBlur: 16,
@@ -304,9 +303,9 @@ describe('openlayers_Range', function () {
         expect(range.styleGroups).toBeNull();
     });
 
-    it("addFeatures", function () {
-        setTimeout(function () {
-            var range = new ol.source.Range("ThemeLayer", {
+    it("addFeatures", () => {
+        setTimeout(() => {
+            var range = new Range("ThemeLayer", {
                 map: map,
                 style: {
                     shadowBlur: 16,
@@ -367,8 +366,8 @@ describe('openlayers_Range', function () {
         }, 5000);
     });
 
-    it('getStyleByData', function () {
-        var range = new ol.source.Range("ThemeLayer", {
+    it('getStyleByData', () => {
+        var range = new Range("ThemeLayer", {
             map: map,
             style: {
                 shadowBlur: 16,

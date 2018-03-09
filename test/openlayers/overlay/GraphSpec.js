@@ -1,11 +1,13 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/overlay/Graph');
-require('../../resources/chinaConsumptionLevel');
+import ol from 'openlayers';
+import {Graph} from '../../../src/openlayers/overlay/Graph';
+import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
+import {ThemeFeature} from '../../../src/openlayers/overlay/theme/ThemeFeature';
+import '../../resources/chinaConsumptionLevel';
 
 var url = GlobeParameter.China4326URL;
-describe('openlayers_Graph', function () {
+describe('openlayers_Graph', () => {
     var testDiv, map, tileLayer;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -23,19 +25,19 @@ describe('openlayers_Graph', function () {
             })
         });
         tileLayer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: url
             })
         });
         map.addLayer(tileLayer);
     });
-    afterAll(function () {
+    afterAll(() => {
         map.removeLayer(tileLayer);
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy', function (done) {
-        var barThemeLayer = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('constructor, destroy', (done) => {
+        var barThemeLayer = new Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {
@@ -84,8 +86,8 @@ describe('openlayers_Graph', function () {
         done();
     });
 
-    it('setChartsType, setOpacity', function (done) {
-        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('setChartsType, setOpacity', (done) => {
+        var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map,
             chartsSetting: {
                 width: 240,
@@ -99,14 +101,14 @@ describe('openlayers_Graph', function () {
         graphThemeSource.setOpacity(0.6);
         expect(graphThemeSource.opacity).toEqual(0.6);
         //on
-        graphThemeSource.on("mousemove", function (e) {
+        graphThemeSource.on("mousemove", (e) => {
             if (e.target && e.target.refDataID && e.target.dataInfo) {
                 var fea = graphThemeSource.getFeatureById(e.target.refDataID);
                 expect(fea).not.toBeNull()
             }
         });
         //un
-        graphThemeSource.un("click", function (e) {
+        graphThemeSource.un("click", (e) => {
             if (e.target && e.target.refDataID && e.target.dataInfo) {
                 var fea = graphThemeSource.getFeatureById(e.target.refDataID);
                 expect(fea).not.toBeNull()
@@ -139,8 +141,8 @@ describe('openlayers_Graph', function () {
         done();
     });
 
-    it('addFeatures, redraw, getFeatures, removeFeatures', function (done) {
-        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('addFeatures, redraw, getFeatures, removeFeatures', (done) => {
+        var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map
         });
         graphThemeSource.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
@@ -181,12 +183,12 @@ describe('openlayers_Graph', function () {
             atrributes.CON2011 = provinceInfo[5];
             atrributes.CON2012 = provinceInfo[6];
             atrributes.CON2013 = provinceInfo[7];
-            var fea = new ol.supermap.ThemeFeature(geometry, atrributes);
+            var fea = new ThemeFeature(geometry, atrributes);
             features.push(fea);
         }
         //addFeatures
         graphThemeSource.addFeatures(features);
-        setTimeout(function () {
+        setTimeout(() => {
             var LayerFeatures = graphThemeSource.features;
             expect(LayerFeatures.length).toBeGreaterThan(0);
             for (var j = 0; j < LayerFeatures.length; j++) {
@@ -251,8 +253,8 @@ describe('openlayers_Graph', function () {
         }, 3000);
     });
 
-    it('isQuadrilateralOverLap', function (done) {
-        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('isQuadrilateralOverLap', (done) => {
+        var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {
@@ -271,8 +273,8 @@ describe('openlayers_Graph', function () {
     });
 
     // 此方法为iclient8的私有方法,不支持openlayers对象,此处测试传入iclient对象的情况
-    it('isPointInPoly', function (done) {
-        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('isPointInPoly', (done) => {
+        var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {
@@ -289,8 +291,8 @@ describe('openlayers_Graph', function () {
         done();
     });
 
-    it('drawCharts', function (done) {
-        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('drawCharts', (done) => {
+        var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {
@@ -322,7 +324,7 @@ describe('openlayers_Graph', function () {
         expect(graphThemeSource).not.toBeNull();
         expect(graphThemeSource.context).toBeUndefined();
         graphThemeSource.drawCharts();
-        setTimeout(function () {
+        setTimeout(() => {
             expect(graphThemeSource.context).not.toBeUndefined();
             graphThemeSource.clear();
             map.removeLayer(layer);
@@ -330,8 +332,8 @@ describe('openlayers_Graph', function () {
         }, 3000);
     });
 
-    it('clearCache', function (done) {
-        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+    it('clearCache', (done) => {
+        var graphThemeSource = new Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {

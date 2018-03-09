@@ -1,12 +1,12 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/overlay/HeatMap');
+import ol from 'openlayers';
+import {HeatMapSource} from '../../../src/openlayers/overlay/HeatMap';
+import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 
 var url = GlobeParameter.worldMapURL;
-var heatMapSource;
-describe('openlayers_HeatMapLayer', function () {
+describe('openlayers_HeatMapLayer', () => {
     var originalTimeout;
-    var testDiv, map;
-    beforeAll(function () {
+    var testDiv, map, heatMapSource;
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -18,8 +18,6 @@ describe('openlayers_HeatMapLayer', function () {
 
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [0, 0],
                 zoom: 3,
@@ -27,16 +25,16 @@ describe('openlayers_HeatMapLayer', function () {
             })
         });
         map.addLayer(new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: url,
             }),
         }));
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
 
-        heatMapSource = new ol.source.HeatMapSource(
+        heatMapSource = new HeatMapSource(
             "heatMap",
             {
                 "map": map,
@@ -65,14 +63,14 @@ describe('openlayers_HeatMapLayer', function () {
         });
         map.addLayer(heatMapLayer);
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('initialize', function () {
+    it('initialize', () => {
         expect(heatMapSource).not.toBeNull();
         expect(heatMapSource.id).toBe("heatmap");
         expect(heatMapSource.radius).toEqual(45);
@@ -83,7 +81,7 @@ describe('openlayers_HeatMapLayer', function () {
         expect(heatMapSource.useGeoUnit).toBeFalsy();
     });
 
-    it("toiClientFeature()_test add HeatMapFeature_Test", function () {
+    it("toiClientFeature, add HeatMapFeature", () => {
         var toiClientFeature = heatMapSource.toiClientFeature([new ol.Feature({
             geometry: new ol.geom.Point([0, 0]),
             Properties: {
@@ -95,7 +93,7 @@ describe('openlayers_HeatMapLayer', function () {
         expect(toiClientFeature[0].CLASS_NAME).toBe("SuperMap.Feature.Vector");
     });
 
-    it("addFeatures() , removeFeatures() ,removeAllFeatures() test", function () {
+    it("addFeatures, removeFeatures, removeAllFeatures", () => {
         var heatPoints = {
             "type": "FeatureCollection",
             "features": [{
@@ -154,7 +152,7 @@ describe('openlayers_HeatMapLayer', function () {
 
     });
 
-    it("setOpacity_test", function () {
+    it("setOpacity", () => {
         heatMapSource.setOpacity(0.5);
         var opacity = heatMapSource.rootCanvas.style.opacity;
         expect(opacity).toBe('0.5');

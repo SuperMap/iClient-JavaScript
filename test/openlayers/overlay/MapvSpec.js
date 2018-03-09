@@ -1,13 +1,15 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/overlay/Mapv');
+import ol from 'openlayers';
+import {Mapv} from '../../../src/openlayers/overlay/Mapv';
+import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
+
 var mapv = require('mapv');
 window.mapv = mapv;
 
 var url = GlobeParameter.ChinaURL;
-describe('openlayers_MapV', function () {
+describe('openlayers_MapV', () => {
     var originalTimeout;
     var testDiv, map, mapVSource;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -18,8 +20,6 @@ describe('openlayers_MapV', function () {
         document.body.appendChild(testDiv);
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: ol.proj.transform([105.403119, 38.028658], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 4,
@@ -27,7 +27,7 @@ describe('openlayers_MapV', function () {
             })
         });
         map.addLayer(new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: url,
                 attributions: new ol.Attribution({
                     html: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
@@ -66,26 +66,26 @@ describe('openlayers_MapV', function () {
         var options = {
             map: map, dataSet: dataSet, mapvOptions: mapvOptions
         };
-        mapVSource = new ol.source.Mapv(options);
+        mapVSource = new Mapv(options);
         map.addLayer(new ol.layer.Image({
             source: mapVSource
         }));
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         document.body.removeChild(testDiv);
         mapv = null;
     });
 
-    it('initialize', function (done) {
+    it('initialize', (done) => {
         //判断是否返回期望的maplayer
-        setTimeout(function () {
+        setTimeout(() => {
             expect(mapVSource).not.toBeNull();
             expect(mapVSource.mapvOptions.shadowBlur).toBe(20);
             expect(mapVSource.mapvOptions.draw).toBe("honeycomb");
