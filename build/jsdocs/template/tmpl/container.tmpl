@@ -113,7 +113,18 @@
             <?js= self.partial('members.tmpl', p) ?>
         <?js }); ?></dl>
     <?js } ?>
-    
+
+    <?js
+        var events = self.find({kind: 'event', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
+        if (events && events.length && events.forEach) {
+    ?>
+        <h3 class="subsection-title">Events</h3>
+
+        <dl><?js events.forEach(function(e) { ?>
+            <?js= self.partial('method.tmpl', e) ?>
+        <?js }); ?></dl>
+    <?js } ?>
+
     <?js
         var methods = self.find({kind: 'function', memberof: title === 'Global' ? {isUndefined: true} : doc.longname});
         if (methods && methods.length && methods.forEach) { 
@@ -144,17 +155,7 @@
                 }
             }); ?></dl>
     <?js } ?>
-    
-    <?js
-        var events = self.find({kind: 'event', memberof: title === 'Global' ? {isUndefined: true} : doc.longname}); 
-        if (events && events.length && events.forEach) { 
-    ?>
-        <h3 class="subsection-title">Events</h3>
-        
-        <dl><?js events.forEach(function(e) { ?>
-            <?js= self.partial('method.tmpl', e) ?>
-        <?js }); ?></dl>
-    <?js } ?>
+
 </article>
 
 </section>  
