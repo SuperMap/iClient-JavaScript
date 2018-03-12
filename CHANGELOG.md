@@ -32,6 +32,8 @@
 
 - 废弃 `L.supermap.circleStyle` 类的 `getCanvas` 接口，改用 `getStyle` 接口
 
+- 增加 `L.supermap.cloverStyle`  `L.supermap.imageStyle` 类，`L.supermap.graphic` 支持三叶草要素风格、自定义图形要素风格
+
 - 新增热力图层：
 
     - `L.supermap.heatMapLayer`
@@ -71,7 +73,7 @@
     - `ol.supermap.HeatMapSource`
     
 - 废弃 `ol.source.Theme` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
-
+- 增加 `ol.style.CloverShape` `ol.style.HitCloverShape` 类，`ol.source.Graphic` 支持三叶草要素风格
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -124,6 +126,7 @@
 ### for MapboxGL
 
 - 修复多个客户端专题图叠加偏移的问题
+- 修复 `mapboxgl.supermap.MapvLayer` 的 `clearData` 失败的问题
 
 ### Classic
 
@@ -139,6 +142,8 @@
 
 - 新增可视化纽约出租车18万点图片示例
 
+- 修复 `05_findPathService.html` 例子显示错误的问题 
+
 ### for OpenLayers
 
 - 新增几何要素批量空间分析示例
@@ -146,6 +151,8 @@
 - 新增批量几何要素叠加分析示例
 
 - 新增可视化纽约出租车18万点图片示例
+
+- 新增可视化随机三叶草示例
 
 ### for MapboxGL
 
@@ -160,6 +167,7 @@
 - API 侧边栏分类显示
 
 ### for Leaflet
+- 修复`L.supermap.wmtsLayer` `L.supermap.cloudTileLayer` `L.supermap.tiledMapLayer` 的 `options.transparent` 为 `{boolean}`类型
 
 ### for OpenLayers
 
@@ -172,6 +180,7 @@
 ## Code Quality
 
 ## Project
+- 新增ISSUE模板
 
 # 9.0.1 (2017-12-27) #
 
