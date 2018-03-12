@@ -1,6 +1,5 @@
-require('../../../src/mapboxgl/overlay/UniqueThemeLayer');
-var mapboxgl = require('mapbox-gl');
-window.mapboxgl = mapboxgl;
+import {Unique} from '../../../src/mapboxgl/overlay/UniqueThemeLayer';
+import mapboxgl from 'mapbox-gl';
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
     dataUrl = GlobeParameter.editServiceURL_leaflet;
@@ -94,7 +93,7 @@ describe('mapboxgl_UniqueThemeLayer', function () {
                 // 岛洞多面要素必需在其他要素之前添加
                 feas = IHFeas.concat(feas);
                 //创建RangeThemeLayer
-                themeLayer = new mapboxgl.supermap.UniqueThemeLayer("ThemeLayer",
+                themeLayer = new Unique("ThemeLayer",
                     {
                         map: map,
                         style: {

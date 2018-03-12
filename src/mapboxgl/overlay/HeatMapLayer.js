@@ -469,11 +469,11 @@ export class HeatMapLayer extends mapboxgl.Evented {
     getPixelXY(coordinate) {
         var pixelP, map = this.map;
         if (coordinate instanceof Point || coordinate instanceof GeoText) {
-            let tempPoint = map.project(new window.mapboxgl.LngLat(coordinate.x, coordinate.y));
+            let tempPoint = map.project(new mapboxgl.LngLat(coordinate.x, coordinate.y));
             pixelP = {x: parseInt(tempPoint.x), y: parseInt(tempPoint.y)};
         }
         if (coordinate instanceof LonLat) {
-            let tempPoint = map.project(new window.mapboxgl.LngLat(coordinate.lon, coordinate.lat));
+            let tempPoint = map.project(new mapboxgl.LngLat(coordinate.lon, coordinate.lat));
             pixelP = {x: parseInt(tempPoint.x), y: parseInt(tempPoint.y)};
         }
         return pixelP;

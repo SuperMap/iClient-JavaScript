@@ -444,17 +444,17 @@ export class Label extends GeoFeature {
 
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
-        var locTmp = this.map.project(new window.mapboxgl.LngLat(locationTmp.x, locationTmp.y));
-        var loc = new window.mapboxgl.Point(locTmp.x, locTmp.y);
+        var locTmp = this.map.project(new mapboxgl.LngLat(locationTmp.x, locationTmp.y));
+        var loc = new mapboxgl.Point(locTmp.x, locTmp.y);
 
         //偏移处理
         if (styleTmp.labelXOffset || styleTmp.labelYOffset) {
             var xOffset = isNaN(styleTmp.labelXOffset) ? 0 : styleTmp.labelXOffset;
             var yOffset = isNaN(styleTmp.labelYOffset) ? 0 : styleTmp.labelYOffset;
-            var point = loc.add(new window.mapboxgl.Point(xOffset, -yOffset));
-            return new window.mapboxgl.Point(point.x, point.y);
+            var point = loc.add(new mapboxgl.Point(xOffset, -yOffset));
+            return new mapboxgl.Point(point.x, point.y);
         } else {
-            return new window.mapboxgl.Point(loc.x, loc.y);
+            return new mapboxgl.Point(loc.x, loc.y);
         }
     }
 
@@ -695,7 +695,7 @@ export class Label extends GeoFeature {
      * @return {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     rotationBounds(bounds, rotationCenterPoi, angle) {
-        var Point = window.mapboxgl.Point;
+        var Point = new mapboxgl.Point;
         var ltPoi = new Point(bounds.left, bounds.top);
         var rtPoi = new Point(bounds.right, bounds.top);
         var rbPoi = new Point(bounds.right, bounds.bottom);
