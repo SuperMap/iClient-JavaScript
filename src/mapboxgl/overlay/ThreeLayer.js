@@ -325,9 +325,8 @@ export class ThreeLayer extends mapboxgl.Evented {
         me._map = map;
         me.renderer.setMap(map);
         me.renderer.render();
-        this._moving = false;
         //three mbgl 联动(仅联动相机,不执行重绘操作)
-        me._map.on('move', this._update.bind(me));
+        me._map.on('render', this._update.bind(me));
         me._map.on('resize', this._resize.bind(me));
 
         return this;
@@ -408,22 +407,17 @@ export class ThreeLayer extends mapboxgl.Evented {
     }
 
     _update() {
-        if (!this._moving) {
-            this._moving = !!1;
-            this.renderScene();
-            this._moving = !!0;
-            /**
-             * move事件，地图移动时触发
-             * @event mapboxgl.supermap.ThreeLayer#move
-             * @type {Object}
-             * @property {string} type  - move
-             * @property {Object} target  - layer
-             */
-            this.fire('move');
-        }
+        /**
+         * render事件，地图渲染时(地图状态改变时)触发
+         * @event mapboxgl.supermap.ThreeLayer#render
+         * @type {Object}
+         * @property {string} type  - render
+         * @property {Object} target  - layer
+         */
+        this.renderScene();
+        this.fire('render');
         return this;
     }
-
 }
 
 

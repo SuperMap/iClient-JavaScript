@@ -51,11 +51,6 @@ export class ThreeLayerRenderer {
         this._layer = layer;
         this.renderer = renderer || "gl";
         this.options = options;
-
-        var layerOpt = this._layer.options;
-        this.forceRefresh = layerOpt != null
-            ? layerOpt.forceRefresh
-            : false;
     }
 
     setMap(map) {
@@ -104,17 +99,9 @@ export class ThreeLayerRenderer {
     }
 
     renderFrame(fn) {
-        var render;
-        if (this.forceRefresh) {
-            render = function () {
-                fn && typeof fn === "function" && fn();
-                return frame(render);
-            }
-        } else {
-            render = function () {
-                fn && typeof fn === "function" && fn();
-            }
-        }
+        var render = function () {
+            fn && typeof fn === "function" && fn();
+        };
         return frame(render);
     }
 
