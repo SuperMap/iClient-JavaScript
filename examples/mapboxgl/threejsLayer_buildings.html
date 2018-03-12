@@ -43,7 +43,7 @@
     function addThreeLayer() {
 
         //gl参数表示使用webgl渲染，forceRefresh强制不断刷新three的场景
-        threeLayer = new mapboxgl.supermap.ThreeLayer('three', 'gl', {forceRefresh: true});
+        threeLayer = new mapboxgl.supermap.ThreeLayer('three');
         threeLayer.on("initialized", render);
 
         function render() {
@@ -64,7 +64,7 @@
         }
 
         //均匀光照，与相机位置同步
-        threeLayer.on("move", function () {
+        threeLayer.on("render", function () {
             threeLayer.light.position.copy(threeLayer.renderer.camera.position);
         });
 
