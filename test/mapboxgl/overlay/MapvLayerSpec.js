@@ -1,7 +1,6 @@
 import {MapvLayer} from '../../../src/mapboxgl/overlay/MapvLayer';
 import mapboxgl from 'mapbox-gl';
-
-window.mapv = require('mapv');
+import {utilCityCenter, DataSet} from 'mapv';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
@@ -45,8 +44,8 @@ describe('mapboxgl_MapVLayer', () => {
             var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
             // 构造数据
             while (randomCount--) {
-                var cityCenter1 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-                var cityCenter2 = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+                var cityCenter1 = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+                var cityCenter2 = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
                 data.push({
                     geometry: {
                         type: 'LineString',
@@ -57,7 +56,7 @@ describe('mapboxgl_MapVLayer', () => {
                     count: 30 * Math.random()
                 });
             }
-            var dataSet = new mapv.DataSet(data);
+            var dataSet = new DataSet(data);
             var options = {
                 gradient: {
                     0: 'blue',
@@ -80,9 +79,8 @@ describe('mapboxgl_MapVLayer', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
-        window.document.body.removeChild(testDiv);
-        map.remove(); 
-    });
+        document.body.removeChild(testDiv);
+        map=null;    });
 
     it('initialize', (done) => {
         setTimeout(() => {

@@ -1,14 +1,16 @@
-require('../../../src/mapboxgl/overlay/RangeThemeLayer');
-require('../../../src/common/util/FetchRequest');
-var mapboxgl = require('mapbox-gl');
-window.mapboxgl = mapboxgl;
+import {Range} from '../../../src/mapboxgl/overlay/RangeThemeLayer';
+import {GetFeaturesBySQLService} from '../../../src/common/iServer/GetFeaturesBySQLService';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {DataFormat} from '../../../src/common/REST';
+import mapboxgl from 'mapbox-gl';
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
     dataUrl = GlobeParameter.editServiceURL_leaflet;
-describe('mapboxgl_RangeThemeLayer', function () {
+describe('mapboxgl_RangeThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -40,32 +42,32 @@ describe('mapboxgl_RangeThemeLayer', function () {
             zoom: 7
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', function (done) {
+    it('initialize, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', (done) => {
         var themeLayer, result;
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: new FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_R"]
         });
-        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
+        var getFeatureBySQLService = new GetFeaturesBySQLService(dataUrl, {
+            format: DataFormat.ISERVER,
             eventListeners: {
-                processCompleted: function (serviceResult) {
+                processCompleted: (serviceResult) => {
                     if (serviceResult.error) {
                         alert("error:" + JSON.stringify(serviceResult.error));
                         return;
@@ -75,10 +77,10 @@ describe('mapboxgl_RangeThemeLayer', function () {
             }
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-        setTimeout(function () {
+        setTimeout(() => {
             if (result && result.features) {
                 //创建RangeThemeLayer
-                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                themeLayer = new Range("ThemeLayer",
                     {
                         map: map,
                         opacity: 0.8,
@@ -179,20 +181,20 @@ describe('mapboxgl_RangeThemeLayer', function () {
     });
 
     //测试父类ThemeVector类下的方法
-    it('lineToTF', function (done) {
+    it('lineToTF', (done) => {
         var themeLayer, result;
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: new FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_L"]
         });
-        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
+        var getFeatureBySQLService = new GetFeaturesBySQLService(dataUrl, {
+            format: DataFormat.ISERVER,
             eventListeners: {
-                processCompleted: function (serviceResult) {
+                processCompleted: (serviceResult) => {
                     if (serviceResult.error) {
                         alert("error:" + JSON.stringify(serviceResult.error));
                         return;
@@ -202,9 +204,9 @@ describe('mapboxgl_RangeThemeLayer', function () {
             }
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-        setTimeout(function () {
+        setTimeout(() => {
             if (result && result.features) {
-                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                themeLayer = new Range("ThemeLayer",
                     {
                         map: map,
                         opacity: 0.8,
@@ -262,20 +264,20 @@ describe('mapboxgl_RangeThemeLayer', function () {
         }, 5000)
     });
 
-    it('pointToTF', function (done) {
+    it('pointToTF', (done) => {
         var themeLayer, result;
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: new FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_P"]
         });
-        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
+        var getFeatureBySQLService = new GetFeaturesBySQLService(dataUrl, {
+            format: DataFormat.ISERVER,
             eventListeners: {
-                processCompleted: function (serviceResult) {
+                processCompleted: (serviceResult) => {
                     if (serviceResult.error) {
                         alert("error:" + JSON.stringify(serviceResult.error));
                         return;
@@ -285,10 +287,10 @@ describe('mapboxgl_RangeThemeLayer', function () {
             }
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-        setTimeout(function () {
+        setTimeout(() => {
             if (result && result.features) {
                 //创建RangeThemeLayer
-                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                themeLayer = new Range("ThemeLayer",
                     {
                         map: map,
                         opacity: 0.8,
@@ -345,28 +347,28 @@ describe('mapboxgl_RangeThemeLayer', function () {
     });
 
     //未找到合适的数据源
-    //xit('multiPointToTF', function () {
+    //xit('multiPointToTF', ()=> {
     //});
-    //xit('multiLineStringToTF', function () {
+    //xit('multiLineStringToTF', ()=> {
     //});
-    //xit('rectangleToTF', function () {
+    //xit('rectangleToTF', ()=> {
     //});
 
     // 测试父类mapbox/overlay/theme/ThemeLayer类中的方法
-    it('getFeatures, getFeatureBy, getFeatureById, getFeaturesByAttribute, moveEvent, moveEndEvent, resizeEvent, destroyFeatures', function (done) {
+    it('getFeatures, getFeatureBy, getFeatureById, getFeaturesByAttribute, moveEvent, moveEndEvent, resizeEvent, destroyFeatures', (done) => {
         var themeLayer, result;
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: new FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_R"]
         });
-        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
+        var getFeatureBySQLService = new GetFeaturesBySQLService(dataUrl, {
+            format: DataFormat.ISERVER,
             eventListeners: {
-                processCompleted: function (serviceResult) {
+                processCompleted: (serviceResult) => {
                     if (serviceResult.error) {
                         alert("error:" + JSON.stringify(serviceResult.error));
                         return;
@@ -376,9 +378,9 @@ describe('mapboxgl_RangeThemeLayer', function () {
             }
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-        setTimeout(function () {
+        setTimeout(() => {
             if (result && result.features) {
-                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                themeLayer = new Range("ThemeLayer",
                     {
                         map: map,
                         opacity: 0.8,
@@ -414,7 +416,7 @@ describe('mapboxgl_RangeThemeLayer', function () {
                 expect(featureGetByAttribute.length).toBeGreaterThan(0);
                 expect(featureGetByAttribute[0].attributes.NAME).toBe("北京市");
                 //on方法
-                themeLayer.on('click', function () {
+                themeLayer.on('click', () => {
                     console.log('test on');
                 });
                 //moveEvent方法

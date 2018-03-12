@@ -1,12 +1,17 @@
 import {Unique} from '../../../src/mapboxgl/overlay/UniqueThemeLayer';
+import {GetFeaturesBySQLService} from '../../../src/common/iServer/GetFeaturesBySQLService';
+import {GetFeaturesBySQLParameters} from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {Geometry} from '../../../src/common/commontypes/Geometry';
+import {DataFormat} from '../../../src/common/REST';
 import mapboxgl from 'mapbox-gl';
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
     dataUrl = GlobeParameter.editServiceURL_leaflet;
-describe('mapboxgl_UniqueThemeLayer', function () {
+describe('mapboxgl_UniqueThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -38,32 +43,32 @@ describe('mapboxgl_UniqueThemeLayer', function () {
             zoom: 7
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', function (done) {
+    it('initialize, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', (done) => {
         var themeLayer, result;
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new GetFeaturesBySQLParameters({
+            queryParameter: new FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
             toIndex: 500,
             datasetNames: ["Jingjin:Landuse_R"]
         });
-        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            format: SuperMap.DataFormat.ISERVER,
+        var getFeatureBySQLService = new GetFeaturesBySQLService(dataUrl, {
+            format: DataFormat.ISERVER,
             eventListeners: {
-                processCompleted: function (serviceResult) {
+                processCompleted: (serviceResult) => {
                     if (serviceResult.error) {
                         alert("error:" + JSON.stringify(serviceResult.error));
                         return;
@@ -73,7 +78,7 @@ describe('mapboxgl_UniqueThemeLayer', function () {
             }
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-        setTimeout(function () {
+        setTimeout(() => {
             if (result && result.features) {
                 //岛洞和多面的处理
                 var features = result.features;
@@ -197,8 +202,8 @@ describe('mapboxgl_UniqueThemeLayer', function () {
      * Returns:
      * {<SuperMap.Feature.Vector>} 处理后的要素。
      */
-    function islandHoleHandlerForFeature(feature) {
-        if (feature.geometry instanceof SuperMap.Geometry.MultiPolygon && feature.geometry.components.length > 1) {
+    var islandHoleHandlerForFeature = (feature) => {
+        if (feature.geometry instanceof Geometry.MultiPolygon && feature.geometry.components.length > 1) {
             var newGeometry = islandHoleHandlerForMultiPolygon(feature.geometry);
             feature.geometry = newGeometry;
         }
@@ -209,12 +214,12 @@ describe('mapboxgl_UniqueThemeLayer', function () {
          * iClient 在解析 iServer 数据时，默认将面要素处理为 MultiPolygon 类型，但有的面要素带有岛洞，
          * 这种情况下应该做特殊处理，本函数可以对一个多面进行岛洞处理，并返回新的多面。
          * Parameters:
-         * multiPolygon - {<SuperMap.Geometry.MultiPolygon>} 需要进行岛洞处理的多面。
+         * multiPolygon - {<Geometry.MultiPolygon>} 需要进行岛洞处理的多面。
          * Returns:
-         * {<SuperMap.Geometry.MultiPolygon>} 处理后的多面。
+         * {<Geometry.MultiPolygon>} 处理后的多面。
          */
-        function islandHoleHandlerForMultiPolygon(multiPolygon) {
-            if (multiPolygon instanceof SuperMap.Geometry.MultiPolygon && multiPolygon.components.length > 1) {
+        var islandHoleHandlerForMultiPolygon = (multiPolygon) => {
+            if (multiPolygon instanceof Geometry.MultiPolygon && multiPolygon.components.length > 1) {
                 var mPTmp = multiPolygon.clone();
                 var componentsPolygons = mPTmp.components;
                 //洞面关系数组
@@ -307,7 +312,7 @@ describe('mapboxgl_UniqueThemeLayer', function () {
                     for (var n = 0, len6 = geoP.length; n < len6; n++) {
                         newLineRings.push(componentsPolygons[geoP[n]].components[0]);
                     }
-                    var newGeoPolygon = new SuperMap.Geometry.Polygon(newLineRings);
+                    var newGeoPolygon = new Geometry.Polygon(newLineRings);
                     newComponents.push(newGeoPolygon)
                 }
                 //独立子面处理
@@ -327,7 +332,7 @@ describe('mapboxgl_UniqueThemeLayer', function () {
          * Returns:
          * {Array} 无重复元素的数组。
          */
-        function delRepeatInArray(arr) {
+        var delRepeatInArray = (arr) => {
             var newArray = [];
             var provisionalTable = {};
             for (var i = 0, a; (a = arr[i]) != null; i++) {
@@ -347,7 +352,7 @@ describe('mapboxgl_UniqueThemeLayer', function () {
          * Returns:
          * {Boolean} 点是否在多边形内。
          */
-        function isPointInPoly(pt, poly) {
+        var isPointInPoly = (pt, poly) => {
             for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
                 ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
                 && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)

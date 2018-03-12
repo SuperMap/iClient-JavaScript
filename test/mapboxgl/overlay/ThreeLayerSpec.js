@@ -1,14 +1,13 @@
-require('../../../src/mapboxgl/overlay/ThreeLayer');
-var mapboxgl = require('mapbox-gl');
-var THREE = require('three');
-window.THREE = THREE;
-window.mapboxgl = mapboxgl;
+import {MeshPhongMaterial, Mesh, PointLight, BoxBufferGeometry} from 'three';
+import {ThreeLayer} from '../../../src/mapboxgl/overlay/ThreeLayer';
+import mapboxgl from 'mapbox-gl';
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
-describe('mapboxgl_ThreeLayer', function () {
+describe('mapboxgl_ThreeLayer', () => {
     var originalTimeout;
     var testDiv, map, threeLayer;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -27,19 +26,18 @@ describe('mapboxgl_ThreeLayer', function () {
 
 
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         document.body.removeChild(testDiv);
-        THREE = null;
     });
 
-    it('initialize', function (done) {
+    it('initialize', (done) => {
 
         var coordinates = [
             [13.413977, 52.532063],
@@ -53,20 +51,20 @@ describe('mapboxgl_ThreeLayer', function () {
             [13.413878, 52.531952],
             [13.413977, 52.532063]
         ];
-        threeLayer = new mapboxgl.supermap.ThreeLayer('three');
-        threeLayer.draw = function (gl, scene, camera) {
-            var light = new THREE.PointLight(0xffffff);
+        threeLayer = new ThreeLayer('three');
+        threeLayer.draw = (gl, scene, camera) => {
+            var light = new PointLight(0xffffff);
             camera.add(light);
             var height = 10;
             var color = 0xff2200;
-            var material = new THREE.MeshPhongMaterial({color: color});
-            var mesh = this.toThreeMesh(coordinates, height, material, true);
+            var material = new MeshPhongMaterial({color: color});
+            var mesh = threeLayer.toThreeMesh(coordinates, height, material, true);
             scene.add(mesh);
         };
 
         threeLayer.addTo(map);
 
-        setTimeout(function () {
+        setTimeout(() => {
             expect(threeLayer._map).not.toBeNull();
             expect(threeLayer.renderer).not.toBeNull();
             expect(threeLayer.renderer.scene).not.toBeNull();
@@ -75,29 +73,29 @@ describe('mapboxgl_ThreeLayer', function () {
         }, 4000)
     });
 
-    it('setPosition', function () {
-        var geometry = new THREE.BoxBufferGeometry(200000, 200000, 16);
-        var material = new THREE.MeshPhongMaterial({color: 0x22ff00, opacity: 0.7});
-        var mesh = new THREE.Mesh(geometry, material);
+    it('setPosition', () => {
+        var geometry = new BoxBufferGeometry(200000, 200000, 16);
+        var material = new MeshPhongMaterial({color: 0x22ff00, opacity: 0.7});
+        var mesh = new Mesh(geometry, material);
         threeLayer.setPosition(mesh, map.getCenter());
 
         expect(mesh.position).not.toBeNull();
         expect(mesh.position.x).toBe(5001083.780391823);
-        expect(mesh.position.y).toBe(-23098767.68369413);
-        expect(mesh.position.z).toBe(19);
+        expect(mesh.position.y).toBe(-23098767.683694128);
+        expect(mesh.position.z).toBe(0);
     });
 
 
-    it('getCanvasContainer', function () {
+    it('getCanvasContainer', () => {
         var container = threeLayer.getCanvasContainer();
         expect(container).not.toBeNull();
     });
-    it('getCanvas', function () {
+    it('getCanvas', () => {
         var canvas = threeLayer.getCanvas();
         expect(canvas).not.toBeNull();
     });
 
-    it('remove', function () {
+    it('remove', () => {
         threeLayer.remove();
         expect(threeLayer._map).toBeNull();
         expect(threeLayer.renderer).not.toBeNull();
@@ -105,6 +103,4 @@ describe('mapboxgl_ThreeLayer', function () {
         expect(threeLayer.renderer.canvas).toBeNull();
         expect(threeLayer.renderer.container).toBeNull();
     });
-
-
 });

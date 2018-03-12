@@ -695,11 +695,10 @@ export class Label extends GeoFeature {
      * @return {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     rotationBounds(bounds, rotationCenterPoi, angle) {
-        var Point = new mapboxgl.Point;
-        var ltPoi = new Point(bounds.left, bounds.top);
-        var rtPoi = new Point(bounds.right, bounds.top);
-        var rbPoi = new Point(bounds.right, bounds.bottom);
-        var lbPoi = new Point(bounds.left, bounds.bottom);
+        var ltPoi = new mapboxgl.Point(bounds.left, bounds.top);
+        var rtPoi = new mapboxgl.Point(bounds.right, bounds.top);
+        var rbPoi = new mapboxgl.Point(bounds.right, bounds.bottom);
+        var lbPoi = new mapboxgl.Point(bounds.left, bounds.bottom);
 
         var ver = [];
         ver.push(this.getRotatedLocation(ltPoi.x, ltPoi.y, rotationCenterPoi.x, rotationCenterPoi.y, angle));

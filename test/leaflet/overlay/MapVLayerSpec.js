@@ -1,7 +1,6 @@
 import {mapVLayer} from '../../../src/leaflet/overlay/MapVLayer';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
-
-window.mapv = require('mapv');
+import {utilCityCenter, DataSet} from 'mapv';
 
 var url = GlobeParameter.ChinaURL;
 describe('leaflet_MapVLayer', () => {
@@ -31,7 +30,7 @@ describe('leaflet_MapVLayer', () => {
             "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
         // 构造数据
         while (randomCount--) {
-            var cityCenter = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+            var cityCenter = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
             data.push({
                 geometry: {
                     type: 'Point',
@@ -40,7 +39,7 @@ describe('leaflet_MapVLayer', () => {
                 count: 30 * Math.random()
             });
         }
-        var dataSet = new mapv.DataSet(data);
+        var dataSet = new DataSet(data);
         var options = {
             fillStyle: 'rgba(55, 50, 250, 0.8)',
             shadowColor: 'rgba(255, 250, 50, 1)',
@@ -67,7 +66,6 @@ describe('leaflet_MapVLayer', () => {
     afterAll(() => {
         document.body.removeChild(testDiv);
         map.remove();
-        mapv = null;
     });
 
     it('initialize', (done) => {
@@ -89,7 +87,7 @@ describe('leaflet_MapVLayer', () => {
             },
             count: 111
         }];
-        var dataset = new mapv.DataSet(data);
+        var dataset = new DataSet(data);
         var tempoption = {
             shadowBlur: 30
         }
@@ -129,7 +127,7 @@ describe('leaflet_MapVLayer', () => {
             },
             count: 111
         }];
-        var dataset = new mapv.DataSet(data);
+        var dataset = new DataSet(data);
         var tempoption = {
             shadowBlur: 40
         }

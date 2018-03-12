@@ -1,9 +1,7 @@
 import {MapVLayer} from '../../../src/classic/overlay/MapVLayer';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 import {LonLat} from '../../../src/common/commontypes/LonLat';
-
-var mapv = require('mapv');
-window.mapv = mapv;
+import {utilCityCenter, DataSet} from 'mapv';
 
 var url = GlobeParameter.ChinaURL;
 describe('classic_MapVLayer', () => {
@@ -39,7 +37,7 @@ describe('classic_MapVLayer', () => {
             "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
         // 构造数据
         while (randomCount--) {
-            var cityCenter = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+            var cityCenter = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
             data.push({
                 geometry: {
                     type: 'Point',
@@ -48,7 +46,7 @@ describe('classic_MapVLayer', () => {
                 count: 30 * Math.random()
             });
         }
-        var dataSet = new mapv.DataSet(data);
+        var dataSet = new DataSet(data);
         var options = {
             fillStyle: 'rgba(55, 50, 250, 0.8)',
             shadowColor: 'rgba(255, 250, 50, 1)',
@@ -73,8 +71,8 @@ describe('classic_MapVLayer', () => {
         mapvLayer.destroy();
     });
     afterAll(() => {
-        document.body.removeChild(testDiv);
-        mapv = null;
+        window.document.body.removeChild(testDiv);
+        map = null;
     });
 
     it('constructor', () => {
@@ -99,7 +97,7 @@ describe('classic_MapVLayer', () => {
             },
             count: 111
         }];
-        var dataset = new mapv.DataSet(data);
+        var dataset = new DataSet(data);
         var tempoption = {
             shadowBlur: 30
         }
@@ -124,7 +122,7 @@ describe('classic_MapVLayer', () => {
             },
             count: 111
         }];
-        var dataset = new mapv.DataSet(data);
+        var dataset = new DataSet(data);
         var tempoption = {
             shadowBlur: 40
         }

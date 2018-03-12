@@ -1,6 +1,5 @@
-require('../../../src/mapboxgl/overlay/HeatMapLayer');
-var mapboxgl = require('mapbox-gl');
-window.mapboxgl = mapboxgl;
+import {HeatMapLayer} from '../../../src/mapboxgl/overlay/HeatMapLayer';
+import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.worldMapURL;
 describe('mapboxgl_HeatMapLayer', () => {
@@ -39,7 +38,7 @@ describe('mapboxgl_HeatMapLayer', () => {
             zoom: 1
         });
 
-        heatLayer = new mapboxgl.supermap.HeatMapLayer(
+        heatLayer = new HeatMapLayer(
             "heatMap",
             {
                 "map": map,
@@ -75,7 +74,7 @@ describe('mapboxgl_HeatMapLayer', () => {
     afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.removeLayer("heatmap");
-        map.removeLayer("heatmap_2"); 
+        map.removeLayer("heatmap_2");
     });
 
     it('initialize', () => {
@@ -177,7 +176,7 @@ describe('mapboxgl_HeatMapLayer', () => {
 
 
     it("moveTo", () => {
-        var heatMapLayer2 = new mapboxgl.supermap.HeatMapLayer(
+        var heatMapLayer2 = new HeatMapLayer(
             "heatMap",
             {
                 "map": map,

@@ -2259,7 +2259,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DatasourceConnectionInfo = __webpack_require__(26);
+var _DatasourceConnectionInfo = __webpack_require__(27);
 
 var _REST = __webpack_require__(2);
 
@@ -2552,7 +2552,7 @@ var _FetchRequest = __webpack_require__(7);
 
 var _Events = __webpack_require__(9);
 
-var _Credential = __webpack_require__(17);
+var _Credential = __webpack_require__(18);
 
 var _SecurityManager = __webpack_require__(10);
 
@@ -2560,7 +2560,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _JSON = __webpack_require__(22);
+var _JSON = __webpack_require__(23);
 
 var _BaseTypes = __webpack_require__(8);
 
@@ -2945,11 +2945,11 @@ exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(45);
-
 __webpack_require__(46);
 
-var _fetchJsonp2 = __webpack_require__(47);
+__webpack_require__(47);
+
+var _fetchJsonp2 = __webpack_require__(48);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -3628,9 +3628,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Pixel = __webpack_require__(19);
+var _Pixel = __webpack_require__(20);
 
-var _Event = __webpack_require__(18);
+var _Event = __webpack_require__(19);
 
 var _BaseTypes = __webpack_require__(8);
 
@@ -4583,6 +4583,36 @@ _SuperMap.SuperMap.SecurityManager = SecurityManager;
 "use strict";
 
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -4594,7 +4624,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(5);
 
-var _MapVRenderer = __webpack_require__(16);
+var _MapVRenderer = __webpack_require__(17);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4867,7 +4897,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
 _SuperMap.SuperMap.Layer.MapVLayer = MapVLayer;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4884,7 +4914,7 @@ var _SuperMap = __webpack_require__(5);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _AddressMatchService = __webpack_require__(23);
+var _AddressMatchService = __webpack_require__(24);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4966,7 +4996,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.REST.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4985,23 +5015,23 @@ var _REST = __webpack_require__(2);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _KernelDensityJobsService = __webpack_require__(30);
+var _KernelDensityJobsService = __webpack_require__(31);
 
-var _SingleObjectQueryJobsService = __webpack_require__(34);
+var _SingleObjectQueryJobsService = __webpack_require__(35);
 
-var _SummaryMeshJobsService = __webpack_require__(38);
+var _SummaryMeshJobsService = __webpack_require__(39);
 
-var _SummaryRegionJobsService = __webpack_require__(40);
+var _SummaryRegionJobsService = __webpack_require__(41);
 
-var _VectorClipJobsService = __webpack_require__(44);
+var _VectorClipJobsService = __webpack_require__(45);
 
-var _OverlayGeoJobsService = __webpack_require__(32);
+var _OverlayGeoJobsService = __webpack_require__(33);
 
-var _BuffersAnalystJobsService = __webpack_require__(25);
+var _BuffersAnalystJobsService = __webpack_require__(26);
 
-var _TopologyValidatorJobsService = __webpack_require__(42);
+var _TopologyValidatorJobsService = __webpack_require__(43);
 
-var _SummaryAttributesJobsService = __webpack_require__(36);
+var _SummaryAttributesJobsService = __webpack_require__(37);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5933,7 +5963,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
 _SuperMap.SuperMap.REST.ProcessingService = ProcessingService;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5950,7 +5980,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _TimeControlBase2 = __webpack_require__(20);
+var _TimeControlBase2 = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6175,7 +6205,7 @@ var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
 _SuperMap.SuperMap.TimeFlowControl = TimeFlowControl;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6936,7 +6966,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
 _SuperMap.SuperMap.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7358,7 +7388,7 @@ var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
 }(MapVBaseLayer);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7476,7 +7506,7 @@ Credential.CREDENTIAL = null;
 _SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7816,7 +7846,7 @@ _SuperMap.SuperMap.Event = Event;
 _SuperMap.SuperMap.Event.observe(window, 'unload', _SuperMap.SuperMap.Event.unloadCache, false);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8044,7 +8074,7 @@ var Pixel = exports.Pixel = function () {
 _SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8532,7 +8562,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
 _SuperMap.SuperMap.TimeControlBase = TimeControlBase;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8629,7 +8659,7 @@ var Format = exports.Format = function () {
 _SuperMap.SuperMap.Format = Format;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8646,7 +8676,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(21);
+var _Format2 = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8955,7 +8985,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 _SuperMap.SuperMap.Format.JSON = JSONFormat;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8976,9 +9006,9 @@ var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FetchRequest = __webpack_require__(7);
 
-var _GeoCodingParameter = __webpack_require__(27);
+var _GeoCodingParameter = __webpack_require__(28);
 
-var _GeoDecodingParameter = __webpack_require__(28);
+var _GeoDecodingParameter = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9102,7 +9132,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9250,7 +9280,7 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
 _SuperMap.SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9269,7 +9299,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _BuffersAnalystJobsParameter = __webpack_require__(24);
+var _BuffersAnalystJobsParameter = __webpack_require__(25);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9352,7 +9382,7 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
 _SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9516,7 +9546,7 @@ var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
 _SuperMap.SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9622,7 +9652,7 @@ var GeoCodingParameter = exports.GeoCodingParameter = function () {
 _SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9742,7 +9772,7 @@ var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
 _SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9920,7 +9950,7 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
 _SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9939,7 +9969,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _KernelDensityJobParameter = __webpack_require__(29);
+var _KernelDensityJobParameter = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10023,7 +10053,7 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
 _SuperMap.SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10154,7 +10184,7 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
 _SuperMap.SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10173,7 +10203,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _OverlayGeoJobParameter = __webpack_require__(31);
+var _OverlayGeoJobParameter = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10260,7 +10290,7 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
 _SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10387,7 +10417,7 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
 _SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10406,7 +10436,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(33);
+var _SingleObjectQueryJobsParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10489,7 +10519,7 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
 _SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10610,7 +10640,7 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
 _SuperMap.SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10629,7 +10659,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _SummaryAttributesJobsParameter = __webpack_require__(35);
+var _SummaryAttributesJobsParameter = __webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10712,7 +10742,7 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
 _SuperMap.SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10891,7 +10921,7 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 _SuperMap.SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10910,7 +10940,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _SummaryMeshJobParameter = __webpack_require__(37);
+var _SummaryMeshJobParameter = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10997,7 +11027,7 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
 _SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11219,7 +11249,7 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
 _SuperMap.SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11238,7 +11268,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _SummaryRegionJobParameter = __webpack_require__(39);
+var _SummaryRegionJobParameter = __webpack_require__(40);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11321,7 +11351,7 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
 _SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11449,7 +11479,7 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 _SuperMap.SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11468,7 +11498,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _TopologyValidatorJobsParameter = __webpack_require__(41);
+var _TopologyValidatorJobsParameter = __webpack_require__(42);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11551,7 +11581,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
 _SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11677,7 +11707,7 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 _SuperMap.SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11696,7 +11726,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(4);
 
-var _VectorClipJobsParameter = __webpack_require__(43);
+var _VectorClipJobsParameter = __webpack_require__(44);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11779,13 +11809,13 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
 _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(50);
+var _promisePolyfill = __webpack_require__(51);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -11794,7 +11824,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Promise = _promisePolyfill2.default;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12231,7 +12261,7 @@ window.Promise = _promisePolyfill2.default;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12350,11 +12380,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(global) {
 
 var apply = Function.prototype.apply;
 
@@ -12404,12 +12434,16 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(51);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
+__webpack_require__(52);
+// On some exotic environments, it's not clear which object `setimmeidate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
+exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || typeof global !== "undefined" && global.clearImmediate || undefined && undefined.clearImmediate;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12602,7 +12636,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12843,10 +12877,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49).setImmediate))
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13034,37 +13068,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52), __webpack_require__(49)))
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var g;
-
-// This works in non-strict mode
-g = function () {
-	return this;
-}();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
-} catch (e) {
-	// This works if the window reference is available
-	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(50)))
 
 /***/ }),
 /* 53 */
@@ -13082,11 +13086,11 @@ module.exports = function(){try{return mapv}catch(e){return {}}}();
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(13);
-__webpack_require__(12);
 __webpack_require__(14);
+__webpack_require__(13);
 __webpack_require__(15);
-module.exports = __webpack_require__(11);
+__webpack_require__(16);
+module.exports = __webpack_require__(12);
 
 
 /***/ })

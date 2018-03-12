@@ -1,12 +1,14 @@
-require('../../../src/mapboxgl/overlay/LabelThemeLayer');
-require('../../resources/themeLabelData');
-var mapboxgl = require('mapbox-gl');
-window.mapboxgl = mapboxgl;
+import {Label} from '../../../src/mapboxgl/overlay/LabelThemeLayer';
+import {ThemeFeature} from '../../../src/mapboxgl/overlay/theme/ThemeFeature';
+import {ThemeStyle} from '../../../src/common/style/ThemeStyle';
+import {Bounds} from '../../../src/common/commonTypes/Bounds';
+import '../../resources/themeLabelData';
+import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.ChinaURL;
 var themeLayer;
 
-function addFeatures() {
+var addFeatures = () => {
     var labelFeatures = [];
     var feat;
     for (var i = 0; i < themeData.length; i++) {
@@ -14,16 +16,16 @@ function addFeatures() {
         var lng = parseFloat(lonlat[0]);
         var lat = parseFloat(lonlat[1]);
         var text = themeData[i].aqi;
-        feat = new mapboxgl.supermap.ThemeFeature([lng, lat, text], themeData[i]);
+        feat = new ThemeFeature([lng, lat, text], themeData[i]);
         labelFeatures.push(feat);
     }
     themeLayer.addFeatures(labelFeatures);
 }
 
-describe('mapboxgl_LabelThemeLayer', function () {
+describe('mapboxgl_LabelThemeLayer', () => {
     var originalTimeout;
     var testDiv, map;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -55,13 +57,13 @@ describe('mapboxgl_LabelThemeLayer', function () {
             zoom: 3
         });
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        themeLayer = new mapboxgl.supermap.LabelThemeLayer("labelThemeLayer", {
+        themeLayer = new Label("labelThemeLayer", {
             map: map,
             attributions: " ",
-            style: new SuperMap.ThemeStyle({
+            style: new ThemeStyle({
                 labelRect: true,
                 fontColor: "#000000",
                 fontWeight: "bolder",
@@ -122,15 +124,15 @@ describe('mapboxgl_LabelThemeLayer', function () {
         });
         addFeatures();
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('constructor', function () {
+    it('constructor', () => {
         expect(themeLayer).not.toBeNull();
         expect(themeLayer.defaultStyle).not.toBeNull();
         expect(themeLayer.features.length).toBeGreaterThan(0);
@@ -140,7 +142,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //重绘所有专题要素
-    it('redrawThematicFeatures', function () {
+    it('redrawThematicFeatures', () => {
         var sw = new mapboxgl.LngLat(-180, -90);
         var ne = new mapboxgl.LngLat(180, 90);
         var bounds = new mapboxgl.LngLatBounds(sw, ne);
@@ -154,7 +156,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     // 创建专题图要素
-    it('createThematicFeature', function () {
+    it('createThematicFeature', () => {
         var feature = themeLayer.labelFeatures[0];
         feature.geometry.calculateBounds();
         var thematicFeature = themeLayer.createThematicFeature(feature);
@@ -167,7 +169,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素
-    it('getDrawnLabels', function () {
+    it('getDrawnLabels', () => {
         var labelFeatures = themeLayer.labelFeatures;
         labelFeatures[0].style.minZoomLevel = 4;
         labelFeatures[1].style.maxZoomLevel = 2;
@@ -187,7 +189,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     // 根据用户数据（feature）设置专题要素的 Style
-    it('getStyleByData', function () {
+    it('getStyleByData', () => {
         themeLayer.style.fontSize = "10px";
         themeLayer.styleGroups[0].style.fontSize = "10px";
         var feat = themeLayer.labelFeatures[0];
@@ -200,7 +202,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //设置标签要素的Style
-    it('setLabelsStyle', function () {
+    it('setLabelsStyle', () => {
         var labelFeatures = themeLayer.labelFeatures;
         var labelFeas = themeLayer.setLabelsStyle(labelFeatures);
         expect(labelFeas).not.toBeNull();
@@ -216,8 +218,9 @@ describe('mapboxgl_LabelThemeLayer', function () {
         }
     });
 
-    // // 设置标签要素的Style   //有未知UT影响，暂时注释掉
-    // xit('setStyle', function () {
+    // // 设置标签要素的Style
+    // // 有未知UT影响，暂时注释掉
+    // xit('setStyle', ()=> {
     //     var feat = themeLayer.labelFeatures[0];
     //     var feature = themeLayer.setStyle(feat);
     //     expect(feature).not.toBeNull();
@@ -231,7 +234,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     // });
 
     //获取标签要素的像素坐标
-    it('getLabelPxLocation', function () {
+    it('getLabelPxLocation', () => {
         var feature = themeLayer.labelFeatures[0];
         feature.style.labelXOffset = 1;
         feature.style.labelYOffset = 1;
@@ -242,7 +245,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //获得标签要素的最终范围  原数据默认getPxBoundsMode = 0，此处测 getPxBoundsMode = 1 时的情况
-    it('calculateLabelBounds_getPxBoundsMode = 1', function () {
+    it('calculateLabelBounds_getPxBoundsMode = 1', () => {
         themeLayer.getPxBoundsMode = 1;
         var feature = themeLayer.labelFeatures[0];
         feature.style.labelXOffset = 1;
@@ -258,7 +261,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //获得标签要素的最终范围  原数据默认getPxBoundsMode = 0，此处测 getPxBoundsMode = 2 时的情况
-    it('calculateLabelBounds_getPxBoundsMode = 2', function () {
+    it('calculateLabelBounds_getPxBoundsMode = 2', () => {
         themeLayer.getPxBoundsMode = 2;
         var feature = themeLayer.labelFeatures[0];
         var location = themeLayer.getLabelPxLocation(feature);
@@ -267,7 +270,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     // 获得标签要素的最终范围的另一种算法
-    it('calculateLabelBounds2', function () {
+    it('calculateLabelBounds2', () => {
         var feature = themeLayer.labelFeatures[0];
         var location = themeLayer.getLabelPxLocation(feature);
         feature.style.fontStyle = "italic";
@@ -338,7 +341,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //根据当前位置获取绘制后的标签信息
-    it('getLabelInfo', function () {
+    it('getLabelInfo', () => {
         var feature = themeLayer.labelFeatures[0];
         var location = feature.geometry.getCentroid();
         var style = feature.style;
@@ -351,9 +354,9 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //旋转bounds
-    it('rotationBounds', function () {
+    it('rotationBounds', () => {
         var feature = themeLayer.labelFeatures[0];
-        var bounds = new SuperMap.Bounds(50, 30, 30, 50);
+        var bounds = new Bounds(50, 30, 30, 50);
         var rotationCenterPoi = themeLayer.getLabelPxLocation(feature);
         var angle = feature.style.labelRotation;
         var boundsQuad = themeLayer.rotationBounds(bounds, rotationCenterPoi, angle);
@@ -366,7 +369,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //获取一个点绕旋转中心顺时针旋转后的位置  (此方法用于屏幕坐标)
-    it('getRotatedLocation', function () {
+    it('getRotatedLocation', () => {
         var x = 10, y = 10, rx = 15, ry = 10, angle = 5;
         var location = themeLayer.getRotatedLocation(x, y, rx, ry, angle);
         expect(location).not.toBeNull();
@@ -375,8 +378,8 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //获取避让的信息 quadrilateral.length = 5
-    it('getAvoidInfo_quadrilateral.length = 5', function () {
-        var bounds = new SuperMap.Bounds(35, 40, 40, 45);
+    it('getAvoidInfo_quadrilateral.length = 5', () => {
+        var bounds = new Bounds(35, 40, 40, 45);
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},
@@ -391,8 +394,8 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     // 获取避让的信息 quadrilateral.length != 5
-    it('getAvoidInfo_quadrilateral.length != 5', function () {
-        var bounds = new SuperMap.Bounds(35, 40, 40, 45);
+    it('getAvoidInfo_quadrilateral.length != 5', () => {
+        var bounds = new Bounds(35, 40, 40, 45);
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},
@@ -402,7 +405,7 @@ describe('mapboxgl_LabelThemeLayer', function () {
     });
 
     //判断两个四边形是否有压盖  原数据quadLen = 5 && quad2Len = 5，此处另测 ！= 5 的情况
-    it('isQuadrilateralOverLap_quadLen != 5', function () {
+    it('isQuadrilateralOverLap_quadLen != 5', () => {
         var quadrilateral = [{"x": 30, "y": 30},
             {"x": 30, "y": 50},
             {"x": 50, "y": 30},
