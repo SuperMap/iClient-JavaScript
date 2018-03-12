@@ -299,7 +299,7 @@ var exampleConfig = {
                     name: "随机点热点图",
                     name_en: "random points",
                     thumbnail: "mb_heatMapLayer.png",
-                    fileName: "heatMapLayer"
+                    fileName: "heatmapLayer"
                 }]
             },
             "VectorTileLayer": {
@@ -668,7 +668,7 @@ var exampleConfig = {
                 ]
             }
         }
-    },
+    }
 };
 /**
  *key值：为exampleConfig配置的key值或者fileName值
@@ -680,7 +680,7 @@ var sideBarIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
     "control": "fa-sliders",
-    "GTC": "fa-globe",
+    "GTC": "fa-globe"
 };
 
 /**
@@ -691,5 +691,5 @@ var sideBarIconConfig = {
 var exampleIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
-    "GTC": "fa-globe",
+    "GTC": "fa-globe"
 };
