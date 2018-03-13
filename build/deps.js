@@ -105,13 +105,13 @@ deps = {
             "./src/common/iServer/DataFlowService.js"
         ],
         "graph": [
-            "./src/common/iServer/Bar.js",
-            "./src/common/iServer/Bar3D.js",
-            "./src/common/iServer/Circle.js",
-            "./src/common/iServer/Line.js",
-            "./src/common/iServer/Pie.js",
-            "./src/common/iServer/Point.js",
-            "./src/common/iServer/Ring.js"
+            "./src/common/overlay/Bar.js",
+            "./src/common/overlay/Bar3D.js",
+            "./src/common/overlay/Circle.js",
+            "./src/common/overlay/Line.js",
+            "./src/common/overlay/Pie.js",
+            "./src/common/overlay/Point.js",
+            "./src/common/overlay/Ring.js"
         ]
 
     },

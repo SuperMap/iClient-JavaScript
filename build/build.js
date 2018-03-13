@@ -8,8 +8,10 @@ var clientsTabs = {
     "OpenLayers": "openlayers",
     "Leaflet": "leaflet",
     "MapboxGL": "mapboxgl",
-    "iClient Classic": "classic",
+    "iClient Classic": "classic"
 };
+var exceptFields = ["title", "description", "description_en"];
+
 //设当前客户端名称，其值为clientsTabs的key值之一
 var currentClientTab = "OpenLayers";
 
@@ -26,6 +28,7 @@ function init() {
     updateCommand();
     bindEvents();
 }
+
 function initClientTabs() {
     var $clientTabList = $("ul#client");
     var $clientTabContents = $('div.tab-content');
@@ -95,7 +98,7 @@ function initModules(clientName, modules) {
         addGroup(clientName, key, title, module.description, $("#" + clientName + "select")[0]);
         var $container = $("#" + clientName + "_" + key);
         for (var itemKey in module) {
-            if (itemKey === 'title' || itemKey === 'description') {
+            if (exceptFields.indexOf(itemKey) > -1) {
                 continue;
             }
             addModule(itemKey, $container[0], false, module[itemKey].name);
