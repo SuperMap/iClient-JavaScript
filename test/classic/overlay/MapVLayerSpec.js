@@ -100,7 +100,7 @@ describe('classic_MapVLayer', () => {
         var dataset = new DataSet(data);
         var tempoption = {
             shadowBlur: 30
-        }
+        };
         mapvLayer.addData(dataset, tempoption);
         expect(mapvLayer.dataSet).not.toBeNull();
         expect(mapvLayer.dataSet._data[1000].count).toEqual(111);
@@ -110,7 +110,7 @@ describe('classic_MapVLayer', () => {
     });
 
     it('getData', () => {
-        var dataset = mapvLayer.getData()
+        var dataset = mapvLayer.getData();
         expect(dataset._data.length).toEqual(1000);
     });
 
@@ -125,7 +125,7 @@ describe('classic_MapVLayer', () => {
         var dataset = new DataSet(data);
         var tempoption = {
             shadowBlur: 40
-        }
+        };
         mapvLayer.setData(dataset, tempoption);
         expect(mapvLayer.dataSet._data.length).toEqual(1);
         expect(mapvLayer.dataSet._data[0].count).toEqual(111);

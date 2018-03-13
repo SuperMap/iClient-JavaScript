@@ -28,14 +28,14 @@ describe('classic_AddressMatchService', () => {
 
     it('code', (done) => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
-        var options = {
-            eventListeners: {"processCompleted": codeCompleted, "processFailed": codeFailed}
-        };
         var codeCompleted = (analyseEventArgs) => {
             codingSuccessEventArgs = analyseEventArgs;
         };
         var codeFailed = (serviceFailedEventArgs) => {
             codingFailedEventArgs = serviceFailedEventArgs;
+        };
+        var options = {
+            eventListeners: {"processCompleted": codeCompleted, "processFailed": codeFailed}
         };
         var GeoCodingParams = new GeoCodingParameter({
             address: '公司',
@@ -79,7 +79,6 @@ describe('classic_AddressMatchService', () => {
         var decodeCompleted = (analyseEventArgs) => {
             decodingSuccessEventArgs = analyseEventArgs;
         };
-
         var GeoDeCodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
             y: 39.92311315752059,
