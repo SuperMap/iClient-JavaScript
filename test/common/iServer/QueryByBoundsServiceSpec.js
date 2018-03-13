@@ -1,12 +1,22 @@
-﻿require('../../../src/common/iServer/QueryByBoundsService');
+﻿import {QueryByBoundsService} from '../../../src/common/iServer/QueryByBoundsService';
+import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
+import {GeometryType} from '../../../src/common/REST';
+import {QueryOption} from '../../../src/common/REST';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
 
-function initQueryByBoundsService() {
-    return new SuperMap.QueryByBoundsService(worldMapURL);
-}
+var QueryByBoundsFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var QueryByBoundsCompleted = (serviceCompletedEventArgs) => {
+    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+};
+var initQueryByBoundsService = () => {
+    return new QueryByBoundsService(worldMapURL);
+};
 var options = {
     eventListeners: {
         'processFailed': QueryByBoundsFailed,
@@ -14,29 +24,23 @@ var options = {
     }
 };
 //服务初始化时注册事件监听函数
-function initQueryByBoundsService_RegisterListener() {
-    return new SuperMap.QueryByBoundsService(worldMapURL, options);
-}
-function QueryByBoundsFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function QueryByBoundsCompleted(serviceCompletedEventArgs) {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-}
+var initQueryByBoundsService_RegisterListener = () => {
+    return new QueryByBoundsService(worldMapURL, options);
+};
 
-describe('QueryByBoundsService_processAsync', function () {
+describe('QueryByBoundsService_processAsync', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceFailedEventArgsSystem = null;
         serviceCompletedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var queryByBoundsService = initQueryByBoundsService();
         expect(queryByBoundsService).not.toBeNull();
         expect(queryByBoundsService.url).toEqual(worldMapURL + "/queryResults.json?");
@@ -46,24 +50,24 @@ describe('QueryByBoundsService_processAsync', function () {
         expect(queryByBoundsService.returnContent).toBeNull();
     })
 
-    it('success:processAsync', function (done) {
+    it('success:processAsync', (done) => {
         var queryByBoundsService = initQueryByBoundsService_RegisterListener();
-        var queryByBoundsParameters = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParameters = new QueryByBoundsParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID<21",
                 name: "Countries@World",
             })),
             returnContent: true,
-            bounds: new SuperMap.Bounds(0, 0, 100, 100)
+            bounds: new Bounds(0, 0, 100, 100)
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
         queryByBoundsService.processAsync(queryByBoundsParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
@@ -85,26 +89,26 @@ describe('QueryByBoundsService_processAsync', function () {
         }, 4000);
     });
 
-    it('processAsync_customsResult', function (done) {
+    it('processAsync_customsResult', (done) => {
         var queryByBoundsService = initQueryByBoundsService_RegisterListener();
-        var queryByBoundsParameters = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParameters = new QueryByBoundsParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID<3",
                 name: "Countries@World",
             })),
             returnContent: false,
-            bounds: new SuperMap.Bounds(0, 0, 100, 100)
+            bounds: new Bounds(0, 0, 100, 100)
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
         queryByBoundsParameters.returnCustomResult = true;
         queryByBoundsService.processAsync(queryByBoundsParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result;
                 expect(queryResult).not.toBeNull();
@@ -129,21 +133,21 @@ describe('QueryByBoundsService_processAsync', function () {
     });
 
     //查询参数为空
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var queryByBoundsService = initQueryByBoundsService_RegisterListener();
-        var queryByBoundsParameters = new SuperMap.QueryByBoundsParameters({
+        var queryByBoundsParameters = new QueryByBoundsParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTE,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
             queryParams: new Array(),
-            bounds: new SuperMap.Bounds(0, 0, 100, 100)
+            bounds: new Bounds(0, 0, 100, 100)
         });
         queryByBoundsParameters.startRecord = 0;
         queryByBoundsParameters.holdTime = 10;
         queryByBoundsService.processAsync(queryByBoundsParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();

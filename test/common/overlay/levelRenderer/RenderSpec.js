@@ -1,11 +1,11 @@
-var Render = require('../../../../src/common/overlay/levelRenderer/Render').Render;
-var Group = require('../../../../src/common/overlay/levelRenderer/Group').Group;
-var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
-var SmicCircle = require('../../../../src/common/overlay/levelRenderer/SmicCircle').SmicCircle;
+import {Render} from '../../../../src/common/overlay/levelRenderer/Render';
+import {Group} from '../../../../src/common/overlay/levelRenderer/Group';
+import {SmicStar} from '../../../../src/common/overlay/levelRenderer/SmicStar';
+import {SmicCircle} from '../../../../src/common/overlay/levelRenderer/SmicCircle';
 
-describe('Render', function () {
+describe('Render', () => {
     var testDiv, render;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "render");
         testDiv.style.styleFloat = "left";
@@ -15,17 +15,17 @@ describe('Render', function () {
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         render = new Render('render', testDiv);
     });
-    afterEach(function () {
+    afterEach(() => {
         render.destroy();
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         expect(render).not.toBeNull();
         expect(render.CLASS_NAME).toEqual("SuperMap.LevelRenderer.Render");
         expect(render.id).toEqual("render");
@@ -43,12 +43,12 @@ describe('Render', function () {
         expect(render.animatingElements).toBeNull();
     });
 
-    it('getId', function () {
+    it('getId', () => {
         var id = render.getId();
         expect(id).toEqual("render");
     });
 
-    it('addShape, modShape, delShape', function () {
+    it('addShape, modShape, delShape', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         var newShape = new SmicStar({style: {x: 100, y: 100, r: 55, n: 5}});
         render.addShape(shape);
@@ -65,7 +65,7 @@ describe('Render', function () {
     });
 
     //添加组到根节点
-    it('addGroup, modGroup, delGroup', function () {
+    it('addGroup, modGroup, delGroup', () => {
         var group = new Group();
         group.addChild(new SmicCircle({
             style: {x: 100, y: 100, r: 20, brushType: 'fill'}
@@ -88,7 +88,7 @@ describe('Render', function () {
         expect(render.storage._roots.length).toEqual(0);
     });
 
-    it('modLayer', function () {
+    it('modLayer', () => {
         expect(render.painter._layerConfig).toEqual({});
         var config = {
             clearColor: 0,
@@ -107,7 +107,7 @@ describe('Render', function () {
         expect(render).not.toBeNull();
     });
 
-    it('addHoverShape', function () {
+    it('addHoverShape', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addHoverShape(shape);
         expect(render).not.toBeNull();
@@ -118,7 +118,7 @@ describe('Render', function () {
     });
 
     //标记视图在浏览器下一帧需要绘制
-    it('refreshNextFrame', function () {
+    it('refreshNextFrame', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();
@@ -128,13 +128,13 @@ describe('Render', function () {
         expect(render._needsRefreshNextFrame).toBeTruthy();
     });
 
-    it('resize', function () {
+    it('resize', () => {
         render.painter._height = 350;
         render.resize();
         expect(render.painter._height).toEqual(400);
     });
 
-    it('refreshShapes', function () {
+    it('refreshShapes', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();
@@ -147,7 +147,7 @@ describe('Render', function () {
     });
 
     //动画对象为Shape数组, 且动画不循环
-    it('animate_shape', function () {
+    it('animate_shape', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();
@@ -170,7 +170,7 @@ describe('Render', function () {
     });
 
     //动画对象为Group数组, 且动画不循环
-    it('animate_group, clearAnimation', function () {
+    it('animate_group, clearAnimation', () => {
         var group = new Group();
         group.addChild(new SmicCircle({
             style: {x: 100, y: 100, r: 20, brushType: 'fill'}
@@ -193,7 +193,7 @@ describe('Render', function () {
     });
 
     //动画对象为Shape数组, 且动画循环
-    it('animate_shape', function () {
+    it('animate_shape', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();
@@ -204,7 +204,7 @@ describe('Render', function () {
         expect(err2).toBeUndefined();
     });
 
-    it('getWidth, getHeight, toDataURL, shapeToImage', function () {
+    it('getWidth, getHeight, toDataURL, shapeToImage', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();
@@ -214,12 +214,12 @@ describe('Render', function () {
         expect(height).toEqual(400);
         var imgUrl = render.toDataURL('PNG', "#FFFFFF", {});
         expect(imgUrl).toContain("image/png");
-        var image = render.shapeToImage(shape,width,height);
+        var image = render.shapeToImage(shape, width, height);
         expect(image).not.toBeNull();
         expect(image.type).toEqual("smicimage");
     });
 
-    it('updateHoverShapes',function () {
+    it('updateHoverShapes', () => {
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
         render.addShape(shape);
         render.render();

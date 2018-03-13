@@ -1,39 +1,38 @@
-require('../../../src/common/iServer/TransferPathService');
-
-var serviceFailedEventArgsSystem = null;
-var analystEventArgsSystem = null;
+import {TransferPathService} from '../../../src/common/iServer/TransferPathService';
+import {TransferPathParameters} from '../../../src/common/iServer/TransferPathParameters';
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
-function succeed(event) {
+var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
+var succeed = (event) => {
     analystEventArgsSystem = event;
-}
-function failed(event) {
+};
+var failed = (event) => {
     serviceFailedEventArgsSystem = event;
-}
+};
 var options = {
     eventListeners: {
         "processCompleted": succeed,
         "processFailed": failed
     }
 };
-function initTransferPathService() {
-    return new SuperMap.TransferPathService(trafficTransferURL, options);
-}
+var initTransferPathService = () => {
+    return new TransferPathService(trafficTransferURL, options);
+};
 
-describe('TransferPathService', function () {
+describe('TransferPathService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var service = initTransferPathService();
         service.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(typeof(service.processAsync()) === "undefined").toBeTruthy();
                 service.destroy();
@@ -47,9 +46,9 @@ describe('TransferPathService', function () {
         }, 1500)
     });
 
-    it('success:processAsync', function (done) {
+    it('success:processAsync', (done) => {
         var service = initTransferPathService();
-        var params = new SuperMap.TransferPathParameters({
+        var params = new TransferPathParameters({
             transferLines: [
                 {"lineID": 27, "startStopIndex": 3, "endStopIndex": 4},
                 {"lineID": 12, "startStopIndex": 5, "endStopIndex": 9}
@@ -58,7 +57,7 @@ describe('TransferPathService', function () {
         });
         service.processAsync(params);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var result = analystEventArgsSystem.result;
                 expect(result).not.toBeNull();

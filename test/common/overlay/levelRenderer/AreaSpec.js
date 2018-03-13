@@ -1,24 +1,24 @@
-var Area = require('../../../../src/common/overlay/levelRenderer/Area').Area;
-var SmicEllipse = require('../../../../src/common/overlay/levelRenderer/SmicEllipse').SmicEllipse;
-var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
-var SmicRing = require('../../../../src/common/overlay/levelRenderer/SmicRing').SmicRing;
-var SmicPoint = require('../../../../src/common/overlay/levelRenderer/SmicPoint').SmicPoint;
-var Shape = require('../../../../src/common/overlay/levelRenderer/Shape').Shape;
-var SmicSector = require('../../../../src/common/overlay/levelRenderer/SmicSector').SmicSector;
-var SmicText = require('../../../../src/common/overlay/levelRenderer/SmicText').SmicText;
-var SmicImage = require('../../../../src/common/overlay/levelRenderer/SmicImage').SmicImage;
+import {Area} from '../../../../src/common/overlay/levelRenderer/Area';
+import {SmicEllipse} from '../../../../src/common/overlay/levelRenderer/SmicEllipse';
+import {SmicPolygon} from '../../../../src/common/overlay/levelRenderer/SmicPolygon';
+import {SmicRing} from '../../../../src/common/overlay/levelRenderer/SmicRing';
+import {SmicPoint} from '../../../../src/common/overlay/levelRenderer/SmicPoint';
+import {Shape} from '../../../../src/common/overlay/levelRenderer/Shape';
+import {SmicSector} from '../../../../src/common/overlay/levelRenderer/SmicSector';
+import {SmicText} from '../../../../src/common/overlay/levelRenderer/SmicText';
+import {SmicImage} from '../../../../src/common/overlay/levelRenderer/SmicImage';
 
-describe('Area', function () {
+describe('Area', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it("initialize", function () {
+    it("initialize", () => {
         var init = new Area();
         expect(init.TEXT_CACHE_MAX).toBe(5000);
         expect(parseFloat(init.PI2.toFixed(15))).toBe(6.283185307179586);
@@ -26,7 +26,7 @@ describe('Area', function () {
         expect(init.extrema.toString()).toBe('-1,-1');
     });
 
-    it("normalizeRadian", function () {
+    it("normalizeRadian", () => {
         var angle = 360;
         var init = new Area();
         var result = init.normalizeRadian(angle);
@@ -34,7 +34,7 @@ describe('Area', function () {
         expect(result).toBe(1.8584374907635848);
     });
 
-    it("isInside", function () {
+    it("isInside", () => {
         var shape = new SmicEllipse({
             style: {
                 x: 100,
@@ -67,8 +67,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside_mathReturn_not_undefined", function () {
-
+    it("isInside_mathReturn_not_undefined", () => {
         var shape = new SmicPolygon({
             style: {
                 // 100x100 的正方形
@@ -90,7 +89,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside_switch_path_smicellipse", function () {
+    it("isInside_switch_path_smicellipse", () => {
         var shape = new SmicEllipse();
         var area = {};
         var x = 100;
@@ -101,7 +100,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside_switch_path_trochoid", function () {
+    it("isInside_switch_path_trochoid", () => {
         var shape = new Shape();
         shape["type"] = "trochoid";
         shape["style"] = {
@@ -124,7 +123,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside_switch_path_rose", function () {
+    it("isInside_switch_path_rose", () => {
         var shape = new Shape();
         shape["type"] = "rose";
         shape["style"] = {"maxr": 10};
@@ -135,7 +134,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside_switch_path_default", function () {
+    it("isInside_switch_path_default", () => {
         var shape = new Shape();
         shape["style"] = {"maxr": 10};
         var area = {"maxr": 10}, x = 100, y = 200;
@@ -145,7 +144,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside_switch_path_ellipse", function () {
+    it("isInside_switch_path_ellipse", () => {
         var shape = new Shape();
         shape["type"] = "ellipse";
         shape["style"] = {"maxr": 10};
@@ -156,7 +155,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it('isInside_shape_buildPath_null_ellipse', function () {
+    it('isInside_shape_buildPath_null_ellipse', () => {
         var shape = new SmicEllipse({
             style: {
                 x: 100,
@@ -189,7 +188,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it('isInside_shape_buildPath_null_trochoid', function () {
+    it('isInside_shape_buildPath_null_trochoid', () => {
         var shape = new Shape();
         shape["type"] = "trochoid";
         shape["style"] = {
@@ -217,7 +216,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it('isInside_shape_buildPath_null_rose', function () {
+    it('isInside_shape_buildPath_null_rose', () => {
         var shape = new Shape();
         shape["type"] = "rose";
         shape["style"] = {
@@ -245,7 +244,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it('isInside_shape_buildPath_null_text', function () {
+    it('isInside_shape_buildPath_null_text', () => {
         var shape = new Shape();
         shape["type"] = "test";
         shape["style"] = {
@@ -273,7 +272,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it('isInside_shape_null', function () {
+    it('isInside_shape_null', () => {
         var shape = null;
         var area = null;
         var init = new Area();
@@ -281,7 +280,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_bezier-curve_and_area.cpX2_equalTo_undefined", function () {
+    it("_mathMethod_bezier-curve_and_area.cpX2_equalTo_undefined", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -312,7 +311,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_bezier-curve_and_area.cpX2_not_equalTo_undefined", function () {
+    it("_mathMethod_bezier-curve_and_area.cpX2_not_equalTo_undefined", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -343,7 +342,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_line", function () {
+    it("_mathMethod_line", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -365,7 +364,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_broken-line_false", function () {
+    it("_mathMethod_broken-line_false", () => {
         var shape = new Shape();
         shape.type = "broken-line";
 
@@ -381,7 +380,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_broken-line_true", function () {
+    it("_mathMethod_broken-line_true", () => {
         var shape = new Shape();
         shape.type = "broken-line";
         var area = {
@@ -396,7 +395,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it("_mathMethod_smicbroken-line", function () {
+    it("_mathMethod_smicbroken-line", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -420,7 +419,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_ring", function () {
+    it("_mathMethod_ring", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -448,7 +447,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_smicring", function () {
+    it("_mathMethod_smicring", () => {
         var shape = new SmicRing({
             style: {
                 x: 100,
@@ -477,7 +476,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_circle", function () {
+    it("_mathMethod_circle", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -513,7 +512,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it("_mathMethod_smicpoint", function () {
+    it("_mathMethod_smicpoint", () => {
         var shape = new SmicPoint({
             style: {
                 x: 100,
@@ -546,7 +545,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it("_mathMethod_sector", function () {
+    it("_mathMethod_sector", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -586,7 +585,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_smicsector", function () {
+    it("_mathMethod_smicsector", () => {
         var shape = new SmicSector({
             style: {
                 x: 100,
@@ -620,7 +619,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_path", function () {
+    it("_mathMethod_path", () => {
         var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -669,7 +668,7 @@ describe('Area', function () {
         expect(result).not.toBeNull();
     });
 
-    it("_mathMethod_polygon", function () {
+    it("_mathMethod_polygon", () => {
         var shape = new Shape();
         shape.type = "polygon";
         var area = {
@@ -683,7 +682,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it("_mathMethod_smicpolygon", function () {
+    it("_mathMethod_smicpolygon", () => {
         var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -718,7 +717,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it("_mathMethod_text", function () {
+    it("_mathMethod_text", () => {
         var shape = new Shape();
         shape.type = "text";
         var area = {
@@ -732,7 +731,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it("_mathMethod_smictext", function () {
+    it("_mathMethod_smictext", () => {
         var shape = new SmicText({
             style: {
                 text: 'smictext',
@@ -755,7 +754,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_rectangle", function () {
+    it("_mathMethod_rectangle", () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -778,7 +777,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("_mathMethod_image", function () {
+    it("_mathMethod_image", () => {
         var shape = new Shape();
         shape.type = "image";
         var area = {
@@ -794,7 +793,7 @@ describe('Area', function () {
         expect(result).not.toBeNull();
     });
 
-    it("_mathMethod_smicimage", function () {
+    it("_mathMethod_smicimage", () => {
         var shape = new SmicImage({
             style: {
                 image: 'test.jpg',
@@ -818,7 +817,7 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-    it("windingQuadratic", function () {
+    it("windingQuadratic", () => {
         var x0 = 5, y0 = 6, x1 = 10, y1 = 5, x2 = 15, y2 = 10, x = 0, y = 6;
         var init = new Area();
         var result = init.windingQuadratic(x0, y0, x1, y1, x2, y2, x, y);
@@ -826,28 +825,28 @@ describe('Area', function () {
         expect(result).toBe(0);
     });
 
-    it("windingArc_x_8", function () {
+    it("windingArc_x_8", () => {
         var cx = 10, cy = 10, r = 5, startAngle = 30, endAngle = 60, anticlockwise = 1, x = 8, y = 12;
         var init = new Area();
         var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
         expect(result).not.toBeNull();
     });
 
-    it("windingArc_x_5", function () {
+    it("windingArc_x_5", () => {
         var cx = 10, cy = 10, r = 5, startAngle = 30, endAngle = 60, anticlockwise = true, x = 5, y = 12;
         var init = new Area();
         var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
         expect(result).toEqual(0);
     });
 
-    it("windingArc_endAngle_35", function () {
+    it("windingArc_endAngle_35", () => {
         var cx = 10, cy = 10, r = 5, startAngle = 40, endAngle = 35, anticlockwise = true, x = 5, y = 12;
         var init = new Area();
         var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
         expect(result).not.toBeNull();
     });
 
-    it('isOutside', function () {
+    it('isOutside', () => {
         var shape = new SmicEllipse();
         var area = {};
         var x = 100;
@@ -858,7 +857,7 @@ describe('Area', function () {
         expect(result).toBeTruthy();
     });
 
-    it('swapExtrema', function () {
+    it('swapExtrema', () => {
         var init = new Area();
         var a = init.extrema[0];
         var b = init.extrema[1];
@@ -869,7 +868,7 @@ describe('Area', function () {
         expect(b1).toEqual(a);
     });
 
-    it('isInsideLine', function () {
+    it('isInsideLine', () => {
         var init = new Area();
         var result1 = init.isInsideLine(10, 20, 10, 15, 4, 11, 20);
         var result2 = init.isInsideLine(10, 20, 10, 15, 0, 20, 20);
@@ -877,19 +876,19 @@ describe('Area', function () {
         expect(result2).toBeFalsy();
     });
 
-    it('isInsideCubicStroke', function () {
+    it('isInsideCubicStroke', () => {
         var init = new Area();
         var result = init.isInsideCubicStroke(10, 20, 10, 15, 11, 20, 15, 20, 0, 11, 20);
         expect(result).toBeFalsy();
     });
 
-    it('isInsideQuadraticStroke', function () {
+    it('isInsideQuadraticStroke', () => {
         var init = new Area();
         var result = init.isInsideQuadraticStroke(10, 15, 11, 20, 15, 20, 0, 11, 20);
         expect(result).toBeFalsy();
     });
 
-    it('windingCubic', function () {
+    it('windingCubic', () => {
         var init = new Area();
         var result1 = init.windingCubic(10, 5, 11, 5, 15, 8, 11, 9, 20, 10);
         expect(result1).toEqual(0);

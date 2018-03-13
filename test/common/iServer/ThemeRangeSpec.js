@@ -1,8 +1,8 @@
-var ThemeRange = require('../../../src/common/iServer/ThemeRange').ThemeRange;
-var ThemeRangeItem = require('../../../src/common/iServer/ThemeRangeItem').ThemeRangeItem;
+import {ThemeRange} from '../../../src/common/iServer/ThemeRange';
+import {ThemeRangeItem} from '../../../src/common/iServer/ThemeRangeItem';
 
-describe('ThemeRange', function () {
-    it('constructor, destroy', function () {
+describe('ThemeRange', () => {
+    it('constructor, destroy', () => {
         var options = {
             items: [new ThemeRangeItem({caption: 'test1'})],
         };
@@ -31,7 +31,7 @@ describe('ThemeRange', function () {
         expect(themeRange.colorGradientType).toBeNull();
     });
 
-    it('fromObj', function () {
+    it('fromObj', () => {
         var options = {
             items: [new ThemeRangeItem({caption: 'test1'})],
         };

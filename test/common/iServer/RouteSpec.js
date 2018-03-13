@@ -1,18 +1,22 @@
-require('../../../src/common/iServer/Route');
+import {Route} from '../../../src/common/iServer/Route';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {LineString} from '../../../src/common/commontypes/geometry/LineString';
 
-describe('Route', function () {
+describe('Route', () => {
     var originalTimeout;
-    beforeEach(function () {
+    var routeLocatorEventArgsSystem = null, serviceFailedEventArgsSystem = null;
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        var routeLocatorEventArgsSystem = null, serviceFailedEventArgsSystem = null;
+        routeLocatorEventArgsSystem = null;
+        serviceFailedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor', function () {
-        var lineString = new SuperMap.Geometry.LineString();
+    it('constructor', () => {
+        var lineString = new LineString();
         var options = {
             "id": 1,
             "length": 1024,
@@ -20,7 +24,7 @@ describe('Route', function () {
             "minM": 100,
             "type": "LINESTRING"
         };
-        var route = new SuperMap.Route([lineString], options);
+        var route = new Route([lineString], options);
         expect(route).not.toBeNull();
         expect(route.id).toBe(1);
         expect(route.length).toBe(1024);
@@ -29,8 +33,8 @@ describe('Route', function () {
         expect(route.type).toBe("LINESTRING");
     });
 
-    it('toJson', function () {
-        var lineString = new SuperMap.Geometry.LineString();
+    it('toJson', () => {
+        var lineString = new LineString();
         var options = {
             "id": 1,
             "length": 1024,
@@ -41,21 +45,21 @@ describe('Route', function () {
             "type": "LINESTRING",
             "parts": [1]
         };
-        var route = new SuperMap.Route([lineString], options);
+        var route = new Route([lineString], options);
         var tojson = route.toJson();
         expect(tojson).not.toBeNull();
         expect(typeof (tojson)).toBe('string');
         expect(tojson).toBe('{"id":1,"center":5000,"style":,"length":1024,"maxM":1000,"minM":100,"type":"LINESTRING","parts":[1],"points":[]}');
     });
 
-    it('toJson_withComponents', function (done) {
+    it('toJson_withComponents', (done) => {
         try {
-            var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
-                new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
-                new SuperMap.Geometry.Point(5006.0235999418364, -3358.8890067038628),
-                new SuperMap.Geometry.Point(5075.3145648369318, -3378.0037556404409),
-                new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)];
-            var roadLine = new SuperMap.Geometry.LineString(points);
+            var points = [new Point(4933.319287022352, -3337.3849141502124),
+                new Point(4960.9674060199022, -3349.3316322355736),
+                new Point(5006.0235999418364, -3358.8890067038628),
+                new Point(5075.3145648369318, -3378.0037556404409),
+                new Point(5305.19551436013, -3376.9669111768926)];
+            var roadLine = new LineString(points);
             var options = {
                 "id": 1,
                 "length": 1024,
@@ -64,7 +68,7 @@ describe('Route', function () {
                 "type": "LINESTRING",
                 "parts": [1]
             };
-            var route = new SuperMap.Route([roadLine], options);
+            var route = new Route([roadLine], options);
             var tojson = route.toJson();
             expect(tojson).not.toBeNull();
             expect(typeof (tojson)).toBe('string');
@@ -75,13 +79,13 @@ describe('Route', function () {
         }
     });
 
-    it('destroy', function () {
-        var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
-            new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
-            new SuperMap.Geometry.Point(5006.0235999418364, -3358.8890067038628),
-            new SuperMap.Geometry.Point(5075.3145648369318, -3378.0037556404409),
-            new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)];
-        var roadLine = new SuperMap.Geometry.LineString(points);
+    it('destroy', () => {
+        var points = [new Point(4933.319287022352, -3337.3849141502124),
+            new Point(4960.9674060199022, -3349.3316322355736),
+            new Point(5006.0235999418364, -3358.8890067038628),
+            new Point(5075.3145648369318, -3378.0037556404409),
+            new Point(5305.19551436013, -3376.9669111768926)];
+        var roadLine = new LineString(points);
         var options = {
             "id": 1,
             "length": 1024,
@@ -90,7 +94,7 @@ describe('Route', function () {
             "type": "LINESTRING",
             "parts": [1]
         };
-        var route = new SuperMap.Route([roadLine], options);
+        var route = new Route([roadLine], options);
         route.destroy();
         expect(route.id).toBeNull();
         expect(route.center).toBeNull();
@@ -104,7 +108,7 @@ describe('Route', function () {
         expect(route.componentTypes).toBeNull();
     });
 
-    it('fromJson', function () {
+    it('fromJson', () => {
         var jsonobj = {
             "id": 1,
             "length": 1024,
@@ -118,9 +122,9 @@ describe('Route', function () {
             }],
             "parts": [1]
         };
-        var result = SuperMap.Route.fromJson(jsonobj);
+        var result = Route.fromJson(jsonobj);
         expect(result).not.toBeNull();
-        expect(result instanceof SuperMap.Route).toBeTruthy();
+        expect(result instanceof Route).toBeTruthy();
         expect(result.id).toBe(1);
         expect(result.length).toBe(1024);
         expect(result.maxM).toBe(1000);

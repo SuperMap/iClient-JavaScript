@@ -1,8 +1,8 @@
-var Clip = require('../../../../src/common/overlay/levelRenderer/Clip').Clip;
-var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
+import {Clip} from '../../../../src/common/overlay/levelRenderer/Clip';
+import {SmicStar} from '../../../../src/common/overlay/levelRenderer/SmicStar';
 
-describe('Clip', function () {
-    it('constructor', function () {
+describe('Clip', () => {
+    it('constructor', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -26,7 +26,7 @@ describe('Clip', function () {
     });
 
     //不循环开始
-    it('step', function () {
+    it('step', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -45,7 +45,7 @@ describe('Clip', function () {
     });
 
     //循环开始
-    it('step_loop', function () {
+    it('step_loop', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -65,7 +65,7 @@ describe('Clip', function () {
     });
 
     //参数time < 动画开始的时间
-    it('step_time', function () {
+    it('step_time', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -84,7 +84,7 @@ describe('Clip', function () {
         expect(result).toBeUndefined();
     });
 
-    it('restart, fire', function () {
+    it('restart, fire', () => {
         var star = new SmicStar({
             style: {
                 x: 200,

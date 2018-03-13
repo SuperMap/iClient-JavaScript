@@ -1,15 +1,15 @@
-require('../../../src/common/iManager/iManagerCreateNodeParam');
+import {IManagerCreateNodeParam} from '../../../src/common/iManager/iManagerCreateNodeParam';
 
-describe('iManagerCreateNodeParam', function () {
-    it('constructor', function () {
+describe('iManagerCreateNodeParam', () => {
+    it('constructor', () => {
         var options = {
             nodeName: 'test',
             password: 'test',
             description: 'test',
             physicalMachineName: 'physicalMachineNameTest',
             userName: 'user'
-        }
-        var iManagerCreateNodeParam = new SuperMap.iManagerCreateNodeParam(options);
+        };
+        var iManagerCreateNodeParam = new IManagerCreateNodeParam(options);
         expect(iManagerCreateNodeParam).not.toBeNull();
         expect(iManagerCreateNodeParam.nodeSpec).toBe('SMALL');
         expect(iManagerCreateNodeParam.nodeCount).toBe(1);

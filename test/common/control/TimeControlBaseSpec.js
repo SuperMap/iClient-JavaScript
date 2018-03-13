@@ -1,12 +1,12 @@
-require('../../../src/common/control/TimeControlBase');
+import {TimeControlBase} from '../../../src/common/control/TimeControlBase';
 
-describe('TimeControlBase', function () {
+describe('TimeControlBase', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     var options = {
@@ -18,8 +18,8 @@ describe('TimeControlBase', function () {
         reverse: false,
     };
 
-    it('updateOptions', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('updateOptions', () => {
+        var timecontrolbase = new TimeControlBase(options);
         timecontrolbase.updateOptions(options);
         expect(timecontrolbase.getSpeed()).toBe(1);
         expect(timecontrolbase.getFrequency()).toBe(1000);
@@ -29,23 +29,23 @@ describe('TimeControlBase', function () {
         expect(timecontrolbase.getReverse()).toBeFalsy();
     });
 
-    it('start', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('start', () => {
+        var timecontrolbase = new TimeControlBase(options);
         expect(timecontrolbase.getRunning()).toBeFalsy();
         timecontrolbase.start();
         expect(timecontrolbase.getRunning()).toBeTruthy();
     });
 
-    it('pause', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('pause', () => {
+        var timecontrolbase = new TimeControlBase(options);
         timecontrolbase.start();
         expect(timecontrolbase.getRunning()).toBeTruthy();
         timecontrolbase.pause();
         expect(timecontrolbase.getRunning()).toBeFalsy();
     });
 
-    it('stop', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('stop', () => {
+        var timecontrolbase = new TimeControlBase(options);
         timecontrolbase.start();
         expect(timecontrolbase.getRunning()).toBeTruthy();
         timecontrolbase.stop();
@@ -53,29 +53,29 @@ describe('TimeControlBase', function () {
         expect(timecontrolbase.getRunning()).toBeFalsy();
     });
 
-    it('toggle', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('toggle', () => {
+        var timecontrolbase = new TimeControlBase(options);
         expect(timecontrolbase.getRunning()).toBeFalsy();
         timecontrolbase.toggle();
         expect(timecontrolbase.getRunning()).toBeTruthy();
     });
 
-    it('setSpeed', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setSpeed', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var speed = 1;
         var result = timecontrolbase.setSpeed(speed);
         expect(result).toBeTruthy();
         expect(timecontrolbase.getSpeed()).toBe(speed);
     });
 
-    it('getSpeed', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getSpeed', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getSpeed();
         expect(result).toBe(1);
     });
 
-    it('setFrequency', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setFrequency', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var frequency = 1000;
         var result = timecontrolbase.setFrequency(frequency);
         expect(result).toBeTruthy();
@@ -89,28 +89,28 @@ describe('TimeControlBase', function () {
         expect(result).toBeFalsy();
     });
 
-    it('getFrequency', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getFrequency', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getFrequency();
         expect(result).toBe(1000);
     });
 
-    it('setStartTime', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setStartTime', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var startTime = 1498772645000;
         var result = timecontrolbase.setStartTime(startTime);
         expect(result).toBeTruthy();
         expect(timecontrolbase.getStartTime()).toBe(startTime);
     });
 
-    it('getStartTime', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getStartTime', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getStartTime();
         expect(result).toBe(1498772645000);
     });
 
-    it('setEndTime', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setEndTime', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var endtime = 1498935332001;
         var result = timecontrolbase.setEndTime(endtime);
         expect(result).toBeTruthy();
@@ -118,14 +118,14 @@ describe('TimeControlBase', function () {
         expect(timecontrolbase.getEndTime()).toBe(endtime);
     });
 
-    it('getEndTime', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getEndTime', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getEndTime();
         expect(result).toBe(1498935332000);
     });
 
-    it('setCurrentTime', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setCurrentTime', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var currentTime = 1498772655001;
         var result = timecontrolbase.setCurrentTime(currentTime);
         expect(result).toBeTruthy();
@@ -133,46 +133,46 @@ describe('TimeControlBase', function () {
 
     });
 
-    it('getCurrentTime', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getCurrentTime', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getCurrentTime();
         expect(result).toBe(1498772645000);
     });
 
-    it('setRepeat', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setRepeat', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var repeat = true;
         timecontrolbase.setRepeat(repeat);
         expect(timecontrolbase.getRepeat()).toBeTruthy();
     });
 
-    it('getRepeat', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getRepeat', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getRepeat();
         expect(result).toBeTruthy();
     });
 
-    it('setReverse', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('setReverse', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var reverse = true;
         timecontrolbase.setReverse(reverse);
         expect(timecontrolbase.getReverse()).toBeTruthy();
     });
 
-    it('getReverse', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getReverse', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getReverse();
         expect(result).toBeFalsy();
     });
 
-    it('getRunning', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('getRunning', () => {
+        var timecontrolbase = new TimeControlBase(options);
         var result = timecontrolbase.getRunning();
         expect(result).toBeFalsy();
     });
 
-    it('destroy', function () {
-        var timecontrolbase = new SuperMap.TimeControlBase(options);
+    it('destroy', () => {
+        var timecontrolbase = new TimeControlBase(options);
         timecontrolbase.destroy();
         expect(timecontrolbase.getSpeed()).toBeNull();
         expect(timecontrolbase.getFrequency()).toBeNull();

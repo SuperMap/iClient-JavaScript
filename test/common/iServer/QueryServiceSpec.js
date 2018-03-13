@@ -1,11 +1,11 @@
-require('../../../src/common/iServer/QueryService');
+import {QueryService} from '../../../src/common/iServer/QueryService';
 
 var url = GlobeParameter.mapServiceURL + "World Map";
-function initQueryService() {
-    return new SuperMap.QueryService(url);
+var initQueryService = () => {
+    return new QueryService(url);
 }
-describe('QueryService', function () {
-    it("constructor", function () {
+describe('QueryService', () => {
+    it("constructor", () => {
         var queryServices = initQueryService();
         expect(queryServices).not.toBeNull();
         expect(queryServices.url).toEqual(url + "/queryResults.json?");

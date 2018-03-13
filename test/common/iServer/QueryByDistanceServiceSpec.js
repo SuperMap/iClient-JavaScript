@@ -1,12 +1,21 @@
-﻿require('../../../src/common/iServer/QueryByDistanceService');
+﻿import {QueryByDistanceService} from '../../../src/common/iServer/QueryByDistanceService';
+import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {GeometryType} from '../../../src/common/REST';
+import {QueryOption} from '../../../src/common/REST';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-
-function initQueryByDistanceService() {
-    return new SuperMap.QueryByDistanceService(worldMapURL);
-}
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var QueryByDistanceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var QueryByDistanceCompleted = (serviceCompletedEventArgs) => {
+    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+};
+var initQueryByDistanceService = () => {
+    return new QueryByDistanceService(worldMapURL);
+};
 var options = {
     eventListeners: {
         'processFailed': QueryByDistanceFailed,
@@ -14,29 +23,23 @@ var options = {
     }
 };
 //服务初始化时注册事件监听函数
-function initQueryByDistanceService_RegisterListener() {
-    return new SuperMap.QueryByDistanceService(worldMapURL, options);
-}
-function QueryByDistanceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function QueryByDistanceCompleted(serviceCompletedEventArgs) {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-}
+var initQueryByDistanceService_RegisterListener = () => {
+    return new QueryByDistanceService(worldMapURL, options);
+};
 
-describe('QueryByBoundsService', function () {
+describe('QueryByBoundsService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceFailedEventArgsSystem = null;
         serviceCompletedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var queryByDistanceService = initQueryByDistanceService();
         expect(queryByDistanceService).not.toBeNull();
         expect(queryByDistanceService.url).toEqual(worldMapURL + "/queryResults.json?");
@@ -46,22 +49,22 @@ describe('QueryByBoundsService', function () {
         expect(queryByDistanceService.returnContent).toBeNull();
     });
 
-    it('processAsync_returnContent:true', function (done) {
+    it('processAsync_returnContent:true', (done) => {
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
-        var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParameters = new QueryByDistanceParameters({
             customParams: null,
             startRecord: 1,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            queryParams: new Array(new FilterParameter({
                 name: "Capitals@World"
             })),
             returnContent: true,
             distance: 20,
-            geometry: new SuperMap.Geometry.Point(-50, -10)
+            geometry: new Point(-50, -10)
         });
         queryByDistanceParameters.holdTime = 10;
         queryByDistanceService.processAsync(queryByDistanceParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
@@ -80,24 +83,24 @@ describe('QueryByBoundsService', function () {
         }, 2000);
     });
 
-    it('processAsync_returnCotent:false', function (done) {
+    it('processAsync_returnCotent:false', (done) => {
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
-        var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParameters = new QueryByDistanceParameters({
             customParams: null,
             expectCount: 100,
-            queryOption: SuperMap.QueryOption.GEOMETRY,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            queryOption: QueryOption.GEOMETRY,
+            queryParams: new Array(new FilterParameter({
                 name: "Capitals@World"
             })),
             returnContent: false,
             distance: 20,
             isNearest: true,
-            geometry: new SuperMap.Geometry.Point(-50, -10)
+            geometry: new Point(-50, -10)
         });
         queryByDistanceParameters.startRecord = 0;
         queryByDistanceParameters.holdTime = 10;
         queryByDistanceService.processAsync(queryByDistanceParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result;
                 expect(queryResult).not.toBeNull();
@@ -118,27 +121,26 @@ describe('QueryByBoundsService', function () {
         }, 2000);
     });
 
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var failedResult;
+        var queryFailed = (e) => {
+            failedResult = e;
+        };
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
-        var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
+        var queryByDistanceParameters = new QueryByDistanceParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTE,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
             queryParams: new Array(),
-            geometry: new SuperMap.Geometry.Point(-50, -10),
-            distance: 20
+            geometry: new Point(-50, -10),
+            distance: 20,
+            startRecord: 0,
+            holdTime: 10
         });
-        queryByDistanceParameters.startRecord = 0;
-        queryByDistanceParameters.holdTime = 10;
         queryByDistanceService.events.on({'processFailed': queryFailed});
         queryByDistanceService.processAsync(queryByDistanceParameters);
-        function queryFailed(e) {
-            failedResult = e;
-        }
-
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();

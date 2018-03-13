@@ -1,13 +1,24 @@
-﻿require('../../../src/common/iServer/QueryByGeometryService');
+﻿import {QueryByGeometryService} from '../../../src/common/iServer/QueryByGeometryService';
+import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+import {Polygon} from '../../../src/common/commontypes/geometry/Polygon';
+import {LinearRing} from '../../../src/common/commontypes/geometry/LinearRing';
+import {GeometryType} from '../../../src/common/REST';
+import {QueryOption} from '../../../src/common/REST';
+import {SpatialQueryMode} from '../../../src/common/REST';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-
-//跨域下的测试
-function initQueryByGeometryService() {
-    return new SuperMap.QueryByGeometryService(worldMapURL);
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
+var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
+    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+};
+var initQueryByGeometryService = () => {
+    return new QueryByGeometryService(worldMapURL);
+};
 var options = {
     eventListeners: {
         'processFailed': QueryByGeometryServiceFailed,
@@ -15,29 +26,23 @@ var options = {
     }
 };
 //服务初始化时注册事件监听函数
-function initQueryByGeometryService_RegisterListener() {
-    return new SuperMap.QueryByGeometryService(worldMapURL, options);
-}
-function QueryByGeometryServiceFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function QueryByGeometryServiceCompleted(serviceCompletedEventArgs) {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-}
+var initQueryByGeometryService_RegisterListener = () => {
+    return new QueryByGeometryService(worldMapURL, options);
+};
 
-describe('QueryByGeometryService', function () {
+describe('QueryByGeometryService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceFailedEventArgsSystem = null;
         serviceCompletedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var queryByGeometryService = initQueryByGeometryService();
         expect(queryByGeometryService).not.toBeNull();
         expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults.json?");
@@ -47,22 +52,22 @@ describe('QueryByGeometryService', function () {
         expect(queryByGeometryService.returnContent).toBeNull();
     });
 
-    it('processAsync_returnContent:false', function (done) {
+    it('processAsync_returnContent:false', (done) => {
         var queryByGeometryService = initQueryByGeometryService_RegisterListener();
-        var points = [new SuperMap.Geometry.Point(-90, -45),
-            new SuperMap.Geometry.Point(90, -45),
-            new SuperMap.Geometry.Point(90, 45),
-            new SuperMap.Geometry.Point(-90, 45),
-            new SuperMap.Geometry.Point(-90, -45)];
-        var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));
-        var queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
+        var points = [new Point(-90, -45),
+            new Point(90, -45),
+            new Point(90, 45),
+            new Point(-90, 45),
+            new Point(-90, -45)];
+        var geometry = new Polygon(new LinearRing(points));
+        var queryByGeometryParameters = new QueryByGeometryParameters({
             customParams: null,
             expectCount: 3,
             startRecord: 1,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            spatialQueryMode: SpatialQueryMode.INTERSECT,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID<20",
                 name: "Capitals@World"
             })),
@@ -73,7 +78,7 @@ describe('QueryByGeometryService', function () {
         queryByGeometryParameters.holdTime = 10;
         queryByGeometryService.processAsync(queryByGeometryParameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result;
                 expect(queryResult).not.toBeNull();
@@ -94,24 +99,24 @@ describe('QueryByGeometryService', function () {
         }, 2000);
     });
 
-    it('processAsync_returnContent:true', function (done) {
+    it('processAsync_returnContent:true', (done) => {
         var queryByGeometryService = initQueryByGeometryService_RegisterListener();
         var points = [
-            new SuperMap.Geometry.Point(-90, -45),
-            new SuperMap.Geometry.Point(90, -45),
-            new SuperMap.Geometry.Point(90, 45),
-            new SuperMap.Geometry.Point(-90, 45),
-            new SuperMap.Geometry.Point(-90, -45)
+            new Point(-90, -45),
+            new Point(90, -45),
+            new Point(90, 45),
+            new Point(-90, 45),
+            new Point(-90, -45)
         ];
-        var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));
-        var queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
+        var geometry = new Polygon(new LinearRing(points));
+        var queryByGeometryParameters = new QueryByGeometryParameters({
             customParams: null,
             expectCount: 10,
             startRecord: 1,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            spatialQueryMode: SpatialQueryMode.INTERSECT,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID<20",
                 name: "Capitals@World"
             })),
@@ -121,7 +126,7 @@ describe('QueryByGeometryService', function () {
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
         queryByGeometryService.processAsync(queryByGeometryParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
@@ -141,27 +146,27 @@ describe('QueryByGeometryService', function () {
     });
 
     //查询参数为空
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var queryByGeometryService = initQueryByGeometryService_RegisterListener();
-        var queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
+        var queryByGeometryParameters = new QueryByGeometryParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTE,
-            spatialQueryMode: SuperMap.SpatialQueryMode.OVERLAP,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            spatialQueryMode: SpatialQueryMode.OVERLAP,
             queryParams: new Array(),
-            geometry: new SuperMap.Geometry.Point(-50, -20)
+            geometry: new Point(-50, -20)
         });
         queryByGeometryParameters.startRecord = 0;
         queryByGeometryParameters.holdTime = 10;
         queryByGeometryService.events.on({'processFailed': queryFailed});
         queryByGeometryService.processAsync(queryByGeometryParameters);
 
-        function queryFailed(e) {
+        var queryFailed = (e) => {
             failedResult = e;
         }
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();

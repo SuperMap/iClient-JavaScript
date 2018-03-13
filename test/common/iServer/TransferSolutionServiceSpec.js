@@ -1,40 +1,40 @@
-require('../../../src/common/iServer/TransferSolutionService');
+import {TransferSolutionService} from '../../../src/common/iServer/TransferSolutionService';
+import {TransferSolutionParameters} from '../../../src/common/iServer/TransferSolutionParameters';
+import {TransferTactic} from '../../../src/common/REST';
+import {TransferPreference} from '../../../src/common/REST';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
-
-//服务初始化时注册事件监听函数
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
-function succeed(event) {
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var succeed = (event) => {
     serviceCompletedEventArgsSystem = event;
-}
-function failed(event) {
+};
+var failed = (event) => {
     serviceFailedEventArgsSystem = event;
-}
-function initTransferSolutionService() {
-    return new SuperMap.TransferSolutionService(trafficTransferURL, {
+};
+var initTransferSolutionService = () => {
+    return new TransferSolutionService(trafficTransferURL, {
         eventListeners: {
             processCompleted: succeed,
             processFailed: failed
         }
     });
-}
+};
 
-describe('TransferSolutionService', function () {
+describe('TransferSolutionService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var service = initTransferSolutionService();
         service.processAsync();
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(typeof(service.processAsync()) === "undefined").toBeTruthy();
                 done();
@@ -47,18 +47,18 @@ describe('TransferSolutionService', function () {
         }, 2000);
     });
 
-    it('success:processAsync', function (done) {
+    it('success:processAsync', (done) => {
         var service = initTransferSolutionService();
-        var params = new SuperMap.TransferSolutionParameters({
+        var params = new TransferSolutionParameters({
             solutionCount: 5,
-            transferTactic: SuperMap.TransferTactic.LESS_TIME,
-            transferPreference: SuperMap.TransferPreference.NONE,
+            transferTactic: TransferTactic.LESS_TIME,
+            transferPreference: TransferPreference.NONE,
             walkingRatio: 10,
             points: [175, 179]
         });
         service.events.on({"processCompleted": succeed});
         service.processAsync(params);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var result = serviceCompletedEventArgsSystem.result;
                 expect(result).not.toBeNull();

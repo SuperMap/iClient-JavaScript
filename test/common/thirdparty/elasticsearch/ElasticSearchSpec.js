@@ -1,16 +1,19 @@
-require('../../../../src/common/thirdparty/elasticsearch/ElasticSearch.js');
+import {ElasticSearch} from '../../../../src/common/thirdparty/elasticsearch/ElasticSearch.js';
+import {Point} from '../../../../src/common/commontypes/geometry/Point';
+import {LinearRing} from '../../../../src/common/commontypes/geometry/LinearRing';
+import {Polygon} from '../../../../src/common/commontypes/geometry/Polygon';
 
-describe('ElasticSearch', function () {
-    it('constructor, setGeoFence', function () {
-        var elasticSearch = new SuperMap.ElasticSearch();
+describe('ElasticSearch', () => {
+    it('constructor, setGeoFence', () => {
+        var elasticSearch = new ElasticSearch();
         expect(elasticSearch.geoFence).toBeNull();
-        var points = [new SuperMap.Geometry.Point(0, 4010338),
-            new SuperMap.Geometry.Point(1063524, 4010338),
-            new SuperMap.Geometry.Point(1063524, 3150322),
-            new SuperMap.Geometry.Point(0, 3150322)
+        var points = [new Point(0, 4010338),
+            new Point(1063524, 4010338),
+            new Point(1063524, 3150322),
+            new Point(0, 3150322)
         ];
-        var linearRings = new SuperMap.Geometry.LinearRing(points);
-        var geoFence = new SuperMap.Geometry.Polygon([linearRings]);
+        var linearRings = new LinearRing(points);
+        var geoFence = new Polygon([linearRings]);
         elasticSearch.setGeoFence(geoFence);
         expect(elasticSearch.geoFence).not.toBeNull();
         expect(elasticSearch.geoFence.CLASS_NAME).toBe("SuperMap.Geometry.Polygon");

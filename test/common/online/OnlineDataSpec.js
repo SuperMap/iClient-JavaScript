@@ -1,8 +1,8 @@
-require('../../../src/common/online/OnlineData');
+import {OnlineData} from '../../../src/common/online/OnlineData';
 
-describe('OnlineData', function () {
-    it('constructor_default', function () {
-        var onlineData = new SuperMap.OnlineData();
+describe('OnlineData', () => {
+    it('constructor_default', () => {
+        var onlineData = new OnlineData();
         expect(onlineData).not.toBeNull();
         expect(onlineData.CLASS_NAME).toBe("SuperMap.OnlineData");
         expect(onlineData.serverType).toBe("ONLINE");
@@ -13,5 +13,4 @@ describe('OnlineData', function () {
         var authorizeSetting = onlineData.getAuthorizeSetting();
         expect(authorizeSetting).toBeNull();
     });
-
 });

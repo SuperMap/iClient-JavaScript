@@ -1,18 +1,20 @@
-var SummaryAttributesJobsParameter = require('../../../src/common/iServer/SummaryAttributesJobsParameter').SummaryAttributesJobsParameter;
-var OutputSetting = require('../../../src/common/iServer/OutputSetting').OutputSetting;
+import {SummaryAttributesJobsParameter} from '../../../src/common/iServer/SummaryAttributesJobsParameter';
+import {DatasourceConnectionInfo} from '../../../src/common/iServer/DatasourceConnectionInfo';
+import {OutputSetting} from '../../../src/common/iServer/OutputSetting';
+import {OutputType} from '../../../src/common/REST';
 
-describe('SummaryAttributesJobsParameter', function () {
-    it('constructor, destroy', function () {
+describe('SummaryAttributesJobsParameter', () => {
+    it('constructor, destroy', () => {
         var options = {
             datasetName: 'testDatasetName',
             groupField: 'testField',
             attributeField: 'testAttrField',
             statisticModes: 'testType',
         };
-        var datasourceConnectionInfo = new SuperMap.DatasourceConnectionInfo({
-            alias:"dataSourceName",
-            connect:"false",
-            dataBase:"testDataBase",
+        var datasourceConnectionInfo = new DatasourceConnectionInfo({
+            alias: "dataSourceName",
+            connect: "false",
+            dataBase: "testDataBase",
             driver: "WMTS"
         });
         var parametersNull = new SummaryAttributesJobsParameter();
@@ -25,7 +27,7 @@ describe('SummaryAttributesJobsParameter', function () {
         expect(parameters.statisticModes).toEqual('testType');
         expect(parameters.output).toEqual(null);
         parameters.output = new OutputSetting({
-            type: SuperMap.OutputType.UDB,
+            type: OutputType.UDB,
             datasetName: 'testAnalystResult',
             datasourceInfo: datasourceConnectionInfo,
             outputPath: 'testpath'
@@ -38,7 +40,7 @@ describe('SummaryAttributesJobsParameter', function () {
         expect(parameters.output).toBeNull();
     });
 
-    it('toObject', function () {
+    it('toObject', () => {
         var options = {
             datasetName: 'testDatasetName',
             groupField: 'testField',
@@ -47,13 +49,13 @@ describe('SummaryAttributesJobsParameter', function () {
         };
         var parameters = new SummaryAttributesJobsParameter(options);
         parameters.output = new OutputSetting({
-            type: SuperMap.OutputType.UDB,
+            type: OutputType.UDB,
             datasetName: 'testAnalystResult',
             datasourceInfo: 'testInfo',
             outputPath: 'testpath'
         });
         var tempObj = new SummaryAttributesJobsParameter(options);
-        new SuperMap.SummaryAttributesJobsParameter.toObject(parameters, tempObj);
+        new SummaryAttributesJobsParameter.toObject(parameters, tempObj);
         expect(tempObj.output.CLASS_NAME).toEqual("SuperMap.OutputSetting");
         expect(tempObj.output.datasetName).toEqual("testAnalystResult");
         expect(tempObj.output.type).toEqual("UDB");

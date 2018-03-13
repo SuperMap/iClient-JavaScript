@@ -1,12 +1,13 @@
-require('../../../src/common/format/JSON');
+import {JSONFormat} from '../../../src/common/format/JSON';
+import {Format} from '../../../src/common/format/Format';
 
-describe('JSON', function () {
+describe('JSON', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
@@ -20,9 +21,9 @@ describe('JSON', function () {
     var DATE = {"DATE": new Date()};
     var pretty = true;
 
-    it("read", function () {
+    it("read", () => {
         var attribute = JSON.stringify(attributes);
-        var jsonFormat = new SuperMap.Format.JSON();
+        var jsonFormat = new JSONFormat();
         var jsonObject = jsonFormat.read(attribute);
         expect(typeof (jsonObject)).toBe('object');
         expect(typeof (jsonObject.SMID)).toBe('number');
@@ -30,32 +31,32 @@ describe('JSON', function () {
         expect((jsonObject.ADDRESS) instanceof Array).toBeTruthy();
     });
 
-    it("write_object", function () {
-        var jsonFormat = new SuperMap.Format.JSON();
+    it("write_object", () => {
+        var jsonFormat = new JSONFormat();
         var jsonString = jsonFormat.write(attributes, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
-    it("write_array", function () {
-        var jsonFormat = new SuperMap.Format.JSON();
+    it("write_array", () => {
+        var jsonFormat = new JSONFormat();
         var jsonString = jsonFormat.write(POINTSARRAY, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
-    it("write_boolean", function () {
-        var jsonFormat = new SuperMap.Format.JSON();
+    it("write_boolean", () => {
+        var jsonFormat = new JSONFormat();
         var jsonString = jsonFormat.write(BOOLEANOBJ, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
-    it("write_date", function () {
-        var jsonFormat = new SuperMap.Format.JSON();
+    it("write_date", () => {
+        var jsonFormat = new JSONFormat();
         var jsonString = jsonFormat.write(DATE, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
 
-    it("write_number", function () {
-        var jsonFormat = new SuperMap.Format.JSON();
+    it("write_number", () => {
+        var jsonFormat = new JSONFormat();
         var jsonString = jsonFormat.write(POINTSARRAY, pretty);
         expect(typeof (jsonString)).toBe('string');
     });

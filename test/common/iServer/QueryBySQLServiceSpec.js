@@ -1,17 +1,22 @@
-﻿require('../../../src/common/iServer/QueryBySQLService');
+﻿import {QueryBySQLService} from '../../../src/common/iServer/QueryBySQLService';
+import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {GeometryType} from '../../../src/common/REST';
+import {QueryOption} from '../../../src/common/REST';
+
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-describe('testQueryBySQLService_processAsync', function () {
+describe('testQueryBySQLService_processAsync', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL);
+    it('constructor, destroy', () => {
+        var queryBySQLService = new QueryBySQLService(worldMapURL);
         expect(queryBySQLService).not.toBeNull();
         expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.json?");
         queryBySQLService.destroy();
@@ -21,30 +26,27 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //不直接返回查询结果
-    it('processAsync_returnContent:false', function (done) {
+    it('processAsync_returnContent:false', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-
-        function QueryBySQLFailed(serviceFailedEventArgs) {
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function QueryBySQLCompleted(queryEventArgs) {
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        }
-
+        };
         var options = {
             eventListeners: {
                 'processFailed': QueryBySQLFailed,
                 'processCompleted': QueryBySQLCompleted
             }
         };
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
+        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTE,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID>0",
                 name: "Countries@World"
             })),
@@ -54,7 +56,7 @@ describe('testQueryBySQLService_processAsync', function () {
         queryBySQLParameters.holdTime = 10;
         queryBySQLParameters.returnCustomResult = false;
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceSuccessEventArgs.result;
                 expect(queryResult).not.toBeNull();
@@ -80,35 +82,32 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //直接返回查询结果
-    it('processAsync_returnContent:true', function (done) {
+    it('processAsync_returnContent:true', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-
-        function QueryBySQLFailed(serviceFailedEventArgs) {
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function QueryBySQLCompleted(queryEventArgs) {
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        }
-
+        };
         var options = {
             eventListeners: {
                 'processFailed': QueryBySQLFailed,
                 'processCompleted': QueryBySQLCompleted
             }
         };
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
+        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
             queryParams: [
-                new SuperMap.FilterParameter({
+                new FilterParameter({
                     attributeFilter: "SmID<3",
                     name: "Capitals@World"
                 }),
-                new SuperMap.FilterParameter({
+                new FilterParameter({
                     attributeFilter: "SmID<3",
                     name: "Countries@World",
                     fields: new Array("COLOR_MAP", "CAPITAL")
@@ -119,7 +118,7 @@ describe('testQueryBySQLService_processAsync', function () {
         });
         queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
@@ -143,30 +142,27 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //返回bounds信息
-    it('processAsync_returnCustomResult', function (done) {
+    it('processAsync_returnCustomResult', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-
-        function QueryBySQLFailed(serviceFailedEventArgs) {
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function QueryBySQLCompleted(queryEventArgs) {
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        }
-
+        };
         var options = {
             eventListeners: {
                 'processFailed': QueryBySQLFailed,
                 'processCompleted': QueryBySQLCompleted
             }
         };
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
+        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID=50",
                 name: "Countries@World",
                 fields: null
@@ -177,7 +173,7 @@ describe('testQueryBySQLService_processAsync', function () {
         queryBySQLParameters.holdTime = 10;
         queryBySQLParameters.returnCustomResult = true;
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var queryResult = serviceSuccessEventArgs.result;
                 expect(queryResult).not.toBeNull();
@@ -203,35 +199,31 @@ describe('testQueryBySQLService_processAsync', function () {
         }, 2000)
     });
 
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-
-        function QueryBySQLFailed(serviceFailedEventArgs) {
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function QueryBySQLCompleted(queryEventArgs) {
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        }
-
+        };
         var options = {
             eventListeners: {
                 'processFailed': QueryBySQLFailed,
                 'processCompleted': QueryBySQLCompleted
             }
         };
-
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
+        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTEANDGEOMETRY,
             queryParams: new Array()
         });
         queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(queryFailedEventArgs).not.toBeNull();
                 expect(queryFailedEventArgs.error).not.toBeNull();
@@ -255,30 +247,27 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //查询目标图层不存在情况
-    it('processAsync_LayerNotExist', function (done) {
+    it('processAsync_LayerNotExist', (done) => {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
-
-        function QueryBySQLFailed(serviceFailedEventArgs) {
+        var QueryBySQLFailed = (serviceFailedEventArgs) => {
             queryFailedEventArgs = serviceFailedEventArgs;
-        }
-
-        function QueryBySQLCompleted(queryEventArgs) {
+        };
+        var QueryBySQLCompleted = (queryEventArgs) => {
             serviceSuccessEventArgs = queryEventArgs;
-        }
-
+        };
         var options = {
             eventListeners: {
                 'processFailed': QueryBySQLFailed,
                 'processCompleted': QueryBySQLCompleted
             }
         };
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
-        var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
+        var queryBySQLService = new QueryBySQLService(worldMapURL, options);
+        var queryBySQLParameters = new QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
-            networkType: SuperMap.GeometryType.POINT,
-            queryOption: SuperMap.QueryOption.ATTRIBUTE,
-            queryParams: new Array(new SuperMap.FilterParameter({
+            networkType: GeometryType.POINT,
+            queryOption: QueryOption.ATTRIBUTE,
+            queryParams: new Array(new FilterParameter({
                 attributeFilter: "SmID>0",
                 name: "notExist"
             })),
@@ -286,7 +275,7 @@ describe('testQueryBySQLService_processAsync', function () {
         });
         queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceSuccessEventArgs).toBeNull();
                 expect(queryFailedEventArgs).not.toBeNull();

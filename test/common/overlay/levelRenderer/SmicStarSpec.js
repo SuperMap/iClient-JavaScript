@@ -1,9 +1,9 @@
-var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
+import {SmicStar} from '../../../../src/common/overlay/levelRenderer/SmicStar';
 
-describe('SmicStar', function () {
+describe('SmicStar', () => {
     var originalTimeout;
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -11,18 +11,18 @@ describe('SmicStar', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -47,7 +47,7 @@ describe('SmicStar', function () {
     });
 
     //创建 n 角星（n>3）路径。
-    it('buildPath', function () {
+    it('buildPath', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -79,7 +79,7 @@ describe('SmicStar', function () {
     });
 
     //返回 n 角星包围盒矩形
-    it('getRect_brushType = fill', function () {
+    it('getRect_brushType = fill', () => {
         var star = new SmicStar({
             style: {
                 x: 200,
@@ -107,7 +107,7 @@ describe('SmicStar', function () {
         star.destroy();
     });
 
-    it('getRect_brushType = null', function () {
+    it('getRect_brushType = null', () => {
         var star = new SmicStar({
             style: {
                 x: 200,

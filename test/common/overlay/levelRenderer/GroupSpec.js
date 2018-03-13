@@ -1,11 +1,11 @@
-var Shape = require('../../../../src/common/overlay/levelRenderer/Shape').Shape;
-var Group = require('../../../../src/common/overlay/levelRenderer/Group').Group;
-var Storage = require('../../../../src/common/overlay/levelRenderer/Storage').Storage;
+import {Shape} from '../../../../src/common/overlay/levelRenderer/Shape';
+import {Group} from '../../../../src/common/overlay/levelRenderer/Group';
+import {Storage} from '../../../../src/common/overlay/levelRenderer/Storage';
 
-describe('Group', function () {
+describe('Group', () => {
     var originalTimeout;
     var testDiv, group, storage;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "group");
         testDiv.style.styleFloat = "left";
@@ -16,7 +16,7 @@ describe('Group', function () {
         window.document.body.appendChild(testDiv);
         storage = new Storage();
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         group = new Group({id: "group"});
@@ -32,14 +32,14 @@ describe('Group', function () {
         group.addChild(new Group());
         group._storage = new Storage();
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy, addChild', function () {
+    it('constructor, destroy, addChild', () => {
         expect(group).not.toBeNull();
         expect(group.id).toEqual("group");
         expect(group.type).toEqual("group");
@@ -58,7 +58,7 @@ describe('Group', function () {
     });
 
     //复制并返回一份新的包含所有儿子节点的数组
-    it('children', function () {
+    it('children', () => {
         var children = group.children();
         expect(children).not.toBeNull();
         expect(children.length).toEqual(2);
@@ -68,7 +68,7 @@ describe('Group', function () {
     });
 
     //获取指定 index 的儿子节点
-    it('childAt', function () {
+    it('childAt', () => {
         var child = group.childAt(0);
         expect(child).not.toBeNull();
         expect(child.CLASS_NAME).toEqual("SuperMap.LevelRenderer.Shape");
@@ -81,7 +81,7 @@ describe('Group', function () {
 
     //添加子节点
     //直接添加g
-    it('addChild_group', function () {
+    it('addChild_group', () => {
         group.addChild(group);
         expect(group).not.toBeNull();
         expect(group._children.length).toEqual(2);
@@ -90,7 +90,7 @@ describe('Group', function () {
         group.destroy();
     });
     //添加g的子节点
-    it('addChild_groupChild', function () {
+    it('addChild_groupChild', () => {
         var child = group.childAt(0);
         group.addChild(child);
         expect(group).not.toBeNull();
@@ -100,7 +100,7 @@ describe('Group', function () {
         group.destroy();
     });
     //添加g1的子节点，group1会默认删除该子节点
-    it('addChild_group1Child', function () {
+    it('addChild_group1Child', () => {
         var group1 = new Group();
         group1.addChild(new Group({id: "g1Child"}));
         var g1Child = group1.childAt(0);
@@ -115,14 +115,14 @@ describe('Group', function () {
     });
 
     //把子图形添加到仓库
-    it('addChildrenToStorage', function () {
+    it('addChildrenToStorage', () => {
         group.addChildrenToStorage(storage);
         expect(storage._elements).not.toBeNull();
         group.destroy();
     });
 
     //移除子节点
-    it('removeChild', function () {
+    it('removeChild', () => {
         group._storage = storage;
         group.removeChild(group.childAt(1));
         expect(group).not.toBeNull();
@@ -132,16 +132,16 @@ describe('Group', function () {
     });
 
     //从仓库把子图形删除
-    it('delChildrenFromStorage', function () {
+    it('delChildrenFromStorage', () => {
         group.delChildrenFromStorage(storage);
         expect(storage._elements).not.toBeNull();
         group.destroy();
     });
 
     //遍历所有子节点
-    it('eachChild_context', function () {
+    it('eachChild_context', () => {
         var className, arr = [];
-        group.eachChild(function (child) {
+        group.eachChild((child) => {
             className = child.CLASS_NAME;
             arr.push(className);
         }, group);
@@ -150,9 +150,9 @@ describe('Group', function () {
         expect(arr[0]).toEqual("SuperMap.LevelRenderer.Shape");
         expect(arr[1]).toEqual("SuperMap.LevelRenderer.Group");
     });
-    it('eachChild_noContext', function () {
+    it('eachChild_noContext', () => {
         var className, arr = [];
-        group.eachChild(function (child) {
+        group.eachChild((child) => {
             className = child.CLASS_NAME;
             arr.push(className);
         });
@@ -163,9 +163,9 @@ describe('Group', function () {
     });
 
     //深度优先遍历所有子孙节点
-    it('traverse_context', function () {
+    it('traverse_context', () => {
         var className, arr = [];
-        group.traverse(function (child) {
+        group.traverse((child) => {
             className = child.CLASS_NAME;
             arr.push(className);
         }, group);
@@ -174,9 +174,9 @@ describe('Group', function () {
         expect(arr[0]).toEqual("SuperMap.LevelRenderer.Shape");
         expect(arr[1]).toEqual("SuperMap.LevelRenderer.Group");
     });
-    it('traverse_noContext', function () {
+    it('traverse_noContext', () => {
         var className, arr = [];
-        group.traverse(function (child) {
+        group.traverse((child) => {
             className = child.CLASS_NAME;
             arr.push(className);
         });

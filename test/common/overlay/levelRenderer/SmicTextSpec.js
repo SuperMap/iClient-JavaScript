@@ -1,9 +1,9 @@
-var SmicText = require('../../../../src/common/overlay/levelRenderer/SmicText').SmicText;
+import {SmicText} from '../../../../src/common/overlay/levelRenderer/SmicText';
 
-describe('SmicText', function () {
+describe('SmicText', () => {
     var originalTimeout;
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -11,11 +11,11 @@ describe('SmicText', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor destroy', function () {
+    it('constructor destroy', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -37,7 +37,7 @@ describe('SmicText', function () {
         expect(shape.style).toBeNull();
     });
 
-    it('brush_isHighlight', function () {
+    it('brush_isHighlight', () => {
         var shape = new SmicText({
             style: {
                 x: 100,
@@ -55,7 +55,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style1', function () {
+    it('brush_style1', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label1',
@@ -98,7 +98,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style2', function () {
+    it('brush_style2', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label2',
@@ -132,7 +132,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style3', function () {
+    it('brush_style3', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label3',
@@ -167,7 +167,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style4', function () {
+    it('brush_style4', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label4',
@@ -201,7 +201,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style5', function () {
+    it('brush_style5', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label5',
@@ -236,7 +236,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style6', function () {
+    it('brush_style6', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label6',
@@ -270,7 +270,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style7', function () {
+    it('brush_style7', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label7',
@@ -305,7 +305,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('brush_style8', function () {
+    it('brush_style8', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label8',
@@ -340,7 +340,7 @@ describe('SmicText', function () {
     });
 
     //返回文字包围盒矩形
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -371,7 +371,7 @@ describe('SmicText', function () {
     });
 
     //返回忽略旋转和maxWidth时文字包围盒矩形
-    it('getRectNoRotation_style1', function () {
+    it('getRectNoRotation_style1', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -402,7 +402,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('getRectNoRotation_style2', function () {
+    it('getRectNoRotation_style2', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -434,7 +434,7 @@ describe('SmicText', function () {
     });
 
     //获取文本背景框范围 redo = true 强制重新计算textBackground
-    it('getTextBackground_redo_style1', function () {
+    it('getTextBackground_redo_style1', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -467,7 +467,7 @@ describe('SmicText', function () {
         shape.destroy();
     });
 
-    it('getTextBackground_redo_style2', function () {
+    it('getTextBackground_redo_style2', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',
@@ -500,7 +500,7 @@ describe('SmicText', function () {
     });
 
     //redo = false 不强制重新计算textBackground
-    it('getTextBackground', function () {
+    it('getTextBackground', () => {
         var shape = new SmicText({
             style: {
                 text: 'Label',

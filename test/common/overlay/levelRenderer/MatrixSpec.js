@@ -1,7 +1,7 @@
-var Matrix = require('../../../../src/common/overlay/levelRenderer/Matrix').Matrix;
+import {Matrix} from '../../../../src/common/overlay/levelRenderer/Matrix';
 
-describe('Matrix', function () {
-    it('constructor, identity', function () {
+describe('Matrix', () => {
+    it('constructor, identity', () => {
         var matrixTool = new Matrix();
         expect(matrixTool).not.toBeNull();
         //创建一个单位矩阵
@@ -15,7 +15,7 @@ describe('Matrix', function () {
         expect(result[5]).toEqual(0);
     });
 
-    it('copy', function () {
+    it('copy', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵
         var E = matrixTool.create();
@@ -27,7 +27,7 @@ describe('Matrix', function () {
         expect(newMatrix[2]).toEqual(2);
     });
 
-    it('mul', function () {
+    it('mul', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵E
         var E = matrixTool.create();
@@ -44,7 +44,7 @@ describe('Matrix', function () {
     });
 
     //平移变换
-    it('translate', function () {
+    it('translate', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵E
         var E = matrixTool.create();
@@ -62,7 +62,7 @@ describe('Matrix', function () {
     });
 
     //旋转变换
-    it('rotate', function () {
+    it('rotate', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵E
         var E = matrixTool.create();
@@ -80,7 +80,7 @@ describe('Matrix', function () {
     });
 
     //缩放变换
-    it('scale', function () {
+    it('scale', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵E
         var E = matrixTool.create();
@@ -98,7 +98,7 @@ describe('Matrix', function () {
     });
 
     //求逆矩阵
-    it('invert', function () {
+    it('invert', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵E
         var E = matrixTool.create();
@@ -114,7 +114,7 @@ describe('Matrix', function () {
     });
 
     //矩阵左乘向量
-    it('mulVector', function () {
+    it('mulVector', () => {
         var matrixTool = new Matrix();
         //创建一个单位矩阵E
         var E = matrixTool.create();

@@ -1,42 +1,42 @@
-require('../../../src/common/iServer/TerrainCurvatureCalculationService');
-var request = require('request');
+import {TerrainCurvatureCalculationService} from '../../../src/common/iServer/TerrainCurvatureCalculationService';
+import {TerrainCurvatureCalculationParameters} from '../../../src/common/iServer/TerrainCurvatureCalculationParameters';
+import request from 'request';
 
-var serviceFailedEventArgsSystem = null;
-var analystEventArgsSystem = null;
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
+var TerrainCurvatureCalculationServiceCompleted = (event) => {
+    analystEventArgsSystem = event;
+};
+var TerrainCurvatureCalculationServiceFailed = (event) => {
+    serviceFailedEventArgsSystem = event;
+};
 var options = {
     eventListeners: {
         "processCompleted": TerrainCurvatureCalculationServiceCompleted,
         'processFailed': TerrainCurvatureCalculationServiceFailed
     }
 };
-function initTerrainCurvatureCalculationService() {
-    return new SuperMap.TerrainCurvatureCalculationService(spatialAnalystURL, options);
-}
-function TerrainCurvatureCalculationServiceCompleted(event) {
-    analystEventArgsSystem = event;
-}
-function TerrainCurvatureCalculationServiceFailed(event) {
-    serviceFailedEventArgsSystem = event;
-}
+var initTerrainCurvatureCalculationService = () => {
+    return new TerrainCurvatureCalculationService(spatialAnalystURL, options);
+};
 
-describe('TerrainCurvatureCalculationService', function () {
+describe('TerrainCurvatureCalculationService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     var resultDataset = "TerrainCurvature_commonTest";
     //成功事件
-    it('success:processAsync', function (done) {
+    it('success:processAsync', (done) => {
         var terrainCurvatureCalculationService = initTerrainCurvatureCalculationService();
         expect(terrainCurvatureCalculationService).not.toBeNull();
         expect(terrainCurvatureCalculationService.url).toEqual(spatialAnalystURL);
-        var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+        var terrainCurvatureCalculationParameters = new TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: resultDataset,
@@ -44,7 +44,7 @@ describe('TerrainCurvatureCalculationService', function () {
         });
         terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
         terrainCurvatureCalculationService.events.on({"processCompleted": TerrainCurvatureCalculationServiceCompleted});
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var terrainCurvatureCalculationResult = analystEventArgsSystem.result;
                 expect(terrainCurvatureCalculationResult).not.toBeNull();
@@ -66,9 +66,9 @@ describe('TerrainCurvatureCalculationService', function () {
     });
 
     //测试失败事件
-    it('fail:processAsync', function (done) {
+    it('fail:processAsync', (done) => {
         var terrainCurvatureCalculationService = initTerrainCurvatureCalculationService();
-        var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+        var terrainCurvatureCalculationParameters = new TerrainCurvatureCalculationParameters({
             dataset: "XX@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: "TerrainCurvatureFail_commonTest",
@@ -76,7 +76,7 @@ describe('TerrainCurvatureCalculationService', function () {
         });
         terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
         terrainCurvatureCalculationService.events.on({'processFailed': TerrainCurvatureCalculationServiceFailed});
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -99,7 +99,7 @@ describe('TerrainCurvatureCalculationService', function () {
     });
 
     // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
+    it('delete test resources', (done) => {
         var testResult = GlobeParameter.datajingjinURL + resultDataset;
         request.delete(testResult);
         done();

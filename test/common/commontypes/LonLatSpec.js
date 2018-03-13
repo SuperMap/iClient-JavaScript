@@ -1,7 +1,8 @@
-var LonLat = require('../../../src/common/commontypes/LonLat').LonLat;
+import {LonLat} from '../../../src/common/commontypes/LonLat';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
 
-describe('LonLat', function () {
-    it('constructor, toString, toShortString, clone, destroy', function () {
+describe('LonLat', () => {
+    it('constructor, toString, toShortString, clone, destroy', () => {
         var lonLat1 = new LonLat(30, 45);
         var lonLat2 = new LonLat([10, 12], 45);
         expect(lonLat1).not.toBeNull();
@@ -24,7 +25,7 @@ describe('LonLat', function () {
         lonLat2.destroy();
     });
 
-    it('add', function () {
+    it('add', () => {
         var lonLat1 = new LonLat(30, 45);
         var lonLat2 = lonLat1.add(10, 10);
         expect(lonLat2.CLASS_NAME).toEqual("SuperMap.LonLat");
@@ -34,7 +35,7 @@ describe('LonLat', function () {
         lonLat2.destroy();
     });
 
-    it('equals', function () {
+    it('equals', () => {
         var lonLat1 = new LonLat(30, 45);
         var lonLat2 = new LonLat(30, 45);
         var lonLat3 = new LonLat(31, 45);
@@ -47,14 +48,14 @@ describe('LonLat', function () {
         lonLat3.destroy();
     });
 
-    it('wrapDateLine', function () {
+    it('wrapDateLine', () => {
         var lonLat1 = new LonLat(420, 50);
         var lonLat2 = new LonLat(-190, 50);
         var lonLat3 = lonLat1.wrapDateLine(
-            new SuperMap.Bounds(-180, -90, 180, 90)
+            new Bounds(-180, -90, 180, 90)
         );
         var lonLat4 = lonLat2.wrapDateLine(
-            new SuperMap.Bounds(-180, -90, 180, 90)
+            new Bounds(-180, -90, 180, 90)
         );
         expect(lonLat3).not.toBeNull();
         expect(lonLat4).not.toBeNull();
@@ -64,7 +65,7 @@ describe('LonLat', function () {
         lonLat4.destroy();
     });
 
-    it('fromString', function () {
+    it('fromString', () => {
         var str = "100,50";
         var lonLat = new LonLat.fromString(str);
         expect(lonLat).not.toBeNull();
@@ -74,7 +75,7 @@ describe('LonLat', function () {
         lonLat.destroy();
     });
 
-    it('fromArray', function () {
+    it('fromArray', () => {
         var arr = [100, 50];
         var lonLat = new LonLat.fromArray(arr);
         expect(lonLat).not.toBeNull();

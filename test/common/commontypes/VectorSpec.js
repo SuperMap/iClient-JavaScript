@@ -1,8 +1,8 @@
-var Vector = require('../../../src/common/commontypes/Vector').Vector;
-var Point = require('../../../src/common/commontypes/geometry/Point').Point;
+import {Vector} from '../../../src/common/commontypes/Vector';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
-describe('Vector', function () {
-    it('constructor, destroy', function () {
+describe('Vector', ()=> {
+    it('constructor, destroy', ()=> {
         var point = new Point(-115, 10);
         var style = {
             strokeColor: "#339933"
@@ -20,7 +20,7 @@ describe('Vector', function () {
         expect(pointFeature.geometry).toBeNull();
     });
 
-    it('clone',function () {
+    it('clone',()=> {
         var point = new Point(-115, 10);
         var style = {
             strokeColor: "#339933"
@@ -36,7 +36,7 @@ describe('Vector', function () {
         expect(newVector.style.strokeColor).toEqual("#339933");
     });
 
-    it('toState',function () {
+    it('toState',()=> {
         var point = new Point(-115, 10);
         var style = {
             strokeColor: "#339933"

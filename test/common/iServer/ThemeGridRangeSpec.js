@@ -1,8 +1,8 @@
-var ThemeGridRange = require('../../../src/common/iServer/ThemeGridRange').ThemeGridRange;
-var ThemeGridRangeItem = require('../../../src/common/iServer/ThemeGridRangeItem').ThemeGridRangeItem;
+import {ThemeGridRange} from '../../../src/common/iServer/ThemeGridRange';
+import {ThemeGridRangeItem} from '../../../src/common/iServer/ThemeGridRangeItem';
 
-describe('ThemeGridRange', function () {
-    it('constructor, destroy', function () {
+describe('ThemeGridRange', () => {
+    it('constructor, destroy', () => {
         var options = {
             items: [new ThemeGridRangeItem({caption: "test1"}),
                 new ThemeGridRangeItem({caption: "test2"})],
@@ -33,7 +33,7 @@ describe('ThemeGridRange', function () {
         expect(themeGridRange.colorGradientType).toBeNull();
     });
 
-    it('fromObj',function () {
+    it('fromObj', () => {
         var options = {
             items: [new ThemeGridRangeItem({caption: "test1"})],
         };

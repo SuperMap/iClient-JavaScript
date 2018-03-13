@@ -1,8 +1,8 @@
-var SmicSector = require('../../../../src/common/overlay/levelRenderer/SmicSector').SmicSector;
+import {SmicSector} from '../../../../src/common/overlay/levelRenderer/SmicSector';
 
-describe('SmicSector', function () {
+describe('SmicSector', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -10,11 +10,11 @@ describe('SmicSector', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicSector({
             style: {x: 100, y: 100, r: 60, r0: 30, startAngle: 0, endAngle: 180}
         });
@@ -28,7 +28,7 @@ describe('SmicSector', function () {
         expect(shape.style).toBeNull();
     });
 
-    it('buildPath', function () {
+    it('buildPath', () => {
         var shape = new SmicSector({
             style: {x: 100, y: 100, r: 60, r0: 30, startAngle: 0, endAngle: 180}
         });
@@ -43,7 +43,7 @@ describe('SmicSector', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicSector({
             style: {x: 100, y: 100, r: 60, r0: 30, startAngle: 0, endAngle: 120}
         });

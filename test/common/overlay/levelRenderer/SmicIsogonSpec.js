@@ -1,9 +1,9 @@
-var SmicIsogon = require('../../../../src/common/overlay/levelRenderer/SmicIsogon').SmicIsogon;
+import {SmicIsogon} from '../../../../src/common/overlay/levelRenderer/SmicIsogon';
 
-describe('SmicIsogon', function () {
+describe('SmicIsogon', () => {
     var originalTimeout;
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -11,18 +11,18 @@ describe('SmicIsogon', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var polygon = new SmicIsogon({
             style: {
                 n: 4,
@@ -46,7 +46,7 @@ describe('SmicIsogon', function () {
         expect(polygon.style).toBeNull();
     });
 
-    it('buildPath_n > 3', function () {
+    it('buildPath_n > 3', () => {
         var polygon = new SmicIsogon({
             style: {
                 n: 4,
@@ -77,7 +77,7 @@ describe('SmicIsogon', function () {
     });
 
     //此处待开发完善修改
-    xit('buildPath_n < 3', function () {
+    xit('buildPath_n < 3', () => {
         var polygon = new SmicIsogon({
             style: {
                 n: 2,
@@ -107,7 +107,7 @@ describe('SmicIsogon', function () {
         polygon.destroy();
     });
 
-    it('getRect_brushType = fill', function () {
+    it('getRect_brushType = fill', () => {
         var polygon = new SmicIsogon({
             style: {
                 n: 4,
@@ -134,7 +134,8 @@ describe('SmicIsogon', function () {
         expect(rect.y).toEqual(50);
         polygon.destroy();
     });
-    it('getRect_brushType = null', function () {
+
+    it('getRect_brushType = null', () => {
         var polygon = new SmicIsogon({
             style: {
                 n: 4,

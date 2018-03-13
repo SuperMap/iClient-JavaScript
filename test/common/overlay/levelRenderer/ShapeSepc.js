@@ -1,9 +1,9 @@
-var Shape = require('../../../../src/common/overlay/levelRenderer/Shape').Shape;
-var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
+import {Shape} from '../../../../src/common/overlay/levelRenderer/Shape';
+import {SmicPolygon} from '../../../../src/common/overlay/levelRenderer/SmicPolygon';
 
-describe('Shape', function () {
+describe('Shape', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -11,11 +11,11 @@ describe('Shape', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy, getHighlightZoom', function () {
+    it('constructor, destroy, getHighlightZoom', () => {
         var options = {
             style: {
                 x: 50,
@@ -47,7 +47,7 @@ describe('Shape', function () {
     });
 
     //绘制图形
-    it('brush, beforeBrush, afterBrush', function () {
+    it('brush, beforeBrush, afterBrush', () => {
         var options = {
             style: {
                 __rect: {
@@ -86,7 +86,7 @@ describe('Shape', function () {
     });
 
     //具体绘制操作前的一些公共操作
-    it('beforeBrush, setContext', function () {
+    it('beforeBrush, setContext', () => {
         var options = {
             style: {
                 __rect: {
@@ -118,7 +118,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('doClip', function () {
+    it('doClip', () => {
         var options = {
             style: {
                 __rect: {
@@ -152,7 +152,7 @@ describe('Shape', function () {
     });
 
     //根据默认样式扩展高亮样式
-    it('getHighlightStyle', function () {
+    it('getHighlightStyle', () => {
         var style = {
             text: 'test',
             textAlign: 'center',
@@ -190,7 +190,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('drift', function () {
+    it('drift', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -210,7 +210,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -241,7 +241,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('isCover', function () {
+    it('isCover', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -262,7 +262,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('isCover_needTransform, getTansform ', function () {
+    it('isCover_needTransform, getTansform ', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -286,7 +286,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('drawText_textPosition = right', function () {
+    it('drawText_textPosition = right', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -334,7 +334,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('drawText_pointList', function () {
+    it('drawText_pointList', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -378,7 +378,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('drawText_textPosition = start', function () {
+    it('drawText_textPosition = start', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -419,7 +419,7 @@ describe('Shape', function () {
         shape.destroy();
     });
 
-    it('drawText_textFont', function () {
+    it('drawText_textFont', () => {
         var shape = new Shape({
             style: {
                 __rect: {
@@ -465,7 +465,7 @@ describe('Shape', function () {
     });
 
     //图形发生改变
-    it('modSelf', function () {
+    it('modSelf', () => {
         var shape = new Shape({
             style: {
                 __rect: {

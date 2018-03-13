@@ -1,13 +1,15 @@
-require('../../../src/common/iServer/ServerGeometry');
-describe('ServerGeometry', function () {
-    it('constructor, destroy', function () {
+import {ServerGeometry} from '../../../src/common/iServer/ServerGeometry';
+import {GeometryType} from '../../../src/common/REST';
+
+describe('ServerGeometry', () => {
+    it('constructor, destroy', () => {
         var options = {
             id: 1,
             parts: [1],
             points: [{"y": -4377.027184298267, "x": 4020.0045221720466}],
-            type: SuperMap.GeometryType.POINT
+            type: GeometryType.POINT
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         expect(serverGeometry).not.toBeNull();
         expect(serverGeometry.CLASS_NAME).toBe("SuperMap.ServerGeometry");
         expect(serverGeometry.id).toEqual(1);
@@ -23,58 +25,58 @@ describe('ServerGeometry', function () {
         expect(serverGeometry.type).toBeNull();
     });
 
-    it('toGeometry', function () {
+    it('toGeometry', () => {
         var options_POINT = {
-            type: SuperMap.GeometryType.POINT
+            type: GeometryType.POINT
         };
-        var serverGeometry_POINT = new SuperMap.ServerGeometry(options_POINT);
+        var serverGeometry_POINT = new ServerGeometry(options_POINT);
         var toGeometry_POINT = serverGeometry_POINT.toGeometry();
         expect(toGeometry_POINT).toBeNull();
         serverGeometry_POINT.destroy();
         var options_LINE = {
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry_LINE = new SuperMap.ServerGeometry(options_LINE);
+        var serverGeometry_LINE = new ServerGeometry(options_LINE);
         var toGeometry_LINE = serverGeometry_LINE.toGeometry();
         expect(toGeometry_LINE).toBeNull();
         serverGeometry_LINE.destroy();
         var options_LINEM = {
-            type: SuperMap.GeometryType.LINEM
+            type: GeometryType.LINEM
         };
-        var serverGeometry_LINEM = new SuperMap.ServerGeometry(options_LINEM);
+        var serverGeometry_LINEM = new ServerGeometry(options_LINEM);
         var toGeometry_LINEM = serverGeometry_LINEM.toGeometry();
         expect(toGeometry_LINEM).not.toBeNull();
         serverGeometry_LINEM.destroy();
         var options_REGION = {
-            type: SuperMap.GeometryType.REGION
+            type: GeometryType.REGION
         };
-        var serverGeometry_REGION = new SuperMap.ServerGeometry(options_REGION);
+        var serverGeometry_REGION = new ServerGeometry(options_REGION);
         var toGeometry_REGION = serverGeometry_REGION.toGeometry();
         expect(toGeometry_REGION).toBeNull();
         serverGeometry_REGION.destroy();
     });
 
-    it('toGeoPoint_Null', function () {
+    it('toGeoPoint_Null', () => {
         var options = {
             id: 1,
             parts: [],
             points: [],
-            type: SuperMap.GeometryType.POINT
+            type: GeometryType.POINT
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoPointNull = serverGeometry.toGeoPoint();
         expect(geoPointNull).toBeNull();
         serverGeometry.destroy();
     });
 
-    it('toGeoPoint', function () {
+    it('toGeoPoint', () => {
         var options = {
             id: 1,
             parts: [1],
             points: [{"y": -4377.027184298267, "x": 4020.0045221720466}],
-            type: SuperMap.GeometryType.POINT
+            type: GeometryType.POINT
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var toGeoPoint = serverGeometry.toGeoPoint();
         expect(toGeoPoint).not.toBeNull();
         expect(toGeoPoint.CLASS_NAME).toBe("SuperMap.Geometry.Point");
@@ -84,15 +86,15 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoPoint_MultiPoint', function () {
+    it('toGeoPoint_MultiPoint', () => {
         var options = {
             id: 1,
             parts: [1, 1],
             points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
                 {"y": -4381.569363260499, "x": 4057.0600591960642}],
-            type: SuperMap.GeometryType.POINT
+            type: GeometryType.POINT
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var toGeoPointMulti = serverGeometry.toGeoPoint();
         expect(toGeoPointMulti).not.toBeNull();
         expect(toGeoPointMulti.CLASS_NAME).toBe("SuperMap.Geometry.MultiPoint");
@@ -110,14 +112,14 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLine_Null', function () {
-        var serverGeometry = new SuperMap.ServerGeometry({parts: []});
+    it('toGeoLine_Null', () => {
+        var serverGeometry = new ServerGeometry({parts: []});
         var geoLine_Null = serverGeometry.toGeoLine();
         expect(geoLine_Null).toBeNull();
         serverGeometry.destroy();
     });
 
-    it('toGeoLine_LineRing', function () {
+    it('toGeoLine_LineRing', () => {
         var options = {
             id: 1,
             parts: [4],
@@ -125,9 +127,9 @@ describe('ServerGeometry', function () {
                 {"y": -4381.569363260499, "x": 4057.0600591960642},
                 {"y": -4382.60877717323, "x": 4064.595810063362},
                 {"y": -4377.027184298267, "x": 4020.0045221720466}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoLine_LineRing = serverGeometry.toGeoLine();
         expect(geoLine_LineRing).not.toBeNull();
         expect(geoLine_LineRing.CLASS_NAME).toBe("SuperMap.Geometry.LinearRing");
@@ -149,7 +151,7 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLine_LineString', function () {
+    it('toGeoLine_LineString', () => {
         var options = {
             id: 1,
             parts: [4],
@@ -157,9 +159,9 @@ describe('ServerGeometry', function () {
                 {"y": -4381.569363260499, "x": 4057.0600591960642},
                 {"y": -4382.60877717323, "x": 4064.595810063362},
                 {"y": -4382.939424428795, "x": 4076.2655245045335}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoLine_LineString = serverGeometry.toGeoLine();
         expect(geoLine_LineString).not.toBeNull();
         expect(geoLine_LineString.CLASS_NAME).toBe("SuperMap.Geometry.LineString");
@@ -181,7 +183,7 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLine_MultiLineString', function () {
+    it('toGeoLine_MultiLineString', () => {
         var options = {
             id: 1,
             parts: [4, 4],
@@ -193,9 +195,9 @@ describe('ServerGeometry', function () {
                 {"y": -4382.389670274902, "x": 4247.756955878764},
                 {"y": -4382.285032149534, "x": 4428.153084011883},
                 {"y": -4383.017499027105, "x": 4647.579232906979}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoLine_MultiLineString = serverGeometry.toGeoLine();
         expect(geoLine_MultiLineString).not.toBeNull();
         expect(geoLine_MultiLineString.CLASS_NAME).toBe("SuperMap.Geometry.MultiLineString");
@@ -214,14 +216,14 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLineEPS_Null', function () {
-        var serverGeometry = new SuperMap.ServerGeometry({parts: []});
+    it('toGeoLineEPS_Null', () => {
+        var serverGeometry = new ServerGeometry({parts: []});
         var geoLineEPS_Null = serverGeometry.toGeoLineEPS();
         expect(geoLineEPS_Null).toBeNull();
         serverGeometry.destroy();
     });
 
-    it('toGeoLineEPS_LinearRing', function () {
+    it('toGeoLineEPS_LinearRing', () => {
         var options = {
             id: 1,
             parts: [4],
@@ -229,9 +231,9 @@ describe('ServerGeometry', function () {
                 {"y": -4381.569363260499, "x": 4057.0600591960642},
                 {"y": -4382.60877717323, "x": 4064.595810063362},
                 {"y": -4377.027184298267, "x": 4020.0045221720466}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var toGeoLineEPS_LinearRing = serverGeometry.toGeoLineEPS();
         expect(toGeoLineEPS_LinearRing).not.toBeNull();
         expect(toGeoLineEPS_LinearRing.CLASS_NAME).toEqual("SuperMap.Geometry.LinearRing");
@@ -250,7 +252,7 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLineEPS_LineString', function () {
+    it('toGeoLineEPS_LineString', () => {
         var options = {
             id: 1,
             parts: [4],
@@ -258,9 +260,9 @@ describe('ServerGeometry', function () {
                 {"y": -4381.569363260499, "x": 4057.0600591960642},
                 {"y": -4382.60877717323, "x": 4064.595810063362},
                 {"y": -4382.939424428795, "x": 4076.2655245045335}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoLine_LineString = serverGeometry.toGeoLineEPS();
         expect(geoLine_LineString).not.toBeNull();
         expect(geoLine_LineString.CLASS_NAME).toEqual("SuperMap.Geometry.LineString");
@@ -280,7 +282,7 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLineEPS_MultiLineString', function () {
+    it('toGeoLineEPS_MultiLineString', () => {
         var options = {
             id: 1,
             parts: [4, 4],
@@ -292,9 +294,9 @@ describe('ServerGeometry', function () {
                 {"y": -4382.389670274902, "x": 4247.756955878764},
                 {"y": -4382.285032149534, "x": 4428.153084011883},
                 {"y": -4383.017499027105, "x": 4647.579232906979}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoLine_MultiLineString = serverGeometry.toGeoLineEPS();
         expect(geoLine_MultiLineString).not.toBeNull();
         expect(geoLine_MultiLineString.CLASS_NAME).toEqual("SuperMap.Geometry.MultiLineString");
@@ -312,16 +314,16 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoLinem', function () {
+    it('toGeoLinem', () => {
         var options = {
             id: 1,
             parts: [3],
             points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
                 {"y": -4381.569363260499, "x": 4057.0600591960642},
                 {"y": -4382.60877717323, "x": 4064.595810063362}],
-            type: SuperMap.GeometryType.LINEM
+            type: GeometryType.LINEM
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoLinem = serverGeometry.toGeoLinem();
         expect(geoLinem).not.toBeNull();
         expect(geoLinem.CLASS_NAME).toBe("SuperMap.Route");
@@ -334,7 +336,7 @@ describe('ServerGeometry', function () {
     });
 
     //将服务端的面几何对象转换为客户端几何对象。
-    it('toGeoRegion', function () {
+    it('toGeoRegion', () => {
         var options = {
             id: 'test',
             parts: [4, 4],
@@ -346,9 +348,9 @@ describe('ServerGeometry', function () {
                 {"y": -4382.389670274902, "x": 4247.756955878764},
                 {"y": -4382.285032149534, "x": 4428.153084011883},
                 {"y": -4383.017499027105, "x": 4647.579232906979}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoRegion = serverGeometry.toGeoRegion();
         expect(geoRegion).not.toBeNull();
         expect(geoRegion.CLASS_NAME).toEqual("SuperMap.Geometry.MultiPolygon");
@@ -358,7 +360,7 @@ describe('ServerGeometry', function () {
             expect(geoRegion.components[i].CLASS_NAME).toEqual("SuperMap.Geometry.Polygon");
             var components = geoRegion.components[i].components[0].components;
             expect(components.length).toEqual(5);
-            for(var j = 0;j<components.length;j++){
+            for (var j = 0; j < components.length; j++) {
                 expect(components[j].type).toEqual("Point");
                 expect(components[j].x).not.toBeNaN();
                 expect(components[j].y).not.toBeNaN();
@@ -368,14 +370,14 @@ describe('ServerGeometry', function () {
     });
 
     //将服务端的面几何对象转换为客户端几何对象
-    it('toGeoRegionEPS_Null', function () {
-        var serverGeometry = new SuperMap.ServerGeometry({parts: []});
+    it('toGeoRegionEPS_Null', () => {
+        var serverGeometry = new ServerGeometry({parts: []});
         var geoRegionEPS_Null = serverGeometry.toGeoRegionEPS();
         expect(geoRegionEPS_Null).toBeNull();
         serverGeometry.destroy();
     });
 
-    it('toGeoRegionEPS_parts =[1]', function () {
+    it('toGeoRegionEPS_parts =[1]', () => {
         var options = {
             id: 'test',
             parts: [1],
@@ -383,7 +385,7 @@ describe('ServerGeometry', function () {
                 {"y": -4381.569363260499, "x": 4057.0600591960642},
                 {"y": -4382.60877717323, "x": 4064.595810063362}],
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoRegionEPS = serverGeometry.toGeoRegionEPS();
         expect(geoRegionEPS).not.toBeNull();
         expect(geoRegionEPS.CLASS_NAME).toEqual("SuperMap.Geometry.MultiPolygon");
@@ -403,7 +405,7 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('toGeoRegionEPS_parts = [4, 4]', function () {
+    it('toGeoRegionEPS_parts = [4, 4]', () => {
         var options = {
             id: 'test',
             parts: [4, 4],
@@ -415,9 +417,9 @@ describe('ServerGeometry', function () {
                 {"y": -4382.389670274902, "x": 4247.756955878764},
                 {"y": -4382.285032149534, "x": 4428.153084011883},
                 {"y": -4383.017499027105, "x": 4647.579232906979}],
-            type: SuperMap.GeometryType.LINE
+            type: GeometryType.LINE
         };
-        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var serverGeometry = new ServerGeometry(options);
         var geoRegionEPS = serverGeometry.toGeoRegionEPS();
         expect(geoRegionEPS).not.toBeNull();
         expect(geoRegionEPS.CLASS_NAME).toEqual("SuperMap.Geometry.MultiPolygon");
@@ -438,17 +440,17 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
-    it('IsClockWise', function () {
-        var points1= [{"y": -4377.027184298267, "x": 4020.0045221720466},
+    it('IsClockWise', () => {
+        var points1 = [{"y": -4377.027184298267, "x": 4020.0045221720466},
             {"y": -4381.569363260499, "x": 4057.0600591960642},
             {"y": -4382.60877717323, "x": 4064.595810063362},
             {"y": -4382.939424428795, "x": 4076.2655245045335},
             {"y": -4377.027184298267, "x": 4020.0045221720466}];
-        var result1 = SuperMap.ServerGeometry.IsClockWise(points1);
+        var result1 = ServerGeometry.IsClockWise(points1);
         expect(result1).toEqual(23.052148170943838);
         var points2 = [{"y": -4377.027184298267, "x": 4020.0045221720466},
             {"y": -4381.569363260499, "x": 4057.0600591960642}];
-        var result2 = SuperMap.ServerGeometry.IsClockWise(points2);
+        var result2 = ServerGeometry.IsClockWise(points2);
         expect(result2).toEqual(0);
     });
 });

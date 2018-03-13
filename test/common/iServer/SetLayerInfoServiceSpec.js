@@ -1,46 +1,42 @@
-require('../../../src/common/iServer/SetLayerInfoService');
-require('../../resources/LayersInfo');
+import {SetLayerInfoService} from '../../../src/common/iServer/SetLayerInfoService';
+import {SetLayersInfoService} from '../../../src/common/iServer/SetLayersInfoService';
+import '../../resources/LayersInfo';
 
 var url = GlobeParameter.WorldURL;
-var setLayerFailedEventArgsSystem = null;
-var setLayerEventArgsSystem = null;
+var setLayerFailedEventArgsSystem = null, setLayerEventArgsSystem = null;
 var id;
-
-function setLayerInfoCompleted(result) {
+var setLayerInfoCompleted = (result) => {
     setLayerEventArgsSystem = result;
-}
-
-function setLayerFailed(result) {
+};
+var setLayerFailed = (result) => {
     setLayerFailedEventArgsSystem = result;
-}
-
+};
 var options = {
     eventListeners: {
         "processCompleted": setLayerInfoCompleted,
         'processFailed': setLayerFailed
     }
 };
+var initSetLayerInfoService = (url) => {
+    return new SetLayerInfoService(url, options);
+};
 
-function initSetLayerInfoService(url) {
-    return new SuperMap.SetLayerInfoService(url, options);
-}
-
-describe('SetLayerInfoService', function () {
+describe('SetLayerInfoService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         setLayerEventArgsSystem = null;
         setLayerFailedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //新建临时图层
-    it('setNewTempLayer', function (done) {
+    it('setNewTempLayer', (done) => {
         var layersInformation = layersInfo;
-        var setLayersInfoService = new SuperMap.SetLayersInfoService(url, {
+        var setLayersInfoService = new SetLayersInfoService(url, {
             eventListeners: {
                 "processCompleted": setLayerInfoCompleted,
                 'processFailed': setLayerFailed
@@ -49,9 +45,9 @@ describe('SetLayerInfoService', function () {
         });
         expect(setLayersInfoService).not.toBeNull();
         expect(setLayersInfoService.url).toEqual(url);
-        setLayersInfoService.processAsync(layersInformation);
         setLayersInfoService.events.on({"processCompleted": setLayerInfoCompleted});
-        setTimeout(function () {
+        setLayersInfoService.processAsync(layersInformation);
+        setTimeout(() => {
             try {
                 expect(setLayerEventArgsSystem.type).toEqual("processCompleted");
                 var serviceResult = setLayerEventArgsSystem.result;
@@ -73,7 +69,7 @@ describe('SetLayerInfoService', function () {
     });
 
     //使用的临时图层id，为上一个it新建的图层
-    it('setLayerInfo', function (done) {
+    it('setLayerInfo', (done) => {
         if (id == null) {
             console.log("没有得到临时图层ID");
         } else {
@@ -83,9 +79,9 @@ describe('SetLayerInfoService', function () {
             var setLayerInfoService = initSetLayerInfoService(url1);
             expect(setLayerInfoService).not.toBeNull();
             expect(setLayerInfoService.url).toEqual(url1);
-            setLayerInfoService.processAsync(layerInformation);
             setLayerInfoService.events.on({"processCompleted": setLayerInfoCompleted});
-            setTimeout(function () {
+            setLayerInfoService.processAsync(layerInformation);
+            setTimeout(() => {
                 try {
                     expect(setLayerEventArgsSystem.type).toEqual("processCompleted");
                     var serviceResult = setLayerEventArgsSystem.result;

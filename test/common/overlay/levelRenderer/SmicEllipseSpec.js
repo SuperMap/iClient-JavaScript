@@ -1,8 +1,8 @@
-var SmicEllipse = require('../../../../src/common/overlay/levelRenderer/SmicEllipse').SmicEllipse;
+import {SmicEllipse} from '../../../../src/common/overlay/levelRenderer/SmicEllipse';
 
-describe('SmicEllipse', function () {
+describe('SmicEllipse', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -10,11 +10,11 @@ describe('SmicEllipse', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicEllipse({
             style: {x: 100, y: 100, a: 40, b: 20}
         });
@@ -28,7 +28,7 @@ describe('SmicEllipse', function () {
         expect(shape.style).toBeNull();
     });
 
-    it('buildPath', function () {
+    it('buildPath', () => {
         var shape = new SmicEllipse({
             style: {x: 100, y: 100, a: 40, b: 20}
         });
@@ -45,7 +45,7 @@ describe('SmicEllipse', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicEllipse({
             style: {x: 100, y: 100, a: 40, b: 20}
         });

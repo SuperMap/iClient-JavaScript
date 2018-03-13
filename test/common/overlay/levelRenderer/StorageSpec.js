@@ -1,11 +1,11 @@
-var Storage = require('../../../../src/common/overlay/levelRenderer/Storage').Storage;
-var Group = require('../../../../src/common/overlay/levelRenderer/Group').Group;
-var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
-var Painter = require('../../../../src/common/overlay/levelRenderer/Painter').Painter;
+import {Storage} from '../../../../src/common/overlay/levelRenderer/Storage';
+import {Group} from '../../../../src/common/overlay/levelRenderer/Group';
+import {SmicStar} from '../../../../src/common/overlay/levelRenderer/SmicStar';
+import {Painter} from '../../../../src/common/overlay/levelRenderer/Painter';
 
-describe('Storage', function () {
+describe('Storage', () => {
     var testDiv;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "group");
         testDiv.style.styleFloat = "left";
@@ -16,10 +16,10 @@ describe('Storage', function () {
         testDiv.style.border = "1px solid #000000";
         window.document.body.appendChild(testDiv);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
-    it('constructor, destroy, dispose', function () {
+    it('constructor, destroy, dispose', () => {
         var storage = new Storage();
         spyOn(storage, 'dispose').and.callThrough();
         expect(storage).not.toBeNull();
@@ -36,7 +36,7 @@ describe('Storage', function () {
     });
 
     //遍历迭代器
-    it('iterShape, getShapeList, addHover, addRoot', function () {
+    it('iterShape, getShapeList, addHover, addRoot', () => {
         var storage = new Storage();
         var shape = new SmicStar({
             style: {x: 100, y: 100, r: 50, n: 5}
@@ -47,21 +47,21 @@ describe('Storage', function () {
         painter.render();
         expect(storage._hoverElements.length).toEqual(1);
         expect(storage._shapeList.length).toEqual(1);
-        storage.iterShape(function (el) {
+        storage.iterShape((el) => {
             return false;
         });
         expect(storage).not.toBeNull();
-        storage.iterShape(function (el) {
+        storage.iterShape((el) => {
             return true;
         });
         expect(storage).not.toBeNull();
 
         var option = {hover: true, normal: 'up', update: true};
-        storage.iterShape(function () {
+        storage.iterShape(() => {
             return false;
         }, option);
         expect(storage).not.toBeNull();
-        storage.iterShape(function () {
+        storage.iterShape(() => {
             return true;
         }, option);
         expect(storage).not.toBeNull();
@@ -72,7 +72,7 @@ describe('Storage', function () {
     });
 
     //返回 hover 层的形状数组
-    it('getHoverShapes', function () {
+    it('getHoverShapes', () => {
         var storage = new Storage();
         var shape1 = new SmicStar({
             style: {x: 100, y: 100, r: 50, n: 4}
@@ -91,7 +91,7 @@ describe('Storage', function () {
         storage.destroy();
     });
 
-    it('updateShapeList, hasHoverShape', function () {
+    it('updateShapeList, hasHoverShape', () => {
         var storage = new Storage();
         var shape = new SmicStar({
             style: {x: 100, y: 100, r: 50, n: 5}
@@ -112,7 +112,7 @@ describe('Storage', function () {
     });
 
     //修改图形(Shape)或者组(Group)。
-    it('mod', function () {
+    it('mod', () => {
         var storage = new Storage();
         var group = new Group({id: "group"});
         var shape = new SmicStar({
@@ -130,7 +130,7 @@ describe('Storage', function () {
     });
 
     //移动指定的图形(Shape)的位置。
-    it('drift', function () {
+    it('drift', () => {
         var storage = new Storage();
         var shape = new SmicStar({
             style: {x: 100, y: 100, r: 50, n: 5}
@@ -159,7 +159,7 @@ describe('Storage', function () {
     });
 
     //删除指定的图形(Shape)或者组(Group)。(elId) == 'undefined'
-    it('delRoot', function () {
+    it('delRoot', () => {
         var storage = new Storage();
         var group = new Group({id: "group"});
         var shape = new SmicStar({
@@ -181,7 +181,7 @@ describe('Storage', function () {
     });
 
     //elId为数组
-    it('delRoot_array', function () {
+    it('delRoot_array', () => {
         var storage = new Storage();
         var group = new Group({id: "group"});
         var shape = new SmicStar({
@@ -214,7 +214,7 @@ describe('Storage', function () {
     });
 
     // 获取指定图形。
-    it('get', function () {
+    it('get', () => {
         var storage = new Storage();
         var group = new Group({id: "group"});
         var shape = new SmicStar({

@@ -1,8 +1,8 @@
-var SmicCircle = require('../../../../src/common/overlay/levelRenderer/SmicCircle').SmicCircle;
+import {SmicCircle} from '../../../../src/common/overlay/levelRenderer/SmicCircle';
 
-describe('SmicCircle', function () {
+describe('SmicCircle', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -10,11 +10,11 @@ describe('SmicCircle', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicCircle({
             style: {x: 100, y: 100, r: 60}
         });
@@ -28,7 +28,7 @@ describe('SmicCircle', function () {
         expect(shape.style).toBeNull();
     });
 
-    it('buildPath', function () {
+    it('buildPath', () => {
         var shape = new SmicCircle({
             style: {x: 100, y: 100, r: 60}
         });
@@ -39,7 +39,7 @@ describe('SmicCircle', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicCircle({
             style: {x: 100, y: 100, r: 60}
         });

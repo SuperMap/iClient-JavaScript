@@ -1,10 +1,10 @@
-var LevelRenderer = require('../../../../src/common/overlay/levelRenderer/LevelRenderer').LevelRenderer;
-var Render = require('../../../../src/common/overlay/levelRenderer/Render').Render;
-var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
+import {LevelRenderer} from '../../../../src/common/overlay/levelRenderer/LevelRenderer';
+import {Render} from '../../../../src/common/overlay/levelRenderer/Render';
+import {SmicStar} from '../../../../src/common/overlay/levelRenderer/SmicStar';
 
-describe('LevelRenderer', function () {
+describe('LevelRenderer', () => {
     var testDiv, render;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "render");
         testDiv.style.styleFloat = "left";
@@ -14,11 +14,11 @@ describe('LevelRenderer', function () {
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var levelRenderer = new LevelRenderer();
         expect(levelRenderer).not.toBeNull();
         expect(levelRenderer.version).not.toBeNull();
@@ -26,7 +26,7 @@ describe('LevelRenderer', function () {
         expect(levelRenderer.version).toBeNull();
     });
 
-    it('init, dispose, delInstance', function () {
+    it('init, dispose, delInstance', () => {
         var levelRenderer = new LevelRenderer();
         var render = new Render("render", testDiv);
         var shape = new SmicStar({style: {x: 100, y: 100, r: 50, n: 5}});
@@ -40,8 +40,8 @@ describe('LevelRenderer', function () {
         expect(newLevelRenderer.handler).not.toBeNull();
         expect(newLevelRenderer.painter).not.toBeNull();
         expect(newLevelRenderer.storage).not.toBeNull();
-        spyOn(render,'dispose').and.callThrough();
-        spyOn(levelRenderer,'dispose').and.callThrough();
+        spyOn(render, 'dispose').and.callThrough();
+        spyOn(levelRenderer, 'dispose').and.callThrough();
         levelRenderer.dispose(render);
         expect(levelRenderer.dispose).toHaveBeenCalledWith(render);
         expect(render.dispose).toHaveBeenCalled();
@@ -50,10 +50,10 @@ describe('LevelRenderer', function () {
         newLevelRenderer.destroy();
     });
 
-    it('getInstance',function () {
+    it('getInstance', () => {
         var levelRenderer = new LevelRenderer();
         var newLevelRenderer = levelRenderer.init(testDiv);
-        var id =newLevelRenderer.id;
+        var id = newLevelRenderer.id;
         var resultRenderer = levelRenderer.getInstance(id);
         expect(resultRenderer).not.toBeNull();
         expect(resultRenderer.id).toEqual(id);

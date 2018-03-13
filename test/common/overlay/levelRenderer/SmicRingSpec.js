@@ -1,8 +1,8 @@
-var SmicRing = require('../../../../src/common/overlay/levelRenderer/SmicRing').SmicRing;
+import {SmicRing} from '../../../../src/common/overlay/levelRenderer/SmicRing';
 
-describe('SmicRing', function () {
+describe('SmicRing', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -10,11 +10,11 @@ describe('SmicRing', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicRing({
             style: {x: 100, y: 100, r0: 30, r: 50}
         });
@@ -30,7 +30,7 @@ describe('SmicRing', function () {
         expect(shape.refOriginalPosition).toBeNull();
     });
 
-    it('buildPath', function () {
+    it('buildPath', () => {
         var shape = new SmicRing({
             style: {x: 100, y: 100, r0: 30, r: 50}
         });
@@ -41,7 +41,7 @@ describe('SmicRing', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicRing({
             style: {x: 100, y: 100, r0: 30, r: 50}
         });

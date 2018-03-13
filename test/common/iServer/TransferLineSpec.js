@@ -1,8 +1,8 @@
-require('../../../src/common/iServer/TransferLine');
+import {TransferLine} from '../../../src/common/iServer/TransferLine';
 
-describe('TransferLine', function () {
-    it('constructor, destroy', function () {
-        var transferLine = new SuperMap.TransferLine({lineName: 'testLine'});
+describe('TransferLine', () => {
+    it('constructor, destroy', () => {
+        var transferLine = new TransferLine({lineName: 'testLine'});
         expect(transferLine).not.toBeNull();
         expect(transferLine.CLASS_NAME).toEqual("SuperMap.TransferLine");
         expect(transferLine.lineName).toEqual('testLine');
@@ -11,11 +11,11 @@ describe('TransferLine', function () {
         expect(transferLine.lineName).toBeNull();
     });
 
-    it('fromJson', function () {
-        var transferLine = new SuperMap.TransferLine({lineName: 'testLine'});
-        var result1 = new SuperMap.TransferLine.fromJson();
+    it('fromJson', () => {
+        var transferLine = new TransferLine({lineName: 'testLine'});
+        var result1 = new TransferLine.fromJson();
         expect(result1).not.toBeNull();
-        var result2 = new SuperMap.TransferLine.fromJson(transferLine);
+        var result2 = new TransferLine.fromJson(transferLine);
         expect(result2.lineName).toEqual('testLine');
         transferLine.destroy();
     });

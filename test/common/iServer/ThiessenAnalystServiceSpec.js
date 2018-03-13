@@ -1,16 +1,21 @@
-﻿require('../../../src/common/iServer/ThiessenAnalystService');
+﻿import {ThiessenAnalystService} from '../../../src/common/iServer/ThiessenAnalystService';
+import {DatasetThiessenAnalystParameters} from '../../../src/common/iServer/DatasetThiessenAnalystParameters';
+import {GeometryThiessenAnalystParameters} from '../../../src/common/iServer/GeometryThiessenAnalystParameters';
+import {FilterParameter} from '../../../src/common/iServer/FilterParameter';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
+
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
 var spatialAnalystURL_Changchun = GlobeParameter.spatialAnalystURL_Changchun;
-function analyzeFailed(serviceFailedEventArgs) {
+var analyzeFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-function analyzeCompleted(analyseEventArgs) {
+var analyzeCompleted = (analyseEventArgs) => {
     analystEventArgsSystem = analyseEventArgs;
 }
-function initThiessenAnalystService() {
-    return new SuperMap.ThiessenAnalystService(spatialAnalystURL_Changchun,
+var initThiessenAnalystService = () => {
+    return new ThiessenAnalystService(spatialAnalystURL_Changchun,
         {
             eventListeners: {
                 "processCompleted": analyzeCompleted,
@@ -19,28 +24,28 @@ function initThiessenAnalystService() {
         });
 }
 
-describe('ThiessenAnalystService', function () {
+describe('ThiessenAnalystService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //成功事件 AnalyzeByDatasets
-    it('processAsync_byDatasets', function (done) {
+    it('processAsync_byDatasets', (done) => {
         var tsServiceByDatasets = initThiessenAnalystService();
         expect(tsServiceByDatasets).not.toBeNull();
         expect(tsServiceByDatasets.url).toEqual(spatialAnalystURL_Changchun);
 
-        var dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        var dsThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
             dataset: "Park@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({attributeFilter: "SMID < 5"})
+            filterQueryParameter: new FilterParameter({attributeFilter: "SMID < 5"})
         });
         tsServiceByDatasets.processAsync(dsThiessenAnalystParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var tsResult = analystEventArgsSystem.result.regions;
                 expect(tsResult).not.toBeNull();
@@ -66,19 +71,19 @@ describe('ThiessenAnalystService', function () {
     });
 
     //成功事件 AnalyzeByGeometry
-    it('processAsync_yGeometry', function (done) {
+    it('processAsync_yGeometry', (done) => {
         var tsServiceByGeometry = initThiessenAnalystService();
-        var points = [new SuperMap.Geometry.Point(21.35414430430097, 91.59340881700358),
-            new SuperMap.Geometry.Point(20.50760752363726, 0.6802641290663991),
-            new SuperMap.Geometry.Point(28.208029226321006, 92.81799910814934),
-            new SuperMap.Geometry.Point(23.986958756157428, 95.21525547430991),
-            new SuperMap.Geometry.Point(30.762395431757028, 0.29794739028268236),
-            new SuperMap.Geometry.Point(20.607496079935604, 77.0461900744243)];
-        var geoThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
+        var points = [new Point(21.35414430430097, 91.59340881700358),
+            new Point(20.50760752363726, 0.6802641290663991),
+            new Point(28.208029226321006, 92.81799910814934),
+            new Point(23.986958756157428, 95.21525547430991),
+            new Point(30.762395431757028, 0.29794739028268236),
+            new Point(20.607496079935604, 77.0461900744243)];
+        var geoThiessenAnalystParameters = new GeometryThiessenAnalystParameters({
             points: points
         });
         tsServiceByGeometry.processAsync(geoThiessenAnalystParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var tsResult = analystEventArgsSystem.result.regions;
                 expect(tsResult).not.toBeNull();
@@ -104,11 +109,11 @@ describe('ThiessenAnalystService', function () {
     });
 
     //测试失败事件 AnalyzeByGeometry
-    it('fail:processAsync_byGeometry', function (done) {
+    it('fail:processAsync_byGeometry', (done) => {
         var tsServiceByGeometry = initThiessenAnalystService();
-        var geoThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters();
+        var geoThiessenAnalystParameters = new GeometryThiessenAnalystParameters();
         tsServiceByGeometry.processAsync(geoThiessenAnalystParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -129,13 +134,13 @@ describe('ThiessenAnalystService', function () {
     });
 
     //测试失败事件 AnalyzeByDataset
-    it('fail:processAsync_byDataset', function (done) {
+    it('fail:processAsync_byDataset', (done) => {
         var tsServiceByDataset = initThiessenAnalystService();
-        var dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        var dsThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
             dataset: 'test'
         });
         tsServiceByDataset.processAsync(dsThiessenAnalystParameters);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();

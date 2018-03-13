@@ -1,11 +1,19 @@
-require('../../../../src/common/overlay/feature/ShapeFactory');
-require('../../../resources/img/baiduTileTest.png');
-describe('ShapeFactory', function () {
+import {ShapeFactory} from '../../../../src/common/overlay/feature/ShapeFactory';
+import {Point} from '../../../../src/common/overlay/feature/Point';
+import {Line} from '../../../../src/common/overlay/feature/Line';
+import {Polygon} from '../../../../src/common/overlay/feature/Polygon';
+import {Rectangle} from '../../../../src/common/overlay/feature/Rectangle';
+import {Sector} from '../../../../src/common/overlay/feature/Sector';
+import {Label} from '../../../../src/common/overlay/feature/Label';
+import {Image} from '../../../../src/common/overlay/feature/Image';
+import {Circle} from '../../../../src/common/overlay/feature/Circle';
+import '../../../resources/img/baiduTileTest.png';
 
+describe('ShapeFactory', () => {
     //构建图形工厂对象
-    it('constructor, destroy', function () {
-        var shapeParameters_point = new SuperMap.Feature.ShapeParameters.Point(0, 0);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_point);
+    it('constructor, destroy', () => {
+        var shapeParameters_point = new Point(0, 0);
+        var shapeFactory = new ShapeFactory(shapeParameters_point);
         expect(shapeFactory).not.toBeNull();
         expect(shapeFactory.CLASS_NAME).toEqual("SuperMap.Feature.ShapeFactory");
         expect(shapeFactory.shapeParameters.CLASS_NAME).toEqual("SuperMap.Feature.ShapeParameters.Point");
@@ -16,9 +24,9 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 点
-    it('createShape_Point', function () {
-        var shapeParameters_point = new SuperMap.Feature.ShapeParameters.Point(0, 0);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_point);
+    it('createShape_Point', () => {
+        var shapeParameters_point = new Point(0, 0);
+        var shapeFactory = new ShapeFactory(shapeParameters_point);
         var shape = shapeFactory.createShape(shapeParameters_point);
         expect(shape).not.toBeNull();
         expect(shape.type).toEqual("smicpoint");
@@ -31,10 +39,10 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 线
-    it('createShape_Line', function () {
+    it('createShape_Line', () => {
         var pointList = [[0, 0], [10, 20], [25, 30]];
-        var shapeParameters_Line = new SuperMap.Feature.ShapeParameters.Line(pointList);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Line);
+        var shapeParameters_Line = new Line(pointList);
+        var shapeFactory = new ShapeFactory(shapeParameters_Line);
         var shape = shapeFactory.createShape(shapeParameters_Line);
         expect(shape).not.toBeNull();
         expect(shape.type).toEqual("smicbroken-line");
@@ -47,10 +55,10 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 面
-    it('createShape_Polygon', function () {
+    it('createShape_Polygon', () => {
         var pointList = [[0, 0], [10, 20], [25, 30]];
-        var shapeParameters_Polygon = new SuperMap.Feature.ShapeParameters.Polygon(pointList);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Polygon);
+        var shapeParameters_Polygon = new Polygon(pointList);
+        var shapeFactory = new ShapeFactory(shapeParameters_Polygon);
         var shape = shapeFactory.createShape(shapeParameters_Polygon);
         expect(shape).not.toBeNull();
         expect(shape.type).toEqual("smicpolygon");
@@ -63,9 +71,9 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 矩形
-    it('createShape_Rectangle', function () {
-        var shapeParameters_Rectangle = new SuperMap.Feature.ShapeParameters.Rectangle(0, 0, 10, 10);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Rectangle);
+    it('createShape_Rectangle', () => {
+        var shapeParameters_Rectangle = new Rectangle(0, 0, 10, 10);
+        var shapeFactory = new ShapeFactory(shapeParameters_Rectangle);
         var shape = shapeFactory.createShape(shapeParameters_Rectangle);
         expect(shape).not.toBeNull();
         expect(shape.type).toEqual("smicrectangle");
@@ -79,9 +87,9 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 扇形
-    it('createShape_Sector', function () {
-        var shapeParameters_Sector = new SuperMap.Feature.ShapeParameters.Sector(0, 0, 10, 0, 60);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Sector);
+    it('createShape_Sector', () => {
+        var shapeParameters_Sector = new Sector(0, 0, 10, 0, 60);
+        var shapeFactory = new ShapeFactory(shapeParameters_Sector);
         var shape = shapeFactory.createShape(shapeParameters_Sector);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -96,9 +104,9 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 标签
-    it('createShape_Label', function () {
-        var shapeParameters_Label = new SuperMap.Feature.ShapeParameters.Label(0, 0, "labelTest");
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Label);
+    it('createShape_Label', () => {
+        var shapeParameters_Label = new Label(0, 0, "labelTest");
+        var shapeFactory = new ShapeFactory(shapeParameters_Label);
         var shape = shapeFactory.createShape(shapeParameters_Label);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -111,10 +119,10 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 图片
-    it('createShape_Image', function () {
+    it('createShape_Image', () => {
         var imgUrl = '../../../resources/img/baiduTileTest.png';
-        var shapeParameters_Image = new SuperMap.Feature.ShapeParameters.Image(0, 0, imgUrl, 260, 208, 50, 50, 150, 150);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Image);
+        var shapeParameters_Image = new Image(0, 0, imgUrl, 260, 208, 50, 50, 150, 150);
+        var shapeFactory = new ShapeFactory(shapeParameters_Image);
         var shape = shapeFactory.createShape(shapeParameters_Image);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -135,9 +143,9 @@ describe('ShapeFactory', function () {
     });
 
     // 创建一个图形 圆形
-    it('createShape_Circle', function () {
-        var shapeParameters_Circle = new SuperMap.Feature.ShapeParameters.Circle(50, 50, 30);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Circle);
+    it('createShape_Circle', () => {
+        var shapeParameters_Circle = new Circle(50, 50, 30);
+        var shapeFactory = new ShapeFactory(shapeParameters_Circle);
         var shape = shapeFactory.createShape(shapeParameters_Circle);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -151,7 +159,7 @@ describe('ShapeFactory', function () {
 
     ////将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准
     //fill类型  即 fill = true
-    it('transformStyle_fill=true_stroke=false', function () {
+    it('transformStyle_fill=true_stroke=false', () => {
         var style = {
             fill: true,
             fillColor: "#FFFFFF",
@@ -185,13 +193,13 @@ describe('ShapeFactory', function () {
             strokeOpacity: 1,
             strokeWidth: 1
         };
-        var newstyle = new SuperMap.Feature.ShapeFactory.transformStyle(style);
+        var newstyle = new ShapeFactory.transformStyle(style);
         expect(newstyle).not.toBeNull();
         expect(newstyle.brushType).toEqual("fill");
     });
 
     //stroke类型   即stroke = true
-    it('transformStyle_fill=false_stroke=true', function () {
+    it('transformStyle_fill=false_stroke=true', () => {
         var style = {
             fill: false,
             fillColor: "#FFFFFF",
@@ -225,13 +233,13 @@ describe('ShapeFactory', function () {
             strokeOpacity: 1,
             strokeWidth: 1
         };
-        var newstyle = new SuperMap.Feature.ShapeFactory.transformStyle(style);
+        var newstyle = new ShapeFactory.transformStyle(style);
         expect(newstyle).not.toBeNull();
         expect(newstyle.brushType).toEqual("stroke");
     });
 
     //both类型  即stroke = true && fill = true
-    it('transformStyle_fill=true_stroke=true', function () {
+    it('transformStyle_fill=true_stroke=true', () => {
         var style = {
             fill: true,
             fillColor: "#FFFFFF",
@@ -265,13 +273,13 @@ describe('ShapeFactory', function () {
             strokeOpacity: 1,
             strokeWidth: 1
         };
-        var newstyle = new SuperMap.Feature.ShapeFactory.transformStyle(style);
+        var newstyle = new ShapeFactory.transformStyle(style);
         expect(newstyle).not.toBeNull();
         expect(newstyle.brushType).toEqual("both");
     });
 
     //false类型  即stroke = false && fill = false
-    it('transformStyle_fill=false_stroke=false', function () {
+    it('transformStyle_fill=false_stroke=false', () => {
         var style = {
             fill: false,
             fillColor: "#FFFFFF",
@@ -305,22 +313,22 @@ describe('ShapeFactory', function () {
             strokeOpacity: 1,
             strokeWidth: 1
         };
-        var newstyle = new SuperMap.Feature.ShapeFactory.transformStyle(style);
+        var newstyle = new ShapeFactory.transformStyle(style);
         expect(newstyle).not.toBeNull();
         expect(newstyle.brushType).toEqual("fill");
 
     });
 
     //创建一个矩形背景框图形对象
-    it('Background', function () {
-        var shapeParameters_Circle = new SuperMap.Feature.ShapeParameters.Circle(50, 50, 30);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_Circle);
+    it('Background', () => {
+        var shapeParameters_Circle = new Circle(50, 50, 30);
+        var shapeFactory = new ShapeFactory(shapeParameters_Circle);
         var box = [0, 100, 100, 0];
         var setting = {
-            backgroundStyle: new SuperMap.Feature.ShapeParameters.Rectangle(0, 0, 100, 100),
+            backgroundStyle: new Rectangle(0, 0, 100, 100),
             backgroundRadius: [5, 5, 5, 5]
         };
-        var bgShape = new SuperMap.Feature.ShapeFactory.Background(shapeFactory, box, setting);
+        var bgShape = new ShapeFactory.Background(shapeFactory, box, setting);
         expect(bgShape).not.toBeNull();
         expect(bgShape.CLASS_NAME).toEqual("SuperMap.LevelRenderer.Shape.SmicRectangle");
         expect(bgShape.type).toEqual("smicrectangle");
@@ -336,17 +344,17 @@ describe('ShapeFactory', function () {
     });
 
     //创建一个统计图表坐标轴图形对象组  不使用刻度
-    it('GraphAxis', function () {
-        var shapeParameters_point = new SuperMap.Feature.ShapeParameters.Point(0, 0);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_point);
+    it('GraphAxis', () => {
+        var shapeParameters_point = new Point(0, 0);
+        var shapeFactory = new ShapeFactory(shapeParameters_point);
         var dataViewBox = [50, 150, 150, 50];
         var setting = {
-            axisStyle: new SuperMap.Feature.ShapeParameters.Line([[0, 0], [80, 80]]),
+            axisStyle: new Line([[0, 0], [80, 80]]),
             axisUseArrow: true,
             axisYLabels: ["80", "60", "40", "20", "0"],
-            axisYLabelsStyle: new SuperMap.Feature.ShapeParameters.Label(75, 75, "y轴"),
+            axisYLabelsStyle: new Label(75, 75, "y轴"),
             axisXLabels: ["80", "60", "40", "20", "0"],
-            axisXLabelsStyle: new SuperMap.Feature.ShapeParameters.Label(75, 75, "x轴"),
+            axisXLabelsStyle: new Label(75, 75, "x轴"),
             useXReferenceLine: false,
             axis3DParameter: 15,
         };
@@ -354,7 +362,7 @@ describe('ShapeFactory', function () {
             xPositions: [50, 0],
             width: 0
         };
-        var coordinateArray = new SuperMap.Feature.ShapeFactory.GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo);
+        var coordinateArray = new ShapeFactory.GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo);
         expect(coordinateArray).not.toBeNull();
         expect(coordinateArray.length).toBeGreaterThan(0);
         for (var i = 0; i < coordinateArray.length; i++) {
@@ -366,29 +374,29 @@ describe('ShapeFactory', function () {
     });
 
     //创建一个统计图表坐标轴图形对象组  使用刻度axisYTick = 5 ,并使用参考线 、标签组偏移量  均匀排列
-    it('GraphAxis_axisYTick', function () {
-        var shapeParameters_point = new SuperMap.Feature.ShapeParameters.Point(0, 0);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_point);
+    it('GraphAxis_axisYTick', () => {
+        var shapeParameters_point = new Point(0, 0);
+        var shapeFactory = new ShapeFactory(shapeParameters_point);
         var dataViewBox = [50, 150, 150, 50];
         var setting = {
-            axisStyle: new SuperMap.Feature.ShapeParameters.Line([[0, 0], [80, 80]]),
+            axisStyle: new Line([[0, 0], [80, 80]]),
             axisUseArrow: true,
             axisYTick: 5,
             axisYLabels: ["80"],
-            axisYLabelsStyle: new SuperMap.Feature.ShapeParameters.Label(75, 75, "y轴"),
+            axisYLabelsStyle: new Label(75, 75, "y轴"),
             axisXLabels: ["80"],
-            axisXLabelsStyle: new SuperMap.Feature.ShapeParameters.Label(75, 75, "x轴"),
+            axisXLabelsStyle: new Label(75, 75, "x轴"),
             axisYLabelsOffset: [1, 1],
             axisXLabelsOffset: [1, 1],
             useXReferenceLine: true,
-            xReferenceLineStyle: new SuperMap.Feature.ShapeParameters.Line([[0, 0], [80, 80]]),
+            xReferenceLineStyle: new Line([[0, 0], [80, 80]]),
             axis3DParameter: 15,
         };
         var xShapeInfo = {
             xPositions: [5],
             width: 0
         };
-        var coordinateArray = new SuperMap.Feature.ShapeFactory.GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo);
+        var coordinateArray = new ShapeFactory.GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo);
         expect(coordinateArray).not.toBeNull();
         expect(coordinateArray.length).toBeGreaterThan(0);
         for (var i = 0; i < coordinateArray.length; i++) {
@@ -400,17 +408,17 @@ describe('ShapeFactory', function () {
     });
 
     //创建一个统计图表坐标轴图形对象组  使用刻度axisYTick = 5  不均匀排列 即axisXLabels.length != xPositions.length
-    it('GraphAxis_axisYTick_Nonuniform', function () {
-        var shapeParameters_point = new SuperMap.Feature.ShapeParameters.Point(0, 0);
-        var shapeFactory = new SuperMap.Feature.ShapeFactory(shapeParameters_point);
+    it('GraphAxis_axisYTick_Nonuniform', () => {
+        var shapeParameters_point = new Point(0, 0);
+        var shapeFactory = new ShapeFactory(shapeParameters_point);
         var dataViewBox = [50, 150, 150, 50];
         var setting = {
-            axisStyle: new SuperMap.Feature.ShapeParameters.Line([[0, 0], [80, 80]]),
+            axisStyle: new Line([[0, 0], [80, 80]]),
             axisUseArrow: true,
             axisYLabels: ["80", "60", "40", "20", "0"],
-            axisYLabelsStyle: new SuperMap.Feature.ShapeParameters.Label(75, 75, "y轴"),
+            axisYLabelsStyle: new Label(75, 75, "y轴"),
             axisXLabels: ["80"],
-            axisXLabelsStyle: new SuperMap.Feature.ShapeParameters.Label(75, 75, "x轴"),
+            axisXLabelsStyle: new Label(75, 75, "x轴"),
             useXReferenceLine: false,
             axis3DParameter: 15,
         };
@@ -418,7 +426,7 @@ describe('ShapeFactory', function () {
             xPositions: [50, 0],
             width: 0
         };
-        var coordinateArray = new SuperMap.Feature.ShapeFactory.GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo);
+        var coordinateArray = new ShapeFactory.GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo);
         expect(coordinateArray).not.toBeNull();
         expect(coordinateArray.length).toBeGreaterThan(0);
         for (var i = 0; i < coordinateArray.length; i++) {
@@ -431,7 +439,7 @@ describe('ShapeFactory', function () {
 
     //一个图形 style 处理工具。
     // 此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
-    it('ShapeStyleTool', function () {
+    it('ShapeStyleTool', () => {
         var defaultStyle = {};
         var style = {
             fill: true,
@@ -524,7 +532,7 @@ describe('ShapeFactory', function () {
         ];
         var index = 1;
         var value = 270;
-        var newStyle = new SuperMap.Feature.ShapeFactory.ShapeStyleTool(defaultStyle, style, styleGroup, styleByCodomain, index, value);
+        var newStyle = new ShapeFactory.ShapeStyleTool(defaultStyle, style, styleGroup, styleByCodomain, index, value);
         expect(newStyle).not.toBeNull();
         expect(newStyle.end).toEqual(500);
         expect(newStyle.fillColor).toEqual("#00EE00");

@@ -1,9 +1,9 @@
-var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
+import {SmicPolygon} from '../../../../src/common/overlay/levelRenderer/SmicPolygon';
 
-describe('SmicPolygon', function () {
+describe('SmicPolygon', () => {
     var originalTimeout;
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -11,11 +11,11 @@ describe('SmicPolygon', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -39,7 +39,7 @@ describe('SmicPolygon', function () {
     });
 
     //笔触 isHighlight = false 不使用高亮属性
-    it('brush_isHighlight = false', function () {
+    it('brush_isHighlight = false', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -65,7 +65,7 @@ describe('SmicPolygon', function () {
     });
 
     //笔触 使用高亮属性
-    it('brush', function () {
+    it('brush', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -91,7 +91,7 @@ describe('SmicPolygon', function () {
         shape.destroy();
     });
 
-    it('buildPath_style1', function () {
+    it('buildPath_style1', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -129,7 +129,7 @@ describe('SmicPolygon', function () {
         shape.destroy();
     });
 
-    it('buildPath_style2', function () {
+    it('buildPath_style2', () => {
         var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -166,7 +166,7 @@ describe('SmicPolygon', function () {
         shape.destroy();
     });
 
-    it('buildPath_style3', function () {
+    it('buildPath_style3', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -191,7 +191,7 @@ describe('SmicPolygon', function () {
         shape.destroy();
     });
 
-    it('buildPath_style4', function () {
+    it('buildPath_style4', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -219,7 +219,7 @@ describe('SmicPolygon', function () {
         shape.destroy();
     });
 
-    it('buildPath_style5', function () {
+    it('buildPath_style5', () => {
         var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
@@ -248,7 +248,7 @@ describe('SmicPolygon', function () {
         shape.destroy();
     });
 
-    it('getRect_style1', function () {
+    it('getRect_style1', () => {
         var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -272,7 +272,7 @@ describe('SmicPolygon', function () {
 
     });
 
-    it('getRect_style2', function () {
+    it('getRect_style2', () => {
         var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],

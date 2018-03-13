@@ -1,12 +1,15 @@
-require('../../../src/common/iServer/UpdateTurnNodeWeightService');
+import {UpdateTurnNodeWeightService} from '../../../src/common/iServer/UpdateTurnNodeWeightService';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
-
-//服务初始化时注册事件监听函数
 var networkAnalystURL = GlobeParameter.networkAnalystURL;
-function initUpdateTurnNodeWeightService_RegisterListener() {
-    return new SuperMap.UpdateTurnNodeWeightService(networkAnalystURL,
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var updateTurnNodeWeightFailed = (serviceFailedEventArgs) => {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+};
+var updateTurnNodeWeightCompleted = (serviceCompletedEventArgs) => {
+    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
+};
+var initUpdateTurnNodeWeightService_RegisterListener = () => {
+    return new UpdateTurnNodeWeightService(networkAnalystURL,
         {
             eventListeners: {
                 'processFailed': updateTurnNodeWeightFailed,
@@ -14,29 +17,23 @@ function initUpdateTurnNodeWeightService_RegisterListener() {
             }
         }
     );
-}
-function updateTurnNodeWeightFailed(serviceFailedEventArgs) {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function updateTurnNodeWeightCompleted(serviceCompletedEventArgs) {
-    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-}
+};
 
-describe('UpdateTurnNodeWeightService', function () {
+describe('UpdateTurnNodeWeightService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync', function (done) {
+    it('processAsync', (done) => {
         var myUpdateTurnNodeWeightService = initUpdateTurnNodeWeightService_RegisterListener();
         expect(myUpdateTurnNodeWeightService).not.toBeNull();
         myUpdateTurnNodeWeightService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(typeof(myUpdateTurnNodeWeightService.processAsync()) === "undefined").toBeTruthy();
                 myUpdateTurnNodeWeightService.destroy();

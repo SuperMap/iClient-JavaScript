@@ -1,16 +1,17 @@
-require('../../../src/common/style/CartoCSS');
-describe('CartoCSS', function () {
+import {CartoCSS} from '../../../src/common/style/CartoCSS';
+
+describe('CartoCSS', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it("getShaders_zoom", function () {
-        var cartoCSS = new SuperMap.CartoCSS(
+    it("getShaders_zoom", () => {
+        var cartoCSS = new CartoCSS(
             "#world[zoom=9] {\n" +
             "  polygon-fill: #000;\n" +
             "\n" +
@@ -51,8 +52,8 @@ describe('CartoCSS', function () {
         cartoCSS.getShaders();
         cartoCSS.destroy();
     });
-    it("getShaders_class", function () {
-        var cartoCSS = new SuperMap.CartoCSS(
+    it("getShaders_class", () => {
+        var cartoCSS = new CartoCSS(
             ".baz .bar {}\n" +
             ".foo {}\n" +
             ".bar {}\n" +
@@ -96,8 +97,8 @@ describe('CartoCSS', function () {
         cartoCSS.getShaders();
         cartoCSS.destroy();
     });
-    it("getShaders_basic", function () {
-        var cartoCSS = new SuperMap.CartoCSS(
+    it("getShaders_basic", () => {
+        var cartoCSS = new CartoCSS(
             "#world[NAME='United States'] {\n" +
             "  polygon-fill:#F00;\n" +
             "  marker-fill: fadeout(#000, 50%);\n" +
@@ -156,8 +157,8 @@ describe('CartoCSS', function () {
         cartoCSS.getShaders();
         cartoCSS.destroy();
     });
-    it("getShaders_extends", function () {
-        var cartoCSS = new SuperMap.CartoCSS(
+    it("getShaders_extends", () => {
+        var cartoCSS = new CartoCSS(
             "        /*中国除外的其他国家的图层*/\n" +
             "        #Countries_World_1{" +
             "        text-placement-type:simple;" +
@@ -202,8 +203,8 @@ describe('CartoCSS', function () {
         cartoCSS.getShaders();
         cartoCSS.destroy();
     });
-    it("getShaders_fillValues", function () {
-        var cartoCSS = new SuperMap.CartoCSS(
+    it("getShaders_fillValues", () => {
+        var cartoCSS = new CartoCSS(
             "        #World_Continent_pl___China[zoom >1.3502381658248012E-8][population>1000000]{\n" +
             "        [Type>=100001] {line-width: 4;}[Type<=10000]  {line-width: 2;}[Type=99999] {line-dasharray: 4,4;}[Type!=50000] {line-dasharray: 4,4;}" +
             "        [Type>50000] {line-dasharray: 4,4;}[Type<60000] {line-dasharray: 4,4;}\n " +
@@ -230,8 +231,8 @@ describe('CartoCSS', function () {
         cartoCSS.getShaders();
         cartoCSS.destroy();
     });
-    it("getShaders_Color", function () {
-        var cartoCSS = new SuperMap.CartoCSS("#world {\n" +
+    it("getShaders_Color", () => {
+        var cartoCSS = new CartoCSS("#world {\n" +
             "  name/line-color: green;\n" +
             "  hex-3/line-color: #BED;\n" +
             "  hex-6/line-color: #DEADBE;\n" +

@@ -1,7 +1,7 @@
-var Vector = require('../../../../src/common/overlay/levelRenderer/Vector').Vector;
+import {Vector} from '../../../../src/common/overlay/levelRenderer/Vector';
 
-describe('Vector', function () {
-    it('constructor, create, copy', function () {
+describe('Vector', () => {
+    it('constructor, create, copy', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'copy').and.callThrough();
@@ -21,7 +21,7 @@ describe('Vector', function () {
         expect(newVector[1]).toEqual(10);
     });
 
-    it('set', function () {
+    it('set', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'set').and.callThrough();
@@ -34,7 +34,7 @@ describe('Vector', function () {
         expect(outVector[1]).toEqual(20);
     });
 
-    it('add', function () {
+    it('add', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'add').and.callThrough();
@@ -48,7 +48,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(30);
     });
 
-    it('scaleAndAdd', function () {
+    it('scaleAndAdd', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'scaleAndAdd').and.callThrough();
@@ -62,7 +62,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(50);
     });
 
-    it('sub', function () {
+    it('sub', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'sub').and.callThrough();
@@ -76,7 +76,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(10);
     });
 
-    it('len, lenSquare, length, lengthSquare', function () {
+    it('len, lenSquare, length, lengthSquare', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'len').and.callThrough();
@@ -99,7 +99,7 @@ describe('Vector', function () {
         expect(lengthSquare).toEqual(200);
     });
 
-    it('mul, div', function () {
+    it('mul, div', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'mul').and.callThrough();
@@ -118,7 +118,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(2);
     });
 
-    it('dot', function () {
+    it('dot', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'dot').and.callThrough();
@@ -130,7 +130,7 @@ describe('Vector', function () {
         expect(result).toEqual(400);
     });
 
-    it('scale', function () {
+    it('scale', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'scale').and.callThrough();
@@ -143,7 +143,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(5);
     });
 
-    it('normalize', function () {
+    it('normalize', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'normalize').and.callThrough();
@@ -161,7 +161,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(0);
     });
 
-    it('distance, distanceSquare, dist, distSquare', function () {
+    it('distance, distanceSquare, dist, distSquare', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'distance').and.callThrough();
@@ -185,7 +185,7 @@ describe('Vector', function () {
         expect(distSquare).toEqual(200);
     });
 
-    it('negate', function () {
+    it('negate', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'negate').and.callThrough();
@@ -198,7 +198,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(-10);
     });
 
-    it('lerp', function () {
+    it('lerp', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'lerp').and.callThrough();
@@ -212,7 +212,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(30);
     });
 
-    it('applyTransform', function () {
+    it('applyTransform', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'applyTransform').and.callThrough();
@@ -226,7 +226,7 @@ describe('Vector', function () {
         expect(vector0[1]).toEqual(66);
     });
 
-    it('min, max', function () {
+    it('min, max', () => {
         var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'min').and.callThrough();

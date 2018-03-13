@@ -1,7 +1,7 @@
-var Online = require('../../../src/common/online/Online').Online;
+import {Online} from '../../../src/common/online/Online';
 
-describe('Online',function () {
-    it('constructor',function () {
+describe('Online', () => {
+    it('constructor', () => {
         var online = new Online();
         expect(online.rootUrl).toEqual("http://www.supermapol.com");
         expect(online.webUrl).toEqual("http://www.supermapol.com/web");

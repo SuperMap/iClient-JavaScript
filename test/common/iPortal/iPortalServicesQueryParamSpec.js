@@ -1,8 +1,8 @@
-require('../../../src/common/iPortal/iPortalServicesQueryParam');
+import {IPortalServicesQueryParam} from '../../../src/common/iPortal/iPortalServicesQueryParam';
 
-describe('iPortalMapsQueryParam', function () {
-    it('constructor', function () {
-        var param = new SuperMap.iPortalServicesQueryParam({userNames:'test'});
+describe('iPortalMapsQueryParam', () => {
+    it('constructor', () => {
+        var param = new IPortalServicesQueryParam({userNames: 'test'});
         expect(param).not.toBeNull();
         expect(param.userNames).toEqual('test');
     });

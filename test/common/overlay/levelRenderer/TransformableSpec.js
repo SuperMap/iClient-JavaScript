@@ -1,8 +1,8 @@
-var Transformable = require('../../../../src/common/overlay/levelRenderer/Transformable').Transformable;
+import {Transformable} from '../../../../src/common/overlay/levelRenderer/Transformable';
 
-describe('Transformable', function () {
+describe('Transformable', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -10,10 +10,11 @@ describe('Transformable', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
-    it('updateNeedTransform, updateTransform', function () {
+
+    it('updateNeedTransform, updateTransform', () => {
         var transformable = new Transformable();
         transformable.lookAt([1, 1]);
         transformable.lookAt([0, 0]);
@@ -38,7 +39,7 @@ describe('Transformable', function () {
         transformable.destroy();
     });
 
-    it('setTransform', function () {
+    it('setTransform', () => {
         var transformable = new Transformable();
         transformable.position = [1, 1];
         spyOn(ctx, 'transform').and.callThrough();
@@ -48,7 +49,7 @@ describe('Transformable', function () {
         transformable.destroy();
     });
 
-    it('decomposeTransform', function () {
+    it('decomposeTransform', () => {
         var transformable = new Transformable();
         transformable.decomposeTransform();
         transformable.position = [12, 10];

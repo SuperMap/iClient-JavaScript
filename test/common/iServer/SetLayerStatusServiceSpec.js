@@ -1,40 +1,38 @@
-require('../../../src/common/iServer/SetLayerStatusService');
+import {SetLayerStatusService} from '../../../src/common/iServer/SetLayerStatusService';
+import {SetLayerStatusParameters} from '../../../src/common/iServer/SetLayerStatusParameters';
+import {LayerStatus} from '../../../src/common/iServer/LayerStatus';
 
-var setLayersStatusEvtArgs = null;
-var setLayersStatusFaildEvtArgs = null;
 var url = GlobeParameter.WorldURL;
-
-function setLayerStatusCompleted(result) {
+var setLayersStatusEvtArgs = null, setLayersStatusFaildEvtArgs = null;
+var setLayerStatusCompleted = (result) => {
     setLayersStatusEvtArgs = result;
-}
-
-function setLayerStatusFailed(result) {
+};
+var setLayerStatusFailed = (result) => {
     setLayersStatusFaildEvtArgs = result;
-}
-
-function initSetLayerStatusService() {
-    return new SuperMap.SetLayerStatusService(url, {
+};
+var initSetLayerStatusService = () => {
+    return new SetLayerStatusService(url, {
         eventListeners: {
             processCompleted: setLayerStatusCompleted,
             processFailed: setLayerStatusFailed
         }
     });
-}
+};
 
-describe('SetLayerStatusService_processAsync', function () {
+describe('SetLayerStatusService_processAsync', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         setLayersStatusEvtArgs = null;
         setLayersStatusFaildEvtArgs = null;
 
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var setLayerStatusService = initSetLayerStatusService();
         expect(setLayerStatusService.mapUrl).toEqual(url);
         expect(setLayerStatusService.events).not.toBeNull();
@@ -46,7 +44,7 @@ describe('SetLayerStatusService_processAsync', function () {
         expect(setLayerStatusService.lastparams == null).toBeTruthy();
     });
 
-    it('getMapName', function () {
+    it('getMapName', () => {
         var setLayerStatusService = initSetLayerStatusService();
         var name = setLayerStatusService.getMapName(url);
         expect(name).toEqual("World");
@@ -54,11 +52,10 @@ describe('SetLayerStatusService_processAsync', function () {
     });
 
     //processAsync没有参数的时候
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var setLayerStatusService = initSetLayerStatusService();
         setLayerStatusService.processAsync();
-
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(setLayersStatusEvtArgs).toBeNull();
                 setLayerStatusService.destroy();
@@ -73,19 +70,20 @@ describe('SetLayerStatusService_processAsync', function () {
     });
 
     //processAsyn有参数，没有resourceID属性
-    it('processAsync_resourceID_null', function (done) {
+    it('processAsync_resourceID_null', (done) => {
+        var resourceID;
         var setLayerStatusService = initSetLayerStatusService();
-        var setLayerStatusParams = new SuperMap.SetLayerStatusParameters();
-        var layerStatus = new SuperMap.LayerStatus();
+        var setLayerStatusParams = new SetLayerStatusParameters();
+        var layerStatus = new LayerStatus();
         layerStatus.layerName = "super";
         layerStatus.isVisible = true;
         setLayerStatusParams.layerStatusList.push(layerStatus);
+        var processCompleted = (createTempLayerEventArgs) => {
+            resourceID = createTempLayerEventArgs.result.newResourceID;
+        }
         setLayerStatusService.events.on({"processCompleted": processCompleted});
         setLayerStatusService.processAsync(setLayerStatusParams);
-
-        function processCompleted(createTempLayerEventArgs) {
-            setLayerStatusService.events.on({"processCompleted": processCompleted});
-            var resourceID = createTempLayerEventArgs.result.newResourceID;
+        setTimeout(() => {
             try {
                 expect(setLayersStatusEvtArgs.result).not.toBeNull();
                 expect(setLayerStatusService.lastparams).not.toBeNull();
@@ -99,7 +97,7 @@ describe('SetLayerStatusService_processAsync', function () {
                 setLayerStatusService.destroy();
                 done();
             }
-        }
+        }, 3000)
     })
 });
 

@@ -1,41 +1,39 @@
-﻿require('../../../src/common/iServer/StopQueryService');
+﻿import {StopQueryService} from '../../../src/common/iServer/StopQueryService';
+import {StopQueryParameters} from '../../../src/common/iServer/StopQueryParameters';
 
-var stopQueryServiceEventArgsSystem = null,
-    serviceFailedEventArgsSystem = null;
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
-
-function succeed(event) {
+var stopQueryServiceEventArgsSystem = null, serviceFailedEventArgsSystem = null;
+var succeed = (event) => {
     stopQueryServiceEventArgsSystem = event;
-}
-function failed(event) {
+};
+var failed = (event) => {
     serviceFailedEventArgsSystem = event;
-}
-function initStopQueryService() {
-    return new SuperMap.StopQueryService(trafficTransferURL, {
+};
+var initStopQueryService = () => {
+    return new StopQueryService(trafficTransferURL, {
         eventListeners: {
             processCompleted: succeed,
             processFailed: failed
         }
     });
-}
+};
 
-describe('StopQueryService', function () {
+describe('StopQueryService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         stopQueryServiceEventArgsSystem = null;
         serviceFailedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var stopQueryService = initStopQueryService();
         stopQueryService.processAsync();
-
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect((stopQueryService.processAsync()) === undefined).toBeTruthy();
                 stopQueryService.destroy();
@@ -49,14 +47,14 @@ describe('StopQueryService', function () {
         }, 2000);
     });
 
-    it('success:processAsync_returnPosition', function (done) {
+    it('success:processAsync_returnPosition', (done) => {
         var stopQueryService = initStopQueryService();
-        var stopQueryServiceParams = new SuperMap.StopQueryParameters({
+        var stopQueryServiceParams = new StopQueryParameters({
             keyWord: '人民',
             returnPosition: true
         });
         stopQueryService.processAsync(stopQueryServiceParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(stopQueryServiceEventArgsSystem.result).not.toBeNull();
                 expect(stopQueryServiceEventArgsSystem.result[0].position).not.toBeNull();
@@ -75,19 +73,19 @@ describe('StopQueryService', function () {
         }, 2000);
     });
 
-    it('success:processAsync_returnPosition:false', function (done) {
+    it('success:processAsync_returnPosition:false', (done) => {
         var stopQueryService = initStopQueryService();
-        var stopQueryServiceParams = new SuperMap.StopQueryParameters({
+        var stopQueryServiceParams = new StopQueryParameters({
             keyWord: '人民',
             returnPosition: false
         });
         stopQueryService.processAsync(stopQueryServiceParams);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var result = stopQueryServiceEventArgsSystem.result;
                 expect(result).not.toBeNull();
-                expect(stopQueryServiceEventArgsSystem.result[0].position).toBeNull();
-                expect(stopQueryServiceEventArgsSystem.result[0]).not.toBeNull();
+                expect(result[0].position).toBeNull();
+                expect(result[0]).not.toBeNull();
                 stopQueryService.destroy();
                 stopQueryServiceParams.destroy();
                 done();

@@ -1,40 +1,35 @@
-require('../../../src/common/iServer/TilesetsService');
-require('../../../src/common/util/FetchRequest');
+import {TilesetsService} from '../../../src/common/iServer/TilesetsService';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
 var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
-
-function analyzeFailed(serviceFailedEventArgs) {
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var analyzeFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-
-function analyzeCompleted(analyseCompletedEventArgs) {
+};
+var analyzeCompleted = (analyseCompletedEventArgs) => {
     serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
-}
-
-function initTilesetsService_Register() {
-    return new SuperMap.TilesetsService(tileSetsURL,
+};
+var initTilesetsService_Register = () => {
+    return new TilesetsService(tileSetsURL,
         {
             eventListeners: {
                 "processCompleted": analyzeCompleted,
                 'processFailed': analyzeFailed
             }
         });
-}
+};
 
-describe('TilesetsService', function () {
+describe('TilesetsService', () => {
     var originalTimeout;
-    var FetchRequest = SuperMap.FetchRequest;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var tilesetsService = initTilesetsService_Register();
         tilesetsService.events.on({"processCompleted": analyzeCompleted});
         expect(tilesetsService.url).toEqual(tileSetsURL);
@@ -46,16 +41,16 @@ describe('TilesetsService', function () {
     });
 
     //成功事件
-    it('processAsync_success', function (done) {
+    it('processAsync_success', (done) => {
         var tilesetsService = initTilesetsService_Register();
-        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('GET');
             expect(testUrl).toBe(tileSetsURL + "/tilesets.json?");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(tilesetsEscapedJson));
         });
         tilesetsService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             expect(serviceCompletedEventArgsSystem.type).toBe("processCompleted");
             var analyseResult = serviceCompletedEventArgsSystem.result;
             expect(analyseResult).not.toBeNull();

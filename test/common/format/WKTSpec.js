@@ -1,9 +1,9 @@
-require('../../../src/common/format/WKT');
+import {WKT} from '../../../src/common/format/WKT';
 
-describe('WKT', function () {
+describe('WKT', () => {
     //point的read、write方法
-    it('read, write_point', function () {
-        var wkt = new SuperMap.Format.WKT({keepData: true});
+    it('read, write_point', () => {
+        var wkt = new WKT({keepData: true});
         var data = "POINT(6 10)";
         var feature = wkt.read(data);
         expect(feature).not.toBeNull();
@@ -18,8 +18,8 @@ describe('WKT', function () {
     });
 
     //multipoint的read、write方法
-    it('read, write_multipoint的read', function () {
-        var wkt = new SuperMap.Format.WKT({keepData: true});
+    it('read, write_multipoint的read', () => {
+        var wkt = new WKT({keepData: true});
         var data = "MULTIPOINT((3.5 5.6),(4.8 10.5))";
         var feature = wkt.read(data);
         expect(feature).not.toBeNull();
@@ -37,8 +37,8 @@ describe('WKT', function () {
     });
 
     //multilinestring 的read、write方法
-    it('read, write_multilinestring', function () {
-        var wkt = new SuperMap.Format.WKT({keepData: true});
+    it('read, write_multilinestring', () => {
+        var wkt = new WKT({keepData: true});
         var data = "MULTILINESTRING((3 4,10 50,20 25),(-5 -8,-10 -8,-15 -4))";
         var feature = wkt.read(data);
         expect(feature).not.toBeNull();
@@ -60,8 +60,8 @@ describe('WKT', function () {
     });
 
     //polygon 的read、write方法
-    it('read, write_polygon', function () {
-        var wkt = new SuperMap.Format.WKT({keepData: true});
+    it('read, write_polygon', () => {
+        var wkt = new WKT({keepData: true});
         var data = "POLYGON((1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2))";
         var feature = wkt.read(data);
         expect(feature).not.toBeNull();
@@ -79,8 +79,8 @@ describe('WKT', function () {
     });
 
     //multipolygon 的read、write方法
-    it('read, write_multipolygon', function () {
-        var wkt = new SuperMap.Format.WKT({keepData: true});
+    it('read, write_multipolygon', () => {
+        var wkt = new WKT({keepData: true});
         var data = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2)),((6 3,9 2,9 4,6 3)))";
         var feature = wkt.read(data);
         expect(feature).not.toBeNull();
@@ -101,8 +101,8 @@ describe('WKT', function () {
     });
 
     //geometrycollection的read、write方法
-    it('read, write_geometrycollection', function () {
-        var wkt = new SuperMap.Format.WKT({keepData: true});
+    it('read, write_geometrycollection', () => {
+        var wkt = new WKT({keepData: true});
         var data = "GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))";
         var feature = wkt.read(data);
         expect(feature).not.toBeNull();

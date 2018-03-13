@@ -1,16 +1,17 @@
-require('../../../src/common/iServer/RouteLocatorService');
+import {RouteLocatorService} from '../../../src/common/iServer/RouteLocatorService';
+import {RouteLocatorParameters} from '../../../src/common/iServer/RouteLocatorParameters';
 
 var routeLocatorEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
-function routeLocatorCompleted(routeLocatorEventArgs) {
+var routeLocatorCompleted = (routeLocatorEventArgs) => {
     routeLocatorEventArgsSystem = routeLocatorEventArgs;
 }
-function routeLocatorFailed(serviceFailedEventArgs) {
+var routeLocatorFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-function initRouteLocatorService() {
-    return new SuperMap.RouteLocatorService(spatialAnalystURL,
+var initRouteLocatorService = () => {
+    return new RouteLocatorService(spatialAnalystURL,
         {
             eventListeners: {
                 "processCompleted": routeLocatorCompleted,
@@ -20,20 +21,20 @@ function initRouteLocatorService() {
     );
 }
 
-describe('RouteLocatorService', function () {
+describe('RouteLocatorService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         routeLocatorEventArgsSystem = null,
             serviceFailedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_RouteLocatorPoint', function (done) {
-        var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+    it('processAsync_RouteLocatorPoint', (done) => {
+        var routeLocatorParameters_point = new RouteLocatorParameters({
             "sourceRoute": {
                 "type": "LINEM",
                 "parts": [4],
@@ -67,7 +68,7 @@ describe('RouteLocatorService', function () {
         });
         var routeLocatorService = initRouteLocatorService();
         routeLocatorService.processAsync(routeLocatorParameters_point);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var routeLocatorResult = routeLocatorEventArgsSystem.result;
                 expect(routeLocatorResult).not.toBeNull();
@@ -89,8 +90,8 @@ describe('RouteLocatorService', function () {
         }, 2000);
     });
 
-    it('processAsync_RouteLocatorLine', function (done) {
-        var routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
+    it('processAsync_RouteLocatorLine', (done) => {
+        var routeLocatorParameters_line = new RouteLocatorParameters({
             "sourceRoute": {
                 "type": "LINEM",
                 "parts": [4],
@@ -124,7 +125,7 @@ describe('RouteLocatorService', function () {
         });
         var routeLocatorService = initRouteLocatorService();
         routeLocatorService.processAsync(routeLocatorParameters_line);
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var routeLocatorResult = routeLocatorEventArgsSystem.result;
                 expect(routeLocatorResult).not.toBeNull();

@@ -1,8 +1,8 @@
-require('../../../src/common/iPortal/iPortalService');
+import {IPortalService} from '../../../src/common/iPortal/iPortalService';
 
-describe('iPortalService', function () {
-    it('constructor_default', function () {
-        var iPortalService = new SuperMap.iPortalService();
+describe('iPortalService', () => {
+    it('constructor_default', () => {
+        var iPortalService = new IPortalService();
         expect(iPortalService).not.toBeNull();
         expect(iPortalService.CLASS_NAME).toBe("SuperMap.iPortalServiceBase");
         expect(iPortalService.enable).toBe(true);
@@ -11,5 +11,5 @@ describe('iPortalService', function () {
         expect(iPortalService.isDataItemService).toBe(false);
         var load = iPortalService.load();
         expect(load).not.toBeNull();
-});
+    });
 });

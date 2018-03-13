@@ -1,13 +1,13 @@
-var Util = require('../../../../src/common/overlay/levelRenderer/Util').Util;
+import {Util} from '../../../../src/common/overlay/levelRenderer/Util';
 
-describe('Util', function () {
-    it('constructor', function () {
+describe('Util', () => {
+    it('constructor', () => {
         var util = new Util();
         expect(util).not.toBeNull();
         expect(util.BUILTIN_OBJECT).not.toBeNull();
     });
 
-    it('clone', function () {
+    it('clone', () => {
         var util = new Util();
         var source1 = [1, 2, 3];
         var source2 = {describe: "test"};
@@ -23,7 +23,7 @@ describe('Util', function () {
     });
 
     //合并源对象的单个属性到目标对象
-    it('mergeItem, merge', function () {
+    it('mergeItem, merge', () => {
         var util = new Util();
         var target = {style: {font: "10px"}};
         var source1 = {style: {font: "14px"}, describe: "test1"};
@@ -32,7 +32,7 @@ describe('Util', function () {
         expect(target.style.font).toEqual("14px");
     });
 
-    it('getPixelContext, adjustCanvasSize, getPixelOffset', function () {
+    it('getPixelContext, adjustCanvasSize, getPixelOffset', () => {
         var util = new Util();
         var pixelCtx = util.getPixelContext();
         expect(pixelCtx).not.toBeNull();
@@ -54,19 +54,19 @@ describe('Util', function () {
         expect(offset.y).toEqual(0);
     });
 
-    it('indexOf', function () {
+    it('indexOf', () => {
         var util = new Util();
         var array1 = [10, 20, 30];
         var result = util.indexOf(array1, 20);
         expect(result).toEqual(1);
     });
 
-    it('inherits', function () {
-        var baseClazz = function (a) {
+    it('inherits', () => {
+        var baseClazz = (a) => {
             this.b = null;
             return this.b + a;
         };
-        var clazz = function (a) {
+        var clazz = (a) => {
             this.b = null;
             return this.b - a;
         };

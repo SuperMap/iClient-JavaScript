@@ -1,13 +1,13 @@
-var Painter = require('../../../../src/common/overlay/levelRenderer/Painter').Painter;
-var Storage = require('../../../../src/common/overlay/levelRenderer/Storage').Storage;
-var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
-var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
-var SmicText = require('../../../../src/common/overlay/levelRenderer/SmicText').SmicText;
-var SmicBrokenLine = require('../../../../src/common/overlay/levelRenderer/SmicBrokenLine').SmicBrokenLine;
+import {Painter} from '../../../../src/common/overlay/levelRenderer/Painter';
+import {Storage} from '../../../../src/common/overlay/levelRenderer/Storage';
+import {SmicPolygon} from '../../../../src/common/overlay/levelRenderer/SmicPolygon';
+import {SmicStar} from '../../../../src/common/overlay/levelRenderer/SmicStar';
+import {SmicText} from '../../../../src/common/overlay/levelRenderer/SmicText';
+import {SmicBrokenLine} from '../../../../src/common/overlay/levelRenderer/SmicBrokenLine';
 
-describe('Painter', function () {
+describe('Painter', () => {
     var testDiv, storage;
-    beforeAll(function () {
+    beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "group");
         testDiv.style.styleFloat = "left";
@@ -18,7 +18,7 @@ describe('Painter', function () {
         testDiv.style.border = "1px solid #000000";
         window.document.body.appendChild(testDiv);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         storage = new Storage();
         storage.addRoot(new SmicStar({
             style: {
@@ -29,14 +29,14 @@ describe('Painter', function () {
             },
         }));
     });
-    afterEach(function () {
+    afterEach(() => {
         storage.dispose();
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(testDiv);
     });
 
-    it('constructor, destroy, refreshHover, clearHover, getWidth, getHeight', function () {
+    it('constructor, destroy, refreshHover, clearHover, getWidth, getHeight', () => {
         var painter = new Painter(testDiv, storage);
         painter.refreshHover();
         expect(painter).not.toBeNull();
@@ -65,7 +65,7 @@ describe('Painter', function () {
     });
 
     //渲染
-    it('render', function () {
+    it('render', () => {
         var painter = new Painter(testDiv, storage);
         spyOn(painter, 'render').and.callThrough();
         painter.render();
@@ -78,10 +78,10 @@ describe('Painter', function () {
     });
 
     // 不强制绘制所有 shape
-    it('refresh', function () {
+    it('refresh', () => {
         var painter = new Painter(testDiv, storage);
         spyOn(painter, 'refresh').and.callThrough();
-        painter.refresh(function () {
+        painter.refresh(() => {
             painter._zlevelList[0] = "test_refresh";
         });
         expect(painter.refresh).toHaveBeenCalled();
@@ -93,10 +93,10 @@ describe('Painter', function () {
     });
 
     // 强制绘制所有 shape
-    it('refresh_paintAll', function () {
+    it('refresh_paintAll', () => {
         var painter = new Painter(testDiv, storage);
         spyOn(painter, 'refresh').and.callThrough();
-        painter.refresh(function () {
+        painter.refresh(() => {
             painter._zlevelList[0] = "test_refresh";
         }, true);
         expect(painter.refresh).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('Painter', function () {
     });
 
     //按列表绘制图形
-    it('_paintList', function () {
+    it('_paintList', () => {
         storage.addRoot(new SmicPolygon({
             style: {pointList: [[0, 0], [100, 0], [100, 100], [0, 100]]},
             zlevel: 1
@@ -145,7 +145,7 @@ describe('Painter', function () {
         painter.destroy();
     });
 
-    it('getLayer, getLayers', function () {
+    it('getLayer, getLayers', () => {
         storage.addRoot(new SmicPolygon({
             style: {pointList: [[0, 0], [100, 0], [100, 100], [0, 100]]},
             zlevel: 2
@@ -170,7 +170,7 @@ describe('Painter', function () {
         painter.destroy();
     });
 
-    it('refreshShapes, clear', function () {
+    it('refreshShapes, clear', () => {
         var painter = new Painter(testDiv, storage);
         var list = storage.getShapeList(true);
         painter.refreshShapes(list);
@@ -192,7 +192,7 @@ describe('Painter', function () {
     });
 
     //修改指定 zlevel 的绘制参数
-    it('modLayer', function () {
+    it('modLayer', () => {
         var painter = new Painter(testDiv, storage);
         painter.render();
         var config = {
@@ -215,7 +215,7 @@ describe('Painter', function () {
     });
 
 
-    it('delLayer, clearHover', function () {
+    it('delLayer, clearHover', () => {
         storage.addRoot(new SmicPolygon({
             style: {pointList: [[0, 0], [100, 0], [100, 100], [0, 100]]},
             zlevel: 1
@@ -236,7 +236,7 @@ describe('Painter', function () {
     });
 
     // 区域大小变化后重绘。
-    it('resize', function () {
+    it('resize', () => {
         var painter = new Painter(testDiv, storage);
         painter._width = 500;
         painter.resize();
@@ -247,7 +247,7 @@ describe('Painter', function () {
 
 
     //获取 Hover 层的 Dom。
-    it('getDomHover', function () {
+    it('getDomHover', () => {
         var painter = new Painter(testDiv, storage);
         var dom = painter.getDomHover();
         expect(dom).not.toBeNull();
@@ -258,7 +258,7 @@ describe('Painter', function () {
     });
 
     //图像导出
-    it('toDataURL', function () {
+    it('toDataURL', () => {
         var painter = new Painter(testDiv, storage);
         var image = painter.toDataURL("PNG", "#fff", {});
         expect(image).not.toBeNull();
@@ -266,7 +266,7 @@ describe('Painter', function () {
         painter.destroy();
     });
 
-    it('_shapeToImage', function () {
+    it('_shapeToImage', () => {
         var painter = new Painter(testDiv, storage);
         var list = storage.getShapeList(true);
         var shape = list[0];
@@ -282,7 +282,7 @@ describe('Painter', function () {
         painter.destroy();
     });
 
-    it('updateHoverLayer', function () {
+    it('updateHoverLayer', () => {
         var painter = new Painter(testDiv, storage);
         var list = storage.getShapeList(true);
         painter.updateHoverLayer(list);

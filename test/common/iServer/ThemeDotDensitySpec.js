@@ -1,7 +1,7 @@
-var ThemeDotDensity = require('../../../src/common/iServer/ThemeDotDensity').ThemeDotDensity;
+import {ThemeDotDensity} from '../../../src/common/iServer/ThemeDotDensity';
 
-describe('ThemeDotDensity', function () {
-    it('constructor, destroy', function () {
+describe('ThemeDotDensity', () => {
+    it('constructor, destroy', () => {
         var options = {
             dotExpression: 'test',
             value: 1
@@ -17,7 +17,7 @@ describe('ThemeDotDensity', function () {
         expect(themeDotDensity.dotExpression).toBeNull();
     });
 
-    it('toServerJSONObject', function () {
+    it('toServerJSONObject', () => {
         var options = {
             dotExpression: 'test',
             value: 1
@@ -32,7 +32,7 @@ describe('ThemeDotDensity', function () {
         themeDotDensity.destroy();
     });
 
-    it('fromObj', function () {
+    it('fromObj', () => {
         var options = {
             dotExpression: 'test',
             value: 1

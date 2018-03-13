@@ -1,10 +1,10 @@
-var SmicImage = require('../../../../src/common/overlay/levelRenderer/SmicImage').SmicImage;
-var img = require('../../../resources/img/baiduTileTest.png');
+import {SmicImage} from '../../../../src/common/overlay/levelRenderer/SmicImage';
+import img from '../../../resources/img/baiduTileTest.png';
 
-describe('SmicImage', function () {
+describe('SmicImage', () => {
     var originalTimeout;
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -12,18 +12,18 @@ describe('SmicImage', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var image = new SmicImage({
             style: {
                 image: img.src,
@@ -43,7 +43,7 @@ describe('SmicImage', function () {
         expect(image.style).toBeNull();
     });
 
-    it('brush, clearCache', function (done) {
+    it('brush, clearCache', (done) => {
         var image = new SmicImage({
             style: {
                 image: img.src,
@@ -54,7 +54,7 @@ describe('SmicImage', function () {
             }
         });
         image.refOriginalPosition = null;
-        image.brush(ctx, true, function () {
+        image.brush(ctx, true, () => {
             image.brush(ctx, true, false);
             expect(image).not.toBeNull();
             expect(image.id).not.toBeNull();
@@ -74,7 +74,7 @@ describe('SmicImage', function () {
         });
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var image = new SmicImage({
             style: {
                 image: img.src,

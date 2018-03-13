@@ -1,16 +1,19 @@
-require('../../../src/common/iServer/RouteCalculateMeasureService');
+import {RouteCalculateMeasureService} from '../../../src/common/iServer/RouteCalculateMeasureService';
+import {RouteCalculateMeasureParameters} from '../../../src/common/iServer/RouteCalculateMeasureParameters';
 
-var routeCalculateMeasureEventArgsSystem = null,
-    serviceFailedEventArgsSystem = null;
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
-function routeCalculateMeasureCompleted(routeCalculateMeasureEventArgs) {
+var routeCalculateMeasureEventArgsSystem = null, serviceFailedEventArgsSystem = null;
+
+var routeCalculateMeasureCompleted = (routeCalculateMeasureEventArgs) => {
     routeCalculateMeasureEventArgsSystem = routeCalculateMeasureEventArgs;
 }
-function routeCalculateMeasureFailed(serviceFailedEventArgs) {
+
+var routeCalculateMeasureFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-function initCalculateMeasureService() {
-    return new SuperMap.RouteCalculateMeasureService(spatialAnalystURL,
+
+var initCalculateMeasureService = () => {
+    return new RouteCalculateMeasureService(spatialAnalystURL,
         {
             eventListeners: {
                 "processCompleted": routeCalculateMeasureCompleted,
@@ -20,20 +23,20 @@ function initCalculateMeasureService() {
     );
 }
 
-describe('RouteCalculateMeasureService', function () {
+describe('RouteCalculateMeasureService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         routeCalculateMeasureEventArgsSystem = null;
         serviceFailedEventArgsSystem = null;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync', function (done) {
-        var parameters = new SuperMap.RouteCalculateMeasureParameters({
+    it('processAsync', (done) => {
+        var parameters = new RouteCalculateMeasureParameters({
             "sourceRoute": {
                 "type": "LINEM",
                 "parts": [4],
@@ -70,7 +73,7 @@ describe('RouteCalculateMeasureService', function () {
         var calculateMeasureService = initCalculateMeasureService();
         calculateMeasureService.processAsync(parameters);
 
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 var calculateMeasureResult = routeCalculateMeasureEventArgsSystem.result;
                 expect(calculateMeasureResult).not.toBeNull();

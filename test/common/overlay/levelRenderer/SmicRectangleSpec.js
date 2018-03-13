@@ -1,8 +1,8 @@
-var SmicRectangle = require('../../../../src/common/overlay/levelRenderer/SmicRectangle').SmicRectangle;
+import {SmicRectangle} from '../../../../src/common/overlay/levelRenderer/SmicRectangle';
 
-describe('SmicRectangle', function () {
+describe('SmicRectangle', () => {
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -10,11 +10,11 @@ describe('SmicRectangle', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicRectangle({
             style: {x: 0, y: 0, width: 100, height: 100, radius: [5, 5, 5, 5]}
         });
@@ -28,7 +28,7 @@ describe('SmicRectangle', function () {
         expect(shape.style).toBeNull();
     });
 
-    it('buildPath_radius', function () {
+    it('buildPath_radius', () => {
         var shape = new SmicRectangle({
             style: {x: 0, y: 0, width: 100, height: 100, radius: {}}
         });
@@ -65,7 +65,7 @@ describe('SmicRectangle', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicRectangle({
             style: {x: 1, y: 1, width: 100, height: 100, radius: [5], brushType: 'fill'}
         });

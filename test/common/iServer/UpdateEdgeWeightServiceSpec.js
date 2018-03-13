@@ -1,21 +1,15 @@
-require('../../../src/common/iServer/UpdateEdgeWeightService');
+import {UpdateEdgeWeightService} from '../../../src/common/iServer/UpdateEdgeWeightService';
 
-var serviceFailedEventArgsSystem = null;
-var serviceCompletedEventArgsSystem = null;
-
-//服务初始化时注册事件监听函数
 var networkAnalystURL = GlobeParameter.networkAnalystURL;
-
-function updateEdgeWeightFailed(serviceFailedEventArgs) {
+var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
+var updateEdgeWeightFailed = (serviceFailedEventArgs) => {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-
-function updateEdgeWeightCompleted(serviceCompletedEventArgs) {
+};
+var updateEdgeWeightCompleted = (serviceCompletedEventArgs) => {
     serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-}
-
-function initUpdateEdgeWeightService_RegisterListener() {
-    return new SuperMap.UpdateEdgeWeightService(networkAnalystURL,
+};
+var initUpdateEdgeWeightService_RegisterListener = () => {
+    return new UpdateEdgeWeightService(networkAnalystURL,
         {
             eventListeners: {
                 'processFailed': updateEdgeWeightFailed,
@@ -23,23 +17,23 @@ function initUpdateEdgeWeightService_RegisterListener() {
             }
         }
     );
-}
+};
 
-describe('UpdateEdgeWeightService', function () {
+describe('UpdateEdgeWeightService', () => {
     var originalTimeout;
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('processAsync_noParams', function (done) {
+    it('processAsync_noParams', (done) => {
         var myUpdateEdgeWeightService = initUpdateEdgeWeightService_RegisterListener();
         expect(myUpdateEdgeWeightService).not.toBeNull();
         myUpdateEdgeWeightService.processAsync();
-        setTimeout(function () {
+        setTimeout(() => {
             try {
                 expect(typeof(myUpdateEdgeWeightService.processAsync()) === "undefined").toBeTruthy();
                 myUpdateEdgeWeightService.destroy();

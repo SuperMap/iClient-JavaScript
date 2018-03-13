@@ -1,9 +1,9 @@
-var SmicBrokenLine = require('../../../../src/common/overlay/levelRenderer/SmicBrokenLine').SmicBrokenLine;
+import {SmicBrokenLine} from '../../../../src/common/overlay/levelRenderer/SmicBrokenLine';
 
-describe('SmicBrokenLine', function () {
+describe('SmicBrokenLine', () => {
     var originalTimeout;
     var canvas, ctx;
-    beforeAll(function () {
+    beforeAll(() => {
         canvas = window.document.createElement('CANVAS');
         canvas.width = 400;
         canvas.height = 400;
@@ -11,18 +11,18 @@ describe('SmicBrokenLine', function () {
         ctx = canvas.getContext('2d');
         window.document.body.appendChild(canvas);
     });
-    beforeEach(function () {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function () {
+    afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
+    afterAll(() => {
         window.document.body.removeChild(canvas);
     });
 
-    it('constructor, destroy', function () {
+    it('constructor, destroy', () => {
         var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
@@ -49,7 +49,7 @@ describe('SmicBrokenLine', function () {
     });
 
     //只有一个点时，将不会继续绘制路径，直接退出
-    it('buildPath_onePoint', function () {
+    it('buildPath_onePoint', () => {
         var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
@@ -72,7 +72,7 @@ describe('SmicBrokenLine', function () {
     });
 
     //buildPath_pointList情况下，smooth = bezier
-    it('buildPath_smooth = bezier', function () {
+    it('buildPath_smooth = bezier', () => {
         var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
@@ -96,7 +96,7 @@ describe('SmicBrokenLine', function () {
     });
 
     //buildPath_pointList情况下，smooth = spline
-    it('buildPath_smooth = spline', function () {
+    it('buildPath_smooth = spline', () => {
         var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
@@ -120,7 +120,7 @@ describe('SmicBrokenLine', function () {
     });
 
     //buildPath_pointList情况下，smooth = spline 测试不同的style.lineType（默认为solid）
-    it('buildPath_lineType', function () {
+    it('buildPath_lineType', () => {
         var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
@@ -165,7 +165,7 @@ describe('SmicBrokenLine', function () {
         shape.destroy();
     });
 
-    it('getRect', function () {
+    it('getRect', () => {
         var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],

@@ -1,12 +1,12 @@
-require('../../../src/common/security/KeyServiceParameter');
+import {KeyServiceParameter} from '../../../src/common/security/KeyServiceParameter';
 
-describe('KeyServiceParameter', function () {
-    it('constructor, toJSON', function () {
+describe('KeyServiceParameter', () => {
+    it('constructor, toJSON', () => {
         var options = {
             name: "testName",
             serviceIds: 1,
         };
-        var parameter = new SuperMap.KeyServiceParameter(options);
+        var parameter = new KeyServiceParameter(options);
         expect(parameter).not.toBeNull();
         expect(parameter.CLASS_NAME).toEqual("SuperMap.KeyServiceParameter");
         expect(parameter.clientType).toEqual("SERVER");

@@ -1,7 +1,7 @@
-var OverlapDisplayedOptions = require('../../../src/common/iServer/OverlapDisplayedOptions').OverlapDisplayedOptions;
+import {OverlapDisplayedOptions} from '../../../src/common/iServer/OverlapDisplayedOptions';
 
-describe('OverlapDisplayedOptions', function () {
-    it('constructor, destroy', function () {
+describe('OverlapDisplayedOptions', () => {
+    it('constructor, destroy', () => {
         var overlapDisplayed = new OverlapDisplayedOptions();
         expect(overlapDisplayed).not.toBeNull();
         expect(overlapDisplayed.CLASS_NAME).toEqual("SuperMap.OverlapDisplayedOptions");
@@ -23,8 +23,8 @@ describe('OverlapDisplayedOptions', function () {
         expect(overlapDisplayed.allowThemeGraphOverlap).toBeNull();
         expect(overlapDisplayed.ugcLayer).toBeNull();
     });
-    
-    it('toServerJSONObject, fromJson', function () {
+
+    it('toServerJSONObject, fromJson', () => {
         var overlapDisplayed = new OverlapDisplayedOptions();
         var json = overlapDisplayed.toServerJSONObject();
         expect(json).not.toBeNull();
@@ -40,7 +40,7 @@ describe('OverlapDisplayedOptions', function () {
         overlapDisplayed.destroy();
     });
 
-    it('toString', function () {
+    it('toString', () => {
         var overlapDisplayed = new OverlapDisplayedOptions();
         var string = overlapDisplayed.toString();
         expect(string).not.toBeNull();

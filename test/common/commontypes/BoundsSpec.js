@@ -1,9 +1,12 @@
-require('../../../src/common/commontypes/Bounds');
-require('../../../src/common/commontypes/LonLat');
+import {Bounds} from '../../../src/common/commontypes/Bounds';
+import {Pixel} from '../../../src/common/commontypes/Pixel';
+import {LonLat} from '../../../src/common/commontypes/LonLat';
+import {Size} from '../../../src/common/commontypes/Size';
+import {Point} from '../../../src/common/commontypes/geometry/Point';
 
-describe('Bounds', function () {
-    it('constructor, clone, equals, toString, toArray', function () {
-        var bounds = new SuperMap.Bounds([-180, -90, 180, 90]);
+describe('Bounds', () => {
+    it('constructor, clone, equals, toString, toArray', () => {
+        var bounds = new Bounds([-180, -90, 180, 90]);
         var bounds1 = bounds.clone();
         expect(bounds).not.toBeNull();
         expect(bounds.CLASS_NAME).toEqual("SuperMap.Bounds");
@@ -32,8 +35,8 @@ describe('Bounds', function () {
     });
 
     //取小数点后decimal位数字进行四舍五入再转换为BBOX字符串
-    it('toBBOX', function () {
-        var bounds = new SuperMap.Bounds(-1.1234567, -1.7654321, 1.4444444, 1.5555555);
+    it('toBBOX', () => {
+        var bounds = new Bounds(-1.1234567, -1.7654321, 1.4444444, 1.5555555);
         var str1 = bounds.toBBOX();
         expect(str1).toEqual("-1.123457,-1.765432,1.444444,1.555556");
         var str2 = bounds.toBBOX(1);
@@ -43,8 +46,8 @@ describe('Bounds', function () {
         bounds.destroy();
     });
 
-    it('getSize, getCenterPixel', function () {
-        var bounds = new SuperMap.Bounds(-180, -90, 100, 80);
+    it('getSize, getCenterPixel', () => {
+        var bounds = new Bounds(-180, -90, 100, 80);
         var size = bounds.getSize();
         var pixel = bounds.getCenterPixel();
         expect(size.w).toEqual(280);
@@ -54,15 +57,15 @@ describe('Bounds', function () {
         bounds.destroy();
     });
 
-    it('scale', function () {
-        var bounds = new SuperMap.Bounds(-50, -50, 40, 40);
+    it('scale', () => {
+        var bounds = new Bounds(-50, -50, 40, 40);
         var bounds1 = bounds.scale(2);
         expect(bounds1).not.toBeNull();
         expect(bounds1.bottom).toEqual(-95);
         expect(bounds1.left).toEqual(-95);
         expect(bounds1.right).toEqual(85);
         expect(bounds1.top).toEqual(85);
-        var origin = new SuperMap.Pixel(40, 50);
+        var origin = new Pixel(40, 50);
         var bounds2 = bounds.scale(2, origin);
         expect(bounds2).not.toBeNull();
         expect(bounds2.bottom).toEqual(-150);
@@ -72,8 +75,8 @@ describe('Bounds', function () {
         bounds.destroy();
     });
 
-    it('add', function () {
-        var bounds = new SuperMap.Bounds(-50, -50, 40, 40);
+    it('add', () => {
+        var bounds = new Bounds(-50, -50, 40, 40);
         var newBounds = bounds.add(20, 10);
         expect(newBounds).not.toBeNull();
         expect(newBounds.bottom).toEqual(-40);
@@ -84,14 +87,14 @@ describe('Bounds', function () {
     });
 
     //在当前bounds上扩展bounds
-    it('extend', function () {
-        var bounds = new SuperMap.Bounds(-50, -50, 40, 40);
+    it('extend', () => {
+        var bounds = new Bounds(-50, -50, 40, 40);
         spyOn(bounds, 'extend').and.callThrough();
-        bounds.extend(new SuperMap.LonLat(50, 60));
+        bounds.extend(new LonLat(50, 60));
         expect(bounds).not.toBeNull();
-        bounds.extend(new SuperMap.Geometry.Point(50, 60));
+        bounds.extend(new Point(50, 60));
         expect(bounds).not.toBeNull();
-        bounds.extend(new SuperMap.Bounds(50, 60));
+        bounds.extend(new Bounds(50, 60));
         expect(bounds).not.toBeNull();
         expect(bounds.bottom).toEqual(-50);
         expect(bounds.left).toEqual(-50);
@@ -101,30 +104,30 @@ describe('Bounds', function () {
     });
 
     //判断传入的坐标是否在范围内
-    it('containsLonLat', function () {
-        var bounds = new SuperMap.Bounds(-50, -50, 40, 40);
-        var isContains1 = bounds.containsLonLat(new SuperMap.LonLat(40, 40), true);
+    it('containsLonLat', () => {
+        var bounds = new Bounds(-50, -50, 40, 40);
+        var isContains1 = bounds.containsLonLat(new LonLat(40, 40), true);
         expect(isContains1).toBeTruthy();
         var isContains2 = bounds.containsLonLat(
-            new SuperMap.LonLat(400, 40),
+            new LonLat(400, 40),
             {
                 inclusive: true,
-                worldBounds: new SuperMap.Bounds(-180, -90, 180, 90)
+                worldBounds: new Bounds(-180, -90, 180, 90)
             }
         );
         expect(isContains2).toBeTruthy();
         bounds.destroy();
     });
 
-    it('containsPixel', function () {
-        var bounds = new SuperMap.Bounds(-50, -50, 40, 40);
-        var isContains = bounds.containsPixel(new SuperMap.Pixel(40, 40), true);
+    it('containsPixel', () => {
+        var bounds = new Bounds(-50, -50, 40, 40);
+        var isContains = bounds.containsPixel(new Pixel(40, 40), true);
         expect(isContains).toBeTruthy();
         bounds.destroy();
     });
 
-    it('contains', function () {
-        var bounds = new SuperMap.Bounds(-50, -50, 40, 40);
+    it('contains', () => {
+        var bounds = new Bounds(-50, -50, 40, 40);
         var isContains1 = bounds.contains(40, 40);
         var isContains2 = bounds.contains();
         var isContains3 = bounds.contains(40, 40, false);
@@ -135,22 +138,22 @@ describe('Bounds', function () {
     });
 
     //判断目标边界范围是否与当前边界范围相交
-    it('intersectsBounds', function () {
-        var bounds = new SuperMap.Bounds(-180, -90, 100, 80);
+    it('intersectsBounds', () => {
+        var bounds = new Bounds(-180, -90, 100, 80);
         var options1 = {
             inclusive: false,
-            worldBounds: new SuperMap.Bounds(-170, -90, 120, 80)
+            worldBounds: new Bounds(-170, -90, 120, 80)
         };
         var options2 = {
             inclusive: false,
-            worldBounds: new SuperMap.Bounds(-180, -90, 100, 80)
+            worldBounds: new Bounds(-180, -90, 100, 80)
         };
         var isIntersects1 = bounds.intersectsBounds(
-            new SuperMap.Bounds(100, -90, 120, 80),
+            new Bounds(100, -90, 120, 80),
             options1
         );
         var isIntersects2 = bounds.intersectsBounds(
-            new SuperMap.Bounds(100, -90, 100, 80),
+            new Bounds(100, -90, 100, 80),
             options2
         );
         expect(isIntersects1).toBeTruthy();
@@ -158,15 +161,15 @@ describe('Bounds', function () {
         bounds.destroy();
     });
 
-    it('determineQuadrant', function () {
-        var bounds = new SuperMap.Bounds(-180, -90, 100, 80);
-        var str = bounds.determineQuadrant(new SuperMap.LonLat(20, 20));
+    it('determineQuadrant', () => {
+        var bounds = new Bounds(-180, -90, 100, 80);
+        var str = bounds.determineQuadrant(new LonLat(20, 20));
         expect(str).toEqual("tr");
         bounds.destroy();
     });
 
-    it('toServerJSONObject', function () {
-        var bounds = new SuperMap.Bounds(-180, -90, 100, 80);
+    it('toServerJSONObject', () => {
+        var bounds = new Bounds(-180, -90, 100, 80);
         var obj = bounds.toServerJSONObject();
         expect(obj).not.toBeNull();
         expect(obj.bottom).toEqual(-90);
@@ -178,8 +181,8 @@ describe('Bounds', function () {
         bounds.destroy();
     });
 
-    it('fromString', function () {
-        var bounds = SuperMap.Bounds.fromString("-180,-90,100,80", false);
+    it('fromString', () => {
+        var bounds = Bounds.fromString("-180,-90,100,80", false);
         expect(bounds).not.toBeNull();
         expect(bounds.bottom).toEqual(-90);
         expect(bounds.left).toEqual(-180);
@@ -187,8 +190,8 @@ describe('Bounds', function () {
         expect(bounds.top).toEqual(80);
     });
 
-    it('fromSize', function () {
-        var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(20, 10));
+    it('fromSize', () => {
+        var bounds = Bounds.fromSize(new Size(20, 10));
         expect(bounds).not.toBeNull();
         expect(bounds.bottom).toEqual(10);
         expect(bounds.left).toEqual(0);
@@ -196,8 +199,8 @@ describe('Bounds', function () {
         expect(bounds.top).toEqual(0);
     });
 
-    it('oppositeQuadrant', function () {
-        var oppositeQuadrant = SuperMap.Bounds.oppositeQuadrant("tl");
+    it('oppositeQuadrant', () => {
+        var oppositeQuadrant = Bounds.oppositeQuadrant("tl");
         expect(oppositeQuadrant).toEqual("br");
     });
 });

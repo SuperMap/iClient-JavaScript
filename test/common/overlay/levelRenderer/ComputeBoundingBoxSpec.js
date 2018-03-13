@@ -1,7 +1,7 @@
-var ComputeBoundingBox = require('../../../../src/common/overlay/levelRenderer/ComputeBoundingBox').ComputeBoundingBox;
+import {ComputeBoundingBox} from '../../../../src/common/overlay/levelRenderer/ComputeBoundingBox';
 
-describe('ComputeBoundingBox', function () {
-    it('computeBoundingBox', function () {
+describe('ComputeBoundingBox', () => {
+    it('computeBoundingBox', () => {
         var computeTool = new ComputeBoundingBox();
         var points = [[10, 10], [5, 20], [20, 5], [20, 20]];
         var min = [], max = [];
@@ -17,7 +17,7 @@ describe('ComputeBoundingBox', function () {
         expect(max[1]).toEqual(20);
     });
 
-    it('cubeBezier', function () {
+    it('cubeBezier', () => {
         var computeTool = new ComputeBoundingBox();
         var p0 = [15, 20];
         var p1 = [10, 30];
@@ -34,7 +34,7 @@ describe('ComputeBoundingBox', function () {
         expect(max[1]).not.toBeNaN();
     });
 
-    it('quadraticBezier', function () {
+    it('quadraticBezier', () => {
         var computeTool = new ComputeBoundingBox();
         var p0 = [15, 20];
         var p1 = [10, 30];
@@ -50,7 +50,7 @@ describe('ComputeBoundingBox', function () {
         expect(max[1]).not.toBeNaN();
     });
 
-    it('arc', function () {
+    it('arc', () => {
         var min = [], max = [];
         var computeTool = new ComputeBoundingBox();
         spyOn(computeTool, 'arc').and.callThrough();
