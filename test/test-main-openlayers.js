@@ -1,54 +1,54 @@
 /*openlayers -- control*/
-require('./openlayers/control/ChangeTileVersionSpec.js');
+import './openlayers/control/ChangeTileVersionSpec.js';
 
 /*openlayers -- core*/
-require('./openlayers/core/StyleUtilsSpec.js');
-require('./openlayers/core/UtilSpec.js');
+import './openlayers/core/StyleUtilsSpec.js';
+import './openlayers/core/UtilSpec.js';
 
 /*openlayers -- mapping*/
-require('./openlayers/mapping/ImageSuperMapRestSpec.js');
-require('./openlayers/mapping/WebMapSpec.js');
+import './openlayers/mapping/ImageSuperMapRestSpec.js';
+import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
-require('./openlayers/overlay/GraphicSpec.js');
-require('./openlayers/overlay/GraphSpec.js');
-require('./openlayers/overlay/HeatMapSpec.js');
-require('./openlayers/overlay/LabelSpec');
-require('./openlayers/overlay/MapvSpec.js');
-require('./openlayers/overlay/RangeSpec.js');
-require('./openlayers/overlay/RankSymbolSpec.js');
-require('./openlayers/overlay/UniqueSpec.js');
-require('./openlayers/overlay/VectorTileSuperMapRestSpec.js');
-require('./openlayers/overlay/theme/GeoFeatureSpec.js');
-require('./openlayers/overlay/theme/ThemeFeatureSpec.js');
-require('./openlayers/overlay/theme/ThemeSpec.js');
-require('./openlayers/overlay/vectortile/VectorTileStylesSpec.js');
+import './openlayers/overlay/GraphicSpec.js';
+import './openlayers/overlay/GraphSpec.js';
+import './openlayers/overlay/HeatMapSpec.js';
+import './openlayers/overlay/LabelSpec';
+import './openlayers/overlay/MapvSpec.js';
+import './openlayers/overlay/RangeSpec.js';
+import './openlayers/overlay/RankSymbolSpec.js';
+import './openlayers/overlay/UniqueSpec.js';
+import './openlayers/overlay/VectorTileSuperMapRestSpec.js';
+import './openlayers/overlay/theme/GeoFeatureSpec.js';
+import './openlayers/overlay/theme/ThemeFeatureSpec.js';
+import './openlayers/overlay/theme/ThemeSpec.js';
+import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 
 /**openlayers --services**/
-require('./openlayers/services/BufferAnalysisSpec.js');
-require('./openlayers/services/DensityAnalysisSpec.js');
-require('./openlayers/services/EditFeaturesSpec.js');
-require('./openlayers/services/FieldServiceSpec.js');
-require('./openlayers/services/GenerateSpatialDataSpec.js');
-require('./openlayers/services/GeoRelationAnalysisSpec.js');
-require('./openlayers/services/GetFeaturesByBoundsSpec.js');
-require('./openlayers/services/GetFeaturesByBufferSpec.js');
-require('./openlayers/services/GetFeaturesByGeometrySpec.js');
-require('./openlayers/services/GetFeaturesByIDsSpec.js');
-require('./openlayers/services/GetFeaturesBySQLSpec.js');
-require('./openlayers/services/InterpolationAnalysisSpec.js');
-require('./openlayers/services/LayerInfoServiceSpec.js');
-require('./openlayers/services/MathExpressionAnalysisSpec.js');
-require('./openlayers/services/MeasureServiceSpec.js');
-require('./openlayers/services/NetworkAnalystServiceSpec.js');
-require('./openlayers/services/OverlayAnalysisSpec.js');
-require('./openlayers/services/ProcessingServiceSpec.js');
-require('./openlayers/services/QueryServiceSpec.js');
-require('./openlayers/services/RouteCalculateMeasureSpec.js');
-require('./openlayers/services/RouteLocateSpec.js');
-require('./openlayers/services/SurfaceAnalysisSpec.js');
-require('./openlayers/services/TerrainCurvatureCalculateSpec.js');
-require('./openlayers/services/ThemeServiceSpec.js');
-require('./openlayers/services/ThiessenAnalysisSpec.js');
-require('./openlayers/services/TrafficTransferAnalystServiceSpec.js');
+import './openlayers/services/BufferAnalysisSpec.js';
+import './openlayers/services/DensityAnalysisSpec.js';
+import './openlayers/services/EditFeaturesSpec.js';
+import './openlayers/services/FieldServiceSpec.js';
+import './openlayers/services/GenerateSpatialDataSpec.js';
+import './openlayers/services/GeoRelationAnalysisSpec.js';
+import './openlayers/services/GetFeaturesByBoundsSpec.js';
+import './openlayers/services/GetFeaturesByBufferSpec.js';
+import './openlayers/services/GetFeaturesByGeometrySpec.js';
+import './openlayers/services/GetFeaturesByIDsSpec.js';
+import './openlayers/services/GetFeaturesBySQLSpec.js';
+import './openlayers/services/InterpolationAnalysisSpec.js';
+import './openlayers/services/LayerInfoServiceSpec.js';
+import './openlayers/services/MathExpressionAnalysisSpec.js';
+import './openlayers/services/MeasureServiceSpec.js';
+import './openlayers/services/NetworkAnalystServiceSpec.js';
+import './openlayers/services/OverlayAnalysisSpec.js';
+import './openlayers/services/ProcessingServiceSpec.js';
+import './openlayers/services/QueryServiceSpec.js';
+import './openlayers/services/RouteCalculateMeasureSpec.js';
+import './openlayers/services/RouteLocateSpec.js';
+import './openlayers/services/SurfaceAnalysisSpec.js';
+import './openlayers/services/TerrainCurvatureCalculateSpec.js';
+import './openlayers/services/ThemeServiceSpec.js';
+import './openlayers/services/ThiessenAnalysisSpec.js';
+import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 
