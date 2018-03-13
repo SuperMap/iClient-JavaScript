@@ -37,7 +37,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'ol')) {
             inputCSS("https://cdn.bootcss.com/openlayers/4.6.4/ol.css");
-            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol.js");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol-debug.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
@@ -46,7 +46,7 @@
             inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
-            inputScript("../../dist/iclient9-openlayers.min.js");
+            inputScript("../../dist/iclient9-openlayers.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers-css')) {
             inputCSS("../../dist/iclient9-openlayers.min.css");
@@ -69,5 +69,5 @@
 
     load();
     window.isLocal = false;
-    window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+    window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
 })();

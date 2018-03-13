@@ -373,12 +373,12 @@ window.resources = {
         "title_tiledMapLayerNonEarth": "Planar coordinate base map of SuperMap REST",
         "title_tiledMapLayerProj4": "Custom Scale Map",
         "title_interpolationAnalystServiceKriging": "Spatial Analysis -  Kriging Interpolation Analysis",
-        "title_interpolationAnalystServiceKrigingUniversal": "Spatial Analysis -Universal Kriging Interpolation Analysis",
-        "title_findMTSPPathsServiceLogistics": "Multi-traveler Analysis (Logistics Distribution)",
-        "title_findTSPPathsService": "Multi-traveler Analysis (Quality Inspection)",
-        "title_graphicLayer":"High efficiency point layer(points of 180K NY taxis)",
-        "title_graphicLayerClovers":"High efficiency point layer(clover)",
-        "title_graphicLayerTaxi":"High efficiency point layer(picture drawing of 180K NY taxis)",
+        "title_interpolationAnalystServiceKrigingUniversal": "Spatial Analysis - Universal Kriging Interpolation Analysis",
+        "title_findMTSPPathsServiceLogistics": "Multi-traveler Analysis - Logistics Distribution ",
+        "title_findTSPPathsService": "Multi-traveler Analysis - Quality Inspection",
+        "title_graphicLayer":"High efficiency point layer - points of 180K NY taxis",
+        "title_graphicLayerClovers":"High efficiency point layer - clover",
+        "title_graphicLayerTaxi":"High efficiency point layer - picture drawing of 180K NY taxis",
         "title_heatMap": "Heat map",
         "title_heatMapNY": "Heat map of New York Taxis",
         "title_markerCluster": "Marker Cluster",
@@ -1339,6 +1339,6 @@ window.resources = {
         "style_width420px": 'width: 500px',
         "style_width350px": 'width: 400px',
         "style_heatMapWidth": "width: 340px",
-        "style_plotAnimation": "width: 170px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;",
+        "style_plotAnimation": "width: 170px; height: 35px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;"
     }
 };

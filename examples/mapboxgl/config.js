@@ -296,7 +296,7 @@ var exampleConfig = {
                 name: "热力图",
                 name_en: "heat map",
                 content: [{
-                    name: "随机点热点图",
+                    name: "随机点",
                     name_en: "random points",
                     thumbnail: "mb_heatMapLayer.png",
                     fileName: "heatmapLayer"
@@ -307,7 +307,7 @@ var exampleConfig = {
                 name_en: "vector tile",
                 content: [
                     {
-                        name: "China-矢量瓦片",
+                        name: "China",
                         name_en: "China",
                         thumbnail: "mvtVectorTile.png",
                         fileName: "mvtVectorTile"
@@ -542,8 +542,8 @@ var exampleConfig = {
                 name_en: "threejs",
                 content: [
                     {
-                        name: "threejs 3D建筑模型",
-                        name_en: "threejs 3D buildings",
+                        name: "3D建筑模型",
+                        name_en: "3D buildings",
                         thumbnail: "mb_threejs_buildings.png",
                         fileName: "threejsLayer_buildings"
                     }

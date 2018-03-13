@@ -530,18 +530,18 @@ var exampleConfig = {
                 name: "热力图",
                 name_en: "heat map",
                 content: [{
-                    name: "热力图-随机点",
-                    name_en: "heat map - random points",
+                    name: "随机点",
+                    name_en: "random points",
                     thumbnail: "l_heat.png",
                     fileName: "12_heatMap"
                 }, {
-                    name: "热力图-纽约出租车上车点",
-                    name_en: "heat map - NY taxi car point",
+                    name: "纽约出租车上车点",
+                    name_en: "NY taxi car point",
                     thumbnail: "l_heatmap_nyc.png",
                     fileName: "12_heatMap_NY"
                 },{
-                    name: "随机点热点图",
-                    name_en: "random points",
+                    name: "随机点(Classic)",
+                    name_en: "random points (Classic)",
                     thumbnail: "l_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }]
@@ -1010,7 +1010,7 @@ var exampleConfig = {
                 }]
             }
         }
-    },
+    }
 
 };
 

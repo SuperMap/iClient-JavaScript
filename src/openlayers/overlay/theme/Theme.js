@@ -559,7 +559,7 @@ export class Theme extends ol.source.ImageCanvas {
             var linearRings = new LinearRing(points);
             geometry = new Polygon([linearRings]);
         }
-        if (geometry.length === 3) {
+        if (geometry && geometry.length === 3) {
             geometry = new GeoText(geometry[0], geometry[1], geometry[2]);
         }
         return new GeometryVector(geometry, attributes);

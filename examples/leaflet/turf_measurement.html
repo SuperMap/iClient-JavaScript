@@ -11,7 +11,7 @@
 <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
 
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         turfLayer, resultLayer, urlWorld,
         totalLat = 0, totalLng = 0, averageLat, averageLng, distance, geo, coordinate,
