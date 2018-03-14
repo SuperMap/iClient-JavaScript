@@ -1,4 +1,5 @@
 import ol from 'openlayers';
+import {CloverShape} from '../../../src/openlayers/overlay/graphic/CloverShape';
 import {Graphic} from '../../../src/openlayers/overlay/Graphic';
 import {MapService} from '../../../src/openlayers/services/MapService';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
@@ -162,6 +163,7 @@ describe('openlayers_GraphicLayer', () => {
             done();
         }, 1000)
     });
+
     it('CloverShape', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
             return Promise.resolve(new Response(escapedJson));
@@ -183,7 +185,7 @@ describe('openlayers_GraphicLayer', () => {
                 source: new TileSuperMapRest(options)
             });
             map.addLayer(layer);
-            var cloverShapeStyle = new ol.style.CloverShape({
+            var cloverShapeStyle = new CloverShape({
                 radius: 20,
                 angle: 30,
                 count: 3,

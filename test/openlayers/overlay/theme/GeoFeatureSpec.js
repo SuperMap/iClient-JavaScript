@@ -1,5 +1,6 @@
 import ol from 'openlayers';
 import {GeoFeature} from '../../../../src/openlayers/overlay/theme/GeoFeature';
+import {TileSuperMapRest} from '../../../../src/openlayers/mapping/TileSuperMapRest';
 
 describe('openlayers_GeoFeature', () => {
     var originalTimeout, map, testDiv;
@@ -24,7 +25,7 @@ describe('openlayers_GeoFeature', () => {
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
+            source: new TileSuperMapRest({
                 url: baseUrl
             })
         });

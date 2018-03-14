@@ -22,6 +22,7 @@ import './leaflet/overlay/RangeThemeLayerSpec.js';
 import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
 import './leaflet/overlay/TileVectorLayerSpec.js';
 import './leaflet/overlay/UniqueThemeLayerSpec.js';
+import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/vectortile/PointSymbolizerSpec.js';
 import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';
 
