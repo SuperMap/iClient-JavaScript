@@ -329,6 +329,10 @@ export class ThreeLayer extends mapboxgl.Evented {
         me._map.on('render', this._update.bind(me));
         me._map.on('resize', this._resize.bind(me));
 
+        me.on('render', (function () {
+            this.context && this.context.render(this.scene, this.camera);
+        }).bind(me.renderer));
+
         return this;
     }
 

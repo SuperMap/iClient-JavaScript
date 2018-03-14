@@ -103,7 +103,7 @@ export var Projection = {
         let z = (zoom | 0), length = this.resolutions.length;
         z = z < 0 ? 0 : z > length - 1 ? length - 1 : z;
         const res = this.resolutions[z];
-        if ((zoom | 0) === zoom && z !== length - 1) {
+        if ((zoom | 0) !== zoom && z !== length - 1) {
             const next = this.resolutions[z + 1];
             return res + (next - res) * (zoom - z);
         }

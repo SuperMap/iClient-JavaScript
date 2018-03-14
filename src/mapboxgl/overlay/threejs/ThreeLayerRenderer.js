@@ -90,12 +90,11 @@ export class ThreeLayerRenderer {
 
     //渲染场景（模型已经添加到图层）
     renderScene() {
-        let me = this;
-        me.locationCamera();
-        me.animationFrame = this.renderFrame(function () {
-            me.animationFrame = null;
-            me.context && me.context.render(me.scene, me.camera);
-        });
+        this.locationCamera();
+        this.animationFrame = this.renderFrame((function () {
+            this.animationFrame = null;
+            this.context && this.context.render(this.scene, this.camera);
+        }).bind(this));
     }
 
     renderFrame(fn) {
@@ -112,9 +111,10 @@ export class ThreeLayerRenderer {
         let width = this.canvas.width,
             height = this.canvas.height;
 
+        let size = this.getMapSize();
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
-        this.context.setSize(width, height);
+        this.context.setSize(size.width, size.height);
         this.renderScene();
     }
 
@@ -225,7 +225,6 @@ export class ThreeLayerRenderer {
         container.style.left = "0px";
         container.style.top = "0px";
         container.style.overflow = "hidden";
-        container.style.boxSizing = "border-box";
         this._resetElementSize(container);
         container.appendChild(canvas);
 
@@ -256,13 +255,14 @@ export class ThreeLayerRenderer {
 
         element.width = width;
         element.height = height;
-        element.style.width = width + 'px';
-        element.style.height = height + 'px';
+        element.style.width = size.width + 'px';
+        element.style.height = size.height + 'px';
     }
 
     _initThreeRenderer() {
         let map = this.map;
         let size = this.getMapSize();
+
         let renderer = this.renderer || 'gl';
         let context;
 
@@ -273,13 +273,14 @@ export class ThreeLayerRenderer {
                 'antialias': true,
                 'preserveDrawingBuffer': true
             }, this.options);
+            context.autoClear = true;
+            context.clear();
         } else {
             context = new CanvasRenderer(Util.extend({
                 'canvas': this.canvas,
                 'alpha': true
             }, this.options));
         }
-        context.setSize(this.canvas.width, this.canvas.height);
         context.setClearColor(new Color(1, 1, 1), 0);
         context.canvas = this.canvas;
         this.context = context;
