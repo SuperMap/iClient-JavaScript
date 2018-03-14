@@ -114,7 +114,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param features - {SuperMap.Feature.Vector} 要添加的要素
+     * @param features -{L.supermap.themeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -420,7 +420,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素
-     * @param feature -{L.supermap.themeFeature|SuperMap.ServerFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型、iServer服务器返回数据格式 和 GeoJOSN 规范数据类型
+     * @param features -{L.supermap.themeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toFeature: function (features) {
         if (CommonUtil.isArray(features)) {

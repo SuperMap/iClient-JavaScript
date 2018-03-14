@@ -488,9 +488,9 @@ var exampleConfig = {
                     name_en: "random points",
                     thumbnail: "ol_heatmap.png",
                     fileName: "07_HeatMap"
-                },{
-                    name: "随机点(Claasic)",
-                    name_en: "random points (Claasic)",
+                }, {
+                    name: "随机点(Classic)",
+                    name_en: "random points (Classic)",
                     thumbnail: "ol_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }]

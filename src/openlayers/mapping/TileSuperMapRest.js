@@ -19,7 +19,7 @@ import {Util} from '../core/Util';
  *        serverType - {SuperMap.ServerType} 服务类型。<br>
  *        redirect - {boolean} 是否重定向，默认为false。<br>
  *        transparent - {boolean} 图片是否透明，默认为true。<br>
- *        _cache - {boolean} 是否使用缓存，默认为true。<br>
+ *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
  *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图图片。例如：{"epsgCode":3857}。<br>
  *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
@@ -109,10 +109,12 @@ export class TileSuperMapRest extends ol.source.TileImage {
         function getAllRequestParams() {
             var me = this, params = {};
 
-            params["redirect"] = options.redirect !== undefined ? options.redirect : true;
+            params["redirect"] = options.redirect !== undefined ? options.redirect : false;
             //切片是否透明
             params["transparent"] = options.transparent !== undefined ? options.transparent : true;
             params["cacheEnabled"] = !(options.cacheEnabled === false);
+            //存储一个cacheEnabled参数
+            me.cacheEnabled = params["cacheEnabled"];
             params["_cache"] = params["cacheEnabled"];
 
             //设置切片原点
@@ -228,7 +230,9 @@ export class TileSuperMapRest extends ol.source.TileImage {
             if (me.tileProxy) {
                 url = me.tileProxy + encodeURIComponent(url);
             }
-
+            if (!me.cacheEnabled){
+                url += "&_t="+new Date().getTime();
+            }
             return url;
         }
 

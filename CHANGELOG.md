@@ -73,7 +73,10 @@
     - `ol.supermap.HeatMapSource`
     
 - 废弃 `ol.source.Theme` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
+
 - 增加 `ol.style.CloverShape` `ol.style.HitCloverShape` 类，`ol.source.Graphic` 支持三叶草要素风格
+
+- 废弃 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 类的 `options._cache` 参数，由 `options.cacheEnabled` 代替
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -122,6 +125,7 @@
 - 修复 `ol.source.DataFlow` 的 `dataUpdated` 事件返回参数为空的问题
 - 修复 `ol.source.Graphic` 在高分辨率屏下显示错位的问题
 - 修改 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 通过 `key` `token` 授权失败的问题
+- 修复 `ol.source.TileSuperMapRest` 的 `redirect` 参数默认为 `false` 但运行为 `true` 的问题
 
 ### for MapboxGL
 

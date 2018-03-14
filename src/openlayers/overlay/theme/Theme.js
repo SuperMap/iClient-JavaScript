@@ -177,7 +177,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param features - {Array<SuperMap.Feature.Vector>} 需要添加的数据
+     * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -499,7 +499,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.toFeature
      * @description 转为 iClient 要素
-     * @param feature -{ol.supermap.ThemeFeature|SuperMap.ServerFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、iServer服务器返回数据格式  GeoJOSN 规范数据类型，以及ol.Feature
+     * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toFeature(features) {

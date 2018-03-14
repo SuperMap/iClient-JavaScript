@@ -55261,7 +55261,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.addFeatures
-         * @param features - {Array<SuperMap.Feature.Vector>} 需要添加的数据
+         * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
          * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
          *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
          *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -55622,7 +55622,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.toFeature
          * @description 转为 iClient 要素
-         * @param feature -{ol.supermap.ThemeFeature|SuperMap.ServerFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、iServer服务器返回数据格式  GeoJOSN 规范数据类型，以及ol.Feature
+         * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
          * @return {SuperMap.Feature.Vector} 转换后的iClient要素
          */
 
@@ -55686,7 +55686,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
                 var linearRings = new _iclientCommon.LinearRing(_points);
                 geometry = new _iclientCommon.Polygon([linearRings]);
             }
-            if (geometry.length === 3) {
+            if (geometry && geometry.length === 3) {
                 geometry = new _iclientCommon.GeoText(geometry[0], geometry[1], geometry[2]);
             }
             return new _iclientCommon.GeometryVector(geometry, attributes);
@@ -57815,7 +57815,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        serverType - {SuperMap.ServerType} 服务类型。<br>
  *        redirect - {boolean} 是否重定向，默认为false。<br>
  *        transparent - {boolean} 图片是否透明，默认为true。<br>
- *        _cache - {boolean} 是否使用缓存，默认为true。<br>
+ *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
  *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图图片。例如：{"epsgCode":3857}。<br>
  *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
@@ -57886,8 +57886,8 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         }
         layerUrl += "&transparent=" + transparent;
 
-        //是否使用缓存
-        var cacheEnabled = false;
+        //是否使用缓存吗，默认为true
+        var cacheEnabled = true;
         if (options.cacheEnabled !== undefined) {
             cacheEnabled = options.cacheEnabled;
         }
@@ -57897,13 +57897,13 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         if (options.layersID !== undefined) {
             layerUrl += "&layersID=" + options.layersID;
         }
-        //是否重定向
+        //是否重定向,默认为false
+        var redirect = false;
         if (options.redirect !== undefined) {
-            layerUrl += "&redirect=" + options.redirect;
+            redirect = options.redirect;
         }
-        if (options.cacheEnabled !== undefined) {
-            layerUrl += "&cacheEnabled=" + options.cacheEnabled;
-        }
+        layerUrl += "&redirect=" + redirect;
+
         if (options.prjCoordSys) {
             layerUrl += "prjCoordSys=" + JSON.stringify(options.prjCoordSys);
         }
@@ -57921,6 +57921,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
             layerUrl += "tileversion=" + options.tileversion;
         }
 
+        //存储一个cacheEnabled
         var _this = _possibleConstructorReturn(this, (ImageSuperMapRest.__proto__ || Object.getPrototypeOf(ImageSuperMapRest)).call(this, {
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -57941,6 +57942,8 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
             cacheEnabled: options.cacheEnabled,
             layersID: options.layersID
         }));
+
+        _this.cacheEnabled = cacheEnabled;
 
         if (options.tileProxy) {
             _this.tileProxy = options.tileProxy;
@@ -57966,6 +57969,10 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
             //支持代理
             if (me.tileProxy) {
                 url = me.tileProxy + encodeURIComponent(url);
+            }
+            //不启用缓存时启用时间戳
+            if (!me.cacheEnabled) {
+                url += "&_t=" + new Date().getTime();
             }
 
             return url;
@@ -58189,7 +58196,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        serverType - {SuperMap.ServerType} 服务类型。<br>
  *        redirect - {boolean} 是否重定向，默认为false。<br>
  *        transparent - {boolean} 图片是否透明，默认为true。<br>
- *        _cache - {boolean} 是否使用缓存，默认为true。<br>
+ *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
  *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图图片。例如：{"epsgCode":3857}。<br>
  *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
@@ -58286,10 +58293,12 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             var me = this,
                 params = {};
 
-            params["redirect"] = options.redirect !== undefined ? options.redirect : true;
+            params["redirect"] = options.redirect !== undefined ? options.redirect : false;
             //切片是否透明
             params["transparent"] = options.transparent !== undefined ? options.transparent : true;
             params["cacheEnabled"] = !(options.cacheEnabled === false);
+            //存储一个cacheEnabled参数
+            me.cacheEnabled = params["cacheEnabled"];
             params["_cache"] = params["cacheEnabled"];
 
             //设置切片原点
@@ -58404,7 +58413,9 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             if (me.tileProxy) {
                 url = me.tileProxy + encodeURIComponent(url);
             }
-
+            if (!me.cacheEnabled) {
+                url += "&_t=" + new Date().getTime();
+            }
             return url;
         }
 
@@ -93459,7 +93470,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 476 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"D:\\iClient9"]],"_cnpm_publish_time":1471808264503,"_from":"proj4@2.3.15","_hasShrinkwrap":false,"_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"D:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","size":114708,"noattachment":false,"tarball":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},{"name":"cwmma","email":"calvin.metcalf@gmail.com"}],"name":"proj4","optionalDependencies":{},"publish_time":1471808264503,"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 477 */

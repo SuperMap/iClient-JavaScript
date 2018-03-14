@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>热点图</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_heatMapLayer"></title>
     <style type="text/css">
         body {
             margin: 0;
@@ -35,31 +33,33 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center' data-i18n="resources.text_heatMapLayer">热点图</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_fastHeatMapLayer"></h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon' data-i18n="resources.text_countsDraw">热点数量：</span>
+                <span class='input-group-addon' data-i18n="resources.text_countsDraw"></span>
                 <input type='text' class='form-control' id='heatNums' value='200'/>
             </div>
         </div>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon' data-i18n="resources.text_radius">热点半径：</span>
+                <span class='input-group-addon' data-i18n="resources.text_radius"></span>
                 <input class='form-control' style='width: 50px' value='50' id='heatradius'/>
                 <select class='form-control' style='width:auto' id='radiusUnit'>
                     <option value='px'>px</option>
-                    <option value='degree'>degree</option>
+                    <option data-i18n='[value]resources.text_degree;resources.text_degree'></option>
                 </select>
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="开始绘制"
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_startDraw"
                onclick="createHeatPoints()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" value="清除"
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
                onclick="clearHeatPoints()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, heatMapLayer,
@@ -98,7 +98,8 @@
         var num = parseInt(document.getElementById('heatNums').value);
         var radius = parseInt(document.getElementById('heatradius').value);
         var unit = document.getElementById("radiusUnit").value;
-        if ("degree" == unit) {
+        //resources.text_degree 表示 id=radiusUnit 选项的第一选项值
+        if (resources.text_degree == unit) {
             //热力半径单位使用地理单位
             heatMapSource.useGeoUnit = true;
         } else {

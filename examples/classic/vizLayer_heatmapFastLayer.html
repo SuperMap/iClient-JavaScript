@@ -46,8 +46,8 @@
                 <span class='input-group-addon' data-i18n="resources.text_radius"></span>
                 <input class='form-control' style='width: 50px' value='50' id='heatradius'/>
                 <select class='form-control' style='width:auto' id='radiusUnit'>
-                    <option value='地理单位' data-i18n="resources.text_degree"></option>
                     <option value='px'>px</option>
+                    <option data-i18n='[value]resources.text_degree;resources.text_degree'></option>
                 </select>
             </div>
         </div>
@@ -63,7 +63,7 @@
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, layer, heatMapLayer,
-            url = host + "/iserver/services/map-world/rest/maps/World";
+        url = host + "/iserver/services/map-world/rest/maps/World";
     init();
 
     function init() {
@@ -89,10 +89,10 @@
             cacheEnabled: true
         }, {maxResolution: "auto"});
         heatMapLayer = new SuperMap.Layer.HeatMapFastLayer(
-                "heatMap",
-                {
-                    "featureWeight": "value"
-                }
+            "heatMap",
+            {
+                "featureWeight": "value"
+            }
         );
         layer.events.on({"layerInitialized": addLayer});
     }
@@ -109,20 +109,21 @@
         var radius = parseInt(document.getElementById('heatradius').value);
         var unit = document.getElementById("radiusUnit").value;
         heatMapLayer.useGeoUnit = false;
-        if ("地图单位" == unit) {
+        //resources.text_degree 表示 id=radiusUnit 选项的第一选项值
+        if (resources.text_degree == unit) {
             heatMapLayer.useGeoUnit = true;
         }
         heatMapLayer.radius = radius;
         heatMapLayer.maxWeight = 10;
         for (var i = 0; i < num; i++) {
             heatPoints[i] = new SuperMap.Feature.Vector(
-                    new SuperMap.Geometry.Point(
-                            Math.random() * 360 - 180,
-                            Math.random() * 180 - 90
-                    ),
-                    {
-                        "value": Math.random() * 9
-                    }
+                new SuperMap.Geometry.Point(
+                    Math.random() * 360 - 180,
+                    Math.random() * 180 - 90
+                ),
+                {
+                    "value": Math.random() * 9
+                }
             );
         }
         var t1 = new Date().getTime();

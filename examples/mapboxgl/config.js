@@ -296,10 +296,10 @@ var exampleConfig = {
                 name: "热力图",
                 name_en: "heat map",
                 content: [{
-                    name: "随机点",
-                    name_en: "random points",
+                    name: "随机点 (Classic)",
+                    name_en: "random points (Classic)",
                     thumbnail: "mb_heatMapLayer.png",
-                    fileName: "heatmapLayer"
+                    fileName: "heatMapLayer"
                 }]
             },
             "VectorTileLayer": {
