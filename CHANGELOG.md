@@ -136,6 +136,7 @@
 
 - 修复多个客户端专题图叠加偏移的问题
 - 修复 `mapboxgl.supermap.MapvLayer` 的 `clearData` 失败的问题
+- 修复客户端3D专题图高亮时底色穿透问题
 
 ### Classic
 
