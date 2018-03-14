@@ -342,22 +342,12 @@ export class Theme3DLayer {
             return;
         }
         var map = this.map;
-        if (map.getSource('highlight')) {
-            map.removeSource('highlight');
-        }
-        map.addSource('highlight', {
-            'type': 'geojson',
-            'data': {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        });
         map.addLayer({
             'id': 'highlightLayer',
             'type': 'fill-extrusion',
-            'source': 'highlight',
-            'paint': this.getHighlightStyleOptions()
-
+            'source': this.sourceId,
+            'paint': this.getHighlightStyleOptions(),
+            "filter": ["in", "$id", ""]
         });
 
         var me = this;
@@ -367,6 +357,7 @@ export class Theme3DLayer {
             canvas.style.cursor = 'auto';
 
             var features = map.queryRenderedFeatures(e.point, {layers: [me.id]});
+
             if (me.highlight && me.highlight.callback) {
                 me.highlight.callback(features, e);
             }
@@ -375,29 +366,18 @@ export class Theme3DLayer {
                 me._clearHighlight.call(me);
                 return;
             }
-
             var id = features[0].id;
             if (featureId === id) {
                 return;
             }
             featureId = id;
-            me._clearHighlight.call(me);
-            var sourceFeatures = map.querySourceFeatures(me.sourceId, {filter: ['==', '$id', id]});
-            var i, len = sourceFeatures.length;
-            var geoFeatures = {'type': 'FeatureCollection', 'features': []};
-            for (i = 0; i < len; i++) {
-                geoFeatures['features'].push(sourceFeatures[i].toJSON());
-            }
-            map.getSource('highlight').setData(geoFeatures);
+            map.setFilter("highlightLayer", ['==', '$id', featureId]);
         });
     }
 
     _clearHighlight() {
         if (this.map) {
-            this.map.getSource('highlight').setData({
-                "type": "FeatureCollection",
-                "features": []
-            })
+            this.map.setFilter("highlightLayer", ["in", "$id", ""]);
         }
     }
 
