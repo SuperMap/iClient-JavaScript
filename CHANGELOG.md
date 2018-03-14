@@ -97,9 +97,14 @@
 
 - `mapboxgl.supermap.ThemeLayer` 类新增 `moveTo`接口，支持调整专题图层显示顺序
 
+- 新增three图层：
+
+    - `mapboxgl.supermap.ThreeLayer`
+
 - 新增热力图层：
 
     - `mapboxgl.supermap.HeatMapLayer`
+
 
 - `mapboxgl.supermap.ThemeLayer` 类新增 `setVisibility`接口，支持设置图层的显示和隐藏
 
@@ -163,6 +168,8 @@
 - 新增几何要素批量空间分析示例
 
 - 新增批量几何要素叠加分析示例
+
+- 新增three图层示例
 
 ### Classic
 
