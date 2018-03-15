@@ -27,7 +27,8 @@
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var dataUrl = host + "/iserver/services/data-jingjin/rest/data";
 
-    var center = [116.640545, 40.531714], themeField = "POP_DENSITY99", popup;
+    var center = [116.640545, 40.531714], themeField = "POP_DENSITY99",
+        themeLayer, popup;
 
     var map = new mapboxgl.Map({
         container: 'map',
@@ -86,7 +87,7 @@
     //创建专题图图层
     function createThemeLayer(data) {
         popup = new mapboxgl.Popup({closeOnClick: true}).addTo(map);
-        var themeLayer = new mapboxgl.supermap.RangeTheme3DLayer("range3DThemeLayer", {
+        themeLayer = new mapboxgl.supermap.RangeTheme3DLayer("range3DThemeLayer", {
             heightField: themeField,
             themeField: themeField,
             parseNumber: true,

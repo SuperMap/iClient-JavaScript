@@ -51533,6 +51533,7 @@ var Theme3DLayer = exports.Theme3DLayer = function () {
             var layerId = this.id ? this.id : "theme3DLayer";
             if (this.map.getLayer(layerId)) {
                 this.map.off('mousemove', layerId, this._onMouseMove.bind(this));
+                this.map.on('mouseout', layerId, this._onMouseMove.bind(this));
                 this.map.removeLayer(layerId);
             }
             //移除高亮图层
@@ -51664,6 +51665,7 @@ var Theme3DLayer = exports.Theme3DLayer = function () {
 
             this._selectFeatureId = null;
             map.on('mousemove', this.id, this._onMouseMove.bind(this));
+            map.on('mouseout', this.id, this._onMouseMove.bind(this));
         }
     }, {
         key: '_onMouseMove',
@@ -51678,14 +51680,15 @@ var Theme3DLayer = exports.Theme3DLayer = function () {
 
             if (!features || features.length < 1) {
                 me._clearHighlight.call(me);
+                me._selectFeatureId = null;
                 return;
             }
             var id = features[0].id;
-            if (this._selectFeatureId === id) {
+            if (me._selectFeatureId === id) {
                 return;
             }
-            this._selectFeatureId = id;
-            map.setFilter("highlightLayer", ['==', '$id', this._selectFeatureId]);
+            me._selectFeatureId = id;
+            map.setFilter("highlightLayer", ['==', '$id', me._selectFeatureId]);
         }
     }, {
         key: '_clearHighlight',
