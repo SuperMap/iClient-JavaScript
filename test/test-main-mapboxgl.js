@@ -21,6 +21,7 @@ import './mapboxgl/services/EditFeaturesSpec.js';
 import './mapboxgl/services/FieldServiceSpec.js';
 import './mapboxgl/services/GenerateSpatialDataSpec.js';
 import './mapboxgl/services/GeoRelationAnalysisSpec.js';
+import './mapboxgl/services/GeometryBatchAnalysisSpec.js';
 import './mapboxgl/services/GetFeaturesByBoundsSpec.js';
 import './mapboxgl/services/GetFeaturesByBufferSpec.js';
 import './mapboxgl/services/GetFeaturesByGeometrySpec.js';
