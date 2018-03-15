@@ -10,24 +10,25 @@ import {
 
 /**
  * @class mapboxgl.supermap.HeatMapLayer
- * @description 热力图层类
+ * @classdesc 热力图层类
+ * @category Visualization HeatMap
  * @param name -{string} 图层名称
  * @param options - {Object} 构造参数，如下：<br>
- *        map - {mapboxgl.Map} mapboxgl map对象。必传。</br>
+ *        map - [mapboxgl.Map]{@linkdoc-mapboxgl/#map} mapboxgl map对象。必传。</br>
  *        id - {string} 专题图层ID。</br>
  *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
  *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
  *        opacity - {number} 图层透明度。</br>
  *        colors - {Array<string>} 颜色线性渐变数组,颜色值必须为canvas所支。默认为['blue','cyan','lime','yellow','red']。</br>
  *        useGeoUnit - {boolean} 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
+ * @extends mapboxgl.Evented{@linkdoc-mapboxgl/#evented}
  */
-
 export class HeatMapLayer extends mapboxgl.Evented {
 
     constructor(name, options) {
         super();
 
-        var _options = options ? options : {}
+        var _options = options ? options : {};
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.name - {string}
          * @description 图层名字

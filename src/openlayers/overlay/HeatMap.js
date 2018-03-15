@@ -10,11 +10,12 @@ import {
 } from '@supermap/iclient-common';
 
 /**
- * @class ol.source.HeatMapSource
- * @description 热力图层类
+ * @class ol.source.HeatMap
+ * @classdesc 热力图层类
+ * @category Visualization HeatMap
  * @param name -{string} 图层名称
  * @param options - {Object} 构造参数，如下：<br>
- *        map - {mapboxgl.Map} mapboxgl map对象。必传参数。</br>
+ *        map - [ol.Map]{@linkdoc-openlayers/ol.Map.html} openlayers 的 map对象。必传参数。</br>
  *        id - {string} 专题图层ID。</br>
  *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
  *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
@@ -23,7 +24,7 @@ import {
  *        useGeoUnit - {boolean} 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
-export class HeatMapSource extends ol.source.ImageCanvas {
+export class HeatMap extends ol.source.ImageCanvas {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
@@ -91,7 +92,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.addFeatures
+     * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
      * @param features - {GeoJson|Array<ol.Feature>|ol.Feature}待转要素,支持 geoJson 格式和 ol.Feature 格式
      *
@@ -111,7 +112,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
      *          }
      *      ]
      *   };
-     * var heatMapSource = new ol.source.HeatMapSource("heatMap",{"map": map});
+     * var heatMapSource = new ol.source.HeatMap("heatMap",{"map": map});
      * heatMapSource.addFeatures(geojson);
      * map.addLayer(new ol.layer.Image({
      *       source: heatMapSource
@@ -124,7 +125,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.setOpacity
+     * @function ol.source.HeatMap.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
      * @param opacity - {number} 不透明度
      */
@@ -143,7 +144,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.updateHeatPoints
+     * @function ol.source.HeatMap.prototype.updateHeatPoints
      * @description 刷新热点图显示
      * @param bounds - {ol.LngLatBounds} 当前显示范围
      * @private
@@ -157,9 +158,9 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.convertFastToPixelPoints
+     * @function ol.source.HeatMap.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
-     * @param bounds - {ol.LngLatBounds} 当前显示范围
+     * @param resolution - {number} 当前分辨率
      * @private
      */
     convertFastToPixelPoints(resolution) {
@@ -210,7 +211,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.draw
+     * @function ol.source.HeatMap.prototype.draw
      * @description 绘制热点图
      * @param data -{Array} convertToPixelPoints方法计算出的点
      * @private
@@ -239,7 +240,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.colorize
+     * @function ol.source.HeatMap.prototype.colorize
      * @description 根据渐变色重置热点图rgb值
      * @param pixels 像素RGBA值
      * @param gradient 渐变canvas.getImageData.data
@@ -257,7 +258,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.drawCircle
+     * @function ol.source.HeatMap.drawCircle
      * @description 绘制热点半径圆
      * @param r -{number} 热点半径
      * @private
@@ -281,7 +282,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.createGradient
+     * @function ol.source.HeatMap.createGradient
      * @description 根据this.canvasColors设置渐变并getImageData
      * @private
      */
@@ -306,7 +307,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.getLocalXY
+     * @function ol.source.HeatMap.prototype.getLocalXY
      * @description 获取坐标系统
      * @param coordinate - {Object} 坐标位置。
      */
@@ -334,7 +335,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.rotate
+     * @function ol.source.HeatMap.prototype.rotate
      * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
      * @param pixelP - {number} 像素坐标点位置。
      * @param rotation - {number} 旋转角度
@@ -347,7 +348,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.scale
+     * @function ol.source.HeatMap.prototype.scale
      * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
      * @param pixelP - {Object} 像素点
      * @param center - {Object} 中心点
@@ -361,7 +362,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.removeFeatures
+     * @function ol.source.HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
      * @param features - {Array<SuperMap.Feature.Vector>} 热点信息数组。
      */
@@ -394,7 +395,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSourceprototype.removeAllFeatures
+     * @function ol.source.HeatMapprototype.removeAllFeatures
      * @description 移除全部的热点信息。
      */
     removeAllFeatures() {
@@ -403,7 +404,7 @@ export class HeatMapSource extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.HeatMapSource.prototype.toiClientFeature
+     * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素
      * @param features - {GeoJson|Array<ol.Feature>}待转要素,支持 geoJson 格式和 ol.Feature 格式
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
@@ -441,4 +442,4 @@ export class HeatMapSource extends ol.source.ImageCanvas {
 
 }
 
-ol.source.HeatMapSource = HeatMapSource;
+ol.source.HeatMap = HeatMap;

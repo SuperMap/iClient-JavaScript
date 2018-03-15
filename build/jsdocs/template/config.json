@@ -286,6 +286,10 @@
         "name": "可视化",
         "name_en": "Visualization",
         "content": {
+            "HeatMap": {
+                "name": "热力图",
+                "name_en": "HeatMap"
+            },
             "ECharts": {
                 "name": "ECharts"
             },

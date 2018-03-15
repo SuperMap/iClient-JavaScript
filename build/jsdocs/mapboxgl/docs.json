@@ -8,7 +8,7 @@
     "disqus":"",
     "tags": {
         "allowUnknownTags": true,
-        "linkdoc-openlayers":"https://www.mapbox.com/mapbox-gl-js/api/"
+        "linkdoc-mapboxgl":"https://www.mapbox.com/mapbox-gl-js/api/"
     },
     "i18n": {
         "defaultLang": "en",

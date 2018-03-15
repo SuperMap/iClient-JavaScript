@@ -1,5 +1,5 @@
 import ol from 'openlayers';
-import {HeatMapSource} from '../../../src/openlayers/overlay/HeatMap';
+import {HeatMap} from '../../../src/openlayers/overlay/HeatMap';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
 
 var url = GlobeParameter.worldMapURL;
@@ -34,7 +34,7 @@ describe('openlayers_HeatMapLayer', () => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
 
-        heatMapSource = new HeatMapSource(
+        heatMapSource = new HeatMap(
             "heatMap",
             {
                 "map": map,

@@ -6,7 +6,7 @@ import '../core/Base';
  * @classdesc Unicode字符图标。
  * @category Visualization Marker
  * @extends L.Path{@linkdoc-leaflet/#Path}
- * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng}} 经纬度坐标
+ * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng} 经纬度坐标
  * @param options -{Object} 符号参数。<br>
  *        label - {string} 符号Unicode值 <br>
  *        labelRotation - {string} 符号旋转角度 <br>
