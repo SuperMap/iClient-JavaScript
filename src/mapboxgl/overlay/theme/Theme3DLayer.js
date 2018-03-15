@@ -233,11 +233,13 @@ export class Theme3DLayer {
         //移除图层
         var layerId = this.id ? this.id : "theme3DLayer";
         if (this.map.getLayer(layerId)) {
+            this.map.off('mousemove', layerId, this._onMouseMove.bind(this));
             this.map.removeLayer(layerId);
         }
         //移除高亮图层
         var highlightLayerId = "highlightLayer";
         if (this.map.getLayer(highlightLayerId)) {
+            this._selectFeatureId = null;
             this.map.removeLayer(highlightLayerId);
         }
 
@@ -350,29 +352,28 @@ export class Theme3DLayer {
             "filter": ["in", "$id", ""]
         });
 
-        var me = this;
-        var canvas = document.querySelector('.mapboxgl-canvas-container.mapboxgl-interactive');
-        var featureId;
-        map.on('mousemove', function (e) {
-            canvas.style.cursor = 'auto';
+        this._selectFeatureId = null;
+        map.on('mousemove', this.id, this._onMouseMove.bind(this));
+    }
 
-            var features = map.queryRenderedFeatures(e.point, {layers: [me.id]});
+    _onMouseMove(e) {
+        var me = this, map = this.map;
+        var features = map.queryRenderedFeatures(e.point, {layers: [me.id]});
 
-            if (me.highlight && me.highlight.callback) {
-                me.highlight.callback(features, e);
-            }
+        if (me.highlight && me.highlight.callback) {
+            me.highlight.callback(features, e);
+        }
 
-            if (!features || features.length < 1) {
-                me._clearHighlight.call(me);
-                return;
-            }
-            var id = features[0].id;
-            if (featureId === id) {
-                return;
-            }
-            featureId = id;
-            map.setFilter("highlightLayer", ['==', '$id', featureId]);
-        });
+        if (!features || features.length < 1) {
+            me._clearHighlight.call(me);
+            return;
+        }
+        var id = features[0].id;
+        if (this._selectFeatureId === id) {
+            return;
+        }
+        this._selectFeatureId = id;
+        map.setFilter("highlightLayer", ['==', '$id', this._selectFeatureId]);
     }
 
     _clearHighlight() {
