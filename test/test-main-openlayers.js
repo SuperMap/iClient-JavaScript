@@ -31,6 +31,7 @@ import './openlayers/services/EditFeaturesSpec.js';
 import './openlayers/services/FieldServiceSpec.js';
 import './openlayers/services/GenerateSpatialDataSpec.js';
 import './openlayers/services/GeoRelationAnalysisSpec.js';
+import './openlayers/services/GeometryBatchAnalysisSpec.js';
 import './openlayers/services/GetFeaturesByBoundsSpec.js';
 import './openlayers/services/GetFeaturesByBufferSpec.js';
 import './openlayers/services/GetFeaturesByGeometrySpec.js';
