@@ -1,5 +1,6 @@
 import ol from 'openlayers';
 import {CloverShape} from '../../../src/openlayers/overlay/graphic/CloverShape';
+import {HitCloverShape} from '../../../src/openlayers/overlay/graphic/HitCloverShape';
 import {Graphic} from '../../../src/openlayers/overlay/Graphic';
 import {MapService} from '../../../src/openlayers/services/MapService';
 import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
@@ -201,7 +202,7 @@ describe('openlayers_GraphicLayer', () => {
                 graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
                 graphics[j].setStyle(cloverShapeStyle);
             }
-            var hitCloverShape = new ol.style.HitCloverShape({
+            var hitCloverShape = new HitCloverShape({
                 radius: 20,
                 angle: 30,
                 stroke: new ol.style.Stroke({
