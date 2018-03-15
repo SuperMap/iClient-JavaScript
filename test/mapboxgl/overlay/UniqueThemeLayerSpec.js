@@ -52,7 +52,6 @@ describe('mapboxgl_UniqueThemeLayer', () => {
     });
     afterAll(() => {
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     it('initialize, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', (done) => {
