@@ -189,7 +189,6 @@ describe('mapboxgl_UniqueThemeLayer', () => {
                 themeLayer.removeAllFeatures();
                 expect(themeLayer.features.length).toEqual(0);
             }
-            themeLayer.clear();
             done();
         }, 5000)
     });
