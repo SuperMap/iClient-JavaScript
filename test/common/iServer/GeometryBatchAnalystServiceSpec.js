@@ -32,7 +32,7 @@ var options = {
     eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
 
-describe("GeometryBatchAnalystServiceTest", () => {
+describe("GeometryBatchAnalystService", () => {
     var originalTimeout;
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
