@@ -1038,7 +1038,7 @@ export class WebMap extends ol.Observable {
     }
 
     getAttributesObjFromTable(cols, colTitles) {
-        if (cols.length < 0 || colTitles.length < 0) {
+        if (cols.length === 0 || colTitles.length === 0) {
             return;
         }
         var attrArr = [];

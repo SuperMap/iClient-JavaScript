@@ -1058,7 +1058,7 @@ export var WebMap = L.LayerGroup.extend({
         }
     },
     getAttributesObjFromTable: function (cols, colTitles) {
-        if (cols.length < 0 || colTitles.length < 0) {
+        if (cols.length === 0 || colTitles.length === 0) {
             return;
         }
         var attrArr = [];
