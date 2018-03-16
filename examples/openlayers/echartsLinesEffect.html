@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_ChangchunPublicTransportNetwork"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/include-openlayers.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, echartsOption,
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [116.402, 39.905],
+            zoom: 10,
+            projection: 'EPSG:4326'
+        }),
+        layers: [new ol.layer.Tile({
+            source: new ol.source.OSM({}),
+            source: new ol.source.TileSuperMapRest({
+                url: url,
+                prjCoordSys: {"epsgCode": 4326}
+            }),
+            projection: 'EPSG:4326'
+        })]
+    });
+    var echartslayer = new ol3Echarts(null, {
+        hideOnMoving: true,
+        hideOnZooming: true
+    });
+    echartslayer.appendTo(map);
+    $.get('../data/lines-bus.json', function (data) {
+        var hStep = 300 / (data.length - 1);
+        var busLines = [].concat.apply([], data.map(function (busLine, idx) {
+            var prevPt;
+            var points = [];
+            for (var i = 0; i < busLine.length; i += 2) {
+                var pt = [busLine[i], busLine[i + 1]];
+                if (i > 0) {
+                    pt = [
+                        prevPt[0] + pt[0],
+                        prevPt[1] + pt[1]
+                    ];
+                }
+                prevPt = pt;
+
+                points.push([pt[0] / 1e4, pt[1] / 1e4]);
+            }
+            return {
+                coords: points,
+                lineStyle: {
+                    normal: {
+                        color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
+                    }
+                }
+            };
+        }));
+        echartsOption = {
+            series: [
+                {
+                    type: 'lines',
+                    polyline: true,
+                    data: busLines,
+                    silent: true,
+                    lineStyle: {
+                        normal: {
+                            opacity: 0.2,
+                            width: 1
+                        }
+                    },
+                    progressiveThreshold: 500,
+                    progressive: 200
+                },
+                {
+                    type: 'lines',
+                    polyline: true,
+                    data: busLines,
+                    lineStyle: {
+                        normal: {
+                            width: 0
+                        }
+                    },
+                    effect: {
+                        constantSpeed: 20,
+                        show: true,
+                        trailLength: 0.1,
+                        symbolSize: 1.5
+                    },
+                    zlevel: 1
+                }]
+        };
+        echartslayer.setChartOptions(echartsOption);
+    });
+</script>
+</body>
+</html>

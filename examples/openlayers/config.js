@@ -567,6 +567,55 @@ var exampleConfig = {
                         name_en: "pie chart",
                         thumbnail: "ol_echartsPie.png",
                         fileName: "echartsPie"
+                    },
+                    {
+                        name: "全国空气质量图",
+                        name_en: "ECharts",
+                        thumbnail: "ol_echartsEffectScatter.png",
+                        fileName: "echartsEffectScatter"
+                    },
+                    {
+                        name: "迁徙图",
+                        name_en: "Mock migration",
+                        thumbnail: "ol_echartsGeoLines.gif",
+                        fileName: "echartsGeoLines"
+                    },
+                    {
+                        name: "热力图",
+                        name_en: "heat map",
+                        thumbnail: "ol_echartsHeatmap.png",
+                        fileName: "echartsHeatmap"
+                    },
+                    {
+                        name: "线路图",
+                        name_en: "line",
+                        thumbnail: "ol_echartsLinesBus.png",
+                        fileName: "echartsLinesBus"
+                    },
+                    {
+                        name: "线特效",
+                        name_en: "line effect",
+                        thumbnail: "ol_echartsLinesEffect.gif",
+                        fileName: "echartsLinesEffect"
+                    },
+                    {
+                        name: "世界飞机航线图",
+                        name_en: "Airplane route map",
+                        thumbnail: "ol_echartsLinesAirline.png",
+                        fileName: "echartsLinesAirline"
+                    },
+                    {
+                        name: "微博签到图",
+                        name_en: "scatter of Weibo user",
+                        thumbnail: "ol_echartsScatterWeibo.png",
+                        fileName: "echartsScatterWeibo"
+                    },
+
+                    {
+                        name: "格网图",
+                        name_en: "cell map",
+                        thumbnail: "ol_echartsCellMap.png",
+                        fileName: "echartsCellMap"
                     }
                 ]
             },

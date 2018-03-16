@@ -37,7 +37,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'ol')) {
             inputCSS("https://cdn.bootcss.com/openlayers/4.6.4/ol.css");
-            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol-debug.js");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
@@ -53,6 +53,9 @@
         }
         if (inArray(includes, 'echarts')) {
             inputScript("http://cdn.bootcss.com/echarts/3.8.5/echarts.min.js");
+        }
+        if (inArray(includes, 'ol3-echarts')) {
+            inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts/dist/ol3Echarts.js");
         }
         if (inArray(includes, 'osmbuildings')) {
             inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_scatterWeibo"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/include-openlayers.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, option, url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [104, 36],
+            zoom: 5,
+            projection: 'EPSG:4326'
+        }),
+        layers: [new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: url,
+                prjCoordSys: {"epsgCode": 4326}
+            }),
+            projection: 'EPSG:4326'
+        })]
+    });
+    var echartslayer = new ol3Echarts(null, {
+        hideOnMoving: true,
+        hideOnZooming: true
+    });
+    echartslayer.appendTo(map);
+    $.get('../data/weibo.json', function (weiboData) {
+        weiboData = weiboData.map(function (serieData, idx) {
+            var px = serieData[0] / 1000;
+            var py = serieData[1] / 1000;
+            var res = [
+                [px, py]
+            ];
+
+            for (var i = 2; i < serieData.length; i += 2) {
+                var dx = serieData[i] / 1000;
+                var dy = serieData[i + 1] / 1000;
+                var x = px + dx;
+                var y = py + dy;
+                res.push([x.toFixed(2), y.toFixed(2), 1]);
+
+                px = x;
+                py = y;
+            }
+            return res;
+        });
+
+        option = {
+            title: {
+                text: resources.text_weiboChina,
+                subtext: 'From ThinkGIS',
+                sublink: 'http://www.thinkgis.cn/public/sina',
+                left: 'center',
+                top: 'top',
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            tooltip: {},
+            legend: {
+                left: 'left',
+                top: 'bottom',
+                data: ['强', '中', '弱'],
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            series: [{
+                name: '弱',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(37, 140, 249, 0.8)',
+                        color: 'rgba(37, 140, 249, 0.8)'
+                    }
+                },
+                data: weiboData[0]
+            }, {
+                name: '中',
+                type: 'scatter',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(14, 241, 242, 0.8)',
+                        color: 'rgba(14, 241, 242, 0.8)'
+                    }
+                },
+                data: weiboData[1]
+            }, {
+                name: '强',
+                type: 'scatter',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(255, 255, 255, 0.8)',
+                        color: 'rgba(255, 255, 255, 0.8)'
+                    }
+                },
+                data: weiboData[2]
+            }]
+        };
+        echartslayer.setChartOptions(option);
+    });
+</script>
+</body>
+</html>
