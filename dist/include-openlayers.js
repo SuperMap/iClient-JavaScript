@@ -52,7 +52,7 @@
             inputCSS("../../dist/iclient9-openlayers.min.css");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("http://cdn.bootcss.com/echarts/3.8.5/echarts.min.js");
+            inputScript("http://cdn.bootcss.com/echarts/4.0.4/echarts.min.js");
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts/dist/ol3Echarts.js");

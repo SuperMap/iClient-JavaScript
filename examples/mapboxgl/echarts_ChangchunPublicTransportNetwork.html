@@ -20,7 +20,7 @@
 <body>
 <div id='map'></div>
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-<script type="text/javascript" include="echarts,echarts-gl" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
@@ -57,6 +57,7 @@
 
     $.get(uploadedDataURL, function (data) {
         option = {
+            animation: false,
             GLMap: {
                 roam: true
             },
@@ -77,7 +78,7 @@
                     }
                 },
                 progressiveThreshold: 500,
-                progressive: 100
+                progressive: 100,
             }, {
 
                 type: 'lines',
@@ -95,7 +96,6 @@
                     trailLength: 0.02,
                     symbolSize: 2
                 },
-                zlevel: 1
             }]
         };
         var echartslayer = new EchartsLayer(map);

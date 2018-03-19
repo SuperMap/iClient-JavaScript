@@ -141,15 +141,15 @@
                         main: {
                             intensity: 1,
                             shadow: true,
-                            shadowQuality: 'low'
+                            shadowQuality: 'high'
                         },
                         ambient: {
                             intensity: 0.
                         },
                         ambientCubemap: {
                             texture: '../data/taxiRoutesOfCapeTown.hdr',
-                            exposure: 1,
-                            diffuseIntensity: 0.5,
+                            exposure: 2,
+                            diffuseIntensity: 1,
                             specularIntensity: 2
                         }
                     }
@@ -177,14 +177,7 @@
                         opacity: 0.
                     },
 
-                    data: {
-                        count: function () {
-                            return lines.length;
-                        },
-                        getItem: function (idx) {
-                            return lines[idx]
-                        }
-                    }
+                    data: lines
                 }, {
                     type: 'map3D',
                     map: 'buildings',
@@ -193,6 +186,9 @@
                     silent: true,
                     instancing: true,
                     data: regions,
+                    itemStyle: {
+                        color: '#444'
+                    },
                     realisticMaterial: {
                         metalness: 1,
                         roughness: 0.2,

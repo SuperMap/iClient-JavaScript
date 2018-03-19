@@ -499,14 +499,7 @@
                 color: 'rgb(200, 40, 0)',
                 opacity: 0.
             },
-            data: {
-                count: function () {
-                    return taxiRoutes.length;
-                },
-                getItem: function (idx) {
-                    return taxiRoutes[idx]
-                }
-            }
+            data: taxiRoutes
         }]
     });
     myChart.getModel().getComponent('mapbox').getMapbox().addControl(new mapboxgl.NavigationControl(), 'top-left');

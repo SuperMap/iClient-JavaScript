@@ -51,7 +51,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdn.bootcss.com/echarts/3.8.0/echarts.min.js");
+            inputScript("https://cdn.bootcss.com/echarts/4.0.4/echarts.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (inArray(includes, 'three')) {
@@ -64,7 +64,7 @@
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");
         }
         if (inArray(includes, 'echarts-gl')) {
-            inputScript("http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.js");
+            inputScript("http://echarts.baidu.com/examples/vendors/echarts-gl/echarts-gl.js");
         }
         if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
