@@ -51,7 +51,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdn.bootcss.com/echarts/4.0.4/echarts.js");
+            inputScript("https://cdn.bootcss.com/echarts/4.0.4/echarts.min.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (inArray(includes, 'three')) {
@@ -59,6 +59,23 @@
         }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             inputScript("../../dist/iclient9-mapboxgl.min.js");
+        }
+        if(inArray(includes,'LoaderSupport')){
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderCommons.js");
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderBuilder.js");
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderWorkerSupport.js");
+        }
+        if(inArray(includes,'OBJLoader')){
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/OBJLoader.js");
+        }
+        if(inArray(includes,'OBJLoader2')){
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/OBJLoader2.js");
+        }
+        if(inArray(includes,'MTLLoader')){
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/MTLLoader.js");
+        }
+        if(inArray(includes,'GLTFLoader')){
+            inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/GLTFLoader.js");
         }
         if (inArray(includes, 'proj4')) {
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>threejs facility</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript" include="three,MTLLoader,LoaderSupport,OBJLoader2"
+        src="../../dist/include-mapboxgl.js"></script>
+
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
+    var map, threeLayer, position = [116.466502, 39.990706];
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v9',
+        center: [116.46548484988489, 39.990389660427695],
+        zoom: 15.91,
+        bearing: 59.19,
+        pitch: 60,
+
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    //加载obj模型
+    loaderModels();
+
+    //添加设施点，路径以及标签
+    map.on('load', function () {
+        loadOverlays();
+    });
+
+    function loaderModels() {
+        var objLoader = new THREE.OBJLoader2();
+
+        objLoader.loadMtl('./js/facility/building.mtl', null, function (materials) {
+
+            objLoader.setModelName("building");
+            objLoader.setMaterials(materials);
+
+            objLoader.load('./js/facility/building.obj', function (event) {
+                var meshes = event.detail.loaderRootNode;
+                meshes.rotation.x = -Math.PI / 2;
+                meshes.rotation.y = 1.4 * Math.PI / 5;
+                meshes.scale.multiplyScalar(3);
+
+                addThreeLayer(meshes);
+            }, null, null, null, false);
+        });
+
+
+    }
+
+    function addThreeLayer(meshes) {
+        threeLayer = new mapboxgl.supermap.ThreeLayer('three');
+
+        threeLayer.on("initialized", render);
+        threeLayer.addTo(map);
+
+        function render() {
+            var renderer = threeLayer.getThreeRenderer(),
+                scene = threeLayer.getScene(),
+                camera = threeLayer.getCamera();
+
+            this.light = new THREE.PointLight(0xffffff, 0.8);
+            this.light.position.copy(camera.position);
+            scene.add(this.light);
+            scene.add(new THREE.AmbientLight(0xffffff));
+            threeLayer.setPosition(meshes, position);
+            scene.add(meshes);
+        }
+
+        //均匀光照，与相机位置同步
+        threeLayer.on("render", function () {
+            threeLayer.light.position.copy(threeLayer.renderer.camera.position);
+        });
+    }
+
+    function loadOverlays() {
+
+        var facilityPositions = {
+            shopping: [116.462834, 39.991234],
+            hospital: [116.467154, 39.995506],
+            school: [116.46506, 39.992958]
+        };
+
+        var labelPositions = {
+            shoppingText: [116.464668, 39.990965],
+            hospitalText: [116.466828, 39.993106],
+            schoolText: [116.465781, 39.991832]
+        };
+
+        //添加设施点
+        var shoppingImg = new Image();
+        shoppingImg.src = './js/facility/shopping.png';
+        var shoppingMall =
+            new mapboxgl.Marker(shoppingImg, {x: -32, y: -54})
+                .setLngLat(facilityPositions.shopping)
+                .addTo(map);
+
+        var hospitalImg = new Image();
+        hospitalImg.src = './js/facility/hospital.png';
+        var hospital = new mapboxgl.Marker(hospitalImg, {x: -32, y: -54})
+            .setLngLat(facilityPositions.hospital)
+            .addTo(map);
+
+        var schoolImg = new Image();
+        schoolImg.src = './js/facility/school.png';
+        var school = new mapboxgl.Marker(schoolImg, {x: -32, y: -54})
+            .setLngLat(facilityPositions.school)
+            .addTo(map);
+
+        //添加购物中心距离路径
+        map.addLayer({
+            "id": "shopping-route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [position, facilityPositions.shopping]
+                    }
+                }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#0000ff",
+                "line-width": 5
+            }
+        });
+
+        //添加医院距离路径
+        map.addLayer({
+            "id": "hospital-route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [position, facilityPositions.hospital]
+                    }
+                }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#ff0000",
+                "line-width": 5
+            }
+        });
+
+        //添加学校距离路径
+        map.addLayer({
+            "id": "school-route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [position, facilityPositions.school]
+                    }
+                }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#00ff00",
+                "line-width": 5
+            }
+        });
+
+        //添加购物中心距离提示标签
+        map.addLayer({
+            "id": "text-shopping",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "properties": {"text": "购物320米"},
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": labelPositions.shoppingText
+                        }
+                    }]
+                }
+            },
+            "paint": {
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 2,
+            },
+            "layout": {
+
+                "text-field": "{text}"
+            }
+        });
+        //添加医院距离提示标签
+        map.addLayer({
+            "id": "text-hospital",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "properties": {"text": "医院550米"},
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": labelPositions.hospitalText
+                        }
+                    }]
+                }
+            },
+            "paint": {
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 2,
+            },
+            "layout": {
+
+                "text-field": "{text}"
+            }
+        });
+        //添加学校距离提示标签
+        map.addLayer({
+            "id": "text-school",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "properties": {"text": "学校300米"},
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": labelPositions.schoolText
+                        }
+                    }]
+                }
+            },
+            "paint": {
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 2,
+            },
+            "layout": {
+
+                "text-field": "{text}"
+            }
+        });
+        //添加大厦名称标签
+        map.addLayer({
+            "id": "text-building",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "properties": {"text": "xxxx大厦"},
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": position
+                        }
+                    }]
+                }
+            },
+            "paint": {
+                "text-translate": [0, -140],
+                "text-color": "#ffffff",
+                "text-halo-color": "#ff0000",
+                "text-halo-width": 2,
+                "text-translate-anchor": "viewport"
+            },
+            "layout": {
+                "text-field": "{text}"
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

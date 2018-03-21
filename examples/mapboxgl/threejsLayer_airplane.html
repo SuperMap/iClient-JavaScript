@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>threejs airplane</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript" include="three,LoaderSupport,GLTFLoader" src="../../dist/include-mapboxgl.js"></script>
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
+    var map, threeLayer,
+        position = [104.0688174135384, 30.548051075500908];
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v9',
+        center: [104.0693966828, 30.5760411152],
+        zoom: 13.23,
+        bearing: 0.8568,
+        pitch: 60,
+
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    loaderModels();
+
+
+    function loaderModels() {
+        var loader = new THREE.GLTFLoader();
+        //加载gltf格式数据
+        loader.load('./js/airplane/airplane.glb', function (gltf) {
+            var scene = gltf.scene;
+            scene.rotation.x = -Math.PI / 2;
+            scene.rotation.y = Math.PI / 2;
+            scene.scale.multiplyScalar(150);
+
+            addThreeLayer(scene);
+        });
+    }
+
+    function addThreeLayer(meshes) {
+        threeLayer = new mapboxgl.supermap.ThreeLayer('three');
+        threeLayer.on("initialized", render);
+        threeLayer.addTo(map);
+
+        function render() {
+            var renderer = threeLayer.getThreeRenderer(),
+                scene = threeLayer.getScene(),
+                camera = threeLayer.getCamera();
+
+            this.light = new THREE.PointLight(0xaaaaaa, 0.5);
+            this.light.position.copy(camera.position);
+            scene.add(this.light);
+            scene.add(new THREE.AmbientLight(0xffffff));
+            threeLayer.setPosition(meshes, position);
+            //设置飞行高度
+            meshes.translateY(5000);
+            scene.add(meshes);
+
+            (function animate() {
+                requestAnimationFrame(animate);
+                meshes.position.y -= 60;
+                var center = map.getCenter().toArray();
+                center[1] += 0.00008;
+                map.setCenter(center);
+                renderer.render(scene, camera);
+            })()
+        }
+
+        //均匀光照，与相机位置同步
+        threeLayer.on("render", function () {
+            threeLayer.light.position.copy(threeLayer.renderer.camera.position);
+        });
+    }
+
+</script>
+</body>
+</html>

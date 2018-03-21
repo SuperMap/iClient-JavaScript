@@ -542,10 +542,25 @@ var exampleConfig = {
                 name_en: "threejs",
                 content: [
                     {
-                        name: "3D建筑模型",
-                        name_en: "3D buildings",
+                        name: "建筑模型",
+                        name_en: "buildings",
                         thumbnail: "mb_threejs_buildings.png",
                         fileName: "threejsLayer_buildings"
+                    }, {
+                        name: "设施点(mtl+obj格式)",
+                        name_en: "facility(mtl+obj)",
+                        thumbnail: "mb_threejs_facility.png",
+                        fileName: "threejsLayer_facility"
+                    }, {
+                        name: "飞机模型(gltf格式)",
+                        name_en: "airplane(gltf)",
+                        thumbnail: "mb_threejs_airplane.png",
+                        fileName: "threejsLayer_airplane"
+                    }, {
+                        name: "飞鸟模型",
+                        name_en: "bird",
+                        thumbnail: "mb_threejs_bird.png",
+                        fileName: "threejsLayer_bird"
                     }
                 ]
             },
