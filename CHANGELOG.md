@@ -77,6 +77,11 @@
 - 增加 `ol.style.CloverShape` `ol.style.HitCloverShape` 类，`ol.source.Graphic` 支持三叶草要素风格
 
 - 废弃 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 类的 `options._cache` 参数，由 `options.cacheEnabled` 代替
+
+- 废弃 `ol.source.Graphic` 类的 `onClick` 参数
+
+- `ol.source.Graphic` 类新增 `isHighLight` 参数，支持高亮响应事件
+
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数

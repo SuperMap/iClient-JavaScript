@@ -133,15 +133,10 @@
             }
 
             //设置每个点的经纬度和传入三叶草样式
-            for (var i = 0; i < count; ++i) {
+            for (var i = 0; i < count; i++) {
                 var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
                 graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
                 graphics[i].setStyle(clovers[Math.floor(Math.random() * randCount)]);
-                var pointVector = graphics[i];
-                pointVector.style = {
-                    image: clovers[i % symbolCount]
-                };
-                graphics.push(pointVector);
             }
 
             map.once('postrender', function () {

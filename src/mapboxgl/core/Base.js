@@ -3,6 +3,6 @@
  * 定义命名空间
  */
 import mapboxgl from 'mapbox-gl';
-import '../core/MapExtend';
+import './MapExtend';
 
 mapboxgl.supermap = mapboxgl.supermap || {};

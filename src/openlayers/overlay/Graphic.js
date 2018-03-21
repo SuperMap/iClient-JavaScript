@@ -1,4 +1,5 @@
 import ol from 'openlayers';
+import '../core/MapExtend';
 import {
     Util
 } from '../core/Util';
@@ -13,7 +14,12 @@ import {
  * @class ol.source.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
- * @param options -{Object} 图形参数
+ * @param options -{Object} 图形参数。如：<br>
+ *        graphics - {ol.Graphic} 高效率点图层点要素。<br>
+ *        map - [ol.Map]{@linkdoc-openlayers/ol.Map.html} openlayers 面对象。<br>
+ *        isHighLight - {boolean} 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
+ *        highLightStyle - [ol.style]{@linkdoc-openlayers/ol.style.html} 高亮风格，默认为 defaultHighLightStyle。<br>
+ *        onClick - {function} 点击事件方法。将在下个版本弃用。<br>
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export class Graphic extends ol.source.ImageCanvas {
@@ -31,16 +37,20 @@ export class Graphic extends ol.source.ImageCanvas {
         this.graphics_ = options.graphics;
         this.map = options.map;
         this.highLightStyle = options.highLightStyle;
+        //是否支持高亮，默认支持
+        this.isHighLight = typeof options.isHighLight === "undefined" ? true : options.isHighLight;
         this.hitGraphicLayer = null;
-
+        this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
 
         var me = this;
+
+        //todo 将被弃用
         if (options.onClick) {
             me.map.on('click', function (e) {
                 var coordinate = e.coordinate;
                 var resolution = e.frameState.viewState.resolution;
                 var pixel = e.pixel;
-                me.forEachFeatureAtCoordinate(coordinate, resolution, options.onClick,pixel);
+                me._forEachFeatureAtCoordinate(coordinate, resolution, options.onClick, pixel);
             });
         }
 
@@ -118,6 +128,115 @@ export class Graphic extends ol.source.ImageCanvas {
             var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
             return [x, y];
         }
+
+        /**
+         * @private
+         * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
+         * @description 获取在视图上的要素
+         * @param coordinate -{string} 坐标
+         * @param resolution -{number} 分辨率
+         * @param callback -{function} 回调函数
+         */
+        function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
+            let graphics = me.getGraphicsInExtent();
+            for (let i = graphics.length - 1; i >= 0; i--) {
+                //已经被高亮的graphics 不被选选中
+                if (graphics[i].getStyle() instanceof HitCloverShape) {
+                    continue;
+                }
+                let center = graphics[i].getGeometry().getCoordinates();
+                let image = new ol.style.Style({
+                    image: graphics[i].getStyle()
+                }).getImage();
+                let extent = [];
+                extent[0] = center[0] - image.getAnchor()[0] * resolution;
+                extent[2] = center[0] + image.getAnchor()[0] * resolution;
+                extent[1] = center[1] - image.getAnchor()[1] * resolution;
+                extent[3] = center[1] + image.getAnchor()[1] * resolution;
+                if (ol.extent.containsCoordinate(extent, coordinate)) {
+                    if (me.isHighLight) {
+                        me._highLight(center, image, graphics[i], evtPixel);
+                    }
+                    return callback(graphics[i]);
+                }
+                if (me.isHighLight) {
+                    me._highLightClose();
+                }
+            }
+            return undefined;
+        }
+
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype._highLightClose
+     * @description 关闭高亮要素显示
+     * @private
+     */
+    _highLightClose() {
+        this.selected = null;
+        if (this.hitGraphicLayer) {
+            this.map.removeLayer(this.hitGraphicLayer);
+            this.hitGraphicLayer = null;
+        }
+        this.changed();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype._highLight
+     * @description 高亮显示选中要素
+     * @param selectGraphic - {ol.Graphic} 高效率点图层点要素
+     * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
+     * @private
+     */
+    _highLight(center, image, selectGraphic, evtPixel) {
+        if (selectGraphic.getStyle() instanceof CloverShape) {
+            if (this.hitGraphicLayer) {
+                this.map.removeLayer(this.hitGraphicLayer);
+                this.hitGraphicLayer = null;
+            }
+            var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
+            //点击点与中心点的角度
+            evtPixel = evtPixel || [0, 0];
+            var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0])) / Math.PI * 180;
+            angle = angle > 0 ? angle : 360 + angle;
+            //确定扇叶
+            var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
+            //扇叶的起始角度
+            var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
+            //渲染参数
+            var opts = {
+                stroke: new ol.style.Stroke({
+                    color: "#ff0000",
+                    width: 1
+                }),
+                fill: new ol.style.Fill({
+                    color: "#0099ff"
+                }),
+                radius: image.getRadius(),
+                angle: image.getAngle(),
+                eAngle: sAngle + image.getAngle(),
+                sAngle: sAngle
+            };
+            if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape) {
+                opts.stroke = this.highLightStyle.getStroke();
+                opts.fill = this.highLightStyle.getFill();
+                opts.radius = this.highLightStyle.getRadius();
+                opts.angle = this.highLightStyle.getAngle();
+            }
+            var hitGraphic = new ol.Graphic(new ol.geom.Point(center));
+            hitGraphic.setStyle(new HitCloverShape(opts));
+            this.hitGraphicLayer = new ol.layer.Image({
+                source: new ol.source.Graphic({
+                    map: this.map,
+                    graphics: [hitGraphic]
+                })
+            });
+            this.map.addLayer(this.hitGraphicLayer);
+        } else {
+            this.selected = selectGraphic;
+            this.changed();
+        }
     }
 
     /**
@@ -143,86 +262,6 @@ export class Graphic extends ol.source.ImageCanvas {
         return graphics;
     }
 
-    /**
-     * @private
-     * @function ol.source.Graphic.prototype.forEachFeatureAtCoordinate
-     * @description 获取在视图上的要素
-     * @param coordinate -{string} 坐标
-     * @param resolution -{number} 分辨率
-     * @param callback -{function} 回调函数
-     */
-    forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
-        var graphics = this.getGraphicsInExtent();
-        for (var i = graphics.length - 1; i > 0; i--) {
-            var center = graphics[i].getGeometry().getCoordinates();
-            var image = new ol.style.Style({
-                image: graphics[i].getStyle()
-            }).getImage();
-            var extent = [];
-            extent[0] = center[0] - image.getAnchor()[0] * resolution;
-            extent[2] = center[0] + image.getAnchor()[0] * resolution;
-            extent[1] = center[1] - image.getAnchor()[1] * resolution;
-            extent[3] = center[1] + image.getAnchor()[1] * resolution;
-            if (ol.extent.containsCoordinate(extent, coordinate)) {
-                if (graphics[i].getStyle() instanceof CloverShape) {
-                    if (this.hitGraphicLayer) {
-                        this.map.removeLayer(this.hitGraphicLayer);
-                        this.hitGraphicLayer = null;
-                    }
-                    var pixel = this.map.getPixelFromCoordinate([center[0], center[1]]);
-                    //点击点与中心点的角度
-                    evtPixel = evtPixel || [0, 0];
-                    var angle = (Math.atan2(evtPixel[1] - pixel[1], evtPixel[0] - pixel[0])) / Math.PI * 180;
-                    angle = angle > 0 ? angle : 360 + angle;
-                    //确定扇叶
-                    var index = Math.ceil(angle / (image.getAngle() + image.getSpaceAngle()));
-                    //扇叶的起始角度
-                    var sAngle = (index - 1) * (image.getAngle() + image.getSpaceAngle());
-                    //渲染参数
-                    var opts = {
-                        stroke: new ol.style.Stroke({
-                            color: "#ff0000",
-                            width: 1
-                        }),
-                        fill: new ol.style.Fill({
-                            color: "#0099ff"
-                        }),
-                        radius: image.getRadius(),
-                        angle: image.getAngle(),
-                        eAngle: sAngle + image.getAngle(),
-                        sAngle: sAngle
-                    };
-                    if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape) {
-                        opts.stroke = this.highLightStyle.getStroke();
-                        opts.fill = this.highLightStyle.getFill();
-                        opts.radius = this.highLightStyle.getRadius();
-                        opts.angle = this.highLightStyle.getAngle();
-                    }
-                    var hitGraphic = new ol.Graphic(new ol.geom.Point(center));
-                    hitGraphic.setStyle(new HitCloverShape(opts));
-                    this.hitGraphicLayer = new ol.layer.Image({
-                        source: new ol.source.Graphic({
-                            map: this.map,
-                            graphics: [hitGraphic]
-                        })
-                    });
-                    this.map.addLayer(this.hitGraphicLayer);
-                } else {
-                    this.selected = graphics[i];
-                    this.changed();
-                }
-                callback(graphics[i]);
-                return;
-            }
-            this.selected = null;
-            if (this.hitGraphicLayer) {
-                this.map.removeLayer(this.hitGraphicLayer);
-                this.hitGraphicLayer = null;
-            }
-            this.changed();
-        }
-        callback();
-    }
 }
 
 ol.source.Graphic = Graphic;

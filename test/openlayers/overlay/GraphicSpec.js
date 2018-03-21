@@ -96,7 +96,7 @@ describe('openlayers_GraphicLayer', () => {
             var a = new Graphic({
                 graphics: graphics,
                 map: map
-            }).forEachFeatureAtCoordinate(coors[1], 1, (result) => {
+            })._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
                 console.log(result);
             });
             expect(a).not.toBeNull();
@@ -228,17 +228,25 @@ describe('openlayers_GraphicLayer', () => {
             });
             map.addLayer(graphicLayer);
         });
+
         setTimeout(() => {
             expect(1).not.toBeNull();
-            graphicLayer.getSource().forEachFeatureAtCoordinate(coors[2], 1, (result) => {
+            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], 1, (result) => {
                 console.log(result);
             });
-            graphicLayer.getSource().forEachFeatureAtCoordinate(coors[1], 1, (result) => {
+            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
                 console.log(result);
             });
-            graphicLayer.getSource().forEachFeatureAtCoordinate([-126.16, 39.05], 1, (result) => {
+            graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], 1, (result) => {
                 console.log(result);
             });
+
+            let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
+            map.forEachFeatureAtPixel(pixel,
+                (graphic) => {
+                    expect(graphic).not.toBeNull();
+                    console.log(graphic);
+                });
             map.removeLayer(graphicLayer);
             done();
         }, 1000)
