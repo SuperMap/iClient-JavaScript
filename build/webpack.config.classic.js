@@ -8,12 +8,21 @@ var banner = `
 `;
 
 module.exports = {
+    mode:"production",
     //页面入口文件配置
     entry: {},
     //入口文件输出配置
     output: {
         path: __dirname + '/../dist',
         filename: 'iclient-classic.js'
+    },
+    //不显示打包文件大小相关警告
+    performance:{
+        hints: false
+    },
+    //是否启用压缩
+    optimization: {
+        minimize:false
     },
 
     //其它解决方案配置
