@@ -12,11 +12,15 @@ export var MapExtend = function () {
 
         this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
 
-        let layers = this.getLayers().getArray();
-        let resolution = this.getView().getResolution();
-        let coordinate = this.getCoordinateFromPixel(pixel);
+        const layerFilter = opt_options.layerFilter ? opt_options.layerFilter : () => {
+            return true;
+        };
+
+        const layers = this.getLayers().getArray();
+        const resolution = this.getView().getResolution();
+        const coordinate = this.getCoordinateFromPixel(pixel);
         for (let i = 0; i < layers.length; i++) {
-            if (layers[i].getSource()._forEachFeatureAtCoordinate) {
+            if (layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
                 layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
             }
         }

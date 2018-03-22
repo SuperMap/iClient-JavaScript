@@ -59874,11 +59874,15 @@ var MapExtend = exports.MapExtend = function () {
 
         this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
 
+        var layerFilter = opt_options.layerFilter ? opt_options.layerFilter : function () {
+            return true;
+        };
+
         var layers = this.getLayers().getArray();
         var resolution = this.getView().getResolution();
         var coordinate = this.getCoordinateFromPixel(pixel);
         for (var i = 0; i < layers.length; i++) {
-            if (layers[i].getSource()._forEachFeatureAtCoordinate) {
+            if (layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
                 layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
             }
         }

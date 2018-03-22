@@ -30,6 +30,7 @@ export var EchartsLayer = L.Layer.extend({
             echartsOptions.LeafletMap = {
                 roam: true
             }
+            echartsOptions.animation = false;
         }
         this._echartsOptions = echartsOptions;
         L.Util.setOptions(this, options);
