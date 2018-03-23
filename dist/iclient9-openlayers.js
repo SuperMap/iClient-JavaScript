@@ -59874,7 +59874,7 @@ var MapExtend = exports.MapExtend = function () {
 
         this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
 
-        var layerFilter = opt_options.layerFilter ? opt_options.layerFilter : function () {
+        var layerFilter = opt_options && opt_options.layerFilter ? opt_options.layerFilter : function () {
             return true;
         };
 

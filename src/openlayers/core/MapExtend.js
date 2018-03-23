@@ -12,7 +12,7 @@ export var MapExtend = function () {
 
         this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
 
-        const layerFilter = opt_options.layerFilter ? opt_options.layerFilter : () => {
+        const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {
             return true;
         };
 
