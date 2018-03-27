@@ -128,6 +128,9 @@
 - 修改 `L.supermap.imageMapLayer` 的出图方式为整张image出图
 - 修改矢量瓦片字体默认粗体的问题
 - 修改 `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 通过 `key` `token` 授权失败的问题
+- 修改 `L.supermap.tiandituLayer` 显示级别多一级的问题
+- 修改 `L.supermap.mapVLayer` 在高分屏时无法选中要素的问题
+- 修改 `L.supermap.echartsLayer` 删除其他图层 `zoomend` `moveend` 事件的问题
 
 ### for OpenLayers
 
