@@ -451,7 +451,8 @@ window.resources = {
         "title_vectorTileLayerNight": "Night Style of SuperMap REST Vector Layer",
         "title_vectorTileLayerNormal": "Vector Layer of SuperMap REST",
         "title_iportalWebMap": "SuperMap iPortal Map",
-
+        "title_earthquakeHeatMapLayer":"Earthquake occurrences(2005-2016)(Classic)",
+        "title_echartsEarthquake":"Earthquake occurrences(2005-2016)",
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
@@ -1067,7 +1068,12 @@ window.resources = {
         "text_proportionAnimation": "Proportional animation",
         "text_SHAnimation": "Show/hidden animation",
         "text_pathAnimation": "Path animation",
-
+        "text_echartsEarthquake_title":"Earthquake occurrences from 2005 to 2016",
+        "text_echartsEarthquake_sub_title":"units: times",
+        "text_quarter_1":"Quarter 1",
+        "text_quarter_2":"Quarter 2",
+        "text_quarter_3":"Quarter 3",
+        "text_quarter_4":"Quarter 4",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

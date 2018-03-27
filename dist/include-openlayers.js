@@ -55,7 +55,7 @@
             inputScript("http://cdn.bootcss.com/echarts/4.0.4/echarts.min.js");
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript("https://cdn.jsdelivr.net/npm/ol3-echarts/dist/ol3Echarts.js");
+            inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/ol3Echarts.js");
         }
         if (inArray(includes, 'osmbuildings')) {
             inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");

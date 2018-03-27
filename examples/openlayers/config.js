@@ -493,6 +493,11 @@ var exampleConfig = {
                     name_en: "random points (Classic)",
                     thumbnail: "ol_heatMapLayer.png",
                     fileName: "heatMapLayer"
+                },{
+                    name: "2005-2016地震次数(Classic)",
+                    name_en: "earthquake occurrences(2005-2016)(classic)",
+                    thumbnail: "ol_earthquakeHeatMapLayer.png",
+                    fileName:'earthquakeHeatMapLayer'
                 }]
             },
             "cluster": {
@@ -616,6 +621,13 @@ var exampleConfig = {
                         name_en: "cell map",
                         thumbnail: "ol_echartsCellMap.png",
                         fileName: "echartsCellMap"
+                    },
+                    {
+                        name: "2005到2016年地震发生情况",
+                        name_en: "Earthquake occurrences(2005-2016)",
+                        thumbnail: "ol_echartsEarthquake.png",
+                        fileName: "echartsEarthquake"
+                       
                     }
                 ]
             },

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_echartsEarthquake"></title>
+    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/include-openlayers.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script type="text/javascript" include="jquery,papaparse" src="../js/include-web.js"></script>
+    <script>
+        // 加载地图
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var map, option, url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({ attributionOptions: { collapsed: false } })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [96, 36],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            }),
+            layers: [new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest({
+                    url: url,
+                    prjCoordSys: { "epsgCode": 4326 }
+                }),
+                projection: 'EPSG:4326'
+            })]
+        });
+
+        var echartslayer = new ol3Echarts(null, {
+            hideOnMoving: true,
+            hideOnZooming: true
+        });
+        echartslayer.appendTo(map);
+
+        $.get('../data/chinaEarthquake.csv', function (csvstr) {
+            var result = Papa.parse(csvstr, { skipEmptyLines: true, header: true }).data;
+
+            // 热力图数据
+            var heatPoints = [];
+            // 图表数据
+            var chartData = {};
+            for (var i = 0; i < result.length; i++) {
+                var item=result[i];
+
+                if (!item.date) continue;
+
+                var date = new Date(item.date);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var point = [parseFloat(item.X), parseFloat(item.Y), parseFloat(item.level)];
+
+                //每一年的地震数据
+                if (heatPoints[year]) {
+                    heatPoints[year].push(point);
+                } else {
+                    heatPoints[year] = [point];
+                }
+
+                //每年每发生的地震次数
+                if (!chartData[year]) {
+                    chartData[year] = {};
+                    chartData[year][month] = 1;
+                } else {
+                    if (!chartData[year][month]) {
+                        chartData[year][month] = 1;
+                    } else {
+                        chartData[year][month]++;
+                    }
+                }
+            }
+
+            //echarts option
+            var option = {
+                baseOption: {
+                    animationDurationUpdate: 1000,
+                    animationEasingUpdate: 'quinticInOut',
+                    timeline: {
+                        axisType: 'category',
+                        orient: 'vertical',
+                        autoPlay: true,
+                        inverse: true,
+                        playInterval: 3000,
+                        left: null,
+                        right: 30,
+                        top: 20,
+                        bottom: 40,
+                        width: 55,
+                        height: null,
+                        label: {
+                            normal: { textStyle: { color: '#ddd' } },
+                            emphasis: { textStyle: { color: '#fff' } }
+                        },
+                        symbol: 'none',
+                        lineStyle: { color: '#555' },
+                        checkpointStyle: { color: '#bbb', borderColor: '#777', borderWidth: 2 },
+                        controlStyle: {
+                            showNextBtn: false,
+                            showPrevBtn: false,
+                            normal: { color: '#666', borderColor: '#666' },
+                            emphasis: { color: '#aaa', borderColor: '#aaa' }
+                        },
+                        data: ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016']
+                    },
+
+                    title: {
+                        text: resources.text_echartsEarthquake_title,
+                        subtext: resources.text_echartsEarthquake_sub_title,
+                        left: 'center',
+                        top: 50,
+                        textStyle: { fontSize: 25, color: 'rgba(255,255,255, 0.9)' }
+                    }
+                },
+                options: []
+            }
+
+            //options
+            for (var j = 2005; j <= 2016; j++) {
+                var dataAxis = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+                var echartsChartData = [
+                    chartData[j][1], chartData[j][2], chartData[j][3], chartData[j][4],
+                    chartData[j][5], chartData[j][6], chartData[j][7], chartData[j][8],
+                    chartData[j][9], chartData[j][10], chartData[j][11], chartData[j][12]
+                ];
+                var yMax = 400;
+                var dataShadow = [];
+                for (var i = 0; i < echartsChartData.length; i++) {
+                    dataShadow.push(yMax);
+                }
+                option.options.push({
+                    visualMap: {
+                        show: false,
+                        top: 'top',
+                        min: 0,
+                        max: 5,
+                        seriesIndex: 0,
+                        calculable: true,
+                        inRange: { color: ['blue', 'blue', 'green', 'yellow', 'red'] }
+                    },
+                    grid: {
+                        left: 50,
+                        top: 575,
+                        bottom: 70,
+                        width: '30%',
+                        height: '30%',
+                        textStyle: {
+                            color: "#fff"
+                        },
+                    },
+                    tooltip: {
+                        trigger: "item",
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        formatter: "{b0}:{c0}"
+                    },
+                    xAxis: [{
+                        type: "category",
+                        axisLine: {
+                            lineStyle: { color: '#90979c' }
+                        },
+                        splitLine: { show: false },
+                        axisTick: { show: false },
+                        splitArea: { show: false },
+                        xisLabel: { interval: 0, },
+                        data: dataAxis,
+                    }],
+                    yAxis: [{
+                        type: "value",
+                        splitLine: { show: false },
+                        axisLine: {
+                            lineStyle: { color: '#90979c' }
+                        },
+                        axisTick: { show: false },
+                        axisLabel: { interval: 0, },
+                        splitArea: { show: false }
+                    }],
+
+                    series: [
+                        // heatmap
+                        {
+                            type: 'heatmap',
+                            coordinateSystem: "openlayers",
+                            data: heatPoints[j],
+                            pointSize: 5,
+                            blurSize: 15
+                        },
+                        // For shadow bar
+                        {
+                            type: 'bar',
+                            itemStyle: {
+                                normal: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            barGap: '-100%',
+                            barCategoryGap: '40%',
+                            data: dataShadow,
+                            animation: false
+                        },
+                        // bar
+                        {
+                            type: 'bar',
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            { offset: 0, color: 'red' },
+                                            { offset: 0.5, color: 'yellow' },
+                                            { offset: 1, color: 'red' }
+                                        ]
+                                    ),
+                                    barBorderRadius: 15
+                                },
+                                emphasis: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            { offset: 0, color: 'red' },
+                                            { offset: 0.7, color: 'yellow' },
+                                            { offset: 1, color: 'red' }
+                                        ]
+                                    )
+                                },
+                            },
+                            barWidth: 20,
+                            bargap: 5,
+                            data: echartsChartData
+                        },
+                        // line
+                        {
+                            type: "line",
+                            symbolSize: 10,
+                            symbol: 'circle',
+                            itemStyle: {
+                                normal: {
+                                    color: "rgba(252,230,48,1)",
+                                    barBorderRadius: 0,
+                                    label: {
+                                        show: true,
+                                        position: "top",
+                                        formatter: function (p) { return p.value > 0 ? (p.value) : ''; }
+                                    }
+                                }
+                            },
+                            data: echartsChartData
+                        },
+                        // pie
+                        {
+                            type: 'pie',
+                            radius: '30%',
+                            center: ['15%', '25%'],
+                            data: [
+                                { value: echartsChartData[0] + echartsChartData[1] + echartsChartData[2], name: resources.text_quarter_1 + "(01-03)" },
+                                { value: echartsChartData[3] + echartsChartData[4] + echartsChartData[5], name: resources.text_quarter_2 + "(04-06)" },
+                                { value: echartsChartData[6] + echartsChartData[7] + echartsChartData[8], name: resources.text_quarter_3 + "(07-09)" },
+                                { value: echartsChartData[9] + echartsChartData[10] + echartsChartData[11], name: resources.text_quarter_4 + "(10-12)" }
+                            ].sort(function (a, b) {
+                                return a.value - b.value
+                            }),
+                            roseType: 'angle',
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        color: 'rgba(255, 255, 255, 0.7)'
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    lineStyle: {
+                                        color: 'rgba(255, 255, 255, 0.7)'
+                                    },
+                                    smooth: 0.2,
+                                    length: 10,
+                                    length2: 20
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'orange',
+                                    shadowBlur: 200,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            animationType: 'scale',
+                            animationEasing: 'elasticOut',
+                            animationDelay: function (idx) {
+                                return Math.random() * 200;
+                            }
+                        }
+                    ]
+                })
+            }
+
+            echartslayer.setChartOptions(option);
+        });
+    </script>
+</body>
+
+</html>

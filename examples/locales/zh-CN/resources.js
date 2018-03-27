@@ -451,7 +451,8 @@ window.resources = {
         "title_vectorTileLayerNight":"SuperMap REST 月夜风格矢量底图",
         "title_vectorTileLayerNormal":"SuperMap REST 矢量瓦片",
         "title_iportalWebMap":"SuperMap iPortal地图",
-
+        "title_earthquakeHeatMapLayer":"2005-2016地震次数(Classic)",
+        "title_echartsEarthquake":"2005到2016年地震发生情况",
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
@@ -1067,7 +1068,12 @@ window.resources = {
         "text_proportionAnimation":"比例动画",
         "text_SHAnimation":"显隐动画",
         "text_pathAnimation":"路径动画",
-
+        "text_echartsEarthquake_title":"2005到2016年地震发生情况",
+        "text_echartsEarthquake_sub_title":"单位：次数",
+        "text_quarter_1":"第一季度",
+        "text_quarter_2":"第二季度",
+        "text_quarter_3":"第三季度",
+        "text_quarter_4":"第四季度",
 
         "btn_overlayAnalyst": "叠加分析",
         "btn_terrainCurvatureCalculation": "地形曲率计算",
