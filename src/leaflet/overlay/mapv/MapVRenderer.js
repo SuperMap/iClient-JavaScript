@@ -1,5 +1,8 @@
 import L from 'leaflet';
-import {baiduMapLayer, DataSet} from "mapv";
+import {
+    baiduMapLayer,
+    DataSet
+} from "mapv";
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -43,8 +46,10 @@ export class MapVRenderer extends BaseLayer {
      * @param e - {Object} 触发对象
      */
     clickEvent(e) {
+        var offset = this.map.containerPointToLayerPoint([0, 0]);
+        var devicePixelRatio = this.devicePixelRatio = window.devicePixelRatio;
         var pixel = e.layerPoint;
-        super.clickEvent(pixel, e);
+        super.clickEvent(L.point((pixel.x - offset.x) / devicePixelRatio, (pixel.y - offset.y) / devicePixelRatio), e);
     }
 
     /**
@@ -119,7 +124,9 @@ export class MapVRenderer extends BaseLayer {
             _data = data.get();
         }
         this.dataSet.add(_data);
-        this.update({options: options});
+        this.update({
+            options: options
+        });
     }
 
     /**
@@ -138,7 +145,9 @@ export class MapVRenderer extends BaseLayer {
         if (_data != undefined) {
             this.dataSet.set(_data);
         }
-        super.update({options: update.options});
+        super.update({
+            options: update.options
+        });
     }
 
     /**
@@ -164,7 +173,9 @@ export class MapVRenderer extends BaseLayer {
             }
         });
         this.dataSet.set(newData);
-        this.update({options: null});
+        this.update({
+            options: null
+        });
     }
 
     /**
@@ -173,7 +184,10 @@ export class MapVRenderer extends BaseLayer {
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
-        this.update({options: null});
+        this.dataSet.add(null);
+        // this.update({
+        //     options: null
+        // });
     }
 
     _canvasUpdate(time) {
@@ -268,8 +282,7 @@ export class MapVRenderer extends BaseLayer {
         this.initAnimator();
     }
 
-    addAnimatorEvent() {
-    }
+    addAnimatorEvent() {}
 
     /**
      * @function L.supermap.MapVRenderer.prototype.moveStartEvent
@@ -291,7 +304,6 @@ export class MapVRenderer extends BaseLayer {
         this.canvasLayer.draw();
         this._show();
     }
-
     /**
      * @function L.supermap.MapVRenderer.prototype.zoomStartEvent
      * @description 隐藏渲染样式

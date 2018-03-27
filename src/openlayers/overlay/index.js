@@ -8,7 +8,7 @@ export {RankSymbol} from './RankSymbol';
 export {Turf} from './Turf';
 export {Unique} from './Unique';
 export {VectorTileSuperMapRest} from './VectorTileSuperMapRest';
-export {HeatMapSource} from './HeatMap';
+export {HeatMap} from './HeatMap';
 export * from './graphic/index';
 export * from './mapv/index';
 export * from './theme';

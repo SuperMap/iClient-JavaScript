@@ -10,7 +10,7 @@ import echarts from "echarts";
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>
  *        attribution - {string} 版权信息。<br>
- *        loadWhileAnimating - {boolean} 是否在启动时加载。
+ *        loadWhileAnimating - {boolean} 是否在移动时加载。
  */
 export var EchartsLayer = L.Layer.extend({
 
@@ -75,14 +75,14 @@ export var EchartsLayer = L.Layer.extend({
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
-        !me.options.loadWhileAnimating && map.on("movestart", function () {
+        me.options.loadWhileAnimating && map.on("movestart", function () {
             me._disableEchartsContainer();
         });
         echarts.registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
-        }, function (payload, ecModel) {// eslint-disable-line no-unused-vars
+        }, function (payload, ecModel) { // eslint-disable-line no-unused-vars
 
         });
         echarts.registerCoordinateSystem(
@@ -118,17 +118,13 @@ export var EchartsLayer = L.Layer.extend({
                     if (rendering) {
                         return;
                     }
-
-                    var bounds = map.getBounds();
-                    var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
-                    var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0];
-
-
+                    var offset = me._map.containerPointToLayerPoint([0, 0]);
+                    var mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
 
-                    if (!me.options.loadWhileAnimating) {
-                        for (var item in  ecLayers) {
+                    if (me.options.loadWhileAnimating) {
+                        for (var item in ecLayers) {
                             if (!ecLayers.hasOwnProperty(item)) {
                                 continue;
                             }
@@ -161,9 +157,15 @@ export var EchartsLayer = L.Layer.extend({
                     });
                     me._enableEchartsContainer();
                 }
+                if (this._oldMoveHandler) {
+                    leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
 
-                leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
-                leafletMap.off('zoomend', this._oldZoomEndHandler);
+                }
+                if (this._oldZoomEndHandler) {
+                    leafletMap.off('zoomend', this._oldZoomEndHandler);
+
+                }
+
                 leafletMap.on(me.options.loadWhileAnimating ? 'move' : 'moveend', moveHandler);
                 leafletMap.on('zoomend', zoomEndHandler);
                 this._oldMoveHandler = moveHandler;
@@ -262,11 +264,12 @@ LeafletMapCoordSys.prototype.prepareCustoms = function () {
 LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     //处理数据中的null值
     if (data[1] === null) {
-        data[1] = 85.4;
+        data[1] = L.CRS.EPSG3857.projection.MAX_LATITUDE;
     }
     data[1] = this.fixLat(data[1]);
 
     var px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
+
     var mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
 };
