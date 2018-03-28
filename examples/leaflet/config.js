@@ -544,6 +544,11 @@ var exampleConfig = {
                     name_en: "random points (Classic)",
                     thumbnail: "l_heatMapLayer.png",
                     fileName: "heatMapLayer"
+                },{
+                    name: "2000年到2015年地震热力图(Classic)",
+                    name_en: "Earthquake heat map (2000-2015)",
+                    thumbnail: "l_earthquakeHeatMap.png",
+                    fileName: "earthquakeHeatMap"
                 }]
             },
             "animate": {

@@ -453,6 +453,7 @@ window.resources = {
         "title_iportalWebMap":"SuperMap iPortal地图",
         "title_earthquakeHeatMapLayer":"2005-2016地震次数(Classic)",
         "title_echartsEarthquake":"2005到2016年地震发生情况",
+        "title_l_echartsEarthquake":"2000年到2015年地震热力图",
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",

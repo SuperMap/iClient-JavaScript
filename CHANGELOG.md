@@ -161,7 +161,10 @@
 
 - 新增可视化纽约出租车18万点图片示例
 
-- 修复 `05_findPathService.html` 例子显示错误的问题 
+- 新增2w+地震数据热力图可视化范例
+
+- 修复 `05_findPathService.html` 例子显示错误的问题
+
 
 ### for OpenLayers
 

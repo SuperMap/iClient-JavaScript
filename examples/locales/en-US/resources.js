@@ -453,6 +453,7 @@ window.resources = {
         "title_iportalWebMap": "SuperMap iPortal Map",
         "title_earthquakeHeatMapLayer":"Earthquake occurrences(2005-2016)(Classic)",
         "title_echartsEarthquake":"Earthquake occurrences(2005-2016)",
+        "title_l_echartsEarthquake":"Earthquake heat map (2000-2015)",
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
