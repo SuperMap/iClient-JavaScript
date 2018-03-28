@@ -30428,9 +30428,9 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
         value: function clearData() {
             this.dataSet && this.dataSet.clear();
             this.dataSet.add(null);
-            // this.update({
-            //     options: null
-            // });
+            this.update({
+                options: null
+            });
         }
     }, {
         key: '_canvasUpdate',
@@ -65609,7 +65609,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>
  *        attribution - {string} 版权信息。<br>
- *        loadWhileAnimating - {boolean} 是否在启动时加载。
+ *        loadWhileAnimating - {boolean} 是否在移动时加载。
  */
 var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
