@@ -46291,6 +46291,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如:</br>
  *        routeTable - {string} 路由数据集。</br>
  *        routeIDField - {string} 路由数据集的标识字段。</br>
+ *        attributeFilter - {string} 属性过滤条件。</br>
  *        eventTable - {string} 用于生成空间数据的事件表名。</br>
  *        eventRouteIDField - {string} 用于生成空间数据的事件表的路由标识字段。</br>
  *        measureField - {string} 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义</br>
@@ -46316,7 +46317,11 @@ var GenerateSpatialDataParameters = exports.GenerateSpatialDataParameters = func
      * @description 路由数据集的标识字段。
      */
     this.routeIDField = null;
-
+    /**
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.attributeFilter - {string}
+     * @description 属性过滤条件。
+     */
+    this.attributeFilter = null;
     /**
      * @member SuperMap.GenerateSpatialDataParameters.prototype.eventTable - {string}
      * @description 用于生成空间数据的事件表名。
@@ -46393,6 +46398,7 @@ var GenerateSpatialDataParameters = exports.GenerateSpatialDataParameters = func
         me.routeTable = null;
       }
       me.routeIDField = null;
+      me.attributeFilter = null;
       me.eventTable = null;
       me.eventRouteIDField = null;
       me.measureField = null;

@@ -184,10 +184,7 @@ export class MapVRenderer extends BaseLayer {
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
-        this.dataSet.add(null);
-        this.update({
-            options: null
-        });
+        this.update({options: null});
     }
 
     _canvasUpdate(time) {

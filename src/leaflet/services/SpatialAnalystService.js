@@ -130,7 +130,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
+     * @function L.supermap.spatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析
      * @param params - {SuperMap.GeoRelationAnalystParameters} 空间关系分析服务参数类
      * @param callback - {function} 回调函数

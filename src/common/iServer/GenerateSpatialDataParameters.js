@@ -1,5 +1,9 @@
-﻿import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
+﻿import {
+    SuperMap
+} from '../SuperMap';
+import {
+    Util
+} from '../commontypes/Util';
 import './DataReturnOption';
 
 /**
@@ -9,6 +13,7 @@ import './DataReturnOption';
  * @param options - {Object} 可选参数。如:</br>
  *        routeTable - {string} 路由数据集。</br>
  *        routeIDField - {string} 路由数据集的标识字段。</br>
+ *        attributeFilter - {string} 属性过滤条件。</br>
  *        eventTable - {string} 用于生成空间数据的事件表名。</br>
  *        eventRouteIDField - {string} 用于生成空间数据的事件表的路由标识字段。</br>
  *        measureField - {string} 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义</br>
@@ -34,7 +39,12 @@ export class GenerateSpatialDataParameters {
          * @description 路由数据集的标识字段。
          */
         this.routeIDField = null;
-
+        /**
+         * @member SuperMap.GenerateSpatialDataParameters.prototype.attributeFilter - {string}
+         * @description 属性过滤条件。
+         * 当 {@link SuperMap.GenerateSpatialDataParameters.prototype.dataReturnOption.dataReturnMode}  为 {@link DataReturnMode.DATASET_AND_RECORDSET} 或 {@link DataReturnMode.RECORDSET_ONLY} 时有效。
+         */
+        this.attributeFilter = null;
         /**
          * @member SuperMap.GenerateSpatialDataParameters.prototype.eventTable - {string}
          * @description 用于生成空间数据的事件表名。
@@ -108,6 +118,7 @@ export class GenerateSpatialDataParameters {
             me.routeTable = null;
         }
         me.routeIDField = null;
+        me.attributeFilter = null;
         me.eventTable = null;
         me.eventRouteIDField = null;
         me.measureField = null;
