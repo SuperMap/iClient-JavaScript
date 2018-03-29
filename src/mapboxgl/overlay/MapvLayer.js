@@ -8,7 +8,8 @@ import {MapvRenderer} from "./mapv/MapvRenderer";
  * @classdesc Mapv图层
  * @param map - {Object} 地图
  * @param dataSet -{Object} 数据集
- * @param mapVOptions -{Object} Mapv参数
+ * @param mapVOptions -{Object} Mapv参数。如：
+ *        layerID - {string} 图层ID。<br>
  */
 export class MapvLayer {
 

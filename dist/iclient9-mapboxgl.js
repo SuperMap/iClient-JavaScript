@@ -14786,7 +14786,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 地理几何专题要素型专题图层。
  * @private
  * @param name - {string} 图层名
- * @param opt_options - {Object} 参数。
+ * @param opt_options - {Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
  * @extends mapboxgl.supermap.ThemeLayer
  */
 
@@ -28293,7 +28297,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 统计专题图层。
  * @param name - {string} 图层名。
  * @param chartsType -{string} 图表类别
- * @param opt_options - {Object} 参数。
+ * @param opt_options - {Object} 参数。如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        themeFields - {string} 指定创建专题图字段。 <br>
+ *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
+ *        symbolSetting - {Object} 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：
+ *  * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * maxR - {Number} 圆形的最大半径。
+ *  * minR - {Number} 圆形的最小半径。
+ *  * fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。
+ *  * circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ *  * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ *  * circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ *  * circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ *  * circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends mapboxgl.supermap.ThemeLayer
  */
 var Graph = exports.Graph = function (_Theme) {
@@ -46320,6 +46341,7 @@ var GenerateSpatialDataParameters = exports.GenerateSpatialDataParameters = func
     /**
      * @member SuperMap.GenerateSpatialDataParameters.prototype.attributeFilter - {string}
      * @description 属性过滤条件。
+     * 当 {@link SuperMap.GenerateSpatialDataParameters.prototype.dataReturnOption.dataReturnMode}  为 {@link DataReturnMode.DATASET_AND_RECORDSET} 或 {@link DataReturnMode.RECORDSET_ONLY} 时有效。
      */
     this.attributeFilter = null;
     /**
@@ -56739,6 +56761,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 构造参数，如下：<br>
  *        map - [mapboxgl.Map]{@linkdoc-mapboxgl/#map} mapboxgl map对象。必传。</br>
  *        id - {string} 专题图层ID。</br>
+ *        featureWeight - {string} 对应 feature 属性中的热点权重字段名称，权重值类型为float。<br>
  *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
  *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
  *        opacity - {number} 图层透明度。</br>
@@ -56812,7 +56835,7 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
 
         /**
          * @member mapboxgl.supermap.HeatMapLayer.prototype.featureWeight - {string}
-         * @description 对应feature.attributes中的热点权重字段名称，feature.attributes中权重参数的类型为float
+         * @description 对应 feature 属性中的热点权重字段名称，权重值类型为float
          * @example
          * //例如：
          * //feature.attributes中表示权重的字段为height,则在HeatMapLayer的featureWeight参数赋值为"height"
@@ -58403,7 +58426,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  Visualization Theme
  * @classdesc  单值专题图层。
  * @param name - {string} 图层名。
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends mapboxgl.supermap.GeoFeatureThemeLayer
  */
 var Unique = exports.Unique = function (_GeoFeature) {
@@ -58680,7 +58712,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 等级符号专题图层。
  * @param name - {string} 图层名。
  * @param symbolType -{string} 符号类型。
- * @param opt_options -{Object} 参数。
+ * @param opt_options - {Object} 参数。如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        themeFields - {string} 指定创建专题图字段。 <br>
+ *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
+ *        chartsSetting - {Object} 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:<br>
+ *  * width - {number} 专题要素（图表）宽度，必设参数。
+ *  * height - {number} 专题要素（图表）高度，必设参数。
+ *  * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ *  * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ *  * dataViewBoxParameter - {Array{number}} 数据视图框 dataViewBox 参数，
+ *  它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
+ *   * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+ *  如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @extends mapboxgl.supermap.GraphThemeLayer
  */
 var RankSymbol = exports.RankSymbol = function (_Graph) {
@@ -58778,7 +58827,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  Visualization Theme
  * @classdesc 分段专题图层。
  * @param name - {string} 图层名。
- * @param options -{Object} 参数。
+ * @param options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends mapboxgl.supermap.GeoFeatureThemeLayer
  */
 var Range = exports.Range = function (_GeoFeature) {
@@ -59109,7 +59167,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc Mapv图层
  * @param map - {Object} 地图
  * @param dataSet -{Object} 数据集
- * @param mapVOptions -{Object} Mapv参数
+ * @param mapVOptions -{Object} Mapv参数。如：
+ *        layerID - {string} 图层ID。<br>
  */
 var MapvLayer = exports.MapvLayer = function () {
     function MapvLayer(map, dataSet, mapVOptions) {
@@ -59326,7 +59385,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  Visualization Theme
  * @classdesc  标签专题图层。
  * @param name - {string} 图层名。
- * @param opt_options -{Object} 参数
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends mapboxgl.supermap.GeoFeatureThemeLayer
  */
 var Label = exports.Label = function (_GeoFeature) {

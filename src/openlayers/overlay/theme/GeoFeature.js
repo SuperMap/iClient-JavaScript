@@ -7,7 +7,20 @@ import {Theme} from './Theme';
  * @classdesc 地理几何专题要素型专题图层基类。
  * @private
  * @param name - {string} 图层名称
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends ol.source.Theme
  */
 

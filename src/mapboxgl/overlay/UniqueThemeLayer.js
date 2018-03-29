@@ -8,7 +8,16 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @category  Visualization Theme
  * @classdesc  单值专题图层。
  * @param name - {string} 图层名。
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends mapboxgl.supermap.GeoFeatureThemeLayer
  */
 export class Unique extends GeoFeature {

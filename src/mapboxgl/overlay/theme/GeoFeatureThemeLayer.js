@@ -8,7 +8,11 @@ import {Theme} from './ThemeLayer';
  * @classdesc 地理几何专题要素型专题图层。
  * @private
  * @param name - {string} 图层名
- * @param opt_options - {Object} 参数。
+ * @param opt_options - {Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
  * @extends mapboxgl.supermap.ThemeLayer
  */
 

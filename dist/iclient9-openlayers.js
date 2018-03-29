@@ -15062,7 +15062,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 地理几何专题要素型专题图层基类。
  * @private
  * @param name - {string} 图层名称
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends ol.source.Theme
  */
 
@@ -29672,7 +29685,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 统计专题图图层基类。
  * @param chartsType -{string} 图表类别
  * @param name - {string} 图层名称
- * @param opt_options - {Object} 参数
+ * @param opt_options - {Object} 参数。如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        themeFields - {string} 指定创建专题图字段。 <br>
+ *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        symbolSetting - {Object} 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：
+ *  * Symbolizer properties:
+ *  * codomain - {Array{number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * maxR - {number} 圆形的最大半径。
+ *  * minR - {number} 圆形的最小半径。
+ *  * fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。
+ *  * circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ *  * circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ *  * circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ *  * circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends ol.source.Theme
  */
 var Graph = exports.Graph = function (_Theme) {
@@ -30321,7 +30357,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
  * @param name - {string} 名称
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends ol.source.GeoFeature
  */
 var Label = exports.Label = function (_GeoFeature) {
@@ -31261,7 +31311,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  Visualization Theme
  * @classdesc 分段专题图图层源。
  * @param name - {string} 名称
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends ol.source.GeoFeature
  */
 var Range = exports.Range = function (_GeoFeature) {
@@ -31417,7 +31481,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
  * @param name - {String} 图层名称
- * @param opt_options -{Object} 参数。
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        themeField - {string}  指定创建专题图字段。<br>
+ *        style - {Object} 专题图样式。<br>
+ *        styleGroups - {Object} 各专题类型样式组。<br>
+ *        isHoverAble - {boolean} 是否开启hover事件。<br>
+ *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
  * @extends ol.source.GeoFeature
  */
 var Unique = exports.Unique = function (_GeoFeature) {
@@ -33575,8 +33654,7 @@ var MapExtend = exports.MapExtend = function () {
 
     _openlayers2.default.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options) {
 
-        this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
-
+        //如果满足高性能图层选取要求优先返回高性能图层选中结果
         var layerFilter = opt_options && opt_options.layerFilter ? opt_options.layerFilter : function () {
             return true;
         };
@@ -33586,9 +33664,11 @@ var MapExtend = exports.MapExtend = function () {
         var coordinate = this.getCoordinateFromPixel(pixel);
         for (var i = 0; i < layers.length; i++) {
             if (layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
-                layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
+                return layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
             }
         }
+
+        return this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
     };
 }();
 
@@ -51695,6 +51775,7 @@ var GenerateSpatialDataParameters = exports.GenerateSpatialDataParameters = func
     /**
      * @member SuperMap.GenerateSpatialDataParameters.prototype.attributeFilter - {string}
      * @description 属性过滤条件。
+     * 当 {@link SuperMap.GenerateSpatialDataParameters.prototype.dataReturnOption.dataReturnMode}  为 {@link DataReturnMode.DATASET_AND_RECORDSET} 或 {@link DataReturnMode.RECORDSET_ONLY} 时有效。
      */
     this.attributeFilter = null;
     /**
@@ -61318,6 +61399,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 构造参数，如下：<br>
  *        map - [ol.Map]{@linkdoc-openlayers/ol.Map.html} openlayers 的 map对象。必传参数。</br>
  *        id - {string} 专题图层ID。</br>
+ *        featureWeight - {string} 对应 feature 属性中的热点权重字段名称，权重值类型为float。<br>
  *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
  *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
  *        opacity - {number} 图层透明度。</br>
@@ -62414,7 +62496,29 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 等级符号专题图图层源。
  * @param name - {string} 专题图层名
  * @param symbolType -{string} 标志类型
- * @param opt_options -{Object} 参数
+ * @param opt_options -{Object} 参数，如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        themeFields - {string} 指定创建专题图字段。 <br>
+ *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
+ *        chartsSetting - {Object} 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:<br>
+ *  * width - {number} 专题要素（图表）宽度，必设参数。
+ *  * height - {number} 专题要素（图表）高度，必设参数。
+ *  * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ *  * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ *  * dataViewBoxParameter - {Array{number}} 数据视图框 dataViewBox 参数，
+ *  它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
+ *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+ *  如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @extends ol.source.Graph
  */
 var RankSymbol = exports.RankSymbol = function (_Graph) {
@@ -65952,7 +66056,7 @@ module.exports = function (proj4) {
 /* 338 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 339 */

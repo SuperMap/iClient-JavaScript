@@ -8,7 +8,30 @@ import {Theme} from './theme/Theme';
  * @classdesc 统计专题图图层基类。
  * @param chartsType -{string} 图表类别
  * @param name - {string} 图层名称
- * @param opt_options - {Object} 参数
+ * @param opt_options - {Object} 参数。如：<br>
+ *        id - {string} 专题图层ID。</br>
+ *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        opacity - {number} 图层透明的。</br>
+ *        attributions - {string|Object} 版权信息。 </br>
+ *        logo - {string} Logo</br>
+ *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ *        resolutions - {Array} 分辨率数组。</br>
+ *        themeFields - {string} 指定创建专题图字段。 <br>
+ *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
+ *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
+ *        symbolSetting - {Object} 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：
+ *  * Symbolizer properties:
+ *  * codomain - {Array{number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * maxR - {number} 圆形的最大半径。
+ *  * minR - {number} 圆形的最小半径。
+ *  * fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。
+ *  * circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ *  * circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ *  * circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ *  * circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends ol.source.Theme
  */
 export class Graph extends Theme {

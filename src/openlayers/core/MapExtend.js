@@ -10,8 +10,7 @@ export var MapExtend = function () {
 
     ol.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options) {
 
-        this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
-
+        //如果满足高性能图层选取要求优先返回高性能图层选中结果
         const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {
             return true;
         };
@@ -21,8 +20,11 @@ export var MapExtend = function () {
         const coordinate = this.getCoordinateFromPixel(pixel);
         for (let i = 0; i < layers.length; i++) {
             if (layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
-                layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
+                return layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
             }
         }
+
+        return this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
+
     }
 }();

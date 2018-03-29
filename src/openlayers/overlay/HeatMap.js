@@ -17,6 +17,7 @@ import {
  * @param options - {Object} 构造参数，如下：<br>
  *        map - [ol.Map]{@linkdoc-openlayers/ol.Map.html} openlayers 的 map对象。必传参数。</br>
  *        id - {string} 专题图层ID。</br>
+ *        featureWeight - {string} 对应 feature 属性中的热点权重字段名称，权重值类型为float。<br>
  *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
  *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
  *        opacity - {number} 图层透明度。</br>

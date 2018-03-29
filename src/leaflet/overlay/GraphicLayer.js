@@ -7,7 +7,8 @@ import '../core/Base';
  * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
  * @param graphics - {Array<L.supermap.Graphic>} 图形对象
- * @param options - {Object} 图层参数，暂时为空
+ * @param options - {Object} 图层参数。<br>
+ *        handleClick - {function} 图层点击响应事件函数。
  */
 export var GraphicLayer = L.Path.extend({
 
