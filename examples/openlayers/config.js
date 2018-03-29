@@ -679,6 +679,11 @@ var exampleConfig = {
                     name_en: "simple line",
                     thumbnail: "mapvPolylineSimple.png",
                     fileName: "mapvPolylineSimple"
+                }, {
+                    name: "北京房价信息",
+                    name_en: "Beijing house prices(2018.2)",
+                    thumbnail: "mapvLianjia.png",
+                    fileName: "mapvLianjia"
                 }
                 ]
             },

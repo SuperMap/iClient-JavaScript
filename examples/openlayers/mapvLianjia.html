@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <script type="text/javascript" include="mapv" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_mapvLianjia"></title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        #popupContainer {
+            background: rgba(9, 1, 54, 0.589);
+            color: red;
+            display: none;
+            padding: 15px;
+            color: white;
+            font-size: 15px;
+            font-weight: bolder;
+            border-radius: 5px;
+            box-shadow: 0px -1px 46px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        #price {
+            font-weight: lighter;
+            padding-right: 5px;
+        }
+
+        #titleContainer {
+            position: absolute;
+            color: white;
+            left: 0;
+            top: 30px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #titleContainer>#title {
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="titleContainer">
+        <h2 id="title" data-i18n="resources.text_mapvLianjia_title"></h2>
+    </div>
+    <div id="popupContainer">
+        <table>
+            <tr>
+                <td data-i18n="resources.text_mapvLianjia_tooltip"></td>
+                <td id="price"></td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        // map
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+
+        var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+        var queryUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_蜂巢";
+
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({ attributionOptions: { collapsed: true } })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [12956083.664865, 4872418.298275658],
+                zoom: 10,
+                projection: 'EPSG:3857'
+            }),
+            layers: [new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest({
+                    url: url
+                })
+            })]
+        });
+
+        // popup
+        var popupContainer = document.getElementById('popupContainer');
+        var popup = new ol.Overlay({
+            element: document.getElementById('popupContainer'),
+            offset: [15, -50]
+        });
+        map.addOverlay(popup);
+
+        var sqlParam = new SuperMap.QueryBySQLParameters({
+            queryParams: {
+                name: "lj_xq_500fc@BJ_201802LJ",
+                attributeFilter: "SMID>0",
+            },
+            fromIndex: 0,
+            toIndex: 10000,
+            maxFeatures: 10000,
+        });
+
+        new ol.supermap.QueryService(queryUrl).queryBySQL(sqlParam, function (data) {
+            var features = data.result.recordsets[0].features.features;
+        
+            //构造mapv数据
+            var data = [], arr = [];
+            for (var i = 0; i < features.length; i++) {
+
+                var feature = features[i];
+                var average_price = feature.properties.average_price_1;
+
+                data.push({
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: feature.geometry.coordinates[0]
+                    },
+                    count: Math.floor(average_price / 10000),
+                    price: parseFloat(average_price).toFixed(2),
+                });
+
+            };
+
+            var dataSet = new mapv.DataSet(data.concat());
+            var mapvOptions = {
+                max: 27,
+                gradient: { // 显示的颜色渐变范围
+                    '0': 'rgba(0,0,255,0.7)',
+                    '0.6': 'rgba(255,0,0,0.7)'
+                },
+                draw: 'intensity',
+                methods: {
+                    click: function (item) {
+                        if (item != null) {
+                            $("#price").text("￥" + item.price);
+                            popupContainer.style.display = "block";
+                            popup.setPosition(item.geometry.coordinates[0][0]);
+                        } else {
+                            popup.setPosition();
+                        };
+                    }
+                }
+            };
+
+            var options = {
+                map: map, dataSet: dataSet, mapvOptions: mapvOptions
+            };
+
+            map.addLayer(new ol.layer.Image({
+                source: new ol.source.Mapv(options)
+            }));
+        });
+    </script>
+</body>
+
+</html>

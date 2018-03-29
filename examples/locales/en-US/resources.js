@@ -454,6 +454,7 @@ window.resources = {
         "title_earthquakeHeatMapLayer":"Earthquake occurrences(2005-2016)(Classic)",
         "title_echartsEarthquake":"Earthquake occurrences(2005-2016)",
         "title_l_echartsEarthquake":"Earthquake heat map (2000-2015)",
+        "title_mapvLianjia":"Beijing house prices of Lianjia",
 
         "text_code": "Forward Match",
         "text_decode": "Reverse Match",
@@ -1075,6 +1076,8 @@ window.resources = {
         "text_quarter_2":"Quarter 2",
         "text_quarter_3":"Quarter 3",
         "text_quarter_4":"Quarter 4",
+        "text_mapvLianjia_title":"Beijing house prices of Lianjia(2018.2)",
+        "text_mapvLianjia_tooltip":"Price(m²)：",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
