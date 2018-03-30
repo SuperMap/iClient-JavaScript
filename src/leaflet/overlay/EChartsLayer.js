@@ -210,11 +210,10 @@ export var EchartsLayer = L.Layer.extend({
  * @param LeafletMap - {L.map} 地图
  * @param api - {Object} 接口
  */
-export function LeafletMapCoordSys(LeafletMap, api) {
+export function LeafletMapCoordSys(LeafletMap) {
     this._LeafletMap = LeafletMap;
     this.dimensions = ['lng', 'lat'];
     this._mapOffset = [0, 0];
-    this._api = api
 }
 
 LeafletMapCoordSys.prototype.dimensions = ['lng', 'lat'];
@@ -291,8 +290,8 @@ LeafletMapCoordSys.prototype.pointToData = function (pt) {
 };
 
 LeafletMapCoordSys.prototype.getViewRect = function () {
-    var api = this._api;
-    return new echarts.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
+    const size = this._LeafletMap.getSize();
+    return new echarts.graphic.BoundingRect(0, 0, size.x, size.y);
 };
 
 LeafletMapCoordSys.prototype.getRoamTransform = function () {
@@ -305,17 +304,18 @@ LeafletMapCoordSys.create = function (ecModel, api) {
 
     ecModel.eachComponent('LeafletMap', function (LeafletMapModel) {
         var leafletMap = echarts.leafletMap;
-        coordSys = new LeafletMapCoordSys(leafletMap, api);
-        coordSys.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
-        LeafletMapModel.coordinateSystem = coordSys;
+        if (!coordSys) {
+            coordSys = new LeafletMapCoordSys(leafletMap, api);
+        }
+        LeafletMapModel.coordinateSystem = coordSys || new LeafletMapCoordSys(echarts.leafletMap);
+        LeafletMapModel.coordinateSystem.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
     });
     ecModel.eachSeries(function (seriesModel) {
         if (seriesModel.get('coordinateSystem') === 'leaflet') {
-            seriesModel.coordinateSystem = coordSys
+            seriesModel.coordinateSystem = coordSys || new LeafletMapCoordSys(echarts.leafletMap);
         }
     })
 };
-
 export var echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
