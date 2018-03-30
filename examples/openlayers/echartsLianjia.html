@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <script type="text/javascript" include="echarts,ol3-echarts" src="../../dist/include-openlayers.js"></script>
+    <title data-i18n="resources.title_mapvLianjia"></title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #titleContainer {
+            position: absolute;
+            color: white;
+            left: 0;
+            top: 30px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #titleContainer>#title {
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="titleContainer">
+        <h2 id="title" data-i18n="resources.text_mapvLianjia_title"></h2>
+    </div>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script>
+       
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+
+        var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+        var queryUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_格网";
+
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({ attributionOptions: { collapsed: true } })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [12954583.524137927, 4860747.532344677],
+                zoom: 10,
+                projection: 'EPSG:3857'
+            }),
+            layers: [new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest({
+                    url: url
+                })
+            })]
+        });
+
+        var echartslayer = new ol3Echarts(null, {
+            hideOnMoving: true,
+            hideOnZooming: true
+        });
+        echartslayer.appendTo(map);
+
+        echartslayer.showLoading();
+        var sqlParam = new SuperMap.QueryBySQLParameters({
+            queryParams: {
+                name: "lj_xq_500gw@BJ_201802LJ",
+                attributeFilter: "SMID>0",
+            },
+            fromIndex: 0,
+            toIndex: 10000,
+            maxFeatures: 10000,
+        });
+
+        new ol.supermap.QueryService(queryUrl).queryBySQL(sqlParam, function (data) {
+            echartslayer.hideLoading();
+            var features = data.result.recordsets[0].features.features;
+
+            var data = [];//由矩形左上角点&权重值&矩形右下角点组成
+            for (var i = 0; i < features.length; i++) {
+                var pointLeftTop = features[i].geometry.coordinates[0][0][0];
+                var pointRightBottom = features[i].geometry.coordinates[0][0][2];
+                var value = parseFloat((features[i].properties.average_price_1 / 10000).toFixed(2))
+                data.push(pointLeftTop.concat(value).concat(pointRightBottom));
+            }
+            var COLORS = ['#e0dffb', '#8c88ef', '#5954e8', '#221cd2', '#17138d', '#0c0a48', '#030314', 'red'];
+            var option = {
+                tooltip: {},
+                visualMap: {
+                    type: 'piecewise',
+                    inverse: true,
+                    top: 110,
+                    left: 10,
+                    pieces: [{
+                        gt: 0, lte: 2, color: COLORS[0]
+                    }, {
+                        gt: 2, lte: 4, color: COLORS[1]
+                    }, {
+                        gt: 4, lte: 6, color: COLORS[2]
+                    }, {
+                        gt: 6, lte: 8, color: COLORS[3]
+                    }, {
+                        gt: 8, lte: 10, color: COLORS[4]
+                    }, {
+                        gt: 10, lte: 15, color: COLORS[5]
+                    }, {
+                        gt: 15, lte: 20, color: COLORS[8]
+                    }, {
+                        gt: 20, lte: 28, color: COLORS[9]
+                    }],
+                    borderColor: '#ccc',
+                    borderWidth: 2,
+                    backgroundColor: '#eee',
+                    dimension: 2,
+                    inRange: {
+                        color: COLORS,
+                        opacity: 0.7
+                    }
+                },
+
+                series: [{
+                    type: 'custom',
+                    coordinateSystem: "openlayers",
+                    data: data,
+                    renderItem: renderItem,
+                    animation: false,
+                    itemStyle: {
+                        emphasis: {
+                            color: 'pink'
+                        }
+                    },
+                    encode: {
+                        tooltip: 2
+                    }
+                }]
+            };
+            echartslayer.setChartOptions(option);
+            // 自定义渲染
+            function renderItem(params, api) {
+                var pointLeftTop = [api.value(0), api.value(1)];
+                pointLeftTop = map.getPixelFromCoordinate(pointLeftTop);
+
+                var pointRightBottom = [api.value(3), api.value(4)];
+                pointRightBottom = map.getPixelFromCoordinate(pointRightBottom);
+              
+                return {
+                    type: 'rect',
+                    shape: {
+                        x: pointLeftTop[0],
+                        y: pointLeftTop[1],
+                        width: pointLeftTop[0] - pointRightBottom[0],
+                        height: pointLeftTop[1] - pointRightBottom[1]
+                    },
+                    style: api.style({
+                        stroke: 'rgba(0,0,0,0.1)'
+                    }),
+                    styleEmphasis: api.styleEmphasis()
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>

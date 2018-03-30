@@ -628,6 +628,11 @@ var exampleConfig = {
                         thumbnail: "ol_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
                        
+                    },{
+                        name: "北京房价信息",
+                        name_en: "Beijing house prices(2018.2)",
+                        thumbnail: "ol_echartsLianjia.png",
+                        fileName: "echartsLianjia"
                     }
                 ]
             },

@@ -38,6 +38,7 @@
             view: new ol.View({
                 center: [96, 36],
                 zoom: 5,
+                minZoom: 5,
                 projection: 'EPSG:4326'
             }),
             layers: [new ol.layer.Tile({
@@ -49,13 +50,18 @@
             })]
         });
 
+
         var echartslayer = new ol3Echarts(null, {
             hideOnMoving: true,
             hideOnZooming: true
         });
         echartslayer.appendTo(map);
-
+    
+        echartslayer.showLoading();
         $.get('../data/chinaEarthquake.csv', function (csvstr) {
+
+            echartslayer.hideLoading();
+
             var result = Papa.parse(csvstr, { skipEmptyLines: true, header: true }).data;
 
             // 热力图数据
@@ -161,8 +167,7 @@
                     },
                     grid: {
                         left: 50,
-                        top: 575,
-                        bottom: 70,
+                        bottom: '10%',
                         width: '30%',
                         height: '30%',
                         textStyle: {
@@ -272,10 +277,10 @@
                             radius: '30%',
                             center: ['15%', '25%'],
                             data: [
-                                { value: echartsChartData[0] + echartsChartData[1] + echartsChartData[2], name: resources.text_quarter_1 + "(01-03)" },
-                                { value: echartsChartData[3] + echartsChartData[4] + echartsChartData[5], name: resources.text_quarter_2 + "(04-06)" },
-                                { value: echartsChartData[6] + echartsChartData[7] + echartsChartData[8], name: resources.text_quarter_3 + "(07-09)" },
-                                { value: echartsChartData[9] + echartsChartData[10] + echartsChartData[11], name: resources.text_quarter_4 + "(10-12)" }
+                                { value: echartsChartData[0] + echartsChartData[1] + echartsChartData[2], name: resources.text_quarter_1 },
+                                { value: echartsChartData[3] + echartsChartData[4] + echartsChartData[5], name: resources.text_quarter_2 },
+                                { value: echartsChartData[6] + echartsChartData[7] + echartsChartData[8], name: resources.text_quarter_3 },
+                                { value: echartsChartData[9] + echartsChartData[10] + echartsChartData[11], name: resources.text_quarter_4 }
                             ].sort(function (a, b) {
                                 return a.value - b.value
                             }),
