@@ -15060,7 +15060,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理几何专题要素型专题图层基类。
- * @private
  * @param name - {string} 图层名称
  * @param opt_options -{Object} 参数，如：<br>
  *        id - {string} 专题图层ID。</br>
@@ -15721,7 +15720,7 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
             if (style.brushType == 'fill' || style.brushType == 'both' || typeof style.brushType == 'undefined') {
                 // 默认为fill
                 ctx.beginPath();
-                if (style.lineType == 'dashed' || style.lineType == 'dotted' || style.lineType == 'dot' || style.lineType == 'dash' || style.lineType == 'dashot' || style.lineType == 'longdash' || style.lineType == 'longdashdot') {
+                if (style.lineType == 'dashed' || style.lineType == 'dotted' || style.lineType == 'dot' || style.lineType == 'dash' || style.lineType == 'dashdot' || style.lineType == 'longdash' || style.lineType == 'longdashdot') {
                     // 特殊处理，虚线围不成path，实线再build一次
                     this.buildPath(ctx, {
                         lineType: 'solid',
@@ -15768,7 +15767,7 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
                         if (hpStyle.brushType == 'fill' || hpStyle.brushType == 'both' || typeof hpStyle.brushType == 'undefined') {
                             // 默认为fill
                             ctx.beginPath();
-                            if (hpStyle.lineType == 'dashed' || hpStyle.lineType == 'dotted' || hpStyle.lineType == 'dot' || hpStyle.lineType == 'dash' || hpStyle.lineType == 'dashot' || hpStyle.lineType == 'longdash' || hpStyle.lineType == 'longdashdot') {
+                            if (hpStyle.lineType == 'dashed' || hpStyle.lineType == 'dotted' || hpStyle.lineType == 'dot' || hpStyle.lineType == 'dash' || hpStyle.lineType == 'dashdot' || hpStyle.lineType == 'longdash' || hpStyle.lineType == 'longdashdot') {
                                 // 特殊处理，虚线围不成path，实线再build一次
                                 this.buildPath(ctx, {
                                     lineType: 'solid',
@@ -15924,7 +15923,7 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
                         _SUtil.SUtil.SUtil_dashedLineTo(ctx, pointList[_i2 - 1][0] + __OP[0], pointList[_i2 - 1][1] + __OP[1], pointList[_i2][0] + __OP[0], pointList[_i2][1] + __OP[1], dashLength, [pattern1, pattern2]);
                     }
                     _SUtil.SUtil.SUtil_dashedLineTo(ctx, pointList[pointList.length - 1][0] + __OP[0], pointList[pointList.length - 1][1] + __OP[1], pointList[0][0] + __OP[0], pointList[0][1] + __OP[1], dashLength, [pattern1, pattern2]);
-                } else if (style.lineType === 'dashot' || style.lineType === 'longdashdot') {
+                } else if (style.lineType === 'dashdot' || style.lineType === 'longdashdot') {
                     var _dashLengthForStyle = style._dashLength || (style.lineWidth || 1) * (style.lineType == 'dashed' ? 5 : 1);
                     style._dashLength = _dashLengthForStyle;
 
@@ -15934,8 +15933,8 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
                     var pattern3 = _dashLength;
                     var pattern4 = _dashLength;
 
-                    //dashot
-                    if (style.lineType === 'dashot') {
+                    //dashdot
+                    if (style.lineType === 'dashdot') {
                         _pattern *= 4;
                         _pattern2 *= 4;
                         pattern4 *= 4;
@@ -19386,7 +19385,7 @@ var Vector = exports.Vector = function (_Feature) {
          * * strokeOpacity - {number} 描边的不透明度(0-1),默认为0.4。
          * * strokeWidth - {number} 像素描边宽度，默认为1。
          * * strokeLinecap - {string} strokeLinecap有三种类型butt，round，square，默认为"round"。
-         * * strokeDashstyle - {string} 有dot,dash,dashot,longdash,longdashdot,solid几种样式，默认为"solid"。
+         * * strokeDashstyle - {string} 有dot,dash,dashdot,longdash,longdashdot,solid几种样式，默认为"solid"。
          * * graphic - {Boolean} 不需要则设置为false。
          * * pointRadius - {number} 像素点半径，默认为6
          * * pointerEvents - {string}  默认为"visiblePainted"。
@@ -20586,7 +20585,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.Theme
  * @classdesc 专题图基类。
- * @private
  * @param name - {string} 专题图图层名称
  * @param opt_option-{Object} 可选参数，如：</br>
  *        id - {string} 专题图层ID。</br>
@@ -21225,7 +21223,6 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类
- * @private
  * @param geometry - {Object} 要量算的几何对象
  * @param attributes - {Object} 属性
  */
@@ -22859,15 +22856,15 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
                     for (var i = 1; i < len; i++) {
                         _SUtil.SUtil.SUtil_dashedLineTo(ctx, pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1], pointList[i][0] + __OP[0], pointList[i][1] + __OP[1], dashLength, [pattern1, pattern2]);
                     }
-                } else if (style.lineType === 'dashot' || style.lineType === 'longdashdot') {
+                } else if (style.lineType === 'dashdot' || style.lineType === 'longdashdot') {
                     var _dashLength = style.lineWidth || 1;
                     var _pattern = _dashLength;
                     var _pattern2 = _dashLength;
                     var pattern3 = _dashLength;
                     var pattern4 = _dashLength;
 
-                    //dashot
-                    if (style.lineType === 'dashot') {
+                    //dashdot
+                    if (style.lineType === 'dashdot') {
                         _pattern *= 4;
                         _pattern2 *= 4;
                         pattern4 *= 4;
@@ -60458,7 +60455,6 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
      * @function ol.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.LayerInfoService} 返回图层信息类
      */
 
 
@@ -66056,7 +66052,7 @@ module.exports = function (proj4) {
 /* 338 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 339 */
@@ -67808,6 +67804,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.createLayersByJson
          * @description 通过json创建图层
          * @param layersJson - {JSON} 图层的json信息
@@ -67899,6 +67896,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
          * @description 通过比例尺获取分辨率
          * @param scales - {Array<number>} 排序比例尺数组
@@ -67921,6 +67919,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.createLayer
          * @description 创建图层
          * @param type - {string} 图层类型
@@ -68023,6 +68022,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
          * @description 获取WMTS图层的分辨率数组和标识矩阵
          * @param wellKnownScaleSet - {Object} 图层的分辨率数据集
@@ -68059,6 +68059,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.createTiandituLayer
          * @description 创建天地图图层
          * @param layerInfo - {Object} 图层信息
@@ -68082,6 +68083,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.createMarkersLayer
          * @description 创建图标图层
          * @param layerInfo - {Object} 图层信息
@@ -68107,6 +68109,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.createVectorLayer
          * @description 创建矢量要素图层
          * @param layerInfo - {Object} 图层信息
@@ -68167,6 +68170,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         }
 
         /**
+         * @private
          * @function ol.supermap.WebMap.prototype.createWmsLayer
          * @description 创建Wms图层
          * @param layerInfo - {Object} 图层信息
@@ -74844,7 +74848,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         strokeWidth - {number} 线宽度/描边宽度，默认值 1。<br>
  *         strokeLinecap - {string} 线帽样式。strokeLinecap 有三种类型 “butt", "round", "square"; 默认为"butt"。<br>
  *         strokeLineJoin - {string} 线段连接样式。strokeLineJoin 有三种类型 “miter", "round", "bevel"; 默认为"miter"。<br>
- *         strokeDashstyle - {string} 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashot",“longdash",“longdashdot",“solid", "dashed", "dotted"。默认值 "solid"。solid 表示实线。<br>
+ *         strokeDashstyle - {string} 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"。默认值 "solid"。solid 表示实线。<br>
  *         pointRadius - {number} 点半径，默认为 6 （像素）。<br>
  *         shadowBlur - {number} 阴影模糊度，（大于 0 有效; 默认值 0）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。<br>
  *         shadowColor - {string} 阴影颜色; 默认值 '#000000'。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。<br>
@@ -74916,7 +74920,7 @@ var ThemeStyle = exports.ThemeStyle = function ThemeStyle(options) {
   this.strokeLineJoin = "miter";
   /**
    * @member SuperMap.ThemeStyle.prototype.strokeDashstyle -{string}
-   * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashot",“longdash",“longdashdot",“solid", "dashed", "dotted";
+   * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
    * 默认值 "solid"。solid 表示实线。
    */
   this.strokeDashstyle = "solid";
@@ -84436,7 +84440,6 @@ var _Util = __webpack_require__(1);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class SuperMap.ServerFeature
  * @category  iServer  
  * @classdesc 服务端矢量要素类。该类描述了服务端返回的矢量要素的相关信息，包括字段和几何信息。

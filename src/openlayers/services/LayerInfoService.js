@@ -31,7 +31,6 @@ export class LayerInfoService extends ServiceBase {
      * @function ol.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.LayerInfoService} 返回图层信息类
      */
     getLayersInfo(callback) {
         var me = this;

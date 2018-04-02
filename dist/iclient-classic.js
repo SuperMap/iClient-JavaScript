@@ -4059,7 +4059,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class MapVRenderer
  * @classdesc MapV渲染器。
- * @private
  * @extends mapv.MapVBaseLayer
  * @param map - {SuperMap.Map} 待渲染的地图
  * @param layer - {mapv.baiduMapLayer} 待渲染的图层
@@ -4098,6 +4097,7 @@ var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
     /**
      * @function MapvRenderer.prototype.clickEvent
      * @description 点击事件
+     * @private
      * @param e - {Object} 触发对象
      */
 
@@ -4112,6 +4112,7 @@ var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
         /**
          * @function MapvRenderer.prototype.mousemoveEvent
          * @description 鼠标移动事件
+         * 
          * @param  e - {Object} 触发对象
          */
 

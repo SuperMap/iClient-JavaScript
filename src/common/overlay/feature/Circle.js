@@ -9,7 +9,6 @@ import {ShapeParameters} from './ShapeParameters';
  * @extends SuperMap.Feature.ShapeParameters
  */
 
-
 export class Circle extends ShapeParameters {
 
 

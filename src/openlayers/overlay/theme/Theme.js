@@ -18,7 +18,6 @@ import {ThemeFeature} from './ThemeFeature';
 /**
  * @class ol.source.Theme
  * @classdesc 专题图基类。
- * @private
  * @param name - {string} 专题图图层名称
  * @param opt_option-{Object} 可选参数，如：</br>
  *        id - {string} 专题图层ID。</br>

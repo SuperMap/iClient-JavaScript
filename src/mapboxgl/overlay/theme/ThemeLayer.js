@@ -13,7 +13,6 @@ import {
 } from '@supermap/iclient-common';
 
 /**
- * @private
  * @class mapboxgl.supermap.ThemeLayer
  * @classdesc 专题图基类。
  * @param name - {string} 专题图图层名。

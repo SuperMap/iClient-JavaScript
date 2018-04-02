@@ -13,7 +13,6 @@ import {ThemeFeature} from './ThemeFeature';
  * @class L.supermap.ThemeLayer
  * @classdesc 专题图层基类，调用建议使用其子类实现类。
  * @category Visualization Theme
- * @private
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param name - {string} 专题图图层名称
  * @param options -{Object} 可选参数，如：</br>

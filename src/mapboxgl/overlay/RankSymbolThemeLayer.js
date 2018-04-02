@@ -49,7 +49,6 @@ export class RankSymbol extends Graph {
     }
 
     /**
-     * @private
      * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.createThematicFeature
      * @description 创建专题图形要素
      * @param feature -{Object} 要创建的专题图形要素

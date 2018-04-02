@@ -156,7 +156,7 @@ describe('SmicBrokenLine', () => {
         style.lineType = 'longdash';
         shape.buildPath(ctx, style);
         expect(shape).not.toBeNull();
-        style.lineType = 'dashot';
+        style.lineType = 'dashdot';
         shape.buildPath(ctx, style);
         expect(shape).not.toBeNull();
         style.lineType = 'longdashdot';

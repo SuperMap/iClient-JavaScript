@@ -223,7 +223,7 @@ export class SmicBrokenLine extends Shape {
                         [pattern1, pattern2]
                     );
                 }
-            } else if (style.lineType === 'dashot'
+            } else if (style.lineType === 'dashdot'
                 || style.lineType === 'longdashdot'
             ) {
                 let dashLength = (style.lineWidth || 1);
@@ -232,8 +232,8 @@ export class SmicBrokenLine extends Shape {
                 let pattern3 = dashLength;
                 let pattern4 = dashLength;
 
-                //dashot
-                if (style.lineType === 'dashot') {
+                //dashdot
+                if (style.lineType === 'dashdot') {
                     pattern1 *= 4;
                     pattern2 *= 4;
                     pattern4 *= 4;

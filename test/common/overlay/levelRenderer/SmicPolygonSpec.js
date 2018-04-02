@@ -208,7 +208,7 @@ describe('SmicPolygon', () => {
         };
         shape.buildPath(ctx, style4);
         expect(shape).not.toBeNull();
-        style4.lineType = "dashot";
+        style4.lineType = "dashdot";
         shape.buildPath(ctx, style4);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -237,7 +237,7 @@ describe('SmicPolygon', () => {
         };
         shape.buildPath(ctx, style5);
         expect(shape).not.toBeNull();
-        style5.lineType = "dashot";
+        style5.lineType = "dashdot";
         shape.buildPath(ctx, style5);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();

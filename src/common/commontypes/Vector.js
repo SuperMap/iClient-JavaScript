@@ -108,7 +108,7 @@ export class Vector extends Feature {
          * * strokeOpacity - {number} 描边的不透明度(0-1),默认为0.4。
          * * strokeWidth - {number} 像素描边宽度，默认为1。
          * * strokeLinecap - {string} strokeLinecap有三种类型butt，round，square，默认为"round"。
-         * * strokeDashstyle - {string} 有dot,dash,dashot,longdash,longdashdot,solid几种样式，默认为"solid"。
+         * * strokeDashstyle - {string} 有dot,dash,dashdot,longdash,longdashdot,solid几种样式，默认为"solid"。
          * * graphic - {Boolean} 不需要则设置为false。
          * * pointRadius - {number} 像素点半径，默认为6
          * * pointerEvents - {string}  默认为"visiblePainted"。

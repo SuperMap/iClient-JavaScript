@@ -46,6 +46,8 @@
 
 - `L.supermap.ThemeLayer` 类新增 `toFeature` 接口
 
+- `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
+
 ### for OpenLayers
 
 - `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据
@@ -82,6 +84,8 @@
 
 - `ol.source.Graphic` 类新增 `isHighLight` 参数，支持高亮响应事件
 
+- `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
+
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -114,6 +118,8 @@
 - `mapboxgl.supermap.ThemeLayer` 类新增 `setVisibility`接口，支持设置图层的显示和隐藏
 
 - 废弃 `mapboxgl.supermap.ThemeLayer` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
+
+- `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
 ### Classic
 

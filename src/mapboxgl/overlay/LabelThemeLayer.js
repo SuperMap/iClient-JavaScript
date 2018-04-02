@@ -100,7 +100,6 @@ export class Label extends GeoFeature {
 
 
     /**
-     * @private
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
@@ -122,7 +121,6 @@ export class Label extends GeoFeature {
 
 
     /**
-     * @private
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.createThematicFeature
      * @description 创建专题图要素
      * @param feature - {Object} 要创建的专题图形要素

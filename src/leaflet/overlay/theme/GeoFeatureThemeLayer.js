@@ -11,7 +11,6 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @function L.supermap.GeoFeatureThemeLayer
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
  * @category Visualization Theme
- * @private
  * @extends L.supermap.ThemeLayer
  * @category Visualization Graphic
  * @param name - {string} 专题图名

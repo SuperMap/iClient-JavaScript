@@ -15,7 +15,7 @@ import {Util} from '../commontypes/Util';
  *         strokeWidth - {number} 线宽度/描边宽度，默认值 1。<br>
  *         strokeLinecap - {string} 线帽样式。strokeLinecap 有三种类型 “butt", "round", "square"; 默认为"butt"。<br>
  *         strokeLineJoin - {string} 线段连接样式。strokeLineJoin 有三种类型 “miter", "round", "bevel"; 默认为"miter"。<br>
- *         strokeDashstyle - {string} 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashot",“longdash",“longdashdot",“solid", "dashed", "dotted"。默认值 "solid"。solid 表示实线。<br>
+ *         strokeDashstyle - {string} 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"。默认值 "solid"。solid 表示实线。<br>
  *         pointRadius - {number} 点半径，默认为 6 （像素）。<br>
  *         shadowBlur - {number} 阴影模糊度，（大于 0 有效; 默认值 0）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。<br>
  *         shadowColor - {string} 阴影颜色; 默认值 '#000000'。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。<br>
@@ -88,7 +88,7 @@ export class ThemeStyle {
         this.strokeLineJoin = "miter";
         /**
          * @member SuperMap.ThemeStyle.prototype.strokeDashstyle -{string}
-         * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashot",“longdash",“longdashdot",“solid", "dashed", "dotted";
+         * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
          * 默认值 "solid"。solid 表示实线。
          */
         this.strokeDashstyle = "solid";

@@ -5,7 +5,6 @@ import {Theme} from './Theme';
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理几何专题要素型专题图层基类。
- * @private
  * @param name - {string} 图层名称
  * @param opt_options -{Object} 参数，如：<br>
  *        id - {string} 专题图层ID。</br>

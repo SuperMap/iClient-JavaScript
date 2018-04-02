@@ -92,6 +92,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.createLayersByJson
      * @description 通过json创建图层
      * @param layersJson - {JSON} 图层的json信息
@@ -180,6 +181,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
      * @param scales - {Array<number>} 排序比例尺数组
@@ -199,6 +201,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.createLayer
      * @description 创建图层
      * @param type - {string} 图层类型
@@ -299,6 +302,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
      * @description 获取WMTS图层的分辨率数组和标识矩阵
      * @param wellKnownScaleSet - {Object} 图层的分辨率数据集
@@ -332,6 +336,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {Object} 图层信息
@@ -352,6 +357,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.createMarkersLayer
      * @description 创建图标图层
      * @param layerInfo - {Object} 图层信息
@@ -374,6 +380,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.createVectorLayer
      * @description 创建矢量要素图层
      * @param layerInfo - {Object} 图层信息
@@ -431,6 +438,7 @@ export class WebMap extends ol.Observable {
     }
 
     /**
+     * @private
      * @function ol.supermap.WebMap.prototype.createWmsLayer
      * @description 创建Wms图层
      * @param layerInfo - {Object} 图层信息
