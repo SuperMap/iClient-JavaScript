@@ -100,6 +100,7 @@
     "@supermap/iclient-common": "file:src/common",
     "@turf/turf": "^4.7.1",
     "echarts": "3.8.5",
+    "deck.gl": "5.1.3",
     "elasticsearch": "13.0.1",
     "express": "^4.16.3",
     "fetch-ie8": "^1.5.0",

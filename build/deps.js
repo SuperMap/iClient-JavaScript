@@ -1103,6 +1103,17 @@ deps = {
                     "des_en": "HeatMap layer"
                 }]
             },
+            "GraphicLayer": {
+                "name": "高效率点图层",
+                "src": [
+                    "./src/mapboxgl/overlay/GraphicLayer.js"
+                ],
+                "modules": [{
+                    "name": "mapboxgl.supermap.GraphicLayer",
+                    "des": "高效率点图层",
+                    "des_en": "high efficiency point layer"
+                }]
+            },
             "Mapv": {
                 "name": "Mapv",
                 "src": [

@@ -57,6 +57,9 @@
         if (inArray(includes, 'three')) {
             inputScript("https://cdn.bootcss.com/three.js/90/three.min.js");
         }
+        if(inArray(includes,'deck')){
+            inputScript("http://iclient.supermap.io/web/libs/deck.gl/deck.gl.min.js");
+        }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             inputScript("../../dist/iclient9-mapboxgl.min.js");
         }

@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var {resolve} = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var pkg = require('../package.json');
 var packageName = "iclient9-mapboxgl";
@@ -10,7 +11,7 @@ var banner = `
 `;
 
 module.exports = {
-    mode:"production",
+    mode: "production",
     //页面入口文件配置
     entry: {},
     //入口文件输出配置
@@ -19,12 +20,12 @@ module.exports = {
         filename: packageName + ".js"
     },
     //不显示打包文件大小相关警告
-    performance:{
+    performance: {
         hints: false
     },
     //是否启用压缩
     optimization: {
-        minimize:false
+        minimize: false
     },
 
     //其它解决方案配置
@@ -36,7 +37,10 @@ module.exports = {
         'three': 'function(){try{return THREE}catch(e){return {}}}()',
         'mapbox-gl': 'mapboxgl',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
-        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()'
+        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
+        'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
+        'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
+        'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()'
     },
 
     module: {
@@ -60,7 +64,7 @@ module.exports = {
             }
         }, {
             test: /\.js/,
-            exclude: /node_modules[\/\\]proj4|classic/,
+            exclude: /node_modules[\/\\]proj4|classic|webgl-debug/,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015']

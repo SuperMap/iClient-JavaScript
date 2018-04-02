@@ -362,6 +362,18 @@ var exampleConfig = {
                     }
                 ]
             },
+            "graphicLayer": {
+                name: "高效率点图层",
+                name_en: "high efficiency point layer",
+                content: [
+                    {
+                        name: "纽约出租车145万点",
+                        name_en: "points of 145w NY taxis",
+                        thumbnail: "mb_graphicLayer.png",
+                        fileName: "graphicLayer"
+                    }
+                ]
+            },
             "ECharts": {
                 name: "ECharts",
                 name_en: "ECharts",

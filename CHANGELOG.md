@@ -113,7 +113,10 @@
 - 新增热力图层：
 
     - `mapboxgl.supermap.HeatMapLayer`
+    
+- 新增高性能点图层：
 
+    - `mapboxgl.supermap.GraphicLayer`
 
 - `mapboxgl.supermap.ThemeLayer` 类新增 `setVisibility`接口，支持设置图层的显示和隐藏
 
@@ -195,6 +198,8 @@
 - 新增批量几何要素叠加分析示例
 
 - 新增three图层示例
+
+- 新增高性能点图层示例
 
 ### Classic
 
