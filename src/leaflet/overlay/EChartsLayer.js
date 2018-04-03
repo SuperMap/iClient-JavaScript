@@ -10,7 +10,7 @@ import echarts from "echarts";
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>
  *        attribution - {string} 版权信息。<br>
- *        loadWhileAnimating - {boolean} 是否在移动时加载。
+ *        loadWhileAnimating - {boolean} 是否在移动时实时绘制。默认为false。
  */
 export var EchartsLayer = L.Layer.extend({
 
@@ -22,20 +22,13 @@ export var EchartsLayer = L.Layer.extend({
 
     options: {
         attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io/' target='_blank'>SuperMap iClient</a></span>",
-        loadWhileAnimating: true
+        loadWhileAnimating: false
     },
 
     initialize: function (echartsOptions, options) {
-        if (echartsOptions) {
-            echartsOptions.LeafletMap = {
-                roam: true
-            }
-            echartsOptions.animation = false;
-        }
-        this._echartsOptions = echartsOptions;
         L.Util.setOptions(this, options);
+        this.setOption(echartsOptions);
     },
-
     /**
      * @function L.supermap.echartsLayer.prototype.setOption
      * @description 设置图表地图参数
@@ -44,15 +37,17 @@ export var EchartsLayer = L.Layer.extend({
      * @param lazyUpdate - {string} 后台自动更新
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate) {
-        if (echartsOptions) {
-            echartsOptions.LeafletMap = {
-                roam: true
-            }
+        var baseOption = echartsOptions.baseOption || echartsOptions;
+        baseOption.LeafletMap = baseOption.LeafletMap || {
+            roam: true
         }
+        baseOption.animation = baseOption.animation === true;
         this._echartsOptions = echartsOptions;
-        this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
+        this._ec && this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
     },
-
+    getEcharts: function () {
+        return this._ec;
+    },
     _disableEchartsContainer: function () {
         this._echartsContainer.style.visibility = "hidden";
     },
@@ -75,7 +70,7 @@ export var EchartsLayer = L.Layer.extend({
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
-        me.options.loadWhileAnimating && map.on("movestart", function () {
+        !me.options.loadWhileAnimating && map.on("movestart", function () {
             me._disableEchartsContainer();
         });
         echarts.registerAction({
@@ -122,14 +117,13 @@ export var EchartsLayer = L.Layer.extend({
                     var mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
-
-                    if (me.options.loadWhileAnimating) {
-                        for (var item in ecLayers) {
-                            if (!ecLayers.hasOwnProperty(item)) {
-                                continue;
-                            }
-                            ecLayers[item] && clearContext(ecLayers[item].ctx);
+                    for (var item in ecLayers) {
+                        if (!ecLayers.hasOwnProperty(item)) {
+                            continue;
                         }
+                        ecLayers[item] && clearContext(ecLayers[item].ctx);
+                    }
+                    if (!me.options.loadWhileAnimating) {
                         me._enableEchartsContainer();
                     }
 
@@ -207,11 +201,11 @@ export var EchartsLayer = L.Layer.extend({
  * @class L.supermap.LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类
- * @param LeafletMap - {L.map} 地图
+ * @param leafletMap - {L.map} 地图
  * @param api - {Object} 接口
  */
-export function LeafletMapCoordSys(LeafletMap) {
-    this._LeafletMap = LeafletMap;
+export function LeafletMapCoordSys(leafletMap) {
+    this._LeafletMap = leafletMap;
     this.dimensions = ['lng', 'lat'];
     this._mapOffset = [0, 0];
 }
@@ -299,20 +293,23 @@ LeafletMapCoordSys.prototype.getRoamTransform = function () {
 };
 LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions;
 
-LeafletMapCoordSys.create = function (ecModel, api) {
-    var coordSys;
+LeafletMapCoordSys.create = function (ecModel) {
+    let coordSys;
 
-    ecModel.eachComponent('LeafletMap', function (LeafletMapModel) {
-        var leafletMap = echarts.leafletMap;
+    ecModel.eachComponent('LeafletMap', function (leafletMapModel) {
         if (!coordSys) {
-            coordSys = new LeafletMapCoordSys(leafletMap, api);
+            coordSys = new LeafletMapCoordSys(echarts.leafletMap);
         }
-        LeafletMapModel.coordinateSystem = coordSys || new LeafletMapCoordSys(echarts.leafletMap);
-        LeafletMapModel.coordinateSystem.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
+        leafletMapModel.coordinateSystem = coordSys;
+        leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || [0, 0]);
     });
     ecModel.eachSeries(function (seriesModel) {
-        if (seriesModel.get('coordinateSystem') === 'leaflet') {
-            seriesModel.coordinateSystem = coordSys || new LeafletMapCoordSys(echarts.leafletMap);
+        if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
+            if (!coordSys) {
+                coordSys = new LeafletMapCoordSys(echarts.leafletMap);
+            }
+            seriesModel.coordinateSystem = coordSys;
+            seriesModel.animation = seriesModel.animation === true;
         }
     })
 };

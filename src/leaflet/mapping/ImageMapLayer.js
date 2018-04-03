@@ -274,7 +274,8 @@ export var ImageMapLayer = Layer.extend({
 
                 if (this.options.position === 'front') {
                     this.bringToFront();
-                } else {
+                } 
+                if (this.options.position === 'back') {
                     this.bringToBack();
                 }
 

@@ -65623,7 +65623,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>
  *        attribution - {string} 版权信息。<br>
- *        loadWhileAnimating - {boolean} 是否在移动时加载。
+ *        loadWhileAnimating - {boolean} 是否在移动时实时绘制。默认为false。
  */
 var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
@@ -65635,20 +65635,13 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
     options: {
         attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io/' target='_blank'>SuperMap iClient</a></span>",
-        loadWhileAnimating: true
+        loadWhileAnimating: false
     },
 
     initialize: function initialize(echartsOptions, options) {
-        if (echartsOptions) {
-            echartsOptions.LeafletMap = {
-                roam: true
-            };
-            echartsOptions.animation = false;
-        }
-        this._echartsOptions = echartsOptions;
         _leaflet2["default"].Util.setOptions(this, options);
+        this.setOption(echartsOptions);
     },
-
     /**
      * @function L.supermap.echartsLayer.prototype.setOption
      * @description 设置图表地图参数
@@ -65657,15 +65650,17 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
      * @param lazyUpdate - {string} 后台自动更新
      */
     setOption: function setOption(echartsOptions, notMerge, lazyUpdate) {
-        if (echartsOptions) {
-            echartsOptions.LeafletMap = {
-                roam: true
-            };
-        }
+        var baseOption = echartsOptions.baseOption || echartsOptions;
+        baseOption.LeafletMap = baseOption.LeafletMap || {
+            roam: true
+        };
+        baseOption.animation = baseOption.animation === true;
         this._echartsOptions = echartsOptions;
-        this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
+        this._ec && this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
     },
-
+    getEcharts: function getEcharts() {
+        return this._ec;
+    },
     _disableEchartsContainer: function _disableEchartsContainer() {
         this._echartsContainer.style.visibility = "hidden";
     },
@@ -65688,7 +65683,7 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
-        me.options.loadWhileAnimating && map.on("movestart", function () {
+        !me.options.loadWhileAnimating && map.on("movestart", function () {
             me._disableEchartsContainer();
         });
         _echarts2["default"].registerAction({
@@ -65733,14 +65728,13 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
                     var mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
-
-                    if (me.options.loadWhileAnimating) {
-                        for (var item in ecLayers) {
-                            if (!ecLayers.hasOwnProperty(item)) {
-                                continue;
-                            }
-                            ecLayers[item] && clearContext(ecLayers[item].ctx);
+                    for (var item in ecLayers) {
+                        if (!ecLayers.hasOwnProperty(item)) {
+                            continue;
                         }
+                        ecLayers[item] && clearContext(ecLayers[item].ctx);
+                    }
+                    if (!me.options.loadWhileAnimating) {
                         me._enableEchartsContainer();
                     }
 
@@ -65814,11 +65808,11 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
  * @class L.supermap.LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类
- * @param LeafletMap - {L.map} 地图
+ * @param leafletMap - {L.map} 地图
  * @param api - {Object} 接口
  */
-function LeafletMapCoordSys(LeafletMap) {
-    this._LeafletMap = LeafletMap;
+function LeafletMapCoordSys(leafletMap) {
+    this._LeafletMap = leafletMap;
     this.dimensions = ['lng', 'lat'];
     this._mapOffset = [0, 0];
 }
@@ -65906,20 +65900,23 @@ LeafletMapCoordSys.prototype.getRoamTransform = function () {
 };
 LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions;
 
-LeafletMapCoordSys.create = function (ecModel, api) {
-    var coordSys;
+LeafletMapCoordSys.create = function (ecModel) {
+    var coordSys = void 0;
 
-    ecModel.eachComponent('LeafletMap', function (LeafletMapModel) {
-        var leafletMap = _echarts2["default"].leafletMap;
+    ecModel.eachComponent('LeafletMap', function (leafletMapModel) {
         if (!coordSys) {
-            coordSys = new LeafletMapCoordSys(leafletMap, api);
+            coordSys = new LeafletMapCoordSys(_echarts2["default"].leafletMap);
         }
-        LeafletMapModel.coordinateSystem = coordSys || new LeafletMapCoordSys(_echarts2["default"].leafletMap);
-        LeafletMapModel.coordinateSystem.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
+        leafletMapModel.coordinateSystem = coordSys;
+        leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || [0, 0]);
     });
     ecModel.eachSeries(function (seriesModel) {
-        if (seriesModel.get('coordinateSystem') === 'leaflet') {
-            seriesModel.coordinateSystem = coordSys || new LeafletMapCoordSys(_echarts2["default"].leafletMap);
+        if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
+            if (!coordSys) {
+                coordSys = new LeafletMapCoordSys(_echarts2["default"].leafletMap);
+            }
+            seriesModel.coordinateSystem = coordSys;
+            seriesModel.animation = seriesModel.animation === true;
         }
     });
 };
@@ -68070,7 +68067,8 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
 
                 if (this.options.position === 'front') {
                     this.bringToFront();
-                } else {
+                }
+                if (this.options.position === 'back') {
                     this.bringToBack();
                 }
 
