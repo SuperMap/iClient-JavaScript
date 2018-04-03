@@ -27,17 +27,40 @@
 <script type="text/javascript" src="./js/ThreeApplication.js"></script>
 <script>
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
+
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     var map, threeLayer;
 
     map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v9',
-        center: [104.0712824591451, 30.560567575197524],
-        zoom: 17.42,
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [104.07099170795755, 30.560115990796447],
+        zoom: 19.54,
         pitch: 60,
-        bearing: 28
+        bearing: 36
     });
 
     addThreeLayer();
@@ -47,17 +70,20 @@
         //gl参数表示使用webgl渲染，forceRefresh强制不断刷新three的场景
         threeLayer = new mapboxgl.supermap.ThreeLayer('three');
         threeLayer.on("initialized", render);
+        threeLayer.addTo(map);
 
         function render() {
             var renderer = threeLayer.getThreeRenderer(),
                 scene = threeLayer.getScene(),
                 camera = threeLayer.getCamera();
 
-            this.light = new THREE.PointLight(0xeeeeee, 0.8);
+            this.light = new THREE.PointLight(0xffffff, 0.8);
             this.light.position.copy(camera.position);
             scene.add(this.light);
-            scene.add(new THREE.AmbientLight(0x333333));
-
+            scene.add(new THREE.AmbientLight(0x04589e));
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(0, 0, 0);
+            scene.add(directionalLight);
             ThreeApplication
                 .register(renderer, scene, camera)
                 .setTargetLayer(threeLayer)
@@ -67,10 +93,10 @@
 
         //均匀光照，与相机位置同步
         threeLayer.on("render", function () {
-            threeLayer.light.position.copy(threeLayer.renderer.camera.position);
+            // threeLayer.light.position.copy(threeLayer.renderer.camera.position);
+            threeLayer.light.position.set(0, 0, 0);
         });
 
-        threeLayer.addTo(map);
     }
 
 </script>

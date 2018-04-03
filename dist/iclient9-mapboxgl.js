@@ -58360,7 +58360,7 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
         value: function remove() {
             var map = this._map,
                 me = this;
-            map.off('move', me._update.bind(me));
+            map.off('render', me._update.bind(me));
             map.off('resize', me._resize.bind(me));
             me.renderer.remove();
             me._map = null;
@@ -58403,12 +58403,12 @@ var ThreeLayer = exports.ThreeLayer = function (_mapboxgl$Evented) {
             this.renderer.renderScene();
             /**
              * renderScene 事件，场景渲染后触发
-             * @event mapboxgl.supermap.ThreeLayer#renderScene
+             * @event mapboxgl.supermap.ThreeLayer#renderscene
              * @type {Object}
-             * @property {string} type  - renderScene
+             * @property {string} type  - renderscene
              * @property {Object} target  - layer
              */
-            this.fire("renderScene");
+            this.fire("renderscene");
             return this;
         }
     }, {
@@ -58646,9 +58646,17 @@ var GraphicLayer = exports.GraphicLayer = function () {
     function GraphicLayer(id, options) {
         _classCallCheck(this, GraphicLayer);
 
+        var opt = _Util.Util.extend(this, defaultProps, options);
+        /**
+         * @member mapboxgl.supermap.GraphicLayer.prototype.id - {string}
+         * @description 高效率点图层id
+         */
         this.id = id || _iclientCommon.CommonUtil.createUniqueID("graphicLayer_");
-        this.graphics = options.graphics;
-        _Util.Util.extend(this, defaultProps, options);
+        /**
+         * @member mapboxgl.supermap.GraphicLayer.prototype.graphics - {Array<mapboxgl.supermap.Graphic>}
+         * @description 点要素对象数组
+         */
+        this.graphics = opt.graphics;
     }
 
     /**
@@ -58744,6 +58752,8 @@ var GraphicLayer = exports.GraphicLayer = function () {
     }, {
         key: 'remove',
         value: function remove() {
+            this.map.off('move', this._moveEvent.bind(this));
+            this.map.off('resize', this._resizeEvent.bind(this));
             this.map.getCanvasContainer().removeChild(this.canvas);
         }
 
@@ -58756,7 +58766,7 @@ var GraphicLayer = exports.GraphicLayer = function () {
     }, {
         key: 'removeFromMap',
         value: function removeFromMap() {
-            this.map.getCanvasContainer().removeChild(this.canvas);
+            this.remove();
         }
 
         /**

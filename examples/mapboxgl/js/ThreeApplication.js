@@ -75,10 +75,15 @@ var SceneBuilder = {
                     var material = new THREE.MultiMaterial(materials);
                     for (var i = 0; i < materials.length; i++) {
                         materials[i].transparent = true;
+                        materials[i].vertexColors = THREE.FaceColors;
                     }
 
                     scaleGeometry(geometry);
 
+                    for (var i = 0; i < geometry.faces.length; i++) {
+                        geometry.faces[i].color = new THREE.Color(0x08acff);
+                        geometry.colorsNeedUpdate = true;
+                    }
                     app.buildingMesh = new THREE.Mesh(geometry, material);
                     app.buildingMesh.geometry.computeBoundingSphere();
                 }
@@ -351,10 +356,8 @@ function BuildingView(app) {
         scene.add(buildingMesh);
 
         // line helper (building)
-        var edgeHelper = new THREE.EdgesHelper(buildingMesh, 0x000000, 80);
-        edgeHelper.material.transparent = true;
-        edgeHelper.material.opacity = 0.3;
-        edgeHelper.material.linewidth = 1;
+        var edgeHelper = new THREE.EdgesHelper(buildingMesh, 0x02f7f8, 1);
+        edgeHelper.material.linewidth = 10;
         correctionObject3D(edgeHelper);
         scene.add(edgeHelper);
 
@@ -368,7 +371,7 @@ function BuildingView(app) {
         scene.add(roofMesh);
 
         // line helper (roof)
-        roofEdgeHelper = new THREE.EdgesHelper(roofMesh, 0x000000, 20);
+        roofEdgeHelper = new THREE.EdgesHelper(roofMesh, 0x02f7f8, 20);
         roofEdgeHelper.material.transparent = true;
         roofEdgeHelper.material.opacity = 0.2;
         roofEdgeHelper.material.linewidth = 1;

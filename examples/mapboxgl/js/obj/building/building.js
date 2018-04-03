@@ -46,7 +46,6 @@
 	"colorDiffuse" : [0.9412, 0.9333, 0.9176],
 	"colorSpecular" : [0.0, 0.0, 0.0],
 	"illumination" : 2,
-	"mapAlpha" : "building_texture.jpg",
 	"opacity" : 1.0,
 	"opticalDensity" : 1.5,
 	"specularCoef" : 10.0,

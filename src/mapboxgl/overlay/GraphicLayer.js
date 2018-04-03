@@ -38,9 +38,18 @@ const defaultProps = {
 export class GraphicLayer {
 
     constructor(id, options) {
+        let opt = Util.extend(this, defaultProps, options);
+        /**
+         * @member mapboxgl.supermap.GraphicLayer.prototype.id - {string}
+         * @description 高效率点图层id
+         */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
-        this.graphics = options.graphics;
-        Util.extend(this, defaultProps, options);
+        /**
+         * @member mapboxgl.supermap.GraphicLayer.prototype.graphics - {Array<mapboxgl.supermap.Graphic>}
+         * @description 点要素对象数组
+         */
+        this.graphics = opt.graphics;
+
     }
 
     /**
@@ -130,6 +139,8 @@ export class GraphicLayer {
      * @description 删除该图层
      */
     remove() {
+        this.map.off('move', this._moveEvent.bind(this));
+        this.map.off('resize', this._resizeEvent.bind(this));
         this.map.getCanvasContainer().removeChild(this.canvas);
     }
 
@@ -139,7 +150,7 @@ export class GraphicLayer {
      * @description 删除该图层
      */
     removeFromMap() {
-        this.map.getCanvasContainer().removeChild(this.canvas);
+        this.remove();
     }
 
     /**

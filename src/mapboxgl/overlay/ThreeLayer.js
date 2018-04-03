@@ -360,7 +360,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      */
     remove() {
         let map = this._map, me = this;
-        map.off('move', me._update.bind(me));
+        map.off('render', me._update.bind(me));
         map.off('resize', me._resize.bind(me));
         me.renderer.remove();
         me._map = null;
@@ -397,12 +397,12 @@ export class ThreeLayer extends mapboxgl.Evented {
         this.renderer.renderScene();
         /**
          * renderScene 事件，场景渲染后触发
-         * @event mapboxgl.supermap.ThreeLayer#renderScene
+         * @event mapboxgl.supermap.ThreeLayer#renderscene
          * @type {Object}
-         * @property {string} type  - renderScene
+         * @property {string} type  - renderscene
          * @property {Object} target  - layer
          */
-        this.fire("renderScene");
+        this.fire("renderscene");
         return this;
     }
 
