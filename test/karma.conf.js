@@ -41,32 +41,27 @@ module.exports = function (config) {
             './test-main-classic.js',
 
             /***common的源码***/
-            '../src/common/**/*.js',
-            '../src/common/commontypes/**/*.js',
-            '../src/common/overlay/**/*.js',
+            '../src/common/**/!(index).js',
             /**测试文件**/
             './test-main-common.js',
 
             /***leaflet的源码***/
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
-            '../src/leaflet/**/*.js',
-            '../src/leaflet/overlay/**/*.js',
+            '../src/leaflet/**/!(index).js',
             /**测试文件**/
             './test-main-leaflet.js',
 
             /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
             {pattern: '../src/openlayers/**/**/*.css', include: false},
-            '../src/openlayers/**/*.js',
-            '../src/openlayers/overlay/**/*.js',
+            '../src/openlayers/**/!(index).js',
             /**测试文件**/
             './test-main-openlayers.js',
 
             /***mapboxgl***/
             {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
-            '../src/mapboxgl/**/*.js',
-            '../src/mapboxgl/overlay/**/*.js',
+            '../src/mapboxgl/**/!(GraphicLayer|index).js',
             /**测试文件**/
             './test-main-mapboxgl.js'
 
@@ -82,31 +77,26 @@ module.exports = function (config) {
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             '../src/classic/libs/SuperMap_Basic-8.1.1-15626.js': ['browserify'],
             '../src/classic/libs/Lang/*.js': ['browserify'],
-            '../src/classic/**/*.js': ['browserify'],
+            '../src/classic/**/!(index).js': ['browserify'],
             './classic/**/*Spec.js': ['browserify'],
             './test-main-classic.js': ['browserify'],
 
-            '../src/common/**/*.js': ['browserify'],
-            '../src/common/commontypes/**/*.js': ['browserify'],
-            '../src/common/overlay/**/*.js': ['browserify'],
+            '../src/common/**/!(index).js': ['browserify'],
             './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],
 
             '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            '../src/leaflet/**/*.js': ['browserify'],
-            '../src/leaflet/overlay/**/*.js': ['browserify'],
+            '../src/leaflet/**/!(index).js': ['browserify'],
             './leaflet/**/*Spec.js': ['browserify'],
             './test-main-leaflet.js': ['browserify'],
 
             '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
-            '../src/openlayers/**/*.js': ['browserify'],
-            '../src/openlayers/overlay/**/*.js': ['browserify'],
+            '../src/openlayers/**/!(index).js': ['browserify'],
             './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],
 
             '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
-            '../src/mapboxgl/**/*.js': ['browserify'],
-            '../src/mapboxgl/overlay/**/*.js': ['browserify'],
+            '../src/mapboxgl/**/!(GraphicLayer|index).js': ['browserify'],
             './mapboxgl/**/*Spec.js': ['browserify'],
             './test-main-mapboxgl.js': ['browserify']
         },
