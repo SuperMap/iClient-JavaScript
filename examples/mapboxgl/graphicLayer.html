@@ -24,13 +24,32 @@
 <script type="text/javascript" include="papaparse,jquery,dat-gui,widgets" src="../js/include-web.js"></script>
 <script type="text/javascript" include="deck" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var map, graphicLayer;
 
+    var attribution = "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span> with <span>© <a href='https://www.mapbox.com' target='_blank'>MapBox</a></span>";
     map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/dark-v9',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
         center: [-73.91426, 40.7594],
         zoom: 10.64
     });
