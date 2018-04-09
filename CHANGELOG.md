@@ -174,6 +174,10 @@
 
 - 修复 `05_findPathService.html` 例子显示错误的问题
 
+- 新增地震数据可视化示例
+
+- 新增链家房价数据可视化示例
+
 
 ### for OpenLayers
 

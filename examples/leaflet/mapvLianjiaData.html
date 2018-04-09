@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_mapvLianjia"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%
+        }
+
+        #titleContainer {
+            width: 100%;
+            position: absolute;
+            top: 30px;
+            color: white;
+            z-index: 999;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #titleContainer > #title {
+            letter-spacing: 0.1em;
+        }
+
+        .popupStyle {
+            font-size: 15px;
+            font-weight: bolder;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .popupStyle .leaflet-popup-content-wrapper,
+        .popupStyle .leaflet-popup-tip {
+            background: rgba(9, 1, 54, 0.589);
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="titleContainer">
+    <h2 id="title" data-i18n="resources.text_mapvLianjia_title"></h2>
+</div>
+<script type="text/javascript" include="mapv" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var baseurl = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+
+    var dataUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_蜂巢";
+
+    var map, resultLayer, popup;
+
+
+    map = L.map('map', {
+        center: [39.88076184888246, 116.42898559570312],
+        zoom: 12,
+        maxZoom: 18,
+        minZoom: 6
+    });
+    L.supermap.tiledMapLayer(baseurl).addTo(map);
+
+    query();
+
+    function query() {
+        var param = new SuperMap.QueryBySQLParameters({
+            queryParams: {
+                name: "lj_xq_500fc@BJ_201802LJ",
+                attributeFilter: "SMID > 0"
+            },
+            fromIndex: 0,
+            toIndex: 10000,
+            maxFeatures: 10000,
+        });
+        L.supermap
+            .queryService(dataUrl)
+            .queryBySQL(param, function (serviceResult) {
+                var result = serviceResult.result;
+                var features = result.recordsets[0].features.features;
+                //构造数据
+                var data = [];
+                for (var i = 0; i < features.length; i++) {
+                    var feature = features[i];
+                    var average_price = feature.properties.average_price_1;
+                    var coordinates = feature.geometry.coordinates[0];
+                    for (var k = 0; k < coordinates.length; k++) {
+                        for (var j = 0; j < coordinates[k].length; j++) {
+                            coordinates[k][j] = coordsTo4326(coordinates[k][j]);
+                        }
+                    }
+                    data.push({
+                        geometry: {
+                            type: "Polygon",
+                            coordinates: coordinates
+                        },
+                        count: parseFloat((average_price) / 10000).toFixed(2),
+                        price: parseFloat(average_price).toFixed(2)
+                    });
+                }
+                var dataSet = new mapv.DataSet(data);
+                var options = {
+                    fillStyle: 'rgba(255, 80, 53, 0.8)',
+                    max: 27,
+                    size: 50,
+                    label: {
+                        show: true,
+                        fillStyle: 'white'
+                    },
+                    globalAlpha: 0.5,
+                    gradient: { // 显示的颜色渐变范围
+                        '0': '#5d5dff',
+                        '0.2': '#74add1',
+                        '0.4': '#ffffbf',
+                        '0.6': '#d73027',
+                        '0.8': '#FF0000'
+                    },
+                    draw: 'intensity',
+                    //弹窗的点击事件
+                    methods: {
+                        click: function (item) {
+                            if (item != null) {
+                                var point = item.geometry.coordinates[0][0];
+                                popup.setLatLng([point[1], point[0]]).setContent(resources.text_mapvLianjia_tooltip + item.price).openOn(map);
+                            } else {
+                                popup.closePopup();
+                            }
+                        }
+                    }
+                };
+                //创建mapv图层
+                resultLayer = L.supermap.mapVLayer(dataSet, options).addTo(map);
+                popup = L.popup({
+                    className: 'popupStyle'
+                });
+            });
+
+
+        function coordsTo4326(coords) {
+            var lngLat = L.CRS.EPSG3857.unproject(L.point(coords));
+            return [lngLat.lng, lngLat.lat];
+        }
+    }
+</script>
+</body>
+</html>

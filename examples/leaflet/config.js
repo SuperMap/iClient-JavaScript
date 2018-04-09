@@ -539,12 +539,12 @@ var exampleConfig = {
                     name_en: "NY taxi car point",
                     thumbnail: "l_heatmap_nyc.png",
                     fileName: "12_heatMap_NY"
-                },{
+                }, {
                     name: "随机点(Classic)",
                     name_en: "random points (Classic)",
                     thumbnail: "l_heatMapLayer.png",
                     fileName: "heatMapLayer"
-                },{
+                }, {
                     name: "2000年到2015年地震热力图(Classic)",
                     name_en: "Earthquake heat map (2000-2015)",
                     thumbnail: "l_earthquakeHeatMap.png",
@@ -672,6 +672,12 @@ var exampleConfig = {
                         name_en: "binning on Map",
                         thumbnail: "l_echartsCellMap.png",
                         fileName: "echartsCellMap"
+                    },
+                    {
+                        name: "2008到20017年地震情况统计",
+                        name_en: "2008 to 20017 years of earthquake statistics",
+                        thumbnail: "l_echartsEarthquake.png",
+                        fileName: "echartsEarthquake"
                     }
                 ]
 
@@ -729,6 +735,11 @@ var exampleConfig = {
                     name_en: "village of beijing",
                     thumbnail: "l_mapvLayer_polygonBuildings.png",
                     fileName: "mapVLayerPolygonBuildings"
+                }, {
+                    name: "2018年2月北京房价",
+                    name_en: "Beijing house prices of Lianjia(2018.2)",
+                    thumbnail: "l_mapvLianjia.png",
+                    fileName: "mapvLianjiaData"
                 }]
             },
             "D3": {
