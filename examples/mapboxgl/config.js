@@ -367,8 +367,8 @@ var exampleConfig = {
                 name_en: "high efficiency point layer",
                 content: [
                     {
-                        name: "纽约出租车145万点",
-                        name_en: "points of 145w NY taxis",
+                        name: "纽约出租车145万上车点",
+                        name_en: "points of 1.45 million NYC taxis",
                         thumbnail: "mb_graphicLayer.png",
                         fileName: "graphicLayer"
                     }

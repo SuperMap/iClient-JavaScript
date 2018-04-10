@@ -11,7 +11,7 @@ import {Util} from "../../core/Util";
  * @param {Object} style - 图形参数。</br>
  * @param {Array} style.color - 点颜色，目前只支持rgba数组
  * @param {Object} style.radius - 点半径
- * @param {Object} properties - 额外属性信息
+ * @param {Object} attributes - 属性信息
  * @example
  *  var graphic = new mapboxgl.supermap.Graphic(
  *          {
@@ -24,11 +24,11 @@ import {Util} from "../../core/Util";
  *  });
  */
 export class Graphic {
-    constructor(lngLat, style, properties) {
+    constructor(lngLat, style, attributes) {
 
         this.lngLat = Util.isArray(lngLat) ? {lng: lngLat[0], lat: lngLat[1]} : lngLat;
         this.style = Util.extend({}, style);
-        this.properties = properties;
+        this.attributes = attributes;
     }
 
     /**
@@ -70,21 +70,21 @@ export class Graphic {
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.setProperties
-     * @description 设置额外属性信息
-     * @param properties -{Object} 额外属性信息
+     * @function mapboxgl.supermap.Graphic.prototype.setAttributes
+     * @description 设置属性信息
+     * @param attributes -{Object} 属性信息
      */
-    setProperties(properties) {
-        this.properties = Util.extend({}, this.properties, properties);
+    setAttributes(attributes) {
+        this.attributes = Util.extend({}, this.attributes, attributes);
     }
 
     /**
-     * @function mapboxgl.supermap.Graphic.prototype.setProperties
-     * @description 获取额外属性信息
-     * @return {Object} 额外属性信息
+     * @function mapboxgl.supermap.Graphic.prototype.getAttributes
+     * @description 获取属性信息
+     * @return {Object} 属性信息
      */
-    getProperties() {
-        return this.properties;
+    getAttributes() {
+        return this.attributes;
     }
 }
 

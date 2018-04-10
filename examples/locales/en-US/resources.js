@@ -1091,6 +1091,8 @@ window.resources = {
         "text_echartsLinesMillions_waterSystem_subtext": "drawn by 14 million points",
         "text_echartsLinesMillions_roads": "National Roads Network",
         "text_echartsLinesMillions_roads_subtext": "drawn by 25 million points",
+        "text_graphicLayer_title": "Boarding points of NYC taxis",
+        "text_graphicLayer_subTitle": "1.45 million points",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

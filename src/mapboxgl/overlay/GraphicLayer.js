@@ -33,7 +33,6 @@ const defaultProps = {
  * @param {number} options.radiusMaxPixels - 半径最大值(像素)
  * @param {number} options.strokeWidth - 边框大小
  * @param {boolean} options.outline - 是否显示边框
- * @param {boolean} options.fp64 - 是否启用64位计算
  */
 export class GraphicLayer {
 
@@ -49,7 +48,6 @@ export class GraphicLayer {
          * @description 点要素对象数组
          */
         this.graphics = opt.graphics;
-
     }
 
     /**
@@ -59,6 +57,13 @@ export class GraphicLayer {
      * @return this
      */
     addTo(map) {
+        this.onAdd(map);
+    }
+
+    /**
+     *增加onAdd接口是为了给map.addLayer()方法使用
+     */
+    onAdd(map) {
         this.map = map;
         if (this.canvas) {
             this.mapContainer = this.map.getCanvasContainer();
@@ -77,8 +82,7 @@ export class GraphicLayer {
             radiusMinPixels,
             radiusMaxPixels,
             strokeWidth,
-            outline,
-            fp64
+            outline
         } = mapState;
         let me = this;
         let layerOptions = {
@@ -95,7 +99,6 @@ export class GraphicLayer {
             radiusMaxPixels: radiusMaxPixels,
             strokeWidth: strokeWidth,
             outline: outline,
-            fp64: fp64,
             getPosition: function (point) {
                 let lngLat = point && point.getLngLat();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
@@ -128,10 +131,106 @@ export class GraphicLayer {
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
         this.deckGL = new experimental.DeckGLJS(deckOptions);
-        this.map.on('move', this._moveEvent.bind(this));
+        this.map.on('render', this._moveEvent.bind(this));
         this.map.on('resize', this._resizeEvent.bind(this));
         this.draw();
         return this;
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.setStyle
+     * @description 设置图层整体样式
+     * @param {Object} styleOptions - 样式对象
+     * @param {Array<number>} styleOptions.color - 点颜色
+     * @param {number} styleOptions.radius - 点半径
+     * @param {number} styleOptions.opacity - 不透明度
+     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
+     * @param {number} styleOptions.radiusScale - 点放大倍数
+     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
+     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
+     * @param {number} styleOptions.strokeWidth - 边框大小
+     * @param {boolean} styleOptions.outline - 是否显示边框
+     */
+    setStyle(styleOptions) {
+        let styleOpt = {
+            color: this.color,
+            radius: this.radius,
+            opacity: this.opacity,
+            highlightColor: this.highlightColor,
+            radiusScale: this.radiusScale,
+            radiusMinPixels: this.radiusMinPixels,
+            radiusMaxPixels: this.radiusMaxPixels,
+            strokeWidth: this.strokeWidth,
+            outline: this.outline
+        };
+
+        Util.extend(this, styleOpt, styleOptions);
+        this.update();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.setGraphics
+     * @description 设置绘制的点要素数据，会覆盖之前的所有要素
+     * @param {Array<mapboxgl.supermap.Graphic>}  graphics - 点要素对象数组
+     */
+    setGraphics(graphics) {
+        this.graphics =  [];
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
+        if (!this.layer.props.data) {
+            this.layer.props.data = [];
+        }
+        this.layer.props.data.length = 0;
+        for (let i = 0; i < sGraphics.length; i++) {
+            this.layer.props.data.push(sGraphics[i]);
+        }
+        this.update();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.addGraphics
+     * @description 添加点要素，不会覆盖之前的要素
+     * @param {Array<mapboxgl.supermap.Graphic>}  graphics - 点要素对象数组
+     */
+    addGraphics(graphics) {
+        this.graphics = this.graphics || [];
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
+        if (!this.layer.props.data) {
+            this.layer.props.data = [];
+        }
+        for (let i = 0; i < sGraphics.length; i++) {
+            this.layer.props.data.push(sGraphics[i]);
+        }
+        this.update();
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.update
+     * @description 更新图层
+     */
+    update() {
+        this.layer.setChangeFlags({
+            dataChanged: true,
+            propsChanged: true,
+            viewportChanged: true,
+            updateTriggersChanged: true
+        });
+        let state = this.getState();
+        this.layer.setState(state);
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.removeGraphics
+     * @description 移除所有要素
+     */
+    removeGraphics() {
+        this.graphics = [];
+
+        if (this.layer.props.data) {
+            this.layer.props.data.length = 0;
+        }
+        this.update();
     }
 
     /**
@@ -139,7 +238,7 @@ export class GraphicLayer {
      * @description 删除该图层
      */
     remove() {
-        this.map.off('move', this._moveEvent.bind(this));
+        this.map.off('render', this._moveEvent.bind(this));
         this.map.off('resize', this._resizeEvent.bind(this));
         this.map.getCanvasContainer().removeChild(this.canvas);
     }
@@ -194,7 +293,6 @@ export class GraphicLayer {
         state.radiusMaxPixels = this.radiusMaxPixels;
         state.strokeWidth = this.strokeWidth;
         state.outline = this.outline;
-        state.fp64 = this.fp64;
         return state;
     }
 
@@ -212,85 +310,6 @@ export class GraphicLayer {
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
         this.deckGL.setProps(deckOptions);
-    }
-
-    /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.update
-     * @description 更新图层
-     */
-    update() {
-        this.layer.setChangeFlags({
-            dataChanged: true,
-            propsChanged: true,
-            viewportChanged: true,
-            updateTriggersChanged: true
-        });
-        let state = this.getState();
-        this.layer.setState(state);
-    }
-
-    /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.setStyle
-     * @description 设置图层整体样式
-     * @param {Object} styleOptions - 样式对象
-     * @param {Array<number>} styleOptions.color - 点颜色
-     * @param {number} styleOptions.radius - 点半径
-     * @param {number} styleOptions.opacity - 不透明度
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
-     * @param {number} styleOptions.radiusScale - 点放大倍数
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
-     * @param {number} styleOptions.strokeWidth - 边框大小
-     * @param {boolean} styleOptions.outline - 是否显示边框
-     * @param {boolean} styleOptions.fp64 - 是否启用64位计算
-     */
-    setStyle(styleOptions) {
-        let styleOpt = {
-            color: this.color,
-            radius: this.radius,
-            opacity: this.opacity,
-            highlightColor: this.highlightColor,
-            radiusScale: this.radiusScale,
-            radiusMinPixels: this.radiusMinPixels,
-            radiusMaxPixels: this.radiusMaxPixels,
-            strokeWidth: this.strokeWidth,
-            outline: this.outline,
-            fp64: this.fp64
-        };
-
-        Util.extend(this, styleOpt, styleOptions);
-        this.update();
-    }
-
-    /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.addData
-     * @description 添加点要素
-     * @param {Array<mapboxgl.supermap.Graphic>}  graphics - 点要素对象数组
-     */
-    addData(graphics) {
-        this.graphics = this.graphics || [];
-        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
-        //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
-        if (!this.layer.props.data) {
-            this.layer.props.data = [];
-        }
-        for (let i = 0; i < sGraphics.length; i++) {
-            this.layer.props.data.push(sGraphics[i]);
-        }
-        this.update();
-    }
-
-    /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.removeFeatures
-     * @description 移除所有要素
-     */
-    removeFeatures() {
-        this.graphics = [];
-
-        if (this.layer.props.data) {
-            this.layer.props.data.length = 0;
-        }
-        this.update();
     }
 
     _moveEvent() {
