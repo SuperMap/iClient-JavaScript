@@ -739,7 +739,7 @@ var exampleConfig = {
                     thumbnail: "l_mapvLayer_polygon.png",
                     fileName: "mapVLayerPolygon"
                 }, {
-                    name: "北京",
+                    name: "北京乡镇分布",
                     name_en: "village of beijing",
                     thumbnail: "l_mapvLayer_polygonBuildings.png",
                     fileName: "mapVLayerPolygonBuildings"
