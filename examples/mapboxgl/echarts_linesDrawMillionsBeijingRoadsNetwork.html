@@ -1,0 +1,132 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>Use lines to draw 2 millions Beijing streets</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileURL],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 18
+            }]
+        },
+        center: [116.36, 40.0],
+        zoom: 9,
+        itemStyle: {
+            normal: {
+                color: 'transparent',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1
+            }
+        },
+        roam: true,
+        silent: true
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    var echartslayer = new EchartsLayer(map);
+
+    var CHUNK_COUNT = 19;
+
+    function fetchData(idx) {
+        if (idx > CHUNK_COUNT) {
+            return;
+        }
+        var dataURL = `http://iclient.supermap.io/web/data/bigdata_beijingroads/bigDta_${idx}.bin`;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', dataURL, true);
+        xhr.responseType = 'arraybuffer';
+
+        xhr.onload = function (e) {
+            var rawData = new Float32Array(this.response);
+            echartslayer.chart.appendData({
+                seriesIndex: 0,
+                data: rawData
+            });
+
+            fetchData(idx + 1);
+        };
+
+        xhr.send();
+    }
+
+    option = {
+        animation: false,
+        progressive: 20000,
+        GLMap: {
+            roam: true
+        },
+        title: {
+            top: '10px',
+            text: resources.text_echartsLinesMillions_bjRoads,
+            subtext: resources.text_echartsLinesMillions_bjRoads_subtext,
+            left: 'center',
+            textStyle: {
+                color: '#fff'
+            },
+            subtextStyle: {
+                color: '#fff'
+            }
+        },
+        coordinateSystem: 'GLMap',
+        series: [{
+            name: 'beijingRoads',
+            type: 'lines',
+            blendMode: 'lighter',
+            coordinateSystem: 'GLMap',
+            dimensions: ['value'],
+            data: new Float64Array(),
+            polyline: true,
+            large: true,
+            lineStyle: {
+                color: 'orange',
+                width: 1,
+                opacity: 0.3
+            }
+        }]
+    };
+
+    fetchData(0);
+    echartslayer.chart.setOption(option);
+
+</script>
+</body>
+</html>

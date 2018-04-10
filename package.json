@@ -99,7 +99,7 @@
     "@mapbox/vector-tile": "1.3.0",
     "@supermap/iclient-common": "file:src/common",
     "@turf/turf": "^4.7.1",
-    "echarts": "3.8.5",
+    "echarts": "4.0.4",
     "deck.gl": "5.1.3",
     "elasticsearch": "13.0.1",
     "express": "^4.16.3",

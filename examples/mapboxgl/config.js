@@ -450,6 +450,26 @@ var exampleConfig = {
                         name_en: "cell map",
                         thumbnail: "echarts_cellMap.png",
                         fileName: "echarts_cellMap"
+                    }, {
+                        name: "2百万点数据绘制北京道路网络图",
+                        name_en: "Use lines to draw 2 millions Beijing streets",
+                        thumbnail: "mb_echartsLinesMillionsBeijingRoads.png",
+                        fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
+                    }, {
+                        name: "4百万点数据绘制全国铁路网络图",
+                        name_en: "Use lines to draw 4 millions Chinese railways",
+                        thumbnail: "mb_echartsLinesMillionsRailway.png",
+                        fileName: "echarts_linesDrawMillionsRailwaysNetwork"
+                    }, {
+                        name: "1千4百万数据绘制全国水系图",
+                        name_en: "Use lines to draw 14 millions Chinese water system",
+                        thumbnail: "mb_echartsLinesMillionsWaterSystem.png",
+                        fileName: "echarts_linesDrawMillionsWaterSystem"
+                    }, {
+                        name: "2千5百万数据绘制全国道路网络图",
+                        name_en: "Use lines to draw 25 millions Chinese roads",
+                        thumbnail: "mb_echartsLinesMillionsRoads.png",
+                        fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }
                 ]
             },

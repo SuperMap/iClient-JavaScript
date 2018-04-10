@@ -606,78 +606,86 @@ var exampleConfig = {
                         name_en: "scatter",
                         thumbnail: "l_echartsEffectScatter.png",
                         fileName: "echartsEffectScatter"
-                    },
-                    {
+                    }, {
                         name: "迁徙图",
                         name_en: "migration",
                         thumbnail: "l_echartsGeoLines.gif",
                         fileName: "echartsGeoLines"
-                    },
-                    {
+                    }, {
                         name: "热力图",
                         name_en: "heat map",
                         thumbnail: "l_echartsHeatmap.png",
                         fileName: "echartsHeatmap"
-                    },
-                    {
+                    }, {
                         name: "线路图",
                         name_en: "line",
                         thumbnail: "l_echartsLinesBus.png",
                         fileName: "echartsLinesBus"
-                    },
-                    {
+                    }, {
                         name: "线特效",
                         name_en: "line effect",
                         thumbnail: "l_echartsLinesEffect.gif",
                         fileName: "echartsLinesEffect"
-                    },
-                    {
+                    }, {
                         name: "折线图",
                         name_en: "line chart",
                         thumbnail: "l_echartsLineMarker.png",
                         fileName: "echartsLineMarker"
-                    },
-                    {
+                    }, {
                         name: "柱状图",
                         name_en: "bar chart",
                         thumbnail: "l_echartsBar.png",
                         fileName: "echartsBar"
-                    },
-                    {
+                    }, {
                         name: "散点图",
                         name_en: "scatter chart",
                         thumbnail: "l_echartsScatter.png",
                         fileName: "echartsScatter"
-                    },
-                    {
+                    }, {
                         name: "饼图",
                         name_en: "pie chart",
                         thumbnail: "l_echartsPie.png",
                         fileName: "echartsPie"
-                    },
-                    {
+                    }, {
                         name: "世界飞机航线图",
                         name_en: "Airplane route map",
                         thumbnail: "l_echartsLinesAirline.png",
                         fileName: "echartsLinesAirline"
-                    },
-                    {
+                    }, {
                         name: "微博签到图",
                         name_en: "weibo scatter",
                         thumbnail: "l_echartsScatterWeibo.png",
                         fileName: "echartsScatterWeibo"
-                    },
-                    {
+                    }, {
                         name: "方形图",
                         name_en: "binning on Map",
                         thumbnail: "l_echartsCellMap.png",
                         fileName: "echartsCellMap"
-                    },
-                    {
+                    }, {
                         name: "2008到2017年地震情况统计",
                         name_en: "2008 to 2017 years of earthquake statistics",
                         thumbnail: "l_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
+                    }, {
+                        name: "2百万点数据绘制北京道路网络图",
+                        name_en: "Use lines to draw 2 millions Beijing streets",
+                        thumbnail: "l_echartsLinesMillionsBeijingRoads.png",
+                        fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
+                    }, {
+                        name: "4百万点数据绘制全国铁路网络图",
+                        name_en: "Use lines to draw 4 millions Chinese railways",
+                        thumbnail: "l_echartsLinesMillionsRailway.png",
+                        fileName: "echarts_linesDrawMillionsRailwaysNetwork"
+                    }, {
+                        name: "1千4百万数据绘制全国水系图",
+                        name_en: "Use lines to draw 14 millions Chinese water system",
+                        thumbnail: "l_echartsLinesMillionsWaterSystem.png",
+                        fileName: "echarts_linesDrawMillionsWaterSystem"
+                    }, {
+                        name: "2千5百万数据绘制全国道路网络图",
+                        name_en: "Use lines to draw 25 millions Chinese roads",
+                        thumbnail: "l_echartsLinesMillionsRoads.png",
+                        fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }
                 ]
 
@@ -731,7 +739,7 @@ var exampleConfig = {
                     thumbnail: "l_mapvLayer_polygon.png",
                     fileName: "mapVLayerPolygon"
                 }, {
-                    name: "北京乡镇分布",
+                    name: "北京",
                     name_en: "village of beijing",
                     thumbnail: "l_mapvLayer_polygonBuildings.png",
                     fileName: "mapVLayerPolygonBuildings"

@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@turf/turf": "^4.7.1",
-    "echarts": "3.8.5",
+    "echarts": "4.0.4",
     "mapv": "2.0.14",
     "leaflet": "1.2.0",
     "@supermap/iclient-common": "9.0.1",

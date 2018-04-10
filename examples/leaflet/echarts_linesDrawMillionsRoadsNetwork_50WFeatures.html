@@ -1,0 +1,95 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>Use lines to draw 25 millions Chinese roads</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+
+    map = L.map('map', {
+        center: [37.94, 106],
+        maxZoom: 18,
+        zoom: 5
+    });
+    L.supermap.tiledMapLayer(tileURL).addTo(map);
+
+    option = {
+        progressive: 20000,
+        title: {
+            top: '10px',
+            text: resources.text_echartsLinesMillions_roads,
+            subtext: resources.text_echartsLinesMillions_roads_subtext,
+            left: 'center',
+            textStyle: {
+                color: '#fff'
+            },
+            subtextStyle: {
+                color: '#fff'
+            }
+        },
+        series: [{
+            type: 'lines',
+            blendMode: 'lighter',
+            coordinateSystem: 'leaflet',
+            dimensions: ['value'],
+            data: new Float64Array(),
+            polyline: true,
+            large: true,
+            lineStyle: {
+                color: 'orange',
+                width: 1,
+                opacity: 0.3
+            }
+        }]
+    };
+
+    var echartsLayer = L.supermap.echartsLayer(option).addTo(map);
+
+    var CHUNK_COUNT = 27;
+
+    function fetchData(idx) {
+        if (idx > CHUNK_COUNT) {
+            return;
+        }
+        var dataURL = `http://iclient.supermap.io/web/data/bigdata_roads_50w/bigDta_${idx}.bin`;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', dataURL, true);
+        xhr.responseType = 'arraybuffer';
+
+        xhr.onload = function (e) {
+            var rawData = new Float32Array(this.response);
+            echartsLayer._ec.appendData({
+                seriesIndex: 0,
+                data: rawData
+            });
+
+            fetchData(idx + 1);
+        };
+
+        xhr.send();
+    }
+
+    fetchData(0);
+
+</script>
+</body>
+</html>
