@@ -457,7 +457,7 @@ window.resources = {
         "title_l_echartsEarthquake":"2000年到2015年地震热力图",
         "title_mapvLianjia":"链家北京房价信息",
         "title_mapvLianjia_Beijing_price":"2018年2月北京房价",
-        "title_l_echartsEarthquake1":"2008到20017年地震情况统计",
+        "title_l_echartsEarthquake1":"2008到2017年地震情况统计",
 
 
 

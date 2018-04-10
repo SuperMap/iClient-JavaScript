@@ -456,7 +456,7 @@ window.resources = {
         "title_echartsEarthquake":"Earthquake occurrences(2005-2016)",
         "title_l_echartsEarthquake":"Earthquake heat map (2000-2015)",
         "title_mapvLianjia":"Beijing house prices of Lianjia",
-        "title_l_echartsEarthquake1":"2008 to 20017 years of earthquake statistics",
+        "title_l_echartsEarthquake1":"2008 to 2017 years of earthquake statistics",
 
 
         "text_code": "Forward Match",

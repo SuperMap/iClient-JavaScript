@@ -674,8 +674,8 @@ var exampleConfig = {
                         fileName: "echartsCellMap"
                     },
                     {
-                        name: "2008到20017年地震情况统计",
-                        name_en: "2008 to 20017 years of earthquake statistics",
+                        name: "2008到2017年地震情况统计",
+                        name_en: "2008 to 2017 years of earthquake statistics",
                         thumbnail: "l_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
                     }
@@ -731,7 +731,7 @@ var exampleConfig = {
                     thumbnail: "l_mapvLayer_polygon.png",
                     fileName: "mapVLayerPolygon"
                 }, {
-                    name: "北京",
+                    name: "北京乡镇分布",
                     name_en: "village of beijing",
                     thumbnail: "l_mapvLayer_polygonBuildings.png",
                     fileName: "mapVLayerPolygonBuildings"
