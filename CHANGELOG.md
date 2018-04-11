@@ -54,6 +54,8 @@
     
     - `addGraphics`: 追加点要素
     
+    - `clear`: 释放图层资源
+    
     - `removeGraphics`: 移除所有要素
 
 
@@ -112,7 +114,7 @@
     
     - `addGraphics`: 追加点要素
     
-    - `clear`: 移除所有要素
+    - `clear`: 释放图层资源
     
     - `removeGraphics`: 移除所有要素
 

@@ -34,7 +34,7 @@ export class Graphic extends ol.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
-        this.graphics_ = options.graphics;
+        this.graphics_ =  [].concat(options.graphics);
         this.map = options.map;
         this.highLightStyle = options.highLightStyle;
         //是否支持高亮，默认支持
@@ -196,7 +196,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.clear
-     * @description 清除所有要素
+     * @description 释放图层资源
      */
     clear() {
         this.removeGraphics();

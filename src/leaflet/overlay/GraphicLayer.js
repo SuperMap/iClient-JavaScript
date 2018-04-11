@@ -15,7 +15,7 @@ export var GraphicLayer = L.Path.extend({
         initialize: function (graphics, options) {
             options = options || {};
             L.setOptions(this, options);
-            this.graphics = graphics;
+            this.graphics = [].concat(graphics);
         },
 
         /**
@@ -69,6 +69,14 @@ export var GraphicLayer = L.Path.extend({
             let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics = this.graphics.concat(sGraphics);
             this._update();
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.clear
+         * @description 释放图层资源
+         */
+        clear() {
+            this.removeGraphics();
         },
 
         /**

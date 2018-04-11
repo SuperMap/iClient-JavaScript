@@ -62881,7 +62881,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
             state: options.state
         }));
 
-        _this.graphics_ = options.graphics;
+        _this.graphics_ = [].concat(options.graphics);
         _this.map = options.map;
         _this.highLightStyle = options.highLightStyle;
         //是否支持高亮，默认支持
@@ -63052,7 +63052,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Graphic.prototype.clear
-         * @description 清除所有要素
+         * @description 释放图层资源
          */
 
     }, {

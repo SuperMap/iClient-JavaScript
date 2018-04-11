@@ -58655,7 +58655,7 @@ var GraphicLayer = exports.GraphicLayer = function () {
          * @member mapboxgl.supermap.GraphicLayer.prototype.graphics - {Array<mapboxgl.supermap.Graphic>}
          * @description 点要素对象数组
          */
-        this.graphics = opt.graphics;
+        this.graphics = [].concat(opt.graphics);
     }
 
     /**
@@ -58845,6 +58845,17 @@ var GraphicLayer = exports.GraphicLayer = function () {
             });
             var state = this.getState();
             this.layer.setState(state);
+        }
+
+        /**
+         * @function mapboxgl.supermap.GraphicLayer.prototype.clear
+         * @description 释放图层资源
+         */
+
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.removeGraphics();
         }
 
         /**

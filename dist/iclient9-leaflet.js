@@ -65439,7 +65439,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
     initialize: function initialize(graphics, options) {
         options = options || {};
         _leaflet2["default"].setOptions(this, options);
-        this.graphics = graphics;
+        this.graphics = [].concat(graphics);
     },
 
     /**
@@ -65494,6 +65494,15 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
         var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = this.graphics.concat(sGraphics);
         this._update();
+    },
+
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.clear
+     * @description 释放图层资源
+     */
+    clear: function clear() {
+        this.removeGraphics();
     },
 
 
