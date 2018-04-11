@@ -174,8 +174,9 @@ export class GraphicLayer {
      * @param {Array<mapboxgl.supermap.Graphic>}  graphics - 点要素对象数组
      */
     setGraphics(graphics) {
-        this.graphics =  [];
-        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics = this.graphics || [];
+        this.graphics.length = 0;
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
         if (!this.layer.props.data) {
             this.layer.props.data = [];
@@ -194,7 +195,7 @@ export class GraphicLayer {
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];
-        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
         if (!this.layer.props.data) {
             this.layer.props.data = [];
@@ -225,7 +226,7 @@ export class GraphicLayer {
      * @description 移除所有要素
      */
     removeGraphics() {
-        this.graphics = [];
+        this.graphics.length = 0;
 
         if (this.layer.props.data) {
             this.layer.props.data.length = 0;

@@ -63028,8 +63028,9 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
     _createClass(Graphic, [{
         key: 'setGraphics',
         value: function setGraphics(graphics) {
-            this.graphics_ = [];
-            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics_ = this.graphics_ || [];
+            this.graphics_.length = 0;
+            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics_ = [].concat(sGraphics);
             this.update();
         }
@@ -63044,7 +63045,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         key: 'addGraphics',
         value: function addGraphics(graphics) {
             this.graphics_ = this.graphics_ || [];
-            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics_ = this.graphics_.concat(sGraphics);
             this.update();
         }
@@ -63068,7 +63069,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
     }, {
         key: 'removeGraphics',
         value: function removeGraphics() {
-            this.graphics_ = [];
+            this.graphics_.length = 0;
             this.update();
         }
 

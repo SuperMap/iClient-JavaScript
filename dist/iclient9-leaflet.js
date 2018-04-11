@@ -65476,8 +65476,9 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
      * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
      */
     setGraphics: function setGraphics(graphics) {
-        this.graphics = [];
-        var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics = this.graphics || [];
+        this.graphics.length = 0;
+        var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = [].concat(sGraphics);
         this._update();
     },
@@ -65490,7 +65491,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
      */
     addGraphics: function addGraphics(graphics) {
         this.graphics = this.graphics || [];
-        var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics = this.graphics.concat(sGraphics);
         this._update();
     },
@@ -65501,7 +65502,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
      * @description 移除所有要素
      */
     removeGraphics: function removeGraphics() {
-        this.graphics = [];
+        this.graphics.length = 0;
         this._update();
     },
 

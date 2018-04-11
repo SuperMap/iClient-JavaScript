@@ -58794,8 +58794,9 @@ var GraphicLayer = exports.GraphicLayer = function () {
     }, {
         key: 'setGraphics',
         value: function setGraphics(graphics) {
-            this.graphics = [];
-            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics = this.graphics || [];
+            this.graphics.length = 0;
+            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
             if (!this.layer.props.data) {
                 this.layer.props.data = [];
@@ -58817,7 +58818,7 @@ var GraphicLayer = exports.GraphicLayer = function () {
         key: 'addGraphics',
         value: function addGraphics(graphics) {
             this.graphics = this.graphics || [];
-            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
             if (!this.layer.props.data) {
                 this.layer.props.data = [];
@@ -58854,7 +58855,7 @@ var GraphicLayer = exports.GraphicLayer = function () {
     }, {
         key: 'removeGraphics',
         value: function removeGraphics() {
-            this.graphics = [];
+            this.graphics.length = 0;
 
             if (this.layer.props.data) {
                 this.layer.props.data.length = 0;

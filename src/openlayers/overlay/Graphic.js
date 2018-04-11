@@ -175,8 +175,9 @@ export class Graphic extends ol.source.ImageCanvas {
      * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
      */
     setGraphics(graphics) {
-        this.graphics_ = [];
-        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics_ = this.graphics_ || [];
+        this.graphics_.length = 0;
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics_ = [].concat(sGraphics);
         this.update();
     }
@@ -188,7 +189,7 @@ export class Graphic extends ol.source.ImageCanvas {
      */
     addGraphics(graphics) {
         this.graphics_ = this.graphics_ || [];
-        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : [].concat(graphics);
         this.graphics_ = this.graphics_.concat(sGraphics);
         this.update();
     }
@@ -206,7 +207,7 @@ export class Graphic extends ol.source.ImageCanvas {
      * @description 清除所有要素
      */
     removeGraphics() {
-        this.graphics_ = [];
+        this.graphics_.length = 0;
         this.update();
     }
 

@@ -52,8 +52,9 @@ export var GraphicLayer = L.Path.extend({
          * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
          */
         setGraphics(graphics) {
-            this.graphics = [];
-            let sGraphics = !L.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics = this.graphics || [];
+            this.graphics.length = 0;
+            let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics = [].concat(sGraphics);
             this._update();
         },
@@ -65,7 +66,7 @@ export var GraphicLayer = L.Path.extend({
          */
         addGraphics(graphics) {
             this.graphics = this.graphics || [];
-            let sGraphics = !L.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics = this.graphics.concat(sGraphics);
             this._update();
         },
@@ -75,7 +76,7 @@ export var GraphicLayer = L.Path.extend({
          * @description 移除所有要素
          */
         removeGraphics() {
-            this.graphics = [];
+            this.graphics.length = 0;
             this._update();
         },
 
