@@ -56,16 +56,16 @@ describe('leaflet_GraphicLayer', () => {
         for (var j = 0; j < count; ++j) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[j] = graphic({
-                _latlng: L.latLng(coordinates[0], coordinates[1]),
-                _canvas: randomCircleStyles[Math.floor(Math.random() * colorCount)].getCanvas()
+                latLng: L.latLng(coordinates[0], coordinates[1]),
+                style: randomCircleStyles[Math.floor(Math.random() * colorCount)].getCanvas()
             });
         }
         var layer = graphicLayer(graphics).addTo(map);
         setTimeout(() => {
             expect(layer.graphics.length).toEqual(count);
             for (var i = 0; i < layer.graphics.length; i++) {
-                expect(layer.graphics[i]._canvas).not.toBeNull();
-                expect(layer.graphics[i]._latlng).not.toBeNull();
+                expect(layer.graphics[i]._style).not.toBeNull();
+                expect(layer.graphics[i]._latLng).not.toBeNull();
             }
             var isContainsPoint = layer._containsPoint();
             expect(isContainsPoint).not.toBe("false");

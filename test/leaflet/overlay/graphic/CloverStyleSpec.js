@@ -62,7 +62,7 @@ describe('leaflet_CloverStyle', () => {
         for (var i = 0; i < count; ++i) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[i] = graphic({
-                latlng: L.latLng(coordinates[0], coordinates[1]),
+                latLng: L.latLng(coordinates[0], coordinates[1]),
                 style: clovers[Math.floor(Math.random() * randCount)].getStyle()
             });
         }
@@ -73,9 +73,9 @@ describe('leaflet_CloverStyle', () => {
             expect(layer.graphics.length).toEqual(count);
             for (var i = 0; i < layer.graphics.length; i++) {
                 expect(layer.graphics[i]._style).not.toBeNull();
-                expect(layer.graphics[i]._latlng).not.toBeNull();
-                expect(layer.graphics[i]._latlng.lat).not.toBeNull();
-                expect(layer.graphics[i]._latlng.lng).not.toBeNull();
+                expect(layer.graphics[i]._latLng).not.toBeNull();
+                expect(layer.graphics[i]._latLng.lat).not.toBeNull();
+                expect(layer.graphics[i]._latLng.lng).not.toBeNull();
             }
             //map.remove()时，canvas渲染的场景下render会先移除canvas的ctx，而path的移除会有重绘操作。
             //从而引起刷新延迟会报错，故在此移除重绘
