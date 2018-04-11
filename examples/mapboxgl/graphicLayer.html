@@ -80,13 +80,13 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    // widgets.loader.showLoader("data loading...");
+    widgets.loader.showLoader("data loading...");
 
-    // $.get('../data/nyc-taxi.csv', function (csvstr) {
-    //     widgets.loader.removeLoader();
-    //     var result = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
-    //     addLayer(result.data);
-    // });
+    $.get('../data/nyc-taxi.csv', function (csvstr) {
+        widgets.loader.removeLoader();
+        var result = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
+        addLayer(result.data);
+    });
 
 
     function addLayer(points) {
