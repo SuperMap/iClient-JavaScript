@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_lianjia"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+        #map {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%
+        }
+
+        #titleContainer {
+            width: 100%;
+            position: absolute;
+            top: 30px;
+            color: white;
+            z-index: 999;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #titleContainer > #title {
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="titleContainer">
+    <h2 id="title" data-i18n="resources.text_lianjia_title"></h2>
+</div>
+<script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var baseurl = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var dataUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_格网";
+    var map = L.map('map', {
+        center: [39.88076184888246, 116.42898559570312],
+        zoom: 11,
+        maxZoom: 18,
+        minZoom: 6
+    });
+    L.supermap.tiledMapLayer(baseurl).addTo(map);
+    query();
+
+    function query() {
+        var param = new SuperMap.QueryBySQLParameters({
+            queryParams: {
+                name: "lj_xq_500gw@BJ_201802LJ",
+                attributeFilter: "SMID > 0"
+            },
+            fromIndex: 0,
+            toIndex: 10000,
+            maxFeatures: 10000
+        });
+        L.supermap.queryService(dataUrl).queryBySQL(param, function (serviceResult) {
+            var result = serviceResult.result;
+            var features = result.recordsets[0].features.features;
+            //构造数据
+            var data = [];
+            for (var i = 0; i < features.length; i++) {
+                var pointLeftTop = coordsTo4326(features[i].geometry.coordinates[0][0][0]);
+                var pointRightBottom = coordsTo4326(features[i].geometry.coordinates[0][0][2]);
+                var value = parseFloat((features[i].properties.average_price_1 / 10000).toFixed(2));
+                data.push(pointLeftTop.concat(value).concat(pointRightBottom));
+            }
+            var COLORS = ['#e0dffb', '#8c88ef', '#5954e8', '#221cd2', '#17138d', '#0c0a48', '#030314', 'red'];
+            var option = {
+                tooltip: {},
+                visualMap: {
+                    type: 'piecewise',
+                    inverse: true,
+                    top: 110,
+                    left: 10,
+                    pieces: [{
+                        gt: 0, lte: 2, color: COLORS[0]
+                    }, {
+                        gt: 2, lte: 4, color: COLORS[1]
+                    }, {
+                        gt: 4, lte: 6, color: COLORS[2]
+                    }, {
+                        gt: 6, lte: 8, color: COLORS[3]
+                    }, {
+                        gt: 8, lte: 10, color: COLORS[4]
+                    }, {
+                        gt: 10, lte: 15, color: COLORS[5]
+                    }, {
+                        gt: 15, lte: 20, color: COLORS[8]
+                    }, {
+                        gt: 20, lte: 28, color: COLORS[9]
+                    }],
+                    borderColor: '#ccc',
+                    borderWidth: 2,
+                    backgroundColor: '#eee',
+                    dimension: 2,
+                    inRange: {
+                        color: COLORS,
+                        opacity: 0.7
+                    }
+                },
+                series: [{
+                    type: 'custom',
+                    coordinateSystem: "leaflet",
+                    data: data,
+                    renderItem: renderItem,
+                    animation: false,
+                    itemStyle: {
+                        emphasis: {
+                            color: 'pink'
+                        }
+                    },
+                    encode: {
+                        tooltip: 2
+                    }
+                }]
+            };
+            // 自定义渲染
+            function renderItem(params, api) {
+                pointLeftTop =map.latLngToContainerPoint(new L.LatLng(api.value(1),api.value(0)));
+
+                pointRightBottom = map.latLngToContainerPoint(new L.LatLng(api.value(4),api.value(3)));
+
+                return {
+                    type: 'rect',
+                    shape: {
+                        x: pointLeftTop.x,
+                        y: pointLeftTop.y,
+                        width: pointLeftTop.x - pointRightBottom.x,
+                        height: pointLeftTop.y - pointRightBottom.y
+                    },
+                    style: api.style({
+                        stroke: 'rgba(0,0,0,0.1)'
+                    }),
+                    styleEmphasis: api.styleEmphasis()
+                };
+            }
+            function coordsTo4326(coords) {
+                var lngLat = L.CRS.EPSG3857.unproject(L.point(coords));
+                return [lngLat.lng, lngLat.lat];
+            }
+            L.supermap.echartsLayer(option).addTo(map);
+        });
+    }
+</script>
+</body>
+</html>

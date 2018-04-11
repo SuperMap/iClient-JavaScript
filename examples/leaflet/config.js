@@ -667,6 +667,11 @@ var exampleConfig = {
                         thumbnail: "l_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
                     }, {
+                        name: "2018年2月北京房价",
+                        name_en: "Beijing house prices of Lianjia(2018.2)",
+                        thumbnail: "l_echartsLianjiaGridLayer.png",
+                        fileName: "echartsGridMapLayer"
+                    }, {
                         name: "2百万点数据绘制北京道路网络图",
                         name_en: "Use lines to draw 2 millions Beijing streets",
                         thumbnail: "l_echartsLinesMillionsBeijingRoads.png",
