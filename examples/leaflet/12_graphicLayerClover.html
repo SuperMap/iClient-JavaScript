@@ -54,7 +54,7 @@
         for (var i = 0; i < count; ++i) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[i] = L.supermap.graphic({
-                latlng: L.latLng(coordinates[0], coordinates[1]),
+                latLng: L.latLng(coordinates[0], coordinates[1]),
                 style: clovers[Math.floor(Math.random() * randCount)].getStyle()
             });
             var pointVector = graphics[i];

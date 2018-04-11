@@ -48,6 +48,26 @@
 
 - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
+- 高性能图层 `L.supermap.GraphicLayer` 新增接口：
+    
+    - `setGraphics`: 设置点要素
+    
+    - `addGraphics`: 追加点要素
+    
+    - `removeGraphics`: 移除所有要素
+
+
+- 高性能图层要素类 `L.supermap.Graphic` 更改接口和参数：
+    
+    - options参数 `latlng` 更改为 `latLng`
+    
+    - options新增参数 `attributes`,支持设置要素属性
+    
+    - 增加 `setAttributes`和`getAttributes`接口
+    
+    - `setLatlng` 接口更改为 `setLatLng`
+    
+
 ### for OpenLayers
 
 - `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据

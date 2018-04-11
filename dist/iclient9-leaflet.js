@@ -32770,18 +32770,19 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
     initialize: function initialize(options) {
         options = options || {};
 
-        var latlng = options.latlng || options._latlng;
-        this._latlng = _leaflet2["default"].latLng(latlng.lat, latlng.lng);
+        var latLng = options.latLng || options._latLng;
+        this._latLng = _leaflet2["default"].latLng(latLng.lat, latLng.lng);
         this._style = options.style || options._canvas;
+        this._attributes = options.attributes;
     },
 
     /**
-     * @function L.supermap.graphic.prototype.setLatlng
+     * @function L.supermap.graphic.prototype.setLatLng
      * @description 设置经纬度
-     * @param latlng - {L.latlng} 经纬度参数
+     * @param latLng - {L.latLng} 经纬度参数
      */
-    setLatlng: function setLatlng(latlng) {
-        this._latlng = latlng;
+    setLatLng: function setLatLng(latLng) {
+        this._latLng = latLng;
     },
 
     /**
@@ -32795,20 +32796,41 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
     },
 
     /**
+     * @function L.supermap.graphic.prototype.setAttributes
+     * @description 设置要素属性
+     * @param attributes - {Object} 属性对象
+     */
+    setAttributes: function setAttributes(attributes) {
+        this._attributes = attributes;
+    },
+
+    /**
      * @function L.supermap.graphic.prototype.getLatLng
      * @description 获取经纬度
+     * @return {L.latLng} 经纬度
      */
+
     getLatLng: function getLatLng() {
-        return this._latlng;
+        return this._latLng;
     },
 
     /**
      * @deprecated
      * @function L.supermap.graphic.prototype.getCanvas
      * @description 获取画布，已弃用该设置，请使用getStyle接口
+     * @return {HTMLCanvasElement} 画布
      */
     getCanvas: function getCanvas() {
         return this._style;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.getAttributes
+     * @description 获取要素属性
+     * @return {Object} 要素属性
+     */
+    getAttributes: function getAttributes() {
+        return this._attributes;
     },
 
     /**
@@ -32823,6 +32845,7 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
     /**
      * @function L.supermap.graphic.prototype.getStyle
      * @description 获取样式
+     * @return {L.supermap.CircleStyle|L.supermap.ImageStyle|L.supermap.CloverStyle} 样式
      */
     getStyle: function getStyle() {
         return this._style;
@@ -65444,6 +65467,42 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
         _leaflet2["default"].Path.prototype.onAdd.call(this);
     },
 
+    /**
+     * @function L.supermap.graphicLayer.prototype.setGraphics
+     * @description 设置绘制的点要素数据，会覆盖之前的所有要素
+     * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+     */
+    setGraphics: function setGraphics(graphics) {
+        this.graphics = [];
+        var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics = [].concat(sGraphics);
+        this._update();
+    },
+
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.addGraphics
+     * @description 追加点要素，不会覆盖之前的要素
+     * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+     */
+    addGraphics: function addGraphics(graphics) {
+        this.graphics = this.graphics || [];
+        var sGraphics = !_leaflet2["default"].Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics = this.graphics.concat(sGraphics);
+        this._update();
+    },
+
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.removeGraphics
+     * @description 移除所有要素
+     */
+    removeGraphics: function removeGraphics() {
+        this.graphics = [];
+        this._update();
+    },
+
+
     _update: function _update() {
         if (this._map) {
             this._updatePath();
@@ -71076,7 +71135,7 @@ module.exports = function (proj4) {
 /* 377 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 378 */

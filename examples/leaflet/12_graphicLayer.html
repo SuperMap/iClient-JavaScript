@@ -47,8 +47,7 @@
                     continue;
                 }
                 graphics[i] = L.supermap.graphic({
-                    latlng: L.latLng(coordinates[1], coordinates[0]),
-
+                    latLng: L.latLng(coordinates[1], coordinates[0]),
                     style: circleStyles[Math.floor(Math.random() * colorCount)].getStyle()
                 });
             }
@@ -63,6 +62,7 @@
             }).addTo(map);
         })
     }
+
     //生成随机颜色
     function getRandomColors(count) {
         return randomColor({

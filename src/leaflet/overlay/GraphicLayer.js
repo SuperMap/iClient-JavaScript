@@ -46,6 +46,39 @@ export var GraphicLayer = L.Path.extend({
             L.Path.prototype.onAdd.call(this);
         },
 
+        /**
+         * @function L.supermap.graphicLayer.prototype.setGraphics
+         * @description 设置绘制的点要素数据，会覆盖之前的所有要素
+         * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+         */
+        setGraphics(graphics) {
+            this.graphics = [];
+            let sGraphics = !L.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics = [].concat(sGraphics);
+            this._update();
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.addGraphics
+         * @description 追加点要素，不会覆盖之前的要素
+         * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+         */
+        addGraphics(graphics) {
+            this.graphics = this.graphics || [];
+            let sGraphics = !L.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics = this.graphics.concat(sGraphics);
+            this._update();
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.removeGraphics
+         * @description 移除所有要素
+         */
+        removeGraphics() {
+            this.graphics = [];
+            this._update();
+        },
+
         _update: function () {
             if (this._map) {
                 this._updatePath();

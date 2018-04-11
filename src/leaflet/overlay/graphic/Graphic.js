@@ -13,18 +13,19 @@ export var Graphic = L.Class.extend({
     initialize: function (options) {
         options = options || {};
 
-        var latlng = options.latlng || options._latlng;
-        this._latlng = L.latLng(latlng.lat, latlng.lng);
+        var latLng = options.latLng || options._latLng;
+        this._latLng = L.latLng(latLng.lat, latLng.lng);
         this._style = options.style || options._canvas;
+        this._attributes = options.attributes;
     },
 
     /**
-     * @function L.supermap.graphic.prototype.setLatlng
+     * @function L.supermap.graphic.prototype.setLatLng
      * @description 设置经纬度
-     * @param latlng - {L.latlng} 经纬度参数
+     * @param latLng - {L.latLng} 经纬度参数
      */
-    setLatlng: function (latlng) {
-        this._latlng = latlng;
+    setLatLng: function (latLng) {
+        this._latLng = latLng;
     },
 
     /**
@@ -38,20 +39,42 @@ export var Graphic = L.Class.extend({
     },
 
     /**
+     * @function L.supermap.graphic.prototype.setAttributes
+     * @description 设置要素属性
+     * @param attributes - {Object} 属性对象
+     */
+    setAttributes: function (attributes) {
+        this._attributes = attributes;
+    },
+
+
+    /**
      * @function L.supermap.graphic.prototype.getLatLng
      * @description 获取经纬度
+     * @return {L.latLng} 经纬度
      */
+
     getLatLng: function () {
-        return this._latlng;
+        return this._latLng;
     },
 
     /**
      * @deprecated
      * @function L.supermap.graphic.prototype.getCanvas
      * @description 获取画布，已弃用该设置，请使用getStyle接口
+     * @return {HTMLCanvasElement} 画布
      */
     getCanvas: function () {
         return this._style;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.getAttributes
+     * @description 获取要素属性
+     * @return {Object} 要素属性
+     */
+    getAttributes: function () {
+        return this._attributes;
     },
 
     /**
@@ -66,6 +89,7 @@ export var Graphic = L.Class.extend({
     /**
      * @function L.supermap.graphic.prototype.getStyle
      * @description 获取样式
+     * @return {L.supermap.CircleStyle|L.supermap.ImageStyle|L.supermap.CloverStyle} 样式
      */
     getStyle: function () {
         return this._style;
