@@ -106,6 +106,23 @@
 
 - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
+- `ol.source.Graphic` 新增接口：
+    
+    - `setGraphics`: 设置点要素
+    
+    - `addGraphics`: 追加点要素
+    
+    - `clear`: 移除所有要素
+    
+    - `removeGraphics`: 移除所有要素
+
+
+- 高性能图层要素类 `ol.Graphic` 更改接口和参数：
+    
+    - options新增参数 `attributes`,支持设置要素属性
+    
+    - 增加 `setAttributes`和`getAttributes`接口
+
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数

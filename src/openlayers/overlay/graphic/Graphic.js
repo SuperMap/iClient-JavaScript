@@ -3,28 +3,32 @@ import ol from 'openlayers';
 /**
  * @class ol.Graphic
  * @category  Visualization Graphic
- * @classdesc 高效率点图层点要素类。
- * @param geometry - {Object} 几何对象
+ * @classdesc 高效率点图层点要素类
+ * @param geometry - [ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 几何对象
+ * @param attributes - {Object} 要素属性
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */
 export class Graphic extends ol.Object {
 
-    constructor(geometry) {
+    constructor(geometry, attributes) {
         super();
         if (geometry instanceof ol.geom.Geometry) {
             this.geometry_ = geometry;
         }
+        this.attributes_ = attributes;
         this.setStyle();
     }
 
     /**
      * @function ol.Graphic.prototype.clone
-     * @description 复制当前信息
+     * @description 克隆当前要素
+     * @return {ol.Graphic} 克隆后的要素
      */
     clone() {
         var clone = new Graphic();
         clone.setId(this.id_);
         clone.setGeometry(this.geometry_);
+        clone.setAttributes(this.attributes_);
         clone.setStyle(this.style_);
         return clone;
     }
@@ -32,6 +36,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.getId
      * @description 获取当前ID
+     * @return {string} id
      */
     getId() {
         return this.id_;
@@ -39,15 +44,18 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.setId
-     * @description 设置当前ID
+     * @description 设置当前要素ID
+     * @param id -{string} 要素ID
      */
+
     setId(id) {
         this.id_ = id;
     }
 
     /**
      * @function ol.Graphic.prototype.getGeometry
-     * @description 获取当前几何信息
+     * @description 获取当前要素几何信息
+     * @return [ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 要素几何信息
      */
     getGeometry() {
         return this.geometry_;
@@ -55,16 +63,35 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.setGeometry
-     * @description 设置当前几何信息
-     * @param geometry -{Object} 几何参数
+     * @description 设置当前要素几何信息
+     * @param geometry -[ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 要素几何信息
      */
     setGeometry(geometry) {
         this.geometry_ = geometry;
     }
 
     /**
+     * @function ol.Graphic.prototype.setAttributes
+     * @description 设置要素属性
+     * @param attributes - {Object} 属性对象
+     */
+    setAttributes(attributes) {
+        this.attributes_ = attributes;
+    }
+
+    /**
+     * @function ol.Graphic.prototype.getAttributes
+     * @description 获取要素属性
+     * @return {Object} 要素属性
+     */
+    getAttributes() {
+        return this.attributes_;
+    }
+
+    /**
      * @function ol.Graphic.prototype.getStyle
      * @description 获取样式
+     * @return [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} ol.style.Image子类样式对象
      */
     getStyle() {
         return this.style_;
@@ -73,7 +100,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.setStyle
      * @description 设置样式
-     * @param style - {Object} 样式参数
+     * @param style - [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} 样式，ol.style.Image子类样式对象
      */
     setStyle(style) {
         this.style_ = style;
@@ -87,6 +114,7 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.getStyleFunction
      * @description 获取样式函数
+     * @return {Function} 样式函数
      */
     getStyleFunction() {
         return this.styleFunction_;
@@ -128,6 +156,7 @@ export class Graphic extends ol.Object {
     destroy() {
         this.id_ = null;
         this.geometry_ = null;
+        this.attributes_ = null;
         this.style_ = null;
     }
 }

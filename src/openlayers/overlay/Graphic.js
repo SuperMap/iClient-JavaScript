@@ -135,7 +135,8 @@ export class Graphic extends ol.source.ImageCanvas {
          * @description 获取在视图上的要素
          * @param coordinate -{string} 坐标
          * @param resolution -{number} 分辨率
-         * @param callback -{function} 回调函数
+         * @param callback -{function}  回调函数
+         * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
             let graphics = me.getGraphicsInExtent();
@@ -169,6 +170,55 @@ export class Graphic extends ol.source.ImageCanvas {
     }
 
     /**
+     * @function ol.source.Graphic.prototype.setGraphics
+     * @description 设置绘制的点要素，会覆盖之前的所有要素
+     * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
+     */
+    setGraphics(graphics) {
+        this.graphics_ = [];
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics_ = [].concat(sGraphics);
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.addGraphics
+     * @description 追加点要素，不会覆盖之前的要素
+     * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
+     */
+    addGraphics(graphics) {
+        this.graphics_ = this.graphics_ || [];
+        let sGraphics = !Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+        this.graphics_ = this.graphics_.concat(sGraphics);
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.clear
+     * @description 清除所有要素
+     */
+    clear() {
+        this.removeGraphics();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.removeGraphics
+     * @description 清除所有要素
+     */
+    removeGraphics() {
+        this.graphics_ = [];
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.update
+     * @description 更新图层
+     */
+    update() {
+        this.changed();
+    }
+
+    /**
      * @function ol.source.Graphic.prototype._highLightClose
      * @description 关闭高亮要素显示
      * @private
@@ -185,6 +235,8 @@ export class Graphic extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Graphic.prototype._highLight
      * @description 高亮显示选中要素
+     * @param center - {Array<number>} 中心点
+     * @param image - {ol.style.Style} 点样式
      * @param selectGraphic - {ol.Graphic} 高效率点图层点要素
      * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
      * @private

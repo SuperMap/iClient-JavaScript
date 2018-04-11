@@ -31911,14 +31911,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.Graphic
  * @category  Visualization Graphic
- * @classdesc 高效率点图层点要素类。
- * @param geometry - {Object} 几何对象
+ * @classdesc 高效率点图层点要素类
+ * @param geometry - [ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 几何对象
+ * @param attributes - {Object} 要素属性
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */
 var Graphic = exports.Graphic = function (_ol$Object) {
     _inherits(Graphic, _ol$Object);
 
-    function Graphic(geometry) {
+    function Graphic(geometry, attributes) {
         _classCallCheck(this, Graphic);
 
         var _this = _possibleConstructorReturn(this, (Graphic.__proto__ || Object.getPrototypeOf(Graphic)).call(this));
@@ -31926,13 +31927,15 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         if (geometry instanceof _openlayers2.default.geom.Geometry) {
             _this.geometry_ = geometry;
         }
+        _this.attributes_ = attributes;
         _this.setStyle();
         return _this;
     }
 
     /**
      * @function ol.Graphic.prototype.clone
-     * @description 复制当前信息
+     * @description 克隆当前要素
+     * @return {ol.Graphic} 克隆后的要素
      */
 
 
@@ -31942,6 +31945,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
             var clone = new Graphic();
             clone.setId(this.id_);
             clone.setGeometry(this.geometry_);
+            clone.setAttributes(this.attributes_);
             clone.setStyle(this.style_);
             return clone;
         }
@@ -31949,6 +31953,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getId
          * @description 获取当前ID
+         * @return {string} id
          */
 
     }, {
@@ -31959,7 +31964,8 @@ var Graphic = exports.Graphic = function (_ol$Object) {
 
         /**
          * @function ol.Graphic.prototype.setId
-         * @description 设置当前ID
+         * @description 设置当前要素ID
+         * @param id -{string} 要素ID
          */
 
     }, {
@@ -31970,7 +31976,8 @@ var Graphic = exports.Graphic = function (_ol$Object) {
 
         /**
          * @function ol.Graphic.prototype.getGeometry
-         * @description 获取当前几何信息
+         * @description 获取当前要素几何信息
+         * @return [ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 要素几何信息
          */
 
     }, {
@@ -31981,8 +31988,8 @@ var Graphic = exports.Graphic = function (_ol$Object) {
 
         /**
          * @function ol.Graphic.prototype.setGeometry
-         * @description 设置当前几何信息
-         * @param geometry -{Object} 几何参数
+         * @description 设置当前要素几何信息
+         * @param geometry -[ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 要素几何信息
          */
 
     }, {
@@ -31992,8 +31999,33 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         }
 
         /**
+         * @function ol.Graphic.prototype.setAttributes
+         * @description 设置要素属性
+         * @param attributes - {Object} 属性对象
+         */
+
+    }, {
+        key: 'setAttributes',
+        value: function setAttributes(attributes) {
+            this.attributes_ = attributes;
+        }
+
+        /**
+         * @function ol.Graphic.prototype.getAttributes
+         * @description 获取要素属性
+         * @return {Object} 要素属性
+         */
+
+    }, {
+        key: 'getAttributes',
+        value: function getAttributes() {
+            return this.attributes_;
+        }
+
+        /**
          * @function ol.Graphic.prototype.getStyle
          * @description 获取样式
+         * @return [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} ol.style.Image子类样式对象
          */
 
     }, {
@@ -32005,7 +32037,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.setStyle
          * @description 设置样式
-         * @param style - {Object} 样式参数
+         * @param style - [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} 样式，ol.style.Image子类样式对象
          */
 
     }, {
@@ -32021,6 +32053,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getStyleFunction
          * @description 获取样式函数
+         * @return {Function} 样式函数
          */
 
     }, {
@@ -32046,6 +32079,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         value: function destroy() {
             this.id_ = null;
             this.geometry_ = null;
+            this.attributes_ = null;
             this.style_ = null;
         }
     }], [{
@@ -62949,7 +62983,8 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
          * @description 获取在视图上的要素
          * @param coordinate -{string} 坐标
          * @param resolution -{number} 分辨率
-         * @param callback -{function} 回调函数
+         * @param callback -{function}  回调函数
+         * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
             var graphics = me.getGraphicsInExtent();
@@ -62984,13 +63019,77 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLightClose
-     * @description 关闭高亮要素显示
-     * @private
+     * @function ol.source.Graphic.prototype.setGraphics
+     * @description 设置绘制的点要素，会覆盖之前的所有要素
+     * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
      */
 
 
     _createClass(Graphic, [{
+        key: 'setGraphics',
+        value: function setGraphics(graphics) {
+            this.graphics_ = [];
+            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics_ = [].concat(sGraphics);
+            this.update();
+        }
+
+        /**
+         * @function ol.source.Graphic.prototype.addGraphics
+         * @description 追加点要素，不会覆盖之前的要素
+         * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
+         */
+
+    }, {
+        key: 'addGraphics',
+        value: function addGraphics(graphics) {
+            this.graphics_ = this.graphics_ || [];
+            var sGraphics = !_Util.Util.isArray(graphics) ? [graphics] : graphics.concat([]);
+            this.graphics_ = this.graphics_.concat(sGraphics);
+            this.update();
+        }
+
+        /**
+         * @function ol.source.Graphic.prototype.clear
+         * @description 清除所有要素
+         */
+
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.removeGraphics();
+        }
+
+        /**
+         * @function ol.source.Graphic.prototype.removeGraphics
+         * @description 清除所有要素
+         */
+
+    }, {
+        key: 'removeGraphics',
+        value: function removeGraphics() {
+            this.graphics_ = [];
+            this.update();
+        }
+
+        /**
+         * @function ol.source.Graphic.prototype.update
+         * @description 更新图层
+         */
+
+    }, {
+        key: 'update',
+        value: function update() {
+            this.changed();
+        }
+
+        /**
+         * @function ol.source.Graphic.prototype._highLightClose
+         * @description 关闭高亮要素显示
+         * @private
+         */
+
+    }, {
         key: '_highLightClose',
         value: function _highLightClose() {
             this.selected = null;
@@ -63004,6 +63103,8 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Graphic.prototype._highLight
          * @description 高亮显示选中要素
+         * @param center - {Array<number>} 中心点
+         * @param image - {ol.style.Style} 点样式
          * @param selectGraphic - {ol.Graphic} 高效率点图层点要素
          * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
          * @private
@@ -66052,7 +66153,7 @@ module.exports = function (proj4) {
 /* 338 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 339 */
