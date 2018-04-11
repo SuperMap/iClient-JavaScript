@@ -6,7 +6,7 @@ import '../core/Base';
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {Array<L.supermap.Graphic>} 图形对象
+ * @param graphics - {Array<L.supermap.graphic>} 图形对象
  * @param options - {Object} 图层参数。<br>
  *        handleClick - {function} 图层点击响应事件函数。
  */
@@ -49,7 +49,7 @@ export var GraphicLayer = L.Path.extend({
         /**
          * @function L.supermap.graphicLayer.prototype.setGraphics
          * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-         * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+         * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
          */
         setGraphics(graphics) {
             this.graphics = [];
@@ -61,7 +61,7 @@ export var GraphicLayer = L.Path.extend({
         /**
          * @function L.supermap.graphicLayer.prototype.addGraphics
          * @description 追加点要素，不会覆盖之前的要素
-         * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+         * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
          */
         addGraphics(graphics) {
             this.graphics = this.graphics || [];

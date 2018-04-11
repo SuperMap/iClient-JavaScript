@@ -65,7 +65,7 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function:  L.supermap.cloverStyle.prototype.drawSector
+     * @function L.supermap.cloverStyle.prototype.drawSector
      * @description 绘制扇形
      * @param ctx - {CanvasRenderingContext2D} context对象
      * @param x - {number} 中心点 x

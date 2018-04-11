@@ -32760,10 +32760,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.graphic
- * @classdesc 图形类。
+ * @classdesc 高效率点图层要素类。
  * @category Visualization Graphic
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 图形参数
+ * @param options -{object} 图形参数
+ * @param options.latLng -{L.LatLng} 经纬度
+ * @param options.style -{L.supermap.circleStyle|L.supermap.cloverStyle|L.supermap.imageStyle} 点样式
+ * @param options.attributes -{Object}  要素属性
  */
 var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
 
@@ -32779,7 +32782,7 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
     /**
      * @function L.supermap.graphic.prototype.setLatLng
      * @description 设置经纬度
-     * @param latLng - {L.latLng} 经纬度参数
+     * @param latLng -{L.LatLng} 经纬度参数
      */
     setLatLng: function setLatLng(latLng) {
         this._latLng = latLng;
@@ -32789,7 +32792,7 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
      * @deprecated
      * @function L.supermap.graphic.prototype.setCanvas
      * @description 设置画布,已弃用该设置，请使用setStyle接口
-     * @param canvas - {Object} 传入需要设置的画布
+     * @param canvas - {HTMLCanvasElement} 传入需要设置的画布
      */
     setCanvas: function setCanvas(canvas) {
         this._style = canvas;
@@ -32807,7 +32810,7 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
     /**
      * @function L.supermap.graphic.prototype.getLatLng
      * @description 获取经纬度
-     * @return {L.latLng} 经纬度
+     * @return {L.LatLng} 经纬度
      */
 
     getLatLng: function getLatLng() {
@@ -32836,16 +32839,16 @@ var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
     /**
      * @function L.supermap.graphic.prototype.setStyle
      * @description 设置样式
-     * @param canvas - {HTMLCanvasElement} 传入需要设置的画布
+     * @param style - {L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle} 样式
      */
-    setStyle: function setStyle(canvas) {
-        this._style = canvas;
+    setStyle: function setStyle(style) {
+        this._style = style;
     },
 
     /**
      * @function L.supermap.graphic.prototype.getStyle
      * @description 获取样式
-     * @return {L.supermap.CircleStyle|L.supermap.ImageStyle|L.supermap.CloverStyle} 样式
+     * @return {L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle} 样式
      */
     getStyle: function getStyle() {
         return this._style;
@@ -62430,7 +62433,7 @@ var CloverStyle = exports.CloverStyle = _leaflet2["default"].Class.extend({
     },
 
     /**
-     * @function:  L.supermap.cloverStyle.prototype.drawSector
+     * @function L.supermap.cloverStyle.prototype.drawSector
      * @description 绘制扇形
      * @param ctx - {CanvasRenderingContext2D} context对象
      * @param x - {number} 中心点 x
@@ -65427,7 +65430,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {Array<L.supermap.Graphic>} 图形对象
+ * @param graphics - {Array<L.supermap.graphic>} 图形对象
  * @param options - {Object} 图层参数。<br>
  *        handleClick - {function} 图层点击响应事件函数。
  */
@@ -65470,7 +65473,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.setGraphics
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-     * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+     * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
      */
     setGraphics: function setGraphics(graphics) {
         this.graphics = [];
@@ -65483,7 +65486,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.addGraphics
      * @description 追加点要素，不会覆盖之前的要素
-     * @param {Array<L.supermap.Graphic>}  graphics - 点要素对象数组
+     * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
      */
     addGraphics: function addGraphics(graphics) {
         this.graphics = this.graphics || [];
