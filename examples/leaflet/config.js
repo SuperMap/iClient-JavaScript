@@ -691,6 +691,11 @@ var exampleConfig = {
                         name_en: "Use lines to draw 25 millions Chinese roads",
                         thumbnail: "l_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
+                    }, {
+                        name: "1百40万数据绘制纽约出租车分布图",
+                        name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
+                        thumbnail: "l_echartScatterMillionsNewYorkTaxi.png",
+                        fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }
                 ]
 

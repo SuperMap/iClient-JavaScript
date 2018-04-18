@@ -1093,6 +1093,8 @@ window.resources = {
         "text_echartsLinesMillions_roads_subtext": "drawn by 25 million points",
         "text_graphicLayer_title": "Boarding points of NYC taxis",
         "text_graphicLayer_subTitle": "1.45 million points",
+        "text_echartsLinesMillions_nyTaxi": "New York taxi map",
+        "text_echartsLinesMillions_nyTaxi_subtext": "drawn by 1.4 million points",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

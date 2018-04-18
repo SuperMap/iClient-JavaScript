@@ -1094,6 +1094,8 @@ window.resources = {
         "text_echartsLinesMillions_roads_subtext": "2500万点数据绘制",
         "text_graphicLayer_title": "纽约出租车上车点",
         "text_graphicLayer_subTitle": "145万点数据绘制",
+        "text_echartsLinesMillions_nyTaxi": "纽约出租车分布图",
+        "text_echartsLinesMillions_nyTaxi_subtext": "140万点数据绘制",
 
         "btn_overlayAnalyst": "叠加分析",
         "btn_terrainCurvatureCalculation": "地形曲率计算",

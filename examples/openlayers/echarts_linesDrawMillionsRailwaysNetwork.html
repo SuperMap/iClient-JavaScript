@@ -85,7 +85,7 @@
         if (idx > CHUNK_COUNT) {
             return;
         }
-        var dataURL = `http://iclient.supermap.io/web/data/bigdata_railway_10w/bigDta_${idx}.bin`;
+        var dataURL = `http://iclient.supermap.io/web/data/bigdata_railway_10w/data_${idx}.bin`;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', dataURL, true);
         xhr.responseType = 'arraybuffer';

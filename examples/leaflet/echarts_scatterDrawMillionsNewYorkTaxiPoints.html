@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset='utf-8'/>
-    <title>Use lines to draw 25 millions Chinese roads</title>
+    <title>1.4 millions New York Taxi Points</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
@@ -25,19 +25,18 @@
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
-    map = L.map('map', {
-        center: [37.94, 106],
+    var map = L.map('map', {
+        center: [40.765654, -73.931577],
         maxZoom: 18,
-        zoom: 5
+        zoom: 12
     });
     L.supermap.tiledMapLayer(tileURL).addTo(map);
 
-    option = {
-        progressive: 20000,
+    var option = {
         title: {
             top: '10px',
-            text: resources.text_echartsLinesMillions_roads,
-            subtext: resources.text_echartsLinesMillions_roads_subtext,
+            text: resources.text_echartsLinesMillions_nyTaxi,
+            subtext: resources.text_echartsLinesMillions_nyTaxi_subtext,
             left: 'center',
             textStyle: {
                 color: '#fff'
@@ -47,40 +46,44 @@
             }
         },
         series: [{
-            type: 'lines',
-            blendMode: 'lighter',
+            type: 'scatter',
+            progressive: 1e5,
             coordinateSystem: 'leaflet',
-            dimensions: ['value'],
-            data: new Float64Array(),
-            polyline: true,
+            symbolSize: 0.5,
+            blendMode: 'lighter',
             large: true,
-            lineStyle: {
-                color: 'orange',
-                width: 1,
-                opacity: 0.3
-            }
+            itemStyle: {
+                color: '#FF3300'
+            },
+            postEffect: {
+                enable: true
+            },
+            silent: true,
+            dimensions: ['lng', 'lat'],
+            data: new Float32Array()
         }]
     };
 
     var echartsLayer = L.supermap.echartsLayer(option).addTo(map);
-
-    var CHUNK_COUNT = 27;
+    var CHUNK_COUNT = 19;
 
     function fetchData(idx) {
-        if (idx > CHUNK_COUNT) {
+        if (idx >= CHUNK_COUNT) {
             return;
         }
-        var dataURL = `http://iclient.supermap.io/web/data/bigdata_roads_50w/data_${idx}.bin`;
+        var dataURL = `http://iclient.supermap.io/web/data/bigdata_nytaxi/data_${idx}.bin`;
+//        var dataURL = `../mapboxgl/resultData_NY/bigData_${idx}.bin`;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', dataURL, true);
         xhr.responseType = 'arraybuffer';
 
         xhr.onload = function (e) {
             var rawData = new Float32Array(this.response);
-            echartsLayer._ec.appendData({
-                seriesIndex: 0,
-                data: rawData
-            });
+            echartsLayer._ec
+                .appendData({
+                    seriesIndex: 0,
+                    data: rawData
+                });
 
             fetchData(idx + 1);
         };

@@ -20,11 +20,9 @@ export var MapExtend = function () {
         const coordinate = this.getCoordinateFromPixel(pixel);
         for (let i = 0; i < layers.length; i++) {
             if (layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
-                return layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
+                layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
             }
         }
-
         return this.forEachFeatureAtPixelDefault(pixel, callback, opt_options);
-
     }
 }();
