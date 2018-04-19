@@ -8,7 +8,7 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.VectorTileStyles
  * @classdesc 矢量瓦片风格
- * @private
+ * @category  Visualization VectorTile
  * @param options -{Object} 交互时所需可选参数
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */

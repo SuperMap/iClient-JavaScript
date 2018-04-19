@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_mvtVectorLayer"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <!--<script type="text/javascript" src="../../dist/include-openlayers.js"></script>-->
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css">
+    <!--当前示例使用 ol-debug 原因：ol.format.MVT 默认坐标系为 3857，最新代码未更新该默认设置，需使用ol-debug，设置 defaultDataProjection 参数，以支持4326底图-->
+    <script src="https://openlayers.org/en/v4.6.4/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: rgba(0, 60, 136, 0.7);
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            bottom: 20px;
+            left: 10px;
+            opacity: 0;
+            transition: opacity 100ms ease-in;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+    <div id="popup" class="ol-popup">
+        <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript">
+        var url = (window.isLocal ? window.server : "http://117.122.248.69:8090") +
+            "/iserver/services/map-mvt-California/rest/maps/California";
+        getResolutions = function (zoom, scale, targetMinZoom, targetMaxZoom) {
+            var res = scaleToResolution(scale);
+            var minRes = res * Math.pow(2, zoom - targetMinZoom);
+            var resolutions = [];
+            for (var index = 0; index < targetMaxZoom - targetMinZoom + 1; index++) {
+                resolutions.push(minRes / Math.pow(2, index));
+            }
+            return resolutions;
+
+        }
+        scaleToResolution = function (scale) {
+            var inchPerMeter = 1 / 0.0254;
+            var meterPerMapUnitValue = Math.PI * 2 * 6378137 / 360;
+            return 1 / (scale * 96 * inchPerMeter * meterPerMapUnitValue);
+        };
+        var vectorLayer;
+        var resolutions = getResolutions(10, 0.00000346145499464224, 0, 16);
+        var map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [-122.228687503369, 38.1364932162598],
+                zoom: 10,
+                minZoom: 10,
+                maxZoom: 14,
+                projection: 'EPSG:4326',
+                resolutions: resolutions
+            })
+        });
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        info = new ol.control.Control({
+            element: container
+        });
+        info.setMap(map);
+        map.addControl(info);
+        var format = new ol.format.MVT({
+            //layers: ['Motorway_REF_L@California'],
+            featureClass: ol.Feature
+
+        });
+        format.defaultDataProjection = new ol.proj.Projection({
+            code: 'EPSG:4326',
+            units: ol.proj.Units.TILE_PIXELS
+        });
+        var style = new ol.supermap.MapboxStyles({
+            url: url,
+            source: 'California',
+            resolutions: resolutions
+        })
+        style.on('styleloaded', function () {
+            vectorLayer = new ol.layer.VectorTile({
+                //设置避让参数
+                declutter: true,
+                source: new ol.source.VectorTileSuperMapRest({
+                    url: url,
+                    projection: 'EPSG:4326',
+                    tileGrid: new ol.tilegrid.TileGrid({
+                        resolutions: resolutions,
+                        origin: [-180, 90],
+                        tileSize: 512
+                    }),
+                    tileType: 'ScaleXY',
+                    format: format
+                }),
+                style: style.getStyleFunction()
+            });
+            map.addLayer(vectorLayer);
+        })
+
+        map.on('pointermove', function (e) {
+            var features = map.getFeaturesAtPixel(e.pixel);
+            if (!features) {
+                content.innerHTML = '';
+                container.style.opacity = 0;
+                return;
+            }
+            content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" + (features[0].get('NAME') ?
+                "Name:  " + features[0].get('NAME') : "");
+            container.style.opacity = 1;
+
+        });
+    </script>
+</body>
+
+</html>

@@ -732,7 +732,7 @@ export var WebMap = L.LayerGroup.extend({
                             }
                         }
                     }
-                    var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
+                    var newEpsgCode = '4326',
                         oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
                     if (needTransform) {
                         me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, sFeaturesArr, function (features) {

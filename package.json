@@ -114,6 +114,7 @@
     "pbf": "3.0.2",
     "proj4": "2.3.15",
     "promise-polyfill": "^6.0.2",
+    "ol-mapbox-style": "^2.11.2",
     "three": "^0.90.0"
   }
 }

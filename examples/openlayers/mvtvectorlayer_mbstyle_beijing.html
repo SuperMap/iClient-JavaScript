@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_mvtVectorLayer_mapboxStyle"></title>
+    <style>
+        #menu {
+            position: absolute;
+            z-index: 2;
+            padding: 6px 0 6px 10px;
+            margin-right: 20px;
+            left: 60px;
+            top: 10px;
+            float: left;
+            border-radius: 4px;
+            -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: #fff;
+
+        }
+
+        label {
+            margin: 0;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+    <div id='menu' class="mapboxgl-ctrl">
+        <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+        <label for='basic' data-i18n="resources.text_vectorDefaultStyle"></label>
+        <input id='dark' type='radio' name='rtoggle' value='dark'>
+        <label for='dark' data-i18n="resources.text_darkBlueStyle"></label>
+        <input id='fiordcolor' type='radio' name='rtoggle' value='fiordcolor'>
+        <label for='fiordcolor' data-i18n="resources.text_fiordStyle"></label>
+        <input id='klokantech' type='radio' name='rtoggle' value='klokantech'>
+        <label for='klokantech' data-i18n="resources.text_klokantechStyle"></label>
+        <input id='osm' type='radio' name='rtoggle' value='OSM'>
+        <label for='osm' data-i18n="resources.text_osmStyle"></label>
+        <input id='positron' type='radio' name='rtoggle' value='positron'>
+        <label for='positron' data-i18n="resources.text_positronStyle"></label>
+    </div>
+    <script type="text/javascript" include='bootstrap-css' src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <script type="text/javascript">
+        var url = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-beijing/rest/maps/beijingMap";
+        var stylesJson = {
+            'basic': "beijing.json",
+            'dark': "beijingDark.json",
+            'fiordcolor': "beijingFiord.json",
+            'klokantech': "beijingKlokantech.json",
+            'osm': "beijingOSM.json",
+            'positron': "beijingPositron.json"
+        }
+        var vectorLayer,currentStyleID,styles = {};
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
+                    }
+                })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                maxResolution: 40075016.68557849 / 512,
+                center: ol.proj.fromLonLat([116.4, 39.9]),
+                zoom: 11
+            })
+        });
+        switchStyle(null, 'basic');
+        var layerList = document.getElementById('menu');
+        var inputs = layerList.getElementsByTagName('input');
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].onclick = switchStyle;
+        }
+
+        function switchStyle(e, targetStyleID) {
+            var styleID = targetStyleID || e.target.id;
+            if (styleID === currentStyleID) {
+                return;
+            }
+            var options = {
+                source: 'vector-tiles',
+                map: map
+            }
+            if (styles[styleID]) {
+                options.style = styles[styleID];
+                var targetStyle = new ol.supermap.MapboxStyles(options);
+                targetStyle.on('styleLoaded', function () {
+                    styleLoaded(styleID, this);
+                });
+            } else {
+                $.get('../data/styles/' + stylesJson[styleID], function (json) {
+                    styles[styleID] = json;
+                    options.style = styles[styleID];
+                    var targetStyle = new ol.supermap.MapboxStyles(options);
+                    targetStyle.on('styleloaded', function () {
+                        styleLoaded(styleID, this);
+                    });
+                })
+            }
+        }
+
+        function styleLoaded(styleID, targetStyle) {
+            if (!vectorLayer) {
+                var vectorTileOptions = {
+                    url: url,
+                    format: new ol.format.MVT({
+                        featureClass: ol.Feature
+                    }),
+                    tileType: 'ViewBounds'
+                };
+                vectorLayer = new ol.layer.VectorTile({
+                    //设置避让参数
+                    declutter: true,
+                    style: targetStyle.featureStyleFuntion,
+                    source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
+                });
+                map.addLayer(vectorLayer);
+            } else {
+                vectorLayer.setStyle(targetStyle.featureStyleFuntion);
+                currentStyleID = styleID;
+            }
+            currentStyleID = styleID;
+        }
+    </script>
+</body>
+
+</html>

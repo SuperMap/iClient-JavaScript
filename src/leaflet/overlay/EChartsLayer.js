@@ -117,13 +117,14 @@ export var EchartsLayer = L.Layer.extend({
                     var mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
-                    for (var item in ecLayers) {
-                        if (!ecLayers.hasOwnProperty(item)) {
-                            continue;
-                        }
-                        ecLayers[item] && clearContext(ecLayers[item].ctx);
-                    }
+                    
                     if (!me.options.loadWhileAnimating) {
+                        for (var item in ecLayers) {
+                            if (!ecLayers.hasOwnProperty(item)) {
+                                continue;
+                            }
+                            ecLayers[item] && clearContext(ecLayers[item].ctx);
+                        }
                         me._enableEchartsContainer();
                     }
 

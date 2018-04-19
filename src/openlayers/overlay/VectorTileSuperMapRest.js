@@ -1,5 +1,7 @@
 import ol from 'openlayers';
-import {Util} from '../core/Util';
+import {
+    Util
+} from '../core/Util';
 import {
     Unit,
     ServerType,
@@ -42,7 +44,8 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
         layerUrl = appendCredential(layerUrl, options.serverType);
 
         function appendCredential(url, serverType) {
-            var newUrl = url, credential, value;
+            var newUrl = url,
+                credential, value;
             switch (serverType) {
                 case ServerType.IPORTAL:
                     value = SecurityManager.getToken(url);
@@ -113,28 +116,37 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             urls: options.urls,
             wrapX: options.wrapX !== undefined ? options.wrapX : false
         });
+        
         var me = this;
-
+        me.tileType = options.tileType || 'ScaleXY';
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 me.tileGrid = me.getTileGridForProjection(projection);
             }
-            var z = tileCoord[0];
-            var x = tileCoord[1];
-            var y = -tileCoord[2] - 1;
-            var origin = me.tileGrid.getOrigin(z);
-            var resolution = me.tileGrid.getResolution(z);
-            var dpi = 96;
-            var unit = projection.getUnits();
-            if (unit === 'degrees') {
-                unit = Unit.DEGREE;
-            }
-            if (unit === 'm') {
-                unit = Unit.METER;
-            }
-            var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
-            var params = "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+            var params = '';
+            if (me.tileType === 'ViewBounds') {
+                var tileExtent = me.tileGrid.getTileCoordExtent(
+                    tileCoord);
+                params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" +  tileExtent[0] + "," + tileExtent[1] + "," + tileExtent[2] + "," + tileExtent[3];
+            } else {
+                var z = tileCoord[0];
+                var x = tileCoord[1];
+                var y = -tileCoord[2] - 1;
+                var origin = me.tileGrid.getOrigin(z);
+                var resolution = me.tileGrid.getResolution(z);
+                var dpi = 96;
+                var unit = projection.getUnits();
+                if (unit === 'degrees') {
+                    unit = Unit.DEGREE;
+                }
+                if (unit === 'm') {
+                    unit = Unit.METER;
+                }
+
+                var scale = Util.resolutionToScale(resolution, dpi, unit);
+                params = "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+            }
             return layerUrl + encodeURI(params);
         }
 

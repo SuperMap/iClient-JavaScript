@@ -769,11 +769,24 @@ var exampleConfig = {
                         fileName: "mvtVectorLayer"
                     },
                     {
-                        name: "默认风格(MVT 4326)",
-                        name_en: "normal(MVT 4326)",
+                        name: "默认风格(MVT WGS84)",
+                        name_en: "normal(MVT WGS84)",
                         thumbnail: "mvtVectorLayer4326.png",
                         fileName: "mvtVectorLayer4326"
+                    },
+                    {
+                        name: "OSM风格(MVT WGS84)",
+                        name_en: "OSM Style(MVT WGS84)",
+                        thumbnail: "mvtvectorlayer_mbstyle_4326.png",
+                        fileName: "mvtvectorlayer_mbstyle_4326"
+                    },
+                    {
+                        name: "风格动态切换",
+                        name_en: "Style Switch",
+                        thumbnail: "mvtvectorlayer_mbstyle_beijing.png",
+                        fileName: "mvtvectorlayer_mbstyle_beijing"
                     }
+                   
                 ]
             },
             "themeLayer": {
