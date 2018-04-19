@@ -194,12 +194,12 @@
 
     //以动画效果显示分析结果
     function addPath(result) {
-        if (routeCompsIndex < result.pathList[pathListIndex].route.components.length) {
+        if (routeCompsIndex < result.pathList[pathListIndex].route.components[0].components.length) {
             var pathFeature = new SuperMap.Feature.Vector();
             var points = [];
             for (var k = 0; k < 2; k++) {
-                if (result.pathList[pathListIndex].route.components[routeCompsIndex + k]) {
-                    points.push(new SuperMap.Geometry.Point(result.pathList[pathListIndex].route.components[routeCompsIndex + k].x, result.pathList[pathListIndex].route.components[routeCompsIndex + k].y));
+                if (result.pathList[pathListIndex].route.components[0].components[routeCompsIndex + k]) {
+                    points.push(new SuperMap.Geometry.Point(result.pathList[pathListIndex].route.components[0].components[routeCompsIndex + k].x, result.pathList[pathListIndex].route.components[0].components[routeCompsIndex + k].y));
                 }
             }
             var curLine = new SuperMap.Geometry.LinearRing(points);
@@ -220,20 +220,18 @@
     }
 
     function addPathGuideItems(result) {
-        vectorLayer.removeAllFeatures();
+        //vectorLayer.removeAllFeatures();
         //显示每个pathGuideItem和对应的描述信息
         for (var k = 0; k < result.pathList.length; k++) {
             var pathGuideItems = result.pathList[pathListIndex].pathGuideItems, len = pathGuideItems.length;
             for (var m = 0; m < len; m++) {
+                if (pathGuideItems[m].geometry.CLASS_NAME !== "SuperMap.Geometry.Point") {
+                    continue;
+                }
                 var guideFeature = new SuperMap.Feature.Vector();
                 guideFeature.geometry = pathGuideItems[m].geometry;
                 guideFeature.attributes = {description: pathGuideItems[m].description};
-                if (guideFeature.geometry.CLASS_NAME === "SuperMap.Geometry.Point") {
-                    guideFeature.style = styleGuidePoint;
-                }
-                else {
-                    guideFeature.style = style;
-                }
+                guideFeature.style = styleGuidePoint;
                 vectorLayer.addFeatures(guideFeature);
             }
         }
