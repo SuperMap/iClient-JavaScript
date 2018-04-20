@@ -55,7 +55,7 @@ module.exports = function (config) {
             /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
             {pattern: '../src/openlayers/**/**/*.css', include: false},
-            '../src/openlayers/**/!(index).js',
+            '../src/openlayers/**/!(index|MapboxStyles).js',
             /**测试文件**/
             './test-main-openlayers.js',
 
