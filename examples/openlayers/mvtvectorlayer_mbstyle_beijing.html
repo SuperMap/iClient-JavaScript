@@ -46,8 +46,11 @@
         <label for='positron' data-i18n="resources.text_positronStyle"></label>
     </div>
     <script type="text/javascript" include='bootstrap-css' src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <script type="text/javascript" include='ol-mapbox-style' src="../../dist/include-openlayers.js"></script>
+
+    
     <script type="text/javascript">
+    console.log(olms);
         var url = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-beijing/rest/maps/beijingMap";
         var stylesJson = {
             'basic': "beijing.json",
@@ -119,12 +122,12 @@
                 vectorLayer = new ol.layer.VectorTile({
                     //设置避让参数
                     declutter: true,
-                    style: targetStyle.featureStyleFuntion,
+                    style: targetStyle.getStyleFunction(),
                     source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
                 });
                 map.addLayer(vectorLayer);
             } else {
-                vectorLayer.setStyle(targetStyle.featureStyleFuntion);
+                vectorLayer.setStyle(targetStyle.getStyleFunction());
                 currentStyleID = styleID;
             }
             currentStyleID = styleID;

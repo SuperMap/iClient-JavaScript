@@ -38,27 +38,8 @@ module.exports = {
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
         '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
-        //for ol-mapbox-style
-        'ol/style/style': 'ol.style.Style',
-        'ol/style/circle': 'ol.style.Circle',
-        'ol/style/icon': 'ol.style.Icon',
-        'ol/style/stroke': 'ol.style.Stroke',
-        'ol/style/fill': 'ol.style.Fill',
-        'ol/style/text': 'ol.style.Text',
-        'ol/geom/point': 'ol.geom.Point',
-        'ol/proj': 'ol.proj',
-        'ol/tilegrid': 'ol.tilegrid',
-        'ol/format/geojson': 'ol.format.GeoJSON',
-        'ol/format/mvt': 'ol.format.MVT',
-        'ol/canvasmap': 'ol.CanvasMap',
-        'ol/observable': 'ol.Observable',
-        'ol/layer/tile': 'ol.layer.Tile',
-        'ol/layer/vector': 'ol.layer.Vector',
-        'ol/layer/vectortile': 'ol.layer.VectorTile',
-        'ol/source/tilejson': 'ol.source.TileJSON',
-        'ol/source/vector': 'ol.source.Vector',
-        'ol/source/vectortile': 'ol.source.VectorTile',
-        'ol/source/xyz': 'ol.source.XYZ'
+        'ol-mapbox-style':"function(){try{return olms}catch(e){return {}}}()",
+        'ol-mapbox-style/stylefunction':"function(){try{return olms.stylefunction}catch(e){return {}}}()"
     },
 
     module: {

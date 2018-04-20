@@ -1,6 +1,7 @@
 ﻿(function () {
     var r = new RegExp("(^|(.*?\\/))(include-openlayers\.js)(\\?|$)"),
-        s = document.getElementsByTagName('script'), targetScript;
+        s = document.getElementsByTagName('script'),
+        targetScript;
     for (var i = 0; i < s.length; i++) {
         var src = s[i].getAttribute('src');
         if (src) {
@@ -44,6 +45,9 @@
         }
         if (inArray(includes, 'turf')) {
             inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
+        }
+        if (inArray(includes, 'ol-mapbox-style')) {
+            inputScript("https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
             inputScript("../../dist/iclient9-openlayers.min.js");
