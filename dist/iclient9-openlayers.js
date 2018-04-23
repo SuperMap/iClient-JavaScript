@@ -61290,6 +61290,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.supermap.MapboxStyles
  * @classdesc Mapbox 矢量瓦片风格
+ * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
+ * <p style="color: #ce4844">Notice</p>
+ * <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
+ * `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js"></script>`
  * @category  Visualization VectorTile
  * @param {Object} options 初始化参数。<br>
  * @param {string | undefined} options.url - iServer UGCV5(MVT) 地图服务地址，例如 `http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test` , 与 `options.style` 互斥，优先级低于 `options.style`。
@@ -61705,7 +61709,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
     /**
      * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param features - {GeoJson|Array<ol.Feature>|ol.Feature}待转要素,支持 geoJson 格式和 ol.Feature 格式
+     * @param features - {Object|Array<ol.Feature>|ol.Feature}待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
      *
      * @example
      * var geojson = {
@@ -62063,7 +62067,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.toiClientFeature
          * @description 转为 iClient 要素
-         * @param features - {GeoJson|Array<ol.Feature>}待转要素,支持 geoJson 格式和 ol.Feature 格式
+         * @param features - {Object|Array<ol.Feature>}待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
          * @return {SuperMap.Feature.Vector} 转换后的iClient要素
          */
 
@@ -66354,7 +66358,7 @@ module.exports = function (proj4) {
 /* 341 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 342 */
@@ -69362,16 +69366,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        tileGrid - [{ol.tilegrid.TileGrid}}]{@linkdoc-openlayers/ol.tilegrid.TileGrid} 瓦片网格对象。<br>
  *        serverType - {SuperMap.ServerType} 服务类型。<br>
  *        redirect - {boolean} 是否重定向，默认为false。<br>
- *        transparent - {boolean} 图片是否透明，默认为true。<br>
+ *        transparent - {boolean} 瓦片是否透明，默认为true。<br>
  *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图图片。例如：{"epsgCode":3857}。<br>
+ *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
  *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
  *        clipRegion - [{ol.geom.Geometry}]{@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
  *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
  *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。
- *        tileProxy - {string} 代理地址
+ *        tileProxy - {string} 代理地址.
+ *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage) {
@@ -69389,7 +69394,9 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
 
-        var layerUrl = options.url + "/tileImage.png?";
+        options.format = options.format ? options.format : "png";
+        var layerUrl = options.url + "/tileImage." + options.format + "?";
+
         options.serverType = options.serverType || _iclientCommon.ServerType.ISERVER;
 
         var _this = _possibleConstructorReturn(this, (TileSuperMapRest.__proto__ || Object.getPrototypeOf(TileSuperMapRest)).call(this, {
@@ -69906,16 +69913,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        tileGrid - [{ol.tilegrid.TileGrid}]{@linkdoc-openlayers/ol.tilegrid.TileGrid} 瓦片网格对象。<br>
  *        serverType - {SuperMap.ServerType} 服务类型。<br>
  *        redirect - {boolean} 是否重定向，默认为false。<br>
- *        transparent - {boolean} 图片是否透明，默认为true。<br>
+ *        transparent - {boolean} 瓦片是否透明，默认为true。<br>
  *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图图片。例如：{"epsgCode":3857}。<br>
+ *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
  *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
  *        clipRegion - [{ol.geom.Geometry}]{@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
  *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
  *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。<br>
- *        tileProxy - {string} 代理地址
+ *        tileProxy - {string} 代理地址。
+ *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileImage) {
@@ -69930,7 +69938,10 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         options.attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
         });
-        var layerUrl = options.url + "/image.png?";
+
+        options.format = options.format ? options.format : "png";
+        var layerUrl = options.url + "/image." + options.format + "?";
+
         options.serverType = options.serverType || _iclientCommon.ServerType.ISERVER;
         //为url添加安全认证信息片段
         layerUrl = appendCredential(options.url, layerUrl, options.serverType);
@@ -93223,15 +93234,16 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
+var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -93245,7 +93257,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(window, this._id);
+  this._clearFn.call(scope, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -93272,7 +93284,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(478);
-// On some exotic environments, it's not clear which object `setimmeidate` was
+// On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;

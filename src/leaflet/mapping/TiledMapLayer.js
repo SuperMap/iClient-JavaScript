@@ -13,7 +13,7 @@ import * as Util from "../core/Util";
  * @param url -{string} 影像图层地址
  * @param options -{Object} 影像图层参数。如：<br>
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
- *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
+ *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。<br>
  *        transparent - {boolean}是否背景透明。<br>
  *        cacheEnabled - {boolean} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
@@ -24,14 +24,15 @@ import * as Util from "../core/Util";
  *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
- *        tileProxy - {string} 启用托管地址
+ *        tileProxy - {string} 启用托管地址。
+ *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  */
 export var TiledMapLayer = L.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
-        //如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流
+        //如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流
         redirect: false,
         transparent: null,
         cacheEnabled: null,
@@ -47,6 +48,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
         crs: null,
         serverType: ServerType.ISERVER,
+        format: 'png',
 
         attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
@@ -258,7 +260,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     _createLayerUrl: function () {
         var me = this;
-        var layerUrl = me._url + "/tileImage.png?";
+        var layerUrl = me._url + "/tileImage." + this.options.format + "?";
         layerUrl += encodeURI(me._getRequestParamString());
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;

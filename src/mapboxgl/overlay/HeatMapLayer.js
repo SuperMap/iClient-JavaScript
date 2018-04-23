@@ -228,7 +228,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.HeatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param features - {geojson} 热点信息数组。
+     * @param features - {Object} 待添加的要素数组，支持 GeoJOSN 规范数据类型
      *
      * @example
      * var geojson = {
@@ -484,7 +484,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.HeatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
-     * @param feature - {GeoJson} 待转的geojson要素
+     * @param feature - {Object} 待添加的要素数组，支持 GeoJOSN 规范数据类型
      */
     toiClientFeature(feature) {
         if (["FeatureCollection", "Feature", "Geometry"].indexOf(feature.type) != -1) {

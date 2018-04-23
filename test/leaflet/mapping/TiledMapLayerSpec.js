@@ -70,4 +70,36 @@ describe('leaflet_TiledMapLayer', () => {
         tiledMapLayerObject.lastTilesVersion();
         expect(tiledMapLayerObject.tempIndex).toBe(-2);
     });
+
+
+    it('getTileUrl_format', () => {
+        var options = {format: "png"};
+        var imageTile = tiledMapLayer(url, options).addTo(map);
+        var coords = L.point(1, 4);
+        var tileUrl = imageTile.getTileUrl(coords);
+        var urlTemp = tileUrl.split("?")[0];
+        var format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("png");
+
+        imageTile.options.format = "bmp";
+        delete imageTile._layerUrl;
+        tileUrl = imageTile.getTileUrl(coords);
+        urlTemp = tileUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("bmp");
+
+        imageTile.options.format = "jpg";
+        delete imageTile._layerUrl;
+        tileUrl = imageTile.getTileUrl(coords);
+        urlTemp = tileUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("jpg");
+
+        imageTile.options.format = "gif";
+        delete imageTile._layerUrl;
+        tileUrl = imageTile.getTileUrl(coords);
+        urlTemp = tileUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("gif");
+    });
 });

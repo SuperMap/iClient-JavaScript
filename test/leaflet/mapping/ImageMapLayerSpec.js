@@ -143,4 +143,31 @@ describe('leaflet_ImageMapLayer', () => {
         });
     });
 
+    it('getTileUrl_format', () => {
+        var options = {format: "png"};
+        var imageLayer = new imageMapLayer(url, options);
+        var imgUrl = imageLayer.getImageUrl({a: 1});
+        var urlTemp = imgUrl.split("?")[0];
+        var format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("png");
+
+        imageLayer.options.format = "bmp";
+        imgUrl = imageLayer.getImageUrl({a: 1});
+        urlTemp = imgUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("bmp");
+
+        imageLayer.options.format = "jpg";
+        imgUrl = imageLayer.getImageUrl({a: 1});
+        urlTemp = imgUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("jpg");
+
+        imageLayer.options.format = "gif";
+        imgUrl = imageLayer.getImageUrl({a: 1});
+        urlTemp = imgUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("gif");
+    });
+
 });

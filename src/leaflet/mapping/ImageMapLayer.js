@@ -11,8 +11,8 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
  * @param url -{string} 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param options -{Object} 图层可选参数。如：<br>
  *        layersID - {number} 如果有layersID，则是在使用专题图 <br>
- *        redirect - {boolean} 如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流<br>
- *        transparent - {boolean} 地图图片是否透明<br>
+ *        redirect - {boolean} 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流<br>
+ *        transparent - {boolean} 地图瓦片是否透明<br>
  *        cacheEnabled - {boolean} 是否使用服务器缓存出图<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域是否有效<br>
  *        prjCoordSys - {Object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
@@ -23,13 +23,14 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
  *        pane - {string} 图层所归属的map DOM的分组。默认为："tilePane" <br>
  *        interactive - {boolean} 是否响应鼠标点击或悬停交互事件。<br>
  *        crossOrigin - {boolean} 是否设置跨域属性。<br>
- *        errorOverlayUrl - {boolean} 图层未能加载时代替显示的图片地址。<br>
+ *        errorOverlayUrl - {boolean} 图层未能加载时代替显示的瓦片地址。<br>
  *        zIndex - {number} 设置图层的层级。<br>
  *        className - {string} 自定义dom元素的className。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
  *        updateInterval - {number} 平移时图层延迟刷新间隔时间。<br>
- *        tileProxy - {string} 启用托管地址
+ *        tileProxy - {string} 启用托管地址。
+ *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  */
 
 export var ImageMapLayer = Layer.extend({
@@ -61,7 +62,7 @@ export var ImageMapLayer = Layer.extend({
         interactive: false,
         //是否设置跨域属性
         crossOrigin: false,
-        //图层未能加载时代替显示的图片地址
+        //图层未能加载时代替显示的瓦片地址
         errorOverlayUrl: false,
         //设置图层的显示层级
         zIndex: 1,
@@ -72,7 +73,9 @@ export var ImageMapLayer = Layer.extend({
         //版权信息
         attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
         //平移时图层延迟刷新间隔时间。
-        updateInterval: 150
+        updateInterval: 150,
+        format: 'png'
+
     },
 
     initialize: function (url, options) {
@@ -160,12 +163,12 @@ export var ImageMapLayer = Layer.extend({
     /**
      * @function L.supermap.imageMapLayer.prototype.getImageUrl
      * @description 获取image图层请求地址，子类可重写实现
-     * @return {string} 请求图片地址
+     * @return {string} 请求瓦片地址
      */
     getImageUrl: function (params) {
         var imageUrl = Util.getParamString(params) + this._initLayerUrl();
         var serviceUrl = this._url;
-        imageUrl = serviceUrl + "/image.png" + imageUrl;
+        imageUrl = serviceUrl + "/image." + this.options.format + imageUrl;
         imageUrl = this._appendCredential(imageUrl);
         //支持代理
         if (this.options.tileProxy) {
@@ -175,7 +178,7 @@ export var ImageMapLayer = Layer.extend({
 
     },
 
-    //获取请求图片宽高以及请求范围参数
+    //获取请求瓦片宽高以及请求范围参数
     _getImageParams: function () {
         var size = this._calculateImageSize();
         return {
@@ -274,7 +277,7 @@ export var ImageMapLayer = Layer.extend({
 
                 if (this.options.position === 'front') {
                     this.bringToFront();
-                } 
+                }
                 if (this.options.position === 'back') {
                     this.bringToBack();
                 }

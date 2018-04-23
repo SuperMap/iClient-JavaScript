@@ -69,6 +69,10 @@
     
     - `setLatlng` 接口更改为 `setLatLng`
     
+- `L.supermap.imageMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+
+- `L.supermap.tiledMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+    
 
 ### for OpenLayers
 
@@ -124,6 +128,10 @@
     - options新增参数 `attributes`,支持设置要素属性
     
     - 增加 `setAttributes`和`getAttributes`接口
+    
+- `ol.source.ImageSuperMapRest` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+
+- `ol.source.TileSuperMapRest` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
 
 ### for MapboxGL
 

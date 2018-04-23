@@ -33181,7 +33181,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param url -{string} 影像图层地址
  * @param options -{Object} 影像图层参数。如：<br>
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
- *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
+ *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。<br>
  *        transparent - {boolean}是否背景透明。<br>
  *        cacheEnabled - {boolean} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
@@ -33192,14 +33192,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
- *        tileProxy - {string} 启用托管地址
+ *        tileProxy - {string} 启用托管地址。
+ *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  */
 var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
-        //如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流
+        //如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流
         redirect: false,
         transparent: null,
         cacheEnabled: null,
@@ -33215,6 +33216,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
 
         crs: null,
         serverType: _iclientCommon.ServerType.ISERVER,
+        format: 'png',
 
         attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
@@ -33425,7 +33427,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
 
     _createLayerUrl: function _createLayerUrl() {
         var me = this;
-        var layerUrl = me._url + "/tileImage.png?";
+        var layerUrl = me._url + "/tileImage." + this.options.format + "?";
         layerUrl += encodeURI(me._getRequestParamString());
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
@@ -62675,7 +62677,7 @@ var HeatMapLayer = exports.HeatMapLayer = _leaflet2["default"].Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param features - {geojson} 热点信息数组。
+     * @param features - {Object|HeatMapFeature}待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式
      *
      * @example
      * var geojson = {
@@ -63048,7 +63050,7 @@ var HeatMapLayer = exports.HeatMapLayer = _leaflet2["default"].Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
-     * @param features - {GeoJson|HeatMapFeature}待转要素,支持 geoJson 格式和 ThemeFeature 格式
+     * @param features - {Object|HeatMapFeature}待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature: function toiClientFeature(features) {
@@ -67878,8 +67880,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param url -{string} 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param options -{Object} 图层可选参数。如：<br>
  *        layersID - {number} 如果有layersID，则是在使用专题图 <br>
- *        redirect - {boolean} 如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流<br>
- *        transparent - {boolean} 地图图片是否透明<br>
+ *        redirect - {boolean} 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流<br>
+ *        transparent - {boolean} 地图瓦片是否透明<br>
  *        cacheEnabled - {boolean} 是否使用服务器缓存出图<br>
  *        clipRegionEnabled - {boolean} 地图显示裁剪的区域是否有效<br>
  *        prjCoordSys - {Object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
@@ -67890,13 +67892,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        pane - {string} 图层所归属的map DOM的分组。默认为："tilePane" <br>
  *        interactive - {boolean} 是否响应鼠标点击或悬停交互事件。<br>
  *        crossOrigin - {boolean} 是否设置跨域属性。<br>
- *        errorOverlayUrl - {boolean} 图层未能加载时代替显示的图片地址。<br>
+ *        errorOverlayUrl - {boolean} 图层未能加载时代替显示的瓦片地址。<br>
  *        zIndex - {number} 设置图层的层级。<br>
  *        className - {string} 自定义dom元素的className。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
  *        updateInterval - {number} 平移时图层延迟刷新间隔时间。<br>
- *        tileProxy - {string} 启用托管地址
+ *        tileProxy - {string} 启用托管地址。
+ *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  */
 
 var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
@@ -67928,7 +67931,7 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
         interactive: false,
         //是否设置跨域属性
         crossOrigin: false,
-        //图层未能加载时代替显示的图片地址
+        //图层未能加载时代替显示的瓦片地址
         errorOverlayUrl: false,
         //设置图层的显示层级
         zIndex: 1,
@@ -67939,7 +67942,9 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
         //版权信息
         attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
         //平移时图层延迟刷新间隔时间。
-        updateInterval: 150
+        updateInterval: 150,
+        format: 'png'
+
     },
 
     initialize: function initialize(url, options) {
@@ -68028,12 +68033,12 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
     /**
      * @function L.supermap.imageMapLayer.prototype.getImageUrl
      * @description 获取image图层请求地址，子类可重写实现
-     * @return {string} 请求图片地址
+     * @return {string} 请求瓦片地址
      */
     getImageUrl: function getImageUrl(params) {
         var imageUrl = _leaflet.Util.getParamString(params) + this._initLayerUrl();
         var serviceUrl = this._url;
-        imageUrl = serviceUrl + "/image.png" + imageUrl;
+        imageUrl = serviceUrl + "/image." + this.options.format + imageUrl;
         imageUrl = this._appendCredential(imageUrl);
         //支持代理
         if (this.options.tileProxy) {
@@ -68042,7 +68047,7 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
         return imageUrl;
     },
 
-    //获取请求图片宽高以及请求范围参数
+    //获取请求瓦片宽高以及请求范围参数
     _getImageParams: function _getImageParams() {
         var size = this._calculateImageSize();
         return {
@@ -71149,7 +71154,7 @@ module.exports = function (proj4) {
 /* 377 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 378 */
@@ -95141,15 +95146,16 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
+var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -95163,7 +95169,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(window, this._id);
+  this._clearFn.call(scope, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -95190,7 +95196,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(504);
-// On some exotic environments, it's not clear which object `setimmeidate` was
+// On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;

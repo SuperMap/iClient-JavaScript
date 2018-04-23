@@ -89,4 +89,43 @@ describe('openlayers_ImageSuperMapRest', () => {
         // expect(tileUrl).toBe("tileProxyhttp%3A%2F%2Flocalhost%3A8090%2Fiserver%2Fservices%2Fmap-world%2Frest%2Fmaps%2F%25E4%25B8%2596%25E7%2595%258C%25E5%259C%25B0%25E5%259B%25BE_Day%2Fimage.png%3F%26transparent%3Dtrue%26cacheEnabled%3Dfalse%26width%3D256%26height%3D256%26viewBounds%3D%257B%2522leftBottom%2522%2520%3A%2520%257B%2522x%2522%3ANaN%2C%2522y%2522%3ANaN%257D%2C%2522rightTop%2522%2520%3A%2520%257B%2522x%2522%3ANaN%2C%2522y%2522%3ANaN%257D%257D");
         expect(tileUrl).not.toBeNull();
     });
+
+    it('tileUrlFunction_format', () => {
+        if (imageTileOptions.tileProxy) {
+            delete imageTileOptions["tileProxy"];
+        }
+        imageTileOptions.format = "png";
+        var imageTile = new ImageSuperMapRest(imageTileOptions);
+        var tempOptions = {
+            redirect: true,
+            prjCoordSys: {"epsgCode": 4326}
+        };
+        var pixelRatio = "245";
+        var coords = new ol.geom.Point(120.14, 30.24);
+        var tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, tempOptions);
+        var urlTemp = tileUrl.split("?")[0];
+        var format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("png");
+
+        imageTileOptions.format = "bmp";
+        imageTile = new ImageSuperMapRest(imageTileOptions);
+        tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, tempOptions);
+        urlTemp = tileUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("bmp");
+
+        imageTileOptions.format = "jpg";
+        imageTile = new ImageSuperMapRest(imageTileOptions);
+        tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, tempOptions);
+        urlTemp = tileUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("jpg");
+
+        imageTileOptions.format = "gif";
+        imageTile = new ImageSuperMapRest(imageTileOptions);
+        tileUrl = imageTile.tileUrlFunction(coords, pixelRatio, tempOptions);
+        urlTemp = tileUrl.split("?")[0];
+        format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
+        expect(format).toBe("gif");
+    });
 });
