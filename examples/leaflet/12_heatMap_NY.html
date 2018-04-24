@@ -3,28 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_heatMapNY"></title>
-    <script type="text/javascript" include="bootstrap-css,jquery,papaparse" src="../js/include-web.js"></script>
-
-    <style>
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            z-index: 800;
-            margin-left: -130px;
-            text-align: center;
-            margin-top: -50px;
-            width: 290px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            color: whitesmoke;
-            font-size: 16px;
-        }
-    </style>
+    <script type="text/javascript" include="bootstrap-css,jquery,papaparse,widgets" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<div id="loading" data-i18n="resources.text_loadingData"></div>
 <script type="text/javascript" include="leaflet.heat" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
@@ -44,9 +26,10 @@
         //145万个点
         var radius = 30, opacity = 0.5;
         var length = 0;//需要截取示例数据的长度,0表示全部
+        widgets.loader.showLoader();
         $.get('../data/nyc-taxi.csv', function (csvstr) {
+            widgets.loader.removeLoader();
             var result = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
-            $("#loading").hide();
 
             var heatPoints = processData(result, length);
             resultLayer = L.heatLayer(heatPoints, {

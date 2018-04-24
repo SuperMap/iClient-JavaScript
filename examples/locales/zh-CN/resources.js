@@ -749,7 +749,7 @@ window.resources = {
         "text_deleteSuccess": "删除成功",
         "text_performanceLayer": "高性能标绘图层：",
         "text_performancePlottingLayer": "标绘图层：",
-        "text_loadingData": "正在加载数据请稍等。。。。。。",
+        "text_loadingData": "正在加载数据,请稍等......",
         "text_keyword": "关键字：",
         "text_queryResult": "查询结果: ",
         "text_propertyName": "属性名",
