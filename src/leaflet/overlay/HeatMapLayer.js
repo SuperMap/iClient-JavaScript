@@ -234,6 +234,7 @@ export var HeatMapLayer = L.Layer.extend({
      * @function L.supermap.heatMapLayer.prototype.draw
      * @description 绘制热点图
      * @param data -{Array} convertToPixelPoints方法计算出的点
+     * @param maxWeight -{number} 最大权重
      * @private
      */
     draw: function (data, maxWeight) {

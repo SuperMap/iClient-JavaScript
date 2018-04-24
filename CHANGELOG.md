@@ -50,6 +50,13 @@
 
 - 高性能图层 `L.supermap.GraphicLayer` 新增接口：
     
+    - 默认支持`webgl`渲染 
+        - `options` 新增 `render` 参数,可选值为`canvas`,`webgl`,
+        - `options` 新增 `webgl` 绘制相关参数，如：
+             `color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,
+             `radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`,
+             `onClick`,`onHover`
+    
     - `setGraphics`: 设置点要素
     
     - `addGraphics`: 追加点要素

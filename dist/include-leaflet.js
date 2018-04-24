@@ -60,6 +60,9 @@
         if (inArray(includes, 'elasticsearch')) {
             inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
         }
+        if (inArray(includes, 'deck')) {
+            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
+        }
         if (!inArray(excludes, 'iclient9-leaflet')) {
             inputScript("../../dist/iclient9-leaflet.min.js");
         }

@@ -54,7 +54,8 @@
 
             //绘制图层
             L.supermap.graphicLayer(graphics, {
-                handleClick: function (graphic) {
+                render:"canvas",
+                onClick: function (graphic) {
                     L.popup().setLatLng(graphic.getLatLng())
                         .setContent('<p>' + resources.text_latLng + '：<br>' + graphic.getLatLng().lng + ',<br>' + graphic.getLatLng().lat + '</p>')
                         .openOn(map);

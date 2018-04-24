@@ -1,21 +1,72 @@
 import L from "leaflet";
 import '../core/Base';
+import {Detector} from "../core/Detector";
+import {GraphicCanvasRenderer, GraphicWebGLRenderer} from './graphic';
 
+const Renderer = ["canvas", "webgl"];
+
+const defaultProps = {
+    color: [0, 0, 0, 255],
+    opacity: 0.8,
+    radius: 10,
+    radiusScale: 1,
+    radiusMinPixels: 0,
+    radiusMaxPixels: Number.MAX_SAFE_INTEGER,
+    strokeWidth: 1,
+    outline: false
+};
+const CSS_TRANSFORM = (function () {
+    let div = document.createElement('div');
+    let props = [
+        'transform',
+        'WebkitTransform',
+        'MozTransform',
+        'OTransform',
+        'msTransform'
+    ];
+
+    for (let i = 0; i < props.length; i++) {
+        let prop = props[i];
+        if (div.style[prop] !== undefined) {
+            return prop;
+        }
+    }
+    return props[0];
+})();
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
  * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {Array<L.supermap.graphic>} 图形对象
- * @param options - {Object} 图层参数。<br>
- *        handleClick - {function} 图层点击响应事件函数。
+ * @param graphics - {Array<L.supermap.graphic>} 要素对象
+ * @param {Object} options - 图层参数
+ * @param {string}   [options.render=webgl]  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
+ * @param {Array<number>} [options.color=[0, 0, 0, 255]] - webgl渲染时要素颜色
+ * @param {Array<number>} [options.highlightColor] - webgl渲染时要素高亮颜色
+ * @param {number} [options.opacity=0.8] - webgl渲染时的要素不透明度
+ * @param {number} [options.radius=10] - webgl渲染时的要素半径
+ * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
+ * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)
+ * @param {number} [options.strokeWidth=1] - 边框大小
+ * @param {boolean} [options.outline=false] - 是否显示边框
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)
  */
 export var GraphicLayer = L.Path.extend({
 
         initialize: function (graphics, options) {
-            options = options || {};
-            L.setOptions(this, options);
             this.graphics = [].concat(graphics);
+            let opt = options || {};
+            L.Util.setOptions(this, opt);
+            //因为跟基类的renderer冲突，所以采用render这个名字
+            let render = this.options.render;
+            //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
+            if (!Detector.supportWebGL2()) {
+                this.options.render = Renderer[0];
+            } else {
+                this.options.render = (!render || render === Renderer[1]) ? Renderer[1] : Renderer[0];
+            }
         },
 
         /**
@@ -25,10 +76,11 @@ export var GraphicLayer = L.Path.extend({
          * @return {Object} 返回该图层支持的事件对象
          */
         getEvents: function () {
-            var events = {
-                click: this._handleClick
+            return {
+                click: this._handleClick.bind(this),
+                resize: this._resize.bind(this),
+                moveend: this._moveEnd.bind(this)
             };
-            return events;
         },
 
         /**
@@ -37,13 +89,19 @@ export var GraphicLayer = L.Path.extend({
          * @description 添加图形
          */
         onAdd: function () {
-            this._canvas = document.createElement('canvas');
-            var width = this._map.getPixelBounds().getSize().x;
-            var height = this._map.getPixelBounds().getSize().y;
-            this._canvas.width = width;
-            this._canvas.height = height;
-            this._ctx = this._canvas.getContext('2d');
+            this._renderer = this._createRenderer();
+            this._container = this._renderer._container;
             L.Path.prototype.onAdd.call(this);
+        },
+
+        /**
+         * @private
+         * @override
+         * @function L.supermap.graphicLayer.prototype.onRemove
+         * @description 移除图层
+         */
+        onRemove: function () {
+            this._renderer._removePath(this);
         },
 
         /**
@@ -51,12 +109,12 @@ export var GraphicLayer = L.Path.extend({
          * @description 设置绘制的点要素数据，会覆盖之前的所有要素
          * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
          */
-        setGraphics(graphics) {
+        setGraphics: function (graphics) {
             this.graphics = this.graphics || [];
             this.graphics.length = 0;
             let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics = [].concat(sGraphics);
-            this._update();
+            this.update();
         },
 
         /**
@@ -64,18 +122,58 @@ export var GraphicLayer = L.Path.extend({
          * @description 追加点要素，不会覆盖之前的要素
          * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
          */
-        addGraphics(graphics) {
+        addGraphics: function (graphics) {
             this.graphics = this.graphics || [];
             let sGraphics = !L.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
             this.graphics = this.graphics.concat(sGraphics);
-            this._update();
+            this.update();
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.setStyle
+         * @description 设置图层要素整体样式(接口仅在wengl渲染时有用)
+         * @param {Object} styleOptions - 样式对象
+         * @param {Array<number>} styleOptions.color - 点颜色
+         * @param {number} styleOptions.radius - 点半径
+         * @param {number} styleOptions.opacity - 不透明度
+         * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
+         * @param {number} styleOptions.radiusScale - 点放大倍数
+         * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
+         * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
+         * @param {number} styleOptions.strokeWidth - 边框大小
+         * @param {boolean} styleOptions.outline - 是否显示边框
+         */
+        setStyle: function (styleOptions) {
+            let _opt = this.options;
+            let styleOpt = {
+                color: _opt.color,
+                radius: _opt.radius,
+                opacity: _opt.opacity,
+                highlightColor: _opt.highlightColor,
+                radiusScale: _opt.radiusScale,
+                radiusMinPixels: _opt.radiusMinPixels,
+                radiusMaxPixels: _opt.radiusMaxPixels,
+                strokeWidth: _opt.strokeWidth,
+                outline: _opt.outline
+            };
+
+            this.options = L.Util.extend(this.options, styleOpt, styleOptions);
+            this.update();
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.update
+         * @description 更新图层，数据或者样式改变后调用
+         */
+        update: function () {
+            this._layerRenderer.update(this.graphics);
         },
 
         /**
          * @function L.supermap.graphicLayer.prototype.clear
          * @description 释放图层资源
          */
-        clear() {
+        clear: function () {
             this.removeGraphics();
         },
 
@@ -83,38 +181,164 @@ export var GraphicLayer = L.Path.extend({
          * @function L.supermap.graphicLayer.prototype.removeGraphics
          * @description 移除所有要素
          */
-        removeGraphics() {
+        removeGraphics: function () {
             this.graphics.length = 0;
+            this.update();
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.getRenderer
+         * @description 获取渲染器
+         * @return {Object} 内部渲染器
+         */
+        getRenderer: function () {
+            return this._renderer;
+        },
+
+        /**
+         * @function L.supermap.graphicLayer.prototype.getState
+         * @description 获取当前地图及图层状态
+         * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+         */
+        getState: function () {
+            let map = this._map;
+            let width = map.getSize().x;
+            let height = map.getSize().y;
+
+            let center = map.getCenter();
+            let longitude = center.lng;
+            let latitude = center.lat;
+            let zoom = map.getZoom();
+            let maxZoom = map.getMaxZoom();
+
+            let mapViewport = {
+                longitude: longitude,
+                latitude: latitude,
+                zoom: zoom,
+                maxZoom: maxZoom,
+                pitch: 0,
+                bearing: 0
+            };
+            let state = {};
+            for (let key in mapViewport) {
+                state[key] = mapViewport[key];
+            }
+            state.width = width;
+            state.height = height;
+            let options = this.options;
+            state.color = options.color;
+            state.radius = options.radius;
+            state.opacity = options.opacity;
+            state.highlightColor = options.highlightColor;
+            state.radiusScale = options.radiusScale;
+            state.radiusMinPixels = options.radiusMinPixels;
+            state.radiusMaxPixels = options.radiusMaxPixels;
+            state.strokeWidth = options.strokeWidth;
+            state.outline = options.outline;
+            return state;
+        },
+
+        _resize: function () {
+            let size = this._map.getSize();
+            this._container.width = size.x;
+            this._container.height = size.y;
+            this._container.style.width = size.x + "px";
+            this._container.style.height = size.y + "px";
+
+            let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
+            L.DomUtil.setPosition(this._container, mapOffset);
+            this._update();
+        },
+        _moveEnd: function () {
+            //拖动和缩放结束后webgl绘制时会有跳动现象(暂时找不到原因)，故在此执行清除操作
+            this._layerRenderer._clearBuffer();
+            let size = this._map.getSize();
+
+            if (this._container._width !== size.x) {
+                this._container.width = size.x;
+            }
+            if (this._container._height !== size.y) {
+                this._container.height = size.y;
+            }
+            this._draw();
+        },
+
+        _draw: function () {
+            let mapPane = this._map.getPanes().mapPane;
+            let point = mapPane._leaflet_pos;
+
+            this._container.style[CSS_TRANSFORM] = 'translate(' +
+                -Math.round(point.x) + 'px,' +
+                -Math.round(point.y) + 'px)';
+
             this._update();
         },
 
+        //使用canvas渲染或webgl渲染
+        _createRenderer: function () {
+            let map = this._map;
+            let width = map.getSize().x;
+            let height = map.getSize().y;
+            let _renderer;
+            if (this.options.render === Renderer[0]) {
+                _renderer = new GraphicCanvasRenderer(this, {
+                    width: width,
+                    height: height,
+                    renderer: map.getRenderer(this)
+                });
+            } else {
+                let optDefault = L.Util.setOptions({}, defaultProps);
+                let opt = L.Util.setOptions({options: optDefault}, this.options);
+                opt = L.Util.setOptions(this, opt);
+                opt.container = map.getPane("overlayPane");
+                opt.width = width;
+                opt.height = height;
+
+                _renderer = new GraphicWebGLRenderer(this, opt);
+            }
+            this._layerRenderer = _renderer;
+            return this._layerRenderer.getRenderer();
+        },
+
+        /**
+         * @private
+         * @override
+         */
         _update: function () {
             if (this._map) {
                 this._updatePath();
             }
         },
 
+        /**
+         * @private
+         * @override
+         */
         _updatePath: function () {
-            var graphics = this._getGraphicsInBounds();
-            this._renderer._drawGraphics(graphics);
+            let graphics = this._getGraphicsInBounds();
+            this._renderer.drawGraphics(graphics);
         },
 
+        /**
+         * @private
+         * @override
+         */
         _project: function () {
-            var me = this;
+            let me = this;
             me._getGraphicsInBounds().map(function (graphic) {
-                var point = me._map.latLngToLayerPoint(graphic.getLatLng());
-                var w = me._clickTolerance();
-                var p = [graphic._anchor + w, graphic._anchor + w];
+                let point = me._map.latLngToLayerPoint(graphic.getLatLng());
+                let w = me._clickTolerance();
+                let p = [graphic._anchor + w, graphic._anchor + w];
                 graphic._pxBounds = new L.Bounds(point.subtract(p), point.add(p));
                 return graphic;
             });
-            me._pxBounds = L.bounds(L.point(0, 0), L.point(this._canvas.width, this._canvas.height));
+            me._pxBounds = L.bounds(L.point(0, 0), L.point(this._container.width, this._container.height));
         },
 
         _getGraphicsInBounds: function () {
-            var me = this;
-            var graphicsInBounds = [];
-            var viewBounds = me._map.getBounds();
+            let me = this;
+            let graphicsInBounds = [];
+            let viewBounds = me._map.getBounds();
             this.graphics.map(function (graphic) {
                 if (viewBounds.contains(graphic.getLatLng())) {
                     graphicsInBounds.push(graphic);
@@ -124,104 +348,26 @@ export var GraphicLayer = L.Path.extend({
             return graphicsInBounds;
         },
 
-        _containsPoint: function () {
-            return false;
-        },
 
         _handleClick: function (evt) {
-            var me = this;
-            var graphics = me._getGraphicsInBounds();
-            for (var i = 0; i < graphics.length; i++) {
-                var p1, p2, bounds;
-                var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
-                var style = graphics[i].getStyle();
-                if (style.img) {
-                    var anchor = style.anchor;
-                    p1 = L.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
-                    p2 = L.point(center.x + style.img.width / 2, center.y + style.img.height / 2);
-                    p1 = calculateOffset(p1, anchor);
-                    p2 = calculateOffset(p2, anchor);
-                } else {
-                    p1 = L.point(center.x - style.width / 2, center.y - style.height / 2);
-                    p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
-                }
-                bounds = L.bounds(p1, p2);
-                if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
-                    return me.options.handleClick.call(me, graphics[i]);
-                }
-            }
-        }
+            this._layerRenderer._handleClick(evt);
+        },
+        /**
+         * @private
+         * @override
+         */
+        beforeAdd: L.Util.falseFn,
+
+        /**
+         * @private
+         * @override
+         */
+        _containsPoint: L.Util.falseFn
+
     }
 );
 
-L.Canvas.include({
-
-    _drawGraphics: function (graphics) {
-        var me = this;
-        me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
-        graphics.forEach(function (graphic) {
-            var style = graphic.getStyle();
-            if (style.img) { //绘制图片
-                me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else {//绘制canvas
-                me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
-            }
-        })
-    },
-
-    _drawCanvas: function (ctx, style, latLng) {
-
-        var canvas = style;
-        var pt = this._map.latLngToLayerPoint(latLng);
-        var p0 = pt.x - canvas.width / 2;
-        var p1 = pt.y - canvas.height / 2;
-        var width = canvas.width;
-        var height = canvas.height;
-
-        ctx.drawImage(canvas, p0, p1, width, height);
-    },
-
-    _drawImage: function (ctx, style, latLng) {
-        //设置图片的大小
-        var width, height;
-        if (style.size) {
-            var size = style.size;
-            width = size[0];
-            height = size[1];
-        } else {
-            width = style.img.width;
-            height = style.img.height;
-        }
-        //设置偏移
-        var pt = this._coordinateToPoint(latLng);
-        pt = calculateOffset(pt, style.anchor);
-
-        ctx.drawImage(style.img, pt[0], pt[1], width, height);
-    },
-
-    _coordinateToPoint: function (coordinate) {
-        if (!this._map) {
-            return coordinate;
-        }
-        var coor = coordinate;
-        if (L.Util.isArray(coordinate)) {
-            coor = L.latLng(coordinate[0], coordinate[1]);
-        } else if (coordinate instanceof L.LatLng) {
-            coor = L.latLng(coordinate.lat, coordinate.lng);
-        }
-        var point = this._map.latLngToLayerPoint(coor);
-        return [point.x, point.y];
-    }
-
-});
-
-function calculateOffset(point, anchor) {
-    var pt = L.point(point),
-        ac = L.point(anchor);
-    return [pt.x - ac.x, pt.y - ac.y];
-}
-
-export var graphicLayer = function (graphics, options) {
+export let graphicLayer = function (graphics, options) {
     return new GraphicLayer(graphics, options);
 };
 

@@ -37,7 +37,10 @@ module.exports = {
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()"
+        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
+        'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
+        'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
+        'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()'
     },
 
     module: {
@@ -60,7 +63,7 @@ module.exports = {
             }
         }, {
             test: [/\.js$/],
-            exclude: /setImmediate/,
+            exclude: /setImmediate | webgl-debug/,
             loader: 'babel-loader',
             options: {
                 presets: ['es2015']

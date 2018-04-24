@@ -590,6 +590,11 @@ var exampleConfig = {
                         name_en: "picture drawing of 180K NY taxis",
                         thumbnail: "l_graphicLayerImage.png",
                         fileName: "12_graphicLayerImage"
+                    }, {
+                        name: "纽约145万出租车-webgl",
+                        name_en: "picture drawing of 1.45 million NY taxis",
+                        thumbnail: "l_graphicLayer_webgl.png",
+                        fileName: "12_graphiclayer_webgl"
                     }
                 ]
             },

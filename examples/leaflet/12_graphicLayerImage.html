@@ -47,7 +47,7 @@
                     });
                 }
                 //绘制图层
-                L.supermap.graphicLayer(graphics).addTo(map);
+                L.supermap.graphicLayer(graphics,{render:'canvas'}).addTo(map);
             };
         })
     }

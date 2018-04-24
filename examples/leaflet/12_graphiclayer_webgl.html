@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title data-i18n="resources.title_graphicLayer_webgl"></title>
+    <script type="text/javascript" include="papaparse,dat-gui,widgets" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%
+        }
+
+        #title {
+            position: absolute;
+            color: white;
+            left: 0;
+            top: 30px;
+            text-align: center;
+            width: 100%;
+            z-index: 500;
+        }
+
+        #title > h3 {
+            margin: 10px 0;
+            letter-spacing: 0.1em;
+        }
+
+        #title > h6 {
+            margin: 0;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+<div id="title">
+    <h3 data-i18n="resources.text_graphicLayer_title"></h3>
+    <h6 data-i18n="resources.text_graphicLayer_subTitle"></h6>
+</div>
+<div id="map"></div>
+<script type="text/javascript" include="deck" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, graphicLayer;
+    map = L.map('map', {
+        preferCanvas: true,
+        closePopupOnClick: false,
+        center: [40.7594, -73.91426],
+        maxZoom: 18,
+        zoom: 11
+    });
+    var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    L.supermap.tiledMapLayer(url).addTo(map);
+
+    addLayer();
+
+    function addLayer() {
+        widgets.loader.showLoader("data loading...");
+        $.get('../data/nyc-taxi.csv', function (csvstr) {
+            widgets.loader.removeLoader();
+            var nycData = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
+            var data = nycData.data;
+            addGraphicLayer(data);
+        })
+    }
+
+    function addGraphicLayer(data) {
+        window.graphics = [], popup = L.popup({keepInView: true, autoClose: false});
+
+        //设置每个点的经纬度
+        for (var i = 0; i < data.length; ++i) {
+            var coordinates = data[i];
+            if (coordinates.lng === coordinates.lat) {
+                continue;
+            }
+            graphics[i] = L.supermap.graphic({
+                latLng: L.latLng(coordinates.lat, coordinates.lng)
+            });
+        }
+
+        var graphicStyle = {
+            color: [0, 255, 128, 255],
+            highlightColor: [255, 0, 0, 255],
+            radius: 20
+        };
+
+        //绘制图层
+        graphicLayer = L.supermap.graphicLayer(graphics, {
+            render: "webgl",
+            color: graphicStyle.color,
+            highlightColor: graphicStyle.highlightColor,
+            radius: graphicStyle.radius,
+            onClick: function (graphic) {
+                if (graphic.lngLat) {
+                    popup.setLatLng(L.latLng(graphic.lngLat[1], graphic.lngLat[0]))
+                        .setContent('<p>' + resources.text_latLng + ': ' + JSON.stringify(graphic.lngLat) + '<p>')
+                        .addTo(map);
+                }
+            }
+        }).addTo(map);
+
+        initDatGui(graphicStyle)
+    }
+
+    //设置面板
+    function initDatGui(options) {
+
+        var gui = new dat.GUI();
+
+        var control = createConfigControl(gui.domElement, 'topright');
+        map.addControl(control);
+
+        gui.addColor(options, 'color').onChange(finished);
+        gui.add(options, 'radius', 0, 100).onChange(finished);
+
+        function finished() {
+            graphicLayer.setStyle(options);
+        }
+
+    }
+
+    //创建样式更改操作控件
+    function createConfigControl(domElement, position) {
+        var infoView = L.control({position: position});
+        infoView.onAdd = function () {
+            this._div = domElement;
+            handleMapEvent(this._div, this._map);
+            return this._div;
+        };
+
+
+        function handleMapEvent(div, map) {
+            if (!div || !map) {
+                return;
+            }
+            div.addEventListener('mouseover', function () {
+                map.dragging.disable();
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+
+            div.addEventListener('mouseout', function () {
+                map.dragging.enable();
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            });
+        }
+
+        return infoView;
+    }
+
+</script>
+</body>
+</html>
