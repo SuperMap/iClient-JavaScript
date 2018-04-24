@@ -48,7 +48,7 @@ module.exports = function (config) {
             /***leaflet的源码***/
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
-            '../src/leaflet/**/!(index).js',
+            '../src/leaflet/**/!(GraphicLayer|WebGLRenderer|index).js',
             /**测试文件**/
             './test-main-leaflet.js',
 
@@ -86,7 +86,7 @@ module.exports = function (config) {
             './test-main-common.js': ['browserify'],
 
             '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            '../src/leaflet/**/!(index).js': ['browserify'],
+            '../src/leaflet/**/!(GraphicLayer|WebGLRenderer|index).js': ['browserify'],
             './leaflet/**/*Spec.js': ['browserify'],
             './test-main-leaflet.js': ['browserify'],
 
