@@ -93,6 +93,7 @@
         }
         if (inArray(includes, 'dat-gui')) {
             inputScript("http://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.min.js");
+            datGuiI18N();
         }
         if (inArray(includes, 'admin-lte')) {
             inputCSS("http://cdn.bootcss.com/admin-lte/2.3.8/css/AdminLTE.min.css");
@@ -145,6 +146,16 @@
             inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
+    }
+
+    function datGuiI18N() {
+        document.writeln("<script>function registerEventListener(evt,fn){" +
+            "if(window.attachEvent){window.attachEvent('on'+evt,fn);}" +
+            "else{window.addEventListener(evt,fn,false);}" +
+            "}</script>");
+        document.writeln("<script>registerEventListener('load',function() { " +
+            "dat.GUI.TEXT_CLOSED=resources.text_close;dat.GUI.TEXT_OPEN=resources.text_open;" +
+            "})</script>")
     }
 
     load();
