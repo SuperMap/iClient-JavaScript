@@ -7,7 +7,8 @@ var template = require('jsdoc/template'),
     handle = require('jsdoc/util/error').handle,
     helper = require('jsdoc/util/templateHelper'),
     logger = require('jsdoc/util/logger'),
-    
+    typeLinks= require('./typeLinkExt').typeLinks,
+   
     _ = require('underscore'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
@@ -365,7 +366,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     var globalUrl = helper.getUniqueFilename('global');
     helper.registerLink('global', globalUrl);
-
+    view.typeLinks=typeLinks;
     // set up templating
     view.layout = 'layout.tmpl';
 
