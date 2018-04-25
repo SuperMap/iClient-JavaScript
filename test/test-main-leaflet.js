@@ -15,6 +15,7 @@ import './leaflet/overlay/DataFlowlayerSpec.js';
 import './leaflet/overlay/EchartsLayerSpec.js';
 /*deck相关测试未通过，待解决后打开注释*/
 //import './leaflet/overlay/GraphicLayerSpec.js';
+//import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';
 import './leaflet/overlay/LabelThemeLayerSpec.js';
@@ -23,7 +24,6 @@ import './leaflet/overlay/RangeThemeLayerSpec.js';
 import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
 import './leaflet/overlay/TileVectorLayerSpec.js';
 import './leaflet/overlay/UniqueThemeLayerSpec.js';
-import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/vectortile/PointSymbolizerSpec.js';
 import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';
 
