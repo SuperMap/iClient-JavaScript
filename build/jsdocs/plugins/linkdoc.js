@@ -2,6 +2,7 @@
 
 var logger = require('jsdoc/util/logger');
 var env = require('jsdoc/env');
+var typeLinks = require('../template/typeLinkExt').typeLinks;
 exports.handlers = {
     newDoclet: function (e) {
         if (e.doclet.augments) {
@@ -23,14 +24,24 @@ exports.handlers = {
         if (e.doclet.params) {
             for (var i = 0; i < e.doclet.params.length; i++) {
                 var a = e.doclet.params[i].description;
-                if (a && a.indexOf("@linkdoc")) {
+                if (a && a.indexOf("@linkdoc") > -1) {
                     var reg = new RegExp("@(linkdoc.*?)/");
                     var match = a.match(reg);
                     if (match) {
-                        var str="@" + match[1] + "/";
-                        e.doclet.params[i].description = a.replace(new RegExp(str,'g'), "@link "+ env.conf.tags[match[1]]);
+                        var str = "@" + match[1] + "/";
+                        e.doclet.params[i].description = a.replace(new RegExp(str, 'g'), "@link " + env.conf.tags[match[1]]);
+                    }
+                } else if (a && a.indexOf("@link") > -1) {
+                    var patt = /{@link (\S*)}/g;
+                    var result;
+                    while ((result = patt.exec(a)) != null) {
+                        var link = result[1];
+                        if (link && typeLinks[link]) {
+                            e.doclet.params[i].description = e.doclet.params[i].description.replace(result[0], "[" + link + "]{@link " + typeLinks[result[1]] + "}");
+                        }
                     }
                 }
+
             }
         }
     }

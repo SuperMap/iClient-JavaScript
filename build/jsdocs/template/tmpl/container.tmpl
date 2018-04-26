@@ -50,12 +50,12 @@
     
     <?js if (doc.augments && doc.augments.length) { ?>
         <h3 class="subsection-title">Extends</h3>
-        
         <ul><?js doc.augments.forEach(function(a) { ?>
             <?js if (a) { ?>
             <?js  array=a.split('{'); ?>
             <?js if (array.length == 1) {  ?>
-            <li><?js= self.linkto(a, a)  ?></li>
+            <?js var url=self.typeLinks[a]||a;  ?>
+            <li><?js= self.linkto(url, a)  ?></li>
             <?js }else{ ?>
             <li><?js= self.linkto(array[1].substring(0,array[1].length-1),array[0]) ?></li>
             <?js } ?>
