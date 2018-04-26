@@ -79,6 +79,8 @@
 - `L.supermap.imageMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
 
 - `L.supermap.tiledMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+
+- GeoJSON数据处理对接iServer数据类型"RECTANGLE"
     
 
 ### for OpenLayers
@@ -140,6 +142,8 @@
 
 - `ol.source.TileSuperMapRest` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
 
+- GeoJSON数据处理对接iServer数据类型"RECTANGLE"
+
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -177,6 +181,8 @@
 - 废弃 `mapboxgl.supermap.ThemeLayer` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
 
 - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
+
+- GeoJSON数据处理对接iServer数据类型"RECTANGLE"
 
 ### Classic
 

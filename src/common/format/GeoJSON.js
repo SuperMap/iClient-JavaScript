@@ -656,6 +656,8 @@ export class GeoJSON extends JSONFormat {
                 return me.toGeoLinem(geometry);
             case GeometryType.REGION:
                 return me.toGeoRegion(geometry);
+            case GeometryType.RECTANGLE:
+                return me.toGeoRectangle(geometry);
             case GeometryType.POINTEPS:
                 return me.toGeoPoint(geometry);
             // case GeometryType.LINEEPS:
@@ -807,6 +809,34 @@ export class GeoJSON extends JSONFormat {
             pointList = [];
         }
         return {type: "MultiPolygon", components: polygonArray};
+    }
+
+    /**
+     * 
+     * @function SuperMap.Format.GeoJSON.toGeoRectangle
+     * @description 将服务端的面几何对象转换为几何对象。
+     */
+    toGeoRectangle(geometry) {
+        var me = this;
+        var center = geometry.center;
+        var halfWidth = geometry.width / 2;
+        var halfHeight = geometry.height / 2;
+
+        var serverRegion = {
+            id: geometry.id,
+            points: [
+                {x: center.x - halfWidth, y: center.y + halfHeight},
+                {x: center.x + halfWidth, y: center.y + halfHeight},
+                {x: center.x + halfWidth, y: center.y - halfHeight},
+                {x: center.x - halfWidth, y: center.y - halfHeight}
+            ],
+            partTopo: geometry.partTopo,
+            rotation: geometry.rotation,
+            style: geometry.style,
+            type: GeometryType.REGION
+        };
+
+        return me.toGeoRegion(serverRegion);
     }
 
     isClockWise(points) {

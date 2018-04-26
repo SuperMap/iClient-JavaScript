@@ -1206,6 +1206,7 @@ var ServerType = exports.ServerType = _SuperMap.SuperMap.ServerType = {
  * @property {string} ELLIPSE  ELLIPSE
  * @property {string} CIRCLE  CIRCLE
  * @property {string} TEXT  TEXT
+ * @property {string} RECTANGLE RECTANGLE
  * @property {string} UNKNOWN  UNKNOWN
  */
 var GeometryType = exports.GeometryType = _SuperMap.SuperMap.GeometryType = {
@@ -1216,6 +1217,7 @@ var GeometryType = exports.GeometryType = _SuperMap.SuperMap.GeometryType = {
   ELLIPSE: "ELLIPSE",
   CIRCLE: "CIRCLE",
   TEXT: "TEXT",
+  RECTANGLE: "RECTANGLE",
   UNKNOWN: "UNKNOWN"
 };
 

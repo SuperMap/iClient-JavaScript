@@ -40,6 +40,7 @@ export var ServerType = SuperMap.ServerType = {
  * @property {string} ELLIPSE  ELLIPSE
  * @property {string} CIRCLE  CIRCLE
  * @property {string} TEXT  TEXT
+ * @property {string} RECTANGLE RECTANGLE
  * @property {string} UNKNOWN  UNKNOWN
  */
 export var GeometryType = SuperMap.GeometryType = {
@@ -50,6 +51,7 @@ export var GeometryType = SuperMap.GeometryType = {
     ELLIPSE: "ELLIPSE",
     CIRCLE: "CIRCLE",
     TEXT: "TEXT",
+    RECTANGLE: "RECTANGLE",
     UNKNOWN: "UNKNOWN"
 };
 
