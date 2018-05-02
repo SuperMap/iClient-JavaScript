@@ -49,6 +49,9 @@
         if (inArray(includes, 'ol-mapbox-style')) {
             inputScript("https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js");
         }
+        if (inArray(includes, 'deck')) {
+            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
+        }
         if (!inArray(excludes, 'iclient9-openlayers')) {
             inputScript("../../dist/iclient9-openlayers.min.js");
         }

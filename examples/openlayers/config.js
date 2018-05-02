@@ -493,11 +493,11 @@ var exampleConfig = {
                     name_en: "random points (Classic)",
                     thumbnail: "ol_heatMapLayer.png",
                     fileName: "heatMapLayer"
-                },{
+                }, {
                     name: "2005-2016地震次数(Classic)",
                     name_en: "earthquake occurrences(2005-2016)(classic)",
                     thumbnail: "ol_earthquakeHeatMapLayer.png",
-                    fileName:'earthquakeHeatMapLayer'
+                    fileName: 'earthquakeHeatMapLayer'
                 }]
             },
             "cluster": {
@@ -533,6 +533,11 @@ var exampleConfig = {
                     name_en: "webgl rendering",
                     thumbnail: "graphiclayer_webgl.png",
                     fileName: "07_graphiclayer_webgl"
+                }, {
+                    name: "纽约145万出租车-webgl",
+                    name_en: "picture drawing of 1.45 million NY taxis",
+                    thumbnail: "graphiclayer_webgl2.png",
+                    fileName: "07_graphiclayer_webgl2"
                 }, {
                     name: "纽约18万出租车-符号绘制",
                     name_en: "picture drawing of 180K NY taxis",
@@ -627,28 +632,28 @@ var exampleConfig = {
                         name_en: "Earthquake occurrences(2005-2016)",
                         thumbnail: "ol_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
-                       
-                    },{
+
+                    }, {
                         name: "北京房价信息",
                         name_en: "Beijing house prices(2018.2)",
                         thumbnail: "ol_echartsLianjia.png",
                         fileName: "echartsLianjia"
-                    },{
+                    }, {
                         name: "2百万点数据绘制北京道路网络图",
                         name_en: "Use lines to draw 2 millions Beijing streets",
                         thumbnail: "ol_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
-                    },{
+                    }, {
                         name: "4百万点数据绘制全国铁路网络图",
                         name_en: "Use lines to draw 4 millions Chinese railways",
                         thumbnail: "ol_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
-                    },{
+                    }, {
                         name: "1千4百万数据绘制全国水系图",
                         name_en: "Use lines to draw 14 millions Chinese water system",
                         thumbnail: "ol_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
-                    },{
+                    }, {
                         name: "2千5百万数据绘制全国道路网络图",
                         name_en: "Use lines to draw 25 millions Chinese roads",
                         thumbnail: "ol_echartsLinesMillionsRoads.png",
@@ -786,7 +791,7 @@ var exampleConfig = {
                         thumbnail: "mvtvectorlayer_mbstyle_beijing.png",
                         fileName: "mvtvectorlayer_mbstyle_beijing"
                     }
-                   
+
                 ]
             },
             "themeLayer": {

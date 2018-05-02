@@ -215,6 +215,7 @@ export class HeatMap extends ol.source.ImageCanvas {
      * @function ol.source.HeatMap.prototype.draw
      * @description 绘制热点图
      * @param data -{Array} convertToPixelPoints方法计算出的点
+     * @param maxWeight -{number}
      * @private
      */
     draw(data, maxWeight) {

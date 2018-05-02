@@ -13,8 +13,7 @@ const defaultProps = {
     radiusMinPixels: 0,
     radiusMaxPixels: Number.MAX_SAFE_INTEGER,
     strokeWidth: 1,
-    outline: false,
-    fp64: false
+    outline: false
 };
 
 /**
@@ -100,6 +99,9 @@ export class GraphicLayer {
             strokeWidth: strokeWidth,
             outline: outline,
             getPosition: function (point) {
+                if(!point){
+                    return [0,0,0];
+                }
                 let lngLat = point && point.getLngLat();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
             },

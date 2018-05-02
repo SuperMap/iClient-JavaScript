@@ -122,6 +122,13 @@
 - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
 - `ol.source.Graphic` 新增接口：
+
+    - 默认支持`webgl`渲染 
+       - `options` 新增 `render` 参数,可选值为`canvas`,`webgl`,
+          - `options` 新增 `webgl` 绘制相关参数，如：
+             `color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,
+             `radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`,
+             `onClick`,`onHover`
     
     - `setGraphics`: 设置点要素
     
@@ -240,6 +247,8 @@
 
 - 新增`echarts` 增量高性能图层示例
 
+- 新增高效率点图层webgl渲染示例
+
 ### for OpenLayers
 
 - 新增几何要素批量空间分析示例
@@ -257,6 +266,8 @@
 - 新增链家房价数据可视化示例
 
 - 新增`echarts` 增量高性能图层示例
+
+- 新增高效率点图层webgl渲染示例
 
 ### for MapboxGL
 

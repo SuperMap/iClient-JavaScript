@@ -39,7 +39,10 @@ module.exports = {
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
         '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
         'ol-mapbox-style':"function(){try{return olms}catch(e){return {}}}()",
-        'ol-mapbox-style/stylefunction':"function(){try{return olms.stylefunction}catch(e){return {}}}()"
+        'ol-mapbox-style/stylefunction':"function(){try{return olms.stylefunction}catch(e){return {}}}()",
+        'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
+        'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
+        'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()'
     },
 
     module: {
@@ -63,7 +66,7 @@ module.exports = {
             }
         }, {
             test: /\.js$/,
-            exclude: /classic/,
+            exclude: /classic | webgl-debug/,
             loader: 'babel-loader',
             query: {
                 presets: ['env']

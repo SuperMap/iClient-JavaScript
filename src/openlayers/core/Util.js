@@ -249,6 +249,16 @@ export class Util {
         }
         return canvas.getContext('2d');
     }
+    /**
+     * @function ol.supermap.Util.supportWebGL2
+     * @description 是否支持webgl2
+     */
+    static supportWebGL2() {
+        var canvas = document.createElement('canvas');
+        return Boolean(canvas && canvas.getContext("webgl2"));
+    }
+
+
 }
 
 ol.supermap.Util = Util;

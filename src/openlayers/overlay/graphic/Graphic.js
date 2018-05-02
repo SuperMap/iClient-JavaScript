@@ -103,6 +103,9 @@ export class Graphic extends ol.Object {
      * @param style - [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} 样式，ol.style.Image子类样式对象
      */
     setStyle(style) {
+        if (!this.style && !style) {
+            return;
+        }
         this.style_ = style;
         this.styleFunction_ = !style ?
             undefined : ol.Graphic.createStyleFunction(new ol.style.Style({

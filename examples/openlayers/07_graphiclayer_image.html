@@ -110,6 +110,7 @@
                     var graphicLayer = new ol.layer.Image({
                         source: new ol.source.Graphic({
                             graphics: graphics,
+                            render:"canvas",
                             map: map
                         })
                     });

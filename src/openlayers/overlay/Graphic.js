@@ -1,14 +1,23 @@
 import ol from 'openlayers';
 import '../core/MapExtend';
-import {
-    Util
-} from '../core/Util';
-import {
-    HitCloverShape
-} from './graphic/HitCloverShape';
-import {
-    CloverShape
-} from './graphic/CloverShape';
+import {Util} from '../core/Util';
+import {HitCloverShape} from './graphic/HitCloverShape';
+import {CloverShape} from './graphic/CloverShape';
+import {CommonUtil} from '@supermap/iclient-common';
+import {GraphicCanvasRenderer, GraphicWebGLRenderer} from './graphic/';
+
+const defaultProps = {
+    color: [0, 0, 0, 255],
+    opacity: 0.8,
+    radius: 10,
+    radiusScale: 1,
+    radiusMinPixels: 0,
+    radiusMaxPixels: Number.MAX_SAFE_INTEGER,
+    strokeWidth: 1,
+    outline: false
+};
+
+const Renderer = ["canvas", "webgl"];
 
 /**
  * @class ol.source.Graphic
@@ -34,99 +43,78 @@ export class Graphic extends ol.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
-        this.graphics_ =  [].concat(options.graphics);
+        this.graphics_ = [].concat(options.graphics);
         this.map = options.map;
+        CommonUtil.extend(this, options);
+        this.renderer = options.renderer;
+        //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
+        if (!Util.supportWebGL2()) {
+            this.renderer = Renderer[0];
+        } else {
+            this.renderer = (!options.renderer || options.renderer === Renderer[1]) ? Renderer[1] : Renderer[0];
+        }
         this.highLightStyle = options.highLightStyle;
         //是否支持高亮，默认支持
         this.isHighLight = typeof options.isHighLight === "undefined" ? true : options.isHighLight;
         this.hitGraphicLayer = null;
         this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
 
-        var me = this;
+        const me = this;
 
         //todo 将被弃用
         if (options.onClick) {
             me.map.on('click', function (e) {
-                var coordinate = e.coordinate;
-                var resolution = e.frameState.viewState.resolution;
-                var pixel = e.pixel;
+                let coordinate = e.coordinate;
+                let resolution = e.frameState.viewState.resolution;
+                let pixel = e.pixel;
                 me._forEachFeatureAtCoordinate(coordinate, resolution, options.onClick, pixel);
             });
         }
 
+        let renderer;
+
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
-            var mapWidth = size[0] * pixelRatio;
-            var mapHeight = size[1] * pixelRatio;
-            var width = this.map.getSize()[0] * pixelRatio;
-            var height = this.map.getSize()[1] * pixelRatio;
-            var context = Util.createCanvasContext2D(mapWidth, mapHeight);
-            var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = ol.render.toContext(context, {
-                size: [mapWidth, mapHeight],
-                pixelRatio: 1
-            });
-            var graphics = this.getGraphicsInExtent(extent);
-            var me = this;
-            graphics.map(function (graphic) {
-                var style = graphic.getStyle();
-                if (me.selected === graphic) {
-                    var defaultHighLightStyle = style;
-                    if (style instanceof ol.style.Circle) {
-                        defaultHighLightStyle = new ol.style.Circle({
-                            radius: style.getRadius(),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 153, 255, 1)'
-                            }),
-                            stroke: style.getStroke(),
-                            snapToPixel: style.getSnapToPixel()
-                        });
-                    } else if (style instanceof ol.style.RegularShape) {
-                        defaultHighLightStyle = new ol.style.RegularShape({
-                            radius: style.getRadius(),
-                            radius2: style.getRadius2(),
-                            points: style.getPoints(),
-                            angle: style.getAngle(),
-                            snapToPixel: style.getSnapToPixel(),
-                            rotation: style.getRotation(),
-                            rotateWithView: style.getRotateWithView(),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 153, 255, 1)'
-                            }),
-                            stroke: style.getStroke()
-                        });
-                    }
-                    style = me.highLightStyle || defaultHighLightStyle;
-                }
-                vectorContext.setStyle(new ol.style.Style({
-                    image: style
-                }));
-                var geometry = graphic.getGeometry();
-                var coordinate = geometry.getCoordinates();
-                var pixelP = me.map.getPixelFromCoordinate(coordinate);
-                var rotation = -me.map.getView().getRotation();
-                var center = me.map.getPixelFromCoordinate(me.map.getView().getCenter());
-                var scaledP = scale(pixelP, center, pixelRatio);
-                var rotatedP = rotate(scaledP, rotation, center);
-                var result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
-                var pixelGeometry = new ol.geom.Point(result);
-                vectorContext.drawGeometry(pixelGeometry);
-                return graphic;
-            });
-            return context.canvas;
+            if (!renderer) {
+                this.renderer = renderer = createRenderer(size, pixelRatio);
+            }
+            let graphics = this.getGraphicsInExtent(extent);
+            renderer._clearBuffer();
+            renderer.drawGraphics(graphics);
+            return renderer.getCanvas();
         }
 
-        //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-        function rotate(pixelP, rotation, center) {
-            var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
-            var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
-            return [x, y];
-        }
 
-        //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
-        function scale(pixelP, center, scaleRatio) {
-            var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
-            var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
-            return [x, y];
+        function createRenderer(size, pixelRatio) {
+            let renderer;
+            if (me.render === Renderer[0]) {
+                renderer = new GraphicCanvasRenderer(me, {size, pixelRatio});
+            } else {
+                let optDefault = CommonUtil.extend({}, defaultProps);
+                let opt = CommonUtil.extend(optDefault, {
+                    color: me.color,
+                    opacity: me.opacity,
+                    radius: me.radius,
+                    radiusScale: me.radiusScale,
+                    radiusMinPixels: me.radiusMinPixels,
+                    radiusMaxPixels: me.radiusMaxPixels,
+                    strokeWidth: me.strokeWidth,
+                    outline: me.outline,
+                    onClick: me.onClick,
+                    onHover: me.onHover
+                });
+                opt = CommonUtil.extend(me, opt);
+                opt.pixelRatio = pixelRatio;
+                opt.container = me.map.getViewport().getElementsByClassName("ol-overlaycontainer")[0];
+                opt.onBeforeRender = function () {
+                    return false;
+                };
+                opt.onAfterRender = function () {
+                    return false;
+                };
+
+                renderer = new GraphicWebGLRenderer(me, opt);
+            }
+            return renderer;
         }
 
         /**
@@ -141,13 +129,17 @@ export class Graphic extends ol.source.ImageCanvas {
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
             let graphics = me.getGraphicsInExtent();
             for (let i = graphics.length - 1; i >= 0; i--) {
+                let style = graphics[i].getStyle();
+                if (!style) {
+                    return;
+                }
                 //已经被高亮的graphics 不被选选中
-                if (graphics[i].getStyle() instanceof HitCloverShape) {
+                if (style instanceof HitCloverShape) {
                     continue;
                 }
                 let center = graphics[i].getGeometry().getCoordinates();
                 let image = new ol.style.Style({
-                    image: graphics[i].getStyle()
+                    image: style
                 }).getImage();
                 let extent = [];
                 extent[0] = center[0] - image.getAnchor()[0] * resolution;
@@ -216,7 +208,87 @@ export class Graphic extends ol.source.ImageCanvas {
      * @description 更新图层
      */
     update() {
-        this.changed();
+        this.renderer.update(this.graphics_);
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.setStyle
+     * @description 设置图层要素整体样式(接口仅在wengl渲染时有用)
+     * @param {Object} styleOptions - 样式对象
+     * @param {Array<number>} styleOptions.color - 点颜色
+     * @param {number} styleOptions.radius - 点半径
+     * @param {number} styleOptions.opacity - 不透明度
+     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
+     * @param {number} styleOptions.radiusScale - 点放大倍数
+     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
+     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
+     * @param {number} styleOptions.strokeWidth - 边框大小
+     * @param {boolean} styleOptions.outline - 是否显示边框
+     */
+    setStyle(styleOptions) {
+        let self = this;
+        let styleOpt = {
+            color: self.color,
+            radius: self.radius,
+            opacity: self.opacity,
+            highlightColor: self.highlightColor,
+            radiusScale: self.radiusScale,
+            radiusMinPixels: self.radiusMinPixels,
+            radiusMaxPixels: self.radiusMaxPixels,
+            strokeWidth: self.strokeWidth,
+            outline: self.outline
+        };
+
+        CommonUtil.extend(self, CommonUtil.extend(styleOpt, styleOptions));
+        self.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getLayerState
+     * @description 获取当前地图及图层状态
+     * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+     */
+    getLayerState() {
+        let map = this.map;
+        let width = map.getSize()[0];
+        let height = map.getSize()[1];
+
+        let view = map.getView();
+        let center = view.getCenter();
+        let longitude = center[0];
+        let latitude = center[1];
+
+        let zoom = view.getZoom();
+        let maxZoom = view.getMaxZoom();
+        let rotationRadians = view.getRotation();
+
+        let rotation = -rotationRadians * 180 / Math.PI;
+
+        let mapViewport = {
+            longitude: longitude,
+            latitude: latitude,
+            zoom: zoom,
+            maxZoom: maxZoom,
+            pitch: 0,
+            bearing: rotation
+        };
+        let state = {};
+        for (let key in mapViewport) {
+            state[key] = mapViewport[key];
+        }
+        state.width = width;
+        state.height = height;
+
+        state.color = this.color;
+        state.radius = this.radius;
+        state.opacity = this.opacity;
+        state.highlightColor = this.highlightColor;
+        state.radiusScale = this.radiusScale;
+        state.radiusMinPixels = this.radiusMinPixels;
+        state.radiusMaxPixels = this.radiusMaxPixels;
+        state.strokeWidth = this.strokeWidth;
+        state.outline = this.outline;
+        return state;
     }
 
     /**
