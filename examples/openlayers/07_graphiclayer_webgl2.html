@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_graphicLayer_webgl"></title>
+
+    <style>
+
+        #title {
+            position: absolute;
+            color: white;
+            left: 0;
+            top: 30px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #title > h3 {
+            margin: 10px 0;
+            letter-spacing: 0.1em;
+        }
+
+        #title > h6 {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 50px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-panel {
+            position: absolute;
+            top: .5em;
+            right:0;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;">
+<div id="map" style="width: 100%;height:100%"></div>
+
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+<div id="title">
+    <h3 data-i18n="resources.text_graphicLayer_title"></h3>
+    <h6 data-i18n="resources.text_graphicLayer_subTitle"></h6>
+</div>
+<div id="control" class="ol-panel"></div>
+<script type="text/javascript" include="papaparse,dat-gui,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="deck" src="../../dist/include-openlayers.js"></script>
+<script type="text/javascript">
+    var url = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-china400/rest/maps/ChinaDark";
+
+    var map, overlay, graphicLayer;
+
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        var container = document.getElementById('popup');
+        overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        }));
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 11,
+                projection: 'EPSG:3857'
+            }),
+            overlays: [overlay]
+        });
+        var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest(options)
+        });
+        map.addLayer(layer);
+        // var raster = new ol.layer.Tile({
+        //     source: new ol.source.OSM()
+        // });
+        // map.addLayer(raster);
+
+        widgets.loader.showLoader("data loading...");
+        Papa.parse('../data/nyc-taxi.csv', {
+            download: true,
+            skipEmptyLines: true,
+            header: true,
+            error: function () {
+                widgets.loader.removeLoader();
+                alert("parse error")
+            },
+            complete: function (results) {
+                widgets.loader.removeLoader();
+                addGraphicLayer(results.data);
+            }
+        });
+
+    });
+
+    function addGraphicLayer(data) {
+        var graphics = [], count = data.length;
+
+        for (var i = 0; i < count; ++i) {
+            var coods = data[i];
+            var coordinates = [parseFloat(coods.lng), parseFloat(coods.lat)];
+            if (coordinates[0] === coordinates[1]) {
+                continue;
+            }
+            coordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857');
+            graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
+        }
+        var graphicStyle = {
+            color: [0, 255, 128, 255],
+            highlightColor: [255, 0, 0, 255],
+            radius: 20
+        };
+        map.once('postrender', function () {
+            var content = document.getElementById('popup-content');
+            graphicLayer = new ol.layer.Image({
+                source: new ol.source.Graphic({
+                    graphics: graphics,
+                    renderer: "webgl",
+                    color: graphicStyle.color,
+                    highlightColor: graphicStyle.highlightColor,
+                    radius: graphicStyle.radius,
+
+                    map: map,
+                    onClick: function (graphic) {
+                        if (graphic) {
+                            var coords = graphic.lngLat;
+                            content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
+                            overlay.setPosition(ol.proj.transform(coords, 'EPSG:4326', 'EPSG:3857'));
+                            return;
+                        }
+                        overlay.setPosition(undefined);
+                    }
+                })
+            });
+            map.addLayer(graphicLayer);
+        });
+        initDatGui(graphicStyle)
+    }
+
+    //设置面板
+    function initDatGui(options) {
+
+        var gui = new dat.GUI();
+
+        var popup = document.getElementById('control');
+        popup.appendChild(gui.domElement);
+        var control = new ol.control.Control({element: popup});
+        control.setMap(map);
+        map.addControl(control);
+
+        gui.addColor(options, 'color').onChange(finished);
+        gui.add(options, 'radius', 0, 100).onChange(finished);
+
+        function finished() {
+            graphicLayer.getSource().setStyle(options);
+        }
+    }
+
+</script>
+</body>
+</html>
