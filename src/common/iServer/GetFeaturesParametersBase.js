@@ -48,10 +48,17 @@ export class GetFeaturesParametersBase {
         this.returnCountOnly = false;
 
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.maxFeatures - {integer}
+         * @member S1uperMap.GetFeaturesParametersBase.prototype.maxFeatures - {integer}
          * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
          */
         this.maxFeatures = null;
+
+        /**
+         * @member SuperMap.GetFeaturesParametersBase.prototype.aggregations - {object}
+         * @description 聚合查询参数，该参数仅支持数据来源Elasticsearch服务的数据服务
+         */
+        this.aggregations = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetFeaturesParametersBase";
@@ -69,6 +76,9 @@ export class GetFeaturesParametersBase {
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
+        if (me.aggregation) {
+            me.aggregation = null;
+        }
     }
 }
 

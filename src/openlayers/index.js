@@ -54,6 +54,8 @@ export {
     StatisticAnalystMode,
     TopologyValidatorRule,
     OutputType,
+    AggregationQueryBuilderType,
+    AggregationType,
     //control
     TimeFlowControl,
     //iManager
@@ -87,6 +89,8 @@ export {
     FetchRequest,
     //iServer
     AreaSolarRadiationParameters,
+    AggregationParameter,
+    AggQueryBuilderParameter,
     BufferAnalystParameters,
     BufferDistance,
     BuffersAnalystJobsParameter,
@@ -116,6 +120,7 @@ export {
     FieldParameters,
     FieldStatisticsParameters,
     FilterParameter,
+    FilterAggParameter,
     FindClosestFacilitiesParameters,
     FindLocationParameters,
     FindMTSPPathsParameters,
@@ -123,8 +128,10 @@ export {
     FindServiceAreasParameters,
     FindTSPPathsParameters,
     GenerateSpatialDataParameters,
+    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
+    GeoHashGridAggParameter,
     GeometryBufferAnalystParameters,
     GeometryOverlayAnalystParameters,
     GeometrySurfaceAnalystParameters,

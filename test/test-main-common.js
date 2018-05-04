@@ -1,5 +1,7 @@
 /**common -- iServer**/
 import './common/iServer/AddressMatchServiceSpec.js';
+import './common/iServer/AggQueryBuilderParameterSpec.js';
+import './common/iServer/AggregationParameterSpec.js';
 import './common/iServer/AreaSolarRadiationParametersSpec.js';
 import './common/iServer/BufferAnalystServiceSpec.js';
 import './common/iServer/BufferDistanceSpec.js';
@@ -14,6 +16,7 @@ import './common/iServer/EditFeaturesServiceSpec.js';
 import './common/iServer/FacilityAnalystStreamParametersSpec.js';
 import './common/iServer/FacilityAnalystUpstream3DParametersSpec.js';
 import './common/iServer/FieldStatisticServiceSpec.js';
+import './common/iServer/FilterAggParameterSpec.js';
 import './common/iServer/FindClosestFacilitiesServiceSpec.js';
 import './common/iServer/FindLocationServiceSpec.js';
 import './common/iServer/FindMTSPPathsServiceSpec.js';
@@ -21,6 +24,8 @@ import './common/iServer/FindPathServiceSpec.js';
 import './common/iServer/FindServiceAreasServiceSpec.js';
 import './common/iServer/FindTSPPathsServiceSpec.js';
 import './common/iServer/GenerateSpatialDataServiceSpec.js';
+import './common/iServer/GeoBoundingBoxQueryBuilderParameterSpec.js';
+import './common/iServer/GeoHashGridAggParameterSpec.js';
 import './common/iServer/GeometryBatchAnalystServiceSpec.js';
 import './common/iServer/GeoRelationAnalystServiceSpec.js';
 import './common/iServer/GetFeaturesByBoundsServiceSpec.js';

@@ -1082,3 +1082,27 @@ export var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
     LINENOOVERLAPWITH: "LINENOOVERLAPWITH",
     POINTNOIDENTICAL: "POINTNOIDENTICAL"
 };
+
+/**
+ * @name AggregationType
+ * @memberOf SuperMap
+ * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
+ *
+ * @property {string} GEOHASH_GRID  geohash_grid
+ * @property {string} FILTER  filter
+ */
+export var AggregationType = SuperMap.AggregationType = {
+    GEOHASH_GRID: "geohash_grid",
+    FILTER: "filter"
+};
+
+/**
+ * @name AggregationType
+ * @memberOf SuperMap
+ * @description  聚合查询中filter查询枚举类
+ *
+ * @property {string} GEO_BOUNDING_BOX  geo_bounding_box
+ */
+export var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType={
+    GEO_BOUNDING_BOX:"geo_bounding_box"
+}

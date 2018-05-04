@@ -54,6 +54,8 @@ import {
     StatisticAnalystMode,
     TopologyValidatorRule,
     OutputType,
+    AggregationQueryBuilderType,
+    AggregationType,
     //control
     TimeFlowControl,
     //iManager
@@ -87,6 +89,8 @@ import {
     FetchRequest,
     //iServer
     AreaSolarRadiationParameters,
+    AggregationParameter,
+    AggQueryBuilderParameter,
     BufferAnalystParameters,
     BufferDistance,
     BuffersAnalystJobsParameter,
@@ -113,6 +117,7 @@ import {
     FacilityAnalystTracedown3DParameters,
     FacilityAnalystTraceup3DParameters,
     FacilityAnalystUpstream3DParameters,
+    FilterAggParameter,
     FieldParameters,
     FieldStatisticsParameters,
     FilterParameter,
@@ -123,8 +128,10 @@ import {
     FindServiceAreasParameters,
     FindTSPPathsParameters,
     GenerateSpatialDataParameters,
+    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
+    GeoHashGridAggParameter,
     GeometryBufferAnalystParameters,
     GeometryOverlayAnalystParameters,
     GeometrySurfaceAnalystParameters,
@@ -372,6 +379,8 @@ export {
     StatisticAnalystMode,
     TopologyValidatorRule,
     OutputType,
+    AggregationQueryBuilderType,
+    AggregationType,
     //control
     TimeFlowControl,
     //iManager
@@ -405,6 +414,8 @@ export {
     FetchRequest,
     //iServer
     AreaSolarRadiationParameters,
+    AggregationParameter,
+    AggQueryBuilderParameter,
     BufferAnalystParameters,
     BufferDistance,
     BuffersAnalystJobsParameter,
@@ -432,6 +443,7 @@ export {
     FacilityAnalystTraceup3DParameters,
     FacilityAnalystUpstream3DParameters,
     FieldParameters,
+    FilterAggParameter,
     FieldStatisticsParameters,
     FilterParameter,
     FindClosestFacilitiesParameters,
@@ -441,8 +453,10 @@ export {
     FindServiceAreasParameters,
     FindTSPPathsParameters,
     GenerateSpatialDataParameters,
+    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
+    GeoHashGridAggParameter,
     GeometryBufferAnalystParameters,
     GeometryOverlayAnalystParameters,
     GeometrySurfaceAnalystParameters,

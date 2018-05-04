@@ -125,6 +125,11 @@ var exampleConfig = {
                     thumbnail: "l_getGridCellInfos.png",
                     fileName: "02_getGridCellInfos"
                 }, {
+                    name: "聚合查询",
+                    name_en: "data aggregation query",
+                    thumbnail: "getFeatureByAggregation.gif",
+                    fileName: "getFeatureByAggregation"
+                }, {
                     name: "字段信息",
                     name_en: "field service",
                     thumbnail: "l_fieldsService.png",

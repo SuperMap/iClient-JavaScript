@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_ESGridAggregation"></title>
+    <script type="text/javascript" include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select"
+            src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="mapv" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map,
+        baseUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        url = host + "/iserver/services/data-es/rest/data";
+    var liveRenderer,
+        timeControl,
+        liveDataSet,
+        info = L.control({position: 'bottomleft'}),
+        layerOptions = getGridOptions();
+
+    map = L.map('map', {
+        center: [33.75, 0],
+        maxZoom: 15,
+        minZoom: 1,
+        zoom: 2,
+        crs: L.CRS.EPSG3857
+    });
+    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    init();
+
+    function init() {
+        info.onAdd = function () {
+            var popup = L.DomUtil.create('div');
+            popup.innerHTML = "<div class='btn-group' role='group' aria-label='...'>" +
+                "<button  value='grid' type='button' class='btn btn-default'>" + resources.btn_grid + "</button>" +
+                "<button value='heatmap' type='button' class='btn btn-default'>" + resources.title_heatMap + "</button></div>"
+            handleMapEvent(popup, map);
+            return popup;
+        };
+        info.addTo(map);
+        initTimeControlView();
+    }
+
+    //默认设置参数
+    function getDefaultControlOptions() {
+        var startMs = 1493706384000;
+        var endMs = 1504333584000;
+        var start = moment(startMs).format("YYYY-MM-DD HH:mm:ss");
+        var end = moment(endMs).format("YYYY-MM-DD HH:mm:ss");
+        return {
+            startTime: start,
+            endTime: end,
+            speed: 300000,
+            frequency: 1000
+        }
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+
+    //开始播放
+    function start() {
+        var options = getControlOptions();
+        if (!timeControl) {
+            timeControl = new SuperMap.TimeFlowControl(loadLiveData, options);
+        } else {
+            timeControl.updateOptions(options);
+        }
+        timeControl.start();
+    }
+
+    //暂停播放
+    function pause() {
+        timeControl.pause();
+    }
+
+    //停止播放
+    function stop() {
+        timeControl.stop();
+        clearAll();
+    }
+
+    //时间控制器回调参数，即每次刷新时执行的操作，此处为向服务器请求数据并绘制。实时刷新执行。
+    function loadLiveData(currentTime) {
+        query(currentTime, currentTime + getControlOptions().speed);
+        updateProgress(moment(currentTime).format("YYYY-MM-DD HH:mm:ss"));
+    }
+
+    function query(startTime, endTime) {
+        var esmode = $("#esmode").val();
+        var geoHashAggegation = new SuperMap.GeoHashGridAggParameter({
+            aggName: "aggName",
+            aggFieldName: "pin.location",
+            precision: 5
+        });
+        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: {
+                name: "flight",
+            },
+            datasetNames: ["aliveflight:flight"],
+            aggregations: geoHashAggegation,
+            maxFeatures: 1000
+        });
+        if (esmode === "esmodeHistroy") {
+            sqlParam.queryParameter.attributeFilter = "datetime>" + startTime + " AND datetime<" + endTime;
+        } else {
+            sqlParam.queryParameter.attributeFilter = "id>0";
+        }
+        L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+            renderLive(serviceResult.result.aggregations[0].buckets);
+        });
+    }
+
+    function renderLive(result) {
+        var data = createLiveRendererData(result);
+        if (data.length < 1) {
+            return;
+        }
+        updateDataSet(data);
+        if (!liveRenderer) {
+            liveRenderer = L.supermap.mapVLayer(liveDataSet, layerOptions, {noWrap: true}).addTo(map);
+        } else {
+            liveRenderer.update({data: liveDataSet, options: layerOptions});
+        }
+    }
+
+    function updateDataSet(data) {
+        if (!liveDataSet) {
+            liveDataSet = new mapv.DataSet(data);
+            return;
+        }
+        var innerData = liveDataSet.get();
+        var dataLen = data.length;
+        for (var i = 0; i < innerData.length; i++) {
+            if (i < dataLen && data[i].ident === innerData[i].ident) {
+                innerData[i] = data[i];
+            }
+        }
+        liveDataSet.set(innerData);
+    }
+
+    //更新当前时间界面
+    function updateProgress(currentTime) {
+        $("#progress").html(currentTime);
+    }
+
+    //获取时间控件设置的参数
+    function getControlOptions() {
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        startTime = new Date(Date.parse(startTime.replace(/-/g, "/"))).getTime();
+        endTime = new Date(Date.parse(endTime.replace(/-/g, "/"))).getTime();
+        var speed = $("#speed").val();
+        speed = (speed > 0) ? speed : 1000;
+        speed = parseInt(speed);
+        var frequency = $("#frequency").val();
+        frequency = (frequency > 0) ? frequency : 1000;
+        frequency = parseInt(frequency);
+        return {
+            startTime: startTime,
+            endTime: endTime,
+            speed: speed,
+            frequency: frequency
+        }
+    }
+
+    //解析点查询结果数据为mapv数据
+    function createLiveRendererData(results) {
+        var data = [];
+        for (var i = 0; i < results.length; i++) {
+            data.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [results[i].point.x, results[i].point.y]
+                },
+                count: results[i].count
+            });
+        }
+
+        return data;
+    }
+
+    var buttons = $('.btn-group').children();
+    buttons.map(function (key) {
+        var value = buttons[key].value;
+        if (value === 'grid') {
+            $(buttons[key]).on('click', function () {
+                layerOptions = getGridOptions();
+                if (liveDataSet) {
+                    liveRenderer.update({data: liveDataSet, options: layerOptions});
+                }
+            });
+            return;
+        }
+        if (value === 'heatmap') {
+            $(buttons[key]).on('click', function () {
+                layerOptions = getHeatMapOptions();
+                if (liveDataSet) {
+                    liveRenderer.update({data: liveDataSet, options: layerOptions});
+                }
+            });
+        }
+    });
+
+    function getGridOptions() {
+        return {
+            fillStyle: 'rgba(55, 50, 250, 0.8)',
+            shadowColor: 'rgba(255, 250, 50, 1)',
+            shadowBlur: 10,
+            size: 40,
+            globalAlpha: 0.5,
+            label: {
+                show: true,
+                fillStyle: 'white',
+                shadowColor: 'yellow',
+                font: '15px Arial',
+                shadowBlur: 10
+            },
+            gradient: {
+                0: "rgba(49, 54, 149, 0)",
+                0.2: "rgba(69,117,180, 0.7)",
+                0.3: "rgba(116,173,209, 0.7)",
+                0.4: "rgba(171,217,233, 0.7)",
+                0.5: "rgba(224,243,248, 0.7)",
+                0.6: "rgba(254,224,144,0.7)",
+                0.7: "rgba(253,174,97,0.7)",
+                0.8: "rgba(244,109,67,0.8)",
+                0.9: "rgba(215,48,39,0.8)",
+                0.95: "rgba(165, 0, 38,0.8)"
+            },
+            draw: 'grid'
+        }
+    }
+
+    function getHeatMapOptions() {
+        return {
+            size: 20,
+            gradient: {
+                0: "rgba(49, 54, 149, 0)",
+                0.2: "rgba(69,117,180, 0.7)",
+                0.3: "rgba(116,173,209, 0.7)",
+                0.4: "rgba(171,217,233, 0.7)",
+                0.5: "rgba(224,243,248, 0.7)",
+                0.6: "rgba(254,224,144,0.7)",
+                0.7: "rgba(253,174,97,0.7)",
+                0.8: "rgba(244,109,67,0.8)",
+                0.9: "rgba(215,48,39,0.8)",
+                0.95: "rgba(165, 0, 38,0.8)"
+            },
+            draw: 'heatmap'
+        }
+    }
+
+    //初始化时间控制控件，仅UI
+    function initTimeControlView() {
+        var control = L.control({position: "topright"});
+        control.onAdd = function () {
+            var me = this;
+            me._div = L.DomUtil.create('div', 'panel panel-primary controlPane');
+            me._div.style.width = "300px";
+            $("<div class='panel-heading text-center' id='toggle' style='cursor: pointer'>" +
+                "<span class='panel-title text-center'>" + resources.text_console + "</span>&nbsp;" +
+                "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
+
+            var contentDiv = $("<div class='panel-body content center-block' style='font-size: 14px'></div>").appendTo(me._div);
+
+            var optionsDiv = $("<div class='' id='options'></div>").appendTo(contentDiv);
+
+            var defaultOption = getDefaultControlOptions();
+
+            $("<div class='form-group form-inline'><label class='text-right' for='esmode' >" + resources.text_esmode + ":  " + "</label>" +
+                "<select id='esmode' class='form-control'><option id='esmode_streaming' value='esmodeStreaming'>" + resources.text_esmode_streaming + "</option> " +
+                "<option id='esmode_histroy' selected value='esmodeHistroy'>" + resources.text_esmode_history + "</option> " +
+                "</select> " + "</div></div>").appendTo(optionsDiv);
+
+            var timeOptionDiv = $("<div class='' id='timeOption'></div>").appendTo(optionsDiv);
+
+            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >" + resources.text_startTime + ":  " + "</label>" +
+                "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
+                "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(timeOptionDiv);
+
+            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >" + resources.text_finishTime + ":  " + "</label>" +
+                "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
+                "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(timeOptionDiv);
+
+            $("<div class='form-group form-inline'><label class='text-right' for='speed' >" + resources.text_refreshStepSize + ":  " + "</label>" +
+                "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
+                "' value='" + defaultOption.speed + "'/></div></div>").appendTo(timeOptionDiv);
+
+            $("<div class='form-group form-inline'><label class='text-right' for='frequency' >" + resources.text_refreshFrequency + ":  " + "</label>" +
+                "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
+                "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
+
+            $("<div class='form-group' id='progressDiv'><div class='form-horizontal text-center'><div class='form-group'>" +
+                "<label  for='progress'>" + resources.text_currentTime + "</label><span class='form-control-static' id='progress'>" + resources.text_noStart + "</span>" +
+                "</div></div></div>").appendTo(contentDiv);
+
+            $("<section><div class='form-inline text-center'>" +
+                "<input id='start' type='button'  class='btn btn-default text-center' value=" + resources.btn_start + ">&nbsp;" +
+                "<input id='pause' type='button'  class='btn btn-default text-center' value=" + resources.btn_pause + ">&nbsp;" +
+                "<input id='stop' type='button'  class='btn btn-default text-center' value=" + resources.btn_stop + ">" +
+                "</div></section>").appendTo(contentDiv);
+
+
+            me._div.addEventListener('mouseover', function () {
+                me._map.dragging.disable();
+                me._map.scrollWheelZoom.disable();
+                me._map.doubleClickZoom.disable();
+            });
+            me._div.addEventListener('mouseout', function () {
+                me._map.dragging.enable();
+                me._map.scrollWheelZoom.enable();
+                me._map.doubleClickZoom.enable();
+            });
+
+            return me._div;
+        };
+        control.addTo(map);
+        var dateOptions = {
+            format: "YYYY-MM-DD HH:mm:ss",
+            stepping: 1,
+            showClose: true,
+            locale: 'zh-cn'
+        };
+        // $("#timeOption").hide();
+        // $("#progressDiv").hide();
+        $("#esmode").change(function () {
+            var esmode = $(this).val();
+            if (esmode === "esmodeStreaming") {
+                $("#timeOption").hide();
+                $("#progressDiv").hide();
+            } else {
+                $("#timeOption").show();
+                $("#progressDiv").show();
+            }
+
+        });
+        $("#startTime").datetimepicker(dateOptions);
+        $("#endTime").datetimepicker(dateOptions);
+        $("#start").on('click', function () {
+            $("#options").slideUp("fast", function () {
+                toggle(this);
+            });
+            start();
+        });
+        $("#pause").on('click', pause);
+        $("#stop").on('click', stop);
+        $("#toggle").on('click', function () {
+            $("#options").slideToggle("fast", function () {
+                toggle(this);
+            });
+            return false;
+        });
+
+        function toggle(ele) {
+            if ($(ele).is(":visible")) {
+                $("#toggleIcon").attr('class', "glyphicon glyphicon-triangle-top");
+            } else {
+                $("#toggleIcon").attr('class', "glyphicon glyphicon-triangle-bottom");
+            }
+        }
+    }
+
+    function clearAll() {
+        if (timeControl) {
+            timeControl.destroy();
+            timeControl = null;
+        }
+        if (liveRenderer) {
+            map.removeLayer(liveRenderer);
+            liveRenderer = null;
+        }
+        if (liveDataSet) {
+            liveDataSet = null;
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -441,6 +441,7 @@ window.resources = {
         "title_rangeThemeLayer": "D3分段专题图",
         "title_UniqueThemeLayer": "D3单值专题图",
         "title_ESHeatMap": "热力/格网图",
+        "title_ESGridAggregation": "格网/热力图",
         "title_nodeManagementUseExample": "iManager 节点管理使用示例",
         "title_iPortalQueryMaps1": "iPortal QueryMaps使用示例",
         "title_iServerSecurity": "iServer 安全认证示例",
@@ -1100,6 +1101,9 @@ window.resources = {
         "text_graphicLayer_subTitle": "145万点数据绘制",
         "text_echartsLinesMillions_nyTaxi": "纽约出租车分布图",
         "text_echartsLinesMillions_nyTaxi_subtext": "140万点数据绘制",
+        "text_esmode_streaming": "实时展示",
+        "text_esmode_history": "历史展示",
+        "text_esmode": "展示模式",
 
         "btn_overlayAnalyst": "叠加分析",
         "btn_terrainCurvatureCalculation": "地形曲率计算",
@@ -1261,6 +1265,7 @@ window.resources = {
         "btn_getResult": "点击生成对应结果",
         "btn_input_value_match": "匹配",
         "btn_input_value_grid": "格网图",
+        "btn_grid": "格网图",
         "btn_startup": "启动",
         "btn_create": "创建",
 

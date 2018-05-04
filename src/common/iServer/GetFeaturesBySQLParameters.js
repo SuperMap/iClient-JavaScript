@@ -66,6 +66,9 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
+        if (params.aggregations) {
+            paramsBySql.aggregations = params.aggregations;
+        }
         return Util.toJSON(paramsBySql);
     }
 

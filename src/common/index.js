@@ -53,7 +53,9 @@ import {
     AnalystSizeUnit,
     StatisticAnalystMode,
     TopologyValidatorRule,
-    OutputType
+    OutputType,
+    AggregationQueryBuilderType,
+    AggregationType
 } from './REST';
 import {
     Collection,
@@ -110,6 +112,8 @@ import {
 } from './iPortal';
 import {
     AddressMatchService,
+    AggregationParameter,
+    AggQueryBuilderParameter,
     AreaSolarRadiationParameters,
     AreaSolarRadiationService,
     BufferAnalystParameters,
@@ -157,6 +161,7 @@ import {
     FieldParameters,
     FieldStatisticService,
     FieldStatisticsParameters,
+    FilterAggParameter,
     FilterParameter,
     FindClosestFacilitiesParameters,
     FindClosestFacilitiesService,
@@ -172,8 +177,10 @@ import {
     FindTSPPathsService,
     GenerateSpatialDataParameters,
     GenerateSpatialDataService,
+    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
+    GeoHashGridAggParameter,
     GeometryBufferAnalystParameters,
     GeometryOverlayAnalystParameters,
     GeometrySurfaceAnalystParameters,
@@ -469,7 +476,9 @@ export {
     AnalystSizeUnit,
     StatisticAnalystMode,
     TopologyValidatorRule,
-    OutputType
+    OutputType,
+    AggregationQueryBuilderType,
+    AggregationType
 };
 export {
     Collection,
@@ -530,6 +539,8 @@ export {
 };
 export {
     AddressMatchService,
+    AggregationParameter,
+    AggQueryBuilderParameter,
     AreaSolarRadiationParameters,
     AreaSolarRadiationService,
     BufferAnalystParameters,
@@ -577,6 +588,7 @@ export {
     FieldParameters,
     FieldStatisticService,
     FieldStatisticsParameters,
+    FilterAggParameter,
     FilterParameter,
     FindClosestFacilitiesParameters,
     FindClosestFacilitiesService,
@@ -592,8 +604,10 @@ export {
     FindTSPPathsService,
     GenerateSpatialDataParameters,
     GenerateSpatialDataService,
+    GeoBoundingBoxQueryBuilderParameter,
     GeoCodingParameter,
     GeoDecodingParameter,
+    GeoHashGridAggParameter,
     GeometryBufferAnalystParameters,
     GeometryOverlayAnalystParameters,
     GeometrySurfaceAnalystParameters,
@@ -639,8 +653,8 @@ export {
     MeasureParameters,
     MeasureService,
     NetworkAnalystServiceBase,
-    OverlapDisplayedOptions,
     OutputSetting,
+    OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayAnalystService,
     OverlayGeoJobParameter,
