@@ -1,6 +1,5 @@
 import L from "leaflet";
 import '../core/Base';
-import './css/ChangeTileVersion.css';
 import {MapService} from "../services/MapService";
 
 /**

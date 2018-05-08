@@ -1,0 +1,1 @@
+import './supermapol-icons.css';

@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
+import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
 
 /**
  * @class mapboxgl.supermap.LogoControl
@@ -50,7 +50,7 @@ export class Logo {
         this._container.style.marginLeft = 0;
         this._container.style.marginRight = 0;
 
-        var imgSrc = logoSrc;
+        var imgSrc = LogoBase64;
         if (this.imageUrl) {
             imgSrc = this.imageUrl;
         }

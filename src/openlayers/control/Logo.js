@@ -1,5 +1,5 @@
 import ol from 'openlayers';
-import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
+import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
 
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
@@ -43,7 +43,7 @@ export class Logo extends ol.control.Control {
 
             setDivStyle.call(this, div);
 
-            var imgSrc = logoSrc;
+            var imgSrc = LogoBase64;
             if (this.options.imageUrl) {
                 imgSrc = this.options.imageUrl;
             }

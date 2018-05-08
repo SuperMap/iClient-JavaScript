@@ -1,6 +1,8 @@
 import L from 'leaflet';
 import '../core/Base';
-import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
+import {
+    LogoBase64
+} from '@supermap/iclient-common/control/img/Logo';
 
 /**
  * @class L.supermap.control.logo
@@ -48,8 +50,8 @@ export var Logo = L.Control.extend({
         div.style.marginBottom = 0;
         div.style.marginLeft = 0;
         div.style.marginRight = 0;
-
-        var imgSrc = logoSrc;
+        //iClient.png base64
+        var imgSrc = LogoBase64;
         if (this.options.imageUrl) {
             imgSrc = this.options.imageUrl;
         }

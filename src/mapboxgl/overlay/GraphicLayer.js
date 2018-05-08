@@ -1,7 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {CommonUtil} from "@supermap/iclient-common";
-import {ScatterplotLayer, experimental} from 'deck.gl';
 import {Util} from "../core/Util";
 import './graphic';
 
@@ -125,14 +124,14 @@ export class GraphicLayer {
             layerOptions.onHover = this.onHover;
         }
 
-        this.layer = new ScatterplotLayer(layerOptions);
+        this.layer = new window.DeckGL.ScatterplotLayer(layerOptions);
         let deckOptions = {};
         for (let key in mapState) {
             deckOptions[key] = mapState[key];
         }
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
-        this.deckGL = new experimental.DeckGLJS(deckOptions);
+        this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         this.map.on('render', this._moveEvent.bind(this));
         this.map.on('resize', this._resizeEvent.bind(this));
         this.draw();

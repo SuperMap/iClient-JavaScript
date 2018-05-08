@@ -1,7 +1,6 @@
 import ol from "openlayers";
 import {CommonUtil} from "@supermap/iclient-common";
 import {Util} from "../../core/Util";
-import {experimental, ScatterplotLayer} from "deck.gl";
 
 const emptyFunc = () => false;
 const CSS_TRANSFORM = (function () {
@@ -257,7 +256,7 @@ export class GraphicWebGLRenderer extends ol.Object {
                 _self.onHover.apply(_self, arguments)
             };
         }
-        me._renderLayer = new ScatterplotLayer(innerLayerOptions);
+        me._renderLayer = new window.DeckGL.ScatterplotLayer(innerLayerOptions);
     }
 
     _getLayerDefaultStyle() {
@@ -314,7 +313,7 @@ export class GraphicWebGLRenderer extends ol.Object {
             deckOptions.onAfterRender = this.onAfterRender.bind(this);
         }
         if (!this.deckGL) {
-            this.deckGL = new experimental.DeckGLJS(deckOptions);
+            this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         } else {
             this.deckGL.setProps(deckOptions);
         }

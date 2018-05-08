@@ -74,7 +74,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 526);
+/******/ 	return __webpack_require__(__webpack_require__.s = 528);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2322,29 +2322,29 @@ var _SuperMap = __webpack_require__(0);
 
 var _REST = __webpack_require__(3);
 
-var _commontypes = __webpack_require__(525);
+var _commontypes = __webpack_require__(526);
 
-var _format = __webpack_require__(522);
+var _format = __webpack_require__(523);
 
-var _control = __webpack_require__(520);
+var _control = __webpack_require__(521);
 
-var _iManager = __webpack_require__(518);
+var _iManager = __webpack_require__(519);
 
-var _iPortal = __webpack_require__(509);
+var _iPortal = __webpack_require__(510);
 
-var _iServer = __webpack_require__(507);
+var _iServer = __webpack_require__(508);
 
-var _online = __webpack_require__(432);
+var _online = __webpack_require__(433);
 
-var _security = __webpack_require__(429);
+var _security = __webpack_require__(430);
 
-var _thirdparty = __webpack_require__(425);
+var _thirdparty = __webpack_require__(426);
 
-var _util = __webpack_require__(421);
+var _util = __webpack_require__(422);
 
-var _style = __webpack_require__(420);
+var _style = __webpack_require__(421);
 
-var _overlay = __webpack_require__(416);
+var _overlay = __webpack_require__(417);
 
 exports.SuperMap = _SuperMap.SuperMap;
 exports.DataFormat = _REST.DataFormat;
@@ -7135,11 +7135,11 @@ exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(516);
+__webpack_require__(517);
 
-__webpack_require__(511);
+__webpack_require__(512);
 
-var _fetchJsonp2 = __webpack_require__(510);
+var _fetchJsonp2 = __webpack_require__(511);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -22414,10 +22414,10 @@ module.exports = function (destination, source) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var parseCode = __webpack_require__(397);
+var parseCode = __webpack_require__(398);
 var extend = __webpack_require__(99);
-var projections = __webpack_require__(393);
-var deriveConstants = __webpack_require__(390);
+var projections = __webpack_require__(394);
+var deriveConstants = __webpack_require__(391);
 
 function Projection(srsCode, callback) {
   if (!(this instanceof Projection)) {
@@ -29126,7 +29126,7 @@ var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend(
 "use strict";
 
 
-var Point = __webpack_require__(328);
+var Point = __webpack_require__(330);
 
 module.exports = VectorTileFeature;
 
@@ -29423,11 +29423,11 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _pbf = __webpack_require__(332);
+var _pbf = __webpack_require__(334);
 
 var _pbf2 = _interopRequireDefault(_pbf);
 
-var _vectorTile = __webpack_require__(330);
+var _vectorTile = __webpack_require__(332);
 
 var _VectorFeatureType = __webpack_require__(47);
 
@@ -30356,7 +30356,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _mapv = __webpack_require__(335);
+var _mapv = __webpack_require__(337);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -31247,17 +31247,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.imageStyle = exports.ImageStyle = exports.graphic = exports.Graphic = exports.circleStyle = exports.CircleStyle = exports.cloverStyle = exports.CloverStyle = exports.GraphicWebGLRenderer = exports.GraphicCanvasRenderer = undefined;
 
-var _CloverStyle = __webpack_require__(342);
+var _CloverStyle = __webpack_require__(343);
 
-var _CircleStyle = __webpack_require__(341);
+var _CircleStyle = __webpack_require__(342);
 
 var _Graphic = __webpack_require__(148);
 
-var _ImageStyle = __webpack_require__(340);
+var _ImageStyle = __webpack_require__(341);
 
-var _CanvasRenderer = __webpack_require__(339);
+var _CanvasRenderer = __webpack_require__(340);
 
-var _WebGLRenderer = __webpack_require__(338);
+var _WebGLRenderer = __webpack_require__(339);
 
 exports.GraphicCanvasRenderer = _CanvasRenderer.GraphicCanvasRenderer;
 exports.GraphicWebGLRenderer = _WebGLRenderer.GraphicWebGLRenderer;
@@ -35075,8 +35075,8 @@ var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(386);
-var adjust_axis = __webpack_require__(385);
+var datum_transform = __webpack_require__(387);
+var adjust_axis = __webpack_require__(386);
 var proj = __webpack_require__(100);
 var toPoint = __webpack_require__(160);
 module.exports = function transform(source, dest, point) {
@@ -35348,8 +35348,8 @@ module.exports = function (wkt, self) {
 
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(395);
-var _units = __webpack_require__(394);
+var PrimeMeridian = __webpack_require__(396);
+var _units = __webpack_require__(395);
 
 module.exports = function (defData) {
   var self = {};
@@ -35484,7 +35484,7 @@ module.exports = function (defData) {
 "use strict";
 
 
-var globals = __webpack_require__(396);
+var globals = __webpack_require__(397);
 var parseProj = __webpack_require__(163);
 var wkt = __webpack_require__(162);
 
@@ -35537,17 +35537,17 @@ module.exports = defs;
 "use strict";
 
 
-var proj4 = __webpack_require__(398);
+var proj4 = __webpack_require__(399);
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(100);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(384);
+proj4.Point = __webpack_require__(385);
 proj4.toPoint = __webpack_require__(160);
 proj4.defs = __webpack_require__(164);
 proj4.transform = __webpack_require__(161);
 proj4.mgrs = __webpack_require__(159);
-proj4.version = __webpack_require__(383).version;
-__webpack_require__(382)(proj4);
+proj4.version = __webpack_require__(384).version;
+__webpack_require__(383)(proj4);
 module.exports = proj4;
 
 /***/ }),
@@ -58747,9 +58747,15 @@ _SuperMap.SuperMap.TimeControlBase = TimeControlBase;
 
 /***/ }),
 /* 302 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII="
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var LogoBase64 = exports.LogoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII=";
 
 /***/ }),
 /* 303 */
@@ -59411,6 +59417,26 @@ _SuperMap.SuperMap.Size = Size;
 "use strict";
 
 
+__webpack_require__(536);
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(307);
+
+__webpack_require__(529);
+
+/***/ }),
+/* 309 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -59530,7 +59556,7 @@ var trafficTransferAnalystService = exports.trafficTransferAnalystService = func
 _leaflet2["default"].supermap.trafficTransferAnalystService = trafficTransferAnalystService;
 
 /***/ }),
-/* 308 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59603,7 +59629,7 @@ var themeService = exports.themeService = function themeService(url, options) {
 _leaflet2["default"].supermap.themeService = themeService;
 
 /***/ }),
-/* 309 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60097,7 +60123,7 @@ var spatialAnalystService = exports.spatialAnalystService = function spatialAnal
 _leaflet2["default"].supermap.spatialAnalystService = spatialAnalystService;
 
 /***/ }),
-/* 310 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60279,7 +60305,7 @@ var queryService = exports.queryService = function queryService(url, options) {
 _leaflet2["default"].supermap.queryService = queryService;
 
 /***/ }),
-/* 311 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61139,7 +61165,7 @@ var processingService = exports.processingService = function processingService(u
 _leaflet2["default"].supermap.processingService = processingService;
 
 /***/ }),
-/* 312 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61492,7 +61518,7 @@ var networkAnalystService = exports.networkAnalystService = function networkAnal
 _leaflet2["default"].supermap.networkAnalystService = networkAnalystService;
 
 /***/ }),
-/* 313 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61650,7 +61676,7 @@ var networkAnalyst3DService = exports.networkAnalyst3DService = function network
 _leaflet2["default"].supermap.networkAnalyst3DService = networkAnalyst3DService;
 
 /***/ }),
-/* 314 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61761,7 +61787,7 @@ var measureService = exports.measureService = function measureService(url, optio
 _leaflet2["default"].supermap.measureService = measureService;
 
 /***/ }),
-/* 315 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61920,7 +61946,7 @@ var layerInfoService = exports.layerInfoService = function layerInfoService(url,
 _leaflet2["default"].supermap.layerInfoService = layerInfoService;
 
 /***/ }),
-/* 316 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61993,7 +62019,7 @@ var gridCellInfosService = exports.gridCellInfosService = function gridCellInfos
 _leaflet2["default"].supermap.gridCellInfosService = gridCellInfosService;
 
 /***/ }),
-/* 317 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62128,7 +62154,7 @@ var fieldService = exports.fieldService = function fieldService(url, options) {
 _leaflet2["default"].supermap.fieldService = fieldService;
 
 /***/ }),
-/* 318 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62246,7 +62272,7 @@ var chartService = exports.chartService = function chartService(url, options) {
 _leaflet2["default"].supermap.chartService = chartService;
 
 /***/ }),
-/* 319 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62341,7 +62367,7 @@ var addressMatchService = exports.addressMatchService = function addressMatchSer
 _leaflet2["default"].supermap.addressMatchService = addressMatchService;
 
 /***/ }),
-/* 320 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62352,39 +62378,39 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.trafficTransferAnalystService = exports.TrafficTransferAnalystService = exports.themeService = exports.ThemeService = exports.spatialAnalystService = exports.SpatialAnalystService = exports.ServiceBase = exports.queryService = exports.QueryService = exports.processingService = exports.ProcessingService = exports.networkAnalystService = exports.NetworkAnalystService = exports.networkAnalyst3DService = exports.NetworkAnalyst3DService = exports.measureService = exports.MeasureService = exports.mapService = exports.MapService = exports.layerInfoService = exports.LayerInfoService = exports.gridCellInfosService = exports.GridCellInfosService = exports.fieldService = exports.FieldService = exports.featureService = exports.FeatureService = exports.dataFlowService = exports.DataFlowService = exports.chartService = exports.ChartService = exports.addressMatchService = exports.AddressMatchService = undefined;
 
-var _AddressMatchService = __webpack_require__(319);
+var _AddressMatchService = __webpack_require__(321);
 
-var _ChartService = __webpack_require__(318);
+var _ChartService = __webpack_require__(320);
 
 var _DataFlowService = __webpack_require__(142);
 
 var _FeatureService = __webpack_require__(144);
 
-var _FieldService = __webpack_require__(317);
+var _FieldService = __webpack_require__(319);
 
-var _GridCellInfosService = __webpack_require__(316);
+var _GridCellInfosService = __webpack_require__(318);
 
-var _LayerInfoService = __webpack_require__(315);
+var _LayerInfoService = __webpack_require__(317);
 
 var _MapService = __webpack_require__(155);
 
-var _MeasureService = __webpack_require__(314);
+var _MeasureService = __webpack_require__(316);
 
-var _NetworkAnalyst3DService = __webpack_require__(313);
+var _NetworkAnalyst3DService = __webpack_require__(315);
 
-var _NetworkAnalystService = __webpack_require__(312);
+var _NetworkAnalystService = __webpack_require__(314);
 
-var _ProcessingService = __webpack_require__(311);
+var _ProcessingService = __webpack_require__(313);
 
-var _QueryService = __webpack_require__(310);
+var _QueryService = __webpack_require__(312);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _SpatialAnalystService = __webpack_require__(309);
+var _SpatialAnalystService = __webpack_require__(311);
 
-var _ThemeService = __webpack_require__(308);
+var _ThemeService = __webpack_require__(310);
 
-var _TrafficTransferAnalystService = __webpack_require__(307);
+var _TrafficTransferAnalystService = __webpack_require__(309);
 
 exports.AddressMatchService = _AddressMatchService.AddressMatchService;
 exports.addressMatchService = _AddressMatchService.addressMatchService;
@@ -62421,7 +62447,7 @@ exports.TrafficTransferAnalystService = _TrafficTransferAnalystService.TrafficTr
 exports.trafficTransferAnalystService = _TrafficTransferAnalystService.trafficTransferAnalystService;
 
 /***/ }),
-/* 321 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62473,7 +62499,7 @@ exports.VectorTileJSON = _VectorTileJSON.VectorTileJSON;
 exports.VectorTilePBF = _VectorTilePBF.VectorTilePBF;
 
 /***/ }),
-/* 322 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62496,7 +62522,7 @@ exports.themeFeature = _ThemeFeature.themeFeature;
 exports.ThemeLayer = _ThemeLayer.ThemeLayer;
 
 /***/ }),
-/* 323 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62512,7 +62538,7 @@ var _MapVRenderer = __webpack_require__(139);
 exports.MapVRenderer = _MapVRenderer.MapVRenderer;
 
 /***/ }),
-/* 324 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62536,7 +62562,7 @@ exports.ServerStyleMap = _CartoStyleMap.ServerStyleMap;
 exports.CompOpMap = _CartoStyleMap.CompOpMap;
 
 /***/ }),
-/* 325 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63149,13 +63175,13 @@ var heatMapFeature = exports.heatMapFeature = function heatMapFeature(geometry, 
 _leaflet2["default"].supermap.heatMapFeature = heatMapFeature;
 
 /***/ }),
-/* 326 */
+/* 328 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return turf}catch(e){return {}}}();
 
 /***/ }),
-/* 327 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63172,7 +63198,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _turf = __webpack_require__(326);
+var _turf = __webpack_require__(328);
 
 var turf = _interopRequireWildcard(_turf);
 
@@ -63372,7 +63398,7 @@ var turfLayer = exports.turfLayer = function turfLayer(options) {
 _leaflet2["default"].supermap.turfLayer = turfLayer;
 
 /***/ }),
-/* 328 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63713,7 +63739,7 @@ Point.convert = function (a) {
 };
 
 /***/ }),
-/* 329 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63735,18 +63761,18 @@ function readTile(tag, layers, pbf) {
 }
 
 /***/ }),
-/* 330 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports.VectorTile = __webpack_require__(329);
+module.exports.VectorTile = __webpack_require__(331);
 module.exports.VectorTileFeature = __webpack_require__(131);
 module.exports.VectorTileLayer = __webpack_require__(132);
 
 /***/ }),
-/* 331 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63838,7 +63864,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 /***/ }),
-/* 332 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63846,7 +63872,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(331);
+var ieee754 = __webpack_require__(333);
 
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -64514,7 +64540,7 @@ function writeUtf8(buf, str, pos) {
 }
 
 /***/ }),
-/* 333 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65019,7 +65045,7 @@ var tiledVectorLayer = exports.tiledVectorLayer = function tiledVectorLayer(url,
 _leaflet2["default"].supermap.tiledVectorLayer = tiledVectorLayer;
 
 /***/ }),
-/* 334 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65117,13 +65143,13 @@ var rankSymbolThemeLayer = exports.rankSymbolThemeLayer = function rankSymbolThe
 _leaflet2["default"].supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
 
 /***/ }),
-/* 335 */
+/* 337 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 336 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65394,13 +65420,7 @@ _leaflet2["default"].Map.include({
 _leaflet2["default"].supermap.mapVLayer = mapVLayer;
 
 /***/ }),
-/* 337 */
-/***/ (function(module, exports) {
-
-module.exports = (function(){try{return DeckGL}catch(e){return {}}})();
-
-/***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65414,8 +65434,6 @@ exports.GraphicWebGLRenderer = undefined;
 var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
-
-var _deck = __webpack_require__(337);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -65580,7 +65598,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
                 _self.options.onHover.apply(_self, arguments);
             };
         }
-        me._renderLayer = new _deck.ScatterplotLayer(innerLayerOptions);
+        me._renderLayer = new window.DeckGL.ScatterplotLayer(innerLayerOptions);
     },
 
     _getLayerDefaultStyle: function _getLayerDefaultStyle() {
@@ -65627,7 +65645,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
         deckOptions.onBeforeRender = this._onBeforeRender.bind(this);
         deckOptions.onAfterRender = this._onAfterRender.bind(this);
         if (!this.deckGL) {
-            this.deckGL = new _deck.experimental.DeckGLJS(deckOptions);
+            this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         } else {
             this.deckGL.setProps(deckOptions);
         }
@@ -65674,7 +65692,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
 });
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65827,7 +65845,7 @@ _leaflet2["default"].Canvas.include({
 });
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65894,7 +65912,7 @@ var imageStyle = exports.imageStyle = function imageStyle(options) {
 _leaflet2["default"].supermap.imageStyle = imageStyle;
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66006,7 +66024,7 @@ var circleStyle = exports.circleStyle = function circleStyle(options) {
 _leaflet2["default"].supermap.circleStyle = circleStyle;
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66150,7 +66168,7 @@ var cloverStyle = exports.cloverStyle = function cloverStyle(options) {
 _leaflet2["default"].supermap.cloverStyle = cloverStyle;
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66198,7 +66216,7 @@ function getContext(context) {
 }
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66215,7 +66233,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _Detector = __webpack_require__(343);
+var _Detector = __webpack_require__(344);
 
 var _graphic = __webpack_require__(141);
 
@@ -66582,13 +66600,13 @@ var graphicLayer = exports.graphicLayer = function graphicLayer(graphics, option
 _leaflet2["default"].supermap.graphicLayer = graphicLayer;
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return echarts}catch(e){return {}}}();
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66606,7 +66624,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _echarts = __webpack_require__(345);
+var _echarts = __webpack_require__(346);
 
 var _echarts2 = _interopRequireDefault(_echarts);
 
@@ -66925,7 +66943,7 @@ var echartsLayer = exports.echartsLayer = function echartsLayer(echartsOptions, 
 _leaflet2["default"].supermap.echartsLayer = echartsLayer;
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67093,7 +67111,7 @@ var dataFlowLayer = exports.dataFlowLayer = function dataFlowLayer(url, options)
 _leaflet2["default"].supermap.dataFlowLayer = dataFlowLayer;
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67104,43 +67122,43 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VectorTilePBF = exports.VectorTileJSON = exports.VectorTile = exports.VectorGrid = exports.VectorFeatureType = exports.TextSymbolizer = exports.PolyBase = exports.Symbolizer = exports.SVGRenderer = exports.RegionSymbolizer = exports.PointSymbolizer = exports.LineSymbolizer = exports.CanvasRenderer = exports.ThemeLayer = exports.themeFeature = exports.ThemeFeature = exports.GeoFeatureThemeLayer = exports.MapVRenderer = exports.graphic = exports.Graphic = exports.circleStyle = exports.CircleStyle = exports.cloverStyle = exports.CloverStyle = exports.imageStyle = exports.ImageStyle = exports.CompOpMap = exports.ServerStyleMap = exports.CartoStyleMap = exports.DefaultStyle = exports.CartoCSSToLeaflet = exports.VectorTileFormat = exports.heatMapFeature = exports.HeatMapFeature = exports.heatMapLayer = exports.HeatMapLayer = exports.uniqueThemeLayer = exports.UniqueThemeLayer = exports.unicodeMarker = exports.UnicodeMarker = exports.turfLayer = exports.TurfLayer = exports.tiledVectorLayer = exports.TileVectorLayer = exports.rankSymbolThemeLayer = exports.RankSymbolThemeLayer = exports.rangeThemeLayer = exports.RangeThemeLayer = exports.mapVLayer = exports.MapVLayer = exports.labelThemeLayer = exports.LabelThemeLayer = exports.graphThemeLayer = exports.GraphThemeLayer = exports.graphicLayer = exports.GraphicLayer = exports.LeafletMapCoordSys = exports.echartsLayer = exports.EchartsLayer = exports.dataFlowLayer = exports.DataFlowLayer = undefined;
 
-var _DataFlowLayer = __webpack_require__(347);
+var _DataFlowLayer = __webpack_require__(348);
 
-var _EChartsLayer = __webpack_require__(346);
+var _EChartsLayer = __webpack_require__(347);
 
-var _GraphicLayer = __webpack_require__(344);
+var _GraphicLayer = __webpack_require__(345);
 
 var _GraphThemeLayer = __webpack_require__(140);
 
 var _LabelThemeLayer = __webpack_require__(145);
 
-var _MapVLayer = __webpack_require__(336);
+var _MapVLayer = __webpack_require__(338);
 
 var _RangeThemeLayer = __webpack_require__(146);
 
-var _RankSymbolThemeLayer = __webpack_require__(334);
+var _RankSymbolThemeLayer = __webpack_require__(336);
 
-var _TileVectorLayer = __webpack_require__(333);
+var _TileVectorLayer = __webpack_require__(335);
 
-var _TurfLayer = __webpack_require__(327);
+var _TurfLayer = __webpack_require__(329);
 
 var _UnicodeMarker = __webpack_require__(143);
 
 var _UniqueThemeLayer = __webpack_require__(147);
 
-var _HeatMapLayer = __webpack_require__(325);
+var _HeatMapLayer = __webpack_require__(327);
 
 var _VectorTileFormat = __webpack_require__(87);
 
-var _carto = __webpack_require__(324);
+var _carto = __webpack_require__(326);
 
 var _graphic = __webpack_require__(141);
 
-var _mapv = __webpack_require__(323);
+var _mapv = __webpack_require__(325);
 
-var _theme = __webpack_require__(322);
+var _theme = __webpack_require__(324);
 
-var _vectortile = __webpack_require__(321);
+var _vectortile = __webpack_require__(323);
 
 exports.DataFlowLayer = _DataFlowLayer.DataFlowLayer;
 exports.dataFlowLayer = _DataFlowLayer.dataFlowLayer;
@@ -67205,7 +67223,7 @@ exports.VectorTileJSON = _vectortile.VectorTileJSON;
 exports.VectorTilePBF = _vectortile.VectorTilePBF;
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67239,7 +67257,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67247,7 +67265,7 @@ module.exports = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var utils = __webpack_require__(349);
+var utils = __webpack_require__(350);
 
 var AND = '&&',
     OR = '||',
@@ -67510,7 +67528,7 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') module
 if (typeof window != 'undefined') window.Query = Query;
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67525,7 +67543,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _jsonsql = __webpack_require__(350);
+var _jsonsql = __webpack_require__(351);
 
 var _jsonsql2 = _interopRequireDefault(_jsonsql);
 
@@ -67564,8 +67582,6 @@ var _ThemeFeature = __webpack_require__(92);
 var _UnicodeMarker = __webpack_require__(143);
 
 var _TiandituTileLayer = __webpack_require__(152);
-
-__webpack_require__(534);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -67608,6 +67624,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
     },
 
     initialize: function initialize(id, options) {
+        if (!id && !options) {
+            return;
+        }
         this._layers = {};
         _leaflet2["default"].setOptions(this, options);
         this.id = id;
@@ -67699,7 +67718,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             }
             this.createLayer(type, layerInfo);
         }
-        this.fire('mapLoaded', { map: this._map });
+        this.fire('mapLoaded', {
+            map: this._map
+        });
     },
 
     /**
@@ -67757,9 +67778,13 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             renderer: _leaflet2["default"].canvas()
         });
         if (crs instanceof _NonEarthCRS.NonEarthCRS) {
-            this._map.setZoom(options.zoom ? options.zoom + 2 : 2, { maxZoom: options.maxZoom || 22 });
+            this._map.setZoom(options.zoom ? options.zoom + 2 : 2, {
+                maxZoom: options.maxZoom || 22
+            });
         } else {
-            this._map.fitBounds(bounds, { maxZoom: options.maxZoom || 22 });
+            this._map.fitBounds(bounds, {
+                maxZoom: options.maxZoom || 22
+            });
         }
     },
 
@@ -67854,7 +67879,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 mapOptions.crs = _leaflet2["default"].CRS.EPSG3857;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
-                layer = (0, _CloudTileLayer.cloudTileLayer)(layerInfo.url, { opacity: opacity });
+                layer = (0, _CloudTileLayer.cloudTileLayer)(layerInfo.url, {
+                    opacity: opacity
+                });
                 break;
             case "MARKER_LAYER":
                 layer = this.createMarkersLayer(layerInfo, crs);
@@ -67923,7 +67950,8 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 };
                 return m;
             },
-            coordsToLatLng: coordsToLatLng, style: function style(geoJsonFeature) {
+            coordsToLatLng: coordsToLatLng,
+            style: function style(geoJsonFeature) {
                 return that.cartoCSSToLeaflet.getStyleFromiPortalMarker(geoJsonFeature.properties.icon);
             }
         });
@@ -67984,7 +68012,8 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     };
                     return m;
                 },
-                coordsToLatLng: coordsToLatLng, style: function style(geoJsonFeature) {
+                coordsToLatLng: coordsToLatLng,
+                style: function style(geoJsonFeature) {
                     var lStyle = me.cartoCSSToLeaflet.getStyleFromiPortalStyle(_style ? _style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
                     if (lStyle.dashArray && lStyle.dashArray.length == 0) {
                         lStyle.dashArray = null;
@@ -68037,7 +68066,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 name: datasetName + "@" + datasourceName,
                 attributeFilter: filter
             },
-            datasetNames: [datasourceName + ":" + datasetName]
+            datasetNames: [datasourceName + ":" + datasetName],
+            fromIndex: 0,
+            toIndex: 100000
         });
         (0, _FeatureService.featureService)(url).getFeaturesBySQL(sqlParam, callback, format);
     },
@@ -68081,8 +68112,6 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         return layer;
     },
     createBaseThemeLayer: function createBaseThemeLayer(layerInfo, themeSettings) {
-        var _this3 = this;
-
         var style = layerInfo.style,
             opacity = layerInfo.opacity,
             vectorType = themeSettings.vectorType,
@@ -68092,10 +68121,6 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         } else {
             featureStyle.fill = true;
         }
-        var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = _this3._map.options.crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
-            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
-        };
         var pointStyle = {};
         pointStyle.radius = featureStyle.pointRadius;
         pointStyle.color = featureStyle.strokeColor;
@@ -68112,9 +68137,11 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 return new _UnicodeMarker.UnicodeMarker(latlng, featureStyle);
             };
         }
-        return _leaflet2["default"].geoJSON({ type: "GeometryCollection", geometries: [] }, {
+        return _leaflet2["default"].geoJSON({
+            type: "GeometryCollection",
+            geometries: []
+        }, {
             pointToLayer: pointToLayer,
-            coordsToLatLng: coordsToLatLng,
             opacity: opacity
         });
         //this.registerVectorEvent(vector);
@@ -68252,7 +68279,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         });
     },
     addFeature2ThemeLayer: function addFeature2ThemeLayer(layerInfo, layer) {
-        var _this4 = this;
+        var _this3 = this;
 
         if (layerInfo.layerType !== "FEATURE_LAYER" || layerInfo.identifier !== "THEME") {
             return;
@@ -68284,7 +68311,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     if (data.type === 'EXCEL' || data.type === 'CSV') {
                         features = me.parseFeatureFromEXCEL.apply(me, [data.content.rows, data.content.colTitles, false, position]);
                         for (var x = 0, len = features.length; x < len; x++) {
-                            result = (0, _jsonsql2["default"])({ attr: features[x].attributes }, sql);
+                            result = (0, _jsonsql2["default"])({
+                                attr: features[x].attributes
+                            }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[x]);
                             }
@@ -68292,7 +68321,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     } else {
                         features = me.parseFeatureFromJson(data.content);
                         for (var i = 0, length = features.length; i < length; i++) {
-                            result = (0, _jsonsql2["default"])({ attr: features[i].attributes }, sql);
+                            result = (0, _jsonsql2["default"])({
+                                attr: features[i].attributes
+                            }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[i]);
                             }
@@ -68313,7 +68344,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     features = layerInfo.features;
                 for (var i = 0, len = features.length; i < len; i++) {
                     var feature = features[i];
-                    var sqlResult = (0, _jsonsql2["default"])({ attr: feature.attributes }, sql);
+                    var sqlResult = (0, _jsonsql2["default"])({
+                        attr: feature.attributes
+                    }, sql);
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
@@ -68344,11 +68377,11 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                         feature = new _iclientCommon.ServerFeature.fromJson(features[fi]).toFeature();
                         addedFeatures.push(feature);
                     }
-                    var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
+                    var newEpsgCode = '4326',
                         oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
 
                     if (needTransform) {
-                        _this4.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, addedFeatures, function (features) {
+                        _this3.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, addedFeatures, function (features) {
                             addFeatures(features);
                         });
                     } else {
@@ -68366,7 +68399,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             layerName = subLayer && subLayer.name;
             var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
             this.getFeaturesBySQL(url, credential, layerName, filter, _iclientCommon.DataFormat.ISERVER, function (features) {
-                var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
+                var newEpsgCode = '4326';
                 if (needTransform) {
                     me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {
                         addFeatures(features);
@@ -68385,7 +68418,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 var heatPoints = [];
                 for (var _i = 0, _len = features.length; _i < _len; _i++) {
                     var geometry = features[_i].geometry;
-                    heatPoints[_i] = me._map.options.crs.unproject(_leaflet2["default"].point(geometry.x, geometry.y));
+                    heatPoints[_i] = _leaflet2["default"].latLng(geometry.y, geometry.x);
                     if (layer.options.featureWeight) {
                         heatPoints[_i] = [heatPoints[_i].lat, heatPoints[_i].lng, parseFloat(features[_i].attributes[layer.options.featureWeight])];
                     }
@@ -68532,11 +68565,17 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             if (point && point.length !== undefined) {
                 newCoord = [];
                 for (var i = 0, len = point.length; i < len; i++) {
-                    var coor = { x: point[i].x, y: point[i].y };
+                    var coor = {
+                        x: point[i].x,
+                        y: point[i].y
+                    };
                     newCoord.push(coor);
                 }
             } else {
-                newCoord = { x: point.x, y: point.y };
+                newCoord = {
+                    x: point.x,
+                    y: point.y
+                };
             }
             if (success) {
                 success.call(this, newCoord);
@@ -68562,14 +68601,22 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             newCoor = [];
             for (var i = 0, len = point.length; i < len; i++) {
                 var coor = (0, _proj2["default"])(fromEpsg, toEpsg, [point[i].x, point[i].y]);
-                newCoor.push({ x: coor[0], y: coor[1] });
+                newCoor.push({
+                    x: coor[0],
+                    y: coor[1]
+                });
             }
         } else {
             newCoor = (0, _proj2["default"])(fromEpsg, toEpsg, [point.x, point.y]);
-            newCoor = { x: newCoor[0], y: newCoor[1] };
+            newCoor = {
+                x: newCoor[0],
+                y: newCoor[1]
+            };
         }
         if (success) {
-            me.fire('coordconvertsuccess', { newCoor: newCoor });
+            me.fire('coordconvertsuccess', {
+                newCoor: newCoor
+            });
             success.call(me, newCoor);
         }
     },
@@ -68581,10 +68628,16 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         }
         if (point && point.length !== undefined) {
             for (var i = 0, len = point.length; i < len; i++) {
-                epsgArray.push({ x: point[i].x, y: point[i].y });
+                epsgArray.push({
+                    x: point[i].x,
+                    y: point[i].y
+                });
             }
         } else {
-            epsgArray = [{ x: point.x, y: point.y }];
+            epsgArray = [{
+                x: point.x,
+                y: point.y
+            }];
         }
         if (epsgArray.length === 0) {
             return success.call(me, null);
@@ -68607,7 +68660,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                         if (!point && point.length !== undefined) {
                             newCoors = newCoors[0];
                         }
-                        me.fire('coordconvertsuccess', { newCoors: newCoors });
+                        me.fire('coordconvertsuccess', {
+                            newCoors: newCoors
+                        });
                         success.call(me, newCoors);
                     }
                 };
@@ -68616,7 +68671,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 if (!me.actived) {
                     return;
                 }
-                me.fire('coordconvertfailed', { err: err });
+                me.fire('coordconvertfailed', {
+                    err: err
+                });
             },
             scope: this
         };
@@ -68720,23 +68777,27 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         };
     },
     registerThemeEvent: function registerThemeEvent(themeLayer) {
-        var _this5 = this;
+        var _this4 = this;
 
         themeLayer.on('click', function (evt) {
             if (!themeLayer.map) {
                 return;
             }
-            if (_this5.selectedFeature) {
-                _this5.fire('featureUnSelected', { feature: _this5.selectedFeature });
-                _this5.selectedFeature = null;
+            if (_this4.selectedFeature) {
+                _this4.fire('featureUnSelected', {
+                    feature: _this4.selectedFeature
+                });
+                _this4.selectedFeature = null;
             }
             var feature = void 0;
             if (evt.target && evt.target.refDataID) {
                 feature = themeLayer.getFeatureById(evt.target.refDataID);
             }
             if (feature) {
-                _this5.selectedFeature = feature;
-                _this5.fire('featureSelected', { feature: feature });
+                _this4.selectedFeature = feature;
+                _this4.fire('featureSelected', {
+                    feature: feature
+                });
             }
         });
         themeLayer.on('mousemove', function (evt) {
@@ -68749,7 +68810,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     feature = themeLayer.getFeatureById(evt.target.refDataID);
                 }
                 if (feature) {
-                    _this5.fire('featureMousemove', { feature: feature });
+                    _this4.fire('featureMousemove', {
+                        feature: feature
+                    });
                 }
             }
         });
@@ -68772,7 +68835,7 @@ var webMap = exports.webMap = function webMap(id, options) {
 _leaflet2["default"].supermap.webmap = webMap;
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69206,7 +69269,7 @@ var imageMapLayer = exports.imageMapLayer = function imageMapLayer(url, options)
 _leaflet2["default"].supermap.imageMapLayer = imageMapLayer;
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69221,7 +69284,7 @@ var _BaiduTileLayer = __webpack_require__(154);
 
 var _CloudTileLayer = __webpack_require__(153);
 
-var _ImageMapLayer = __webpack_require__(352);
+var _ImageMapLayer = __webpack_require__(353);
 
 var _TiandituTileLayer = __webpack_require__(152);
 
@@ -69229,7 +69292,7 @@ var _TiledMapLayer = __webpack_require__(151);
 
 var _TileLayer = __webpack_require__(95);
 
-var _WebMap = __webpack_require__(351);
+var _WebMap = __webpack_require__(352);
 
 exports.BaiduTileLayer = _BaiduTileLayer.BaiduTileLayer;
 exports.baiduTileLayer = _BaiduTileLayer.baiduTileLayer;
@@ -69247,7 +69310,7 @@ exports.WebMap = _WebMap.WebMap;
 exports.webMap = _WebMap.webMap;
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69287,7 +69350,7 @@ exports.GetResolutionFromScaleDpi = _Util.GetResolutionFromScaleDpi;
 exports.NormalizeScale = _Util.NormalizeScale;
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69304,9 +69367,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _iClient = __webpack_require__(302);
-
-var _iClient2 = _interopRequireDefault(_iClient);
+var _Logo = __webpack_require__(302);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -69356,8 +69417,8 @@ var Logo = exports.Logo = _leaflet2["default"].Control.extend({
         div.style.marginBottom = 0;
         div.style.marginLeft = 0;
         div.style.marginRight = 0;
-
-        var imgSrc = _iClient2["default"];
+        //iClient.png base64
+        var imgSrc = _Logo.LogoBase64;
         if (this.options.imageUrl) {
             imgSrc = this.options.imageUrl;
         }
@@ -69404,7 +69465,7 @@ var logo = exports.logo = function logo(options) {
 _leaflet2["default"].supermap.control.logo = logo;
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69593,7 +69654,7 @@ exports.inverse = function (p) {
 exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69716,7 +69777,7 @@ exports.inverse = function (p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69828,7 +69889,7 @@ exports.inverse = function (p) {
 exports.names = ["Equidistant_Conic", "eqdc"];
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69913,7 +69974,7 @@ exports.inverse = function (p) {
 exports.names = ["Mollweide", "moll"];
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69942,7 +70003,7 @@ module.exports = function (arg, es, en) {
 };
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69974,7 +70035,7 @@ module.exports = function (es) {
 };
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69982,10 +70043,10 @@ module.exports = function (es) {
 
 var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(48);
-var pj_enfn = __webpack_require__(361);
+var pj_enfn = __webpack_require__(362);
 var MAX_ITER = 20;
 var pj_mlfn = __webpack_require__(157);
-var pj_inv_mlfn = __webpack_require__(360);
+var pj_inv_mlfn = __webpack_require__(361);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
 var asinz = __webpack_require__(39);
@@ -70079,7 +70140,7 @@ exports.inverse = function (p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70130,7 +70191,7 @@ exports.inverse = function (p) {
 exports.names = ["Miller_Cylindrical", "mill"];
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70356,7 +70417,7 @@ exports.inverse = function (p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70483,7 +70544,7 @@ exports.inverse = function (p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70531,7 +70592,7 @@ exports.inverse = function (p) {
 exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70570,7 +70631,7 @@ module.exports = function (eccent, q) {
 };
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70579,7 +70640,7 @@ module.exports = function (eccent, q) {
 var adjust_lon = __webpack_require__(7);
 var qsfnz = __webpack_require__(96);
 var msfnz = __webpack_require__(40);
-var iqsfnz = __webpack_require__(367);
+var iqsfnz = __webpack_require__(368);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -70638,7 +70699,7 @@ exports.inverse = function (p) {
 exports.names = ["cea"];
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70740,7 +70801,7 @@ exports.inverse = function (p) {
 exports.names = ["gnom"];
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70865,7 +70926,7 @@ exports.phi1z = function (eccent, qs) {
 exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71150,7 +71211,7 @@ exports.authlat = function (beta, APA) {
 exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71253,7 +71314,7 @@ exports.inverse = function (p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71359,7 +71420,7 @@ exports.inverse = function (p) {
 exports.names = ["Krovak", "krovak"];
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71497,7 +71558,7 @@ exports.inverse = function (p) {
 exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71657,7 +71718,7 @@ exports.inverse = function (p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71744,7 +71805,7 @@ exports.inverse = function (p) {
 exports.names = ["somerc"];
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71906,7 +71967,7 @@ exports.inverse = function (p) {
 exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71917,14 +71978,14 @@ module.exports = function (esinp, exp) {
 };
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var FORTPI = Math.PI / 4;
-var srat = __webpack_require__(378);
+var srat = __webpack_require__(379);
 var HALF_PI = Math.PI / 2;
 var MAX_ITER = 20;
 exports.init = function () {
@@ -71970,13 +72031,13 @@ exports.inverse = function (p) {
 exports.names = ["gauss"];
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var gauss = __webpack_require__(379);
+var gauss = __webpack_require__(380);
 var adjust_lon = __webpack_require__(7);
 exports.init = function () {
   gauss.init.apply(this);
@@ -72034,7 +72095,7 @@ exports.inverse = function (p) {
 exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea", "Oblique Stereographic Alternative"];
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72060,13 +72121,13 @@ exports.init = function () {
 exports.names = ["Universal Transverse Mercator System", "utm"];
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var projs = [__webpack_require__(158), __webpack_require__(381), __webpack_require__(380), __webpack_require__(377), __webpack_require__(376), __webpack_require__(375), __webpack_require__(374), __webpack_require__(373), __webpack_require__(372), __webpack_require__(371), __webpack_require__(370), __webpack_require__(369), __webpack_require__(368), __webpack_require__(366), __webpack_require__(365), __webpack_require__(364), __webpack_require__(363), __webpack_require__(362), __webpack_require__(359), __webpack_require__(358), __webpack_require__(357), __webpack_require__(356)];
+var projs = [__webpack_require__(158), __webpack_require__(382), __webpack_require__(381), __webpack_require__(378), __webpack_require__(377), __webpack_require__(376), __webpack_require__(375), __webpack_require__(374), __webpack_require__(373), __webpack_require__(372), __webpack_require__(371), __webpack_require__(370), __webpack_require__(369), __webpack_require__(367), __webpack_require__(366), __webpack_require__(365), __webpack_require__(364), __webpack_require__(363), __webpack_require__(360), __webpack_require__(359), __webpack_require__(358), __webpack_require__(357)];
 module.exports = function (proj4) {
   projs.forEach(function (proj) {
     proj4.Proj.projections.add(proj);
@@ -72074,13 +72135,13 @@ module.exports = function (proj4) {
 };
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72124,7 +72185,7 @@ Point.prototype.toMGRS = function (accuracy) {
 module.exports = Point;
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72181,7 +72242,7 @@ module.exports = function (crs, denorm, point) {
 };
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72285,7 +72346,7 @@ module.exports = function (source, dest, point) {
 };
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72678,7 +72739,7 @@ datum.prototype = {
 module.exports = datum;
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72901,7 +72962,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72989,16 +73050,16 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Datum = __webpack_require__(389);
-var Ellipsoid = __webpack_require__(388);
+var Datum = __webpack_require__(390);
+var Ellipsoid = __webpack_require__(389);
 var extend = __webpack_require__(99);
-var datum = __webpack_require__(387);
+var datum = __webpack_require__(388);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -73054,7 +73115,7 @@ module.exports = function (json) {
 };
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73072,7 +73133,7 @@ exports.inverse = identity;
 exports.names = ["longlat", "identity"];
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73170,13 +73231,13 @@ exports.inverse = function (p) {
 exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var projs = [__webpack_require__(392), __webpack_require__(391)];
+var projs = [__webpack_require__(393), __webpack_require__(392)];
 var names = {};
 var projStore = [];
 
@@ -73209,7 +73270,7 @@ exports.start = function () {
 };
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73219,7 +73280,7 @@ exports.ft = { to_meter: 0.3048 };
 exports['us-ft'] = { to_meter: 1200 / 3937 };
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73240,7 +73301,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73259,7 +73320,7 @@ module.exports = function (defs) {
 };
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73301,7 +73362,7 @@ function parse(code) {
 module.exports = parse;
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73369,7 +73430,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73385,8 +73446,6 @@ var _leaflet = __webpack_require__(2);
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
-
-__webpack_require__(527);
 
 var _MapService = __webpack_require__(155);
 
@@ -73742,7 +73801,7 @@ var changeTileVersion = exports.changeTileVersion = function changeTileVersion(o
 _leaflet2["default"].supermap.control.changeTileVersion = changeTileVersion;
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73753,9 +73812,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.logo = exports.Logo = exports.changeTileVersion = exports.ChangeTileVersion = undefined;
 
-var _ChangeTileVersion = __webpack_require__(399);
+var _ChangeTileVersion = __webpack_require__(400);
 
-var _Logo = __webpack_require__(355);
+var _Logo = __webpack_require__(356);
 
 exports.ChangeTileVersion = _ChangeTileVersion.ChangeTileVersion;
 exports.changeTileVersion = _ChangeTileVersion.changeTileVersion;
@@ -73763,7 +73822,7 @@ exports.Logo = _Logo.Logo;
 exports.logo = _Logo.logo;
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73997,7 +74056,7 @@ var SmicStar = exports.SmicStar = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74180,7 +74239,7 @@ var SmicRing = exports.SmicRing = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74385,7 +74444,7 @@ var SmicIsogon = exports.SmicIsogon = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74583,7 +74642,7 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74770,7 +74829,7 @@ var LevelRenderer = exports.LevelRenderer = function () {
 _SuperMap.SuperMap.LevelRenderer = LevelRenderer;
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74781,7 +74840,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = undefined;
 
-var _LevelRenderer = __webpack_require__(405);
+var _LevelRenderer = __webpack_require__(406);
 
 var _Render = __webpack_require__(174);
 
@@ -74827,11 +74886,11 @@ var _SmicBrokenLine = __webpack_require__(104);
 
 var _SmicCircle = __webpack_require__(177);
 
-var _SmicEllipse = __webpack_require__(404);
+var _SmicEllipse = __webpack_require__(405);
 
 var _SmicImage = __webpack_require__(103);
 
-var _SmicIsogon = __webpack_require__(403);
+var _SmicIsogon = __webpack_require__(404);
 
 var _SmicPoint = __webpack_require__(107);
 
@@ -74839,11 +74898,11 @@ var _SmicPolygon = __webpack_require__(67);
 
 var _SmicRectangle = __webpack_require__(102);
 
-var _SmicRing = __webpack_require__(402);
+var _SmicRing = __webpack_require__(403);
 
 var _SmicSector = __webpack_require__(176);
 
-var _SmicStar = __webpack_require__(401);
+var _SmicStar = __webpack_require__(402);
 
 var _SmicText = __webpack_require__(105);
 
@@ -74899,7 +74958,7 @@ exports.LevelRendererVector = _Vector.Vector;
 exports.SUtil = _SUtil.SUtil;
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74945,7 +75004,7 @@ exports.Sector = _Sector.Sector;
 exports.FeatureTheme = _Theme.Theme;
 
 /***/ }),
-/* 408 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75681,7 +75740,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
 _SuperMap.SuperMap.Feature.Theme.ThemeVector = ThemeVector;
 
 /***/ }),
-/* 409 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75923,7 +75982,7 @@ var Ring = exports.Ring = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Ring = Ring;
 
 /***/ }),
-/* 410 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76236,7 +76295,7 @@ var Point = exports.Point = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Point = Point;
 
 /***/ }),
-/* 411 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76475,7 +76534,7 @@ var Pie = exports.Pie = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Pie = Pie;
 
 /***/ }),
-/* 412 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76825,7 +76884,7 @@ var Line = exports.Line = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Line = Line;
 
 /***/ }),
-/* 413 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77019,7 +77078,7 @@ var Circle = exports.Circle = function (_RankSymbol) {
 _SuperMap.SuperMap.Feature.Theme.Circle = Circle;
 
 /***/ }),
-/* 414 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77473,7 +77532,7 @@ var Bar3D = exports.Bar3D = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Bar3D = Bar3D;
 
 /***/ }),
-/* 415 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77865,7 +77924,7 @@ var Bar = exports.Bar = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Bar = Bar;
 
 /***/ }),
-/* 416 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77876,29 +77935,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = undefined;
 
-var _Bar = __webpack_require__(415);
+var _Bar = __webpack_require__(416);
 
-var _Bar3D = __webpack_require__(414);
+var _Bar3D = __webpack_require__(415);
 
-var _Circle = __webpack_require__(413);
+var _Circle = __webpack_require__(414);
 
 var _Graph = __webpack_require__(28);
 
-var _Line = __webpack_require__(412);
+var _Line = __webpack_require__(413);
 
-var _Pie = __webpack_require__(411);
+var _Pie = __webpack_require__(412);
 
-var _Point = __webpack_require__(410);
+var _Point = __webpack_require__(411);
 
 var _RankSymbol = __webpack_require__(175);
 
-var _Ring = __webpack_require__(409);
+var _Ring = __webpack_require__(410);
 
-var _ThemeVector = __webpack_require__(408);
+var _ThemeVector = __webpack_require__(409);
 
-var _feature = __webpack_require__(407);
+var _feature = __webpack_require__(408);
 
-var _levelRenderer = __webpack_require__(406);
+var _levelRenderer = __webpack_require__(407);
 
 exports.Bar = _Bar.Bar;
 exports.Bar3D = _Bar3D.Bar3D;
@@ -77963,7 +78022,7 @@ exports.LevelRendererVector = _levelRenderer.LevelRendererVector;
 exports.SUtil = _levelRenderer.SUtil;
 
 /***/ }),
-/* 417 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78169,7 +78228,7 @@ var ThemeStyle = exports.ThemeStyle = function ThemeStyle(options) {
 _SuperMap.SuperMap.ThemeStyle = ThemeStyle;
 
 /***/ }),
-/* 418 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78880,7 +78939,7 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(124)))
 
 /***/ }),
-/* 419 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78897,7 +78956,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _lodash = __webpack_require__(418);
+var _lodash = __webpack_require__(419);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -83377,7 +83436,7 @@ _SuperMap.SuperMap.CartoCSS.Tree.Zoom.ranges = {
 };
 
 /***/ }),
-/* 420 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83388,17 +83447,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ThemeStyle = exports.CartoCSS = undefined;
 
-__webpack_require__(534);
+var _CartoCSS = __webpack_require__(420);
 
-var _CartoCSS = __webpack_require__(419);
-
-var _ThemeStyle = __webpack_require__(417);
+var _ThemeStyle = __webpack_require__(418);
 
 exports.CartoCSS = _CartoCSS.CartoCSS;
 exports.ThemeStyle = _ThemeStyle.ThemeStyle;
 
 /***/ }),
-/* 421 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83416,13 +83473,13 @@ exports.RequestTimeout = _FetchRequest.RequestTimeout;
 exports.FetchRequest = _FetchRequest.FetchRequest;
 
 /***/ }),
-/* 422 */
+/* 423 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 423 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83439,7 +83496,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Events = __webpack_require__(85);
 
-var _elasticsearch = __webpack_require__(422);
+var _elasticsearch = __webpack_require__(423);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -84183,22 +84240,6 @@ var ElasticSearch = exports.ElasticSearch = function () {
 _SuperMap.SuperMap.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 424 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ElasticSearch = undefined;
-
-var _ElasticSearch = __webpack_require__(423);
-
-exports.ElasticSearch = _ElasticSearch.ElasticSearch;
-
-/***/ }),
 /* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -84210,12 +84251,28 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ElasticSearch = undefined;
 
-var _elasticsearch = __webpack_require__(424);
+var _ElasticSearch = __webpack_require__(424);
+
+exports.ElasticSearch = _ElasticSearch.ElasticSearch;
+
+/***/ }),
+/* 426 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ElasticSearch = undefined;
+
+var _elasticsearch = __webpack_require__(425);
 
 exports.ElasticSearch = _elasticsearch.ElasticSearch;
 
 /***/ }),
-/* 426 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84314,7 +84371,7 @@ var TokenServiceParameter = exports.TokenServiceParameter = function () {
 _SuperMap.SuperMap.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
-/* 427 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84401,7 +84458,7 @@ var ServerInfo = exports.ServerInfo = function ServerInfo(type, options) {
 _SuperMap.SuperMap.ServerInfo = ServerInfo;
 
 /***/ }),
-/* 428 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84469,7 +84526,7 @@ var KeyServiceParameter = exports.KeyServiceParameter = function () {
 _SuperMap.SuperMap.KeyServiceParameter = KeyServiceParameter;
 
 /***/ }),
-/* 429 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84480,13 +84537,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = undefined;
 
-var _KeyServiceParameter = __webpack_require__(428);
+var _KeyServiceParameter = __webpack_require__(429);
 
 var _SecurityManager = __webpack_require__(37);
 
-var _ServerInfo = __webpack_require__(427);
+var _ServerInfo = __webpack_require__(428);
 
-var _TokenServiceParameter = __webpack_require__(426);
+var _TokenServiceParameter = __webpack_require__(427);
 
 exports.KeyServiceParameter = _KeyServiceParameter.KeyServiceParameter;
 exports.SecurityManager = _SecurityManager.SecurityManager;
@@ -84494,7 +84551,7 @@ exports.ServerInfo = _ServerInfo.ServerInfo;
 exports.TokenServiceParameter = _TokenServiceParameter.TokenServiceParameter;
 
 /***/ }),
-/* 430 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84620,7 +84677,7 @@ var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () 
 _SuperMap.SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;
 
 /***/ }),
-/* 431 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84735,7 +84792,7 @@ var Online = exports.Online = function () {
 _SuperMap.SuperMap.Online = Online;
 
 /***/ }),
-/* 432 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84748,11 +84805,11 @@ exports.OnlineServiceBase = exports.FilterField = exports.DataItemOrderBy = expo
 
 var _OnlineResources = __webpack_require__(191);
 
-var _Online = __webpack_require__(431);
+var _Online = __webpack_require__(432);
 
 var _OnlineData = __webpack_require__(190);
 
-var _OnlineQueryDatasParameter = __webpack_require__(430);
+var _OnlineQueryDatasParameter = __webpack_require__(431);
 
 var _OnlineServiceBase = __webpack_require__(189);
 
@@ -84766,7 +84823,7 @@ exports.FilterField = _OnlineResources.FilterField;
 exports.OnlineServiceBase = _OnlineServiceBase.OnlineServiceBase;
 
 /***/ }),
-/* 433 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84868,7 +84925,7 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
 _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 434 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85019,7 +85076,7 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
 _SuperMap.SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;
 
 /***/ }),
-/* 435 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85172,7 +85229,7 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
 _SuperMap.SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;
 
 /***/ }),
-/* 436 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85305,7 +85362,7 @@ var TransferSolutionService = exports.TransferSolutionService = function (_Commo
 _SuperMap.SuperMap.TransferSolutionService = TransferSolutionService;
 
 /***/ }),
-/* 437 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85416,7 +85473,7 @@ var TransferPathService = exports.TransferPathService = function (_CommonService
 _SuperMap.SuperMap.TransferPathService = TransferPathService;
 
 /***/ }),
-/* 438 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85518,7 +85575,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
 _SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 439 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85610,7 +85667,7 @@ var TilesetsService = exports.TilesetsService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.TilesetsService = TilesetsService;
 
 /***/ }),
-/* 440 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85783,7 +85840,7 @@ var GeometryBatchAnalystService = exports.GeometryBatchAnalystService = function
 _SuperMap.SuperMap.GeometryBatchAnalystService = GeometryBatchAnalystService;
 
 /***/ }),
-/* 441 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85918,7 +85975,7 @@ var ThiessenAnalystService = exports.ThiessenAnalystService = function (_Spatial
 _SuperMap.SuperMap.ThiessenAnalystService = ThiessenAnalystService;
 
 /***/ }),
-/* 442 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86093,7 +86150,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.ThemeService = ThemeService;
 
 /***/ }),
-/* 443 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86222,7 +86279,7 @@ var ThemeLabelUniqueItem = exports.ThemeLabelUniqueItem = function () {
 _SuperMap.SuperMap.ThemeLabelUniqueItem = ThemeLabelUniqueItem;
 
 /***/ }),
-/* 444 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86332,7 +86389,7 @@ var TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationServ
 _SuperMap.SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;
 
 /***/ }),
-/* 445 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86471,7 +86528,7 @@ var SurfaceAnalystService = exports.SurfaceAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.SurfaceAnalystService = SurfaceAnalystService;
 
 /***/ }),
-/* 446 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86582,7 +86639,7 @@ var SupplyCenter = exports.SupplyCenter = function () {
 _SuperMap.SuperMap.SupplyCenter = SupplyCenter;
 
 /***/ }),
-/* 447 */
+/* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86684,7 +86741,7 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
 _SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 448 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86790,7 +86847,7 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
 _SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 449 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86892,7 +86949,7 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
 _SuperMap.SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 
 /***/ }),
-/* 450 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87007,7 +87064,7 @@ var StopQueryService = exports.StopQueryService = function (_CommonServiceBase) 
 _SuperMap.SuperMap.StopQueryService = StopQueryService;
 
 /***/ }),
-/* 451 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87109,7 +87166,7 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
 _SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 452 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87298,7 +87355,7 @@ var SetLayerStatusService = exports.SetLayerStatusService = function (_CommonSer
 _SuperMap.SuperMap.SetLayerStatusService = SetLayerStatusService;
 
 /***/ }),
-/* 453 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87461,7 +87518,7 @@ var SetLayersInfoService = exports.SetLayersInfoService = function (_CommonServi
 _SuperMap.SuperMap.SetLayersInfoService = SetLayersInfoService;
 
 /***/ }),
-/* 454 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87562,7 +87619,7 @@ var SetLayerInfoService = exports.SetLayerInfoService = function (_CommonService
 _SuperMap.SuperMap.SetLayerInfoService = SetLayerInfoService;
 
 /***/ }),
-/* 455 */
+/* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87719,7 +87776,7 @@ var ServerFeature = exports.ServerFeature = function () {
 _SuperMap.SuperMap.ServerFeature = ServerFeature;
 
 /***/ }),
-/* 456 */
+/* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87886,7 +87943,7 @@ var RouteLocatorService = exports.RouteLocatorService = function (_SpatialAnalys
 _SuperMap.SuperMap.RouteLocatorService = RouteLocatorService;
 
 /***/ }),
-/* 457 */
+/* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88053,7 +88110,7 @@ var RouteCalculateMeasureService = exports.RouteCalculateMeasureService = functi
 _SuperMap.SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService;
 
 /***/ }),
-/* 458 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88170,7 +88227,7 @@ var QueryBySQLService = exports.QueryBySQLService = function (_QueryService) {
 _SuperMap.SuperMap.QueryBySQLService = QueryBySQLService;
 
 /***/ }),
-/* 459 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88284,7 +88341,7 @@ var QueryByGeometryService = exports.QueryByGeometryService = function (_QuerySe
 _SuperMap.SuperMap.QueryByGeometryService = QueryByGeometryService;
 
 /***/ }),
-/* 460 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88391,7 +88448,7 @@ var QueryByDistanceService = exports.QueryByDistanceService = function (_QuerySe
 _SuperMap.SuperMap.QueryByDistanceService = QueryByDistanceService;
 
 /***/ }),
-/* 461 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88498,7 +88555,7 @@ var QueryByBoundsService = exports.QueryByBoundsService = function (_QueryServic
 _SuperMap.SuperMap.QueryByBoundsService = QueryByBoundsService;
 
 /***/ }),
-/* 462 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88604,7 +88661,7 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
 _SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 /***/ }),
-/* 463 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88740,7 +88797,7 @@ var OverlayAnalystService = exports.OverlayAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.OverlayAnalystService = OverlayAnalystService;
 
 /***/ }),
-/* 464 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88896,7 +88953,7 @@ var MeasureService = exports.MeasureService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.MeasureService = MeasureService;
 
 /***/ }),
-/* 465 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89008,7 +89065,7 @@ var MathExpressionAnalysisService = exports.MathExpressionAnalysisService = func
 _SuperMap.SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;
 
 /***/ }),
-/* 466 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89155,7 +89212,7 @@ var MapService = exports.MapService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.MapService = MapService;
 
 /***/ }),
-/* 467 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89258,7 +89315,7 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
 _SuperMap.SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 468 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89350,7 +89407,7 @@ var InterpolationDensityAnalystParameters = exports.InterpolationDensityAnalystP
 _SuperMap.SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;
 
 /***/ }),
-/* 469 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89373,7 +89430,7 @@ var _SpatialAnalystBase2 = __webpack_require__(10);
 
 var _InterpolationRBFAnalystParameters = __webpack_require__(229);
 
-var _InterpolationDensityAnalystParameters = __webpack_require__(468);
+var _InterpolationDensityAnalystParameters = __webpack_require__(469);
 
 var _InterpolationIDWAnalystParameters = __webpack_require__(228);
 
@@ -89509,7 +89566,7 @@ var InterpolationAnalystService = exports.InterpolationAnalystService = function
 _SuperMap.SuperMap.InterpolationAnalystService = InterpolationAnalystService;
 
 /***/ }),
-/* 470 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89696,7 +89753,7 @@ var GetLayersInfoService = exports.GetLayersInfoService = function (_CommonServi
 _SuperMap.SuperMap.GetLayersInfoService = GetLayersInfoService;
 
 /***/ }),
-/* 471 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89905,7 +89962,7 @@ var GetGridCellInfosService = exports.GetGridCellInfosService = function (_Commo
 _SuperMap.SuperMap.GetGridCellInfosService = GetGridCellInfosService;
 
 /***/ }),
-/* 472 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90025,7 +90082,7 @@ var GetFieldsService = exports.GetFieldsService = function (_CommonServiceBase) 
 _SuperMap.SuperMap.GetFieldsService = GetFieldsService;
 
 /***/ }),
-/* 473 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90123,7 +90180,7 @@ var GetFeaturesBySQLService = exports.GetFeaturesBySQLService = function (_GetFe
 _SuperMap.SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService;
 
 /***/ }),
-/* 474 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90217,7 +90274,7 @@ var GetFeaturesByIDsService = exports.GetFeaturesByIDsService = function (_GetFe
 _SuperMap.SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService;
 
 /***/ }),
-/* 475 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90311,7 +90368,7 @@ var GetFeaturesByGeometryService = exports.GetFeaturesByGeometryService = functi
 _SuperMap.SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService;
 
 /***/ }),
-/* 476 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90408,7 +90465,7 @@ var GetFeaturesByBufferService = exports.GetFeaturesByBufferService = function (
 _SuperMap.SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;
 
 /***/ }),
-/* 477 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90503,7 +90560,7 @@ var GetFeaturesByBoundsService = exports.GetFeaturesByBoundsService = function (
 _SuperMap.SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService;
 
 /***/ }),
-/* 478 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90638,7 +90695,7 @@ var GeoRelationAnalystService = exports.GeoRelationAnalystService = function (_S
 _SuperMap.SuperMap.GeoRelationAnalystService = GeoRelationAnalystService;
 
 /***/ }),
-/* 479 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90736,7 +90793,7 @@ var GeoHashGridAggParameter = exports.GeoHashGridAggParameter = function (_Aggre
 _SuperMap.SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter;
 
 /***/ }),
-/* 480 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90812,7 +90869,7 @@ var GeoBoundingBoxQueryBuilderParameter = exports.GeoBoundingBoxQueryBuilderPara
 _SuperMap.SuperMap.GeoBoundingBoxQueryBuilderParameter = GeoBoundingBoxQueryBuilderParameter;
 
 /***/ }),
-/* 481 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90970,7 +91027,7 @@ var GenerateSpatialDataService = exports.GenerateSpatialDataService = function (
 _SuperMap.SuperMap.GenerateSpatialDataService = GenerateSpatialDataService;
 
 /***/ }),
-/* 482 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91154,7 +91211,7 @@ var FindTSPPathsService = exports.FindTSPPathsService = function (_NetworkAnalys
 _SuperMap.SuperMap.FindTSPPathsService = FindTSPPathsService;
 
 /***/ }),
-/* 483 */
+/* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91335,7 +91392,7 @@ var FindServiceAreasService = exports.FindServiceAreasService = function (_Netwo
 _SuperMap.SuperMap.FindServiceAreasService = FindServiceAreasService;
 
 /***/ }),
-/* 484 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91512,7 +91569,7 @@ var FindPathService = exports.FindPathService = function (_NetworkAnalystServic)
 _SuperMap.SuperMap.FindPathService = FindPathService;
 
 /***/ }),
-/* 485 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91695,7 +91752,7 @@ var FindMTSPPathsService = exports.FindMTSPPathsService = function (_NetworkAnal
 _SuperMap.SuperMap.FindMTSPPathsService = FindMTSPPathsService;
 
 /***/ }),
-/* 486 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91860,7 +91917,7 @@ var FindLocationService = exports.FindLocationService = function (_NetworkAnalys
 _SuperMap.SuperMap.FindLocationService = FindLocationService;
 
 /***/ }),
-/* 487 */
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92051,7 +92108,7 @@ var FindClosestFacilitiesService = exports.FindClosestFacilitiesService = functi
 _SuperMap.SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService;
 
 /***/ }),
-/* 488 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92191,7 +92248,7 @@ var FieldStatisticService = exports.FieldStatisticService = function (_CommonSer
 _SuperMap.SuperMap.FieldStatisticService = FieldStatisticService;
 
 /***/ }),
-/* 489 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92268,7 +92325,7 @@ var FilterAggParameter = exports.FilterAggParameter = function (_AggregationPara
 _SuperMap.SuperMap.FilterAggParameter = FilterAggParameter;
 
 /***/ }),
-/* 490 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92368,7 +92425,7 @@ var FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DService 
 _SuperMap.SuperMap.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService;
 
 /***/ }),
-/* 491 */
+/* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92477,7 +92534,7 @@ var FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DService = 
 _SuperMap.SuperMap.FacilityAnalystTraceup3DService = FacilityAnalystTraceup3DService;
 
 /***/ }),
-/* 492 */
+/* 493 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92577,7 +92634,7 @@ var FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DServic
 _SuperMap.SuperMap.FacilityAnalystTracedown3DService = FacilityAnalystTracedown3DService;
 
 /***/ }),
-/* 493 */
+/* 494 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92697,7 +92754,7 @@ var FacilityAnalystStreamService = exports.FacilityAnalystStreamService = functi
 _SuperMap.SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService;
 
 /***/ }),
-/* 494 */
+/* 495 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92801,7 +92858,7 @@ var FacilityAnalystSources3DService = exports.FacilityAnalystSources3DService = 
 _SuperMap.SuperMap.FacilityAnalystSources3DService = FacilityAnalystSources3DService;
 
 /***/ }),
-/* 495 */
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92910,7 +92967,7 @@ var FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DService = func
 _SuperMap.SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;
 
 /***/ }),
-/* 496 */
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93067,7 +93124,7 @@ var EditFeaturesService = exports.EditFeaturesService = function (_CommonService
 _SuperMap.SuperMap.EditFeaturesService = EditFeaturesService;
 
 /***/ }),
-/* 497 */
+/* 498 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93191,7 +93248,7 @@ var DensityAnalystService = exports.DensityAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.DensityAnalystService = DensityAnalystService;
 
 /***/ }),
-/* 498 */
+/* 499 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93483,7 +93540,7 @@ var DataFlowService = exports.DataFlowService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.DataFlowService = DataFlowService;
 
 /***/ }),
-/* 499 */
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93626,7 +93683,7 @@ var ComputeWeightMatrixService = exports.ComputeWeightMatrixService = function (
 _SuperMap.SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;
 
 /***/ }),
-/* 500 */
+/* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93839,7 +93896,7 @@ var ChartQueryService = exports.ChartQueryService = function (_CommonServiceBase
 _SuperMap.SuperMap.ChartQueryService = ChartQueryService;
 
 /***/ }),
-/* 501 */
+/* 502 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93944,7 +94001,7 @@ var ChartFeatureInfoSpecsService = exports.ChartFeatureInfoSpecsService = functi
 _SuperMap.SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
 
 /***/ }),
-/* 502 */
+/* 503 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94057,7 +94114,7 @@ var BurstPipelineAnalystService = exports.BurstPipelineAnalystService = function
 _SuperMap.SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;
 
 /***/ }),
-/* 503 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94159,7 +94216,7 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
 _SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 /***/ }),
-/* 504 */
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94290,7 +94347,7 @@ var BufferAnalystService = exports.BufferAnalystService = function (_SpatialAnal
 _SuperMap.SuperMap.BufferAnalystService = BufferAnalystService;
 
 /***/ }),
-/* 505 */
+/* 506 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94407,7 +94464,7 @@ var AreaSolarRadiationService = exports.AreaSolarRadiationService = function (_S
 _SuperMap.SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
 
 /***/ }),
-/* 506 */
+/* 507 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94554,7 +94611,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 507 */
+/* 508 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94567,7 +94624,7 @@ exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector
 exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.GeometryBatchAnalystService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OutputSetting = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = undefined;
 exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoHashGridAggParameter = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GeoBoundingBoxQueryBuilderParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FilterAggParameter = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BufferSetting = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AggregationParameter = exports.AggQueryBuilderParameter = exports.AddressMatchService = undefined;
 
-var _AddressMatchService = __webpack_require__(506);
+var _AddressMatchService = __webpack_require__(507);
 
 var _AggQueryBuilderParameter = __webpack_require__(292);
 
@@ -94575,31 +94632,31 @@ var _AggregationParameter = __webpack_require__(123);
 
 var _AreaSolarRadiationParameters = __webpack_require__(291);
 
-var _AreaSolarRadiationService = __webpack_require__(505);
+var _AreaSolarRadiationService = __webpack_require__(506);
 
 var _BufferAnalystParameters = __webpack_require__(122);
 
-var _BufferAnalystService = __webpack_require__(504);
+var _BufferAnalystService = __webpack_require__(505);
 
 var _BufferDistance = __webpack_require__(289);
 
 var _BuffersAnalystJobsParameter = __webpack_require__(285);
 
-var _BuffersAnalystJobsService = __webpack_require__(503);
+var _BuffersAnalystJobsService = __webpack_require__(504);
 
 var _BufferSetting = __webpack_require__(290);
 
 var _BurstPipelineAnalystParameters = __webpack_require__(284);
 
-var _BurstPipelineAnalystService = __webpack_require__(502);
+var _BurstPipelineAnalystService = __webpack_require__(503);
 
-var _ChartFeatureInfoSpecsService = __webpack_require__(501);
+var _ChartFeatureInfoSpecsService = __webpack_require__(502);
 
 var _ChartQueryFilterParameter = __webpack_require__(283);
 
 var _ChartQueryParameters = __webpack_require__(282);
 
-var _ChartQueryService = __webpack_require__(500);
+var _ChartQueryService = __webpack_require__(501);
 
 var _ClipParameter = __webpack_require__(281);
 
@@ -94609,9 +94666,9 @@ var _CommonServiceBase = __webpack_require__(6);
 
 var _ComputeWeightMatrixParameters = __webpack_require__(279);
 
-var _ComputeWeightMatrixService = __webpack_require__(499);
+var _ComputeWeightMatrixService = __webpack_require__(500);
 
-var _DataFlowService = __webpack_require__(498);
+var _DataFlowService = __webpack_require__(499);
 
 var _DataReturnOption = __webpack_require__(58);
 
@@ -94627,45 +94684,45 @@ var _DatasetThiessenAnalystParameters = __webpack_require__(273);
 
 var _DatasourceConnectionInfo = __webpack_require__(121);
 
-var _DensityAnalystService = __webpack_require__(497);
+var _DensityAnalystService = __webpack_require__(498);
 
 var _DensityKernelAnalystParameters = __webpack_require__(272);
 
 var _EditFeaturesParameters = __webpack_require__(271);
 
-var _EditFeaturesService = __webpack_require__(496);
+var _EditFeaturesService = __webpack_require__(497);
 
 var _FacilityAnalyst3DParameters = __webpack_require__(43);
 
 var _FacilityAnalystSinks3DParameters = __webpack_require__(270);
 
-var _FacilityAnalystSinks3DService = __webpack_require__(495);
+var _FacilityAnalystSinks3DService = __webpack_require__(496);
 
 var _FacilityAnalystSources3DParameters = __webpack_require__(269);
 
-var _FacilityAnalystSources3DService = __webpack_require__(494);
+var _FacilityAnalystSources3DService = __webpack_require__(495);
 
 var _FacilityAnalystStreamParameters = __webpack_require__(268);
 
-var _FacilityAnalystStreamService = __webpack_require__(493);
+var _FacilityAnalystStreamService = __webpack_require__(494);
 
 var _FacilityAnalystTracedown3DParameters = __webpack_require__(267);
 
-var _FacilityAnalystTracedown3DService = __webpack_require__(492);
+var _FacilityAnalystTracedown3DService = __webpack_require__(493);
 
 var _FacilityAnalystTraceup3DParameters = __webpack_require__(266);
 
-var _FacilityAnalystTraceup3DService = __webpack_require__(491);
+var _FacilityAnalystTraceup3DService = __webpack_require__(492);
 
 var _FacilityAnalystUpstream3DParameters = __webpack_require__(265);
 
-var _FacilityAnalystUpstream3DService = __webpack_require__(490);
+var _FacilityAnalystUpstream3DService = __webpack_require__(491);
 
-var _FilterAggParameter = __webpack_require__(489);
+var _FilterAggParameter = __webpack_require__(490);
 
 var _FieldParameters = __webpack_require__(264);
 
-var _FieldStatisticService = __webpack_require__(488);
+var _FieldStatisticService = __webpack_require__(489);
 
 var _FieldStatisticsParameters = __webpack_require__(263);
 
@@ -94673,39 +94730,39 @@ var _FilterParameter = __webpack_require__(15);
 
 var _FindClosestFacilitiesParameters = __webpack_require__(262);
 
-var _FindClosestFacilitiesService = __webpack_require__(487);
+var _FindClosestFacilitiesService = __webpack_require__(488);
 
 var _FindLocationParameters = __webpack_require__(261);
 
-var _FindLocationService = __webpack_require__(486);
+var _FindLocationService = __webpack_require__(487);
 
 var _FindMTSPPathsParameters = __webpack_require__(260);
 
-var _FindMTSPPathsService = __webpack_require__(485);
+var _FindMTSPPathsService = __webpack_require__(486);
 
 var _FindPathParameters = __webpack_require__(259);
 
-var _FindPathService = __webpack_require__(484);
+var _FindPathService = __webpack_require__(485);
 
 var _FindServiceAreasParameters = __webpack_require__(258);
 
-var _FindServiceAreasService = __webpack_require__(483);
+var _FindServiceAreasService = __webpack_require__(484);
 
 var _FindTSPPathsParameters = __webpack_require__(257);
 
-var _FindTSPPathsService = __webpack_require__(482);
+var _FindTSPPathsService = __webpack_require__(483);
 
 var _GenerateSpatialDataParameters = __webpack_require__(256);
 
-var _GenerateSpatialDataService = __webpack_require__(481);
+var _GenerateSpatialDataService = __webpack_require__(482);
 
-var _GeoBoundingBoxQueryBuilderParameter = __webpack_require__(480);
+var _GeoBoundingBoxQueryBuilderParameter = __webpack_require__(481);
 
 var _GeoCodingParameter = __webpack_require__(294);
 
 var _GeoDecodingParameter = __webpack_require__(293);
 
-var _GeoHashGridAggParameter = __webpack_require__(479);
+var _GeoHashGridAggParameter = __webpack_require__(480);
 
 var _GeometryBufferAnalystParameters = __webpack_require__(120);
 
@@ -94717,39 +94774,39 @@ var _GeometryThiessenAnalystParameters = __webpack_require__(117);
 
 var _GeoRelationAnalystParameters = __webpack_require__(254);
 
-var _GeoRelationAnalystService = __webpack_require__(478);
+var _GeoRelationAnalystService = __webpack_require__(479);
 
 var _GetFeaturesByBoundsParameters = __webpack_require__(253);
 
-var _GetFeaturesByBoundsService = __webpack_require__(477);
+var _GetFeaturesByBoundsService = __webpack_require__(478);
 
 var _GetFeaturesByBufferParameters = __webpack_require__(252);
 
-var _GetFeaturesByBufferService = __webpack_require__(476);
+var _GetFeaturesByBufferService = __webpack_require__(477);
 
 var _GetFeaturesByGeometryParameters = __webpack_require__(251);
 
-var _GetFeaturesByGeometryService = __webpack_require__(475);
+var _GetFeaturesByGeometryService = __webpack_require__(476);
 
 var _GetFeaturesByIDsParameters = __webpack_require__(250);
 
-var _GetFeaturesByIDsService = __webpack_require__(474);
+var _GetFeaturesByIDsService = __webpack_require__(475);
 
 var _GetFeaturesBySQLParameters = __webpack_require__(249);
 
-var _GetFeaturesBySQLService = __webpack_require__(473);
+var _GetFeaturesBySQLService = __webpack_require__(474);
 
 var _GetFeaturesParametersBase = __webpack_require__(42);
 
 var _GetFeaturesServiceBase = __webpack_require__(41);
 
-var _GetFieldsService = __webpack_require__(472);
+var _GetFieldsService = __webpack_require__(473);
 
 var _GetGridCellInfosParameters = __webpack_require__(248);
 
-var _GetGridCellInfosService = __webpack_require__(471);
+var _GetGridCellInfosService = __webpack_require__(472);
 
-var _GetLayersInfoService = __webpack_require__(470);
+var _GetLayersInfoService = __webpack_require__(471);
 
 var _Grid = __webpack_require__(232);
 
@@ -94757,7 +94814,7 @@ var _Image = __webpack_require__(231);
 
 var _InterpolationAnalystParameters = __webpack_require__(33);
 
-var _InterpolationAnalystService = __webpack_require__(469);
+var _InterpolationAnalystService = __webpack_require__(470);
 
 var _InterpolationIDWAnalystParameters = __webpack_require__(228);
 
@@ -94769,7 +94826,7 @@ var _JoinItem = __webpack_require__(82);
 
 var _KernelDensityJobParameter = __webpack_require__(226);
 
-var _KernelDensityJobsService = __webpack_require__(467);
+var _KernelDensityJobsService = __webpack_require__(468);
 
 var _LabelImageCell = __webpack_require__(225);
 
@@ -94785,15 +94842,15 @@ var _LayerStatus = __webpack_require__(222);
 
 var _LinkItem = __webpack_require__(287);
 
-var _MapService = __webpack_require__(466);
+var _MapService = __webpack_require__(467);
 
 var _MathExpressionAnalysisParameters = __webpack_require__(221);
 
-var _MathExpressionAnalysisService = __webpack_require__(465);
+var _MathExpressionAnalysisService = __webpack_require__(466);
 
 var _MeasureParameters = __webpack_require__(220);
 
-var _MeasureService = __webpack_require__(464);
+var _MeasureService = __webpack_require__(465);
 
 var _NetworkAnalystServiceBase = __webpack_require__(14);
 
@@ -94803,11 +94860,11 @@ var _OverlapDisplayedOptions = __webpack_require__(233);
 
 var _OverlayAnalystParameters = __webpack_require__(119);
 
-var _OverlayAnalystService = __webpack_require__(463);
+var _OverlayAnalystService = __webpack_require__(464);
 
 var _OverlayGeoJobParameter = __webpack_require__(219);
 
-var _OverlayGeoJobsService = __webpack_require__(462);
+var _OverlayGeoJobsService = __webpack_require__(463);
 
 var _PointWithMeasure = __webpack_require__(286);
 
@@ -94815,19 +94872,19 @@ var _ProcessingServiceBase = __webpack_require__(17);
 
 var _QueryByBoundsParameters = __webpack_require__(218);
 
-var _QueryByBoundsService = __webpack_require__(461);
+var _QueryByBoundsService = __webpack_require__(462);
 
 var _QueryByDistanceParameters = __webpack_require__(217);
 
-var _QueryByDistanceService = __webpack_require__(460);
+var _QueryByDistanceService = __webpack_require__(461);
 
 var _QueryByGeometryParameters = __webpack_require__(216);
 
-var _QueryByGeometryService = __webpack_require__(459);
+var _QueryByGeometryService = __webpack_require__(460);
 
 var _QueryBySQLParameters = __webpack_require__(215);
 
-var _QueryBySQLService = __webpack_require__(458);
+var _QueryBySQLService = __webpack_require__(459);
 
 var _QueryParameters = __webpack_require__(36);
 
@@ -94837,15 +94894,15 @@ var _Route = __webpack_require__(81);
 
 var _RouteCalculateMeasureParameters = __webpack_require__(214);
 
-var _RouteCalculateMeasureService = __webpack_require__(457);
+var _RouteCalculateMeasureService = __webpack_require__(458);
 
 var _RouteLocatorParameters = __webpack_require__(213);
 
-var _RouteLocatorService = __webpack_require__(456);
+var _RouteLocatorService = __webpack_require__(457);
 
 var _ServerColor = __webpack_require__(19);
 
-var _ServerFeature = __webpack_require__(455);
+var _ServerFeature = __webpack_require__(456);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -94857,49 +94914,49 @@ var _ServerTheme = __webpack_require__(247);
 
 var _SetLayerInfoParameters = __webpack_require__(212);
 
-var _SetLayerInfoService = __webpack_require__(454);
+var _SetLayerInfoService = __webpack_require__(455);
 
 var _SetLayersInfoParameters = __webpack_require__(211);
 
-var _SetLayersInfoService = __webpack_require__(453);
+var _SetLayersInfoService = __webpack_require__(454);
 
 var _SetLayerStatusParameters = __webpack_require__(210);
 
-var _SetLayerStatusService = __webpack_require__(452);
+var _SetLayerStatusService = __webpack_require__(453);
 
 var _SingleObjectQueryJobsParameter = __webpack_require__(209);
 
-var _SingleObjectQueryJobsService = __webpack_require__(451);
+var _SingleObjectQueryJobsService = __webpack_require__(452);
 
 var _SpatialAnalystBase = __webpack_require__(10);
 
 var _StopQueryParameters = __webpack_require__(208);
 
-var _StopQueryService = __webpack_require__(450);
+var _StopQueryService = __webpack_require__(451);
 
 var _SummaryAttributesJobsParameter = __webpack_require__(207);
 
-var _SummaryAttributesJobsService = __webpack_require__(449);
+var _SummaryAttributesJobsService = __webpack_require__(450);
 
 var _SummaryMeshJobParameter = __webpack_require__(206);
 
-var _SummaryMeshJobsService = __webpack_require__(448);
+var _SummaryMeshJobsService = __webpack_require__(449);
 
 var _SummaryRegionJobParameter = __webpack_require__(205);
 
-var _SummaryRegionJobsService = __webpack_require__(447);
+var _SummaryRegionJobsService = __webpack_require__(448);
 
-var _SupplyCenter = __webpack_require__(446);
+var _SupplyCenter = __webpack_require__(447);
 
 var _SurfaceAnalystParameters = __webpack_require__(80);
 
 var _SurfaceAnalystParametersSetting = __webpack_require__(274);
 
-var _SurfaceAnalystService = __webpack_require__(445);
+var _SurfaceAnalystService = __webpack_require__(446);
 
 var _TerrainCurvatureCalculationParameters = __webpack_require__(204);
 
-var _TerrainCurvatureCalculationService = __webpack_require__(444);
+var _TerrainCurvatureCalculationService = __webpack_require__(445);
 
 var _Theme = __webpack_require__(25);
 
@@ -94939,7 +94996,7 @@ var _ThemeLabelItem = __webpack_require__(245);
 
 var _ThemeLabelText = __webpack_require__(244);
 
-var _ThemeLabelUniqueItem = __webpack_require__(443);
+var _ThemeLabelUniqueItem = __webpack_require__(444);
 
 var _ThemeMemoryData = __webpack_require__(246);
 
@@ -94951,7 +95008,7 @@ var _ThemeRange = __webpack_require__(111);
 
 var _ThemeRangeItem = __webpack_require__(235);
 
-var _ThemeService = __webpack_require__(442);
+var _ThemeService = __webpack_require__(443);
 
 var _ThemeUnique = __webpack_require__(115);
 
@@ -94959,23 +95016,23 @@ var _ThemeUniqueItem = __webpack_require__(116);
 
 var _ThiessenAnalystParameters = __webpack_require__(79);
 
-var _ThiessenAnalystService = __webpack_require__(441);
+var _ThiessenAnalystService = __webpack_require__(442);
 
-var _GeometryBatchAnalystService = __webpack_require__(440);
+var _GeometryBatchAnalystService = __webpack_require__(441);
 
-var _TilesetsService = __webpack_require__(439);
+var _TilesetsService = __webpack_require__(440);
 
 var _TopologyValidatorJobsParameter = __webpack_require__(198);
 
-var _TopologyValidatorJobsService = __webpack_require__(438);
+var _TopologyValidatorJobsService = __webpack_require__(439);
 
 var _TransferLine = __webpack_require__(197);
 
 var _TransferPathParameters = __webpack_require__(196);
 
-var _TransferPathService = __webpack_require__(437);
+var _TransferPathService = __webpack_require__(438);
 
-var _TransferSolutionService = __webpack_require__(436);
+var _TransferSolutionService = __webpack_require__(437);
 
 var _TransportationAnalystParameter = __webpack_require__(35);
 
@@ -94991,17 +95048,17 @@ var _UGCSubLayer = __webpack_require__(57);
 
 var _UpdateEdgeWeightParameters = __webpack_require__(194);
 
-var _UpdateEdgeWeightService = __webpack_require__(435);
+var _UpdateEdgeWeightService = __webpack_require__(436);
 
 var _UpdateTurnNodeWeightParameters = __webpack_require__(193);
 
-var _UpdateTurnNodeWeightService = __webpack_require__(434);
+var _UpdateTurnNodeWeightService = __webpack_require__(435);
 
 var _Vector = __webpack_require__(230);
 
 var _VectorClipJobsParameter = __webpack_require__(192);
 
-var _VectorClipJobsService = __webpack_require__(433);
+var _VectorClipJobsService = __webpack_require__(434);
 
 exports.AddressMatchService = _AddressMatchService.AddressMatchService;
 exports.AggQueryBuilderParameter = _AggQueryBuilderParameter.AggQueryBuilderParameter;
@@ -95223,7 +95280,7 @@ exports.VectorClipJobsParameter = _VectorClipJobsParameter.VectorClipJobsParamet
 exports.VectorClipJobsService = _VectorClipJobsService.VectorClipJobsService;
 
 /***/ }),
-/* 508 */
+/* 509 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -95364,7 +95421,7 @@ var IPortal = exports.IPortal = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortal = IPortal;
 
 /***/ }),
-/* 509 */
+/* 510 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -95375,7 +95432,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = undefined;
 
-var _iPortal = __webpack_require__(508);
+var _iPortal = __webpack_require__(509);
 
 var _iPortalMap = __webpack_require__(295);
 
@@ -95395,7 +95452,7 @@ exports.IPortalServiceBase = _iPortalServiceBase.IPortalServiceBase;
 exports.IPortalServicesQueryParam = _iPortalServicesQueryParam.IPortalServicesQueryParam;
 
 /***/ }),
-/* 510 */
+/* 511 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -95506,7 +95563,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 511 */
+/* 512 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -95943,7 +96000,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 512 */
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96136,7 +96193,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 513 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96324,10 +96381,10 @@ process.umask = function () {
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(124), __webpack_require__(512)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(124), __webpack_require__(513)))
 
 /***/ }),
-/* 514 */
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96382,7 +96439,7 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(513);
+__webpack_require__(514);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -96391,7 +96448,7 @@ exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || t
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(124)))
 
 /***/ }),
-/* 515 */
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96632,16 +96689,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(514).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(515).setImmediate))
 
 /***/ }),
-/* 516 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(515);
+var _promisePolyfill = __webpack_require__(516);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -96650,7 +96707,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 window.Promise = _promisePolyfill2["default"];
 
 /***/ }),
-/* 517 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96787,7 +96844,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 _SuperMap.SuperMap.iManager = IManager;
 
 /***/ }),
-/* 518 */
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96798,7 +96855,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = undefined;
 
-var _iManager = __webpack_require__(517);
+var _iManager = __webpack_require__(518);
 
 var _iManagerCreateNodeParam = __webpack_require__(299);
 
@@ -96809,7 +96866,7 @@ exports.IManagerCreateNodeParam = _iManagerCreateNodeParam.IManagerCreateNodePar
 exports.IManagerServiceBase = _iManagerServiceBase.IManagerServiceBase;
 
 /***/ }),
-/* 519 */
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97051,7 +97108,7 @@ var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
 _SuperMap.SuperMap.TimeFlowControl = TimeFlowControl;
 
 /***/ }),
-/* 520 */
+/* 521 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97060,19 +97117,20 @@ _SuperMap.SuperMap.TimeFlowControl = TimeFlowControl;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TimeFlowControl = exports.TimeControlBase = undefined;
+exports.TimeFlowControl = exports.TimeControlBase = exports.LogoBase64 = undefined;
 
-__webpack_require__(302);
+var _Logo = __webpack_require__(302);
 
 var _TimeControlBase = __webpack_require__(301);
 
-var _TimeFlowControl = __webpack_require__(519);
+var _TimeFlowControl = __webpack_require__(520);
 
+exports.LogoBase64 = _Logo.LogoBase64;
 exports.TimeControlBase = _TimeControlBase.TimeControlBase;
 exports.TimeFlowControl = _TimeFlowControl.TimeFlowControl;
 
 /***/ }),
-/* 521 */
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97454,7 +97512,7 @@ var WKT = exports.WKT = function (_Format) {
 _SuperMap.SuperMap.Format.WKT = WKT;
 
 /***/ }),
-/* 522 */
+/* 523 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97471,7 +97529,7 @@ var _GeoJSON = __webpack_require__(16);
 
 var _JSON = __webpack_require__(125);
 
-var _WKT = __webpack_require__(521);
+var _WKT = __webpack_require__(522);
 
 exports.Format = _Format.Format;
 exports.JSONFormat = _JSON.JSONFormat;
@@ -97479,7 +97537,7 @@ exports.GeoJSON = _GeoJSON.GeoJSON;
 exports.WKT = _WKT.WKT;
 
 /***/ }),
-/* 523 */
+/* 524 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97578,7 +97636,7 @@ var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
 };
 
 /***/ }),
-/* 524 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97624,7 +97682,7 @@ exports.Polygon = _Polygon.Polygon;
 exports.Rectangle = _Rectangle.Rectangle;
 
 /***/ }),
-/* 525 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97635,7 +97693,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = undefined;
 
-var _index = __webpack_require__(524);
+var _index = __webpack_require__(525);
 
 var _BaseTypes = __webpack_require__(62);
 
@@ -97643,7 +97701,7 @@ var _Bounds = __webpack_require__(26);
 
 var _Credential = __webpack_require__(127);
 
-var _Date = __webpack_require__(523);
+var _Date = __webpack_require__(524);
 
 var _Event = __webpack_require__(304);
 
@@ -97692,7 +97750,7 @@ exports.CommonUtil = _Util.Util;
 exports.GeometryVector = _Vector.Vector;
 
 /***/ }),
-/* 526 */
+/* 527 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97708,15 +97766,15 @@ exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParamete
 
 var _iclientCommon = __webpack_require__(5);
 
-var _control = __webpack_require__(400);
+var _control = __webpack_require__(401);
 
-var _core = __webpack_require__(354);
+var _core = __webpack_require__(355);
 
-var _mapping = __webpack_require__(353);
+var _mapping = __webpack_require__(354);
 
-var _overlay = __webpack_require__(348);
+var _overlay = __webpack_require__(349);
 
-var _services = __webpack_require__(320);
+var _services = __webpack_require__(322);
 
 exports.SuperMap = _iclientCommon.SuperMap;
 exports.DataFormat = _iclientCommon.DataFormat;
@@ -98070,19 +98128,27 @@ exports.TrafficTransferAnalystService = _services.TrafficTransferAnalystService;
 exports.trafficTransferAnalystService = _services.trafficTransferAnalystService;
 
 /***/ }),
-/* 527 */
+/* 528 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(527);
+module.exports = __webpack_require__(308);
+
+
+/***/ }),
+/* 529 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 528 */,
-/* 529 */,
 /* 530 */,
 /* 531 */,
 /* 532 */,
 /* 533 */,
-/* 534 */
+/* 534 */,
+/* 535 */,
+/* 536 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

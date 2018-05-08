@@ -13,21 +13,48 @@ import {
     CommonUtil as Util,
     GetFeaturesBySQLParameters
 } from '@supermap/iclient-common';
-import { CartoCSSToLeaflet } from '../overlay/carto/CartoCSSToLeaflet';
-import { NonEarthCRS } from "../core/NonEarthCRS";
-import { Graphic } from '../overlay/graphic/Graphic';
-import { baiduTileLayer } from './BaiduTileLayer';
-import { wmtsLayer } from './TileLayer.WMTS';
-import { cloudTileLayer } from './CloudTileLayer';
-import { tiledMapLayer } from './TiledMapLayer';
-import { UniqueThemeLayer } from "../overlay/UniqueThemeLayer";
-import { RangeThemeLayer } from "../overlay/RangeThemeLayer";
-import { LabelThemeLayer } from "../overlay/LabelThemeLayer";
-import { featureService } from "../services/FeatureService";
-import { ThemeFeature } from '../overlay/theme/ThemeFeature';
-import { UnicodeMarker } from '../overlay/UnicodeMarker';
-import { TiandituTileLayer } from '../mapping/TiandituTileLayer';
-import "@supermap/iclient-common/style/supermapol-icons.css";
+import {
+    CartoCSSToLeaflet
+} from '../overlay/carto/CartoCSSToLeaflet';
+import {
+    NonEarthCRS
+} from "../core/NonEarthCRS";
+import {
+    Graphic
+} from '../overlay/graphic/Graphic';
+import {
+    baiduTileLayer
+} from './BaiduTileLayer';
+import {
+    wmtsLayer
+} from './TileLayer.WMTS';
+import {
+    cloudTileLayer
+} from './CloudTileLayer';
+import {
+    tiledMapLayer
+} from './TiledMapLayer';
+import {
+    UniqueThemeLayer
+} from "../overlay/UniqueThemeLayer";
+import {
+    RangeThemeLayer
+} from "../overlay/RangeThemeLayer";
+import {
+    LabelThemeLayer
+} from "../overlay/LabelThemeLayer";
+import {
+    featureService
+} from "../services/FeatureService";
+import {
+    ThemeFeature
+} from '../overlay/theme/ThemeFeature';
+import {
+    UnicodeMarker
+} from '../overlay/UnicodeMarker';
+import {
+    TiandituTileLayer
+} from '../mapping/TiandituTileLayer';
 
 /**
  * @class L.supermap.webmap
@@ -68,6 +95,9 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     initialize: function (id, options) {
+        if (!id && !options) {
+            return;
+        }
         this._layers = {};
         L.setOptions(this, options);
         this.id = id;
@@ -159,7 +189,9 @@ export var WebMap = L.LayerGroup.extend({
             }
             this.createLayer(type, layerInfo);
         }
-        this.fire('mapLoaded', { map: this._map });
+        this.fire('mapLoaded', {
+            map: this._map
+        });
     },
 
     /**
@@ -192,12 +224,11 @@ export var WebMap = L.LayerGroup.extend({
             epsgCode = 4326
             //todo 火星
         }
-        return L.Proj.CRS("EPSG:" + epsgCode,
-            {
-                origin: origin,
-                resolutions: resolutions,
-                bounds: bounds
-            })
+        return L.Proj.CRS("EPSG:" + epsgCode, {
+            origin: origin,
+            resolutions: resolutions,
+            bounds: bounds
+        })
     },
 
     /**
@@ -218,9 +249,13 @@ export var WebMap = L.LayerGroup.extend({
             renderer: L.canvas()
         });
         if (crs instanceof NonEarthCRS) {
-            this._map.setZoom(options.zoom ? options.zoom + 2 : 2, { maxZoom: options.maxZoom || 22 });
+            this._map.setZoom(options.zoom ? options.zoom + 2 : 2, {
+                maxZoom: options.maxZoom || 22
+            });
         } else {
-            this._map.fitBounds(bounds, { maxZoom: options.maxZoom || 22 });
+            this._map.fitBounds(bounds, {
+                maxZoom: options.maxZoom || 22
+            });
         }
     },
 
@@ -315,7 +350,9 @@ export var WebMap = L.LayerGroup.extend({
                 mapOptions.crs = L.CRS.EPSG3857;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
-                layer = cloudTileLayer(layerInfo.url, { opacity: opacity });
+                layer = cloudTileLayer(layerInfo.url, {
+                    opacity: opacity
+                });
                 break;
             case "MARKER_LAYER":
                 layer = this.createMarkersLayer(layerInfo, crs);
@@ -384,7 +421,8 @@ export var WebMap = L.LayerGroup.extend({
                 };
                 return m;
             },
-            coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
+            coordsToLatLng: coordsToLatLng,
+            style: function (geoJsonFeature) {
                 return that.cartoCSSToLeaflet.getStyleFromiPortalMarker(geoJsonFeature.properties.icon);
             }
         });
@@ -443,7 +481,8 @@ export var WebMap = L.LayerGroup.extend({
                     }
                     return m;
                 },
-                coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
+                coordsToLatLng: coordsToLatLng,
+                style: function (geoJsonFeature) {
                     let lStyle = me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
                     if (lStyle.dashArray && lStyle.dashArray.length == 0) {
                         lStyle.dashArray = null;
@@ -496,7 +535,9 @@ export var WebMap = L.LayerGroup.extend({
                 name: datasetName + "@" + datasourceName,
                 attributeFilter: filter
             },
-            datasetNames: [datasourceName + ":" + datasetName]
+            datasetNames: [datasourceName + ":" + datasetName],
+            fromIndex: 0,
+            toIndex: 100000
         });
         featureService(url).getFeaturesBySQL(sqlParam, callback, format);
     },
@@ -538,17 +579,15 @@ export var WebMap = L.LayerGroup.extend({
         return layer;
     },
     createBaseThemeLayer: function (layerInfo, themeSettings) {
-        let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+        let style = layerInfo.style,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType,
             featureStyle = style.pointStyle;
         if (vectorType === "LINE") {
             featureStyle.fill = false;
         } else {
             featureStyle.fill = true;
         }
-        var coordsToLatLng = (coords) => {
-            var ll = this._map.options.crs.unproject(L.point(coords[0], coords[1]));
-            return new L.LatLng(ll.lat, ll.lng, coords[2]);
-        };
         var pointStyle = {};
         pointStyle.radius = featureStyle.pointRadius;
         pointStyle.color = featureStyle.strokeColor;
@@ -565,17 +604,23 @@ export var WebMap = L.LayerGroup.extend({
                 return new UnicodeMarker(latlng, featureStyle)
             }
         }
-        return L.geoJSON({ type: "GeometryCollection", geometries: [] }, {
+        return L.geoJSON({
+            type: "GeometryCollection",
+            geometries: []
+        }, {
             pointToLayer: pointToLayer,
-            coordsToLatLng: coordsToLatLng,
             opacity: opacity
         });
         //this.registerVectorEvent(vector);
     },
     createUniqueLayer: function (layerInfo, themeSettings) {
         var title = layerInfo.title;
-        var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
-            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType;
+        var themeField = themeSettings.field,
+            styleGroups = [],
+            settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType;
         //组成styleGroup
         for (var i = 0; i < settings.length; i++) {
             var object = {};
@@ -606,8 +651,12 @@ export var WebMap = L.LayerGroup.extend({
     },
     createRangeLayer: function (layerInfo, themeSettings) {
         var title = layerInfo.title;
-        var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
-            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+        var themeField = themeSettings.field,
+            styleGroups = [],
+            settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType,
             featureStyle = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             featureStyle.fill = false;
@@ -635,7 +684,8 @@ export var WebMap = L.LayerGroup.extend({
     },
     createLabelLayer: function (layerInfo, themeSettings) {
         var title = layerInfo.title;
-        var labelField = themeSettings.labelField, settings = themeSettings.settings,
+        var labelField = themeSettings.labelField,
+            settings = themeSettings.settings,
             isVisible = layerInfo.isVisible;
 
         //目前只是同一样式
@@ -672,7 +722,8 @@ export var WebMap = L.LayerGroup.extend({
     },
     createHeatLayer: function (layerInfo, themeSettings) {
         let colors = themeSettings.colors || ['blue', 'cyan', 'lime', 'yellow', 'red'];
-        let gradient = {}, featureWeight;
+        let gradient = {},
+            featureWeight;
         for (let i = 0, len = colors.length, index = 1; i < len; i++) {
             gradient[index / len] = colors[i];
             index++;
@@ -706,19 +757,24 @@ export var WebMap = L.LayerGroup.extend({
             var isAddFile = this.getCartoCSS2Obj(cartoCSS).isAddFile;
         }
 
-        var url = layerInfo.url, subLayers, subLayer, layerName, credential = layerInfo.credential,
-            themeSettings = layerInfo.themeSettings, filter = themeSettings.filter;
+        var url = layerInfo.url,
+            subLayers, subLayer, layerName, credential = layerInfo.credential,
+            themeSettings = layerInfo.themeSettings,
+            filter = themeSettings.filter;
 
         if (isAddFile) {
             var position = JSON.parse(layerInfo.datasourceName);
             var sql = this.getSQLFromFilter(filter);
             if (url) {
                 this.getFeatureFromFileAdded(layerInfo, function (data) {
-                    var sFeaturesArr = [], features, result;
+                    var sFeaturesArr = [],
+                        features, result;
                     if (data.type === 'EXCEL' || data.type === 'CSV') {
                         features = me.parseFeatureFromEXCEL.apply(me, [data.content.rows, data.content.colTitles, false, position]);
                         for (var x = 0, len = features.length; x < len; x++) {
-                            result = jsonsql({ attr: features[x].attributes }, sql);
+                            result = jsonsql({
+                                attr: features[x].attributes
+                            }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[x])
                             }
@@ -726,7 +782,9 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         features = me.parseFeatureFromJson(data.content);
                         for (var i = 0, length = features.length; i < length; i++) {
-                            result = jsonsql({ attr: features[i].attributes }, sql);
+                            result = jsonsql({
+                                attr: features[i].attributes
+                            }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[i]);
                             }
@@ -741,13 +799,15 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () {
-                });
+                }, function () {});
             } else {
-                var newFeautures = [], features = layerInfo.features;
+                var newFeautures = [],
+                    features = layerInfo.features;
                 for (var i = 0, len = features.length; i < len; i++) {
                     var feature = features[i];
-                    var sqlResult = jsonsql({ attr: feature.attributes }, sql);
+                    var sqlResult = jsonsql({
+                        attr: feature.attributes
+                    }, sql);
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
@@ -768,14 +828,15 @@ export var WebMap = L.LayerGroup.extend({
             }
             layerName = subLayer && subLayer.name;
             this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, DataFormat.ISERVER, (getFeaturesEventArgs) => {
-                var features, feature, result = getFeaturesEventArgs.result, addedFeatures = [];
+                var features, feature, result = getFeaturesEventArgs.result,
+                    addedFeatures = [];
                 if (result && result.features) {
                     features = result.features;
                     for (var fi = 0, felen = features.length; fi < felen; fi++) {
                         feature = new ServerFeature.fromJson(features[fi]).toFeature();
                         addedFeatures.push(feature);
                     }
-                    var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
+                    var newEpsgCode = '4326',
                         oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
 
                     if (needTransform) {
@@ -797,7 +858,7 @@ export var WebMap = L.LayerGroup.extend({
             layerName = subLayer && subLayer.name;
             var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
             this.getFeaturesBySQL(url, credential, layerName, filter, DataFormat.ISERVER, function (features) {
-                var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
+                var newEpsgCode = '4326';
                 if (needTransform) {
                     me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {
                         addFeatures(features);
@@ -816,7 +877,7 @@ export var WebMap = L.LayerGroup.extend({
                 var heatPoints = [];
                 for (let i = 0, len = features.length; i < len; i++) {
                     let geometry = features[i].geometry;
-                    heatPoints[i] = me._map.options.crs.unproject(L.point(geometry.x, geometry.y));
+                    heatPoints[i] = L.latLng(geometry.y, geometry.x);
                     if (layer.options.featureWeight) {
                         heatPoints[i] = [heatPoints[i].lat, heatPoints[i].lng, parseFloat(features[i].attributes[layer.options.featureWeight])];
                     }
@@ -842,7 +903,8 @@ export var WebMap = L.LayerGroup.extend({
         var themeField = themeSettings.labelField;
 
         var style = layer.style;
-        var labelFeatures = [], lngLat;
+        var labelFeatures = [],
+            lngLat;
         var styleInfo = layerInfo.styleString && JSON.parse(layerInfo.styleString);
         for (var i = 0; i < features.length; i++) {
             lngLat = this.getLabelLngLat(themeSettings.vectorType, features[i]);
@@ -900,7 +962,8 @@ export var WebMap = L.LayerGroup.extend({
         return lngLat;
     },
     changeFeatureLayerEpsgCode: function (oldEpsgCode, newEpsgCode, layer, features, success) {
-        var me = this, i, len;
+        var me = this,
+            i, len;
         var points = [];
         if (!oldEpsgCode || !newEpsgCode) {
             return;
@@ -915,9 +978,11 @@ export var WebMap = L.LayerGroup.extend({
             oldEpsgCode = 'EPSG:' + oldEpsgCode, newEpsgCode = 'EPSG:' + newEpsgCode;
             me.coordsTransform(oldEpsgCode, newEpsgCode, points, function (layer, features) {
                 return function (newCoors) {
-                    var start = 0, len = newCoors.length;
+                    var start = 0,
+                        len = newCoors.length;
                     for (i = start; i < len; i++) {
-                        var point = points[i], coor = newCoors[i];
+                        var point = points[i],
+                            coor = newCoors[i];
                         point.x = coor.x;
                         point.y = coor.y;
                         point.calculateBounds();
@@ -953,22 +1018,30 @@ export var WebMap = L.LayerGroup.extend({
     },
     coordsTransform: function (fromEpsg, toEpsg, point, success) {
         var newCoord;
-        var from = this.SERVER_TYPE_MAP[fromEpsg], to = this.SERVER_TYPE_MAP[toEpsg];
+        var from = this.SERVER_TYPE_MAP[fromEpsg],
+            to = this.SERVER_TYPE_MAP[toEpsg];
         if (fromEpsg === toEpsg || !from || !to) {
             if (point && point.length !== undefined) {
                 newCoord = [];
                 for (var i = 0, len = point.length; i < len; i++) {
-                    var coor = { x: point[i].x, y: point[i].y };
+                    var coor = {
+                        x: point[i].x,
+                        y: point[i].y
+                    };
                     newCoord.push(coor);
                 }
             } else {
-                newCoord = { x: point.x, y: point.y };
+                newCoord = {
+                    x: point.x,
+                    y: point.y
+                };
             }
             if (success) {
                 success.call(this, newCoord);
             }
         } else {
-            var mercator = this.SERVER_TYPE_MAP['EPSG:3857'], wgs84 = this.SERVER_TYPE_MAP['EPSG:4326'];
+            var mercator = this.SERVER_TYPE_MAP['EPSG:3857'],
+                wgs84 = this.SERVER_TYPE_MAP['EPSG:4326'];
             if ((from === mercator || from === wgs84) && (to === mercator || to === wgs84)) {
                 this.projTransform(fromEpsg, toEpsg, point, success);
             } else {
@@ -986,28 +1059,43 @@ export var WebMap = L.LayerGroup.extend({
             newCoor = [];
             for (var i = 0, len = point.length; i < len; i++) {
                 var coor = proj4(fromEpsg, toEpsg, [point[i].x, point[i].y]);
-                newCoor.push({ x: coor[0], y: coor[1] });
+                newCoor.push({
+                    x: coor[0],
+                    y: coor[1]
+                });
             }
         } else {
             newCoor = proj4(fromEpsg, toEpsg, [point.x, point.y]);
-            newCoor = { x: newCoor[0], y: newCoor[1] };
+            newCoor = {
+                x: newCoor[0],
+                y: newCoor[1]
+            };
         }
         if (success) {
-            me.fire('coordconvertsuccess', { newCoor: newCoor });
+            me.fire('coordconvertsuccess', {
+                newCoor: newCoor
+            });
             success.call(me, newCoor);
         }
     },
     postTransform: function (convertType, point, success) {
-        var me = this, epsgArray = [];
+        var me = this,
+            epsgArray = [];
         if (!convertType) {
             return success.call(me, null);
         }
         if (point && point.length !== undefined) {
             for (var i = 0, len = point.length; i < len; i++) {
-                epsgArray.push({ x: point[i].x, y: point[i].y });
+                epsgArray.push({
+                    x: point[i].x,
+                    y: point[i].y
+                });
             }
         } else {
-            epsgArray = [{ x: point.x, y: point.y }];
+            epsgArray = [{
+                x: point.x,
+                y: point.y
+            }];
         }
         if (epsgArray.length === 0) {
             return success.call(me, null);
@@ -1030,7 +1118,9 @@ export var WebMap = L.LayerGroup.extend({
                         if (!point && point.length !== undefined) {
                             newCoors = newCoors[0];
                         }
-                        me.fire('coordconvertsuccess', { newCoors: newCoors });
+                        me.fire('coordconvertsuccess', {
+                            newCoors: newCoors
+                        });
                         success.call(me, newCoors);
                     }
                 }
@@ -1039,7 +1129,9 @@ export var WebMap = L.LayerGroup.extend({
                 if (!me.actived) {
                     return;
                 }
-                me.fire('coordconvertfailed', { err: err });
+                me.fire('coordconvertfailed', {
+                    err: err
+                });
             },
             scope: this
         };
@@ -1148,7 +1240,9 @@ export var WebMap = L.LayerGroup.extend({
                 return;
             }
             if (this.selectedFeature) {
-                this.fire('featureUnSelected', { feature: this.selectedFeature });
+                this.fire('featureUnSelected', {
+                    feature: this.selectedFeature
+                });
                 this.selectedFeature = null;
             }
             let feature;
@@ -1157,7 +1251,9 @@ export var WebMap = L.LayerGroup.extend({
             }
             if (feature) {
                 this.selectedFeature = feature;
-                this.fire('featureSelected', { feature: feature });
+                this.fire('featureSelected', {
+                    feature: feature
+                });
             }
         });
         themeLayer.on('mousemove', evt => {
@@ -1170,7 +1266,9 @@ export var WebMap = L.LayerGroup.extend({
                     feature = themeLayer.getFeatureById(evt.target.refDataID);
                 }
                 if (feature) {
-                    this.fire('featureMousemove', { feature: feature });
+                    this.fire('featureMousemove', {
+                        feature: feature
+                    });
                 }
 
             }

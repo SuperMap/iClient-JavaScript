@@ -1,5 +1,4 @@
 import L from "leaflet";
-import {experimental, ScatterplotLayer} from "deck.gl";
 
 const emptyFunc = L.Util.falseFn;
 /**
@@ -164,7 +163,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
                 _self.options.onHover.apply(_self, arguments)
             };
         }
-        me._renderLayer = new ScatterplotLayer(innerLayerOptions);
+        me._renderLayer = new window.DeckGL.ScatterplotLayer(innerLayerOptions);
     },
 
     _getLayerDefaultStyle: function () {
@@ -212,7 +211,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
         deckOptions.onBeforeRender = this._onBeforeRender.bind(this);
         deckOptions.onAfterRender = this._onAfterRender.bind(this);
         if (!this.deckGL) {
-            this.deckGL = new experimental.DeckGLJS(deckOptions);
+            this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         } else {
             this.deckGL.setProps(deckOptions);
         }

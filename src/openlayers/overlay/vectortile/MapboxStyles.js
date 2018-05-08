@@ -1,8 +1,4 @@
 import ol from 'openlayers';
-import applyStyleFunction from 'ol-mapbox-style/stylefunction';
-import {
-    applyBackground
-} from 'ol-mapbox-style';
 import {
     FetchRequest
 } from "@supermap/iclient-common";
@@ -99,9 +95,9 @@ export class MapboxStyles extends ol.Observable {
     }
     _createStyleFunction(mbStyle, spriteData, spriteImageUrl) {
         if (this.map) {
-            applyBackground(this.map, mbStyle);
+            window.olms.applyBackground(this.map, mbStyle);
         }
-        this.featureStyleFuntion = applyStyleFunction({
+        this.featureStyleFuntion = window.olms.stylefunction({
             setStyle: function () {},
             set: function () {},
             changed: function () {}

@@ -22,7 +22,6 @@ import {Unique as UniqueThemeSource} from "../overlay/Unique";
 import {Range as RangeThemeSource} from "../overlay/Range";
 import {Label as LabelThemeSource} from "../overlay/Label";
 import {Logo} from '../control/Logo';
-import "@supermap/iclient-common/style/supermapol-icons.css";
 
 ol.supermap = ol.supermap || {};
 

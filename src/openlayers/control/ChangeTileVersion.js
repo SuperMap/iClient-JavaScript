@@ -1,4 +1,3 @@
-import './css/ChangeTileVersion.css';
 import ol from 'openlayers';
 import {MapService} from "../services/MapService"
 
