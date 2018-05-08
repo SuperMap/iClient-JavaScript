@@ -1162,7 +1162,7 @@ _SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OutputType = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
+exports.AggregationQueryBuilderType = exports.AggregationType = exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OutputType = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -2246,6 +2246,30 @@ var TopologyValidatorRule = exports.TopologyValidatorRule = _SuperMap.SuperMap.T
   POINTNOIDENTICAL: "POINTNOIDENTICAL"
 };
 
+/**
+ * @name AggregationType
+ * @memberOf SuperMap
+ * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
+ *
+ * @property {string} GEOHASH_GRID  geohash_grid
+ * @property {string} FILTER  filter
+ */
+var AggregationType = exports.AggregationType = _SuperMap.SuperMap.AggregationType = {
+  GEOHASH_GRID: "geohash_grid",
+  FILTER: "filter"
+};
+
+/**
+ * @name AggregationType
+ * @memberOf SuperMap
+ * @description  聚合查询中filter查询枚举类
+ *
+ * @property {string} GEO_BOUNDING_BOX  geo_bounding_box
+ */
+var AggregationQueryBuilderType = exports.AggregationQueryBuilderType = _SuperMap.SuperMap.AggregationQueryBuilderType = {
+  GEO_BOUNDING_BOX: "geo_bounding_box"
+};
+
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2573,13 +2597,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.CommonServiceBase
- * @category  iServer 
+ * @category  iServer
  * @classdesc 对接iServer各种服务的Service的基类。
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        withCredentials - {boolean} 请求是否携带cookie,默认为true。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
@@ -2617,6 +2642,8 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         this._processFailed = null;
 
         this.isInTheSameDomain = null;
+
+        this.withCredentials = true;
 
         if (_Util.Util.isArray(url)) {
             me.urls = url;
@@ -2700,6 +2727,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
          *        failure - {function} 请求失败后的回调函数。<br>
          *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
          *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
+         *        withCredentials - {boolean} 请求是否携带cookie。<br>
          */
 
     }, {
@@ -2708,6 +2736,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
             var me = this;
             options.url = options.url || me.url;
             options.proxy = options.proxy || me.proxy;
+            options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
             options.isInTheSameDomain = me.isInTheSameDomain;
             //为url添加安全认证信息片段
             var credential = this.getCredential(options.url);

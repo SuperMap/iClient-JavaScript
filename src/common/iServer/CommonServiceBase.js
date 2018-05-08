@@ -10,13 +10,14 @@ import {FunctionExt} from '../commontypes/BaseTypes';
 
 /**
  * @class SuperMap.CommonServiceBase
- * @category  iServer 
+ * @category  iServer
  * @classdesc 对接iServer各种服务的Service的基类。
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        withCredentials - {boolean} 请求是否携带cookie,默认为true。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export class CommonServiceBase {
@@ -53,6 +54,8 @@ export class CommonServiceBase {
         this._processFailed = null;
 
         this.isInTheSameDomain = null;
+
+        this.withCredentials = true;
 
         if (Util.isArray(url)) {
             me.urls = url;
@@ -132,11 +135,13 @@ export class CommonServiceBase {
      *        failure - {function} 请求失败后的回调函数。<br>
      *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
      *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
+     *        withCredentials - {boolean} 请求是否携带cookie。<br>
      */
     request(options) {
         let me = this;
         options.url = options.url || me.url;
         options.proxy = options.proxy || me.proxy;
+        options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
         let credential = this.getCredential(options.url);

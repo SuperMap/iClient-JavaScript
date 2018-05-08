@@ -207,6 +207,7 @@
 - 修改 `L.supermap.tiandituLayer` 显示级别多一级的问题
 - 修改 `L.supermap.mapVLayer` 在高分屏时无法选中要素的问题
 - 修改 `L.supermap.echartsLayer` 删除其他图层 `zoomend` `moveend` 事件的问题
+- 修复请求无法携带cookie问题
 
 ### for OpenLayers
 
@@ -215,6 +216,7 @@
 - 修复 `ol.source.Graphic` 在高分辨率屏下显示错位的问题
 - 修改 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 通过 `key` `token` 授权失败的问题
 - 修复 `ol.source.TileSuperMapRest` 的 `redirect` 参数默认为 `false` 但运行为 `true` 的问题
+- 修复请求无法携带cookie问题
 
 ### for MapboxGL
 
@@ -222,8 +224,11 @@
 - 修复 `mapboxgl.supermap.MapvLayer` 的 `clearData` 失败的问题
 - 修复客户端3D专题图高亮时底色穿透问题
 - 修复移除客户端3D专题图图层报错问题
+- 修复请求无法携带cookie问题
 
 ### Classic
+
+- 修复请求无法携带cookie问题
 
 ## Examples
 
