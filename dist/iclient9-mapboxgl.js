@@ -2340,7 +2340,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为true。<br>
+ *        withCredentials - {boolean} 请求是否携带cookie,默认为false。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
@@ -2379,7 +2379,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
 
         this.isInTheSameDomain = null;
 
-        this.withCredentials = true;
+        this.withCredentials = false;
 
         if (_Util.Util.isArray(url)) {
             me.urls = url;
@@ -3175,6 +3175,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 可选参数。如：<br>
  *        proxy - {string} 服务代理地址<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ *        withCredentials - {boolean} 请求是否携带cookie,默认为false
  */
 var ServiceBase = exports.ServiceBase = function (_mapboxgl$Evented) {
     _inherits(ServiceBase, _mapboxgl$Evented);
@@ -52685,6 +52686,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
             var me = this;
             var stopQueryService = new _iclientCommon.StopQueryService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -52708,6 +52710,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
             var me = this;
             var transferPathService = new _iclientCommon.TransferPathService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -52731,6 +52734,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
             var me = this;
             var transferSolutionService = new _iclientCommon.TransferSolutionService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -52838,6 +52842,7 @@ var ThemeService = exports.ThemeService = function (_ServiceBase) {
             var me = this;
             var themeService = new _iclientCommon.ThemeService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -52925,6 +52930,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var areaSolarRadiationService = new _iclientCommon.AreaSolarRadiationService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -52950,6 +52956,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var bufferAnalystService = new _iclientCommon.BufferAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -52975,6 +52982,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var densityAnalystService = new _iclientCommon.DensityAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53000,6 +53008,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var generateSpatialDataService = new _iclientCommon.GenerateSpatialDataService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53025,6 +53034,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var geoRelationAnalystService = new _iclientCommon.GeoRelationAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53050,6 +53060,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var interpolationAnalystService = new _iclientCommon.InterpolationAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53075,6 +53086,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var mathExpressionAnalysisService = new _iclientCommon.MathExpressionAnalysisService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53100,6 +53112,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var overlayAnalystService = new _iclientCommon.OverlayAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53125,6 +53138,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var routeCalculateMeasureService = new _iclientCommon.RouteCalculateMeasureService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53150,6 +53164,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var routeLocatorService = new _iclientCommon.RouteLocatorService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53175,6 +53190,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var surfaceAnalystService = new _iclientCommon.SurfaceAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53200,6 +53216,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var terrainCurvatureCalculationService = new _iclientCommon.TerrainCurvatureCalculationService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53225,6 +53242,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
             var me = this;
             var thiessenAnalystService = new _iclientCommon.ThiessenAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53466,6 +53484,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
             var me = this;
             var queryService = new _iclientCommon.QueryByBoundsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53493,6 +53512,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
             var me = this;
             var queryByDistanceService = new _iclientCommon.QueryByDistanceService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53519,6 +53539,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
             var me = this;
             var queryBySQLService = new _iclientCommon.QueryBySQLService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53545,6 +53566,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
             var me = this;
             var queryByGeometryService = new _iclientCommon.QueryByGeometryService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53687,6 +53709,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _iclientCommon.KernelDensityJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53713,6 +53736,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _iclientCommon.KernelDensityJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53740,7 +53764,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _iclientCommon.KernelDensityJobsService(me.url, {
-                proxy: me.proxy,
+                proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -53781,6 +53806,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _iclientCommon.SummaryMeshJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53807,6 +53833,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _iclientCommon.SummaryMeshJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53834,7 +53861,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _iclientCommon.SummaryMeshJobsService(me.url, {
-                proxy: me.proxy,
+                proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -53875,6 +53903,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _iclientCommon.SingleObjectQueryJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53901,6 +53930,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _iclientCommon.SingleObjectQueryJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53928,7 +53958,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _iclientCommon.SingleObjectQueryJobsService(me.url, {
-                proxy: me.proxy,
+                proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -53969,6 +54000,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _iclientCommon.SummaryRegionJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -53995,6 +54027,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _iclientCommon.SummaryRegionJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54022,7 +54055,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _iclientCommon.SummaryRegionJobsService(me.url, {
-                proxy: me.proxy,
+                proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -54063,6 +54097,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _iclientCommon.VectorClipJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54089,6 +54124,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _iclientCommon.VectorClipJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54117,6 +54153,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _iclientCommon.VectorClipJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54158,6 +54195,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _iclientCommon.OverlayGeoJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54184,6 +54222,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _iclientCommon.OverlayGeoJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54212,6 +54251,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var overlayGeoJobsService = new _iclientCommon.OverlayGeoJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54253,6 +54293,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _iclientCommon.BuffersAnalystJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54279,6 +54320,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _iclientCommon.BuffersAnalystJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54307,6 +54349,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var buffersAnalystJobsService = new _iclientCommon.BuffersAnalystJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54348,6 +54391,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _iclientCommon.TopologyValidatorJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54374,6 +54418,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _iclientCommon.TopologyValidatorJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54402,6 +54447,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var topologyValidatorJobsService = new _iclientCommon.TopologyValidatorJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54443,6 +54489,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _iclientCommon.SummaryAttributesJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54469,6 +54516,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _iclientCommon.SummaryAttributesJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54497,6 +54545,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var summaryAttributesJobsService = new _iclientCommon.SummaryAttributesJobsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54628,6 +54677,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
             var me = this;
             var facilityAnalystSinks3DService = new _iclientCommon.FacilityAnalystSinks3DService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54652,6 +54702,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
             var me = this;
             var facilityAnalystSources3DService = new _iclientCommon.FacilityAnalystSources3DService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54676,6 +54727,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
             var me = this;
             var facilityAnalystTraceup3DService = new _iclientCommon.FacilityAnalystTraceup3DService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54700,6 +54752,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
             var me = this;
             var facilityAnalystTracedown3DService = new _iclientCommon.FacilityAnalystTracedown3DService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54724,6 +54777,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
             var me = this;
             var facilityAnalystUpstream3DService = new _iclientCommon.FacilityAnalystUpstream3DService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54813,6 +54867,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var burstPipelineAnalystService = new _iclientCommon.BurstPipelineAnalystService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54836,6 +54891,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var computeWeightMatrixService = new _iclientCommon.ComputeWeightMatrixService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54860,6 +54916,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var findClosestFacilitiesService = new _iclientCommon.FindClosestFacilitiesService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54885,6 +54942,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var facilityAnalystStreamService = new _iclientCommon.FacilityAnalystStreamService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54910,6 +54968,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var findLocationService = new _iclientCommon.FindLocationService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54935,6 +54994,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var findPathService = new _iclientCommon.FindPathService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54960,6 +55020,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var findTSPPathsService = new _iclientCommon.FindTSPPathsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -54985,6 +55046,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var findMTSPPathsService = new _iclientCommon.FindMTSPPathsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55010,6 +55072,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var findServiceAreasService = new _iclientCommon.FindServiceAreasService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55034,6 +55097,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var updateEdgeWeightService = new _iclientCommon.UpdateEdgeWeightService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55057,6 +55121,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             var me = this;
             var updateTurnNodeWeightService = new _iclientCommon.UpdateTurnNodeWeightService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55248,6 +55313,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
             var me = this;
             var measureService = new _iclientCommon.MeasureService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 measureMode: type,
                 eventListeners: {
@@ -55343,6 +55409,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
             var me = this;
             var getMapStatusService = new _iclientCommon.MapService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55366,6 +55433,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
             var me = this;
             var tilesetsService = new _iclientCommon.TilesetsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55451,6 +55519,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
             var me = this;
             var getLayersInfoService = new _iclientCommon.GetLayersInfoService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55484,6 +55553,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
             url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
             var setLayerInfoService = new _iclientCommon.SetLayerInfoService(url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55515,6 +55585,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
             }
             var setLayersInfoService = new _iclientCommon.SetLayersInfoService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55542,6 +55613,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
             var me = this;
             var setLayerStatusService = new _iclientCommon.SetLayerStatusService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55631,6 +55703,7 @@ var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase
             var me = this;
             var gridCellQueryService = new _iclientCommon.GetGridCellInfosService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55716,6 +55789,7 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
             var me = this;
             var getFieldsService = new _iclientCommon.GetFieldsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -55869,6 +55943,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             var me = this;
             var getFeaturesByIDsService = new _iclientCommon.GetFeaturesByIDsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55893,6 +55968,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             var me = this;
             var getFeaturesByBoundsService = new _iclientCommon.GetFeaturesByBoundsService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55917,6 +55993,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             var me = this;
             var getFeatureService = new _iclientCommon.GetFeaturesByBufferService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55941,6 +56018,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             var me = this;
             var getFeatureBySQLService = new _iclientCommon.GetFeaturesBySQLService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55966,6 +56044,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             var me = this;
             var getFeaturesByGeometryService = new _iclientCommon.GetFeaturesByGeometryService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -55997,6 +56076,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
             var editFeatureService = new _iclientCommon.EditFeaturesService(url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
@@ -56338,6 +56418,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
                 format = me._processFormat(resultFormat);
             var chartQueryService = new _iclientCommon.ChartQueryService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56364,6 +56445,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
             url += "/chartFeatureInfoSpecs";
             var chartFeatureInfoSpecsService = new _iclientCommon.ChartFeatureInfoSpecsService(url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56474,6 +56556,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
             var me = this;
             var addressMatchService = new _iclientCommon.AddressMatchService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
@@ -56497,6 +56580,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
             var me = this;
             var addressMatchService = new _iclientCommon.AddressMatchService(me.url, {
                 proxy: me.options.proxy,
+                withCredentials: me.options.withCredentials,
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,

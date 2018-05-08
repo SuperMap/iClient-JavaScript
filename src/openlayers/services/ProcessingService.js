@@ -53,6 +53,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -76,6 +77,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -135,6 +137,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -158,6 +161,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -217,6 +221,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -240,6 +245,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -299,6 +305,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -322,6 +329,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -381,6 +389,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -404,6 +413,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -429,6 +439,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -464,6 +475,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -487,6 +499,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -512,6 +525,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -547,6 +561,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -570,6 +585,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -595,6 +611,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -630,6 +647,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -653,6 +671,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -678,6 +697,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -713,6 +733,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -736,6 +757,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -761,6 +783,7 @@ export class ProcessingService extends ServiceBase {
             format = me._processFormat(resultFormat);
         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

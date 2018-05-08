@@ -49,6 +49,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var burstPipelineAnalystService = new BurstPipelineAnalystService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -69,6 +70,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var computeWeightMatrixService = new ComputeWeightMatrixService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -90,6 +92,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var findClosestFacilitiesService = new FindClosestFacilitiesService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -112,6 +115,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var facilityAnalystStreamService = new FacilityAnalystStreamService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -134,6 +138,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var findLocationService = new FindLocationService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -156,6 +161,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var findPathService = new FindPathService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -178,6 +184,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var findTSPPathsService = new FindTSPPathsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -200,6 +207,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var findMTSPPathsService = new FindMTSPPathsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -222,6 +230,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var findServiceAreasService = new FindServiceAreasService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -243,6 +252,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var updateEdgeWeightService = new UpdateEdgeWeightService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -263,6 +273,7 @@ export class NetworkAnalystService extends ServiceBase {
         var me = this;
         var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

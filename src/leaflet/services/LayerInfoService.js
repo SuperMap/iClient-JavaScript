@@ -40,6 +40,7 @@ export var LayerInfoService = ServiceBase.extend({
         var me = this;
         var getLayersInfoService = new GetLayersInfoService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -71,6 +72,7 @@ export var LayerInfoService = ServiceBase.extend({
 
         var setLayerInfoService = new SetLayerInfoService(url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -101,6 +103,7 @@ export var LayerInfoService = ServiceBase.extend({
         }
         var setLayersInfoService = new SetLayersInfoService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -127,6 +130,7 @@ export var LayerInfoService = ServiceBase.extend({
         var me = this;
         var setLayerStatusService = new SetLayerStatusService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

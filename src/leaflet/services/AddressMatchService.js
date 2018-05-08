@@ -34,6 +34,7 @@ export var AddressMatchService = ServiceBase.extend({
         var me = this;
         var addressMatchService = new CommonMatchAddressService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -54,6 +55,7 @@ export var AddressMatchService = ServiceBase.extend({
         var me = this;
         var addressMatchService = new CommonMatchAddressService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

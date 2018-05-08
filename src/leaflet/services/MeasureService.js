@@ -66,6 +66,7 @@ export var MeasureService = ServiceBase.extend({
         }
         var measureService = new CommonMeasureService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {

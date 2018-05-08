@@ -39,6 +39,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
         var me = this;
         var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -60,6 +61,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
         var me = this;
         var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -81,6 +83,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
         var me = this;
         var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -101,6 +104,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
         var me = this;
         var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -121,6 +125,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
         var me = this;
         var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

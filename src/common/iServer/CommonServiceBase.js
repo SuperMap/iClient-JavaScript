@@ -17,7 +17,7 @@ import {FunctionExt} from '../commontypes/BaseTypes';
  *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  *        proxy - {string} 服务代理地址<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为true。<br>
+ *        withCredentials - {boolean} 请求是否携带cookie,默认为false。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export class CommonServiceBase {
@@ -55,7 +55,7 @@ export class CommonServiceBase {
 
         this.isInTheSameDomain = null;
 
-        this.withCredentials = true;
+        this.withCredentials = false;
 
         if (Util.isArray(url)) {
             me.urls = url;

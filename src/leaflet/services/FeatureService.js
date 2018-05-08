@@ -44,6 +44,7 @@ export var FeatureService = ServiceBase.extend({
         var me = this;
         var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -66,6 +67,7 @@ export var FeatureService = ServiceBase.extend({
         var me = this;
         var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -87,6 +89,7 @@ export var FeatureService = ServiceBase.extend({
         var me = this;
         var getFeatureService = new GetFeaturesByBufferService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -108,6 +111,7 @@ export var FeatureService = ServiceBase.extend({
         var me = this;
         var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -129,6 +133,7 @@ export var FeatureService = ServiceBase.extend({
         var me = this;
         var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

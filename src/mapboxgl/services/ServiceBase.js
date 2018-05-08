@@ -9,6 +9,7 @@ import '../core/Base';
  * @param options - {Object} 可选参数。如：<br>
  *        proxy - {string} 服务代理地址<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ *        withCredentials - {boolean} 请求是否携带cookie,默认为false
  */
 export class ServiceBase extends mapboxgl.Evented {
 

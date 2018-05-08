@@ -35,6 +35,7 @@ export var GridCellInfosService = ServiceBase.extend({
         var me = this;
         var gridCellQueryService = new GetGridCellInfosService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

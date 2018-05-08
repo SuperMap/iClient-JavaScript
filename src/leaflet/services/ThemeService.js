@@ -34,6 +34,7 @@ export var ThemeService = ServiceBase.extend({
         var me = this;
         var themeService = new SuperMapThemeService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

@@ -42,6 +42,7 @@ export var QueryService = ServiceBase.extend({
         var me = this;
         var queryService = new QueryByBoundsService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -65,6 +66,7 @@ export var QueryService = ServiceBase.extend({
         var me = this;
         var queryByDistanceService = new QueryByDistanceService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -88,6 +90,7 @@ export var QueryService = ServiceBase.extend({
         var me = this;
         var queryBySQLService = new QueryBySQLService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -111,6 +114,7 @@ export var QueryService = ServiceBase.extend({
         var me = this;
         var queryByGeometryService = new QueryByGeometryService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

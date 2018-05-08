@@ -33,6 +33,7 @@ export class ThemeService extends ServiceBase {
         var me = this;
         var themeService = new CommonThemeService(me.url, {
             proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
