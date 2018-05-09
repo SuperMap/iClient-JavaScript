@@ -41,7 +41,7 @@ module.exports = function (config) {
             './test-main-classic.js',
 
             /***common的源码***/
-            '../src/common/**/!(index).js',
+            '../src/common/**/*.js',
             /**测试文件**/
             './test-main-common.js',
 
@@ -81,7 +81,7 @@ module.exports = function (config) {
             './classic/**/*Spec.js': ['browserify'],
             './test-main-classic.js': ['browserify'],
 
-            '../src/common/**/!(index).js': ['browserify'],
+            '../src/common/**/*.js': ['browserify'],
             './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],
 
