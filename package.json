@@ -34,8 +34,8 @@
     "build-docs-openlayers": "jsdoc -c ./build/jsdocs/openlayers/docs.json -R ./build/jsdocs/openlayers/index.md",
     "build-docs-mapboxgl": "jsdoc -c ./build/jsdocs/mapboxgl/docs.json -R ./build/jsdocs/mapboxgl/index.md",
     "build-docs-classic": "jsdoc -c ./build/jsdocs/classic/docs.json -R ./build/jsdocs/classic/index.md",
-    "prepublish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node  ./build/publish.js --classic",
-    "publish": "npm run prepublish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../classic && npm publish"
+    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node  ./build/publish.js --classic",
+    "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../classic && npm publish"
   },
   "keywords": [
     "SuperMap",
