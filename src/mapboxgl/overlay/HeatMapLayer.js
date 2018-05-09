@@ -567,7 +567,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
      * @param visibility - {boolean} 是否显示图层（当前地图的resolution在最大最小resolution之间）。
      */
     setVisibility(visibility) {
-        if (visibility !== this.visibility) {
+        if (this.rootCanvas && visibility !== this.visibility) {
             this.visibility = visibility;
             this.rootCanvas.style.display = visibility ? "block" : "none";
         }

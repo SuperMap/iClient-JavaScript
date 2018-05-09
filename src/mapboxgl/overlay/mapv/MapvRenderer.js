@@ -1,4 +1,4 @@
-import {baiduMapLayer, DataSet} from "mapv";
+import {baiduMapLayer} from "mapv";
 import mapboxgl from 'mapbox-gl';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
@@ -37,7 +37,7 @@ export class MapvRenderer extends BaseLayer {
         this.map.on('rotatestart', this.rotateStartEvent.bind(this));
         this.map.on('rotate', this.rotateEvent.bind(this));
         this.map.on('rotateend', this.rotateEndEvent.bind(this));
-        this.map.on('dragend', this.dragEndEvent.bind(this));
+        // this.map.on('dragend', this.dragEndEvent.bind(this));
         this.map.on('movestart', this.moveStartEvent.bind(this));
         this.map.on('move', this.moveEvent.bind(this));
         this.map.on('moveend', this.moveEndEvent.bind(this));
@@ -227,10 +227,22 @@ export class MapvRenderer extends BaseLayer {
             return;
         }
 
+        var bounds = map.getBounds(),
+            dw = bounds.getEast() - bounds.getWest(),
+            dh = bounds.getNorth() - bounds.getSouth();
+        var resolutionX = dw / this.canvasLayer.canvas.width,
+            resolutionY = dh / this.canvasLayer.canvas.height;
+
+        var center = map.getCenter();
+        var centerPx = map.project(center);
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var worldPoint = map.project((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
-                return [worldPoint.x, worldPoint.y];
+                if (map.transform.rotationMatrix) {
+                    var worldPoint = map.project((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
+                    return [worldPoint.x, worldPoint.y];
+                }
+                var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
+                return [pixel[0] + centerPx.x, pixel[1] + centerPx.y];
             }
         };
 
@@ -248,7 +260,7 @@ export class MapvRenderer extends BaseLayer {
         self.options._size = self.options.size;
 
         var worldPoint = map.project(new mapboxgl.LngLat(0, 0));
-        this.drawContext(context, new DataSet(data), self.options, worldPoint);
+        this.drawContext(context, data, self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);
     }

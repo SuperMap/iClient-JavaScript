@@ -226,14 +226,36 @@ export class MapVRenderer extends BaseLayer {
             return;
         }
 
+        var bounds = map.getBounds();
+        //获取当前像素下的地理范围
+        var dw = bounds.getEast() - bounds.getWest();
+        var dh = bounds.getNorth() - bounds.getSouth();
+        var mapCanvas = map.getSize();
 
-        var offset = map.latLngToAccurateContainerPoint(this.canvasLayer.getTopLeft());
+        var resolutionX = dw / mapCanvas.x,
+            resolutionY = dh / mapCanvas.y;
+        var centerPx = map.latLngToLayerPoint(map.getCenter());
+
+        //获取屏幕左上角的地理坐标坐标
+        //左上角屏幕坐标为0,0
+        var lopLeft = this.canvasLayer.getTopLeft();
+
+        var lopLeftPX = map.latLngToAccurateContainerPoint(lopLeft);
+        // var lopLeft = map.containerPointToLatLng([0, 0]);
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var worldPoint = map.latLngToAccurateContainerPoint(L.latLng(coordinate[1], coordinate[0]));
+                var offset;
+                if (self.context === '2d') {
+                    offset = map.latLngToAccurateContainerPoint(L.latLng(coordinate[1], coordinate[0]));
+                } else {
+                    offset = {
+                        'x': (coordinate[0] - lopLeft.lng) / resolutionX,
+                        'y': (lopLeft.lat - coordinate[1]) / resolutionY
+                    };
+                }
                 var pixel = {
-                    x: worldPoint.x - offset.x,
-                    y: worldPoint.y - offset.y
+                    x: offset.x - lopLeftPX.x,
+                    y: offset.y - lopLeftPX.x
                 };
                 return [pixel.x, pixel.y];
             }
@@ -254,10 +276,10 @@ export class MapVRenderer extends BaseLayer {
 
         var worldPoint = map.latLngToContainerPoint(L.latLng(0, 0));
         var pixel = {
-            x: worldPoint.x - offset.x,
-            y: worldPoint.y - offset.y
+            x: worldPoint.x - centerPx.x,
+            y: worldPoint.y - centerPx.y
         };
-        this.drawContext(context, new DataSet(data), self.options, pixel);
+        this.drawContext(context, data, self.options, pixel);
 
         self.options.updateCallback && self.options.updateCallback(time);
     }
@@ -279,7 +301,8 @@ export class MapVRenderer extends BaseLayer {
         this.initAnimator();
     }
 
-    addAnimatorEvent() {}
+    addAnimatorEvent() {
+    }
 
     /**
      * @function L.supermap.MapVRenderer.prototype.moveStartEvent
@@ -301,6 +324,7 @@ export class MapVRenderer extends BaseLayer {
         this.canvasLayer.draw();
         this._show();
     }
+
     /**
      * @function L.supermap.MapVRenderer.prototype.zoomStartEvent
      * @description 隐藏渲染样式

@@ -4399,7 +4399,7 @@ var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
                 self.options._width = self.options.width;
             }
 
-            this.drawContext(context, new _mapv.DataSet(data), self.options, worldPoint);
+            this.drawContext(context, data, self.options, worldPoint);
 
             self.options.updateCallback && self.options.updateCallback(time);
         }

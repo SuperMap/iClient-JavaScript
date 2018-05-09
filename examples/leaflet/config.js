@@ -734,6 +734,11 @@ var exampleConfig = {
                     thumbnail: "l_mapvLayer_forceEdgeBunding.gif",
                     fileName: "mapVLayerForceEdgeBunding"
                 }, {
+                    name: "迁徙时序图",
+                    name_en: "migration",
+                    thumbnail: "l_mapvLayer_qianxitime.gif",
+                    fileName: "mapVLayerQianxiTime"
+                }, {
                     name: "迁徙图",
                     name_en: "migration",
                     thumbnail: "l_mapvLayer_qianxi.gif",
@@ -765,7 +770,7 @@ var exampleConfig = {
                     fileName: "mapVLayerPolygonBuildings"
                 }, {
                     name: "2018年2月北京房价",
-                    name_en: "Beijing house prices of Lianjia(2018.2)",
+                    name_en: "Beijing house prices(2018.2)",
                     thumbnail: "l_mapvLianjia.png",
                     fileName: "mapvLianjiaData"
                 }]

@@ -680,10 +680,15 @@ var exampleConfig = {
                     thumbnail: "mapvForceEdgeBuilding.gif",
                     fileName: "mapvForceEdgeBuilding"
                 }, {
-                    name: "迁徙图",
-                    name_en: "migration",
+                    name: "迁徙时序图",
+                    name_en: "Migration timing",
                     thumbnail: "mapvQianxiTime.gif",
                     fileName: "mapvQianxiTime"
+                }, {
+                    name: "迁徙图",
+                    name_en: "migration",
+                    thumbnail: "mapvQianxi.gif",
+                    fileName: "mapvQianxi"
                 }, {
                     name: "动态轨迹",
                     name_en: "dynamic trajectory",
@@ -700,17 +705,22 @@ var exampleConfig = {
                     thumbnail: "mapvCsvcar.png",
                     fileName: "mapvCsvcar"
                 }, {
-                    name: "北京村庄分布图",
-                    name_en: "village of beijing",
-                    thumbnail: "mapvBeijingVillage.png",
-                    fileName: "mapvBeijingVillage"
-                }, {
                     name: "简单线",
                     name_en: "simple line",
                     thumbnail: "mapvPolylineSimple.png",
                     fileName: "mapvPolylineSimple"
                 }, {
-                    name: "北京房价信息",
+                    name: "面",
+                    name_en: "simple polygon",
+                    thumbnail: "ol_mapvLayer_polygon.png",
+                    fileName: "mapvPolygon"
+                }, {
+                    name: "北京村庄分布图",
+                    name_en: "village of beijing",
+                    thumbnail: "mapvBeijingVillage.png",
+                    fileName: "mapvBeijingVillage"
+                }, {
+                    name: "2018年2月北京房价",
                     name_en: "Beijing house prices(2018.2)",
                     thumbnail: "mapvLianjia.png",
                     fileName: "mapvLianjia"

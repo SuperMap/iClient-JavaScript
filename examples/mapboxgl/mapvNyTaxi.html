@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_mapvNyvTaxi"></title>
+    <script type="text/javascript" include="jquery,widgets,dat-gui" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapv" src="../../dist/include-mapboxgl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map"></div>
+<script type="text/javascript">
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        resources.text_dataSources + "<a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2017 " + resources.title_3baidu + " MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+    var tileURL = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light/zxyTileImage.png?z={z}&x={x}&y={y}";
+    var layer,
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [tileURL],
+                        "tileSize": 256,
+                    },
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                }]
+            },
+            center: [-73.931577, 40.745654],
+            zoom: 11
+        });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    widgets.loader.showLoader();
+    $.get('../data/nyc-taxi.csv', function (csvstr) {
+        widgets.loader.removeLoader();
+        var options = {
+            size: 1.5,
+            context: 'webgl',
+            fillStyle: 'rgba(250, 50, 50, 0.8)',
+            draw: 'simple'
+        };
+        var dataSet = mapv.csv.getDataSet(csvstr);
+        dataSet.initGeometry();
+        $('#loading').hide();
+        layer = new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+        $('#loading').hide();
+        initDatGUI(layer, options);
+    });
+
+    function initDatGUI(layer, options) {
+        var gui = new dat.GUI();
+        var Control = createConfigControl();
+        map.addControl(new Control(gui.domElement), 'top-right');
+        gui.add(options, 'size', 0.1, 10).onFinishChange(finished);
+        gui.addColor(options, 'fillStyle').onChange(finished);
+
+        function finished() {
+            layer.update(options);
+        }
+    }
+
+    //创建图层操作控件
+    function createConfigControl() {
+        function ConfigControl(domElement) {
+            this.dom = domElement;
+        }
+
+        ConfigControl.prototype.onAdd = function (map) {
+            this._map = map;
+            this._container = this.dom;
+            this._container.className = 'mapboxgl-ctrl ' + this._container.className;
+            return this._container;
+        };
+
+        ConfigControl.prototype.onRemove = function () {
+            this._container.parentNode.removeChild(this._container);
+            this._map = undefined;
+        };
+        return ConfigControl;
+    }
+</script>
+</body>
+</html>

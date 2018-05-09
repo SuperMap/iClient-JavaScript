@@ -525,6 +525,18 @@ var exampleConfig = {
                 name_en: "MapV",
                 content: [
                     {
+                        name: "蜂巢图",
+                        name_en: "honeycomb",
+                        thumbnail: "mb_mapVLayer_honeycomb.png",
+                        fileName: "mapVLayerHoneycomb"
+                    },
+                    {
+                        name: "纽约出租车上车点",
+                        name_en: "NY taxi car point",
+                        thumbnail: "mb_mapVLayer_point.png",
+                        fileName: "mapvNyTaxi"
+                    },
+                    {
                         name: "通勤图",
                         name_en: "OD",
                         thumbnail: "mapvCsvcar.png",
@@ -567,10 +579,22 @@ var exampleConfig = {
                         fileName: "mapvQianxi"
                     },
                     {
+                        name: "面",
+                        name_en: "simple polygon",
+                        thumbnail: "mb_mapvLayer_polygon.png",
+                        fileName: "mapvLayerPolyon"
+                    },
+                    {
                         name: "北京村庄分布图",
                         name_en: "village of beijing",
                         thumbnail: "mapvBeijingVillage.png",
                         fileName: "mapvBeijingVillage"
+                    },
+                    {
+                        name: "2018年2月北京房价",
+                        name_en: "Beijing house prices(2018.2)",
+                        thumbnail: "mb_mapvLianjia.png",
+                        fileName: "mapvLinanJiaData"
                     }
                 ]
             },

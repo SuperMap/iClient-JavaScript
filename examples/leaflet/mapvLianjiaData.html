@@ -54,7 +54,7 @@
 <body>
 <div id="map"></div>
 <div id="titleContainer">
-    <h2 id="title" data-i18n="resources.text_lianjia_title"></h2>
+    <h2 id="title" data-i18n="resources.title_lianjia"></h2>
 </div>
 <script type="text/javascript" include="mapv" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
@@ -68,7 +68,7 @@
 
 
     map = L.map('map', {
-        center: [39.88076184888246, 116.42898559570312],
+        center: [39.954, 116.36],
         zoom: 12,
         maxZoom: 18,
         minZoom: 6
@@ -121,7 +121,7 @@
                         show: true,
                         fillStyle: 'white'
                     },
-                    globalAlpha: 0.5,
+                    globalAlpha: 0.7,
                     gradient: { // 显示的颜色渐变范围
                         '0': '#5d5dff',
                         '0.2': '#74add1',

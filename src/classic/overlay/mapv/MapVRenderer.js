@@ -267,7 +267,7 @@ export class MapVRenderer extends MapVBaseLayer {
             self.options._width = self.options.width;
         }
 
-        this.drawContext(context, new DataSet(data), self.options, worldPoint);
+        this.drawContext(context, data, self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);
     }

@@ -1,6 +1,6 @@
 import ol from 'openlayers';
 import {MapvCanvasLayer} from './MapvCanvasLayer';
-import {baiduMapLayer, DataSet} from "mapv";
+import {baiduMapLayer} from "mapv";
 
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -271,18 +271,26 @@ export class MapvLayer extends BaiduMapLayer {
             context.clear(context.COLOR_BUFFER_BIT);
         }
         var ext = map.getView().calculateExtent();
-        var topLeft = map.getPixelFromCoordinate([ext[0], ext[3]]);
+        var topLeftPx = map.getPixelFromCoordinate([ext[0], ext[3]]);
+
+        self._mapCenter = map.getView().getCenter();
+        self._mapCenterPx = map.getPixelFromCoordinate(self._mapCenter);
+        self._reselutions = map.getView().getResolution();
+        self._rotation = -map.getView().getRotation();
 
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var pixelP = map.getPixelFromCoordinate(coordinate);
-                var rotation = -map.getView().getRotation();
-                var center = map.getPixelFromCoordinate(map.getView().getCenter());
-                var scaledP = scale(pixelP, center, self.pixelRatio);
-                var rotatedP = rotate(scaledP, rotation, center);
-                // var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
-                var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
-                return result;
+                var x = (coordinate[0] - self._mapCenter[0]) / self._reselutions,
+                    y = (self._mapCenter[1] - coordinate[1]) / self._reselutions;
+                var scaledP = [x + self._mapCenterPx[0], y + self._mapCenterPx[1]];
+                scaledP = scale(scaledP, self._mapCenterPx, self.pixelRatio);
+                /*//有旋转量的时候处理旋转
+                if (self._rotation !== 0) {
+                    var rotatedP = rotate(scaledP, self._rotation, self._mapCenterPx);
+                    return [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
+                }
+                //处理放大或缩小级别*/
+                return [scaledP[0] + self.offset[0], scaledP[1] + self.offset[1]];
             }
         };
 
@@ -314,8 +322,8 @@ export class MapvLayer extends BaiduMapLayer {
         self.processData(data);
         self.options._size = self.options.size;
         var pixel = map.getPixelFromCoordinate([0, 0]);
-        pixel = [pixel[0] - topLeft[0], pixel[1] - topLeft[1]];
-        this.drawContext(context, new DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
+        pixel = [pixel[0] - topLeftPx[0], pixel[1] - topLeftPx[1]];
+        this.drawContext(context, data, self.options, {x: pixel[0], y: pixel[1]});
         if (self.isEnabledTime()) {
             this.source.changed();
         }

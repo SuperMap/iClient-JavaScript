@@ -1,23 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <script type="text/javascript" include="mapv" src="../../dist/include-openlayers.js"></script>
     <title data-i18n="resources.title_mapvQianxi"></title>
-    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+            font-size: 8pt;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" include="mapv" src="../../dist/include-leaflet.js"></script>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content" data-i18n="resources.text_iClient9"></div>
+</div>
+<script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var map = L.map('map', {
-        center: [36.64, 108.15],
-        zoom: 5,
-    });
+    var container = document.getElementById('popup');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay(({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+    closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
 
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [113.2, 37.82],
+            zoom: 5,
+            projection: 'EPSG:4326'
+        }),
+        layers: [new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: url,
+                prjCoordSys: {"epsgCode": 4326},
+                attributions: new ol.Attribution({
+                    html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
+                }),
+            }),
+            projection: 'EPSG:4326'
+        })]
+    });
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    overlay.setPosition(map.getView().getCenter());
 
     $.get('../data/china.json', function (geojson) {
 
@@ -94,7 +180,7 @@
         var textData = [];
         var timeData = [];
 
-        var citys = {}
+        var citys = {};
 
         for (var i = 0; i < qianxiData.length; i++) {
             var fromCenter = mapv.utilCityCenter.getCenterByCityName(qianxiData[i].from);
@@ -175,7 +261,9 @@
             }
         });
         geojsonDataSet = new mapv.DataSet(data);
-        L.supermap.mapVLayer(geojsonDataSet, geojsonOptions).addTo(map);
+        map.addLayer(new ol.layer.Image({
+            source: new ol.source.Mapv({map: map, dataSet: geojsonDataSet, mapvOptions: geojsonOptions})
+        }));
 
         var textDataSet = new mapv.DataSet(textData);
 
@@ -188,7 +276,9 @@
             zIndex: 11,
             shadowBlur: 10
         };
-        L.supermap.mapVLayer(textDataSet, textOptions).addTo(map);
+        map.addLayer(new ol.layer.Image({
+            source: new ol.source.Mapv({map: map, dataSet: textDataSet, mapvOptions: textOptions})
+        }));
 
         var lineDataSet = new mapv.DataSet(lineData);
 
@@ -200,7 +290,10 @@
             zIndex: 100,
             draw: 'simple'
         };
-        L.supermap.mapVLayer(lineDataSet, lineOptions).addTo(map);
+
+        map.addLayer(new ol.layer.Image({
+            source: new ol.source.Mapv({map: map, dataSet: lineDataSet, mapvOptions: lineOptions})
+        }));
 
         var pointOptions = {
             fillStyle: 'rgba(254,175,3,0.7)',
@@ -213,7 +306,10 @@
 
 
         var pointDataSet = new mapv.DataSet(pointData);
-        L.supermap.mapVLayer(pointDataSet, pointOptions).addTo(map);
+
+        map.addLayer(new ol.layer.Image({
+            source: new ol.source.Mapv({map: map, dataSet: pointDataSet, mapvOptions: pointOptions})
+        }));
 
         var timeDataSet = new mapv.DataSet(timeData);
 
@@ -234,12 +330,12 @@
             },
             draw: 'simple'
         };
-
-        L.supermap.mapVLayer(timeDataSet, timeOptions).addTo(map);
+        map.addLayer(new ol.layer.Image({
+            source: new ol.source.Mapv({map: map, dataSet: timeDataSet, mapvOptions: timeOptions})
+        }));
 
     });
 
 </script>
-
 </body>
 </html>

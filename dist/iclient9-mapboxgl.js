@@ -27962,7 +27962,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
         _this.map.on('rotatestart', _this.rotateStartEvent.bind(_this));
         _this.map.on('rotate', _this.rotateEvent.bind(_this));
         _this.map.on('rotateend', _this.rotateEndEvent.bind(_this));
-        _this.map.on('dragend', _this.dragEndEvent.bind(_this));
+        // this.map.on('dragend', this.dragEndEvent.bind(this));
         _this.map.on('movestart', _this.moveStartEvent.bind(_this));
         _this.map.on('move', _this.moveEvent.bind(_this));
         _this.map.on('moveend', _this.moveEndEvent.bind(_this));
@@ -28188,10 +28188,22 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
                 return;
             }
 
+            var bounds = map.getBounds(),
+                dw = bounds.getEast() - bounds.getWest(),
+                dh = bounds.getNorth() - bounds.getSouth();
+            var resolutionX = dw / this.canvasLayer.canvas.width,
+                resolutionY = dh / this.canvasLayer.canvas.height;
+
+            var center = map.getCenter();
+            var centerPx = map.project(center);
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    var worldPoint = map.project(new _mapboxGl2.default.LngLat(coordinate[0], coordinate[1]));
-                    return [worldPoint.x, worldPoint.y];
+                    if (map.transform.rotationMatrix) {
+                        var worldPoint = map.project(new _mapboxGl2.default.LngLat(coordinate[0], coordinate[1]));
+                        return [worldPoint.x, worldPoint.y];
+                    }
+                    var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
+                    return [pixel[0] + centerPx.x, pixel[1] + centerPx.y];
                 }
             };
 
@@ -28209,7 +28221,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
             self.options._size = self.options.size;
 
             var worldPoint = map.project(new _mapboxGl2.default.LngLat(0, 0));
-            this.drawContext(context, new _mapv.DataSet(data), self.options, worldPoint);
+            this.drawContext(context, data, self.options, worldPoint);
 
             self.options.updateCallback && self.options.updateCallback(time);
         }
@@ -57731,7 +57743,7 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
     }, {
         key: 'setVisibility',
         value: function setVisibility(visibility) {
-            if (visibility !== this.visibility) {
+            if (this.rootCanvas && visibility !== this.visibility) {
                 this.visibility = visibility;
                 this.rootCanvas.style.display = visibility ? "block" : "none";
             }

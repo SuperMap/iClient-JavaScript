@@ -459,7 +459,7 @@ window.resources = {
         "title_earthquakeHeatMapLayer": "2005-2016地震次数(Classic)",
         "title_echartsEarthquake": "2005到2016年地震发生情况",
         "title_l_echartsEarthquake": "2000年到2015年地震热力图",
-        "title_lianjia": "链家北京房价信息",
+        "title_lianjia": "2018年2月北京房价信息",
         "title_mapvLianjia_Beijing_price": "2018年2月北京房价",
         "title_l_echartsEarthquake1": "2008到2017年地震情况统计",
 
@@ -1085,7 +1085,6 @@ window.resources = {
         "text_quarter_2": "二季度",
         "text_quarter_3": "三季度",
         "text_quarter_4": "四季度",
-        "text_lianjia_title": "2018年2月北京房价信息",
         "text_mapvLianjia_tooltip": "价格(每平米)：",
         "text_l_echartsEarthquake": "2008年到2017年地震数据热力图",
         "text_l_echartsEarthquake_x_coordinate": "月份",

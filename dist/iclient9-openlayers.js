@@ -29632,18 +29632,26 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
                 context.clear(context.COLOR_BUFFER_BIT);
             }
             var ext = map.getView().calculateExtent();
-            var topLeft = map.getPixelFromCoordinate([ext[0], ext[3]]);
+            var topLeftPx = map.getPixelFromCoordinate([ext[0], ext[3]]);
+
+            self._mapCenter = map.getView().getCenter();
+            self._mapCenterPx = map.getPixelFromCoordinate(self._mapCenter);
+            self._reselutions = map.getView().getResolution();
+            self._rotation = -map.getView().getRotation();
 
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    var pixelP = map.getPixelFromCoordinate(coordinate);
-                    var rotation = -map.getView().getRotation();
-                    var center = map.getPixelFromCoordinate(map.getView().getCenter());
-                    var scaledP = scale(pixelP, center, self.pixelRatio);
-                    var rotatedP = rotate(scaledP, rotation, center);
-                    // var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
-                    var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
-                    return result;
+                    var x = (coordinate[0] - self._mapCenter[0]) / self._reselutions,
+                        y = (self._mapCenter[1] - coordinate[1]) / self._reselutions;
+                    var scaledP = [x + self._mapCenterPx[0], y + self._mapCenterPx[1]];
+                    scaledP = scale(scaledP, self._mapCenterPx, self.pixelRatio);
+                    /*//有旋转量的时候处理旋转
+                    if (self._rotation !== 0) {
+                        var rotatedP = rotate(scaledP, self._rotation, self._mapCenterPx);
+                        return [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
+                    }
+                    //处理放大或缩小级别*/
+                    return [scaledP[0] + self.offset[0], scaledP[1] + self.offset[1]];
                 }
             };
 
@@ -29675,8 +29683,8 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
             self.processData(data);
             self.options._size = self.options.size;
             var pixel = map.getPixelFromCoordinate([0, 0]);
-            pixel = [pixel[0] - topLeft[0], pixel[1] - topLeft[1]];
-            this.drawContext(context, new _mapv.DataSet(data), self.options, { x: pixel[0], y: pixel[1] });
+            pixel = [pixel[0] - topLeftPx[0], pixel[1] - topLeftPx[1]];
+            this.drawContext(context, data, self.options, { x: pixel[0], y: pixel[1] });
             if (self.isEnabledTime()) {
                 this.source.changed();
             }
@@ -67378,7 +67386,7 @@ module.exports = function (proj4) {
 /* 345 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 346 */
