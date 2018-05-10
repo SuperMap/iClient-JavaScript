@@ -5,12 +5,12 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AreaSolarRadiationService
- * @category  iServer SpatialAnalyst SolarradiationAnalyst
+ * @category iServer SpatialAnalyst SolarRadiationAnalyst
  * @classdesc 地区太阳辐射服务类。
- * @param url - {string} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
- * @param options - {Object} 参数。如:</br>
- * eventListeners - {Object} 需要被注册的监听器对象。
- * @extends SuperMap.SpatialAnalystBase
+ * @param {string} url - 服务的访问地址。如：</br>http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var myAreaSolarRadiationService = new SuperMap.AreaSolarRadiationService(url);
@@ -39,8 +39,8 @@ export class AreaSolarRadiationService extends SpatialAnalystBase {
 
     /**
      * @function SuperMap.AreaSolarRadiationService.prototype.processAsync
-     * @description  负责将客户端的查询参数传递到服务端。
-     * @param parameter - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param {SuperMap.AreaSolarRadiationParameters} parameter - 地区太阳辐射参数。
      */
     processAsync(parameter) {
         if (!(parameter instanceof AreaSolarRadiationParameters)) {

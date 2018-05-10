@@ -8,17 +8,17 @@ import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ChartQueryService
- *  @category  iServer Map Chart
+ * @category  iServer Map Chart
  * @classdesc 海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。<br>
- *      用户可以通过两种方式获取查询结果:<br>
+ *      用户可以通过两种方式获取查询结果：<br>
  *      1.通过 AsyncResponder 类获取（推荐使用）；<br>
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。<br>
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
- * @param options - {Object} 服务交互时所需的可选参数。<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -53,13 +53,13 @@ export class ChartQueryService extends CommonServiceBase {
         options = options || {};
 
         /**
-         * @member SuperMap.ChartQueryService.prototype.returnContent -{boolean}
+         * @member {boolean} SuperMap.ChartQueryService.prototype.returnContent
          * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
          */
         this.returnContent = null;
 
         /**
-         * @member SuperMap.ChartQueryService.prototype.format -{SuperMap.DataFormat}
+         * @member {SuperMap.DataFormat} SuperMap.ChartQueryService.prototype.format
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
          *              参数格式为"ISERVER","GEOJSON",GEOJSON
          */
@@ -105,7 +105,7 @@ export class ChartQueryService extends CommonServiceBase {
     /**
      * @function SuperMap.ChartQueryService.prototype.processAsync
      * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
-     * @param params - {SuperMap.ChartQueryParameters} 查询参数。
+     * @param {SuperMap.ChartQueryParameters} params - 查询参数。
      */
     processAsync(params) {
         //todo重点需要添加代码的地方
@@ -131,7 +131,7 @@ export class ChartQueryService extends CommonServiceBase {
     /**
      * @function SuperMap.ChartQueryService.prototype.serviceProcessCompleted
      * @description 查询完成，执行此方法。
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this;
@@ -151,8 +151,8 @@ export class ChartQueryService extends CommonServiceBase {
     /**
      * @function SuperMap.ChartQueryService.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
-     * @param params - {Object} JSON 字符串表示的查询参数。
-     * @return {SuperMap.QueryParameters} 返回查询结果
+     * @param {Object} params - JSON 字符串表示的查询参数。
+     * @returns {SuperMap.QueryParameters} 返回查询结果
      */
     getQueryParameters(params) {
         return new QueryParameters({

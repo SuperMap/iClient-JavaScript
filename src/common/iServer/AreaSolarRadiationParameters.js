@@ -1,123 +1,123 @@
-import{    SuperMap}from'../SuperMap';
+import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AreaSolarRadiationParameters
- * @category  iServer SpatialAnalyst SolarradiationAnalyst
+ * @category iServer SpatialAnalyst SolarRadiationAnalyst
  * @classdesc 地区太阳辐射参数类。
- * @param options -{Object} 可选参数。如:</br>
- *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。</br>
- *        targetDatasourceName - {string}  指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
- *        totalGridName - {string} 指定地区太阳辐射总辐射量数据集的名称（必设参数）。</br>
- *        diffuseDatasetGridName - {string} 指定地区太阳辐射散射辐射量数据集的名称。</br>
- *        durationDatasetGridName - {string} 指定地区太阳辐射太阳直射持续时间数据集的名称。</br>
- *        directDatasetGridName - {string} 指定地区太阳辐射直射辐射量数据集的名称。</br>
- *        latitude - {number} 待计算区域的纬度值。</br>
- *        timeMode - {string} 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日），默认值为"MULTIDAYS"。</br>
- *        dayStart - {number} 起始日期（年内的第几天）。（必设参数）</br>
- *        dayEnd - {number} 结束日期（年内的第几天）。（必设参数）</br>
- *        hourStart - {number} 起始时间（一天中的第几个小时）。</br>
- *        hourEnd - {number} 结束时间（一天中的第几个小时）。</br>
- *        transmittance - {number} 太阳辐射穿过大气的透射率。</br>
- *        hourInterval - {number} 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）</br>
- *        dayInterval - {number} 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）</br>
- *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+ * @param {Object} options - 参数。</br>
+ * @param {string} options.dataset - 要用来做地区太阳辐射数据源中数据集的名称（必设参数）。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。</br>
+ * @param {string} options.targetDatasourceName - 指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
+ * @param {string} options.totalGridName - 指定地区太阳辐射总辐射量数据集的名称（必设参数）。</br>
+ * @param {string} options.diffuseDatasetGridName - 指定地区太阳辐射散射辐射量数据集的名称。</br>
+ * @param {string} options.durationDatasetGridName - 指定地区太阳辐射太阳直射持续时间数据集的名称。</br>
+ * @param {string} options.directDatasetGridName - 指定地区太阳辐射直射辐射量数据集的名称。</br>
+ * @param {number} options.latitude - 待计算区域的纬度值。</br>
+ * @param {string} [options.timeMode = "MULTIDAYS"] - 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日）。</br>
+ * @param {number} options.dayStart - 起始日期（年内的第几天），必设参数。</br>
+ * @param {number} options.dayEnd - 结束日期（年内的第几天），必设参数。</br>
+ * @param {number} options.hourStart - 起始时间（一天中的第几个小时）。</br>
+ * @param {number} options.hourEnd - 结束时间（一天中的第几个小时）。</br>
+ * @param {number} options.transmittance - 太阳辐射穿过大气的透射率。</br>
+ * @param {number} [options.hourInterval=0.5] - 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）。</br>
+ * @param {number} [options.dayInterval=5] - 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）。</br>
+ * @param {boolean} [options.deleteExistResultDataset=false] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
  */
 export class AreaSolarRadiationParameters {
 
     constructor(options) {
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.dataset - {string}
-         *  @description  要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin （必设参数）。注：地区太阳辐射数据必须为栅格数据集。
+         *  @member {string} SuperMap.AreaSolarRadiationParameters.prototype.dataset
+         *  @description 要用来做地区太阳辐射数据源中数据集的名称（必设参数）。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。注：地区太阳辐射数据必须为栅格数据集。
          */
         this.dataset = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.targetDatasourceName - {string}
+         * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.targetDatasourceName
          * @description 指定的存储结果数据集的数据源名称（必设参数），例如："Jingjin"。
          */
         this.targetDatasourceName = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.totalGridName - {string}
+         * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.totalGridName
          * @description 指定地区太阳辐射总辐射量数据集的名称（必设参数）。
          */
         this.totalGridName = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.diffuseDatasetGridName - {string}
+         * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.diffuseDatasetGridName
          * @description 指定地区太阳辐射散射辐射量数据集的名称。
          */
         this.diffuseDatasetGridName = null;
 
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName - {string}
+         * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName
          * @description  指定地区太阳辐射太阳直射持续时间数据集的名称。
          */
         this.durationDatasetGridName = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName - {string}
+         * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName
          * @description 指定地区太阳辐射直射辐射量数据集的名称。
          */
         this.directDatasetGridName = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.latitude - {number}
+         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.latitude
          * @description 待计算区域的纬度值。
          */
         this.latitude = null;
 
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.timeMode - {string}
+         *  @member {string} SuperMap.AreaSolarRadiationParameters.prototype.timeMode
          *  @description 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日），默认值为"MULTIDAYS";
          */
         this.timeMode = "MULTIDAYS";
 
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.dayStart - {number}
-         *  @description 起始日期（年内的第几天）。（必设参数）
+         *  @member {number} SuperMap.AreaSolarRadiationParameters.prototype.dayStart
+         *  @description 起始日期（年内的第几天），必设参数。
          */
         this.dayStart = null;
 
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.dayEnd - {number}
-         * @description 结束日期（年内的第几天）。（必设参数）
+         *  @member {number} SuperMap.AreaSolarRadiationParameters.prototype.dayEnd
+         * @description 结束日期（年内的第几天），必设参数。
          */
         this.dayEnd = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.hourStart - {number}
+         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.hourStart
          * @description 起始时间（一天中的第几个小时）。
          */
         this.hourStart = null;
 
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.hourEnd - {number}
+         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.hourEnd
          * @description 结束时间（一天中的第几个小时）。
          */
         this.hourEnd = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.transmittance - {number}
+         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.transmittance
          * @description 太阳辐射穿过大气的透射率。
          */
         this.transmittance = null;
 
         /**
-         *  @member SuperMap.AreaSolarRadiationParameters.prototype.hourInterval - {number}
+         *  @member {number} SuperMap.AreaSolarRadiationParameters.prototype.hourInterval
          *  @description 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）
          */
         this.hourInterval = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.dayInterval - {number}
+         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.dayInterval
          * @description 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）
          */
         this.dayInterval = null;
 
         /**
-         * @member SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset - {boolean}
+         * @member {boolean} SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset
          * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
          */
         this.deleteExistResultDataset = false;
@@ -143,9 +143,9 @@ export class AreaSolarRadiationParameters {
 
     /**
      * @function SuperMap.AreaSolarRadiationParameters.toObject
-     * @param param - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数类。
-     * @param tempObj - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数对象。
-     * @return {object} JSON对象。
+     * @param {SuperMap.AreaSolarRadiationParameters} param - 地区太阳辐射参数类。
+     * @param {SuperMap.AreaSolarRadiationParameters} tempObj - 地区太阳辐射参数对象。
+     * @returns {Object} JSON对象。
      * @description 将SuperMap.AreaSolarRadiationParameters对象转换成JSON对象。
      */
     static toObject(param, tempObj) {

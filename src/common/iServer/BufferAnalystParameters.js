@@ -4,10 +4,10 @@ import {BufferSetting} from './BufferSetting';
 
 /**
  * @class SuperMap.BufferAnalystParameters
- * @category  iServer SpatialAnalyst BufferAnalyst
+ * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析参数基类。
- * @param options - {Object} 参数。如:</br>
- *        bufferSetting - {@link SuperMap.BufferSetting} 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
+ * @param {Object} options - 参数。</br>
+ * @param {SuperMap.BufferSetting} options.bufferSetting - 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
  */
 export class BufferAnalystParameters {
 
@@ -15,7 +15,7 @@ export class BufferAnalystParameters {
     constructor(options) {
         var me = this;
         /**
-         * @member SuperMap.BufferAnalystParameters.prototype.bufferSetting - {SuperMap.BufferSetting}
+         * @member {SuperMap.BufferSetting} SuperMap.BufferAnalystParameters.prototype.bufferSetting
          * @description 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
          */
         me.bufferSetting = new BufferSetting();

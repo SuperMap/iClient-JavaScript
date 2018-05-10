@@ -8,14 +8,14 @@ import {EditFeaturesParameters} from './EditFeaturesParameters';
  * @class SuperMap.EditFeaturesService
  * @category  iServer Data Feature
  * @classdesc 数据服务中数据集添加、更新、删除服务类。
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
  * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。</br>
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
- * @param options - {Object} 参数。如:</br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {Object} options - 参数。如:</br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} format -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @example
  * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
  *     "processCompleted": editFeatureCompleted,
@@ -30,16 +30,16 @@ export class EditFeaturesService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member SuperMap.EditFeaturesService.prototype.returnContent -{boolean}
-         * @description要素添加时，isUseBatch 不传或传为 false 的情况下有效。true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+         * @member {boolean} [SuperMap.EditFeaturesService.prototype.returnContent=false]
+         * @description要素添加时，isUseBatch 不传或传为 false 的情况下有效。true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。
          */
         this.returnContent = false;
 
         /**
-         * @member SuperMap.EditFeaturesService.prototype.isUseBatch -{boolean}
+         * @member {boolean} [SuperMap.EditFeaturesService.prototype.isUseBatch=false]
          * @description 是否使用批量添加要素功能，要素添加时有效。
-         *           批量添加能够提高要素编辑效率。
-         *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+         *              批量添加能够提高要素编辑效率。
+         *              true 表示批量添加；false 表示不使用批量添加。
          */
         this.isUseBatch = false;
 
@@ -71,7 +71,7 @@ export class EditFeaturesService extends CommonServiceBase {
     /**
      * @function SuperMap.EditFeaturesService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param params - {SuperMap.EditFeaturesParameters} 编辑要素参数。
+     * @param {SuperMap.EditFeaturesParameters} params - 编辑要素参数。
      */
     processAsync(params) {
         if (!(params instanceof EditFeaturesParameters)) {

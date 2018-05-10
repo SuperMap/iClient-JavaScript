@@ -5,50 +5,53 @@ import {BufferDistance} from './BufferDistance';
 
 /**
  * @class SuperMap.BufferSetting
- * @category  iServer SpatialAnalyst Buffer
+ * @category iServer SpatialAnalyst Buffer
  * @classdesc 缓冲区分析通用设置类。
- * @param options - {Object} 缓冲区分析设置可选参数。如：<br>
- *         endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。<br>
- *         leftDistance - {{@link SuperMap.BufferDistance}} 左侧缓冲距离。<br>
- *         rightDistance - {{@link SuperMap.BufferDistance}} 右侧缓冲距离。<br>
- *         semicircleLineSegment - {number} 圆头缓冲圆弧处线段的个数。<br>
- *         radiusUnit - {{@link SuperMap.BufferRadiusUnit}} 缓冲半径单位。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.BufferEndType} options.endType - 缓冲区端点枚举值。<br>
+ * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。<br>
+ * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。<br>
+ * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。<br>
+ * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.BufferRadiusUnit.METER] - 缓冲半径单位。
  */
 export class BufferSetting {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.BufferSetting.prototype.endType - {SuperMap.BufferEndType}
-         * @description 缓冲区端点枚举值。分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT
+         * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType=SuperMap.BufferEndType.FLAT]
+         * @description 缓冲区端点枚举值。分为平头和圆头两种。
          */
         this.endType = BufferEndType.FLAT;
 
         /**
-         * @member SuperMap.BufferSetting.prototype.leftDistance - {SuperMap.BufferDistance}
+         * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.leftDistance=100]
          * @description 左侧缓冲距离。
-         * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
+         * 当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
+         * 当为DatasetBufferAnalyst时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
          */
         this.leftDistance = new BufferDistance();
 
         /**
-         * @member SuperMap.BufferSetting.prototype.rightDistance -{SuperMap.BufferDistance}
+         * @member {SuperMap.BufferDistance} SuperMap.BufferSetting.prototype.rightDistance
          * @description 右侧缓冲距离。
-         * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
+         * 当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
+         * 当为DatasetBufferAnalyst时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
          */
         this.rightDistance = new BufferDistance();
 
         /**
-         * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{number}
-         * @description 圆头缓冲圆弧处线段的个数。即用多少个线段来模拟一个半圆，默认值为4。
+         * @member {number} [SuperMap.BufferSetting.prototype.semicircleLineSegment=4]
+         * @description 圆头缓冲圆弧处线段的个数。即用多少个线段来模拟一个半圆。
          */
         this.semicircleLineSegment = 4;
 
         /**
-         * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.BufferRadiusUnit}
-         * @description 缓冲半径单位，默认值为SuperMap.BufferRadiusUnit.METER，还可以是SuperMap.BufferRadiusUnit.MILIMETER、SuperMap.BufferRadiusUnit.CENTIMETER、SuperMap.BufferRadiusUnit.DECIMETER、SuperMap.BufferRadiusUnit.KILOMETER、SuperMap.BufferRadiusUnit.FOOT、SuperMap.BufferRadiusUnit.INCH、SuperMap.BufferRadiusUnit.MILE、SuperMap.BufferRadiusUnit.YARD。仅对BufferAnalyst有效
+         * @member {SuperMap.BufferRadiusUnit} [SuperMap.BufferSetting.prototype.radiusUnit=SuperMap.BufferRadiusUnit.METER]
+         * @description 缓冲半径单位，可以是{@link SuperMap.BufferRadiusUnit.METER}、{@link SuperMap.BufferRadiusUnit.MILIMETER}、
+         * {@link SuperMap.BufferRadiusUnit.CENTIMETER}、{@link SuperMap.BufferRadiusUnit.DECIMETER}、{@link SuperMap.BufferRadiusUnit.KILOMETER}、
+         * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。
+         * 仅对BufferAnalyst有效。
          */
         this.radiusUnit = BufferRadiusUnit.METER;
 

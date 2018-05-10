@@ -13,17 +13,17 @@ import {Bounds} from '../commontypes/Bounds';
  *              线数据集，面数据集等，各矢量数据集是空间特征和性质相同的数据组织起来的集合。
  *              目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
  *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
- * @param options - {Object} 可选参数。如：<br>
- *        bounds - {@link SuperMap.Bounds} 数据集范围，该字段只读。<br>
- *        dataSourceName - {string} 数据源名称，该字段只读。<br>
- *        description - {string} 数据集的描述信息。<br>
- *        encodeType - {string} 数据集存储时的压缩编码方式，该字段只读。<br>
- *        isReadOnly - {boolean} 数据集是否为只读。<br>
- *        name - {string} 数据集名称，该字段必须且只读。<br>
- *        prjCoordSys - {@link SuperMap.Projection} 数据集的投影信息。<br>
- *        tableName - {string} 表名，该字段只读。<br>
- *        type - {string} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
- *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Bounds} options.bounds - 数据集范围，该字段只读。<br>
+ * @param {string} options.dataSourceName - 数据源名称，该字段只读。<br>
+ * @param {string} options.description - 数据集的描述信息。<br>
+ * @param {string} options.encodeType - 数据集存储时的压缩编码方式，该字段只读。<br>
+ * @param {boolean} options.isReadOnly - 数据集是否为只读。<br>
+ * @param {string} options.name - 数据集名称，该字段必须且只读。<br>
+ * @param {SuperMap.Projection} options.prjCoordSys - 数据集的投影信息。<br>
+ * @param {string} options.tableName - 表名，该字段只读。<br>
+ * @param {string} options.type - 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
+ *                                网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
 export class DatasetInfo {
 
@@ -32,55 +32,55 @@ export class DatasetInfo {
         options = options || {};
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.bounds - {SuperMap.Bounds}
+         * @member {SuperMap.Bounds} SuperMap.DatasetInfo.prototype.bounds
          * @description 数据集范围，该字段只读。
          */
         this.bounds = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.dataSourceName - {string}
+         * @member {string} SuperMap.DatasetInfo.prototype.dataSourceName
          * @description 数据源名称，该字段只读。
          */
         this.dataSourceName = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.description - {string}
+         * @member {string} SuperMap.DatasetInfo.prototype.description
          * @description 数据集的描述信息。
          */
         this.description = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.encodeType - {string}
+         * @member {string} SuperMap.DatasetInfo.prototype.encodeType
          * @description 数据集存储时的压缩编码方式，该字段只读。
          */
         this.encodeType = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.isReadOnly - {boolean}
+         * @member {boolean} SuperMap.DatasetInfo.prototype.isReadOnly
          * @description 数据集是否为只读。
          */
         this.isReadOnly = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.name - {string}
+         * @member {string} SuperMap.DatasetInfo.prototype.name
          * @description 数据集名称，该字段必须且只读。
          */
         this.name = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.prjCoordSys - {SuperMap.Projection}
+         * @member {SuperMap.Projection} SuperMap.DatasetInfo.prototype.prjCoordSys
          * @description 数据集的投影信息。
          */
         this.prjCoordSys = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.tableName - {string}
+         * @member {string} SuperMap.DatasetInfo.prototype.tableName
          * @description 表名，该字段只读。
          */
         this.tableName = null;
 
         /**
-         * @member SuperMap.DatasetInfo.prototype.type - {string}
+         * @member {string} SuperMap.DatasetInfo.prototype.type
          * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
          *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
          */
@@ -106,7 +106,7 @@ export class DatasetInfo {
     /**
      * @function SuperMap.DatasetInfo.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return {Object} JSON对象。
+     * @returns {Object} JSON对象。
      */
     toServerJSONObject() {
         var dataObj = {};

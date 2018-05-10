@@ -5,59 +5,58 @@ import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
- * @category  iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         bounds - {Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
- *         distance -{string} 缓冲距离，或缓冲区半径。 <br>
- *         distanceField -{string} 缓冲区分析距离字段。 <br>
- *         distanceUnit -{{@link SuperMap.AnalystSizeUnit}} 缓冲距离单位单位。 <br>
- *         distance -{string} 缓冲区半径。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @category iServer ProcessingService BufferAnalyst
+ * @classdesc 缓冲区分析任务参数类。
+ * @param {Object} options - 参数。</br>
+ * @param {string} options.datasetName - 数据集名。</br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 分析范围。</br>
+ * @param {string} options.distance - 缓冲距离，或缓冲区半径。</br>
+ * @param {string} options.distanceField - 缓冲区分析距离字段。</br>
+ * @param {SuperMap.AnalystSizeUnit} options.distanceUnit - 缓冲距离单位单位。</br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。</br>
  */
 export class BuffersAnalystJobsParameter {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.bounds - {Object}
-         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.BuffersAnalystJobsParameter.prototype.bounds
+         * @description 分析范围。<br>
          */
         this.bounds = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distance -{string}
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.distance
          * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
          */
         this.distance = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{string}
-         * @description 缓冲距离字段，
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.distanceField
+         * @description 缓冲距离字段。
          */
         this.distanceField = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
+         * @member {SuperMap.AnalystSizeUnit} SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit
          * @description 缓冲距离单位。
          */
         this.distanceUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
         this.dissolveField = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.BuffersAnalystJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -89,8 +88,8 @@ export class BuffersAnalystJobsParameter {
 
     /**
      * @function SuperMap.BuffersAnalystJobsParameter.toObject
-     * @param BuffersAnalystJobsParameter -{Object} 缓冲区分析任务参数
-     * @param tempObj - {Object} 目标对象
+     * @param {SuperMap.BuffersAnalystJobsParameter} BuffersAnalystJobsParameter - 缓冲区分析任务参数
+     * @param {Object} tempObj - 目标对象
      * @description 生成缓冲区分析任务对象
      */
     static toObject(BuffersAnalystJobsParameter, tempObj) {
@@ -100,7 +99,7 @@ export class BuffersAnalystJobsParameter {
                 tempObj['input'][name] = BuffersAnalystJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;

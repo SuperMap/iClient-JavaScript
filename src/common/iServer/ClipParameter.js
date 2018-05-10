@@ -4,47 +4,46 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.ClipParameter
- * @category  iServer SpatialAnalyst Interpolation
+ * @category iServer SpatialAnalyst Interpolation
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
- * @param options - {Object} 参数。<br>
- *          clipDatasetName - {String} 裁剪的数据集名。<br>
- *          clipDatasourceName - {String} 裁剪的数据集所在数据源的名字。<br>
- *          clipRegion - {Object} 用户指定的裁剪区域。面对象可以是SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
- *          isClipInRegion - {Boolean} 是否对裁剪区内的数据集进行裁剪。<br>
- *          isExactClip - {Boolean} 是否使用精确裁剪。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.clipDatasetName - 裁剪的数据集名。<br>
+ * @param {string} options.clipDatasourceName - 裁剪的数据集所在数据源的名字。<br>
+ * @param {(SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON)} options.clipRegion - 用户指定的裁剪区域。</br>
+ * @param {boolean} options.isClipInRegion - 是否对裁剪区内的数据集进行裁剪。<br>
+ * @param {boolean} options.isExactClip - 是否使用精确裁剪。
  */
 export class ClipParameter {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.ClipParameter.prototype.clipDatasetName -{string}
+         * @member {string} SuperMap.ClipParameter.prototype.clipDatasetName
          * @description 用于裁剪的数据集名，当clipRegion不设置时起作用。
          */
         this.clipDatasetName = null;
 
         /**
-         * @member SuperMap.ClipParameter.prototype.clipDatasourceName -{string}
+         * @member {string} SuperMap.ClipParameter.prototype.clipDatasourceName
          * @description 用于裁剪的数据集所在数据源的名字。
          */
         this.clipDatasourceName = null;
 
         /**
-         * @member SuperMap.ClipParameter.prototype.clipRegion -{Object}
+         * @member {(SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON)} SuperMap.ClipParameter.prototype.clipRegion
          * @description 用户指定的裁剪区域，优先使用。<br>
-         * 面对象可以是SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
          */
         this.clipRegion = null;
 
         /**
-         * @member SuperMap.ClipParameter.prototype.isClipInRegion -{boolean}
+         * @member {boolean} SuperMap.ClipParameter.prototype.isClipInRegion
          * @description 是否对裁剪区内的数据集进行裁剪。
          */
         this.isClipInRegion = false;
 
         /**
-         * @member SuperMap.ClipParameter.prototype.isExactClip -{boolean}
+         * @member {boolean} SuperMap.ClipParameter.prototype.isExactClip
          * @description 是否使用精确裁剪。
          */
         this.isExactClip = null;
@@ -74,7 +73,7 @@ export class ClipParameter {
     /**
      * @function SuperMap.ClipParameter.prototype.toJSON
      * @description 将 ClipParameter 对象转化为json字符串。
-     * @return {string} 返回转换后的 JSON 字符串。
+     * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         if (this.isClipInRegion == false) {

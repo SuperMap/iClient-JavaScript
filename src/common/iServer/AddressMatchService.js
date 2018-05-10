@@ -6,10 +6,10 @@ import {GeoDecodingParameter} from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
- * @category  iServer AddressMatch
+ * @category iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @param options - {Object} 参数。
- * @param url {string} 地址匹配服务地址。
+ * @param {string} url - 地址匹配服务地址。
+ * @param {Object} options - 参数。
  */
 export class AddressMatchService extends CommonServiceBase {
 
@@ -28,8 +28,8 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.AddressMatchService.prototype.code
-     * @param url {string} 正向地址匹配服务地址
-     * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
+     * @param {string} url - 正向地址匹配服务地址。
+     * @param {SuperMap.GeoCodingParameter} params - 正向地址匹配服务参数。
      */
     code(url, params) {
         if (!(params instanceof GeoCodingParameter)) {
@@ -40,8 +40,8 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.AddressMatchService.prototype.decode
-     * @param url {string} 反向地址匹配服务地址
-     * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
+     * @param {string} url - 反向地址匹配服务地址。
+     * @param {SuperMap.GeoDecodingParameter} params - 反向地址匹配服务参数。
      */
     decode(url, params) {
         if (!(params instanceof GeoDecodingParameter)) {
@@ -53,8 +53,8 @@ export class AddressMatchService extends CommonServiceBase {
     /**
      * @function SuperMap.AddressMatchService.prototype.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
-     * @param url - {string} 服务地址
-     * @param params - {Object} 参数
+     * @param {string} url - 服务地址。
+     * @param {Object} params - 参数。
      */
 
     processAsync(url, params) {
@@ -74,7 +74,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      * @description 服务流程是否完成
      */
     serviceProcessCompleted(result) {
@@ -83,7 +83,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      * @description 服务流程是否失败
      */
     serviceProcessFailed(result) {

@@ -4,14 +4,14 @@ import {DataReturnMode} from '../REST';
 
 /**
  * @class SuperMap.DataReturnOption
- * @category  iServer SpatialAnalyst
+ * @category iServer SpatialAnalyst
  * @classdesc 数据返回设置类。
- * @param options - {Object} 可选参数。如：<br>
- *         expectCount - {number} 设置返回的最大记录数，小于或者等于0时表示返回所有记录数。<br>
- *         dataset - {string} 设置结果数据集标识，当dataReturnMode为 SuperMap.DataReturnMode.DATASET_ONLY或SuperMap.DataReturnMode.DATASET_AND_RECORDSET时有效，
- *                            作为返回数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。<br>
- *         dataReturnMode - {@link SuperMap.DataReturnMode} 数据返回模式，默认为SuperMap.DataReturnMode.RECORDSET_ONLY。<br>
- *         deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为true。<br>
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.expectCount - 设置返回的最大记录数，小于或者等于0时表示返回所有记录数。<br>
+ * @param {string} options.dataset - 设置结果数据集标识，当dataReturnMode为 {@link SuperMap.DataReturnMode.DATASET_ONLY}或{@link SuperMap.DataReturnMode.DATASET_AND_RECORDSET}时有效，
+ *                                   作为返回数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。<br>
+ * @param {SuperMap.DataReturnMode} [options.dataReturnMode=SuperMap.DataReturnMode.RECORDSET_ONLY] - 数据返回模式。<br>
+ * @param {boolean} [options.deleteExistResultDataset=true] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。<br>
  */
 export class DataReturnOption {
 
@@ -19,27 +19,27 @@ export class DataReturnOption {
     constructor(options) {
 
         /**
-         * @member SuperMap.DataReturnOption.prototype.expectCount -{number}
+         * @member {number} SuperMap.DataReturnOption.prototype.expectCount
          * @description 设置返回的最大记录数，小于或者等于0时表示返回所有记录数。
          */
         this.expectCount = 1000;
 
         /**
-         * @member SuperMap.DataReturnOption.prototype.dataset -{string}
-         * @description 设置结果数据集标识，当dataReturnMode为 SuperMap.DataReturnMode.DATASET_ONLY
-         * 或SuperMap.DataReturnMode.DATASET_AND_RECORDSET时有效，
+         * @member {string} SuperMap.DataReturnOption.prototype.dataset
+         * @description 设置结果数据集标识，当dataReturnMode为 {@link SuperMap.DataReturnMode.DATASET_ONLY}
+         * 或{@link SuperMap.DataReturnMode.DATASET_AND_RECORDSET}时有效，
          * 作为返回数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
          */
         this.dataset = null;
 
         /**
-         * @member SuperMap.DataReturnOption.prototype.dataReturnMode -{SuperMap.DataReturnMode}
-         * @description 数据返回模式，默认为SuperMap.DataReturnMode.RECORDSET_ONLY。
+         * @member {SuperMap.DataReturnMode} [SuperMap.DataReturnOption.prototype.dataReturnMode=SuperMap.DataReturnMode.RECORDSET_ONLY]
+         * @description 数据返回模式。
          */
         this.dataReturnMode = DataReturnMode.RECORDSET_ONLY;
 
         /**
-         * @member SuperMap.DataReturnOption.prototype.deleteExistResultDataset -{boolean}
+         * @member {boolean} SuperMap.DataReturnOption.prototype.deleteExistResultDataset
          * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
          */
         this.deleteExistResultDataset = true;

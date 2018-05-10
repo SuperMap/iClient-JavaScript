@@ -7,22 +7,22 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
  * @class SuperMap.ComputeWeightMatrixService
  * @category  iServer NetworkAnalyst WeightMatrix
  * @classdesc 耗费矩阵分析服务类。<br>
- *               耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
- *               用来存储指定的任意两点间的资源消耗。
- *               耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
- * @extends SuperMap.NetworkAnalystServiceBase
+ *            耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
+ *            用来存储指定的任意两点间的资源消耗。
+ *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
+ * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
  * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
  *     eventListeners: {
  *	       "processCompleted": computeWeightMatrixCompleted,
  *		   "processFailed": computeWeightMatrixnError
- *		   }
+ *	   }
  * });
- * @param url - {string} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
- *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {string} url - 耗费矩阵分析服务地址。请求服务的URL应为：<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       例如："http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
@@ -44,7 +44,7 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
     /**
      * @function SuperMap.ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析参数类
+     * @param {SuperMap.ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类
      */
     processAsync(params) {
         if (!(params instanceof ComputeWeightMatrixParameters)) {
@@ -69,9 +69,9 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
     /**
      * @function SuperMap.ComputeWeightMatrixService.prototype.getJson
      * @description 将对象转化为JSON字符串。
-     * @param isAnalyzeById - {boolean} 是否通过id分析
-     * @param params - {Array} 分析参数数组
-     * @return- {string} 转化后的JSON字符串。
+     * @param {boolean} isAnalyzeById - 是否通过id分析
+     * @param {Array.<SuperMap.ComputeWeightMatrixParameters>} params - 分析参数数组
+     * @returns {string} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",
