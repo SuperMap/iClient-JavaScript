@@ -4,25 +4,25 @@ import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DPara
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DService
- * @category  iServer FacilityAnalyst3D TraceUpResult
+ * @category iServer FacilityAnalyst3D TraceUpResult
  * @classdesc 上游追踪资源服务类
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
- *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class FacilityAnalystTraceup3DService extends CommonServiceBase {
 
     /*
      * @function SuperMap.FacilityAnalystTraceup3DService.constructor
      * @description 上游追踪资源服务类构造函数。
-     * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
-     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
-     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
+     * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param {Object} options - 参数。<br>
+     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);
@@ -40,7 +40,7 @@ export class FacilityAnalystTraceup3DService extends CommonServiceBase {
     /**
      * @function SuperMap.FacilityAnalystTraceup3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
+     * @param {SuperMap.FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类
      */
     processAsync(params) {
         if (!(params instanceof FacilityAnalystTraceup3DParameters)) {

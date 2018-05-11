@@ -4,16 +4,16 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.GetFieldsService
- * @category  iServer Data Field
+ * @category iServer Data Field
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
- * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
- * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
- *        datasource - {string}</br>
- *        dataset - {string}</br>
- * @extends SuperMap.CommonServiceBase
+ * @param {string} url - 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {string}options.datasource - 要查询的数据集所在的数据源名称。</br>
+ * @param {string}options.dataset - 要查询的数据集名称。</br>
+ * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
  *     "processCompleted": getFieldsCompleted,
@@ -30,13 +30,13 @@ export class GetFieldsService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member SuperMap.GetFieldsService.prototype.datasource -{string}
+         * @member {string} SuperMap.GetFieldsService.prototype.datasource
          * @description 要查询的数据集所在的数据源名称。
          */
         this.datasource = null;
 
         /**
-         *  @member SuperMap.GetFieldsService.prototype.dataset -{string}
+         *  @member {string} SuperMap.GetFieldsService.prototype.dataset
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;

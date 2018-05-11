@@ -4,57 +4,57 @@ import {Util} from '../commontypes/Util';
 /**
  * @class SuperMap.GetFeaturesParametersBase
  * @category  iServer Data FeatureResults
- * @classdesc 要素查询参数基类
- * @param options - {Object} 参数。如：<br>
- *        datasetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {boolean} 是否直接返回查询结果。</br>
- *        fromIndex - {integer} 查询结果的最小索引号。</br>
- *        toIndex - {integer} 查询结果的最大索引号。</br>
+ * @classdesc 要素查询参数基类。
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。</br>
+ * @param {boolean} options.returnContent - 是否直接返回查询结果。</br>
+ * @param {number} options.fromIndex - 查询结果的最小索引号。</br>
+ * @param {number} options.toIndex - 查询结果的最大索引号。</br>
  */
 export class GetFeaturesParametersBase {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.datasetName - {Array<string>}
+         * @member {Array.<string>} SuperMap.GetFeaturesParametersBase.prototype.datasetName
          * @description 数据集集合中的数据集名称列表。
          */
         this.datasetNames = null;
 
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.returnContent - {boolean}
+         * @member {boolean} [SuperMap.GetFeaturesParametersBase.prototype.returnContent=true]
          * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
          *              如果为 true，则直接返回新创建资源，即查询结果的表述。
-         *              如果为 false，则返回的是查询结果资源的 URI。默认为 true。
+         *              如果为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = true;
 
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.fromIndex - {integer}
-         * @description 查询结果的最小索引号。默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
+         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.fromIndex=0]
+         * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
          */
         this.fromIndex = 0;
 
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.toIndex - {integer}
-         * @description 查询结果的最大索引号。默认值是19，如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.toIndex=19]
+         * @description 查询结果的最大索引号。如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
          */
         this.toIndex = 19;
 
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.returnCountOnly - {boolean}
-         * @description 只返回查询结果的总数，默认为false。
+         * @member {boolean} [SuperMap.GetFeaturesParametersBase.prototype.returnCountOnly=false]
+         * @description 只返回查询结果的总数。
          */
         this.returnCountOnly = false;
 
         /**
-         * @member S1uperMap.GetFeaturesParametersBase.prototype.maxFeatures - {integer}
-         * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
+         * @member {number} [SuperMap.GetFeaturesParametersBase.prototype.maxFeatures=1000]
+         * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量。
          */
         this.maxFeatures = null;
 
         /**
-         * @member SuperMap.GetFeaturesParametersBase.prototype.aggregations - {object}
+         * @member {Object} SuperMap.GetFeaturesParametersBase.prototype.aggregations
          * @description 聚合查询参数，该参数仅支持数据来源Elasticsearch服务的数据服务
          */
         this.aggregations = null;

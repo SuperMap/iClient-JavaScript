@@ -5,14 +5,14 @@ import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
 
 /**
  * @class SuperMap.GetGridCellInfosService
- * @category  iServer Data Grid
+ * @category iServer Data Grid
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息。
- * @param url - {string} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
- * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
- * @extends SuperMap.CommonServiceBase
+ * @param {string} url - 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
  *     "processCompleted": queryCompleted,
@@ -27,31 +27,31 @@ export class GetGridCellInfosService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{string}
+         * @member {string} SuperMap.GetGridCellInfosService.prototype.datasetName
          * @description 数据集名称。
          */
         this.datasetName = null;
 
         /**
-         * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{string}
+         * @member {string} SuperMap.GetGridCellInfosService.prototype.dataSourceName
          * @description 数据源名称。
          */
         this.dataSourceName = null;
 
         /**
-         * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{string}
+         * @member {string} SuperMap.GetGridCellInfosService.prototype.datasetType
          * @description 数据集类型。
          */
         this.datasetType = null;
 
         /**
-         * @member SuperMap.GetGridCellInfosService.prototype.X -{number}
+         * @member {number} SuperMap.GetGridCellInfosService.prototype.X
          * @description 要查询的地理位置X轴
          */
         this.X = null;
 
         /**
-         * @member SuperMap.GetGridCellInfosService.prototype.Y-{number}
+         * @member {number} SuperMap.GetGridCellInfosService.prototype.Y
          * @description 要查询的地理位置Y轴
          */
         this.Y = null;
@@ -78,7 +78,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
     /**
      * @function SuperMap.GetGridCellInfosService.prototype.processAsync
      * @description 执行服务，查询数据集信息。
-     * @param params - {SuperMap.GetGridCellInfosParameters} 查询参数。
+     * @param {SuperMap.GetGridCellInfosParameters} params - 查询参数。
      */
     processAsync(params) {
         if (!(params instanceof GetGridCellInfosParameters)) {
@@ -96,8 +96,8 @@ export class GetGridCellInfosService extends CommonServiceBase {
     /**
      * @function SuperMap.GetGridCellInfosService.prototype.queryRequest
      * @description 执行服务，查询。
-     * @param successFun -{function} 成功后执行的函数
-     * @param failedFunc -{function} 失败后执行的函数
+     * @callback {function} successFun - 成功后执行的函数。
+     * @callback {function} failedFunc - 失败后执行的函数。
      */
     queryRequest(successFun, failedFunc) {
         var me = this;
@@ -112,8 +112,8 @@ export class GetGridCellInfosService extends CommonServiceBase {
 
     /**
      * @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoCompleted
-     * @description  数据集查询完成，执行此方法。
-     * @param result - {Object} 服务器返回的结果对象。
+     * @description 数据集查询完成，执行此方法。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     getDatasetInfoCompleted(result) {
         var me = this;
@@ -148,7 +148,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
     /**
      * @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoFailed
      * @description 数据集查询失败，执行此方法。
-     * @param result -  {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     getDatasetInfoFailed(result) {
         var me = this;

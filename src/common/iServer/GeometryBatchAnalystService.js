@@ -8,16 +8,15 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.GeometryBatchAnalystService
- * @category  iServer SpatialAnalyst BatchAnalyst
+ * @category iServer SpatialAnalyst BatchAnalyst
  * @classdesc 批量空间分析服务类
  * @description 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  *              叠加分析结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.OverlayAnalystEventArgs>}; 获取的结果数据包括 originResult 、result 两种，
  *              其中，originResult 为服务端返回的用 JSON 对象表示的量算结果数据，result 为服务端返回的量算结果数据。
- * @extends SuperMap.SpatialAnalystBase
- *
- * @param url - {string} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
- * @param options - {Object} 可选参数。如：</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @example
  * var myOverlayAnalystService = new SuperMap.REST.GeometryBatchAnalystService(url, {
  *     eventListeners: {
@@ -41,7 +40,7 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
     /**
      * @function SuperMap.GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @params parameter - {SuperMap.GeometryBatchOverlayAnalystParameters} 批量几何对象叠加分析参数类
+     * @params {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
      *
      */
     processAsync(parameters) {
