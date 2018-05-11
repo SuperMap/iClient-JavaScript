@@ -4,9 +4,9 @@ import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.MapService
- * @category  iServer Map
+ * @category iServer Map
  * @classdesc 地图信息服务类。
- * @extends SuperMap.CommonServiceBase
+ * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myMapService = new SuperMap.MapService(url, {
  * eventListeners:{
@@ -15,11 +15,11 @@ import {CommonServiceBase} from './CommonServiceBase';
  *       }
  * });
  *
- * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param options - {Object} 可选参数 。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export class MapService extends CommonServiceBase {
 
@@ -27,7 +27,7 @@ export class MapService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member  SuperMap.MapService.prototype.projection -{string}
+         * @member {string} SuperMap.MapService.prototype.projection
          * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
          */
         this.projection = null;
@@ -86,7 +86,7 @@ export class MapService extends CommonServiceBase {
      * 获取地图状态完成，执行此方法。
      *
      * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this;
