@@ -84,7 +84,7 @@
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");
         }
         if (inArray(includes, 'echarts-gl')) {
-            inputScript("http://echarts.baidu.com/examples/vendors/echarts-gl/echarts-gl.js");
+            inputScript("http://iclient.supermap.io/libs/echarts-gl/1.1.0/echarts-gl.min.js");
         }
         if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
