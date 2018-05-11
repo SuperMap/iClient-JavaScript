@@ -5,15 +5,15 @@ import './FilterParameter';
 
 /**
  * @class SuperMap.GetFeaturesBySQLParameters
- * @category  iServer Data FeatureResults
+ * @category iServer Data FeatureResults
  * @classdesc 数据服务中数据集SQL查询参数类。
- * @param options - {Object} 可選参数。如:</br>
- *        queryParameter - {{@link SuperMap.FilterParameter}} 查询过滤条件参数。</br>
- *         datasetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
- *         returnContent - {boolean} 是否直接返回查询结果。</br>
- *         fromIndex - {integer} 查询结果的最小索引号。</br>
- *         toIndex - {integer} 查询结果的最大索引号。</br>
- * @extends SuperMap.GetFeaturesParametersBase
+ * @param {Object} options - 参数。</br>
+ * @param {SuperMap.FilterParameter} options.queryParameter - 查询过滤条件参数。</br>
+ * @param {Array<string>} options.datasetNames - 数据集集合中的数据集名称列表。</br>
+ * @param {boolean} options.returnContent - 是否直接返回查询结果。</br>
+ * @param {number} options.fromIndex - 查询结果的最小索引号。</br>
+ * @param {number} options.toIndex - 查询结果的最大索引号。</br>
+ * @extends {SuperMap.GetFeaturesParametersBase}
  */
 export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
@@ -21,13 +21,13 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
     constructor(options) {
         super(options);
         /**
-         * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode - {string}
+         * @function {string} SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode
          * @description 数据集查询模式。
          */
         this.getFeatureMode = "SQL";
 
         /**
-         * @function SuperMap.GetFeaturesBySQLParameters.prototype.queryParameter - {SuperMap.FilterParameter}
+         * @function {SuperMap.FilterParameter} SuperMap.GetFeaturesBySQLParameters.prototype.queryParameter
          * @description 查询过滤条件参数类。
          */
         this.queryParameter = null;
@@ -53,9 +53,9 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
     /**
      * @function SuperMap.GetFeaturesBySQLParameters.prototype.toJsonParameters
-     * @description  将SuperMap.GetFeaturesBySQLParameters对象转换为JSON字符串。
-     * @param params - {SuperMap.GetFeaturesBySQLParameters} 数据集SQL查询参数对象。
-     * @return {string} 转化后的JSON字符串。
+     * @description 将SuperMap.GetFeaturesBySQLParameters对象转换为JSON字符串。
+     * @param {SuperMap.GetFeaturesBySQLParameters} params - 数据集SQL查询参数对象。
+     * @returns {string} 转化后的JSON字符串。
      */
     static toJsonParameters(params) {
         var paramsBySql = {

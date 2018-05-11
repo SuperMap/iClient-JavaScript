@@ -3,6 +3,7 @@
 [![SonarCloud Gate](https://sonarcloud.io/api/badges/gate?key=com.supermap%3Aiclient-javascript9)](https://sonarcloud.io/dashboard?id=com.supermap%3Aiclient-javascript9)
 [![SonarCloud Coverage](https://sonarcloud.io/api/badges/measure?key=com.supermap%3Aiclient-javascript9&metric=coverage)](https://sonarcloud.io/dashboard?id=com.supermap%3Aiclient-javascript9)
 [![npm version](https://img.shields.io/npm/v/@supermap/iclient-common.svg)](https://www.npmjs.com/~supermap)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript?ref=badge_shield)
 
 SuperMap iClient for JavaScript 是一套由 JavaScript 语言编写的 GIS 客户端应用开发包， 支持多源数据地图，支持多终端，跨浏览器， 通过本产品可快速实现浏览器上美观、流畅的地图呈现。
 
@@ -15,3 +16,7 @@ SuperMap iClient for JavaScript 是一套由 JavaScript 语言编写的 GIS 客�
  
 ## 许可
 [ Apache License 2.0 ](./LICENSE)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript?ref=badge_large)

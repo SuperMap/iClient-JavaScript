@@ -5,60 +5,59 @@ import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.EditFeaturesParameters
- * @category  iServer Data Feature
+ * @category iServer Data Feature
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @category iServer Data
- * @param options - {Object} 可选参数。如:</br>
- *        features - {Array<Object>} 当前需要创建或者是修改的要素集。feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。</br>
- *        returnContent - {boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
- *        editType - {SuperMap.EditType} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
- *        IDs - {Array<string|integer>} 删除要素时的要素的ID数组。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {Array.<SuperMap.Feature.Vector|GeoJSON|ol.feature>} options.features - 当前需要创建或者是修改的要素集。</br>
+ * @param {boolean} options.returnContent - 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
+ * @param {SuperMap.EditType} [options.editType=SuperMap.EditType.ADD] - POST动作类型(ADD、UPDATE、DELETE)。</br>
+ * @param {Array.<string|integer>} options.IDs - 删除要素时的要素的ID数组。</br>
  */
 export class EditFeaturesParameters {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
+         * @member {string} SuperMap.EditFeaturesParameters.prototype.dataSourceName
          * @description 当前需要创建或者是修改的要素的数据源
          */
         this.dataSourceName = null;
 
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
+         * @member {string} SuperMap.EditFeaturesParameters.prototype.dataSetName
          * @description 当前需要创建或者是修改的要素的数据集。
          */
         this.dataSetName = null;
 
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+         * @member {Array.<SuperMap.Feature.Vector|GeoJSON|ol.feature>} SuperMap.EditFeaturesParameters.prototype.features
          * @description 当前需要创建或者是修改的要素集。</br>
-         * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
          */
         this.features = null;
 
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
-         * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+         * @member {SuperMap.EditType} [SuperMap.EditFeaturesParameters.prototype.editType=SuperMap.EditType.ADD]
+         * @description 要素集更新类型(add、update、delete)。
          */
         this.editType = EditType.ADD;
 
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
+         * @member {Array.<string|number>} SuperMap.EditFeaturesParameters.prototype.IDs
          * @description 执行删除时要素集ID集合。
          */
         this.IDs = null;
 
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
+         * @member {boolean} [SuperMap.EditFeaturesParameters.prototype.returnContent=false]
          * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-         *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+         *              true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。
          */
         this.returnContent = false;
 
         /**
-         * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
-         * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+         * @member {boolean} [SuperMap.EditFeaturesParameters.prototype.isUseBatch=false]
+         * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。
          */
         this.isUseBatch = false;
         Util.extend(this, options);
@@ -83,9 +82,9 @@ export class EditFeaturesParameters {
 
     /**
      * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
-     * @description 将 <EditFeaturesParameters> 对象参数转换为 JSON 字符串。
-     * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
-     * @return {string} JSON字符串。
+     * @description 将 EditFeaturesParameters 对象参数转换为 JSON 字符串。
+     * @param {SuperMap.EditFeaturesParameters} params - 地物编辑参数。
+     * @returns {string} JSON字符串。
      */
     static toJsonParameters(params) {
         var feature,

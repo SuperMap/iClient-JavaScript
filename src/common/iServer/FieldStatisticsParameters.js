@@ -4,14 +4,14 @@ import {FieldParameters} from './FieldParameters';
 
 /**
  * @class SuperMap.FieldStatisticsParameters
- * @category  iServer Data Field
+ * @category iServer Data Field
  * @classdesc 字段统计信息查询参数类。
- * @param options - {Object} 可选参数。如:<br>
- *         datasource - {string} 数据源名称。<br>
- *        dataset - {string} 数据集名称。<br>
- *        fieldName - {string} 字段名。<br>
- *        statisticMode - {String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>>} 字段统计方法类型。
- * @extends SuperMap.FieldParameters
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasource - 数据源名称。<br>
+ * @param {string} options.dataset - 数据集名称。<br>
+ * @param {string} options.fieldName - 字段名。<br>
+ * @param {(string.<SuperMap.StatisticMode>|Array.<string.<SuperMap.StatisticMode>>)} statisticMode - 字段统计方法类型。
+ * @extends {SuperMap.FieldParameters}
  */
 export class FieldStatisticsParameters extends FieldParameters {
 
@@ -19,13 +19,13 @@ export class FieldStatisticsParameters extends FieldParameters {
     constructor(options) {
         super(options);
         /**
-         * @member SuperMap.FieldStatisticsParameters.prototype.fieldName - {string}
+         * @member {string} SuperMap.FieldStatisticsParameters.prototype.fieldName
          * @description 字段名
          */
         this.fieldName = null;
 
         /**
-         * @member SuperMap.FieldStatisticsParameters.prototype.statisticMode -{string<SuperMap.StatisticMode>}|{Array<string{SuperMap.StatisticMode}>}
+         * @member {(string.<SuperMap.StatisticMode>|Array.<string.<SuperMap.StatisticMode>>)} SuperMap.FieldStatisticsParameters.prototype.statisticMode
          * @description 字段统计方法类型
          */
         this.statisticMode = null;

@@ -9,13 +9,13 @@ import {GeoJSON} from '../format/GeoJSON';
  * @category  iServer Data FeatureResults
  * @classdesc 数据服务中数据集查询服务基类。获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON。
  * @extends SuperMap.CommonServiceBase
- * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，URL
- * 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
+ * @param {string} url - 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * URL应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
- * @param options - {Object} 可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @example
  * var myService = new SuperMap.GetFeaturesServiceBase(url, {
  *     eventListeners: {
@@ -31,37 +31,36 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         options = options || {};
 
         /**
-         * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {boolean}
+         * @member {boolean} [SuperMap.GetFeaturesServiceBase.prototype.returnContent=false]
          * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
          * 如果为 true，则直接返回新创建资源，即查询结果的表述。
-         * 如果为 false，则返回的是查询结果资源的 URI。默认为 false。
+         * 如果为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = true;
 
         /**
-         * @member SuperMap.GetFeaturesServiceBase.prototype.fromIndex - {integer}
-         * @description 查询结果的最小索引号。
-         * 默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
+         * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.fromIndex=0]
+         * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
          */
         this.fromIndex = 0;
 
         /**
-         * @member SuperMap.GetFeaturesServiceBase.prototype.toIndex - {integer}
+         * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.toIndex=19]
          * @description 查询结果的最大索引号。
          * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
          */
         this.toIndex = 19;
 
         /**
-         * @member SuperMap.GetFeaturesServiceBase.prototype.maxFeatures - {integer}
-         * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
+         * @member {number} [SuperMap.GetFeaturesServiceBase.prototype.maxFeatures=1000]
+         * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量。
          */
         this.maxFeatures = null;
 
         /**
-         * @member SuperMap.GetFeaturesServiceBase.prototype.format - {string}
+         * @member {string} SuperMap.GetFeaturesServiceBase.prototype.format
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。
-         *  参数格式为"ISERVER","GEOJSON",GEOJSON
+         * 参数格式为"ISERVER","GEOJSON"。
          */
         this.format = DataFormat.GEOJSON;
 
@@ -101,8 +100,8 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
 
     /**
      * @function SuperMap.GetFeaturesServiceBase.prototype.processAsync
-     * @description  将客户端的查询参数传递到服务端。
-     * @param params - {Object} 查询参数。
+     * @description 将客户端的查询参数传递到服务端。
+     * @param {Object} params - 查询参数。
      */
     processAsync(params) {
         if (!params) {
@@ -141,7 +140,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
     /**
      * @function SuperMap.GetFeaturesServiceBase.prototype.getFeatureComplete
      * @description 查询完成，执行此方法。
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this;

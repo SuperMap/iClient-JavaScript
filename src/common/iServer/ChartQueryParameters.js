@@ -4,60 +4,60 @@ import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
 
 /**
  * @class SuperMap.ChartQueryParameters
- *  @category  iServer Map Chart
+ * @category iServer Map Chart
  * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询和海图范围查询两类，通过属性queryMode指定查询模式。
- *              必设属性有：queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
- * @param options - {Object} 可选参数。如：<br>
- *         queryMode - {string} 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
- *         bounds - {Object} 海图查询范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
- *         chartLayerNames - {Array<string>} 查询的海图图层的名称。<br>
- *         chartQueryFilterParameters - {Array <{@link SuperMap.ChartQueryFilterParameter}>} 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
- *         returnContent - {boolean} 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。<br>
- *         startRecord - {number} 查询起始记录位置，默认为0。<br>
- *         expectCount - {number} 期望查询结果返回的记录数，该值大于0。
+ *            必设属性有：queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.queryMode - 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。<br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 海图查询范围。<br>
+ * @param {Array.<string>} options.chartLayerNames - 查询的海图图层的名称。<br>
+ * @param {Array.<{SuperMap.ChartQueryFilterParameter}>} options.chartQueryFilterParameters - 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
+ * @param {boolean} [options.returnContent=true] - 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。<br>
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。<br>
+ * @param {number} options.expectCount - 期望查询结果返回的记录数，该值大于0。
  */
 export class ChartQueryParameters {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.queryMode -{string}
+         * @member {string} SuperMap.ChartQueryParameters.prototype.queryMode
          * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
          */
         this.queryMode = null;
 
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.bounds - {Object}
-         * @description 海图查询范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.ChartQueryParameters.prototype.bounds
+         * @description 海图查询范围。
          */
         this.bounds = null;
 
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames - {Array<string>}
+         * @member {Array.<string>} SuperMap.ChartQueryParameters.prototype.chartLayerNames
          * @description 查询的海图图层的名称。
          */
         this.chartLayerNames = null;
 
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters - {Array<SuperMap.ChartQueryFilterParameter>}
+         * @member {Array.<SuperMap.ChartQueryFilterParameter>} SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters
          * @description 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
          */
         this.chartQueryFilterParameters = null;
 
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.returnContent - {boolean}
-         * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。
+         * @member {boolean} [SuperMap.ChartQueryParameters.prototype.returnContent=true]
+         * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。
          */
         this.returnContent = true;
 
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.startRecord - {number}
-         * @description 查询起始记录位置，默认为0。
+         * @member {number} [SuperMap.ChartQueryParameters.prototype.startRecord=0]
+         * @description 查询起始记录位置。
          */
         this.startRecord = 0;
 
         /**
-         * @member SuperMap.ChartQueryParameters.prototype.expectCount - {number}
+         * @member {number} SuperMap.ChartQueryParameters.prototype.expectCount
          * @description 期望查询结果返回的记录数，该值大于0。
          */
         this.expectCount = null;
@@ -84,7 +84,7 @@ export class ChartQueryParameters {
     /**
      * @function SuperMap.ChartQueryParameters.prototype.getVariablesJson
      * @description 将属性信息转换成能够被服务识别的JSON格式字符串。
-     * @return {string} JSON字符串。
+     * @returns {string} JSON字符串。
      */
     getVariablesJson() {
         var json = "";

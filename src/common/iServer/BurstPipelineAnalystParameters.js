@@ -3,13 +3,13 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.BurstPipelineAnalystParameters
- * @category  iServer NetworkAnalyst BurstAnalyse
+ * @category iServer NetworkAnalyst BurstAnalyse
  * @classdesc 爆管分析参数类。
- * @param options - {Object} 可选参数。如：<br>
- *         sourceNodeIDs - {Array<number>} 指定的设施点ID数组。<br>
- *         edgeID - {number} 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。<br>
- *         nodeID - {number} 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。<br>
- *         isUncertainDirectionValid - {boolean} 指定不确定流向是否有效；默认false，无效。
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点ID数组。<br>
+ * @param {number} options.edgeID - 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。<br>
+ * @param {number} options.nodeID - 指定的结点ID（注：edgeID 与 nodeID 不能同时使用）。<br>
+ * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。
  */
 export class BurstPipelineAnalystParameters {
 
@@ -17,26 +17,26 @@ export class BurstPipelineAnalystParameters {
     constructor(options) {
         var me = this;
         /**
-         * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<number>}
-         * @description 指定的设施点ID数组,可以为空。
+         * @member {Array.<number>} SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs
+         * @description 指定的设施点ID数组，可以为空。
          */
         this.sourceNodeIDs = null;
 
         /**
-         * @member SuperMap.BurstPipelineAnalystParameters.prototype.edgeID -{number}
+         * @member {number} SuperMap.BurstPipelineAnalystParameters.prototype.edgeID
          * @description 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
          */
         this.edgeID = null;
 
         /**
-         * @member SuperMap.BurstPipelineAnalystParameters.prototype.nodeID -{number}
-         * @description 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
+         * @member {number} SuperMap.BurstPipelineAnalystParameters.prototype.nodeID
+         * @description 指定的结点ID（注：edgeID 与 nodeID 不能同时使用）。
          */
         this.nodeID = null;
 
         /**
-         * @member SuperMap.BurstPipelineAnalystParameters.prototype.isUncertainDirectionValid -{boolean}
-         * @description 指定不确定流向是否有效，默认为false。
+         * @member {boolean} [SuperMap.BurstPipelineAnalystParameters.prototype.isUncertainDirectionValid=false]
+         * @description 指定不确定流向是否有效。
          * 指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行。
          * 指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
          */

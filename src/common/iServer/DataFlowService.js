@@ -5,15 +5,15 @@ import {SecurityManager} from '../security/SecurityManager';
 
 /**
  * @class SuperMap.DataFlowService
- * @category  iServer DataFlow
+ * @category iServer DataFlow
  * @classdesc 实时数据服务类
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 实时数据服务地址
- * @param options - {Object} 加载实时数据可选参数。如：<br>
- *        style - {function} 设置数据加载样式。<br>
- *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<Object>} 设置增添的几何要素对象数组。
- *        excludeField - -{Object} 排除字段
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 实时数据服务地址
+ * @param {Object} options - 参数。<br>
+ * @function {function} options.style - 设置数据加载样式。<br>
+ * @function {function} options.onEachFeature - 设置每个数据加载popup等。<br>
+ * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。<br>
+ * @param {Object} options.excludeField - -排除字段。
  */
 export class DataFlowService extends CommonServiceBase {
 
@@ -22,26 +22,26 @@ export class DataFlowService extends CommonServiceBase {
         options = options || {};
         /*
          * @constant EVENT_TYPES
-         * {Array<string>}
+         * {Array.<string>}
          * 此类支持的事件类型
          */
         options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
         super(url, options);
 
         /**
-         * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<Object>}
+         * @member {Array.<Object>} SuperMap.DataFlowService.prototype.geometry
          * @description 设置增添的几何要素对象数组。
          */
         this.geometry = null;
 
         /**
-         * @member SuperMap.DataFlowService.prototype.prjCoordSys -{Object}
+         * @member {Object} SuperMap.DataFlowService.prototype.prjCoordSys
          * @description 动态投影参数
          */
         this.prjCoordSys = null;
 
         /**
-         * @member SuperMap.DataFlowService.prototype.excludeField -{Object}
+         * @member {Object} SuperMap.DataFlowService.prototype.excludeField
          * @description 排除字段
          */
         this.excludeField = null;
@@ -61,7 +61,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @return{SuperMap.DataFlowService}
+     * @returns {SuperMap.DataFlowService}
      */
     initBroadcast() {
         var me = this;
@@ -86,7 +86,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param geoJSONFeature {JSON} json格式的要素数据
+     * @param {JSON} geoJSONFeature - json格式的要素数据
      */
     broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket||!this.broadcastWebSocket.isOpen) {
@@ -101,7 +101,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @return {this} this
+     * @returns {this} this
      */
     initSubscribe() {
         var me = this;
@@ -125,8 +125,8 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {Object} 排除字段
-     * @return {this} this
+     * @param {Object} excludeField - 排除字段
+     * @returns {this} this
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
@@ -137,8 +137,8 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
-     * @return {this} this
+     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
+     * @returns {this} this
      */
     setGeometry(geometry) {
         this.geometry = geometry;

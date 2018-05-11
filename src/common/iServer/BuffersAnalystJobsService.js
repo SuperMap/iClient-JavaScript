@@ -4,11 +4,11 @@ import {BuffersAnalystJobsParameter} from './BuffersAnalystJobsParameter';
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
- * @category  iServer ProcessingService BufferAnalyst
+ * @category iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 缓冲区分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
  */
 export class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {
@@ -25,7 +25,7 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.BuffersAnalystJobsService.protitype.getBufferJobs
+     * @function SuperMap.BuffersAnalystJobsService.prototype.getBufferJobs
      * @description 获取缓冲区分析所有任务
      */
     getBuffersJobs() {
@@ -33,19 +33,19 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.BuffersAnalystJobsService.protitype.getBufferJob
+     * @function SuperMap.BuffersAnalystJobsService.prototype.getBufferJob
      * @description 获取指定id的缓冲区分析服务
-     * @param id -{string} 指定要获取数据的id
+     * @param {string} id - 指定要获取数据的id。
      */
     getBuffersJob(id) {
         super.getJobs(this.url + '/' + id);
     }
 
     /**
-     * @function SuperMap.BuffersAnalystJobsService.protitype.addBufferJob
+     * @function SuperMap.BuffersAnalystJobsService.prototype.addBufferJob
      * @description 新建缓冲区分析服务
-     * @param params - {SuperMap.BuffersAnalystJobsParameter} 创建一个空间分析的请求参数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addBuffersJob(params, seconds) {
         super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds);

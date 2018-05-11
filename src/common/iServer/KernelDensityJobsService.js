@@ -6,9 +6,9 @@ import {KernelDensityJobParameter} from './KernelDensityJobParameter';
  * @class SuperMap.KernelDensityJobsService
  * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 核密度分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url -核密度分析服务地址。
+ * @param {Object} options - 交互服务时所需可选参数。
  */
 export class KernelDensityJobsService extends ProcessingServiceBase {
 
@@ -37,7 +37,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取指定id的核密度分析服务
-     * @param id -{string} 指定要获取数据的id
+     * @param {string} id - 指定要获取数据的id
      */
     getKernelDensityJob(id) {
         super.getJobs(this.url + '/' + id);
@@ -46,8 +46,8 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
      * @description 新建核密度分析服务
-     * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addKernelDensityJob(params, seconds) {
         super.addJob(this.url, params, KernelDensityJobParameter, seconds);

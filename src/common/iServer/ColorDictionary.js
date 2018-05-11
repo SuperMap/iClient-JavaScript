@@ -7,12 +7,12 @@ import {ServerColor} from './ServerColor';
  * @category  iServer Map Theme
  * @classdesc 颜色对照表类。
  * @description 颜色对照表中的键名为具体的高程值，键值表示该高程值要显示的颜色。对于栅格图层中高程值小于颜色对照表中高程最
- *                小值的点使用颜色对照表中高程最小值对应的颜色，对于栅格图层中高程值大于颜色对照表中高程最大值的点使用颜色对
- *                照表中高程最大值对应的颜色，对于栅格图层中高程值在颜色对照表中没有对应颜色的点，则查找颜色对照表中与当前高
- *                程值相邻的两个高程对应的颜色，然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
- * @param options - {Object} 可选参数。如：<br>
- *        elevation - {number} 高程值。<br>
- *        color - {@link SuperMap.ServerColor} 服务端颜色类。
+ *              小值的点使用颜色对照表中高程最小值对应的颜色，对于栅格图层中高程值大于颜色对照表中高程最大值的点使用颜色对
+ *              照表中高程最大值对应的颜色，对于栅格图层中高程值在颜色对照表中没有对应颜色的点，则查找颜色对照表中与当前高
+ *              程值相邻的两个高程对应的颜色，然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.elevation - 高程值。<br>
+ * @param {SuperMap.ServerColor} options.color - 服务端颜色类。
  */
 export class ColorDictionary {
 
@@ -21,13 +21,13 @@ export class ColorDictionary {
         options = options || {};
 
         /**
-         * @member SuperMap.ColorDictionary.prototype.elevation - {number}
+         * @member {number} SuperMap.ColorDictionary.prototype.elevation
          * @description 高程值。
          */
         this.elevation = null;
 
         /**
-         * @member SuperMap.ColorDictionary.prototype.color - {SuperMap.ServerColor}
+         * @member {SuperMap.ServerColor} SuperMap.ColorDictionary.prototype.color
          * @description 服务端颜色类。
          */
         this.color = null;
@@ -54,7 +54,7 @@ export class ColorDictionary {
     /**
      * @function SuperMap.ColorDictionary.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return {Object} JSON对象。
+     * @returns {Object} JSON对象。
      */
     toServerJSONObject() {
         var dataObj = {};

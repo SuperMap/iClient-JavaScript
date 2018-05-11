@@ -8,19 +8,19 @@ import {Vector} from './Vector';
 
 /**
  * @class SuperMap.GetLayersInfoService
- * @category  iServer Map Layer
+ * @category iServer Map Layer
  * @classdesc 获取图层信息服务类构造函数。
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
- *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
- *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
- *         如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
- *         http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *         serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *         format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
- *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
+ *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
+ *        如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
+ *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
  */
 export class GetLayersInfoService extends CommonServiceBase {
 
@@ -28,7 +28,7 @@ export class GetLayersInfoService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member SuperMap.GetLayersInfoService.prototype.isTempLayers -{Boolean}
+         * @member {boolean} SuperMap.GetLayersInfoService.prototype.isTempLayers
          * @description 当前url对应的图层是否是临时图层。
          */
         this.isTempLayers = false;
@@ -73,7 +73,7 @@ export class GetLayersInfoService extends CommonServiceBase {
     /**
      * @function SuperMap.GetLayersInfoService.prototype.serviceProcessCompleted
      * @description 编辑完成，执行此方法。
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;
@@ -89,9 +89,9 @@ export class GetLayersInfoService extends CommonServiceBase {
     /**
      * TODO 专题图时候可能会用到
      * @function SuperMap.GetLayersInfoService.prototype.handleLayers
-     * @description 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
-     * @param len - {number} subLayers.layers的长度
-     * @param layers - {Array} subLayers.layers
+     * @description 处理 iServer 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
+     * @param {number} len - subLayers.layers的长度
+     * @param {Array.<number>} layers - subLayers.layers的长度数组
      */
     handleLayers(len, layers) {
         var me = this, tempLayer;

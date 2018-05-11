@@ -3,24 +3,24 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FieldParameters
- * @category  iServer Data Field
+ * @category iServer Data Field
  * @classdesc 字段信息查询参数类。
- * @param options - {Object} 可选参数。如:<br>
- *         datasource - {string} 数据源名称。<br>
- *         dataset - {string} 数据集名称。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasource - 数据源名称。<br>
+ * @param {string} options.dataset - 数据集名称。
  */
 export class FieldParameters {
 
 
     constructor(options) {
         /**
-         * @member SuperMap.FieldParameters.prototype.datasource - {string}
+         * @member {string} SuperMap.FieldParameters.prototype.datasource
          * @description 要查询的数据集所在的数据源名称。
          */
         this.datasource = null;
 
         /**
-         *  @member SuperMap.FieldParameters.prototype.dataset - {string}
+         *  @member {string} SuperMap.FieldParameters.prototype.dataset
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;
