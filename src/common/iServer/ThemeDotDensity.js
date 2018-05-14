@@ -18,7 +18,7 @@ import {ServerStyle} from './ServerStyle';
  * @param options - {Object} 可选参数。如：<br>
  *        dotExpression - {string} 创建点密度专题图的字段或字段表达式。<br>
  *        style - {{@link SuperMap.ServerStyle}} 点密度专题图中点的风格。<br>
- *        value - {string} 专题图中每一个点所代表的数值。<br>
+ *        value - {number} 专题图中每一个点所代表的数值。<br>
  *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
 export class ThemeDotDensity extends Theme {

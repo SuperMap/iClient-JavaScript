@@ -10,7 +10,7 @@ import {Theme} from './theme/Theme';
  * @param name - {string} 图层名称
  * @param opt_options - {Object} 参数。如：<br>
  *        id - {string} 专题图层ID。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        map - {ol.Map} 当前map对象。</br>
  *        opacity - {number} 图层透明的。</br>
  *        attributions - {string|Object} 版权信息。 </br>
  *        logo - {string} Logo</br>

@@ -23,7 +23,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  *        graphSize - {{@link SuperMap.ThemeGraphSize}} 统计符号的最大最小尺寸。<br>
  *        graphSizeFixed - {boolean} 缩放地图时统计图符号是否固定大小。<br>
  *        graphText - {{@link SuperMap.ThemeGraphText}} 统计图上的文字是否可以见以及文字标注风格。<br>
- *        graphAxesTextDisplayMode -{{@link SuperMap.GraphAxesTextDisplayMode}} 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。
+ *        graphAxesTextDisplayMode -{{@link SuperMap.GraphAxesTextDisplayMode}} 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。<br>
  *        graphType - {{@link SuperMap.ThemeGraphType}} 统计专题图类型。<br>
  *        items - {Array<{@link SuperMap.ThemeGraphItem}>} 统计专题图子项集合。<br>
  *        memoryKeys - {Array<integer>} 以内存数组方式制作专题图时的键数组。<br>

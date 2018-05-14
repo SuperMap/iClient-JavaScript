@@ -10,7 +10,7 @@ import {Graph} from './Graph';
  * @param symbolType -{string} 标志类型
  * @param opt_options -{Object} 参数，如：<br>
  *        id - {string} 专题图层ID。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
+ *        map - {ol.Map} 当前map对象。</br>
  *        opacity - {number} 图层透明的。</br>
  *        attributions - {string|Object} 版权信息。 </br>
  *        logo - {string} Logo</br>
@@ -20,7 +20,7 @@ import {Graph} from './Graph';
  *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
  *        themeFields - {string} 指定创建专题图字段。 <br>
  *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
- *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
+ *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。<br>
  *        chartsSetting - {Object} 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:<br>
  *  * width - {number} 专题要素（图表）宽度，必设参数。
  *  * height - {number} 专题要素（图表）高度，必设参数。

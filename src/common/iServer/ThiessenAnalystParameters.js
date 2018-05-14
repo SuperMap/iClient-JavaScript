@@ -9,8 +9,8 @@ import {Util} from '../commontypes/Util';
  *        clipRegion - {Object} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
  *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        createResultDataset - {boolean} 是否返回结果数据集，默认不返回。</br>
- *        resultDatasetName - {boolean} 指定结果数据集名称。</br>
- *        resultDatasourceName - {boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
+ *        resultDatasetName - {string} 指定结果数据集名称。</br>
+ *        resultDatasourceName - {string} 指定结果数据集所在数据源，默认为当前数据源。</br>
  *        returnResultRegion - {boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
  */
 export class ThiessenAnalystParameters {

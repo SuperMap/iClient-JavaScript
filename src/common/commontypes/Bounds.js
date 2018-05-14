@@ -7,11 +7,11 @@ import {Util} from './Util';
 /**
  * @class SuperMap.Bounds
  * @classdesc 表示边界类实例。使用bounds之前需要设置left,bottom, right, top四个属性，这些属性的初始值为null。
- * @param  left - {number} 左边界，注意考虑宽度，理论上小于right值。
- * @param  bottom - {number} 下边界。考虑高度，理论上小于top值。
- * @param  right - {number} 右边界。
- * @param  top - {number} 上边界。
- * @param  array - {Array<number>} [left, bottom, right, top]  如果同时传多个参数，则使用左下右上组成的数组。
+ * @param {number} left - 左边界，注意考虑宽度，理论上小于right值。
+ * @param {number} bottom - 下边界。考虑高度，理论上小于top值。
+ * @param {number} right - 右边界。
+ * @param {number} top - 上边界。
+ * @param {Array.<number>} array - [left, bottom, right, top]，如果同时传多个参数，则使用左下右上组成的数组。
  * @example
  * var bounds = new SuperMap.Bounds();
  * bounds.extend(new SuperMap.LonLat(4,5));
@@ -115,9 +115,9 @@ export class Bounds {
      * var array1 = bounds.toArray();
      * //array1 = [-90,-180,80,100];
      * var array2 = bounds.toArray(true);
-     * @param reverseAxisOrder - {boolean} 是否反转轴顺序，
+     * @param {boolean} reverseAxisOrder - 是否反转轴顺序，
      * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
-     * @returns {Array} left, bottom, right, top数组。
+     * @returns {Array.<number>} left, bottom, right, top数组。
      */
     toArray(reverseAxisOrder) {
         if (reverseAxisOrder === true) {
@@ -138,8 +138,8 @@ export class Bounds {
      * var str2 = bounds.toBBOX(1);
      * //str2 = "-1.8,-1.1,1.6,1.4";
      * var str2 = bounds.toBBOX(1,true);
-     * @param decimal - {integer} 边界方位坐标的有效数字个数，默认为6。
-     * @param  reverseAxisOrder - {boolean} 是否是反转轴顺序。
+     * @param {integer} decimal - 边界方位坐标的有效数字个数，默认为6。
+     * @param {boolean} reverseAxisOrder - 是否是反转轴顺序。
      * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
      * @returns {string} 边界对象的字符串表示形式，如："5,42,10,45"。
      */
@@ -253,8 +253,8 @@ export class Bounds {
      * @example
      * var bounds = new SuperMap.Bounds(-50,-50,40,40);
      * var bounds2 = bounds.scale(2);
-     * @param ratio - {float} 需要扩大的比例，默认为1。
-     * @param origin - {SuperMap.Pixel|SuperMap.LonLat} 扩大时的基准点，默认为当前bounds的中心点。
+     * @param {float} ratio - 需要扩大的比例，默认为1。
+     * @param {(SuperMap.Pixel|SuperMap.LonLat)} origin - 扩大时的基准点，默认为当前bounds的中心点。
      * @returns {SuperMap.Bounds} 返回通过ratio、origin计算得到的新的边界范围。
      */
     scale(ratio, origin) {
@@ -289,8 +289,8 @@ export class Bounds {
      * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
      * //bounds2 是新的 bounds
      * var bounds2 = bounds.add(20,10);
-     * @param x - {float} 传入坐标点的x坐标。
-     * @param y - {float} 传入坐标点的y坐标。
+     * @param {float} x - 传入坐标点的x坐标。
+     * @param {float} y - 传入坐标点的y坐标。
      * @returns {SuperMap.Bounds} 返回一个新的bounds，此bounds的坐标是由传入的x，y参数与当前bounds坐标计算所得。
      */
     add(x, y) {
@@ -308,7 +308,7 @@ export class Bounds {
      * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
      * //bounds改变
      * bounds.extend(new SuperMap.LonLat(50,60));
-     * @param object - {SuperMap.Geometry.Point|SuperMap.LonLat | SuperMap.Bounds} 可以是point，lanlat和bounds。
+     * @param {(SuperMap.Geometry.Point|SuperMap.LonLat|SuperMap.Bounds)} object - 可以是point、lonlat和bounds。
      */
     extend(object) {
         var bounds = null;
@@ -367,13 +367,12 @@ export class Bounds {
      *           worldBounds: new SuperMap.Bounds(-180,-90,180,90)
      *      }
      *      );
-     * @param ll - {SuperMap.LonLat|Object}  <SuperMap.LonLat> 对象或者是一个
-     *     包含 'lon' 与 'lat' 属性的对象。
-     * @param options - {Object} 可选参数<br>
-     *         inclusive - {boolean} 是否包含边界，默认为 true 。<br>
-     *         worldBounds - {@link SuperMap.Bounds} 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds）,
-     *         但是通过日界线的转化可以被包含, 它将被认为是包含在该范围内的。
-     * @returns {boolean} 传入坐标是否包含在范围内.
+     * @param {(SuperMap.LonLat|Object)} ll - <SuperMap.LonLat> 对象或者是一个包含 'lon' 与 'lat' 属性的对象。
+     * @param {Object} options - 可选参数<br>
+     * @param {boolean} options.inclusive - 是否包含边界，默认为 true。<br>
+     * @param {SuperMap.Bounds} options.worldBounds - 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds），
+     *        但是通过日界线的转化可以被包含, 它将被认为是包含在该范围内的。
+     * @returns {boolean} 传入坐标是否包含在范围内。
      */
     containsLonLat(ll, options) {
         if (typeof options === "boolean") {
@@ -403,8 +402,8 @@ export class Bounds {
      * var bounds = new SuperMap.Bounds(-50,-50,40,40);
      * //isContains = true
      * var isContains = bounds.containsPixel(new SuperMap.Pixel(40,40),true);
-     * @param px - {SuperMap.Pixel} 提供的像素参数。
-     * @param inclusive - {boolean} 是否包含边界，默认为true。
+     * @param {SuperMap.Pixel} px - 提供的像素参数。
+     * @param {boolean} inclusive - 是否包含边界，默认为true。
      * @returns {boolean} 传入的pixel在当前边界范围之内。
      */
     containsPixel(px, inclusive) {
@@ -418,9 +417,9 @@ export class Bounds {
      * var bounds = new SuperMap.Bounds(-50,-50,40,40);
      * //isContains = true
      * var isContains = bounds.contains(40,40,true);
-     * @param x - {float} 传入的x坐标值。
-     * @param y - {float} 传入的y坐标值。
-     * @param inclusive - {boolean} 是否包含边界，默认为true。
+     * @param {float} x - 传入的x坐标值。
+     * @param {float} y - 传入的y坐标值。
+     * @param {boolean} inclusive - 是否包含边界，默认为true。
      * @returns {boolean} 传入的x,y坐标在当前范围内。
      */
     contains(x, y, inclusive) {
@@ -450,20 +449,19 @@ export class Bounds {
     /**
      * @function SuperMap.Bounds.prototype.intersectsBounds
      * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意
-     *                边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
+     *              边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
      * @example
      * var bounds = new SuperMap.Bounds(-180,-90,100,80);
      * var isIntersects = bounds.intersectsBounds(
      *      new SuperMap.Bounds(-170,-90,120,80)
      *  );
-     * @param bounds - {SuperMap.Bounds} 目标边界。
-     * @param options - {Object} 可选参数。<br>
-     *         inclusive - {boolean} 边缘重合也看成相交，默认为true。如果是false，
+     * @param {SuperMap.Bounds} bounds - 目标边界。
+     * @param {Object} options - 可选参数。<br>
+     * @param {boolean} options.inclusive - 边缘重合也看成相交，默认为true。如果是false，
      *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
      *                               这种情况被认为没有相交。<br>
-     *         worldBounds - {@link SuperMap.Bounds} 提供了 worldBounds 参数, 如果他们相交时
-     *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉
-     *                               或完全不在世界范围的边界。
+     * @param {SuperMap.Bounds} options.worldBounds - 提供了 worldBounds 参数, 如果他们相交时
+     *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
      * @returns {boolean} 传入的bounds对象与当前bounds相交。
      */
     intersectsBounds(bounds, options) {
@@ -536,10 +534,10 @@ export class Bounds {
      * var isContains = bounds.containsBounds(
      *      new SuperMap.Bounds(-170,-90,100,80),true,true
      *  );
-     * @param bounds - {SuperMap.Bounds} 目标边界。
-     * @param partial - {boolean} 目标边界的任意部分都包含在当前边界中则被认为是包含关系。默认为false，
-     *                             如果设为false，整个目标边界全部被包含在当前边界范围内。
-     * @param inclusive - {boolean} 边缘共享被视为包含。默认为true。
+     * @param {SuperMap.Bounds} bounds - 目标边界。
+     * @param {boolean} partial - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。默认为false，
+     *                            如果设为false，整个目标边界全部被包含在当前边界范围内。
+     * @param {boolean} inclusive - 边缘共享被视为包含。默认为true。
      * @returns {boolean} 传入的边界被当前边界包含。
      */
     containsBounds(bounds, partial, inclusive) {
@@ -567,7 +565,7 @@ export class Bounds {
      * var str = bounds.determineQuadrant(
      *      new SuperMap.LonLat(20,20)
      *  );
-     * @param lonlat - {SuperMap.LonLat} 传入的坐标对象。
+     * @param {SuperMap.LonLat} lonlat - 传入的坐标对象。
      * @returns {string} 传入坐标所在的象限("br" "tr" "tl" "bl" 分别对应"右下"，"右上"，"左上" "左下")。
      */
     determineQuadrant(lonlat) {
@@ -589,13 +587,13 @@ export class Bounds {
      * var maxExtent = new SuperMap.Bounds(-180,-90,100,80);
      * //新的bounds
      * var newBounds = bounds.wrapDateLine(maxExtent);
-     * @param maxExtent - {SuperMap.Bounds} 最大的边界范围（一般是全球范围）。
-     * @param options - {Object} 可选选项参数。<br>
-     *         leftTolerance - {float} left允许的误差。默认为0。<br>
-     *         rightTolerance - {float} right允许的误差。默认为0。
+     * @param {SuperMap.Bounds} maxExtent - 最大的边界范围（一般是全球范围）。
+     * @param {Object} options - 可选选项参数。<br>
+     * @param {float} options.leftTolerance - left允许的误差。默认为0。<br>
+     * @param {float} options.rightTolerance - right允许的误差。默认为0。
      * @returns {SuperMap.Bounds} 克隆当前边界。如果当前边界完全在最大范围之外此函数则返回一个不同值的边界，
-     *                             若落在最大边界的左边，则给当前的bounds值加上最大范围的宽度，即向右移动，
-     *                             若落在右边，则向左移动，即给当前的bounds值加上负的最大范围的宽度。
+     *                            若落在最大边界的左边，则给当前的bounds值加上最大范围的宽度，即向右移动，
+     *                            若落在右边，则向左移动，即给当前的bounds值加上负的最大范围的宽度。
      */
     wrapDateLine(maxExtent, options) {
         options = options || {};
@@ -673,8 +671,8 @@ export class Bounds {
      * @description 通过字符串参数创建新的bounds的构造函数。
      * @example
      * var bounds = SuperMap.Bounds.fromString("-180,-90,100,80");
-     * @param str - {string} 边界字符串，用逗号隔开 (e.g. <i>"5,42,10,45"</i>)
-     * @param reverseAxisOrder - {boolean} 是否反转轴顺序.
+     * @param {string} str - 边界字符串，用逗号隔开 (e.g. <i>"5,42,10,45"</i>)
+     * @param {boolean} reverseAxisOrder - 是否反转轴顺序.
      * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
      * @returns {SuperMap.Bounds} 返回给定的字符串创建的新的边界对象
      */
@@ -688,8 +686,8 @@ export class Bounds {
      * @description 通过边界框数组创建Bounds。
      * @example
      * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
-     * @param bbox - {Array(float)} 边界值数组。 (e.g. <i>[5,42,10,45]</i>)
-     * @param reverseAxisOrder - {boolean} 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
+     * @param {Array.<float>} bbox - 边界值数组。 (e.g. <i>[5,42,10,45]</i>)
+     * @param {boolean} reverseAxisOrder - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
      * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
      */
     static fromArray(bbox, reverseAxisOrder) {
@@ -703,7 +701,7 @@ export class Bounds {
      * @description 通过传入的边界大小来创建新的边界。
      * @example
      * var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(20,10));
-     * @param size - {SuperMap.Size} 传入的边界大小。
+     * @param {SuperMap.Size} size - 传入的边界大小。
      * @returns {SuperMap.Bounds} 返回根据传入的边界大小的创建新的边界。
      */
     static fromSize(size) {
@@ -716,7 +714,7 @@ export class Bounds {
     /**
      * @function SuperMap.Bounds.oppositeQuadrant
      * @description 反转象限。"t"和"b" 交换，"r"和"l"交换, 如："tl"变为"br"。
-     * @param quadrant - {string} 代表象限的字符串，如："tl"。
+     * @param {string} quadrant - 代表象限的字符串，如："tl"。
      * @returns {string} 反转后的象限。
      */
     static oppositeQuadrant(quadrant) {

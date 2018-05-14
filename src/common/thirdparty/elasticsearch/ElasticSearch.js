@@ -98,8 +98,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.bulk
      * @description 批量操作API，允许执行多个索引/删除操作。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -110,8 +110,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.clearScroll
      * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll</br>
-     *更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
+     *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -122,8 +122,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.count
      * @description 获取集群、索引、类型或查询的文档个数。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -134,8 +134,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.count
      * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -146,8 +146,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.delete
      * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -158,8 +158,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.delete
      * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -170,8 +170,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.delete
      * @description 根据其ID删除脚本。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -182,8 +182,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.deleteTemplate
      * @description 根据其ID删除模板。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -194,8 +194,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.exists
      * @description 检查给定文档是否存在。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -206,8 +206,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.existsSource
      * @description 检查资源是否存在。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -219,8 +219,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.explain
      * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -231,8 +231,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.fieldCaps
      * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -244,8 +244,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.get
      * @description 从索引获取一个基于其id的类型的JSON文档。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -256,8 +256,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.getScript
      * @description 获取脚本。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -268,8 +268,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.getSource
      * @description 通过索引，类型和ID获取文档的源。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -280,8 +280,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.getTemplate
      * @description 获取模板。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -292,8 +292,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.index
      * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -304,8 +304,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.info
      * @description 从当前集群获取基本信息。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info</br>
-     * 更多信息参考 https://www.elastic.co/guide/index.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -316,8 +316,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.mget
      * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -328,8 +328,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.msearch
      * @description 在同一请求中执行多个搜索请求。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
      *     回调参数：error,response。结果存储在response.responses中
@@ -351,8 +351,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.msearchTemplate
      * @description 在同一请求中执行多个搜索模板请求。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -363,8 +363,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.mtermvectors
      * @description 多termvectors API允许一次获得多个termvectors。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -375,8 +375,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.ping
      * @description 测试连接。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping</br>
-     * 更多信息参考 https://www.elastic.co/guide/index.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -387,8 +387,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.putScript
      * @description 添加脚本。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -399,8 +399,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.putTemplate
      * @description 添加模板。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -411,8 +411,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.reindex
      * @description 重新索引。</br>
-     * 参数设置参考 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -423,8 +423,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.reindexRessrottle
      * @description 重新索引。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -435,8 +435,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.renderSearchTemplate
      * @description 搜索模板。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -447,8 +447,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.scroll
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -459,8 +459,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.search
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
      *     回调参数：error,response,结果存储在response.responses中
@@ -481,8 +481,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.searchShards
      * @description  返回要执行搜索请求的索引和分片。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -493,8 +493,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.searchTemplate
      * @description  搜索模板。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -505,8 +505,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.suggest
      * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -517,8 +517,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.termvectors
      * @description 返回有关特定文档字段中的术语的信息和统计信息。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -529,8 +529,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.update
      * @description 更新文档的部分。</br>
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */
@@ -541,8 +541,8 @@ export class ElasticSearch {
     /**
      * @function  SuperMap.ElasticSearch.prototype.update
      * @description 通过查询API来更新文档。</br>
-     * 参数设置参考 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery</br>
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html</br>
+     * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
+     * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
      * @param params - {Object} 参数。
      * @param callback - {function} 回调函数。
      */

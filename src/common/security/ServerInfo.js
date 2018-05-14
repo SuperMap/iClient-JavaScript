@@ -15,7 +15,7 @@ import {ServerType} from '../REST';
 export class ServerInfo {
     constructor(type, options) {
         /**
-         * @member SuperMap.ServerInfo.prototype.type -{ServerType}
+         * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
          * @description 服务器类型
          */
         this.type = type;

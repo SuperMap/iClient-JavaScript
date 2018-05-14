@@ -26,8 +26,8 @@ import {Util} from '../core/Util';
  *        clipRegion - [{ol.geom.Geometry}]{@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
  *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
- *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。
- *        tileProxy - {string} 代理地址.
+ *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。<br>
+ *        tileProxy - {string} 代理地址。<br>
  *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */

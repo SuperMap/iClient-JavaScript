@@ -10,8 +10,8 @@ import {GeoFeature} from './theme/GeoFeature';
  * @param opt_options -{Object} 参数，如：<br>
  *        id - {string} 专题图层ID。</br>
  *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
- *        opacity - {number} 图层透明的。</br>
+ *        map - {ol.Map} 当前map对象。</br>
+ *        opacity - {number} 图层透明度。</br>
  *        attributions - {string|Object} 版权信息。 </br>
  *        logo - {string} Logo</br>
  *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>

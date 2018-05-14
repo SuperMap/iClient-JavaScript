@@ -2298,36 +2298,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.OutputSetting
  * @category  iServer ProcessingService
  * @classdesc 分布式分析输出类型设置类
- * @param options - {Object} 必填参数。<br>
- *         type -{{@link SuperMap.OutputType}} 输出类型。 <br>
- *         datasetName -{string} 结果数据集名称 <br>
- *         datasourceInfo -{DatasourceConnectionInfo} 数据源连接信息 <br>
- *         outputPath -{string} 分析结果输出路径 <br>
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.OutputType} options.type - 输出类型。<br>
+ * @param {string} options.datasetName - 结果数据集名称。<br>
+ * @param {SuperMap.DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。<br>
+ * @param {string} options.outputPath - 分析结果输出路径 <br>
  */
 var OutputSetting = exports.OutputSetting = function () {
   function OutputSetting(options) {
     _classCallCheck(this, OutputSetting);
 
     /**
-     * @member SuperMap.OutputSetting.prototype.type -{SuperMap.OutputType}
+     * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
      * @description 分布式分析的输出类型，必设字段。
      */
     this.type = _REST.OutputType.UDB;
 
     /**
-     * @member SuperMap.OutputSetting.prototype.datasetName -{string}
+     * @member {string} SuperMap.OutputSetting.prototype.datasetName
      * @description 分布式分析的输出结果数据集名称，必设字段。
      */
     this.datasetName = "analystResult";
 
     /**
-     * @member SuperMap.OutputSetting.prototype.datasourceInfo -{SuperMap.DatasourceConnectionInfo}
+     * @member {SuperMap.DatasourceConnectionInfo} SuperMap.OutputSetting.prototype.datasourceInfo
      * @description 分布式分析的输出结果数据源连接信息。
      */
     this.datasourceInfo = null;
 
     /**
-     * @member SuperMap.OutputSetting.prototype.outputPath -{string}
+     * @member {string} SuperMap.OutputSetting.prototype.outputPath
      * @description 分布式分析的分析结果输出路径。
      */
     this.outputPath = "";
@@ -2397,14 +2397,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.ProcessingServiceBase
  * @category  iServer ProcessingService
  * @classdesc 分布式分析服务基类
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 分布式分析服务地址。
- * @param options - {Object} 参数。如：<br>
- *        events - {{@link SuperMap.Events}} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {{@link ServerType}} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number}服务访问地址在数组中的位置。<br>
- *        length - {number}服务访问地址数组长度。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 分布式分析服务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
+ * @param {Object} options.eventListeners - 听器对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {number} options.length - 服务访问地址数组长度。
  */
 var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
@@ -2415,7 +2415,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
         options = options || {};
         /*
          * Constant: EVENT_TYPES
-         * {Array<string>}
+         * {Array.<string>}
          * 此类支持的事件类型
          * - *processCompleted* 创建成功后触发的事件。
          * - *processFailed* 创建失败后触发的事件 。
@@ -2444,7 +2444,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.getJobs
          * @description 获取分布式分析任务。
-         * @param url - {string} 资源地址。
+         * @param {string} url - 资源地址。
          */
 
     }, {
@@ -2463,10 +2463,10 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.addJob
          * @description 添加分布式分析任务。
-         * @param url - {string} 资源根地址。
-         * @param params - {Object} 创建一个空间分析的请求参数。
-         * @param paramType - {string} - 请求参数类型。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {string} url - 资源根地址。
+         * @param {Object} params - 创建一个空间分析的请求参数。
+         * @param {string} paramType - 请求参数类型。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -4505,16 +4505,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.GeoDecodingParameter
- * @category  iServer AddressMatch
+ * @category iServer AddressMatch
  * @classdesc 地理反向匹配参数类。
- * @param options - {Object}可选参数。如:<br>
- *        x - {number} 查询位置的横坐标。<br>
- *        y - {number} 查询位置的纵坐标。<br>
- *        fromIndex - {number} 设置返回对象的起始索引值。<br>
- *        filters - {Array<string>} 过滤字段，限定查询区域。<br>
- *        prjCoordSys - {string} 查询结果的坐标系。<br>
- *        maxReturn - {number} 最大返回结果数。<br>
- *        geoDecodingRadius - {number} 查询半径。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.x - 查询位置的横坐标。<br>
+ * @param {number} options.y - 查询位置的纵坐标。<br>
+ * @param {number} options.fromIndex - 设置返回对象的起始索引值。<br>
+ * @param {Array.<string>} options.filters - 过滤字段，限定查询区域。<br>
+ * @param {string} options.prjCoordSys - 查询结果的坐标系。<br>
+ * @param {number} options.maxReturn - 最大返回结果数。<br>
+ * @param {number} options.geoDecodingRadius - 查询半径。
  */
 var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
   function GeoDecodingParameter(options) {
@@ -4530,48 +4530,48 @@ var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
       options.filters = strs;
     }
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
+     * @member {number} SuperMap.GeoDecodingParameter.prototype.x
      * @description 查询位置的横坐标。
      */
     this.x = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
+     * @member {number} SuperMap.GeoDecodingParameter.prototype.y
      * @description 查询位置的纵坐标。
      */
     this.y = null;
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
+     * @member {number} SuperMap.GeoDecodingParameter.prototype.fromIndex
      * @description  设置返回对象的起始索引值。
      */
     this.fromIndex = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
+     * @member {number} SuperMap.GeoDecodingParameter.prototype.toIndex
      * @description 设置返回对象的结束索引值。
      */
     this.toIndex = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.filters - {Array<string>}
+     * @member {Array.<string>} SuperMap.GeoDecodingParameter.prototype.filters
      * @description 过滤字段，限定查询区域。
      */
     this.filters = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys - {string}
+     * @member {string} SuperMap.GeoDecodingParameter.prototype.prjCoordSys
      * @description 查询结果的坐标系。
      */
     this.prjCoordSys = null;
 
     /**
-     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
+     *  @member {number} SuperMap.GeoDecodingParameter.prototype.maxReturn
      *  @description 最大返回结果数。
      */
     this.maxReturn = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius - {number}
+     * @member {number} SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius
      * @description 查询半径。
      */
     this.geoDecodingRadius = null;
@@ -4627,13 +4627,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.GeoCodingParameter
  * @category  iServer AddressMatch
  * @classdesc 地理正向匹配参数类。
- * @param options - {Object} 可选参数。如:</br>
- *         address - {string} 地点关键词。</br>
- *         fromIndex - {number} 设置返回对象的起始索引值。</br>
- *         toIndex - {number} 设置返回对象的结束索引值。</br>
- *         filters - {Array<string>} 过滤字段，限定查询区域。</br>
- *         prjCoordSys - {string} 查询结果的坐标系。</br>
- *         maxReturn - {number} 最大返回结果数。
+ * @param {Object} options - 参数。</br>
+ * @param {string} options.address - 地点关键词。</br>
+ * @param {number} options.fromIndex - 设置返回对象的起始索引值。</br>
+ * @param {number} options.toIndex - 设置返回对象的结束索引值。</br>
+ * @param {Array.<string>} options.filters - 过滤字段，限定查询区域。</br>
+ * @param {string} options.prjCoordSys - 查询结果的坐标系。</br>
+ * @param {number} options.maxReturn - 最大返回结果数。
  */
 var GeoCodingParameter = exports.GeoCodingParameter = function () {
   function GeoCodingParameter(options) {
@@ -4649,37 +4649,37 @@ var GeoCodingParameter = exports.GeoCodingParameter = function () {
       options.filters = strs;
     }
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.address - {string}
+     * @member {string} SuperMap.GeoCodingParameter.prototype.address
      * @description 地点关键词。
      */
     this.address = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.fromIndex - {number}
+     * @member {number} SuperMap.GeoCodingParameter.prototype.fromIndex
      * @description 设置返回对象的起始索引值。
      */
     this.fromIndex = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.toIndex - {number}
+     * @member {number} SuperMap.GeoCodingParameter.prototype.toIndex
      * @description 设置返回对象的结束索引值。
      */
     this.toIndex = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.filters - {Array<string>}
+     * @member {Array.<string>}SuperMap.GeoCodingParameter.prototype.filters
      * @description 过滤字段，限定查询区域。
      */
     this.filters = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys - {string}
+     * @member {string} SuperMap.GeoCodingParameter.prototype.prjCoordSys
      * @description  查询结果的坐标系。
      */
     this.prjCoordSys = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.maxReturn - {number}
+     * @member {number} SuperMap.GeoCodingParameter.prototype.maxReturn
      * @description 最大返回结果数。
      */
     this.maxReturn = null;
@@ -4863,59 +4863,58 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
- * @category  iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         bounds - {Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
- *         distance -{string} 缓冲距离，或缓冲区半径。 <br>
- *         distanceField -{string} 缓冲区分析距离字段。 <br>
- *         distanceUnit -{{@link SuperMap.AnalystSizeUnit}} 缓冲距离单位单位。 <br>
- *         distance -{string} 缓冲区半径。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @category iServer ProcessingService BufferAnalyst
+ * @classdesc 缓冲区分析任务参数类。
+ * @param {Object} options - 参数。</br>
+ * @param {string} options.datasetName - 数据集名。</br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 分析范围。</br>
+ * @param {string} options.distance - 缓冲距离，或缓冲区半径。</br>
+ * @param {string} options.distanceField - 缓冲区分析距离字段。</br>
+ * @param {SuperMap.AnalystSizeUnit} options.distanceUnit - 缓冲距离单位单位。</br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。</br>
  */
 var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function () {
     function BuffersAnalystJobsParameter(options) {
         _classCallCheck(this, BuffersAnalystJobsParameter);
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.bounds - {Object}
-         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.BuffersAnalystJobsParameter.prototype.bounds
+         * @description 分析范围。<br>
          */
         this.bounds = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distance -{string}
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.distance
          * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
          */
         this.distance = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{string}
-         * @description 缓冲距离字段，
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.distanceField
+         * @description 缓冲距离字段。
          */
         this.distanceField = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
+         * @member {SuperMap.AnalystSizeUnit} SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit
          * @description 缓冲距离单位。
          */
         this.distanceUnit = _REST.AnalystSizeUnit.METER;
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
+         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
         this.dissolveField = "";
 
         /**
-         * @member SuperMap.BuffersAnalystJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.BuffersAnalystJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -4951,8 +4950,8 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
 
         /**
          * @function SuperMap.BuffersAnalystJobsParameter.toObject
-         * @param BuffersAnalystJobsParameter -{Object} 缓冲区分析任务参数
-         * @param tempObj - {Object} 目标对象
+         * @param {SuperMap.BuffersAnalystJobsParameter} BuffersAnalystJobsParameter - 缓冲区分析任务参数
+         * @param {Object} tempObj - 目标对象
          * @description 生成缓冲区分析任务对象
          */
 
@@ -5009,13 +5008,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
- * @category  iServer ProcessingService OverlayAnalyst
+ * @category iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetOverlay -{string} 叠加对象所在的数据集名称。 <br>
- *         mode -{string} 叠加分析模式 。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。<br>
+ * @param {string} options.mode - 叠加分析模式。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
     function OverlayGeoJobParameter(options) {
@@ -5025,37 +5024,37 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
             return;
         }
         /**
-         * @member SuperMap.OverlayGeoJobParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.OverlayGeoJobParameter.prototype.datasetOverlay -{string}
+         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.datasetOverlay
          * @description 叠加对象所在的数据集名称。
          */
         this.datasetOverlay = "";
 
         /**
-         * @member SuperMap.OverlayGeoJobParameter.prototype.mode -{string}
+         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.mode
          * @description 叠加分析模式
          */
         this.mode = "";
 
         /**
-         * @member SuperMap.OverlayGeoJobParameter.prototype.srcFields -{string}
+         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.srcFields
          * @description 输入数据需要保留的字段
          */
         this.srcFields = "";
 
         /**
-         * @member SuperMap.OverlayGeoJobParameter.prototype.overlayFields -{string}
+         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.overlayFields
          * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
          */
         this.overlayFields = "";
 
         /**
-         * @member SuperMap.OverlayGeoJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -5086,8 +5085,8 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
 
         /**
          * @function SuperMap.OverlayGeoJobParameter.toObject
-         * @param OverlayGeoJobParameter - {Object} 点聚合分析任务参数。
-         * @param tempObj - {Object} 目标对象。
+         * @param {Object} OverlayGeoJobParameter - 点聚合分析任务参数。
+         * @param {Object} tempObj - 目标对象。
          * @description 生成点聚合分析任务对象
          */
 
@@ -5791,17 +5790,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.KernelDensityJobParameter
- * @category  iServer ProcessingService DensityAnalyst
+ * @category iServer ProcessingService DensityAnalyst
  * @classdesc 密度分析任务参数类。
- * @param options - {Object} 可选参数。如：<br>
- *        datasetName - {string} 数据集名。<br>
- *        query - {Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
- *        resolution - {number} 分辨率。<br>
- *        method - {number} 分析方法。<br>
- *        meshType - {number} 分析类型。<br>
- *        fields - {string} 权重索引。<br>
- *        radius - {number} 分析的影响半径。
- *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。<br>
+ * @param {number} options.resolution - 分辨率。<br>
+ * @param {number} options.method - 分析方法。<br>
+ * @param {number} options.meshType - 分析类型。<br>
+ * @param {string} options.fields - 权重索引。<br>
+ * @param {number} options.radius - 分析的影响半径。
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置  <br>
  */
 var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () {
   function KernelDensityJobParameter(options) {
@@ -5811,67 +5810,67 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
       return;
     }
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName - {string}
+     * @member {string} SuperMap.KernelDensityJobParameter.prototype.datasetName
      * @description 数据集名。
      */
     this.datasetName = "";
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query - {Object}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+     * @member {SuperMap.Bounds|L.Bounds|ol.extent} SuperMap.KernelDensityJobParameter.prototype.query
+     * @description 分析范围。<br>
      */
     this.query = "";
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution - {number}
+     * @member {number} SuperMap.KernelDensityJobParameter.prototype.resolution
      * @description 网格大小。
      */
     this.resolution = 80;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method - {number}
+     * @member {number} SuperMap.KernelDensityJobParameter.prototype.method
      * @description 分析方法。
      */
     this.method = 0;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType - {number}
+     * @member {number} SuperMap.KernelDensityJobParameter.prototype.meshType
      * @description 分析类型。
      */
     this.meshType = 0;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields - {string}
+     * @member {string} SuperMap.KernelDensityJobParameter.prototype.fields
      * @description 权重索引。
      */
     this.fields = "";
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius - {number}
+     * @member {number} SuperMap.KernelDensityJobParameter.prototype.radius
      * @description 分析的影响半径。
      */
     this.radius = 300;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit - {SuperMap.AnalystSizeUnit}
+     * @member {SuperMap.AnalystSizeUnit} SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit
      * @description 网格大小单位。
      */
     this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit - {SuperMap.AnalystSizeUnit}
+     * @member {SuperMap.AnalystSizeUnit} SuperMap.KernelDensityJobParameter.prototype.radiusUnit
      * @description 搜索半径单位。
      */
     this.radiusUnit = _REST.AnalystSizeUnit.METER;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit - {SuperMap.AnalystAreaUnit}
+     * @member {SuperMap.AnalystAreaUnit} SuperMap.KernelDensityJobParameter.prototype.areaUnit
      * @description 面积单位。
      */
     this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.output -{SuperMap.OutputSetting}
+     * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
      * @description 输出参数设置类
      */
     this.output = null;
@@ -5908,10 +5907,10 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
 
     /**
      * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param kernelDensityJobParameter -{SuperMap.KernelDensityJobParameter} 密度分析任务参数类。
-     * @param tempObj - {SuperMap.KernelDensityJobParameter} 密度分析任务参数对象。
+     * @param {SuperMap.KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
+     * @param {SuperMap.KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
      * @description 将密度分析任务参数对象转换为JSON对象。
-     * @return JSON对象。
+     * @returns JSON对象。
      */
 
   }], [{
@@ -6756,11 +6755,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
- * @category  iServer ProcessingService BufferAnalyst
+ * @category iServer ProcessingService BufferAnalyst
  * @classdesc 缓冲区分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 缓冲区分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
  */
 var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_ProcessingServiceBas) {
     _inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
@@ -6787,7 +6786,7 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
         }
 
         /**
-         * @function SuperMap.BuffersAnalystJobsService.protitype.getBufferJobs
+         * @function SuperMap.BuffersAnalystJobsService.prototype.getBufferJobs
          * @description 获取缓冲区分析所有任务
          */
 
@@ -6798,9 +6797,9 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
         }
 
         /**
-         * @function SuperMap.BuffersAnalystJobsService.protitype.getBufferJob
+         * @function SuperMap.BuffersAnalystJobsService.prototype.getBufferJob
          * @description 获取指定id的缓冲区分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id。
          */
 
     }, {
@@ -6810,10 +6809,10 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
         }
 
         /**
-         * @function SuperMap.BuffersAnalystJobsService.protitype.addBufferJob
+         * @function SuperMap.BuffersAnalystJobsService.prototype.addBufferJob
          * @description 新建缓冲区分析服务
-         * @param params - {SuperMap.BuffersAnalystJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -6858,15 +6857,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.OverlayGeoJobsService
- * @category  iServer ProcessingService OverlayAnalyst
+ * @category iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务类。
- * @param url -{string} 叠加分析任务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number}服务访问地址在数组中的位置。<br>
- *        length - {number}服务访问地址数组长度。
+ * @param {string} url - 叠加分析任务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
+ * @param {Object} options.eventListeners - 听器对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {number} options.length - 服务访问地址数组长度。
  */
 var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_ProcessingServiceBas) {
     _inherits(OverlayGeoJobsService, _ProcessingServiceBas);
@@ -6906,7 +6905,7 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
         /**
          * @function SuperMap.OverlayGeoJobsService.prototype.getOverlayGeoJob
          * @description 获取指定id的叠加分析任务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -6918,8 +6917,8 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
         /**
          * @function SuperMap.OverlayGeoJobsService.prototype.addOverlayGeoJob
          * @description 新建点叠加析服务
-         * @param params - {SuperMap.OverlayGeoJobParameter} 创建一个叠加分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.OverlayGeoJobParameter} params - 创建一个叠加分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -7504,9 +7503,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.KernelDensityJobsService
  * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 核密度分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url -核密度分析服务地址。
+ * @param {Object} options - 交互服务时所需可选参数。
  */
 var KernelDensityJobsService = exports.KernelDensityJobsService = function (_ProcessingServiceBas) {
     _inherits(KernelDensityJobsService, _ProcessingServiceBas);
@@ -7547,7 +7546,7 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
          * @description 获取指定id的核密度分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -7559,8 +7558,8 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
          * @description 新建核密度分析服务
-         * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -8603,10 +8602,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.AddressMatchService
- * @category  iServer AddressMatch
+ * @category iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @param options - {Object} 参数。
- * @param url {string} 地址匹配服务地址。
+ * @param {string} url - 地址匹配服务地址。
+ * @param {Object} options - 参数。
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -8634,8 +8633,8 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 
         /**
          * @function SuperMap.AddressMatchService.prototype.code
-         * @param url {string} 正向地址匹配服务地址
-         * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
+         * @param {string} url - 正向地址匹配服务地址。
+         * @param {SuperMap.GeoCodingParameter} params - 正向地址匹配服务参数。
          */
 
     }, {
@@ -8649,8 +8648,8 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 
         /**
          * @function SuperMap.AddressMatchService.prototype.decode
-         * @param url {string} 反向地址匹配服务地址
-         * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
+         * @param {string} url - 反向地址匹配服务地址。
+         * @param {SuperMap.GeoDecodingParameter} params - 反向地址匹配服务参数。
          */
 
     }, {
@@ -8665,8 +8664,8 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         /**
          * @function SuperMap.AddressMatchService.prototype.processAsync
          * @description 负责将客户端的动态分段服务参数传递到服务端。
-         * @param url - {string} 服务地址
-         * @param params - {Object} 参数
+         * @param {string} url - 服务地址。
+         * @param {Object} params - 参数。
          */
 
     }, {
@@ -8688,7 +8687,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 
         /**
          * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          * @description 服务流程是否完成
          */
 
@@ -8700,7 +8699,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 
         /**
          * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          * @description 服务流程是否失败
          */
 
@@ -9763,47 +9762,47 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.DatasourceConnectionInfo
  * @category  iServer Data
  * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
- *             当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
- *             所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
- *             其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
+ *            当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
+ *            所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
+ *            其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
  * @category iServer Data
- * @param options - {Object} 参数。如:</br>
- *         alias - {string} 数据源别名。</br>
- *         connect - {boolean} 数据源是否自动连接数据。</br>
- *         dataBase - {string} 数据源连接的数据库名。</br>
- *         driver - {string} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
- *         engineType - {EngineType} 数据源连接的引擎类型。</br>
- *         exclusive - {boolean} 是否以独占方式打开数据源。</br>
- *         OpenLinkTable - {boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
- *         password - {string} 登录数据源连接的数据库或文件的密码。</br>
- *         readOnly - {boolean} 是否以只读方式打开数据源。</br>
- *         server - {string} 数据库服务器名或 SDB 文件名。</br>
- *         user - {string} 登录数据库的用户名。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {string} options.alias - 数据源别名。</br>
+ * @param {boolean} options.connect - 数据源是否自动连接数据。</br>
+ * @param {string} options.dataBase - 数据源连接的数据库名。</br>
+ * @param {string} options.driver - 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
+ * @param {SuperMap.EngineType} options.engineType - 数据源连接的引擎类型。</br>
+ * @param {boolean} options.exclusive - 是否以独占方式打开数据源。</br>
+ * @param {boolean} options.OpenLinkTable - 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
+ * @param {string} options.password - 登录数据源连接的数据库或文件的密码。</br>
+ * @param {boolean} options.readOnly - 是否以只读方式打开数据源。</br>
+ * @param {string} options.server - 数据库服务器名或 SDB 文件名。</br>
+ * @param {string} options.user - 登录数据库的用户名。</br>
  */
 var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
   function DatasourceConnectionInfo(options) {
     _classCallCheck(this, DatasourceConnectionInfo);
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
+     * @member {string} SuperMap.DatasourceConnectionInfo.prototype.alias
      * @description 数据源别名。
      */
     this.alias = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{boolean}
+     * @member {boolean} SuperMap.DatasourceConnectionInfo.prototype.connect
      * @description 数据源是否自动连接数据。
      */
     this.connect = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{string}
+     * @member {string} SuperMap.DatasourceConnectionInfo.prototype.dataBase
      * @description 数据源连接的数据库名。
      */
     this.dataBase = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{string}
+     * @member {string} SuperMap.DatasourceConnectionInfo.prototype.driver
      * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
      * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
      * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
@@ -9812,37 +9811,37 @@ var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
     this.driver = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.engineType -{EngineType}
+     * @member {SuperMap.EngineType} SuperMap.DatasourceConnectionInfo.prototype.engineType
      * @description 数据源连接的引擎类型。
      */
     this.engineType = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
+     * @member {boolean} SuperMap.DatasourceConnectionInfo.prototype.exclusive
      * @description 是否以独占方式打开数据源。
      */
     this.exclusive = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{boolean}
+     * @member {boolean} SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable
      * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
      */
     this.OpenLinkTable = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{string}
+     * @member {string} SuperMap.DatasourceConnectionInfo.prototype.password
      * @description 登录数据源连接的数据库或文件的密码。
      */
     this.password = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{boolean}
+     * @member {boolean} SuperMap.DatasourceConnectionInfo.prototype.readOnly
      * @description 是否以只读方式打开数据源。
      */
     this.readOnly = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{string}
+     * @member {string} SuperMap.DatasourceConnectionInfo.prototype.server
      * @description 数据库服务器名、文件名或服务地址。
      * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
      * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
@@ -9850,15 +9849,15 @@ var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
      * 4.对于PostgreSQL数据库，其服务器名为“IP:端口号”，默认的端口号是 5432。
      * 5.对于DB2数据库，已经进行了编目，所以不需要进行服务器的设置。
      * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。
-     * 7.对于GoogleMaps数据源，其服务器地址，默认设置为“http://maps.google.com”，且不可更改。
+     * 7.对于GoogleMaps数据源，其服务器地址，默认设置为“{@link http://maps.google.com}”，且不可更改。
      * 8.对于SuperMapCould数据源，为其服务地址。
-     * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“http://www.tianditu.cn”，且不可更改。
+     * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“{@link http://www.tianditu.cn}”，且不可更改。
      * 10.对于OGC和REST数据源，为其服务地址。
      */
     this.server = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{string}
+     * @member {string} SuperMap.DatasourceConnectionInfo.prototype.user
      * @description 登录数据库的用户名。
      */
     this.user = null;
@@ -10838,16 +10837,15 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -10861,7 +10859,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(scope, this._id);
+  this._clearFn.call(window, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -10888,7 +10886,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(48);
-// On some exotic environments, it's not clear which object `setimmediate` was
+// On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
@@ -11854,8 +11852,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.bulk
          * @description 批量操作API，允许执行多个索引/删除操作。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11869,8 +11867,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.clearScroll
          * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll</br>
-         *更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
+         *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11884,8 +11882,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.count
          * @description 获取集群、索引、类型或查询的文档个数。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11899,8 +11897,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.count
          * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11914,8 +11912,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
          * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11929,8 +11927,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
          * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11944,8 +11942,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
          * @description 根据其ID删除脚本。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11959,8 +11957,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.deleteTemplate
          * @description 根据其ID删除模板。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11974,8 +11972,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.exists
          * @description 检查给定文档是否存在。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -11989,8 +11987,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.existsSource
          * @description 检查资源是否存在。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12004,8 +12002,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.explain
          * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12019,8 +12017,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.fieldCaps
          * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12034,8 +12032,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.get
          * @description 从索引获取一个基于其id的类型的JSON文档。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12049,8 +12047,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.getScript
          * @description 获取脚本。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12064,8 +12062,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.getSource
          * @description 通过索引，类型和ID获取文档的源。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12079,8 +12077,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.getTemplate
          * @description 获取模板。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12094,8 +12092,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.index
          * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12109,8 +12107,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.info
          * @description 从当前集群获取基本信息。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info</br>
-         * 更多信息参考 https://www.elastic.co/guide/index.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12124,8 +12122,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.mget
          * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12139,8 +12137,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.msearch
          * @description 在同一请求中执行多个搜索请求。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
          *     回调参数：error,response。结果存储在response.responses中
@@ -12164,8 +12162,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.msearchTemplate
          * @description 在同一请求中执行多个搜索模板请求。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12179,8 +12177,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.mtermvectors
          * @description 多termvectors API允许一次获得多个termvectors。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12194,8 +12192,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.ping
          * @description 测试连接。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping</br>
-         * 更多信息参考 https://www.elastic.co/guide/index.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12209,8 +12207,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.putScript
          * @description 添加脚本。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12224,8 +12222,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.putTemplate
          * @description 添加模板。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12239,8 +12237,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.reindex
          * @description 重新索引。</br>
-         * 参数设置参考 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12254,8 +12252,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.reindexRessrottle
          * @description 重新索引。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12269,8 +12267,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.renderSearchTemplate
          * @description 搜索模板。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12284,8 +12282,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.scroll
          * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12299,8 +12297,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.search
          * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
          *     回调参数：error,response,结果存储在response.responses中
@@ -12323,8 +12321,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.searchShards
          * @description  返回要执行搜索请求的索引和分片。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12338,8 +12336,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.searchTemplate
          * @description  搜索模板。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12353,8 +12351,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.suggest
          * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12368,8 +12366,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.termvectors
          * @description 返回有关特定文档字段中的术语的信息和统计信息。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12383,8 +12381,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.update
          * @description 更新文档的部分。</br>
-         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */
@@ -12398,8 +12396,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.update
          * @description 通过查询API来更新文档。</br>
-         * 参数设置参考 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery</br>
-         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html</br>
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
          * @param params - {Object} 参数。
          * @param callback - {function} 回调函数。
          */

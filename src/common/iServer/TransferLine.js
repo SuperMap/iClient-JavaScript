@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
  * @param options - {Object} 可选参数。如:</br>
- *        lineID - {string} 乘车路线名称。</br>
+ *        lineID - {number} 乘车路线ID。</br>
  *        lineName - {string} 乘车路线名称。</br>
  *        lineAliasName - {string} 乘车路线别名。</br>
  *        startStopIndex - {number}上车站点在本公交路线中的索引。</br>
@@ -22,7 +22,7 @@ export class TransferLine {
         options = options || {};
         /**
          * @memberSuperMap.TransferLine.prototype.lineID -{number}
-         * @description 乘车路线名称。
+         * @description 乘车路线ID。
          */
         this.lineID = null;
 

@@ -8,14 +8,14 @@ import {SecurityManager} from '../security/SecurityManager';
  * @class SuperMap.ProcessingServiceBase
  * @category  iServer ProcessingService
  * @classdesc 分布式分析服务基类
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 分布式分析服务地址。
- * @param options - {Object} 参数。如：<br>
- *        events - {{@link SuperMap.Events}} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {{@link ServerType}} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number}服务访问地址在数组中的位置。<br>
- *        length - {number}服务访问地址数组长度。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 分布式分析服务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
+ * @param {Object} options.eventListeners - 听器对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {number} options.length - 服务访问地址数组长度。
  */
 export class ProcessingServiceBase extends CommonServiceBase {
 
@@ -23,7 +23,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
         options = options || {};
         /*
          * Constant: EVENT_TYPES
-         * {Array<string>}
+         * {Array.<string>}
          * 此类支持的事件类型
          * - *processCompleted* 创建成功后触发的事件。
          * - *processFailed* 创建失败后触发的事件 。
@@ -46,7 +46,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
     /**
      * @function SuperMap.ProcessingServiceBase.prototype.getJobs
      * @description 获取分布式分析任务。
-     * @param url - {string} 资源地址。
+     * @param {string} url - 资源地址。
      */
     getJobs(url) {
         var me = this;
@@ -62,10 +62,10 @@ export class ProcessingServiceBase extends CommonServiceBase {
     /**
      * @function SuperMap.ProcessingServiceBase.prototype.addJob
      * @description 添加分布式分析任务。
-     * @param url - {string} 资源根地址。
-     * @param params - {Object} 创建一个空间分析的请求参数。
-     * @param paramType - {string} - 请求参数类型。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param {string} url - 资源根地址。
+     * @param {Object} params - 创建一个空间分析的请求参数。
+     * @param {string} paramType - 请求参数类型。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addJob(url, params, paramType, seconds) {
         var me = this, parameterObject = null;
