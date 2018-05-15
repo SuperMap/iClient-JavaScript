@@ -8,7 +8,7 @@ var typeLinks = {
     "ol.geom.Polygon": olapi + "ol.geom.Polygon.html",
     "ol.geom.Point": olapi + "ol.geom.Point.html",
     "ol.format.GeoJSON": olapi + "ol.format.GeoJSON.html",
-    "L.bounds": lfapi + "#bounds",
+    "L.Bounds": lfapi + "#bounds",
     "L.Polygon": lfapi + "#polygon",
     "L.Point": lfapi + "#point",
     "L.LatLng": lfapi + "#latlng",

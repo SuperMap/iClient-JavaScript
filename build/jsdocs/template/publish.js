@@ -493,7 +493,6 @@ exports.publish = function (taffyData, opts, tutorials) {
     data().each(function (doclet) {
       
         doclet.ancestors = getAncestorLinks(doclet);
-
         if (doclet.kind === 'member') {
             addSignatureTypes(doclet);
         }
@@ -510,10 +509,17 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     var members = helper.getMembers(data);
     members.tutorials = tutorials.children;
+    var extendLinkto = function (longname, linkText, cssClass, fragmentId) {
+        if (longname && view.typeLinks && view.typeLinks[longname]) {
+            linkText = longname;
+            longname = view.typeLinks[longname];
+        }
+        return linkto(longname, linkText, cssClass, fragmentId);
 
+    }
     // add template helpers
     view.find = find;
-    view.linkto = linkto;
+    view.linkto = extendLinkto;
     view.resolveAuthorLinks = resolveAuthorLinks;
     view.tutoriallink = tutoriallink;
     view.htmlsafe = htmlsafe;

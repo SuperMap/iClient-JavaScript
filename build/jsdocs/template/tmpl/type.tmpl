@@ -4,11 +4,7 @@
     data.forEach(function(name, i) { ?>
 <span class="param-type"><?js=
 function(){
-   if(name&&self.typeLinks&&self.typeLinks[name]){
-      return self.linkto(self.typeLinks[name],name);
-    } else{
 return self.linkto(name, self.htmlsafe(name)) 
-    } 
 }()
 ?></span>
 <?js if (i < data.length-1) { ?>|<?js } ?>
