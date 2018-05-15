@@ -1,6 +1,15 @@
-﻿import {SuperMap} from '../SuperMap';
-import {SmoothMethod} from '../REST';
-import {Util} from '../commontypes/Util';
+﻿import {
+    SuperMap
+} from '../SuperMap';
+import {
+    SmoothMethod
+} from '../REST';
+import {
+    Util
+} from '../commontypes/Util';
+import {
+    ServerGeometry
+} from './ServerGeometry';
 
 /**
  * @class SuperMap.SurfaceAnalystParametersSetting
@@ -98,6 +107,28 @@ export class SurfaceAnalystParametersSetting {
         me.resampleTolerance = null;
         me.smoothMethod = null;
         me.smoothness = null;
+    }
+    /**
+     * @function SuperMap.SurfaceAnalystParametersSetting.prototype.toJSON
+     * @description 将对象转化为JSON字符串。
+     * @returns {string} 对象JSON字符串
+     */
+    toJSON() {
+        let json = "'datumValue':" + Util.toJSON(this.datumValue);
+        json += ",'interval':" + Util.toJSON(this.interval);
+        json += ",'resampleTolerance':" + Util.toJSON(this.resampleTolerance);
+        json += ",'smoothMethod':" + Util.toJSON(this.smoothMethod);
+        json += ",'smoothness':" + Util.toJSON(this.smoothness);
+        if (this.expectedZValues != null) {
+            json += "," + "'expectedZValues':" + Util.toJSON(this.expectedZValues);
+        }
+        if (this.clipRegion != null) {
+            var serverGeometry = ServerGeometry.fromGeometry(this.clipRegion);
+            if (serverGeometry) {
+                json += ",'clipRegion':" + Util.toJSON(serverGeometry);
+            }
+        }
+        return "{" + json + "}";
     }
 
 }

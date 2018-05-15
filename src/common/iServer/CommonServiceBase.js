@@ -321,7 +321,10 @@ export class CommonServiceBase {
             if (response.text) {
                 return response.text();
             }
-            return response.json();
+            if(response.json){
+                return response.json();
+            }
+            return response;
         }).then(function (text) {
             var result = text;
             if (typeof text === "string") {

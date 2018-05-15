@@ -1,11 +1,15 @@
 import {
-    CORS,
-    RequestTimeout,
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
     FetchRequest
 } from './FetchRequest';
 
 export {
-    CORS,
-    RequestTimeout,
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
     FetchRequest
 } ;

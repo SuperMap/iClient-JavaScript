@@ -1,7 +1,6 @@
 import L from 'leaflet';
 import {
-    baiduMapLayer,
-    DataSet
+    baiduMapLayer
 } from "mapv";
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;

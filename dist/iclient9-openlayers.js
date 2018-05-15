@@ -2286,10 +2286,10 @@ module.exports = ol;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ElasticSearch = exports.ThemeStyle = exports.CartoCSS = exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = exports.OnlineServiceBase = exports.FilterField = exports.DataItemOrderBy = exports.DataItemType = exports.ServiceStatus = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = undefined;
-exports.GeometryBatchAnalystService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.OutputSetting = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = undefined;
-exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoHashGridAggParameter = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GeoBoundingBoxQueryBuilderParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FilterAggParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferSetting = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AggQueryBuilderParameter = exports.AggregationParameter = exports.AddressMatchService = exports.IPortalServicesQueryParam = exports.IPortalServiceBase = undefined;
-exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = exports.FetchRequest = exports.RequestTimeout = exports.CORS = exports.WKT = exports.JSONFormat = exports.GeoJSON = exports.Format = exports.TimeFlowControl = exports.TimeControlBase = exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = exports.AggregationType = exports.AggregationQueryBuilderType = exports.OutputType = exports.TopologyValidatorRule = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SummaryType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ClientType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.ChartType = exports.ColorSpaceType = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.OverlayOperationType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.SideType = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.SpatialQueryMode = exports.BufferRadiusUnit = exports.Unit = exports.DataReturnMode = exports.SpatialRelationType = exports.MeasureMode = exports.EngineType = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = exports.SuperMap = undefined;
+exports.ElasticSearch = exports.ThemeStyle = exports.CartoCSS = exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = exports.OnlineServiceBase = exports.FilterField = exports.DataItemOrderBy = exports.DataItemType = exports.ServiceStatus = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.GeometryBatchAnalystService = exports.ThiessenAnalystService = undefined;
+exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.OutputSetting = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = undefined;
+exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoHashGridAggParameter = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GeoBoundingBoxQueryBuilderParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FilterAggParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferSetting = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AggQueryBuilderParameter = exports.AggregationParameter = exports.AddressMatchService = exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = undefined;
+exports.IPortalMap = exports.IPortal = exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = exports.FetchRequest = exports.getRequestTimeout = exports.setRequestTimeout = exports.isCORS = exports.setCORS = exports.WKT = exports.JSONFormat = exports.GeoJSON = exports.Format = exports.TimeFlowControl = exports.TimeControlBase = exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = exports.AggregationType = exports.AggregationQueryBuilderType = exports.OutputType = exports.TopologyValidatorRule = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SummaryType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ClientType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.ChartType = exports.ColorSpaceType = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.OverlayOperationType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.SideType = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.SpatialQueryMode = exports.BufferRadiusUnit = exports.Unit = exports.DataReturnMode = exports.SpatialRelationType = exports.MeasureMode = exports.EngineType = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = exports.SuperMap = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -2409,8 +2409,10 @@ exports.Format = _format.Format;
 exports.GeoJSON = _format.GeoJSON;
 exports.JSONFormat = _format.JSONFormat;
 exports.WKT = _format.WKT;
-exports.CORS = _util.CORS;
-exports.RequestTimeout = _util.RequestTimeout;
+exports.setCORS = _util.setCORS;
+exports.isCORS = _util.isCORS;
+exports.setRequestTimeout = _util.setRequestTimeout;
+exports.getRequestTimeout = _util.getRequestTimeout;
 exports.FetchRequest = _util.FetchRequest;
 exports.IManager = _iManager.IManager;
 exports.IManagerCreateNodeParam = _iManager.IManagerCreateNodeParam;
@@ -3090,7 +3092,10 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                 if (response.text) {
                     return response.text();
                 }
-                return response.json();
+                if (response.json) {
+                    return response.json();
+                }
+                return response;
             }).then(function (text) {
                 var result = text;
                 if (typeof text === "string") {
@@ -7417,7 +7422,7 @@ _SuperMap.SuperMap.ServerColor = ServerColor;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
+exports.FetchRequest = exports.getRequestTimeout = exports.setRequestTimeout = exports.isCORS = exports.setCORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -7436,19 +7441,41 @@ var _Util = __webpack_require__(1);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var fetch = window.fetch;
-
 /**
- * @member SuperMap.CORS
+ * @function SuperMap.setCORS
+ * @description 设置是否支持跨域
+ * @param {boolean} cors - 是否支持跨域
+ */
+var setCORS = exports.setCORS = _SuperMap.SuperMap.setCORS = function (cors) {
+    _SuperMap.SuperMap.CORS = cors;
+};
+/**
+ * @function SuperMap.isCORS
  * @description 是否支持跨域
- * @type {boolean}
+ * @returns {boolean} 是否支持跨域
  */
-var CORS = exports.CORS = _SuperMap.SuperMap.CORS = _SuperMap.SuperMap.CORS || window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
+var isCORS = exports.isCORS = _SuperMap.SuperMap.isCORS = function () {
+    if (_SuperMap.SuperMap.CORS != undefined) {
+        return _SuperMap.SuperMap.CORS;
+    }
+    return window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
+};
 /**
- * @member SuperMap.RequestTimeout
- * @description 请求超时时间，默认45s
- * @type {number}
+ * @function SuperMap.setRequestTimeout
+ * @description 设置请求超时时间。
+ * @param {number} timeout - 请求超时时间
  */
-var RequestTimeout = exports.RequestTimeout = _SuperMap.SuperMap.RequestTimeout = _SuperMap.SuperMap.RequestTimeout || 45000;
+var setRequestTimeout = exports.setRequestTimeout = _SuperMap.SuperMap.setRequestTimeout = function (timeout) {
+    return _SuperMap.SuperMap.RequestTimeout = timeout;
+};
+/**
+ * @function SuperMap.getRequestTimeout
+ * @description 获取请求超时时间，默认45s。
+ * @returns {number} 请求超时时间
+ */
+var getRequestTimeout = exports.getRequestTimeout = _SuperMap.SuperMap.getRequestTimeout = function () {
+    return _SuperMap.SuperMap.RequestTimeout || 45000;
+};
 var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
     commit: function commit(method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -7465,22 +7492,27 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
                 return this.get(url, params, options);
         }
     },
-
+    supportDirectRequest: function supportDirectRequest(url, options) {
+        return _Util.Util.isInTheSameDomain(url) || isCORS() || options.proxy;
+    },
     get: function get(url, params, options) {
         options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
         url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (!this.urlIsLong(url)) {
-            if (_Util.Util.isInTheSameDomain(url) || CORS || options.proxy) {
-                return this._fetch(url, params, options, type);
-            }
-            if (!_Util.Util.isInTheSameDomain(url)) {
-                url = url.replace('.json', '.jsonp');
-                return this._fetchJsonp(url, options);
-            }
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url,
+                data: params
+            };
+            return _SuperMap.SuperMap.Util.RequestJSONP.GET(config);
         }
-        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+        if (!this.urlIsLong(url)) {
+            return this._fetch(url, params, options, type);
+        } else {
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+        }
     },
 
     delete: function _delete(url, params, options) {
@@ -7488,20 +7520,44 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
         var type = 'DELETE';
         url = this._processUrl(url, options);
         url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (!this.urlIsLong(url) && CORS) {
-            return this._fetch(url, params, options, type);
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url += "&_method=DELETE",
+                data: params
+            };
+            return _SuperMap.SuperMap.Util.RequestJSONP.DELETE(config);
         }
-        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+        if (this.urlIsLong(url)) {
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+        }
+        return this._fetch(url, params, options, type);
     },
-
     post: function post(url, params, options) {
         options = options || {};
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url += "&_method=POST",
+                data: params
+            };
+            return _SuperMap.SuperMap.Util.RequestJSONP.POST(config);
+        }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
 
     put: function put(url, params, options) {
         options = options || {};
-        return this._fetch(this._processUrl(url, options), params, options, 'PUT');
+        url = this._processUrl(url, options);
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url += "&_method=PUT",
+                data: params
+            };
+            return _SuperMap.SuperMap.Util.RequestJSONP.DELETE(config);
+        }
+        return this._fetch(url, params, options, 'PUT');
     },
     urlIsLong: function urlIsLong(url) {
         //当前url的字节长度。
@@ -7568,7 +7624,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout: RequestTimeout
+                timeout: getRequestTimeout()
             }).then(function (response) {
                 return response;
             }));
@@ -7579,7 +7635,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout: RequestTimeout
+            timeout: getRequestTimeout()
         }).then(function (response) {
             return response;
         });
@@ -7587,7 +7643,10 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
 
     _fetchJsonp: function _fetchJsonp(url, options) {
         options = options || {};
-        return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
+        return (0, _fetchJsonp3.default)(url, {
+            method: 'GET',
+            timeout: options.timeout
+        }).then(function (response) {
             return response;
         });
     },
@@ -7626,6 +7685,172 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
 
     _isMVTRequest: function _isMVTRequest(url) {
         return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
+    }
+};
+_SuperMap.SuperMap.Util.RequestJSONP = {
+    limitLength: 1500,
+    queryKeys: [],
+    queryValues: [],
+    supermap_callbacks: {},
+    addQueryStrings: function addQueryStrings(values) {
+        var me = this;
+        for (var key in values) {
+            me.queryKeys.push(key);
+            if (typeof values[key] !== "string") {
+                values[key] = _SuperMap.SuperMap.Util.toJSON(values[key]);
+            }
+            var tempValue = encodeURIComponent(values[key]);
+            me.queryValues.push(tempValue);
+        }
+    },
+    issue: function issue(config) {
+        var me = this,
+            uid = me.getUid(),
+            url = config.url,
+            splitQuestUrl = [];
+        var p = new Promise(function (resolve) {
+            me.supermap_callbacks[uid] = function (response) {
+                delete me.supermap_callbacks[uid];
+                resolve(response);
+            };
+        });
+
+        // me.addQueryStrings({
+        //     callback: "SuperMap.Util.RequestJSONP.supermap_callbacks[" + uid + "]"
+        // });
+        var sectionURL = url,
+            keysCount = 0; //此次sectionURL中有多少个key
+        var length = me.queryKeys ? me.queryKeys.length : 0;
+        for (var i = 0; i < length; i++) {
+            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+                //+2 for ("&"or"?")and"="
+                if (keysCount == 0) {
+                    return false;
+                }
+                if (splitQuestUrl == null) {
+                    splitQuestUrl = new Array();
+                }
+                splitQuestUrl.push(sectionURL);
+                sectionURL = url;
+                keysCount = 0;
+                i--;
+            } else {
+                if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
+                    var leftValue = me.queryValues[i];
+                    while (leftValue.length > 0) {
+                        var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
+                        if (sectionURL.indexOf("?") > -1) {
+                            sectionURL += "&";
+                        } else {
+                            sectionURL += "?";
+                        }
+                        var tempLeftValue = leftValue.substring(0, leftLength);
+                        //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
+                        if (tempLeftValue.substring(leftLength - 1, leftLength) === "%") {
+                            leftLength -= 1;
+                            tempLeftValue = leftValue.substring(0, leftLength);
+                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === "%") {
+                            leftLength -= 2;
+                            tempLeftValue = leftValue.substring(0, leftLength);
+                        }
+
+                        sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
+                        leftValue = leftValue.substring(leftLength);
+                        if (tempLeftValue.length > 0) {
+                            if (splitQuestUrl == null) {
+                                splitQuestUrl = new Array();
+                            }
+                            splitQuestUrl.push(sectionURL);
+                            sectionURL = url;
+                            keysCount = 0;
+                        }
+                    }
+                } else {
+                    keysCount++;
+                    if (sectionURL.indexOf("?") > -1) {
+                        sectionURL += "&";
+                    } else {
+                        sectionURL += "?";
+                    }
+                    sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
+                }
+            }
+        }
+        if (splitQuestUrl == null) {
+            splitQuestUrl = new Array();
+        }
+        splitQuestUrl.push(sectionURL);
+        me.send(splitQuestUrl, "SuperMap.Util.RequestJSONP.supermap_callbacks[" + uid + "]", config && config.proxy);
+        return p;
+    },
+
+    getUid: function getUid() {
+        var uid = new Date().getTime(),
+            random = Math.floor(Math.random() * 1e17);
+        return uid * 1000 + random;
+    },
+
+    send: function send(splitQuestUrl, callback, proxy) {
+        var len = splitQuestUrl.length;
+        if (len > 0) {
+            var jsonpUserID = new Date().getTime();
+            for (var i = 0; i < len; i++) {
+                var url = splitQuestUrl[i];
+                if (url.indexOf("?") > -1) {
+                    url += "&";
+                } else {
+                    url += "?";
+                }
+                url += "sectionCount=" + len;
+                url += "&sectionIndex=" + i;
+                url += "&jsonpUserID=" + jsonpUserID;
+                if (proxy) {
+                    url = decodeURIComponent(url);
+                    url = proxy + encodeURIComponent(url);
+                }
+                (0, _fetchJsonp3.default)(url, {
+                    jsonpCallbackFunction: callback,
+                    timeout: 30000
+                });
+            }
+        }
+    },
+
+    GET: function GET(config) {
+        var me = this;
+        me.queryKeys.length = 0;
+        me.queryValues.length = 0;
+        me.addQueryStrings(config.params);
+        return me.issue(config);
+    },
+
+    POST: function POST(config) {
+        var me = this;
+        me.queryKeys.length = 0;
+        me.queryValues.length = 0;
+        me.addQueryStrings({
+            requestEntity: config.data
+        });
+        return me.issue(config);
+    },
+
+    PUT: function PUT(config) {
+        var me = this;
+        me.queryKeys.length = 0;
+        me.queryValues.length = 0;
+        me.addQueryStrings({
+            requestEntity: config.data
+        });
+        return me.issue(config);
+    },
+    DELETE: function DELETE(config) {
+        var me = this;
+        me.queryKeys.length = 0;
+        me.queryValues.length = 0;
+        me.addQueryStrings({
+            requestEntity: config.data
+        });
+        return me.issue(config);
     }
 };
 
@@ -29712,12 +29937,12 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
                 }
             };
 
-            //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-            function rotate(pixelP, rotation, center) {
-                var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
-                var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
-                return [x, y];
-            }
+            // //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+            // function rotate(pixelP, rotation, center) {
+            //     var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+            //     var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+            //     return [x, y];
+            // }
 
             //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
             function scale(pixelP, center, scaleRatio) {
@@ -53857,7 +54082,7 @@ _SuperMap.SuperMap.DatasetThiessenAnalystParameters = DatasetThiessenAnalystPara
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.SurfaceAnalystParametersSetting = undefined;
 
@@ -53868,6 +54093,8 @@ var _SuperMap = __webpack_require__(0);
 var _REST = __webpack_require__(2);
 
 var _Util = __webpack_require__(1);
+
+var _ServerGeometry = __webpack_require__(9);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53888,93 +54115,118 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        smoothness - {number}获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
  */
 var SurfaceAnalystParametersSetting = exports.SurfaceAnalystParametersSetting = function () {
-  function SurfaceAnalystParametersSetting(options) {
-    _classCallCheck(this, SurfaceAnalystParametersSetting);
+    function SurfaceAnalystParametersSetting(options) {
+        _classCallCheck(this, SurfaceAnalystParametersSetting);
 
-    /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion -{Object}
-     * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
-     */
-    this.clipRegion = null;
+        /**
+         * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion -{Object}
+         * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
+         */
+        this.clipRegion = null;
 
-    /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.datumValue -{number}
-     * @description 获取或设置表面分析中提取等值线、提取等值面的基准值。
-     * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。 例如，高程范围为 220 -1550 的 DEM 栅格数据，
-     * 如果设基准值为0， 等值距为50，则提取等值线时，以基准值0为起点，等值距50为间隔提取等值线，
-     * 因为给定高程的最小值是220，所以，在给定范围内提取等值线的最小高程是250。
-     * 提取等值线的结果是：最小等值线值为250，最大等值线值为1550。
-     */
-    this.datumValue = 0;
-    /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.expectedZValues -{Array<number>}
-     * @description 获取或设置期望分析结果的 Z 值集合。
-     * Z 值集合存储一系列数值，该数值为待提取等值线的值。即仅高程值在Z值集合中的等值线会被提取。
-     */
-    this.expectedZValues = null;
+        /**
+         * @member SuperMap.SurfaceAnalystParametersSetting.prototype.datumValue -{number}
+         * @description 获取或设置表面分析中提取等值线、提取等值面的基准值。
+         * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。 例如，高程范围为 220 -1550 的 DEM 栅格数据，
+         * 如果设基准值为0， 等值距为50，则提取等值线时，以基准值0为起点，等值距50为间隔提取等值线，
+         * 因为给定高程的最小值是220，所以，在给定范围内提取等值线的最小高程是250。
+         * 提取等值线的结果是：最小等值线值为250，最大等值线值为1550。
+         */
+        this.datumValue = 0;
+        /**
+         * @member SuperMap.SurfaceAnalystParametersSetting.prototype.expectedZValues -{Array<number>}
+         * @description 获取或设置期望分析结果的 Z 值集合。
+         * Z 值集合存储一系列数值，该数值为待提取等值线的值。即仅高程值在Z值集合中的等值线会被提取。
+         */
+        this.expectedZValues = null;
 
-    /**
-     *  @member SuperMap.SurfaceAnalystParametersSetting.prototype.interval -{number}
-     *  @description 获取或设置等值距。等值距是两条等值线之间的间隔值。
-     */
-    this.interval = 0;
+        /**
+         *  @member SuperMap.SurfaceAnalystParametersSetting.prototype.interval -{number}
+         *  @description 获取或设置等值距。等值距是两条等值线之间的间隔值。
+         */
+        this.interval = 0;
 
-    /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.resampleTolerance -{number}
-     * @description 获取或设置重采样容限。
-     * 容限值越大，采样结果数据越简化。当分析结果出现交叉时，可通过调整重采样容限为较小的值来处理。
-     */
-    this.resampleTolerance = 0;
+        /**
+         * @member SuperMap.SurfaceAnalystParametersSetting.prototype.resampleTolerance -{number}
+         * @description 获取或设置重采样容限。
+         * 容限值越大，采样结果数据越简化。当分析结果出现交叉时，可通过调整重采样容限为较小的值来处理。
+         */
+        this.resampleTolerance = 0;
 
-    /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothMethod -{SuperMap.SmoothMethod}
-     * @description 获取或设置光滑处理所使用的方法。
-     */
-    this.smoothMethod = _REST.SmoothMethod.BSPLINE;
+        /**
+         * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothMethod -{SuperMap.SmoothMethod}
+         * @description 获取或设置光滑处理所使用的方法。
+         */
+        this.smoothMethod = _REST.SmoothMethod.BSPLINE;
 
-    /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness -{number}
-     * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
-     * 以为0-5为例，光滑度为0表示不进行光滑操作，值越大表示光滑度越高。
-     * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，
-     * 计算所需的时间和占用的内存也就越大。而且，当等值距较小时，
-     * 光滑度太高会出现等值线相交的问题。
-     */
-    this.smoothness = 0;
+        /**
+         * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness -{number}
+         * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
+         * 以为0-5为例，光滑度为0表示不进行光滑操作，值越大表示光滑度越高。
+         * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，
+         * 计算所需的时间和占用的内存也就越大。而且，当等值距较小时，
+         * 光滑度太高会出现等值线相交的问题。
+         */
+        this.smoothness = 0;
 
-    if (options) {
-      _Util.Util.extend(this, options);
+        if (options) {
+            _Util.Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.SurfaceAnalystParametersSetting";
     }
 
-    this.CLASS_NAME = "SuperMap.SurfaceAnalystParametersSetting";
-  }
-
-  /**
-   * @function SuperMap.SurfaceAnalystParametersSetting.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
+    /**
+     * @function SuperMap.SurfaceAnalystParametersSetting.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
 
 
-  _createClass(SurfaceAnalystParametersSetting, [{
-    key: 'destroy',
-    value: function destroy() {
-      var me = this;
-      if (me.clipRegion) {
-        me.clipRegion.destroy();
-        me.clipRegion = null;
-      }
+    _createClass(SurfaceAnalystParametersSetting, [{
+        key: 'destroy',
+        value: function destroy() {
+            var me = this;
+            if (me.clipRegion) {
+                me.clipRegion.destroy();
+                me.clipRegion = null;
+            }
 
-      me.datumValue = null;
-      me.expectedZValues = null;
-      me.interval = null;
-      me.resampleTolerance = null;
-      me.smoothMethod = null;
-      me.smoothness = null;
-    }
-  }]);
+            me.datumValue = null;
+            me.expectedZValues = null;
+            me.interval = null;
+            me.resampleTolerance = null;
+            me.smoothMethod = null;
+            me.smoothness = null;
+        }
+        /**
+         * @function SuperMap.SurfaceAnalystParametersSetting.prototype.toJSON
+         * @description 将对象转化为JSON字符串。
+         * @returns {string} 对象JSON字符串
+         */
 
-  return SurfaceAnalystParametersSetting;
+    }, {
+        key: 'toJSON',
+        value: function toJSON() {
+            var json = "'datumValue':" + _Util.Util.toJSON(this.datumValue);
+            json += ",'interval':" + _Util.Util.toJSON(this.interval);
+            json += ",'resampleTolerance':" + _Util.Util.toJSON(this.resampleTolerance);
+            json += ",'smoothMethod':" + _Util.Util.toJSON(this.smoothMethod);
+            json += ",'smoothness':" + _Util.Util.toJSON(this.smoothness);
+            if (this.expectedZValues != null) {
+                json += "," + "'expectedZValues':" + _Util.Util.toJSON(this.expectedZValues);
+            }
+            if (this.clipRegion != null) {
+                var serverGeometry = _ServerGeometry.ServerGeometry.fromGeometry(this.clipRegion);
+                if (serverGeometry) {
+                    json += ",'clipRegion':" + _Util.Util.toJSON(serverGeometry);
+                }
+            }
+            return "{" + json + "}";
+        }
+    }]);
+
+    return SurfaceAnalystParametersSetting;
 }();
 
 _SuperMap.SuperMap.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting;
@@ -55961,7 +56213,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BufferSetting
- * @category iServer SpatialAnalyst Buffer
+ * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析通用设置类。
  * @param {Object} options - 参数。<br>
  * @param {SuperMap.BufferEndType} options.endType - 缓冲区端点枚举值。<br>
@@ -67370,7 +67622,7 @@ module.exports = function (proj4) {
 /* 345 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 346 */
@@ -81580,12 +81832,14 @@ exports.ThemeStyle = _ThemeStyle.ThemeStyle;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
+exports.FetchRequest = exports.getRequestTimeout = exports.setRequestTimeout = exports.isCORS = exports.setCORS = undefined;
 
 var _FetchRequest = __webpack_require__(20);
 
-exports.CORS = _FetchRequest.CORS;
-exports.RequestTimeout = _FetchRequest.RequestTimeout;
+exports.setCORS = _FetchRequest.setCORS;
+exports.isCORS = _FetchRequest.isCORS;
+exports.setRequestTimeout = _FetchRequest.setRequestTimeout;
+exports.getRequestTimeout = _FetchRequest.getRequestTimeout;
 exports.FetchRequest = _FetchRequest.FetchRequest;
 
 /***/ }),
@@ -90378,7 +90632,7 @@ var _Util = __webpack_require__(1);
 
 var _AggregationParameter2 = __webpack_require__(113);
 
-var _AggQueryBuilderParameter = __webpack_require__(114);
+__webpack_require__(114);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

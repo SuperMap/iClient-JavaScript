@@ -294,12 +294,12 @@ export class MapvLayer extends BaiduMapLayer {
             }
         };
 
-        //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-        function rotate(pixelP, rotation, center) {
-            var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
-            var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
-            return [x, y];
-        }
+        // //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+        // function rotate(pixelP, rotation, center) {
+        //     var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+        //     var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+        //     return [x, y];
+        // }
 
         //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
         function scale(pixelP, center, scaleRatio) {

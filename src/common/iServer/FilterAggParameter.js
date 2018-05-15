@@ -2,7 +2,7 @@ import {SuperMap} from "../SuperMap";
 import {AggregationType} from '../REST';
 import {Util} from '../commontypes/Util';
 import {AggregationParameter} from "./AggregationParameter";
-import {AggQueryBuilderParameter} from "./AggQueryBuilderParameter";
+import "./AggQueryBuilderParameter";
 
 /**
  * @class SuperMap.FilterAggParameter

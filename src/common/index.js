@@ -350,8 +350,10 @@ import {
     ElasticSearch
 } from './thirdparty';
 import {
-    CORS,
-    RequestTimeout,
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
     FetchRequest
 } from './util';
 import {
@@ -520,8 +522,10 @@ export {
     WKT
 };
 export {
-    CORS,
-    RequestTimeout,
+    setCORS,
+    isCORS,
+    setRequestTimeout,
+    getRequestTimeout,
     FetchRequest
 };
 export {
