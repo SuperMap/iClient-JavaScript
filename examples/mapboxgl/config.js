@@ -355,10 +355,10 @@ var exampleConfig = {
                         fileName: "mvtVectorTile_changeStyle"
                     },
                     {
-                        name: "UGCV5(MVT)",
-                        name_en: "UGCV5(MVT)",
+                        name: "预缓存(MVT)",
+                        name_en: "precache(MVT)",
                         thumbnail: "mvt_UGCV5.png",
-                        fileName: "mvtVectorTile_UGCV5"
+                        fileName: "mvtVectorTile_precache"
                     }
                 ]
             },

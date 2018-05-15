@@ -10,6 +10,9 @@ import {
 import {
     ServerGeometry
 } from './ServerGeometry';
+import {
+    Geometry
+} from '../commontypes/Geometry';
 
 /**
  * @class SuperMap.SurfaceAnalystParametersSetting
@@ -123,10 +126,11 @@ export class SurfaceAnalystParametersSetting {
             json += "," + "'expectedZValues':" + Util.toJSON(this.expectedZValues);
         }
         if (this.clipRegion != null) {
-            var serverGeometry = ServerGeometry.fromGeometry(this.clipRegion);
-            if (serverGeometry) {
-                json += ",'clipRegion':" + Util.toJSON(serverGeometry);
+            var serverGeometry = this.clipRegion;
+            if (this.clipRegion instanceof Geometry && this.clipRegion.components) {
+                serverGeometry = ServerGeometry.fromGeometry(this.clipRegion)
             }
+            json += ",'clipRegion':" + Util.toJSON(serverGeometry);
         }
         return "{" + json + "}";
     }

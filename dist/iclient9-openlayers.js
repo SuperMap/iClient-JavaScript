@@ -4397,7 +4397,7 @@ var _Math = __webpack_require__(159);
 
 var _Matrix = __webpack_require__(158);
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 var _Vector = __webpack_require__(65);
 
@@ -6138,7 +6138,7 @@ var _Vector = __webpack_require__(80);
 
 var _Util = __webpack_require__(1);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 var _Collection = __webpack_require__(30);
 
@@ -8243,9 +8243,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry2 = __webpack_require__(29);
+var _Geometry2 = __webpack_require__(26);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 var _Util = __webpack_require__(1);
 
@@ -9598,6 +9598,221 @@ _SuperMap.SuperMap.Theme = Theme;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Geometry = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+// import {WKT} from '../format/WKT';
+// import {Vector} from './Vector';
+
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.Geometry
+ * @classdesc 几何对象类，描述地理对象的几何图形。
+ */
+var Geometry = exports.Geometry = function () {
+    function Geometry() {
+        _classCallCheck(this, Geometry);
+
+        this.CLASS_NAME = "SuperMap.Geometry";
+        /**
+         * @member SuperMap.Geometry.prototype.id -{string}
+         * @description  此几何对象的唯一标示符。
+         *
+         */
+        this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
+
+        /**
+         * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
+         * @description This is set when a Geometry is added as component
+         * of another geometry
+         */
+        this.parent = null;
+
+        /**
+         * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
+         * @description 几何对象的范围
+         *
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.Geometry.prototype.SRID -{interger}
+         * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
+         * @example
+         *   var geometry= new SuperMap.Geometry();
+         *   geometry. SRID=4326;
+         *
+         */
+        this.SRID = null;
+    }
+
+    /**
+     * @function SuperMap.Geometry.prototype.destroy
+     * @description 解构Geometry类，释放资源。
+     */
+
+
+    _createClass(Geometry, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.id = null;
+            this.bounds = null;
+            this.SRID = null;
+        }
+
+        /**
+         * @function SuperMap.Geometry.prototype.clone
+         * @description 创建克隆的几何图形。克隆的几何图形不设置非标准的属性。
+         * @returns {SuperMap.Geometry} 克隆的几何图形。
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+            return new Geometry();
+        }
+
+        /**
+         * @function SuperMap.Geometry.prototype.setBounds
+         * @description 设置此几何对象的bounds。
+         * @param bounds - {SuperMap.Bounds}
+         */
+
+    }, {
+        key: 'setBounds',
+        value: function setBounds(bounds) {
+            if (bounds) {
+                this.bounds = bounds.clone();
+            }
+        }
+
+        /**
+         * @function SuperMap.Geometry.prototype.clearBounds
+         * @description 清除几何对象的bounds。
+         * 如果该对象有父类，也会清除父类几何对象的bounds。
+         */
+
+    }, {
+        key: 'clearBounds',
+        value: function clearBounds() {
+            this.bounds = null;
+            if (this.parent) {
+                this.parent.clearBounds();
+            }
+        }
+
+        /**
+         * @function SuperMap.Geometry.prototype.extendBounds
+         * @description Extend the existing bounds to include the new bounds.
+         * If geometry's bounds is not yet set, then set a new Bounds.
+         *
+         * @param newBounds - {SuperMap.Bounds}
+         */
+
+    }, {
+        key: 'extendBounds',
+        value: function extendBounds(newBounds) {
+            var bounds = this.getBounds();
+            if (!bounds) {
+                this.setBounds(newBounds);
+            } else {
+                this.bounds.extend(newBounds);
+            }
+        }
+
+        /**
+         * @function SuperMap.Geometry.prototype.getBounds
+         * @description 获得几何图形的边界。如果没有设置边界，可通过计算获得。
+         * @returns {SuperMap.Bounds}返回的几何对象的边界。
+         */
+
+    }, {
+        key: 'getBounds',
+        value: function getBounds() {
+            if (this.bounds == null) {
+                this.calculateBounds();
+            }
+            return this.bounds;
+        }
+
+        /**
+         * @function SuperMap.Geometry.prototype.calculateBounds
+         * @description 重新计算几何图形的边界。（需要在子类中实现此方法）
+         */
+
+    }, {
+        key: 'calculateBounds',
+        value: function calculateBounds() {}
+        //
+        // This should be overridden by subclasses.
+        //
+
+
+        /**
+         * @function SuperMap.Geometry.prototype.getVertices
+         * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
+         * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
+         * @returns {Array} 几何图形的顶点列表。
+         */
+
+    }, {
+        key: 'getVertices',
+        value: function getVertices(nodes) {} // eslint-disable-line no-unused-vars
+
+
+        /**
+         * @function SuperMap.Geometry.prototype.getArea
+         * @description 计算几何对象的面积 ，此方法需要在子类中定义  。
+         * @returns {float} The area of the collection by summing its parts
+         */
+
+    }, {
+        key: 'getArea',
+        value: function getArea() {
+            //to be overridden by geometries that actually have an area
+            //
+            return 0.0;
+        }
+
+        // /**
+        //  * @function SuperMap.Geometry.prototype.toString
+        //  * @description 返回geometry对象的字符串表述，需要引入{@link SuperMap.Format.WKT}。此方法只能在子类实现，在父类使用会报错。
+        //  * @returns {string} geometry对象的字符串表述(Well-Known Text)
+        //  */
+        // toString() {
+        // var string;
+        // if (WKT) {
+        //     var wkt = new WKT();
+        //     string = wkt.write(new Vector(this));
+        // } else {
+        //     string = Object.prototype.toString.call(this);
+        // }
+        // return string;
+        // }
+
+    }]);
+
+    return Geometry;
+}();
+
+_SuperMap.SuperMap.Geometry = Geometry;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.Bounds = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10384,7 +10599,7 @@ var Bounds = exports.Bounds = function () {
 _SuperMap.SuperMap.Bounds = Bounds;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10401,7 +10616,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 var _Theme2 = __webpack_require__(62);
 
@@ -10942,7 +11157,7 @@ _Theme2.Theme.getDataValues = function (data, fields, decimalNumber) {
 _SuperMap.SuperMap.Feature.Theme.Graph = Graph;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11288,221 +11503,6 @@ var Util = exports.Util = function () {
 }();
 
 /***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Geometry = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-// import {WKT} from '../format/WKT';
-// import {Vector} from './Vector';
-
-
-var _SuperMap = __webpack_require__(0);
-
-var _Util = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.Geometry
- * @classdesc 几何对象类，描述地理对象的几何图形。
- */
-var Geometry = exports.Geometry = function () {
-    function Geometry() {
-        _classCallCheck(this, Geometry);
-
-        this.CLASS_NAME = "SuperMap.Geometry";
-        /**
-         * @member SuperMap.Geometry.prototype.id -{string}
-         * @description  此几何对象的唯一标示符。
-         *
-         */
-        this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
-
-        /**
-         * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
-         * @description This is set when a Geometry is added as component
-         * of another geometry
-         */
-        this.parent = null;
-
-        /**
-         * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
-         * @description 几何对象的范围
-         *
-         */
-        this.bounds = null;
-
-        /**
-         * @member SuperMap.Geometry.prototype.SRID -{interger}
-         * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
-         * @example
-         *   var geometry= new SuperMap.Geometry();
-         *   geometry. SRID=4326;
-         *
-         */
-        this.SRID = null;
-    }
-
-    /**
-     * @function SuperMap.Geometry.prototype.destroy
-     * @description 解构Geometry类，释放资源。
-     */
-
-
-    _createClass(Geometry, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.id = null;
-            this.bounds = null;
-            this.SRID = null;
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.clone
-         * @description 创建克隆的几何图形。克隆的几何图形不设置非标准的属性。
-         * @returns {SuperMap.Geometry} 克隆的几何图形。
-         */
-
-    }, {
-        key: 'clone',
-        value: function clone() {
-            return new Geometry();
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.setBounds
-         * @description 设置此几何对象的bounds。
-         * @param bounds - {SuperMap.Bounds}
-         */
-
-    }, {
-        key: 'setBounds',
-        value: function setBounds(bounds) {
-            if (bounds) {
-                this.bounds = bounds.clone();
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.clearBounds
-         * @description 清除几何对象的bounds。
-         * 如果该对象有父类，也会清除父类几何对象的bounds。
-         */
-
-    }, {
-        key: 'clearBounds',
-        value: function clearBounds() {
-            this.bounds = null;
-            if (this.parent) {
-                this.parent.clearBounds();
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.extendBounds
-         * @description Extend the existing bounds to include the new bounds.
-         * If geometry's bounds is not yet set, then set a new Bounds.
-         *
-         * @param newBounds - {SuperMap.Bounds}
-         */
-
-    }, {
-        key: 'extendBounds',
-        value: function extendBounds(newBounds) {
-            var bounds = this.getBounds();
-            if (!bounds) {
-                this.setBounds(newBounds);
-            } else {
-                this.bounds.extend(newBounds);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.getBounds
-         * @description 获得几何图形的边界。如果没有设置边界，可通过计算获得。
-         * @returns {SuperMap.Bounds}返回的几何对象的边界。
-         */
-
-    }, {
-        key: 'getBounds',
-        value: function getBounds() {
-            if (this.bounds == null) {
-                this.calculateBounds();
-            }
-            return this.bounds;
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.calculateBounds
-         * @description 重新计算几何图形的边界。（需要在子类中实现此方法）
-         */
-
-    }, {
-        key: 'calculateBounds',
-        value: function calculateBounds() {}
-        //
-        // This should be overridden by subclasses.
-        //
-
-
-        /**
-         * @function SuperMap.Geometry.prototype.getVertices
-         * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
-         * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
-         * @returns {Array} 几何图形的顶点列表。
-         */
-
-    }, {
-        key: 'getVertices',
-        value: function getVertices(nodes) {} // eslint-disable-line no-unused-vars
-
-
-        /**
-         * @function SuperMap.Geometry.prototype.getArea
-         * @description 计算几何对象的面积 ，此方法需要在子类中定义  。
-         * @returns {float} The area of the collection by summing its parts
-         */
-
-    }, {
-        key: 'getArea',
-        value: function getArea() {
-            //to be overridden by geometries that actually have an area
-            //
-            return 0.0;
-        }
-
-        // /**
-        //  * @function SuperMap.Geometry.prototype.toString
-        //  * @description 返回geometry对象的字符串表述，需要引入{@link SuperMap.Format.WKT}。此方法只能在子类实现，在父类使用会报错。
-        //  * @returns {string} geometry对象的字符串表述(Well-Known Text)
-        //  */
-        // toString() {
-        // var string;
-        // if (WKT) {
-        //     var wkt = new WKT();
-        //     string = wkt.write(new Vector(this));
-        // } else {
-        //     string = Object.prototype.toString.call(this);
-        // }
-        // return string;
-        // }
-
-    }]);
-
-    return Geometry;
-}();
-
-_SuperMap.SuperMap.Geometry = Geometry;
-
-/***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11520,9 +11520,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
-var _Geometry2 = __webpack_require__(29);
+var _Geometry2 = __webpack_require__(26);
 
 var _Util = __webpack_require__(1);
 
@@ -23820,7 +23820,7 @@ exports.Color = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25582,7 +25582,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 __webpack_require__(2);
 
@@ -28360,9 +28360,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry2 = __webpack_require__(29);
+var _Geometry2 = __webpack_require__(26);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 var _Util = __webpack_require__(1);
 
@@ -35509,7 +35509,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 var _Eventful2 = __webpack_require__(51);
 
@@ -37434,7 +37434,7 @@ var _SmicImage = __webpack_require__(93);
 
 var _Util = __webpack_require__(1);
 
-var _Util2 = __webpack_require__(28);
+var _Util2 = __webpack_require__(29);
 
 var _Config = __webpack_require__(64);
 
@@ -39021,7 +39021,7 @@ exports.Storage = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 var _Group = __webpack_require__(152);
 
@@ -39619,7 +39619,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 var _Util2 = __webpack_require__(1);
 
@@ -40372,7 +40372,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42044,7 +42044,7 @@ exports.Area = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 var _Curve = __webpack_require__(66);
 
@@ -46569,7 +46569,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Geometry = __webpack_require__(29);
+var _Geometry = __webpack_require__(26);
 
 __webpack_require__(77);
 
@@ -54096,6 +54096,8 @@ var _Util = __webpack_require__(1);
 
 var _ServerGeometry = __webpack_require__(9);
 
+var _Geometry = __webpack_require__(26);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -54217,10 +54219,11 @@ var SurfaceAnalystParametersSetting = exports.SurfaceAnalystParametersSetting = 
                 json += "," + "'expectedZValues':" + _Util.Util.toJSON(this.expectedZValues);
             }
             if (this.clipRegion != null) {
-                var serverGeometry = _ServerGeometry.ServerGeometry.fromGeometry(this.clipRegion);
-                if (serverGeometry) {
-                    json += ",'clipRegion':" + _Util.Util.toJSON(serverGeometry);
+                var serverGeometry = this.clipRegion;
+                if (this.clipRegion instanceof _Geometry.Geometry && this.clipRegion.components) {
+                    serverGeometry = _ServerGeometry.ServerGeometry.fromGeometry(this.clipRegion);
                 }
+                json += ",'clipRegion':" + _Util.Util.toJSON(serverGeometry);
             }
             return "{" + json + "}";
         }
@@ -54257,7 +54260,7 @@ var _SurfaceAnalystParameters = __webpack_require__(76);
 
 var _ServerGeometry = __webpack_require__(9);
 
-var _Geometry = __webpack_require__(29);
+var _Geometry = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -54582,7 +54585,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -58140,9 +58143,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry2 = __webpack_require__(29);
+var _Geometry2 = __webpack_require__(26);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73278,7 +73281,7 @@ var _Storage = __webpack_require__(153);
 
 var _Transformable = __webpack_require__(67);
 
-var _Util = __webpack_require__(28);
+var _Util = __webpack_require__(29);
 
 var _Vector = __webpack_require__(65);
 
@@ -73389,7 +73392,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry = __webpack_require__(29);
+var _Geometry = __webpack_require__(26);
 
 var _Util = __webpack_require__(1);
 
@@ -74129,7 +74132,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Sector = __webpack_require__(68);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74371,7 +74374,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Point = __webpack_require__(70);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74684,7 +74687,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Sector = __webpack_require__(68);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74925,7 +74928,7 @@ var _Point = __webpack_require__(70);
 
 var _Line = __webpack_require__(99);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75469,7 +75472,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Polygon = __webpack_require__(69);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75925,7 +75928,7 @@ var _Color = __webpack_require__(96);
 
 var _Util = __webpack_require__(1);
 
-var _Graph2 = __webpack_require__(27);
+var _Graph2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76309,7 +76312,7 @@ var _Bar3D = __webpack_require__(386);
 
 var _Circle = __webpack_require__(385);
 
-var _Graph = __webpack_require__(27);
+var _Graph = __webpack_require__(28);
 
 var _Line = __webpack_require__(384);
 
@@ -96059,7 +96062,7 @@ var _index = __webpack_require__(496);
 
 var _BaseTypes = __webpack_require__(58);
 
-var _Bounds = __webpack_require__(26);
+var _Bounds = __webpack_require__(27);
 
 var _Credential = __webpack_require__(118);
 
@@ -96071,7 +96074,7 @@ var _Events = __webpack_require__(81);
 
 var _Feature = __webpack_require__(282);
 
-var _Geometry = __webpack_require__(29);
+var _Geometry = __webpack_require__(26);
 
 var _LonLat = __webpack_require__(43);
 

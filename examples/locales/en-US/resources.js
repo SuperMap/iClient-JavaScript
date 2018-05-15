@@ -1103,7 +1103,6 @@ window.resources = {
         "text_esmode_history": "historical display",
         "text_esmode": "display mode",
 
-		"btn_grid": "栅格图",
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",
         "btn_mathExpression": "Start calculation",

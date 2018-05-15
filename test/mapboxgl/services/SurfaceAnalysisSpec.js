@@ -43,7 +43,7 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
             expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
-            var expectParams = "{'resolution':3000,'extractParameter':{'clipRegion':null,'datumValue':0,'expectedZValues':null,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
+            var expectParams = "{'resolution':3000,'extractParameter':{'datumValue':0,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
             expect(params).toBe(expectParams);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
