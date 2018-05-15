@@ -2,35 +2,32 @@
 
 /**
  * @class SuperMap.ServerColor
- * @category  iServer Map Theme
+ * @category iServer Map Theme
  * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
- * @param options - {Object} 可选参数。如：<br>
- *        red - {number}获取或设置红色值,默认值为255。<br>
- *        green - {number}获取或设置绿色值,默认值为0。<br>
- *        blue - {number}获取或设置蓝色值,默认值为0。
+ * @param {Object} options - 参数。<br>
+ * @param {number} [options.red=255] - 获取或设置红色值。<br>
+ * @param {number} [options.green=0] - 获取或设置绿色值。<br>
+ * @param {number} [options.blue=0] - 获取或设置蓝色值。
  */
 export class ServerColor {
 
     constructor(red, green, blue) {
 
         /**
-         * @member SuperMap.ServerColor.prototype.red -{number}
-         * @description 获取或设置红色值,默认值为255。
-         * @default 255
+         * @member {number} [SuperMap.ServerColor.prototype.red=255]
+         * @description 获取或设置红色值。
          */
         this.red = (!red && red != 0)?255:red;
 
         /**
-         * @member SuperMap.ServerColor.prototype.green -{number}
-         * @description 获取或设置绿色值,默认值为0。
-         * @default 0
+         * @member {number} [SuperMap.ServerColor.prototype.green=0]
+         * @description 获取或设置绿色值。
          */
         this.green = green||0;
 
         /**
-         * @member SuperMap.ServerColor.prototype.blue -{number}
-         * @description 获取或设置蓝色值,默认值为0。
-         * @default 0
+         * @member {number} [SuperMap.ServerColor.prototype.blue=0]
+         * @description 获取或设置蓝色值。
          */
         this.blue = blue||0;
 
@@ -52,8 +49,8 @@ export class ServerColor {
     /**
      * @function SuperMap.ServerColor.formJson
      * @description 将JSON对象转化为ServerColor对象。
-     * @param jsonObject - {Object} 要转换的JSON对象
-     * @return{SuperMap.ServerColor} 转化后的ServerColor对象。
+     * @param {Object} jsonObject - 要转换的JSON对象
+     * @returns {SuperMap.ServerColor} 转化后的ServerColor对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

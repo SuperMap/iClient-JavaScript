@@ -5,20 +5,20 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.StopQueryParameters
  * @category  iServer TrafficTransferAnalyst TransferStops
  * @classdesc 站点查询参数类。
- * @param options - {Object} 可选参数。
+ * @param {Object} options - 参数。
  */
 export class StopQueryParameters {
 
     constructor(options) {
         options = options || {};
         /**
-         *  @member SuperMap.StopQueryParameters.prototype.keyWord -{string}
+         *  @member {string} SuperMap.StopQueryParameters.prototype.keyWord
          *  @description 站点名称关键字。
          */
         this.keyWord = null;
 
         /**
-         * @member SuperMap.StopQueryParameters.prototype.returnPosition -{boolean}
+         * @member {boolean} SuperMap.StopQueryParameters.prototype.returnPosition
          * @description 是否返回站点坐标信息。
          */
         this.returnPosition = false;

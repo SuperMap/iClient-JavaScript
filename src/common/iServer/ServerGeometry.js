@@ -15,42 +15,34 @@ import {GeometryType} from '../REST';
  * @private
  * @class SuperMap.ServerGeometry
  * @category  iServer  
- * @classdesc 服务端几何对象类。
- * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
+ * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
  * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.id - 服务端几何对象唯一标识符。<br>
+ * @param {SuperMap.ServerStyle} options.style - 服务端几何对象的风格。<br>
+ * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。<br>
+ * @param {Array.<SuperMap.Geometry.Point>} options.points - 组成几何对象的节点的坐标对数组。<br>
+ * @param {SuperMap.GeometryType} options.type - 几何对象的类型。
  */
 export class ServerGeometry {
 
-    /*
-     * Constructor: SuperMap.ServerGeometry
-     * 服务端几何对象类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * id - {String} 服务端几何对象唯一标识符。
-     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。
-     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。
-     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。
-     * type - {<SuperMap.GeometryType>} 几何对象的类型。
-     */
     constructor(options) {
 
-        /*
-         * APIProperty: id
-         * {String} 服务端几何对象唯一标识符。
+        /**
+         * @member {string} SuperMap.ServerGeometry.prototype.id
+         * @description 服务端几何对象唯一标识符。
          */
         this.id = 0;
-
-        /*
-         * APIProperty: style
-         * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。
+        
+        /**
+         * @member {SuperMap.ServerStyle} SuperMap.ServerGeometry.prototype.style
+         * @description 服务端几何对象的风格(ServerStyle)。
          */
         this.style = null;
-        /*
-         * APIProperty: parts
-         * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。
+
+        /**
+         * @member {Array.<number>} SuperMap.ServerGeometry.prototype.parts
+         * @description 服务端几何对象中各个子对象所包含的节点个数。
          * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
          * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
          * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
@@ -64,9 +56,10 @@ export class ServerGeometry {
          * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
          */
         this.parts = null;
-        /*
-         * APIProperty: points
-         * {Array(<Point>)} 组成几何对象的节点的坐标对数组。
+
+        /**
+         * @member {Array.<SuperMap.Geometry.Point>} SuperMap.ServerGeometry.prototype.points
+         * @description 组成几何对象的节点的坐标对数组。
          * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
          * 该字段存放了组成几何对象的点坐标的数组。
          * 对于简单的面对象，他的起点和终点的坐标点相同。
@@ -74,14 +67,16 @@ export class ServerGeometry {
          * 从而确定 Points 字段中坐标对的分配归属问题。
          */
         this.points = null;
-        /*
-         * APIProperty: type
-         * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。
+
+        /**
+         * @member {SuperMap.GeometryType} SuperMap.ServerGeometry.prototype.type
+         * @description 几何对象的类型(GeometryType)。
          */
         this.type = null;
-        /*
-         * APIProperty: prjCoordSys
-         * {Object}投影坐标参数,现仅在缓冲区分析中有效。
+
+        /**
+         * @member {Object} SuperMap.ServerGeometry.prototype.prjCoordSys
+         * @description 投影坐标参数,现仅在缓冲区分析中有效。
          */
         this.prjCoordSys = null;
         if (options) {
@@ -91,9 +86,9 @@ export class ServerGeometry {
         this.CLASS_NAME = "SuperMap.ServerGeometry";
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;
@@ -106,12 +101,10 @@ export class ServerGeometry {
         me.prjCoordSys = null;
     }
 
-    /*
-     * APIMethod: toGeometry
-     * 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeometry
+     * @description 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeometry() {
         var me = this,
@@ -134,13 +127,10 @@ export class ServerGeometry {
         }
     }
 
-    /*
-     * Method: toGeoPoint
-     * 将服务端的点几何对象转换为客户端几何对象。
-     * 包括 Point 、MultiPoint。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoPoint
+     * @description 将服务端的点几何对象转换为客户端几何对象。包括Point、MultiPoint。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoPoint() {
         var me = this,
@@ -162,13 +152,10 @@ export class ServerGeometry {
         }
     }
 
-    /*
-     * Method: toGeoLine
-     * 将服务端的线几何对象转换为客户端几何对象。
-     * 包括LinearRing、LineString、MultiLineString。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoLine
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括LinearRing、LineString、MultiLineString。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoLine() {
         var me = this,
@@ -204,13 +191,10 @@ export class ServerGeometry {
         }
     }
 
-    /*
-     * Method: toGeoLineEPS
-     * 将服务端的线几何对象转换为客户端几何对象。
-     * 包括LinearRing、LineString、MultiLineString。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoLineEPS
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括LinearRing、LineString、MultiLineString。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoLineEPS() {
         var me = this,
@@ -251,26 +235,20 @@ export class ServerGeometry {
         }
     }
 
-    /*
-     * Method: toGeoLine
-     * 将服务端的路由线几何对象转换为客户端几何对象。
-     * 包括LinearRing、LineString、MultiLineString。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoLine
+     * @description 将服务端的路由线几何对象转换为客户端几何对象。包括LinearRing、LineString、MultiLineString。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoLinem() {
         var me = this;
         return new Route.fromJson(me);
     }
 
-    /*
-     * Method: toGeoRegion
-     * 将服务端的面几何对象转换为客户端几何对象。
-     * 类型为Polygon。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoRegion
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为Polygon。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoRegion() {
         var me = this,
@@ -379,13 +357,10 @@ export class ServerGeometry {
         return new MultiPolygon(polygonArray);
     }
 
-    /*
-     * Method: toGeoRegionEPS
-     * 将服务端的面几何对象转换为客户端几何对象。
-     * 类型为Polygon。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.toGeoRegionEPS
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为Polygon。
+     * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoRegionEPS() {
         var me = this,
@@ -499,15 +474,11 @@ export class ServerGeometry {
         return new MultiPolygon(polygonArray);
     }
 
-    /*
-     * Function: ServerGeometry.fromJson
-     * 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
-     *
-     * Parameters:
-     * jsonObject - {Object} 要转换的 JSON 对象。
-     *
-     * Returns:
-     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.fromJson
+     * @description 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
+     * @params {Object} jsonObject - 要转换的 JSON 对象。
+     * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {
@@ -528,16 +499,11 @@ export class ServerGeometry {
 
     }
 
-    /*
-     * Function: ServerGeometry.fromGeometry
-     * 将客户端Geometry转换成服务端ServerGeometry。
-     *
-     * Parameters:
-     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。
-
-     *
-     * Returns:
-     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.fromGeometry
+     * @description 将客户端Geometry转换成服务端ServerGeometry。
+     * @params {SuperMap.Geometry} geometry - 要转换的客户端Geometry对象。
+     * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
      */
     static fromGeometry(geometry) {
         if (!geometry) {
@@ -616,17 +582,11 @@ export class ServerGeometry {
         });
     }
 
-    /*
-     * Function: SuperMap.Geometry.IsClockWise
-     * 判断linearRing中的点的顺序，顺时针？逆时针
-     * 返回值大于0, 逆时针; 小于0, 顺时针
-     *
-     * Parameters:
-     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。
-
-     *
-     * Returns:
-     * {<Number>}。
+    /**
+     * @function SuperMap.ServerGeometry.prototype.IsClockWise
+     * @description 判断linearRing中的点的顺序。返回值大于0，逆时针；小于0，顺时针。
+     * @params {SuperMap.Geometry} geometry - 要转换的客户端Geometry对象。
+     * @returns {number} 返回值大于0，逆时针；小于0，顺时针。
      */
     static IsClockWise(points) {
         var length = points.length;

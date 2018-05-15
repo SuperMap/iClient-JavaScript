@@ -8,16 +8,15 @@ import {Collection} from '../commontypes/geometry/Collection';
 /**
  * @class SuperMap.Route
  * @category  iServer SpatialAnalyst
- * @classdesc
- * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
- * @param points - {{Array<SuperMap.Geometry>}} 形成路由对象的线数组。
- * @param  options - {Object} 可选参数。如:</br>
- *         id - {number}路由对象在数据库中的id。</br>
- *         length - {number}路由对象的长度。</br>
- *         maxM - {number}最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
- *         minM - {number}最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
- *         type - {string} 数据类型，如："LINEM"</br>
- * @extends SuperMap.Geometry.Collection
+ * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
+ * @param {Array.<SuperMap.Geometry>} points - 形成路由对象的线数组。
+ * @param {Object} options - 参数。</br>
+ * @param {number} options.id - 路由对象在数据库中的id。</br>
+ * @param {number} options.length - 路由对象的长度。</br>
+ * @param {number} options.maxM - 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
+ * @param {number} options.minM - 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
+ * @param {string} options.type - 数据类型，如："LINEM"</br>
+ * @extends {SuperMap.Geometry.Collection}
  */
 export class Route extends Collection {
 
@@ -25,78 +24,77 @@ export class Route extends Collection {
         super(points, options);
 
         /**
-         * @member SuperMap.Route.prototype.id -{number}
+         * @member {number} SuperMap.Route.prototype.id
          * @description 路由对象在数据库中的id。
          */
         this.id = null;
 
         /**
-         * @member SuperMap.Route.prototype.center -{number}
+         * @member {number} SuperMap.Route.prototype.center
          * @description 路由对象的中心点
          */
         this.center = null;
 
         /**
-         * @member SuperMap.Route.prototype.style -{string}
+         * @member {string} SuperMap.Route.prototype.style
          * @description 路由对象的样式
          */
         this.style = null;
 
         /**
-         * @member SuperMap.Route.prototype.length -{number}
+         * @member {number} SuperMap.Route.prototype.length
          * @description 路由对象的长度。单位与数据集的单位相同。
          */
         this.length = null;
 
         /**
-         *  @member SuperMap.Route.prototype.maxM -{number}
+         *  @member {number} SuperMap.Route.prototype.maxM
          *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
          */
         this.maxM = null;
 
         /**
-         * @member SuperMap.Route.prototype.minM -{number}
+         * @member {number} SuperMap.Route.prototype.minM
          * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
          */
         this.minM = null;
 
         /**
-         * @member SuperMap.Route.prototype.parts -{Array<number>}
+         * @member {Array.<number>} SuperMap.Route.prototype.parts
          * @description 服务端几何对象中各个子对象所包含的节点个数。
          */
         this.parts = null;
 
         /**
-         * @member SuperMap.Route.prototype.points -{Array<Object>}
+         * @member {Array.<Object>} SuperMap.Route.prototype.points
          * @description 路由对象的所有路由点。
          * @example
          * (start code)
          * [
          *  {
-     *      "measure": 0,
-     *      "y": -4377.027184298267,
-     *      "x": 4020.0045221720466
-     *  },
+         *      "measure": 0,
+         *      "y": -4377.027184298267,
+         *      "x": 4020.0045221720466
+         *  },
          *  {
-     *      "measure": 37.33288381391519,
-     *      "y": -4381.569363260499,
-     *      "x": 4057.0600591960642
-     *  }
+         *      "measure": 37.33288381391519,
+         *      "y": -4381.569363260499,
+         *      "x": 4057.0600591960642
+         *  }
          * ]
          * (end)
          */
         this.points = null;
 
         /**
-         * @member SuperMap.Route.prototype.type -{string}
+         * @member {string} SuperMap.Route.prototype.type
          * @description 服务端几何对象类型。
          */
         this.type = null;
 
         /**
-         * @member SuperMap.Route.prototype.componentTypes -{Array<string>}
-         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-         * @default ["{@link SuperMap.Geometry.LinearRing}", "{@link SuperMap.Geometry.LineString}"];
+         * @member {Array.<string>} [SuperMap.Route.prototype.componentTypes=SuperMap.Geometry.LineString]
+         * @description components存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
@@ -111,7 +109,7 @@ export class Route extends Collection {
      *
      * @function SuperMap.Route.prototype.toJson
      * @description 转换为json对象。
-     * @return{Object} json对象
+     * @returns {Object} json对象
      */
     toJson() {
         var result = "{";
@@ -182,9 +180,9 @@ export class Route extends Collection {
 
     /**
      * @function SuperMap.Route.fromJson
-     * @description  将 JSON 对象转换为 SuperMap.Route 对象。
-     * @param jsonObject - {Object} JSON 对象表示的路由对象。
-     * @return{SuperMap.Route} 转化后的 Route 对象。
+     * @description 将 JSON 对象转换为 SuperMap.Route 对象。
+     * @param {Object} jsonObject - JSON 对象表示的路由对象。
+     * @returns {SuperMap.Route} 转化后的 Route 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

@@ -5,17 +5,17 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.SupplyCenter
  * @category  iServer NetworkAnalyst Location
  * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
- * @param options - {Object} 可选参数。如：<br>
- *        maxWeight - {number}资源供给中心的最大耗费值，必设参数。<br>
- *        nodeID - {integer} 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。<br>
- *        resourceValue - {number}资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
- *        type - {{@link SuperMap.SupplyCenterType}} 资源供给中心点的类型常量。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.maxWeight - 资源供给中心的最大耗费值，必设参数。<br>
+ * @param {number} options.nodeID - 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。<br>
+ * @param {number} options.resourceValue - 资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
+ * @param {SuperMap.SupplyCenterType} options.type - 资源供给中心点的类型常量。
  */
 export class SupplyCenter {
 
     constructor(options) {
         /**
-         * @member SuperMap.SupplyCenter.prototype.maxWeight -{number}
+         * @member {number} SuperMap.SupplyCenter.prototype.maxWeight
          * @description 资源供给中心的最大耗费值，必设参数。中心点最大阻值设置越小，表示中心点所提供的资源可影响范围越大。
          *              最大阻力值是用来限制需求点到中心点的花费。
          *              如果需求点（弧段或结点）到此中心的花费大于最大阻力值，则该需求点不属于该资源供给中心提供资源的范围。
@@ -23,19 +23,19 @@ export class SupplyCenter {
         this.maxWeight = null;
 
         /**
-         * @member SuperMap.SupplyCenter.prototype.nodeID -{integer}
+         * @member {number} SuperMap.SupplyCenter.prototype.nodeID
          * @description 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。
          */
         this.nodeID = null;
 
         /**
-         * @member SuperMap.SupplyCenter.prototype.resourceValue -{number}
+         * @member {number} SuperMap.SupplyCenter.prototype.resourceValue
          * @description 资源供给中心能提供的最大服务量或商品数量，必设参数。例如资源中心为学校，资源中心资源量表示该学校能够接纳多少学生。
          */
         this.resourceValue = null;
 
         /**
-         * @member SuperMap.SupplyCenter.prototype.type -{SuperMap.SupplyCenterType}
+         * @member {SuperMap.SupplyCenterType} SuperMap.SupplyCenter.prototype.type
          * @description 资源供给中心点的类型常量。资源供给中心点的类型包括非中心，固定中心和可选中心。
          *              固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
          */
@@ -63,8 +63,8 @@ export class SupplyCenter {
     /**
      * @function SuperMap.SupplyCenter.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
-     * @return{SuperMap.SupplyCenter} SupplyCenter对象
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
+     * @returns {SuperMap.SupplyCenter} SupplyCenter对象
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

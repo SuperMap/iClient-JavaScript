@@ -12,31 +12,26 @@ import {UGCSubLayer} from './UGCSubLayer';
 /**
  * @class SuperMap.ServerTheme
  * @category  iServer Map Theme
+ * @description UGC 专题图图层类类构造函数。
  * @classdesc UGC 专题图图层类。
- * @extends SuperMap.UGCSubLayer
- * @param theme - {SuperMap.Theme} 专题图对象。
- * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
+ * @extends {SuperMap.UGCSubLayer}
+ * @param {SuperMap.Theme} theme - 专题图对象。
+ * @param {SuperMap.LonLat} themeElementPosition - 专题图元素位置。
  */
 export class ServerTheme extends UGCSubLayer {
 
-    /*
-     * @class SuperMap.ServerTheme
-     * @description UGC 专题图图层类类构造函数。
-     * @param theme - {SuperMap.Theme} 专题图对象。
-     * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
-     */
     constructor(options) {
         options = options || {};
         super(options);
 
         /**
-         * @member SuperMap.ServerTheme.prototype.theme -{SuperMap.Theme}
+         * @member {SuperMap.Theme} SuperMap.ServerTheme.prototype.theme
          * @description 专题图对象。
          */
         this.theme = null;
 
         /**
-         * @member SuperMap.ServerTheme.prototype.themeElementPosition -{SuperMap.LonLat}
+         * @member {SuperMap.LonLat} SuperMap.ServerTheme.prototype.themeElementPosition
          * @description 专题图元素位置。
          */
         this.themeElementPosition = null;
@@ -59,7 +54,7 @@ export class ServerTheme extends UGCSubLayer {
     /**
      * @function SuperMap.ServerTheme.prototype.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
@@ -94,7 +89,7 @@ export class ServerTheme extends UGCSubLayer {
     }
 
     /**
-     * @function  SuperMap.ServerTheme.prototype.toServerJSONObject
+     * @function SuperMap.ServerTheme.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {

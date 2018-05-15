@@ -9,14 +9,13 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
 /**
  * @class SuperMap.SurfaceAnalystService
  * @category  iServer SpatialAnalyst SurfaceAnalyst
- * @classdesc
- * 表面分析服务类。
+ * @classdesc 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
  * 表面分析结果通过该类支持的事件的监听函数参数获取
- * @param options - {Object} 可选参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
- * @extends SuperMap.SpatialAnalystBase
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
+ * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
@@ -46,7 +45,7 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
     /**
      * @function SuperMap.SurfaceAnalystService.prototype.processAsync
      * @description 负责将客户端的表面分析服务参数传递到服务端。
-     * @param params - {SuperMap.SurfaceAnalystParameters}
+     * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析提取操作参数类。
      */
     processAsync(params) {
         if (!(params instanceof SurfaceAnalystParameters)) {
@@ -66,7 +65,7 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
     /**
      * @function SuperMap.SurfaceAnalystService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
-     * @param params - {SuperMap.SurfaceAnalystParameters}
+     * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析提取操作参数类。
      * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {

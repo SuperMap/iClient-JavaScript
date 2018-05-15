@@ -7,11 +7,11 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
  * @classdesc 单对象空间查询分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
- *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.datasetQuery - 查询对象所在的数据集名称。<br>
+ * @param {SuperMap.SpatialQueryMode} options.mode - 空间查询模式。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 export class SingleObjectQueryJobsParameter {
 
@@ -20,31 +20,31 @@ export class SingleObjectQueryJobsParameter {
             return;
         }
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
+         * @member {string} SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery
          * @description 查询对象所在的数据集名称。
          */
         this.datasetQuery = "";
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
+         * @member {string} SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery
          * @description 查询对象所在的几何对象。
          */
         this.geometryQuery = "";
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
+         * @member {SuperMap.SpatialQueryMode} SuperMap.SingleObjectQueryJobsParameter.prototype.mode
          * @description 空间查询模式 。
          */
         this.mode = SpatialQueryMode.CONTAIN;
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.SingleObjectQueryJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -71,8 +71,8 @@ export class SingleObjectQueryJobsParameter {
 
     /**
      * @function SuperMap.SingleObjectQueryJobsParameter.toObject
-     * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
-     * @param tempObj - {Object} 目标对象
+     * @param {Object} singleObjectQueryJobsParameter - 单对象空间查询分析任务参数
+     * @param {Object} tempObj - 目标对象
      * @description 生成单对象空间查询分析任务对象
      */
     static toObject(singleObjectQueryJobsParameter, tempObj) {

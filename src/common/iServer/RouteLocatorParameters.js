@@ -6,18 +6,17 @@ import './Route';
 /**
  * @class SuperMap.RouteLocatorParameters
  * @category  iServer SpatialAnalyst RouteLocator
- * @classdesc
- * 路由对象定位空间对象的参数类。
+ * @classdesc 路由对象定位空间对象的参数类。
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
- * @param options - {Object} 可选参数。如:</br>
- *        sourceRoute -  {Object} 【必选参数】路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString。</br>
- *        type -  {string} 【必选参数】类型：点 or 线。</br>
- *        measure - {float} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
- *        offset - {float} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
- *        isIgnoreGap - {boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
- *        startMeasure - {float} 定位线的起始M值。只当路由对象定位线时有意义。</br>
- *        endMeasure -  {float} 定位线的终止M值。只当路由对象定位线时有意义。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.sourceRoute -  【必选参数】路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString。</br>
+ * @param {string} options.type -  【必选参数】类型：点 or 线。</br>
+ * @param {float} options.measure - 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
+ * @param {float} options.offset - 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
+ * @param {boolean} options.isIgnoreGap - 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
+ * @param {float} options.startMeasure - 定位线的起始M值。只当路由对象定位线时有意义。</br>
+ * @param {float} options.endMeasure -  定位线的终止M值。只当路由对象定位线时有意义。</br>
  */
 export class RouteLocatorParameters {
 
@@ -26,33 +25,33 @@ export class RouteLocatorParameters {
             return this;
         }
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.sourceRoute -{Object}
-         * @description 路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
+         * @member {(SuperMap.Route|L.Polyline|ol.geom.LineString)} SuperMap.RouteLocatorParameters.prototype.sourceRoute
+         * @description 路由对象。
          */
         this.sourceRoute = null;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.dataset -{string}
+         * @member {string} SuperMap.RouteLocatorParameters.prototype.dataset
          * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
          */
         this.dataset = null;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.routeIDField -{string}
+         * @member {string} SuperMap.RouteLocatorParameters.prototype.routeIDField
          * @description  路由对象所在的字段名称。
          *
          */
         this.routeIDField = null;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.routeID -{interger}
+         * @member {number} SuperMap.RouteLocatorParameters.prototype.routeID
          * @description 路由对象标识 。
          *
          */
         this.routeID = null;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.type -{string}
+         * @member {string} SuperMap.RouteLocatorParameters.prototype.type
          * @description 【必选参数】类型：点 or 线。
          * 可选值为:
          * LINE :根据起始 M 值及终止 M 值定位线对象。
@@ -61,31 +60,31 @@ export class RouteLocatorParameters {
         this.type = null;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.measure -{float}
+         * @member {float} SuperMap.RouteLocatorParameters.prototype.measure
          * @description 必选参数,定位点的M值。只当路由对象定位点时有意义。
          */
         this.measure = null;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.offset -{float}
-         * @description 定位点偏移量。只当路由对象定位点时有意义，默认为0。
+         * @member {float} [SuperMap.RouteLocatorParameters.prototype.offset=0]
+         * @description 定位点偏移量。只当路由对象定位点时有意义。
          */
         this.offset = 0;
 
         /**
-         * @member SuperMap.RouteLocatorParameters.prototype.isIgnoreGap -{boolean}
-         * @description 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
+         * @member {boolean} [SuperMap.RouteLocatorParameters.prototype.isIgnoreGap=false]
+         * @description 是否忽略子对象之间的距离。
          */
         this.isIgnoreGap = false;
 
         /**
-         *  @member SuperMap.RouteLocatorParameters.prototype.startMeasure -{float}
+         *  @member {float} SuperMap.RouteLocatorParameters.prototype.startMeasure
          *  @description 定位线的起始M值。只当路由对象定位线时有意义。
          */
         this.startMeasure = null;
 
         /**
-         *  @member SuperMap.RouteLocatorParameters.prototype.endMeasure -{float}
+         *  @member {float} SuperMap.RouteLocatorParameters.prototype.endMeasure
          *  @description 定位线的终止M值。只当路由对象定位线时有意义。
          */
         this.endMeasure = null;

@@ -8,16 +8,16 @@ import {GeoJSON} from '../format/GeoJSON';
  * @class SuperMap.SpatialAnalystBase
  * @category  iServer SpatialAnalyst
  * @classdesc 空间分析服务基类。
- * @param url -{string} 地址d。
- * @param options -{Object} 参数。
- * @extends SuperMap.CommonServiceBase
+ * @param {string} url - 地址d。
+ * @param {Object} options - 参数。
+ * @extends {SuperMap.CommonServiceBase}
  */
 export class SpatialAnalystBase extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
         /**
-         * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
+         * @member {string} SuperMap.SpatialAnalystBase.prototype.format
          * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
          */
         this.format = DataFormat.GEOJSON;
@@ -36,7 +36,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
     /**
      * @function SuperMap.SpatialAnalystBase.prototype.serviceProcessCompleted
      * @description 分析完成，执行此方法。
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
@@ -62,7 +62,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
     /**
      * @function SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult
      * @description 将含有geometry的数据转换为geojson格式。
-     * @param result - {Object} 服务器返回的结果对象。
+     * @param {Object} result - 服务器返回的结果对象。
      *
      */
     toGeoJSONResult(result) {

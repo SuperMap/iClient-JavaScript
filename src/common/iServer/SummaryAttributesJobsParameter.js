@@ -6,12 +6,12 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{string} 数据集名。<br>
- *        groupField -{string}分组字段。<br>
- *        attributeField -{string} 属性字段。<br>
- *        statisticModes -{string} 统计模式。<br>
- *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.groupField - 分组字段。<br>
+ * @param {string} options.attributeField - 属性字段。<br>
+ * @param {string} options.statisticModes - 统计模式。<br>
+ * @param {SuperMap.OutputSetting} options.output -输出参数设置。<br>
  */
 export class SummaryAttributesJobsParameter {
 
@@ -20,27 +20,27 @@ export class SummaryAttributesJobsParameter {
             return;
         }
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.datasetName
          * @description 汇总数据集名称
          */
         this.datasetName = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.groupField -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.groupField
          * @description 分组字段
          */
         this.groupField = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.attributeField -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.attributeField
          * @description 属性字段
          */
         this.attributeField = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes
          * @description 属性汇总统计模式
          */
         this.statisticModes = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.SummaryAttributesJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -66,8 +66,8 @@ export class SummaryAttributesJobsParameter {
 
     /**
      * @function SuperMap.SummaryAttributesJobsParameter.toObject
-     * @param SummaryAttributesJobsParameter -{Object} 属性汇总任务参数
-     * @param tempObj - {Object} 目标对象
+     * @param {Object} SummaryAttributesJobsParameter - 属性汇总任务参数
+     * @param {Object} tempObj - 目标对象
      * @description 生成属性汇总分析任务对象
      */
     static toObject(SummaryAttributesJobsParameter, tempObj) {

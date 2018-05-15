@@ -6,9 +6,9 @@ import {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
  * @class SuperMap.SummaryAttributesJobsService
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 汇总统计分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 汇总统计分析服务地址。
+ * @param {Object} options - 参数。
  */
 export class SummaryAttributesJobsService extends ProcessingServiceBase {
 
@@ -36,7 +36,7 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.SummaryAttributesJobsService.protitype.getSummaryAttributesJob
      * @description 获取指定id的属性汇总分析服务
-     * @param id -{string} 指定要获取数据的id
+     * @param {string} id - 指定要获取数据的id
      */
     getSummaryAttributesJob(id) {
         super.getJobs(this.url + '/' + id);
@@ -45,8 +45,8 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.SummaryAttributesJobsService.protitype.addSummaryAttributesJob
      * @description 新建属性汇总分析服务
-     * @param params - {SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryAttributesJob(params, seconds) {
         super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);

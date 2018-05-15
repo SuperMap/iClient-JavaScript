@@ -6,15 +6,13 @@ import {StopQueryParameters} from './StopQueryParameters'
 /**
  * @class SuperMap.StopQueryService
  * @category  iServer TrafficTransferAnalyst TransferStops
- * @classdesc
- * 站点查询服务类。
+ * @classdesc 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 与客户端交互的站点查询服务地址。
- * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
- * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
- *
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 与客户端交互的站点查询服务地址。
+ * 例如：</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @example 例如：
  * (start code)
  * var myService = new SuperMap.StopQueryService(url, {eventListeners: {
@@ -48,7 +46,7 @@ export class StopQueryService extends CommonServiceBase {
     /**
      * @function SuperMap.StopQueryService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param params - {SuperMap.StopQueryParameters} 交通换乘参数。
+     * @param {SuperMap.StopQueryParameters} params - 交通换乘参数。
      */
     processAsync(params) {
         if (!(params instanceof StopQueryParameters)) {

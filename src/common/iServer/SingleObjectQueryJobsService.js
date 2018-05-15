@@ -6,9 +6,9 @@ import {SingleObjectQueryJobsParameter} from './SingleObjectQueryJobsParameter';
  * @class SuperMap.SingleObjectQueryJobsService
  * @category  iServer ProcessingService Query
  * @classdesc 单对象查询分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 单对象空间查询分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 单对象空间查询分析服务地址。
+ * @param {Object} options - 参数。
  */
 export class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
@@ -36,7 +36,7 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.KernelDensityJobsService.protitype.getQueryJob
      * @description 获取指定id的单对象空间查询分析服务
-     * @param id -{string} 指定要获取数据的id
+     * @param {string} id - 指定要获取数据的id
      */
     getQueryJob(id) {
         super.getJobs(this.url + '/' + id);
@@ -45,8 +45,8 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
      * @description 新建单对象空间查询分析服务
-     * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addQueryJob(params, seconds) {
         super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);

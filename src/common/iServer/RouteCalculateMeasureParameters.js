@@ -6,12 +6,11 @@ import './Route';
  * @class SuperMap.RouteCalculateMeasureParameters
  * @category  iServer SpatialAnalyst RouteCalculateMeasure
  * @classdesc 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
- * @param options - {Object} 可选参数。如:</br>
- *        sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
- *        point - {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
- *                点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
- *        tolerance - {float} 【可选参数】容限值。</br>
- *        isIgnoreGap - {boolean}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {(SuperMap.Route|L.Polyline|ol.geom.LineString)} options.sourceRoute - 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
+ * @param {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point)} options.point - 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
+ * @param {float} options.tolerance - 【可选参数】容限值。</br>
+ * @param {boolean} [options.isIgnoreGap=false] - 【可选参数】是否忽略子对象之间的距离。</br>
  */
 export class RouteCalculateMeasureParameters {
 
@@ -20,29 +19,26 @@ export class RouteCalculateMeasureParameters {
             return this;
         }
         /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{Object}
-         * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象；<br>
-         * 路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
+         * @member {(SuperMap.Route|L.Polyline|ol.geom.LineString)} SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute
+         * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。<br>
          */
         this.sourceRoute = null;
 
         /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.point -{Object}
+         * @member {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point)} SuperMap.RouteCalculateMeasureParameters.prototype.point
          * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
-         * 点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
          */
         this.point = null;
 
         /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{float}
+         * @member {float} SuperMap.RouteCalculateMeasureParameters.prototype.tolerance
          * @description 【可选参数】容限值。
          */
         this.tolerance = null;
 
         /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
-         * @description 【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
-         * @default false
+         * @member {boolean} [SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap=false]
+         * @description 【可选参数】是否忽略子对象之间的距离。
          */
         this.isIgnoreGap = false;
 

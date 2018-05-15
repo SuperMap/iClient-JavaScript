@@ -5366,21 +5366,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{string} 数据集名。 <br>
- *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
- *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
- *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以标准属字段统计的统计模式。 <br>
- *         weightedSummaryFields -{boolean} 以权重字段统计。 <br>
- *         weightedFields -{string} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以权重字段统计的统计模式。 <br>
- *         resolution -{number}网格大小。 <br>
- *         meshType -{number}网格面汇总类型。 <br>
- *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
- *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {boolean} options.sumShape - 是否统计长度或面积。<br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query -分析范围。<br>
+ * @param {boolean} options.standardSummaryFields 以标准属字段统计。<br>
+ * @param {string} options.standardFields - 以标准属字段统计的字段名称。<br>
+ * @param {SuperMap.StatisticAnalystMode} options.standardStatisticModes - 以标准属字段统计的统计模式。<br>
+ * @param {boolean} options.weightedSummaryFields - 以权重字段统计。<br>
+ * @param {string} options.weightedFields - 以权重字段统计的字段名称。<br>
+ * @param {SuperMap.StatisticAnalystMode} options.weightedStatisticModes - 以权重字段统计的统计模式。<br>
+ * @param {number} options.resolution - 网格大小。<br>
+ * @param {number} options.meshType - 网格面汇总类型。 <br>
+ * @param {SuperMap.AnalystSizeUnit} options.meshSizeUnit - 网格大小单位。<br>
+ * @param {SuperMap.SummaryType} options.type - 汇总类型。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () {
   function SummaryRegionJobParameter(options) {
@@ -5391,91 +5391,91 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
     }
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
+     * @member {string} SuperMap.SummaryRegionJobParameter.prototype.datasetName
      * @description 数据集名。
      */
     this.datasetName = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
+     * @member {string} SuperMap.SummaryRegionJobParameter.prototype.regionDataset
      * @description 汇总数据源（多边形汇总时用到的参数）。
      */
     this.regionDataset = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
+     * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.sumShape
      * @description 是否统计长度或面积。
      */
     this.sumShape = true;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+     * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.SummaryRegionJobParameter.prototype.query
+     * @description 分析范围。
      */
     this.query = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
+     * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields
      * @description 以标准属字段统计。
      */
     this.standardSummaryFields = false;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
+     * @member {string} SuperMap.SummaryRegionJobParameter.prototype.standardFields
      * @description 以标准属字段统计的字段名称。
      */
     this.standardFields = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
+     * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes
      * @description 以标准属字段统计的统计模式。
      */
     this.standardStatisticModes = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
+     * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields
      * @description 以权重字段统计。
      */
     this.weightedSummaryFields = false;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
+     * @member {string} SuperMap.SummaryRegionJobParameter.prototype.weightedFields
      * @description 以权重字段统计的字段名称。
      */
     this.weightedFields = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
+     * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes
      * @description 以权重字段统计的统计模式。
      */
     this.weightedStatisticModes = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
+     * @member {number} SuperMap.SummaryRegionJobParameter.prototype.meshType
      * @description 网格面汇总类型。
      */
     this.meshType = 0;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
+     * @member {number} SuperMap.SummaryRegionJobParameter.prototype.resolution
      * @description 网格大小。
      */
     this.resolution = 100;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+     * @member {SuperMap.AnalystSizeUnit} SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit
      * @description 网格大小单位。
      */
     this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
+     * @member {SuperMap.SummaryType} SuperMap.SummaryRegionJobParameter.prototype.type
      * @description 汇总类型。
      */
     this.type = _REST.SummaryType.SUMMARYMESH;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.output -{SuperMap.OutputSetting}
+     * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
      * @description 输出参数设置类
      */
     this.output = null;
@@ -5516,8 +5516,8 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
 
     /**
      * @function SuperMap.SummaryRegionJobParameter.toObject
-     * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
-     * @param tempObj - {Object} 目标对象。
+     * @param {Object} summaryRegionJobParameter - 矢量裁剪分析任务参数。
+     * @param {Object} tempObj - 目标对象。
      * @description 生成区域汇总分析服务对象
      */
 
@@ -5587,16 +5587,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
- * @classdesc 点聚合分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{string} 数据集名。<br>
- *        query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
- *        resolution -{number}分辨率。<br>
- *        statisticModes -{{@link SuperMap.StatisticAnalystMode}} 分析模式。<br>
- *        meshType -{number}分析类型。<br>
- *        fields -{number}权重索引。<br>
- *        type -{{@link SuperMap.SummaryType}} 聚合类型。
- *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @classdesc 点聚合分析任务参数类。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。<br>
+ * @param {number} options.resolution - 分辨率。<br>
+ * @param {SuperMap.StatisticAnalystMode} options.statisticModes - 分析模式。<br>
+ * @param {number} options.meshType - 分析类型。<br>
+ * @param {number} options.fields - 权重索引。<br>
+ * @param {SuperMap.SummaryType} options.type - 聚合类型。
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。
  */
 var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
     function SummaryMeshJobParameter(options) {
@@ -5606,55 +5606,55 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
             return;
         }
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.SummaryMeshJobParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{string}
+         * @member {string} SuperMap.SummaryMeshJobParameter.prototype.regionDataset
          * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
          */
         this.regionDataset = "";
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.query -{Object}
-         * @description 分析范围(聚合类型为网格面聚合时使用的参数)。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
+         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.SummaryMeshJobParameter.prototype.query
+         * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
          */
         this.query = "";
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
+         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.resolution
          * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
          */
         this.resolution = 100;
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
-         * @description  网格面类型(聚合类型为网格面聚合时使用的参数),取值：0或1。
+         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.meshType
+         * @description  网格面类型(聚合类型为网格面聚合时使用的参数)，取值：0或1。
          */
         this.meshType = 0;
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{SuperMap.StatisticAnalystMode}
+         * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryMeshJobParameter.prototype.statisticModes
          * @description 统计模式。
          */
         this.statisticModes = _REST.StatisticAnalystMode.AVERAGE;
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
+         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.fields
          * @description 权重字段。
          */
         this.fields = "";
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.type -{SuperMap.SummaryType}
+         * @member {SuperMap.SummaryType} SuperMap.SummaryMeshJobParameter.prototype.type
          * @description 聚合类型。
          */
         this.type = _REST.SummaryType.SUMMARYMESH;
 
         /**
-         * @member SuperMap.SummaryMeshJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -5689,8 +5689,8 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 
         /**
          * @function SuperMap.SummaryMeshJobParameter.toObject
-         * @param summaryMeshJobParameter - {Object} 点聚合分析任务参数。
-         * @param tempObj - {Object} 目标对象。
+         * @param {Object} summaryMeshJobParameter - 点聚合分析任务参数。
+         * @param {Object} tempObj - 目标对象。
          * @description 生成点聚合分析任务对象
          */
 
@@ -5765,12 +5765,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{string} 数据集名。<br>
- *        groupField -{string}分组字段。<br>
- *        attributeField -{string} 属性字段。<br>
- *        statisticModes -{string} 统计模式。<br>
- *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.groupField - 分组字段。<br>
+ * @param {string} options.attributeField - 属性字段。<br>
+ * @param {string} options.statisticModes - 统计模式。<br>
+ * @param {SuperMap.OutputSetting} options.output -输出参数设置。<br>
  */
 var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = function () {
     function SummaryAttributesJobsParameter(options) {
@@ -5780,27 +5780,27 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
             return;
         }
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.datasetName
          * @description 汇总数据集名称
          */
         this.datasetName = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.groupField -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.groupField
          * @description 分组字段
          */
         this.groupField = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.attributeField -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.attributeField
          * @description 属性字段
          */
         this.attributeField = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes -{string}
+         * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes
          * @description 属性汇总统计模式
          */
         this.statisticModes = "";
         /**
-         * @member SuperMap.SummaryAttributesJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.SummaryAttributesJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -5830,8 +5830,8 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
 
         /**
          * @function SuperMap.SummaryAttributesJobsParameter.toObject
-         * @param SummaryAttributesJobsParameter -{Object} 属性汇总任务参数
-         * @param tempObj - {Object} 目标对象
+         * @param {Object} SummaryAttributesJobsParameter - 属性汇总任务参数
+         * @param {Object} tempObj - 目标对象
          * @description 生成属性汇总分析任务对象
          */
 
@@ -5888,11 +5888,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
  * @classdesc 单对象空间查询分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
- *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.datasetQuery - 查询对象所在的数据集名称。<br>
+ * @param {SuperMap.SpatialQueryMode} options.mode - 空间查询模式。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = function () {
     function SingleObjectQueryJobsParameter(options) {
@@ -5902,31 +5902,31 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
             return;
         }
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
+         * @member {string} SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery
          * @description 查询对象所在的数据集名称。
          */
         this.datasetQuery = "";
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
+         * @member {string} SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery
          * @description 查询对象所在的几何对象。
          */
         this.geometryQuery = "";
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
+         * @member {SuperMap.SpatialQueryMode} SuperMap.SingleObjectQueryJobsParameter.prototype.mode
          * @description 空间查询模式 。
          */
         this.mode = _REST.SpatialQueryMode.CONTAIN;
 
         /**
-         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.SingleObjectQueryJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -5957,8 +5957,8 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
 
         /**
          * @function SuperMap.SingleObjectQueryJobsParameter.toObject
-         * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
-         * @param tempObj - {Object} 目标对象
+         * @param {Object} singleObjectQueryJobsParameter - 单对象空间查询分析任务参数
+         * @param {Object} tempObj - 目标对象
          * @description 生成单对象空间查询分析任务对象
          */
 
@@ -6776,9 +6776,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SummaryAttributesJobsService
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 汇总统计分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 汇总统计分析服务地址。
+ * @param {Object} options - 参数。
  */
 var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
@@ -6818,7 +6818,7 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
         /**
          * @function SuperMap.SummaryAttributesJobsService.protitype.getSummaryAttributesJob
          * @description 获取指定id的属性汇总分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -6830,8 +6830,8 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
         /**
          * @function SuperMap.SummaryAttributesJobsService.protitype.addSummaryAttributesJob
          * @description 新建属性汇总分析服务
-         * @param params - {SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -7416,9 +7416,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SummaryRegionJobsService
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 区域汇总分析服务地址。
- * @param options - {Object} 区域汇总分析服务可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 区域汇总分析服务地址。
+ * @param {Object} options - 参数。
  */
 var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
@@ -7458,7 +7458,7 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
          * @description 获取指定id的区域汇总分析任务。
-         * @param id -{string} 要获取区域汇总分析任务的id
+         * @param {string} id -要获取区域汇总分析任务的id
          */
 
     }, {
@@ -7470,8 +7470,8 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
          * @description 新建区域汇总任务。
-         * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个区域汇总任务的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.SummaryRegionJobParameter} params - 创建一个区域汇总任务的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -7518,13 +7518,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SummaryMeshJobsService
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务类。
- * @param url -{string} 点聚合分析任务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number}服务访问地址在数组中的位置。<br>
- *        length - {number}服务访问地址数组长度。
+ * @param {string} url -点聚合分析任务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
+ * @param {Object} options.eventListeners - 听器对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {number} options.length - 服务访问地址数组长度。
  */
 var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
@@ -7564,7 +7564,7 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
         /**
          * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
          * @description 获取指定ip的点聚合分析任务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -7576,8 +7576,8 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
         /**
          * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
          * @description 新建点聚合分析服务
-         * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.SummaryMeshJobParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -7624,9 +7624,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SingleObjectQueryJobsService
  * @category  iServer ProcessingService Query
  * @classdesc 单对象查询分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 单对象空间查询分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 单对象空间查询分析服务地址。
+ * @param {Object} options - 参数。
  */
 var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
@@ -7666,7 +7666,7 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
         /**
          * @function SuperMap.KernelDensityJobsService.protitype.getQueryJob
          * @description 获取指定id的单对象空间查询分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -7678,8 +7678,8 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
          * @description 新建单对象空间查询分析服务
-         * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {

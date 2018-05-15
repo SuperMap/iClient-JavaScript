@@ -7,21 +7,21 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{string} 数据集名。 <br>
- *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
- *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
- *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以标准属字段统计的统计模式。 <br>
- *         weightedSummaryFields -{boolean} 以权重字段统计。 <br>
- *         weightedFields -{string} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以权重字段统计的统计模式。 <br>
- *         resolution -{number}网格大小。 <br>
- *         meshType -{number}网格面汇总类型。 <br>
- *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
- *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {boolean} options.sumShape - 是否统计长度或面积。<br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query -分析范围。<br>
+ * @param {boolean} options.standardSummaryFields 以标准属字段统计。<br>
+ * @param {string} options.standardFields - 以标准属字段统计的字段名称。<br>
+ * @param {SuperMap.StatisticAnalystMode} options.standardStatisticModes - 以标准属字段统计的统计模式。<br>
+ * @param {boolean} options.weightedSummaryFields - 以权重字段统计。<br>
+ * @param {string} options.weightedFields - 以权重字段统计的字段名称。<br>
+ * @param {SuperMap.StatisticAnalystMode} options.weightedStatisticModes - 以权重字段统计的统计模式。<br>
+ * @param {number} options.resolution - 网格大小。<br>
+ * @param {number} options.meshType - 网格面汇总类型。 <br>
+ * @param {SuperMap.AnalystSizeUnit} options.meshSizeUnit - 网格大小单位。<br>
+ * @param {SuperMap.SummaryType} options.type - 汇总类型。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 export class SummaryRegionJobParameter {
 
@@ -31,91 +31,91 @@ export class SummaryRegionJobParameter {
         }
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.SummaryRegionJobParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
+         * @member {string} SuperMap.SummaryRegionJobParameter.prototype.regionDataset
          * @description 汇总数据源（多边形汇总时用到的参数）。
          */
         this.regionDataset = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
+         * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.sumShape
          * @description 是否统计长度或面积。
          */
         this.sumShape = true;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.query
-         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.SummaryRegionJobParameter.prototype.query
+         * @description 分析范围。
          */
         this.query = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
+         * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields
          * @description 以标准属字段统计。
          */
         this.standardSummaryFields = false;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
+         * @member {string} SuperMap.SummaryRegionJobParameter.prototype.standardFields
          * @description 以标准属字段统计的字段名称。
          */
         this.standardFields = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
+         * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes
          * @description 以标准属字段统计的统计模式。
          */
         this.standardStatisticModes = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
+         * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields
          * @description 以权重字段统计。
          */
         this.weightedSummaryFields = false;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
+         * @member {string} SuperMap.SummaryRegionJobParameter.prototype.weightedFields
          * @description 以权重字段统计的字段名称。
          */
         this.weightedFields = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
+         * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes
          * @description 以权重字段统计的统计模式。
          */
         this.weightedStatisticModes = "";
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
+         * @member {number} SuperMap.SummaryRegionJobParameter.prototype.meshType
          * @description 网格面汇总类型。
          */
         this.meshType = 0;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
+         * @member {number} SuperMap.SummaryRegionJobParameter.prototype.resolution
          * @description 网格大小。
          */
         this.resolution = 100;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+         * @member {SuperMap.AnalystSizeUnit} SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit
          * @description 网格大小单位。
          */
         this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
+         * @member {SuperMap.SummaryType} SuperMap.SummaryRegionJobParameter.prototype.type
          * @description 汇总类型。
          */
         this.type = SummaryType.SUMMARYMESH;
 
         /**
-         * @member SuperMap.SummaryRegionJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.SummaryRegionJobParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -152,8 +152,8 @@ export class SummaryRegionJobParameter {
 
     /**
      * @function SuperMap.SummaryRegionJobParameter.toObject
-     * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
-     * @param tempObj - {Object} 目标对象。
+     * @param {Object} summaryRegionJobParameter - 矢量裁剪分析任务参数。
+     * @param {Object} tempObj - 目标对象。
      * @description 生成区域汇总分析服务对象
      */
     static toObject(summaryRegionJobParameter, tempObj) {

@@ -9,12 +9,12 @@ import {DataFormat} from '../REST';
  * @class SuperMap.QueryService
  * @category  iServer Map QueryResults
  * @classdesc 查询服务基类。
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
- * @param options - {Object} 可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER"，"GEOJSON"。
  * @example
  * var myService = new SuperMap.QueryService(url, {
  *     eventListeners: {
@@ -25,26 +25,25 @@ import {DataFormat} from '../REST';
  */
 export class QueryService extends CommonServiceBase {
 
-    /*
+    /**
      * @function SuperMap.QueryService.prototype.constructor
      * @description 查询服务基类构造函数。
-     * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * @param options - {Object} 可选参数。如：<br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
+     * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+     * @param {Object} options -参数。<br>
+     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);
-
-        /*
-         * Property: returnContent
-         * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
+        
+        /**
+         * @member {boolean} SuperMap.QueryService.prototype.returnContent
+         * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
          */
         this.returnContent = false;
 
-        /*
-         *  Property: format
-         *  {string} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-         *  参数格式为"ISERVER","GEOJSON",GEOJSON
+        /**
+         * @member {string} SuperMap.QueryService.prototype.format
+         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
          */
         this.format = DataFormat.GEOJSON;
 
@@ -86,7 +85,7 @@ export class QueryService extends CommonServiceBase {
     /**
      * @function SuperMap.QueryService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param params - {SuperMap.QueryParameters} 查询参数。
+     * @param {SuperMap.QueryParameters} params - 查询参数。
      */
     processAsync(params) {
         if (!(params instanceof QueryParameters)) {
@@ -115,12 +114,10 @@ export class QueryService extends CommonServiceBase {
         });
     }
 
-    /*
-     * Method: queryComplete
-     * 查询完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.QueryService.prototype.serviceProcessCompleted
+     * @description 查询完成，执行此方法。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this;
@@ -140,8 +137,8 @@ export class QueryService extends CommonServiceBase {
     /**
      * @function SuperMap.QueryService.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
-     * @param params - {Object} JSON 字符串表示的查询参数。
-     * @return {QueryParameters} 返回转化后的 QueryParameters 对象。
+     * @param {Object} params - JSON 字符串表示的查询参数。
+     * @returns {SuperMap.QueryParameters} 返回转化后的 QueryParameters 对象。
      */
     getQueryParameters(params) {
         return new QueryParameters({

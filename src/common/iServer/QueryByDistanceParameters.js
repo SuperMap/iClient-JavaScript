@@ -6,25 +6,25 @@ import {QueryParameters} from './QueryParameters';
  * @class SuperMap.QueryByDistanceParameters
  * @category  iServer Map QueryResults
  * @classdesc Distance 查询参数类。
- *               该类用于设置 Distance 查询的相关参数。
- * @extends SuperMap.QueryParameters
- * @param options - {Object} 可选参数。如：<br>
- *         customParams - {string} 自定义参数，供扩展使用。<br>
- *         prjCoordSys -{Object} 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {number}期望返回结果记录个数。<br>
- *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br>
- *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br>
- *         queryParams - {Array<{@link SuperMap.FilterParameter}>} 查询过滤条件参数数组。<br>
- *         startRecord - {number}查询起始记录号。<br>
- *         holdTime - {number}资源在服务端保存的时间。<br>
- *         returnCustomResult -{boolean} 仅供三维使用。<br>
- *         distance - {number}查询距离。<br>
- *         geometry - {Object} 用于查询的几何对象。<br>
- *                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
- *                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
- *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
- *         isNearest - {boolean} 是否为最近距离查询。<br>
- *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ *            该类用于设置 Distance 查询的相关参数。
+ * @extends {SuperMap.QueryParameters}
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.customParams - 自定义参数，供扩展使用。<br>
+ * @param {Object} options.prjCoordSys -自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
+ * @param {number} options.expectCount - 期望返回结果记录个数。<br>
+ * @param {SuperMap.GeometryType} options.networkType - 网络数据集对应的查询类型。<br>
+ * @param {SuperMap.QueryOption} options.queryOption - 查询结果类型枚举类。<br>
+ * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。<br>
+ * @param {number} options.startRecord - 查询起始记录号。<br>
+ * @param {number} options.holdTime - 资源在服务端保存的时间。<br>
+ * @param {boolean} options.returnCustomResult -仅供三维使用。<br>
+ * @param {number} options.distance - 查询距离。<br>
+ * @param {Object} options.geometry - 用于查询的几何对象。<br>
+ *                                    点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+ *                                    线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+ *                                    面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
+ * @param {boolean} options.isNearest - 是否为最近距离查询。<br>
+ * @param {boolean} options.returnContent - 是否立即返回新创建资源的表述还是返回新资源的 URI。
  */
 export class QueryByDistanceParameters extends QueryParameters {
 
@@ -35,9 +35,9 @@ export class QueryByDistanceParameters extends QueryParameters {
         }
         super(options);
         /**
-         * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}
+         * @member {number} SuperMap.QueryByDistanceParameters.prototype.distance
          * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。
-         *               当查找最近地物时，该属性无效。
+         *              当查找最近地物时，该属性无效。
          * @default 0
          */
         this.distance = 0;
@@ -52,7 +52,7 @@ export class QueryByDistanceParameters extends QueryParameters {
         this.geometry = null;
 
         /**
-         * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{boolean}
+         * @member {boolean} SuperMap.QueryByDistanceParameters.prototype.isNearest
          * @description 是否为最近距离查询。<br>
          *               建议该属性与 expectCount （继承自 {@link SuperMap.QueryParameters}）属性联合使用。<br>
          *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
@@ -64,7 +64,7 @@ export class QueryByDistanceParameters extends QueryParameters {
         this.isNearest = null;
 
         /**
-         * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}
+         * @member {boolean} SuperMap.QueryByDistanceParameters.prototype.returnContent
          * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
          *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
          *               为 false，则返回的是查询结果资源的 URI。默认为 true。
