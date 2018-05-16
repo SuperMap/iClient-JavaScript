@@ -47,13 +47,13 @@
             inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
         }
         if (inArray(includes, 'ol-mapbox-style')) {
-            inputScript("https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js");
+            inputScript("http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
         }
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
-            inputScript("../../dist/iclient9-openlayers.js");
+            inputScript("../../dist/iclient9-openlayers.min.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers-css')) {
             inputCSS("../../dist/iclient9-openlayers.min.css");
