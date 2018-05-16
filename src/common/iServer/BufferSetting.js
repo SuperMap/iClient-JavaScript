@@ -8,7 +8,7 @@ import {BufferDistance} from './BufferDistance';
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析通用设置类。
  * @param {Object} options - 参数。<br>
- * @param {SuperMap.BufferEndType} options.endType - 缓冲区端点枚举值。<br>
+ * @param {SuperMap.BufferEndType} [options.endType=SuperMap.BufferEndType.FLAT] - 缓冲区端点枚举值。<br>
  * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。<br>
  * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。<br>
  * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。<br>
@@ -19,7 +19,7 @@ export class BufferSetting {
 
     constructor(options) {
         /**
-         * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType=SuperMap.BufferEndType.FLAT]
+         * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType = SuperMap.BufferEndType.FLAT]
          * @description 缓冲区端点枚举值。分为平头和圆头两种。
          */
         this.endType = BufferEndType.FLAT;
@@ -47,7 +47,7 @@ export class BufferSetting {
         this.semicircleLineSegment = 4;
 
         /**
-         * @member {SuperMap.BufferRadiusUnit} [SuperMap.BufferSetting.prototype.radiusUnit=SuperMap.BufferRadiusUnit.METER]
+         * @member {SuperMap.BufferRadiusUnit} [SuperMap.BufferSetting.prototype.radiusUnit = SuperMap.BufferRadiusUnit.METER]
          * @description 缓冲半径单位，可以是{@link SuperMap.BufferRadiusUnit.METER}、{@link SuperMap.BufferRadiusUnit.MILIMETER}、
          * {@link SuperMap.BufferRadiusUnit.CENTIMETER}、{@link SuperMap.BufferRadiusUnit.DECIMETER}、{@link SuperMap.BufferRadiusUnit.KILOMETER}、
          * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。

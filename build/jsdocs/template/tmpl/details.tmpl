@@ -52,7 +52,7 @@ var self = this;
     
     <?js if (data.defaultvalue) {?>
     <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy"><li><?js= data.defaultvalue ?></li></ul></dd>
+    <?js= (typeof data.defaultvalue==="string"?self.linkto(data.defaultvalue, self.htmlsafe(data.defaultvalue)):data.defaultvalue) ?></li></ul></dd>
     <?js } ?>
     
     <?js if (data.tutorials && tutorials.length) {?>

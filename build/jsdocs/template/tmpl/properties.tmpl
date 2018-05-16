@@ -51,9 +51,6 @@
 		<th>Argument</th>
 		<?js } ?>
 		
-		<?js if (props.hasDefault) {?>
-		<th>Default</th>
-		<?js } ?>
 		
 		<th class="last">Description</th>
 	</tr>
@@ -67,8 +64,21 @@
 	?>
 	
         <tr>
-            <?js if (props.hasName) {?>
-                <td class="name"><code><?js= prop.name ?></code></td>
+            <?js if (props.hasName) {
+                    var idTag="";
+                    if(prop.longname){
+                    var link=self.linkto(prop.longname, self.htmlsafe(prop.longname));
+                    if(link){
+                        var tag=link.match(/.*href=\"[^#]*#(.*)\">/);
+                        if(tag&&tag[1]){
+                            idTag=tag[1];
+                        }
+                    }
+                 }
+             ?>
+                <td class="name" <?js if(idTag){ ?>
+                    id="<?js=idTag ?>"<?js } ?>
+                ><code><?js= prop.name ?></code></td>
             <?js } ?>
             
             <td class="type">
@@ -89,13 +99,6 @@
                 </td>
             <?js } ?>
             
-            <?js if (props.hasDefault) {?>
-                <td class="default">
-                <?js if (typeof prop.defaultvalue !== 'undefined') { ?>
-                    <?js= self.htmlsafe(prop.defaultvalue) ?>
-                <?js } ?>
-                </td>
-            <?js } ?>
             
             <td class="description last"><?js= prop.description ?><?js if (prop.subprops) { ?>
                 <h6>Properties</h6><?js= self.partial('properties.tmpl', prop.subprops) ?>

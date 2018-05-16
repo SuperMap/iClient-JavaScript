@@ -206,7 +206,6 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description Used to find tokens in a string.
-     * @default  /\$\{([\w.]+?)\}/g
      * @example
      * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
      */
@@ -214,7 +213,6 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description Used to test strings as numbers.
-     * @default  /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/
      */
     numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
 

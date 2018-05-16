@@ -116,23 +116,27 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             urls: options.urls,
             wrapX: options.wrapX !== undefined ? options.wrapX : false
         });
-        
+
         var me = this;
         me.tileType = options.tileType || 'ScaleXY';
+
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 me.tileGrid = me.getTileGridForProjection(projection);
             }
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var params = '';
-            if (me.tileType === 'ViewBounds') {
+            var z = tileCoord[0];
+            var x = tileCoord[1];
+            var y = -tileCoord[2] - 1;
+            if (me.tileType === 'ZXY') {
+                params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&x=" + x + "&y=" + y + "&z=" + z;
+
+            } else if (me.tileType === 'ViewBounds') {
                 var tileExtent = me.tileGrid.getTileCoordExtent(
                     tileCoord);
-                params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" +  tileExtent[0] + "," + tileExtent[1] + "," + tileExtent[2] + "," + tileExtent[3];
+                params = "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + tileExtent[0] + "," + tileExtent[1] + "," + tileExtent[2] + "," + tileExtent[3];
             } else {
-                var z = tileCoord[0];
-                var x = tileCoord[1];
-                var y = -tileCoord[2] - 1;
                 var origin = me.tileGrid.getOrigin(z);
                 var resolution = me.tileGrid.getResolution(z);
                 var dpi = 96;

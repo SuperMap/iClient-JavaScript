@@ -1160,1115 +1160,1221 @@ _SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.AggregationQueryBuilderType = exports.AggregationType = exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OutputType = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
 /**
- * @name DataFormat
+ * @enum DataFormat
  * @memberOf SuperMap
  * @description 服务请求返回结果数据类型
- *
- * @property {string} GEOJSON  GEOJSON
- * @property {string} ISERVER  ISERVER
+ * @type {string}
  */
-var DataFormat = exports.DataFormat = _SuperMap.SuperMap.DataFormat = {
-  GEOJSON: "GEOJSON",
-  ISERVER: "ISERVER"
+var DataFormat = _SuperMap.SuperMap.DataFormat = {
+    /** GEOJSON */
+    GEOJSON: "GEOJSON",
+    /** ISERVER */
+    ISERVER: "ISERVER"
 };
+exports.DataFormat = DataFormat;
 
 /**
- * @name ServerType
+ * @enum ServerType
  * @memberOf SuperMap
  * @description 服务器类型
- *
- * @property {string} ISERVER  ISERVER
- * @property {string} IPORTAL  IPORTAL
- * @property {string} ONLINE  ONLINE
+ * @type {string}
  */
-var ServerType = exports.ServerType = _SuperMap.SuperMap.ServerType = {
-  ISERVER: "ISERVER",
-  IPORTAL: "IPORTAL",
-  ONLINE: "ONLINE"
+
+var ServerType = _SuperMap.SuperMap.ServerType = {
+    /** ISERVER */
+    ISERVER: "ISERVER",
+    /** IPORTAL */
+    IPORTAL: "IPORTAL",
+    /** ONLINE */
+    ONLINE: "ONLINE"
 };
+exports.ServerType = ServerType;
 
 /**
- * @name GeometryType
+ * @enum GeometryType
  * @memberOf SuperMap
  * @description 几何对象枚举,定义了一系列几何对象类型。
- *
- * @property {string} LINE  LINE
- * @property {string} LINEM  LINEM
- * @property {string} POINT  POINT
- * @property {string} REGION  REGION
- * @property {string} ELLIPSE  ELLIPSE
- * @property {string} CIRCLE  CIRCLE
- * @property {string} TEXT  TEXT
- * @property {string} RECTANGLE RECTANGLE
- * @property {string} UNKNOWN  UNKNOWN
+ * @type {string}
  */
-var GeometryType = exports.GeometryType = _SuperMap.SuperMap.GeometryType = {
-  LINE: "LINE",
-  LINEM: "LINEM",
-  POINT: "POINT",
-  REGION: "REGION",
-  ELLIPSE: "ELLIPSE",
-  CIRCLE: "CIRCLE",
-  TEXT: "TEXT",
-  RECTANGLE: "RECTANGLE",
-  UNKNOWN: "UNKNOWN"
+
+var GeometryType = _SuperMap.SuperMap.GeometryType = {
+    /** LINE */
+    LINE: "LINE",
+    /** LINEM */
+    LINEM: "LINEM",
+    /** POINT */
+    POINT: "POINT",
+    /** REGION */
+    REGION: "REGION",
+    /** ELLIPSE */
+    ELLIPSE: "ELLIPSE",
+    /** CIRCLE */
+    CIRCLE: "CIRCLE",
+    /** TEXT */
+    TEXT: "TEXT",
+    /** RECTANGLE */
+    RECTANGLE: "RECTANGLE",
+    /** UNKNOWN */
+    UNKNOWN: "UNKNOWN"
 };
+exports.GeometryType = GeometryType;
 
 /**
- * @name QueryOption
+ * @enum QueryOption
  * @memberOf SuperMap
  * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
- *
- * @property {string} ATTRIBUTE  ATTRIBUTE
- * @property {string} ATTRIBUTEANDGEOMETRY  ATTRIBUTEANDGEOMETRY
- * @property {string} GEOMETRY  GEOMETRY
+ * @type {string}
  */
-var QueryOption = exports.QueryOption = _SuperMap.SuperMap.QueryOption = {
-  ATTRIBUTE: "ATTRIBUTE",
-  ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
-  GEOMETRY: "GEOMETRY"
+
+var QueryOption = _SuperMap.SuperMap.QueryOption = {
+    /** 属性 */
+    ATTRIBUTE: "ATTRIBUTE",
+    /** 属性和几何对象 */
+    ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
+    /** 几何对象 */
+    GEOMETRY: "GEOMETRY"
 };
+exports.QueryOption = QueryOption;
 
 /**
- * @name JoinType
+ * @enum JoinType
  * @memberOf SuperMap
  * @description 关联查询时的关联类型常量。
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
- *
- * @property {string} INNERJOIN  INNERJOIN
- * @property {string} LEFTJOIN  LEFTJOIN
+ * @type {string}
  */
-var JoinType = exports.JoinType = _SuperMap.SuperMap.JoinType = {
-  INNERJOIN: "INNERJOIN",
-  LEFTJOIN: "LEFTJOIN"
+
+var JoinType = _SuperMap.SuperMap.JoinType = {
+    /** INNERJOIN */
+    INNERJOIN: "INNERJOIN",
+    /** LEFTJOIN */
+    LEFTJOIN: "LEFTJOIN"
 };
+exports.JoinType = JoinType;
 
 /**
- * @name SpatialQueryMode
+ * @enum SpatialQueryMode
  * @memberOf SuperMap
  * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
- *
- * @property {string} CONTAIN  CONTAIN
- * @property {string} CROSS  CROSS
- * @property {string} DISJOINT  DISJOINT
- * @property {string} IDENTITY  IDENTITY
- * @property {string} INTERSECT  INTERSECT
- * @property {string} NONE  NONE
- * @property {string} OVERLAP  OVERLAP
- * @property {string} TOUCH  TOUCH
- * @property {string} WITHIN  WITHIN
+ * @type {string}
  */
-var SpatialQueryMode = exports.SpatialQueryMode = _SuperMap.SuperMap.SpatialQueryMode = {
-  CONTAIN: "CONTAIN",
-  CROSS: "CROSS",
-  DISJOINT: "DISJOINT",
-  IDENTITY: "IDENTITY",
-  INTERSECT: "INTERSECT",
-  NONE: "NONE",
-  OVERLAP: "OVERLAP",
-  TOUCH: "TOUCH",
-  WITHIN: "WITHIN"
-};
 
+var SpatialQueryMode = _SuperMap.SuperMap.SpatialQueryMode = {
+    /** 包含空间查询模式 */
+    CONTAIN: "CONTAIN",
+    /** 交叉空间查询模式 */
+    CROSS: "CROSS",
+    /** 分离空间查询模式 */
+    DISJOINT: "DISJOINT",
+    /** 重合空间查询模式 */
+    IDENTITY: "IDENTITY",
+    /** 相交空间查询模式 */
+    INTERSECT: "INTERSECT",
+    /** 无空间查询 */
+    NONE: "NONE",
+    /** 叠加空间查询模式 */
+    OVERLAP: "OVERLAP",
+    /** 邻接空间查询模式 */
+    TOUCH: "TOUCH",
+    /** 被包含空间查询模式 */
+    WITHIN: "WITHIN"
+};
+exports.SpatialQueryMode = SpatialQueryMode;
 /**
- * @name SpatialRelationType
+ * @enum SpatialRelationType
  * @memberOf SuperMap
  * @description  数据集对象间的空间关系枚举。
  * 该类定义了数据集对象间的空间关系类型常量。
- *
- * @property {string} CONTAIN 包含关系 CONTAIN  CONTAIN
- * @property {string} INTERSECT 相交关系 INTERSECT  INTERSECT
- * @property {string} INTERSECT 被包含关系 WITHIN  WITHIN
+ * @type {string}
  */
-var SpatialRelationType = exports.SpatialRelationType = _SuperMap.SuperMap.SpatialRelationType = {
-  CONTAIN: "CONTAIN",
-  INTERSECT: "INTERSECT",
-  WITHIN: "WITHIN"
+
+var SpatialRelationType = _SuperMap.SuperMap.SpatialRelationType = {
+    /** 包含关系 */
+    CONTAIN: "CONTAIN",
+    /** 相交关系 */
+    INTERSECT: "INTERSECT",
+    /** 被包含关系 */
+    WITHIN: "WITHIN"
 };
+exports.SpatialRelationType = SpatialRelationType;
 
 /**
- * @name MeasureMode
+ * @enum MeasureMode
  * @memberOf SuperMap
- * @property {string} DISTANCE DISTANCE
- * @property {string} AREA AREA
+ * @type {string}
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var MeasureMode = exports.MeasureMode = _SuperMap.SuperMap.MeasureMode = {
-  DISTANCE: "DISTANCE",
-  AREA: "AREA"
+
+var MeasureMode = _SuperMap.SuperMap.MeasureMode = {
+    /** 距离测量 */
+    DISTANCE: "DISTANCE",
+    /** 面积测量 */
+    AREA: "AREA"
 };
+exports.MeasureMode = MeasureMode;
 
 /**
- * @name Unit
+ * @enum Unit
  * @memberOf SuperMap
  * @description  距离单位枚举。
  * 该类定义了一系列距离单位类型。
- *
- * @property {string} METER  METER
- * @property {string} KILOMETER  KILOMETER
- * @property {string} MILE  MILE
- * @property {string} YARD  YARD
- * @property {string} DEGREE  DEGREE
- * @property {string} MILLIMETER  MILLIMETER
- * @property {string} CENTIMETER  CENTIMETER
- * @property {string} INCH  INCH
- * @property {string} DECIMETER  DECIMETER
- * @property {string} FOOT  FOOT
- * @property {string} SECOND  SECOND
- * @property {string} MINUTE  MINUTE
- * @property {string} RADIAN  RADIAN
+ * @type {string}
  */
-var Unit = exports.Unit = _SuperMap.SuperMap.Unit = {
-  METER: "METER",
-  KILOMETER: "KILOMETER",
-  MILE: "MILE",
-  YARD: "YARD",
-  DEGREE: "DEGREE",
-  MILLIMETER: "MILLIMETER",
-  CENTIMETER: "CENTIMETER",
-  INCH: "INCH",
-  DECIMETER: "DECIMETER",
-  FOOT: "FOOT",
-  SECOND: "SECOND",
-  MINUTE: "MINUTE",
-  RADIAN: "RADIAN"
+
+var Unit = _SuperMap.SuperMap.Unit = {
+    /**  米 */
+    METER: "METER",
+    /**  千米 */
+    KILOMETER: "KILOMETER",
+    /**  英里 */
+    MILE: "MILE",
+    /**  码 */
+    YARD: "YARD",
+    /**  度 */
+    DEGREE: "DEGREE",
+    /**  毫米 */
+    MILLIMETER: "MILLIMETER",
+    /**  厘米 */
+    CENTIMETER: "CENTIMETER",
+    /**  英寸 */
+    INCH: "INCH",
+    /**  分米 */
+    DECIMETER: "DECIMETER",
+    /**  英尺 */
+    FOOT: "FOOT",
+    /**  秒 */
+    SECOND: "SECOND",
+    /**  分 */
+    MINUTE: "MINUTE",
+    /**  弧度 */
+    RADIAN: "RADIAN"
 };
+exports.Unit = Unit;
 
 /**
- * @name BufferRadiusUnit
+ * @enum BufferRadiusUnit
  * @memberOf SuperMap
  * @description  缓冲区距离单位枚举。
  * 该类定义了一系列缓冲距离单位类型。
- *
- * @property {string} CENTIMETER   厘米
- * @property {string} DECIMETER   分米
- * @property {string} FOOT   英尺
- * @property {string} INCH  英寸
- * @property {string} KILOMETER  千米
- * @property {string} METER   米
- * @property {string} MILE   英里
- * @property {string} MILLIMETER    毫米
- * @property {string} YARD    码
+ * @type {string}
  */
-var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap.SuperMap.BufferRadiusUnit = {
-  CENTIMETER: "CENTIMETER",
-  DECIMETER: "DECIMETER",
-  FOOT: "FOOT",
-  INCH: "INCH",
-  KILOMETER: "KILOMETER",
-  METER: "METER",
-  MILE: "MILE",
-  MILLIMETER: "MILLIMETER",
-  YARD: "YARD"
 
-  /**
-   * @name EngineType
-   * @memberOf SuperMap
-   * @description  数据源引擎类型枚举。
-   *
-   * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
-   * @property {string} OGC  OGC
-   * @property {string} ORACLEPLUS  ORACLEPLUS
-   * @property {string} SDBPLUS  SDBPLUS
-   * @property {string} SQLPLUS  SQLPLUS
-   * @property {string} UDB  UDB
-   */
-};var EngineType = exports.EngineType = _SuperMap.SuperMap.EngineType = {
-  IMAGEPLUGINS: "IMAGEPLUGINS",
-  OGC: "OGC",
-  ORACLEPLUS: "ORACLEPLUS",
-  SDBPLUS: "SDBPLUS",
-  SQLPLUS: "SQLPLUS",
-  UDB: "UDB"
+var BufferRadiusUnit = _SuperMap.SuperMap.BufferRadiusUnit = {
+    /**  厘米 */
+    CENTIMETER: "CENTIMETER",
+    /**  分米 */
+    DECIMETER: "DECIMETER",
+    /**  英尺 */
+    FOOT: "FOOT",
+    /**  英寸 */
+    INCH: "INCH",
+    /**  千米 */
+    KILOMETER: "KILOMETER",
+    /**  米 */
+    METER: "METER",
+    /**  英里 */
+    MILE: "MILE",
+    /**  毫米 */
+    MILLIMETER: "MILLIMETER",
+    /**  码 */
+    YARD: "YARD"
 };
+exports.BufferRadiusUnit = BufferRadiusUnit;
 
 /**
- * @name ThemeGraphTextFormat
+ * @enum EngineType
+ * @memberOf SuperMap
+ * @description  数据源引擎类型枚举。
+ * @type {string}
+ */
+
+var EngineType = _SuperMap.SuperMap.EngineType = {
+    /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
+    IMAGEPLUGINS: "IMAGEPLUGINS",
+    /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
+    OGC: "OGC",
+    /**  Oracle 引擎类型，针对 Oracle 数据源，数据库引擎。 */
+    ORACLEPLUS: "ORACLEPLUS",
+    /**  SDB 引擎类型，文件引擎，即 SDB 数据源。 */
+    SDBPLUS: "SDBPLUS",
+    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎 */
+    SQLPLUS: "SQLPLUS",
+    /**  UDB 引擎类型，文件引擎。 */
+    UDB: "UDB"
+};
+exports.EngineType = EngineType;
+
+/**
+ * @enum ThemeGraphTextFormat
  * @memberOf SuperMap
  * @description  统计专题图文本显示格式枚举。
- *
- * @property {string} CAPTION  CAPTION
- * @property {string} CAPTION_PERCENT  CAPTION_PERCENT
- * @property {string} CAPTION_VALUE  CAPTION_VALUE
- * @property {string} PERCENT  PERCENT
- * @property {string} VALUE  VALUE
+ * @type {string}
  */
-var ThemeGraphTextFormat = exports.ThemeGraphTextFormat = _SuperMap.SuperMap.ThemeGraphTextFormat = {
-  CAPTION: "CAPTION",
-  CAPTION_PERCENT: "CAPTION_PERCENT",
-  CAPTION_VALUE: "CAPTION_VALUE",
-  PERCENT: "PERCENT",
-  VALUE: "VALUE"
+
+var ThemeGraphTextFormat = _SuperMap.SuperMap.ThemeGraphTextFormat = {
+    /**  标题。以各子项的标题来进行标注。 */
+    CAPTION: "CAPTION",
+    /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
+    CAPTION_PERCENT: "CAPTION_PERCENT",
+    /**  标题 + 实际数值。以各子项的标题和真实数值来进行标注。 */
+    CAPTION_VALUE: "CAPTION_VALUE",
+    /**  百分数。以各子项所占的百分比来进行标注。 */
+    PERCENT: "PERCENT",
+    /**  实际数值。以各子项的真实数值来进行标注。 */
+    VALUE: "VALUE"
+
 };
+exports.ThemeGraphTextFormat = ThemeGraphTextFormat;
 
 /**
- * @name ThemeGraphType
+ * @enum ThemeGraphType
  * @memberOf SuperMap
  * @description  统计专题图类型枚举。
- *
- * @property {string} AREA  AREA
- * @property {string} BAR  BAR
- * @property {string} BAR3D  BAR3D
- * @property {string} LINE  LINE
- * @property {string} PIE  PIE
- * @property {string} PIE3D  PIE3D
- * @property {string} POINT  POINT
- * @property {string} RING  RING
- * @property {string} ROSE  ROSE
- * @property {string} ROSE3D  ROSE3D
- * @property {string} STACK_BAR  STACK_BAR
- * @property {string} STACK_BAR3D  STACK_BAR3D
- * @property {string} STEP  STEP
+ * @type {string}
  */
-var ThemeGraphType = exports.ThemeGraphType = _SuperMap.SuperMap.ThemeGraphType = {
-  AREA: "AREA",
-  BAR: "BAR",
-  BAR3D: "BAR3D",
-  LINE: "LINE",
-  PIE: "PIE",
-  PIE3D: "PIE3D",
-  POINT: "POINT",
-  RING: "RING",
-  ROSE: "ROSE",
-  ROSE3D: "ROSE3D",
-  STACK_BAR: "STACK_BAR",
-  STACK_BAR3D: "STACK_BAR3D",
-  STEP: "STEP"
+
+var ThemeGraphType = _SuperMap.SuperMap.ThemeGraphType = {
+    /**  面积图。 */
+    AREA: "AREA",
+    /**  柱状图。 */
+    BAR: "BAR",
+    /**  三维柱状图。 */
+    BAR3D: "BAR3D",
+    /**  折线图。 */
+    LINE: "LINE",
+    /**  饼图。 */
+    PIE: "PIE",
+    /**  三维饼图。 */
+    PIE3D: "PIE3D",
+    /**  点状图。 */
+    POINT: "POINT",
+    /**  环状图。 */
+    RING: "RING",
+    /**  玫瑰图。 */
+    ROSE: "ROSE",
+    /**  三维玫瑰图。 */
+    ROSE3D: "ROSE3D",
+    /**  堆叠柱状图。 */
+    STACK_BAR: "STACK_BAR",
+    /**  三维堆叠柱状图。 */
+    STACK_BAR3D: "STACK_BAR3D",
+    /**  阶梯图。 */
+    STEP: "STEP"
 };
+exports.ThemeGraphType = ThemeGraphType;
 
 /**
- * @name GraphAxesTextDisplayMode
+ * @enum GraphAxesTextDisplayMode
  * @memberOf SuperMap
  * @description  统计专题图坐标轴文本显示模式。
- *
- * @property {string} ALL  ALL, 显示全部文本
- * @property {string} NONE  NONE, 没有显示
- * @property {string} YAXES  YAXES. 显示Y轴的文本
+ * @type {string}
  */
-var GraphAxesTextDisplayMode = exports.GraphAxesTextDisplayMode = _SuperMap.SuperMap.GraphAxesTextDisplayMode = {
-  ALL: "ALL",
-  NONE: "NONE",
-  YAXES: "YAXES"
+
+var GraphAxesTextDisplayMode = _SuperMap.SuperMap.GraphAxesTextDisplayMode = {
+    /**  显示全部文本。 */
+    ALL: "ALL",
+    /**  不显示。 */
+    NONE: "NONE",
+    /**  显示Y轴的文本。 */
+    YAXES: "YAXES"
 };
+exports.GraphAxesTextDisplayMode = GraphAxesTextDisplayMode;
 
 /**
- * @name GraduatedMode
+ * @enum GraduatedMode
  * @memberOf SuperMap
  * @description  专题图分级模式枚举。
  *
- * @property {string} CONSTANT  CONSTANT
- * @property {string} LOGARITHM  LOGARITHM
- * @property {string} SQUAREROOT  SQUAREROOT
+ * @type {string}
  */
-var GraduatedMode = exports.GraduatedMode = _SuperMap.SuperMap.GraduatedMode = {
-  CONSTANT: "CONSTANT",
-  LOGARITHM: "LOGARITHM",
-  SQUAREROOT: "SQUAREROOT"
+
+var GraduatedMode = _SuperMap.SuperMap.GraduatedMode = {
+    /**  常量分级模式。 */
+    CONSTANT: "CONSTANT",
+    /** 对数分级模式。 */
+    LOGARITHM: "LOGARITHM",
+    /**  平方根分级模式。 */
+    SQUAREROOT: "SQUAREROOT"
 };
+exports.GraduatedMode = GraduatedMode;
 
 /**
- * @name RangeMode
+ * @enum RangeMode
  * @memberOf SuperMap
  * @description  范围分段专题图分段方式枚举。
- *
- * @property {string} CUSTOMINTERVAL  CUSTOMINTERVAL
- * @property {string} EQUALINTERVAL  EQUALINTERVAL
- * @property {string} LOGARITHM  LOGARITHM
- * @property {string} QUANTILE  QUANTILE
- * @property {string} SQUAREROOT  SQUAREROOT
- * @property {string} STDDEVIATION  STDDEVIATION
+ * @type {string}
  */
-var RangeMode = exports.RangeMode = _SuperMap.SuperMap.RangeMode = {
-  CUSTOMINTERVAL: "CUSTOMINTERVAL",
-  EQUALINTERVAL: "EQUALINTERVAL",
-  LOGARITHM: "LOGARITHM",
-  QUANTILE: "QUANTILE",
-  SQUAREROOT: "SQUAREROOT",
-  STDDEVIATION: "STDDEVIATION"
+
+var RangeMode = _SuperMap.SuperMap.RangeMode = {
+    /**  自定义分段法。 */
+    CUSTOMINTERVAL: "CUSTOMINTERVAL",
+    /**  等距离分段法。 */
+    EQUALINTERVAL: "EQUALINTERVAL",
+    /**  对数分段法。 */
+    LOGARITHM: "LOGARITHM",
+    /**  等计数分段法。 */
+    QUANTILE: "QUANTILE",
+    /**  平方根分段法。 */
+    SQUAREROOT: "SQUAREROOT",
+    /**  标准差分段法。 */
+    STDDEVIATION: "STDDEVIATION"
 };
+exports.RangeMode = RangeMode;
 
 /**
- * @name ThemeType
+ * @enum ThemeType
  * @memberOf SuperMap
  * @description  专题图类型枚举。
- *
- * @property {string} DOTDENSITY  DOTDENSITY
- * @property {string} GRADUATEDSYMBOL  GRADUATEDSYMBOL
- * @property {string} GRAPH  GRAPH
- * @property {string} LABEL  LABEL
- * @property {string} RANGE  RANGE
- * @property {string} UNIQUE  UNIQUE
+ * @type {string}
  */
-var ThemeType = exports.ThemeType = _SuperMap.SuperMap.ThemeType = {
-  DOTDENSITY: "DOTDENSITY",
-  GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
-  GRAPH: "GRAPH",
-  LABEL: "LABEL",
-  RANGE: "RANGE",
-  UNIQUE: "UNIQUE"
+
+var ThemeType = _SuperMap.SuperMap.ThemeType = {
+    /** 点密度专题图。 */
+    DOTDENSITY: "DOTDENSITY",
+    /** 等级符号专题图。 */
+    GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
+    /** 统计专题图。 */
+    GRAPH: "GRAPH",
+    /** 标签专题图。 */
+    LABEL: "LABEL",
+    /** 分段专题图。 */
+    RANGE: "RANGE",
+    /** 単值专题图。 */
+    UNIQUE: "UNIQUE"
 };
+exports.ThemeType = ThemeType;
 
 /**
- * @name ColorGradientType
+ * @enum ColorGradientType
  * @memberOf SuperMap
  * @description  渐变颜色枚举。
- *
- * @property {string} BLACK_WHITE  BLACKWHITE
- * @property {string} BLUE_BLACK  BLUEBLACK
- * @property {string} BLUE_RED   BLUERED
- * @property {string} BLUE_WHITE  BLUEWHITE
- * @property {string} CYAN_BLACK  CYANBLACK
- * @property {string} CYAN_BLUE  CYANBLUE
- * @property {string} CYAN_GREEN  CYANGREEN
- * @property {string} CYAN_WHITE  CYANWHITE
- * @property {string} GREEN_BLACK  GREENBLACK
- * @property {string} GREEN_BLUE  GREENBLUE
- * @property {string} GREEN_ORANGE_VIOLET  GREENORANGEVIOLET
- * @property {string} GREEN_RED  GREENRED
- * @property {string} GREEN_WHITE  GREENWHITE
- * @property {string} PINK_BLACK  PINKBLACK
- * @property {string} PINK_BLUE  PINKBLUE
- * @property {string} PINK_RED  PINKRED
- * @property {string} PINK_WHITE  PINKWHITE
- * @property {string} RAIN_BOW  RAINBOW
- * @property {string} RED_BLACK  REDBLACK
- * @property {string} RED_WHITE  REDWHITE
- * @property {string} SPECTRUM  SPECTRUM
- * @property {string} TERRAIN  TERRAIN
- * @property {string} YELLOW_BLACK  YELLOWBLACK
- * @property {string} YELLOW_BLUE  YELLOWBLUE
- * @property {string} YELLOW_GREEN  YELLOWGREEN
- * @property {string} YELLOW_RED  YELLOWRED
- * @property {string} YELLOW_WHITE  YELLOWWHITE
+ * @type {string}
  */
-var ColorGradientType = exports.ColorGradientType = _SuperMap.SuperMap.ColorGradientType = {
-  BLACK_WHITE: "BLACKWHITE",
-  BLUE_BLACK: "BLUEBLACK",
-  BLUE_RED: "BLUERED",
-  BLUE_WHITE: "BLUEWHITE",
-  CYAN_BLACK: "CYANBLACK",
-  CYAN_BLUE: "CYANBLUE",
-  CYAN_GREEN: "CYANGREEN",
-  CYAN_WHITE: "CYANWHITE",
-  GREEN_BLACK: "GREENBLACK",
-  GREEN_BLUE: "GREENBLUE",
-  GREEN_ORANGE_VIOLET: "GREENORANGEVIOLET",
-  GREEN_RED: "GREENRED",
-  GREEN_WHITE: "GREENWHITE",
-  PINK_BLACK: "PINKBLACK",
-  PINK_BLUE: "PINKBLUE",
-  PINK_RED: "PINKRED",
-  PINK_WHITE: "PINKWHITE",
-  RAIN_BOW: "RAINBOW",
-  RED_BLACK: "REDBLACK",
-  RED_WHITE: "REDWHITE",
-  SPECTRUM: "SPECTRUM",
-  TERRAIN: "TERRAIN",
-  YELLOW_BLACK: "YELLOWBLACK",
-  YELLOW_BLUE: "YELLOWBLUE",
-  YELLOW_GREEN: "YELLOWGREEN",
-  YELLOW_RED: "YELLOWRED",
-  YELLOW_WHITE: "YELLOWWHITE"
+
+var ColorGradientType = _SuperMap.SuperMap.ColorGradientType = {
+    /** 黑白渐变色。 */
+    BLACK_WHITE: "BLACKWHITE",
+    /** 蓝黑渐变色。 */
+    BLUE_BLACK: "BLUEBLACK",
+    /** 蓝红渐变色。 */
+    BLUE_RED: "BLUERED",
+    /** 蓝白渐变色。 */
+    BLUE_WHITE: "BLUEWHITE",
+    /** 青黑渐变色。 */
+    CYAN_BLACK: "CYANBLACK",
+    /** 青蓝渐变色。 */
+    CYAN_BLUE: "CYANBLUE",
+    /** 青绿渐变色。 */
+    CYAN_GREEN: "CYANGREEN",
+    /** 青白渐变色。 */
+    CYAN_WHITE: "CYANWHITE",
+    /** 绿黑渐变色。 */
+    GREEN_BLACK: "GREENBLACK",
+    /** 绿蓝渐变色。 */
+    GREEN_BLUE: "GREENBLUE",
+    /** 绿橙紫渐变色。 */
+    GREEN_ORANGE_VIOLET: "GREENORANGEVIOLET",
+    /** 绿红渐变色。 */
+    GREEN_RED: "GREENRED",
+    /** 蓝红渐变色。 */
+    GREEN_WHITE: "GREENWHITE",
+    /** 粉黑渐变色。 */
+    PINK_BLACK: "PINKBLACK",
+    /** 粉蓝渐变色。 */
+    PINK_BLUE: "PINKBLUE",
+    /** 粉红渐变色。 */
+    PINK_RED: "PINKRED",
+    /** 粉白渐变色。 */
+    PINK_WHITE: "PINKWHITE",
+    /** 彩虹色。 */
+    RAIN_BOW: "RAINBOW",
+    /** 红黑渐变色。 */
+    RED_BLACK: "REDBLACK",
+    /** 红白渐变色。 */
+    RED_WHITE: "REDWHITE",
+    /** 光谱渐变。 */
+    SPECTRUM: "SPECTRUM",
+    /** 地形渐变,用于三维显示效果较好。 */
+    TERRAIN: "TERRAIN",
+    /** 黄黑渐变色。 */
+    YELLOW_BLACK: "YELLOWBLACK",
+    /** 黄蓝渐变色。 */
+    YELLOW_BLUE: "YELLOWBLUE",
+    /** 黄绿渐变色。 */
+    YELLOW_GREEN: "YELLOWGREEN",
+    /** 黄红渐变色。 */
+    YELLOW_RED: "YELLOWRED",
+    /** 黄白渐变色。 */
+    YELLOW_WHITE: "YELLOWWHITE"
 };
+exports.ColorGradientType = ColorGradientType;
 
 /**
- * @name TextAlignment
+ * @enum TextAlignment
  * @memberOf SuperMap
  * @description  文本对齐枚举。
- *
- * @property {string} TOPLEFT  TOPLEFT
- * @property {string} TOPCENTER  TOPCENTER
- * @property {string} TOPRIGHT  TOPRIGHT
- * @property {string} BASELINELEFT  BASELINELEFT
- * @property {string} BASELINECENTER  BASELINECENTER
- * @property {string} BASELINERIGHT  BASELINERIGHT
- * @property {string} BOTTOMLEFT  BOTTOMLEFT
- * @property {string} BOTTOMCENTER  BOTTOMCENTER
- * @property {string} BOTTOMRIGHT  BOTTOMRIGHT
- * @property {string} MIDDLELEFT  MIDDLELEFT
- * @property {string} MIDDLECENTER  MIDDLECENTER
- * @property {string} MIDDLERIGHT  MIDDLERIGHT
+ * @type {string}
  */
-var TextAlignment = exports.TextAlignment = _SuperMap.SuperMap.TextAlignment = {
-  TOPLEFT: "TOPLEFT",
-  TOPCENTER: "TOPCENTER",
-  TOPRIGHT: "TOPRIGHT",
-  BASELINELEFT: "BASELINELEFT",
-  BASELINECENTER: "BASELINECENTER",
-  BASELINERIGHT: "BASELINERIGHT",
-  BOTTOMLEFT: "BOTTOMLEFT",
-  BOTTOMCENTER: "BOTTOMCENTER",
-  BOTTOMRIGHT: "BOTTOMRIGHT",
-  MIDDLELEFT: "MIDDLELEFT",
-  MIDDLECENTER: "MIDDLECENTER",
-  MIDDLERIGHT: "MIDDLERIGHT"
-};
 
+var TextAlignment = _SuperMap.SuperMap.TextAlignment = {
+    /** 左上角对齐。 */
+    TOPLEFT: "TOPLEFT",
+    /** 顶部居中对齐。 */
+    TOPCENTER: "TOPCENTER",
+    /** 右上角对齐。 */
+    TOPRIGHT: "TOPRIGHT",
+    /** 基准线左对齐。 */
+    BASELINELEFT: "BASELINELEFT",
+    /** 基准线居中对齐。 */
+    BASELINECENTER: "BASELINECENTER",
+    /** 基准线右对齐。 */
+    BASELINERIGHT: "BASELINERIGHT",
+    /** 左下角对齐。 */
+    BOTTOMLEFT: "BOTTOMLEFT",
+    /** 底部居中对齐。 */
+    BOTTOMCENTER: "BOTTOMCENTER",
+    /** 右下角对齐。 */
+    BOTTOMRIGHT: "BOTTOMRIGHT",
+    /** 左中对齐。 */
+    MIDDLELEFT: "MIDDLELEFT",
+    /** 中心对齐。 */
+    MIDDLECENTER: "MIDDLECENTER",
+    /** 右中对齐。 */
+    MIDDLERIGHT: "MIDDLERIGHT"
+};
+exports.TextAlignment = TextAlignment;
 /**
- * @name FillGradientMode
+ * @enum FillGradientMode
  * @memberOf SuperMap
  * @description  渐变填充风格的渐变类型枚举。
- *
- * @property {string} NONE  NONE
- * @property {string} LINEAR  LINEAR
- * @property {string} RADIAL  RADIAL
- * @property {string} CONICAL  CONICAL
- * @property {string} SQUARE  SQUARE
+ * @type {string}
  */
-var FillGradientMode = exports.FillGradientMode = _SuperMap.SuperMap.FillGradientMode = {
-  NONE: "NONE",
-  LINEAR: "LINEAR",
-  RADIAL: "RADIAL",
-  CONICAL: "CONICAL",
-  SQUARE: "SQUARE"
+
+var FillGradientMode = _SuperMap.SuperMap.FillGradientMode = {
+    /** 无渐变。 */
+    NONE: "NONE",
+    /** 线性渐变填充。 */
+    LINEAR: "LINEAR",
+    /** 辐射渐变填充。 */
+    RADIAL: "RADIAL",
+    /** 圆锥渐变填充。 */
+    CONICAL: "CONICAL",
+    /** 四角渐变填充。 */
+    SQUARE: "SQUARE"
 };
+exports.FillGradientMode = FillGradientMode;
 
 /**
- * @name AlongLineDirection
- * @memberOf SuperMap
- * @name AlongLineDirection
+ * @enum AlongLineDirection
  * @memberOf SuperMap
  * @description  标签沿线标注方向枚举。
- *
- * @property {string} NORMAL  ALONG_LINE_NORMAL
- * @property {string} LB_TO_RT  LEFT_BOTTOM_TO_RIGHT_TOP
- * @property {string} LT_TO_RB  LEFT_TOP_TO_RIGHT_BOTTOM
- * @property {string} RB_TO_LT  RIGHT_BOTTOM_TO_LEFT_TOP
- * @property {string} RT_TO_LB  RIGHT_TOP_TO_LEFT_BOTTOM
+ * @type {string}
  */
-var AlongLineDirection = exports.AlongLineDirection = _SuperMap.SuperMap.AlongLineDirection = {
-  NORMAL: "ALONG_LINE_NORMAL",
-  LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
-  LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
-  RB_TO_LT: "RIGHT_BOTTOM_TO_LEFT_TOP",
-  RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
+
+var AlongLineDirection = _SuperMap.SuperMap.AlongLineDirection = {
+    /** 沿线的法线方向放置标签。 */
+    NORMAL: "ALONG_LINE_NORMAL",
+    /** 从下到上，从左到右放置。 */
+    LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
+    /** 从上到下，从左到右放置。 */
+    LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
+    /** 从下到上，从右到左放置。 */
+    RB_TO_LT: "RIGHT_BOTTOM_TO_LEFT_TOP",
+    /** 从上到下，从右到左放置。 */
+    RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
 };
+exports.AlongLineDirection = AlongLineDirection;
 
 /**
- * @name LabelBackShape
+ * @enum LabelBackShape
  * @memberOf SuperMap
  * @description  标签专题图中标签背景的形状枚举。
- *
- * @property {string} DIAMOND  DIAMOND
- * @property {string} ELLIPSE  ELLIPSE
- * @property {string} MARKER  MARKER
- * @property {string} NONE  NONE
- * @property {string} RECT  RECT
- * @property {string} ROUNDRECT  ROUNDRECT
- * @property {string} TRIANGLE  TRIANGLE
+ * @type {string}
  */
-var LabelBackShape = exports.LabelBackShape = _SuperMap.SuperMap.LabelBackShape = {
-  DIAMOND: "DIAMOND",
-  ELLIPSE: "ELLIPSE",
-  MARKER: "MARKER",
-  NONE: "NONE",
-  RECT: "RECT",
-  ROUNDRECT: "ROUNDRECT",
-  TRIANGLE: "TRIANGLE"
+
+var LabelBackShape = _SuperMap.SuperMap.LabelBackShape = {
+    /** 菱形背景，即标签背景的形状为菱形。 */
+    DIAMOND: "DIAMOND",
+    /** 椭圆形背景，即标签背景的行状为椭圆形。 */
+    ELLIPSE: "ELLIPSE",
+    /** 符号背景，即标签背景的形状为设定的符号。 */
+    MARKER: "MARKER",
+    /** 空背景，即不使用任何形状作为标签的背景。 */
+    NONE: "NONE",
+    /** 矩形背景，即标签背景的形状为矩形。 */
+    RECT: "RECT",
+    /** 圆角矩形背景，即标签背景的形状为圆角矩形。 */
+    ROUNDRECT: "ROUNDRECT",
+    /** 三角形背景，即标签背景的形状为三角形。 */
+    TRIANGLE: "TRIANGLE"
 };
+exports.LabelBackShape = LabelBackShape;
 
 /**
- * @name LabelOverLengthMode
+ * @enum LabelOverLengthMode
  * @memberOf SuperMap
  * @description  标签专题图中超长标签的处理模式枚举。
- *
- * @property {string} NEWLINE  NEWLINE
- * @property {string} NONE  NONE
- * @property {string} OMIT  OMIT
+ * @type {string}
  */
-var LabelOverLengthMode = exports.LabelOverLengthMode = _SuperMap.SuperMap.LabelOverLengthMode = {
-  NEWLINE: "NEWLINE",
-  NONE: "NONE",
-  OMIT: "OMIT"
+
+var LabelOverLengthMode = _SuperMap.SuperMap.LabelOverLengthMode = {
+    /** 换行显示。 */
+    NEWLINE: "NEWLINE",
+    /** 对超长标签不进行处理。 */
+    NONE: "NONE",
+    /** 省略超出部分。 */
+    OMIT: "OMIT"
 };
+exports.LabelOverLengthMode = LabelOverLengthMode;
 
 /**
- * @name DirectionType
+ * @enum DirectionType
  * @memberOf SuperMap
  * @description  网络分析中方向枚举。
  * 在行驶引导子项中使用。
- *
- * @property {string} EAST  EAST
- * @property {string} NONE  NONE
- * @property {string} NORTH  NORTH
- * @property {string} SOURTH  SOURTH
- * @property {string} WEST  WEST
+ * @type {string}
  */
-var DirectionType = exports.DirectionType = _SuperMap.SuperMap.DirectionType = {
-  EAST: "EAST",
-  NONE: "NONE",
-  NORTH: "NORTH",
-  SOURTH: "SOURTH",
-  WEST: "WEST"
+
+var DirectionType = _SuperMap.SuperMap.DirectionType = {
+    /** 东。 */
+    EAST: "EAST",
+    /** 无方向。 */
+    NONE: "NONE",
+    /** 北。 */
+    NORTH: "NORTH",
+    /** 南。 */
+    SOURTH: "SOURTH",
+    /** 西。 */
+    WEST: "WEST"
 };
+exports.DirectionType = DirectionType;
 
 /**
- * @name SideType
+ * @enum SideType
  * @memberOf SuperMap
  * @description  行驶位置枚举。
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
- *
- * @property {string} LEFT  LEFT
- * @property {string} MIDDLE  MIDDLE
- * @property {string} NONE  NONE
- * @property {string} RIGHT  RIGHT
+ * @type {string}
  */
-var SideType = exports.SideType = _SuperMap.SuperMap.SideType = {
-  LEFT: "LEFT",
-  MIDDLE: "MIDDLE",
-  NONE: "NONE",
-  RIGHT: "RIGHT"
+
+var SideType = _SuperMap.SuperMap.SideType = {
+    /** 路的左侧。 */
+    LEFT: "LEFT",
+    /** 在路上（即路的中间）。 */
+    MIDDLE: "MIDDLE",
+    /** 无效值。 */
+    NONE: "NONE",
+    /** 路的右侧。 */
+    RIGHT: "RIGHT"
 };
+exports.SideType = SideType;
 
 /**
- * @name SupplyCenterType
+ * @enum SupplyCenterType
  * @memberOf SuperMap
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
- *
- * @property {string} FIXEDCENTER  FIXEDCENTER
- * @property {string} NULL  NULL
- * @property {string} OPTIONALCENTER  OPTIONALCENTER
+ * @type {string}
  */
-var SupplyCenterType = exports.SupplyCenterType = _SuperMap.SuperMap.SupplyCenterType = {
-  FIXEDCENTER: "FIXEDCENTER",
-  NULL: "NULL",
-  OPTIONALCENTER: "OPTIONALCENTER"
+
+var SupplyCenterType = _SuperMap.SuperMap.SupplyCenterType = {
+    /** 固定中心点。 */
+    FIXEDCENTER: "FIXEDCENTER",
+    /** 非中心点。 */
+    NULL: "NULL",
+    /** 可选中心点。 */
+    OPTIONALCENTER: "OPTIONALCENTER"
 };
+exports.SupplyCenterType = SupplyCenterType;
 
 /**
- * @name TurnType
+ * @enum TurnType
  * @memberOf SuperMap
  * @description  转弯方向枚举。
  * 用在行驶引导子项类中，表示转弯的方向。
- *
- * @property {string} AHEAD  AHEAD
- * @property {string} BACK  BACK
- * @property {string} END  END
- * @property {string} LEFT  LEFT
- * @property {string} NONE  NONE
- * @property {string} RIGHT  RIGHT
+ * @type {string}
  */
-var TurnType = exports.TurnType = _SuperMap.SuperMap.TurnType = {
-  AHEAD: "AHEAD",
-  BACK: "BACK",
-  END: "END",
-  LEFT: "LEFT",
-  NONE: "NONE",
-  RIGHT: "RIGHT"
+
+var TurnType = _SuperMap.SuperMap.TurnType = {
+    /** 向前直行。 */
+    AHEAD: "AHEAD",
+    /** 掉头。 */
+    BACK: "BACK",
+    /** 终点，不拐弯。 */
+    END: "END",
+    /** 左转弯。 */
+    LEFT: "LEFT",
+    /** 无效值。 */
+    NONE: "NONE",
+    /** 右转弯。 */
+    RIGHT: "RIGHT"
 };
+exports.TurnType = TurnType;
 
 /**
- * @name BufferEndType
+ * @enum BufferEndType
  * @memberOf SuperMap
  * @description  缓冲区分析BufferEnd类型。
- *
- * @property {string} FLAT  FLAT
- * @property {string} ROUND  ROUND
+ * @type {string}
  */
-var BufferEndType = exports.BufferEndType = _SuperMap.SuperMap.BufferEndType = {
-  FLAT: "FLAT",
-  ROUND: "ROUND"
-};
 
+var BufferEndType = _SuperMap.SuperMap.BufferEndType = {
+    /** FLAT */
+    FLAT: "FLAT",
+    /** ROUND */
+    ROUND: "ROUND"
+};
+exports.BufferEndType = BufferEndType;
 /**
- * @name OverlayOperationType
+ * @enum OverlayOperationType
  * @memberOf SuperMap
  * @description  叠加分析类型枚举。
- *
- * @property {string} CLIP  CLIP
- * @property {string} ERASE  ERASE
- * @property {string} IDENTITY  IDENTITY
- * @property {string} INTERSECT  INTERSECT
- * @property {string} UNION  UNION
- * @property {string} UPDATE  UPDATE
- * @property {string} XOR  XOR
+ * @type {string}
  */
-var OverlayOperationType = exports.OverlayOperationType = _SuperMap.SuperMap.OverlayOperationType = {
-  CLIP: "CLIP",
-  ERASE: "ERASE",
-  IDENTITY: "IDENTITY",
-  INTERSECT: "INTERSECT",
-  UNION: "UNION",
-  UPDATE: "UPDATE",
-  XOR: "XOR"
+
+var OverlayOperationType = _SuperMap.SuperMap.OverlayOperationType = {
+    /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
+    CLIP: "CLIP",
+    /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。。 */
+    ERASE: "ERASE",
+    /**对被操作数据集（几何对象）进行同一操作，即操作执行后，被操作数据集（几何对象）包含来自操作数据集（几何对象）的几何形状。 */
+    IDENTITY: "IDENTITY",
+    /** 对两个数据集（几何对象）求交，返回两个数据集（几何对象）的交集。 */
+    INTERSECT: "INTERSECT",
+    /** 对两个面数据集（几何对象）进行合并操作。。 */
+    UNION: "UNION",
+    /** 对两个面数据集（几何对象）进行更新操作。 */
+    UPDATE: "UPDATE",
+    /** 对两个面数据集（几何对象）进行对称差操作。 */
+    XOR: "XOR"
 };
+exports.OverlayOperationType = OverlayOperationType;
 
 /**
- * @name OutputType
+ * @enum OutputType
  * @memberOf SuperMap
  * @description  分布式分析输出类型枚举。
- *
- * @property {string} INDEXEDHDFS  INDEXEDHDFS
- * @property {string} UDB  UDB
- * @property {string} MONGODB  MONGODB
- * @property {string} PG  PG
+ * @type {string}
  */
-var OutputType = exports.OutputType = _SuperMap.SuperMap.OutputType = {
-  INDEXEDHDFS: "INDEXEDHDFS",
-  UDB: "UDB",
-  MONGODB: "MONGODB",
-  PG: "PG"
+
+var OutputType = _SuperMap.SuperMap.OutputType = {
+    /** INDEXEDHDFS */
+    INDEXEDHDFS: "INDEXEDHDFS",
+    /** UDB */
+    UDB: "UDB",
+    /** MONGODB */
+    MONGODB: "MONGODB",
+    /** PG */
+    PG: "PG"
 };
+exports.OutputType = OutputType;
 
 /**
- * @name SmoothMethod
+ * @enum SmoothMethod
  * @memberOf SuperMap
  * @description  光滑方法枚举。
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
- *
- * @property {string} BSPLINE  BSPLINE
- * @property {string} POLISH  POLISH
+ * @type {string}
  */
-var SmoothMethod = exports.SmoothMethod = _SuperMap.SuperMap.SmoothMethod = {
-  BSPLINE: "BSPLINE",
-  POLISH: "POLISH"
-};
 
+var SmoothMethod = _SuperMap.SuperMap.SmoothMethod = {
+    /** B 样条法。 */
+    BSPLINE: "BSPLINE",
+    /** 磨角法。 */
+    POLISH: "POLISH"
+};
+exports.SmoothMethod = SmoothMethod;
 /**
- * @name SurfaceAnalystMethod
+ * @enum SurfaceAnalystMethod
  * @memberOf SuperMap
  * @description  表面分析方法枚举。
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
- *
- * @property {string} ISOLINE  ISOLINE
- * @property {string} ISOREGION  ISOREGION
+ * @type {string}
  */
-var SurfaceAnalystMethod = exports.SurfaceAnalystMethod = _SuperMap.SuperMap.SurfaceAnalystMethod = {
-  ISOLINE: "ISOLINE",
-  ISOREGION: "ISOREGION"
+
+var SurfaceAnalystMethod = _SuperMap.SuperMap.SurfaceAnalystMethod = {
+    /** 等值线提取。 */
+    ISOLINE: "ISOLINE",
+    /** 等值面提取。 */
+    ISOREGION: "ISOREGION"
 };
+exports.SurfaceAnalystMethod = SurfaceAnalystMethod;
 /**
- * @name DataReturnMode
+ * @enum DataReturnMode
  * @memberOf SuperMap
  * @description  数据返回模式枚举。
  * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
- *
- * @property {string} DATASET_AND_RECORDSET  DATASET_AND_RECORDSET
- * @property {string} DATASET_ONLY  DATASET_ONLY
- * @property {string} RECORDSET_ONLY  RECORDSET_ONLY
+ * @type {string}
  */
-var DataReturnMode = exports.DataReturnMode = _SuperMap.SuperMap.DataReturnMode = {
-  DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
-  DATASET_ONLY: "DATASET_ONLY",
-  RECORDSET_ONLY: "RECORDSET_ONLY"
-};
 
+var DataReturnMode = _SuperMap.SuperMap.DataReturnMode = {
+    /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
+    DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
+    /** 只返回数据集标识（数据集名称@数据源名称）。 */
+    DATASET_ONLY: "DATASET_ONLY",
+    /** 只返回记录集（RecordSet）。 */
+    RECORDSET_ONLY: "RECORDSET_ONLY"
+};
+exports.DataReturnMode = DataReturnMode;
 /**
- * @name EditType
+ * @enum EditType
  * @memberOf SuperMap
  * @description  要素集更新模式枚举。
  * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
- *
- * @property {string} ADD  add
- * @property {string} UPDATE  update
- * @property {string} DELETE  delete
+ * @type {string}
  */
-var EditType = exports.EditType = _SuperMap.SuperMap.EditType = {
-  ADD: "add",
-  UPDATE: "update",
-  DELETE: "delete"
+
+var EditType = _SuperMap.SuperMap.EditType = {
+    /** 增加操作。 */
+    ADD: "add",
+    /** 修改操作。 */
+    UPDATE: "update",
+    /** 删除操作。 */
+    DELETE: "delete"
 };
+exports.EditType = EditType;
 
 /**
- * @name TransferTactic
+ * @enum TransferTactic
  * @memberOf SuperMap
  * @description  公交换乘策略枚举。
  * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
- *
- * @property {string} LESS_TIME  LESS_TIME
- * @property {string} LESS_TRANSFER  LESS_TRANSFER
- * @property {string} LESS_WALK  LESS_WALK
- * @property {string} MIN_DISTANCE  MIN_DISTANCE
+ * @type {string}
  */
-var TransferTactic = exports.TransferTactic = _SuperMap.SuperMap.TransferTactic = {
-  LESS_TIME: "LESS_TIME",
-  LESS_TRANSFER: "LESS_TRANSFER",
-  LESS_WALK: "LESS_WALK",
-  MIN_DISTANCE: "MIN_DISTANCE"
+
+var TransferTactic = _SuperMap.SuperMap.TransferTactic = {
+    /** 时间短。 */
+    LESS_TIME: "LESS_TIME",
+    /** 少换乘。 */
+    LESS_TRANSFER: "LESS_TRANSFER",
+    /** 少步行。 */
+    LESS_WALK: "LESS_WALK",
+    /** 距离最短。 */
+    MIN_DISTANCE: "MIN_DISTANCE"
 };
+exports.TransferTactic = TransferTactic;
 
 /**
- * @name TransferPreference
+ * @enum TransferPreference
  * @memberOf SuperMap
  * @description  公交换乘策略枚举。
  * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
- *
- * @property {string} BUS  BUS
- * @property {string} SUBWAY  SUBWAY
- * @property {string} NO_SUBWAY  NO_SUBWAY
- * @property {string} NONE  NONE
+ * @type {string}
  */
-var TransferPreference = exports.TransferPreference = _SuperMap.SuperMap.TransferPreference = {
-  BUS: "BUS",
-  SUBWAY: "SUBWAY",
-  NO_SUBWAY: "NO_SUBWAY",
-  NONE: "NONE"
+
+var TransferPreference = _SuperMap.SuperMap.TransferPreference = {
+    /** 公交汽车优先。 */
+    BUS: "BUS",
+    /** 地铁优先。 */
+    SUBWAY: "SUBWAY",
+    /** 不乘坐地铁。 */
+    NO_SUBWAY: "NO_SUBWAY",
+    /** 无乘车偏好。 */
+    NONE: "NONE"
 };
+exports.TransferPreference = TransferPreference;
 
 /**
- * @name GridType
+ * @enum GridType
  * @memberOf SuperMap
  * @description  地图背景格网类型枚举。
- *
- * @property {string} CROSS  CROSS
- * @property {string} GRID  GRID
- * @property {string} POINT  POINT
+ * @type {string}
  */
-var GridType = exports.GridType = _SuperMap.SuperMap.GridType = {
-  CROSS: "CROSS",
-  GRID: "GRID",
-  POINT: "POINT"
+
+var GridType = _SuperMap.SuperMap.GridType = {
+    /** 十字叉丝。 */
+    CROSS: "CROSS",
+    /** 网格线。 */
+    GRID: "GRID",
+    /** 点。 */
+    POINT: "POINT"
 };
+exports.GridType = GridType;
 
 /**
- * @name ColorSpaceType
+ * @enum ColorSpaceType
  * @memberOf SuperMap
  * @description  色彩空间枚举。
  * 由于成色原理的不同，决定了显示器、投影仪这类靠色光直接合成颜色的颜色设备和打印机、
  * 印刷机这类靠使用颜料的印刷设备在生成颜色方式上的区别。
  * 针对上述不同成色方式，SuperMap 提供两种色彩空间，
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
- *
- * @property {string} CMYK  CMYK
- * @property {string} RGB  RGB
+ * @type {string}
  */
-var ColorSpaceType = exports.ColorSpaceType = _SuperMap.SuperMap.ColorSpaceType = {
-  CMYK: "CMYK",
-  RGB: "RGB"
-};
 
+var ColorSpaceType = _SuperMap.SuperMap.ColorSpaceType = {
+    /** 该类型主要在印刷系统使用。 */
+    CMYK: "CMYK",
+    /** 该类型主要在显示系统中使用。 */
+    RGB: "RGB"
+};
+exports.ColorSpaceType = ColorSpaceType;
 /**
- * @name LayerType
+ * @enum LayerType
  * @memberOf SuperMap
  * @description  图层类型。
- *
- * @property {string} UGC  UGC
- * @property {string} WMS  WMS
- * @property {string} WFS  WFS
- * @property {string} CUSTOM  CUSTOM
+ * @type {string}
  */
-var LayerType = exports.LayerType = _SuperMap.SuperMap.LayerType = {
-  UGC: "UGC",
-  WMS: "WMS",
-  WFS: "WFS",
-  CUSTOM: "CUSTOM"
 
+var LayerType = _SuperMap.SuperMap.LayerType = {
+    /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。。 */
+    UGC: "UGC",
+    /** WMS 图层。 */
+    WMS: "WMS",
+    /** WFS 图层。 */
+    WFS: "WFS",
+    /** 自定义图层。 */
+    CUSTOM: "CUSTOM"
 };
+exports.LayerType = LayerType;
 
 /**
- * @name UGCLayerType
+ * @enum UGCLayerType
  * @memberOf SuperMap
  * @description  UGC图层类型。
- *
- * @property {string} THEME  THEME
- * @property {string} VECTOR  VECTOR
- * @property {string} GRID  GRID
- * @property {string} IMAGE  IMAGE
+ * @type {string}
  */
-var UGCLayerType = exports.UGCLayerType = _SuperMap.SuperMap.UGCLayerType = {
-  THEME: "THEME",
-  VECTOR: "VECTOR",
-  GRID: "GRID",
-  IMAGE: "IMAGE"
 
+var UGCLayerType = _SuperMap.SuperMap.UGCLayerType = {
+    /** 专题图层。 */
+    THEME: "THEME",
+    /** 矢量图层。 */
+    VECTOR: "VECTOR",
+    /** 栅格图层。。 */
+    GRID: "GRID",
+    /** 影像图层。 */
+    IMAGE: "IMAGE"
 };
+exports.UGCLayerType = UGCLayerType;
 
 /**
- * @name StatisticMode
+ * @enum StatisticMode
  * @memberOf SuperMap
  * @description  字段统计方法类型。
- *
- * @property {string} AVERAGE  AVERAGE, 统计所选字段的平均值
- * @property {string} MAX  MAX, 统计所选字段的最大值
- * @property {string} MIN  MIN, 统计所选字段的最小值
- * @property {string} STDDEVIATION  STDDEVIATION, 统计所选字段的标准差
- * @property {string} SUM  SUM, 统计所选字段的总和
- * @property {string} VARIANCE  VARIANCE, 统计所选字段的方差
+ * @type {string}
  */
-var StatisticMode = exports.StatisticMode = _SuperMap.SuperMap.StatisticMode = {
-  AVERAGE: "AVERAGE",
-  MAX: "MAX",
-  MIN: "MIN",
-  STDDEVIATION: "STDDEVIATION",
-  SUM: "SUM",
-  VARIANCE: "VARIANCE"
+
+var StatisticMode = _SuperMap.SuperMap.StatisticMode = {
+    /** 统计所选字段的平均值。 */
+    AVERAGE: "AVERAGE",
+    /** 统计所选字段的最大值。 */
+    MAX: "MAX",
+    /** 统计所选字段的最小值。 */
+    MIN: "MIN",
+    /** 统计所选字段的标准差 */
+    STDDEVIATION: "STDDEVIATION",
+    /** 统计所选字段的总和。 */
+    SUM: "SUM",
+    /** 统计所选字段的方差。 */
+    VARIANCE: "VARIANCE"
 };
+exports.StatisticMode = StatisticMode;
 
 /**
- * @name PixelFormat
+ * @enum PixelFormat
  * @memberOf SuperMap
  * @description  栅格与影像数据存储的像素格式枚举。
- *
- * @property {string} BIT16  BIT16, 每个像元用16个比特(即2个字节)表示
- * @property {string} BIT32  BIT32, 每个像元用32个比特(即4个字节)表示
- * @property {string} BIT64  BIT64, 每个像元用64个比特(即8个字节)表示，只提供给栅格数据集使用
- * @property {string} SINGLE  SINGLE, 每个像元用4个字节来表示，只提供给栅格数据集使用
- * @property {string} DOUBLE  DOUBLE, 每个像元用8个字节来表示，只提供给栅格数据集使用
- * @property {string} UBIT1  UBIT1, 每个像元用1个比特表示
- * @property {string} UBIT4  UBIT4, 每个像元用4个比特来表示
- * @property {string} UBIT8  UBIT8, 每个像元用8个比特(即1个字节)来表示
- * @property {string} UBIT24  UBIT24, 每个像元用24个比特(即3个字节)来表示
- * @property {string} UBIT32  UBIT32, 每个像元用32个比特(即4个字节)来表示
+ * @type {string}
  */
-var PixelFormat = exports.PixelFormat = _SuperMap.SuperMap.PixelFormat = {
-  BIT16: "BIT16",
-  BIT32: "BIT32",
-  BIT64: "BIT64",
-  SINGLE: "SINGLE",
-  DOUBLE: "DOUBLE",
-  UBIT1: "UBIT1",
-  UBIT4: "UBIT4",
-  UBIT8: "UBIT8",
-  UBIT24: "UBIT24",
-  UBIT32: "UBIT32"
+
+var PixelFormat = _SuperMap.SuperMap.PixelFormat = {
+    /** 每个像元用16个比特(即2个字节)表示。 */
+    BIT16: "BIT16",
+    /** 每个像元用32个比特(即4个字节)表示。 */
+    BIT32: "BIT32",
+    /** 每个像元用64个比特(即8个字节)表示，只提供给栅格数据集使用。 */
+    BIT64: "BIT64",
+    /** 每个像元用4个字节来表示，只提供给栅格数据集使用。 */
+    SINGLE: "SINGLE",
+    /** 每个像元用8个字节来表示，只提供给栅格数据集使用。 */
+    DOUBLE: "DOUBLE",
+    /** 每个像元用1个比特表示。 */
+    UBIT1: "UBIT1",
+    /** 每个像元用4个比特来表示。 */
+    UBIT4: "UBIT4",
+    /** 每个像元用8个比特(即1个字节)来表示。 */
+    UBIT8: "UBIT8",
+    /** 每个像元用24个比特(即3个字节)来表示。 */
+    UBIT24: "UBIT24",
+    /** 每个像元用32个比特(即4个字节)来表示。 */
+    UBIT32: "UBIT32"
 };
+exports.PixelFormat = PixelFormat;
 
 /**
- * @name SearchMode
+ * @enum SearchMode
  * @memberOf SuperMap
  * @description  内插时使用的样本点的查找方式枚举
- *
- * @property {string} KDTREE_FIXED_COUNT  KDTREE_FIXED_COUNT, 使用 KDTREE 的固定点数方式查找参与内插分析的点
- * @property {string} KDTREE_FIXED_RADIUS  KDTREE_FIXED_RADIUS, 使用 KDTREE 的定长方式查找参与内插分析的点
- * @property {string} NONE  NONE, 不进行查找，使用所有的输入点进行内插分析
- * @property {string} QUADTREE  QUADTREE, 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用
+ * @type {string}
  */
-var SearchMode = exports.SearchMode = _SuperMap.SuperMap.SearchMode = {
-  KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
-  KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS",
-  NONE: "NONE",
-  QUADTREE: "QUADTREE"
+
+var SearchMode = _SuperMap.SuperMap.SearchMode = {
+    /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
+    KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
+    /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
+    KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS",
+    /** 不进行查找，使用所有的输入点进行内插分析。 */
+    NONE: "NONE",
+    /** 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用。 */
+    QUADTREE: "QUADTREE"
 };
+exports.SearchMode = SearchMode;
 
 /**
- * @name InterpolationAlgorithmType
+ * @enum InterpolationAlgorithmType
  * @memberOf SuperMap
  * @description  插值分析的算法的类型
- *
- * @property {string} KRIGING  KRIGING, 普通克吕金插值法
- * @property {string} SimpleKriging  SimpleKriging, 简单克吕金插值法
- * @property {string} UniversalKriging  UniversalKriging, 泛克吕金插值法
+ * @type {string}
  */
-var InterpolationAlgorithmType = exports.InterpolationAlgorithmType = _SuperMap.SuperMap.InterpolationAlgorithmType = {
-  KRIGING: "KRIGING",
-  SimpleKriging: "SimpleKriging",
-  UniversalKriging: "UniversalKriging"
+
+var InterpolationAlgorithmType = _SuperMap.SuperMap.InterpolationAlgorithmType = {
+    /** 普通克吕金插值法。 */
+    KRIGING: "KRIGING",
+    /** 简单克吕金插值法。 */
+    SimpleKriging: "SimpleKriging",
+    /** 泛克吕金插值法。 */
+    UniversalKriging: "UniversalKriging"
 };
+exports.InterpolationAlgorithmType = InterpolationAlgorithmType;
 
 /**
- * @name VariogramMode
+ * @enum VariogramMode
  * @memberOf SuperMap
  * @description  克吕金（Kriging）插值时的半变函数类型枚举
- *
- * @property {string} EXPONENTIAL  EXPONENTIAL, 指数函数（Exponential Variogram Mode）
- * @property {string} GAUSSIAN  GAUSSIAN,  高斯函数（Gaussian Variogram Mode）
- * @property {string} SPHERICAL  SPHERICAL, 球型函数（Spherical Variogram Mode）
+ * @type {string}
  */
-var VariogramMode = exports.VariogramMode = _SuperMap.SuperMap.VariogramMode = {
-  EXPONENTIAL: "EXPONENTIAL",
-  GAUSSIAN: "GAUSSIAN",
-  SPHERICAL: "SPHERICAL"
+
+var VariogramMode = _SuperMap.SuperMap.VariogramMode = {
+    /** 指数函数。 */
+    EXPONENTIAL: "EXPONENTIAL",
+    /** 高斯函数。 */
+    GAUSSIAN: "GAUSSIAN",
+    /** 球型函数。 */
+    SPHERICAL: "SPHERICAL"
 };
+exports.VariogramMode = VariogramMode;
 
 /**
- * @name Exponent
+ * @enum Exponent
  * @memberOf SuperMap
  * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
- *
- * @property {string} EXP1  EXP1, 阶数为1
- * @property {string} EXP2  EXP2, 阶数为2
+ * @type {string}
  */
-var Exponent = exports.Exponent = _SuperMap.SuperMap.Exponent = {
-  EXP1: "EXP1",
-  EXP2: "EXP2"
+
+var Exponent = _SuperMap.SuperMap.Exponent = {
+    /** 阶数为1。 */
+    EXP1: "EXP1",
+    /** 阶数为2。 */
+    EXP2: "EXP2"
 };
+exports.Exponent = Exponent;
 
 /**
- * @name ClientType
+ * @enum ClientType
  * @memberOf SuperMap
  * @description token申请的客户端标识类型
- *
- * @property {string} IP  IP
- * @property {string} REFERER  Referer
- * @property {string} REQUESTIP  RequestIP
- * @property {string} NONE  NONE
- * @property {string} SERVER  SERVER
- * @property {string} WEB  WEB
+ * @type {string}
  */
-var ClientType = exports.ClientType = _SuperMap.SuperMap.ClientType = {
-  IP: "IP",
-  REFERER: "Referer",
-  REQUESTIP: "RequestIP",
-  NONE: "NONE",
-  SERVER: "SERVER",
-  WEB: "WEB"
+
+var ClientType = _SuperMap.SuperMap.ClientType = {
+    /** 指定的 IP 地址。 */
+    IP: "IP",
+    /** 指定的 URL。 */
+    REFERER: "Referer",
+    /** 发送申请令牌请求的客户端 IP。 */
+    REQUESTIP: "RequestIP",
+    /** 不做任何验证。 */
+    NONE: "NONE",
+    /** SERVER。 */
+    SERVER: "SERVER",
+    /** WEB。 */
+    WEB: "WEB"
 };
+exports.ClientType = ClientType;
 
 /**
- * @name ChartType
+ * @enum ChartType
  * @memberOf SuperMap
  * @description 客户端专题图图表类型
- *
- * @property {string} BAR  Bar
- * @property {string} BAR3D  Bar3D
- * @property {string} CIRCLE  Circle
- * @property {string} PIE  Pie
- * @property {string} POINT  Point
- * @property {string} LINE  Line
- * @property {string} RING  Ring
+ * @type {string}
  */
-var ChartType = exports.ChartType = _SuperMap.SuperMap.ChartType = {
-  BAR: "Bar",
-  BAR3D: "Bar3D",
-  CIRCLE: "Circle",
-  PIE: "Pie",
-  POINT: "Point",
-  LINE: "Line",
-  RING: "Ring"
+
+var ChartType = _SuperMap.SuperMap.ChartType = {
+    /** 柱状图。 */
+    BAR: "Bar",
+    /** 三维柱状图。 */
+    BAR3D: "Bar3D",
+    /** 圆形图。 */
+    CIRCLE: "Circle",
+    /** 饼图。 */
+    PIE: "Pie",
+    /** 散点图。 */
+    POINT: "Point",
+    /** 折线图。 */
+    LINE: "Line",
+    /** 环状图。 */
+    RING: "Ring"
 };
+exports.ChartType = ChartType;
 
 /**
- * @name ClipAnalystMode
+ * @enum ClipAnalystMode
  * @memberOf SuperMap
  * @description  裁剪分析模式
- *
- * @property {string} CLIP  clip
- * @property {string} INTERSECT  intersect
+ * @type {string}
  */
-var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap.SuperMap.ClipAnalystMode = {
-  CLIP: "clip",
-  INTERSECT: "intersect"
+
+var ClipAnalystMode = _SuperMap.SuperMap.ClipAnalystMode = {
+    /** CLIP。 */
+    CLIP: "clip",
+    /** INTERSECT。 */
+    INTERSECT: "intersect"
 };
+exports.ClipAnalystMode = ClipAnalystMode;
 /**
- * @name AnalystAreaUnit
+ * @enum AnalystAreaUnit
  * @memberOf SuperMap
  * @description 分布式分析面积单位
- *
- * @property {string} SQUAREMETER  SquareMeter
- * @property {string} SQUAREKILOMETER   SquareKiloMeter
- * @property {string} HECTARE  Hectare
- * @property {string} ARE   Are
- * @property {string} ACRE   Acre
- * @property {string} SQUAREFOOT   SquareFoot
- * @property {string} SQUAREYARD   SquareYard
- * @property {string} SQUAREMILE   SquareMile
+ * @type {string}
  */
-var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap.SuperMap.AnalystAreaUnit = {
-  "SQUAREMETER": "SquareMeter",
-  "SQUAREKILOMETER": "SquareKiloMeter",
-  "HECTARE": "Hectare",
-  "ARE": "Are",
-  "ACRE": "Acre",
-  "SQUAREFOOT": "SquareFoot",
-  "SQUAREYARD": "SquareYard",
-  "SQUAREMILE": "SquareMile"
+
+var AnalystAreaUnit = _SuperMap.SuperMap.AnalystAreaUnit = {
+    /** 平方米。 */
+    "SQUAREMETER": "SquareMeter",
+    /** 平方千米。 */
+    "SQUAREKILOMETER": "SquareKiloMeter",
+    /** 公顷。 */
+    "HECTARE": "Hectare",
+    /** 公亩。 */
+    "ARE": "Are",
+    /** 英亩。 */
+    "ACRE": "Acre",
+    /** 平方英尺。 */
+    "SQUAREFOOT": "SquareFoot",
+    /** 平方码。 */
+    "SQUAREYARD": "SquareYard",
+    /** 平方英里。 */
+    "SQUAREMILE": "SquareMile"
 };
+exports.AnalystAreaUnit = AnalystAreaUnit;
 /**
- * @name AnalystSizeUnit
+ * @enum AnalystSizeUnit
  * @memberOf SuperMap
  * @description 分布式分析单位
- *
- * @property {string} METER   Meter
- * @property {string} KILOMETER   Kilometer
- * @property {string} YARD   Yard
- * @property {string} FOOT   Foot
- * @property {string} MILE   Mile
+ * @type {string}
  */
-var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap.SuperMap.AnalystSizeUnit = {
-  "METER": "Meter",
-  "KILOMETER": "Kilometer",
-  "YARD": "Yard",
-  "FOOT": "Foot",
-  "MILE": "Mile"
+
+var AnalystSizeUnit = _SuperMap.SuperMap.AnalystSizeUnit = {
+    /** 米。 */
+    "METER": "Meter",
+    /** 千米。 */
+    "KILOMETER": "Kilometer",
+    /** 码。 */
+    "YARD": "Yard",
+    /** 英尺。 */
+    "FOOT": "Foot",
+    /** 英里。 */
+    "MILE": "Mile"
 };
+exports.AnalystSizeUnit = AnalystSizeUnit;
+
 /**
- * @name StatisticAnalystMode
+ * @enum StatisticAnalystMode
  * @memberOf SuperMap
  * @description 分布式分析统计模式
- *
- * @property {string} MAX   max
- * @property {string} MIN   min
- * @property {string} AVERAGE   average
- * @property {string} SUM   sum
- * @property {string} VARIANCE   variance
- * @property {string} STDDEVIATION   stdDeviation
+ * @type {string}
  */
-var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap.SuperMap.StatisticAnalystMode = {
-  "MAX": "max",
-  "MIN": "min",
-  "AVERAGE": "average",
-  "SUM": "sum",
-  "VARIANCE": "variance",
-  "STDDEVIATION": "stdDeviation"
+
+var StatisticAnalystMode = _SuperMap.SuperMap.StatisticAnalystMode = {
+    /** 统计所选字段的最大值。 */
+    "MAX": "max",
+    /** 统计所选字段的最小值。 */
+    "MIN": "min",
+    /** 统计所选字段的平均值。 */
+    "AVERAGE": "average",
+    /** 统计所选字段的总和。 */
+    "SUM": "sum",
+    /** 统计所选字段的方差。 */
+    "VARIANCE": "variance",
+    /** 统计所选字段的标准差 */
+    "STDDEVIATION": "stdDeviation"
 };
+exports.StatisticAnalystMode = StatisticAnalystMode;
 /**
- * @name SummaryType
+ * @enum SummaryType
  * @memberOf SuperMap
  * @description 分布式分析聚合类型
- *
- * @property {string} SUMMARYMESH   SUMMARYMESH
- * @property {string} SUMMARYREGION SUMMARYREGION
+ * @type {string}
  */
-var SummaryType = exports.SummaryType = _SuperMap.SuperMap.SummaryType = {
-  "SUMMARYMESH": "SUMMARYMESH",
-  "SUMMARYREGION": "SUMMARYREGION"
+
+var SummaryType = _SuperMap.SuperMap.SummaryType = {
+    /** 格网聚合。 */
+    "SUMMARYMESH": "SUMMARYMESH",
+    /** 多边形聚合。 */
+    "SUMMARYREGION": "SUMMARYREGION"
 };
+exports.SummaryType = SummaryType;
 /**
- * @name TopologyValidatorRule
+ * @enum TopologyValidatorRule
  * @memberOf SuperMap
  * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
- *
- * @property {string} REGIONNOOVERLAP  REGIONNOOVERLAP
- * @property {string} REGIONNOOVERLAPWITH  REGIONNOOVERLAPWITH
- * @property {string} REGIONCONTAINEDBYREGION  REGIONCONTAINEDBYREGION
- * @property {string} REGIONCOVEREDBYREGION  REGIONCOVEREDBYREGION
- * @property {string} LINENOOVERLAP  LINENOOVERLAP
- * @property {string} LINENOOVERLAPWITH  LINENOOVERLAPWITH
- * @property {string} POINTNOIDENTICAL  POINTNOIDENTICAL
+ * @type {string}
  */
-var TopologyValidatorRule = exports.TopologyValidatorRule = _SuperMap.SuperMap.TopologyValidatorRule = {
-  REGIONNOOVERLAP: "REGIONNOOVERLAP",
-  REGIONNOOVERLAPWITH: "REGIONNOOVERLAPWITH",
-  REGIONCONTAINEDBYREGION: "REGIONCONTAINEDBYREGION",
-  REGIONCOVEREDBYREGION: "REGIONCOVEREDBYREGION",
-  LINENOOVERLAP: "LINENOOVERLAP",
-  LINENOOVERLAPWITH: "LINENOOVERLAPWITH",
-  POINTNOIDENTICAL: "POINTNOIDENTICAL"
+
+var TopologyValidatorRule = _SuperMap.SuperMap.TopologyValidatorRule = {
+    /** 面内无重叠，用于对面数据进行拓扑检查。 */
+    REGIONNOOVERLAP: "REGIONNOOVERLAP",
+    /** 面与面无重叠，用于对面数据进行拓扑检查。 */
+    REGIONNOOVERLAPWITH: "REGIONNOOVERLAPWITH",
+    /** 面被面包含，用于对面数据进行拓扑检查。 */
+    REGIONCONTAINEDBYREGION: "REGIONCONTAINEDBYREGION",
+    /** 面被面覆盖，用于对面数据进行拓扑检查。 */
+    REGIONCOVEREDBYREGION: "REGIONCOVEREDBYREGION",
+    /** 线与线无重叠，用于对线数据进行拓扑检查。 */
+    LINENOOVERLAP: "LINENOOVERLAP",
+    /** 线内无重叠，用于对线数据进行拓扑检查。 */
+    LINENOOVERLAPWITH: "LINENOOVERLAPWITH",
+    /** 点不相同，用于对点数据进行拓扑检查。 */
+    POINTNOIDENTICAL: "POINTNOIDENTICAL"
 };
+exports.TopologyValidatorRule = TopologyValidatorRule;
 
 /**
- * @name AggregationType
+ * @enum AggregationType
  * @memberOf SuperMap
  * @description  聚合查询枚举类，该类定义了Es数据服务中聚合查询模式常量
- *
- * @property {string} GEOHASH_GRID  geohash_grid
- * @property {string} FILTER  filter
+ * @type {string}
  */
-var AggregationType = exports.AggregationType = _SuperMap.SuperMap.AggregationType = {
-  GEOHASH_GRID: "geohash_grid",
-  FILTER: "filter"
+
+var AggregationType = _SuperMap.SuperMap.AggregationType = {
+    /** 格网聚合类型。 */
+    GEOHASH_GRID: "geohash_grid",
+    /** 过滤聚合类型。 */
+    FILTER: "filter"
 };
+exports.AggregationType = AggregationType;
 
 /**
- * @name AggregationType
+ * @enum AggregationType
  * @memberOf SuperMap
  * @description  聚合查询中filter查询枚举类
- *
- * @property {string} GEO_BOUNDING_BOX  geo_bounding_box
+ * @type {string}
  */
-var AggregationQueryBuilderType = exports.AggregationQueryBuilderType = _SuperMap.SuperMap.AggregationQueryBuilderType = {
-  GEO_BOUNDING_BOX: "geo_bounding_box"
+
+var AggregationQueryBuilderType = _SuperMap.SuperMap.AggregationQueryBuilderType = {
+    /** 范围查询。 */
+    GEO_BOUNDING_BOX: "geo_bounding_box"
 };
+exports.AggregationQueryBuilderType = AggregationQueryBuilderType;
 
 /***/ }),
 /* 3 */
@@ -14780,7 +14886,6 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description Used to find tokens in a string.
-     * @default  /\$\{([\w.]+?)\}/g
      * @example
      * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
      */
@@ -14788,7 +14893,6 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description Used to test strings as numbers.
-     * @default  /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/
      */
     numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
 
@@ -38200,144 +38304,146 @@ _SuperMap.SuperMap.OnlineData = OnlineData;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.FilterField = exports.DataItemOrderBy = exports.DataItemType = exports.ServiceStatus = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
 /**
- * @name ServiceStatus
+ * @enum ServiceStatus
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 服务发布状态
- * @property {string} DOES_NOT_INVOLVE  DOES_NOT_INVOLVE
- * @property {string} PUBLISH_FAILED  PUBLISH_FAILED
- * @property {string} PUBLISHED  PUBLISHED
- * @property {string} PUBLISHING  PUBLISHING
- * @property {string} UNPUBLISHED  UNPUBLISHED
- * @property {string} UNPUBLISHED_FAILED  UNPUBLISHED_FAILED
  */
-var ServiceStatus = exports.ServiceStatus = _SuperMap.SuperMap.ServiceStatus = {
-  DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
-  PUBLISH_FAILED: "PUBLISH_FAILED",
-  PUBLISHED: "PUBLISHED",
-  PUBLISHING: "PUBLISHING",
-  UNPUBLISHED: "UNPUBLISHED",
-  UNPUBLISHED_FAILED: "UNPUBLISHED_FAILED"
+var ServiceStatus = _SuperMap.SuperMap.ServiceStatus = {
+    /** 不涉及，不可发布。 */
+    DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
+    /** 发布失败。 */
+    PUBLISH_FAILED: "PUBLISH_FAILED",
+    /** 已发布。 */
+    PUBLISHED: "PUBLISHED",
+    /** 正在发布。 */
+    PUBLISHING: "PUBLISHING",
+    /** 未发布。 */
+    UNPUBLISHED: "UNPUBLISHED",
+    /** 取消服务失败。 */
+    UNPUBLISHED_FAILED: "UNPUBLISHED_FAILED"
 };
+exports.ServiceStatus = ServiceStatus;
 
 /**
  * 
- * @name DataItemType
+ * @enum DataItemType
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 数据项类型
- * @property {string} AUDIO AUDIO
- * @property {string} COLOR COLOR
- * @property {string} COLORSCHEME COLORSCHEME
- * @property {string} CSV CSV
- * @property {string} EXCEL EXCEL
- * @property {string} FILLSYMBOL FILLSYMBOL
- * @property {string} IMAGE IMAGE
- * @property {string} LAYERTEMPLATE LAYERTEMPLATE
- * @property {string} LAYOUTTEMPLATE LAYOUTTEMPLATE
- * @property {string} LINESYMBOL LINESYMBOL
- * @property {string} MAPTEMPLATE MAPTEMPLATE
- * @property {string} MARKERSYMBOL MARKERSYMBOL
- * @property {string} MBTILES MBTILES
- * @property {string} PHOTOS PHOTOS
- * @property {string} SHP SHP
- * @property {string} SMTILES SMTILES
- * @property {string} SVTILES SVTILES
- * @property {string} THEMETEMPLATE THEMETEMPLATE
- * @property {string} TPK TPK
- * @property {string} UDB UDB
- * @property {string} UGCV5 UGCV5
- * @property {string} UNKNOWN UNKNOWN
- * @property {string} VIDEO VIDEO
- * @property {string} WORKENVIRONMENT WORKENVIRONMENT
- * @property {string} WORKSPACE WORKSPACE
  */
-var DataItemType = exports.DataItemType = _SuperMap.SuperMap.DataItemType = {
-  AUDIO: "AUDIO",
-  COLOR: "COLOR",
-  COLORSCHEME: "COLORSCHEME",
-  CSV: "CSV",
-  EXCEL: "EXCEL",
-  FILLSYMBOL: "FILLSYMBOL",
-  IMAGE: "IMAGE",
-  LAYERTEMPLATE: "LAYERTEMPLATE",
-  LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
-  LINESYMBOL: "LINESYMBOL",
-  MAPTEMPLATE: "MAPTEMPLATE",
-  MARKERSYMBOL: "MARKERSYMBOL",
-  MBTILES: "MBTILES",
-  PHOTOS: "PHOTOS",
-  SHP: "SHP",
-  SMTILES: "SMTILES",
-  SVTILES: "SVTILES",
-  THEMETEMPLATE: "THEMETEMPLATE",
-  TPK: "TPK",
-  UDB: "UDB",
-  UGCV5: "UGCV5",
-  UNKNOWN: "UNKNOWN",
-  VIDEO: "VIDEO",
-  WORKENVIRONMENT: "WORKENVIRONMENT",
-  WORKSPACE: "WORKSPACE"
-};
 
+var DataItemType = _SuperMap.SuperMap.DataItemType = {
+    /** AUDIO */
+    AUDIO: "AUDIO",
+    /** COLOR */
+    COLOR: "COLOR",
+    /** COLORSCHEME */
+    COLORSCHEME: "COLORSCHEME",
+    /** CSV */
+    CSV: "CSV",
+    /** EXCEL */
+    EXCEL: "EXCEL",
+    /** FILLSYMBOL */
+    FILLSYMBOL: "FILLSYMBOL",
+    /** IMAGE */
+    IMAGE: "IMAGE",
+    /** LAYERTEMPLATE */
+    LAYERTEMPLATE: "LAYERTEMPLATE",
+    /** LAYOUTTEMPLATE */
+    LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
+    /** LINESYMBOL */
+    LINESYMBOL: "LINESYMBOL",
+    /** MAPTEMPLATE */
+    MAPTEMPLATE: "MAPTEMPLATE",
+    /** MARKERSYMBOL */
+    MARKERSYMBOL: "MARKERSYMBOL",
+    /** MBTILES */
+    MBTILES: "MBTILES",
+    /** PHOTOS */
+    PHOTOS: "PHOTOS",
+    /** SHP */
+    SHP: "SHP",
+    /** SMTILES */
+    SMTILES: "SMTILES",
+    /** SVTILES */
+    SVTILES: "SVTILES",
+    /** THEMETEMPLATE */
+    THEMETEMPLATE: "THEMETEMPLATE",
+    /** TPK */
+    TPK: "TPK",
+    /** UDB */
+    UDB: "UDB",
+    /** UGCV5 */
+    UGCV5: "UGCV5",
+    /** UNKNOWN */
+    UNKNOWN: "UNKNOWN",
+    /** VIDEO */
+    VIDEO: "VIDEO",
+    /** WORKENVIRONMENT */
+    WORKENVIRONMENT: "WORKENVIRONMENT",
+    /** WORKSPACE */
+    WORKSPACE: "WORKSPACE"
+};
+exports.DataItemType = DataItemType;
 /**
- * @name DataItemOrderBy
+ * @enum DataItemOrderBy
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 数据排序字段
- * @property {string} FILENAME  FILENAME
- * @property {string} ID  ID
- * @property {string} LASTMODIFIEDTIME  LASTMODIFIEDTIME
- * @property {string} NICKNAME  NICKNAME
- * @property {string} SERVICESTATUS  SERVICESTATUS
- * @property {string} SIZE  SIZE
- * @property {string} STATUS  STATUS
- * @property {string} TYPE  TYPE
- * @property {string} UPDATETIME  UPDATETIME
- * @property {string} USERNAME  USERNAME
  */
-var DataItemOrderBy = exports.DataItemOrderBy = _SuperMap.SuperMap.DataItemOrderBy = {
-  FILENAME: "FILENAME",
-  ID: "ID",
-  LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
-  NICKNAME: "NICKNAME",
-  SERVICESTATUS: "SERVICESTATUS",
-  SIZE: "SIZE",
-  STATUS: "STATUS",
-  TYPE: "TYPE",
-  UPDATETIME: "UPDATETIME",
-  USERNAME: "USERNAME"
+
+var DataItemOrderBy = _SuperMap.SuperMap.DataItemOrderBy = {
+    /** FILENAME */
+    FILENAME: "FILENAME",
+    /** ID */
+    ID: "ID",
+    /** LASTMODIFIEDTIME */
+    LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
+    /** NICKNAME */
+    NICKNAME: "NICKNAME",
+    /** SERVICESTATUS */
+    SERVICESTATUS: "SERVICESTATUS",
+    /** SIZE */
+    SIZE: "SIZE",
+    /** STATUS */
+    STATUS: "STATUS",
+    /** TYPE */
+    TYPE: "TYPE",
+    /** UPDATETIME */
+    UPDATETIME: "UPDATETIME",
+    /** USERNAME */
+    USERNAME: "USERNAME"
 };
+exports.DataItemOrderBy = DataItemOrderBy;
 
 /**
- * @name FilterField
+ * @enum FilterField
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段
- * @property {string} LINKPAGE  LINKPAGE
- * @property {string} MAPTITLE  MAPTITLE
- * @property {string} NICKNAME  NICKNAME
- * @property {string} RESTITLE  RESTITLE
- * @property {string} USERNAME  USERNAME
  */
-var FilterField = exports.FilterField = _SuperMap.SuperMap.FilterField = {
-  LINKPAGE: "LINKPAGE",
-  MAPTITLE: "MAPTITLE",
-  NICKNAME: "NICKNAME",
-  RESTITLE: "RESTITLE",
-  USERNAME: "USERNAME"
+
+var FilterField = _SuperMap.SuperMap.FilterField = {
+    /** LINKPAGE */
+    LINKPAGE: "LINKPAGE",
+    /** LINKPAGE */
+    MAPTITLE: "MAPTITLE",
+    /** LINKPAGE */
+    NICKNAME: "NICKNAME",
+    /** LINKPAGE */
+    RESTITLE: "RESTITLE",
+    /** LINKPAGE */
+    USERNAME: "USERNAME"
 };
+exports.FilterField = FilterField;
 
 /***/ }),
 /* 137 */
@@ -50648,18 +50754,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析通用设置类。
  * @param {Object} options - 参数。<br>
- * @param {SuperMap.BufferEndType} options.endType - 缓冲区端点枚举值。<br>
+ * @param {SuperMap.BufferEndType} [options.endType=SuperMap.BufferEndType.FLAT] - 缓冲区端点枚举值。<br>
  * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。<br>
  * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。<br>
  * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。<br>
- * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.BufferRadiusUnit.METER] - 缓冲半径单位。
+ * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.Unit.METER] - 缓冲半径单位。
  */
 var BufferSetting = exports.BufferSetting = function () {
   function BufferSetting(options) {
     _classCallCheck(this, BufferSetting);
 
     /**
-     * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType=SuperMap.BufferEndType.FLAT]
+     * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType = SuperMap.BufferEndType.FLAT]
      * @description 缓冲区端点枚举值。分为平头和圆头两种。
      */
     this.endType = _REST.BufferEndType.FLAT;
@@ -50687,7 +50793,7 @@ var BufferSetting = exports.BufferSetting = function () {
     this.semicircleLineSegment = 4;
 
     /**
-     * @member {SuperMap.BufferRadiusUnit} [SuperMap.BufferSetting.prototype.radiusUnit=SuperMap.BufferRadiusUnit.METER]
+     * @member {SuperMap.BufferRadiusUnit} [SuperMap.BufferSetting.prototype.radiusUnit = SuperMap.BufferRadiusUnit.METER]
      * @description 缓冲半径单位，可以是{@link SuperMap.BufferRadiusUnit.METER}、{@link SuperMap.BufferRadiusUnit.MILIMETER}、
      * {@link SuperMap.BufferRadiusUnit.CENTIMETER}、{@link SuperMap.BufferRadiusUnit.DECIMETER}、{@link SuperMap.BufferRadiusUnit.KILOMETER}、
      * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。
@@ -84298,15 +84404,16 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
+var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -84320,7 +84427,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(window, this._id);
+  this._clearFn.call(scope, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -84347,7 +84454,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(400);
-// On some exotic environments, it's not clear which object `setimmeidate` was
+// On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;

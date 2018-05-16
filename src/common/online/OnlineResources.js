@@ -1,137 +1,141 @@
-import { SuperMap } from '../SuperMap';
+import {
+    SuperMap
+} from '../SuperMap';
 
 /**
- * @name ServiceStatus
+ * @enum ServiceStatus
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 服务发布状态
- * @property {string} DOES_NOT_INVOLVE  DOES_NOT_INVOLVE
- * @property {string} PUBLISH_FAILED  PUBLISH_FAILED
- * @property {string} PUBLISHED  PUBLISHED
- * @property {string} PUBLISHING  PUBLISHING
- * @property {string} UNPUBLISHED  UNPUBLISHED
- * @property {string} UNPUBLISHED_FAILED  UNPUBLISHED_FAILED
  */
-export var ServiceStatus = SuperMap.ServiceStatus = {
+var ServiceStatus = SuperMap.ServiceStatus = {
+    /** 不涉及，不可发布。 */
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
+    /** 发布失败。 */
     PUBLISH_FAILED: "PUBLISH_FAILED",
+    /** 已发布。 */
     PUBLISHED: "PUBLISHED",
+    /** 正在发布。 */
     PUBLISHING: "PUBLISHING",
+    /** 未发布。 */
     UNPUBLISHED: "UNPUBLISHED",
+    /** 取消服务失败。 */
     UNPUBLISHED_FAILED: "UNPUBLISHED_FAILED"
 };
+export {
+    ServiceStatus
+}
 
 /**
  * 
- * @name DataItemType
+ * @enum DataItemType
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 数据项类型
- * @property {string} AUDIO AUDIO
- * @property {string} COLOR COLOR
- * @property {string} COLORSCHEME COLORSCHEME
- * @property {string} CSV CSV
- * @property {string} EXCEL EXCEL
- * @property {string} FILLSYMBOL FILLSYMBOL
- * @property {string} IMAGE IMAGE
- * @property {string} LAYERTEMPLATE LAYERTEMPLATE
- * @property {string} LAYOUTTEMPLATE LAYOUTTEMPLATE
- * @property {string} LINESYMBOL LINESYMBOL
- * @property {string} MAPTEMPLATE MAPTEMPLATE
- * @property {string} MARKERSYMBOL MARKERSYMBOL
- * @property {string} MBTILES MBTILES
- * @property {string} PHOTOS PHOTOS
- * @property {string} SHP SHP
- * @property {string} SMTILES SMTILES
- * @property {string} SVTILES SVTILES
- * @property {string} THEMETEMPLATE THEMETEMPLATE
- * @property {string} TPK TPK
- * @property {string} UDB UDB
- * @property {string} UGCV5 UGCV5
- * @property {string} UNKNOWN UNKNOWN
- * @property {string} VIDEO VIDEO
- * @property {string} WORKENVIRONMENT WORKENVIRONMENT
- * @property {string} WORKSPACE WORKSPACE
  */
-export var DataItemType = SuperMap.DataItemType = {
+var DataItemType = SuperMap.DataItemType = {
+    /** AUDIO */
     AUDIO: "AUDIO",
+    /** COLOR */
     COLOR: "COLOR",
+    /** COLORSCHEME */
     COLORSCHEME: "COLORSCHEME",
+    /** CSV */
     CSV: "CSV",
+    /** EXCEL */
     EXCEL: "EXCEL",
+    /** FILLSYMBOL */
     FILLSYMBOL: "FILLSYMBOL",
+    /** IMAGE */
     IMAGE: "IMAGE",
+    /** LAYERTEMPLATE */
     LAYERTEMPLATE: "LAYERTEMPLATE",
+    /** LAYOUTTEMPLATE */
     LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
+    /** LINESYMBOL */
     LINESYMBOL: "LINESYMBOL",
+    /** MAPTEMPLATE */
     MAPTEMPLATE: "MAPTEMPLATE",
+    /** MARKERSYMBOL */
     MARKERSYMBOL: "MARKERSYMBOL",
+    /** MBTILES */
     MBTILES: "MBTILES",
+    /** PHOTOS */
     PHOTOS: "PHOTOS",
+    /** SHP */
     SHP: "SHP",
+    /** SMTILES */
     SMTILES: "SMTILES",
+    /** SVTILES */
     SVTILES: "SVTILES",
+    /** THEMETEMPLATE */
     THEMETEMPLATE: "THEMETEMPLATE",
+    /** TPK */
     TPK: "TPK",
+    /** UDB */
     UDB: "UDB",
+    /** UGCV5 */
     UGCV5: "UGCV5",
+    /** UNKNOWN */
     UNKNOWN: "UNKNOWN",
+    /** VIDEO */
     VIDEO: "VIDEO",
+    /** WORKENVIRONMENT */
     WORKENVIRONMENT: "WORKENVIRONMENT",
+    /** WORKSPACE */
     WORKSPACE: "WORKSPACE"
 };
-
+export {DataItemType}
 /**
- * @name DataItemOrderBy
+ * @enum DataItemOrderBy
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 数据排序字段
- * @property {string} FILENAME  FILENAME
- * @property {string} ID  ID
- * @property {string} LASTMODIFIEDTIME  LASTMODIFIEDTIME
- * @property {string} NICKNAME  NICKNAME
- * @property {string} SERVICESTATUS  SERVICESTATUS
- * @property {string} SIZE  SIZE
- * @property {string} STATUS  STATUS
- * @property {string} TYPE  TYPE
- * @property {string} UPDATETIME  UPDATETIME
- * @property {string} USERNAME  USERNAME
  */
-export var DataItemOrderBy = SuperMap.DataItemOrderBy = {
+var DataItemOrderBy = SuperMap.DataItemOrderBy = {
+    /** FILENAME */
     FILENAME: "FILENAME",
+    /** ID */
     ID: "ID",
+    /** LASTMODIFIEDTIME */
     LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
+    /** NICKNAME */
     NICKNAME: "NICKNAME",
+    /** SERVICESTATUS */
     SERVICESTATUS: "SERVICESTATUS",
+    /** SIZE */
     SIZE: "SIZE",
+    /** STATUS */
     STATUS: "STATUS",
+    /** TYPE */
     TYPE: "TYPE",
+    /** UPDATETIME */
     UPDATETIME: "UPDATETIME",
+    /** USERNAME */
     USERNAME: "USERNAME"
 };
+export {
+    DataItemOrderBy
+}
 
 /**
- * @name FilterField
+ * @enum FilterField
  * @memberOf SuperMap
- * @namespace
  * @category iPortal/Online
  * @description 关键字查询时的过滤字段
- * @property {string} LINKPAGE  LINKPAGE
- * @property {string} MAPTITLE  MAPTITLE
- * @property {string} NICKNAME  NICKNAME
- * @property {string} RESTITLE  RESTITLE
- * @property {string} USERNAME  USERNAME
  */
-export var FilterField = SuperMap.FilterField = {
+var FilterField = SuperMap.FilterField = {
+    /** LINKPAGE */
     LINKPAGE: "LINKPAGE",
+    /** LINKPAGE */
     MAPTITLE: "MAPTITLE",
+    /** LINKPAGE */
     NICKNAME: "NICKNAME",
+    /** LINKPAGE */
     RESTITLE: "RESTITLE",
+    /** LINKPAGE */
     USERNAME: "USERNAME"
 };
-
-
-
+export {
+    FilterField
+}
