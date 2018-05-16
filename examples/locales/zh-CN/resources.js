@@ -40,6 +40,7 @@ window.resources = {
         "guide": {
             "_name": "开发指南",
             "beginning": "开发入门",
+            "update": "iClient 8C 升级",
             "npm": "npm",
             "quickStart": "快速入门",
             "projection": "投影",
@@ -52,7 +53,24 @@ window.resources = {
             "processingService": "使用分布式分析服务",
             "dataFlow": "使用数据流服务",
             "addressMatch": "使用地址匹配服务",
-            "visualization": "使用可视化"
+            "visualization": "使用可视化",
+            
+            "install": "安装",
+            "multiProjection": "如何使用多投影",
+            "createMap": "创建一幅地图",
+            "vectorTile": "个性化地图(矢量瓦片)",
+            "drawSymbolsAndGraphs": "绘制符号与图形",
+            "areaAndDistanceMeasurement": "面积和距离测量",
+            "queryMapInformation": "地物查询",
+            "editMapInformation": "地物编辑",
+            "thematicMap": "专题图",
+            "spatialAnalyst": "空间分析",
+            "networkAnalysis": "网络分析",
+            "clientComputing": "客户端计算",
+            "leafletAddressMatch": "地址匹配",
+            "bigDataAnalysis": "大数据分析",
+            "leafletVisualization": "可视化"
+
         },
         "examples": {
             "_name": "示例",
@@ -415,9 +433,9 @@ window.resources = {
         "title_mapvNyvTaxi": "纽约出租车上车点",
         "title_modifyFeatures": "修改图形",
         "title_mvtVectorLayer": "iServer MVT矢量瓦片",
-        "title_mvtVectorLayer4326":"iServer MVT矢量瓦片(WGS84)",
-        "title_mvtVectorLayer_mapboxStyle":"OSM风格(MVT WGS84)",
-        "title_mvtVectorLayer_mapboxStyle_4326":"风格动态切换",
+        "title_mvtVectorLayer4326": "iServer MVT矢量瓦片(WGS84)",
+        "title_mvtVectorLayer_mapboxStyle": "OSM风格(MVT WGS84)",
+        "title_mvtVectorLayer_mapboxStyle_4326": "风格动态切换",
         "title_onlineSecurity": "Online SecurityManager使用示例",
         "title_onlineWebMap": "2014当了一回背包客",
         "title_osmBuildings": "openlayers 建筑立体效果",

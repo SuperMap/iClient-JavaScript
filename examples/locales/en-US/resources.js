@@ -30,6 +30,7 @@ window.resources = {
         "product": {
             "_name": "Product",
             "introduce": "Introduction",
+            "update": "iClient 8C Upgrade",
             "download": "Download",
             "guide": "Guide",
             "modules": "Modules",
