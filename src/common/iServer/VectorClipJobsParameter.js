@@ -7,11 +7,11 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetOverlay -{string} 裁剪对象数据集。 <br>
- *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.datasetOverlay - 裁剪对象数据集。<br>
+ * @param {SuperMap.ClipAnalystMode} options.mode - 裁剪分析模式。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 export class VectorClipJobsParameter {
 
@@ -19,31 +19,31 @@ export class VectorClipJobsParameter {
         options = options || {};
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.datasetOverlay
          * @description 裁剪对象数据集。
          */
         this.datasetVectorClip = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.geometryClip
          * @description 裁剪几何对象。
          */
         this.geometryClip = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+         * @member {SuperMap.ClipAnalystMode} SuperMap.VectorClipJobsParameter.prototype.mode
          * @description 裁剪分析模式 。
          */
         this.mode = ClipAnalystMode.CLIP;
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -70,8 +70,8 @@ export class VectorClipJobsParameter {
 
     /**
      * @function SuperMap.VectorClipJobsParameter.toObject
-     * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
-     * @param tempObj - {Object} 目标对象。
+     * @param {Object} vectorClipJobsParameter - 区域汇总分析服务参数
+     * @param {Object} tempObj - 目标对象。
      * @description 矢量裁剪分析任务对象
      */
     static toObject(vectorClipJobsParameter, tempObj) {

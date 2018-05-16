@@ -14134,30 +14134,25 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.UGCSubLayer
  * @category  iServer Map Layer
- * @classdesc 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
- * @extends SuperMap.UGCMapLayer
- * @param options - {Object} 可选参数。如：<br>
- *        datasetInfo - {{@link SuperMap.DatasetInfo}} 数据集信息。<br>
- *        displayFilter - {string} 图层显示过滤条件。<br>
- *        joinItems - {{@link SuperMap.JoinItem}} 连接信息类。<br>
- *        representationField - {string} 存储制图表达信息的字段。<br>
- *        ugcLayerType - {{@link SuperMap.LayerType}} 图层类型
+ * @classdesc 地图服务图层属性信息类类。影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
+ * @extends {SuperMap.UGCMapLayer}
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.DatasetInfo} options.datasetInfo - 数据集信息。<br>
+ * @param {string} options.displayFilter - 图层显示过滤条件。<br>
+ * @param {SuperMap.JoinItem} options.joinItems - 连接信息类。<br>
+ * @param {string} options.representationField - 存储制图表达信息的字段。<br>
+ * @param {SuperMap.LayerType} options.ugcLayerType - 图层类型。
  */
 var UGCSubLayer = exports.UGCSubLayer = function (_UGCMapLayer) {
     _inherits(UGCSubLayer, _UGCMapLayer);
 
-    /*
-     * Constructor: SuperMap.UGCSubLayer
-     * 地图服务图层属性信息类构造函数。
-     。
-     */
     function UGCSubLayer(options) {
         _classCallCheck(this, UGCSubLayer);
 
         options = options || {};
 
         /**
-         * @member SuperMap.UGCSubLayer.prototype.datasetInfo -{SuperMap.DatasetInfo}
+         * @member {SuperMap.DatasetInfo} SuperMap.UGCSubLayer.prototype.datasetInfo
          * @description 数据集信息。
          */
         var _this = _possibleConstructorReturn(this, (UGCSubLayer.__proto__ || Object.getPrototypeOf(UGCSubLayer)).call(this, options));
@@ -14165,25 +14160,25 @@ var UGCSubLayer = exports.UGCSubLayer = function (_UGCMapLayer) {
         _this.datasetInfo = null;
 
         /**
-         * @member SuperMap.UGCSubLayer.prototype.displayFilter -{string}
+         * @member {string} SuperMap.UGCSubLayer.prototype.displayFilter
          * @description 图层显示过滤条件。
          */
         _this.displayFilter = null;
 
         /**
-         * @member SuperMap.UGCSubLayer.prototype.joinItems -{SuperMap.JoinItem}
+         * @member {SuperMap.JoinItem} SuperMap.UGCSubLayer.prototype.joinItems
          * @description 连接信息类。
          */
         _this.joinItems = null;
 
         /**
-         * @member SuperMap.UGCSubLayer.prototype.representationField -{string}
+         * @member {string} SuperMap.UGCSubLayer.prototype.representationField
          * @description 存储制图表达信息的字段。
          */
         _this.representationField = null;
 
         /**
-         * @member SuperMap.UGCSubLayer.prototype.ugcLayerType -{SuperMap.LayerType}
+         * @member {SuperMap.LayerType} SuperMap.UGCSubLayer.prototype.ugcLayerType
          * @description 图层类型。
          */
         _this.ugcLayerType = null;
@@ -14195,7 +14190,7 @@ var UGCSubLayer = exports.UGCSubLayer = function (_UGCMapLayer) {
     /**
      * @function SuperMap.UGCSubLayer.prototype.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
 
 
@@ -14230,7 +14225,7 @@ var UGCSubLayer = exports.UGCSubLayer = function (_UGCMapLayer) {
         /**
          * @function SuperMap.UGCSubLayer.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return{Object} 对应的 JSON 格式对象。
+         * @returns {Object} 对应的 JSON 格式对象。
          */
 
     }, {
@@ -24707,15 +24702,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.UGCLayer
  * @category  iServer Map Layer
  * @classdesc UGC 图层类。
- * @param options - {Object} 可选参数。如：<br>
- *        bounds - {{@link SuperMap.Bounds}} 图层范围。<br>
- *        caption - {string} 图层的标题。<br>
- *        description - {string} 图层的描述信息。<br>
- *        name - {string} 图层的名称。<br>
- *        queryable - {boolean} 图层中的对象是否可以查询。<br>
- *        subUGCLayers - {boolean} 是否允许图层的符号大小随图缩放。<br>
- *        type - {{@link SuperMap.UGCLayerType}} 图层类型。<br>
- *        visible - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Bounds} options.bounds - 图层范围。<br>
+ * @param {string} options.caption - 图层的标题。<br>
+ * @param {string} options.description - 图层的描述信息。<br>
+ * @param {string} options.name - 图层的名称。<br>
+ * @param {boolean} options.queryable - 图层中的对象是否可以查询。<br>
+ * @param {boolean} options.subUGCLayers - 是否允许图层的符号大小随图缩放。<br>
+ * @param {SuperMap.UGCLayerType} options.type - 图层类型。<br>
+ * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
  */
 var UGCLayer = exports.UGCLayer = function () {
   function UGCLayer(options) {
@@ -24723,49 +24718,49 @@ var UGCLayer = exports.UGCLayer = function () {
 
     options = options || {};
     /**
-     * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}
+     * @member {SuperMap.Bounds} SuperMap.UGCLayer.prototype.bounds
      * @description 图层范围。
      */
     this.bounds = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.caption -{string}
+     * @member {string} SuperMap.UGCLayer.prototype.caption
      * @description 图层的标题。
      */
     this.caption = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.description -{string}
+     * @member {string} SuperMap.UGCLayer.prototype.description
      * @description 图层的描述信息。
      */
     this.description = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.name -{string}
+     * @member {string} SuperMap.UGCLayer.prototype.name
      * @description 图层的名称。
      */
     this.name = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.queryable -{boolean}
+     * @member {boolean} SuperMap.UGCLayer.prototype.queryable
      * @description 图层中的对象是否可以查询。
      */
     this.queryable = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.subLayers -{Array}
+     * @member {Array} SuperMap.UGCLayer.prototype.subLayers
      * @description 子图层集。
      */
     this.subLayers = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.type -{SuperMap.UGCLayerType}
+     * @member {SuperMap.UGCLayerType} SuperMap.UGCLayer.prototype.type
      * @description 图层类型。
      */
     this.type = null;
 
     /**
-     * @member SuperMap.UGCLayer.prototype.visible -{boolean}
+     * @member {boolean} SuperMap.UGCLayer.prototype.visible
      * @description 图层是否可视。
      */
     this.visible = null;
@@ -24791,7 +24786,7 @@ var UGCLayer = exports.UGCLayer = function () {
     /**
      * @function SuperMap.UGCLayer.prototype.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
 
   }, {
@@ -24808,7 +24803,7 @@ var UGCLayer = exports.UGCLayer = function () {
     /**
      * @function SuperMap.UGCLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return{Object} 对应的 JSON 格式对象。
+     * @returns {Object} 对应的 JSON 格式对象。
      */
 
   }, {
@@ -38372,11 +38367,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetOverlay -{string} 裁剪对象数据集。 <br>
- *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.datasetOverlay - 裁剪对象数据集。<br>
+ * @param {SuperMap.ClipAnalystMode} options.mode - 裁剪分析模式。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
     function VectorClipJobsParameter(options) {
@@ -38385,31 +38380,31 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
         options = options || {};
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.datasetOverlay
          * @description 裁剪对象数据集。
          */
         this.datasetVectorClip = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.geometryClip
          * @description 裁剪几何对象。
          */
         this.geometryClip = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+         * @member {SuperMap.ClipAnalystMode} SuperMap.VectorClipJobsParameter.prototype.mode
          * @description 裁剪分析模式 。
          */
         this.mode = _REST.ClipAnalystMode.CLIP;
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -38440,8 +38435,8 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 
         /**
          * @function SuperMap.VectorClipJobsParameter.toObject
-         * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
-         * @param tempObj - {Object} 目标对象。
+         * @param {Object} vectorClipJobsParameter - 区域汇总分析服务参数
+         * @param {Object} tempObj - 目标对象。
          * @description 矢量裁剪分析任务对象
          */
 
@@ -38494,12 +38489,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.UpdateTurnNodeWeightParameters
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务参数类
- * @param options - {Object} 可选参数。如：<br>
- *         nodeId - {string} 转向结点的id。<br>
- *        fromEdgeId - {string} 起始边的id。<br>
- *        toEdgeId - {string} 终止边的id。<br>
- *        weightField - {string} 转向结点的耗费字段。<br>
- *        turnNodeWeight - {string} 耗费权重
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.nodeId - 转向结点的id。<br>
+ * @param {string} options.fromEdgeId - 起始边的id。<br>
+ * @param {string} options.toEdgeId - 终止边的id。<br>
+ * @param {string} options.weightField - 转向结点的耗费字段。<br>
+ * @param {string} options.turnNodeWeight - 耗费权重
  */
 var UpdateTurnNodeWeightParameters = exports.UpdateTurnNodeWeightParameters = function () {
   function UpdateTurnNodeWeightParameters(options) {
@@ -38509,31 +38504,31 @@ var UpdateTurnNodeWeightParameters = exports.UpdateTurnNodeWeightParameters = fu
       return;
     }
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{string}
+     * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId
      * @description 转向结点的id
      */
     this.nodeId = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{string}
+     * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId
      * @description 起始边的id
      */
     this.fromEdgeId = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{string}
+     * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId
      * @description 终止边的id
      */
     this.toEdgeId = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{string}
+     * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField
      * @description 转向结点的耗费字段
      */
     this.weightField = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{string}
+     * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight
      * @description 耗费权重
      */
     this.turnNodeWeight = "";
@@ -38587,12 +38582,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.UpdateEdgeWeightParameters
  * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 边的耗费权重更新服务参数类。
- * @param options - {Object} 可选参数。如：<br>
- *        edgeId - {string} 所在边的id。<br>
- *        fromNodeId - {string} 起始转向点的id。<br>
- *        toNodeId - {string} 终止转向点的id。<br>
- *        weightField - {string} 边的耗费字段。<br>
- *        edgeWeight - {string} 耗费权重。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.edgeId - 所在边的id。<br>
+ * @param {string} options.fromNodeId - 起始转向点的id。<br>
+ * @param {string} options.toNodeId - 终止转向点的id。<br>
+ * @param {string} options.weightField - 边的耗费字段。<br>
+ * @param {string} options.edgeWeight - 耗费权重。
  */
 var UpdateEdgeWeightParameters = exports.UpdateEdgeWeightParameters = function () {
   function UpdateEdgeWeightParameters(options) {
@@ -38602,31 +38597,31 @@ var UpdateEdgeWeightParameters = exports.UpdateEdgeWeightParameters = function (
       return;
     }
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
+     * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.edgeId
      * @description 所在边的id
      */
     this.edgeId = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{string}
+     * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId
      * @description 起始转向点的id
      */
     this.fromNodeId = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{string}
+     * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId
      * @description 终止转向点的id
      */
     this.toNodeId = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{string}
+     * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.weightField
      * @description 边的耗费字段
      */
     this.weightField = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{string}
+     * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight
      * @description 耗费权重
      */
     this.edgeWeight = "";
@@ -43283,9 +43278,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Vector
  * @category  iServer Map TileFeature
  * @classdesc UGC 矢量图层类。
- * @extends SuperMap.UGCSubLayer
- * @param options - {Object} 可选参数。如：
- *        style - {{@link SuperMap.ServerStyle}} 矢量图层的风格。
+ * @extends {SuperMap.UGCSubLayer}
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ServerStyle} options.style - 矢量图层的风格。
  */
 
 var Vector = exports.Vector = function (_UGCSubLayer) {
@@ -43297,7 +43292,7 @@ var Vector = exports.Vector = function (_UGCSubLayer) {
         options = options || {};
 
         /**
-         * @member SuperMap.Vector.prototype.style -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.Vector.prototype.style
          * @description 矢量图层的风格。
          */
         var _this = _possibleConstructorReturn(this, (Vector.__proto__ || Object.getPrototypeOf(Vector)).call(this, options));
@@ -43324,7 +43319,7 @@ var Vector = exports.Vector = function (_UGCSubLayer) {
         /**
          * @function SuperMap.Vector.prototype.fromJson
          * @description 将服务端JSON对象转换成当前客户端对象
-         * @param jsonObject - {Object} 要转换的 JSON 对象。
+         * @param {Object} jsonObject - 要转换的 JSON 对象。
          */
 
     }, {
@@ -43340,7 +43335,7 @@ var Vector = exports.Vector = function (_UGCSubLayer) {
         /**
          * @function SuperMap.Vector.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -43946,33 +43941,28 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.UGCMapLayer
  * @category  iServer Map Layer
  * @classdesc UGC 地图图层类。
- * @extends SuperMap.UGCLayer
- * @param options - {Object} 可选参数。如：<br>
- *        completeLineSymbolDisplayed - {boolean} 是否显示完整线型。<br>
- *        maxScale - {number}地图最大比例尺。<br>
- *        minScale - {number}地图最小比例尺。<br>
- *        minVisibleGeometrySize - {number}几何对象的最小可见大小，以像素为单位。<br>
- *        opaqueRate - {integer} 图层的不透明度。<br>
- *        symbolScalable - {boolean} 是否允许图层的符号大小随图缩放。<br>
- *        symbolScale - {number}图层的符号缩放基准比例尺。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。<br>
- *        overlapDisplayedOptions - {{@link SuperMap.OverlapDisplayedOptions}} 地图的压盖过滤显示选项，当
- *                                   overlapDisplayed 为 false 时有效。
+ * @extends {SuperMap.UGCLayer}
+ * @param {Object} options - 参数。<br>
+ * @param {boolean} options.completeLineSymbolDisplayed - 是否显示完整线型。<br>
+ * @param {number} options.maxScale - 地图最大比例尺。<br>
+ * @param {number} options.minScale - 地图最小比例尺。<br>
+ * @param {number} options.minVisibleGeometrySize - 几何对象的最小可见大小，以像素为单位。<br>
+ * @param {number} options.opaqueRate - 图层的不透明度。<br>
+ * @param {boolean} options.symbolScalable - 是否允许图层的符号大小随图缩放。<br>
+ * @param {number} options.symbolScale - 图层的符号缩放基准比例尺。<br>
+ * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示，默认为False。<br>
+ * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 地图的压盖过滤显示选项，当overlapDisplayed 为 false 时有效。
  */
 var UGCMapLayer = exports.UGCMapLayer = function (_UGCLayer) {
   _inherits(UGCMapLayer, _UGCLayer);
 
-  /*
-   * Constructor: SuperMap.UGCMapLayer
-   * UGC 地图图层类构造函数。
-   */
   function UGCMapLayer(options) {
     _classCallCheck(this, UGCMapLayer);
 
     options = options || {};
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{boolean}
+     * @member {boolean} SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed
      * @description 是否显示完整线型。
      */
     var _this = _possibleConstructorReturn(this, (UGCMapLayer.__proto__ || Object.getPrototypeOf(UGCMapLayer)).call(this, options));
@@ -43980,48 +43970,48 @@ var UGCMapLayer = exports.UGCMapLayer = function (_UGCLayer) {
     _this.completeLineSymbolDisplayed = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.maxScale -{number}
+     * @member {number} SuperMap.UGCMapLayer.prototype.maxScale
      * @description 地图最大比例尺。
      */
     _this.maxScale = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.minScale -{number}
+     * @member {number} SuperMap.UGCMapLayer.prototype.minScale
      * @description 地图最小比例尺。
      */
     _this.minScale = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.minVisibleGeometrySize -{number}
+     * @member {number} SuperMap.UGCMapLayer.prototype.minVisibleGeometrySize
      * @description 几何对象的最小可见大小，以像素为单位。
      */
     _this.minVisibleGeometrySize = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.opaqueRate -{integer}
+     * @member {number} SuperMap.UGCMapLayer.prototype.opaqueRate
      * @description 图层的不透明度。
      */
     _this.opaqueRate = null;
     /**
-     * @member SuperMap.UGCMapLayer.prototype.symbolScalable -{boolean}
+     * @member {boolean} SuperMap.UGCMapLayer.prototype.symbolScalable
      * @description 是否允许图层的符号大小随图缩放。
      */
     _this.symbolScalable = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.symbolScale -{number}
+     * @member {number} SuperMap.UGCMapLayer.prototype.symbolScale
      * @description 图层的符号缩放基准比例尺。
      */
     _this.symbolScale = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.overlapDisplayed -{boolean}
-     * @description 地图对象在同一范围内时，是否重叠显示，默认为False。
+     * @member {boolean} [SuperMap.UGCMapLayer.prototype.overlapDisplayed=false]
+     * @description 地图对象在同一范围内时，是否重叠显示。
      */
     _this.overlapDisplayed = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.overlapDisplayedOptions -{SuperMap.OverlapDisplayedOptions}
+     * @member {SuperMap.OverlapDisplayedOptions} SuperMap.UGCMapLayer.prototype.overlapDisplayedOptions
      * @description 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
      */
     _this.overlapDisplayedOptions = null;
@@ -44046,7 +44036,7 @@ var UGCMapLayer = exports.UGCMapLayer = function (_UGCLayer) {
     /**
      * @function SuperMap.UGCMapLayer.prototype.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
 
   }, {
@@ -44058,7 +44048,7 @@ var UGCMapLayer = exports.UGCMapLayer = function (_UGCLayer) {
     /**
      * @function SuperMap.UGCMapLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return{Object} 对应的 JSON 格式对象。
+     * @returns {Object} 对应的 JSON 格式对象。
      */
 
   }, {
@@ -72794,9 +72784,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.VectorClipJobsService
  * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 矢量裁剪分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url -矢量裁剪分析服务地址。
+ * @param {Object} options - 交互服务时所需可选参数。
  */
 var VectorClipJobsService = exports.VectorClipJobsService = function (_ProcessingServiceBas) {
     _inherits(VectorClipJobsService, _ProcessingServiceBas);
@@ -72836,7 +72826,7 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
         /**
          * @function SuperMap.KernelDensityJobsService.protitype.getVectorClipJob
          * @description 获取指定id的矢量裁剪分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -72848,8 +72838,8 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
         /**
          * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
          * @description 新建矢量裁剪分析服务
-         * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -72896,7 +72886,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.UpdateTurnNodeWeightService
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务类
- * @extends SuperMap.NetworkAnalystServiceBase
+ * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
  * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
  *     eventListeners: {
@@ -72904,10 +72894,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
  *		   }
  * });
- * @param url - {string} 服务的访问地址。如:<br>
+ * @param {string} url - 服务的访问地址。如:<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function (_NetworkAnalystServic) {
     _inherits(UpdateTurnNodeWeightService, _NetworkAnalystServic);
@@ -72935,7 +72925,7 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
         /**
          * @function SuperMap.UpdateTurnNodeWeightService.prototype.processAsync
          * @description 开始异步执行转向耗费权重的更新
-         * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
+         * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
          * @example
          * (code)
          *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
@@ -72973,10 +72963,10 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
             });
         }
 
-        /*
-         * Method: parse
-         * 将更新服务参数解析为用‘/’做分隔的字符串
-         * */
+        /**
+         * @function SuperMap.UpdateTurnNodeWeightService.prototype.parse
+         * @description 将更新服务参数解析为用‘/’做分隔的字符串
+         */
 
     }, {
         key: 'parse',
@@ -73047,7 +73037,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.UpdateEdgeWeightService
  * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 更新边的边的耗费权重服务
- * @extends SuperMap.NetworkAnalystServiceBase
+ * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
  *(start code)
  * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
@@ -73057,10 +73047,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   }
  * });
  * (end)
- * @param url - {string} 服务的访问地址。 如:<br>
+ * @param {string} url - 服务的访问地址。如：<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_NetworkAnalystServic) {
     _inherits(UpdateEdgeWeightService, _NetworkAnalystServic);
@@ -73088,7 +73078,7 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
         /**
          * @function SuperMap.UpdateEdgeWeightService.prototype.processAsync
          * @description 开始异步执行边的边的耗费权重的更新
-         * @param params - {SuperMap.UpdateEdgeWeightParameters} 边的耗费权重更新服务参数类
+         * @param {SuperMap.UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
          * @example
          * (code)
          *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
@@ -73126,10 +73116,10 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
             });
         }
 
-        /*
-         * Method: parse
-         * 将更新服务参数解析为用‘/’做分隔的字符串
-         */
+        /**
+        * @function SuperMap.UpdateEdgeWeightService.prototype.parse
+        * @description 将更新服务参数解析为用‘/’做分隔的字符串
+        */
 
     }, {
         key: 'parse',

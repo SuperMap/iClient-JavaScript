@@ -7184,11 +7184,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetOverlay -{string} 裁剪对象数据集。 <br>
- *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.datasetName - 数据集名。<br>
+ * @param {string} options.datasetOverlay - 裁剪对象数据集。<br>
+ * @param {SuperMap.ClipAnalystMode} options.mode - 裁剪分析模式。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
     function VectorClipJobsParameter(options) {
@@ -7197,31 +7197,31 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
         options = options || {};
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.datasetOverlay
          * @description 裁剪对象数据集。
          */
         this.datasetVectorClip = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+         * @member {string} SuperMap.VectorClipJobsParameter.prototype.geometryClip
          * @description 裁剪几何对象。
          */
         this.geometryClip = "";
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+         * @member {SuperMap.ClipAnalystMode} SuperMap.VectorClipJobsParameter.prototype.mode
          * @description 裁剪分析模式 。
          */
         this.mode = _REST.ClipAnalystMode.CLIP;
 
         /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.VectorClipJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -7252,8 +7252,8 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 
         /**
          * @function SuperMap.VectorClipJobsParameter.toObject
-         * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
-         * @param tempObj - {Object} 目标对象。
+         * @param {Object} vectorClipJobsParameter - 区域汇总分析服务参数
+         * @param {Object} tempObj - 目标对象。
          * @description 矢量裁剪分析任务对象
          */
 
@@ -7314,9 +7314,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.VectorClipJobsService
  * @category  iServer ProcessingService VectorClip
  * @classdesc 矢量裁剪分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 矢量裁剪分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url -矢量裁剪分析服务地址。
+ * @param {Object} options - 交互服务时所需可选参数。
  */
 var VectorClipJobsService = exports.VectorClipJobsService = function (_ProcessingServiceBas) {
     _inherits(VectorClipJobsService, _ProcessingServiceBas);
@@ -7356,7 +7356,7 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
         /**
          * @function SuperMap.KernelDensityJobsService.protitype.getVectorClipJob
          * @description 获取指定id的矢量裁剪分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -7368,8 +7368,8 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
         /**
          * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
          * @description 新建矢量裁剪分析服务
-         * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {

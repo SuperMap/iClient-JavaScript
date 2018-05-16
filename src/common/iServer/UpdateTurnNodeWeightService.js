@@ -6,7 +6,7 @@ import {UpdateTurnNodeWeightParameters} from './UpdateTurnNodeWeightParameters';
  * @class SuperMap.UpdateTurnNodeWeightService
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务类
- * @extends SuperMap.NetworkAnalystServiceBase
+ * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
  * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
  *     eventListeners: {
@@ -14,10 +14,10 @@ import {UpdateTurnNodeWeightParameters} from './UpdateTurnNodeWeightParameters';
  *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
  *		   }
  * });
- * @param url - {string} 服务的访问地址。如:<br>
+ * @param {string} url - 服务的访问地址。如:<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
@@ -36,7 +36,7 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
     /**
      * @function SuperMap.UpdateTurnNodeWeightService.prototype.processAsync
      * @description 开始异步执行转向耗费权重的更新
-     * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
+     * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
      * @example
      * (code)
      *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
@@ -70,10 +70,10 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
         });
     }
 
-    /*
-     * Method: parse
-     * 将更新服务参数解析为用‘/’做分隔的字符串
-     * */
+    /**
+     * @function SuperMap.UpdateTurnNodeWeightService.prototype.parse
+     * @description 将更新服务参数解析为用‘/’做分隔的字符串
+     */
     parse(params) {
         if (!params) {
             return;

@@ -5,12 +5,12 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.UpdateEdgeWeightParameters
  * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 边的耗费权重更新服务参数类。
- * @param options - {Object} 可选参数。如：<br>
- *        edgeId - {string} 所在边的id。<br>
- *        fromNodeId - {string} 起始转向点的id。<br>
- *        toNodeId - {string} 终止转向点的id。<br>
- *        weightField - {string} 边的耗费字段。<br>
- *        edgeWeight - {string} 耗费权重。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.edgeId - 所在边的id。<br>
+ * @param {string} options.fromNodeId - 起始转向点的id。<br>
+ * @param {string} options.toNodeId - 终止转向点的id。<br>
+ * @param {string} options.weightField - 边的耗费字段。<br>
+ * @param {string} options.edgeWeight - 耗费权重。
  */
 export class UpdateEdgeWeightParameters {
 
@@ -19,31 +19,31 @@ export class UpdateEdgeWeightParameters {
             return;
         }
         /**
-         * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
+         * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.edgeId
          * @description 所在边的id
          */
         this.edgeId = "";
 
         /**
-         * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{string}
+         * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId
          * @description 起始转向点的id
          */
         this.fromNodeId = "";
 
         /**
-         * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{string}
+         * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId
          * @description 终止转向点的id
          */
         this.toNodeId = "";
 
         /**
-         * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{string}
+         * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.weightField
          * @description 边的耗费字段
          */
         this.weightField = "";
 
         /**
-         * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{string}
+         * @member {string} SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight
          * @description 耗费权重
          */
         this.edgeWeight = "";

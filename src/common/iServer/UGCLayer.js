@@ -7,64 +7,64 @@ import '../REST';
  * @class SuperMap.UGCLayer
  * @category  iServer Map Layer
  * @classdesc UGC 图层类。
- * @param options - {Object} 可选参数。如：<br>
- *        bounds - {{@link SuperMap.Bounds}} 图层范围。<br>
- *        caption - {string} 图层的标题。<br>
- *        description - {string} 图层的描述信息。<br>
- *        name - {string} 图层的名称。<br>
- *        queryable - {boolean} 图层中的对象是否可以查询。<br>
- *        subUGCLayers - {boolean} 是否允许图层的符号大小随图缩放。<br>
- *        type - {{@link SuperMap.UGCLayerType}} 图层类型。<br>
- *        visible - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.Bounds} options.bounds - 图层范围。<br>
+ * @param {string} options.caption - 图层的标题。<br>
+ * @param {string} options.description - 图层的描述信息。<br>
+ * @param {string} options.name - 图层的名称。<br>
+ * @param {boolean} options.queryable - 图层中的对象是否可以查询。<br>
+ * @param {boolean} options.subUGCLayers - 是否允许图层的符号大小随图缩放。<br>
+ * @param {SuperMap.UGCLayerType} options.type - 图层类型。<br>
+ * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
  */
 export class UGCLayer {
 
     constructor(options) {
         options =  options || {};
         /**
-         * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}
+         * @member {SuperMap.Bounds} SuperMap.UGCLayer.prototype.bounds
          * @description 图层范围。
          */
         this.bounds = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.caption -{string}
+         * @member {string} SuperMap.UGCLayer.prototype.caption
          * @description 图层的标题。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.description -{string}
+         * @member {string} SuperMap.UGCLayer.prototype.description
          * @description 图层的描述信息。
          */
         this.description = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.name -{string}
+         * @member {string} SuperMap.UGCLayer.prototype.name
          * @description 图层的名称。
          */
         this.name = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.queryable -{boolean}
+         * @member {boolean} SuperMap.UGCLayer.prototype.queryable
          * @description 图层中的对象是否可以查询。
          */
         this.queryable = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.subLayers -{Array}
+         * @member {Array} SuperMap.UGCLayer.prototype.subLayers
          * @description 子图层集。
          */
         this.subLayers = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.type -{SuperMap.UGCLayerType}
+         * @member {SuperMap.UGCLayerType} SuperMap.UGCLayer.prototype.type
          * @description 图层类型。
          */
         this.type = null;
 
         /**
-         * @member SuperMap.UGCLayer.prototype.visible -{boolean}
+         * @member {boolean} SuperMap.UGCLayer.prototype.visible
          * @description 图层是否可视。
          */
         this.visible = null;
@@ -86,7 +86,7 @@ export class UGCLayer {
     /**
      * @function SuperMap.UGCLayer.prototype.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
-     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
         jsonObject = jsonObject ? jsonObject : {};
@@ -101,7 +101,7 @@ export class UGCLayer {
     /**
      * @function SuperMap.UGCLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return{Object} 对应的 JSON 格式对象。
+     * @returns {Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var jsonObject = {};

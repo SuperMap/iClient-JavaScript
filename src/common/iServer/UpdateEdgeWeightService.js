@@ -6,7 +6,7 @@ import {UpdateEdgeWeightParameters} from './UpdateEdgeWeightParameters';
  * @class SuperMap.UpdateEdgeWeightService
  * @category  iServer NetworkAnalyst EdgeWeight
  * @classdesc 更新边的边的耗费权重服务
- * @extends SuperMap.NetworkAnalystServiceBase
+ * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
  *(start code)
  * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
@@ -16,10 +16,10 @@ import {UpdateEdgeWeightParameters} from './UpdateEdgeWeightParameters';
  *		   }
  * });
  * (end)
- * @param url - {string} 服务的访问地址。 如:<br>
+ * @param {string} url - 服务的访问地址。如：<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 
@@ -38,7 +38,7 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
     /**
      * @function SuperMap.UpdateEdgeWeightService.prototype.processAsync
      * @description 开始异步执行边的边的耗费权重的更新
-     * @param params - {SuperMap.UpdateEdgeWeightParameters} 边的耗费权重更新服务参数类
+     * @param {SuperMap.UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
      * @example
      * (code)
      *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
@@ -72,10 +72,10 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
         });
     }
 
-    /*
-     * Method: parse
-     * 将更新服务参数解析为用‘/’做分隔的字符串
-     */
+    /**
+    * @function SuperMap.UpdateEdgeWeightService.prototype.parse
+    * @description 将更新服务参数解析为用‘/’做分隔的字符串
+    */
     parse(params) {
         if (!params) {
             return;
