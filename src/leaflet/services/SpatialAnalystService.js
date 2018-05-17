@@ -425,7 +425,15 @@ export var SpatialAnalystService = ServiceBase.extend({
         }
         //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
+            var SRID = null;
+            if (params.sourceGeometrySRID) {
+                SRID = params.sourceGeometrySRID;
+            }
             params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
+            if (SRID) {
+                params.sourceGeometry.SRID = SRID;
+            }
+            delete params.sourceGeometry.sourceGeometrySRID;
         }
         if (params.operateGeometry) {
             params.operateGeometry = Util.toSuperMapGeometry(params.operateGeometry);

@@ -423,7 +423,15 @@ export class SpatialAnalystService extends ServiceBase {
         }
         //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
+            var SRID = null;
+            if (params.sourceGeometrySRID) {
+                SRID = params.sourceGeometrySRID;
+            }
             params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
+            if (SRID) {
+                params.sourceGeometry.SRID = SRID;
+            }
+            delete params.sourceGeometry.sourceGeometrySRID;
         }
         if (params.operateGeometry) {
             params.operateGeometry = this.convertGeometry(params.operateGeometry);

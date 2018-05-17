@@ -208,6 +208,7 @@
 - 修改 `L.supermap.mapVLayer` 在高分屏时无法选中要素的问题
 - 修改 `L.supermap.echartsLayer` 删除其他图层 `zoomend` `moveend` 事件的问题
 - 修复请求无法携带cookie问题
+- 修复缓冲区分析SRID参数不可用问题
 
 ### for OpenLayers
 
@@ -217,6 +218,7 @@
 - 修改 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 通过 `key` `token` 授权失败的问题
 - 修复 `ol.source.TileSuperMapRest` 的 `redirect` 参数默认为 `false` 但运行为 `true` 的问题
 - 修复请求无法携带cookie问题
+- 修复缓冲区分析SRID参数不可用问题
 
 ### for MapboxGL
 
