@@ -8,17 +8,17 @@ import {TransferPathParameters} from './TransferPathParameters';
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
  *            返回结果通过该类支持的事件的监听函数参数获取
- * @extends SuperMap.CommonServiceBase
+ * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * var myService = new SuperMap.TransferPathService(url, {eventListeners: {
  *     "processCompleted": TrafficTransferCompleted,
  *     "processFailed": TrafficTransferError
  *     }
  * };
- * @param url - {string} 与客户端交互的交通换乘线路查询服务地址。
+ * @param {string} url - 与客户端交互的交通换乘线路查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
- * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class TransferPathService extends CommonServiceBase {
 
@@ -37,7 +37,7 @@ export class TransferPathService extends CommonServiceBase {
     /**
      * @function SuperMap.TransferPathService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
+     * @param {SuperMap.TransferPathParameters} params - 交通换乘参数。
      */
     processAsync(params) {
         if (!(params instanceof TransferPathParameters)) {

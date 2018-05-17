@@ -17,59 +17,59 @@ import './LabelThemeCell';
  * @class SuperMap.ThemeParameters
  * @category  iServer Map Theme
  * @classdesc 专题图参数类。
- *               该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
- * @param options - {Object} 可选参数。如：<br>
- *        datasetNames - {Array<string>} 要制作专题图的数据集数组，必设。<br>
- *        dataSourceNames - {Array<string>} 要制作专题图的数据集所在的数据源数组，必设。<br>
- *        joinItems - {Array<{@link SuperMap.JoinItem}>} 专题图外部表的连接信息 JoinItem 数组。<br>
- *        themes - {Array<{@link SuperMap.Theme}>} 专题图对象列表。<br>
- *        displayFilters -{Array<string>} 专题图属性过滤条件。<br>
- *        displayOrderBys -{Array<string>} 专题图对象生成符号叠加次序排序字段。<br>
- *        fieldValuesDisplayFilter -{Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
+ *            该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<string>} options.datasetNames - 要制作专题图的数据集数组，必设。<br>
+ * @param {Array.<string>} options.dataSourceNames - 要制作专题图的数据集所在的数据源数组，必设。<br>
+ * @param {Array.<SuperMap.JoinItem>} options.joinItems - 专题图外部表的连接信息 JoinItem 数组。<br>
+ * @param {Array.<SuperMap.Theme>} options.themes - 专题图对象列表。<br>
+ * @param {Array.<string>} options.displayFilters - 专题图属性过滤条件。<br>
+ * @param {Array.<string>} options.displayOrderBys - 专题图对象生成符号叠加次序排序字段。<br>
+ * @param {Object} options.fieldValuesDisplayFilter - 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
  */
 export class ThemeParameters {
 
     constructor(options) {
         /**
-         * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<string>}
+         * @member {Array.<string>} SuperMap.ThemeParameters.prototype.datasetNames
          * @description 要制作专题图的数据集数组，必设。
          */
         this.datasetNames = null;
 
         /**
-         * @member SuperMap.ThemeParameters.prototype.dataSourceNames -{Array<string>}
+         * @member {Array.<string>} SuperMap.ThemeParameters.prototype.dataSourceNames
          * @description 要制作专题图的数据集所在的数据源数组，必设。
          */
         this.dataSourceNames = null;
 
         /**
-         * @member SuperMap.ThemeParameters.prototype.joinItems -{Array<SuperMap.JoinItem>}
+         * @member {Array.<SuperMap.JoinItem>} SuperMap.ThemeParameters.prototype.joinItems
          * @description 设置与外部表的连接信息 JoinItem 数组。
          *               使用此属性可以制作与外部表连接的专题图。
          */
         this.joinItems = null;
 
         /**
-         * @member SuperMap.ThemeParameters.prototype.themes -{Array<SuperMap.Theme>}
+         * @member {Array.<SuperMap.Theme>} SuperMap.ThemeParameters.prototype.themes
          * @description 专题图对象列表。
-         *               该参数为实例化的各类专题图对象的集合。
+         *              该参数为实例化的各类专题图对象的集合。
          */
         this.themes = null;
 
         /**
-         * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<string>}
+         * @member {Array.<string>} SuperMap.ThemeParameters.prototype.displayFilters
          * @description 专题图属性过滤条件。
          */
         this.displayFilters = null;
 
         /**
-         * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<string>}
+         * @member {Array.<string>}  SuperMap.ThemeParameters.prototype.displayOrderBys
          * @description 专题图对象生成符号叠加次序排序字段
          */
         this.displayOrderBys = null;
 
         /**
-         * @member SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter -{Object}
+         * @member {Object} SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter
          * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
          *  * values：{Array<number>} - 就是要过滤的值；<br>
          *  * fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>

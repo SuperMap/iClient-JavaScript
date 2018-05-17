@@ -7,48 +7,48 @@ import {LabelMixedTextStyle} from './LabelMixedTextStyle';
  * @class SuperMap.ThemeLabelText
  * @category  iServer Map Theme
  * @classdesc 标签中文本风格类。
- *              通过该类可以设置标签中的文本字体大小和显示风格。
- * @param options - {Object} 可选参数。如：<br>
- *        maxTextHeight - {number}标签中文本的最大高度。<br>
- *        maxTextWidth - {number}标签中文本的最大宽度。<br>
- *        minTextHeight - {number}标签中文本的最小高度。<br>
- *        minTextWidth - {number}标签中文本的最小宽度。<br>
- *        uniformStyle - {{@link SuperMap.ServerTextStyle}} 统一文本风格。<br>
- *        uniformMixedStyle - {{@link SuperMap.LabelMixedTextStyle}} 标签专题图统一的文本复合风格。
+ *            通过该类可以设置标签中的文本字体大小和显示风格。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.maxTextHeight - 标签中文本的最大高度。<br>
+ * @param {number} options.maxTextWidth - 标签中文本的最大宽度。<br>
+ * @param {number} options.minTextHeight - 标签中文本的最小高度。<br>
+ * @param {number} options.minTextWidth - 标签中文本的最小宽度。<br>
+ * @param {SuperMap.ServerTextStyle} options.uniformStyle - 统一文本风格。<br>
+ * @param {SuperMap.LabelMixedTextStyle} options.uniformMixedStyle - 标签专题图统一的文本复合风格。
  */
 export class ThemeLabelText {
 
     constructor(options) {
         /**
-         * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.maxTextHeight=0]
          * @description 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
+         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。
          */
         this.maxTextHeight = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.maxTextWidth=0]
          * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
+         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。
          */
         this.maxTextWidth = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.minTextHeight=0]
          * @description 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+         *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。
          */
         this.minTextHeight = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.minTextWidth=0]
          * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。
          */
         this.minTextWidth = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.uniformStyle -{SuperMap.ServerTextStyle}
+         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelText.prototype.uniformStyle
          * @description 统一文本风格。当标签专题图子项的个数大于等于1时，
          *              uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
@@ -56,7 +56,7 @@ export class ThemeLabelText {
         this.uniformStyle = new ServerTextStyle();
 
         /**
-         *@member SuperMap.ThemeLabelText.prototype.uniformMixedStyle -{SuperMap.LabelMixedTextStyle}
+         *@member {SuperMap.LabelMixedTextStyle} SuperMap.ThemeLabelText.prototype.uniformMixedStyle
          *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标
          *              签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
@@ -92,8 +92,8 @@ export class ThemeLabelText {
     /**
      * @function SuperMap.ThemeLabelText.fromObj
      * @description 从传入对象获取标签中文本风格类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeLabelText} ThemeLabelText对象
      */
     static fromObj(obj) {
         if (!obj) {

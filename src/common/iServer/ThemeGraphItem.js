@@ -6,30 +6,30 @@ import {ServerStyle} from './ServerStyle';
  * @class SuperMap.ThemeGraphItem
  * @category  iServer Map Theme
  * @classdesc 统计专题图子项类
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 专题图子项的名称。<br>
- *        graphExpression - {string} 统计专题图的专题变量。<br>
- *        memoryDoubleValues - {Array<number>} 内存数组方式制作专题图时的值数组。<br>
- *        uniformStyle - {{@link SuperMap.ServerStyle}} 统计专题图子项的显示风格
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 专题图子项的名称。<br>
+ * @param {string} options.graphExpression - 统计专题图的专题变量。<br>
+ * @param {Array.<number>} options.memoryDoubleValues - 内存数组方式制作专题图时的值数组。<br>
+ * @param {SuperMap.ServerStyle} options.uniformStyle - 统计专题图子项的显示风格
  */
 export class ThemeGraphItem {
 
     constructor(options) {
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeGraphItem.prototype.caption
          * @description 专题图子项的名称。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{string}
+         * @member {string} SuperMap.ThemeGraphItem.prototype.graphExpression
          * @description 统计专题图的专题变量。专题变量可以是一个字段或字段表达式。字段必须为数值型；表达式只能为数值型的字段间的运算。必设字段。
          */
         this.graphExpression = null;
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<number>}
+         * @member {Array.<number>} SuperMap.ThemeGraphItem.prototype.memoryDoubleValues
          * @description 内存数组方式制作专题图时的值数组。<br>
          *              内存数组方式制作专题图时，只对 SmID 值在键数组（{@link SuperMap.ThemeGraph.memoryKeys}）中的记录制作专题图。<br>
          *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -38,7 +38,7 @@ export class ThemeGraphItem {
         this.memoryDoubleValues = null;
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.uniformStyle -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeGraphItem.prototype.uniformStyle
          * @description 统计专题图子项的显示风格。
          *              每一个统计专题图子项都对应一种显示风格。
          */
@@ -66,8 +66,8 @@ export class ThemeGraphItem {
     /**
      * @function SuperMap.ThemeGraphItem.fromObj
      * @description 从传入对象获取统计专题图子项类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraphItem} ThemeGraphItem对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeGraphItem} ThemeGraphItem对象
      */
     static fromObj(obj) {
         if (!obj) {

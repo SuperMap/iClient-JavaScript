@@ -6,9 +6,9 @@ import './ThemeMemoryData';
  * @class SuperMap.Theme
  * @category  iServer Map Theme
  * @classdesc 专题图基类。
- * @param  type - {string} 专题图类型。
- * @param options - {Object} 可选参数。如：<br>
- *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @param {string} type - 专题图类型。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 export class Theme {
 
@@ -17,7 +17,7 @@ export class Theme {
             return this;
         }
         /**
-         * @member SuperMap.Theme.prototype.memoryData -{SuperMap.ThemeMemoryData}
+         * @member {SuperMap.ThemeMemoryData} SuperMap.Theme.prototype.memoryData
          * @description 专题图内存数据。<br>
          *              用内存数据制作专题图的方式与表达式制作专题图的方式互斥，前者优先级较高。
          *              第一个参数代表专题值，即数据集中用来做专题图的字段或表达式的值；第二个参数代表外部值。在制作专题图时，会用外部值代替专题值来制作相应的专题图。
@@ -25,7 +25,7 @@ export class Theme {
         this.memoryData = null;
 
         /**
-         * @member SuperMap.Theme.prototype.type -{string}
+         * @member {string} SuperMap.Theme.prototype.type
          * @description 专题图类型。
          */
         this.type = type;
@@ -53,7 +53,7 @@ export class Theme {
     /**
      * @function SuperMap.Theme.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return {Object} 对应的 JSON 格式对象
+     * @returns {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         //return 子类实现

@@ -7,7 +7,7 @@ import {ThemeParameters} from './ThemeParameters';
  * @class SuperMap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类。
- * @extends SuperMap.CommonServiceBase
+ * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myThemeService = new SuperMap.ThemeService(url, {
  *     eventListeners: {
@@ -15,9 +15,9 @@ import {ThemeParameters} from './ThemeParameters';
  *           "processFailed": themeFailed
  *           }
  * });
- * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class ThemeService extends CommonServiceBase {
 
@@ -44,7 +44,7 @@ export class ThemeService extends CommonServiceBase {
     /**
      * @function SuperMap.ThemeService.prototype.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
-     * @param params - {SuperMap.ThemeParameters} 专题图参数类。
+     * @param {SuperMap.ThemeParameters} params - 专题图参数类。
      */
     processAsync(params) {
         if (!(params instanceof ThemeParameters)) {
@@ -65,8 +65,8 @@ export class ThemeService extends CommonServiceBase {
     /**
      * @function SuperMap.ThemeService.prototype.getJsonParameters
      * @description 将专题图参数参数转化为 JSON 字符串。
-     * @param parameter - {SuperMap.ThemeParameters} 专题图参数类。
-     * @return {Object} 转化后的JSON字符串。
+     * @param {SuperMap.ThemeParameters} parameter - 专题图参数类。
+     * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(parameter) {
         var jsonParameters = "",

@@ -10,24 +10,24 @@ import {ThemeGridUniqueItem} from './ThemeGridUniqueItem';
  * @classdesc 栅格单值专题图类。
  * @description 栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。<br>
  *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。<br>
- * @extends SuperMap.Theme
- * @param options - {Object} 可选参数。如：<br>
- *        items - {Array<{@link SuperMap.ThemeGridUniqueItem}>} 栅格单值专题图子项数组。<br>
- *        defaultcolor - {{@link SuperMap.ServerColor}} 栅格单值专题图的默认颜色。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<SuperMap.ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。<br>
+ * @param {SuperMap.ServerColor} options.defaultcolor - 栅格单值专题图的默认颜色。
  */
 export class ThemeGridUnique extends Theme {
 
     constructor(options) {
         super("GRIDUNIQUE", options);
         /**
-         * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
+         * @member {SuperMap.ServerColor} SuperMap.ThemeGridUnique.prototype.defaultcolor
          * @description 栅格单值专题图的默认颜色。
          *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
          */
         this.defaultcolor = new ServerColor();
 
         /**
-         * @member SuperMap.ThemeGridUnique.prototype.items -{Array<SuperMap.ThemeGridUniqueItem>}
+         * @member {Array.<SuperMap.ThemeGridUniqueItem>} SuperMap.ThemeGridUnique.prototype.items
          * @description 栅格单值专题图子项数组。
          *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
          */
@@ -66,7 +66,7 @@ export class ThemeGridUnique extends Theme {
     /**
      * @function SuperMap.ThemeGridUnique.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @return {Object} 对应的 JSON 格式对象
+     * @returns {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var obj = {};
@@ -90,8 +90,8 @@ export class ThemeGridUnique extends Theme {
     /**
      * @function SuperMap.ThemeGridUnique.fromObj
      * @description 从传入对象获取栅格单值专题图类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGridUnique} ThemeGridUnique对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeGridUnique} ThemeGridUnique对象
      */
     static fromObj(obj) {
         var res = new ThemeGridUnique();

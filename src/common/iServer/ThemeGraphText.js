@@ -7,30 +7,30 @@ import {ThemeGraphTextFormat} from '../REST';
  * @class SuperMap.ThemeGraphText
  * @category  iServer Map Theme
  * @classdesc 统计图文字标注风格类。
- * @param options - {Object} 可选参数。<br>
- *        graphTextDisplayed - {boolean} 是否显示统计图上的文字标注。<br>
- *        graphTextFormat - {{@link SuperMap.ThemeGraphTextFormat}} 统计专题图文本显示格式。<br>
- *        graphTextStyle - {{@link SuperMap.ServerTextStyle}} 统计图上的文字标注风格。
+ * @param {Object} options - 可选参数。<br>
+ * @param {boolean} options.graphTextDisplayed - 是否显示统计图上的文字标注。<br>
+ * @param {SuperMap.ThemeGraphTextFormat} options.graphTextFormat - 统计专题图文本显示格式。<br>
+ * @param {SuperMap.ServerTextStyle} options.graphTextStyle - 统计图上的文字标注风格。
  */
 export class ThemeGraphText {
 
     constructor(options) {
 
         /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
-         * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
+         * @member {boolean} [SuperMap.ThemeGraphText.prototype.graphTextDisplayed=false]
+         * @description 是否显示统计图上的文字标注。
          */
         this.graphTextDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
+         * @member {SuperMap.ThemeGraphTextFormat} [SuperMap.ThemeGraphText.prototype.graphTextFormat=SuperMap.ThemeGraphTextFormat.CAPTION]
          * @description 统计专题图文本显示格式。<br>
-         *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。默认为 SuperMap.ThemeGraphTextFormat.CAPTION。
+         *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。
          */
         this.graphTextFormat = ThemeGraphTextFormat.CAPTION;
 
         /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextStyle -{SuperMap.ServerTextStyle}
+         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphText.prototype.graphTextStyle
          * @description 统计图上的文字标注风格。
          */
         this.graphTextStyle =  new ServerTextStyle();
@@ -59,8 +59,8 @@ export class ThemeGraphText {
     /**
      * @function SuperMap.ThemeGraphText.fromObj
      * @description 从传入对象获取统计图文字标注风格类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraphText} ThemeGraphText对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeGraphText} ThemeGraphText对象
      */
     static fromObj(obj) {
         var res = new ThemeGraphText();

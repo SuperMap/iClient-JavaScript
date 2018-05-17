@@ -5,71 +5,71 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.TransferLine
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
- * @param options - {Object} 可选参数。如:</br>
- *        lineID - {number} 乘车路线ID。</br>
- *        lineName - {string} 乘车路线名称。</br>
- *        lineAliasName - {string} 乘车路线别名。</br>
- *        startStopIndex - {number}上车站点在本公交路线中的索引。</br>
- *        startStopName - {string} 上车站点名称。</br>
- *        startStopAliasName - {string} 上车站点别名。</br>
- *        endStopIndex - {number}下车站点在本公交路线中的索引</br>
- *        endStopName - {string} 下车站点名称。</br>
- *        endStopAliasName - {string} 下车站点别名。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {number} options.lineID - 乘车路线ID。</br>
+ * @param {string} options.lineName - 乘车路线名称。</br>
+ * @param {string} options.lineAliasName - 乘车路线别名。</br>
+ * @param {number} options.startStopIndex - 上车站点在本公交路线中的索引。</br>
+ * @param {string} options.startStopName - 上车站点名称。</br>
+ * @param {string} options.startStopAliasName - 上车站点别名。</br>
+ * @param {number} options.endStopIndex - 下车站点在本公交路线中的索引</br>
+ * @param {string} options.endStopName - 下车站点名称。</br>
+ * @param {string} options.endStopAliasName - 下车站点别名。</br>
  */
 export class TransferLine {
 
     constructor(options) {
         options = options || {};
         /**
-         * @memberSuperMap.TransferLine.prototype.lineID -{number}
+         * @member {number} SuperMap.TransferLine.prototype.lineID
          * @description 乘车路线ID。
          */
         this.lineID = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.lineName -{string}
+         * @member {string} SuperMap.TransferLine.prototype.lineName
          * @description 乘车路线名称。
          */
         this.lineName = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.lineAliasName -{string}
+         * @member {string} SuperMap.TransferLine.prototype.lineAliasName
          * @description 乘车路线别名。
          */
         this.lineAliasName = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.startStopIndex -{number}
+         * @member {number} SuperMap.TransferLine.prototype.startStopIndex
          * @description 上车站点在本公交路线中的索引。
          */
         this.startStopIndex = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.startStopName -{string}
+         * @member {string} SuperMap.TransferLine.prototype.startStopName
          * @description 上车站点名称。
          */
         this.startStopName = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.startStopAliasName -{string}
+         * @member {string} SuperMap.TransferLine.prototype.startStopAliasName
          * @description 上车站点别名。
          */
         this.startStopAliasName = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.endStopIndex -{number}
+         * @member {number} SuperMap.TransferLine.prototype.endStopIndex
          * @description 下车站点在本公交路线中的索引。
          */
         this.endStopIndex = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.endStopName -{string}
+         * @member {string} SuperMap.TransferLine.prototype.endStopName
          * @description 下车站点名称。
          */
         this.endStopName = null;
 
         /**
-         * @memberSuperMap.TransferLine.prototype.endStopAliasName -{string}
+         * @member {string} SuperMap.TransferLine.prototype.endStopAliasName
          * @description 下车站点别名。
          */
         this.endStopAliasName = null;
@@ -91,8 +91,8 @@ export class TransferLine {
     /**
      * @function SuperMap.TransferLine.fromJson
      * @description 将返回结果转化为 SuperMap.TransferLine 对象。
-     * @param jsonObject - {Object} 新的返回结果。
-     * @return {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。
+     * @param {Object} jsonObject - 新的返回结果。
+     * @returns {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

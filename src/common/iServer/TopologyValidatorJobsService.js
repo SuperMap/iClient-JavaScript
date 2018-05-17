@@ -6,9 +6,9 @@ import {TopologyValidatorJobsParameter} from './TopologyValidatorJobsParameter';
  * @class SuperMap.TopologyValidatorJobsService
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 拓扑检查分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 拓扑检查分析服务地址。
+ * @param {Object} options - 参数。
  */
 export class TopologyValidatorJobsService extends ProcessingServiceBase {
 
@@ -36,7 +36,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.TopologyValidatorJobsService.protitype.getTopologyValidatorJob
      * @description 获取指定id的拓扑检查分析服务
-     * @param id -{string} 指定要获取数据的id
+     * @param {string} id - 指定要获取数据的id
      */
     getTopologyValidatorJob(id) {
         super.getJobs(this.url + '/' + id);
@@ -45,8 +45,8 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.TopologyValidatorJobsService.protitype.addTopologyValidatorJob
      * @description 新建拓扑检查分析服务
-     * @param params - {SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addTopologyValidatorJob(params, seconds) {
         super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds);
