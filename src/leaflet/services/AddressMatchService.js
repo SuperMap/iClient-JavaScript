@@ -28,7 +28,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @function L.supermap.addressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param params - {Object} 正向匹配参数。
-     * @param callback - {function} 请求结果的回调函数。
+     * @param {RequestCallback} callback 请求结果的回调函数。
      */
     code: function (params, callback) {
         var me = this;
@@ -49,7 +49,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @function L.supermap.addressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param params -{Object} 反向匹配参数。
-     * @param callback -{function} 请求结果的回调函数。
+     * @param {RequestCallback} callback 请求结果的回调函数。
      */
     decode: function (params, callback) {
         var me = this;

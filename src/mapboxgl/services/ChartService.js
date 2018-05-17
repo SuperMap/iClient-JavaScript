@@ -27,7 +27,7 @@ export class ChartService extends ServiceBase {
      * @function mapboxgl.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param callback - {function} 回调函数。
+     * @param {RequestCallback} callback 回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
      */
     queryChart(params, callback, resultFormat) {
@@ -52,7 +52,7 @@ export class ChartService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getChartFeatureInfo(callback) {
         var me = this, url = me.url.concat();

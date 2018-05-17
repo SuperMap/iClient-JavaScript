@@ -28,7 +28,7 @@ export var FieldService = ServiceBase.extend({
      * @function L.supermap.fieldService.prototype.getFields
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getFields: function (params, callback) {
         var me = this;
@@ -51,7 +51,7 @@ export var FieldService = ServiceBase.extend({
      * @function L.supermap.fieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
      * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getFieldStatisticsInfo: function (params, callback) {
         if (!(params instanceof FieldStatisticsParameters)) {

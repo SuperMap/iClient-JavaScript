@@ -1,12 +1,30 @@
-﻿import {SuperMap} from '../SuperMap';
-import {FetchRequest} from "../util/FetchRequest";
-import {Events} from '../commontypes/Events';
-import {Credential} from '../commontypes/Credential';
-import {SecurityManager} from '../security/SecurityManager';
-import {Util} from '../commontypes/Util';
-import {ServerType} from '../REST';
-import {JSONFormat as JSON} from '../format/JSON';
-import {FunctionExt} from '../commontypes/BaseTypes';
+﻿import {
+    SuperMap
+} from '../SuperMap';
+import {
+    FetchRequest
+} from "../util/FetchRequest";
+import {
+    Events
+} from '../commontypes/Events';
+import {
+    Credential
+} from '../commontypes/Credential';
+import {
+    SecurityManager
+} from '../security/SecurityManager';
+import {
+    Util
+} from '../commontypes/Util';
+import {
+    ServerType
+} from '../REST';
+import {
+    JSONFormat as JSON
+} from '../format/JSON';
+import {
+    FunctionExt
+} from '../commontypes/BaseTypes';
 
 /**
  * @class SuperMap.CommonServiceBase
@@ -176,7 +194,8 @@ export class CommonServiceBase {
      * @return {SuperMap.Credential} 凭据信息对象。
      */
     getCredential(url) {
-        let keyUrl = url, credential, value;
+        let keyUrl = url,
+            credential, value;
         switch (this.serverType) {
             case ServerType.IPORTAL:
                 value = SecurityManager.getToken(keyUrl);
@@ -290,7 +309,9 @@ export class CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         result = Util.transformResult(result);
-        this.events.triggerEvent("processCompleted", {result: result});
+        this.events.triggerEvent("processCompleted", {
+            result: result
+        });
     }
 
     /**
@@ -301,7 +322,9 @@ export class CommonServiceBase {
     serviceProcessFailed(result) {
         result = Util.transformResult(result);
         let error = result.error || result;
-        this.events.triggerEvent("processFailed", {error: error});
+        this.events.triggerEvent("processFailed", {
+            error: error
+        });
     }
 
     _commit(options) {
@@ -321,7 +344,7 @@ export class CommonServiceBase {
             if (response.text) {
                 return response.text();
             }
-            if(response.json){
+            if (response.json) {
                 return response.json();
             }
             return response;
@@ -332,9 +355,13 @@ export class CommonServiceBase {
             }
             if (!result || result.error || result.code >= 300 && result.code !== 304) {
                 if (result && result.error) {
-                    result = {error: result.error};
+                    result = {
+                        error: result.error
+                    };
                 } else {
-                    result = {error: result};
+                    result = {
+                        error: result
+                    };
                 }
             }
             if (result.error) {
@@ -351,3 +378,18 @@ export class CommonServiceBase {
 }
 
 SuperMap.CommonServiceBase = CommonServiceBase;
+
+/**
+ * 服务器请求回调函数
+ * @callback RequestCallback
+ * @example
+ * var requestCallback = function (serviceResult){
+ *      console.log(serviceResult.result);
+ * }
+ * new QueryService(url).queryByBounds(param, requestCallback);
+ * @param {Object} serviceResult
+ * @param {Object} serviceResult.result 服务器返回结果
+ * @param {Object} serviceResult.object 发布应用程序事件的对象
+ * @param {Object} serviceResult.type 事件类型
+ * @param {Object} serviceResult.element 接受浏览器事件的DOM节点
+ */

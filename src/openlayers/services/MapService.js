@@ -25,7 +25,7 @@ export class MapService extends ServiceBase {
     /**
      * @function ol.supermap.MapService.prototype.getMapInfo
      * @description 地图信息查询服务
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @return {ol.supermap.MapService} 获取服务信息
      */
     getMapInfo(callback) {
@@ -46,7 +46,7 @@ export class MapService extends ServiceBase {
     /**
      * @function ol.supermap.MapService.prototype.getTilesets
      * @description 切片列表信息查询服务
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @return {ol.supermap.MapService} 获取服务信息
      */
     getTilesets(callback) {

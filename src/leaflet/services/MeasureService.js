@@ -32,7 +32,7 @@ export var MeasureService = ServiceBase.extend({
      * @function L.supermap.measureService.prototype.measureDistance
      * @description 测距
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     measureDistance: function (params, callback) {
         this.measure(MeasureMode.DISTANCE, params, callback);
@@ -43,7 +43,7 @@ export var MeasureService = ServiceBase.extend({
      * @function L.supermap.measureService.prototype.measureArea
      * @description 测面积
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     measureArea: function (params, callback) {
         this.measure(MeasureMode.AREA, params, callback);
@@ -54,7 +54,7 @@ export var MeasureService = ServiceBase.extend({
      * @function L.supermap.measureService.measure
      * @param type -{SuperMap.MeasureMode} 量算模式
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     measure: function (type, params, callback) {
         if (!(params instanceof MeasureParameters)) {

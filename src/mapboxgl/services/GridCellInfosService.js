@@ -29,7 +29,7 @@ export class GridCellInfosService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.GridCellInfosService.prototype.getGridCellInfos
      * @param params - {SuperMap.GetGridCellInfosParameters} 查询所需参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getGridCellInfos(params, callback) {
         if (!params) {

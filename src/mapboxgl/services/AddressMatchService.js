@@ -25,7 +25,7 @@ export class AddressMatchService extends ServiceBase {
      * @function mapboxgl.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param params - {Object} 正向匹配参数。
-     * @param callback - {function} 请求结果的回调函数。
+     * @param {RequestCallback} callback 请求结果的回调函数。
      */
     code(params, callback) {
         var me = this;
@@ -46,7 +46,7 @@ export class AddressMatchService extends ServiceBase {
      * @function mapboxgl.supermap.AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param params -{Object} 反向匹配参数。
-     * @param callback -{function}请求结果的回调函数。
+     * @param {RequestCallback} callback请求结果的回调函数。
      */
     decode(params, callback) {
         var me = this;

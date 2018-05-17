@@ -35,7 +35,7 @@ export var MapService = ServiceBase.extend({
     /**
      * @function  L.supermap.mapService.prototype.getMapInfo
      * @description 获取地图信息
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getMapInfo: function (callback) {
         var me = this;
@@ -55,7 +55,7 @@ export var MapService = ServiceBase.extend({
     /**
      * @function  L.supermap.mapService.prototype.getTilesets
      * @description 获取切片列表信息
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getTilesets: function (callback) {
         var me = this;

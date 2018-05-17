@@ -28,7 +28,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @function mapboxgl.supermap.TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
      * @param params - {SuperMap.StopQueryParameters} 查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     queryStop(params, callback) {
         var me = this;
@@ -49,7 +49,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @function mapboxgl.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
      * @param params - {SuperMap.TransferPathParameters} 查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     analysisTransferPath(params, callback) {
         var me = this;
@@ -70,7 +70,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @function mapboxgl.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
      * @param params - {SuperMap.TransferSolutionParameters} 查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     analysisTransferSolution(params, callback) {
         var me = this;

@@ -34,7 +34,7 @@ export class QueryService extends ServiceBase {
      * @function mapboxgl.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
     queryByBounds(params, callback, resultFormat) {
@@ -59,7 +59,7 @@ export class QueryService extends ServiceBase {
      * @function mapboxgl.supermap.QueryService.prototype.queryByDistance
      * @description 地图距离查询服务
      * @param params - {QueryByDistanceParameters} Distance查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
     queryByDistance(params, callback, resultFormat) {
@@ -83,7 +83,7 @@ export class QueryService extends ServiceBase {
      * @function mapboxgl.supermap.QueryService.prototype.queryBySQL
      * @description 地图SQL查询服务
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
     queryBySQL(params, callback, resultFormat) {
@@ -107,7 +107,7 @@ export class QueryService extends ServiceBase {
      * @function mapboxgl.supermap.QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
     queryByGeometry(params, callback, resultFormat) {

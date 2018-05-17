@@ -37,7 +37,7 @@ export var FeatureService = ServiceBase.extend({
      * @function L.supermap.featureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
      * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
@@ -60,7 +60,7 @@ export var FeatureService = ServiceBase.extend({
      * @function L.supermap.featureService.prototype.getFeaturesByBounds
      * @description 数据集Bounds查询服务
      * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
@@ -82,7 +82,7 @@ export var FeatureService = ServiceBase.extend({
      * @function L.supermap.featureService.prototype.getFeaturesByBuffer
      * @description 数据集Buffer查询服务
      * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
@@ -104,7 +104,7 @@ export var FeatureService = ServiceBase.extend({
      * @function L.supermap.featureService.prototype.getFeaturesBySQL
      * @description 数据集SQL查询服务
      * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
@@ -126,7 +126,7 @@ export var FeatureService = ServiceBase.extend({
      * @function L.supermap.featureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类
      * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
@@ -148,7 +148,7 @@ export var FeatureService = ServiceBase.extend({
      * @function L.supermap.featureService.prototype.editFeatures
      * @description 地物编辑服务
      * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     editFeatures: function (params, callback) {
 

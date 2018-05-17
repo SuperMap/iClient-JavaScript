@@ -35,7 +35,7 @@ export class FeatureService extends ServiceBase {
      * @function ol.supermap.FeatureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
      * @param params - {SuperMap.GetFeaturesByIDsParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
      */
     getFeaturesByIDs(params, callback, resultFormat) {
@@ -58,7 +58,7 @@ export class FeatureService extends ServiceBase {
      * @function ol.supermap.FeatureService.prototype.getFeaturesByBounds
      * @description 数据集Bounds查询服务
      * @param params - {SuperMap.GetFeaturesByBoundsParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
      */
     getFeaturesByBounds(params, callback, resultFormat) {
@@ -80,7 +80,7 @@ export class FeatureService extends ServiceBase {
      * @function ol.supermap.FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集Buffer查询服务
      * @param params - {SuperMap.GetFeaturesByBufferParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
@@ -102,7 +102,7 @@ export class FeatureService extends ServiceBase {
      * @function ol.supermap.FeatureService.prototype.getFeaturesBySQL
      * @description 数据集SQL查询服务
      * @param params - {SuperMap.GetFeaturesBySQLParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
      */
     getFeaturesBySQL(params, callback, resultFormat) {
@@ -125,7 +125,7 @@ export class FeatureService extends ServiceBase {
      * @function ol.supermap.FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类
      * @param params - {SuperMap.GetFeaturesByGeometryParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
@@ -147,7 +147,7 @@ export class FeatureService extends ServiceBase {
      * @function ol.supermap.FeatureService.prototype.editFeatures
      * @description 地物编辑服务
      * @param params - {SuperMap.EditFeaturesParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     editFeatures(params, callback) {
         if (!params || !params.dataSourceName || !params.dataSetName) {

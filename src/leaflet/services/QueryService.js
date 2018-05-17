@@ -1,8 +1,12 @@
 ﻿import L from "leaflet";
 import '../core/Base';
-import {ServiceBase} from './ServiceBase';
+import {
+    ServiceBase
+} from './ServiceBase';
 import * as Util from '../core/Util';
-import {CommontypesConversion} from '../core/CommontypesConversion';
+import {
+    CommontypesConversion
+} from '../core/CommontypesConversion';
 import {
     GeometryPoint,
     DataFormat,
@@ -30,12 +34,11 @@ export var QueryService = ServiceBase.extend({
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },
-
     /**
      * @function L.supermap.queryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param callback -{function} 回掉函数
+     * @param {RequestCallback} callback - 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
     queryByBounds: function (params, callback, resultFormat) {
@@ -59,7 +62,7 @@ export var QueryService = ServiceBase.extend({
      * @function L.supermap.queryService.prototype.queryByDistance
      * @description 地图距离查询服务
      * @param params - {SuperMap.QueryByDistanceParameters} Distance查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
      */
     queryByDistance: function (params, callback, resultFormat) {
@@ -83,7 +86,7 @@ export var QueryService = ServiceBase.extend({
      * @function L.supermap.queryService.prototype.queryBySQL
      * @description 地图SQL查询服务
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
      */
     queryBySQL: function (params, callback, resultFormat) {
@@ -107,7 +110,7 @@ export var QueryService = ServiceBase.extend({
      * @function L.supermap.queryService.prototype.queryByGeometry
      * @description 地图几何查询服务
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
     queryByGeometry: function (params, callback, resultFormat) {

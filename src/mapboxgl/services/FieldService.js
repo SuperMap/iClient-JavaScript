@@ -25,7 +25,7 @@ export class FieldService extends ServiceBase {
      * @function mapboxgl.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getFields(params, callback) {
         var me = this;
@@ -48,7 +48,7 @@ export class FieldService extends ServiceBase {
      * @function mapboxgl.supermap.FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
      * @param params -{SuperMap.FieldStatisticsParameters} 查询所需参数类。
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getFieldStatisticsInfo(params, callback) {
         var me = this,

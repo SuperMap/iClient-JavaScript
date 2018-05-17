@@ -33,7 +33,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function  L.supermap.networkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     sinksFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -54,7 +54,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function L.supermap.networkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务
      * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      *  @return {this} this
      */
     sourcesFacilityAnalyst: function (params, callback) {
@@ -76,7 +76,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function L.supermap.networkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务
      * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      *  @return {this} this
      */
     traceUpFacilityAnalyst: function (params, callback) {
@@ -98,7 +98,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function L.supermap.networkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务
      * @param params {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     traceDownFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -119,7 +119,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function L.supermap.networkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务
      * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     upstreamFacilityAnalyst: function (params, callback) {
         var me = this;

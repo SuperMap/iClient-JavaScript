@@ -28,7 +28,7 @@ export var ChartService = ServiceBase.extend({
      * @function L.supermap.chartService.prototype.queryChart
      * @description 查询海图
      * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param callback -{function} 回调函数。
+     * @param {RequestCallback} callback 回调函数。
      * @param resultFormat -{SuperMap.DataFormat} 返回的结果格式类型。
      */
     queryChart: function (params, callback, resultFormat) {
@@ -53,7 +53,7 @@ export var ChartService = ServiceBase.extend({
     /**
      * @function L.supermap.chartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.url.concat();

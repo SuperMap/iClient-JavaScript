@@ -27,7 +27,7 @@ export class ThemeService extends ServiceBase {
      * @function ol.supermap.ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
     getThemeInfo(params, callback) {
         var me = this;
