@@ -528,7 +528,7 @@ var exampleConfig = {
                         name: "蜂巢图",
                         name_en: "honeycomb",
                         thumbnail: "mb_mapVLayer_honeycomb.png",
-                        fileName: "mapVLayerHoneycomb"
+                        fileName: "mapvLayerHoneycomb"
                     },
                     {
                         name: "纽约出租车上车点",
