@@ -117,15 +117,15 @@ export class MapvLayer {
         canvas.style.position = 'absolute';
         canvas.style.top = 0 + "px";
         canvas.style.left = 0 + "px";
-        canvas.width = parseInt(this.map.getCanvas().style.width);
-        canvas.height = parseInt(this.map.getCanvas().style.height);
-        canvas.style.width = this.map.getCanvas().style.width;
-        canvas.style.height = this.map.getCanvas().style.height;
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        canvas.width = parseInt(this.map.getCanvas().style.width)*devicePixelRatio;
+        canvas.height = parseInt(this.map.getCanvas().style.height)*devicePixelRatio;
         if (this.mapVOptions.context == '2d') {
             canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
         }
+        canvas.style.width = this.map.getCanvas().style.width;
+        canvas.style.height = this.map.getCanvas().style.height;
         return canvas;
     }
 
