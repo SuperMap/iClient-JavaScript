@@ -46,7 +46,7 @@ export class MapVRenderer extends BaseLayer {
      */
     clickEvent(e) {
         var offset = this.map.containerPointToLayerPoint([0, 0]);
-        var devicePixelRatio = this.devicePixelRatio = window.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = this.canvasLayer.devicePixelRatio = window.devicePixelRatio;
         var pixel = e.layerPoint;
         super.clickEvent(L.point((pixel.x - offset.x) / devicePixelRatio, (pixel.y - offset.y) / devicePixelRatio), e);
     }
@@ -183,7 +183,9 @@ export class MapVRenderer extends BaseLayer {
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
-        this.update({options: null});
+        this.update({
+            options: null
+        });
     }
 
     _canvasUpdate(time) {
@@ -300,8 +302,7 @@ export class MapVRenderer extends BaseLayer {
         this.initAnimator();
     }
 
-    addAnimatorEvent() {
-    }
+    addAnimatorEvent() {}
 
     /**
      * @function L.supermap.MapVRenderer.prototype.moveStartEvent

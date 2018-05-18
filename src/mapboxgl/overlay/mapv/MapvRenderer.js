@@ -1,4 +1,6 @@
-import {baiduMapLayer} from "mapv";
+import {
+    baiduMapLayer
+} from "mapv";
 import mapboxgl from 'mapbox-gl';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
@@ -118,7 +120,9 @@ export class MapvRenderer extends BaseLayer {
             _data = data.get();
         }
         this.dataSet.add(_data);
-        this.update({options: options});
+        this.update({
+            options: options
+        });
     }
 
     /**
@@ -137,7 +141,9 @@ export class MapvRenderer extends BaseLayer {
         if (_data != undefined) {
             this.dataSet.set(_data);
         }
-        super.update({options: update.options});
+        super.update({
+            options: update.options
+        });
     }
 
     /**
@@ -163,7 +169,9 @@ export class MapvRenderer extends BaseLayer {
             }
         });
         this.dataSet.set(newData);
-        this.update({options: null});
+        this.update({
+            options: null
+        });
     }
 
     /**
@@ -172,7 +180,9 @@ export class MapvRenderer extends BaseLayer {
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
-        this.update({options: null});
+        this.update({
+            options: null
+        });
     }
 
     /**
@@ -185,7 +195,9 @@ export class MapvRenderer extends BaseLayer {
         if (dataSet && dataSet.get) {
             this.dataSet.set(dataSet.get());
         }
-        this.update({options: options});
+        this.update({
+            options: options
+        });
     }
 
     _canvasUpdate(time) {
@@ -237,7 +249,7 @@ export class MapvRenderer extends BaseLayer {
         var centerPx = map.project(center);
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                if (map.transform.rotationMatrix) {
+                if (map.transform.rotationMatrix || self.context === '2d') {
                     var worldPoint = map.project((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
                     return [worldPoint.x, worldPoint.y];
                 }
@@ -310,9 +322,11 @@ export class MapvRenderer extends BaseLayer {
         canvas.style.left = 0 + "px";
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
-        canvas.width = parseInt(this.map.getCanvas().style.width)*devicePixelRatio;
-        canvas.height = parseInt(this.map.getCanvas().style.height)*devicePixelRatio;
-
+        canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
+        canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
+        if (this.canvasLayer.mapVOptions.context == '2d') {
+            canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
+        }
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
     }
@@ -394,7 +408,7 @@ export class MapvRenderer extends BaseLayer {
      * @description 清除环境
      */
     clear(context) {
-        context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        context && context.clearRect && context.clearRect(0, 0, parseInt(this.map.getCanvas().style.width), parseInt(this.map.getCanvas().style.height));
     }
 
     /**

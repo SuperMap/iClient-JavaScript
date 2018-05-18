@@ -2743,7 +2743,9 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         key: 'serviceProcessCompleted',
         value: function serviceProcessCompleted(result) {
             result = _Util.Util.transformResult(result);
-            this.events.triggerEvent("processCompleted", { result: result });
+            this.events.triggerEvent("processCompleted", {
+                result: result
+            });
         }
 
         /**
@@ -2757,7 +2759,9 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         value: function serviceProcessFailed(result) {
             result = _Util.Util.transformResult(result);
             var error = result.error || result;
-            this.events.triggerEvent("processFailed", { error: error });
+            this.events.triggerEvent("processFailed", {
+                error: error
+            });
         }
     }, {
         key: '_commit',
@@ -2788,9 +2792,13 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                 }
                 if (!result || result.error || result.code >= 300 && result.code !== 304) {
                     if (result && result.error) {
-                        result = { error: result.error };
+                        result = {
+                            error: result.error
+                        };
                     } else {
-                        result = { error: result };
+                        result = {
+                            error: result
+                        };
                     }
                 }
                 if (result.error) {
@@ -2809,6 +2817,21 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
 }();
 
 _SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
+
+/**
+ * 服务器请求回调函数
+ * @callback RequestCallback
+ * @example
+ * var requestCallback = function (serviceResult){
+ *      console.log(serviceResult.result);
+ * }
+ * new QueryService(url).queryByBounds(param, requestCallback);
+ * @param {Object} serviceResult
+ * @param {Object} serviceResult.result 服务器返回结果
+ * @param {Object} serviceResult.object 发布应用程序事件的对象
+ * @param {Object} serviceResult.type 事件类型
+ * @param {Object} serviceResult.element 接受浏览器事件的DOM节点
+ */
 
 /***/ }),
 /* 6 */
@@ -9430,9 +9453,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.Theme
  * @category  iServer Map Theme
  * @classdesc 专题图基类。
- * @param  type - {string} 专题图类型。
- * @param options - {Object} 可选参数。如：<br>
- *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @param {string} type - 专题图类型。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 var Theme = exports.Theme = function () {
     function Theme(type, options) {
@@ -9442,7 +9465,7 @@ var Theme = exports.Theme = function () {
             return this;
         }
         /**
-         * @member SuperMap.Theme.prototype.memoryData -{SuperMap.ThemeMemoryData}
+         * @member {SuperMap.ThemeMemoryData} SuperMap.Theme.prototype.memoryData
          * @description 专题图内存数据。<br>
          *              用内存数据制作专题图的方式与表达式制作专题图的方式互斥，前者优先级较高。
          *              第一个参数代表专题值，即数据集中用来做专题图的字段或表达式的值；第二个参数代表外部值。在制作专题图时，会用外部值代替专题值来制作相应的专题图。
@@ -9450,7 +9473,7 @@ var Theme = exports.Theme = function () {
         this.memoryData = null;
 
         /**
-         * @member SuperMap.Theme.prototype.type -{string}
+         * @member {string} SuperMap.Theme.prototype.type
          * @description 专题图类型。
          */
         this.type = type;
@@ -9482,7 +9505,7 @@ var Theme = exports.Theme = function () {
         /**
          * @function SuperMap.Theme.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -12169,16 +12192,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TransportationAnalystParameter
  * @category  iServer NetworkAnalyst
  * @classdesc 交通网络分析通用参数类。
- * @description该类主要用来提供交通网络分析所需的通用参数。
+ * @description 该类主要用来提供交通网络分析所需的通用参数。
  * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。
- * @param options - {Object} 可选参数。如:</br>
- *        barrierEdgeIDs - {Array<number>} 网络分析中障碍弧段的 ID 数组。</br>
- *        barrierNodeIDs - {Array<number>} 网络分析中障碍点的 ID 数组。</br>
- *        barrierPoints - {Array<Point>} 网络分析中 Point2D 类型的障碍点数组。</br>
- *                         点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
- *        weightFieldName - {string} 阻力字段的名称。</br>
- *        turnWeightField - {string} 转向权重字段的名称。</br>
- *        resultSetting - {{@link SuperMap.TransportationAnalystResultSetting}} 分析结果返回内容。
+ * @param {Object} options - 参数。</br>
+ * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。</br>
+ * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。</br>
+ * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} options.barrierPoints - 网络分析中 Point2D 类型的障碍点数组。</br>
+ * @param {string} options.weightFieldName - 阻力字段的名称。</br>
+ * @param {string} options.turnWeightField - 转向权重字段的名称。</br>
+ * @param {SuperMap.TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容。
  */
 var TransportationAnalystParameter = exports.TransportationAnalystParameter = function () {
   function TransportationAnalystParameter(options) {
@@ -12188,40 +12210,39 @@ var TransportationAnalystParameter = exports.TransportationAnalystParameter = fu
       return;
     }
     /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}
+     * @member {Array.<number>} SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs
      * @description 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。
      */
     this.barrierEdgeIDs = null;
 
     /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierNodeIDs -{Array<number>}
+     * @member {Array.<number>} SuperMap.TransportationAnalystParameter.prototype.barrierNodeIDs
      * @description 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。
      */
     this.barrierNodeIDs = null;
 
     /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}
+     * @member {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>}  SuperMap.TransportationAnalystParameter.prototype.barrierPoints
      * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
      * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。
      */
     this.barrierPoints = null;
 
     /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{string}
+     * @member {string} SuperMap.TransportationAnalystParameter.prototype.weightFieldName
      * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。
      * 该字段默值为服务器发布的所有耗费字段的第一个字段。
      */
     this.weightFieldName = null;
 
     /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}
+     * @member {string} SuperMap.TransportationAnalystParameter.prototype.turnWeightField
      * @description 转向权重字段的名称。
      */
     this.turnWeightField = null;
 
     /**
-     *  @member SuperMap.TransportationAnalystParameter.prototype.resultSetting -{SuperMap.TransportationAnalystResultSetting}
+     *  @member {SuperMap.TransportationAnalystResultSetting} SuperMap.TransportationAnalystParameter.prototype.resultSetting
      *  @description 分析结果返回内容。
      */
     this.resultSetting = new _TransportationAnalystResultSetting.TransportationAnalystResultSetting();
@@ -18027,31 +18048,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeOffset
  * @category  iServer Map Theme
  * @classdesc 专题图中文本或符号相对于要素内点的偏移量设置类。
- *              通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
- * @param options - {Object} 可选参数。如：<br>
- *        offsetFixed - {boolean} 当前专题图是否固定标记文本或符号的偏移量。<br>
- *        offsetX - {string} 专题图中文本或符号相对于要素内点的水平偏移量。<br>
- *        offsetY - {string} 专题图中文本或符号相对于要素内点的垂直偏移量。
+ *            通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
+ * @param {Object} options - 参数。<br>
+ * @param {boolean} options.offsetFixed - 当前专题图是否固定标记文本或符号的偏移量。<br>
+ * @param {string} options.offsetX - 专题图中文本或符号相对于要素内点的水平偏移量。<br>
+ * @param {string} options.offsetY - 专题图中文本或符号相对于要素内点的垂直偏移量。
  */
 var ThemeOffset = exports.ThemeOffset = function () {
     function ThemeOffset(options) {
         _classCallCheck(this, ThemeOffset);
 
         /**
-         * @member SuperMap.ThemeOffset.prototype.offsetFixed -{boolean}
-         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。默认为 false，表示偏移量随地图的缩放而变化。
+         * @member {boolean} [SuperMap.ThemeOffset.prototype.offsetFixed=false]
+         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。
          */
         this.offsetFixed = false;
 
         /**
-         * @member SuperMap.ThemeOffset.prototype.offsetX -{string}
+         * @member {string} SuperMap.ThemeOffset.prototype.offsetX
          * @description 专题图中文本或符号相对于要素内点的水平偏移量。偏移量的单位为地图单位。
          *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么水平偏移量为2。
          */
         this.offsetX = "0.0";
 
         /**
-         * @member SuperMap.ThemeOffset.prototype.offsetY -{string}
+         * @member {string} SuperMap.ThemeOffset.prototype.offsetY
          * @description 专题图中文本或符号相对于要素内点的垂直偏移量。偏移量的单位为地图单位。
          *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么垂直偏移量为2。
          */
@@ -18081,8 +18102,8 @@ var ThemeOffset = exports.ThemeOffset = function () {
         /**
          * @function SuperMap.ThemeOffset.fromObj
          * @description 从传入对象获取专题图中文本或符号相对于要素内点的偏移量设置类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeOffset} ThemeOffset对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeOffset} ThemeOffset对象
          */
 
     }], [{
@@ -18128,18 +18149,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeFlow
  * @category  iServer Map Theme
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
- *              通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
- * @param options - {Object} 可选参数。如：<br>
- *        flowEnabled - {boolean} 是否流动显示标签或符号。<br>
- *        leaderLineDisplayed - {boolean} 是否显示标签或符号和它标注的对象之间的牵引线。<br>
- *        leaderLineStyle - {{@link SuperMap.ServerStyle}} 标签或符号与其标注对象之间牵引线的风格。
+ *            通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
+ * @param {Object} options - 参数。<br>
+ * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。<br>
+ * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。<br>
+ * @param SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
  */
 var ThemeFlow = exports.ThemeFlow = function () {
     function ThemeFlow(options) {
         _classCallCheck(this, ThemeFlow);
 
         /**
-         * @member SuperMap.ThemeFlow.prototype.flowEnabled -{boolean}
+         * @member {boolean} SuperMap.ThemeFlow.prototype.flowEnabled
          * @description 是否流动显示标签或符号。<br>
          *              对于标签专题图而言，对于跨越比较大的区域和线条状的几何对象，在一个地图窗口中不能完全显示的情况下，如果其标签位置比较固定，<br>
          *              在当前地图窗口中该对象的标签不可见，则需要通过平移地图来查看对象的标签信息。如果采用了流动显示的效果，在当前地图窗口中，对象即使是部分显示，<br>
@@ -18148,15 +18169,15 @@ var ThemeFlow = exports.ThemeFlow = function () {
         this.flowEnabled = false;
 
         /**
-         * @member SuperMap.ThemeFlow.prototype.leaderLineDisplayed -{boolean}
-         * @description 是否显示标签或符号和它标注的对象之间的牵引线。默认值为 false，即不显示标签或符号和它标注的对象之间的牵引线。<br>
+         * @member {boolean} [SuperMap.ThemeFlow.prototype.leaderLineDisplayed=false]
+         * @description 是否显示标签或符号和它标注的对象之间的牵引线。false表示不显示标签或符号和它标注的对象之间的牵引线。<br>
          *              只有当 flowEnabled 为 true 时，牵引线才起作用。在当标签流动显示时，其位置不固定，由于牵引线始终指向要素的内点，<br>
          *              因而通过牵引线显示功能可以找到流动的标签或符号实际对应的要素。或者渲染符号偏移它所指向的对象时，图与对象之间可以采用牵引线进行连接。
          */
         this.leaderLineDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeFlow.prototype.leaderLineStyle -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeFlow.prototype.leaderLineStyle
          * @description 标签或符号与其标注对象之间牵引线的风格。
          */
         this.leaderLineStyle = new _ServerStyle.ServerStyle();
@@ -18189,8 +18210,8 @@ var ThemeFlow = exports.ThemeFlow = function () {
         /**
          * @function SuperMap.ThemeFlow.fromObj
          * @description 从传入对象获取标签或符号流动显示和牵引线风格设置类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeFlow} ThemeFlow对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeFlow} ThemeFlow 对象
          */
 
     }], [{
@@ -18260,23 +18281,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  iServer Map Theme
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
- * @param  options - {Object} 可选参数。如：<br>
- *         alongLine - {{@link SuperMap.ThemeLabelAlongLine}} 标签沿线标注方向样式类。<br>
- *         background - {{@link SuperMap.ThemeLabelBackground}} 标签专题图中标签的背景风格类。<br>
- *         flow - {{@link SuperMap.ThemeFlow}} 标签专题图标签流动显示与牵引线设置类。<br>
- *         items - {Array<{@link SuperMap.ThemeUniqueItem}>} 分段标签专题图的子项数组。<br>
- *         labelExpression - {string} 标注字段表达式。<br>
- *         labelOverLengthMode - {{@link SuperMap.LabelOverLengthMode}} 标签专题图中超长标签的处理模式枚举类。<br>
- *         matrixCells - {Array<{@link SuperMap.LabelMatrixCell}>} 矩阵标签元素数组。<br>
- *         maxLabelLength - {number}标签在每一行显示的最大长度。<br>
- *         numericPrecision - {number}通过该字段设置其显示的精度。<br>
- *         offset - {{@link SuperMap.ThemeOffset}} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- *         overlapAvoided - {boolean} 是否允许以文本避让方式显示文本。<br>
- *         rangeExpression - {string} 制作分段标签专题的分段字段或字段表达式。<br>
- *         smallGeometryLabeled - {boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
- *         text - {{@link SuperMap.ThemeLabelText}} 标签中文本风格。<br>
- *         textSpace - {number} 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
- *         memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.ThemeLabelAlongLine} options.alongLine - 标签沿线标注方向样式类。<br>
+ * @param {SuperMap.ThemeLabelBackground} options.background - 标签专题图中标签的背景风格类。<br>
+ * @param {SuperMap.ThemeFlow} options.flow - 标签专题图标签流动显示与牵引线设置类。<br>
+ * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。<br>
+ * @param {string} options.labelExpression - 标注字段表达式。<br>
+ * @param {SuperMap.LabelOverLengthMode} options.labelOverLengthMode - 标签专题图中超长标签的处理模式枚举类。<br>
+ * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。<br>
+ * @param {number} options.maxLabelLength - 标签在每一行显示的最大长度。<br>
+ * @param {number} options.numericPrecision - 通过该字段设置其显示的精度。<br>
+ * @param {SuperMap.ThemeOffset} options.offset - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
+ * @param {boolean} options.overlapAvoided - 是否允许以文本避让方式显示文本。<br>
+ * @param {string} options.rangeExpression - 制作分段标签专题的分段字段或字段表达式。<br>
+ * @param {boolean} options.smallGeometryLabeled - 是否显示长度大于被标注对象本身长度的标签。<br>
+ * @param {SuperMap.ThemeLabelText} options.text - 标签中文本风格。<br>
+ * @param {number} options.textSpace - 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 var ThemeLabel = exports.ThemeLabel = function (_Theme) {
     _inherits(ThemeLabel, _Theme);
@@ -18285,7 +18306,7 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
         _classCallCheck(this, ThemeLabel);
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.alongLine -{SuperMap.ThemeLabelAlongLine}
+         * @member {SuperMap.ThemeLabelAlongLine} SuperMap.ThemeLabel.prototype.alongLine
          * @description 标签沿线标注方向样式类。<br>
          *              在该类中可以设置标签是否沿线标注以及沿线标注的多种方式。沿线标注属性只适用于线数据集专题图。
          */
@@ -18294,78 +18315,78 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
         _this.alongLine = new _ThemeLabelAlongLine.ThemeLabelAlongLine();
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.background -{SuperMap.ThemeLabelBackground}
+         * @member {SuperMap.ThemeLabelBackground} SuperMap.ThemeLabel.prototype.background 
          * @description 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
          */
         _this.background = new _ThemeLabelBackground.ThemeLabelBackground();
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.flow -{SuperMap.ThemeFlow}
+         * @member {SuperMap.ThemeFlow} SuperMap.ThemeLabel.prototype.flow
          * @description 标签专题图标签流动显示与牵引线设置类。通过该字段可以设置标签是否流动显示和牵引线风格。
          */
         _this.flow = new _ThemeFlow.ThemeFlow();
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.items - {Array<SuperMap.ThemeUniqueItem>}
+         * @member {Array.<SuperMap.ThemeUniqueItem>} SuperMap.ThemeLabel.prototype.items
          * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression <br>
          *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
          */
         _this.items = null;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.uniqueItems -{Array<SuperMap.ThemeLabelUniqueItem>}
+         * @member {Array.<SuperMap.ThemeLabelUniqueItem>} SuperMap.ThemeLabel.prototype.uniqueItems
          * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression单值标签专题图子项集合
          */
         _this.uniqueItems = null;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.labelExpression -{string}
+         * @member {string} SuperMap.ThemeLabel.prototype.labelExpression
          * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
          */
         _this.labelExpression = null;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.labelOverLengthMode -{SuperMap.LabelOverLengthMode} 标签专题图中超长标签的处理模式枚举类。
-         * 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。默认为 SuperMap.LabelOverLengthMode.NONE。
+         * @member {SuperMap.LabelOverLengthMode} [SuperMap.ThemeLabel.prototype.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
+         * 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。
          */
         _this.labelOverLengthMode = _REST.LabelOverLengthMode.NONE;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.matrixCells -{Array<SuperMap.LabelMatrixCell>}
+         * @member {Array.<SuperMap.LabelMatrixCell>} SuperMap.ThemeLabel.prototype.matrixCells
          * @description 矩阵标签元素数组，用于制作矩阵标签专题图。
          *              数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
          */
         _this.matrixCells = null;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.maxLabelLength -{number}
+         * @member {number} [SuperMap.ThemeLabel.prototype.maxLabelLength=256]
          * @description 标签在每一行显示的最大长度，一个中文为两个字符。
-         *              如果超过最大长度，可以采用两种方式来处理，一种是换行的模式进行显示，另一种是以省略号方式显示。默认最大长度为256个字符。
+         *              如果超过最大长度，可以采用两种方式来处理，一种是换行的模式进行显示，另一种是以省略号方式显示。单位为字符。
          */
         _this.maxLabelLength = 256;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.numericPrecision -{number}
+         * @member {number} SuperMap.ThemeLabel.prototype.numericPrecision
          * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
          *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
          */
         _this.numericPrecision = 0;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.offset -{SuperMap.ThemeOffset}
+         * @member {SuperMap.ThemeOffset} SuperMap.ThemeLabel.prototype.offset
          * @description 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
          */
         _this.offset = new _ThemeOffset.ThemeOffset();
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{boolean}
-         * @description 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
-         *               在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
+         * @member {boolean} [SuperMap.ThemeLabel.prototype.overlapAvoided=true]
+         * @description 是否允许以文本避让方式显示文本。true 表示自动避免文本叠盖。只针对该标签专题图层中的文本数据。
+         *              在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
          */
         _this.overlapAvoided = true;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.rangeExpression -{string}
+         * @member {string} SuperMap.ThemeLabel.prototype.rangeExpression
          * @description 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
          *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
          *              最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
@@ -18373,28 +18394,28 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
         _this.rangeExpression = null;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{string}
+         * @member {string} SuperMap.ThemeLabel.prototype.uniqueExpression
          * @description 用于制作单值专题图的字段或字段表达式。
-         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
+         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段，必须与labelExpression一起使用。
          */
         _this.uniqueExpression = null;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.smallGeometryLabeled -{boolean}
-         * @description 是否显示长度大于被标注对象本身长度的标签，默认为 false。在标签的长度大于线或者面对象本身的长度时，
+         * @member {boolean} [SuperMap.ThemeLabel.prototype.smallGeometryLabeled=false]
+         * @description 是否显示长度大于被标注对象本身长度的标签。在标签的长度大于线或者面对象本身的长度时，
          *              如果该值为 true，则标签文字会叠加在一起显示，为了清楚完整的显示该标签，
          *              可以采用换行模式来显示标签，但必须保证每行的长度小于对象本身的长度。
          */
         _this.smallGeometryLabeled = false;
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.text -{SuperMap.ThemeLabelText}
+         * @member {SuperMap.ThemeLabelText} SuperMap.ThemeLabel.prototype.text
          * @description 标签中文本风格。
          */
         _this.text = new _ThemeLabelText.ThemeLabelText();
 
         /**
-         * @member SuperMap.ThemeLabel.prototype.textSpace -{number}
+         * @member {number} SuperMap.ThemeLabel.prototype.textSpace
          * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高
          */
         _this.textSpace = 0;
@@ -18460,7 +18481,7 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
         /**
          * @function SuperMap.ThemeLabel.prototype.toJSON
          * @description 将themeLabel对象转化为json字符串。
-         * @return {string} 返回转换后的 JSON 字符串。
+         * @returns {string} 返回转换后的 JSON 字符串。
          */
 
     }, {
@@ -18472,7 +18493,7 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
         /**
          * @function SuperMap.ThemeLabel.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -18531,8 +18552,8 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
         /**
          * @function SuperMap.ThemeLabel.fromObj
          * @description 从传入对象获取标签专题图类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeLabel} ThemeLabel对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeLabel} ThemeLabel对象
          */
 
     }], [{
@@ -18608,13 +18629,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThiessenAnalystParameters
  * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 泰森多边形分析参数基类。
- * @param options - {Object} 可选参数。如:</br>
- *        clipRegion - {Object} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
- *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
- *        createResultDataset - {boolean} 是否返回结果数据集，默认不返回。</br>
- *        resultDatasetName - {string} 指定结果数据集名称。</br>
- *        resultDatasourceName - {string} 指定结果数据集所在数据源，默认为当前数据源。</br>
- *        returnResultRegion - {boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {(SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon)} options.clipRegion - 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+ * @param {boolean} [options.createResultDataset=false] - 是否返回结果数据集。</br>
+ * @param {string} options.resultDatasetName - 指定结果数据集名称。</br>
+ * @param {string} options.resultDatasourceName - 指定结果数据集所在数据源，默认为当前数据源。</br>
+ * @param {boolean} [options.returnResultRegion=true] - 是否返回分析得到的多边形面数组。</br>
  */
 var ThiessenAnalystParameters = exports.ThiessenAnalystParameters = function () {
   function ThiessenAnalystParameters(options) {
@@ -18624,32 +18644,31 @@ var ThiessenAnalystParameters = exports.ThiessenAnalystParameters = function () 
       return;
     }
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.clipRegion  -{Object}
+     * @member {(SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon)} SuperMap.ThiessenAnalystParameters.prototype.clipRegion
      * @description 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
      */
     this.clipRegion = null;
 
     /**
-     *  @member SuperMap.ThiessenAnalystParameters.prototype.createResultDataset -{boolean}
-     *  @description 是否返回结果数据集，默认值 false。如果为true，则必须设置属性resultDatasetName和resultDatasourceName。
+     *  @member {boolean} [SuperMap.ThiessenAnalystParameters.prototype.createResultDataset=false]
+     *  @description 是否返回结果数据集。如果为true，则必须设置属性resultDatasetName和resultDatasourceName。
      */
     this.createResultDataset = false;
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.resultDatasetName -{string}
+     * @member {string} SuperMap.ThiessenAnalystParameters.prototype.resultDatasetName
      * @description 指定结果数据集名称。
      */
     this.resultDatasetName = null;
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.resultDatasourceName -{string}
+     * @member {string} SuperMap.ThiessenAnalystParameters.prototype.resultDatasourceName
      * @description 指定结果数据集所在数据源。
      */
     this.resultDatasourceName = null;
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.returnResultRegion -{boolean}
+     * @member {boolean} SuperMap.ThiessenAnalystParameters.prototype.returnResultRegion
      * @description 是否返回分析得到的多边形面数组，默认 true，返回。
      */
     this.returnResultRegion = true;
@@ -24968,14 +24987,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @description 范围分段专题图是按照指定的分段方法（如：等距离分段法）对字段的属性值进行分段，使用不同的颜色或符号（线型、填充）表示不同范围段落的属性值在整体上的分布情况，体现区域的差异。
  *              在分段专题图中，专题值按照某种分段方式被分成多个范围段，要素根据各自的专题值被分配到其中一个范围段中，在同一个范围段中的要素使用相同的颜色，填充，符号等风格进行显示。
  *              分段专题图所基于的专题变量必须为数值型，分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
- * @extends SuperMap.Theme
- * @param options - {Object} 可选参数。如：<br>
- *        items - {Array<{@link SuperMap.ThemeRangeItem}>} 分段专题图子项数组。<br>
- *        rangeExpression - {string} 分段字段表达式。<br>
- *        rangeMode - {{@link SuperMap.RangeMode}} 分段专题图的分段模式。<br>
- *        rangeParameter - {number}分段参数。<br>
- *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。<br>
- *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<SuperMap.ThemeRangeItem>} options.items - 分段专题图子项数组。<br>
+ * @param {string} options.rangeExpression - 分段字段表达式。<br>
+ * @param {SuperMap.RangeMode} options.rangeMode - 分段专题图的分段模式。<br>
+ * @param {number} options.rangeParameter - 分段参数。<br>
+ * @param {SuperMap.ColorGradientType} options.colorGradientType - 渐变颜色枚举类。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 var ThemeRange = exports.ThemeRange = function (_Theme) {
     _inherits(ThemeRange, _Theme);
@@ -24984,7 +25003,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
         _classCallCheck(this, ThemeRange);
 
         /**
-         * @member SuperMap.ThemeRange.prototype.precision -{string}
+         * @member {string} SuperMap.ThemeRange.prototype.precision
          * @description 精准度
          */
         var _this = _possibleConstructorReturn(this, (ThemeRange.__proto__ || Object.getPrototypeOf(ThemeRange)).call(this, "RANGE", options));
@@ -24992,7 +25011,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
         _this.precision = '1.0E-12';
 
         /**
-         * @member SuperMap.ThemeRange.prototype.items -{Array<SuperMap.ThemeRangeItem>}
+         * @member {Array.<SuperMap.ThemeRangeItem>} SuperMap.ThemeRange.prototype.items
          * @description 分段专题图子项数组。<br>
          *              在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。<br>
          *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。<br>
@@ -25001,14 +25020,14 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
         _this.items = null;
 
         /**
-         * @member SuperMap.ThemeRange.prototype.rangeExpression -{string}
+         * @member {string} SuperMap.ThemeRange.prototype.rangeExpression
          * @description 分段字段表达式。<br>
          *              由于范围分段专题图基于各种分段方法根据一定的距离进行分段，因而范围分段专题图所基于的字段值的数据类型必须为数值型。对于字段表达式，只能为数值型的字段间的运算。必设字段。
          */
         _this.rangeExpression = null;
 
         /**
-         * @member SuperMap.ThemeRange.prototype.rangeMode -{SuperMap.RangeMode}
+         * @member {SuperMap.RangeMode} SuperMap.ThemeRange.prototype.rangeMode
          * @description 分段专题图的分段模式。<br>
          *              默认值为 {@link RangeMode|SuperMap.RangeMode.EQUALINTERVAL}（等距离分段）。
          *              在分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段。
@@ -25018,7 +25037,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
         _this.rangeMode = _REST.RangeMode.EQUALINTERVAL;
 
         /**
-         * @member SuperMap.ThemeRange.prototype.rangeParameter -{number}
+         * @member {number} SuperMap.ThemeRange.prototype.rangeParameter
          * @description 分段参数。<br>
          *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
          *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
@@ -25026,7 +25045,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
         _this.rangeParameter = 0;
 
         /**
-         * @member SuperMap.ThemeRange.prototype.colorGradientType -{SuperMap.ColorGradientType}
+         * @member {SuperMap.ColorGradientType} SuperMap.ThemeRange.prototype.colorGradientType
          * @description 渐变颜色枚举类 <br>
          *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
          *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色
@@ -25072,8 +25091,8 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
         /**
          * @function SuperMap.ThemeRange.fromObj
          * @description 从传入对象获取范围分段专题图类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeRange} ThemeRange对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeRange} ThemeRange对象
          */
 
     }], [{
@@ -25140,14 +25159,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  iServer Map Theme
  * @classdesc 等级符号专题图。
  * @extends SuperMap.Theme
- * @param options - {Object} 可选参数。如：<br>
- *        baseValue - {number}等级符号专题图的基准值，单位同专题变量的单位。<br>
- *        expression - {string} 等级符号专题图的字段或字段表达式。<br>
- *        flow - {{@link SuperMap.ThemeFlow}} 等级符号专题图符号流动显示与牵引线设置类。<br>
- *        graduatedMode - {{@link SuperMap.GraduatedMode}} 等级符号专题图分级模式。<br>
- *        offset - {{@link SuperMap.ThemeOffset}} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- *        style - {{@link SuperMap.ThemeGraduatedSymbolStyle}} 用于设置等级符号图正负和零值显示风格。<br>
- *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.baseValue - 等级符号专题图的基准值，单位同专题变量的单位。<br>
+ * @param {string} options.expression - 等级符号专题图的字段或字段表达式。<br>
+ * @param {SuperMap.ThemeFlow} options.flow - 等级符号专题图符号流动显示与牵引线设置类。<br>
+ * @param {SuperMap.GraduatedMode} options.graduatedMode - 等级符号专题图分级模式。<br>
+ * @param {SuperMap.ThemeOffset} options.offset - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
+ * @param {SuperMap.ThemeGraduatedSymbolStyle} options.style - 用于设置等级符号图正负和零值显示风格。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
     _inherits(ThemeGraduatedSymbol, _Theme);
@@ -25156,7 +25175,7 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
         _classCallCheck(this, ThemeGraduatedSymbol);
 
         /**
-         * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{number}
+         * @member {number} SuperMap.ThemeGraduatedSymbol.prototype.baseValue
          * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
          *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于<br>
          *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，<br>
@@ -25167,20 +25186,20 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
         _this.baseValue = 0;
 
         /**
-         * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{string}
+         * @member {string} SuperMap.ThemeGraduatedSymbol.prototype.expression
          * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
          */
         _this.expression = null;
 
         /**
-         * @member SuperMap.ThemeGraduatedSymbol.prototype.flow -{SuperMap.ThemeFlow}
+         * @member {SuperMap.ThemeFlow} SuperMap.ThemeGraduatedSymbol.prototype.flow
          * @description 等级符号专题图符号流动显示与牵引线设置类。<br>
          *              通过该字段可以设置等级符号是否流动显示和牵引线风格。
          */
         _this.flow = new _ThemeFlow.ThemeFlow();
 
         /**
-         * @member SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode -{SuperMap.GraduatedMode}
+         * @member {SuperMap.GraduatedMode} SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode
          * @description 等级符号专题图分级模式。<br>
          *              分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，<br>
          *              这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。<br>
@@ -25192,13 +25211,13 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
         _this.graduatedMode = _REST.GraduatedMode.CONSTANT;
 
         /**
-         * @member SuperMap.ThemeGraduatedSymbol.prototype.offset -{SuperMap.ThemeOffset}
+         * @member {SuperMap.ThemeOffset} SuperMap.ThemeGraduatedSymbol.prototype.offset
          * @description 用于设置等级符号图相对于要素内点的偏移量。
          */
         _this.offset = new _ThemeOffset.ThemeOffset();
 
         /**
-         * @member SuperMap.ThemeGraduatedSymbol.prototype.style -{SuperMap.ThemeGraduatedSymbolStyle}
+         * @member {SuperMap.ThemeGraduatedSymbolStyle} SuperMap.ThemeGraduatedSymbol.prototype.style
          * @description 用于设置等级符号图正负和零值显示风格。
          */
         _this.style = new _ThemeGraduatedSymbolStyle.ThemeGraduatedSymbolStyle();
@@ -25241,7 +25260,7 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
         /**
          * @function SuperMap.ThemeGraduatedSymbol.prototype.toJSON
          * @description 将themeLabel对象转化为json字符串。
-         * @return {string} 返回转换后的 JSON 字符串。
+         * @returns {string} 返回转换后的 JSON 字符串。
          */
 
     }, {
@@ -25253,7 +25272,7 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
         /**
          * @function SuperMap.ThemeGraduatedSymbol.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return{Object} 对应的 JSON 格式对象。
+         * @returns {Object} 对应的 JSON 格式对象。
          */
 
     }, {
@@ -25288,8 +25307,8 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
         /**
          * @function SuperMap.ThemeGraduatedSymbol.fromObj
          * @description 从传入对象获取等级符号专题图。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象
          */
 
     }], [{
@@ -25344,19 +25363,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.ThemeDotDensity
  * @category  iServer Map Theme
  * @classdesc 点密度专题图。<br>
- * @description
- *              点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。<br>
+ * @description 点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。<br>
  *              点密度专题图利用图层的某一数值属性信息（专题值）映射为不同等级，每一级别使用不同数量或表现为密度的点符号来表示。<br>
  *              该专题值在各个分区内的分布情况，体现不同区域的相对数量差异。多用于具有数量特征的地图上，<br>
  *              比如表示不同地区的粮食产量、GDP、人口等的分级，主要针对区域或面状的要素，因而，点密度专题图适用于面数据集。<br>
  *              注意：点密度专题图中点的分布是随机的，并不代表实际的分布位置。即使在相关设置完全相同的情况下，<br>
  *              每次制作出的专题图，点的数量相同，但点的位置都有差异。
- * @extends SuperMap.Theme
- * @param options - {Object} 可选参数。如：<br>
- *        dotExpression - {string} 创建点密度专题图的字段或字段表达式。<br>
- *        style - {{@link SuperMap.ServerStyle}} 点密度专题图中点的风格。<br>
- *        value - {number} 专题图中每一个点所代表的数值。<br>
- *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.dotExpression - 创建点密度专题图的字段或字段表达式。<br>
+ * @param {SuperMap.ServerStyle} options.style - 点密度专题图中点的风格。<br>
+ * @param {number} options.value - 专题图中每一个点所代表的数值。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
     _inherits(ThemeDotDensity, _Theme);
@@ -25365,7 +25383,7 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
         _classCallCheck(this, ThemeDotDensity);
 
         /**
-         * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{string}
+         * @member {string} SuperMap.ThemeDotDensity.prototype.dotExpression
          * @description 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
          */
         var _this = _possibleConstructorReturn(this, (ThemeDotDensity.__proto__ || Object.getPrototypeOf(ThemeDotDensity)).call(this, "DOTDENSITY", options));
@@ -25373,13 +25391,13 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
         _this.dotExpression = null;
 
         /**
-         * @member SuperMap.ThemeDotDensity.prototype.style -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeDotDensity.prototype.style
          * @description 点密度专题图中点的风格。
          */
         _this.style = new _ServerStyle.ServerStyle();
 
         /**
-         * @member SuperMap.ThemeDotDensity.prototype.value -{number}
+         * @member {number} SuperMap.ThemeDotDensity.prototype.value
          * @description 专题图中每一个点所代表的数值。<br>
          *              点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，<br>
          *              点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，<br>
@@ -25416,7 +25434,7 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
         /**
          * @function SuperMap.ThemeDotDensity.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return{Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -25435,8 +25453,8 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
         /**
          * @function SuperMap.ThemeDotDensity.fromObj
          * @description 从传入对象获取点密度专题图中点的风格。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeDotDensity} ThemeDotDensity对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeDotDensity} ThemeDotDensity对象
          */
 
     }], [{
@@ -25503,24 +25521,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.ThemeGraph
  * @category  iServer Map Theme
  * @classdesc 统计专题图类。
- * @extends SuperMap.Theme
- * @param options - {Object} 参数。<br>
- *        barWidth - {number}柱状专题图中每一个柱的宽度。<br>
- *        flow - {SuperMap.ThemeFlow} 统计专题图流动显示与牵引线设置。<br>
- *        graduatedMode - {{@link SuperMap.GraduatedMode}} 统计图中地理要素的值与图表尺寸间的映射关系。<br>
- *        graphAxes - {{@link SuperMap.ThemeGraphAxes}} 统计图中坐标轴样式相关信息。<br>
- *        graphSize - {{@link SuperMap.ThemeGraphSize}} 统计符号的最大最小尺寸。<br>
- *        graphSizeFixed - {boolean} 缩放地图时统计图符号是否固定大小。<br>
- *        graphText - {{@link SuperMap.ThemeGraphText}} 统计图上的文字是否可以见以及文字标注风格。<br>
- *        graphAxesTextDisplayMode -{{@link SuperMap.GraphAxesTextDisplayMode}} 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。<br>
- *        graphType - {{@link SuperMap.ThemeGraphType}} 统计专题图类型。<br>
- *        items - {Array<{@link SuperMap.ThemeGraphItem}>} 统计专题图子项集合。<br>
- *        memoryKeys - {Array<integer>} 以内存数组方式制作专题图时的键数组。<br>
- *        negativeDisplayed - {boolean} 专题图中是否显示属性为负值的数据。<br>
- *        offset - {{@link SuperMap.ThemeOffset}} 统计图相对于要素内点的偏移量。<br>
- *        overlapAvoided - {boolean} 统计图是否采用避让方式显示。<br>
- *        roseAngle - {number}统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
- *        startAngle - {number}饼状统计图扇形的起始角度。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {number}  options.barWidth - 柱状专题图中每一个柱的宽度。<br>
+ * @param {SuperMap.ThemeFlow} options.flow - 统计专题图流动显示与牵引线设置。<br>
+ * @param {SuperMap.GraduatedMode} options.graduatedMode - 统计图中地理要素的值与图表尺寸间的映射关系。<br>
+ * @param {SuperMap.ThemeGraphAxes} options.graphAxes - 统计图中坐标轴样式相关信息。<br>
+ * @param {SuperMap.ThemeGraphSize} options.graphSize - 统计符号的最大最小尺寸。<br>
+ * @param {boolean} options.graphSizeFixed - 缩放地图时统计图符号是否固定大小。<br>
+ * @param {SuperMap.ThemeGraphText} options.graphText - 统计图上的文字是否可以见以及文字标注风格。<br>
+ * @param {SuperMap.GraphAxesTextDisplayMode} [options.graphAxesTextDisplayMode=SuperMap.GraphAxesTextDisplayMode.NONE] - 统计专题图坐标轴文本显示模式。<br>
+ * @param {SuperMap.ThemeGraphType} options.graphType - 统计专题图类型。<br>
+ * @param {Array.<SuperMap.ThemeGraphItem>} options.items - 统计专题图子项集合。<br>
+ * @param {Array.<number>} options.memoryKeys - 以内存数组方式制作专题图时的键数组。<br>
+ * @param {boolean} options.negativeDisplayed - 专题图中是否显示属性为负值的数据。<br>
+ * @param {SuperMap.ThemeOffset} options.offset - 统计图相对于要素内点的偏移量。<br>
+ * @param {boolean} options.overlapAvoided - 统计图是否采用避让方式显示。<br>
+ * @param {number} options.roseAngle - 统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
+ * @param {number} options.startAngle - 饼状统计图扇形的起始角度。
  */
 var ThemeGraph = exports.ThemeGraph = function (_Theme) {
     _inherits(ThemeGraph, _Theme);
@@ -25529,8 +25547,8 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         _classCallCheck(this, ThemeGraph);
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.barWidth -{number}
-         * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位，默认值为0。<br>
+         * @member {number} [SuperMap.ThemeGraph.prototype.barWidth=0]
+         * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位。<br>
          *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
          */
         var _this = _possibleConstructorReturn(this, (ThemeGraph.__proto__ || Object.getPrototypeOf(ThemeGraph)).call(this, "GRAPH", options));
@@ -25538,14 +25556,14 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         _this.barWidth = 0;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.flow -{SuperMap.ThemeFlow}
+         * @member {SuperMap.ThemeFlow} SuperMap.ThemeGraph.prototype.flow
          * @description 统计专题图流动显示与牵引线设置。
          *              通过该字段可以设置统计符号是否流动显示和牵引线风格。
          */
         _this.flow = new _ThemeFlow.ThemeFlow();
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graduatedMode -{SuperMap.GraduatedMode}
+         * @member {SuperMap.GraduatedMode} SuperMap.ThemeGraph.prototype.graduatedMode
          * @description 统计图中地理要素的值与图表尺寸间的映射关系（常数、对数、平方根），即分级方式。
          *              默认值为 SuperMap.GraduatedMode.CONSTANT。
          *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
@@ -25554,44 +25572,44 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         _this.graduatedMode = _REST.GraduatedMode.CONSTANT;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graphAxes -{SuperMap.ThemeGraphAxes}
+         * @member {SuperMap.ThemeGraphAxes} SuperMap.ThemeGraph.prototype.graphAxes
          * @description 用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
          */
         _this.graphAxes = new _ThemeGraphAxes.ThemeGraphAxes();
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graphSize -{SuperMap.ThemeGraphSize}
+         * @member {SuperMap.ThemeGraphSize} SuperMap.ThemeGraph.prototype.graphSize
          * @description 用于设置统计符号的最大最小尺寸。
          */
         _this.graphSize = new _ThemeGraphSize.ThemeGraphSize();
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{boolean}
+         * @member {boolean} [SuperMap.ThemeGraph.prototype.graphSizeFixed=false]
          * @description 缩放地图时统计图符号是否固定大小。默认值为 false，即统计图符号将随地图缩放。
          */
         _this.graphSizeFixed = false;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graphText -{SuperMap.ThemeGraphText}
+         * @member {SuperMap.ThemeGraphText} SuperMap.ThemeGraph.prototype.graphText
          * @description 统计图上的文字是否可以见以及文字标注风格。
          */
         _this.graphText = new _ThemeGraphText.ThemeGraphText();
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graphType -{SuperMap.ThemeGraphType}
+         * @member {SuperMap.ThemeGraphType} SuperMap.ThemeGraph.prototype.graphType
          * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，<br>
          *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
          */
         _this.graphType = _REST.ThemeGraphType.AREA;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode -{SuperMap.GraphAxesTextDisplayMode}
-         * @description 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。
+         * @member {SuperMap.GraphAxesTextDisplayMode} [SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode=SuperMap.GraphAxesTextDisplayMode.NONE]
+         * @description 统计专题图坐标轴文本显示模式。
          */
         _this.graphAxesTextDisplayMode = _REST.GraphAxesTextDisplayMode.NONE;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.items -{Array<SuperMap.ThemeGraphItem>}
+         * @member {Array.<SuperMap.ThemeGraphItem>} SuperMap.ThemeGraph.prototype.items
          * @description 统计专题图子项集合。必设字段。
          *              统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
          *              对于每个专题图子项可以为其设置标题、风格，甚至可以将该子项再制作成范围分段专题图。
@@ -25599,7 +25617,7 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         _this.items = null;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array<integer>}
+         * @member {Array.<number>} SuperMap.ThemeGraph.prototype.memoryKeys
          * @description 以内存数组方式制作专题图时的键数组。<br>
          *              键数组内的数值代表 SmID 值，它与 SuperMap.ThemeGraphItem 类中的值数组（SuperMap.ThemeGraphItem.memoryDoubleValues）要关联起来应用。<br>
          *              键数组中数值的个数必须要与值数组的数值个数一致。值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -25679,19 +25697,19 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         _this.memoryKeys = null;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{boolean}
-         * @description 专题图中是否显示属性为负值的数据。true 表示显示；默认为 false 即不显示。
+         * @member {boolean} [SuperMap.ThemeGraph.prototype.negativeDisplayed=false]
+         * @description 专题图中是否显示属性为负值的数据。true 表示显示；falese 不显示。
          */
         _this.negativeDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.offset -{SuperMap.ThemeOffset}
+         * @member {SuperMap.ThemeOffset} SuperMap.ThemeGraph.prototype.offset
          * @description 用于设置统计图相对于要素内点的偏移量。
          */
         _this.offset = new _ThemeOffset.ThemeOffset();
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{boolean}
+         * @member {boolean} SuperMap.ThemeGraph.prototype.overlapAvoided
          * @description 统计图是否采用避让方式显示。<br>
          *              1.对数据集制作统计专题图:当统计图采用避让方式显示时，如果 overlapAvoided 为 true，则在统计图重叠度很大的情况下，
          *              会出现无法完全避免统计图重叠的现象；如果 overlapAvoided 为 false，会过滤掉一些统计图，从而保证所有的统计图均不重叠。<br>
@@ -25701,13 +25719,13 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         _this.overlapAvoided = true;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.roseAngle -{number}
+         * @member {number} SuperMap.ThemeGraph.prototype.roseAngle
          * @description 统计图中玫瑰图或三维玫瑰图用于等分的角度，默认为0度，精确到0.1度。在角度为0或者大于360度的情况下均使用360度来等分制作统计图的字段数。
          */
         _this.roseAngle = 0;
 
         /**
-         * @member SuperMap.ThemeGraph.prototype.startAngle -{number}
+         * @member {number} SuperMap.ThemeGraph.prototype.startAngle
          * @description 饼状统计图扇形的起始角度。默认为0度，精确到0.1度，以水平方向为正向。只有选择的统计图类型为饼状图（饼图、三维饼图、玫瑰图、三维玫瑰图）时，此项才可设置。
          */
         _this.startAngle = 0;
@@ -25772,7 +25790,7 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         /**
          * @function SuperMap.ThemeGraph.prototype.toJSON
          * @description 将SuperMap.ThemeGraph对象转化为json字符串。
-         * @return {string} 返回转换后的 JSON 字符串。
+         * @returns {string} 返回转换后的 JSON 字符串。
          */
 
     }, {
@@ -25784,7 +25802,7 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         /**
          * @function SuperMap.ThemeGraph.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象。
+         * @returns {Object} 对应的 JSON 格式对象。
          */
 
     }, {
@@ -25835,8 +25853,8 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
         /**
          * @function SuperMap.ThemeGraph.fromObj
          * @description 从传入对象获取统计专题图类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraph} ThemeGraph对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGraph} ThemeGraph对象
          */
 
     }], [{
@@ -25904,13 +25922,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 单值专题图。
  * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
  *              比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
- * @extends SuperMap.Theme
- * @param options - {Object} 可选参数。如：<br>
- *        items - {Array<{@link SuperMap.ThemeUniqueItem}>} 单值专题图子项类数组。<br>
- *        uniqueExpression - {string} 用于制作单值专题图的字段或字段表达式。<br>
- *        defaultStyle - {{@link SuperMap.ServerStyle}} 未参与单值专题图制作的对象的显示风格。<br>
- *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。<br>
- *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 单值专题图子项类数组。<br>
+ * @param {string} options.uniqueExpression - 用于制作单值专题图的字段或字段表达式。<br>
+ * @param {SuperMap.ServerStyle} options.defaultStyle - 未参与单值专题图制作的对象的显示风格。<br>
+ * @param {SuperMap.ColorGradientType} options.colorGradientType - 渐变颜色枚举类。<br>
+ * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
  */
 var ThemeUnique = exports.ThemeUnique = function (_Theme) {
     _inherits(ThemeUnique, _Theme);
@@ -25919,7 +25937,7 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
         _classCallCheck(this, ThemeUnique);
 
         /**
-         * @member SuperMap.ThemeUnique.prototype.defaultStyle -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeUnique.prototype.defaultStyle
          * @description 未参与单值专题图制作的对象的显示风格。<br>
          *              通过单值专题图子项数组 （items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
          */
@@ -25928,7 +25946,7 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
         _this.defaultStyle = new _ServerStyle.ServerStyle();
 
         /**
-         * @member SuperMap.ThemeUnique.prototype.items -{Array<SuperMap.ThemeUniqueItem>}
+         * @member {Array.<SuperMap.ThemeUniqueItem>} SuperMap.ThemeUnique.prototype.items
          * @description 单值专题图子项类数组。<br>
          *              单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
          *              Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
@@ -25936,14 +25954,14 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
         _this.items = null;
 
         /**
-         * @member SuperMap.ThemeUnique.prototype.uniqueExpression -{string}
+         * @member {string} SuperMap.ThemeUnique.prototype.uniqueExpression
          * @description 用于制作单值专题图的字段或字段表达式。<br>
          *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
          */
         _this.uniqueExpression = null;
 
         /**
-         * @member SuperMap.ThemeUnique.prototype.colorGradientType -{SuperMap.ColorGradientType}
+         * @member {SuperMap.ColorGradientType} SuperMap.ThemeUnique.prototype.colorGradientType
          * @description 渐变颜色枚举类。<br>
          *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
          *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。
@@ -25992,7 +26010,7 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
         /**
          * @function SuperMap.ThemeUnique.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -26019,8 +26037,8 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
         /**
          * @function SuperMap.ThemeUnique.fromObj
          * @description 从传入对象获取单值专题图类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeUnique} ThemeUnique对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeUnique} ThemeUnique对象
          */
 
     }], [{
@@ -26072,37 +26090,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 单值专题图子项类。
  * @description 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
  *              省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 单值专题图子项的标题。<br>
- *        style - {{@link SuperMap.ServerStyle}} 单值专题图子项的风格。<br>
- *        unique - {string} 单值专题图子项的单值。<br>
- *        visible - {boolean} 单值专题图子项是否可见。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 单值专题图子项的标题。<br>
+ * @param {SuperMap.ServerStyle} options.style - 单值专题图子项的风格。<br>
+ * @param {string} options.unique - 单值专题图子项的单值。<br>
+ * @param {boolean} options.visible - 单值专题图子项是否可见。
  */
 var ThemeUniqueItem = exports.ThemeUniqueItem = function () {
     function ThemeUniqueItem(options) {
         _classCallCheck(this, ThemeUniqueItem);
 
         /**
-         * @member SuperMap.ThemeUniqueItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeUniqueItem.prototype.caption
          * @description 单值专题图子项的标题。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeUniqueItem.prototype.style -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeUniqueItem.prototype.style
          * @description 单值专题图子项的显示风格。
          */
         this.style = new _ServerStyle.ServerStyle();
 
         /**
-         * @member SuperMap.ThemeUniqueItem.prototype.unique -{string}
+         * @member {string} SuperMap.ThemeUniqueItem.prototype.unique
          * @description 单值专题图子项的值，可以为数字、字符串等。
          */
         this.unique = null;
 
         /**
-         * @member SuperMap.ThemeUniqueItem.prototype.visible -{boolean}
-         * @description 单值专题图子项的可见性。默认为 true，表示可见。
+         * @member {boolean} [SuperMap.ThemeUniqueItem.prototype.visible=true]
+         * @description 单值专题图子项的可见性。
          */
         this.visible = true;
 
@@ -26136,7 +26154,7 @@ var ThemeUniqueItem = exports.ThemeUniqueItem = function () {
         /**
          * @function SuperMap.ThemeUniqueItem.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -26155,8 +26173,8 @@ var ThemeUniqueItem = exports.ThemeUniqueItem = function () {
         /**
          * @function SuperMap.ThemeUniqueItem.fromObj
          * @description 从传入对象获取单值专题图子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeUniqueItem} ThemeUniqueItem对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeUniqueItem} ThemeUniqueItem对象
          */
 
     }], [{
@@ -28390,7 +28408,9 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
                 _data = data.get();
             }
             this.dataSet.add(_data);
-            this.update({ options: options });
+            this.update({
+                options: options
+            });
         }
 
         /**
@@ -28412,7 +28432,9 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
             if (_data != undefined) {
                 this.dataSet.set(_data);
             }
-            _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'update', this).call(this, { options: update.options });
+            _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'update', this).call(this, {
+                options: update.options
+            });
         }
 
         /**
@@ -28444,7 +28466,9 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
                 }
             });
             this.dataSet.set(newData);
-            this.update({ options: null });
+            this.update({
+                options: null
+            });
         }
 
         /**
@@ -28456,7 +28480,9 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
         key: 'clearData',
         value: function clearData() {
             this.dataSet && this.dataSet.clear();
-            this.update({ options: null });
+            this.update({
+                options: null
+            });
         }
 
         /**
@@ -28472,7 +28498,9 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
             if (dataSet && dataSet.get) {
                 this.dataSet.set(dataSet.get());
             }
-            this.update({ options: options });
+            this.update({
+                options: options
+            });
         }
     }, {
         key: '_canvasUpdate',
@@ -28525,7 +28553,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
             var centerPx = map.project(center);
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    if (map.transform.rotationMatrix) {
+                    if (map.transform.rotationMatrix || self.context === '2d') {
                         var worldPoint = map.project(new _mapboxGl2.default.LngLat(coordinate[0], coordinate[1]));
                         return [worldPoint.x, worldPoint.y];
                     }
@@ -28604,8 +28632,13 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
             canvas.style.position = 'absolute';
             canvas.style.top = 0 + "px";
             canvas.style.left = 0 + "px";
-            canvas.width = parseInt(this.map.getCanvas().style.width);
-            canvas.height = parseInt(this.map.getCanvas().style.height);
+            var global$2 = typeof window === 'undefined' ? {} : window;
+            var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
+            canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
+            canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
+            if (this.canvasLayer.mapVOptions.context == '2d') {
+                canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
+            }
             canvas.style.width = this.map.getCanvas().style.width;
             canvas.style.height = this.map.getCanvas().style.height;
         }
@@ -28698,7 +28731,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
     }, {
         key: 'clear',
         value: function clear(context) {
-            context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context && context.clearRect && context.clearRect(0, 0, parseInt(this.map.getCanvas().style.width), parseInt(this.map.getCanvas().style.height));
         }
 
         /**
@@ -38785,19 +38818,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TransferSolutionParameters
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询参数类。
- * @param options - {Object} 参数。如:</br>
- *        solutionCount - {number} 乘车方案的数量。默认为6。</br>
- *        transferTactic - {{@link SuperMap.TransferTactic}} 交通换乘策略类型，
- *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
- *        transferPreference - {{@link SuperMap.TransferPreference}} 乘车偏好枚举。</br>
- *        walkingRatio - {number} 步行与公交的消耗权重比，默认值为 10。</br>
- *        points - {Array<Object>|Array<number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
- *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
- *        evadeLines - {Array<number>} 避让路线的ID，默认为null。</br>
- *        evadeStops - {Array<number>} 避让站点的ID，默认为null。</br>
- *        priorLines - {Array<number>} 优先路线的ID，默认为null。</br>
- *        priorStops - {Array<number>} 优先站点的ID，默认为null。</br>
- *        travelTime - {string} 出行的时间。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {number} [options.solutionCount=6] - 乘车方案的数量。</br>
+ * @param {SuperMap.TransferTactic} options.transferTactic - 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
+ * @param {SuperMap.TransferPreference} options.transferPreference - 乘车偏好枚举。</br>
+ * @param {number} [options.walkingRatio=10] - 步行与公交的消耗权重比。</br>
+ * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|number)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+ * @param {Array.<number>} [options.evadeLines=null] - 避让路线的ID。</br>
+ * @param {Array.<number>} [options.evadeStops=null] - 避让站点的ID。</br>
+ * @param {Array.<number>} [options.priorLines=null] - 优先路线的ID。</br>
+ * @param {Array.<number>} [options.priorStops=null] - 优先站点的ID。</br>
+ * @param {string} options.travelTime - 出行的时间。</br>
  */
 var TransferSolutionParameters = exports.TransferSolutionParameters = function () {
   function TransferSolutionParameters(options) {
@@ -38805,75 +38836,74 @@ var TransferSolutionParameters = exports.TransferSolutionParameters = function (
 
     options = options || {};
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.solutionCount -{number}
-     *  @description 乘车方案的数量。默认为6。
+     *  @member {number} [SuperMap.TransferSolutionParameters.prototype.solutionCount=6]
+     *  @description 乘车方案的数量。
      */
     this.solutionCount = 6;
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.transferPreference -{SuperMap.TransferPreference}
-     *  @description 乘车偏好枚举。默认为{@link TransferPreference|SuperMap.TransferPreference.NONE}
+     * @member {SuperMap.TransferPreference} [SuperMap.TransferSolutionParameters.prototype.transferPreference=TransferPreference|SuperMap.TransferPreference.NONE]
+     *  @description 乘车偏好枚举。
      */
     this.transferPreference = _REST.TransferPreference.NONE;
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.transferTactic - {SuperMap.TransferTactic}
-     *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。默认为{@link TransferTactic|SuperMap.TransferTactic.LESS_TIME}
+     *  @member {SuperMap.TransferTactic} [SuperMap.TransferSolutionParameters.prototype.transferTactic=TransferTactic|SuperMap.TransferTactic.LESS_TIME]
+     *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
      */
     this.transferTactic = _REST.TransferTactic.LESS_TIME;
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.walkingRatio - {number}
-     *  @description 步行与公交的消耗权重比，默认值为 10。此值越大，则步行因素对于方案选择的影响越大。例如：</br>
-     * 例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：</br>
-     * 方案1：坐车10公里，走路1公里；</br>
-     * 方案2：坐车15公里，走路0.5公里；</br>
-     *      1. 假设权重比为15：
-     *          •方案1的总消耗为：10 + 1*15 = 25
-     *          •方案2的总消耗为：15 + 0.5*15 = 22.5
-     *          此时方案2消耗更低。
-     *      2. 假设权重比为2：
-     *          •方案1的总消耗为：10+1*2 = 12
-     *          •方案2的总消耗为：15+0.5*2 = 17
-     *          此时方案1消耗更低。
+     *  @member {number} [SuperMap.TransferSolutionParameters.prototype.walkingRatio=10]
+     *  @description 步行与公交的消耗权重比。此值越大，则步行因素对于方案选择的影响越大。例如：</br>
+     *  例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：</br>
+     *  方案1：坐车10公里，走路1公里；</br>
+     *  方案2：坐车15公里，走路0.5公里；</br>
+     *        1. 假设权重比为15：
+     *           •方案1的总消耗为：10 + 1*15 = 25
+     *           •方案2的总消耗为：15 + 0.5*15 = 22.5
+     *           此时方案2消耗更低。
+     *        2. 假设权重比为2：
+     *           •方案1的总消耗为：10+1*2 = 12
+     *           •方案2的总消耗为：15+0.5*2 = 17
+     *           此时方案1消耗更低。
      */
 
     this.walkingRatio = null;
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.points - {Array<string>|{Array<Object>}
-     *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
-     *  两种查询方式：
+     *  @member {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|string)>} SuperMap.TransferSolutionParameters.prototype.points
+     *  @description 两种查询方式：
      *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
      *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
      */
     this.points = false;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.evadeLines -{Array<number>}
+     * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.evadeLines
      * @description 避让路线ID。
      * */
     this.evadeLines = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.evadeStops -{Array<number>}
+     * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.evadeStops
      * @description 避让站点ID。
      * */
     this.evadeStops = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.priorLines -{Array<number>}
+     * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.priorLines
      * @description 优先路线ID。
      * */
     this.priorLines = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.priorStops -{Array<number>}
+     * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.priorStops
      * @description 优先站点ID。
      * */
     this.priorStops = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.travelTime -{string}
+     * @member {string} SuperMap.TransferSolutionParameters.prototype.travelTime
      * @description 出行的时间； 格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
      */
     this.travelTime = null;
@@ -38898,8 +38928,8 @@ var TransferSolutionParameters = exports.TransferSolutionParameters = function (
     /**
      * @function SuperMap.TransferSolutionParameters.toJsonParameters
      * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
-     * @param  params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
-     * @return {string} 转化后的 json字符串。
+     * @param {SuperMap.TransferSolutionParameters} params - 交通换乘参数。
+     * @returns {string} 转化后的 json字符串。
      */
 
   }], [{
@@ -38942,10 +38972,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TransferPathParameters
  * @category  iServer TrafficTransferAnalyst TransferPaths
  * @classdesc 交通换乘线路查询参数类。
- * @param options - {Object} 参数。如:</br>
- *        transferLines -{Array<{@link SuperMap.TransferLine}>} 本换乘分段内可乘车的路线集合。</br>
- *        points - {Array<string>|Array<Object>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
- *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {Array.<SuperMap.TransferLine>} options.transferLines -本 换乘分段内可乘车的路线集合。</br>
+ * @param {Array.<(string|SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
  *
  */
 var TransferPathParameters = exports.TransferPathParameters = function () {
@@ -38954,15 +38983,14 @@ var TransferPathParameters = exports.TransferPathParameters = function () {
 
         options = options || {};
         /**
-         * @member SuperMap.TransferPathParameters.prototype.transferLines -{Array<SuperMap.TransferLine>}
+         * @member {Array.<SuperMap.TransferLine>} SuperMap.TransferPathParameters.prototype.transferLines
          * @description 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
          */
         this.transferLines = null;
 
         /**
-         *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>|Array<Object>}
-         *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
-         *  两种查询方式：
+         *  @member {Array.<(string|SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} SuperMap.TransferPathParameters.prototype.points
+         *  @description 两种查询方式：
          *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
          *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
          */
@@ -38987,9 +39015,9 @@ var TransferPathParameters = exports.TransferPathParameters = function () {
 
         /**
          * @function SuperMap.TransferPathParameters.toJson
-         * @description 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
-         * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
-         * @return{string} 转化后的 json字符串。
+         * @description 将 {@link SuperMap.TransferPathParameters} 对象参数转换为 json 字符串。
+         * @param {SuperMap.TransferPathParameters} params - 交通换乘参数。
+         * @returns {string} 转化后的 json字符串。
          */
 
     }], [{
@@ -39030,16 +39058,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TransferLine
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
- * @param options - {Object} 可选参数。如:</br>
- *        lineID - {number} 乘车路线ID。</br>
- *        lineName - {string} 乘车路线名称。</br>
- *        lineAliasName - {string} 乘车路线别名。</br>
- *        startStopIndex - {number}上车站点在本公交路线中的索引。</br>
- *        startStopName - {string} 上车站点名称。</br>
- *        startStopAliasName - {string} 上车站点别名。</br>
- *        endStopIndex - {number}下车站点在本公交路线中的索引</br>
- *        endStopName - {string} 下车站点名称。</br>
- *        endStopAliasName - {string} 下车站点别名。</br>
+ * @param {Object} options - 参数。</br>
+ * @param {number} options.lineID - 乘车路线ID。</br>
+ * @param {string} options.lineName - 乘车路线名称。</br>
+ * @param {string} options.lineAliasName - 乘车路线别名。</br>
+ * @param {number} options.startStopIndex - 上车站点在本公交路线中的索引。</br>
+ * @param {string} options.startStopName - 上车站点名称。</br>
+ * @param {string} options.startStopAliasName - 上车站点别名。</br>
+ * @param {number} options.endStopIndex - 下车站点在本公交路线中的索引</br>
+ * @param {string} options.endStopName - 下车站点名称。</br>
+ * @param {string} options.endStopAliasName - 下车站点别名。</br>
  */
 var TransferLine = exports.TransferLine = function () {
   function TransferLine(options) {
@@ -39047,55 +39075,55 @@ var TransferLine = exports.TransferLine = function () {
 
     options = options || {};
     /**
-     * @memberSuperMap.TransferLine.prototype.lineID -{number}
+     * @member {number} SuperMap.TransferLine.prototype.lineID
      * @description 乘车路线ID。
      */
     this.lineID = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineName -{string}
+     * @member {string} SuperMap.TransferLine.prototype.lineName
      * @description 乘车路线名称。
      */
     this.lineName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineAliasName -{string}
+     * @member {string} SuperMap.TransferLine.prototype.lineAliasName
      * @description 乘车路线别名。
      */
     this.lineAliasName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopIndex -{number}
+     * @member {number} SuperMap.TransferLine.prototype.startStopIndex
      * @description 上车站点在本公交路线中的索引。
      */
     this.startStopIndex = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopName -{string}
+     * @member {string} SuperMap.TransferLine.prototype.startStopName
      * @description 上车站点名称。
      */
     this.startStopName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopAliasName -{string}
+     * @member {string} SuperMap.TransferLine.prototype.startStopAliasName
      * @description 上车站点别名。
      */
     this.startStopAliasName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopIndex -{number}
+     * @member {number} SuperMap.TransferLine.prototype.endStopIndex
      * @description 下车站点在本公交路线中的索引。
      */
     this.endStopIndex = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopName -{string}
+     * @member {string} SuperMap.TransferLine.prototype.endStopName
      * @description 下车站点名称。
      */
     this.endStopName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopAliasName -{string}
+     * @member {string} SuperMap.TransferLine.prototype.endStopAliasName
      * @description 下车站点别名。
      */
     this.endStopAliasName = null;
@@ -39120,8 +39148,8 @@ var TransferLine = exports.TransferLine = function () {
     /**
      * @function SuperMap.TransferLine.fromJson
      * @description 将返回结果转化为 SuperMap.TransferLine 对象。
-     * @param jsonObject - {Object} 新的返回结果。
-     * @return {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。
+     * @param {Object} jsonObject - 新的返回结果。
+     * @returns {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。
      */
 
   }], [{
@@ -39177,12 +39205,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetTopology -{string} 检查对象所在的数据集名称。 <br>
- *         rule -{{@link SuperMap.TopologyValidatorRule}} 拓扑检查规则 。 <br>
- *         tolerance -{string} 容限 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 必填参数。<br>
+ * @param {string} options.datasetName -数据集名。<br>
+ * @param {string} options.datasetTopology -检查对象所在的数据集名称。<br>
+ * @param {SuperMap.TopologyValidatorRule} options.rule - 拓扑检查规则。<br>
+ * @param {string} options.tolerance - 容限。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = function () {
     function TopologyValidatorJobsParameter(options) {
@@ -39192,31 +39220,31 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
             return;
         }
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology -{string}
+         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology
          * @description 拓扑检查对象所在的数据集名称。
          */
         this.datasetTopology = "";
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.tolerance -{string}
+         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.tolerance
          * @description 容限，指定的拓扑错误检查时使用的容限。
          */
         this.tolerance = "";
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.rule -{SuperMap.TopologyValidatorRule}
+         * @member {SuperMap.TopologyValidatorRule} SuperMap.TopologyValidatorJobsParameter.prototype.rule
          * @description 拓扑检查模式 。
          */
         this.rule = _REST.TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -39247,8 +39275,8 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 
         /**
          * @function SuperMap.TopologyValidatorJobsParameter.toObject
-         * @param TopologyValidatorJobsParameter -{Object} 拓扑检查分析任务参数
-         * @param tempObj - {Object} 目标对象
+         * @param {Object} TopologyValidatorJobsParameter -拓扑检查分析任务参数
+         * @param {Object} tempObj - 目标对象
          * @description 生成拓扑检查分析任务对象
          */
 
@@ -39325,60 +39353,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeParameters
  * @category  iServer Map Theme
  * @classdesc 专题图参数类。
- *               该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
- * @param options - {Object} 可选参数。如：<br>
- *        datasetNames - {Array<string>} 要制作专题图的数据集数组，必设。<br>
- *        dataSourceNames - {Array<string>} 要制作专题图的数据集所在的数据源数组，必设。<br>
- *        joinItems - {Array<{@link SuperMap.JoinItem}>} 专题图外部表的连接信息 JoinItem 数组。<br>
- *        themes - {Array<{@link SuperMap.Theme}>} 专题图对象列表。<br>
- *        displayFilters -{Array<string>} 专题图属性过滤条件。<br>
- *        displayOrderBys -{Array<string>} 专题图对象生成符号叠加次序排序字段。<br>
- *        fieldValuesDisplayFilter -{Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
+ *            该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<string>} options.datasetNames - 要制作专题图的数据集数组，必设。<br>
+ * @param {Array.<string>} options.dataSourceNames - 要制作专题图的数据集所在的数据源数组，必设。<br>
+ * @param {Array.<SuperMap.JoinItem>} options.joinItems - 专题图外部表的连接信息 JoinItem 数组。<br>
+ * @param {Array.<SuperMap.Theme>} options.themes - 专题图对象列表。<br>
+ * @param {Array.<string>} options.displayFilters - 专题图属性过滤条件。<br>
+ * @param {Array.<string>} options.displayOrderBys - 专题图对象生成符号叠加次序排序字段。<br>
+ * @param {Object} options.fieldValuesDisplayFilter - 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
  */
 var ThemeParameters = exports.ThemeParameters = function () {
   function ThemeParameters(options) {
     _classCallCheck(this, ThemeParameters);
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<string>}
+     * @member {Array.<string>} SuperMap.ThemeParameters.prototype.datasetNames
      * @description 要制作专题图的数据集数组，必设。
      */
     this.datasetNames = null;
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.dataSourceNames -{Array<string>}
+     * @member {Array.<string>} SuperMap.ThemeParameters.prototype.dataSourceNames
      * @description 要制作专题图的数据集所在的数据源数组，必设。
      */
     this.dataSourceNames = null;
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.joinItems -{Array<SuperMap.JoinItem>}
+     * @member {Array.<SuperMap.JoinItem>} SuperMap.ThemeParameters.prototype.joinItems
      * @description 设置与外部表的连接信息 JoinItem 数组。
      *               使用此属性可以制作与外部表连接的专题图。
      */
     this.joinItems = null;
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.themes -{Array<SuperMap.Theme>}
+     * @member {Array.<SuperMap.Theme>} SuperMap.ThemeParameters.prototype.themes
      * @description 专题图对象列表。
-     *               该参数为实例化的各类专题图对象的集合。
+     *              该参数为实例化的各类专题图对象的集合。
      */
     this.themes = null;
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<string>}
+     * @member {Array.<string>} SuperMap.ThemeParameters.prototype.displayFilters
      * @description 专题图属性过滤条件。
      */
     this.displayFilters = null;
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<string>}
+     * @member {Array.<string>}  SuperMap.ThemeParameters.prototype.displayOrderBys
      * @description 专题图对象生成符号叠加次序排序字段
      */
     this.displayOrderBys = null;
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter -{Object}
+     * @member {Object} SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter
      * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
      *  * values：{Array<number>} - 就是要过滤的值；<br>
      *  * fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
@@ -39451,37 +39479,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGridUniqueItem
  * @category  iServer Map Theme
  * @classdesc 栅格单值专题图子项类。<br>
- *              栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 栅格单值专题图子项的名称。<br>
- *        color - {{@link SuperMap.ServerColor}} 栅格单值专题图子项的显示颜色。<br>
- *        unique - {number}栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
- *        visible - {boolean} 栅格单值专题图子项是否可见。
+ *            栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 栅格单值专题图子项的名称。<br>
+ * @param {SuperMap.ServerColor} options.color - 栅格单值专题图子项的显示颜色。<br>
+ * @param {number} options.unique - 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
+ * @param {boolean} options.visible - 栅格单值专题图子项是否可见。
  */
 var ThemeGridUniqueItem = exports.ThemeGridUniqueItem = function () {
     function ThemeGridUniqueItem(options) {
         _classCallCheck(this, ThemeGridUniqueItem);
 
         /**
-         * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeGridUniqueItem.prototype.caption
          * @description 栅格单值专题图子项的名称。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeGridUniqueItem.prototype.color -{SuperMap.ServerColor}
+         * @member {SuperMap.ServerColor} SuperMap.ThemeGridUniqueItem.prototype.color
          * @description 栅格单值专题图子项的显示颜色。
          */
         this.color = new _ServerColor.ServerColor();
 
         /**
-         * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{number}
+         * @member {number} SuperMap.ThemeGridUniqueItem.prototype.unique
          * @description 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
          */
         this.unique = null;
 
         /**
-         * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{boolean}
+         * @member {boolean} SuperMap.ThemeGridUniqueItem.prototype.visible
          * @description 栅格单值专题图子项是否可见。默认为true。
          */
         this.visible = true;
@@ -39516,7 +39544,7 @@ var ThemeGridUniqueItem = exports.ThemeGridUniqueItem = function () {
         /**
          * @function SuperMap.ThemeGridUniqueItem.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -39535,8 +39563,8 @@ var ThemeGridUniqueItem = exports.ThemeGridUniqueItem = function () {
         /**
          * @function SuperMap.ThemeGridUniqueItem.fromObj
          * @description 从传入对象获取栅格单值专题图子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGridUniqueItem} ThemeGridUniqueItem对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGridUniqueItem} ThemeGridUniqueItem对象
          */
 
     }], [{
@@ -39592,10 +39620,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 栅格单值专题图类。
  * @description 栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。<br>
  *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。<br>
- * @extends SuperMap.Theme
- * @param options - {Object} 可选参数。如：<br>
- *        items - {Array<{@link SuperMap.ThemeGridUniqueItem}>} 栅格单值专题图子项数组。<br>
- *        defaultcolor - {{@link SuperMap.ServerColor}} 栅格单值专题图的默认颜色。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<SuperMap.ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。<br>
+ * @param {SuperMap.ServerColor} options.defaultcolor - 栅格单值专题图的默认颜色。
  */
 var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
     _inherits(ThemeGridUnique, _Theme);
@@ -39604,7 +39632,7 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
         _classCallCheck(this, ThemeGridUnique);
 
         /**
-         * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
+         * @member {SuperMap.ServerColor} SuperMap.ThemeGridUnique.prototype.defaultcolor
          * @description 栅格单值专题图的默认颜色。
          *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
          */
@@ -39613,7 +39641,7 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
         _this.defaultcolor = new _ServerColor.ServerColor();
 
         /**
-         * @member SuperMap.ThemeGridUnique.prototype.items -{Array<SuperMap.ThemeGridUniqueItem>}
+         * @member {Array.<SuperMap.ThemeGridUniqueItem>} SuperMap.ThemeGridUnique.prototype.items
          * @description 栅格单值专题图子项数组。
          *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
          */
@@ -39657,7 +39685,7 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
         /**
          * @function SuperMap.ThemeGridUnique.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -39684,8 +39712,8 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
         /**
          * @function SuperMap.ThemeGridUnique.fromObj
          * @description 从传入对象获取栅格单值专题图类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGridUnique} ThemeGridUnique对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGridUnique} ThemeGridUnique对象
          */
 
     }], [{
@@ -39735,46 +39763,46 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGridRangeItem
  * @category  iServer Map Theme
  * @classdesc 栅格分段专题图子项类。
- * @description  在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
- *            本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 栅格分段专题图子项的标题。<br>
- *        color - {{@link SuperMap.ServerColor}}栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
- *        end - {number}栅格分段专题图子项的终止值。<br>
- *        start - {number}栅格分段专题图子项的起始值。<br>
- *        visible - {boolean} 栅格分段专题图子项是否可见。
+ * @description 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
+ *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 栅格分段专题图子项的标题。<br>
+ * @param {SuperMap.ServerColor} options.color - 栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
+ * @param {number} options.end - 栅格分段专题图子项的终止值。<br>
+ * @param {number} options.start - 栅格分段专题图子项的起始值。<br>
+ * @param {boolean} options.visible - 栅格分段专题图子项是否可见。
  */
 var ThemeGridRangeItem = exports.ThemeGridRangeItem = function () {
     function ThemeGridRangeItem(options) {
         _classCallCheck(this, ThemeGridRangeItem);
 
         /**
-         * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeGridRangeItem.prototype.caption
          * @description 栅格分段专题图子项的标题。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
+         * @member {SuperMap.ServerColor} SuperMap.ThemeGridRangeItem.prototype.color
          * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
          */
         this.color = new _ServerColor.ServerColor();
 
         /**
-         * @member SuperMap.ThemeGridRangeItem.prototype.end -{number}
-         * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
+         * @member {number} [SuperMap.ThemeGridRangeItem.prototype.end=0]
+         * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值。
          */
         this.end = 0;
 
         /**
-         * @member SuperMap.ThemeGridRangeItem.prototype.start -{number}
-         * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
+         * @member {number} [SuperMap.ThemeGridRangeItem.prototype.start=0]
+         * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值。
          */
         this.start = 0;
 
         /**
-         * @member SuperMap.ThemeGridRangeItem.prototype.visible -{boolean}
-         * @description 栅格分段专题图子项是否可见。默认为 true。
+         * @member {boolean} [SuperMap.ThemeGridRangeItem.prototype.visible=true]
+         * @description 栅格分段专题图子项是否可见。
          */
         this.visible = true;
 
@@ -39808,7 +39836,7 @@ var ThemeGridRangeItem = exports.ThemeGridRangeItem = function () {
         /**
          * @function SuperMap.ThemeGridRangeItem.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象。
+         * @returns {Object} 对应的 JSON 格式对象。
          */
 
     }, {
@@ -39827,8 +39855,8 @@ var ThemeGridRangeItem = exports.ThemeGridRangeItem = function () {
         /**
          * @function SuperMap.ThemeGridRangeItem.fromObj
          * @description 从传入对象获取栅格分段专题图子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem对象
          */
 
     }], [{
@@ -39888,13 +39916,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @description 栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。<br>
  *              栅格分段专题图一般用来反映连续分布现象的数量或程度特征。比如某年的全国降水量分布图，将各气象站点的观测值经过内插之后生成的栅格数据进行分段显示。<br>
  *              该类类似于分段专题图类，不同点在于分段专题图的操作对象是矢量数据，而栅格分段专题图的操作对象是栅格数据。<br>
- * @extends SuperMap.Theme
- * @param options - {Object} 参数。<br>
- *        items - {Array<{@link SuperMap.ThemeGridRangeItem}>} 栅格分段专题图子项数组。<br>
- *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
- *        rangeMode - {{@link SuperMap.RangeMode}} 分段专题图的分段模式。<br>
- *        rangeParameter - {number}分段参数。<br>
- *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。<br>
+ * @param {Array.<SuperMap.ThemeGridRangeItem>} options.items - 栅格分段专题图子项数组。<br>
+ * @param {boolean} options.reverseColor - 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
+ * @param {SuperMap.RangeMode} options.rangeMode - 分段专题图的分段模式。<br>
+ * @param {number} options.rangeParameter - 分段参数。<br>
+ * @param {SuperMap.ColorGradientType} options.colorGradientType - 渐变颜色枚举类。
  */
 var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
     _inherits(ThemeGridRange, _Theme);
@@ -39903,7 +39931,7 @@ var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
         _classCallCheck(this, ThemeGridRange);
 
         /**
-         * @member SuperMap.ThemeGridRange.prototype.items -{Array<SuperMap.ThemeGridRangeItem>}
+         * @member {Array.<SuperMap.ThemeGridRangeItem>} SuperMap.ThemeGridRange.prototype.items
          * @description 栅格分段专题图子项数组。<br>
          *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
          *              本类用来设置每个栅格范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
@@ -39913,9 +39941,8 @@ var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
         _this.items = null;
 
         /**
-         * @member SuperMap.ThemeGridRange.prototype.rangeMode -{SuperMap.RangeMode}
+         * @member {SuperMap.RangeMode} [SuperMap.ThemeGridRange.prototype.rangeMode=SuperMap.RangeMode.EQUALINTERVAL]
          * @description 分段专题图的分段模式。<br>
-         *              默认值为 SuperMap.RangeMode.EQUALINTERVAL（等距离分段）。<br>
          *              在栅格分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段。<br>
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，<br>
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
@@ -39923,22 +39950,22 @@ var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
         _this.rangeMode = _REST.RangeMode.EQUALINTERVAL;
 
         /**
-         * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{number}
+         * @member {number} [SuperMap.ThemeGridRange.prototype.rangeParameter=-1]
          * @description 分段参数。<br>
          *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，<br>
-         *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
+         *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。
          */
         _this.rangeParameter = 0;
 
         /**
-         * @member SuperMap.ThemeGridRange.prototype.colorGradientType -{SuperMap.ColorGradientType}
+         * @member {SuperMap.ColorGradientType} SuperMap.ThemeGridRange.prototype.colorGradientType
          * @description 渐变颜色枚举类
          *
          */
         _this.colorGradientType = _REST.ColorGradientType.YELLOW_RED;
 
         /**
-         * @member SuperMap.ThemeGridRange.prototype.reverseColor -{boolean}
+         * @member {boolean} SuperMap.ThemeGridRange.prototype.reverseColor
          * @description 是否对栅格分段专题图中分段的颜色风格进行反序显示。
          */
         _this.reverseColor = false;
@@ -39980,8 +40007,8 @@ var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
         /**
          * @function SuperMap.ThemeGridRange.fromObj
          * @description 从传入对象获取栅格分段专题图。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGridRange} ThemeGridRange对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGridRange} ThemeGridRange对象
          */
 
     }], [{
@@ -40031,13 +40058,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TerrainCurvatureCalculationParameters
  * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 地形曲率计算参数类。
- * @param options - {Object} 可选参数。如</br>
- *        dataset - {string} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
- *        zFactor - {number}指定的高程缩放系数。默认值为 1.0，表示不缩放。</br>
- *        averageCurvatureName - {string} 结果数据集：平均曲率数据集的名称，必设字段。</br>
- *        profileCurvatureName - {string} 结果数据集：剖面曲率数据集的名称。</br>
- *        planCurvatureName - {string} 结果数据集：平面曲率数据集的名称。</br>
- *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
+ * @param {Object} options - 参数。如/br>
+ * @param {string} options.dataset - 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
+ * @param {number} [options.zFactor=1.0] - 指定的高程缩放系数。1.0表示不缩放。</br>
+ * @param {string} options.averageCurvatureName - 结果数据集：平均曲率数据集的名称，必设字段。</br>
+ * @param {string} options.profileCurvatureName - 结果数据集：剖面曲率数据集的名称。</br>
+ * @param {string} options.planCurvatureName - 结果数据集：平面曲率数据集的名称。</br>
+ * @param {boolean} [options.deleteExistResultDataset=false] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。</br>
  */
 var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationParameters = function () {
   function TerrainCurvatureCalculationParameters(options) {
@@ -40047,7 +40074,7 @@ var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationP
       return;
     }
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.dataset -{string}
+     * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.dataset
      * @description 要用来做地形曲率计算数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
      * 注：地形曲率计算必须为栅格数据集。
@@ -40055,8 +40082,8 @@ var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationP
     this.dataset = null;
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.zFactor -{number}
-     * @description 指定的高程缩放系数。默认值为 1.0，表示不缩放。
+     * @member {number} [SuperMap.TerrainCurvatureCalculationParameters.prototype.zFactor=1.0]
+     * @description 指定的高程缩放系数。1.0表示不缩放。
      * 该值是指在 DEM 栅格数据中，栅格值（Z 坐标，即高程值）相对于 X 和 Y 坐标的单位变换系数。
      * 通常有 X，Y，Z 都参加的计算中，需要将高程值乘以一个高程缩放系数，使得三者单位一致。
      * 例如，X、Y 方向上的单位是米，而 Z 方向的单位是英尺，由于 1 英尺等于 0.3048 米，则需要指定缩放系数为 0.3048。
@@ -40064,26 +40091,26 @@ var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationP
     this.zFactor = 1.0;
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.averageCurvatureName -{string}
+     * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.averageCurvatureName
      * @description 结果数据集：平均曲率数据集的名称，必设字段。
      */
     this.averageCurvatureName = null;
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.profileCurvatureName -{string}
+     * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.profileCurvatureName
      * @description 结果数据集：剖面曲率数据集的名称。
      */
     this.profileCurvatureName = "";
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.planCurvatureName -{string}
+     * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.planCurvatureName
      * @description 结果数据集：平面曲率数据集的名称。
      */
     this.planCurvatureName = "";
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.deleteExistResultDataset -{boolean}
-     * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+     * @member {boolean} [SuperMap.TerrainCurvatureCalculationParameters.prototype.deleteExistResultDataset=false]
+     * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
      */
     this.deleteExistResultDataset = false;
 
@@ -40112,8 +40139,8 @@ var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationP
 
     /**
      * @function SuperMap.TerrainCurvatureCalculationParameters.toObject
-     * @param derrainCurvatureCalculationParameters - {Object}  地形曲率计算参数
-     * @param tempObj - {Object} 目标对象。
+     * @param {Object} derrainCurvatureCalculationParameters - 地形曲率计算参数
+     * @param {Object} tempObj - 目标对象。
      * @description 生成地形曲率计算对象
      */
 
@@ -44197,26 +44224,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 范围分段专题图子项类。
  * @description 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 分段专题图子项的标题。<br>
- *        end - {number}分段专题图子项的终止值。<br>
- *        start - {number}分段专题图子项的起始值。<br>
- *        style - {{@link SuperMap.ServerStyle}} 分段专题图子项的风格。<br>
- *        visible - {boolean} 分段专题图子项是否可见。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 分段专题图子项的标题。<br>
+ * @param {number} options.end - 分段专题图子项的终止值。<br>
+ * @param {number} options.start - 分段专题图子项的起始值。<br>
+ * @param {SuperMap.ServerStyle} options.style - 分段专题图子项的风格。<br>
+ * @param {boolean} options.visible - 分段专题图子项是否可见。
  */
 var ThemeRangeItem = exports.ThemeRangeItem = function () {
     function ThemeRangeItem(options) {
         _classCallCheck(this, ThemeRangeItem);
 
         /**
-         * @member SuperMap.ThemeRangeItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeRangeItem.prototype.caption
          * @description 分段专题图子项的标题。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeRangeItem.prototype.end -{number}
-         * @description 分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。<br>
+         * @member {number} [SuperMap.ThemeRangeItem.prototype.end=0]
+         * @description 分段专题图子项的终止值，即该段专题值范围的最大值。<br>
          *              如果该子项是分段中最后一个子项，则该终止值应大于分段字段（ThemeRange 类的 rangeExpression 属性）的最大值，若该终止值小于分段字段最大值，
          *              则剩余部分由内部随机定义其颜色；如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常；
          *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
@@ -44224,23 +44251,23 @@ var ThemeRangeItem = exports.ThemeRangeItem = function () {
         this.end = 0;
 
         /**
-         * @member SuperMap.ThemeRangeItem.prototype.start -{number}
-         * @description 分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。<br>
+         * @member {number} [SuperMap.ThemeRangeItem.prototype.start=0]
+         * @description 分段专题图子项的起始值，即该段专题值范围的最小值。<br>
          *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
          *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
          */
         this.start = 0;
 
         /**
-         * @member SuperMap.ThemeRangeItem.prototype.style -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeRangeItem.prototype.style
          * @description 分段专题图子项的风格。
          *              每一个分段专题图子项都对应一种显示风格。
          */
         this.style = new _ServerStyle.ServerStyle();
 
         /**
-         * @member SuperMap.ThemeRangeItem.prototype.visible -{boolean}
-         * @description 分段专题图子项是否可见。默认为 true。
+         * @member {boolean} [SuperMap.ThemeRangeItem.prototype.visible=true]
+         * @description 分段专题图子项是否可见。
          */
         this.visible = true;
 
@@ -44275,7 +44302,7 @@ var ThemeRangeItem = exports.ThemeRangeItem = function () {
         /**
          * @function SuperMap.ThemeRangeItem.prototypetoServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象
+         * @returns {Object} 对应的 JSON 格式对象
          */
 
     }, {
@@ -44294,8 +44321,8 @@ var ThemeRangeItem = exports.ThemeRangeItem = function () {
         /**
          * @function SuperMap.ThemeRangeItem.fromObj
          * @description 从传入对象获取范围分段专题图子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeRangeItem} ThemeRangeItem对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeRangeItem} ThemeRangeItem对象
          */
 
     }], [{
@@ -44342,42 +44369,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraduatedSymbolStyle
  * @category  iServer Map Theme
  * @classdesc 等级符号专题图正负零值显示风格类
- * @param options - {Object} 可选参数。如：<br>
- *        negativeDisplayed - {boolean} 是否显示负值。默认为 false。<br>
- *        negativeStyle - {{@link SuperMap.ServerStyle}} 负值的等级符号风格。<br>
- *        positiveStyle - {{@link SuperMap.ServerStyle}}  正值的等级符号风格。<br>
- *        zeroDisplayed - {boolean} 是否显示0值。默认为 false。<br>
- *        zeroStyle - {{@link SuperMap.ServerStyle}} 0值的等级符号风格。
+ * @param {Object} options - 参数。<br>
+ * @param {boolean} [options.negativeDisplayed=false] - 是否显示负值。<br>
+ * @param {SuperMap.ServerStyle} options.negativeStyle - 负值的等级符号风格。<br>
+ * @param {SuperMap.ServerStyle} options.positiveStyle - 正值的等级符号风格。<br>
+ * @param {boolean} [options.zeroDisplayed=false] - 是否显示0值。<br>
+ * @param {SuperMap.ServerStyle} options.zeroStyle - 0值的等级符号风格。
  */
 var ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbolStyle = function () {
   function ThemeGraduatedSymbolStyle(options) {
     _classCallCheck(this, ThemeGraduatedSymbolStyle);
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{boolean}
-     * @description 是否显示负值。默认为 false。
+     * @member {boolean} [SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed=false]
+     * @description 是否显示负值。
      */
     this.negativeDisplayed = false;
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle -{SuperMap.ServerStyle} 负值的等级符号风格。
+     * @member {SuperMap.ServerStyle} SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle
+     * @description 负值的等级符号风格。
      */
     this.negativeStyle = new _ServerStyle.ServerStyle();
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle -{SuperMap.ServerStyle}
+     * @member {SuperMap.ServerStyle} SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle
      * @description 正值的等级符号风格。
      */
     this.positiveStyle = new _ServerStyle.ServerStyle();
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{boolean}
-     * @description 是否显示0值。默认为 false。
+     * @member {boolean} [SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed=false]
+     * @description 是否显示0值。
      */
     this.zeroDisplayed = false;
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroStyle -{SuperMap.ServerStyle}
+     * @member {SuperMap.ServerStyle} SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroStyle
      * @description 0值的等级符号风格。
      */
     this.zeroStyle = new _ServerStyle.ServerStyle();
@@ -44409,8 +44437,8 @@ var ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbolStyle = function () 
     /**
      * @function SuperMap.ThemeGraduatedSymbolStyle.fromObj
      * @description 从传入对象获取等级符号专题图正负零值显示风格类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象
      */
 
   }], [{
@@ -44459,30 +44487,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphItem
  * @category  iServer Map Theme
  * @classdesc 统计专题图子项类
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 专题图子项的名称。<br>
- *        graphExpression - {string} 统计专题图的专题变量。<br>
- *        memoryDoubleValues - {Array<number>} 内存数组方式制作专题图时的值数组。<br>
- *        uniformStyle - {{@link SuperMap.ServerStyle}} 统计专题图子项的显示风格
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 专题图子项的名称。<br>
+ * @param {string} options.graphExpression - 统计专题图的专题变量。<br>
+ * @param {Array.<number>} options.memoryDoubleValues - 内存数组方式制作专题图时的值数组。<br>
+ * @param {SuperMap.ServerStyle} options.uniformStyle - 统计专题图子项的显示风格
  */
 var ThemeGraphItem = exports.ThemeGraphItem = function () {
     function ThemeGraphItem(options) {
         _classCallCheck(this, ThemeGraphItem);
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeGraphItem.prototype.caption
          * @description 专题图子项的名称。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{string}
+         * @member {string} SuperMap.ThemeGraphItem.prototype.graphExpression
          * @description 统计专题图的专题变量。专题变量可以是一个字段或字段表达式。字段必须为数值型；表达式只能为数值型的字段间的运算。必设字段。
          */
         this.graphExpression = null;
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<number>}
+         * @member {Array.<number>} SuperMap.ThemeGraphItem.prototype.memoryDoubleValues
          * @description 内存数组方式制作专题图时的值数组。<br>
          *              内存数组方式制作专题图时，只对 SmID 值在键数组（{@link SuperMap.ThemeGraph.memoryKeys}）中的记录制作专题图。<br>
          *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -44491,7 +44519,7 @@ var ThemeGraphItem = exports.ThemeGraphItem = function () {
         this.memoryDoubleValues = null;
 
         /**
-         * @member SuperMap.ThemeGraphItem.prototype.uniformStyle -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeGraphItem.prototype.uniformStyle
          * @description 统计专题图子项的显示风格。
          *              每一个统计专题图子项都对应一种显示风格。
          */
@@ -44523,8 +44551,8 @@ var ThemeGraphItem = exports.ThemeGraphItem = function () {
         /**
          * @function SuperMap.ThemeGraphItem.fromObj
          * @description 从传入对象获取统计专题图子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphItem} ThemeGraphItem对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGraphItem} ThemeGraphItem对象
          */
 
     }], [{
@@ -44573,30 +44601,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphText
  * @category  iServer Map Theme
  * @classdesc 统计图文字标注风格类。
- * @param options - {Object} 可选参数。<br>
- *        graphTextDisplayed - {boolean} 是否显示统计图上的文字标注。<br>
- *        graphTextFormat - {{@link SuperMap.ThemeGraphTextFormat}} 统计专题图文本显示格式。<br>
- *        graphTextStyle - {{@link SuperMap.ServerTextStyle}} 统计图上的文字标注风格。
+ * @param {Object} options - 可选参数。<br>
+ * @param {boolean} options.graphTextDisplayed - 是否显示统计图上的文字标注。<br>
+ * @param {SuperMap.ThemeGraphTextFormat} options.graphTextFormat - 统计专题图文本显示格式。<br>
+ * @param {SuperMap.ServerTextStyle} options.graphTextStyle - 统计图上的文字标注风格。
  */
 var ThemeGraphText = exports.ThemeGraphText = function () {
     function ThemeGraphText(options) {
         _classCallCheck(this, ThemeGraphText);
 
         /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
-         * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
+         * @member {boolean} [SuperMap.ThemeGraphText.prototype.graphTextDisplayed=false]
+         * @description 是否显示统计图上的文字标注。
          */
         this.graphTextDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
+         * @member {SuperMap.ThemeGraphTextFormat} [SuperMap.ThemeGraphText.prototype.graphTextFormat=SuperMap.ThemeGraphTextFormat.CAPTION]
          * @description 统计专题图文本显示格式。<br>
-         *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。默认为 SuperMap.ThemeGraphTextFormat.CAPTION。
+         *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。
          */
         this.graphTextFormat = _REST.ThemeGraphTextFormat.CAPTION;
 
         /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextStyle -{SuperMap.ServerTextStyle}
+         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphText.prototype.graphTextStyle
          * @description 统计图上的文字标注风格。
          */
         this.graphTextStyle = new _ServerTextStyle.ServerTextStyle();
@@ -44629,8 +44657,8 @@ var ThemeGraphText = exports.ThemeGraphText = function () {
         /**
          * @function SuperMap.ThemeGraphText.fromObj
          * @description 从传入对象获取统计图文字标注风格类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphText} ThemeGraphText对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGraphText} ThemeGraphText对象
          */
 
     }], [{
@@ -44672,23 +44700,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphSize
  * @category  iServer Map Theme
  * @classdesc 统计专题图符号尺寸类。
- * @param  options - {Object} 可选参数。如：<br>
- *         maxGraphSize - {number}统计图中显示的最大图表尺寸基准值。<br>
- *         minGraphSize - {number}统计图中显示的最小图表尺寸基准值。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.maxGraphSize - 统计图中显示的最大图表尺寸基准值。<br>
+ * @param {number} options.minGraphSize - 统计图中显示的最小图表尺寸基准值。
  */
 var ThemeGraphSize = exports.ThemeGraphSize = function () {
     function ThemeGraphSize(options) {
         _classCallCheck(this, ThemeGraphSize);
 
         /**
-         * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
-         * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
+         * @member {number} [SuperMap.ThemeGraphSize.prototype.maxGraphSize=0]
+         * @description 获取或设置统计图中显示的最大图表尺寸基准值，单位为像素。
          */
         this.maxGraphSize = 0;
 
         /**
-         * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{number}
-         * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
+         * @member {number} [SuperMap.ThemeGraphSize.prototype.minGraphSize=0]
+         * @description 获取或设置统计图中显示的最小图表尺寸基准值，单位为像素。
          */
         this.minGraphSize = 0;
 
@@ -44716,8 +44744,8 @@ var ThemeGraphSize = exports.ThemeGraphSize = function () {
         /**
          * @function SuperMap.ThemeGraphSize.fromObj
          * @description 从传入对象获统计专题图符号尺寸类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphSize}  ThemeGraphSize对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGraphSize}  ThemeGraphSize对象
          */
 
     }], [{
@@ -44762,44 +44790,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphAxes
  * @category  iServer Map Theme
  * @classdesc 统计专题图坐标轴样式类。
- * @param  options - {Object} 可选参数。<br>
- *         axesColor - {{@link SuperMap.ServerColor}} 坐标轴颜色。<br>
- *         axesDisplayed - {boolean} 是否显示坐标轴。<br>
- *         axesGridDisplayed - {boolean} 是否在统计图坐标轴上显示网格。<br>
- *         axesTextDisplayed - {boolean} 是否显示坐标轴的文本标注。<br>
- *         axesTextStyle - {{@link SuperMap.ServerTextStyle}} 统计符号的最大最小尺寸。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.ServerColor} options.axesColor - 坐标轴颜色。<br>
+ * @param {boolean} options.axesDisplayed - 是否显示坐标轴。<br>
+ * @param {boolean} options.axesGridDisplayed - 是否在统计图坐标轴上显示网格。<br>
+ * @param {boolean} options.axesTextDisplayed - 是否显示坐标轴的文本标注。<br>
+ * @param {SuperMap.ServerTextStyle} options.axesTextStyle - 统计符号的最大最小尺寸。
  */
 var ThemeGraphAxes = exports.ThemeGraphAxes = function () {
     function ThemeGraphAxes(options) {
         _classCallCheck(this, ThemeGraphAxes);
 
         /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesColor -{SuperMap.ServerColor}
+         * @member {SuperMap.ServerColor} SuperMap.ThemeGraphAxes.prototype.axesColor
          * @description 坐标轴颜色，默认为黑色。当 axesDisplayed = true 时有效。
          */
         this.axesColor = new _ServerColor.ServerColor(0, 0, 0);
 
         /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{boolean}
-         * @description 是否显示坐标轴。默认为 false，即不显示。<br>
+         * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesDisplayed=false]
+         * @description 是否显示坐标轴。<br>
          *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
          */
         this.axesDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{boolean}
-         * @description 是否在统计图坐标轴上显示网格。默认为 false，即不显示。
+         * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed=false]
+         * @description 是否在统计图坐标轴上显示网格。
          */
         this.axesGridDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{boolean}
-         * @description 是否显示坐标轴的文本标注。默认为 false，即不显示。
+         * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed=false]
+         * @description 是否显示坐标轴的文本标注。
          */
         this.axesTextDisplayed = false;
 
         /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesTextStyle -{SuperMap.ServerTextStyle}
+         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeGraphAxes.prototype.axesTextStyle
          * @description 坐标轴文本风格。当 axesTextDisplayed = true 时有效。
          */
         this.axesTextStyle = new _ServerTextStyle.ServerTextStyle();
@@ -44837,8 +44865,8 @@ var ThemeGraphAxes = exports.ThemeGraphAxes = function () {
         /**
          * @function SuperMap.ThemeGraphAxes.fromObj
          * @description 从传入对象获取统计专题图坐标轴样式类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
          */
 
     }], [{
@@ -44888,23 +44916,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeLabelBackground
  * @category  iServer Map Theme
  * @classdesc 标签背景风格类。通过该类可以设置标签的背景形状和风格。
- * @param options - {Object} 可选参数。如：<br>
- *        labelBackShape - {{@link SuperMap.LabelBackShape}} 标签专题图中标签背景风格。<br>
- *        backStyle - {{@link SuperMap.ServerStyle}} 标签专题图中标签背景的形状枚举类。
+ * @param {Object} options - 参数。<br>
+ * @param {SuperMap.LabelBackShape} labelBackShape - 标签专题图中标签背景风格。<br>
+ * @param {SuperMap.ServerStyle} backStyle - 标签专题图中标签背景的形状枚举类。
  */
 var ThemeLabelBackground = exports.ThemeLabelBackground = function () {
     function ThemeLabelBackground(options) {
         _classCallCheck(this, ThemeLabelBackground);
 
         /**
-         * @member SuperMap.ThemeLabelBackground.prototype.labelBackShape -{SuperMap.LabelBackShape}
+         * @member {SuperMap.LabelBackShape} SuperMap.ThemeLabelBackground.prototype.labelBackShape
          * @description 标签专题图中标签背景风格。当背景形状
          *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
          */
         this.labelBackShape = _REST.LabelBackShape.NONE;
 
         /**
-         * @member SuperMap.ThemeLabelBackground.prototype.backStyle -{SuperMap.ServerStyle}
+         * @member {SuperMap.ServerStyle} SuperMap.ThemeLabelBackground.prototype.backStyle
          * @description 标签专题图中标签背景的形状枚举类。背景类型可
          *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，默认为 {@link SuperMap.LabelBackShape.NONE}，
          *              即不使用任何的形状作为标签的背景。
@@ -44938,8 +44966,8 @@ var ThemeLabelBackground = exports.ThemeLabelBackground = function () {
         /**
          * @function SuperMap.ThemeLabelBackground.fromObj
          * @description 从传入对象获取标签背景风格类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeLabelBackground} ThemeLabelBackground对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeLabelBackground} ThemeLabelBackground对象
          */
 
     }], [{
@@ -44987,53 +45015,53 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeLabelAlongLine
  * @category  iServer Map Theme
  * @classdesc 标签沿线标注样式类。
- * @param options - {Object} 可选参数。如：<br>
- *        isAlongLine - {boolean} 是否沿线显示文本。<br>
- *        alongLineDirection - {{@link SuperMap.AlongLineDirection}} 标签沿线标注方向。<br>
- *        angleFixed - {boolean} 当沿线显示文本时，是否将文本角度固定。<br>
- *        repeatedLabelAvoided - {boolean} 沿线循环标注时是否避免标签重复标注。<br>
- *        repeatIntervalFixed - {boolean} 循环标注间隔是否固定。<br>
- *        labelRepeatInterval - {number}沿线且循环标注时循环标注的间隔。
+ * @param {Object} options - 参数。<br>
+ * @param {boolean} options.isAlongLine - 是否沿线显示文本。<br>
+ * @param {SuperMap.AlongLineDirection} options.alongLineDirection - 标签沿线标注方向。<br>
+ * @param {boolean} options.angleFixed - 当沿线显示文本时，是否将文本角度固定。<br>
+ * @param {boolean} options.repeatedLabelAvoided - 沿线循环标注时是否避免标签重复标注。<br>
+ * @param {boolean} options.repeatIntervalFixed - 循环标注间隔是否固定。<br>
+ * @param {number} options.labelRepeatInterval - 沿线且循环标注时循环标注的间隔。
  */
 var ThemeLabelAlongLine = exports.ThemeLabelAlongLine = function () {
   function ThemeLabelAlongLine(options) {
     _classCallCheck(this, ThemeLabelAlongLine);
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.isAlongLine -{boolean}
-     * @description 是否沿线显示文本。true 表示沿线显示文本，false 表示正常显示文本，默认为 true。
+     * @member {boolean} [SuperMap.ThemeLabelAlongLine.prototype.isAlongLine=true]
+     * @description 是否沿线显示文本。true 表示沿线显示文本，false 表示正常显示文本。
      */
     this.isAlongLine = true;
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.alongLineDirection -{SuperMap.AlongLineDirection}
-     * @description 标签沿线标注方向。默认为 SuperMap.AlongLineDirection.LB_TO_RT（从上到下，从左到右放置）。
+     * @member {SuperMap.AlongLineDirection} [SuperMap.ThemeLabelAlongLine.prototype.alongLineDirection=SuperMap.AlongLineDirection.LB_TO_RT]
+     * @description 标签沿线标注方向。
      */
     this.alongLineDirection = _REST.AlongLineDirection.LB_TO_RT;
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.angleFixed -{boolean}
+     * @member {boolean} [SuperMap.ThemeLabelAlongLine.prototype.angleFixed=false]
      * @description 当沿线显示文本时，是否将文本角度固定。true 表示按固定文本角度显示文本，false 表示按照沿线角度显示文本。
-     *              默认值为 false。如果固定角度，则所有标签均按所设置的文本风格中字体的旋转角度来显示，不考虑沿线标注的方向；
+     *              如果固定角度，则所有标签均按所设置的文本风格中字体的旋转角度来显示，不考虑沿线标注的方向；
      *              如果不固定角度，在显示标签时会同时考虑字体的旋转角度和沿线标注的方向。
      */
     this.angleFixed = false;
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.repeatedLabelAvoided -{boolean}
+     * @member {boolean} SuperMap.ThemeLabelAlongLine.prototype.repeatedLabelAvoided
      * @description 沿线循环标注时是否避免标签重复标注。
      */
     this.repeatedLabelAvoided = false;
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.repeatIntervalFixed -{boolean}
+     * @member {boolean} [SuperMap.ThemeLabelAlongLine.prototype.repeatIntervalFixed=false]
      * @description 循环标注间隔是否固定。true 表示使用固定循环标注间隔，即使用逻辑坐标来显示循环标注间隔；
-     *              false 表示循环标注间隔随地图的缩放而变化，即使用地理坐标来显示循环标注间隔。默认值为 false。
+     *              false 表示循环标注间隔随地图的缩放而变化，即使用地理坐标来显示循环标注间隔。
      */
     this.repeatIntervalFixed = false;
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval -{number}
+     * @member {number} [SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval=0]
      * @description 沿线且循环标注时循环标注的间隔。长度的单位与地图的地理单位一致。只有设定 RepeatedLabelAvoided 为 true
      *              的时候，labelRepeatInterval 属性才有效。默认为0地图单位。
      */
@@ -45067,8 +45095,8 @@ var ThemeLabelAlongLine = exports.ThemeLabelAlongLine = function () {
     /**
      * @function SuperMap.ThemeLabelAlongLine.fromObj
      * @description 从传入对象获取标签沿线标注样式类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabelAlongLine} ThemeLabelAlongLine对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeLabelAlongLine} ThemeLabelAlongLine对象
      */
 
   }], [{
@@ -45266,49 +45294,49 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeLabelText
  * @category  iServer Map Theme
  * @classdesc 标签中文本风格类。
- *              通过该类可以设置标签中的文本字体大小和显示风格。
- * @param options - {Object} 可选参数。如：<br>
- *        maxTextHeight - {number}标签中文本的最大高度。<br>
- *        maxTextWidth - {number}标签中文本的最大宽度。<br>
- *        minTextHeight - {number}标签中文本的最小高度。<br>
- *        minTextWidth - {number}标签中文本的最小宽度。<br>
- *        uniformStyle - {{@link SuperMap.ServerTextStyle}} 统一文本风格。<br>
- *        uniformMixedStyle - {{@link SuperMap.LabelMixedTextStyle}} 标签专题图统一的文本复合风格。
+ *            通过该类可以设置标签中的文本字体大小和显示风格。
+ * @param {Object} options - 参数。<br>
+ * @param {number} options.maxTextHeight - 标签中文本的最大高度。<br>
+ * @param {number} options.maxTextWidth - 标签中文本的最大宽度。<br>
+ * @param {number} options.minTextHeight - 标签中文本的最小高度。<br>
+ * @param {number} options.minTextWidth - 标签中文本的最小宽度。<br>
+ * @param {SuperMap.ServerTextStyle} options.uniformStyle - 统一文本风格。<br>
+ * @param {SuperMap.LabelMixedTextStyle} options.uniformMixedStyle - 标签专题图统一的文本复合风格。
  */
 var ThemeLabelText = exports.ThemeLabelText = function () {
     function ThemeLabelText(options) {
         _classCallCheck(this, ThemeLabelText);
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.maxTextHeight=0]
          * @description 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
+         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。
          */
         this.maxTextHeight = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.maxTextWidth=0]
          * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
+         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。
          */
         this.maxTextWidth = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.minTextHeight=0]
          * @description 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+         *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。
          */
         this.minTextHeight = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{number}
+         * @member {number} [SuperMap.ThemeLabelText.prototype.minTextWidth=0]
          * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。
          */
         this.minTextWidth = 0;
 
         /**
-         * @member SuperMap.ThemeLabelText.prototype.uniformStyle -{SuperMap.ServerTextStyle}
+         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelText.prototype.uniformStyle
          * @description 统一文本风格。当标签专题图子项的个数大于等于1时，
          *              uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
@@ -45316,7 +45344,7 @@ var ThemeLabelText = exports.ThemeLabelText = function () {
         this.uniformStyle = new _ServerTextStyle.ServerTextStyle();
 
         /**
-         *@member SuperMap.ThemeLabelText.prototype.uniformMixedStyle -{SuperMap.LabelMixedTextStyle}
+         *@member {SuperMap.LabelMixedTextStyle} SuperMap.ThemeLabelText.prototype.uniformMixedStyle
          *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标
          *              签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
@@ -45356,8 +45384,8 @@ var ThemeLabelText = exports.ThemeLabelText = function () {
         /**
          * @function SuperMap.ThemeLabelText.fromObj
          * @description 从传入对象获取标签中文本风格类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeLabelText} ThemeLabelText对象
          */
 
     }], [{
@@ -45410,45 +45438,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，<br>
  *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，<br>
  *              SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 专题图子项的名称。<br>
- *        end - {number}标签专题图子项的终止值。<br>
- *        start - {number}标签专题图子项的分段起始值。<br>
- *        visible - {boolean} 标签专题图子项是否可见。<br>
- *        style - {{@link SuperMap.ServerTextStyle}} 标签专题图子项文本的显示风格。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 专题图子项的名称。<br>
+ * @param {number} options.end - 标签专题图子项的终止值。<br>
+ * @param {number} options.start - 标签专题图子项的分段起始值。<br>
+ * @param {boolean} options.visible - 标签专题图子项是否可见。<br>
+ * @param {SuperMap.ServerTextStyle} options.style - 标签专题图子项文本的显示风格。
  */
 var ThemeLabelItem = exports.ThemeLabelItem = function () {
     function ThemeLabelItem(options) {
         _classCallCheck(this, ThemeLabelItem);
 
         /**
-         * @member SuperMap.ThemeLabelItem.prototype.caption -{string}
+         * @member {string} SuperMap.ThemeLabelItem.prototype.caption
          * @description 标签专题子项的标题。
          */
         this.caption = null;
 
         /**
-         * @member SuperMap.ThemeLabelItem.prototype.end -{number}
+         * @member {number} [SuperMap.ThemeLabelItem.prototype.end=0]
          * @description 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
-         *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
+         *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。
          */
         this.end = 0;
 
         /**
-         * @member SuperMap.ThemeLabelItem.prototype.start -{number}
+         * @member {number} [SuperMap.ThemeLabelItem.prototype.start=0]
          * @description 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
-         *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
+         *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
          */
         this.start = 0;
 
         /**
-         * @member SuperMap.ThemeLabelItem.prototype.visible -{boolean}
-         * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
+         * @member {boolean} [SuperMap.ThemeLabelItem.prototype.visible=true]
+         * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。
          */
         this.visible = true;
 
         /**
-         * @member SuperMap.ThemeLabelItem.prototype.style -{SuperMap.ServerTextStyle}
+         * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelItem.prototype.style
          * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
          *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
          */
@@ -45483,8 +45511,8 @@ var ThemeLabelItem = exports.ThemeLabelItem = function () {
         /**
          * @function SuperMap.ThemeLabelItem.fromObj
          * @description 从传入对象获取分段标签专题图的子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeLabelItem} ThemeLabelItem对象
+         * @param {Object} obj - 传入对象
+         * @returns {SuperMap.ThemeLabelItem} ThemeLabelItem对象
          */
 
     }], [{
@@ -45526,21 +45554,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。
- * @param srcData - {Array} 原始值数组。
- * @param targetData - {Array} 外部值数组。
+ * @param {Array} srcData - 原始值数组。
+ * @param {Array} targetData - 外部值数组。
  */
 var ThemeMemoryData = exports.ThemeMemoryData = function () {
     function ThemeMemoryData(srcData, targetData) {
         _classCallCheck(this, ThemeMemoryData);
 
         /**
-         * @member SuperMap.ThemeMemoryData.prototype.srcData -{Array}
+         * @member {Array} SuperMap.ThemeMemoryData.prototype.srcData
          * @description 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
          */
         this.srcData = srcData;
 
         /**
-         * @member SuperMap.ThemeMemoryData.prototype.targetData -{Array}
+         * @member {Array} SuperMap.ThemeMemoryData.prototype.targetData
          * @description 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
          */
         this.targetData = targetData;
@@ -45565,7 +45593,7 @@ var ThemeMemoryData = exports.ThemeMemoryData = function () {
         /**
          * @function SuperMap.ThemeMemoryData.prototype.toJSON
          * @description 将 SuperMap.ThemeMemoryData 对象转化为json字符串。
-         * @return {string} 返回转换后的 JSON 字符串。
+         * @returns {string} 返回转换后的 JSON 字符串。
          */
 
     }, {
@@ -49279,15 +49307,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @category  iServer NetworkAnalyst
  * @classdesc 交通网络分析结果参数类。
  * @description 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。
- * @param options - {Object} 可选参数。如:</br>
- *        returnEdgeFeatures - {boolean} 是否在分析结果中包含弧段要素集合。</br>
- *        returnEdgeGeometry - {boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br>
- *        returnEdgeIDs - {boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br>
- *        returnNodeFeatures - {boolean} 是否在分析结果中包含结点要素集合。</br>
- *        returnNodeGeometry - {boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br>
- *        returnNodeIDs - {boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br>
- *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br>
- *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。
+ * @param {Object} options - 参数。</br>
+ * @param {boolean} options.returnEdgeFeatures - 是否在分析结果中包含弧段要素集合。</br>
+ * @param {boolean} [options.returnEdgeGeometry=false] - 返回的弧段要素集合中是否包含几何对象信息。</br>
+ * @param {boolean} [options.returnEdgeIDs=false] - 返回结果中是否包含经过弧段 ID 集合。</br>
+ * @param {boolean} options.returnNodeFeatures - 是否在分析结果中包含结点要素集合。</br>
+ * @param {boolean} [options.returnNodeGeometry=false] - 返回的结点要素集合中是否包含几何对象信息。</br>
+ * @param {boolean} [options.returnNodeIDs=false] - 返回结果中是否包含经过结点 ID 集合。</br>
+ * @param {boolean} options.returnPathGuides - 返回分析结果中是否包含行驶导引集合。</br>
+ * @param {boolean} options.returnRoutes - 返回分析结果中是否包含路由对象的集合。
  */
 var TransportationAnalystResultSetting = exports.TransportationAnalystResultSetting = function () {
   function TransportationAnalystResultSetting(options) {
@@ -49298,50 +49326,50 @@ var TransportationAnalystResultSetting = exports.TransportationAnalystResultSett
     }
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}
+     * @member {boolean} SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures
      * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。
      */
     this.returnEdgeFeatures = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{boolean}
-     * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。
+     * @member {boolean} [SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry=false]
+     * @description 返回的弧段要素集合中是否包含几何对象信息。
      */
     this.returnEdgeGeometry = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{boolean}
-     * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。
+     * @member {boolean} [SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs=false]
+     * @description 返回结果中是否包含经过弧段 ID 集合。
      */
     this.returnEdgeIDs = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{boolean}
+     * @member {boolean} [SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures=false]
      * @description 是否在分析结果中包含结点要素集合。
-     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。
+     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。
      */
     this.returnNodeFeatures = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{boolean}
-     * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。
+     * @member {boolean} [SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry=false]
+     * @description 返回的结点要素集合中是否包含几何对象信息。
      */
     this.returnNodeGeometry = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{boolean}
-     * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。
+     * @member {boolean} [SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs=false]
+     * @description 返回结果中是否包含经过结点 ID 集合。
      */
     this.returnNodeIDs = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}
+     * @member {boolean} SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides
      * @description 返回分析结果中是否包含行驶导引集合。
      */
     this.returnPathGuides = false;
 
     /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{boolean}
+     * @member {boolean} SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes
      * @description 返回分析结果中是否包含路由对象的集合。
      */
     this.returnRoutes = false;
@@ -50758,7 +50786,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。<br>
  * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。<br>
  * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。<br>
- * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.Unit.METER] - 缓冲半径单位。
+ * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.BufferRadiusUnit.METER] - 缓冲半径单位。
  */
 var BufferSetting = exports.BufferSetting = function () {
   function BufferSetting(options) {
@@ -52957,7 +52985,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
      * @function mapboxgl.supermap.TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
      * @param params - {SuperMap.StopQueryParameters} 查询相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
 
 
@@ -52982,7 +53010,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
          * @function mapboxgl.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
          * @description 交通换乘线路查询服务
          * @param params - {SuperMap.TransferPathParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -53006,7 +53034,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
          * @function mapboxgl.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
          * @description 交通换乘方案查询服务
          * @param params - {SuperMap.TransferSolutionParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -53113,7 +53141,7 @@ var ThemeService = exports.ThemeService = function (_ServiceBase) {
      * @function mapboxgl.supermap.ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
 
 
@@ -53200,7 +53228,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
      * @function mapboxgl.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射
      * @param params -{SuperMap.mapboxgl} 查询相关参数类
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
      */
 
@@ -53227,7 +53255,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.bufferAnalysis
          * @description 缓冲区分析
          * @param params -{SuperMap.DatasetBufferAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53253,7 +53281,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.densityAnalysis
          * @description 点密度分析
          * @param params -{SuperMap.DensityKernelAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53279,7 +53307,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.generateSpatialData
          * @description 动态分段分析
          * @param params - {SuperMap.GenerateSpatialDataParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53305,7 +53333,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.geoRelationAnalysis
          * @description 空间关系分析
          * @param params - {SuperMap.GeoRelationAnalystParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53331,7 +53359,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.interpolationAnalysis
          * @description 插值分析
          * @param params - {SuperMap.InterpolationRBFAnalystParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53357,7 +53385,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
          * @description 栅格代数运算
          * @param params - {SuperMap.MathExpressionAnalysisParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53383,7 +53411,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.overlayAnalysis
          * @description 叠加分析
          * @param params - {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类，支持批量几何要素叠加分析。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53409,7 +53437,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
          * @description 路由测量计算
          * @param params - {SuperMap.RouteCalculateMeasureParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53435,7 +53463,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.routeLocate
          * @description 路由定位
          * @param params - {SuperMap.RouteLocatorParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53461,7 +53489,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.surfaceAnalysis
          * @description 表面分析
          * @param params - {SuperMap.SurfaceAnalystParameters} 表面分析参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53487,7 +53515,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
          * @description 地形曲率计算
          * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53513,7 +53541,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.SpatialAnalystService.prototype.thiessenAnalysis
          * @description 泰森多边形分析
          * @param params - {SuperMap.DatasetThiessenAnalystParameters} 查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53754,7 +53782,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
      * @function mapboxgl.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      */
 
@@ -53783,7 +53811,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
          * @function mapboxgl.supermap.QueryService.prototype.queryByDistance
          * @description 地图距离查询服务
          * @param params - {QueryByDistanceParameters} Distance查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53810,7 +53838,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
          * @function mapboxgl.supermap.QueryService.prototype.queryBySQL
          * @description 地图SQL查询服务
          * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53837,7 +53865,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
          * @function mapboxgl.supermap.QueryService.prototype.queryByGeometry
          * @description 地图几何查询服务
          * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          */
 
@@ -53978,7 +54006,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
     /**
      * @function mapboxgl.supermap.ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
-     * @param callback -{function}请求结果的回调函数。
+     * @param {RequestCallback} callback请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
 
@@ -54006,7 +54034,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.getKernelDensityJob
          * @description 获取某一个密度分析。
          * @param id -{string} 空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54033,7 +54061,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.addKernelDensityJob
          * @description 新建一个密度分析。
          * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
@@ -54076,7 +54104,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.ProcessingService.prototype.getSummaryMeshJobs
          * @description 获取点聚合分析的列表。
-         * @param callback - {function}请求结果的回调函数。
+         * @param {RequestCallback} callback请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54130,7 +54158,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.addSummaryMeshJob
          * @description 新建一个点聚合分析。
          * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
@@ -54173,7 +54201,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.ProcessingService.prototype.getQueryJobs
          * @description 获取单对象查询分析的列表。
-         * @param callback -{function}请求结果的回调函数。
+         * @param {RequestCallback} callback请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54200,7 +54228,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.getQueryJob
          * @description 获取某一个单对象查询分析。
          * @param id -{string} 空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54227,7 +54255,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.addQueryJob
          * @description 新建一个单对象查询分析。
          * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
@@ -54270,7 +54298,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.ProcessingService.prototype.getSummaryRegionJobs
          * @description 获取区域汇总分析的列表。
-         * @param callback -{function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54297,7 +54325,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.getSummaryRegionJob
          * @description 获取某一个区域汇总分析。
          * @param id -{string}区域汇总分析的id。
-         * @param callback - {function}请求结果的回调函数。
+         * @param {RequestCallback} callback请求结果的回调函数。
          * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54324,7 +54352,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.addSummaryRegionJob
          * @description 新建一个区域汇总分析。
          * @param params - {SuperMap.SummaryRegionJobParameter} 区域汇总分析参数类
-         * @param callback - {function} 请求结果的回调函数
+         * @param {RequestCallback} callback 请求结果的回调函数
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
          * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
          */
@@ -54367,7 +54395,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.ProcessingService.prototype.getVectorClipJobs
          * @description 获取矢量裁剪分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54394,7 +54422,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.getVectorClipJob
          * @description 获取某一个矢量裁剪分析。
          * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54421,7 +54449,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.ProcessingService.prototype.addVectorClipJob
          * @description 新建一个矢量裁剪分析。
          * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
@@ -54465,7 +54493,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.processingService.prototype.getOverlayGeoJobs
          * @description 获取叠加分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54492,7 +54520,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.getOverlayGeoJob
          * @description 获取某一个叠加分析。
          * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54519,7 +54547,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.addOverlayGeoJob
          * @description 新建一个叠加分析。
          * @param params -{SuperMap.OverlayGeoJobParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
@@ -54563,7 +54591,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.processingService.prototype.getBuffersJobs
          * @description 获取缓冲区分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54590,7 +54618,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.getBuffersJob
          * @description 获取某一个缓冲区分析。
          * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54617,7 +54645,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.addBuffersJob
          * @description 新建一个缓冲区分析。
          * @param params -{SuperMap.BuffersAnalystJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
@@ -54661,7 +54689,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.processingService.prototype.getTopologyValidatorJobs
          * @description 获取拓扑检查分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54688,7 +54716,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.getTopologyValidatorJob
          * @description 获取某一个拓扑检查分析。
          * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54715,7 +54743,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.addTopologyValidatorJob
          * @description 新建一个拓扑检查分析。
          * @param params -{SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
@@ -54759,7 +54787,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.processingService.prototype.getSummaryAttributesJobs
          * @description 获取属性汇总分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54786,7 +54814,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.getSummaryAttributesJob
          * @description 获取某一个属性汇总分析。
          * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
 
@@ -54813,7 +54841,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function mapboxgl.supermap.processingService.prototype.addSummaryAttributesJob
          * @description 新建一个属性汇总分析。
          * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          */
@@ -54947,7 +54975,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
      * @function mapboxgl.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @return {mapboxgl.supermap.NetworkAnalyst3DService} 3D网络分析服务
      */
 
@@ -54973,7 +55001,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
          * @function mapboxgl.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
          * @description 源查找服务
          * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @return {mapboxgl.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
@@ -54998,7 +55026,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
          * @function mapboxgl.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
          * @description 上游追踪资源服务
          * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @return {mapboxgl.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
@@ -55023,7 +55051,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
          * @function mapboxgl.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
          * @description 下游追踪资源服务
          * @param params - {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @return {mapboxgl.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
@@ -55048,7 +55076,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
          * @function mapboxgl.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
          * @description 上游关键设施查找服务
          * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @return {mapboxgl.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
@@ -55138,7 +55166,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
      * @function mapboxgl.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param params -{SuperMap.BurstPipelineAnalystParameters} 爆管分析服务参数类
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
 
 
@@ -55163,7 +55191,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.computeWeightMatrix
          * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
          * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55187,7 +55215,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.findClosestFacilities
          * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
          * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
-         * @param callback -{function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55213,7 +55241,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst
          * @description 上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
          * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游 关键设施查找资源服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55239,7 +55267,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.findLocation
          * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置
          * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55265,7 +55293,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.findPath
          * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
          * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55291,7 +55319,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.findTSPPaths
          * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
          * @param params - {SuperMap.SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55317,7 +55345,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.findMTSPPaths
          * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
          * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55343,7 +55371,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.findServiceAreas
          * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
          * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
          */
 
@@ -55369,7 +55397,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.updateEdgeWeight
          * @description 更新边的耗费权重服务
          * @param params - {SuperMap.UpdateEdgeWeightParameters} 更新边的耗费权重服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55393,7 +55421,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
          * @function mapboxgl.supermap.NetworkAnalystService.prototype.updateTurnNodeWeight
          * @description 转向耗费权重更新服务
          * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55556,7 +55584,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
      * @function mapboxgl.supermap.MeasureService.prototype.measureDistance
      * @description 测距
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
 
 
@@ -55570,7 +55598,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
          * @function mapboxgl.supermap.MeasureService.prototype.measureArea
          * @description 测面积
          * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55584,7 +55612,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
          * @description 测量
          * @param params -{SuperMap.MeasureParameters} 测量相关参数类
          * @param type - {string} 类型
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @return {mapboxgl.supermap.MeasureService} 测量服务
          */
 
@@ -55679,7 +55707,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
     /**
      * @function mapboxgl.supermap.MapService.prototype.getMapInfo
      * @description 地图信息查询服务
-     * @param callback -{function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @return {mapboxgl.supermap.MapService} 获取服务信息
      */
 
@@ -55704,7 +55732,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.MapService.prototype.getTilesets
          * @description 切片列表信息查询服务
-         * @param callback -{function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @return {mapboxgl.supermap.MapService} 获取服务信息
          */
 
@@ -55789,7 +55817,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
     /**
      * @function mapboxgl.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @return {mapboxgl.supermap.LayerInfoService} 返回图层信息类
      */
 
@@ -55814,7 +55842,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
          * @function mapboxgl.supermap.LayerInfoService.prototype.setLayerInfo
          * @description 设置图层信息服务。可以实现临时图层中子图层的修改
          * @param params - {SuperMap.SetLayerInfoParameters} 设置图层信息参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55848,7 +55876,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
          * @function mapboxgl.supermap.LayerInfoService.prototype.setLayersInfo
          * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改
          * @param params - {SuperMap.SetLayersInfoParameters}  设置图层信息参数类,包括临时图层。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55882,7 +55910,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
          * @function mapboxgl.supermap.LayerInfoService.prototype.setLayerStatus
          * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
          * @param params - {SuperMap.SetLayerStatusParameters} 子图层显示控制参数类
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -55971,7 +55999,7 @@ var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase
     /**
      * @function mapboxgl.supermap.GridCellInfosService.prototype.getGridCellInfos
      * @param params - {SuperMap.GetGridCellInfosParameters} 查询所需参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
 
 
@@ -56060,7 +56088,7 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
      * @function mapboxgl.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      */
 
 
@@ -56087,7 +56115,7 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
          * @function mapboxgl.supermap.FieldService.prototype.getFieldStatisticsInfo
          * @description 字段统计服务
          * @param params -{SuperMap.FieldStatisticsParameters} 查询所需参数类。
-         * @param callback -{function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -56213,7 +56241,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
      * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
      * @param params - {SuperMap.GetFeaturesByIDsParameters} 查询所需参数类。
-     * @param callback - {function} 回调函数
+     * @param {RequestCallback} callback 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
      */
 
@@ -56239,7 +56267,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
          * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByBounds
          * @description 数据集Bounds查询服务
          * @param params - {SuperMap.GetFeaturesByBoundsParameters} 查询所需参数类。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
          */
 
@@ -56264,7 +56292,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
          * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByBuffer
          * @description 数据集Buffer查询服务
          * @param params - {SuperMap.GetFeaturesByBufferParameters} 查询所需参数类。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
          */
 
@@ -56289,7 +56317,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
          * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesBySQL
          * @description 数据集SQL查询服务
          * @param params - {SuperMap.GetFeaturesBySQLParameters} 查询所需参数类。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
          */
 
@@ -56315,7 +56343,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
          * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByGeometry
          * @description 数据集几何查询服务类
          * @param params - {SuperMap.GetFeaturesByGeometryParameters} 查询所需参数类。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
          */
 
@@ -56340,7 +56368,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
          * @function mapboxgl.supermap.FeatureService.prototype.editFeatures
          * @description 地物编辑服务
          * @param params - {SuperMap.EditFeaturesParameters} 查询所需参数类。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -56686,7 +56714,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
      * @function mapboxgl.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param callback - {function} 回调函数。
+     * @param {RequestCallback} callback 回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
      */
 
@@ -56715,7 +56743,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
         /**
          * @function mapboxgl.supermap.ChartService.prototype.getChartFeatureInfo
          * @description 获取海图物标信息服务。
-         * @param callback - {function} 回调函数
+         * @param {RequestCallback} callback 回调函数
          */
 
     }, {
@@ -56827,7 +56855,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
      * @function mapboxgl.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param params - {Object} 正向匹配参数。
-     * @param callback - {function} 请求结果的回调函数。
+     * @param {RequestCallback} callback 请求结果的回调函数。
      */
 
 
@@ -56852,7 +56880,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
          * @function mapboxgl.supermap.AddressMatchService.prototype.decode
          * @description 获取反向地址匹配结果。
          * @param params -{Object} 反向匹配参数。
-         * @param callback -{function}请求结果的回调函数。
+         * @param {RequestCallback} callback请求结果的回调函数。
          */
 
     }, {
@@ -60496,15 +60524,15 @@ var MapvLayer = exports.MapvLayer = function () {
             canvas.style.position = 'absolute';
             canvas.style.top = 0 + "px";
             canvas.style.left = 0 + "px";
-            canvas.width = parseInt(this.map.getCanvas().style.width);
-            canvas.height = parseInt(this.map.getCanvas().style.height);
-            canvas.style.width = this.map.getCanvas().style.width;
-            canvas.style.height = this.map.getCanvas().style.height;
             var global$2 = typeof window === 'undefined' ? {} : window;
             var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+            canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
+            canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
             if (this.mapVOptions.context == '2d') {
                 canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
             }
+            canvas.style.width = this.map.getCanvas().style.width;
+            canvas.style.height = this.map.getCanvas().style.height;
             return canvas;
         }
 
@@ -60535,6 +60563,17 @@ var MapvLayer = exports.MapvLayer = function () {
                 }
                 nextLayer.parentNode.appendChild(layer);
             }
+        }
+        /**
+         * @function mapboxgl.supermap.MapvLayer.prototype.setZIndex
+         * @description 设置canvas层级
+         * @param {number} zIndex - canvas层级
+         */
+
+    }, {
+        key: 'setZIndex',
+        value: function setZIndex(z) {
+            this.canvas.style.zIndex = z;
         }
     }]);
 
@@ -73297,14 +73336,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.TransferSolutionService
  * @category  iServer TrafficTransferAnalyst TransferSolutions
- * @classdesc
- * 交通换乘方案查询服务类。
+ * @classdesc 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取。
- * @param url - {string} 与客户端交互的交通换乘方案查询服务地址。
+ * @param {string} url - 与客户端交互的交通换乘方案查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
- * @param options - {Object} 参数。如</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。</br>
- * @extends SuperMap.CommonServiceBase
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
+ * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * (start code)
  * var myService = new SuperMap.TransferSolutionService(url, {eventListeners: {
@@ -73341,7 +73379,7 @@ var TransferSolutionService = exports.TransferSolutionService = function (_Commo
         /**
          * @function SuperMap.TransferSolutionService.prototype.processAsync
          * @description 负责将客户端的更新参数传递到服务端。
-         * @param params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
+         * @param {SuperMap.TransferSolutionParameters} params - 交通换乘参数。
          */
 
     }, {
@@ -73432,17 +73470,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
  *            返回结果通过该类支持的事件的监听函数参数获取
- * @extends SuperMap.CommonServiceBase
+ * @extends {SuperMap.CommonServiceBase}
  * @example 例如：
  * var myService = new SuperMap.TransferPathService(url, {eventListeners: {
  *     "processCompleted": TrafficTransferCompleted,
  *     "processFailed": TrafficTransferError
  *     }
  * };
- * @param url - {string} 与客户端交互的交通换乘线路查询服务地址。
+ * @param {string} url - 与客户端交互的交通换乘线路查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
- * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 var TransferPathService = exports.TransferPathService = function (_CommonServiceBase) {
     _inherits(TransferPathService, _CommonServiceBase);
@@ -73470,7 +73508,7 @@ var TransferPathService = exports.TransferPathService = function (_CommonService
         /**
          * @function SuperMap.TransferPathService.prototype.processAsync
          * @description 负责将客户端的更新参数传递到服务端。
-         * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
+         * @param {SuperMap.TransferPathParameters} params - 交通换乘参数。
          */
 
     }, {
@@ -73540,9 +73578,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.TopologyValidatorJobsService
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 拓扑检查分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 拓扑检查分析服务地址。
+ * @param {Object} options - 参数。
  */
 var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = function (_ProcessingServiceBas) {
     _inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
@@ -73582,7 +73620,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
         /**
          * @function SuperMap.TopologyValidatorJobsService.protitype.getTopologyValidatorJob
          * @description 获取指定id的拓扑检查分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -73594,8 +73632,8 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
         /**
          * @function SuperMap.TopologyValidatorJobsService.protitype.addTopologyValidatorJob
          * @description 新建拓扑检查分析服务
-         * @param params - {SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -73639,15 +73677,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.TilesetsService
  * @category  iServer Map Tilesets
- * @classdesc 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
- * @extends SuperMap.CommonServiceBase
- * @param url - {string} 地图服务地址。URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{服务名}/rest/maps/map；<br>
+ * @classdesc 切片列表信息查询服务类；即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
+ * @extends {SuperMap.CommonServiceBase}
+ * @param {string} url - 地图服务地址。URL应为：<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{服务名}/rest/maps/map；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/maps/tianlocal";
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER"，"GEOJSON"。
  */
 var TilesetsService = exports.TilesetsService = function (_CommonServiceBase) {
     _inherits(TilesetsService, _CommonServiceBase);
@@ -73916,12 +73954,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 泰森多边形分析的参数支持两种，当参数为 {SuperMap.DatasetThiessenAnalystParameters} 类型
  * 时，执行数据集泰森多边形分析，当参数为 {SuperMap.GeometryThiessenAnalystParameters} 类型时，
  * 执行几何对象泰森多边形分析。
- * @param options - {Object} 参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param url - {string} 服务的访问地址。
- * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
- *
- * @extends SuperMap.SpatialAnalystBase
+ * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+ * @extends {SuperMap.SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
@@ -73940,7 +73977,7 @@ var ThiessenAnalystService = exports.ThiessenAnalystService = function (_Spatial
         _classCallCheck(this, ThiessenAnalystService);
 
         /**
-         * @member SuperMap.ThiessenAnalystService.prototype.mode -{string}
+         * @member {string} SuperMap.ThiessenAnalystService.prototype.mode
          * @description 缓冲区分析类型
          */
         var _this = _possibleConstructorReturn(this, (ThiessenAnalystService.__proto__ || Object.getPrototypeOf(ThiessenAnalystService)).call(this, url, options));
@@ -73968,7 +74005,7 @@ var ThiessenAnalystService = exports.ThiessenAnalystService = function (_Spatial
         /**
          * @function SuperMap.ThiessenAnalystService.prototype.processAsync
          * @description 负责将客户端的查询参数传递到服务端。
-         * @param parameter - {SuperMap.DatasetThiessenAnalystParameters}|{GeometryThiessenAnalystParameters}
+         * @param {(SuperMap.DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters)} parameter - 泰森多边形分析参数基类。
          */
 
     }, {
@@ -74043,7 +74080,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类。
- * @extends SuperMap.CommonServiceBase
+ * @extends {SuperMap.CommonServiceBase}
  * @example
  * var myThemeService = new SuperMap.ThemeService(url, {
  *     eventListeners: {
@@ -74051,9 +74088,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *           "processFailed": themeFailed
  *           }
  * });
- * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
     _inherits(ThemeService, _CommonServiceBase);
@@ -74089,7 +74126,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.ThemeService.prototype.processAsync
          * @description 负责将客户端的专题图参数传递到服务端。
-         * @param params - {SuperMap.ThemeParameters} 专题图参数类。
+         * @param {SuperMap.ThemeParameters} params - 专题图参数类。
          */
 
     }, {
@@ -74113,8 +74150,8 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.ThemeService.prototype.getJsonParameters
          * @description 将专题图参数参数转化为 JSON 字符串。
-         * @param parameter - {SuperMap.ThemeParameters} 专题图参数类。
-         * @return {Object} 转化后的JSON字符串。
+         * @param {SuperMap.ThemeParameters} parameter - 专题图参数类。
+         * @returns {Object} 转化后的JSON字符串。
          */
 
     }, {
@@ -74213,50 +74250,50 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression <br>
  *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，<br>
  *              每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
- * @param options - {Object} 可选参数。如：<br>
- *        caption - {string} 专题图子项的名称。<br>
- *        unique - {string} 单值专题图子项的值，可以为数字、字符串等。<br>
- *        offsetX - {number}标签在X方向偏移量。<br>
- *        offsetY - {number}标签在Y方向偏移量。<br>
- *        visible - {boolean} 标签专题图子项是否可见。<br>
- *        style - {{@link SuperMap.ServerTextStyle}} 标签专题图子项文本的显示风格。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.caption - 专题图子项的名称。<br>
+ * @param {string} options.unique - 单值专题图子项的值，可以为数字、字符串等。<br>
+ * @param {number }options.offsetX - 标签在X方向偏移量。<br>
+ * @param {number}options.offsetY - 标签在Y方向偏移量。<br>
+ * @param {boolean} options.visible - 标签专题图子项是否可见。<br>
+ * @param {SuperMap.ServerTextStyle} options.style - 标签专题图子项文本的显示风格。
  */
 var ThemeLabelUniqueItem = exports.ThemeLabelUniqueItem = function () {
   function ThemeLabelUniqueItem(options) {
     _classCallCheck(this, ThemeLabelUniqueItem);
 
     /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.caption -{string}
+     * @member {string} SuperMap.ThemeLabelUniqueItem.prototype.caption
      * @description 标签专题子项的标题。
      */
     this.caption = null;
 
     /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.unique -{string}
+     * @member {string} SuperMap.ThemeLabelUniqueItem.prototype.unique
      * @description 单值专题图子项的值，可以为数字、字符串等。
      */
     this.unique = null;
 
     /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{number}
+     * @member {number} SuperMap.ThemeLabelUniqueItem.prototype.offsetX
      * @description 标签在X方向偏移量。
      */
     this.offsetX = 0;
 
     /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{number}
+     * @member {number} SuperMap.ThemeLabelUniqueItem.prototype.offsetY
      * @description 标签在Y方向偏移量。
      */
     this.offsetY = 0;
 
     /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.visible -{boolean}
-     * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
+     * @member {boolean} [SuperMap.ThemeLabelUniqueItem.prototype.visible=true]
+     * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。
      */
     this.visible = true;
 
     /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
+     * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelUniqueItem.prototype.style
      * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
      *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
      */
@@ -74292,8 +74329,8 @@ var ThemeLabelUniqueItem = exports.ThemeLabelUniqueItem = function () {
     /**
      * @function SuperMap.ThemeLabelUniqueItem.fromObj
      * @description 从传入对象获取单值标签专题图的子项类。
-     * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabelUniqueItem} ThemeLabelUniqueItem对象
+     * @param {Object} obj - 传入对象
+     * @returns {SuperMap.ThemeLabelUniqueItem} ThemeLabelUniqueItem对象
      */
 
   }], [{
@@ -74345,10 +74382,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.TerrainCurvatureCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 地形曲率计算服务类。
- * @extends SuperMap.SpatialAnalystBase
- * @param options - {Object} 可选参数。如</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @param {Object} options - 参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @example 例如：
  * (start code)
  * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
@@ -74386,7 +74423,7 @@ var TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationServ
         /**
          * @function SuperMap.TerrainCurvatureCalculationService.prototype.processAsync
          * @description 负责将客户端的查询参数传递到服务端。
-         * @param parameter - {SuperMap.TerrainCurvatureCalculationParameters}
+         * @param {SuperMap.TerrainCurvatureCalculationParameters} parameter - 地形曲率计算参数类。
          */
 
     }, {

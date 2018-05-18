@@ -1,6 +1,8 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {MapvRenderer} from "./mapv/MapvRenderer";
+import {
+    MapvRenderer
+} from "./mapv/MapvRenderer";
 
 /**
  * @class mapboxgl.supermap.MapvLayer
@@ -119,8 +121,8 @@ export class MapvLayer {
         canvas.style.left = 0 + "px";
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-        canvas.width = parseInt(this.map.getCanvas().style.width)*devicePixelRatio;
-        canvas.height = parseInt(this.map.getCanvas().style.height)*devicePixelRatio;
+        canvas.width = parseInt(this.map.getCanvas().style.width) * devicePixelRatio;
+        canvas.height = parseInt(this.map.getCanvas().style.height) * devicePixelRatio;
         if (this.mapVOptions.context == '2d') {
             canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
         }
@@ -153,6 +155,14 @@ export class MapvLayer {
             }
             nextLayer.parentNode.appendChild(layer);
         }
+    }
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.setZIndex
+     * @description 设置canvas层级
+     * @param {number} zIndex - canvas层级
+     */
+    setZIndex(z) {
+        this.canvas.style.zIndex = z;
     }
 
 }

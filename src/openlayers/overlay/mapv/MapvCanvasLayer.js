@@ -34,8 +34,8 @@ export class MapvCanvasLayer {
         canvas.className = "mapvClass";
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
-        canvas.width = me.width;
-        canvas.height = me.height;
+        canvas.width = parseInt(me.width) * devicePixelRatio;
+        canvas.height = parseInt(me.height) * devicePixelRatio;
         if (me.context == '2d') {
             canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
         }
@@ -60,6 +60,13 @@ export class MapvCanvasLayer {
     resize(mapWidth, mapHeight) {
         this.canvas.width = mapWidth;
         this.canvas.height = mapHeight;
+        var global$2 = typeof window === 'undefined' ? {} : window;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        this.canvas.width = parseInt(this.width) * devicePixelRatio;
+        this.canvas.height = parseInt(this.height) * devicePixelRatio;
+        if (this.context == '2d') {
+            this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
+        }
         this.canvas.style.width = mapWidth + "px";
         this.canvas.style.height = mapHeight + "px";
     }
