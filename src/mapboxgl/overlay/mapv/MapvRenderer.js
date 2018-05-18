@@ -308,8 +308,11 @@ export class MapvRenderer extends BaseLayer {
         canvas.style.position = 'absolute';
         canvas.style.top = 0 + "px";
         canvas.style.left = 0 + "px";
-        canvas.width = parseInt(this.map.getCanvas().style.width);
-        canvas.height = parseInt(this.map.getCanvas().style.height);
+        var global$2 = typeof window === 'undefined' ? {} : window;
+        var devicePixelRatio = this.canvasLayer.devicePixelRatio = global$2.devicePixelRatio;
+        canvas.width = parseInt(this.map.getCanvas().style.width)*devicePixelRatio;
+        canvas.height = parseInt(this.map.getCanvas().style.height)*devicePixelRatio;
+
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
     }
