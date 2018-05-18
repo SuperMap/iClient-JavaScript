@@ -2,6 +2,7 @@ import ol from 'openlayers';
 import {
     FetchRequest
 } from "@supermap/iclient-common";
+import {olExtends} from './olExtends'
 
 
 /**
@@ -56,12 +57,7 @@ export class MapboxStyles extends ol.Observable {
         this.url = options.url ? options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true' : "";
         this.resolutions = options.resolutions;
         this.style = options.style;
-        //applyStyleFunction 调用了ol.geom.LineString.getFlatMidpoint但是该方法在ol-debug.js里才有
-        if (!ol.geom.LineString.getFlatMidpoint) {
-            ol.geom.LineString.prototype.getFlatMidpoint = function () {
-                return this.getCoordinateAt(0.5);
-            };
-        }
+        olExtends(this.map);
         if (this.style) {
             this._resolve(this.style);
         } else {

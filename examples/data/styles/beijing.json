@@ -338,10 +338,7 @@
                 "text-anchor": "bottom-left",
                 "text-field": "{NAME}",
                 "text-max-width": 7,
-                "text-font": [
-                    "DIN Offc Pro Medium",
-                    "Arial Unicode MS Regular"
-                ],
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 22
             },
             "paint": {
@@ -362,6 +359,7 @@
                 "text-offset": [-1.5, -0.5],
                 "text-anchor": "bottom-left",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-max-width": 7,
                 "text-size": 14
             },
@@ -395,10 +393,7 @@
                         ]
                     ]
                 },
-                "text-font": [
-                    "DIN Offc Pro Italic",
-                    "Arial Unicode MS Regular"
-                ],
+                "text-font": ["Microsoft YaHei Regular"],
                 "symbol-placement": "line",
                 "text-field": "{道路名称}",
                 "text-letter-spacing": 0.1,
@@ -436,10 +431,7 @@
                         ]
                     ]
                 },
-                "text-font": [
-                    "DIN Offc Pro Italic",
-                    "Arial Unicode MS Regular"
-                ],
+                "text-font": ["Microsoft YaHei Regular"],
                 "symbol-placement": "line",
                 "text-field": "{道路名称}",
                 "text-letter-spacing": 0.1,
@@ -465,6 +457,7 @@
                 "text-offset": [-1, -1],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 14
             },
             "paint": {
@@ -486,6 +479,7 @@
                 "text-offset": [-1, -1],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -507,6 +501,7 @@
                 "text-offset": [-1, -1],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -528,6 +523,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -549,6 +545,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -570,6 +567,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -591,6 +589,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -612,6 +611,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -633,6 +633,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -654,6 +655,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -675,6 +677,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -696,6 +699,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -717,6 +721,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "filter": [
@@ -743,6 +748,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -764,6 +770,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "filter": [
@@ -790,6 +797,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 10,
                 "text-max-width": 18
             },
@@ -813,6 +821,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                 "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -834,6 +843,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -855,6 +865,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -876,6 +887,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -897,6 +909,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -918,6 +931,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -939,6 +953,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -960,6 +975,7 @@
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
@@ -981,6 +997,7 @@
                 "text-offset": [0, -0.3],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
+                "text-font": ["Microsoft YaHei Regular"],
                 "text-size": 12
             },
             "paint": {
