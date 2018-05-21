@@ -1,4 +1,4 @@
-window.resources = {
+window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
         "home": {
@@ -27,51 +27,6 @@ window.resources = {
         "3dwebgl": {
             "_name": "3D-WebGL"
         },
-        "product": {
-            "_name": "产品",
-            "introduce": "产品介绍",
-            "download": "下载",
-            "guide": "开发指南",
-            "modules": "模块说明",
-            "dependence": "相关依赖",
-            "license": "许可说明",
-            "features": "技术特点"
-        },
-        "guide": {
-            "_name": "开发指南",
-            "beginning": "开发入门",
-            "update": "iClient 8C 升级",
-            "npm": "npm",
-            "quickStart": "快速入门",
-            "projection": "投影",
-            "ie8": "兼容IE8",
-            "mapService": "使用地图服务",
-            "dataService": "使用数据服务",
-            "spatialAnalystService": "使用空间分析服务",
-            "networkAnalystService": "使用交通网络分析",
-            "trafficTransferAnalystService": "使用交通换乘分析",
-            "processingService": "使用分布式分析服务",
-            "dataFlow": "使用数据流服务",
-            "addressMatch": "使用地址匹配服务",
-            "visualization": "使用可视化",
-            
-            "install": "安装",
-            "multiProjection": "如何使用多投影",
-            "createMap": "创建一幅地图",
-            "vectorTile": "个性化地图(矢量瓦片)",
-            "drawSymbolsAndGraphs": "绘制符号与图形",
-            "areaAndDistanceMeasurement": "面积和距离测量",
-            "queryMapInformation": "地物查询",
-            "editMapInformation": "地物编辑",
-            "thematicMap": "专题图",
-            "spatialAnalyst": "空间分析",
-            "networkAnalysis": "网络分析",
-            "clientComputing": "客户端计算",
-            "leafletAddressMatch": "地址匹配",
-            "bigDataAnalysis": "大数据分析",
-            "leafletVisualization": "可视化"
-
-        },
         "examples": {
             "_name": "示例",
             "iServer": "iServer",
@@ -94,35 +49,7 @@ window.resources = {
             "mapping": "互联网地图",
             "others": "其他",
             "3D-WebGL": "3D-WebGL"
-        },
-        "more": {
-            "_name": "更多>>",
-            "version": {
-                "_name": "历史版本"
-            },
-            "get": {
-                "_name": "下载",
-                "stable": "稳定版",
-                "releases": "Releases",
-                "source": "源码",
-                "npm": "npm",
-                "oldVersions": "历史版本"
-            },
-            "language": {
-                "_name": "语言"
-            },
-            "faq": {
-                "_name": "FAQ"
-            }
-        },
-        "api": {
-            "_name": "API",
-            "doc": "文档"
-        },
-        "gallery": {
-            "_name": "Gallery"
-        },
-        "soon": "敬请期待"
+        }
     },
     "footer": {
         "download": "下载",

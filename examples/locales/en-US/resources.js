@@ -1,4 +1,4 @@
-window.resources = {
+window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
         "home": {

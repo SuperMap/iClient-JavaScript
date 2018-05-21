@@ -38,7 +38,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'ol')) {
             inputCSS("https://cdn.bootcss.com/openlayers/4.6.4/ol.css");
-            inputScript("../../web/libs/openlayers/ol-debug.js");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");

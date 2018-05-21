@@ -38,6 +38,7 @@ var Localization = {
 
         //脚本加载完成标志
         var lang = utils.getLanguage();
+
         inputScript(filePathMap[lang], function () {
 
             i18next.init({
@@ -45,10 +46,38 @@ var Localization = {
                 whitelist: ["zh-CN", "en-US"],
                 fallbackLng: ["zh-CN", "en-US"]
             });
+            if (window.isSite) {
+                var webResourceURL = `../../web/locales/${lang}/resources.js`
+                $.get(webResourceURL, function () {
+                    for (var name in window.webResources) {
+                        var subWeb = window.webResources[name];
+                        var subExamples = window.examplesResources[name];
+                        //重名以webResource为准
+                        if (typeof window.webResources[name] == 'object') {
 
-            i18next.addResourceBundle(lang, 'translation', window.resources);
+                            if (!subExamples) {
+                                subExamples = {};
+                            }
+                            for (var name1 in subWeb) {
+                                subExamples[name1] = subWeb[name1];
+                            }
+                        } else {
+                            subExamples[name1] = subWeb[name];
+                        }
 
-            callback && callback();
+                    }
+                    window.resources = window.examplesResources;
+                    i18next.addResourceBundle(lang, 'translation', window.resources);
+                    callback && callback();
+
+                })
+
+            } else {
+                window.resources = window.examplesResources;
+                i18next.addResourceBundle(lang, 'translation', window.resources);
+                callback && callback();
+            }
+
         });
 
     }
@@ -56,7 +85,7 @@ var Localization = {
     //国际化dom中的文本
     function localize() {
         jqueryI18next.init(i18next, $);
-        $("html").localize();//翻译页面所有含data-i18n属性的标签的文本
+        $("html").localize(); //翻译页面所有含data-i18n属性的标签的文本
     }
 
     //全局变量挂载
