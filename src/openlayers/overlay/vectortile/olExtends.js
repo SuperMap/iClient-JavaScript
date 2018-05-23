@@ -4,7 +4,7 @@ import ol from 'openlayers';
 export var olExtends = function (targetMap) {
 
     window.targetMapCache = targetMap;
-    ol.format.MVT.prototype.readProjection = function (source) {
+    ol.format.MVT.prototype.readProjection = function (source) {// eslint-disable-line no-unused-vars
         return new ol.proj.Projection({
             code: '',
             units: ol.proj.Units.TILE_PIXELS
@@ -15,7 +15,7 @@ export var olExtends = function (targetMap) {
             return this.getCoordinateAt(0.5);
         };
     }
-    ol.render.canvas.Replay.prototype.applyFill = function (state, geometry) {
+    ol.render.canvas.Replay.prototype.applyFill = function (state, geometry) {// eslint-disable-line no-unused-vars
         var fillStyle = state.fillStyle;
         var fillInstruction = [ol.render.canvas.Instruction.SET_FILL_STYLE, fillStyle];
         if (typeof fillStyle !== 'string') {
@@ -86,47 +86,83 @@ export var olExtends = function (targetMap) {
         return feature;
     };
 
-    ol.geom.flat.textpath.lineString = function (flatCoordinates, offset, end, stride, text, measure, startM, maxAngle) {
-        const result = [];
+    ol.geom.flat.textpath.lineString = function (
+        flatCoordinates, offset, end, stride, text, measure, startM, maxAngle) {
+        var result = [];
 
         // Keep text upright
-        //const reverse = flatCoordinates[offset] > flatCoordinates[end - stride];
-        const anglereverse = Math.atan2(flatCoordinates[end - stride + 1] - flatCoordinates[offset + 1], flatCoordinates[end - stride] - flatCoordinates[offset]);
-        const reverse = anglereverse < -0.785 || anglereverse > 2.356 ? true : false; //0.785//2.356
-        const isRotateUp = (anglereverse < -0.785 && anglereverse > -2.356) || (anglereverse > 0.785 && anglereverse < 2.356);
+        var anglereverse = Math.atan2(flatCoordinates[end - stride + 1] - flatCoordinates[offset + 1], flatCoordinates[end - stride] - flatCoordinates[offset]);
+        var reverse = anglereverse < -0.785 || anglereverse > 2.356; //0.785//2.356
+        var isRotateUp = (anglereverse < -0.785 && anglereverse > -2.356) || (anglereverse > 0.785 && anglereverse < 2.356);
 
-        const numChars = text.length;
+        var numChars = text.length;
 
-        let x1 = flatCoordinates[offset];
-        let y1 = flatCoordinates[offset + 1];
+        var x1 = flatCoordinates[offset];
+        var y1 = flatCoordinates[offset + 1];
         offset += stride;
-        let x2 = flatCoordinates[offset];
-        let y2 = flatCoordinates[offset + 1];
-        let segmentM = 0;
-        let segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        var x2 = flatCoordinates[offset];
+        var y2 = flatCoordinates[offset + 1];
+        var segmentM = 0;
+        var segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-        let chunk = '';
-        let chunkLength = 0;
-        let data, index, previousAngle, previousLang;
-        for (let i = 0; i < numChars; ++i) {
+        while (offset < end - stride && segmentM + segmentLength < startM) {
+            x1 = x2;
+            y1 = y2;
+            offset += stride;
+            x2 = flatCoordinates[offset];
+            y2 = flatCoordinates[offset + 1];
+            segmentM += segmentLength;
+            segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+        var interpolate = (startM - segmentM) / segmentLength;
+        var x0 = ol.math.lerp(x1, x2, interpolate); //起始点
+        var y0 = ol.math.lerp(y1, y2, interpolate); //起始点
+
+        var chunk = '';
+        var chunkLength = 0;
+        var data, index, previousAngle, previousLang;
+        for (var i = 0; i < numChars; ++i) {
             index = reverse ? numChars - i - 1 : i;
-            const char = text.charAt(index);
-            const ischinese = char.charCodeAt(0) >= 19968 && char.charCodeAt(0) <= 40907 ? true : false;
+            var char = text.charAt(index);
+            var charcode = char.charCodeAt(0);
+            var ischinese = charcode >= 19968 && charcode <= 40907;
             chunk = reverse ? char + chunk : chunk + char;
-            const charLength = measure(chunk) - chunkLength;
+            var charLength = measure(chunk) - chunkLength;
             chunkLength += charLength;
-            const charM = startM + charLength / 2;
-            while (offset < end - stride && segmentM + segmentLength < charM) {
+            //var charM = startM + charLength / 2;
+            while (offset < end - stride && Math.sqrt(Math.pow(x2 - x0, 2) + Math.pow(y2 - y0, 2)) < (charLength / 2)) {
                 x1 = x2;
                 y1 = y2;
                 offset += stride;
                 x2 = flatCoordinates[offset];
                 y2 = flatCoordinates[offset + 1];
-                segmentM += segmentLength;
-                segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
             }
-            const segmentPos = charM - segmentM;
-            let angle = Math.atan2(y2 - y1, x2 - x1);
+            var a = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+            var b = 2 * (x2 - x1) * (x1 - x0) + 2 * (y2 - y1) * (y1 - y0);
+            var c = Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2) - Math.pow(charLength / 2, 2);
+            var scale1 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            var scale2 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            interpolate = scale1 < 0 || scale1 > 1 ? scale2 : scale2 < 0 || scale2 > 1 ? scale1 : scale1 < scale2 ? scale2 : scale1;
+            var x = ol.math.lerp(x1, x2, interpolate);
+            var y = ol.math.lerp(y1, y2, interpolate);
+
+            while (offset < end - stride && Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) < (charLength / 2)) {
+                x1 = x2;
+                y1 = y2;
+                offset += stride;
+                x2 = flatCoordinates[offset];
+                y2 = flatCoordinates[offset + 1];
+            }
+            a = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+            b = 2 * (x2 - x1) * (x1 - x) + 2 * (y2 - y1) * (y1 - y);
+            c = Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2) - Math.pow(charLength / 2, 2);
+            scale1 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            scale2 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            interpolate = scale1 < 0 || scale1 > 1 ? scale2 : scale2 < 0 || scale2 > 1 ? scale1 : scale1 < scale2 ? scale2 : scale1;
+            var x3 = ol.math.lerp(x1, x2, interpolate);
+            var y3 = ol.math.lerp(y1, y2, interpolate);
+            var angle = Math.atan2(y3 - y0, x3 - x0);
+
             if (reverse) {
                 angle += angle > 0 ? -Math.PI : Math.PI;
             }
@@ -134,15 +170,13 @@ export var olExtends = function (targetMap) {
                 angle += angle > 0 ? -Math.PI / 2 : Math.PI / 2;
             }
             if (previousAngle !== undefined) {
-                let delta = angle - previousAngle;
+                var delta = angle - previousAngle;
                 delta += (delta > Math.PI) ? -2 * Math.PI : (delta < -Math.PI) ? 2 * Math.PI : 0;
                 if (ischinese === previousLang ? Math.abs(delta) > maxAngle : Math.abs(delta) > (maxAngle + Math.PI / 2)) {
                     return null;
                 }
             }
-            const interpolate = segmentPos / segmentLength;
-            const x = ol.math.lerp(x1, x2, interpolate);
-            const y = ol.math.lerp(y1, y2, interpolate);
+
             if (previousAngle == angle && !isRotateUp) {
                 if (reverse) {
                     data[0] = x;
@@ -162,10 +196,12 @@ export var olExtends = function (targetMap) {
                 previousAngle = angle;
                 previousLang = ischinese;
             }
+            x0 = x3;
+            y0 = y3;
             startM += charLength;
         }
         return result;
-    }
+    };
     ol.layer.VectorTile.prototype.setFastRender = function (fastRender) {
         return this.fastRender = fastRender;
     };
@@ -257,4 +293,4 @@ export var olExtends = function (targetMap) {
         ol.renderer.canvas.TileLayer.prototype.postCompose.apply(this, arguments);
     };
 }
-window.olExtends=olExtends;
+window.olExtends = olExtends;

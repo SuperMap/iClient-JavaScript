@@ -29988,7 +29988,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
 
             self._mapCenter = map.getView().getCenter();
             self._mapCenterPx = map.getPixelFromCoordinate(self._mapCenter);
-            self._reselutions = map.getView().getResolution() * self.pixelRatio;
+            self._reselutions = map.getView().getResolution();
             self._rotation = -map.getView().getRotation();
 
             var dataGetOptions = {
@@ -29996,7 +29996,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
                     var x = (coordinate[0] - self._mapCenter[0]) / self._reselutions,
                         y = (self._mapCenter[1] - coordinate[1]) / self._reselutions;
                     var scaledP = [x + self._mapCenterPx[0], y + self._mapCenterPx[1]];
-                    scaledP = scale(scaledP, self._mapCenterPx, 1);
+                    scaledP = scale(scaledP, self._mapCenterPx, self.pixelRatio);
                     /*//有旋转量的时候处理旋转
                     if (self._rotation !== 0) {
                         var rotatedP = rotate(scaledP, self._rotation, self._mapCenterPx);
@@ -61955,6 +61955,7 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
 
     window.targetMapCache = targetMap;
     _openlayers2.default.format.MVT.prototype.readProjection = function (source) {
+        // eslint-disable-line no-unused-vars
         return new _openlayers2.default.proj.Projection({
             code: '',
             units: _openlayers2.default.proj.Units.TILE_PIXELS
@@ -61966,6 +61967,7 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
         };
     }
     _openlayers2.default.render.canvas.Replay.prototype.applyFill = function (state, geometry) {
+        // eslint-disable-line no-unused-vars
         var fillStyle = state.fillStyle;
         var fillInstruction = [_openlayers2.default.render.canvas.Instruction.SET_FILL_STYLE, fillStyle];
         if (typeof fillStyle !== 'string') {
@@ -62034,9 +62036,8 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
         var result = [];
 
         // Keep text upright
-        //const reverse = flatCoordinates[offset] > flatCoordinates[end - stride];
         var anglereverse = Math.atan2(flatCoordinates[end - stride + 1] - flatCoordinates[offset + 1], flatCoordinates[end - stride] - flatCoordinates[offset]);
-        var reverse = anglereverse < -0.785 || anglereverse > 2.356 ? true : false; //0.785//2.356
+        var reverse = anglereverse < -0.785 || anglereverse > 2.356; //0.785//2.356
         var isRotateUp = anglereverse < -0.785 && anglereverse > -2.356 || anglereverse > 0.785 && anglereverse < 2.356;
 
         var numChars = text.length;
@@ -62049,31 +62050,64 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
         var segmentM = 0;
         var segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
+        while (offset < end - stride && segmentM + segmentLength < startM) {
+            x1 = x2;
+            y1 = y2;
+            offset += stride;
+            x2 = flatCoordinates[offset];
+            y2 = flatCoordinates[offset + 1];
+            segmentM += segmentLength;
+            segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+        var interpolate = (startM - segmentM) / segmentLength;
+        var x0 = _openlayers2.default.math.lerp(x1, x2, interpolate); //起始点
+        var y0 = _openlayers2.default.math.lerp(y1, y2, interpolate); //起始点
+
         var chunk = '';
         var chunkLength = 0;
-        var data = void 0,
-            index = void 0,
-            previousAngle = void 0,
-            previousLang = void 0;
+        var data, index, previousAngle, previousLang;
         for (var i = 0; i < numChars; ++i) {
             index = reverse ? numChars - i - 1 : i;
             var char = text.charAt(index);
-            var ischinese = char.charCodeAt(0) >= 19968 && char.charCodeAt(0) <= 40907 ? true : false;
+            var charcode = char.charCodeAt(0);
+            var ischinese = charcode >= 19968 && charcode <= 40907;
             chunk = reverse ? char + chunk : chunk + char;
             var charLength = measure(chunk) - chunkLength;
             chunkLength += charLength;
-            var charM = startM + charLength / 2;
-            while (offset < end - stride && segmentM + segmentLength < charM) {
+            //var charM = startM + charLength / 2;
+            while (offset < end - stride && Math.sqrt(Math.pow(x2 - x0, 2) + Math.pow(y2 - y0, 2)) < charLength / 2) {
                 x1 = x2;
                 y1 = y2;
                 offset += stride;
                 x2 = flatCoordinates[offset];
                 y2 = flatCoordinates[offset + 1];
-                segmentM += segmentLength;
-                segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
             }
-            var segmentPos = charM - segmentM;
-            var angle = Math.atan2(y2 - y1, x2 - x1);
+            var a = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+            var b = 2 * (x2 - x1) * (x1 - x0) + 2 * (y2 - y1) * (y1 - y0);
+            var c = Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2) - Math.pow(charLength / 2, 2);
+            var scale1 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            var scale2 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            interpolate = scale1 < 0 || scale1 > 1 ? scale2 : scale2 < 0 || scale2 > 1 ? scale1 : scale1 < scale2 ? scale2 : scale1;
+            var x = _openlayers2.default.math.lerp(x1, x2, interpolate);
+            var y = _openlayers2.default.math.lerp(y1, y2, interpolate);
+
+            while (offset < end - stride && Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) < charLength / 2) {
+                x1 = x2;
+                y1 = y2;
+                offset += stride;
+                x2 = flatCoordinates[offset];
+                y2 = flatCoordinates[offset + 1];
+            }
+            a = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+            b = 2 * (x2 - x1) * (x1 - x) + 2 * (y2 - y1) * (y1 - y);
+            c = Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2) - Math.pow(charLength / 2, 2);
+            scale1 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            scale2 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            interpolate = scale1 < 0 || scale1 > 1 ? scale2 : scale2 < 0 || scale2 > 1 ? scale1 : scale1 < scale2 ? scale2 : scale1;
+            var x3 = _openlayers2.default.math.lerp(x1, x2, interpolate);
+            var y3 = _openlayers2.default.math.lerp(y1, y2, interpolate);
+            var angle = Math.atan2(y3 - y0, x3 - x0);
+
             if (reverse) {
                 angle += angle > 0 ? -Math.PI : Math.PI;
             }
@@ -62087,9 +62121,7 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
                     return null;
                 }
             }
-            var interpolate = segmentPos / segmentLength;
-            var x = _openlayers2.default.math.lerp(x1, x2, interpolate);
-            var y = _openlayers2.default.math.lerp(y1, y2, interpolate);
+
             if (previousAngle == angle && !isRotateUp) {
                 if (reverse) {
                     data[0] = x;
@@ -62109,6 +62141,8 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
                 previousAngle = angle;
                 previousLang = ischinese;
             }
+            x0 = x3;
+            y0 = y3;
             startM += charLength;
         }
         return result;
