@@ -496,12 +496,12 @@ export class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.Theme.prototype.toFeature
+     * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素
      * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
-    toFeature(features) {
+    toiClientFeature(features) {
         if (CommonUtil.isArray(features)) {
             var featuresTemp = [];
             for (let i = 0; i < features.length; i++) {
@@ -531,6 +531,17 @@ export class Theme extends ol.source.ImageCanvas {
             return format.read(features, "FeatureCollection");
         }
         throw new Error(`features's type is not be supported.`);
+    }
+
+    /**
+     * @function ol.source.Theme.prototype.toFeature
+     * @deprecated
+     * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
+     * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     */
+    toFeature(features) {
+        return this.toiClientFeature(features);
     }
 
     _toFeature(feature) {

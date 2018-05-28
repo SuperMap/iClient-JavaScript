@@ -3007,7 +3007,9 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         key: 'serviceProcessCompleted',
         value: function serviceProcessCompleted(result) {
             result = _Util.Util.transformResult(result);
-            this.events.triggerEvent("processCompleted", { result: result });
+            this.events.triggerEvent("processCompleted", {
+                result: result
+            });
         }
 
         /**
@@ -3021,7 +3023,9 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         value: function serviceProcessFailed(result) {
             result = _Util.Util.transformResult(result);
             var error = result.error || result;
-            this.events.triggerEvent("processFailed", { error: error });
+            this.events.triggerEvent("processFailed", {
+                error: error
+            });
         }
     }, {
         key: '_commit',
@@ -3052,9 +3056,13 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                 }
                 if (!result || result.error || result.code >= 300 && result.code !== 304) {
                     if (result && result.error) {
-                        result = { error: result.error };
+                        result = {
+                            error: result.error
+                        };
                     } else {
-                        result = { error: result };
+                        result = {
+                            error: result
+                        };
                     }
                 }
                 if (result.error) {
@@ -3073,6 +3081,21 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
 }();
 
 _SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
+
+/**
+ * 服务器请求回调函数
+ * @callback RequestCallback
+ * @example
+ * var requestCallback = function (serviceResult){
+ *      console.log(serviceResult.result);
+ * }
+ * new QueryService(url).queryByBounds(param, requestCallback);
+ * @param {Object} serviceResult
+ * @param {Object} serviceResult.result 服务器返回结果
+ * @param {Object} serviceResult.object 发布应用程序事件的对象
+ * @param {Object} serviceResult.type 事件类型
+ * @param {Object} serviceResult.element 接受浏览器事件的DOM节点
+ */
 
 /***/ }),
 /* 7 */
@@ -5064,12 +5087,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{string} 数据集名。 <br>
- *         datasetTopology -{string} 检查对象所在的数据集名称。 <br>
- *         rule -{{@link SuperMap.TopologyValidatorRule}} 拓扑检查规则 。 <br>
- *         tolerance -{string} 容限 <br>
- *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
+ * @param {Object} options - 必填参数。<br>
+ * @param {string} options.datasetName -数据集名。<br>
+ * @param {string} options.datasetTopology -检查对象所在的数据集名称。<br>
+ * @param {SuperMap.TopologyValidatorRule} options.rule - 拓扑检查规则。<br>
+ * @param {string} options.tolerance - 容限。<br>
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
  */
 var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = function () {
     function TopologyValidatorJobsParameter(options) {
@@ -5079,31 +5102,31 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
             return;
         }
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetName -{string}
+         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.datasetName
          * @description 数据集名。
          */
         this.datasetName = "";
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology -{string}
+         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology
          * @description 拓扑检查对象所在的数据集名称。
          */
         this.datasetTopology = "";
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.tolerance -{string}
+         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.tolerance
          * @description 容限，指定的拓扑错误检查时使用的容限。
          */
         this.tolerance = "";
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.rule -{SuperMap.TopologyValidatorRule}
+         * @member {SuperMap.TopologyValidatorRule} SuperMap.TopologyValidatorJobsParameter.prototype.rule
          * @description 拓扑检查模式 。
          */
         this.rule = _REST.TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member SuperMap.TopologyValidatorJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
          * @description 输出参数设置类
          */
         this.output = null;
@@ -5134,8 +5157,8 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 
         /**
          * @function SuperMap.TopologyValidatorJobsParameter.toObject
-         * @param TopologyValidatorJobsParameter -{Object} 拓扑检查分析任务参数
-         * @param tempObj - {Object} 目标对象
+         * @param {Object} TopologyValidatorJobsParameter -拓扑检查分析任务参数
+         * @param {Object} tempObj - 目标对象
          * @description 生成拓扑检查分析任务对象
          */
 
@@ -6982,9 +7005,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.TopologyValidatorJobsService
  * @category  iServer ProcessingService TopologyValidator
  * @classdesc 拓扑检查分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 拓扑检查分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @extends {SuperMap.ProcessingServiceBase}
+ * @param {string} url - 拓扑检查分析服务地址。
+ * @param {Object} options - 参数。
  */
 var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = function (_ProcessingServiceBas) {
     _inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
@@ -7024,7 +7047,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
         /**
          * @function SuperMap.TopologyValidatorJobsService.protitype.getTopologyValidatorJob
          * @description 获取指定id的拓扑检查分析服务
-         * @param id -{string} 指定要获取数据的id
+         * @param {string} id - 指定要获取数据的id
          */
 
     }, {
@@ -7036,8 +7059,8 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
         /**
          * @function SuperMap.TopologyValidatorJobsService.protitype.addTopologyValidatorJob
          * @description 新建拓扑检查分析服务
-         * @param params - {SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {

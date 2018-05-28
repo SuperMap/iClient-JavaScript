@@ -69,7 +69,7 @@ export class Graph extends Theme {
             return;
         }
         //转换 features 形式
-        this.features = this.toFeature(features);
+        this.features = this.toiClientFeature(features);
         //绘制专题要素
         if (this.renderer) {
             this.redrawThematicFeatures(this.map.getBounds());

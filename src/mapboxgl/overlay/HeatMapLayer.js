@@ -491,6 +491,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
             var format = new GeoJSONFormat();
             return format.read(feature, "FeatureCollection");
         }
+        throw new Error("Features's type does not match, please check.");
     }
 
     /**

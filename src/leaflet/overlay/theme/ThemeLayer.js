@@ -417,12 +417,12 @@ export var ThemeLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.ThemeLayer.prototype.toFeature
+     * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
      * @param features -{L.supermap.themeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
-    toFeature: function (features) {
+    toiClientFeature: function (features) {
         if (CommonUtil.isArray(features)) {
             var featuresTemp = [];
             for (let i = 0; i < features.length; i++) {
@@ -448,6 +448,17 @@ export var ThemeLayer = L.Layer.extend({
         }
 
         throw new Error(`features's type is not be supported.`);
+    },
+
+    /**
+     * @function L.supermap.ThemeLayer.prototype.toFeature
+     * @deprecated
+     * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
+     * @param features -{L.supermap.themeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     */
+    toFeature: function (features) {
+        return this.toiClientFeature(features);
     },
 
     _initContainer: function () {

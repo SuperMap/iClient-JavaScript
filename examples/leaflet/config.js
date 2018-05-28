@@ -682,30 +682,30 @@ var exampleConfig = {
                         thumbnail: "l_echartsLianjiaGridLayer.png",
                         fileName: "echartsGridMapLayer"
                     }, {
-                        name: "2百万点数据绘制北京道路网络图",
-                        name_en: "Use lines to draw 2 millions Beijing streets",
+                        name: "北京道路网络图（130万点数据绘制）",
+                        name_en: "Use lines to draw 1.3 millions Beijing streets",
                         thumbnail: "l_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
-                        name: "4百万点数据绘制全国铁路网络图",
+                        name: "纽约出租车分布图（140万点数据绘制）",
+                        name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
+                        thumbnail: "l_echartScatterMillionsNewYorkTaxi.png",
+                        fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
+                    }, {
+                        name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
                         thumbnail: "l_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
-                        name: "1千4百万数据绘制全国水系图",
+                        name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
                         thumbnail: "l_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
-                        name: "2千5百万数据绘制全国道路网络图",
+                        name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
                         thumbnail: "l_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
-                    }, {
-                        name: "1百40万数据绘制纽约出租车分布图",
-                        name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
-                        thumbnail: "l_echartScatterMillionsNewYorkTaxi.png",
-                        fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }
                 ]
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title data-i18n="resources.title_graphicLayerTaxi"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="papaparse,widgets" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -22,8 +22,10 @@
 
     function addGraphicLayer() {
         //将数据可视化展示
-        $.get('../data/nyc_taxi.json', function (nycData) {
-            var count = nycData.features.length;
+        widgets.loader.showLoader();
+        $.get('../data/nyc_taxi_18W.csv', function (nycData) {
+            var features = Papa.parse(nycData, {skipEmptyLines: true, header: true}).data;
+            var count = features.length;
             var graphics = [];
             var imageStyles = [];
             //创建图片的样式
@@ -37,7 +39,7 @@
 
                 //设置每个点的经纬度和图片的样式
                 for (var i = 0; i < count; ++i) {
-                    var coordinates = nycData.features[i].geometry.coordinates;
+                    var coordinates = [Number(features[i].X), Number(features[i].Y)];
                     if (coordinates[0] === coordinates[1]) {
                         continue;
                     }
@@ -47,7 +49,8 @@
                     });
                 }
                 //绘制图层
-                L.supermap.graphicLayer(graphics,{render:'canvas'}).addTo(map);
+                L.supermap.graphicLayer(graphics, {render: 'canvas'}).addTo(map);
+                widgets.loader.removeLoader();
             };
         })
     }

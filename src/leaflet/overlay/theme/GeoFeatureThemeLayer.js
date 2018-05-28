@@ -8,7 +8,7 @@ import {ThemeLayer} from './ThemeLayer';
 import {CommontypesConversion} from '../../core/CommontypesConversion';
 
 /**
- * @function L.supermap.GeoFeatureThemeLayer
+ * @class L.supermap.GeoFeatureThemeLayer
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
  * @category Visualization Theme
  * @extends L.supermap.ThemeLayer
@@ -66,7 +66,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         me.fire("beforefeaturesadded", {features: features});
 
         //转换 features 形式
-        this.features = this.toFeature(features);
+        this.features = this.toiClientFeature(features);
 
         if (!me.isCustomSetMaxCacheCount) {
             me.maxCacheCount = me.features.length * 5;

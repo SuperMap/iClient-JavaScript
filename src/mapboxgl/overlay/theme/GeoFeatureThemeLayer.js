@@ -81,7 +81,7 @@ export class GeoFeature extends Theme {
     addFeatures(features) {
         mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
         //转换 features 形式
-        this.features = this.toFeature(features);
+        this.features = this.toiClientFeature(features);
 
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;

@@ -639,22 +639,22 @@ var exampleConfig = {
                         thumbnail: "ol_echartsLianjia.png",
                         fileName: "echartsLianjia"
                     }, {
-                        name: "2百万点数据绘制北京道路网络图",
-                        name_en: "Use lines to draw 2 millions Beijing streets",
+                        name: "北京道路网络图（130万点数据绘制）",
+                        name_en: "Use lines to draw 1.3 millions Beijing streets",
                         thumbnail: "ol_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
-                        name: "4百万点数据绘制全国铁路网络图",
+                        name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
                         thumbnail: "ol_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
-                        name: "1千4百万数据绘制全国水系图",
+                        name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
                         thumbnail: "ol_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
-                        name: "2千5百万数据绘制全国道路网络图",
+                        name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
                         thumbnail: "ol_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
@@ -724,6 +724,11 @@ var exampleConfig = {
                     name_en: "Beijing house prices(2018.2)",
                     thumbnail: "mapvLianjia.png",
                     fileName: "mapvLianjia"
+                }, {
+                    name: "四川省水系分布图",
+                    name_en: "Water System Map of Sichuan Province",
+                    thumbnail: "ol_mapVLine_webgl.png",
+                    fileName: "mapVLayerLine_webgl"
                 }
                 ]
             },

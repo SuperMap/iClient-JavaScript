@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title data-i18n="resources.title_graphicLayerTaxi"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="papaparse,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
@@ -52,73 +52,79 @@
     <div id="popup-content"></div>
 </div>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/ChinaDark";
-    var map;
-    $.get('../data/nyc_taxi.json', function (nycData) {
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
-            var mapJSONObj = serviceResult.result;
-            var container = document.getElementById('popup');
-            var content = document.getElementById('popup-content');
-            var overlay = new ol.Overlay(({
-                element: container,
-                autoPan: true,
-                autoPanAnimation: {
-                    duration: 250
-                }
-            }));
-            map = new ol.Map({
-                target: 'map',
-                controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                    .extend([new ol.supermap.control.Logo()]),
-                view: new ol.View({
-                    center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
-                    zoom: 12,
-                    projection: 'EPSG:3857'
-                }),
-                overlays: [overlay],
-                renderer: ['canvas']
-            });
-            var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
-            var layer = new ol.layer.Tile({
-                source: new ol.source.TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-
-
-            var img = new Image();
-            img.src = '../img/taxi.png';
-            img.onload = function () {
-                var imageStyle = new ol.style.Icon(({
-                    img: this,
-                    size: [20, 20],
-                    imgSize: [20, 20]
-                }));
-                var counts = nycData.features.length;    //矢量点的个数
-                var graphics = new Array(counts);
-
-
-                for (var i = 0; i < counts; ++i) {
-                    var coordinates = nycData.features[i].geometry.coordinates;
-                    if (coordinates[0] === coordinates[1]) {
-                        continue;
-                    }
-                    coordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857');
-                    graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
-                    graphics[i].setStyle(imageStyle);
-                }
-                map.once('postrender', function () {
-                    var graphicLayer = new ol.layer.Image({
-                        source: new ol.source.Graphic({
-                            graphics: graphics,
-                            render:"canvas",
-                            map: map
-                        })
-                    });
-                    map.addLayer(graphicLayer);
-                })
+    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        container = document.getElementById('popup'),
+        content = document.getElementById('popup-content'),
+        overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
             }
+        })),
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 12,
+                projection: 'EPSG:3857'
+            }),
+            overlays: [overlay],
+            renderer: ['canvas']
         });
-    });
+
+    loadData();
+
+    function loadData() {
+        widgets.loader.showLoader();
+        $.get('../data/nyc_taxi_18W.csv', function (nycData) {
+            new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+                widgets.loader.removeLoader();
+                var mapJSONObj = serviceResult.result;
+                var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+                var layer = new ol.layer.Tile({
+                    source: new ol.source.TileSuperMapRest(options)
+                });
+                map.addLayer(layer);
+
+                var img = new Image();
+                img.src = '../img/taxi.png';
+                img.onload = function () {
+                    var imageStyle = new ol.style.Icon(({
+                        img: this,
+                        size: [20, 20],
+                        imgSize: [20, 20]
+                    }));
+                    var features = Papa.parse(nycData, {skipEmptyLines: true, header: true}).data;
+                    var counts = features.length;    //矢量点的个数
+                    var graphics = new Array(counts);
+
+
+                    for (var i = 0; i < counts; ++i) {
+                        var coordinates = [Number(features[i].X), Number(features[i].Y)];
+                        if (coordinates[0] === coordinates[1]) {
+                            continue;
+                        }
+                        coordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857');
+                        graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
+                        graphics[i].setStyle(imageStyle);
+                    }
+                    map.once('postrender', function () {
+                        var graphicLayer = new ol.layer.Image({
+                            source: new ol.source.Graphic({
+                                graphics: graphics,
+                                render: "canvas",
+                                map: map
+                            })
+                        });
+                        map.addLayer(graphicLayer);
+                    })
+                }
+            });
+        });
+    }
 </script>
 </body>
 </html>

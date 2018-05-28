@@ -15261,7 +15261,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
         value: function addFeatures(features) {
             _mapboxGl2.default.Evented.prototype.fire('beforefeaturesadded', { features: features });
             //转换 features 形式
-            this.features = this.toFeature(features);
+            this.features = this.toiClientFeature(features);
 
             if (!this.isCustomSetMaxCacheCount) {
                 this.maxCacheCount = this.features.length * 5;
@@ -21387,8 +21387,8 @@ var Theme = function () {
          */
 
     }, {
-        key: 'toFeature',
-        value: function toFeature(features) {
+        key: 'toiClientFeature',
+        value: function toiClientFeature(features) {
             if (_iclientCommon.CommonUtil.isArray(features)) {
                 var featuresTemp = [];
                 for (var i = 0; i < features.length; i++) {
@@ -21415,6 +21415,20 @@ var Theme = function () {
             }
 
             throw new Error('features\'s type is not be supported.');
+        }
+
+        /**
+         * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
+         * @deprecated
+         * @description 转为 iClient 要素，该方法将被弃用，由 {@link mapboxgl.supermap.ThemeLayer#toiClientFeature} 代替。
+         * @param features -{mapboxgl.supermap.ThemeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+         * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+         */
+
+    }, {
+        key: 'toFeature',
+        value: function toFeature(features) {
+            return this.toiClientFeature(features);
         }
     }, {
         key: 'moveEndEvent',
@@ -28938,7 +28952,7 @@ var Graph = exports.Graph = function (_Theme) {
                 return;
             }
             //转换 features 形式
-            this.features = this.toFeature(features);
+            this.features = this.toiClientFeature(features);
             //绘制专题要素
             if (this.renderer) {
                 this.redrawThematicFeatures(this.map.getBounds());
@@ -57944,6 +57958,7 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
                 var format = new _iclientCommon.GeoJSON();
                 return format.read(feature, "FeatureCollection");
             }
+            throw new Error("Features's type does not match, please check.");
         }
 
         /**

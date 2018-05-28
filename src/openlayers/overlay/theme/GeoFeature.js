@@ -66,7 +66,7 @@ export class GeoFeature extends Theme {
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
         //转换 features 形式
-        this.features = this.toFeature(features);
+        this.features = this.toiClientFeature(features);
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }

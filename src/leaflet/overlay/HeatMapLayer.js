@@ -507,7 +507,7 @@ export var HeatMapLayer = L.Layer.extend({
             }
             return featuresTemp;
         }
-        throw new Error("features 类型不符，请检查。");
+        throw new Error("Features's type does not match, please check.");
     },
 
     _zoomAnim: function (e) {

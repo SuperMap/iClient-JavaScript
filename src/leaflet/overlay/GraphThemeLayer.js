@@ -68,7 +68,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
         me.fire("beforefeaturesadded", {features: features});
 
         //转换 features 形式
-        this.features = this.toFeature(features);
+        this.features = this.toiClientFeature(features);
 
         //绘制专题要素
         if (!me.renderer) {
