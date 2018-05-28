@@ -1,206 +1,294 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>ECharts Pie with OpenLayers</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" include="echarts" src="../../dist/include-openlayers.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-<div id="popup"></div>
-<script type="text/javascript">
-    var resultLayer;
-    var map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: [105.2, 31.6],
-            zoom: 5,
-            projection: 'EPSG:4326'
-        }),
-        layers: [new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
-                url: (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/世界地图_Gray",
-            }),
-            projection: 'EPSG:4326'
-        })]
-    });
-    var popup = new ol.Overlay({
-        element: document.getElementById('popup'),
-        offset: [5, 5]
-    });
-    map.addOverlay(popup);
-    var categoryDataMap = {
-        "北京市": [
-            {value: 335, name: resources.text_class+'A'},
-            {value: 679, name: resources.text_class+'B'},
-            {value: 1299, name: resources.text_class+'C'}
-        ],
-        "广州市": [
-            {value: 117, name: resources.text_class+'A'},
-            {value: 1267, name: resources.text_class+'B'},
-            {value: 1048, name: resources.text_class+'C'}
-        ], "上海市": [
-            {value: 475, name: resources.text_class+'A'},
-            {value: 1450, name: resources.text_class+'B'},
-            {value: 875, name: resources.text_class+'C'}
-        ]
-    }
-    var dataMap = {
-        "北京市": [
-            {value: 335, name: resources.text_commodity+'A'},
-            {value: 310, name: resources.text_commodity+'B'},
-            {value: 234, name: resources.text_commodity+'C'},
-            {value: 135, name: resources.text_commodity+'D'},
-            {value: 1048, name: resources.text_commodity+'E'},
-            {value: 251, name: resources.text_commodity+'F'}
-        ],
-        "广州市": [
-            {value: 117, name: resources.text_commodity+'A'},
-            {value: 284, name: resources.text_commodity+'B'},
-            {value: 768, name: resources.text_commodity+'C'},
-            {value: 215, name: resources.text_commodity+'D'},
-            {value: 901, name: resources.text_commodity+'E'},
-            {value: 148, name: resources.text_commodity+'F'}
-        ], "上海市": [
-            {value: 475, name: resources.text_commodity+'A'},
-            {value: 29, name: resources.text_commodity+'B'},
-            {value: 430, name: resources.text_commodity+'C'},
-            {value: 981, name: resources.text_commodity+'D'},
-            {value: 732, name: resources.text_commodity+'E'},
-            {value: 143, name: resources.text_commodity+'F'}
-        ]
-    }
-    var option = {
-        title: {
-            text: resources.text_beijingCommoditySales,
-            subtext: resources.text_fictitiouData,
-            textStyle: {
-                color: '#fff',
-                fontSize: 16
-            }
-        },
-        backgroundColor: '#404a59',
-        tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b}: {c} ({d}%)"
-        },
-        legend: {
-            orient: 'vertical',
-            x: 'right',
-            y: 'bottom',
-            textStyle: {
-                color: '#fff',
-                fontSize: 12
-            },
-            data: [resources.text_commodity+'A', resources.text_commodity+'B', resources.text_commodity+'C', resources.text_commodity+'D', resources.text_commodity+'E', resources.text_commodity+'F']
-        },
-        series: [
-            {
-                name: resources.text_commodityClass,
-                type: 'pie',
-                selectedMode: 'single',
-                radius: [0, '30%'],
-
-                label: {
-                    normal: {
-                        position: 'inner'
+    <div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+    <div id="popup"></div>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var resultLayer;
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
                     }
-                },
-                labelLine: {
-                    normal: {
-                        show: false
-                    }
-                },
-                data: categoryDataMap['北京市']
-            },
-            {
-                name: resources.text_commodity,
-                type: 'pie',
-                radius: ['40%', '55%'],
-                data: dataMap['北京市']
-            }
-        ]
-    };
-    var chart = echarts.init(document.createElement('div'), '', {
-        width: 500,
-        height: 300
-    });
-    chart.setOption(option);
-    query();
-    function query() {
-        clearLayer();
-        var queryService = new ol.supermap.QueryService("http://support.supermap.com:8090/iserver/services/map-china400/rest/maps/China");
-        var param = new SuperMap.QueryBySQLParameters({
-            queryParams: [{
-                name: "China_ProCenCity_pt@China",
-                attributeFilter: "NAME = '广州市' or NAME = '上海市'"
-            }, {
-                name: "China_Capital_pt@China",
-                attributeFilter: "NAME = '北京市'"
-            }]
-        });
-        queryService.queryBySQL(param, function (serviceResult) {
-            var features = [];
-            for (var i = 0; i < serviceResult.result.recordsets.length; i++) {
-                var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[i].features, {
-                    dataProjection: 'EPSG:3857',
-                    featureProjection: 'EPSG:4326'
-                });
-                features = features.concat(temp);
-            }
-            resultLayer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    wrapX: false,
-                    features: features
                 })
-            });
-            map.addLayer(resultLayer);
-            var select = new ol.interaction.Select();
-            map.addInteraction(select);
-            select.on('select', function (e) {
-                if (this.getFeatures().getLength() > 0) {
-                    var city = this.getFeatures().item(0).getProperties().NAME;
-                    var data1 = [];
-                    var data2 = [];
-                    for (var i = 0; i < 7; i++) {
-                        var data = Math.random().toFixed(2);
-                        data1.push(data);
-                        data2.push(data * (Math.random() + 1.5));
-
-                    }
-                    chart.setOption({
-                        title: {
-                            text: city + resources.text_commoditySales,
-                        },
-                        series: [
-                            {
-                                name: resources.text_commodityClass,
-                                data: categoryDataMap[city]
-                            },
-                            {
-                                name: resources.text_commodity,
-                                data: dataMap[city]
-                            }
-                        ]
-                    });
-                    popup.setElement(chart.getDom());
-                    var coordinate = e.mapBrowserEvent.coordinate;
-                    popup.setPosition(coordinate);
-                } else {
-                    popup.setPosition(undefined);
-                }
-                map.getView().setCenter(e.mapBrowserEvent.coordinate);
-            });
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [105.2, 31.6],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            }),
+            layers: [new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest({
+                    url: host + "/iserver/services/map-world/rest/maps/世界地图_Gray",
+                }),
+                projection: 'EPSG:4326'
+            })]
         });
-    }
-    function clearLayer() {
-        if (resultLayer) {
-            map.removeLayer(resultLayer);
+        var popup = new ol.Overlay({
+            element: document.getElementById('popup'),
+            offset: [5, 5]
+        });
+        map.addOverlay(popup);
+        var categoryDataMap = {
+            "北京市": [{
+                    value: 335,
+                    name: resources.text_class + 'A'
+                },
+                {
+                    value: 679,
+                    name: resources.text_class + 'B'
+                },
+                {
+                    value: 1299,
+                    name: resources.text_class + 'C'
+                }
+            ],
+            "广州市": [{
+                    value: 117,
+                    name: resources.text_class + 'A'
+                },
+                {
+                    value: 1267,
+                    name: resources.text_class + 'B'
+                },
+                {
+                    value: 1048,
+                    name: resources.text_class + 'C'
+                }
+            ],
+            "上海市": [{
+                    value: 475,
+                    name: resources.text_class + 'A'
+                },
+                {
+                    value: 1450,
+                    name: resources.text_class + 'B'
+                },
+                {
+                    value: 875,
+                    name: resources.text_class + 'C'
+                }
+            ]
         }
-    }
-</script>
+        var dataMap = {
+            "北京市": [{
+                    value: 335,
+                    name: resources.text_commodity + 'A'
+                },
+                {
+                    value: 310,
+                    name: resources.text_commodity + 'B'
+                },
+                {
+                    value: 234,
+                    name: resources.text_commodity + 'C'
+                },
+                {
+                    value: 135,
+                    name: resources.text_commodity + 'D'
+                },
+                {
+                    value: 1048,
+                    name: resources.text_commodity + 'E'
+                },
+                {
+                    value: 251,
+                    name: resources.text_commodity + 'F'
+                }
+            ],
+            "广州市": [{
+                    value: 117,
+                    name: resources.text_commodity + 'A'
+                },
+                {
+                    value: 284,
+                    name: resources.text_commodity + 'B'
+                },
+                {
+                    value: 768,
+                    name: resources.text_commodity + 'C'
+                },
+                {
+                    value: 215,
+                    name: resources.text_commodity + 'D'
+                },
+                {
+                    value: 901,
+                    name: resources.text_commodity + 'E'
+                },
+                {
+                    value: 148,
+                    name: resources.text_commodity + 'F'
+                }
+            ],
+            "上海市": [{
+                    value: 475,
+                    name: resources.text_commodity + 'A'
+                },
+                {
+                    value: 29,
+                    name: resources.text_commodity + 'B'
+                },
+                {
+                    value: 430,
+                    name: resources.text_commodity + 'C'
+                },
+                {
+                    value: 981,
+                    name: resources.text_commodity + 'D'
+                },
+                {
+                    value: 732,
+                    name: resources.text_commodity + 'E'
+                },
+                {
+                    value: 143,
+                    name: resources.text_commodity + 'F'
+                }
+            ]
+        }
+        var option = {
+            title: {
+                text: resources.text_beijingCommoditySales,
+                subtext: resources.text_fictitiouData,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                }
+            },
+            backgroundColor: '#404a59',
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'right',
+                y: 'bottom',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 12
+                },
+                data: [resources.text_commodity + 'A', resources.text_commodity + 'B', resources.text_commodity +
+                    'C', resources.text_commodity + 'D', resources.text_commodity + 'E', resources.text_commodity +
+                    'F'
+                ]
+            },
+            series: [{
+                    name: resources.text_commodityClass,
+                    type: 'pie',
+                    selectedMode: 'single',
+                    radius: [0, '30%'],
+
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: categoryDataMap['北京市']
+                },
+                {
+                    name: resources.text_commodity,
+                    type: 'pie',
+                    radius: ['40%', '55%'],
+                    data: dataMap['北京市']
+                }
+            ]
+        };
+        var chart = echarts.init(document.createElement('div'), '', {
+            width: 500,
+            height: 300
+        });
+        chart.setOption(option);
+        query();
+
+        function query() {
+            clearLayer();
+            var queryService = new ol.supermap.QueryService(host + "/iserver/services/map-china400/rest/maps/China");
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: [{
+                    name: "China_ProCenCity_pt@China",
+                    attributeFilter: "NAME = '广州市' or NAME = '上海市'"
+                }, {
+                    name: "China_Capital_pt@China",
+                    attributeFilter: "NAME = '北京市'"
+                }]
+            });
+            queryService.queryBySQL(param, function (serviceResult) {
+                var features = [];
+                for (var i = 0; i < serviceResult.result.recordsets.length; i++) {
+                    var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[i].features, {
+                        dataProjection: 'EPSG:3857',
+                        featureProjection: 'EPSG:4326'
+                    });
+                    features = features.concat(temp);
+                }
+                resultLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        wrapX: false,
+                        features: features
+                    })
+                });
+                map.addLayer(resultLayer);
+                var select = new ol.interaction.Select();
+                map.addInteraction(select);
+                select.on('select', function (e) {
+                    if (this.getFeatures().getLength() > 0) {
+                        var city = this.getFeatures().item(0).getProperties().NAME;
+                        var data1 = [];
+                        var data2 = [];
+                        for (var i = 0; i < 7; i++) {
+                            var data = Math.random().toFixed(2);
+                            data1.push(data);
+                            data2.push(data * (Math.random() + 1.5));
+
+                        }
+                        chart.setOption({
+                            title: {
+                                text: city + resources.text_commoditySales,
+                            },
+                            series: [{
+                                    name: resources.text_commodityClass,
+                                    data: categoryDataMap[city]
+                                },
+                                {
+                                    name: resources.text_commodity,
+                                    data: dataMap[city]
+                                }
+                            ]
+                        });
+                        popup.setElement(chart.getDom());
+                        var coordinate = e.mapBrowserEvent.coordinate;
+                        popup.setPosition(coordinate);
+                    } else {
+                        popup.setPosition(undefined);
+                    }
+                    map.getView().setCenter(e.mapBrowserEvent.coordinate);
+                });
+            });
+        }
+
+        function clearLayer() {
+            if (resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+        }
+    </script>
 </body>
+
 </html>

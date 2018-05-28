@@ -1,216 +1,253 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>ECharts LineMarker with OpenLayers</title>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd">
-</div>
-<div id="infoControl"
-     style=" position: absolute;top: 10px;right: 5px;text-align: left;background: white;color: #333;box-shadow: 0 3px 14px rgba(0,0,0,0.4);"></div>
-<script type="text/javascript" src="../js/include-web.js"></script>
-<script type="text/javascript" include="echarts" src="../../dist/include-openlayers.js"></script>
-<script type="text/javascript">
-    var resultLayer;
-    var map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: [116.402, 39.905],
-            zoom: 5,
-            projection: 'EPSG:4326'
-        }),
-        layers: [new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest({
-                url: (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/世界地图_Gray",
-            }),
-            projection: 'EPSG:4326'
-        })]
-    });
-    var option = {
-        title: {
-            text: window.resources.text_Beijing + window.resources.text_nextWeekTemperature,
-            textStyle: {
-                color: '#404a59',
-                fontSize: 16
-            },
-            subtext: window.resources.text_fictitiouData
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: [window.resources.text_maxTemperature, window.resources.text_minTemperature]
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                magicType: {type: ['line', 'bar']},
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [window.resources.text_monday, window.resources.text_tuesday, window.resources.text_wednesday, window.resources.text_thursday, window.resources.text_friday, window.resources.text_saturday, window.resources.text_sunday]
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} °C'
-            }
-        },
-        series: [
-            {
-                name: window.resources.text_maxTemperature,
-                type: 'line',
-                data: [11, 11, 15, 13, 12, 13, 10],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: window.resources.text_maxValue},
-                        {type: 'min', name: window.resources.text_minValue}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: window.resources.text_maxValue
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
-            },
-            {
-                name: window.resources.text_minTemperature,
-                type: 'line',
-                data: [1, -2, 2, 5, 3, 2, 0],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: window.resources.text_maxValue},
-                        {type: 'min', name: window.resources.text_minValue}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'min'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: window.resources.text_minValue
-                                }
-                            },
-                            type: 'min',
-                            name: '最低点'
-                        }]
-                    ]
-                }
-            }
-        ]
-    };
-    var chart = echarts.init(document.createElement('div'), '', {
-        width: 600,
-        height: 400
-    });
-    chart.setOption(option);
-    var control = new ol.control.Control({
-        element: chart.getDom(),
-        target: document.getElementById('infoControl')
-    });
-    map.addControl(control);
-    query();
-
-    function query() {
-        clearLayer();
-        var queryService = new ol.supermap.QueryService("http://support.supermap.com:8090/iserver/services/map-china400/rest/maps/China");
-        var param = new SuperMap.QueryBySQLParameters({
-            queryParams: [{
-                name: "China_ProCenCity_pt@China",
-                attributeFilter: "NAME = '广州市' or NAME = '上海市'"
-            }, {
-                name: "China_Capital_pt@China",
-                attributeFilter: "NAME = '北京市'"
-            }]
-        });
-        queryService.queryBySQL(param, function (serviceResult) {
-            var features = [];
-            for (var i = 0; i < serviceResult.result.recordsets.length; i++) {
-                var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[i].features, {
-                    dataProjection: 'EPSG:3857',
-                    featureProjection: 'EPSG:4326'
-                });
-                features = features.concat(temp);
-            }
-            resultLayer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    wrapX: false,
-                    features: features
-                })
-            });
-            map.addLayer(resultLayer);
-            var select = new ol.interaction.Select({features: [features[2]]});
-            map.addInteraction(select);
-            select.on('select', function (e) {
-                if (this.getFeatures().getLength() > 0) {
-                    var city = this.getFeatures().item(0).getProperties().NAME;
-                    var data1 = [];
-                    var data2 = [];
-                    for (var i = 0; i < 7; i++) {
-                        var data = Math.random().toFixed(2);
-                        data1.push(data);
-                        data2.push(data * (Math.random() + 1.5));
+    <div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd">
+    </div>
+    <div id="infoControl" style=" position: absolute;top: 10px;right: 5px;text-align: left;background: white;color: #333;box-shadow: 0 3px 14px rgba(0,0,0,0.4);"></div>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="echarts" src="../../dist/include-openlayers.js"></script>
+    <script type="text/javascript">
+        var resultLayer;
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
                     }
-                    chart.setOption({
-                        title: {
-                            text: city + window.resources.text_nextWeekTemperature,
-                        },
-                        series: [
-                            {
-                                name: window.resources.text_maxTemperature,
-                                data: [10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10)],
+                })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [116.402, 39.905],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            }),
+            layers: [new ol.layer.Tile({
+                source: new ol.source.TileSuperMapRest({
+                    url: host + "/iserver/services/map-world/rest/maps/世界地图_Gray",
+                }),
+                projection: 'EPSG:4326'
+            })]
+        });
+        var option = {
+            title: {
+                text: window.resources.text_Beijing + window.resources.text_nextWeekTemperature,
+                textStyle: {
+                    color: '#404a59',
+                    fontSize: 16
+                },
+                subtext: window.resources.text_fictitiouData
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [window.resources.text_maxTemperature, window.resources.text_minTemperature]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    magicType: {
+                        type: ['line', 'bar']
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: [window.resources.text_monday, window.resources.text_tuesday, window.resources.text_wednesday,
+                    window.resources.text_thursday, window.resources.text_friday, window.resources.text_saturday,
+                    window.resources.text_sunday
+                ]
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} °C'
+                }
+            },
+            series: [{
+                    name: window.resources.text_maxTemperature,
+                    type: 'line',
+                    data: [11, 11, 15, 13, 12, 13, 10],
+                    markPoint: {
+                        data: [{
+                                type: 'max',
+                                name: window.resources.text_maxValue
                             },
                             {
-                                name: window.resources.text_minTemperature,
-                                data: [8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10)],
-
+                                type: 'min',
+                                name: window.resources.text_minValue
                             }
                         ]
-                    });
+                    },
+                    markLine: {
+                        data: [{
+                                type: 'average',
+                                name: '平均值'
+                            },
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: window.resources.text_maxValue
+                                    }
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                },
+                {
+                    name: window.resources.text_minTemperature,
+                    type: 'line',
+                    data: [1, -2, 2, 5, 3, 2, 0],
+                    markPoint: {
+                        data: [{
+                                type: 'max',
+                                name: window.resources.text_maxValue
+                            },
+                            {
+                                type: 'min',
+                                name: window.resources.text_minValue
+                            }
+                        ]
+                    },
+                    markLine: {
+                        data: [{
+                                type: 'average',
+                                name: '平均值'
+                            },
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'min'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: window.resources.text_minValue
+                                    }
+                                },
+                                type: 'min',
+                                name: '最低点'
+                            }]
+                        ]
+                    }
                 }
-                map.getView().setCenter(e.mapBrowserEvent.coordinate);
-            });
+            ]
+        };
+        var chart = echarts.init(document.createElement('div'), '', {
+            width: 600,
+            height: 400
         });
-    }
+        chart.setOption(option);
+        var control = new ol.control.Control({
+            element: chart.getDom(),
+            target: document.getElementById('infoControl')
+        });
+        map.addControl(control);
+        query();
 
-    function clearLayer() {
-        if (resultLayer) {
-            map.removeLayer(resultLayer);
+        function query() {
+            clearLayer();
+            var queryService = new ol.supermap.QueryService(host + "/iserver/services/map-china400/rest/maps/China");
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: [{
+                    name: "China_ProCenCity_pt@China",
+                    attributeFilter: "NAME = '广州市' or NAME = '上海市'"
+                }, {
+                    name: "China_Capital_pt@China",
+                    attributeFilter: "NAME = '北京市'"
+                }]
+            });
+            queryService.queryBySQL(param, function (serviceResult) {
+                var features = [];
+                for (var i = 0; i < serviceResult.result.recordsets.length; i++) {
+                    var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[i].features, {
+                        dataProjection: 'EPSG:3857',
+                        featureProjection: 'EPSG:4326'
+                    });
+                    features = features.concat(temp);
+                }
+                resultLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        wrapX: false,
+                        features: features
+                    })
+                });
+                map.addLayer(resultLayer);
+                var select = new ol.interaction.Select({
+                    features: [features[2]]
+                });
+                map.addInteraction(select);
+                select.on('select', function (e) {
+                    if (this.getFeatures().getLength() > 0) {
+                        var city = this.getFeatures().item(0).getProperties().NAME;
+                        var data1 = [];
+                        var data2 = [];
+                        for (var i = 0; i < 7; i++) {
+                            var data = Math.random().toFixed(2);
+                            data1.push(data);
+                            data2.push(data * (Math.random() + 1.5));
+                        }
+                        chart.setOption({
+                            title: {
+                                text: city + window.resources.text_nextWeekTemperature,
+                            },
+                            series: [{
+                                    name: window.resources.text_maxTemperature,
+                                    data: [10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(
+                                            Math.random() * 10), 10 + Math.ceil(Math.random() *
+                                            10), 10 + Math.ceil(Math.random() * 10), 10 +
+                                        Math.ceil(Math.random() * 10), 10 + Math.ceil(
+                                            Math.random() * 10), 10 + Math.ceil(Math.random() *
+                                            10)
+                                    ],
+                                },
+                                {
+                                    name: window.resources.text_minTemperature,
+                                    data: [8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(
+                                            Math.random() * 10), 8 - Math.ceil(Math.random() *
+                                            10), 8 - Math.ceil(Math.random() * 10), 8 -
+                                        Math.ceil(Math.random() * 10), 8 - Math.ceil(
+                                            Math.random() * 10), 8 - Math.ceil(Math.random() *
+                                            10)
+                                    ],
+
+                                }
+                            ]
+                        });
+                    }
+                    map.getView().setCenter(e.mapBrowserEvent.coordinate);
+                });
+            });
         }
-    }
-</script>
-</body>
-</html>
 
+        function clearLayer() {
+            if (resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+        }
+    </script>
+</body>
+
+</html>

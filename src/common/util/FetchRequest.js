@@ -74,7 +74,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url,
                 data: params
             };
-            return SuperMap.Util.RequestJSONP.GET(config);
+            return SuperMap.Util.RequestJSONPPromise.GET(config);
         }
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
@@ -95,7 +95,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=DELETE",
                 data: params
             };
-            return SuperMap.Util.RequestJSONP.DELETE(config);
+            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
             return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -111,7 +111,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=POST",
                 data: params
             };
-            return SuperMap.Util.RequestJSONP.POST(config);
+            return SuperMap.Util.RequestJSONPPromise.POST(config);
         }
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
 
@@ -126,7 +126,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return SuperMap.Util.RequestJSONP.DELETE(config);
+            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
 
         }
         return this._fetch(url, params, options, 'PUT');
@@ -262,7 +262,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
         return (url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1);
     }
 };
-SuperMap.Util.RequestJSONP = {
+SuperMap.Util.RequestJSONPPromise = {
     limitLength: 1500,
     queryKeys: [],
     queryValues: [],
@@ -291,7 +291,7 @@ SuperMap.Util.RequestJSONP = {
         });
 
         // me.addQueryStrings({
-        //     callback: "SuperMap.Util.RequestJSONP.supermap_callbacks[" + uid + "]"
+        //     callback: "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]"
         // });
         var sectionURL = url,
             keysCount = 0; //此次sectionURL中有多少个key
@@ -354,7 +354,7 @@ SuperMap.Util.RequestJSONP = {
             splitQuestUrl = new Array();
         }
         splitQuestUrl.push(sectionURL);
-        me.send(splitQuestUrl, "SuperMap.Util.RequestJSONP.supermap_callbacks[" + uid + "]", config && config.proxy);
+        me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
         return p;
     },
 
