@@ -315,48 +315,56 @@ var exampleConfig = {
                     {
                         name: "北京",
                         name_en: "Beijing",
+                        localIgnore:true,
                         thumbnail: "mvt_Beijing.png",
                         fileName: "mvtVectorTile_Beijing"
                     },
                     {
                         name: "北京-暗夜风格",
                         name_en: "Beijing - dark-blue style",
+                        localIgnore:true,
                         thumbnail: "mvt_Beijing_dark.png",
                         fileName: "mvtVectorTile_Beijing_dark"
                     },
                     {
                         name: "北京-深海风格",
                         name_en: "Beijing - fiord style",
+                        localIgnore:true,
                         thumbnail: "mvt_Beijing_fiordcolor.png",
                         fileName: "mvtVectorTile_Beijing_fiordcolor"
                     },
                     {
                         name: "北京-淡绿风格",
                         name_en: "Beijing - klokantech style",
+                        localIgnore:true,
                         thumbnail: "mvt_Beijing_klokantech.png",
                         fileName: "mvtVectorTile_Beijing_klokantech"
                     },
                     {
                         name: "北京-OSM风格",
                         name_en: "Beijing - OSM style",
+                        localIgnore:true,
                         thumbnail: "mvt_Beijing_osm.png",
                         fileName: "mvtVectorTile_Beijing_OSM"
                     },
                     {
                         name: "北京-淡灰风格",
                         name_en: "Beijing - positron style",
+                        localIgnore:true,
                         thumbnail: "mvt_Beijing_positron.png",
                         fileName: "mvtVectorTile_Beijing_positron"
                     },
                     {
                         name: "风格切换",
                         name_en: "style switch",
+                        localIgnore:true,
                         thumbnail: "mvt_changeStyle.png",
                         fileName: "mvtVectorTile_changeStyle"
                     },
                     {
                         name: "预缓存(MVT)",
                         name_en: "precache(MVT)",
+                        localIgnore:true,
                         thumbnail: "mvt_UGCV5.png",
                         fileName: "mvtVectorTile_precache"
                     }
@@ -453,26 +461,31 @@ var exampleConfig = {
                     }, {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
+                        localIgnore:true,
                         thumbnail: "mb_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "纽约出租车分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
+                        localIgnore:true,
                         thumbnail: "mb_echartScatterMillionsNewYorkTaxi.png",
                         fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
+                        localIgnore:true,
                         thumbnail: "mb_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
+                        localIgnore:true,
                         thumbnail: "mb_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
+                        localIgnore:true,
                         thumbnail: "mb_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }
@@ -593,14 +606,9 @@ var exampleConfig = {
                     {
                         name: "2018年2月北京房价",
                         name_en: "Beijing house prices(2018.2)",
+                        localIgnore:true,
                         thumbnail: "mb_mapvLianjia.png",
                         fileName: "mapvLinanJiaData"
-                    },
-                    {
-                        name: "四川省水系分布图",
-                        name_en: "Water System Map of Sichuan Province",
-                        thumbnail: "mb_mapVLine_webgl.png",
-                        fileName: "mapVLayerLine_webgl"
                     }
                 ]
             },
@@ -736,6 +744,7 @@ var exampleConfig = {
     "GTC": {
         name: "GTC",
         name_en: "GTC",
+        localIgnore:true,
         content: {
             "GTC2017": {
                 name: "2017",
@@ -775,3 +784,4 @@ var exampleIconConfig = {
     "viz": "fa-map",
     "GTC": "fa-globe"
 };
+window.mapboxglExampleConfig = exampleConfig;

@@ -47,7 +47,7 @@ var Localization = {
                 fallbackLng: ["zh-CN", "en-US"]
             });
             if (window.isSite) {
-                var webResourceURL = `../../web/locales/${lang}/resources.js`
+                var webResourceURL = '../../web/locales/'+lang+'/resources.js';
                 $.get(webResourceURL, function () {
                     for (var name in window.webResources) {
                         var subWeb = window.webResources[name];

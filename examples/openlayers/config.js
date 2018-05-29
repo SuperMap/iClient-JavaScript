@@ -448,6 +448,7 @@ var exampleConfig = {
     "Online": {
         name: "Online",
         name_en: "Online",
+        localIgnore:true,
         content: {
             "ol_map": {
                 name: "地图",
@@ -474,6 +475,7 @@ var exampleConfig = {
     "iManager": {
         name: "iManager",
         name_en: "iManager",
+        localIgnore:true,
         content: null
     },
     "viz": {
@@ -636,26 +638,31 @@ var exampleConfig = {
                     }, {
                         name: "北京房价信息",
                         name_en: "Beijing house prices(2018.2)",
+                        localIgnore:true,
                         thumbnail: "ol_echartsLianjia.png",
                         fileName: "echartsLianjia"
                     }, {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
+                        localIgnore:true,
                         thumbnail: "ol_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
+                        localIgnore:true,
                         thumbnail: "ol_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
+                        localIgnore:true,
                         thumbnail: "ol_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
+                        localIgnore:true,
                         thumbnail: "ol_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }
@@ -722,13 +729,9 @@ var exampleConfig = {
                 }, {
                     name: "2018年2月北京房价",
                     name_en: "Beijing house prices(2018.2)",
+                    localIgnore:true,
                     thumbnail: "mapvLianjia.png",
                     fileName: "mapvLianjia"
-                }, {
-                    name: "四川省水系分布图",
-                    name_en: "Water System Map of Sichuan Province",
-                    thumbnail: "ol_mapVLine_webgl.png",
-                    fileName: "mapVLayerLine_webgl"
                 }
                 ]
             },
@@ -797,12 +800,14 @@ var exampleConfig = {
                     {
                         name: "OSM风格(MVT WGS84)",
                         name_en: "OSM Style(MVT WGS84)",
+                        localIgnore:true,
                         thumbnail: "mvtvectorlayer_mbstyle_4326.png",
                         fileName: "mvtvectorlayer_mbstyle_4326"
                     },
                     {
                         name: "风格动态切换",
                         name_en: "Style Switch",
+                        localIgnore:true,
                         thumbnail: "mvtvectorlayer_mbstyle_beijing.png",
                         fileName: "mvtvectorlayer_mbstyle_beijing"
                     }
@@ -988,6 +993,7 @@ var exampleConfig = {
     "mapping": {
         name: "互联网地图",
         name_en: "Internet map",
+        localIgnore:true,
         content: {
             "Baidu": {
                 name: "百度地图",
@@ -1063,3 +1069,4 @@ var exampleIconConfig = {
     "OGC": "fa-globe",
     "mapping": "fa-send"
 };
+window.openlayersExampleConfig = exampleConfig;

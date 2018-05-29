@@ -77,6 +77,9 @@ function createSideBarMenuItem(id, config, containAll) {
     if (!config) {
         return;
     }
+    if (window.isLocal && config.localIgnore) {
+        return;
+    }
     var title = utils.getLocalPairs(config, "name");
 
     var li = $("<li id='iclient_" + id + "' class='treeview ' title='" + title + "'></li>");
@@ -115,6 +118,9 @@ function createSideBarThirdMenu(examples) {
     var len = (examples && examples.length) ? examples.length : 0;
     for (var i = 0; i < len; i++) {
         var example = examples[i];
+        if (window.isLocal && example.localIgnore) {
+            continue;
+        }
         var title = utils.getLocalPairs(example, "name")|| "【empty title】";
 
         var li = $("<li class='menuTitle' id='" + example.fileName + "' title='" + title + "'></li>");

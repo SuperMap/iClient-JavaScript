@@ -1267,5 +1267,6 @@ var exampleIconConfig = {
     "viz": "fa-map",
     "OGC": "fa fa-globe",
     "plot": "fa-edit",
-    "others": "fa-th-large",
+    "others": "fa-th-large"
 };
+window.classicExampleConfig = exampleConfig;

@@ -43,12 +43,15 @@ function createGalleryItem(id, config) {
     if (!config) {
         return;
     }
-
+    if (window.isLocal && config.localIgnore) {
+        return;
+    }
     var categoryLi = $("<li class='category' id='" + id + "'></li>");
     var title = utils.getLocalPairs(config, "name");
     if (title) {
         createGalleryItemTitle(id, title).appendTo(categoryLi);
     }
+   
     if (config.content) {
         createSubGalleryItem(config.content, id).appendTo(categoryLi);
     }
@@ -65,6 +68,7 @@ function createSubGalleryItem(config, name) {
         createSubGalleryItemTitle(key, title).appendTo(content);
         if (configItem.content) {
             createGalleryCharts(configItem.content).appendTo(content);
+
         }
         content.appendTo(categoryContentDiv);
     }
@@ -85,7 +89,11 @@ function createGalleryCharts(examples) {
     var chartsDiv = $("<div class='box-body'></div>");
     var len = (examples && examples.length) ? examples.length : 0;
     for (var i = 0; i < len; i++) {
-        createGalleryChart(examples[i]).appendTo(chartsDiv);
+        var exam = examples[i];
+        if (window.isLocal && exam.localIgnore) {
+            continue;
+        }
+        createGalleryChart(exam).appendTo(chartsDiv);
     }
     return chartsDiv;
 }
@@ -150,7 +158,9 @@ function scroll() {
     }
 
     if (ele && ele.offset()) {
-        $(window).animate({scrollTop: ele.offset().top - 60}, 0);
+        $(window).animate({
+            scrollTop: ele.offset().top - 60
+        }, 0);
     }
 }
 
@@ -162,12 +172,12 @@ function bindEvents() {
     if ($('ul.sidebar-menu>li#firstMenuiManager').find('ul').length == 0) {
         if ($('ul.sidebar-menu>li#firstMenuiManager').click(function () {
                 $('ul#sidebar-menu>li>ul').slideUp(500);
-            })) ;
+            }));
     }
     //一级菜单跳转
     child.parent('ul').siblings('a').click(function (evt) {
         if ($(this).siblings('ul').is(':visible') && $(this).siblings('ul').children('li').hasClass('active')) {
-            evt.stopPropagation();//阻止点击事件触发折叠的冒泡
+            evt.stopPropagation(); //阻止点击事件触发折叠的冒泡
         }
         window.location = evt.currentTarget.href;
     });
@@ -196,9 +206,3 @@ $(window).on('scroll', function () {
     }
     $('ul.sidebar-menu>li').not("li.active").children('ul').css('display', 'none');
 });
-
-
-
-
-
-

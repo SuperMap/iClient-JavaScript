@@ -467,6 +467,7 @@ var exampleConfig = {
     "Online": {
         name: "Online",
         name_en: "Online",
+        localIgnore:true,
         content: {
             "ol_map": {
                 name: "地图",
@@ -493,6 +494,7 @@ var exampleConfig = {
     "iManager": {
         name: "iManager",
         name_en: "iManager",
+        localIgnore:true,
         content: {
             "im_node": {
                 name: "节点",
@@ -509,6 +511,7 @@ var exampleConfig = {
     "Elasticsearch": {
         name: "Elasticsearch",
         name_en: "Elasticsearch",
+        localIgnore:true,
         content: {
             "es_viz": {
                 name: "可视化",
@@ -679,31 +682,37 @@ var exampleConfig = {
                     }, {
                         name: "2018年2月北京房价",
                         name_en: "Beijing house prices of Lianjia(2018.2)",
+                        localIgnore:true,
                         thumbnail: "l_echartsLianjiaGridLayer.png",
                         fileName: "echartsGridMapLayer"
                     }, {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
+                        localIgnore:true,
                         thumbnail: "l_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "纽约出租车分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
+                        localIgnore:true,
                         thumbnail: "l_echartScatterMillionsNewYorkTaxi.png",
                         fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
+                        localIgnore:true,
                         thumbnail: "l_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
+                        localIgnore:true,
                         thumbnail: "l_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
+                        localIgnore:true,
                         thumbnail: "l_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }
@@ -771,6 +780,7 @@ var exampleConfig = {
                 }, {
                     name: "2018年2月北京房价",
                     name_en: "Beijing house prices(2018.2)",
+                    localIgnore:true,
                     thumbnail: "l_mapvLianjia.png",
                     fileName: "mapvLianjiaData"
                 }]
@@ -1022,6 +1032,7 @@ var exampleConfig = {
     "mapping": {
         name: "互联网地图",
         name_en: "Internet map",
+        localIgnore:true,
         content: {
             "Baidu": {
                 name: "百度地图",
@@ -1101,3 +1112,4 @@ var exampleIconConfig = {
     "OGC": "fa-globe",
     "mapping": "fa-send"
 };
+window.leafletExampleConfig = exampleConfig;
