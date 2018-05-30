@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_dataFlowService"></title>
@@ -10,149 +11,156 @@
         max-width: 200px;
     }
 </style>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
-<script>
-    var host = (window.isLocal ? window.server : "http://117.122.248.69:8090"),
-        tileUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}',
-        urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <script>
+        var host = (window.isLocal ? window.server : "http://117.122.248.69:8090"),
+            tileUrl = host +
+            '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}',
+            urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
 
-    wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
-    var token = "DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..";
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+        wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
+        var token = "DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..";
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
-    var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
-    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
-    var dataFlowService;
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [tileUrl],
-                    "tileSize": 256,
+        var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
+        var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+        var dataFlowService;
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [tileUrl],
+                        "tileSize": 256,
+                    },
                 },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 18
+                }],
+                "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
             },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 18
-            }],
-            "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
-        },
-        center: [116.443571, 39.887549],
-        maxZoom: 18,
-        zoom: 10
-    });
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
-    if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken(urlDataFlow, token);
-    }
-    var popup = new mapboxgl.Popup();
-
-    map.on('load', function () {
-        query();
-    });
-
-
-    function query() {
-        var param = new SuperMap.QueryBySQLParameters({
-            queryParams: {
-                name: "Main_Road_L@China#1",
-                attributeFilter: "SMID = 1755"
-            }
+            center: [116.443571, 39.887549],
+            maxZoom: 18,
+            zoom: 10
         });
+        map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-        queryService = new mapboxgl.supermap.QueryService(urlQuery).queryBySQL(param, function (serviceResult) {
+        if (!window.isLocal) {
+            SuperMap.SecurityManager.registerToken(urlDataFlow, token);
+        }
+        var popup = new mapboxgl.Popup();
 
-            featureResult = serviceResult;
-            var options = {ws: urlDataFlow};
-            var dataService = new mapboxgl.supermap.DataFlowService(options.ws, {
+        map.on('load', function () {
+            var options = {
+                ws: urlDataFlow
+            };
+            var dataFlowSubscribe = new mapboxgl.supermap.DataFlowService(options.ws, {
                 geometry: options.geometry,
                 prjCoordSys: options.prjCoordSys,
                 excludeField: options.excludeField
             }).initSubscribe();
-
-            dataFlowService = new mapboxgl.supermap.DataFlowService(urlDataFlow).initBroadcast();
-            dataService.on('subscribeSuccessed', function (e) {
-                dataFlowService.on('broadcastSocketConnected', function (e) {
-                    timer = window.setInterval("broadcast()", 2000);
-                });
-            });
-            dataService.on('messageSuccessed', function (msg) {
+            dataFlowSubscribe.on('messageSuccessed', function (msg) {
                 popup.remove();
                 addLayer(msg);
             });
-
+            query();
         });
-    }
 
-    var count = 200;
-
-    function broadcast() {
-
-        if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
-            window.clearInterval(timer);
-            return;
-        }
-        var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
-        var feature = {
-            geometry: {coordinates: [point[0], point[1]], type: "Point"},
-            type: "Feature",
-            properties: {id: 1, time: new Date()}
-        };
-        dataFlowService.broadcast(feature);
-        count += 3;
-    }
-
-    function addLayer(msg) {
-        if (!msg.featureResult) {
-            return;
-        }
-        var feature = msg.featureResult;
-        var coord = feature.geometry.coordinates;
-        var data = {
-            geometry: {
-                type: 'Point',
-                coordinates: coord,
-            },
-            type: "Feature"
-        };
-
-        if (!map.getSource('location')) {
-            map.addSource('location', {
-                'type': 'geojson',
-                'data': data
+        //模拟实时数据
+        //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
+        function query() {
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: "Main_Road_L@China#1",
+                    attributeFilter: "SMID = 1755"
+                }
             });
-            map.addLayer({
-                "id": "point",
-                "type": "circle",
-                "paint": {
-                    "circle-radius": 6,
-                    "circle-color": 'red',
+            queryService = new mapboxgl.supermap.QueryService(urlQuery).queryBySQL(param, function (serviceResult) {
+                featureResult = serviceResult;
+                dataFlowBroadcast = new mapboxgl.supermap.DataFlowService(urlDataFlow).initBroadcast();
+                dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
+                    timer = window.setInterval("broadcast()", 2000);
+                });
+
+            });
+        }
+
+        var count = 200;
+
+        function broadcast() {
+
+            if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
+                window.clearInterval(timer);
+                return;
+            }
+            var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
+            var feature = {
+                geometry: {
+                    coordinates: [point[0], point[1]],
+                    type: "Point"
                 },
-                "source": 'location'
-            });
+                type: "Feature",
+                properties: {
+                    id: 1,
+                    time: new Date()
+                }
+            };
+            dataFlowBroadcast.broadcast(feature);
+            count += 3;
         }
 
-        map.getSource('location').setData(data);
+        function addLayer(msg) {
+            if (!msg.featureResult) {
+                return;
+            }
+            var feature = msg.featureResult;
+            var coord = feature.geometry.coordinates;
+            var data = {
+                geometry: {
+                    type: 'Point',
+                    coordinates: coord,
+                },
+                type: "Feature"
+            };
 
-        popup.setLngLat(coord)
-            .setHTML(feature.properties.time)
-            .addTo(map);
-    }
+            if (!map.getSource('location')) {
+                map.addSource('location', {
+                    'type': 'geojson',
+                    'data': data
+                });
+                map.addLayer({
+                    "id": "point",
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 6,
+                        "circle-color": 'red',
+                    },
+                    "source": 'location'
+                });
+            }
 
+            map.getSource('location').setData(data);
 
-</script>
+            popup.setLngLat(coord)
+                .setHTML(feature.properties.time)
+                .addTo(map);
+        }
+    </script>
 
 </body>
+
 </html>

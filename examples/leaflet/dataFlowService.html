@@ -29,7 +29,7 @@
     }
 
     var popup = L.popup({offset: L.point(0, 0), autoPan: true});
-    //创建DataFlowLayer，创建DataFlowLayer订阅DataFlow并将结果加载到地图上
+    //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
     var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
         style: function (feature) {
             return {
@@ -51,10 +51,10 @@
     });
     dataFlowLayer.addTo(map);
 
-    //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务，模拟实时数据
-    //可通过dataFlowService将其他实时数据广播给iServer
+    //模拟实时数据
+    //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
     query();
-    var timer, featureResult, dataFlowService;
+    var timer, featureResult, dataFlowBroadcast;
 
     function query() {
         var param = new SuperMap.QueryBySQLParameters({
@@ -67,8 +67,8 @@
             .queryService(urlQuery)
             .queryBySQL(param, function (serviceResult) {
                 featureResult = serviceResult;
-                dataFlowService = L.supermap.dataFlowService(urlDataFlow).initBroadcast();
-                dataFlowService.on('broadcastSocketConnected', function (e) {
+                dataFlowBroadcast = L.supermap.dataFlowService(urlDataFlow).initBroadcast();
+                dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
                     timer = window.setInterval("broadcast()", 2000);
                 })
             });
@@ -88,7 +88,7 @@
             type: "Feature",
             properties: {id: 1, time: new Date()}
         };
-        dataFlowService.broadcast(feature);
+        dataFlowBroadcast.broadcast(feature);
         count += 3;
     }
 </script>
