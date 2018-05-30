@@ -1,6 +1,6 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
-    'leaflet_addressMatchService': function (browser) {
+    'leaflet_addressMatchService_code': function (browser) {
         var type = 'leaflet';
         var exampleName = 'addressMatchService';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
@@ -31,9 +31,16 @@ module.exports = {
                 browser.expect.element('.leaflet-popup-content').text.to.contain('过滤字段');
             })
         });
-        browser.pause(1000);
+        browser.end();
+    },
+    'leaflet_addressMatchService_decode': function (browser) {
+        var type = 'leaflet';
+        var exampleName = 'addressMatchService';
+        commonTools.openExampleAndLoadMap(browser, type, exampleName);
+        /*判断初始交互控件*/
+        browser.waitForElementPresent('.panel-body', 10000);
+       
         /*在反向匹配服务中输入值，并判断结果*/
-        browser.refresh();
         browser.click('#geodecode');
         browser.pause(1000);
         browser.setValue('#xCoord', '116.3518541194752');
@@ -61,9 +68,6 @@ module.exports = {
                 browser.expect.element('.leaflet-popup-content').text.to.contain('过滤字段');
             })
         });
-        //测试版权点击的正确性
-        //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
         browser.end();
     }
 };
