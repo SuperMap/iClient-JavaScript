@@ -29,10 +29,19 @@
             return lang;
         }
         if (navigator.appName === 'Netscape') {
-            return navigator.language;
+            lang = navigator.language;
         } else {
-            return navigator.browserLanguage;
+            lang = navigator.browserLanguage;
         }
+        if (lang) {
+            if (lang.indexOf('zh') === 0) {
+                return 'zh-CN';
+            }
+            if (lang.indexOf('en') === 0) {
+                return 'en-US';
+            }
+        }
+        return 'zh-CN';
     }
 
     //设置cookie,参数分别为：key,value,过期时间（单位:ms）,域
