@@ -96,10 +96,10 @@
             datGuiI18N();
         }
         if (inArray(includes, 'admin-lte')) {
-            inputCSS("http://cdn.bootcss.com/admin-lte/2.3.8/css/AdminLTE.min.css");
-            inputCSS("http://cdn.bootcss.com/admin-lte/2.3.8/css/skins/skin-blue.min.css");
-            inputCSS("http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css");
-            inputScript("http://cdn.bootcss.com/admin-lte/2.3.8/js/app.min.js");
+            inputCSS("http://iclient.supermap.io/libs/admin-lte/css/AdminLTE.min.css");
+            inputCSS("http://iclient.supermap.io/libs/admin-lte/css/skins/skin-blue.min.css");
+            inputCSS("http://iclient.supermap.io/libs/font-awesome/css/font-awesome.min.css");
+            inputScript("http://iclient.supermap.io/libs/admin-lte/js/app.min.js");
         }
         if (inArray(includes, 'jquery.scrollto')) {
             inputScript("http://iclient.supermap.io/libs/jquery.scrollto/jquery.scrollTo.min.js");

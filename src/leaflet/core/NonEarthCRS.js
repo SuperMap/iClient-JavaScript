@@ -108,7 +108,7 @@ export var NonEarthCRS = L.Class.extend({
         return Math.sqrt(dx * dx + dy * dy);
     },
 
-    infinite: true
+    infinite: false
 });
 export var nonEarthCRS = function (options) {
     return new NonEarthCRS(options)

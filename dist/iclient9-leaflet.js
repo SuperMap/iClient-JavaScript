@@ -22870,7 +22870,7 @@ var NonEarthCRS = exports.NonEarthCRS = _leaflet2["default"].Class.extend({
         return Math.sqrt(dx * dx + dy * dy);
     },
 
-    infinite: true
+    infinite: false
 });
 var nonEarthCRS = exports.nonEarthCRS = function nonEarthCRS(options) {
     return new NonEarthCRS(options);
