@@ -6,11 +6,11 @@ ol.supermap = ol.supermap || {};
  * @class ol.supermap.ServiceBase
  * @category  iServer
  * @classdesc ol.supermap的服务基类。
- * @param url - {string} 与客户端交互的服务地址。
- * @param options - {Object} 参数。<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType -{SuperMap.ServerType} 服务来源 iServer|iPortal|online <br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false
+ * @param {Object} options - 可选参数。
+ * @param {string} options.url - 与客户端交互的服务地址。
+ * @param {string} options.proxy - 服务代理地址
+ * @param {SuperMap.ServerType} options.serverType - 服务来源 iServer|iPortal|online
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  *
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */

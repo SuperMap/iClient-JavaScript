@@ -11,8 +11,11 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 交互时所需可选参数。
+ * @param {string} url - 与客户端交互的服务地址。
+ * @param {Object} options - 交互时所需可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @extends ol.supermap.ServiceBase
  */
 export class AddressMatchService extends ServiceBase {
@@ -24,7 +27,7 @@ export class AddressMatchService extends ServiceBase {
     /**
      * @function ol.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params - {Object} 正向匹配参数。
+     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
     code(params, callback) {
@@ -45,7 +48,7 @@ export class AddressMatchService extends ServiceBase {
     /**
      * @function ol.supermap.AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params -{Object} 反向匹配参数。
+     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
      * @param {RequestCallback} callback请求结果的回调函数。
      */
     decode(params, callback) {

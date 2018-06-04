@@ -25,9 +25,11 @@ import {
  * .getKernelDensityJobs(function(result){
  *     //doSomething
  * })
- * @param url -{string} 分布式分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。
+ * @param {string} url - 分布式分析服务地址。
+ * @param {Object} options - 交互服务时所需可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 export var ProcessingService = ServiceBase.extend({
 
@@ -50,7 +52,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getKernelDensityJobs: function (callback, resultFormat) {
         var me = this,
@@ -72,9 +74,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getKernelDensityJob: function (id, callback, resultFormat) {
         var me = this,
@@ -96,10 +98,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addKernelDensityJob
      * @description 新建一个密度分析。
-     * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addKernelDensityJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -125,7 +127,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param id - {string}密度分析的id。
+     * @param {string} id - 密度分析的id。
      * @return {Object} 密度分析的状态
      */
     getKernelDensityJobState: function (id) {
@@ -135,8 +137,8 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
-     * @param {RequestCallback} callback  请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryMeshJobs: function (callback, resultFormat) {
         var me = this,
@@ -158,9 +160,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJob
      * @description 获取某一个点聚合分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryMeshJob: function (id, callback, resultFormat) {
         var me = this,
@@ -182,10 +184,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addSummaryMeshJob
      * @description 新建一个点聚合分析。
-     * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
+     * @param {SuperMap.SummaryMeshJobParameter} params - 点聚合分析任务参数类。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryMeshJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -211,7 +213,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
-     * @param id - {string} 点聚合分析的id。
+     * @param {string} id - 点聚合分析的id。
      * @return {Object} 点聚合分析的状态
      */
     getSummaryMeshJobState: function (id) {
@@ -222,7 +224,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getQueryJobs: function (callback, resultFormat) {
         var me = this,
@@ -246,7 +248,7 @@ export var ProcessingService = ServiceBase.extend({
      * @description 获取某一个单对象查询分析。
      * @param id - {string}空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getQueryJob: function (id, callback, resultFormat) {
         var me = this,
@@ -268,10 +270,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addQueryJob
      * @description 新建一个单对象查询分析。
-     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
+     * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addQueryJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -297,7 +299,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
-     * @param id - {string}单对象查询分析的id。
+     * @param {string} id - 单对象查询分析的id。
      * @return {Object} 单对象查询分析的状态
      */
     getQueryJobState: function (id) {
@@ -308,7 +310,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryRegionJobs: function (callback, resultFormat) {
         var me = this,
@@ -330,9 +332,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJob
      * @description 获取某一个区域汇总分析。
-     * @param id - {string}区域汇总分析的id。
+     * @param {string} id - 区域汇总分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryRegionJob: function (id, callback, resultFormat) {
         var me = this,
@@ -356,8 +358,8 @@ export var ProcessingService = ServiceBase.extend({
      * @description 新建一个区域汇总分析。
      * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryRegionJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -383,7 +385,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param id - {string}区域汇总分析的id。
+     * @param {string} id - 区域汇总分析的id。
      * @return {Object} 区域汇总分析的状态
      */
     getSummaryRegionJobState: function (id) {
@@ -394,7 +396,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getVectorClipJobs: function (callback, resultFormat) {
         var me = this,
@@ -416,9 +418,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJob
      * @description 获取某一个矢量裁剪分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getVectorClipJob: function (id, callback, resultFormat) {
         var me = this,
@@ -440,10 +442,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addVectorClipJob
      * @description 新建一个矢量裁剪分析。
-     * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addVectorClipJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -469,7 +471,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param id - {string}矢量裁剪分析的id。
+     * @param {string} id - 矢量裁剪分析的id。
      * @return {Object} 矢量裁剪分析的状态
      */
     getVectorClipJobState: function (id) {
@@ -480,7 +482,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getOverlayGeoJobs: function (callback, resultFormat) {
         var me = this,
@@ -502,9 +504,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getOverlayGeoJob
      * @description 获取某一个叠加分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getOverlayGeoJob: function (id, callback, resultFormat) {
         var me = this,
@@ -526,10 +528,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addOverlayGeoJob
      * @description 新建一个叠加分析。
-     * @param params -{SuperMap.OverlayGeoJobParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.OverlayGeoJobParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addOverlayGeoJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -555,7 +557,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param id - {string}叠加分析的id。
+     * @param {string} id - 叠加分析的id。
      * @return {Object} 叠加分析的状态
      */
     getoverlayGeoJobState: function (id) {
@@ -566,7 +568,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getBuffersJobs: function (callback, resultFormat) {
         var me = this,
@@ -588,9 +590,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getBuffersJob
      * @description 获取某一个缓冲区分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getBuffersJob: function (id, callback, resultFormat) {
         var me = this,
@@ -612,10 +614,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addBuffersJob
      * @description 新建一个缓冲区分析。
-     * @param params -{SuperMap.CreateBufferAnalystJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.CreateBufferAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addBuffersJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -641,7 +643,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
-     * @param id - {string}缓冲区分析的id。
+     * @param {string} id - 缓冲区分析的id。
      * @return {Object} 缓冲区分析的状态
      */
     getBuffersJobState: function (id) {
@@ -652,7 +654,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getTopologyValidatorJobs: function (callback, resultFormat) {
         var me = this,
@@ -674,9 +676,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getTopologyValidatorJob
      * @description 获取某一个拓扑检查分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getTopologyValidatorJob: function (id, callback, resultFormat) {
         var me = this,
@@ -698,10 +700,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addTopologyValidatorJob
      * @description 新建一个拓扑检查分析。
-     * @param params -{SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addTopologyValidatorJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -727,7 +729,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
-     * @param id - {string}拓扑检查分析的id。
+     * @param {string} id - 拓扑检查分析的id。
      * @return {Object} 拓扑检查分析的状态
      */
     getTopologyValidatorJobState: function (id) {
@@ -738,7 +740,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryAttributesJobs: function (callback, resultFormat) {
         var me = this,
@@ -760,9 +762,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryAttributesJob
      * @description 获取某一个属性汇总分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryAttributesJob: function (id, callback, resultFormat) {
         var me = this,
@@ -784,10 +786,10 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addSummaryAttributesJob
      * @description 新建一个属性汇总分析。
-     * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryAttributesJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -813,7 +815,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
-     * @param id - {string}属性汇总分析的id。
+     * @param {string} id - 属性汇总分析的id。
      * @return {Object} 属性汇总分析的状态
      */
     getSummaryAttributesJobState: function (id) {

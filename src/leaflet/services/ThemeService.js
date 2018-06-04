@@ -14,9 +14,11 @@ import {ThemeService as SuperMapThemeService} from '@supermap/iclient-common';
  *  }).getThemeInfo(params,function(result){
  *      //doSomething
  * });
- * @param url - {string} 服务的访问地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。
+ * @param {string} url - 服务的访问地址。
+ * @param {Object} options - 交互服务时所需可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 export var ThemeService = ServiceBase.extend({
 
@@ -27,7 +29,7 @@ export var ThemeService = ServiceBase.extend({
     /**
      * @function L.supermap.themeService.prototype.getThemeInfo
      * @description 获取专题图信息
-     * @param params - {SuperMap.ThemeParameters} 专题图参数类
+     * @param {SuperMap.ThemeParameters} params - 专题图参数类
      * @param {RequestCallback} callback 回调函数
      */
     getThemeInfo: function (params, callback) {

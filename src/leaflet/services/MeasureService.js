@@ -16,11 +16,11 @@ import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} 
  * },function(result){
  *     //doSomething
  * })
- * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World 。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。<br>
- *        measureMode - {SuperMap.MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
+ * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World。
+ * @param {Object} options - 交互服务时所需可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 export var MeasureService = ServiceBase.extend({
 
@@ -31,7 +31,7 @@ export var MeasureService = ServiceBase.extend({
     /**
      * @function L.supermap.measureService.prototype.measureDistance
      * @description 测距
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
      * @param {RequestCallback} callback 回调函数
      */
     measureDistance: function (params, callback) {
@@ -42,7 +42,7 @@ export var MeasureService = ServiceBase.extend({
     /**
      * @function L.supermap.measureService.prototype.measureArea
      * @description 测面积
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
      * @param {RequestCallback} callback 回调函数
      */
     measureArea: function (params, callback) {
@@ -52,8 +52,8 @@ export var MeasureService = ServiceBase.extend({
 
     /**
      * @function L.supermap.measureService.measure
-     * @param type -{SuperMap.MeasureMode} 量算模式
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
+     * @param {SuperMap.MeasureMode} type - 量算模式
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
      * @param {RequestCallback} callback 回调函数
      */
     measure: function (type, params, callback) {

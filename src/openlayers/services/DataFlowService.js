@@ -12,12 +12,15 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的实时数据服务地址。
- * @param options - {Object} 加载实时数据可选参数。如：<br>
- *        style - {function} 设置数据加载样式。<br>
- *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
- *        excludeField - -{Object} 排除字段
+ * @param {string} url - 与客户端交互的实时数据服务地址。
+ * @param {Object} options - 加载实时数据可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {Function} options.style - 设置数据加载样式。
+ * @param {Function} options.onEachFeature - 设置每个数据加载popup等。
+ * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {Object} options.excludeField - 排除字段
  */
 export class DataFlowService extends ServiceBase {
 
@@ -55,7 +58,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param obj {JSON} json格式的要素数据
+     * @param {JSON} obj - json格式的要素数据
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);
@@ -73,7 +76,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {Object} 排除字段
+     * @param {Object} excludeField - 排除字段
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -84,7 +87,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
+     * @param {Array<Object>} geometry - 设置增添的几何要素对象数组。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

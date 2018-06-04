@@ -40,7 +40,7 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
     /**
      * @function SuperMap.GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @params {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
+     * @param {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
      *
      */
     processAsync(parameters) {

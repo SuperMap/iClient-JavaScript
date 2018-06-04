@@ -12,11 +12,13 @@ import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from
  *   L.supermap.fieldService(url).getFields(function(result){
  *     //doSomething
  *   });
- * @param url - {string} 字段服务地址
- * @param options - {Object} 字段服务类可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        dataSourceName - {string} 数据资源名称 <br>
- *        dataSetName - {string} 数据集名称
+ * @param {string} url - 字段服务地址。
+ * @param {Object} options - 字段服务类可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {string} options.dataSourceName - 数据资源名称。
+ * @param {string} options.dataSetName - 数据集名称。
  */
 export var FieldService = ServiceBase.extend({
 
@@ -27,7 +29,7 @@ export var FieldService = ServiceBase.extend({
     /**
      * @function L.supermap.fieldService.prototype.getFields
      * @description 字段查询服务
-     * @param params {SuperMap.FieldParameters} 字段信息查询参数类
+     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类
      * @param {RequestCallback} callback 回调函数
      */
     getFields: function (params, callback) {
@@ -50,8 +52,8 @@ export var FieldService = ServiceBase.extend({
     /**
      * @function L.supermap.fieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
-     * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FieldStatisticsParameters} params - 字段统计信息查询参数类。
+     * @param {RequestCallback} callback - 回调函数
      */
     getFieldStatisticsInfo: function (params, callback) {
         if (!(params instanceof FieldStatisticsParameters)) {

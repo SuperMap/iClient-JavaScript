@@ -8,9 +8,11 @@ import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient
  * @classdesc 地图信息服务类
  * @category  iServer Map
  * @extends L.supermap.ServiceBase
- * @param url -{string} 地图服务地址
- * @param options -{Object} 地图服务信息相关参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @param {string} url - 地图服务地址
+ * @param {Object} options - 地图服务信息相关参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @example
  * L.supermap.mapService(url)
  *  .getMapInfo(function(result){

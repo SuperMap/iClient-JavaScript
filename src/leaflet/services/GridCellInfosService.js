@@ -13,9 +13,11 @@ import {GetGridCellInfosService, GetGridCellInfosParameters} from '@supermap/icl
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param url - {string} 数据栅格查询服务地址
- * @param options - {Object} 数据栅格查询服务类可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
+ * @param {string} url - 数据栅格查询服务地址。
+ * @param {Object} options - 数据栅格查询服务类可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 export var GridCellInfosService = ServiceBase.extend({
 

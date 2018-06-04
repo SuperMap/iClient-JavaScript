@@ -19,9 +19,12 @@ import {
  *  .sinksFacilityAnalyst(params,function(result){
  *     //doSomething
  * })
- * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为:
  *                      "http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param options - {Object} 服务所需可选参数
+ * @param {Object} options - 服务所需可选参数
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 export var NetworkAnalyst3DService = ServiceBase.extend({
 
@@ -32,7 +35,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function  L.supermap.networkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
-     * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
+     * @param {SuperMap.FacilityAnalystSinks3DParameters} params -  最近设施分析参数类(汇查找资源)
      * @param {RequestCallback} callback 回调函数
      */
     sinksFacilityAnalyst: function (params, callback) {
@@ -53,7 +56,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务
-     * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
+     * @param {SuperMap.FacilityAnalystSources3DParameters} params - 最近设施分析参数类(源查找服务)
      * @param {RequestCallback} callback 回调函数
      *  @return {this} this
      */
@@ -75,7 +78,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务
-     * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
+     * @param {SuperMap.FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类
      * @param {RequestCallback} callback 回调函数
      *  @return {this} this
      */
@@ -97,7 +100,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务
-     * @param params {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
+     * @param {SuperMap.FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类
      * @param {RequestCallback} callback 回调函数
      */
     traceDownFacilityAnalyst: function (params, callback) {
@@ -118,7 +121,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务
-     * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
+     * @param {SuperMap.FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类
      * @param {RequestCallback} callback 回调函数
      */
     upstreamFacilityAnalyst: function (params, callback) {
