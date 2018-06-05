@@ -3322,11 +3322,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.ServiceBase
  * @classdesc L.supermap服务基类
  * @category  iServer
- * @param url - {string} 与客户端交互的服务地址。
- * @param options - {Object} 可选参数。如：<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false
+ * @param {string} url - 与客户端交互的服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var ServiceBase = exports.ServiceBase = _leaflet2["default"].Evented.extend({
 
@@ -4200,7 +4200,7 @@ var _Math = __webpack_require__(180);
 
 var _Matrix = __webpack_require__(179);
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 var _Vector = __webpack_require__(69);
 
@@ -5943,7 +5943,7 @@ var _Util = __webpack_require__(1);
 
 var _Bounds = __webpack_require__(27);
 
-var _Collection = __webpack_require__(31);
+var _Collection = __webpack_require__(32);
 
 var _JSON = __webpack_require__(126);
 
@@ -10408,6 +10408,130 @@ _SuperMap.SuperMap.Bounds = Bounds;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.NormalizeScale = exports.GetResolutionFromScaleDpi = exports.scaleToResolution = exports.resolutionToScale = exports.getMeterPerMapUnit = exports.toSuperMapGeometry = exports.toGeoJSON = exports.supermap_callbacks = undefined;
+
+var _leaflet = __webpack_require__(2);
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+var _iclientCommon = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var supermap_callbacks = exports.supermap_callbacks = {};
+_leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
+var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
+    if (!feature) {
+        return feature;
+    }
+    return JSON.parse(new _iclientCommon.GeoJSON().write(feature));
+};
+var toSuperMapGeometry = exports.toSuperMapGeometry = function toSuperMapGeometry(geometry) {
+    if (!geometry) {
+        return geometry;
+    }
+    var result,
+        format = new _iclientCommon.GeoJSON();
+    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+        result = format.read(geometry, geometry.type);
+    } else if (typeof geometry.toGeoJSON === "function") {
+        var geojson = geometry.toGeoJSON();
+        result = geojson ? format.read(geojson, geojson.type) : geometry;
+    }
+
+    var serverResult = result;
+    if (_leaflet2["default"].Util.isArray(result)) {
+        if (result.length === 1) {
+            serverResult = result[0];
+        } else if (result.length > 1) {
+            serverResult = [];
+            result.map(function (item) {
+                serverResult.push(item.geometry);
+                return item;
+            });
+        }
+    }
+
+    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
+};
+
+var getMeterPerMapUnit = exports.getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === _iclientCommon.Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === _iclientCommon.Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === _iclientCommon.Unit.KILOMETER) {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === _iclientCommon.Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === _iclientCommon.Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
+var resolutionToScale = exports.resolutionToScale = function resolutionToScale(resolution, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    // 地球半径。
+    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
+    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    scale = 1 / scale;
+    return scale;
+};
+var scaleToResolution = exports.scaleToResolution = function scaleToResolution(scale, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+    return resolution;
+};
+
+var GetResolutionFromScaleDpi = exports.GetResolutionFromScaleDpi = function GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis) {
+    var resolution = null,
+        ratio = 10000;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "";
+    if (scale > 0 && dpi > 0) {
+        scale = _leaflet2["default"].Util.NormalizeScale(scale);
+        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+            //scale = SuperMap.Util.normalizeScale(scale);
+            resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
+            return resolution;
+        } else {
+            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            return resolution;
+        }
+    }
+    return -1;
+};
+var NormalizeScale = exports.NormalizeScale = function NormalizeScale(scale) {
+    return scale > 1.0 ? 1.0 / scale : scale;
+};
+
+_leaflet2["default"].Util.toGeoJSON = toGeoJSON;
+_leaflet2["default"].Util.toSuperMapGeometry = toSuperMapGeometry;
+_leaflet2["default"].Util.resolutionToScale = resolutionToScale;
+_leaflet2["default"].Util.scaleToResolution = scaleToResolution;
+_leaflet2["default"].Util.getMeterPerMapUnit = getMeterPerMapUnit;
+_leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+_leaflet2["default"].Util.NormalizeScale = NormalizeScale;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.CommontypesConversion = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10502,7 +10626,7 @@ var CommontypesConversion = exports.CommontypesConversion = function () {
 _leaflet2["default"].supermap.CommontypesConversion = CommontypesConversion;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11060,7 +11184,7 @@ _Theme2.Theme.getDataValues = function (data, fields, decimalNumber) {
 _SuperMap.SuperMap.Feature.Theme.Graph = Graph;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11406,7 +11530,7 @@ var Util = exports.Util = function () {
 }();
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11704,130 +11828,6 @@ var Collection = exports.Collection = function (_Geometry) {
 }(_Geometry2.Geometry);
 
 _SuperMap.SuperMap.Geometry.Collection = Collection;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.NormalizeScale = exports.GetResolutionFromScaleDpi = exports.scaleToResolution = exports.resolutionToScale = exports.getMeterPerMapUnit = exports.toSuperMapGeometry = exports.toGeoJSON = exports.supermap_callbacks = undefined;
-
-var _leaflet = __webpack_require__(2);
-
-var _leaflet2 = _interopRequireDefault(_leaflet);
-
-var _iclientCommon = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var supermap_callbacks = exports.supermap_callbacks = {};
-_leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
-var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
-    if (!feature) {
-        return feature;
-    }
-    return JSON.parse(new _iclientCommon.GeoJSON().write(feature));
-};
-var toSuperMapGeometry = exports.toSuperMapGeometry = function toSuperMapGeometry(geometry) {
-    if (!geometry) {
-        return geometry;
-    }
-    var result,
-        format = new _iclientCommon.GeoJSON();
-    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
-        result = format.read(geometry, geometry.type);
-    } else if (typeof geometry.toGeoJSON === "function") {
-        var geojson = geometry.toGeoJSON();
-        result = geojson ? format.read(geojson, geojson.type) : geometry;
-    }
-
-    var serverResult = result;
-    if (_leaflet2["default"].Util.isArray(result)) {
-        if (result.length === 1) {
-            serverResult = result[0];
-        } else if (result.length > 1) {
-            serverResult = [];
-            result.map(function (item) {
-                serverResult.push(item.geometry);
-                return item;
-            });
-        }
-    }
-
-    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
-};
-
-var getMeterPerMapUnit = exports.getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === _iclientCommon.Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === _iclientCommon.Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === _iclientCommon.Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === _iclientCommon.Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === _iclientCommon.Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-
-var resolutionToScale = exports.resolutionToScale = function resolutionToScale(resolution, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    // 地球半径。
-    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
-    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
-    scale = 1 / scale;
-    return scale;
-};
-var scaleToResolution = exports.scaleToResolution = function scaleToResolution(scale, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
-    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
-    resolution = 1 / resolution;
-    return resolution;
-};
-
-var GetResolutionFromScaleDpi = exports.GetResolutionFromScaleDpi = function GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis) {
-    var resolution = null,
-        ratio = 10000;
-    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-    datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
-    if (scale > 0 && dpi > 0) {
-        scale = _leaflet2["default"].Util.NormalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-            //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
-            return resolution;
-        } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
-            return resolution;
-        }
-    }
-    return -1;
-};
-var NormalizeScale = exports.NormalizeScale = function NormalizeScale(scale) {
-    return scale > 1.0 ? 1.0 / scale : scale;
-};
-
-_leaflet2["default"].Util.toGeoJSON = toGeoJSON;
-_leaflet2["default"].Util.toSuperMapGeometry = toSuperMapGeometry;
-_leaflet2["default"].Util.resolutionToScale = resolutionToScale;
-_leaflet2["default"].Util.scaleToResolution = scaleToResolution;
-_leaflet2["default"].Util.getMeterPerMapUnit = getMeterPerMapUnit;
-_leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
-_leaflet2["default"].Util.NormalizeScale = NormalizeScale;
 
 /***/ }),
 /* 33 */
@@ -13537,7 +13537,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(31);
+var _Collection2 = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14804,7 +14804,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(31);
+var _Collection2 = __webpack_require__(32);
 
 __webpack_require__(22);
 
@@ -14892,7 +14892,7 @@ exports.MultiPolygon = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(31);
+var _Collection2 = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14956,7 +14956,7 @@ exports.MultiLineString = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(31);
+var _Collection2 = __webpack_require__(32);
 
 __webpack_require__(21);
 
@@ -15479,7 +15479,7 @@ var _iclientCommon = __webpack_require__(5);
 
 var _ThemeLayer = __webpack_require__(93);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19144,7 +19144,7 @@ var _LineString = __webpack_require__(21);
 
 var _PointWithMeasure = __webpack_require__(287);
 
-var _Collection2 = __webpack_require__(31);
+var _Collection2 = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24344,7 +24344,7 @@ exports.Color = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29324,7 +29324,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _VectorFeatureType = __webpack_require__(47);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -31159,7 +31159,7 @@ var _iclientCommon = __webpack_require__(5);
 
 var _ThemeLayer = __webpack_require__(93);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -31680,14 +31680,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.dataFlowService
  * @classdesc 实时数据服务类
  * @category  iServer DataFlow
- * @extends L.supermap.ServiceBase
- * @param url - {string} 实时数据服务地址
- * @param options - {Object} 加载实时数据可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        style - {function} 设置数据加载样式。<br>
- *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
- *        excludeField - -{Object} 排除字段
+ * @extends {L.supermap.ServiceBase}
+ * @param {string} url - 实时数据服务地址。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {function} options.style - 设置数据加载样式。
+ * @param {function} options.onEachFeature -  设置每个数据加载popup等。
+ * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {Object} options.excludeField - 排除字段。
  */
 var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend({
 
@@ -31730,7 +31730,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     /**
      * @function L.supermap.dataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param obj {JSONObject} json格式的要素数据
+     * @param {JSONObject} obj - json格式的要素数据。
      */
     broadcast: function broadcast(obj) {
         this.dataFlow.broadcast(obj);
@@ -31748,7 +31748,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     /**
      * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {Object} 排除字段
+     * @param {Object} excludeField - 排除字段
      */
     setExcludeField: function setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -31759,7 +31759,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的GeoJSON几何要素数据
-     * @param geometry - {Array<Object>} 设置增添的GeoJSON几何要素对象数组。
+     * @param {Array.<Object>} geometry - 设置增添的GeoJSON几何要素对象数组。
      */
     setGeometry: function setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -31978,11 +31978,11 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 var Util = _interopRequireWildcard(_Util);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 var _iclientCommon = __webpack_require__(5);
 
@@ -31999,10 +31999,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething
  *      })
- * @extends L.supermap.ServiceBase
- * @param url - {string} 要素数据集服务地址
- * @param options - {Object} 创建要素数据集服务类可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @extends {L.supermap.ServiceBase}
+ * @param {string} url - 要素数据集服务地址
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
 
@@ -32013,9 +32015,9 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.featureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
-     * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.GetFeaturesByIDsParameters} params - ID 查询参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
      */
     getFeaturesByIDs: function getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
@@ -32035,9 +32037,9 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.featureService.prototype.getFeaturesByBounds
      * @description 数据集Bounds查询服务
-     * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     getFeaturesByBounds: function getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
@@ -32057,9 +32059,9 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.featureService.prototype.getFeaturesByBuffer
      * @description 数据集Buffer查询服务
-     * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.GetFeaturesByBufferParameters} params - 数据服务中数据集缓冲区查询参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     getFeaturesByBuffer: function getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
@@ -32079,9 +32081,9 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.featureService.prototype.getFeaturesBySQL
      * @description 数据集SQL查询服务
-     * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.GetFeaturesBySQLParameters} params - 数据服务中数据集SQL查询参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     getFeaturesBySQL: function getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
@@ -32101,9 +32103,9 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.featureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类
-     * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     getFeaturesByGeometry: function getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -32123,8 +32125,8 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.featureService.prototype.editFeatures
      * @description 地物编辑服务
-     * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.EditFeaturesParameters} params - 数据服务中数据集添加、修改、删除参数类。
+     * @param {RequestCallback} callback - 回调函数
      */
     editFeatures: function editFeatures(params, callback) {
 
@@ -33742,7 +33744,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -33879,34 +33881,24 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
     getDefaultScale: function getDefaultScale(coords) {
         var me = this,
             crs = me._crs;
-        if (crs.options && crs.options.scaleDenominators) {
-            return 1.0 / crs.options.scaleDenominators[coords.z];
-        }
-        if (crs.options && crs.options.scales) {
-            return crs.options.scales[coords.z];
-        }
-        var resolution;
-        if (crs.options && crs.options.resolutions) {
-            resolution = crs.options.resolutions[coords.z];
-        } else if (crs._scales) {
-            resolution = 1 / crs._scales[coords.z];
+        if (crs.scales) {
+            return crs.scales[coords.z];
         } else {
             var tileBounds = me._tileCoordsToBounds(coords);
             var ne = crs.project(tileBounds.getNorthEast());
             var sw = crs.project(tileBounds.getSouthWest());
             var tileSize = me.options.tileSize;
-            resolution = Math.max(Math.abs(ne.x - sw.x) / tileSize, Math.abs(ne.y - sw.y) / tileSize);
-        }
-
-        var mapUnit = _iclientCommon.Unit.METER;
-        if (crs.code) {
-            var array = crs.code.split(':');
-            if (array && array.length > 1) {
-                var code = parseInt(array[1]);
-                mapUnit = code && code >= 4000 && code <= 5000 ? _iclientCommon.Unit.DEGREE : _iclientCommon.Unit.METER;
+            var resolution = Math.max(Math.abs(ne.x - sw.x) / tileSize, Math.abs(ne.y - sw.y) / tileSize);
+            var mapUnit = _iclientCommon.Unit.METER;
+            if (crs.code) {
+                var array = crs.code.split(':');
+                if (array && array.length > 1) {
+                    var code = parseInt(array[1]);
+                    mapUnit = code && code >= 4000 && code <= 5000 ? _iclientCommon.Unit.DEGREE : _iclientCommon.Unit.METER;
+                }
             }
+            return Util.resolutionToScale(resolution, 96, mapUnit);
         }
-        return Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     /**
@@ -33922,7 +33914,9 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
         if (!this.tileSets) {
             return;
         }
-        this.fire('tilesetsinfoloaded', { tileVersions: this.tileSets.tileVersions });
+        this.fire('tilesetsinfoloaded', {
+            tileVersions: this.tileSets.tileVersions
+        });
         this.changeTilesVersion();
     },
 
@@ -33966,7 +33960,9 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
             var result = me.mergeTileVersionParam(name);
             if (result) {
                 me.tileSetsIndex = me.tempIndex;
-                me.fire('tileversionschanged', { tileVersion: tileVersions[me.tempIndex] });
+                me.fire('tileversionschanged', {
+                    tileVersion: tileVersions[me.tempIndex]
+                });
             }
         }
     },
@@ -34056,11 +34052,17 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = me._crs;
         if (crs.options && crs.options.origin) {
-            params["origin"] = JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] });
+            params["origin"] = JSON.stringify({
+                x: crs.options.origin[0],
+                y: crs.options.origin[1]
+            });
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
-            params["origin"] = JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y });
+            params["origin"] = JSON.stringify({
+                x: tileOrigin.x,
+                y: tileOrigin.y
+            });
         }
 
         if (options.overlapDisplayed === false) {
@@ -34405,10 +34407,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class  L.supermap.mapService
  * @classdesc 地图信息服务类
  * @category  iServer Map
- * @extends L.supermap.ServiceBase
- * @param url -{string} 地图服务地址
- * @param options -{Object} 地图服务信息相关参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @extends {L.supermap.ServiceBase}
+ * @param {string} url - 地图服务地址
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @example
  * L.supermap.mapService(url)
  *  .getMapInfo(function(result){
@@ -34433,7 +34437,7 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
     /**
      * @function  L.supermap.mapService.prototype.getMapInfo
      * @description 获取地图信息
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     getMapInfo: function getMapInfo(callback) {
         var me = this;
@@ -34453,7 +34457,7 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
     /**
      * @function  L.supermap.mapService.prototype.getTilesets
      * @description 获取切片列表信息
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     getTilesets: function getTilesets(callback) {
         var me = this;
@@ -35970,10 +35974,10 @@ _leaflet2["default"].Proj._isProj4Obj = function (a) {
  * @private
  * @classdesc Proj投影定义类
  * @category BaseTypes Projection
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param code - {number}地理编码
- * @param def - {string} 定位
- * @param bounds - {L.bounds} 投影范围参数
+ * @extends {L.Class}
+ * @param {string} code - proj srsCode
+ * @param {string} def - 投影的proj4定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {L.bounds} bounds -  投影范围参数
  */
 _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
 
@@ -35990,8 +35994,8 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
     /**
      * @function L.Proj.Projection.prototype.project
      * @description 通过地理坐标得到投影坐标
-     * @param latlng - {L.laylng} 经纬度坐标
-     * @return {Point} 返回投影坐标点
+     * @param  {L.Latlng} latlng -  经纬度坐标。
+     * @return {L.Point} 返回投影坐标点。
      */
     project: function project(latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
@@ -36001,9 +36005,9 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
     /**
      * @function L.Proj.Projection.prototype.unproject
      * @description 通过投影坐标得到地理坐标
-     * @param point {L.Point} 地理坐标点
-     * @param unbounded - {string} 坐标点高程不限
-     * @return {LatLng} 返回经纬度坐标
+     * @param {L.Point} point - 坐标点。
+     * @param {number} unbounded -  坐标点高程值等。
+     * @return {L.LatLng} 返回经纬度坐标
      */
     unproject: function unproject(point, unbounded) {
         if (this.bounds) {
@@ -36030,25 +36034,29 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
         return (0, _proj2["default"])(code);
     },
     getUnits: function getUnits() {
-        return this._proj.oProj.units;
+        return this._proj.oProj.units || "degrees";
     }
 });
 
 /**
  * @class L.Proj.CRS
- * @classdesc 基于Proj4坐标系统扩展类
+ * @classdesc 基于Proj4坐标系统扩展类。
+ * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。
+ * 当指定`options.bounds` 时，第0级为一张256切片包含整个bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
+ * 为保证切片行列号正确，`options.origin` `options.bounds` 必须指定一个。
+ * 当指定`options.bounds` 时，切片原点为bounds的左上角。
  * @category BaseTypes Projection
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param srsCode -{string} proj srsCode。
- * @param options -{Object} options。可选参数：<br>
- *                     def -{string} 投影的proj4定义。<br>
- *                     origin -{Array|L.Point} 原点。必填<br>
- *                     scales -{Array} 比例尺数组 <br>
- *                     scaleDenominators -{Array} 比例尺分母数组 <br>
- *                     resolutions -{Array} 分辨率数组 <br>
- *                     bounds -{Array|L.Bounds} 范围
+ * @extends {L.Class}
+ * @param {string} srsCode - proj srsCode。
+ * @param {Object} options - options。可选参数：
+ * @param {string} options.def - 投影的proj4定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {Array.<number>|L.Point} [options.origin=] - 原点。
+ * @param {Array.<number>} [options.scales=] - 比例尺数组。
+ * @param {Array.<number>} [options.scaleDenominators=] - 比例尺分母数组。
+ * @param {Array.<number>} [options.resolutions=] - 分辨率数组。
+ * @param {Array.<number>|L.Bounds} [options.bounds=] - 范围。
+ * @param {number} [options.dpi=96] - dpi。
  * @example
- * 用法：
  *    var crs =L.Proj.CRS("EPSG:4326",{
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
@@ -36099,13 +36107,14 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
         }
 
         if (this.options.scales && this.options.scales.length > 0) {
-            this._scales = this._toProj4Scales(this.options.scales);
+            this.scales = this.options.scales;
+            this._scales = this._toProj4Scales(this.options.scales, this.options.dpi);
         } else if (this.options.scaleDenominators && this.options.scaleDenominators.length > 0) {
-            var scales = [];
+            this.scales = [];
             for (var i = 0; i < this.options.scaleDenominators.length; i++) {
-                scales[i] = 1 / this.options.scaleDenominators[i];
+                this.scales[i] = 1 / this.options.scaleDenominators[i];
             }
-            this._scales = this._toProj4Scales(scales);
+            this._scales = this._toProj4Scales(this.scales, this.options.dpi);
         } else if (this.options.resolutions && this.options.resolutions.length > 0) {
             this._scales = [];
             for (var _i = this.options.resolutions.length - 1; _i >= 0; _i--) {
@@ -36116,10 +36125,24 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
         } else if (this.options.bounds) {
             this._scales = this._getDefaultProj4ScalesByBounds(this.options.bounds);
         }
-
+        this._rectify();
         this.infinite = !this.options.bounds;
     },
-
+    _rectify: function _rectify() {
+        if (this._scales) {
+            if (!this.resolutions) {
+                this.resolutions = [];
+                this.resolutions = this._proj4ScalesToResolutions(this._scales);
+            }
+            if (!this.scales) {
+                this.scales = [];
+                for (var i = 0; i < this.resolutions.length; i++) {
+                    var scaleD = this.resolutions[i] * this.options.dpi * (1 / 0.0254) * this._getMeterPerMapUnit(this.projection.getUnits());
+                    this.scales[i] = 1.0 / scaleD;
+                }
+            }
+        }
+    },
     /**
      * @function L.Proj.CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值
@@ -36185,15 +36208,25 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
         }
         return low;
     },
+    _proj4ScalesToResolutions: function _proj4ScalesToResolutions(_scales) {
+        var resolutions = [];
+        if (!_scales) {
+            return resolutions;
+        }
+        for (var i = 0; i < _scales.length; i++) {
+            resolutions[i] = 1.0 / _scales[i];
+        }
+        return resolutions;
+    },
 
-    _toProj4Scales: function _toProj4Scales(scales) {
+    _toProj4Scales: function _toProj4Scales(scales, dpi) {
         var proj4Scales = [];
         if (!scales) {
             return proj4Scales;
         }
         for (var i = 0; i < scales.length; i++) {
             var a = this.projection ? this._getMeterPerMapUnit(this.projection.getUnits()) : 1;
-            proj4Scales[i] = 1 / (0.0254 / (96 * scales[i]) / a);
+            proj4Scales[i] = 1 / (0.0254 / ((dpi || 96) * scales[i]) / a);
         }
         return proj4Scales;
     },
@@ -36897,7 +36930,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 var _Eventful2 = __webpack_require__(55);
 
@@ -38822,7 +38855,7 @@ var _SmicImage = __webpack_require__(103);
 
 var _Util = __webpack_require__(1);
 
-var _Util2 = __webpack_require__(30);
+var _Util2 = __webpack_require__(31);
 
 var _Config = __webpack_require__(68);
 
@@ -40409,7 +40442,7 @@ exports.Storage = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 var _Group = __webpack_require__(173);
 
@@ -41007,7 +41040,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 var _Util2 = __webpack_require__(1);
 
@@ -41760,7 +41793,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43432,7 +43465,7 @@ exports.Area = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 var _Curve = __webpack_require__(70);
 
@@ -59775,10 +59808,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *   //doSomething
  * })
- * @extends L.supermap.ServiceBase
- * @param url - {string} 服务地址
- * @param option - {Object} 可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @extends {L.supermap.ServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _ServiceBase.ServiceBase.extend({
 
@@ -59789,7 +59824,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
-     * @param params - {SuperMap.StopQueryParameters} 站点查询参数类
+     * @param {SuperMap.StopQueryParameters} params - 站点查询参数类
      * @param {RequestCallback} callback 回调函数
      */
     queryStop: function queryStop(params, callback) {
@@ -59809,7 +59844,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
-     * @param params - {SuperMap.TransferPathParameters} 交通换乘线路查询参数类
+     * @param {SuperMap.TransferPathParameters} params - 交通换乘线路查询参数类
      * @param {RequestCallback} callback 回调函数
      */
     analysisTransferPath: function analysisTransferPath(params, callback) {
@@ -59829,7 +59864,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
-     * @param params {SuperMap.TransferSolutionParameters} 交通换乘方案查询参数类
+     * @param {SuperMap.TransferSolutionParameters} params - 交通换乘方案查询参数类
      * @param {RequestCallback} callback 回调函数
      */
     analysisTransferSolution: function analysisTransferSolution(params, callback) {
@@ -59896,16 +59931,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.themeService
  * @classdesc 专题图服务类
  * @category  iServer Map Theme
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  * L.supermap.themeService(url,{
  *      projection:projection
  *  }).getThemeInfo(params,function(result){
  *      //doSomething
  * });
- * @param url - {string} 服务的访问地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。
+ * @param {string} url - 服务的访问地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var ThemeService = exports.ThemeService = _ServiceBase.ServiceBase.extend({
 
@@ -59916,7 +59953,7 @@ var ThemeService = exports.ThemeService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.themeService.prototype.getThemeInfo
      * @description 获取专题图信息
-     * @param params - {SuperMap.ThemeParameters} 专题图参数类
+     * @param {SuperMap.ThemeParameters} params - 专题图参数类
      * @param {RequestCallback} callback 回调函数
      */
     getThemeInfo: function getThemeInfo(params, callback) {
@@ -59961,11 +59998,11 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 var Util = _interopRequireWildcard(_Util);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 var _iclientCommon = __webpack_require__(5);
 
@@ -59984,9 +60021,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param url -{string} 空间分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @param {string} url - 空间分析服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.ServiceBase.extend({
 
@@ -59996,9 +60035,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射
-     * @param params - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数类
+     * @param {SuperMap.AreaSolarRadiationParameters} params - 地区太阳辐射参数类
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getAreaSolarRadiationResult: function getAreaSolarRadiationResult(params, callback, resultFormat) {
         var me = this;
@@ -60019,9 +60058,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析
-     * @param params - {SuperMap.DatasetBufferAnalystParameters} 数据集缓冲区分析参数类
+     * @param {SuperMap.DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     bufferAnalysis: function bufferAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60042,9 +60081,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析
-     * @param params - {SuperMap.DensityKernelAnalystParameters} 核密度分析参数类
+     * @param {SuperMap.DensityKernelAnalystParameters} params - 核密度分析参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     densityAnalysis: function densityAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60065,9 +60104,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析
-     * @param params - {SuperMap.GenerateSpatialDataParameters} 动态分段操作参数类
+     * @param {SuperMap.GenerateSpatialDataParameters} params - 动态分段操作参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     generateSpatialData: function generateSpatialData(params, callback, resultFormat) {
         var me = this;
@@ -60088,9 +60127,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析
-     * @param params - {SuperMap.GeoRelationAnalystParameters} 空间关系分析服务参数类
+     * @param {SuperMap.GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     geoRelationAnalysis: function geoRelationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60111,9 +60150,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析
-     * @param params - {SuperMap.InterpolationRBFAnalystParameters} 样条插值（径向基函数插值法）分析参数类
+     * @param {SuperMap.InterpolationRBFAnalystParameters} params - 样条插值（径向基函数插值法）分析参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     interpolationAnalysis: function interpolationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60134,9 +60173,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算
-     * @param params - {SuperMap.MathExpressionAnalysisParameters} 栅格代数运算参数类
+     * @param {SuperMap.MathExpressionAnalysisParameters} params - 栅格代数运算参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     mathExpressionAnalysis: function mathExpressionAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60157,9 +60196,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析
-     * @param params - {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类，支持批量几何要素叠加分析。
+     * @param {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} params - 叠加分析参数类，支持批量几何要素叠加分析。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     overlayAnalysis: function overlayAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60180,9 +60219,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算
-     * @param params - {SuperMap.RouteCalculateMeasureParameters} 基于路由对象计算指定点M值操作的参数类
+     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点M值操作的参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     routeCalculateMeasure: function routeCalculateMeasure(params, callback, resultFormat) {
         var me = this;
@@ -60203,9 +60242,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.routeLocate
      * @description 路由定位
-     * @param params - {SuperMap.RouteLocatorParameters} 路由对象定位空间对象的参数类
+     * @param {SuperMap.RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     routeLocate: function routeLocate(params, callback, resultFormat) {
         var me = this;
@@ -60226,9 +60265,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析
-     * @param params - {SuperMap.SurfaceAnalystParameters} 表面分析参数类
+     * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     surfaceAnalysis: function surfaceAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60249,9 +60288,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算
-     * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 地形曲率计算参数类。
+     * @param {SuperMap.TerrainCurvatureCalculationParameters} params - 地形曲率计算参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     terrainCurvatureCalculate: function terrainCurvatureCalculate(params, callback, resultFormat) {
         var me = this;
@@ -60272,9 +60311,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.spatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析
-     * @param params - {SuperMap.DatasetThiessenAnalystParameters} 数据集泰森多边形分析参数类
+     * @param {SuperMap.DatasetThiessenAnalystParameters} params - 数据集泰森多边形分析参数类
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     thiessenAnalysis: function thiessenAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60303,8 +60342,8 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
      *                                    {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
      *                                    {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
      *                                    {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
-     * @param {RequestCallback} callback
-     * @param resultFormat
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     geometrybatchAnalysis: function geometrybatchAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -60463,11 +60502,11 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 var Util = _interopRequireWildcard(_Util);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 var _iclientCommon = __webpack_require__(5);
 
@@ -60480,9 +60519,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @classdesc 地图查询服务类。
  * @category  iServer Map QueryResults
  * @extends L.supermap.ServiceBase
- * @param url - {string} 地图查询服务访问地址。
- * @param - options - {Object} 服务交互时所需的可选参数。如：<br>
- *          serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @param {string} url -  地图查询服务访问地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @example
  * L.supermap.queryService(url).queryByBounds(param,function(result){
  *   //doSomething
@@ -60496,9 +60537,9 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.queryService.prototype.queryByBounds
      * @description bounds查询地图服务
-     * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
+     * @param {SuperMap.QueryByBoundsParameters} params - 通过Bounds查询的相关参数类
      * @param {RequestCallback} callback - 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryByBounds: function queryByBounds(params, callback, resultFormat) {
         var me = this;
@@ -60520,9 +60561,9 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.queryService.prototype.queryByDistance
      * @description 地图距离查询服务
-     * @param params - {SuperMap.QueryByDistanceParameters} Distance查询相关参数类
+     * @param {SuperMap.QueryByDistanceParameters} params - Distance查询相关参数类。
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
      */
     queryByDistance: function queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -60544,9 +60585,9 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.queryService.prototype.queryBySQL
      * @description 地图SQL查询服务
-     * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
+     * @param {SuperMap.QueryBySQLParameters} params - SQL查询相关参数类
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryBySQL: function queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -60568,9 +60609,9 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.queryService.prototype.queryByGeometry
      * @description 地图几何查询服务
-     * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
+     * @param {SuperMap.QueryByGeometryParameters} params - Geometry查询相关参数类
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryByGeometry: function queryByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -60644,7 +60685,7 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 var _iclientCommon = __webpack_require__(5);
 
@@ -60660,9 +60701,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * .getKernelDensityJobs(function(result){
  *     //doSomething
  * })
- * @param url -{string} 分布式分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。
+ * @param {string} url - 分布式分析服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.extend({
 
@@ -60685,7 +60728,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getKernelDensityJobs: function getKernelDensityJobs(callback, resultFormat) {
         var me = this,
@@ -60707,9 +60750,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getKernelDensityJob: function getKernelDensityJob(id, callback, resultFormat) {
         var me = this,
@@ -60731,10 +60774,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addKernelDensityJob
      * @description 新建一个密度分析。
-     * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addKernelDensityJob: function addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -60760,8 +60803,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param id - {string}密度分析的id。
-     * @return {Object} 密度分析的状态
+     * @param {string} id - 密度分析的id。
+     * @returns {Object} 密度分析的状态
      */
     getKernelDensityJobState: function getKernelDensityJobState(id) {
         return this.kernelDensityJobs[id];
@@ -60770,8 +60813,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
-     * @param {RequestCallback} callback  请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryMeshJobs: function getSummaryMeshJobs(callback, resultFormat) {
         var me = this,
@@ -60793,9 +60836,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJob
      * @description 获取某一个点聚合分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryMeshJob: function getSummaryMeshJob(id, callback, resultFormat) {
         var me = this,
@@ -60817,10 +60860,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addSummaryMeshJob
      * @description 新建一个点聚合分析。
-     * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
+     * @param {SuperMap.SummaryMeshJobParameter} params - 点聚合分析任务参数类。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryMeshJob: function addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -60846,8 +60889,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
-     * @param id - {string} 点聚合分析的id。
-     * @return {Object} 点聚合分析的状态
+     * @param {string} id - 点聚合分析的id。
+     * @returns {Object} 点聚合分析的状态
      */
     getSummaryMeshJobState: function getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
@@ -60857,7 +60900,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getQueryJobs: function getQueryJobs(callback, resultFormat) {
         var me = this,
@@ -60879,9 +60922,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getQueryJob
      * @description 获取某一个单对象查询分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getQueryJob: function getQueryJob(id, callback, resultFormat) {
         var me = this,
@@ -60903,10 +60946,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addQueryJob
      * @description 新建一个单对象查询分析。
-     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addQueryJob: function addQueryJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -60932,8 +60975,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
-     * @param id - {string}单对象查询分析的id。
-     * @return {Object} 单对象查询分析的状态
+     * @param {string} id - 单对象查询分析的id。
+     * @returns {Object} 单对象查询分析的状态
      */
     getQueryJobState: function getQueryJobState(id) {
         return this.queryJobs[id];
@@ -60943,7 +60986,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryRegionJobs: function getSummaryRegionJobs(callback, resultFormat) {
         var me = this,
@@ -60965,9 +61008,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJob
      * @description 获取某一个区域汇总分析。
-     * @param id - {string}区域汇总分析的id。
+     * @param {string} id - 区域汇总分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryRegionJob: function getSummaryRegionJob(id, callback, resultFormat) {
         var me = this,
@@ -60989,10 +61032,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addSummaryRegionJob
      * @description 新建一个区域汇总分析。
-     * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
+     * @param {SuperMap.SummaryRegionJobParameter} params - 创建一个区域汇总分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryRegionJob: function addSummaryRegionJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -61018,8 +61061,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param id - {string}区域汇总分析的id。
-     * @return {Object} 区域汇总分析的状态
+     * @param {string} id - 区域汇总分析的id。
+     * @returns {Object} 区域汇总分析的状态
      */
     getSummaryRegionJobState: function getSummaryRegionJobState(id) {
         return this.summaryRegionJobs[id];
@@ -61029,7 +61072,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getVectorClipJobs: function getVectorClipJobs(callback, resultFormat) {
         var me = this,
@@ -61051,9 +61094,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJob
      * @description 获取某一个矢量裁剪分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getVectorClipJob: function getVectorClipJob(id, callback, resultFormat) {
         var me = this,
@@ -61075,10 +61118,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addVectorClipJob
      * @description 新建一个矢量裁剪分析。
-     * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addVectorClipJob: function addVectorClipJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -61104,8 +61147,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param id - {string}矢量裁剪分析的id。
-     * @return {Object} 矢量裁剪分析的状态
+     * @param {string} id - 矢量裁剪分析的id。
+     * @returns {Object} 矢量裁剪分析的状态
      */
     getVectorClipJobState: function getVectorClipJobState(id) {
         return this.vectorClipJobs[id];
@@ -61115,7 +61158,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getOverlayGeoJobs: function getOverlayGeoJobs(callback, resultFormat) {
         var me = this,
@@ -61137,9 +61180,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getOverlayGeoJob
      * @description 获取某一个叠加分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getOverlayGeoJob: function getOverlayGeoJob(id, callback, resultFormat) {
         var me = this,
@@ -61161,10 +61204,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addOverlayGeoJob
      * @description 新建一个叠加分析。
-     * @param params -{SuperMap.OverlayGeoJobParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.OverlayGeoJobParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addOverlayGeoJob: function addOverlayGeoJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -61190,8 +61233,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param id - {string}叠加分析的id。
-     * @return {Object} 叠加分析的状态
+     * @param {string} id - 叠加分析的id。
+     * @returns {Object} 叠加分析的状态
      */
     getoverlayGeoJobState: function getoverlayGeoJobState(id) {
         return this.overlayGeoJobs[id];
@@ -61201,7 +61244,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getBuffersJobs: function getBuffersJobs(callback, resultFormat) {
         var me = this,
@@ -61223,9 +61266,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getBuffersJob
      * @description 获取某一个缓冲区分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getBuffersJob: function getBuffersJob(id, callback, resultFormat) {
         var me = this,
@@ -61247,10 +61290,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addBuffersJob
      * @description 新建一个缓冲区分析。
-     * @param params -{SuperMap.CreateBufferAnalystJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.CreateBufferAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addBuffersJob: function addBuffersJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -61276,8 +61319,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
-     * @param id - {string}缓冲区分析的id。
-     * @return {Object} 缓冲区分析的状态
+     * @param {string} id - 缓冲区分析的id。
+     * @returns {Object} 缓冲区分析的状态
      */
     getBuffersJobState: function getBuffersJobState(id) {
         return this.buffersJobs[id];
@@ -61287,7 +61330,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getTopologyValidatorJobs: function getTopologyValidatorJobs(callback, resultFormat) {
         var me = this,
@@ -61309,9 +61352,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getTopologyValidatorJob
      * @description 获取某一个拓扑检查分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getTopologyValidatorJob: function getTopologyValidatorJob(id, callback, resultFormat) {
         var me = this,
@@ -61333,10 +61376,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addTopologyValidatorJob
      * @description 新建一个拓扑检查分析。
-     * @param params -{SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addTopologyValidatorJob: function addTopologyValidatorJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -61362,8 +61405,8 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
-     * @param id - {string}拓扑检查分析的id。
-     * @return {Object} 拓扑检查分析的状态
+     * @param {string} id - 拓扑检查分析的id。
+     * @returns {Object} 拓扑检查分析的状态
      */
     getTopologyValidatorJobState: function getTopologyValidatorJobState(id) {
         return this.topologyValidatorJobs[id];
@@ -61373,7 +61416,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @function L.supermap.processingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryAttributesJobs: function getSummaryAttributesJobs(callback, resultFormat) {
         var me = this,
@@ -61395,9 +61438,9 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryAttributesJob
      * @description 获取某一个属性汇总分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     getSummaryAttributesJob: function getSummaryAttributesJob(id, callback, resultFormat) {
         var me = this,
@@ -61419,10 +61462,10 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.addSummaryAttributesJob
      * @description 新建一个属性汇总分析。
-     * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryAttributesJob: function addSummaryAttributesJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -61448,7 +61491,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
-     * @param id - {string}属性汇总分析的id。
+     * @param {string} id - 属性汇总分析的id。
      * @return {Object} 属性汇总分析的状态
      */
     getSummaryAttributesJobState: function getSummaryAttributesJobState(id) {
@@ -61518,11 +61561,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *  .findPath(params,function(result){
  *     //doSomething
  * })
- * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.ServiceBase.extend({
 
@@ -61533,8 +61578,8 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
-     * @param params -{SuperMap.BurstPipelineAnalystParameters} 爆管分析服务参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.BurstPipelineAnalystParameters} params - 爆管分析服务参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     burstPipelineAnalyst: function burstPipelineAnalyst(params, callback) {
         var me = this;
@@ -61553,9 +61598,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
 
     /**
      * @function L.supermap.networkAnalystService.prototype.computeWeightMatrix
-     * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
-     * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析服务参数类
-     * @param {RequestCallback} callback 回调函数
+     * @description 耗费矩阵分析服务：根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
+     * @param {SuperMap.ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     computeWeightMatrix: function computeWeightMatrix(params, callback) {
         var me = this;
@@ -61575,9 +61620,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.findClosestFacilities
      * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
-     * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.FindClosestFacilitiesParameters} params - 最近设施分析服务参数类
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型
      */
     findClosestFacilities: function findClosestFacilities(params, callback, resultFormat) {
         var me = this;
@@ -61597,10 +61642,10 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
 
     /**
      * @function L.supermap.networkAnalystService.prototype.streamFacilityAnalyst
-     * @description 上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
-     * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游 关键设施查找资源服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @description 上游/下游 关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
+     * @param {SuperMap.FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     streamFacilityAnalyst: function streamFacilityAnalyst(params, callback, resultFormat) {
         var me = this;
@@ -61621,9 +61666,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.findLocation
      * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置
-     * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.FindLocationParameters} params - 选址分区分析服务参数类
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     findLocation: function findLocation(params, callback, resultFormat) {
         var me = this;
@@ -61644,9 +61689,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.findPath
      * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
-     * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
+     * @param {SuperMap.FindPathParameters} params - 最佳路径分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     findPath: function findPath(params, callback, resultFormat) {
         var me = this;
@@ -61667,9 +61712,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.findTSPPaths
      * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
-     * @param params - {SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.FindTSPPathsParameters} params - 旅行商分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     findTSPPaths: function findTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -61690,9 +61735,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function l.supermap.networkAnalystService.prototype.findMTSPPaths
      * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
-     * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     findMTSPPaths: function findMTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -61713,9 +61758,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.findServiceAreas
      * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
-     * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @param {SuperMap.FindServiceAreasParameters} params -  服务区分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     findServiceAreas: function findServiceAreas(params, callback, resultFormat) {
         var me = this;
@@ -61736,8 +61781,8 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.updateEdgeWeight
      * @description 更新边的耗费权重服务
-     * @param params - {SuperMap.UpdateEdgeWeightParameters} 更新边的耗费权重服务参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
+     * @param {RequestCallback} callback -回调函数
      */
     updateEdgeWeight: function updateEdgeWeight(params, callback) {
         var me = this;
@@ -61757,8 +61802,8 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     /**
      * @function L.supermap.networkAnalystService.prototype.updateTurnNodeWeight
      * @description 转向耗费权重更新服务
-     * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
+     * @param {RequestCallback} callback - 回调函数
      */
     updateTurnNodeWeight: function updateTurnNodeWeight(params, callback) {
         var me = this;
@@ -61865,15 +61910,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.networkAnalyst3DService
  * @classdesc 3D网络分析服务类
  * @category  iServer FacilityAnalyst3D
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  * L.supermap.networkAnalyst3DService(url)
  *  .sinksFacilityAnalyst(params,function(result){
  *     //doSomething
  * })
- * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为:
  *                      "http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param options - {Object} 服务所需可选参数
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.ServiceBase.extend({
 
@@ -61882,10 +61930,10 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     },
 
     /**
-     * @function  L.supermap.networkAnalyst3DService.prototype.sinksFacilityAnalyst
+     * @function L.supermap.networkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
-     * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FacilityAnalystSinks3DParameters} params - 最近设施分析参数类(汇查找资源)
+     * @param {RequestCallback} callback - 回调函数
      */
     sinksFacilityAnalyst: function sinksFacilityAnalyst(params, callback) {
         var me = this;
@@ -61905,9 +61953,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务
-     * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
-     * @param {RequestCallback} callback 回调函数
-     *  @return {this} this
+     * @param {SuperMap.FacilityAnalystSources3DParameters} params - 最近设施分析参数类(源查找服务)
+     * @param {RequestCallback} callback - 回调函数
+     * @return {this} this
      */
     sourcesFacilityAnalyst: function sourcesFacilityAnalyst(params, callback) {
         var me = this;
@@ -61927,9 +61975,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务
-     * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
-     * @param {RequestCallback} callback 回调函数
-     *  @return {this} this
+     * @param {SuperMap.FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {this} this
      */
     traceUpFacilityAnalyst: function traceUpFacilityAnalyst(params, callback) {
         var me = this;
@@ -61949,8 +61997,8 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务
-     * @param params {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     traceDownFacilityAnalyst: function traceDownFacilityAnalyst(params, callback) {
         var me = this;
@@ -61970,8 +62018,8 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     /**
      * @function L.supermap.networkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务
-     * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     upstreamFacilityAnalyst: function upstreamFacilityAnalyst(params, callback) {
         var me = this;
@@ -62015,7 +62063,7 @@ var _ServiceBase = __webpack_require__(8);
 
 __webpack_require__(4);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -62027,9 +62075,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.measureService
- * @classdesc 量算服务服务类
+ * @classdesc 量算服务类
  * @category  iServer Map Measure
- * @augments L.supermap.ServiceBase
+ * @augments {L.supermap.ServiceBase}
  * @example
  * 用法：
  * L.supermap.measureService(url).measureDistance({
@@ -62037,11 +62085,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * },function(result){
  *     //doSomething
  * })
- * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World 。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。<br>
- *        measureMode - {SuperMap.MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
+ * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
 
@@ -62052,8 +62100,8 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.measureService.prototype.measureDistance
      * @description 测距
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     measureDistance: function measureDistance(params, callback) {
         this.measure(_iclientCommon.MeasureMode.DISTANCE, params, callback);
@@ -62063,8 +62111,8 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.measureService.prototype.measureArea
      * @description 测面积
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     measureArea: function measureArea(params, callback) {
         this.measure(_iclientCommon.MeasureMode.AREA, params, callback);
@@ -62073,9 +62121,9 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
 
     /**
      * @function L.supermap.measureService.measure
-     * @param type -{SuperMap.MeasureMode} 量算模式
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.MeasureMode} type - 量算模式
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     measure: function measure(type, params, callback) {
         if (!(params instanceof _iclientCommon.MeasureParameters)) {
@@ -62134,15 +62182,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.layerInfoService
  * @classdesc 图层信息类
  * @category  iServer Map Layer
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  * L.supermap.layerInfoService(url).getLayersInfo(function(result){
  *   //doSomething
  * })
- * @param url - {string} 与服务端交互的地图服务地址。请求地图服务URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}"；
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {string} url - 与服务端交互的地图服务地址。请求地图服务URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}"；
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.extend({
 
@@ -62153,7 +62202,7 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
     /**
      * @function L.supermap.layerInfoService.prototype.getLayerInfo
      * @description 获取图层信息
-     * @param {RequestCallback} callback 获取信息完成后的回调函数
+     * @param {RequestCallback} callback - 获取信息完成后的回调函数
      */
     getLayersInfo: function getLayersInfo(callback) {
         var me = this;
@@ -62172,8 +62221,8 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
     /**
      * @function L.supermap.layerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改
-     * @param params - {SuperMap.SetLayerInfoParameters} 图层信息相关参数
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.SetLayerInfoParameters} params - 图层信息相关参数
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayerInfo: function setLayerInfo(params, callback) {
         if (!(params instanceof _iclientCommon.SetLayerInfoParameters)) {
@@ -62205,8 +62254,8 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
     /**
      * @function  L.supermap.layerInfoService.prototype.setLayersInfo
      * @description 设置图层信息。可以实现创建新的临时图层和对现有临时图层的修改
-     * @param params -{SuperMap.SetLayersInfoParameters} 图层信息设置参数,包括临时图层。
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.SetLayersInfoParameters} params - 图层信息设置参数,包括临时图层。
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayersInfo: function setLayersInfo(params, callback) {
         if (!(params instanceof _iclientCommon.SetLayersInfoParameters)) {
@@ -62237,8 +62286,8 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
     /**
      * @function L.supermap.layerInfoService.prototype.setLayerStatus
      * @description 负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
-     * @param params -{SuperMap.SetLayerStatusParameters} 图层信息显示控制参数
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.SetLayerStatusParameters} params - 图层信息显示控制参数。
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayerStatus: function setLayerStatus(params, callback) {
         if (!(params instanceof _iclientCommon.SetLayerStatusParameters)) {
@@ -62293,15 +62342,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.gridCellInfosService
  * @classdesc 数据栅格查询服务
  * @category  iServer Data Grid
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  *      L.supermap.gridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param url - {string} 数据栅格查询服务地址
- * @param options - {Object} 数据栅格查询服务类可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
+ * @param {string} url - 数据栅格查询服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var GridCellInfosService = exports.GridCellInfosService = _ServiceBase.ServiceBase.extend({
 
@@ -62311,8 +62362,8 @@ var GridCellInfosService = exports.GridCellInfosService = _ServiceBase.ServiceBa
 
     /**
      * @function L.supermap.gridCellInfosService.prototype.getGridCellInfos
-     * @param params {SuperMap.GetGridCellInfosParameters} 数据服务栅格查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.GetGridCellInfosParameters} params - 数据服务栅格查询参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     getGridCellInfos: function getGridCellInfos(params, callback) {
         if (!(params instanceof _iclientCommon.GetGridCellInfosParameters)) {
@@ -62366,16 +62417,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
  * @category iServer Data Field
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  *   L.supermap.fieldService(url).getFields(function(result){
  *     //doSomething
  *   });
- * @param url - {string} 字段服务地址
- * @param options - {Object} 字段服务类可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        dataSourceName - {string} 数据资源名称 <br>
- *        dataSetName - {string} 数据集名称
+ * @param {string} url - 字段服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {string} options.dataSourceName - 数据资源名称。
+ * @param {string} options.dataSetName - 数据集名称。
  */
 var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
 
@@ -62386,8 +62439,8 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.fieldService.prototype.getFields
      * @description 字段查询服务
-     * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     getFields: function getFields(params, callback) {
         var me = this;
@@ -62409,8 +62462,8 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.fieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
-     * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FieldStatisticsParameters} params - 字段统计信息查询参数类。
+     * @param {RequestCallback} callback - 回调函数
      */
     getFieldStatisticsInfo: function getFieldStatisticsInfo(params, callback) {
         if (!(params instanceof _iclientCommon.FieldStatisticsParameters)) {
@@ -62495,23 +62548,25 @@ var _iclientCommon = __webpack_require__(5);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.chartService
  * @classdesc 海图服务。
- *  @category  iServer Map Chart
- * @extends L.supermap.ServiceBase
+ * @category  iServer Map Chart
+ * @extends {L.supermap.ServiceBase}
  * @example
  *      L.supermap.chartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的海图服务地址。
- * @param options -{Object} 可选参数。如：<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
+ * @param {string} url - 与客户端交互的海图服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var ChartService = exports.ChartService = _ServiceBase.ServiceBase.extend({
 
@@ -62522,9 +62577,9 @@ var ChartService = exports.ChartService = _ServiceBase.ServiceBase.extend({
     /**
      * @function L.supermap.chartService.prototype.queryChart
      * @description 查询海图
-     * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param resultFormat -{SuperMap.DataFormat} 返回的结果格式类型。
+     * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {SuperMap.DataFormat} resultFormat - 返回的结果格式类型。
      */
     queryChart: function queryChart(params, callback, resultFormat) {
         var me = this,
@@ -62620,15 +62675,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @constructs L.supermap.addressMatchService
  * @classdesc 地址匹配服务
  * @category  iServer AddressMatch
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  *      L.supermap.addressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param url - {string} 地址匹配服务地址
- * @param options {Object} 地址匹配服务可选参数。如：data - {number}
- *
+ * @param {string} url - 地址匹配服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase.extend({
 
@@ -62639,8 +62696,8 @@ var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase
     /**
      * @function L.supermap.addressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params - {Object} 正向匹配参数。
-     * @param {RequestCallback} callback 请求结果的回调函数。
+     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
      */
     code: function code(params, callback) {
         var me = this;
@@ -62660,8 +62717,8 @@ var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase
     /**
      * @function L.supermap.addressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params -{Object} 反向匹配参数。
-     * @param {RequestCallback} callback 请求结果的回调函数。
+     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
      */
     decode: function decode(params, callback) {
         var me = this;
@@ -64883,6 +64940,12 @@ var _CartoCSSToLeaflet = __webpack_require__(94);
 
 var _iclientCommon = __webpack_require__(5);
 
+var _Util = __webpack_require__(28);
+
+var Util = _interopRequireWildcard(_Util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
@@ -65023,7 +65086,10 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         if (!layerInfo) {
             return null;
         }
-        layerInfo_simple = { layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType };
+        layerInfo_simple = {
+            layerIndex: layerInfo.layerIndex,
+            ugcLayerType: layerInfo.ugcLayerType
+        };
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":
                 layerInfo_simple.layerStyle = layerInfo.style ? layerInfo.style : null;
@@ -65196,22 +65262,24 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     getDefaultScale: function getDefaultScale(coords) {
         var me = this,
             crs = me._crs;
-        var resolution;
-        if (crs.options && crs.options.resolutions) {
-            resolution = crs.options.resolutions[coords.z];
+        if (crs.scales) {
+            return crs.scales[coords.z];
         } else {
             var tileBounds = me._tileCoordsToBounds(coords);
             var ne = crs.project(tileBounds.getNorthEast());
             var sw = crs.project(tileBounds.getSouthWest());
             var tileSize = me.options.tileSize;
-            resolution = Math.max(Math.abs(ne.x - sw.x) / tileSize, Math.abs(ne.y - sw.y) / tileSize);
+            var resolution = Math.max(Math.abs(ne.x - sw.x) / tileSize, Math.abs(ne.y - sw.y) / tileSize);
+            var mapUnit = _iclientCommon.Unit.METER;
+            if (crs.code) {
+                var array = crs.code.split(':');
+                if (array && array.length > 1) {
+                    var code = parseInt(array[1]);
+                    mapUnit = code && code >= 4000 && code <= 5000 ? _iclientCommon.Unit.DEGREE : _iclientCommon.Unit.METER;
+                }
+            }
+            return Util.resolutionToScale(resolution, 95.89, mapUnit);
         }
-
-        var mapUnit = _iclientCommon.Unit.METER;
-        if (crs.code && crs.code.indexOf("4326") > -1) {
-            mapUnit = _iclientCommon.Unit.DEGREE;
-        }
-        return _leaflet2["default"].Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _mergeFeatureTextField: function _mergeFeatureTextField(feature, style) {
@@ -65309,11 +65377,17 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = this._crs;
         if (crs.options && crs.options.origin) {
-            params.push("origin=" + JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] }));
+            params.push("origin=" + JSON.stringify({
+                x: crs.options.origin[0],
+                y: crs.options.origin[1]
+            }));
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
-            params.push("origin=" + JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y }));
+            params.push("origin=" + JSON.stringify({
+                x: tileOrigin.x,
+                y: tileOrigin.y
+            }));
         }
         if (options.expands) {
             params.push("expands=" + options.expands);
@@ -69641,7 +69715,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.NormalizeScale = exports.GetResolutionFromScaleDpi = exports.scaleToResolution = exports.resolutionToScale = exports.getMeterPerMapUnit = exports.toSuperMapGeometry = exports.toGeoJSON = exports.crs = exports.CRS = exports.nonEarthCRS = exports.NonEarthCRS = exports.nonProjection = exports.NonProjection = exports.TianDiTu_MercatorCRS = exports.TianDiTu_WGS84CRS = exports.BaiduCRS = exports.CommontypesConversion = undefined;
 
-var _CommontypesConversion = __webpack_require__(28);
+var _CommontypesConversion = __webpack_require__(29);
 
 var _ExtendsCRS = __webpack_require__(157);
 
@@ -69649,7 +69723,7 @@ var _NonEarthCRS = __webpack_require__(101);
 
 var _Proj4Leaflet = __webpack_require__(167);
 
-var _Util = __webpack_require__(32);
+var _Util = __webpack_require__(28);
 
 exports.CommontypesConversion = _CommontypesConversion.CommontypesConversion;
 exports.BaiduCRS = _ExtendsCRS.BaiduCRS;
@@ -75230,7 +75304,7 @@ var _Storage = __webpack_require__(174);
 
 var _Transformable = __webpack_require__(71);
 
-var _Util = __webpack_require__(30);
+var _Util = __webpack_require__(31);
 
 var _Vector = __webpack_require__(69);
 
@@ -75351,7 +75425,7 @@ var _Rectangle = __webpack_require__(305);
 
 var _Point = __webpack_require__(22);
 
-var _Collection = __webpack_require__(31);
+var _Collection = __webpack_require__(32);
 
 var _MultiPoint = __webpack_require__(44);
 
@@ -76081,7 +76155,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Sector = __webpack_require__(72);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76323,7 +76397,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Point = __webpack_require__(74);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76636,7 +76710,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Sector = __webpack_require__(72);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76877,7 +76951,7 @@ var _Point = __webpack_require__(74);
 
 var _Line = __webpack_require__(109);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77421,7 +77495,7 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Polygon = __webpack_require__(73);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77877,7 +77951,7 @@ var _Color = __webpack_require__(106);
 
 var _Util = __webpack_require__(1);
 
-var _Graph2 = __webpack_require__(29);
+var _Graph2 = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -78261,7 +78335,7 @@ var _Bar3D = __webpack_require__(415);
 
 var _Circle = __webpack_require__(414);
 
-var _Graph = __webpack_require__(29);
+var _Graph = __webpack_require__(30);
 
 var _Line = __webpack_require__(413);
 
@@ -86061,7 +86135,7 @@ var GeometryBatchAnalystService = exports.GeometryBatchAnalystService = function
     /**
      * @function SuperMap.GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @params {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
+     * @param {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
      *
      */
 
@@ -97945,7 +98019,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = undefined;
 
-var _Collection = __webpack_require__(31);
+var _Collection = __webpack_require__(32);
 
 var _Curve = __webpack_require__(130);
 

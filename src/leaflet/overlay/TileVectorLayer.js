@@ -1,8 +1,20 @@
 import L from "leaflet";
 import '../core/Base';
-import {VectorGrid} from './vectortile/VectorGrid';
-import {CartoCSSToLeaflet} from './carto/CartoCSSToLeaflet';
-import {FetchRequest, Unit, ServerType, Credential, SecurityManager} from '@supermap/iclient-common';
+import {
+    VectorGrid
+} from './vectortile/VectorGrid';
+import {
+    CartoCSSToLeaflet
+} from './carto/CartoCSSToLeaflet';
+import {
+    FetchRequest,
+    Unit,
+    ServerType,
+    Credential,
+    SecurityManager
+} from '@supermap/iclient-common';
+import * as Util from "../core/Util";
+
 
 /**
  * @class L.supermap.tiledVectorLayer
@@ -126,7 +138,8 @@ export var TileVectorLayer = VectorGrid.extend({
      * @param layerName - {string} 图层名称
      */
     getLayerStyleInfo: function (layerName) {
-        var me = this, layerInfo_simple;
+        var me = this,
+            layerInfo_simple;
         me.layersStyles = me.layersStyles || {};
 
         layerInfo_simple = me.layersStyles[layerName];
@@ -141,7 +154,10 @@ export var TileVectorLayer = VectorGrid.extend({
         if (!layerInfo) {
             return null;
         }
-        layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
+        layerInfo_simple = {
+            layerIndex: layerInfo.layerIndex,
+            ugcLayerType: layerInfo.ugcLayerType
+        };
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":
                 layerInfo_simple.layerStyle = layerInfo.style ? layerInfo.style : null;
@@ -155,7 +171,7 @@ export var TileVectorLayer = VectorGrid.extend({
                     layerInfo_simple.textField = theme.labelExpression;
                 }
                 break;
-            default :
+            default:
                 //SVTile发布出来的地图没有ugcLayerType属性
                 if (layerInfo.style) {
                     layerInfo_simple.layerStyle = layerInfo.style;
@@ -293,7 +309,8 @@ export var TileVectorLayer = VectorGrid.extend({
      * @return {number} 比例尺
      */
     getScaleFromCoords: function (coords) {
-        var me = this, scale;
+        var me = this,
+            scale;
         if (me.scales && me.scales[coords.z]) {
             return me.scales[coords.z];
         }
@@ -311,26 +328,29 @@ export var TileVectorLayer = VectorGrid.extend({
      * @return {number} 默认比例尺
      */
     getDefaultScale: function (coords) {
-        var me = this, crs = me._crs;
-        var resolution;
-        if (crs.options && crs.options.resolutions) {
-            resolution = crs.options.resolutions[coords.z];
+        var me = this,
+            crs = me._crs;
+        if (crs.scales) {
+            return crs.scales[coords.z];
         } else {
             var tileBounds = me._tileCoordsToBounds(coords);
             var ne = crs.project(tileBounds.getNorthEast());
             var sw = crs.project(tileBounds.getSouthWest());
             var tileSize = me.options.tileSize;
-            resolution = Math.max(
+            var resolution = Math.max(
                 Math.abs(ne.x - sw.x) / tileSize,
                 Math.abs(ne.y - sw.y) / tileSize
             );
+            var mapUnit = Unit.METER;
+            if (crs.code) {
+                var array = crs.code.split(':');
+                if (array && array.length > 1) {
+                    var code = parseInt(array[1]);
+                    mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
+                }
+            }
+            return Util.resolutionToScale(resolution, 95.89, mapUnit);
         }
-
-        var mapUnit = Unit.METER;
-        if (crs.code && crs.code.indexOf("4326") > -1) {
-            mapUnit = Unit.DEGREE;
-        }
-        return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _mergeFeatureTextField: function (feature, style) {
@@ -354,7 +374,8 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     _getTileUrl: function (coords) {
-        var me = this, tileTemplate = me.options.tileTemplate;
+        var me = this,
+            tileTemplate = me.options.tileTemplate;
         if (!tileTemplate) {
             return me._getDefaultTileUrl(coords);
         }
@@ -362,7 +383,8 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     _getTileTemplateUrl: function (coords) {
-        var me = this, tileTemplate = me.options.tileTemplate;
+        var me = this,
+            tileTemplate = me.options.tileTemplate;
         var data = {
             s: me._getSubdomain(coords),
             x: coords.x,
@@ -387,7 +409,8 @@ export var TileVectorLayer = VectorGrid.extend({
 
     _getSubdomain: L.TileLayer.prototype._getSubdomain,
     _getDefaultTileUrl: function (coords) {
-        var x = coords.x, y = coords.y;
+        var x = coords.x,
+            y = coords.y;
         var tileUrl = this._tileUrl + "&x=" + x + "&y=" + y;
         var scale = this.getScaleFromCoords(coords);
         tileUrl += "&scale=" + scale;
@@ -425,11 +448,17 @@ export var TileVectorLayer = VectorGrid.extend({
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = this._crs;
         if (crs.options && crs.options.origin) {
-            params.push("origin=" + JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]}));
+            params.push("origin=" + JSON.stringify({
+                x: crs.options.origin[0],
+                y: crs.options.origin[1]
+            }));
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params.push("origin=" + JSON.stringify({x: tileOrigin.x, y: tileOrigin.y}));
+            params.push("origin=" + JSON.stringify({
+                x: tileOrigin.x,
+                y: tileOrigin.y
+            }));
         }
         if (options.expands) {
             params.push("expands=" + options.expands);

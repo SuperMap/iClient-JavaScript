@@ -10,7 +10,7 @@ L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {
     return (typeof a.inverse !== 'undefined' &&
-    typeof a.forward !== 'undefined');
+        typeof a.forward !== 'undefined');
 };
 
 /**
@@ -18,10 +18,10 @@ L.Proj._isProj4Obj = function (a) {
  * @private
  * @classdesc Proj投影定义类
  * @category BaseTypes Projection
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param code - {number}地理编码
- * @param def - {string} 定位
- * @param bounds - {L.bounds} 投影范围参数
+ * @extends {L.Class}
+ * @param {string} code - proj srsCode
+ * @param {string} def - 投影的proj4定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {L.bounds} bounds -  投影范围参数
  */
 L.Proj.Projection = L.Class.extend({
 
@@ -38,8 +38,8 @@ L.Proj.Projection = L.Class.extend({
     /**
      * @function L.Proj.Projection.prototype.project
      * @description 通过地理坐标得到投影坐标
-     * @param latlng - {L.laylng} 经纬度坐标
-     * @return {Point} 返回投影坐标点
+     * @param  {L.Latlng} latlng -  经纬度坐标。
+     * @return {L.Point} 返回投影坐标点。
      */
     project: function (latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
@@ -49,13 +49,13 @@ L.Proj.Projection = L.Class.extend({
     /**
      * @function L.Proj.Projection.prototype.unproject
      * @description 通过投影坐标得到地理坐标
-     * @param point {L.Point} 地理坐标点
-     * @param unbounded - {string} 坐标点高程不限
-     * @return {LatLng} 返回经纬度坐标
+     * @param {L.Point} point - 坐标点。
+     * @param {number} unbounded -  坐标点高程值等。
+     * @return {L.LatLng} 返回经纬度坐标
      */
     unproject: function (point, unbounded) {
         if (this.bounds) {
-            point.x = point.x < this.bounds.min.x ? this.bounds.min.x : (point.x > this.bounds.max.x ? this.bounds.max.x : point.x );
+            point.x = point.x < this.bounds.min.x ? this.bounds.min.x : (point.x > this.bounds.max.x ? this.bounds.max.x : point.x);
             point.y = point.y < this.bounds.min.y ? this.bounds.min.y : (point.y > this.bounds.max.y ? this.bounds.max.y : point.y);
         }
         var point2 = this._proj.inverse([point.x, point.y]);
@@ -78,25 +78,29 @@ L.Proj.Projection = L.Class.extend({
         return proj4(code);
     },
     getUnits: function () {
-        return this._proj.oProj.units;
+        return this._proj.oProj.units || "degrees";
     }
 });
 
 /**
  * @class L.Proj.CRS
- * @classdesc 基于Proj4坐标系统扩展类
+ * @classdesc 基于Proj4坐标系统扩展类。
+ * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。
+ * 当指定`options.bounds` 时，第0级为一张256切片包含整个bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
+ * 为保证切片行列号正确，`options.origin` `options.bounds` 必须指定一个。
+ * 当指定`options.bounds` 时，切片原点为bounds的左上角。
  * @category BaseTypes Projection
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param srsCode -{string} proj srsCode。
- * @param options -{Object} options。可选参数：<br>
- *                     def -{string} 投影的proj4定义。<br>
- *                     origin -{Array|L.Point} 原点。必填<br>
- *                     scales -{Array} 比例尺数组 <br>
- *                     scaleDenominators -{Array} 比例尺分母数组 <br>
- *                     resolutions -{Array} 分辨率数组 <br>
- *                     bounds -{Array|L.Bounds} 范围
+ * @extends {L.Class}
+ * @param {string} srsCode - proj srsCode。
+ * @param {Object} options - options。可选参数：
+ * @param {string} options.def - 投影的proj4定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {Array.<number>|L.Point} [options.origin=] - 原点。
+ * @param {Array.<number>} [options.scales=] - 比例尺数组。
+ * @param {Array.<number>} [options.scaleDenominators=] - 比例尺分母数组。
+ * @param {Array.<number>} [options.resolutions=] - 分辨率数组。
+ * @param {Array.<number>|L.Bounds} [options.bounds=] - 范围。
+ * @param {number} [options.dpi=96] - dpi。
  * @example
- * 用法：
  *    var crs =L.Proj.CRS("EPSG:4326",{
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
@@ -144,18 +148,18 @@ export var CRS = L.Class.extend({
                 this.options.origin = [this.options.origin.x, this.options.origin.y];
             }
             this.transformation =
-                new L.Transformation(1, -this.options.origin[0],
-                    -1, this.options.origin[1]);
+                new L.Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
         }
 
         if (this.options.scales && this.options.scales.length > 0) {
-            this._scales = this._toProj4Scales(this.options.scales);
+            this.scales = this.options.scales;
+            this._scales = this._toProj4Scales(this.options.scales, this.options.dpi);
         } else if (this.options.scaleDenominators && this.options.scaleDenominators.length > 0) {
-            var scales = [];
+            this.scales = [];
             for (let i = 0; i < this.options.scaleDenominators.length; i++) {
-                scales[i] = 1 / this.options.scaleDenominators[i];
+                this.scales[i] = 1 / this.options.scaleDenominators[i];
             }
-            this._scales = this._toProj4Scales(scales);
+            this._scales = this._toProj4Scales(this.scales, this.options.dpi);
         } else if (this.options.resolutions && this.options.resolutions.length > 0) {
             this._scales = [];
             for (let i = this.options.resolutions.length - 1; i >= 0; i--) {
@@ -166,11 +170,25 @@ export var CRS = L.Class.extend({
         } else if (this.options.bounds) {
             this._scales = this._getDefaultProj4ScalesByBounds(this.options.bounds);
         }
-
+        this._rectify();
         this.infinite = !this.options.bounds;
 
     },
-
+    _rectify: function () {
+        if (this._scales) {
+            if (!this.resolutions) {
+                this.resolutions = [];
+                this.resolutions = this._proj4ScalesToResolutions(this._scales);
+            }
+            if (!this.scales) {
+                this.scales = [];
+                for (let i = 0; i < this.resolutions.length; i++) {
+                    var scaleD = this.resolutions[i] * this.options.dpi * (1 / 0.0254) * this._getMeterPerMapUnit(this.projection.getUnits());
+                    this.scales[i] = 1.0 / scaleD;
+                }
+            }
+        }
+    },
     /**
      * @function L.Proj.CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值
@@ -236,15 +254,25 @@ export var CRS = L.Class.extend({
         }
         return low;
     },
+    _proj4ScalesToResolutions(_scales) {
+        var resolutions = [];
+        if (!_scales) {
+            return resolutions;
+        }
+        for (var i = 0; i < _scales.length; i++) {
+            resolutions[i] = 1.0 / _scales[i];
+        }
+        return resolutions;
 
-    _toProj4Scales: function (scales) {
+    },
+    _toProj4Scales: function (scales, dpi) {
         var proj4Scales = [];
         if (!scales) {
             return proj4Scales;
         }
         for (var i = 0; i < scales.length; i++) {
             var a = this.projection ? this._getMeterPerMapUnit(this.projection.getUnits()) : 1;
-            proj4Scales[i] = 1 / ( 0.0254 / (96 * scales[i]) / a);
+            proj4Scales[i] = 1 / (0.0254 / ((dpi || 96) * scales[i]) / a);
         }
         return proj4Scales;
     },

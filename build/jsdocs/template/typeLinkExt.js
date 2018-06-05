@@ -1,6 +1,7 @@
 var olapi = "https://openlayers.org/en/latest/apidoc/";
 var lfapi = "http://leafletjs.com/reference-1.3.0.html";
 var typeLinks = {
+    //openlayers
     "ol.Map": olapi + "ol.Map.html",
     "ol.View": olapi + "ol.View.html",
     "ol.extent": olapi + "ol.extent.html",
@@ -9,6 +10,8 @@ var typeLinks = {
     "ol.geom.LineString": olapi + "ol.geom.LineString.html",
     "ol.geom.Point": olapi + "ol.geom.Point.html",
     "ol.format.GeoJSON": olapi + "ol.format.GeoJSON.html",
+
+    //leaflet
     "L.Bounds": lfapi + "#bounds",
     "L.Polygon": lfapi + "#polygon",
     "L.Polyline": lfapi + "#polyline",

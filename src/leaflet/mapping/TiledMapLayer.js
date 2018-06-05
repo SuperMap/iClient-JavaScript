@@ -1,6 +1,13 @@
 import L from "leaflet";
 import "../core/Base";
-import {SecurityManager, ServerType, Unit, Credential, CommonUtil, ServerGeometry} from '@supermap/iclient-common';
+import {
+    SecurityManager,
+    ServerType,
+    Unit,
+    Credential,
+    CommonUtil,
+    ServerGeometry
+} from '@supermap/iclient-common';
 import * as Util from "../core/Util";
 
 /**
@@ -112,7 +119,8 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @return {number} 比例尺
      */
     getScaleFromCoords: function (coords) {
-        var me = this, scale;
+        var me = this,
+            scale;
         if (me.scales && me.scales[coords.z]) {
             return me.scales[coords.z];
         }
@@ -129,39 +137,33 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @param coords - {Object} 坐标对象参数
      */
     getDefaultScale: function (coords) {
-        var me = this, crs = me._crs;
-        if (crs.options && crs.options.scaleDenominators) {
-            return 1.0 / crs.options.scaleDenominators[coords.z];
-        }
-        if (crs.options && crs.options.scales) {
-            return crs.options.scales[coords.z];
-        }
-        var resolution;
-        if (crs.options && crs.options.resolutions) {
-            resolution = crs.options.resolutions[coords.z];
-        } else if (crs._scales) {
-            resolution = 1 / crs._scales[coords.z];
+        var me = this,
+            crs = me._crs;
+        if (crs.scales) {
+            return crs.scales[coords.z];
         } else {
             var tileBounds = me._tileCoordsToBounds(coords);
             var ne = crs.project(tileBounds.getNorthEast());
             var sw = crs.project(tileBounds.getSouthWest());
             var tileSize = me.options.tileSize;
-            resolution = Math.max(
+            var resolution = Math.max(
                 Math.abs(ne.x - sw.x) / tileSize,
                 Math.abs(ne.y - sw.y) / tileSize
             );
-        }
-
-        var mapUnit = Unit.METER;
-        if (crs.code) {
-            var array = crs.code.split(':');
-            if (array && array.length > 1) {
-                var code = parseInt(array[1]);
-                mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
+            var mapUnit = Unit.METER;
+            if (crs.code) {
+                var array = crs.code.split(':');
+                if (array && array.length > 1) {
+                    var code = parseInt(array[1]);
+                    mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
+                }
             }
+            return Util.resolutionToScale(resolution, 96, mapUnit);
         }
-        return Util.resolutionToScale(resolution, 96, mapUnit);
     },
+
+
+
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
@@ -176,7 +178,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         if (!this.tileSets) {
             return;
         }
-        this.fire('tilesetsinfoloaded', {tileVersions: this.tileSets.tileVersions});
+        this.fire('tilesetsinfoloaded', {
+            tileVersions: this.tileSets.tileVersions
+        });
         this.changeTilesVersion();
     },
 
@@ -220,7 +224,9 @@ export var TiledMapLayer = L.TileLayer.extend({
             var result = me.mergeTileVersionParam(name);
             if (result) {
                 me.tileSetsIndex = me.tempIndex;
-                me.fire('tileversionschanged', {tileVersion: tileVersions[me.tempIndex]});
+                me.fire('tileversionschanged', {
+                    tileVersion: tileVersions[me.tempIndex]
+                });
             }
         }
     },
@@ -277,7 +283,9 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     _getAllRequestParams: function () {
-        var me = this, options = me.options || {}, params = {};
+        var me = this,
+            options = me.options || {},
+            params = {};
 
         var tileSize = this.options.tileSize;
         if (!(tileSize instanceof L.Point)) {
@@ -308,11 +316,17 @@ export var TiledMapLayer = L.TileLayer.extend({
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = me._crs;
         if (crs.options && crs.options.origin) {
-            params["origin"] = JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]});
+            params["origin"] = JSON.stringify({
+                x: crs.options.origin[0],
+                y: crs.options.origin[1]
+            });
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params["origin"] = JSON.stringify({x: tileOrigin.x, y: tileOrigin.y});
+            params["origin"] = JSON.stringify({
+                x: tileOrigin.x,
+                y: tileOrigin.y
+            });
         }
 
         if (options.overlapDisplayed === false) {
@@ -333,7 +347,8 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     //追加token或key
     _appendCredential: function (url) {
-        var newUrl = url, credential, value;
+        var newUrl = url,
+            credential, value;
         switch (this.options.serverType) {
             case ServerType.IPORTAL:
                 value = SecurityManager.getToken(this._url);
