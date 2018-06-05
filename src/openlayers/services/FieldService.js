@@ -16,7 +16,7 @@ import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common'
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  */
 export class FieldService extends ServiceBase {
 
@@ -27,8 +27,8 @@ export class FieldService extends ServiceBase {
     /**
      * @function ol.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
-     * @param {SuperMap.FieldParameters} params 字段信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类
+     * @param {RequestCallback} callback - 回调函数
      */
     getFields(params, callback) {
         var me = this;
@@ -51,7 +51,7 @@ export class FieldService extends ServiceBase {
      * @function ol.supermap.FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
      * @param {SuperMap.FieldStatisticsParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {
         var me = this,

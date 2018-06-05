@@ -25,7 +25,7 @@ export class MeasureService extends ServiceBase {
      * @function ol.supermap.MeasureService.prototype.measureDistance
      * @description 测距
      * @param {SuperMap.MeasureParameters} params - 测量相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     measureDistance(params, callback) {
         this.measure(params, 'DISTANCE', callback);
@@ -35,7 +35,7 @@ export class MeasureService extends ServiceBase {
      * @function ol.supermap.MeasureService.prototype.measureArea
      * @description 测面积
      * @param {SuperMap.MeasureParameters} params - 测量相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     measureArea(params, callback) {
         this.measure(params, 'AREA', callback);
@@ -46,8 +46,8 @@ export class MeasureService extends ServiceBase {
      * @description 测量
      * @param {SuperMap.MeasureParameters} params - 测量相关参数类
      * @param {string} type - 类型
-     * @param {RequestCallback} callback 回调函数
-     * @return {ol.supermap.MeasureService} 测量服务
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {ol.supermap.MeasureService} 测量服务
      */
     measure(params, type, callback) {
         var me = this;

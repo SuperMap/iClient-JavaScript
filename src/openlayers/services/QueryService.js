@@ -16,9 +16,9 @@ import {ServiceBase} from './ServiceBase';
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL查询，几何查询，距离查询
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @param {string} url - 地图查询服务访问地址。
- * @param {object} options - 服务交互时所需的可选参数。
+ * @param {object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -38,9 +38,9 @@ export class QueryService extends ServiceBase {
      * @function ol.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param {SuperMap.QueryByBoundsParameters} params - 通过Bounds查询的相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
-     * @return ol.supermap.QueryService}
+     * @returns ol.supermap.QueryService}
      */
     queryByBounds(params, callback, resultFormat) {
         var me = this;

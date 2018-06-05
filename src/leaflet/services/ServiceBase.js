@@ -5,7 +5,7 @@
  * @classdesc L.supermap服务基类
  * @category  iServer
  * @param {string} url - 与客户端交互的服务地址。
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。

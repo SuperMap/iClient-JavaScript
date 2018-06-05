@@ -26,7 +26,7 @@ import {
  *     //doSomething
  * })
  * @param {string} url - 分布式分析服务地址。
- * @param {Object} options - 交互服务时所需可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -128,7 +128,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
      * @param {string} id - 密度分析的id。
-     * @return {Object} 密度分析的状态
+     * @returns {Object} 密度分析的状态
      */
     getKernelDensityJobState: function (id) {
         return this.kernelDensityJobs[id];
@@ -214,7 +214,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
      * @param {string} id - 点聚合分析的id。
-     * @return {Object} 点聚合分析的状态
+     * @returns {Object} 点聚合分析的状态
      */
     getSummaryMeshJobState: function (id) {
         return this.summaryMeshJobs[id];
@@ -246,7 +246,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getQueryJob
      * @description 获取某一个单对象查询分析。
-     * @param id - {string}空间分析的id。
+     * @param {string} id - 空间分析的id。
      * @param {RequestCallback} callback 请求结果的回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
@@ -270,9 +270,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addQueryJob
      * @description 新建一个单对象查询分析。
-     * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
+     * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addQueryJob: function (params, callback, seconds, resultFormat) {
@@ -300,7 +300,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
      * @param {string} id - 单对象查询分析的id。
-     * @return {Object} 单对象查询分析的状态
+     * @returns {Object} 单对象查询分析的状态
      */
     getQueryJobState: function (id) {
         return this.queryJobs[id];
@@ -356,9 +356,9 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addSummaryRegionJob
      * @description 新建一个区域汇总分析。
-     * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
+     * @param {SuperMap.SummaryRegionJobParameter} params - 创建一个区域汇总分析的请求参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
-     * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryRegionJob: function (params, callback, seconds, resultFormat) {
@@ -386,7 +386,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
      * @param {string} id - 区域汇总分析的id。
-     * @return {Object} 区域汇总分析的状态
+     * @returns {Object} 区域汇总分析的状态
      */
     getSummaryRegionJobState: function (id) {
         return this.summaryRegionJobs[id];
@@ -472,7 +472,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
      * @param {string} id - 矢量裁剪分析的id。
-     * @return {Object} 矢量裁剪分析的状态
+     * @returns {Object} 矢量裁剪分析的状态
      */
     getVectorClipJobState: function (id) {
         return this.vectorClipJobs[id];
@@ -558,7 +558,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
      * @param {string} id - 叠加分析的id。
-     * @return {Object} 叠加分析的状态
+     * @returns {Object} 叠加分析的状态
      */
     getoverlayGeoJobState: function (id) {
         return this.overlayGeoJobs[id];
@@ -644,7 +644,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
      * @param {string} id - 缓冲区分析的id。
-     * @return {Object} 缓冲区分析的状态
+     * @returns {Object} 缓冲区分析的状态
      */
     getBuffersJobState: function (id) {
         return this.buffersJobs[id];
@@ -730,7 +730,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
      * @param {string} id - 拓扑检查分析的id。
-     * @return {Object} 拓扑检查分析的状态
+     * @returns {Object} 拓扑检查分析的状态
      */
     getTopologyValidatorJobState: function (id) {
         return this.topologyValidatorJobs[id];

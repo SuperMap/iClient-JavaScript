@@ -6,7 +6,7 @@ import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
  * @class ol.supermap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.ThemeService(url,{
  *            projection:projection
@@ -14,7 +14,7 @@ import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
  *           //doSomething
  *      });
  * @param {string} url - 服务的访问地址。
- * @param {Object} options - 交互服务时所需可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。

@@ -7,12 +7,12 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @class L.supermap.dataFlowService
  * @classdesc 实时数据服务类
  * @category  iServer DataFlow
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @param {string} url - 实时数据服务地址。
- * @param {Object} options - 加载实时数据可选参数。
+ * @param {Object} options - 参数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {Function} options.style - 设置数据加载样式。
- * @param {Function} options.onEachFeature -  设置每个数据加载popup等。
+ * @param {function} options.style - 设置数据加载样式。
+ * @param {function} options.onEachFeature -  设置每个数据加载popup等。
  * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
  * @param {Object} options.excludeField - 排除字段。
  */
@@ -57,7 +57,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param  {JSONObject} obj - json格式的要素数据。
+     * @param {JSONObject} obj - json格式的要素数据。
      */
     broadcast: function (obj) {
         this.dataFlow.broadcast(obj);
@@ -76,7 +76,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param {Object} excludeField -  排除字段
+     * @param {Object} excludeField - 排除字段
      */
     setExcludeField: function (excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -87,7 +87,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的GeoJSON几何要素数据
-     * @param {Array<Object>} geometry - 设置增添的GeoJSON几何要素对象数组。
+     * @param {Array.<Object>} geometry - 设置增添的GeoJSON几何要素对象数组。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);

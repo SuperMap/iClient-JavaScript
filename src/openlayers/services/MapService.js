@@ -6,9 +6,9 @@ import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient
  * @class ol.supermap.MapService
  * @category  iServer Map
  * @classdesc 地图信息服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @param {string} url - 地图服务地址。
- * @param {Object} options - 地图服务信息相关参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -27,8 +27,8 @@ export class MapService extends ServiceBase {
     /**
      * @function ol.supermap.MapService.prototype.getMapInfo
      * @description 地图信息查询服务
-     * @param {RequestCallback} callback 回调函数
-     * @return {ol.supermap.MapService} 获取服务信息
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {ol.supermap.MapService} 获取服务信息
      */
     getMapInfo(callback) {
         var me = this;
@@ -48,8 +48,8 @@ export class MapService extends ServiceBase {
     /**
      * @function ol.supermap.MapService.prototype.getTilesets
      * @description 切片列表信息查询服务
-     * @param {RequestCallback} callback 回调函数
-     * @return {ol.supermap.MapService} 获取服务信息
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {ol.supermap.MapService} 获取服务信息
      */
     getTilesets(callback) {
         var me = this;

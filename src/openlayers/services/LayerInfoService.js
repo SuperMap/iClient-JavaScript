@@ -11,14 +11,14 @@ import {
  * @class ol.supermap.LayerInfoService
  * @category  iServer Map Layer
  * @classdesc 图层信息服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.LayerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
  * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
- *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
- * @param {Object} options - 服务所需可选参数。
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -32,7 +32,7 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function ol.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     getLayersInfo(callback) {
         var me = this;
@@ -52,7 +52,7 @@ export class LayerInfoService extends ServiceBase {
      * @function ol.supermap.LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改
      * @param {SuperMap.SetLayerInfoParameters} params - 设置图层信息参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayerInfo(params, callback) {
         if (!params) {
@@ -83,7 +83,7 @@ export class LayerInfoService extends ServiceBase {
      * @function ol.supermap.LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
      * @param {SuperMap.SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayersInfo(params, callback) {
         if (!params) {
@@ -114,7 +114,7 @@ export class LayerInfoService extends ServiceBase {
      * @function ol.supermap.LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SuperMap.SetLayerStatusParameters} params - 子图层显示控制参数类。
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayerStatus(params, callback) {
         if (!params) {

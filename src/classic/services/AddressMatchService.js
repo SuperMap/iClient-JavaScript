@@ -6,9 +6,9 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @extends SuperMap.REST.CommonServiceBase
+ * @extends {SuperMap.REST.CommonServiceBase}
  * @param {string} url - 服务地址
- * @param {Object} options - 地址匹配服务可选参数
+ * @param {Object} options - 参数
  */
 export class AddressMatchService extends CommonServiceBase {
 
@@ -21,7 +21,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @function SuperMap.REST.AddressMatchService.prototype.code
      * @description 正向匹配
      * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数
-     * @param callback - {function} 回调函数
+     * @param {function} callback - 回调函数
      */
     code(params, callback) {
         var me = this;
@@ -42,7 +42,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @function SuperMap.REST.AddressMatchService.prototype.decode
      * @description 反向匹配
      * @param {SuperMap.GeoDeCodingParameter} params -  反向匹配参数
-     * @param callback - {function} 回调函数
+     * @param {function} callback - 回调函数
      */
     decode(params, callback) {
         var me = this;

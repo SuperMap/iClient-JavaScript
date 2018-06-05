@@ -22,7 +22,7 @@ import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.SpatialAnalystService
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @category  iServer SpatialAnalyst
  * @classdesc 空间分析服务类。提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @example
@@ -31,7 +31,7 @@ import {ServiceBase} from './ServiceBase';
  *          //doSomething
  *      })
  * @param {string} url - 服务的访问地址。
- * @param {object} options - 交互服务时所需可选参数。
+ * @param {object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -344,18 +344,16 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.geometrybatchAnalysis
      * @description 批量空间分析
-     * @param params - {Array} 批量分析参数对象数组；包括：</br>
-     * @param {Array.<string>} analystName - 空间分析方法的名称。
-     *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"
-     *                            analystName - {string} 空间分析方法的名称。包括：</br>
-     *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"
-     *                            param - {Object} 空间分析类型对应的请求参数，包括：</br>
-     *                                    {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
-     *                                    {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
-     *                                    {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
-     *                                    {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
-     * @param {RequestCallback} callback
-     * @param resultFormat
+     * @param {Array} params - 批量分析参数对象数组；包括：</br>
+     * @param {Array.<Object>} params.analystName - 空间分析方法的名称。包括：</br>
+     *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"。
+     * @param {Object} params.param - 空间分析类型对应的请求参数，包括：</br>
+     *                                {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
+     *                                {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
+     *                                {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
+     *                                {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     geometrybatchAnalysis(params, callback, resultFormat) {
         var me = this;

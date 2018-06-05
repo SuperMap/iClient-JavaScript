@@ -7,13 +7,13 @@ import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
  * @category iServer Data Field
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @example
  *   L.supermap.fieldService(url).getFields(function(result){
  *     //doSomething
  *   });
  * @param {string} url - 字段服务地址。
- * @param {Object} options - 字段服务类可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -30,7 +30,7 @@ export var FieldService = ServiceBase.extend({
      * @function L.supermap.fieldService.prototype.getFields
      * @description 字段查询服务
      * @param {SuperMap.FieldParameters} params - 字段信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
     getFields: function (params, callback) {
         var me = this;

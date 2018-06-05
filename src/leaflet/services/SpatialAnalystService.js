@@ -33,7 +33,7 @@ import {
  *          //doSomething
  *      })
  * @param {string} url - 空间分析服务地址。
- * @param {Object} options - 交互服务时所需可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -138,7 +138,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function L.supermap.spatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析
-     * @param {SuperMap.GeoRelationAnalystParameters}  params - 空间关系分析服务参数类。
+     * @param {SuperMap.GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
      * @param {RequestCallback} callback 回调函数
      * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
@@ -353,8 +353,8 @@ export var SpatialAnalystService = ServiceBase.extend({
      *                                    {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
      *                                    {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
      *                                    {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
-     * @param {RequestCallback} callback
-     * @param resultFormat
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     geometrybatchAnalysis: function (params, callback, resultFormat) {
         var me = this;

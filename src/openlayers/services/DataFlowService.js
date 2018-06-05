@@ -6,19 +6,19 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @class ol.supermap.DataFlowService
  * @category  iServer DataFlow
  * @classdesc 实时数据服务
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
  * @param {string} url - 与客户端交互的实时数据服务地址。
- * @param {Object} options - 加载实时数据可选参数。
+ * @param {Object} options - 参数。
  * @param {string} options.proxy - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
- * @param {Function} options.style - 设置数据加载样式。
- * @param {Function} options.onEachFeature - 设置每个数据加载popup等。
+ * @param {function} options.style - 设置数据加载样式。
+ * @param {function} options.onEachFeature - 设置每个数据加载popup等。
  * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
  * @param {Object} options.excludeField - 排除字段
  */
@@ -87,7 +87,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

@@ -5,7 +5,7 @@ import {StopQueryService, TransferPathService, TransferSolutionService} from '@s
 
 /**
  * @class ol.supermap.TrafficTransferAnalystService
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类
  * @example
