@@ -81,7 +81,7 @@
 </div>
 <script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
     var style = {
         strokeColor: "#304DBE",
         strokeWidth: 2,
@@ -92,7 +92,7 @@
     var layer, resultLayer, drawPolygon, polygonLayer, points = [],
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..',
+        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..',
         polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
     polygonLayer.style = style;
     drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
@@ -128,7 +128,7 @@
 
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
+        SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
     }
 
     bindClick();

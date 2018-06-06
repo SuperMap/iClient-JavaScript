@@ -60,10 +60,10 @@
 <script type="text/javascript" include="draw" src="../../dist/include-mapboxgl.js"></script>
 <script>
     var map,
-        baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
+        baseUrl = (window.isLocal ? window.server : "http://54.223.164.155:8090") + "/iserver/services/map-world/rest/maps/World",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        token = 'DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..';
+        processingsUrl = (window.isLocal ? window.server : "http://54.223.164.155:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
+        token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..';
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
         " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
@@ -111,7 +111,7 @@
     });
 
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
+        SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
     }
     var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl);
     bindClick();

@@ -64,8 +64,8 @@
             var resultLayer,
                 urlQuery = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") +
                 "/iserver/services/map-china400/rest/maps/China_4326",
-                wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
-            var token = "DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..";
+                wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "54.223.164.155:8800");
+            var token = "0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..";
             var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
             var timer, featureResult, dataFlowBroadcast, source;
             new ol.supermap.MapService(urlQuery).getMapInfo(function (serviceResult) {

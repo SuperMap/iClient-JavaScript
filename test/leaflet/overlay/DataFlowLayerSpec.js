@@ -3,9 +3,9 @@ import {dataFlowLayer} from '../../../src/leaflet/overlay/DataFlowLayer';
 import {SecurityManager} from '../../../src/common/security/SecurityManager';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 
-var wsHost = "ws:\//" + "117.122.248.69:8800";
+var wsHost = "ws:\//" + "54.223.164.155:8800";
 var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
-var urlMap = "http://117.122.248.69:8090/iserver/services/map-china400/rest/maps/China";
+var urlMap = "http://54.223.164.155:8090/iserver/services/map-china400/rest/maps/China";
 describe('leaflet_DataFlowLayer', () => {
     var originalTimeout;
     var testDiv, map;

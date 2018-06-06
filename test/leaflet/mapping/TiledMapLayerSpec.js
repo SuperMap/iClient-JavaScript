@@ -63,7 +63,7 @@ describe('leaflet_TiledMapLayer', () => {
     });
 
     it('changeTilesVersion', () => {
-        var sourceUrl = "http://117.122.248.69:8090//iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces";
+        var sourceUrl = "http://54.223.164.155:8090//iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces";
         var tiledMapLayerObject = tiledMapLayer(sourceUrl);
         tiledMapLayerObject.nextTilesVersion();
         expect(tiledMapLayerObject.tempIndex).toBe(0);
