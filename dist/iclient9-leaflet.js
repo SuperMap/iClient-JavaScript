@@ -65278,7 +65278,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
                     mapUnit = code && code >= 4000 && code <= 5000 ? _iclientCommon.Unit.DEGREE : _iclientCommon.Unit.METER;
                 }
             }
-            return Util.resolutionToScale(resolution, 95.89, mapUnit);
+            return Util.resolutionToScale(resolution, 96, mapUnit);
         }
     },
 

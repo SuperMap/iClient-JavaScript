@@ -349,7 +349,7 @@ export var TileVectorLayer = VectorGrid.extend({
                     mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
                 }
             }
-            return Util.resolutionToScale(resolution, 95.89, mapUnit);
+            return Util.resolutionToScale(resolution, 96, mapUnit);
         }
     },
 
