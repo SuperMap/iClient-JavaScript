@@ -16,7 +16,7 @@
         center: [33.03, 104.79],
         zoom: 3,
     });
-    var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
+    var baseLayer = L.supermap.tiledMapLayer(url,{transparent:true}).addTo(map);
 
     L.supermap.control.changeTileVersion({
         layer: baseLayer,
