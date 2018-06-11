@@ -62377,6 +62377,7 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
         _this.url = options.url ? options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true' : "";
         _this.resolutions = options.resolutions;
         _this.style = options.style;
+        _this.layersBySourceLayer = {};
         (0, _olExtends.olExtends)(_this.map);
         if (_this.style) {
             _this._mbStyle = _this.style;
@@ -62402,6 +62403,50 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
         key: 'getStyleFunction',
         value: function getStyleFunction() {
             return this.featureStyleFuntion;
+        }
+        /**
+         * @function ol.supermap.MapboxStyles.getStylesBySourceLayer
+         * @param {string} sourceLayer - 数据图层名称。
+         * @return 
+         */
+
+    }, {
+        key: 'getStylesBySourceLayer',
+        value: function getStylesBySourceLayer(sourceLayer) {
+            if (this.layersBySourceLayer[sourceLayer]) {
+                return this.layersBySourceLayer[sourceLayer];
+            }
+            var layers = [];
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this._mbStyle.layers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var layer = _step.value;
+
+                    if (layer['source-layer'] !== sourceLayer) {
+                        continue;
+                    }
+                    layers.push(layer);
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            this.layersBySourceLayer[sourceLayer] = layers;
+            return layers;
         }
     }, {
         key: 'updateStyles',

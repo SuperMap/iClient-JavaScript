@@ -60,6 +60,7 @@ export class MapboxStyles extends ol.Observable {
         this.url = options.url ? options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true' : "";
         this.resolutions = options.resolutions;
         this.style = options.style;
+        this.layersBySourceLayer = {};
         olExtends(this.map);
         if (this.style) {
             this._mbStyle = this.style;
@@ -79,6 +80,25 @@ export class MapboxStyles extends ol.Observable {
      */
     getStyleFunction() {
         return this.featureStyleFuntion;
+    }
+    /**
+     * @function ol.supermap.MapboxStyles.getStylesBySourceLayer
+     * @param {string} sourceLayer - 数据图层名称。
+     * @return 
+     */
+    getStylesBySourceLayer(sourceLayer) {
+        if (this.layersBySourceLayer[sourceLayer]) {
+            return this.layersBySourceLayer[sourceLayer];
+        }
+        const layers = [];
+        for (const layer of this._mbStyle.layers) {
+            if (layer['source-layer'] !== sourceLayer) {
+                continue;
+            }
+            layers.push(layer);
+        }
+        this.layersBySourceLayer[sourceLayer] = layers;
+        return layers;
     }
     updateStyles(layerStyles) {
         if (Object.prototype.toString.call(layerStyles) !== '[object Array]') {
