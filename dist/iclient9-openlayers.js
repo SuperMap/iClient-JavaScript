@@ -3619,13 +3619,12 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
  * @class ol.supermap.ServiceBase
  * @category  iServer
  * @classdesc ol.supermap的服务基类。
- * @param url - {string} 与客户端交互的服务地址。
- * @param options - {Object} 参数。<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType -{SuperMap.ServerType} 服务来源 iServer|iPortal|online <br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false
- *
- * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
+ * @param {Object} options - 参数。
+ * @param {string} options.url - 与客户端交互的服务地址。
+ * @param {string} options.proxy - 服务代理地址
+ * @param {SuperMap.ServerType} options.serverType - 服务来源 iServer|iPortal|online
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @extends {ol.Observable}
  */
 
 var ServiceBase = exports.ServiceBase = function (_ol$Observable) {
@@ -30774,18 +30773,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.DataFlowService
  * @category  iServer DataFlow
  * @classdesc 实时数据服务
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的实时数据服务地址。
- * @param options - {Object} 加载实时数据可选参数。如：<br>
- *        style - {function} 设置数据加载样式。<br>
- *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
- *        excludeField - -{Object} 排除字段
+ * @param {string} url - 与客户端交互的实时数据服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {function} options.style - 设置数据加载样式。
+ * @param {function} options.onEachFeature - 设置每个数据加载popup等。
+ * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
+ * @param {Object} options.excludeField - 排除字段
  */
 var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
     _inherits(DataFlowService, _ServiceBase);
@@ -30832,7 +30834,7 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
         /**
          * @function ol.supermap.DataFlowService.prototype.broadcast
          * @description 加载广播数据
-         * @param obj {JSON} json格式的要素数据
+         * @param {JSON} obj - json格式的要素数据
          */
 
     }, {
@@ -30856,7 +30858,7 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
         /**
          * @function ol.supermap.DataFlowService.prototype.setExcludeField
          * @description 设置排除字段
-         * @param excludeField - {Object} 排除字段
+         * @param {Object} excludeField - 排除字段
          */
 
     }, {
@@ -30870,7 +30872,7 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
         /**
          * @function ol.supermap.DataFlowService.prototype.setGeometry
          * @description 设置添加的几何要素数据
-         * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
+         * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
          */
 
     }, {
@@ -32248,9 +32250,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 参数。
- * @extends ol.supermap.ServiceBase
+ * @param {string} url - 与客户端交互的服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @extends {ol.supermap.ServiceBase}
  */
 var FeatureService = exports.FeatureService = function (_ServiceBase) {
     _inherits(FeatureService, _ServiceBase);
@@ -32264,9 +32269,9 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
     /**
      * @function ol.supermap.FeatureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
-     * @param params - {SuperMap.GetFeaturesByIDsParameters} 查询所需参数类。
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
+     * @param {SuperMap.GetFeaturesByIDsParameters} params - 查询所需参数类。
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} resultFormat - 返回的数据格式。
      */
 
 
@@ -32290,9 +32295,9 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesByBounds
          * @description 数据集Bounds查询服务
-         * @param params - {SuperMap.GetFeaturesByBoundsParameters} 查询所需参数类。
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
+         * @param {SuperMap.GetFeaturesByBoundsParameters} params - 查询所需参数类。
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} resultFormat - 返回的数据格式
          */
 
     }, {
@@ -32315,9 +32320,9 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesByBuffer
          * @description 数据集Buffer查询服务
-         * @param params - {SuperMap.GetFeaturesByBufferParameters} 查询所需参数类。
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
+         * @param {SuperMap.GetFeaturesByBufferParameters} params - 查询所需参数类。
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} resultFormat - 返回的数据格式。
          */
 
     }, {
@@ -32340,9 +32345,9 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesBySQL
          * @description 数据集SQL查询服务
-         * @param params - {SuperMap.GetFeaturesBySQLParameters} 查询所需参数类。
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
+         * @param {SuperMap.GetFeaturesBySQLParameters} params - 查询所需参数类。
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} resultFormat - 返回的数据格式。
          */
 
     }, {
@@ -32366,9 +32371,9 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesByGeometry
          * @description 数据集几何查询服务类
-         * @param params - {SuperMap.GetFeaturesByGeometryParameters} 查询所需参数类。
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
+         * @param {SuperMap.GetFeaturesByGeometryParameters} params - 查询所需参数类。
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} resultFormat - 返回的数据格式
          */
 
     }, {
@@ -32391,8 +32396,8 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.editFeatures
          * @description 地物编辑服务
-         * @param params - {SuperMap.EditFeaturesParameters} 查询所需参数类。
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.EditFeaturesParameters} params - 查询所需参数类。
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -34856,10 +34861,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.MapService
  * @category  iServer Map
  * @classdesc 地图信息服务类
- * @extends ol.supermap.ServiceBase
- * @param url -{string} 地图服务地址
- * @param options -{Object} 地图服务信息相关参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。
+ * @extends {ol.supermap.ServiceBase}
+ * @param {string} url - 地图服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @example
  *   new ol.supermap.MapService(url)
  *      .getMapInfo(function(result){
@@ -34878,8 +34885,8 @@ var MapService = exports.MapService = function (_ServiceBase) {
     /**
      * @function ol.supermap.MapService.prototype.getMapInfo
      * @description 地图信息查询服务
-     * @param {RequestCallback} callback 回调函数
-     * @return {ol.supermap.MapService} 获取服务信息
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {ol.supermap.MapService} 获取服务信息
      */
 
 
@@ -34903,8 +34910,8 @@ var MapService = exports.MapService = function (_ServiceBase) {
         /**
          * @function ol.supermap.MapService.prototype.getTilesets
          * @description 切片列表信息查询服务
-         * @param {RequestCallback} callback 回调函数
-         * @return {ol.supermap.MapService} 获取服务信息
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {ol.supermap.MapService} 获取服务信息
          */
 
     }, {
@@ -58473,7 +58480,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.supermap.TrafficTransferAnalystService
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类
  * @example
@@ -58481,9 +58488,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .queryStop(params,function(result){
  *           //doSomething
  *      })
- * @param url - {String} 服务地址
- * @param option - {Object} 参数。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ * @param {String} url - 服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = function (_ServiceBase) {
     _inherits(TrafficTransferAnalystService, _ServiceBase);
@@ -58497,7 +58506,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
     /**
      * @function ol.supermap.TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
-     * @param params - {SuperMap.StopQueryParameters} 查询相关参数类
+     * @param {SuperMap.StopQueryParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数
      */
 
@@ -58522,7 +58531,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
         /**
          * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
          * @description 交通换乘线路查询服务
-         * @param params - {SuperMap.TransferPathParameters} 查询相关参数类
+         * @param {SuperMap.TransferPathParameters} params - 查询相关参数类。
          * @param {RequestCallback} callback 回调函数
          */
 
@@ -58546,7 +58555,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
         /**
          * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
          * @description 交通换乘方案查询服务
-         * @param params - {SuperMap.TransferSolutionParameters} 查询相关参数类
+         * @param {SuperMap.TransferSolutionParameters} params - 查询相关参数类。
          * @param {RequestCallback} callback 回调函数
          */
 
@@ -58627,16 +58636,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.ThemeService(url,{
  *            projection:projection
  *      }).getThemeInfo(params,function(result){
  *           //doSomething
  *      });
- * @param url - {string} 服务的访问地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ * @param {string} url - 服务的访问地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var ThemeService = exports.ThemeService = function (_ServiceBase) {
     _inherits(ThemeService, _ServiceBase);
@@ -58650,7 +58661,7 @@ var ThemeService = exports.ThemeService = function (_ServiceBase) {
     /**
      * @function ol.supermap.ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息
-     * @param params - {SuperMap.ThemeParameters} 专题图参数类
+     * @param {SuperMap.ThemeParameters} params - 专题图参数类。
      * @param {RequestCallback} callback 回调函数
      */
 
@@ -58712,7 +58723,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.supermap.SpatialAnalystService
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @category  iServer SpatialAnalyst
  * @classdesc 空间分析服务类。提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @example
@@ -58720,8 +58731,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 服务的访问地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @param {string} url - 服务的访问地址。
+ * @param {object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBase) {
     _inherits(SpatialAnalystService, _ServiceBase);
@@ -58735,9 +58749,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射
-     * @param params -{SuperMap.AreaSolarRadiationParameters} 查询相关参数类
+     * @param {SuperMap.AreaSolarRadiationParameters} params - 查询相关参数类
      * @param {RequestCallback} callback 回调函数
-     * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
 
 
@@ -58762,9 +58776,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.bufferAnalysis
          * @description 缓冲区分析
-         * @param params -{SuperMap.DatasetBufferAnalystParameters} 查询相关参数类
+         * @param {SuperMap.DatasetBufferAnalystParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58788,9 +58802,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.densityAnalysis
          * @description 点密度分析
-         * @param params -{SuperMap.DensityKernelAnalystParameters} 查询相关参数类
+         * @param {SuperMap.DensityKernelAnalystParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58814,9 +58828,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.generateSpatialData
          * @description 动态分段分析
-         * @param params - {SuperMap.GenerateSpatialDataParameters} 查询相关参数类
+         * @param {SuperMap.GenerateSpatialDataParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58840,9 +58854,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis
          * @description 空间关系分析
-         * @param params - {SuperMap.GeoRelationAnalystParameters} 查询相关参数类
+         * @param {SuperMap.GeoRelationAnalystParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58866,9 +58880,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis
          * @description 插值分析
-         * @param params - {SuperMap.InterpolationRBFAnalystParameters} 查询相关参数类
+         * @param {SuperMap.InterpolationRBFAnalystParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58892,9 +58906,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
          * @description 栅格代数运算
-         * @param params - {SuperMap.MathExpressionAnalysisParameters} 查询相关参数类
+         * @param {SuperMap.MathExpressionAnalysisParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58918,9 +58932,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.overlayAnalysis
          * @description 叠加分析
-         * @param params - {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类，支持批量几何要素叠加分析。
+         * @param {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} params - 叠加分析参数类，支持批量几何要素叠加分析。
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58944,9 +58958,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
          * @description 路由测量计算
-         * @param params - {SuperMap.RouteCalculateMeasureParameters} 查询相关参数类
+         * @param {SuperMap.RouteCalculateMeasureParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58970,9 +58984,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.routeLocate
          * @description 路由定位
-         * @param params - {SuperMap.RouteLocatorParameters} 查询相关参数类
+         * @param {SuperMap.RouteLocatorParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -58996,9 +59010,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis
          * @description 表面分析
-         * @param params - {SuperMap.SurfaceAnalystParameters} 表面分析参数类
+         * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -59022,9 +59036,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
          * @description 地形曲率计算
-         * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 地形曲率计算相关参数
+         * @param {SuperMap.TerrainCurvatureCalculationParameters} params - 地形曲率计算相关参数
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -59048,9 +59062,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis
          * @description 泰森多边形分析
-         * @param params - {SuperMap.DatasetThiessenAnalystParameters} 查询相关参数类
+         * @param {SuperMap.DatasetThiessenAnalystParameters} params - 查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -59074,16 +59088,16 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.geometrybatchAnalysis
          * @description 批量空间分析
-         * @param params - {Array} 批量分析参数对象数组；包括：</br>
-         *                            analystName - {string} 空间分析方法的名称。包括：</br>
-         *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"
-         *                            param - {Object} 空间分析类型对应的请求参数，包括：</br>
-         *                                    {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
-         *                                    {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
-         *                                    {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
-         *                                    {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
-         * @param {RequestCallback} callback
-         * @param resultFormat
+         * @param {Array} params - 批量分析参数对象数组；包括：</br>
+         * @param {Array.<Object>} params.analystName - 空间分析方法的名称。包括：</br>
+         *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"。
+         * @param {Object} params.param - 空间分析类型对应的请求参数，包括：</br>
+         *                                {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
+         *                                {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
+         *                                {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
+         *                                {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
+         * @param {RequestCallback} callback - 回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -59227,7 +59241,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
          * @private
          * @function ol.supermap.SpatialAnalystService.prototype.convertGeometry
          * @description 转换几何对象
-         * @param ol3Geometry - {Object} 待转换的几何对象
+         * @param {Object} ol3Geometry - 待转换的几何对象
          */
 
     }, {
@@ -59283,9 +59297,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL查询，几何查询，距离查询
- * @extends ol.supermap.ServiceBase
- * @param url - {string} 地图查询服务访问地址。
- * @param options - {Object} 服务交互时所需的可选参数。
+ * @extends {ol.supermap.ServiceBase}
+ * @param {string} url - 地图查询服务访问地址。
+ * @param {object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @example
  *    new ol.supermap.QueryService(url)
  *      .queryByBounds(param,function(result){
@@ -59304,10 +59321,10 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
     /**
      * @function ol.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
-     * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return ol.supermap.QueryService}
+     * @param {SuperMap.QueryByBoundsParameters} params - 通过Bounds查询的相关参数类
+     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
+     * @returns ol.supermap.QueryService}
      */
 
 
@@ -59333,9 +59350,9 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         /**
          * @function ol.supermap.QueryService.prototype.queryByDistance
          * @description 地图距离查询服务
-         * @param params - {QueryByDistanceParameters} Distance查询相关参数类
+         * @param {SuperMap.QueryByDistanceParameters} params - Distance查询相关参数类。
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
          */
 
     }, {
@@ -59360,9 +59377,9 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         /**
          * @function ol.supermap.QueryService.prototype.queryBySQL
          * @description 地图SQL查询服务
-         * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
+         * @param {SuperMap.QueryBySQLParameters} params - SQL查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -59387,9 +59404,9 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
         /**
          * @function ol.supermap.QueryService.prototype.queryByGeometry
          * @description 地图几何查询服务
-         * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
+         * @param {SuperMap.QueryByGeometryParameters} params - Geometry查询相关参数类
          * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+         * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
          */
 
     }, {
@@ -59480,14 +59497,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.ProcessingService(url,options)
  *      .getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param url -{string} 分布式分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数
+ * @param {string} url - 分布式分析服务地址。
+ * @param {object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
     _inherits(ProcessingService, _ServiceBase);
@@ -59512,8 +59532,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
     /**
      * @function ol.supermap.ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
-     * @param {RequestCallback} callback请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
 
 
@@ -59539,9 +59559,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getKernelDensityJob
          * @description 获取某一个密度分析。
-         * @param id -{string} 空间分析的id。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59566,10 +59586,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.addKernelDensityJob
          * @description 新建一个密度分析。
-         * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59596,8 +59616,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getKernelDensityJobState
          * @description 获取密度分析的状态。
-         * @param id - {string}密度分析的id。
-         * @return {Object} 密度分析的状态
+         * @param {string} id - 密度分析的id。
+         * @returns {Object} 密度分析的状态
          */
 
     }, {
@@ -59609,8 +59629,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getSummaryMeshJobs
          * @description 获取点聚合分析的列表。
-         * @param {RequestCallback} callback请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59635,9 +59655,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getSummaryMeshJob
          * @description 获取某一个点聚合分析。
-         * @param id - {string} 空间分析的id。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59662,10 +59682,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.addSummaryMeshJob
          * @description 新建一个点聚合分析。
-         * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SummaryMeshJobParameter} params - 点聚合分析任务参数类。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59692,8 +59712,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getSummaryMeshJobState
          * @description 获取点聚合分析的状态。
-         * @param id - {string} 点聚合分析的id。
-         * @return {Object} 点聚合分析的状态
+         * @param {string} id - 点聚合分析的id。
+         * @returns {Object} 点聚合分析的状态
          */
 
     }, {
@@ -59705,8 +59725,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getQueryJobs
          * @description 获取单对象查询分析的列表。
-         * @param {RequestCallback} callback请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59731,9 +59751,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getQueryJob
          * @description 获取某一个单对象查询分析。
-         * @param id -{string} 空间分析的id。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59758,10 +59778,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.addQueryJob
          * @description 新建一个单对象查询分析。
-         * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59788,8 +59808,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getQueryJobState
          * @description 获取单对象查询分析的状态。
-         * @param id - {string}单对象查询分析的id。
-         * @return {Object} 单对象查询分析的状态
+         * @param {string} id - 单对象查询分析的id。
+         * @returns {Object} 单对象查询分析的状态
          */
 
     }, {
@@ -59801,8 +59821,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJobs
          * @description 获取区域汇总分析的列表。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59827,9 +59847,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJob
          * @description 获取某一个区域汇总分析。
-         * @param id -{string}区域汇总分析的id。
-         * @param {RequestCallback} callback请求结果的回调函数。
-         * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 区域汇总分析的id。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59854,10 +59874,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.addSummaryRegionJob
          * @description 新建一个区域汇总分析。
-         * @param params - {SuperMap.SummaryRegionJobParameter} 区域汇总分析参数类
-         * @param {RequestCallback} callback 请求结果的回调函数
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-         * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
+         * @param {SuperMap.SummaryRegionJobParameter} params - 区域汇总分析参数类
+         * @param {RequestCallback} callback - 请求结果的回调函数
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59884,8 +59904,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJobState
          * @description 获取区域汇总分析的状态。
-         * @param id - {string}生成区域汇总分析的id。
-         * @return {Object} 区域汇总分析的状态
+         * @param {string} id - 生成区域汇总分析的id。
+         * @returns {Object} 区域汇总分析的状态
          */
 
     }, {
@@ -59898,7 +59918,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function ol.supermap.ProcessingService.prototype.getVectorClipJobs
          * @description 获取矢量裁剪分析的列表。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59923,9 +59943,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getVectorClipJob
          * @description 获取某一个矢量裁剪分析。
-         * @param id - {string}空间分析的id。
+         * @param {string} id - 空间分析的id。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59950,10 +59970,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.addVectorClipJob
          * @description 新建一个矢量裁剪分析。
-         * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
+         * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -59982,8 +60002,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ProcessingService.prototype.getVectorClipJobState
          * @description 获取矢量裁剪分析的状态。
-         * @param id - {number} 矢量裁剪分析的id。
-         * @return {Object} 矢量裁剪分析的状态
+         * @param {number} id - 矢量裁剪分析的id。
+         * @returns {Object} 矢量裁剪分析的状态
          */
 
     }, {
@@ -59996,7 +60016,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function ol.supermap.processingService.prototype.getOverlayGeoJobs
          * @description 获取叠加分析的列表。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60021,9 +60041,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getOverlayGeoJob
          * @description 获取某一个叠加分析。
-         * @param id - {string}空间分析的id。
+         * @param {string} id - 空间分析的id。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60048,10 +60068,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.addOverlayGeoJob
          * @description 新建一个叠加分析。
-         * @param params -{SuperMap.OverlayGeoJobParameter} 创建一个空间分析的请求参数。
+         * @param {SuperMap.OverlayGeoJobParameter} params - 创建一个空间分析的请求参数。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60080,7 +60100,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getoverlayGeoJobState
          * @description 获取叠加分析的状态。
-         * @param id - {string}叠加分析的id。
+         * @param {string} id - 叠加分析的id。
          * @return {Object} 叠加分析的状态
          */
 
@@ -60094,7 +60114,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function ol.supermap.processingService.prototype.getBuffersJobs
          * @description 获取缓冲区分析的列表。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60119,9 +60139,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getBuffersJob
          * @description 获取某一个缓冲区分析。
-         * @param id - {string}空间分析的id。
+         * @param {string} id - 空间分析的id。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60146,10 +60166,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.addBuffersJob
          * @description 新建一个缓冲区分析。
-         * @param params -{SuperMap.BuffersAnalystJobsParameter} 创建一个空间分析的请求参数。
+         * @param {SuperMap.BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60178,8 +60198,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getBuffersJobState
          * @description 获取缓冲区分析的状态。
-         * @param id - {string}缓冲区分析的id。
-         * @return {Object} 缓冲区分析的状态
+         * @param {string} id - 缓冲区分析的id。
+         * @returns {Object} 缓冲区分析的状态
          */
 
     }, {
@@ -60192,7 +60212,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
          * @function ol.supermap.processingService.prototype.getTopologyValidatorJobs
          * @description 获取拓扑检查分析的列表。
          * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60217,9 +60237,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getTopologyValidatorJob
          * @description 获取某一个拓扑检查分析。
-         * @param id - {string}空间分析的id。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60244,10 +60264,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.addTopologyValidatorJob
          * @description 新建一个拓扑检查分析。
-         * @param params -{SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60276,8 +60296,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getTopologyValidatorJobState
          * @description 获取拓扑检查分析的状态。
-         * @param id - {string}拓扑检查分析的id。
-         * @return {Object} 拓扑检查分析的状态
+         * @param {string} id - 拓扑检查分析的id。
+         * @returns {Object} 拓扑检查分析的状态
          */
 
     }, {
@@ -60289,8 +60309,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getSummaryAttributesJobs
          * @description 获取拓扑检查属性汇总分析的列表。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60315,9 +60335,9 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getSummaryAttributesJob
          * @description 获取某一个属性汇总分析。
-         * @param id - {string}空间分析的id。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60342,10 +60362,10 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.addSummaryAttributesJob
          * @description 新建一个属性汇总分析。
-         * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
-         * @param {RequestCallback} callback 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {RequestCallback} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60374,8 +60394,8 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
         /**
          * @function ol.supermap.processingService.prototype.getSummaryAttributesJobState
          * @description 获取属性汇总分析的状态。
-         * @param id - {string} 属性汇总分析的id。
-         * @return {Object} 属性汇总分析的状态
+         * @param {string} id - 属性汇总分析的id。
+         * @returns {Object} 属性汇总分析的状态
          */
 
     }, {
@@ -60451,17 +60471,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.NetworkAnalystService
  * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.NetworkAnalystService(url)
  *      .findPath(params,function(result){
  *           //doSomething
  *      })
- * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为:
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
- * @param options - {Object} 服务所需可选参数。如：<br>
- *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBase) {
     _inherits(NetworkAnalystService, _ServiceBase);
@@ -60475,7 +60497,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
     /**
      * @function ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
-     * @param params -{SuperMap.BurstPipelineAnalystParameters} 爆管分析服务参数类
+     * @param {SuperMap.BurstPipelineAnalystParameters} params - 爆管分析服务参数类
      * @param {RequestCallback} callback 回调函数
      */
 
@@ -60500,8 +60522,8 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix
          * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
-         * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析服务参数类
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -60524,9 +60546,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.findClosestFacilities
          * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
-         * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.FindClosestFacilitiesParameters} params - 最近设施分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60550,9 +60572,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst
          * @description 上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
-         * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游 关键设施查找资源服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60576,9 +60598,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.findLocation
          * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置
-         * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.FindLocationParameters} params - 选址分区分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60602,9 +60624,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.findPath
          * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
-         * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.FindPathParameters} params - 最佳路径分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60628,9 +60650,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.findTSPPaths
          * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
-         * @param params - {SuperMap.SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SuperMap.FindTSPPathsParameters} params - 旅行商分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60654,9 +60676,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.findMTSPPaths
          * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
-         * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.FindMTSPPathsParameters} params - 多旅行商分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60680,9 +60702,9 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.findServiceAreas
          * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
-         * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.FindServiceAreasParameters} params - 服务区分析服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
          */
 
     }, {
@@ -60706,7 +60728,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight
          * @description 更新边的耗费权重服务
-         * @param params - {SuperMap.UpdateEdgeWeightParameters} 更新边的耗费权重服务参数类
+         * @param {SuperMap.UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类
          * @param {RequestCallback} callback 回调函数
          */
 
@@ -60730,8 +60752,8 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
         /**
          * @function ol.supermap.NetworkAnalystService.prototype.updateTurnNodeWeight
          * @description 转向耗费权重更新服务
-         * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -60854,17 +60876,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.NetworkAnalyst3DService
  * @category  iServer FacilityAnalyst3D
  * @classdesc 3D网络分析服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.NetworkAnalyst3DService(url)
  *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething
  *      })
- * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
- *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param options - {Object} 服务所需可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_ServiceBase) {
     _inherits(NetworkAnalyst3DService, _ServiceBase);
@@ -60878,9 +60903,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
     /**
      * @function ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
-     * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
-     * @param {RequestCallback} callback 回调函数
-     * @return {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
+     * @param {SuperMap.FacilityAnalystSinks3DParameters} params - 最近设施分析参数类(汇查找资源)
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
      */
 
 
@@ -60904,9 +60929,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         /**
          * @function ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
          * @description 源查找服务
-         * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
-         * @param {RequestCallback} callback 回调函数
-         * @return {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
+         * @param {SuperMap.FacilityAnalystSources3DParameters} params - 最近设施分析参数类(源查找服务)
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
     }, {
@@ -60929,9 +60954,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         /**
          * @function ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
          * @description 上游追踪资源服务
-         * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
-         * @param {RequestCallback} callback 回调函数
-         * @return {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
+         * @param {SuperMap.FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
     }, {
@@ -60954,9 +60979,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         /**
          * @function ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
          * @description 下游追踪资源服务
-         * @param params - {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @return {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
+         * @param {SuperMap.FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
     }, {
@@ -60979,9 +61004,9 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
         /**
          * @function ol.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
          * @description 上游关键设施查找服务
-         * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
-         * @param {RequestCallback} callback 回调函数
-         * @return {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
+         * @param {SuperMap.FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {ol.supermap.NetworkAnalyst3DService} 3D网络分析服务
          */
 
     }, {
@@ -61044,10 +61069,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category  iServer Map Measure
  * @classdesc 测量服务
  * @extends ol.supermap.ServiceBase
- * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
- *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
+ * @param {string} url -  服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {Object} options -  交互服务时所需可选参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {Object} options.eventListeners -  需要被注册的监听器对象。
  */
 var MeasureService = exports.MeasureService = function (_ServiceBase) {
     _inherits(MeasureService, _ServiceBase);
@@ -61061,8 +61088,8 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
     /**
      * @function ol.supermap.MeasureService.prototype.measureDistance
      * @description 测距
-     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
+     * @param {RequestCallback} callback - 回调函数
      */
 
 
@@ -61075,8 +61102,8 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.MeasureService.prototype.measureArea
          * @description 测面积
-         * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.MeasureParameters} params - 测量相关参数类
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -61088,10 +61115,10 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.MeasureService.prototype.measure
          * @description 测量
-         * @param params -{SuperMap.MeasureParameters} 测量相关参数类
-         * @param type - {string} 类型
-         * @param {RequestCallback} callback 回调函数
-         * @return {ol.supermap.MeasureService} 测量服务
+         * @param {SuperMap.MeasureParameters} params - 测量相关参数类
+         * @param {string} type - 类型
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {ol.supermap.MeasureService} 测量服务
          */
 
     }, {
@@ -61160,15 +61187,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.LayerInfoService
  * @category  iServer Map Layer
  * @classdesc 图层信息服务类
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.LayerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
- * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
- *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
- * @param options - {Object} 服务所需可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
     _inherits(LayerInfoService, _ServiceBase);
@@ -61182,7 +61211,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
     /**
      * @function ol.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
-     * @param {RequestCallback} callback 回调函数
+     * @param {RequestCallback} callback - 回调函数
      */
 
 
@@ -61205,8 +61234,8 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
         /**
          * @function ol.supermap.LayerInfoService.prototype.setLayerInfo
          * @description 设置图层信息服务。可以实现临时图层中子图层的修改
-         * @param params - {SuperMap.SetLayerInfoParameters} 设置图层信息参数类
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.SetLayerInfoParameters} params - 设置图层信息参数类
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -61238,9 +61267,9 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
 
         /**
          * @function ol.supermap.LayerInfoService.prototype.setLayersInfo
-         * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改
-         * @param params - {SuperMap.SetLayersInfoParameters}  设置图层信息参数类,包括临时图层。
-         * @param {RequestCallback} callback 回调函数
+         * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
+         * @param {SuperMap.SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -61273,8 +61302,8 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
         /**
          * @function ol.supermap.LayerInfoService.prototype.setLayerStatus
          * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
-         * @param params - {SuperMap.SetLayerStatusParameters} 子图层显示控制参数类
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.SetLayerStatusParameters} params - 子图层显示控制参数类。
+         * @param {RequestCallback} callback - 回调函数
          */
 
     }, {
@@ -61336,18 +61365,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.GridCellInfosService
  * @category  iServer Data Grid
  * @classdesc 数据栅格查询服务
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
- *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
- * @param options - {Object} 服务所需可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase) {
     _inherits(GridCellInfosService, _ServiceBase);
@@ -61360,8 +61390,8 @@ var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase
 
     /**
      * @function ol.supermap.GridCellInfosService.prototype.getGridCellInfos
-     * @param params - {SuperMap.GetGridCellInfosParameters} 查询所需参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.GetGridCellInfosParameters} params - 查询所需参数类
+     * @param {RequestCallback} callback - 回调函数
      */
 
 
@@ -61431,9 +61461,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      new ol.supermap.FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 参数。
- * @extends ol.supermap.ServiceBase
+ * @param {string} url - 与客户端交互的服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @extends {ol.supermap.ServiceBase}
  */
 var FieldService = exports.FieldService = function (_ServiceBase) {
     _inherits(FieldService, _ServiceBase);
@@ -61447,8 +61480,8 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
     /**
      * @function ol.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
-     * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类
+     * @param {RequestCallback} callback - 回调函数
      */
 
 
@@ -61474,8 +61507,8 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FieldService.prototype.getFieldStatisticsInfo
          * @description 字段统计服务
-         * @param params -{SuperMap.FieldStatisticsParameters} 查询所需参数类。
-         * @param {RequestCallback} callback 回调函数
+         * @param {SuperMap.FieldStatisticsParameters} params - 查询所需参数类。
+         * @param {RequestCallback} callback - 回调函数。
          */
 
     }, {
@@ -61574,16 +61607,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.supermap.ChartService
- *  @category  iServer Map Chart
+ * @category  iServer Map Chart
  * @classdesc 海图服务。
- * @extends ol.supermap.ServiceBase
+ * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.ChartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的海图服务地址。
- * @param options -{Object} 交互时所需可选参数。
+ * @param {string} url - 与客户端交互的海图服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  *
  */
 var ChartService = exports.ChartService = function (_ServiceBase) {
@@ -61598,9 +61634,9 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
     /**
      * @function ol.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
-     * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
+     * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
+     * @param {SuperMap.DataFormat} resultFormat - 返回的结果格式类型。
      */
 
 
@@ -61714,9 +61750,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 交互时所需可选参数。
- * @extends ol.supermap.ServiceBase
+ * @param {string} url - 与客户端交互的服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @extends {ol.supermap.ServiceBase}
  */
 var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) {
     _inherits(AddressMatchService, _ServiceBase);
@@ -61730,7 +61769,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
     /**
      * @function ol.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params - {Object} 正向匹配参数。
+     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback 请求结果的回调函数。
      */
 
@@ -61755,8 +61794,8 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
         /**
          * @function ol.supermap.AddressMatchService.prototype.decode
          * @description 获取反向地址匹配结果。
-         * @param params -{Object} 反向匹配参数。
-         * @param {RequestCallback} callback请求结果的回调函数。
+         * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
+         * @param {RequestCallback} callback 请求结果的回调函数。
          */
 
     }, {
@@ -62340,12 +62379,14 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
         _this.style = options.style;
         (0, _olExtends.olExtends)(_this.map);
         if (_this.style) {
+            _this._mbStyle = _this.style;
             _this._resolve(_this.style);
         } else {
             _iclientCommon.FetchRequest.get(_this.url).then(function (response) {
                 return response.json();
             }).then(function (mbStyle) {
-                return _this._resolve(mbStyle);
+                _this._mbStyle = mbStyle;
+                _this._resolve(mbStyle);
             });
         }
         return _this;
@@ -62363,6 +62404,32 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
             return this.featureStyleFuntion;
         }
     }, {
+        key: 'updateStyles',
+        value: function updateStyles(layerStyles) {
+            if (Object.prototype.toString.call(layerStyles) !== '[object Array]') {
+                layerStyles = [layerStyles];
+            }
+            var layerObj = {};
+            for (var item in layerStyles) {
+                var layerStyle = layerStyles[item];
+                layerObj[layerStyle.id] = layerStyle;
+            }
+            var count = 0;
+            for (var key in this._mbStyle.layers) {
+                var oldLayerStyle = this._mbStyle.layers[key];
+                if (count >= layerStyles.length) {
+                    break;
+                }
+                var newLayerStyle = layerObj[oldLayerStyle.id];
+                if (!newLayerStyle) {
+                    continue;
+                }
+                _iclientCommon.CommonUtil.extend(oldLayerStyle, newLayerStyle);
+                count++;
+            }
+            this._createStyleFunction(this._mbStyle, this._spriteData, this._spriteImageUrl);
+        }
+    }, {
         key: '_resolve',
         value: function _resolve(mbStyle) {
             var _this2 = this;
@@ -62374,13 +62441,23 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
                 _iclientCommon.FetchRequest.get(spriteUrl).then(function (response) {
                     return response.json();
                 }).then(function (spritesJson) {
-                    var spriteData = spritesJson;
-                    var spriteImageUrl = _this2._toSpriteUrl(mbStyle.sprite, _this2.path, sizeFactor + '.png');
-                    _this2._createStyleFunction(mbStyle, spriteData, spriteImageUrl);
+                    _this2._spriteData = spritesJson;
+                    _this2._spriteImageUrl = _this2._toSpriteUrl(mbStyle.sprite, _this2.path, sizeFactor + '.png');
+                    _this2._initStyleFunction(mbStyle, _this2._spriteData, _this2._spriteImageUrl);
                 });
             } else {
-                this._createStyleFunction(mbStyle, null, null);
+                this._initStyleFunction(mbStyle, null, null);
             }
+        }
+    }, {
+        key: '_initStyleFunction',
+        value: function _initStyleFunction(mbStyle, spriteData, spriteImageUrl) {
+            this._createStyleFunction(mbStyle, spriteData, spriteImageUrl);
+            /**
+             * @description 样式加载成功后触发。
+             * @event ol.supermap.MapboxStyles#styleloaded
+             */
+            this.dispatchEvent('styleloaded');
         }
     }, {
         key: '_createStyleFunction',
@@ -62393,11 +62470,6 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
                 set: function set() {},
                 changed: function changed() {}
             }, mbStyle, this.source, this.resolutions, spriteData, spriteImageUrl);
-            /**
-             * @description 样式加载成功后触发。
-             * @event ol.supermap.MapboxStyles#styleloaded
-             */
-            this.dispatchEvent('styleloaded');
         }
     }, {
         key: '_withPath',
@@ -84485,7 +84557,7 @@ var GeometryBatchAnalystService = exports.GeometryBatchAnalystService = function
     /**
      * @function SuperMap.GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @params {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
+     * @param {SuperMap.GeometryBatchOverlayAnalystParameters} parameter - 批量几何对象叠加分析参数类
      *
      */
 

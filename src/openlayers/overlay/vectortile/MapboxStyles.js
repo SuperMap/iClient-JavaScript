@@ -1,8 +1,11 @@
 import ol from 'openlayers';
 import {
-    FetchRequest
+    FetchRequest,
+    CommonUtil
 } from "@supermap/iclient-common";
-import {olExtends} from './olExtends'
+import {
+    olExtends
+} from './olExtends'
 
 
 /**
@@ -59,10 +62,14 @@ export class MapboxStyles extends ol.Observable {
         this.style = options.style;
         olExtends(this.map);
         if (this.style) {
+            this._mbStyle = this.style;
             this._resolve(this.style);
         } else {
             FetchRequest.get(this.url).then(response =>
-                response.json()).then(mbStyle => this._resolve(mbStyle));
+                response.json()).then(mbStyle => {
+                this._mbStyle = mbStyle;
+                this._resolve(mbStyle)
+            });
         }
     }
     /**
@@ -73,6 +80,30 @@ export class MapboxStyles extends ol.Observable {
     getStyleFunction() {
         return this.featureStyleFuntion;
     }
+    updateStyles(layerStyles) {
+        if (Object.prototype.toString.call(layerStyles) !== '[object Array]') {
+            layerStyles = [layerStyles];
+        }
+        const layerObj = {};
+        for (const item in layerStyles) {
+            const layerStyle = layerStyles[item];
+            layerObj[layerStyle.id] = layerStyle;
+        }
+        let count = 0;
+        for (const key in this._mbStyle.layers) {
+            const oldLayerStyle = this._mbStyle.layers[key];
+            if (count >= layerStyles.length) {
+                break;
+            }
+            const newLayerStyle = layerObj[oldLayerStyle.id]
+            if (!newLayerStyle) {
+                continue;
+            }
+            CommonUtil.extend(oldLayerStyle, newLayerStyle);
+            count++;
+        }
+        this._createStyleFunction(this._mbStyle, this._spriteData, this._spriteImageUrl);
+    }
     _resolve(mbStyle) {
         if (mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
@@ -81,13 +112,21 @@ export class MapboxStyles extends ol.Observable {
             FetchRequest.get(spriteUrl)
                 .then(response =>
                     response.json()).then(spritesJson => {
-                    const spriteData = spritesJson;
-                    const spriteImageUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.png');
-                    this._createStyleFunction(mbStyle, spriteData, spriteImageUrl);
+                    this._spriteData = spritesJson;
+                    this._spriteImageUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.png');
+                    this._initStyleFunction(mbStyle, this._spriteData, this._spriteImageUrl);
                 })
         } else {
-            this._createStyleFunction(mbStyle, null, null);
+            this._initStyleFunction(mbStyle, null, null);
         }
+    }
+    _initStyleFunction(mbStyle, spriteData, spriteImageUrl) {
+        this._createStyleFunction(mbStyle, spriteData, spriteImageUrl);
+        /**
+         * @description 样式加载成功后触发。
+         * @event ol.supermap.MapboxStyles#styleloaded
+         */
+        this.dispatchEvent('styleloaded');
     }
     _createStyleFunction(mbStyle, spriteData, spriteImageUrl) {
         if (this.map) {
@@ -98,11 +137,6 @@ export class MapboxStyles extends ol.Observable {
             set: function () {},
             changed: function () {}
         }, mbStyle, this.source, this.resolutions, spriteData, spriteImageUrl);
-        /**
-         * @description 样式加载成功后触发。
-         * @event ol.supermap.MapboxStyles#styleloaded
-         */
-        this.dispatchEvent('styleloaded');
     }
     _withPath(url, path) {
         if (path && url.indexOf('http') != 0) {
