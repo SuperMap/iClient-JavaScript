@@ -545,11 +545,11 @@ export class Theme extends ol.source.ImageCanvas {
     }
 
     _toFeature(feature) {
-        var geometry,
+        var geometry = feature.getGeometry(),
             attributes = feature.getProperties()["Properties"] ? feature.getProperties()["Properties"] : {};
         //热点图支支持传入点对象要素
-        if (feature.getGeometry() instanceof ol.geom.Point) {
-            geometry = new GeometryPoint(feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]);
+        if (geometry instanceof ol.geom.Point) {
+            geometry = new GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
             //固定属性字段为 "Properties"
         }
         if (geometry instanceof ol.geom.LineString) {
@@ -561,7 +561,7 @@ export class Theme extends ol.source.ImageCanvas {
             geometry = new LineString(points);
         }
         if (geometry instanceof ol.geom.Polygon) {
-            let coords = geometry.getCoordinates();
+            let coords = geometry.getCoordinates()[0];
             let points = [];
             for (let i = 0; i < coords.length; i++) {
                 points.push(new GeometryPoint(coords[i][0], coords[i][1]));
@@ -569,6 +569,7 @@ export class Theme extends ol.source.ImageCanvas {
             var linearRings = new LinearRing(points);
             geometry = new Polygon([linearRings]);
         }
+
         if (geometry && geometry.length === 3) {
             geometry = new GeoText(geometry[0], geometry[1], geometry[2]);
         }
