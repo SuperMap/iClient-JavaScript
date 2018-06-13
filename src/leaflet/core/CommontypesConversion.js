@@ -10,7 +10,7 @@ export class CommontypesConversion {
     /**
      * @function L.supermap.CommontypesConversion.toSuperMapBounds
      * @description 将Leaflet对象得bounds转成SuperMap 的bounds对象
-     * @param bounds - {L.Bounds|L.LatLngBounds} 图层显示范围
+     * @param {(L.Bounds|L.LatLngBounds)} bounds - 图层显示范围
      * @return {SuperMap.Bounds} SuperMap的bounds对象
      */
     static toSuperMapBounds(bounds) {
@@ -44,7 +44,7 @@ export class CommontypesConversion {
     /**
      * @function L.supermap.Util.isArray
      * @description 判断是否为数组格式
-     * @param obj - {Object} 待判断对象
+     * @param {Object} obj - 待判断对象
      * @return {boolean} 是否是数组
      */
     static isArray(obj) {
@@ -54,7 +54,7 @@ export class CommontypesConversion {
     /**
      * @function L.supermap.CommontypesConversion.toProcessingParam
      * @description 将Region节点数组转为Processing服务需要的分析参数
-     * @param points - Region各个节点数组
+     * @param {Array} points - Region各个节点数组
      * @return processing服务裁剪、查询分析的分析参数
      */
     static toProcessingParam(points) {

@@ -6,14 +6,14 @@ const emptyFunc = L.Util.falseFn;
  * @class GraphicWebGLRenderer
  * @classdesc 高效率点图层 webgl渲染器。
  * @category Visualization Graphic
- * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param layer - {Array<L.supermap.graphicLayer>} 高效率点图层
+ * @extends {L.Layer}
+ * @param {Array.<L.supermap.graphicLayer>} layer - 高效率点图层
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
  *
- * @param {Array<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255],
+ * @param {Array.<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
  * @param {number} options.radius - 半径,默认10
  * @param {number} options.opacity - 不透明度,默认0.8
  * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组

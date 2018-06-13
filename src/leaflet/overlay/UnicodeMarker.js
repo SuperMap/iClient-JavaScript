@@ -5,18 +5,18 @@ import '../core/Base';
  * @class L.supermap.unicodeMarker
  * @classdesc Unicode字符图标。
  * @category Visualization Marker
- * @extends L.Path{@linkdoc-leaflet/#Path}
- * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng} 经纬度坐标
- * @param options -{Object} 符号参数。<br>
- *        label - {string} 符号Unicode值 <br>
- *        labelRotation - {string} 符号旋转角度 <br>
- *        globalAlpha - {string} 符号的透明值 <br>
- *        fontStyle - {string} 符号的风格 <br>
- *        fontWeight - {string} 符号的粗细 <br>
- *        fontSize - {string} 符号的尺寸 <br>
- *        fontFamily - {string} 符号的字体 <br>
- *        textAlign - {string} 符号内容的对齐方式 <br>
- *        textBaseline - {string} 绘制符号时使用的基线 <br>
+ * @extends {L.Path}
+ * @param {L.LatLngBounds} latlng - 经纬度坐标。
+ * @param {Object} options - 符号参数。
+ * @param {string} options.label - 符号Unicode值。
+ * @param {string} options.labelRotation - 符号旋转角度。
+ * @param {string} options.globalAlpha - 符号的透明值。
+ * @param {string} options.fontStyle - 符号的风格。
+ * @param {string} options.fontWeight - 符号的粗细。
+ * @param {string} options.fontSize - 符号的尺寸。
+ * @param {string} options.fontFamily - 符号的字体。
+ * @param {string} options.textAlign - 符号内容的对齐方式。
+ * @param {string} options.textBaseline - 绘制符号时使用的基线。
  */
 export var UnicodeMarker = L.Path.extend({
     // @section

@@ -5,32 +5,32 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用Image资源出图
  * @category iServer Map
- * @extends L.Layer{@linkdoc-leaflet/#Layer}
+ * @extends {L.Layer}
  * @example
  *      L.supermap.imageMapLayer(url).addTo(map);
- * @param url -{string} 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
- * @param options -{Object} 图层可选参数。如：<br>
- *        layersID - {number} 如果有layersID，则是在使用专题图 <br>
- *        redirect - {boolean} 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流<br>
- *        transparent - {boolean} 地图瓦片是否透明<br>
- *        cacheEnabled - {boolean} 是否使用服务器缓存出图<br>
- *        clipRegionEnabled - {boolean} 地图显示裁剪的区域是否有效<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
- *        opacity - {number} 图层不透明度。<br>
- *        alt - {string} 无法显示图像时显示替代的文本。<br>
- *        pane - {string} 图层所归属的map DOM的分组。默认为："tilePane" <br>
- *        interactive - {boolean} 是否响应鼠标点击或悬停交互事件。<br>
- *        crossOrigin - {boolean} 是否设置跨域属性。<br>
- *        errorOverlayUrl - {boolean} 图层未能加载时代替显示的瓦片地址。<br>
- *        zIndex - {number} 设置图层的层级。<br>
- *        className - {string} 自定义dom元素的className。<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        attribution - {string} 版权信息。<br>
- *        updateInterval - {number} 平移时图层延迟刷新间隔时间。<br>
- *        tileProxy - {string} 启用托管地址。
- *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @param {string} url - 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
+ * @param {Object} options - 图层可选参数。
+ * @param {number} options.layersID - 如果有layersID，则是在使用专题图。
+ * @param {boolean} options.redirect - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
+ * @param {boolean} options.transparent - 地图瓦片是否透明。
+ * @param {boolean} options.cacheEnabled - 是否使用服务器缓存出图。
+ * @param {boolean} options.clipRegionEnabled - 地图显示裁剪的区域是否有效。
+ * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
+ * @param {string} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项。
+ * @param {number} options.opacity - 图层不透明度。
+ * @param {string} options.alt - 无法显示图像时显示替代的文本。
+ * @param {string}  options.pane - 图层所归属的map DOM的分组。默认为："tilePane" 
+ * @param {boolean} options.interactive - 是否响应鼠标点击或悬停交互事件。
+ * @param {boolean} options.crossOrigin - 是否设置跨域属性。
+ * @param {boolean} options.errorOverlayUrl - 图层未能加载时代替显示的瓦片地址。
+ * @param {number} options.zIndex - 设置图层的层级。
+ * @param {string} options.className - 自定义dom元素的className。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {string} options.attribution - 版权信息。
+ * @param {number} options.updateInterval - 平移时图层延迟刷新间隔时间。
+ * @param {string} options.tileProxy - 启用托管地址。
+ * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型。
  */
 
 export var ImageMapLayer = Layer.extend({
@@ -87,7 +87,7 @@ export var ImageMapLayer = Layer.extend({
      * @private
      * @function L.supermap.imageMapLayer.prototype.onAdd
      * @description 添加到地图
-     * @param map - {L.map} 待添加到的地图对象
+     * @param {L.map} map - 待添加到的地图对象
      */
     onAdd: function (map) {
         this.update = Util.throttle(this.update, this.options.updateInterval, this);
@@ -106,7 +106,7 @@ export var ImageMapLayer = Layer.extend({
      * @private
      * @function L.supermap.imageMapLayer.prototype.onRemove
      * @description 从地图上移除
-     * @param map - {L.map} 待移除的地图对象
+     * @param {L.map} map - 待移除的地图对象
      */
     onRemove: function (map) { // eslint-disable-line no-unused-vars
         if (this._currentImage) {

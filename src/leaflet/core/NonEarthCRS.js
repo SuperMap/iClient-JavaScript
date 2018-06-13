@@ -7,8 +7,8 @@ L.Projection = {};
  * @class L.Projection.NonProjection
  * @classdesc 平面无投影对象
  * @category BaseTypes Projection
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param bounds - {L.bounds} 坐标范围
+ * @extends {L.Class}
+ * @param {L.bounds} bounds - 坐标范围
  */
 export var NonProjection = L.Class.extend({
 
@@ -33,11 +33,11 @@ export var nonProjection = function (bounds) {
  * @class L.CRS.NonEarthCRS
  * @classdesc 平面无投影坐标类
  * @category BaseTypes Projection
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 构建平面无投影坐标对象参数<br>
- *        origin - {Object} 原点<br>
- *        bounds - {[L.bounds]{@linkdoc-leaflet/#bounds}|Array<number>} 范围<br>
- *        resolutions - {Array<number>} 分辨率
+ * @extends {L.Class}
+ * @param {Object} options - 构建平面无投影坐标对象参数
+ * @param {Object} options.origin - 原点
+ * @param {L.bounds} options.bounds - 范围
+ * @param {Array.<number>} options.resolutions - 分辨率
  */
 export var NonEarthCRS = L.Class.extend({
 
@@ -62,7 +62,7 @@ export var NonEarthCRS = L.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.scale
      * @description 通过缩放级别计算比例尺
-     * @param zoom - {number}缩放级别
+     * @param {number} zoom - 缩放级别
      * @return {number} 得到的比例尺
      */
     scale: function (zoom) {
@@ -77,7 +77,7 @@ export var NonEarthCRS = L.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.zoom
      * @description 通过比例尺计算范围
-     * @param scale - {number}比例尺
+     * @param {number} scale - 比例尺
      * @return {number} 返回空间范围值
      */
     zoom: function (scale) {
@@ -97,8 +97,8 @@ export var NonEarthCRS = L.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.distance
      * @description 通过两个坐标点计算之间的距离
-     * @param latlng1 - {L.latLng} 坐标点1
-     * @param latlng2 - {L.latLng} 坐标点2
+     * @param {L.latLng} latlng1 - 坐标点1
+     * @param {L.latLng} latlng2 - 坐标点2
      * @return {number} 返回距离长度
      */
     distance: function (latlng1, latlng2) {

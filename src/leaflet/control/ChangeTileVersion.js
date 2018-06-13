@@ -6,24 +6,24 @@ import {MapService} from "../services/MapService";
  * @class L.supermap.control.changeTileVersion
  * @classdesc 版本切换控件,支持IE10及以上
  * @category  Control
- * @extends L.Control{@linkdoc-leaflet/#control}
+ * @extends {L.Control}
  * @example
  * L.supermap.control.changeTileVersion({
  *      layer: baseLayer,
  *      position: "topleft",
  *      orientation: "horizontal"
  *  }).addTo(map);
- * @param options -{Object} logo控件配置项</br>
- *        layer - {[L.Layer]{@linkdoc-leaflet/#layer}} 绑定的底图图层</br>
- *        position - {string} 控件位置 继承自leaflet control</br>
- *        title - {string} 鼠标滑过时提示</br>
- *        tooltip - {string} tooltip提示显示位置 top | right | bottom | left</br>
- *        collapsed - {boolean} 是否折叠。<br>
- *        nextText - {string} 下一个版本的按钮布局</br>
- *        lastText - {string} 上一个版本的按钮布局</br>
- *        ico - {string} 控件显示的logo</br>
- *        orientation - {string} 方向horizontal|vertical</br>
- *        switch - {boolean} 是否显示上/下一个版本切换控件
+ * @param {Object} options - logo控件配置项。
+ * @param {L.Layer} options.layer - 绑定的底图图层。
+ * @param {string} [options.position='topleft'] - 控件位置 继承自leaflet control。
+ * @param {string} options.title - 鼠标滑过时提示。
+ * @param {string} options.tooltip - tooltip提示显示位置 top | right | bottom | left。
+ * @param {boolean} options.collapsed - 是否折叠。
+ * @param {string} options.nextText - 下一个版本的按钮布局。
+ * @param {string} options.lastText - 上一个版本的按钮布局。
+ * @param {string} options.ico - 控件显示的logo。
+ * @param {string} options.orientation - 方向horizontal|vertical。
+ * @param {boolean} options.switch - 是否显示上/下一个版本切换控件。
  */
 export var ChangeTileVersion = L.Control.extend({
 
@@ -69,7 +69,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version - {Object} 版本信息
+     * @param {Object} version - 版本信息
      */
     setContent: function (version) {
         var content = L.Util.extend({}, version);
@@ -79,7 +79,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setVersionName
      * @description  设置版本号
-     * @param content - {string} 版本信息
+     * @param {string} content - 版本信息
      * @return {this} this
      */
     setVersionName: function (content) {
@@ -94,7 +94,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setToolTip
      * @description 设置提示信息
-     * @param tooltip - {HTMLElement|String} 要需要设置的提示信息
+     * @param {(HTMLElement|String)} tooltip - 要需要设置的提示信息
      * @return {this} this
      */
     setToolTip: function (tooltip) {
@@ -105,7 +105,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.updateLength
      * @description 更新进度条长度
-     * @param length - {number}进度长度参数
+     * @param {number} length - 进度长度参数
      */
     updateLength: function (length) {
         if (length > 0) {
@@ -118,7 +118,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setLayer
      * @description 绑定图层
-     * @param layer - {L.supermap.tiledMapLayer} 绑定的图层
+     * @param {L.supermap.tiledMapLayer} layer - 绑定的图层
      */
     setLayer: function (layer) {
         if (layer) {
@@ -140,7 +140,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度
-     * @param tileVersions - {number}待更新的切片版本号
+     * @param {number} tileVersions - 待更新的切片版本号
      */
     update: function (tileVersions) {
         this.tileVersions = tileVersions;
@@ -203,7 +203,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.tilesVersion
      * @description 根据指定版本号请求版本
-     * @param version - {string} 版本号参数
+     * @param {string} version - 版本号参数
      */
     tilesVersion: function (version) {
         var layer = this.options.layer,

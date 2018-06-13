@@ -6,11 +6,11 @@ import echarts from "echarts";
  * @class L.supermap.echartsLayer
  * @classdesc 百度ECharts图层类。
  * @category  Visualization ECharts
- * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param echartsOptions - {Object} 图表参数
- * @param options - {Object} 可选图层参数。<br>
- *        attribution - {string} 版权信息。<br>
- *        loadWhileAnimating - {boolean} 是否在移动时实时绘制。默认为false。
+ * @extends {L.Layer}
+ * @param {Object} echartsOptions - 图表参数
+ * @param {Object} options - 可选图层参数。
+ * @param {string} options.attribution - 版权信息。
+ * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  */
 export var EchartsLayer = L.Layer.extend({
 
@@ -32,9 +32,9 @@ export var EchartsLayer = L.Layer.extend({
     /**
      * @function L.supermap.echartsLayer.prototype.setOption
      * @description 设置图表地图参数
-     * @param echartsOptions - {Object} 图表参数
-     * @param notMerge - {boolean} 是否合并参数
-     * @param lazyUpdate - {string} 后台自动更新
+     * @param {Object} echartsOptions - 图表参数
+     * @param {boolean} notMerge - 是否合并参数
+     * @param {string} lazyUpdate - 后台自动更新
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate) {
         var baseOption = echartsOptions.baseOption || echartsOptions;
@@ -59,7 +59,7 @@ export var EchartsLayer = L.Layer.extend({
      * @private
      * @function L.supermap.echartsLayer.prototype.onAdd
      * @description 添加地图
-     * @param map - {L.map} 待添加的地图
+     * @param {L.map} map - 待添加的地图
      */
     onAdd: function (map) {
         this._map = map;
@@ -202,8 +202,8 @@ export var EchartsLayer = L.Layer.extend({
  * @class L.supermap.LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类
- * @param leafletMap - {L.map} 地图
- * @param api - {Object} 接口
+ * @param {L.map} leafletMap - 地图
+ * @param {Object} api - 接口
  */
 export function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;

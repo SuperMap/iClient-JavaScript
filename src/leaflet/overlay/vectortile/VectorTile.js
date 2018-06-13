@@ -13,14 +13,14 @@ import {VectorTileFormat} from '../VectorTileFormat';
  * @classdesc 矢量瓦片图层基类
  * @category Visualization VectorTile
  * @private
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 矢量瓦片类构造可选参数。如：<br>
- *        layer - {string} 图层名称。<br>
- *        tileSize - {number} 瓦片大小。<br>
- *        format - {string} 返回值类型。<br>
- *        coords - {Object} 坐标系统对象。<br>
- *        renderer - {Object} 渲染器对象。
- * @param done - {function} 回调函数。
+ * @extends {L.Class}
+ * @param {Object} options - 矢量瓦片类构造可选参数。
+ * @param {string} options.layer - 图层名称。
+ * @param {number} options.tileSize - 瓦片大小。
+ * @param {string} options.format - 返回值类型。
+ * @param {Object} options.coords -  坐标系统对象。
+ * @param {Object} options.renderer - 渲染器对象。
+ * @param {Function} done - 回调函数。
  */
 export var VectorTile = L.Class.extend({
 
@@ -59,8 +59,8 @@ export var VectorTile = L.Class.extend({
     /**
      * @function L.supermap.VectorTile.prototype.render
      * @description 渲染切片要素
-     * @param tileFeature - {L.feature} 要渲染的切片要素
-     * @param coords - {Object} 切片坐标参数对象
+     * @param {L.feature} tileFeature - 要渲染的切片要素
+     * @param {Object} coords - 切片坐标参数对象
      */
     render: function (tileFeature, coords) {
         if (!tileFeature) {

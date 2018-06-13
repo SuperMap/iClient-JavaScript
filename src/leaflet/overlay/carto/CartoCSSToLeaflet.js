@@ -8,7 +8,7 @@ import {CartoStyleMap, ServerStyleMap, CompOpMap} from './CartoStyleMap';
  * @class L.supermap.CartoCSSToLeaflet
  * @classdesc CartoCSS样式转Leaflet样式类
  * @category BaseTypes Style
- * @param url - {String} 地图服务地址
+ * @param {string} url - 地图服务地址
  * @private
  */
 export class CartoCSSToLeaflet {
@@ -31,8 +31,8 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
      * @description CartoCSS样式预处理
-     * @param cartoStr - {string} Carto信息
-     * @param processCharacters - {Object} 需要处理的特征对象
+     * @param {string} cartoStr - Carto信息
+     * @param {Object} processCharacters - 需要处理的特征对象
      */
     pretreatedCartoCSS(cartoStr, processCharacters) {
         if (processCharacters) {
@@ -55,7 +55,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号
-     * @param cartoCSSStr - {string} cartoCSSS信息
+     * @param {string} cartoCSSStr - cartoCSSS信息
      */
     processCharacters(cartoCSSStr) {
         var style = cartoCSSStr;
@@ -78,7 +78,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
      * @description 拾取着色对象
-     * @param layerName - {string} 图层名称
+     * @param {string} layerName - 图层名称
      */
     pickShader(layerName) {
         if (!this.cartoCSS) {
@@ -91,7 +91,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
      * @description 获取默认风格
-     * @param type - {string} 默认风格类型
+     * @param {string} type - 默认风格类型
      */
     getDefaultStyle(type) {
         var style = {};
@@ -107,7 +107,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从iPortalMarker中获取样式
-     * @param icon - {string} iPortal图标
+     * @param {string} icon - iPortal图标
      */
     getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
@@ -128,9 +128,9 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
      * @description 从iPortal的风格中获取样式
-     * @param iPortalStyle - {Object} iPortal的样式对象
-     * @param type - {string} 样式类型
-     * @param fStyle -{Object} 图标参数
+     * @param {Object} iPortalStyle - iPortal的样式对象
+     * @param {string} type - 样式类型
+     * @param {Object} fStyle - 图标参数
      */
     getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
@@ -189,8 +189,8 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
      * @description 符号样式
-     * @param style -{Object} 样式参数
-     * @param widthFactor -{number}宽度系数
+     * @param {Object} style - 样式参数
+     * @param {number} widthFactor - 宽度系数
      */
     dashStyle(style, widthFactor) {
         if (!style) {
@@ -226,11 +226,11 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom - {number}缩放级别
-     * @param scale - {number}比例尺
-     * @param shader - {Array<Object>} 渲染器对象数组
-     * @param feature - {L.feature} 要素
-     * @param fromServer - {string} 服务源
+     * @param {number} zoom - 缩放级别
+     * @param {number} scale - 比例尺
+     * @param {Array.<Object>} shader - 渲染器对象数组
+     * @param {L.feature} feature - 要素
+     * @param {string} fromServer - 服务源
      */
     getValidStyleFromCarto(zoom, scale, shader, feature, fromServer) {
         if (!shader) {
@@ -284,8 +284,8 @@ export class CartoCSSToLeaflet {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
      * @description 通过图层信息获取有效的样式
-     * @param feature - {SuperMap.Feature} 要素
-     * @param layerInfo - {Object} 图层信息
+     * @param {SuperMap.Feature} feature - 要素
+     * @param {Object} layerInfo - 图层信息
      */
     getValidStyleFromLayerInfo(feature, layerInfo) {
         var type = feature.type,

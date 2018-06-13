@@ -5,15 +5,15 @@ import L from "leaflet";
  * @class L.supermap.baiduTileLayer
  * @classdesc 百度地图图层。
  * @category ThirdPartyMap
- * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param url -{string} 切片地址
- * @param options -{Object} 切片参数。如：<br>
- *        minZoom - {number} 最小缩放级别 <br>
- *        maxZoom - {number} 最大缩放级别 <br>
- *        bounds - {[L.LatLngBounds]{@linkdoc-leaflet/#latlngbounds}} 显示范围 <br>
- *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
- *        attribution - {string} 版权信息 <br>
- *        tileProxy - {string} 启用托管地址
+ * @extends {L.TileLayer}
+ * @param {string} url - 切片地址。
+ * @param {Object} options - 切片参数。
+ * @param {number} options.minZoom - 最小缩放级别。 
+ * @param {number} options.maxZoom - 最大缩放级别。
+ * @param {L.LatLngBounds} options.bounds - 显示范围。
+ * @param {L.Browser} options.retina - 浏览器显示分辨率。
+ * @param {string} options.attribution - 版权信息。
+ * @param {string} options.tileProxy - 启用托管地址。
  */
 export var BaiduTileLayer = L.TileLayer.extend({
 
@@ -45,7 +45,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.baiduTileLayer.prototype.getTileUrl
      * @description 获取切片地址
-     * @param coords - {Object} 行列号
+     * @param {Object} coords - 行列号
      * @return {string} 切片地址
      */
     getTileUrl: function (coords) {

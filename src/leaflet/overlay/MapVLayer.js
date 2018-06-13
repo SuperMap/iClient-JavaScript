@@ -6,12 +6,12 @@ import {MapVRenderer} from "./mapv/MapVRenderer";
  * @class L.supermap.mapVLayer
  * @classdesc MapV图层
  * @category Visualization MapV
- * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param dataSet - {mapv.DataSet} MapV图层数据集
- * @param mapVOptions - {Object} MapV图层参数
- * @param options - {Object} 可选参数。如：<br>
- *        attributionPrefix - {string} 版权信息前缀。<br>
- *        attribution - {string} 版权信息。
+ * @extends {L.Layer}
+ * @param {mapv.DataSet} dataSet - MapV图层数据集
+ * @param {Object} mapVOptions - MapV图层参数
+ * @param {Object} options - 参数。
+ * @param {string} options.attributionPrefix - 版权信息前缀。
+ * @param {string} options.attribution - 版权信息。
  */
 export var MapVLayer = L.Layer.extend({
 
@@ -38,7 +38,7 @@ export var MapVLayer = L.Layer.extend({
      * @private
      * @function L.supermap.mapVLayer.prototype.onAdd
      * @description 添加地图图层
-     * @param map - {L.map} 要添加的地图
+     * @param {L.map} map - 要添加的地图
      */
     onAdd: function (map) {
         this._map = map;
@@ -74,8 +74,8 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.addData
      * @description 追加数据
-     * @param data - {Object} 要追加的数据
-     * @param options -{Object} 要追加的值
+     * @param {Object} data - 要追加的数据
+     * @param {Object} options - 要追加的值
      */
     addData: function (data, options) {
         this.renderer.addData(data, options);
@@ -84,9 +84,9 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.update
      * @description 更新图层
-     * @param opt - {Object} 待更新的数据<br>
-     *        data -{Object} mapv数据集<br>
-     *        options -{Object} mapv绘制参数<br>
+     * @param {Object} opt - 待更新的数据。
+     * @param {Object} data - mapv数据集。
+     * @param {Object} options - mapv绘制参数。
      */
     update: function (opt) {
         this.renderer.update(opt);
@@ -107,7 +107,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.removeData
      * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -139,7 +139,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.setZIndex
      * @description 设置canvas层级
-     * @param zIndex - {number} canvas层级
+     * @param {number} zIndex - canvas层级
      */
     setZIndex: function (zIndex) {
         this.canvas.style.zIndex = zIndex;

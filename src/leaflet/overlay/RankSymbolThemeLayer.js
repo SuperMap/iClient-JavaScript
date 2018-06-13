@@ -11,19 +11,16 @@ import {GraphThemeLayer} from './GraphThemeLayer';
  *            符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。
  *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。
  *           目前提供的符号图形有：圆形（后续进行扩展 心形 五角星 多角心 图片等）
- * @extends L.supermap.GraphThemeLayer
- * @param name - {string} 专题图层名
- * @param symbolType - {SuperMap.ChartType} 必设参数，目前支持："Circle"。
- * @param options - {Object} 可选参数<br>
- *          symbolType<SuperMap.ChartType>，必设参数，目前支持："Circle"。<br>
- *          symbolSetting:各类型图表的 symbolSetting 对象可设属性请参考图表模型类的注释中对 symbolSetting 对象可设属性的描述。
- *              所有图表类型的 symbolSetting 对象通常都具有以下 5 个基础可设属性：
- *  * codomain - {Array{number}} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- *  * XOffset - {number}  专题要素（图形）在 X 方向上的偏移值，单位像素。
- *  * YOffset - {number}  专题要素（图形）在 Y 方向上的偏移值，单位像素。
- *  * dataViewBoxParameter - {Array{number}} 数据视图框 dataViewBox 参数，
- *  它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
- *  * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @extends {L.supermap.GraphThemeLayer}
+ * @param {string} name - 专题图层名
+ * @param {SuperMap.ChartType} symbolType - 必设参数，目前支持："Circle"。
+ * @param {Object} options - 参数。
+ * @param {Object} options.symbolSetting
+ * @param {Array} options.symbolSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。  
+ * @param {number} options.symbolSetting.XOffset - 专题要素（图形）在 X 方向上的偏移值，单位像素。
+ * @param {number} options.symbolSetting.YOffset - 专题要素（图形）在 Y 方向上的偏移值，单位像素。
+ * @param {Array} options.symbolSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
+ * @param {number} options.symbolSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  */
 export var RankSymbolThemeLayer = GraphThemeLayer.extend({
 
@@ -36,7 +33,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
     /**
      * @function L.supermap.rankSymbolThemeLayer.prototype.setSymbolType
      * @description 设置符号类型，此函数可动态改变图表类型。在调用此函数前请通过 symbolSetting 为新类型的图表做相关配置。
-     * @param symbolType - {SuperMap.ChartType} 目前支持："Circle"。 //todo 这里怎么又是supermap的类型
+     * @param {SuperMap.ChartType} symbolType - 目前支持："Circle"。 //todo 这里怎么又是supermap的类型
      */
     setSymbolType: function (symbolType) {
         this.symbolType = symbolType;
@@ -46,7 +43,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
     /**
      * @function L.supermap.rankSymbolThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素（图形）
-     * @param feature  - {SuperMap.Feature.Vector} 要创建的专题图形要素
+     * @param {SuperMap.Feature.Vector} feature - 要创建的专题图形要素
      * @return {SuperMap.Feature.Theme} 专题图形
      */
     createThematicFeature: function (feature) {

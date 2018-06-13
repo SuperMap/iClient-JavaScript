@@ -92,13 +92,13 @@ L.Proj.Projection = L.Class.extend({
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
- * @param {Object} options - options。可选参数：
- * @param {string} options.def - 投影的proj4定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
- * @param {Array.<number>|L.Point} [options.origin=] - 原点。
- * @param {Array.<number>} [options.scales=] - 比例尺数组。
- * @param {Array.<number>} [options.scaleDenominators=] - 比例尺分母数组。
- * @param {Array.<number>} [options.resolutions=] - 分辨率数组。
- * @param {Array.<number>|L.Bounds} [options.bounds=] - 范围。
+ * @param {Object} options - 参数。
+ * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}
+ * @param {(Array.<number>|L.Point)} options.origin - 原点。
+ * @param {Array.<number>} options.scales - 比例尺数组。
+ * @param {Array.<number>} options.scaleDenominators - 比例尺分母数组。
+ * @param {Array.<number>} options.resolutions - 分辨率数组。
+ * @param {(Array.<number>|L.Bounds)} options.bounds - 范围。
  * @param {number} [options.dpi=96] - dpi。
  * @example
  *    var crs =L.Proj.CRS("EPSG:4326",{
@@ -192,7 +192,7 @@ export var CRS = L.Class.extend({
     /**
      * @function L.Proj.CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值
-     * @param zoom - {number}缩放级别
+     * @param {number} zoom - 缩放级别
      * @return 比例尺值
      */
     scale: function (zoom) {
@@ -216,7 +216,7 @@ export var CRS = L.Class.extend({
     /**
      * @function L.Proj.CRS.prototype.zoom
      * @description 根据比例尺返回缩放级别
-     * @param scale - {number}比例尺
+     * @param {number} scale - 比例尺
      * @return {number} 缩放级别
      */
     zoom: function (scale) {

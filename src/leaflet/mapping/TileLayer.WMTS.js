@@ -5,23 +5,23 @@ import "../core/Base";
  * @class L.supermap.wmtsLayer
  * @classdesc wmts图层类
  * @category OGC
- * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param url -{string} wmts图层地址
- * @param options -{Object} wmts图层可选参数。如：<br>
- *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
- *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
- *        transparent - {boolean}是否背景透明。<br>
- *        cacheEnabled - {boolean} 启用缓存。<br>
- *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
- *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
- *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
- *        attribution - {string} 版权信息。
- *        tileProxy - {string} 启用托管地址。
- *        requestEncoding - {string} KVP或者REST的请求方式，默认是KVP。
+ * @extends {L.TileLayer}
+ * @param {string} url - wmts图层地址
+ * @param {Object} options - wmts图层可选参数。
+ * @param {number} options.layersID - 图层ID，如果有layersID，则是在使用专题图。
+ * @param {boolean} options.redirect - 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。
+ * @param {boolean} options.transparent - 是否背景透明。
+ * @param {boolean} options.cacheEnabled - 启用缓存。
+ * @param {boolean} options.clipRegionEnabled - 是否启用地图裁剪。
+ * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
+ * @param {string} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项。
+ * @param {string} options.tileversion - 切片版本名称，cacheEnabled 为 true 时有效。
+ * @param {L.Proj.CRS} options.crs - 坐标系统类。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {string} options.attribution - 版权信息。
+ * @param {string} options.tileProxy - 启用托管地址。
+ * @param {string} options.requestEncoding - KVP或者REST的请求方式，默认是KVP。
  */
 export var WMTSLayer = L.TileLayer.extend({
 
@@ -66,7 +66,7 @@ export var WMTSLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.wmtsLayer.prototype.getTileUrl
      * @description 根据行列号获取切片地址
-     * @param coords - {Object} 行列号
+     * @param {Object} coords - 行列号
      * @return {string} 切片地址
      */
     getTileUrl: function (coords) { // (Point, Number) -> String

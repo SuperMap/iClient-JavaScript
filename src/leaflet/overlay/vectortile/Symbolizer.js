@@ -5,8 +5,8 @@ import L from "leaflet";
  * @description 符号类
  * @category Visualization VectorTile
  * @private
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param feature — {L.feature} 要素
+ * @extends {L.Class}
+ * @param {L.feature} feature — 要素
  */
 export var Symbolizer = L.Class.extend({
 
@@ -19,8 +19,8 @@ export var Symbolizer = L.Class.extend({
     /**
      * @function L.supermap.Symbolizer.prototype.render
      * @description 绘制线符号
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     render: function (renderer, style) {
         this._renderer = renderer;
@@ -38,8 +38,8 @@ export var Symbolizer = L.Class.extend({
     /**
      * @function L.supermap.Symbolizer.prototype.updateStyle
      * @description 更新替换符号样式
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     updateStyle: function (renderer, style) {
         this.options = style;

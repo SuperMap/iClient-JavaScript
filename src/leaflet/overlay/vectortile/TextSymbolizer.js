@@ -8,9 +8,9 @@ import {SVGRenderer} from './SVGRenderer';
  * @classdesc 文本符号类
  * @category Visualization VectorTile
  * @private
- * @extends L.Path{@linkdoc-leaflet/#path}
- * @param feature - {L.feature} 要素
- * @param pxPerExtent - {number}文本符号大小
+ * @extends {L.Path}
+ * @param {L.feature} feature - 要素
+ * @param {number} pxPerExtent - 文本符号大小
  */
 export var TextSymbolizer = L.Path.extend({
 
@@ -47,8 +47,8 @@ export var TextSymbolizer = L.Path.extend({
     /**
      * @function L.supermap.TextSymbolizer.prototype.render
      * @description 绘制点符号
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     render: function (renderer, style) {
         //原本类型就是text的情况
@@ -91,8 +91,8 @@ export var TextSymbolizer = L.Path.extend({
     /**
      * @function L.supermap.TextSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     updateStyle: function (renderer, style) {
         this._updateBounds();

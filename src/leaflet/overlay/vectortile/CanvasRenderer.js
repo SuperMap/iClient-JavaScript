@@ -5,10 +5,10 @@ import L from "leaflet";
  * @private
  * @classdesc 画布渲染器
  * @category Visualization VectorTile
- * @extends L.Canvas{@linkdoc-leaflet/#canvas}
- * @param tileCoord - {Object} 切片坐标系
- * @param tileSize - {number}切片大小
- * @param options - {Object} 渲染器参数
+ * @extends {L.Canvas}
+ * @param {Object} tileCoord - 切片坐标系
+ * @param {number} tileSize - 切片大小
+ * @param {Object} options - 渲染器参数
  */
 export var CanvasRenderer = L.Canvas.extend({
 
@@ -58,7 +58,7 @@ export var CanvasRenderer = L.Canvas.extend({
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
      * @description 添加到地图
-     * @param map - {L.map} map对象
+     * @param {L.map} map - map对象
      */
     addTo: function (map) {
         this._map = map;
@@ -67,7 +67,7 @@ export var CanvasRenderer = L.Canvas.extend({
     /**
      * @function L.supermap.CanvasRenderer.prototype.removeFrom
      * @description 从地图移除
-     * @param map - {L.map} map对象
+     * @param {L.map} map - map对象
      */
     removeFrom: function (map) { // eslint-disable-line no-unused-vars
         delete this._map;

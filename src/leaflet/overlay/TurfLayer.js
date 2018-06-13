@@ -6,9 +6,9 @@ import * as turf from '@turf/turf';
  * @class L.supermap.turfLayer
  * @classdesc Turf图层
  * @category Visualization Turf
- * @extends L.Layer{@linkdoc-leaflet/#geojson}
- * @param options - {Object} 可选参数。如：<br>
- *        attribution - {string} 版权信息。
+ * @extends {L.Layer}
+ * @param {Object} options - 可选参数。
+ * @param {string} options.attribution - 版权信息。
  */
 export var TurfLayer = L.GeoJSON.extend({
 
@@ -155,10 +155,10 @@ export var TurfLayer = L.GeoJSON.extend({
     /**
      * @function L.supermap.turfLayer.prototype.process
      * @description 执行Turf.js提供的相关空间分析方法
-     * @param type -{string} Turf.js提供的空间分析方法名
-     * @param args -{Object} Turf.js提供的空间分析方法对应的参数对象
-     * @param callback -{function} 空间分析完成执行的回调函数，返回执行的结果
-     * @param addFeaturesToMap -{boolean} 是否添加到map
+     * @param {string} type - Turf.js提供的空间分析方法名
+     * @param {Object} args - Turf.js提供的空间分析方法对应的参数对象
+     * @param {Function} callback - 空间分析完成执行的回调函数，返回执行的结果
+     * @param {boolean} addFeaturesToMap - 是否添加到map
      */
     process: function (type, args, callback, addFeaturesToMap) {
         var result = turf[type.split('.')[1]].apply(this, this.parse(type, args));

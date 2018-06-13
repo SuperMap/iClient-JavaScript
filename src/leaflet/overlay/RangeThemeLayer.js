@@ -10,14 +10,14 @@ import {CommonUtil} from '@supermap/iclient-common';
  * @description 范围分段专题图对数据（<{@link SuperMap.Feature.Vector}>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
  *            分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @extends L.supermap.GeoFeatureThemeLayer
- * @param name - {string} 图层名
- * @param options - {Object} 图层参数。如：<br>
- *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
- *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
- *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
- *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
- *        isAllowFeatureStyle - {boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
- *                                        默认值为： false，禁止对专题要素使用数据（feature）的 style。
+ * @param {string} name - 图层名
+ * @param {Object} options - 图层参数。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
+ * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
+ * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
+ * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
+ * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ *                                       禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
@@ -45,8 +45,8 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function L.supermap.rangeThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param feat - {SuperMap.Feature.Vector} 矢量要素对象
-     * @return {Array<SuperMap.ThemeStyle>} 专题要素的 Style
+     * @param {SuperMap.Feature.Vector} feat - 矢量要素对象
+     * @return {Array.<SuperMap.ThemeStyle>} 专题要素的 Style
      */
     getStyleByData: function (feat) {
         var me = this,

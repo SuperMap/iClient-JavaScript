@@ -37,21 +37,21 @@ const CSS_TRANSFORM = (function () {
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
- * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {Array<L.supermap.graphic>} 要素对象
+ * @extends {L.Path}
+ * @param {Array.<L.supermap.graphic>} graphics - 要素对象
  * @param {Object} options - 图层参数
- * @param {string}   [options.render=webgl]  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
- * @param {Array<number>} [options.color=[0, 0, 0, 255]] - webgl渲染时要素颜色
- * @param {Array<number>} [options.highlightColor] - webgl渲染时要素高亮颜色
+ * @param {string}   [options.render='webgl']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - webgl渲染时要素颜色
+ * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色
  * @param {number} [options.opacity=0.8] - webgl渲染时的要素不透明度
  * @param {number} [options.radius=10] - webgl渲染时的要素半径
  * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
  * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)
+ * @param {number} [options.radiusMaxPixels='Number.MAX_SAFE_INTEGER'] - webgl渲染时的要素半径最大值(像素)
  * @param {number} [options.strokeWidth=1] - 边框大小
  * @param {boolean} [options.outline=false] - 是否显示边框
- * @param {function} [options.onClick] -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)
- * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)
+ * @param {function} options.onClick -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)
+ * @param {function} options.onHover -  图层鼠标悬停响应事件(只有webgl渲染时有用)
  */
 export var GraphicLayer = L.Path.extend({
 
@@ -107,7 +107,7 @@ export var GraphicLayer = L.Path.extend({
         /**
          * @function L.supermap.graphicLayer.prototype.setGraphics
          * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-         * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
+         * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
          */
         setGraphics: function (graphics) {
             this.graphics = this.graphics || [];
@@ -120,7 +120,7 @@ export var GraphicLayer = L.Path.extend({
         /**
          * @function L.supermap.graphicLayer.prototype.addGraphics
          * @description 追加点要素，不会覆盖之前的要素
-         * @param {Array<L.supermap.graphic>}  graphics - 点要素对象数组
+         * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
          */
         addGraphics: function (graphics) {
             this.graphics = this.graphics || [];
@@ -133,7 +133,7 @@ export var GraphicLayer = L.Path.extend({
          * @function L.supermap.graphicLayer.prototype.setStyle
          * @description 设置图层要素整体样式(接口仅在wengl渲染时有用)
          * @param {Object} styleOptions - 样式对象
-         * @param {Array<number>} styleOptions.color - 点颜色
+         * @param {Array.<number>} styleOptions.color - 点颜色
          * @param {number} styleOptions.radius - 点半径
          * @param {number} styleOptions.opacity - 不透明度
          * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组

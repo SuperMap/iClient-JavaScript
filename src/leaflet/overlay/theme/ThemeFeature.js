@@ -7,9 +7,9 @@ import {LineString, Polygon, GeoText, GeometryPoint, GeometryVector as Vector} f
  * @classdesc 客户端专题图要素类。
  *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
  * @category Visualization Theme
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
- * @param attributes - {Object} 要素属性
+ * @extends {L.Class}
+ * @param {(L.Path|L.Point|L.LatLng)} geometry - 要素图形
+ * @param {Object} attributes - 要素属性
  */
 export var ThemeFeature = L.Class.extend({
 
@@ -56,7 +56,7 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function L.supermap.themeFeature.prototype.reverseLatLngs
      * @description 坐标反转
-     * @param latlngs - {L.latlng} 坐标值
+     * @param {L.latlng} latlngs - 坐标值
      */
     reverseLatLngs: function (latlngs) {
         if (!L.Util.isArray(latlngs)) {

@@ -5,19 +5,19 @@ import '../../core/Base';
  * @class L.supermap.circleStyle
  * @classdesc 圆形要素风格
  * @category Visualization Graphic
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 圆形要素风格参数。如：<br>
- *        stroke - {boolean} 是否描边<br>
- *        color - {string} 颜色<br>
- *        weight - {number} 线宽<br>
- *        opacity - {number} 透明度<br>
- *        lineCap - {string} 线帽形状<br>
- *        lineJoin - {string} 线条交汇边角形状<br>
- *        fill - {boolean} 是否填充<br>
- *        fillColor - {string} 填充色<br>
- *        fillOpacity - {number}填充透明度<br>
- *        fillRule - {string} 填充形状<br>
- *        radius - {number} 半径
+ * @extends {L.Class}
+ * @param {Object} options - 圆形要素风格参数。
+ * @param {boolean} options.stroke - 是否描边。
+ * @param {string} options.color - 颜色。
+ * @param {number} options.weight - 线宽。
+ * @param {number} options.opacity - 透明度。
+ * @param {string} options.lineCap - 线帽形状。
+ * @param {string} options.lineJoin - 线条交汇边角形状。
+ * @param {boolean} options.fill - 是否填充。
+ * @param {string} options.fillColor - 填充色。
+ * @param {number} options.fillOpacity - 填充透明度。
+ * @param {string} options.fillRule - 填充形状。
+ * @param {number} options.radius - 半径
  */
 export var CircleStyle = L.Class.extend({
 

@@ -13,17 +13,18 @@ import {
  * @class L.supermap.heatMapLayer
  * @classdesc 热力图层类
  * @category Visualization HeatMap
- * @param name -{string} 图层名称
- * @param options - {Object} 构造参数，如下：<br>
- *        map - [L.Map]{@linkdoc-leaflet/#map} leaflet 的 map对象。必传。</br>
- *        id - {string} 专题图层ID。</br>
- *        featureWeight - {string} 对应 feature 属性中的热点权重字段名称，权重值类型为float。<br>
- *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
- *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
- *        opacity - {number} 图层透明度。</br>
- *        colors - {Array<string>} 颜色线性渐变数组,颜色值必须为canvas所支。默认为['blue','cyan','lime','yellow','red']。</br>
- *        useGeoUnit - {boolean} 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
- * @extends L.Layer{@linkdoc-leaflet/#layer}
+ * @param {string} name - 图层名称
+ * @param {Object} options - 构造参数。
+ * @param {L.Map} options.map - leaflet 的 map对象。必传。
+ * @param {string} options.id - 专题图层ID。
+ * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
+ * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为float。
+ * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
+ * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
+ * @param {number} options.opacity - 图层透明度。
+ * @param {Array.<string>} colors - 颜色线性渐变数组,颜色值必须为canvas所支持的。默认为['blue','cyan','lime','yellow','red']。
+ * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
+ * @extends {L.Layer}
  */
 export var HeatMapLayer = L.Layer.extend({
     options: {
@@ -74,7 +75,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.onRemove
      * @description 删除某个地图
-     * @param map - {L.map} 要删除的地图
+     * @param {L.map} map - 要删除的地图
      * @private
      */
     onRemove: function (map) {
@@ -86,7 +87,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.onAdd
      * @description 添加专题图
-     * @param map - {L.map} 要添加的地图
+     * @param {L.map} map - 要添加的地图
      * @private
      */
     onAdd: function (map) {
@@ -116,7 +117,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param features - {Object|HeatMapFeature}待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式
+     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式
      *
      * @example
      * var geojson = {
@@ -160,7 +161,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.updateHeatPoints
      * @description 刷新热点图显示
-     * @param bounds - {L.LngLatBounds} 当前显示范围
+     * @param {L.LngLatBounds} bounds - 当前显示范围
      */
     updateHeatPoints: function (bounds) {
         if (this.features && this.features.length > 0) {
@@ -173,7 +174,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
-     * @param bounds - {L.LngLatBounds} 当前显示范围
+     * @param {L.LngLatBounds} bounds - 当前显示范围
      * @private
      */
     convertFastToPixelPoints: function (bounds) {
@@ -233,8 +234,8 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.draw
      * @description 绘制热点图
-     * @param data -{Array} convertToPixelPoints方法计算出的点
-     * @param maxWeight -{number} 最大权重
+     * @param {Array} data - convertToPixelPoints方法计算出的点
+     * @param {number} maxWeight - 最大权重
      * @private
      */
     draw: function (data, maxWeight) {
@@ -263,8 +264,8 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.colorize
      * @description 根据渐变色重置热点图rgb值
-     * @param pixels 像素RGBA值
-     * @param gradient 渐变canvas.getImageData.data
+     * @param {Array} pixels 像素RGBA值
+     * @param {Array} gradient 渐变canvas.getImageData.data
      * @private
      */
     colorize: function (pixels, gradient) {
@@ -281,7 +282,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.drawCircle
      * @description 绘制热点半径圆
-     * @param r -{number} 热点半径
+     * @param {number} r - 热点半径
      * @private
      */
     drawCircle: function (r) {
@@ -353,7 +354,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标
-     * @param coordinate - {array}
+     * @param {Array} coordinate - 地理坐标
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {
@@ -378,7 +379,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
-     * @param opacity - {number}不透明度
+     * @param {number} opacity - 不透明度
      */
     setOpacity: function (opacity) {
         var me = this;
@@ -394,7 +395,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param features - {Array<SuperMap.Feature.Vector>} 热点信息数组。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
      */
     removeFeatures: function (features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -487,7 +488,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
-     * @param features - {Object|HeatMapFeature}待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式
+     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature: function (features) {
@@ -558,9 +559,9 @@ L.supermap.heatMapLayer = heatMapLayer;
  * @class L.supermap.heatMapFeature
  * @classdesc 客户端专题图要素类。
  *            支持的geometry参数类型为L.Point、L.LatLng、L.CircleMarker
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param geometry - {L.Point|L.LatLng|L.CircleMarker} 要素图形
- * @param attributes - {Object} 要素属性
+ * @extends {L.Class}
+ * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形
+ * @param {Object} attributes - 要素属性
  */
 export var HeatMapFeature = L.Class.extend({
     initialize: function (geometry, attributes) {

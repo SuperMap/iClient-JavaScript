@@ -8,8 +8,8 @@ import {FetchRequest} from '@supermap/iclient-common';
  * @classdesc iServer 矢量瓦片json表述出图
  * @category Visualization VectorTile
  * @private
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param url - {string} 矢量瓦片json表述服务地址
+ * @extends {L.Class}
+ * @param {string} url - 矢量瓦片json表述服务地址
  */
 export var VectorTileJSON = L.Class.extend({
 

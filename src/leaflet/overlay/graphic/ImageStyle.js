@@ -5,12 +5,12 @@ import '../../core/Base';
  * @class L.supermap.imageStyle
  * @classdesc 自定义图形要素风格
  * @category Graphic
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 图形要素风格参数。如：<br>
- *        img - {HTMLImageElement}  image对象<br>
- *        origin - {Array}  中心点<br>
- *        anchor - {Array}  偏移量<br>
- *        size - {Array}  图形大小，即高度和宽度[width,height]
+ * @extends {L.Class}
+ * @param {Object} options - 图形要素风格参数。
+ * @param {HTMLImageElement} options.img - image对象。
+ * @param {Array} options.origin - 中心点。
+ * @param {Array} options.anchor - 偏移量。
+ * @param {Array} options.size - 图形大小，即高度和宽度[width,height]。
  *
  */
 export var ImageStyle = L.Class.extend({

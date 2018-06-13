@@ -17,6 +17,16 @@ var typeLinks = {
     "L.Polyline": lfapi + "#polyline",
     "L.Point": lfapi + "#point",
     "L.LatLng": lfapi + "#latlng",
-    "L.GeoJSON": lfapi + "#geojson"
+    "L.GeoJSON": lfapi + "#geojson",
+    "L.Control": lfapi + "#control",
+    "L.Class": lfapi + "#class",
+    "L.GridLayer": lfapi + '#gridlayer',
+    "L.Path": lfapi + '#path',
+    "L.SVG": lfapi + '#svg',
+    "L.Canvas": lfapi + '#canvas',
+    "L.Layer": lfapi + '#layer',
+    "L.LayerGroup": lfapi + '#layergroup',
+    "L.TileLayer": lfapi + '#tilelayer',
+    "L.CircleMarker": lfapi + '#circlemarker'
 }
 exports.typeLinks = typeLinks;

@@ -5,10 +5,10 @@ import L from "leaflet";
  * @classdesc 矢量图层缩放渲染器类
  * @category Visualization VectorTile
  * @private
- * @extends L.SVG{@linkdoc-leaflet/#svg}
- * @param tileCoord - {Object} 切片坐标系
- * @param tileSize - {number}切片大小
- * @param options - {Object} 渲染参数
+ * @extends {L.SVG}
+ * @param {Object} tileCoord - 切片坐标系
+ * @param {number} tileSize - 切片大小
+ * @param {Object} options - 渲染参数
  */
 export var SVGRenderer = L.SVG.extend({
 
@@ -46,7 +46,7 @@ export var SVGRenderer = L.SVG.extend({
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
      * @description 添加到地图
-     * @param map - {L.map} map对象
+     * @param {L.map} map - map对象
      */
     addTo: function (map) {
         this._map = map;
@@ -62,7 +62,7 @@ export var SVGRenderer = L.SVG.extend({
     /**
      * @function L.supermap.SVGRenderer.prototype.removeFrom
      * @description 从地图移除
-     * @param map - {L.map} map对象
+     * @param {L.map} map - map对象
      */
     removeFrom: function (map) {
         var _map = map || this._map;

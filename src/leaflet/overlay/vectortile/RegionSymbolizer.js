@@ -7,9 +7,9 @@ import {PolyBase} from './SymbolizerPolyBase';
  * @classdesc 面符号类
  * @category Visualization VectorTile
  * @private
- * @extends L.Polygon{@linkdoc-leaflet/#polygon}
- * @param feature - {L.feature} 面要素
- * @param pxPerExtent - {number}面积像素大小
+ * @extends {L.Polygon}
+ * @param {L.feature} feature - 面要素
+ * @param {number} pxPerExtent - 面积像素大小
  */
 export var RegionSymbolizer = L.Polygon.extend({
 
@@ -27,8 +27,8 @@ export var RegionSymbolizer = L.Polygon.extend({
     /**
      * @function L.supermap.RegionSymbolizer.prototype.render
      * @description 绘制面符号
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     render: function (renderer, style) {
         Symbolizer.prototype.render.call(this, renderer, style);

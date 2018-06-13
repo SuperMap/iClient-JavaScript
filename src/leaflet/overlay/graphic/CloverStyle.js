@@ -5,22 +5,22 @@ import '../../core/Base';
  * @class L.supermap.cloverStyle
  * @classdesc 三叶草要素风格
  * @category Visualization Graphic
- * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 三叶草形要素风格参数。如：<br>
- *        angle - {number} 三叶草每个扇叶的圆心角,默认为30，单位弧度。<br>
- *        spaceAngle - {number} 扇叶间隔角度，通过计算获取。<br>
- *        count - {number} 扇叶数量， 默认是三个<br>
- *        stroke - {boolean} 是否描边<br>
- *        color - {string} 颜色<br>
- *        weight - {number} 线宽<br>
- *        opacity - {number}透明度<br>
- *        lineCap - {string} 线帽形状<br>
- *        lineJoin - {string} 线条交汇边角形状<br>
- *        fill - {boolean} 是否填充<br>
- *        fillColor - {string} 填充色<br>
- *        fillOpacity - {number}填充透明度<br>
- *        fillRule - {string} 填充形状<br>
- *        radius - {number}半径
+ * @extends {L.Class}
+ * @param {Object} options - 三叶草形要素风格参数。
+ * @param {number} options.angle - 三叶草每个扇叶的圆心角,默认为30，单位弧度。
+ * @param {number} options.spaceAngle - 扇叶间隔角度，通过计算获取。
+ * @param {number} [options.count=3] - 扇叶数量。
+ * @param {boolean} options.stroke - 是否描边。
+ * @param {string} options.color - 颜色。
+ * @param {number} options.weight - 线宽。
+ * @param {number} options.opacity - 透明度。
+ * @param {string} options.lineCap - 线帽形状。
+ * @param {string} options.lineJoin - 线条交汇边角形状。
+ * @param {boolean} options.fill - 是否填充。
+ * @param {string} options.fillColor - 填充色。
+ * @param {number} options.fillOpacity - 填充透明度。
+ * @param {string} options.fillRule - 填充形状。
+ * @param {number} options.radius - 半径。
  */
 export var CloverStyle = L.Class.extend({
 
@@ -67,12 +67,12 @@ export var CloverStyle = L.Class.extend({
     /**
      * @function L.supermap.cloverStyle.prototype.drawSector
      * @description 绘制扇形
-     * @param ctx - {CanvasRenderingContext2D} context对象
-     * @param x - {number} 中心点 x
-     * @param y - {number} 中心点 y
-     * @param r - {number} 中心点 r
-     * @param sAngle - {number} 扇叶起始角度
-     * @param eAngle - {number} 扇叶终止角度
+     * @param  {CanvasRenderingContext2D} ctx - context对象
+     * @param {number} x - 中心点 x
+     * @param {number} y - 中心点 y
+     * @param {number} r - 中心点 r
+     * @param {number} sAngle - 扇叶起始角度
+     * @param {number} eAngle - 扇叶终止角度
      */
     drawSector: function (ctx, x, y, r, sAngle, eAngle) {
         //角度转换

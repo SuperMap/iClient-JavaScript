@@ -7,9 +7,9 @@ import {PolyBase} from './SymbolizerPolyBase';
  * @classdesc 线符号类
  * @category Visualization VectorTile
  * @private
- * @extends L.Polyline{@linkdoc-leaflet/#polyline}
- * @param feature - {L.feature} 线要素
- * @param pxPerExtent - {number}线长
+ * @extends {L.Polyline}
+ * @param {L.feature} feature - 线要素
+ * @param {number} pxPerExtent - 线长
  */
 export var LineSymbolizer = L.Polyline.extend({
 
@@ -27,8 +27,8 @@ export var LineSymbolizer = L.Polyline.extend({
     /**
      * @function L.supermap.LineSymbolizer.prototype.render
      * @description 绘制线符号
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     render: function (renderer, style) {
         style.fill = false;
@@ -39,8 +39,8 @@ export var LineSymbolizer = L.Polyline.extend({
     /**
      * @function L.supermap.LineSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     updateStyle: function (renderer, style) {
         style.fill = false;

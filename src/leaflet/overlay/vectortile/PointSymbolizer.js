@@ -6,9 +6,9 @@ import L from "leaflet";
  * @classdesc 点符号类
  * @category Visualization VectorTile
  * @private
- * @extends L.CircleMarker{@linkdoc-leaflet/#circlemarker}
- * @param feature - {L.feature} 点要素
- * @param pxPerExtent - {number}点符号大小
+ * @extends {L.CircleMarker}
+ * @param {L.feature} feature - 点要素
+ * @param {number} pxPerExtent - 点符号大小
  */
 export var PointSymbolizer = L.CircleMarker.extend({
 
@@ -30,8 +30,8 @@ export var PointSymbolizer = L.CircleMarker.extend({
     /**
      * @function L.supermap.PointSymbolizer.prototype.render
      * @description 绘制点符号
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer -  渲染器
+     * @param {string} style - 符号样式
      */
     render: function (renderer, style) {
         Symbolizer.prototype.render.call(this, renderer, style);
@@ -62,8 +62,8 @@ export var PointSymbolizer = L.CircleMarker.extend({
     /**
      * @function L.supermap.PointSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
-     * @param renderer - {Object} 渲染器
-     * @param style - {string} 符号样式
+     * @param {Object} renderer - 渲染器
+     * @param {string} style - 符号样式
      */
     updateStyle: function (renderer, style) {
         this._radius = style.radius || this._radius;

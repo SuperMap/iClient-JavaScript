@@ -11,10 +11,10 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @category Visualization MapV
  * @private
  * @extends mapv.BaseLayer
- * @param map - {L.map} 待渲染的地图
- * @param layer - {L.Layer} 待渲染的图层
- * @param dataSet - {DataSet} 待渲染的数据集
- * @param options - {Object} 渲染的参数
+ * @param {L.map} map - 待渲染的地图
+ * @param {L.Layer} layer - 待渲染的图层
+ * @param {DataSet} dataSet - 待渲染的数据集
+ * @param {Object} options - 渲染的参数
  */
 export class MapVRenderer extends BaseLayer {
 
@@ -42,7 +42,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.clickEvent
      * @description 点击事件
-     * @param e - {Object} 触发对象
+     * @param {Object} e - 触发对象
      */
     clickEvent(e) {
         var offset = this.map.containerPointToLayerPoint([0, 0]);
@@ -54,7 +54,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.mousemoveEvent
      * @description 鼠标移动事件
-     * @param  e - {Object} 触发对象
+     * @param {Object} e - 触发对象
      */
     mousemoveEvent(e) {
         var pixel = e.layerPoint;
@@ -64,7 +64,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.bindEvent
      * @description 绑定鼠标移动和鼠标点击事件
-     * @param e - {Object} 触发对象
+     * @param {Object} e - 触发对象
      */
     bindEvent() {
         var map = this.map;
@@ -85,7 +85,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.unbindEvent
      * @description 解绑鼠标移动和鼠标滑动触发的事件
-     * @param e - {Object} 触发对象
+     * @param {Object} e - 触发对象
      */
     unbindEvent() {
         var map = this.map;
@@ -114,8 +114,8 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.addData
      * @description 添加数据
-     * @param data - {oject} 待添加的数据
-     * @param options - {oject} 待添加的数据信息
+     * @param {Object} data - 待添加的数据
+     * @param  {Object} options - 待添加的数据信息
      */
     addData(data, options) {
         var _data = data;
@@ -131,9 +131,9 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.update
      * @description 更新图层
-     * @param opt - {Object} 待更新的数据<br>
-     *        data -{Object} mapv数据集<br>
-     *        options -{Object} mapv绘制参数<br>
+     * @param {Object} opt - 待更新的数据
+     * @param {Object} opt.data - mapv数据集
+     * @param {Object} opt.options - mapv绘制参数
      */
     update(opt) {
         var update = opt || {};
@@ -160,7 +160,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -336,7 +336,7 @@ export class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.clear
      * @description 清除信息
-     * @param context - {string} 指定要清除的信息
+     * @param {string} context - 指定要清除的信息
      */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);

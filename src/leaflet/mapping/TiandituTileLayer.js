@@ -9,14 +9,14 @@ import {
  * @classdesc 天地图图层类。
  * @category ThirdPartyMap
  * @extends L.supermap.wmtsLayer
- * @param options -{Object} 切片图层参数。如：<br>
- *        url - {string} 地图地址。<br>
- *        layerType - {string} 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
- *        style - {string} 图层风格。<br>
- *        format - {string} 格式。<br>
- *        isLabel - {boolean} 是否是标注图层<br>
- *        subdomains - {Array<number>} 子域名数组。<br>
- *        attribution - {string} 版权信息
+ * @param {Object} options - 切片图层参数。
+ * @param {string} options.url - 地图地址。
+ * @param {string} [options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
+ * @param {string} options.style - 图层风格。
+ * @param {string} options.format - 格式。
+ * @param {boolean} options.isLabel - 是否是标注图层。
+ * @param {Array.<number>} options.subdomains - 子域名数组。
+ * @param {string} options.attribution - 版权信息
  */
 export var TiandituTileLayer = WMTSLayer.extend({
 

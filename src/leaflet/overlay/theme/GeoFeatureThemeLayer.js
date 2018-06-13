@@ -13,14 +13,14 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @category Visualization Theme
  * @extends L.supermap.ThemeLayer
  * @category Visualization Graphic
- * @param name - {string} 专题图名
- * @param options - {Object} 需要设置得参数对象。如：<br>
- *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
- *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
- *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
- *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
- *        isAllowFeatureStyle - {boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
- *                                        默认值为： false，禁止对专题要素使用数据（feature）的 style。
+ * @param {string} name - 专题图名。
+ * @param {Object} options - 需要设置得参数对象。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
+ * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
+ * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
+ * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
+ * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
@@ -59,7 +59,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param features - {SuperMap.ServerFeature|L.supermap.themeFeature} 待填加的要素
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature)} features - 待填加的要素
      */
     addFeatures: function (features) {
         var me = this;
@@ -86,7 +86,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     * @param features - {L.features} 要删除得要素
+     * @param {L.features} features - 要删除的要素
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -107,7 +107,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param bounds - {L.bounds} 重绘得范围
+     * @param {L.bounds} bounds - 重绘的范围
      */
     redrawThematicFeatures: function (bounds) {
         var me = this;
@@ -176,7 +176,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素
-     * @param feature - {L.feature} 要创建得要素
+     * @param {L.feature} feature - 要创建得要素
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -246,7 +246,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @description 设置最大缓存数量。
-     * @param cacheCount - {number}最大缓存量。
+     * @param {number} cacheCount - 最大缓存量。
      */
     setMaxCacheCount: function (cacheCount) {
         if (isNaN(cacheCount)) {
@@ -259,7 +259,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param featureID - {number}要素ID。
+     * @param {number} featureID - 要素ID。
      */
     getShapesByFeatureID: function (featureID) {
         var me = this,
