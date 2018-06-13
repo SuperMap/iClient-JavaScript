@@ -8,20 +8,19 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @class MapvLayer
  * @classdesc MapV图层类。
  * @private
- * @param map - {Object} 地图
- * @param dataSet - {Object} 数据集
- * @param options - {Object} 参数，如：<br>
- *        paneName - {string} 窗口名。<br>
- *        enableMassClear - {} 。<br>
- *        context - {string} 内容。<br>
- *        zIndex - {number} 层级。<br>
- *        width - {number} 画布宽。<br>
- *        height - {number} 画布高。<br>
- *        mixBlendMode - {string} 最小混合模式。
- * @param mapWidth - {number} 地图宽度
- * @param mapHeight - {number} 地图高度
- * @param source - {Object} 资源
- * @extends BaiduMapLayer
+ * @param {Object} map - 地图
+ * @param {Object} dataSet - 数据集
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.paneName - 窗口名。<br>
+ * @param {string} options.context - 内容。<br>
+ * @param {number} options.zIndex - 层级。<br>
+ * @param {number} options.width - 画布宽。<br>
+ * @param {number} options.height - 画布高。<br>
+ * @param {string} options.mixBlendMode - 最小混合模式。
+ * @param {number} mapWidth - 地图宽度
+ * @param {number} mapHeight - 地图高度
+ * @param {Object} source - 资源
+ * @extends {BaiduMapLayer}
  */
 export class MapvLayer extends BaiduMapLayer {
 
@@ -61,7 +60,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.init
-     * @param options - {Object} 参数
+     * @param {Object} options - 参数
      * @description 初始化参数
      */
     init(options) {
@@ -77,7 +76,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.clickEvent
-     * @param e - {Object} 事件参数
+     * @param {Object} e - 事件参数
      * @description 点击事件
      */
     clickEvent(e) {
@@ -87,7 +86,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.mousemoveEvent
-     * @param e - {Object} 事件参数
+     * @param {Object} e - 事件参数
      * @description 鼠标移动事件
      */
     mousemoveEvent(e) {
@@ -170,8 +169,8 @@ export class MapvLayer extends BaiduMapLayer {
     /**
      * @function MapvLayer.prototype.addData
      * @description 添加数据
-     * @param data - {oject} 待添加的数据
-     * @param options - {oject} 待添加的数据信息
+     * @param {Object} data - 待添加的数据
+     * @param {Object} options - 待添加的数据信息
      */
     addData(data, options) {
         var _data = data;
@@ -185,9 +184,8 @@ export class MapvLayer extends BaiduMapLayer {
     /**
      * @function MapvLayer.prototype.update
      * @description 更新图层
-     * @param opt - {Object} 待更新的数据<br>
-     *        data -{Object} mapv数据集<br>
-     *        options -{Object} mapv绘制参数<br>
+     * @param {Object} opt - 待更新的数据<br>
+     * @param {Object} opt.data - mapv数据集<br>
      */
     update(opt) {
         var update = opt || {};
@@ -216,7 +214,7 @@ export class MapvLayer extends BaiduMapLayer {
     /**
      * @function MapvLayer.prototype.removeData
      * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      */
     removeData(filter) {
         if (!this.dataSet) {

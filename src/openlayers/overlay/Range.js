@@ -6,23 +6,23 @@ import {GeoFeature} from './theme/GeoFeature';
  * @class ol.source.Range
  * @category  Visualization Theme
  * @classdesc 分段专题图图层源。
- * @param name - {string} 名称
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        themeField - {string}  指定创建专题图字段。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends ol.source.GeoFeature
+ * @param {string} name - 名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {(string|Object)} opt_options.attributions - 版权信息。 </br>
+ * @param {string} opt_options.logo - Logo</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {string} opt_options.themeField - 指定创建专题图字段。<br>
+ * @param {Object} opt_options.style - 专题图样式。<br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {ol.source.GeoFeature}
  */
 export class Range extends GeoFeature {
 
@@ -50,7 +50,7 @@ export class Range extends GeoFeature {
      * @private
      * @function ol.source.Range.prototype.createThematicFeature
      * @description 创建专题图要素
-     * @param feature -{Object} 要创建的专题图形要素
+     * @param {Object} feature - 要创建的专题图形要素
      */
     createThematicFeature(feature) {
         //赋 style
@@ -78,7 +78,7 @@ export class Range extends GeoFeature {
      * @private
      * @function ol.source.Range.prototype.getStyleByData
      * @description 通过数据获取style
-     * @param fea -{Object} 要素数据
+     * @param {Object} fea - 要素数据
      */
     getStyleByData(fea) {
         var style = {};

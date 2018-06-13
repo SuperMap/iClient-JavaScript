@@ -6,33 +6,23 @@ import {Theme} from './theme/Theme';
  * @class ol.source.Graph
  * @category  Visualization Theme
  * @classdesc 统计专题图图层基类。
- * @param chartsType -{string} 图表类别
- * @param name - {string} 图层名称
- * @param opt_options - {Object} 参数。如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        themeFields - {string} 指定创建专题图字段。 <br>
- *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
- *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        symbolSetting - {Object} 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：
- *  * Symbolizer properties:
- *  * codomain - {Array{number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- *  * maxR - {number} 圆形的最大半径。
- *  * minR - {number} 圆形的最小半径。
- *  * fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。
- *  * circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
- *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- *  * circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。
- *  * circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- *  * circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- * @extends ol.source.Theme
+ * @param {string} chartsType - 图表类别
+ * @param {string} name - 图层名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {string|Object} opt_options.attributions - 版权信息。 </br>
+ * @param {string} opt_options.logo - Logo</br>
+ * @param opt_options.projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ * @param {number} opt_options.ratio - 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ * @param {Array.<number>} opt_options.resolutions - 分辨率数组。</br>
+ * @param {string} opt_options.themeFields - 指定创建专题图字段。 <br>
+ * @param {boolean} opt_options.isOverLay - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {Object} opt_options.symbolSetting - 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>）
+ * @extends {ol.source.Theme}
  */
 export class Graph extends Theme {
 
@@ -66,7 +56,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
-     * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
+     * @param {string} chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。
      */
     setChartsType(chartsType) {
         this.chartsType = chartsType;
@@ -76,7 +66,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param features - {Object} 待填加得要素
+     * @param {Object} features - 待填加得要素
      */
     addFeatures(features) {
         var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -96,7 +86,7 @@ export class Graph extends Theme {
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param extent - {Object} 重绘的范围
+     * @param {Object} extent - 重绘的范围
      *
      */
     redrawThematicFeatures(extent) {
@@ -139,7 +129,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.createThematicFeature
      * @description  向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象
-     * @param feature - {Object} 待填加得要素
+     * @param {Object} feature - 待填加得要素
      *
      */
     createThematicFeature(feature) {
@@ -259,7 +249,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.getShapesByFeatureID
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param featureID - {number} 要素ID。
+     * @param {number} featureID - 要素ID。
      */
     getShapesByFeatureID(featureID) {
         var list = [];
@@ -279,8 +269,8 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
-     * @param quadrilateral - {Array<Object>} 四边形节点数组。
-     * @param quadrilateral2 - {Array<Object>} 第二个四边形节点数组。
+     * @param {Array.<Object>} quadrilateral - 四边形节点数组。
+     * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
      */
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
@@ -322,8 +312,8 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。(射线法)
-     * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param poly - {Array<Object>} 多边形节点数组。
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param {Array.<Object>} poly - 多边形节点数组。
      */
     isPointInPoly(pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
@@ -337,8 +327,8 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.isChartInMap
      * @description  判断图表是否在地图里。
-     * @param mapPxBounds - {SuperMap.Bounds} 地图像素范围。
-     * @param chartPxBounds - {Array<Object>} 图表范围的四边形节点数组。
+     * @param {SuperMap.Bounds} mapPxBounds - 地图像素范围。
+     * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
      */
     isChartInMap(mapPxBounds, chartPxBounds) {
         var mb = mapPxBounds;
@@ -366,7 +356,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature
-     * @param features - {Object} 要删除的要素
+     * @param {Object} features - 要删除的要素
      */
     removeFeatures(features) {
         this.clearCache();

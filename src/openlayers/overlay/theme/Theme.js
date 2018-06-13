@@ -18,18 +18,18 @@ import {ThemeFeature} from './ThemeFeature';
 /**
  * @class ol.source.Theme
  * @classdesc 专题图基类。
- * @param name - {string} 专题图图层名称
- * @param opt_option-{Object} 可选参数，如：</br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前openlayers的map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @param {string} name - 专题图图层名称
+ * @param {Object} opt_option - 参数。</br>
+ * @param {string} opt_option.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_option.map - 当前openlayers的map对象。</br>
+ * @param {number} opt_option.opacity - 图层透明度。</br>
+ * @param {(string|Object)} opt_option.attributions - 版权信息。 </br>
+ * @param {string} opt_option.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_option.projection - 投影信息。</br>
+ * @param {number} [opt_option.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_option.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_option.state - 资源状态。
+ * @extends {ol.source.ImageCanvas}
  */
 export class Theme extends ol.source.ImageCanvas {
 
@@ -141,7 +141,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
      * @description 销毁某个要素
-     * @param features -{Object} 将被销毁的要素
+     * @param {Object} features - 将被销毁的要素
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -158,8 +158,8 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.setOpacity
-     * @description 设置图层的不透明度,取值[0-1]之间。
-     * @param opacity - {number} 不透明度
+     * @description 设置图层的不透明度，取值[0-1]之间。
+     * @param {number} opacity - 不透明度
      */
     setOpacity(opacity) {
         if (opacity !== this.opacity) {
@@ -176,8 +176,8 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
-     * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+     * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
      */
@@ -187,7 +187,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.removeFeatures
-     * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除feature的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
@@ -262,8 +262,8 @@ export class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
-     * @param property - {string} feature 的某个属性名称。
-     * @param value - {string} property 所对应的值。
+     * @param {string} property - feature 的某个属性名称。
+     * @param {string} value - property 所对应的值。
      * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
     getFeatureBy(property, value) {
@@ -281,7 +281,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.getFeatureById
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param featureId - {string} 矢量要素的属性 id。
+     * @param {string} featureId - 矢量要素的属性 id。
      * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
@@ -291,9 +291,9 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param attrName - {string} 属性的 key。
-     * @param attrValue - {string} 矢量要素的属性 id。
-     * @return {Array<SuperMap.Feature.Vector>}一个匹配的 feature 数组。
+     * @param {string} attrName - 属性的 key。
+     * @param {string} attrValue - 矢量要素的属性 id。
+     * @return {Array.<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -313,7 +313,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
-     * @param extent - {Array} 当前级别下计算出的地图范围
+     * @param {Array} extent - 当前级别下计算出的地图范围
      */
     redrawThematicFeatures(extent) { //eslint-disable-line no-unused-vars
     }
@@ -321,8 +321,8 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.on
      * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
-     * @param event - {string} 事件名称。
-     * @param callback - {Function} 事件回调函数。
+     * @param {string} event - 事件名称。
+     * @param {RequestCallback} callback - 事件回调函数。
      */
     on(event, callback) {
         var cb = callback;
@@ -339,8 +339,8 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.fire
      * @description 添加专题要素事件监听
-     * @param type - {string} 事件类型。
-     * @param event - {string} 事件名称。
+     * @param {string} type - 事件类型。
+     * @param {string} event - 事件名称。
      */
     fire(type, event) {
         if (!this.offset) {
@@ -406,8 +406,8 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.un
      * @description 移除专题要素事件监听
-     * @param event - {string} 事件名称。
-     * @param callback - {Function} 事件回调函数。
+     * @param {string} event - 事件名称。
+     * @param {RequestCallback} callback - 事件回调函数。
      */
     un(event, callback) {
         var cb = callback;
@@ -443,7 +443,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.getLocalXY
      * @description 获取坐标系统
-     * @param coordinate - {Object} 坐标位置。
+     * @param {Object} coordinate - 坐标位置。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
@@ -471,9 +471,9 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.rotate
      * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-     * @param pixelP - {number} 像素坐标点位置。
-     * @param rotation - {number} 旋转角度
-     * @param center - {number} 中心位置。
+     * @param {number} pixelP - 像素坐标点位置。
+     * @param {number} rotation - 旋转角度
+     * @param {number} center - 中心位置。
      */
     rotate(pixelP, rotation, center) {
         var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
@@ -484,10 +484,10 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.scale
      * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
-     * @param pixelP - {Object} 像素点
-     * @param center - {Object} 中心点
-     * @param scaleRatio - {number} 缩放倍数
-     * @return {Array<number>} 返回数组形比例
+     * @param {Object} pixelP - 像素点
+     * @param {Object} center - 中心点
+     * @param {number} scaleRatio - 缩放倍数
+     * @return {Array.<number>} 返回数组形比例
      */
     scale(pixelP, center, scaleRatio) {
         var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
@@ -498,7 +498,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素
-     * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {
@@ -537,8 +537,8 @@ export class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
-     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+     * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);

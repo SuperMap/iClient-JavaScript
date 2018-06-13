@@ -16,7 +16,7 @@ export class Util {
     /**
      * @function ol.supermap.Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式
-     * @param smObj - {Object} 待转参数
+     * @param {Object} smObj - 待转参数
      */
     static toGeoJSON(smObj) {
         if (smObj) {
@@ -28,7 +28,7 @@ export class Util {
     /**
      * @function ol.supermap.Util.toSuperMapGeometry
      * @description 将 geoJSON 对象转为SuperMap几何图形
-     * @param geoJSON - {Object} geoJSON 对象
+     * @param {Object} geoJSON - geoJSON 对象
      */
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
@@ -41,10 +41,10 @@ export class Util {
     /**
      * @function ol.supermap.Util.resolutionToScale
      * @description 通过分辨率计算比例尺
-     * @param resolution - {number} 分辨率
-     * @param dpi - {number} 屏幕分辨率
-     * @param mapUnit - {string} 地图单位
-     * @return {number} 比例尺
+     * @param {number} resolution - 分辨率
+     * @param {number} dpi - 屏幕分辨率
+     * @param {string} mapUnit - 地图单位
+     * @returns {number} 比例尺
      */
     static resolutionToScale(resolution, dpi, mapUnit) {
         var inchPerMeter = 1 / 0.0254;
@@ -58,8 +58,8 @@ export class Util {
     /**
      * @function ol.supermap.Util.toSuperMapBounds
      * @description 转为SuperMapBounds格式
-     * @param bounds {Array<number>} bounds数组
-     * @return {SuperMap.Bounds} 返回SuperMap的Bounds对象
+     * @param {Array.<number>} bounds - bounds数组
+     * @returns {SuperMap.Bounds} 返回SuperMap的Bounds对象
      */
     static toSuperMapBounds(bounds) {
         return new Bounds(
@@ -73,8 +73,8 @@ export class Util {
     /**
      * @function ol.supermap.Util.toProcessingParam
      * @description 将Region节点数组转为Processing服务需要的分析参数
-     * @param points - Region各个节点数组
-     * @return processing服务裁剪、查询分析的分析参数
+     * @param {Array} points - Region各个节点数组
+     * @returns processing服务裁剪、查询分析的分析参数
      */
     static toProcessingParam(points) {
         var geometryParam = {};
@@ -98,10 +98,10 @@ export class Util {
     /**
      * @function ol.supermap.Util.scaleToResolution
      * @description 通过比例尺计算分辨率
-     * @param scale - {number} 比例尺
-     * @param dpi - {number} 屏幕分辨率
-     * @param mapUnit - {string} 地图单位
-     * @return {number} 分辨率
+     * @param {number} scale - 比例尺
+     * @param {number} dpi - 屏幕分辨率
+     * @param {string} mapUnit - 地图单位
+     * @returns {number} 分辨率
      */
     static scaleToResolution(scale, dpi, mapUnit) {
         var inchPerMeter = 1 / 0.0254;
@@ -115,8 +115,8 @@ export class Util {
      * @private
      * @function ol.supermap.Util.getMeterPerMapUnit
      * @description 获取每地图单位多少米
-     * @param mapUnit mapUnit - {string} 地图单位
-     * @return {number} 返回每地图单位多少米
+     * @param {string} mapUnit - 地图单位
+     * @returns {number} 返回每地图单位多少米
      */
     static getMeterPerMapUnit(mapUnit) {
         var earchRadiusInMeters = 6378137;
@@ -141,8 +141,8 @@ export class Util {
     /**
      * @function ol.supermap.Util.isArray
      * @description 判断是否为数组格式
-     * @param obj - {Object} 待判断对象
-     * @return {boolean} 是否是数组
+     * @param {Object} obj - 待判断对象
+     * @returns {boolean} 是否是数组
      */
     static isArray(obj) {
         return Object.prototype.toString.call(obj) == '[object Array]'
@@ -151,8 +151,8 @@ export class Util {
     /**
      * @function ol.supermap.Util.Csv2GeoJSON
      * @description 将 csv 格式转为 GeoJSON
-     * @param csv - {Object} csv 对象
-     * @param options - {Object} 转换参数
+     * @param {Object} csv - csv 对象
+     * @param {Object} options - 转换参数
      */
     static Csv2GeoJSON(csv, options) {
         var defaultOptions = {
@@ -236,8 +236,8 @@ export class Util {
     /**
      * @function ol.supermap.Util.createCanvasContext2D
      * @description 创建2D画布
-     * @param opt_width - {number} 画布宽度
-     * @param opt_height - {number} 画布高度
+     * @param {number} opt_width - 画布宽度
+     * @param {number} opt_height - 画布高度
      */
     static createCanvasContext2D(opt_width, opt_height) {
         var canvas = document.createElement('CANVAS');

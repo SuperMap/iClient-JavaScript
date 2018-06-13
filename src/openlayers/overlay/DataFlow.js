@@ -5,8 +5,8 @@ import {DataFlowService} from "../services/DataFlowService";
  * @class ol.source.DataFlow
  * @category  iServer DataFlow
  * @classdesc 实时数据图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
+ * @param {Object} opt_options - 参数。
+ * @extends {ol.source.Vector}
  */
 export class DataFlow extends ol.source.Vector {
 
@@ -35,7 +35,7 @@ export class DataFlow extends ol.source.Vector {
     /**
      * @function ol.source.DataFlow.prototype.setPrjCoordSys
      * @description 设置坐标参考系
-     * @param prjCoordSys - {Object} 参考系
+     * @param {Object} prjCoordSys - 参考系
      */
     setPrjCoordSys(prjCoordSys) {
         this.dataService.setPrjCoordSys(prjCoordSys);
@@ -46,7 +46,7 @@ export class DataFlow extends ol.source.Vector {
     /**
      * @function ol.source.DataFlow.prototype.setExcludeField
      * @description 设置唯一字段
-     * @param excludeField - {Object} 排除字段。
+     * @param {Object} excludeField - 排除字段。
      */
     setExcludeField(excludeField) {
         this.dataService.setExcludeField(excludeField);
@@ -57,7 +57,7 @@ export class DataFlow extends ol.source.Vector {
     /**
      * @function ol.source.DataFlow.prototype.setGeometry
      * @description 设置几何图形
-     * @param geometry - {Object} 要素图形
+     * @param {Object} geometry - 要素图形
      */
     setGeometry(geometry) {
         this.dataService.setGeometry(geometry);

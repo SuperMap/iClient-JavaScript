@@ -2,14 +2,13 @@
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc Mapv渲染器。
  * @private
- * @param options - {Object} 可选参数。如：<br>
- *        paneName - {string} 窗口名。<br>
- *        enableMassClear - {} 。<br>
- *        context - {string} 内容。<br>
- *        zIndex - {number} 层级。<br>
- *        width - {number} 画布宽。<br>
- *        height - {number} 画布高。<br>
- *        mixBlendMode - {string} 最小混合模式。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.paneName - 窗口名。<br>
+ * @param {string} options.context - 内容。<br>
+ * @param {number} options.zIndex - 层级。<br>
+ * @param {number} options.width - 画布宽。<br>
+ * @param {number} options.height - 画布高。<br>
+ * @param {string} options.mixBlendMode - 最小混合模式。
  */
 export class MapvCanvasLayer {
 
@@ -53,8 +52,8 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.resize
-     * @param mapWidth - {number} 地图宽度
-     * @param mapHeight - {number} 地图高度
+     * @param {number} mapWidth - 地图宽度
+     * @param {number} mapHeight - 地图高度
      * @description 调整地图大小
      */
     resize(mapWidth, mapHeight) {
@@ -74,7 +73,7 @@ export class MapvCanvasLayer {
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
      * @description 获取容器
-     * @return {Element} 包含Mapv图层的dom对象
+     * @returns {Element} 包含Mapv图层的dom对象
      */
     getContainer() {
         return this.canvas;
@@ -82,7 +81,7 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
-     * @param zIndex - {number} 层级参数
+     * @param {number} zIndex - 层级参数
      * @description 设置图层层级
      */
     setZIndex(zIndex) {

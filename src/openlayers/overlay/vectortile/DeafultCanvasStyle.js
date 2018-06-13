@@ -77,7 +77,7 @@ export var polygonStyle = {
  * @private
  */
 export var DeafultCanvasStyle = {
-    /*
+    /**
      * @constant ol.supermap.DeafultCanvasStyle.prototype.TEXT
      * @description 默认文本样式
      */

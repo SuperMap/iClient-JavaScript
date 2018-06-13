@@ -5,22 +5,22 @@ import {Theme} from './Theme';
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理几何专题要素型专题图层基类。
- * @param name - {string} 图层名称
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends ol.source.Theme
+ * @param {string} name - 图层名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {(string|Object)} opt_options.attributions - 版权信息。</br>
+ * @param {string} opt_options.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} - 资源状态。<br>
+ * @param {Object} opt_options.style - 专题图样式。<br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {ol.source.Theme}
  */
 
 export class GeoFeature extends Theme {
@@ -61,7 +61,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
      * @description 添加要素
-     * @param features - {Object} 要素对象
+     * @param {Object} features - 要素对象
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -79,7 +79,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param features - {Object} 要删除的要素对象
+     * @param {Object} features - 要删除的要素对象
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -98,7 +98,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
-     * @param extent -{Object} 视图范围数据
+     * @param {Object} extent - 视图范围数据
      */
     redrawThematicFeatures(extent) {
         //获取高亮专题要素对应的用户 id
@@ -174,7 +174,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.createThematicFeature
      * @description 创建专题要素
-     * @param feature - {Object} 要素对象
+     * @param {Object} feature - 要素对象
      */
     createThematicFeature(feature) {
         var style = CommonUtil.copyAttributesWithClip(this.style);
@@ -212,7 +212,7 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.clear
-     * @description  清除的内容包括数据（features） 、专题要素、缓存。
+     * @description  清除的内容包括数据（features）、专题要素、缓存。
      */
     clear() {
         this.renderer.clearAll();
@@ -224,7 +224,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.getCacheCount
      * @description 获取当前缓存数量。
-     * @return {Number} 返回当前缓存数量。
+     * @returns {Number} 返回当前缓存数量。
      */
     getCacheCount() {
         return this.cacheFields.length;
@@ -232,7 +232,7 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @param cacheCount -{number} 缓存总数
+     * @param {number} cacheCount - 缓存总数
      * @description 设置最大缓存条数
      */
     setMaxCacheCount(cacheCount) {
@@ -244,7 +244,7 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @param featureID -{number} 要素ID。
+     * @param {number} featureID - 要素ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */
     getShapesByFeatureID(featureID) {

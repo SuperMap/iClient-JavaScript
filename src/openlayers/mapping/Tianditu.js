@@ -4,18 +4,18 @@ import ol from 'openlayers';
  * @class ol.source.Tianditu
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
- * @param opt_options - {Object} 参数。
- *        url - {string} 服务地址。<br>
- *        layerType - {string} 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
- *        attributions - {string} 版权描述信息。<br>
- *        cacheSize - {number} 缓冲大小。<br>
- *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
- *        style - {string} 图层风格。<br>
- *        format - {string} 格式。<br>
- *        isLabel - {boolean} 是否是标注图层<br>
- *        opaque - {boolean} 是否透明。<br>
- *        tileProxy - {string} 代理地址
- * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
+ * @param {Object} opt_options - 参数。
+ * @param {string} opt_options.url - 服务地址。<br>
+ * @param {string} opt_options.layerType - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
+ * @param {string} opt_options.attributions - 版权描述信息。<br>
+ * @param {number} opt_options.cacheSize - 缓冲大小。<br>
+ * @param {function} opt_options.tileLoadFunction - 切片加载完成后执行函数。<br>
+ * @param {string} opt_options.style - 图层风格。<br>
+ * @param {string} opt_options.format - 格式。<br>
+ * @param {boolean} opt_options.isLabel - 是否是标注图层<br>
+ * @param {boolean} opt_options.opaque - 是否透明。<br>
+ * @param {string} opt_options.tileProxy - 代理地址
+ * @extends {ol.source.WMTS}
  */
 export class Tianditu extends ol.source.WMTS {
     constructor(opt_options) {
@@ -83,8 +83,8 @@ export class Tianditu extends ol.source.WMTS {
     /**
      * @function ol.source.Tianditu.getTileGrid
      * @description 获取瓦片网格
-     * @param projection - {Object} 投影参考对象
-     * @return {ol.tilegrid.WMTS} 返回瓦片网格对象
+     * @param {Object} projection - 投影参考对象
+     * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
      */
     static getTileGrid(projection) {
         if (projection === "EPSG:4326" || projection === "EPSG:4490") {
@@ -97,7 +97,7 @@ export class Tianditu extends ol.source.WMTS {
     /**
      * @function ol.source.Tianditu.default4326TileGrid
      * @description 获取默认4326网格瓦片
-     * @return {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
+     * @returns {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
      */
     static default4326TileGrid() {
         var tdt_WGS84_resolutions = [];
@@ -119,7 +119,7 @@ export class Tianditu extends ol.source.WMTS {
     /**
      * @function ol.source.Tianditu.default3857TileGrid
      * @description 获取默认3857网格瓦片
-     * @return {ol.tilegrid.WMTS} 返回默认3857网格瓦片对象
+     * @returns {ol.tilegrid.WMTS} 返回默认3857网格瓦片对象
      */
     static default3857TileGrid() {
         var tdt_Mercator_resolutions = [];

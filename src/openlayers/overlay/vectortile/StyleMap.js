@@ -64,7 +64,7 @@ export var polygonMap = {
  * @description 地图样式
  */
 export var StyleMap = {
-    /*
+    /**
      * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
      * @description CartoCSS中的style属性名与Canvas的style属性名的对应表
      */
@@ -99,7 +99,7 @@ export var StyleMap = {
         "POLYGON": polygonMap,
         "MULTIPOLYGON": polygonMap
     },
-    /*
+    /**
      * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
      * @description 服务端传过来的style属性名与Canvas的style属性名的对应表
      */
@@ -201,7 +201,7 @@ export var StyleMap = {
             defaultValue: 0
         }
     },
-    /*
+    /**
      * @constant ol.supermap.StyleMap.prototype.CartoCompOpMap
      * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
      */

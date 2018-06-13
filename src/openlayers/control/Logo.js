@@ -8,16 +8,16 @@ ol.supermap.control = ol.supermap.control || {};
  * @class ol.supermap.control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
- * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
+ * @extends {ol.control.Control}
  * @example
  *      var control = new ol.supermap.control.Logo();
  *      map.addControl(control);
- * @param options - {Object} logo控件配置项。配置项有如下:</br>
- *        imageUrl - {string} logo图片地址。</br>
- *        width - {number} logo图片宽。</br>
- *        height - {number} logo图片高。</br>
- *        link - {string} 跳转链接。</br>
- *        alt - {string} logo图片失效时显示文本。
+ * @param {Object} options - logo控件配置项。</br>
+ * @param {string} options.imageUrl - logo图片地址。</br>
+ * @param {number} options.width - logo图片宽。</br>
+ * @param {number} options.height - logo图片高。</br>
+ * @param {string} options.link - 跳转链接。</br>
+ * @param {string} options.alt - logo图片失效时显示文本。
  */
 export class Logo extends ol.control.Control {
 
@@ -32,7 +32,7 @@ export class Logo extends ol.control.Control {
         this.options = options;
         this.element = options.element = initLayerout.call(this);
 
-        /*
+        /**
          * @function ol.supermap.control.Logo.prototype.initLayerout
          * @description 初始化图层信息
          */
@@ -68,7 +68,7 @@ export class Logo extends ol.control.Control {
             return div;
         }
 
-        /*
+        /**
          * @function ol.supermap.control.Logo.prototype.setDivStyle
          * @div 获取div对象
          * @description 设置对象style

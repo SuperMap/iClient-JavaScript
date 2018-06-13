@@ -4,10 +4,10 @@ import ol from 'openlayers';
  * @class ol.source.BaiduMap
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
- * @param opt_options - {Object} 创建地图参数可选参数：<br>
- *        url - {string} 服务地址。<br>
- *        tileProxy - {string} 代理地址
- * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} url - 服务地址。<br>
+ * @param {string} tileProxy - 代理地址
+ * @extends {ol.source.TileImage}
  */
 export class BaiduMap extends ol.source.TileImage {
     constructor(opt_options) {
@@ -70,7 +70,7 @@ export class BaiduMap extends ol.source.TileImage {
     /**
      * @function ol.source.BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网
-     * @return {ol.tilegrid.TileGrid} 返回瓦片格网对象
+     * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象
      */
     static defaultTileGrid() {
         var tileGird = new ol.tilegrid.TileGrid({

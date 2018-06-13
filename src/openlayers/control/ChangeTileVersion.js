@@ -8,16 +8,16 @@ ol.supermap.control = ol.supermap.control || {};
  * @class ol.supermap.control.ChangeTileVersion
  * @category  Control
  * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置
- * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
- * @param options -{options} 可选参数。如：<br>
- *        title - {string} 提示信息。<br>
- *        tooltip - {string} 提示显示位置 top | right | bottom | left。<br>
- *        collapsed - {boolean} 是否折叠。<br>
- *        lastText - {string} 上一个版本的按钮布局。<br>
- *        nextText - {string} 下一个版本的按钮布局。<br>
- *        ico - {string} 控件显示的logo。<br>
- *        orientation - {string} 方向horizontal|vertical。<br>
- *        switch - {boolean} 是否显示上/下一个版本切换控件
+ * @extends {ol.control.Control}
+ * @param {options} options -参数。<br>
+ * @param {string} options.title - 提示信息。<br>
+ * @param {string} options.tooltip - 提示显示位置 top | right | bottom | left。<br>
+ * @param {boolean} options.collapsed - 是否折叠。<br>
+ * @param {string} options.lastText - 上一个版本的按钮布局。<br>
+ * @param {string} options.nextText - 下一个版本的按钮布局。<br>
+ * @param {string} options.ico - 控件显示的logo。<br>
+ * @param {string} options.orientation - 方向horizontal|vertical。<br>
+ * @param {boolean} options.switch - 是否显示上/下一个版本切换控件
  * @example
  * var control = new ol.supermap.control.ChangeTileVersion({
  *           layer: baseLayer,
@@ -69,7 +69,7 @@ export class ChangeTileVersion extends ol.control.Control {
             this.setLayer(options.layer);
         }
 
-        /*
+        /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.initLayout
          * @description 初始化
          */
@@ -143,7 +143,7 @@ export class ChangeTileVersion extends ol.control.Control {
                 this._sliderContainer.style.width = 150 + 'px';
             }
 
-            /*
+            /**
              * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
              * @description 为元素添加事件
              */
@@ -167,13 +167,13 @@ export class ChangeTileVersion extends ol.control.Control {
             return this._container;
         }
 
-        /*
+        /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.createElement
          * @description 新建元素
-         * @param tagName -{string} 标签名
-         * @param className -{string} 类名
-         * @param container -{Object} 容器
-         * @return {object|Element} 元素
+         * @param {string} tagName - 标签名
+         * @param {string} className - 类名
+         * @param {Object} container - 容器
+         * @returns {object|Element} 元素
          */
         function createElement(tagName, className, container) {
             var el = document.createElement(tagName);
@@ -185,14 +185,14 @@ export class ChangeTileVersion extends ol.control.Control {
             return el;
         }
 
-        /*
+        /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
          * @description 为元素添加事件
-         * @param obj -{Object} 事件对象集
-         * @param type -{string} 事件类型
-         * @param fn -{Object} 容器
-         * @param context -{Object} 当前环境
-         * @return {addDomEvent} 添加的事件
+         * @param {Object} obj - 事件对象集
+         * @param {string} type - 事件类型
+         * @param {Object} fn -容器
+         * @param {Object} context -当前环境
+         * @returns {addDomEvent} 添加的事件
          */
         function addDomEvent(obj, type, fn, context) {
             var handler = function (e) {
@@ -257,7 +257,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version -{Object} 版本信息
+     * @param {Object} version - 版本信息
      */
     setContent(version) {
         var content = version || {};
@@ -267,7 +267,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setVersionName
      * @description 设置版本号
-     * @param content -{string} 版本内容
+     * @param {string} content -版本内容
      */
     setVersionName(content) {
         var value = content;
@@ -281,8 +281,8 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息
-     * @param tooltip -{string} 工具提示
-     * @return {this} this
+     * @param {string} tooltip - 工具提示
+     * @returns {this} this
      */
     setToolTip(tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -292,7 +292,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.updateLength
      * @description 更新进度条长度
-     * @param length -{number} 进度条长度
+     * @param {number} length - 进度条长度
      */
     updateLength(length) {
         if (length > 0) {
@@ -305,7 +305,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setLayer
      * @description 绑定图层
-     * @param layer -{Object} 图层
+     * @param {Object} layer - 图层
      */
     setLayer(layer) {
         if (layer) {
@@ -327,7 +327,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度
-     * @param tileVersions -{Object} 待更新的切片版本
+     * @param {Object} tileVersions - 待更新的切片版本
      */
     update(tileVersions) {
         this.tileVersions = tileVersions;
@@ -358,7 +358,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本，第一次不进行加减，是无版本的状态
-     * @return {this} this
+     * @returns {this} this
      */
     nextTilesVersion() {
         if (this.firstLoad) {
@@ -377,7 +377,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion
      * @description 获取上一个版本信息
-     * @return {this} this
+     * @returns {this} this
      */
     lastTilesVersion() {
         if (parseInt(this.slider.value) < this.min + 1) {
@@ -391,7 +391,7 @@ export class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.tilesVersion
      * @description 根据指定版本号请求版本
-     * @param version -{Object} 版本信息
+     * @param {Object} version - 版本信息
      */
     tilesVersion(version) {
         var layer = this.options.layer,

@@ -21,8 +21,8 @@ ol.supermap = ol.supermap || {};
  * @class ol.source.VectorTileSuperMapRest
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
- * @param options -{Object} 参数。
- * @extends ol.source.VectorTile{@linkdoc-openlayers/ol.source.VectorTile}
+ * @param {Object} options - 参数。
+ * @extends {ol.source.VectorTile}
  */
 export class VectorTileSuperMapRest extends ol.source.VectorTile {
 
@@ -158,8 +158,8 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
          * @private
          * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片
-         * @param tile -{onject} 瓦片类
-         * @param tileUrl -{string} 瓦片地址
+         * @param {Object} tile -瓦片类
+         * @param {string} tileUrl - 瓦片地址
          */
         function tileLoadFunction(tile, tileUrl) {
             var regWidth = new RegExp("(^|\\?|&)" + 'width' + "=([^&]*)(\\s|&|$)");
@@ -215,8 +215,8 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
 
     /**
      * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
-     * @param url - {string} 地址
-     * @param mapJSONObj - {Object} 地图JSON
+     * @param {string} url - 地址
+     * @param {Object} mapJSONObj - 地图JSON
      * @description 获取地图JSON信息
      */
     static optionsFromMapJSON(url, mapJSONObj) {

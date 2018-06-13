@@ -13,8 +13,8 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类
- * @param geometry - {Object} 要量算的几何对象
- * @param attributes - {Object} 属性
+ * @param {Object} geometry - 要量算的几何对象
+ * @param {Object} attributes - 属性
  */
 export class ThemeFeature {
 

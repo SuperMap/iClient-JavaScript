@@ -13,23 +13,23 @@ import {Util} from '../core/Util';
  * @class ol.source.TileSuperMapRest
  * @category iServer Map
  * @classdesc SuperMap iServer TileImage图层源。
- * @param options - {Object} 可选参数。如：<br>
- *        url - {string} 服务地址。<br>
- *        tileGrid - [{ol.tilegrid.TileGrid}}]{@linkdoc-openlayers/ol.tilegrid.TileGrid} 瓦片网格对象。<br>
- *        serverType - {SuperMap.ServerType} 服务类型。<br>
- *        redirect - {boolean} 是否重定向，默认为false。<br>
- *        transparent - {boolean} 瓦片是否透明，默认为true。<br>
- *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
- *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
- *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
- *        clipRegion - [{ol.geom.Geometry}]{@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
- *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
- *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。<br>
- *        tileProxy - {string} 代理地址。<br>
- *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
- * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.url - 服务地址。<br>
+ * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} options.tileGrid - 瓦片网格对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务类型。<br>
+ * @param {boolean} [options.redirect=false] - 是否重定向。<br>
+ * @param {boolean} [options.transparent=true] - 瓦片是否透明。<br>
+ * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存。<br>
+ * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
+ * @param {string} options.layersID - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
+ * @param {boolean} options.clipRegionEnabled - 是否只地图只显示该区域覆盖的部分。true表示地图只显示该区域覆盖的部分。<br>
+ * @param {(ol.geom.Geometry|ol.geom.Geometry)} options.clipRegion - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
+ * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
+ * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
+ * @param {string} options.tileversion - 切片版本名称，_cache 为 true 时有效。<br>
+ * @param {string} options.tileProxy - 代理地址。<br>
+ * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @extends {ol.source.TileImage}
  */
 export class TileSuperMapRest extends ol.source.TileImage {
 
@@ -244,7 +244,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
     /**
      * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
-     * @param tileSets - {Object} 瓦片集合
+     * @param {Object} tileSets - 瓦片集合
      */
     setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
@@ -304,7 +304,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
     /**
      * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
      * @description 更新当前切片集索引，目前主要提供给控件使用。
-     * @param index - {number} 索引号
+     * @param {number} index - 索引号
      */
     updateCurrentTileSetsIndex(index) {
         this.tempIndex = index;
@@ -313,8 +313,8 @@ export class TileSuperMapRest extends ol.source.TileImage {
     /**
      * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号,并重绘。
-     * @param version - {Object} 版本信息
-     * @return {boolean} 是否成功
+     * @param {Object} version - 版本信息
+     * @returns {boolean} 是否成功
      */
     mergeTileVersionParam(version) {
         if (version) {
@@ -329,8 +329,8 @@ export class TileSuperMapRest extends ol.source.TileImage {
     /**
      * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
      * @description 从 MapJSON 中获取参数对象
-     * @param url - {string} 地址
-     * @param mapJSONObj -{Object} 地图JSON对象
+     * @param {string} url - 地址
+     * @param {Object} mapJSONObj - 地图JSON对象
      */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};
@@ -383,11 +383,11 @@ export class TileSuperMapRest extends ol.source.TileImage {
     /**
      * @function  ol.source.TileSuperMapRest.createTileGrid
      * @description 创建切片网格
-     * @param extent - {number} 长度
-     * @param maxZoom - {number} 最大的放大级别
-     * @param minZoom - {number} 最小的放大级别
-     * @param tileSize - {number} 瓦片的尺寸
-     * @param origin - {number} 原点
+     * @param {number} extent - 长度
+     * @param {number} maxZoom - 最大的放大级别
+     * @param {number} minZoom - 最小的放大级别
+     * @param {number} tileSize - 瓦片的尺寸
+     * @param {number} origin - 原点
      * */
     static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
         var tilegrid = ol.tilegrid.createXYZ({

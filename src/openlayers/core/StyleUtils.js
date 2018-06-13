@@ -15,10 +15,10 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getValidStyleFromLayerInfo
      * @description 通过图层信息获取有效的样式
-     * @param layerInfo - {Object} 图层信息
-     * @param feature - [{ol.Feature}]{@linkdoc-openlayers/ol.Feature} 要素
-     * @param url - {string} 图层数据地址
-     * @return {ol.style.Style} 返回图层样式
+     * @param {Object} layerInfo - 图层信息
+     * @param {ol.Feature} feature - 要素
+     * @param {string} url - 图层数据地址
+     * @returns {ol.style.Style} 返回图层样式
      */
     static getValidStyleFromLayerInfo(layerInfo, feature, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
@@ -230,12 +230,12 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom -{number} 缩放级别
-     * @param scale - {number} 比例尺
-     * @param shader -{Array} 渲染器对象数组
-     * @param feature -{Object} 要素
-     * @param fromServer -{string} 服务源
-     * @param url -{string} 地址
+     * @param {number} zoom -缩放级别
+     * @param {number} scale - 比例尺
+     * @param {Array} shader - 渲染器对象数组
+     * @param {Object} feature - 要素
+     * @param {string} fromServer - 服务源
+     * @param {string} url - 地址
      */
     static getStyleFromCarto(zoom, scale, shader, feature, fromServer, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
@@ -310,8 +310,8 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.toOLPointStyle
      * @description 点样式
-     * @param style -{Object} 样式参数
-     * @return {ol.style.Style} 获取点样式
+     * @param {Object} style - 样式参数
+     * @returns {ol.style.Style} 获取点样式
      */
     static toOLPointStyle(style) {
         if (style.pointFile !== '') {
@@ -338,8 +338,8 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.toOLLineStyle
      * @description 线样式
-     * @param style -{Object} 样式参数
-     * @return {ol.style.Style} 获取线的样式
+     * @param {Object} style - 样式参数
+     * @returns {ol.style.Style} 获取线的样式
      */
     static toOLLineStyle(style) {
         return new ol.style.Style({
@@ -358,8 +358,8 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.toOLPolygonStyle
      * @description 面样式
-     * @param style -{Object} 样式参数
-     * @return {ol.style.Style} 获取面的样式
+     * @param {Object} style -样式参数
+     * @returns {ol.style.Style} 获取面的样式
      */
     static toOLPolygonStyle(style) {
         var fill = new ol.style.Fill({
@@ -383,9 +383,9 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.toOLTextStyle
      * @description 文本样式
-     * @param style -{Object} 样式对象
-     * @param text -{string} 文本参数
-     * @return {ol.style.Style} 获取的文本样式
+     * @param {Object} style -样式对象
+     * @param {string} text -文本参数
+     * @returns {ol.style.Style} 获取的文本样式
      */
     static toOLTextStyle(style, text) {
         return new ol.style.Style({
@@ -409,8 +409,8 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.dashStyle
      * @description 符号样式
-     * @param style -{Object} 样式参数
-     * @param widthFactor -{number} 宽度系数
+     * @param {Object} style - 样式参数
+     * @param {number} widthFactor - 宽度系数
      */
     static dashStyle(style, widthFactor) {
         if (!style) {
@@ -446,7 +446,7 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getStyleFromiPortalMarker
      * @description 从iPortal标记获取样式
-     * @param icon -{Object} 图标参数
+     * @param {Object} icon - 图标参数
      */
     static getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
@@ -469,9 +469,9 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getStyleFromiPortalStyle
      * @description 从iPortal标记获取样式
-     * @param iPortalStyle -{Object} iportal样式
-     * @param type - {string} 样式类型
-     * @param fStyle -{Object} 要素样式
+     * @param {Object} iPortalStyle - iportal样式
+     * @param {string} type - 样式类型
+     * @param {Object} fStyle - 要素样式
      */
     static getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
@@ -540,9 +540,9 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.hexToRgba
      * @description 十六进制转RGBA格式
-     * @param hex -{Object} 十六进制格式参数
-     * @param opacity -{number} Alpha参数
-     * @return {string} 生成的RGBA格式
+     * @param {Object} hex - 十六进制格式参数
+     * @param {number} opacity -Alpha参数
+     * @returns {string} 生成的RGBA格式
      */
     static hexToRgba(hex, opacity) {
         var color = [], rgba = [];
@@ -565,7 +565,7 @@ export class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getDefaultStyle
      * @description 获取默认风格
-     * @param type -{string} 类型参数
+     * @param {string} type - 类型参数
 
      */
     static getDefaultStyle(type) {

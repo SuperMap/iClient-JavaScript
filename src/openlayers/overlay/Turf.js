@@ -5,8 +5,8 @@ import * as turf from '@turf/turf';
  * @class ol.source.Turf
  * @category  Visualization Turf
  * @classdesc Turf.js图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
+ * @param {Object} opt_options - 参数
+ * @extends {ol.source.Vector}
  */
 export class Turf extends ol.source.Vector {
 
@@ -157,10 +157,10 @@ export class Turf extends ol.source.Vector {
     /**
      * @function ol.source.turf.prototype.process
      * @description 执行Turf.js提供的相关空间分析方法
-     * @param type -{string} Turf.js提供的空间分析方法名
-     * @param args -{Object} Turf.js提供的空间分析方法对应的参数对象
+     * @param {string} type - Turf.js提供的空间分析方法名
+     * @param {Object} args - Turf.js提供的空间分析方法对应的参数对象
      * @param callback -{function} 空间分析完成执行的回调函数，返回执行的结果
-     * @param addFeaturesToMap -{boolean} 是否添加到map
+     * @param {boolean} addFeaturesToMap - 是否添加到map
      */
     process(type, args, callback, addFeaturesToMap) {
         var result = turf[type.split('.')[1]].apply(this, this.parse(type, args));

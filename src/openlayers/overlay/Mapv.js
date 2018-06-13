@@ -6,8 +6,8 @@ import {Util} from '../core/Util';
  * @class ol.source.Mapv
  * @category  Visualization MapV
  * @classdesc MapV图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @param {Object} opt_options - 参数
+ * @extends {ol.source.ImageCanvas}
  */
 export class Mapv extends ol.source.ImageCanvas {
 
@@ -72,8 +72,8 @@ export class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.addData
      * @description 追加数据
-     * @param data - {Object} 要追加的数据
-     * @param options -{Object} 要追加的值
+     * @param {Object} data - 要追加的数据
+     * @param {Object} options - 要追加的值
      */
     addData(data, options) {
         this.layer.addData(data, options);
@@ -82,7 +82,7 @@ export class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.getData
      * @description 获取数据
-     * @return {mapv.DataSet} mapv数据集
+     * @returns {mapv.DataSet} mapv数据集
      */
     getData() {
         if (this.layer) {
@@ -94,7 +94,7 @@ export class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.removeData
      * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -119,9 +119,8 @@ export class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.update
      * @description 更新数据
-     * @param options - {Object} 待更新的数据<br>
-     *        data -{Object} mapv数据集<br>
-     *        options -{Object} mapv绘制参数<br>
+     * @param {Object} options - 待更新的数据<br>
+     * @param {Object} options.data - mapv数据集<br>
      */
     update(options) {
         this.layer.update(options);
