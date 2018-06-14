@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_modifySymbolStyle"></title>
+    <script type="text/javascript" include="bootstrap-css,jquery-colorpicker,zTree,easyui" src="../js/include-web.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #plottingPanel {
+            float: left;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+    </style>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="plottingPanel">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div class="easyui-tabs" style="width: 100%;height: 100%">
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet,PlottingPanel" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0,0],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    function loadSymbolLib(){
+        var symbolLibManager = L.supermap.plotting.getControl(map, serverUrl).getSymbolLibManager();
+        symbolLibManager.on(L.supermap.plotting.event.initializecompleted,symbolLibInitializeCompleted);
+        symbolLibManager.initializeAsync();
+    }
+    function symbolLibInitializeCompleted(){
+        plotSymbol();
+    }
+
+    function plotSymbol() {
+
+        //线面标号
+        var polygonPoints = [];
+        polygonPoints.push(new L.latLng(-11.232812197819818,-52.28812080668847));
+        polygonPoints.push(new L.latLng(18.852702842151643,-3.3455361848108325));
+        plottingLayer.createSymbol(22, 1003, polygonPoints,{symbolType:SuperMap.Plot.SymbolType.ALGOSYMBOL});
+
+        //标绘点标号
+        var dotPoints = [];
+        dotPoints.push(new L.latLng(19.86325625,6.679675));
+        plottingLayer.createSymbol(421, 9, dotPoints,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
+    }
+    function clearMap(){
+        plottingLayer.removeAllFeatures();
+    }
+    window.onload = function(){
+        L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+        loadSymbolLib();
+    };
+</script>
+</body>
+</html>

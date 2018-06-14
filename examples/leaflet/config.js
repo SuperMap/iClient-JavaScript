@@ -933,6 +933,127 @@ var exampleConfig = {
             }
         }
     },
+    "dynamicPlot": {
+        name: "动态标绘",
+        name_en: "dynamicPlot",
+        content: {
+            "plot": {
+                name: "标绘",
+                name_en: "plot",
+                content: [{
+                    name: "动态标绘",
+                    name_en: "dynamic plot",
+                    thumbnail: "plot_dynamicPlot.png",
+                    fileName: "plot_dynamicPlot"
+                }, {
+                    name: "鼠标标绘",
+                    name_en: "plot symbol",
+                    thumbnail: "plot_plotSymbol.png",
+                    fileName: "plot_plotSymbol"
+                }, {
+                    name: "编程标绘",
+                    name_en: "draw",
+                    thumbnail: "plot_drawGeoGraphicObject.png",
+                    fileName: "plot_drawGeoGraphicObject"
+                }, {
+                    name: "属性修改",
+                    name_en: "modify symbol style",
+                    thumbnail: "plot_modifySymbolStyle.png",
+                    fileName: "plot_modifySymbolStyle"
+                }, {
+                    name: "缺省属性",
+                    name_en: "default symbol style",
+                    thumbnail: "plot_defaultStyle.png",
+                    fileName: "plot_defaultStyle"
+                }, {
+                    name: "自定义属性",
+                    name_en: "extend symbol properties",
+                    thumbnail: "plot_symbolExtendProperty.png",
+                    fileName: "plot_symbolExtendProperty"
+                }, {
+                    name: "图层操作",
+                    name_en: "layer operations",
+                    thumbnail: "plot_operatePlottingLayer.png",
+                    fileName: "plot_operatePlottingLayer"
+                }, {
+                    name: "图层编辑",
+                    name_en: "layer editing",
+                    thumbnail: "plot_editPlottingLayer.png",
+                    fileName: "plot_editPlottingLayer"
+                }, {
+                    name: "标号库加载",
+                    name_en: "load symbol library",
+                    thumbnail: "plot_loadSymbolLib.png",
+                    fileName: "plot_loadSymbolLib"
+                }, {
+                    name: "查询标号",
+                    name_en: "query symbol",
+                    thumbnail: "plot_querySymbolLib.png",
+                    fileName: "plot_querySymbolLib"
+                }, {
+                    name: "编辑器",
+                    name_en: "symbol editor",
+                    thumbnail: "plot_symbolEditor.png",
+                    fileName: "plot_symbolEditor"
+                }]
+            },
+            "trendMap": {
+                name: "态势图",
+                name_en: "trend plot",
+                content: [{
+                    name: "保存和加载",
+                    name_en: "save and load",
+                    thumbnail: "plot_saveload.png",
+                    fileName: "plot_saveload"
+                }, {
+                    name: "态势图叠加",
+                    name_en: "add plot symbol file",
+                    thumbnail: "plot_addfile.png",
+                    fileName: "plot_addfile"
+                }, {
+                    name: "态势图上传下载",
+                    name_en: "plot symbol file upload and download",
+                    thumbnail: "plot_filetransfer.png",
+                    fileName: "plot_filetransfer"
+                }]
+            },
+            "other": {
+                name: "其他",
+                name_en: "others",
+                content: [{
+                    name: "几何查询",
+                    name_en: "symbol geometry query",
+                    thumbnail: "plot_symbolGeometricQuery.png",
+                    fileName: "plot_symbolGeometricQuery"
+                }, {
+                    name: "态势推演",
+                    name_en: "situation deduction",
+                    thumbnail: "plot_plotGOAnimation.gif",
+                    fileName: "plot_plotGOAnimation"
+                }, {
+                    name: "复杂对象",
+                    name_en: "draw graphics",
+                    thumbnail: "plot_drawGraphics.png",
+                    fileName: "plot_drawGraphics"
+                }, {
+                    name: "航线",
+                    name_en: "draw route",
+                    thumbnail: "plot_drawRoute.png",
+                    fileName: "plot_drawRoute"
+                }, {
+                    name: "高性能图层",
+                    name_en: "graphic layer",
+                    thumbnail: "plot_graphicLayer.png",
+                    fileName: "plot_graphicLayer"
+                }, {
+                    name: "避让区域",
+                    name_en: "symbol avoid",
+                    thumbnail: "plot_symbolAvoid.png",
+                    fileName: "plot_symbolAvoid"
+                }]
+            }
+        }
+    },
     "clientSpatialAnalyst": {
         name: "客户端分析",
         name_en: "client spatial analysis",
@@ -1103,6 +1224,7 @@ var sideBarIconConfig = {
     "iManager": "fa-group",
     "Elasticsearch": "fa-tasks",
     "plot": "fa-edit",
+    "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
@@ -1122,6 +1244,7 @@ var exampleIconConfig = {
     "iManager": "fa-group",
     "Elasticsearch": "fa-tasks",
     "plot": "fa-edit",
+    "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
