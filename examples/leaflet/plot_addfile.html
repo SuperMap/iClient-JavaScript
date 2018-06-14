@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_addfile"></title>
+    <script type="text/javascript" include="bootstrap,widgets.alert,fileupLoad" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style="position: absolute;top: 15px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>态势图叠加</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group' style=" margin-bottom: 10px;">
+                <input type="file" id="file" name="file" style="margin-left: 50px">
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="叠加" onclick="add()"/>
+        <input type="button" class="btn btn-default" value="叠加到指定图层" onclick="addtolayer()"/>
+        <input type="button" class="btn btn-default" value="打开并上传服务器" onclick="openFileToServer()"/>
+        <input type="button" class="btn btn-default" value="清除" onclick="clearLayers()"/>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [35,104],
+        maxZoom: 18,
+        zoom: 3
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    var sitDataManager = plotting.getSitDataManager();
+
+    function add() {
+        widgets.alert.clearAlert();
+        sitDataManager.addSmlFile('file', true, function(evt){
+            if(evt.success){
+                widgets.alert.showAlert("叠加态势图成功！",true);
+            } else {
+                widgets.alert.showAlert("叠加态势图失败！",true);
+            }
+        });
+    }
+
+    //叠加到指定图层
+    function addtolayer(){
+        widgets.alert.clearAlert();
+        sitDataManager.addSmlFileToLayer('file', "plot", function(evt){
+            if(evt.success){
+                widgets.alert.showAlert("叠加态势图成功！",true);
+            } else {
+                widgets.alert.showAlert("叠加态势图失败！",true);
+            }
+        });
+    }
+
+    //打开并上传到服务器
+    function openFileToServer() {
+        widgets.alert.clearAlert();
+        sitDataManager.openSmlFile('file', function(evt){
+            if(evt.success){
+                widgets.alert.showAlert("打开态势图成功！",true);
+            } else {
+                widgets.alert.showAlert("打开态势图失败！",true);
+            }
+        });
+    }
+
+    function clearLayers() {
+        widgets.alert.clearAlert();
+        map.getPlottingLayers()[0].removeAllFeatures();
+    }
+
+</script>
+</body>
+</html>

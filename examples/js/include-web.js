@@ -135,9 +135,22 @@
         }
         if (inArray(includes, 'sticklr')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/jquery-sticklr.css");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/icon.css");
         }
         if (inArray(includes, 'responsive')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
+        }
+        if (inArray(includes, 'easyui')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
+            //inputScript("../../../iClient9Website/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
+            //inputCSS("../../../iClient9Website/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
+        }
+        if (inArray(includes, 'jquery-colorpicker')) {
+            inputScript("http://iclient.supermap.io/libs/colorpicker/js/colorpicker.js");
+            inputCSS("http://iclient.supermap.io/libs/colorpicker/css/colorpicker.css");
+            //inputScript("../../../iClient9Website/libs/colorpicker/js/colorpicker.js");
+            //inputCSS("../../../iClient9Website/libs/colorpicker/css/colorpicker.css");
         }
         if (inArray(includes, 'lazyload')) {
             inputScript("https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js");

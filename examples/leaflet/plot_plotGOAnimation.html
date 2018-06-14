@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_plotGOAnimation"></title>
+    <script type="text/javascript" include="bootstrap,sticklr,zTree,easyui,jquery-colorpicker" src="../js/include-web.js"></script>
+    <style type="text/css">
+        #map {
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #plottingPanel {
+            float: left;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #plottingMenu {
+            position: absolute;
+            top: 20%;
+            z-index: 999999;
+            border-radius: 4px;
+            padding-top: 2px;
+            left: 210px;
+            color: #000000;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style="   position: absolute;top: 15px;right: 20px;text-align: center;z-index: 2000;border-radius: 4px;">
+    <div class="panel-heading">
+        <h5 class="panel-title text-center" style=" font-size: 16px;color: #ffffff;">态势推演</h5>
+    </div>
+    <div class="panel-body content">
+        <div class="input-group" style="margin-top:15px; margin-left: 10px; margin-bottom: 10px;">
+            <select class="search-query from-control" id="STL" style="width: 120px;height: 30px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;">
+                <option value="属性动画">属性动画</option>
+                <option value="闪烁动画">闪烁动画</option>
+                <option value="生长动画">生长动画</option>
+                <option value="旋转动画">旋转动画</option>
+                <option value="比例动画">比例动画</option>
+                <option value="显隐动画">显隐动画</option>
+                <option value="路径动画">路径动画</option>
+            </select>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="创建动画" onclick="createAnimation()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="播放" onclick="play()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="暂停" onclick="pause()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="停止" onclick="stop()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="复位" onclick="reset()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="删除动画" onclick="deleteSelectedFeaturesAnimation()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="删除全部动画" onclick="deleteAllAnimation()">&nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+<div id="plottingPanel">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div class="easyui-tabs" style="width: 100%;height: 100%">
+            <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+        </div>
+    </div>
+</div>
+<div id="plottingMenu" class="sticklr">
+    <li>
+        <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow"
+           data-i18n="[title]resources.text_cancelDraw"
+           onclick="cancelDraw()"></a>
+    </li>
+    <li>
+        <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow"
+           data-i18n="[title]resources.text_input_value_clear"></a>
+        <ul>
+            <li><input type="button" data-i18n="[value]resources.btn_deleteMarker" onclick="deleteSymbol()"
+                       style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+            <li><input type="button" data-i18n="[value]resources.btn_clearLayers" onclick="clearLayer()"
+                       style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+        </ul>
+    </li>
+
+    <li>
+        <a class="glyphicon plotting-lyphicon-save-simulationMap" data-i18n="[title]resources.text_situationMapOperation"></a>
+        <ul>
+            <li><input type="button" data-i18n="[value]resources.btn_saveSimulationMap" onclick="saveSimulationMap()"
+                       style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+            <li><input type="button" data-i18n="[value]resources.btn_loadSimulationMap" onclick="loadSimulationMap()"
+                       style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+        </ul>
+    </li>
+</div>
+<div id="map"></div>
+<script type="text/javascript"  include="leaflet,iclient9-leaflet,iclient9-plot-leaflet,PlottingPanel"
+        src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [35, 104],
+        maxZoom: 18,
+        zoom: 3
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.spatialAnalystUrl=host+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
+    L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+
+    goAnimationManager = L.supermap.plotting.getControl(map, serverUrl).getGOAnimationManager();
+    window.setInterval("execute()",100);
+
+    //播放动画
+    function play(){
+        if(null === goAnimationManager.goAnimations){
+            return;
+        }
+
+        for(var i = 0; i < goAnimationManager.goAnimations.length; i++){
+            goAnimationManager.goAnimations[i].play();
+        }
+    }
+
+    //暂停
+    function pause(){
+        if(null === goAnimationManager.goAnimations){
+            return;
+        }
+
+        for(var i = 0; i < goAnimationManager.goAnimations.length; i++){
+            goAnimationManager.goAnimations[i].pause();
+        }
+    }
+
+    //停止
+    function stop(){
+        if(null === goAnimationManager.goAnimations){
+            return;
+        }
+
+        for(var i = 0; i < goAnimationManager.goAnimations.length; i++){
+            goAnimationManager.goAnimations[i].stop();
+        }
+    }
+
+    //复位
+    function reset(){
+        if(null === goAnimationManager.goAnimations){
+            return;
+        }
+
+        for(var i = 0; i < goAnimationManager.goAnimations.length; i++){
+            goAnimationManager.goAnimations[i].reset();
+        }
+    }
+    //创建动画
+    function createAnimation(){
+        if(0 === editControl.getSelectedFeatures().length){
+            return;
+        }
+        var obj = selectAnimationType();
+        var feature = editControl.getSelectedFeatures()[0];
+        var goAnimationNameUUid = SuperMap.PlotUtil.generateUuid();
+        var goAnimationName = obj.selectValue + goAnimationNameUUid;
+
+        var goAnimation = goAnimationManager.createGOAnimation(obj.animationType,goAnimationName,feature);
+
+        switch (goAnimation.getGOAnimationType()){
+            case SuperMap.Plot.GOAnimationType.ANIMATION_ATTRIBUTE:{//属性动画
+    //            goAnimation.startTime=0;//开始时间
+//                goAnimation.duration=5;//间隔时间
+                //goAnimation.repeat = true;//重复播放
+                goAnimation.lineColorAnimation = true;//线色动画
+                goAnimation.startLineColor="#ff0000";//开始线色
+                goAnimation.endLineColor="#1a1817";//结束线色
+
+                goAnimation.lineWidthAnimation = true;//线宽动画
+                goAnimation.startLineWidth=1;//开始线宽
+                goAnimation.endLineWidth=5;//结束线宽
+
+                goAnimation.surroundLineColorAnimation = true;//衬线动画
+                goAnimation.startSurroundLineColor="#ffff00";//开始衬线色
+                goAnimation.endSurroundLineColor="#009933";//结束衬线色
+
+                goAnimation.surroundLineWidthAnimation = true;//衬线宽
+                goAnimation.startSurroundLineWidth=2;//开始衬线宽
+                goAnimation.endSurroundLineWidth=4;//结束衬线宽
+                break;
+            }
+            case SuperMap.Plot.GOAnimationType.ANIMATION_BLINK:{//闪烁动画
+    //            goAnimation.startTime = 5;
+//                goAnimation.duration = 5;
+                //goAnimation.repeat = true;//重复播放
+                //闪烁类型：次数闪烁
+                goAnimation.blinkStyle = SuperMap.Plot.BlinkAnimationBlinkStyle.Blink_Number;
+                goAnimation.blinkNumber = 5;//闪烁次数
+
+                //闪烁类型：频率闪烁
+                //goAnimation.blinkStyle = SuperMap.Plot.BlinkAnimationBlinkStyle.Blink_Frequency;
+                //goAnimation.blinkInterval = 500;//闪烁频率
+
+                //闪烁颜色交替类型:无颜色交替
+                //goAnimation.replaceStyle =  SuperMap.Plot.BlinkAnimationReplaceStyle.Replace_NoColor;
+                //闪烁颜色交替类型：有颜色交替
+                goAnimation.replaceStyle =  SuperMap.Plot.BlinkAnimationReplaceStyle.Replace_Color;
+                goAnimation.startColor = "#00ff00";
+                goAnimation.endColor = "#ff0000";
+                break;
+            }
+            case SuperMap.Plot.GOAnimationType.ANIMATION_GROW:{//生长动画
+  //             goAnimation.startTime =10;
+//                goAnimation.duration = 5;
+                //goAnimation.repeat = true;
+                goAnimation.startScale =0;
+                goAnimation.endScale = 1;
+                break;
+            }
+            case SuperMap.Plot.GOAnimationType.ANIMATION_ROTATE:{//旋转动画
+  //             goAnimation.startTime = 15;
+//                goAnimation.duration = 5;
+                //goAnimation.repeat = true;
+                goAnimation.rotateDirection = SuperMap.Plot.RotateDirection.AntiClockWise;//逆时针旋转
+                //goAnimation.rotateDirection = SuperMap.Plot.RotateDirection.ClockWise;//顺时针旋转
+                goAnimation.startAngle =0;
+                goAnimation.endAngle = 90;
+                break;
+            }
+            case SuperMap.Plot.GOAnimationType.ANIMATION_SCALE:{//比例动画
+  //              goAnimation.startTime = 20;
+//                goAnimation.duration = 5;
+                //goAnimation.repeat = true;
+                goAnimation.startScale = 1;
+                goAnimation.endScale = 2;
+                break;
+            }
+            case SuperMap.Plot.GOAnimationType.ANIMATION_SHOW:{//显隐动画
+  //              goAnimation.startTime=25;//开始时间
+//                goAnimation.duration=5;//间隔时间
+                //goAnimation.repeat = true;//重复播放
+                goAnimation.finalDisplay = true;
+                goAnimation.showEffect = true;
+                break;
+            }
+            case SuperMap.Plot.GOAnimationType.ANIMATION_WAY:{//路径动画
+ //               goAnimation.startTime = 30;//开始时间
+//                goAnimation.duration = 5;//间隔时间
+                //goAnimation.repeat = true;//是否重复播放
+
+                var arypts=[];
+                var pt = L.latLng(44, 88);
+                var pt1 = L.latLng(30, 91);
+                var pt2 = L.latLng(37, 102);
+                var pt3 = L.latLng(30, 106);
+                var pt4 = L.latLng(34, 109);
+                var pt5 = L.latLng(35, 114);
+                var pt6 = L.latLng(40, 116);
+
+
+                arypts.push(pt);
+                arypts.push(pt1);
+                arypts.push(pt2);
+                arypts.push(pt3);
+                arypts.push(pt4);
+                arypts.push(pt5);
+                arypts.push(pt6);
+                goAnimation.setWayPoints(arypts);
+
+                //路径类型：折线类型
+                goAnimation.pathType= SuperMap.Plot.WayPathType.POLYLINE;
+                //路径类型：曲线路径
+                //goAnimation.pathType=SuperMap.Plot.WayPathType.CURVE;
+
+                goAnimation.pathColor = "#005eff";
+                goAnimation.pathWidth = 3;
+                //是否是切线方向
+                goAnimation.tangentDirection = true;
+                goAnimation.setShowPath(true);
+                break;
+            }
+        }
+    }
+    function selectAnimationType() {
+        var select = document.getElementById("STL");
+        var type = select.options[select.selectedIndex].value;
+
+        if(type === "属性动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_ATTRIBUTE;
+        }
+        else if(type === "闪烁动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_BLINK;
+        }
+        else if(type === "生长动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_GROW;
+        }
+        else if(type === "旋转动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_ROTATE;
+        }
+        else if(type === "比例动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_SCALE;
+        }
+        else if(type === "显隐动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_SHOW;
+        }
+        else if(type === "路径动画"){
+            animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_WAY;
+        }
+        var obj = new Object();
+        obj.selectValue = type;
+        obj.animationType=animationtype;
+        return obj;
+    }
+
+
+
+    function execute(){
+        goAnimationManager.execute();
+    }
+    function deleteSelectedFeaturesAnimation(){
+        if(null === goAnimationManager.goAnimations){
+            return;
+        }
+
+        if(0 === editControl.getSelectedFeatures().length){
+            return;
+        }
+        var selectFeature = editControl.getSelectedFeatures()[0];
+        var animations = goAnimationManager.findGOAnimationsByFeature(selectFeature);
+
+        for(var i = 0; i < animations.length; i++){
+            goAnimationManager.removeGOAnimation(animations[i]);
+        }
+
+    }
+
+    function deleteAllAnimation(){
+        if(null === goAnimationManager.goAnimations){
+            return;
+        }
+        goAnimationManager.reset();
+        goAnimationManager.removeAllGOAnimation();
+    }
+    //保存态势图
+    function saveSimulationMap() {
+        cancelDraw();
+        plotting.getSitDataManager().saveAsSmlFile("situationMap");
+    }
+    function loadSimulationMap() {
+        plotting.getSitDataManager().openSmlFileOnServer("situationMap", function(evt){
+            drawControl.setDrawingLayer(evt.sitDataLayers[0]);
+        });
+    }
+    //取消标绘
+    function cancelDraw() {
+        drawControl.handler.disable();
+    }
+    //删除选中标号
+    function deleteSymbol() {
+        editControl.deleteSelectedFeatures();
+    }
+    //清空绘制
+    function clearLayer() {
+        cancelDraw();
+
+        for(var i = 0; i < map.getPlottingLayers().length; i++){
+            map.getPlottingLayers().removeAllFeatures();
+        }
+    }
+</script>
+</body>
+</html>
+
+
+

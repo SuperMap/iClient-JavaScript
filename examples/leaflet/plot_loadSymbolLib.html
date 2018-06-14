@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_loadSymbolLib"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+</head>
+<body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;width: 300px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>标号库加载</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="标绘" onclick="plotSymbol()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" value="取消标绘" onclick="PlottingDrawCancel()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" value="清空" onclick="PlottingClear()"/>
+    </div>
+    <div id="popupWin" class="popupWindow" style=" background: #FFF;z-index: 9999;display: block;display: block;top: 400px; height: 150px;">
+        <div class='panel'>
+            <div class='input-group'>
+                <div class="winTitle" style=" margin-left: 20px;font-size: 14px;font-weight: bold;">
+                    <span class="title_left">标号库信息:</span>
+                </div>
+            </div>
+        </div>
+        <div id="symbolLibInfo" class="winContent" style="  padding: 5px;overflow-y: auto;height: 220px;overflow-y:auto;height:250px;">
+        </div>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map,symbolLibManager;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0, 0],
+        zoom: 2,
+        maxZoom: 18
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    function loadSymbolLib(){
+        symbolLibManager = plotting.getSymbolLibManager();
+        symbolLibManager.on(L.supermap.plotting.event.initializecompleted,showSymbolLibInfo);
+        symbolLibManager.initializeAsync();
+    }
+    function showSymbolLibInfo(result) {
+        document.all.symbolLibInfo.innerHTML = "";
+
+        if (0 === result.length) {
+            return;
+        }
+
+        var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+
+
+        //获取选中的对象
+        var container = document.getElementById("symbolLibInfo");
+        var table = document.createElement("table");
+        var body = document.createElement("tbody");
+        table.setAttribute("border", "1");
+        table.setAttribute("borderColor", "black");
+        table.setAttribute("width", "100%");
+
+        //标号库名称
+        var tr_SymbolLibName = document.createElement("tr");
+
+        var tdName_SymbolLibName = document.createElement("td");
+        var textName_SymbolLibName = document.createTextNode("标号库名称");
+        tdName_SymbolLibName.appendChild(textName_SymbolLibName);
+        tr_SymbolLibName.appendChild(tdName_SymbolLibName);
+
+        var tdValue_SymbolLibName = document.createElement("td");
+        var textValue_SymbolLibName = document.createTextNode(symbolLib.getSymbolLibName());
+        tdValue_SymbolLibName.appendChild(textValue_SymbolLibName);
+        tr_SymbolLibName.appendChild(tdValue_SymbolLibName);
+
+        body.appendChild(tr_SymbolLibName);
+
+        //标号库ID
+        var tr_SymbolLibID = document.createElement("tr");
+
+        var tdName_SymbolLibID = document.createElement("td");
+        var textName_SymbolLibID = document.createTextNode("标号库ID");
+        tdName_SymbolLibID.appendChild(textName_SymbolLibID);
+        tr_SymbolLibID.appendChild(tdName_SymbolLibID);
+
+        var tdValue_SymbolLibID = document.createElement("td");
+        var textValue_SymbolLibID = document.createTextNode(symbolLib.getSymbolLibID());
+        tdValue_SymbolLibID.appendChild(textValue_SymbolLibID);
+        tr_SymbolLibID.appendChild(tdValue_SymbolLibID);
+
+        body.appendChild(tr_SymbolLibID);
+
+        //标号库标号个数
+        var tr_SymbolCount = document.createElement("tr");
+
+        var tdName_SymbolCount = document.createElement("td");
+        var textName_SymbolCount = document.createTextNode("标号个数");
+        tdName_SymbolCount.appendChild(textName_SymbolCount);
+        tr_SymbolCount.appendChild(tdName_SymbolCount);
+
+        var tdValue_SymbolCount = document.createElement("td");
+        var textValue_SymbolCount = document.createTextNode(symbolLib.getSymbolCount());
+        tdValue_SymbolCount.appendChild(textValue_SymbolCount);
+        tr_SymbolCount.appendChild(tdValue_SymbolCount);
+
+        body.appendChild(tr_SymbolCount);
+
+
+        table.appendChild(body);
+        container.appendChild(table);
+    }
+    function getCode(symbolInfo) {
+        var nCode = -1;
+        while (symbolInfo.symbolNodeType === "SYMBOL_GROUP") {
+            symbolInfo = symbolInfo.childNodes[0];
+        }
+
+        nCode = symbolInfo.symbolCode;
+
+        return nCode;
+    }
+    function getFirstSymbol() {
+        var nCode = -1;
+        var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+        if (null === symbolLib) {
+            drawGraphicObject.deactivate();
+            return nCode;
+        }
+
+        var rootSymbolInfo = symbolLib.getRootSymbolInfo();
+
+        var i = 0;
+        nCode = getCode(rootSymbolInfo.childNodes[i]);
+        while (-1 === nCode) {
+            i++;
+            nCode = getCode(rootSymbolInfo.childNodes[i]);
+        }
+
+        return nCode;
+    }
+    function plotSymbol(){
+        var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+        if (null === symbolLib) {
+            drawControl.handler.disable();
+            return;
+        }
+        drawControl.handler.libID = symbolLib.getSymbolLibID();
+        drawControl.handler.code = getFirstSymbol();
+        drawControl.handler.serverUrl = serverUrl;
+        drawControl.handler.enable();
+    }
+    function PlottingDrawCancel(){
+        drawControl.handler.disable();
+    }
+    function PlottingClear(){
+        plottingLayer.removeAllFeatures();
+    }
+    window.onload = function(){
+        loadSymbolLib();
+    };
+</script>
+</body>
+</html>

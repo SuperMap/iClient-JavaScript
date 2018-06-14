@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.text_editor"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>编辑器</h5></div>
+    <div class='panel-body content'>
+        <input id="btn_Copy" type="button" class="btn btn-default" value="复制" onclick="copySymbol()" />
+        <input id="btn_Cut" type="button" class="btn btn-default" value="剪切" onclick="cutSymbol()" />
+        <input id="btn_Paste" type="button" class="btn btn-default" value="粘贴" onclick="pasteSymbol()" />
+        <input id="btn_Reset" type="button" class="btn btn-default" value="复位" onclick="resetSymbol()" />
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<div id="contentMe" style="width:100px;background-color:#f4f4f4;box-shadow:3px 3px 3px rgba(0,0,0,0.5);position:absolute;z-index:1000; top:20px;left:100px;display:none;text-align:center;">
+    <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;">粘贴此处</a></a>
+</div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host+"/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host+"/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0,0],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    function plotSymbol() {
+        //标绘多边形
+        var polygonPoints = [];
+        polygonPoints.push(new L.latLng(0,-20));
+        polygonPoints.push(new L.latLng(20,-10));
+        polygonPoints.push(new L.latLng(40,-30));
+        polygonPoints.push(new L.latLng(10,-60));
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, polygonPoints);
+
+        //标绘折线
+        var linePoints = [];
+        linePoints.push(new L.latLng(0, 0));
+        linePoints.push(new L.latLng(20,0));
+        linePoints.push(new L.latLng(10,20));
+        linePoints.push(new L.latLng(30,10));
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, linePoints);
+    }
+
+    function copySymbol() {
+        editControl.copy();
+    }
+
+    function cutSymbol() {
+        editControl.cut();
+    }
+
+    function pasteSymbol() {
+        editControl.paste();
+    }
+
+    function resetSymbol() {
+        plottingLayer.removeAllFeatures();
+        plotSymbol();
+    }
+    map.on('contextmenu', function (event) {
+        if(editControl.getSelectedFeatures().length == 0){
+            return;
+        }
+        var contentMe = document.getElementById("contentMe");
+        contentMe.style.top = event.originalEvent.clientY + "px";
+        contentMe.style.left = event.originalEvent.clientX + "px";
+        contentMe.style.display = "block";
+        document.getElementById("paste").onclick = function(){
+            editControl.paste(event.latlng);
+        };
+    }).on('mousemove', function (event) {
+        contentMe.style.display = "none";
+    })
+    window.onload = function(){
+        plotSymbol();
+    };
+</script>
+</body>
+</html>

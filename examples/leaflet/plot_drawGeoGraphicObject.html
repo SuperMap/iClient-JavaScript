@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_drawGeoGraphicObject"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style="  position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>点线面绘制</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="绘点" onclick="draw_dot()"/>
+        <input type="button" class="btn btn-default" value="绘线" onclick="draw_line()"/>
+        <input type="button" class="btn btn-default" value="绘面" onclick="draw_polygon()"/>
+        <input type="button" class="btn btn-default" value="绘文字" onclick="draw_text()"/>
+        <input type="button" class="btn btn-default" value="清除" onclick="clearLayers()"/>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0,0],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    function clearLayers(){
+        plottingLayer.removeAllFeatures();
+    }
+    function draw_dot(){
+        clearLayers();
+        var latlngs = [new L.latLng(20,0)];
+        plottingLayer.createSymbol(421, 10100,latlngs,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
+    }
+
+    function draw_line() {
+        clearLayers();
+        var latlngs = [];
+        latlngs.push(new L.latLng(0, 0));
+        latlngs.push(new L.latLng(20,0));
+        latlngs.push(new L.latLng(10,20));
+        latlngs.push(new L.latLng(30,10));
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, latlngs);
+    }
+
+    function draw_polygon() {
+        clearLayers();
+        var latlngs = [];
+        latlngs.push(new L.latLng(0,20));
+        latlngs.push(new L.latLng(20,10));
+        latlngs.push(new L.latLng(40,30));
+        latlngs.push(new L.latLng(10,60));
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, latlngs);
+    }
+
+    function draw_text() {
+        clearLayers();
+        var latlngs = [new L.latLng(20,0)];
+        plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.TEXTSYMBOL,latlngs,null,{fontSize:30});
+    }
+
+
+</script>
+</body>
+</html>

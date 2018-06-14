@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_operatePlottingLayer"></title>
+    <script type="text/javascript" include="bootstrap-css,jquery,widgets.alert" src="../js/include-web.js"></script>
+</head>
+<body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>图层操作</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="创建图层" onclick="createPlottingLayer()"/>
+        <input type="button" class="btn btn-default" value="删除图层" onclick="removePlottingLayer()"/>
+        <input type="button" class="btn btn-default" value="绘制标号" onclick="plotSymbol()"/>
+        <input type="button" class="btn btn-default" value="取消绘制" onclick="plottingDrawCancel()"/>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map,plottingLayer,plottingLayers=[],drawControl;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0, 0],
+        zoom: 2,
+        maxZoom: 18
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    drawControl = L.supermap.plotting.drawControl();
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    function createPlottingLayer(){
+        widgets.alert.clearAlert();
+        var plottingLayerName = "plottingLayer_" + Math.ceil(Math.random() * 1000);
+        plottingLayer = L.supermap.plotting.plottingLayer(plottingLayerName, serverUrl);
+        drawControl.setDrawingLayer(plottingLayer);
+        plottingLayer.addTo(map);
+        plottingLayers.push(plottingLayer);
+        var successMessage = "图层 " + plottingLayer.name + " 创建成功";
+        widgets.alert.showAlert(successMessage,true);
+    }
+    function removePlottingLayer(){
+        widgets.alert.clearAlert();
+        if (plottingLayers.length !== 0) {
+            var tempPlottingLayer = plottingLayers[plottingLayers.length - 1];
+            map.removeLayer(tempPlottingLayer);
+            var successMessage = "图层 " + tempPlottingLayer.name + " 删除成功";
+            plottingLayers.splice(plottingLayers.length - 1, 1);
+            drawControl.setDrawingLayer(plottingLayers[plottingLayers.length-1]);
+            widgets.alert.showAlert(successMessage,true);
+        } else {
+            widgets.alert.showAlert("当前地图无标绘图层",false);
+        }
+    }
+    function plotSymbol(){
+        widgets.alert.clearAlert();
+        if(drawControl.drawingLayer !== undefined){
+            drawControl.handler.libID = 421;
+            drawControl.handler.code = 10100;
+            drawControl.handler.serverUrl = serverUrl;
+            drawControl.handler.enable();
+        }else{
+            widgets.alert.showAlert("请先添加标绘图层！",true);
+        }
+    }
+    function plottingDrawCancel(){
+        widgets.alert.clearAlert();
+        drawControl.handler.disable();
+    }
+</script>
+</body>
+</html>

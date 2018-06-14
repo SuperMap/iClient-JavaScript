@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_defaultStyle"></title>
+    <script type="text/javascript" include="bootstrap-css,responsive,colorpicker" src="../js/include-web.js"></script>
+</head>
+<body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style="position: absolute;top: 10px;right: 10px;width: 300px;text-align: center;z-index: 800;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>缺省属性</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group' style="margin-bottom: 15px;">
+                <span class='input-group-addon'>线宽：</span>
+                <input type='text' class='form-control' id='lineWidth' value='2' onchange="lineWidthChanges()"/>
+            </div>
+            <div class='input-group'  style="margin-bottom: 15px;">
+                <span class='input-group-addon'>线型：</span>
+                <select class='form-control' id='lineStyle' onchange="lineStyleChanges()">
+                    <option value='0,0' >solid</option>
+                    <option value='1,5'>dot</option>
+                    <option value='5,10'>dash</option>
+                    <option value='5,5,1,5'>dashdot</option>
+                    <option value='10,5'>longdash</option>
+                    <option value='15,10,5,10'>longdashdot</option>
+                </select>
+            </div>
+            <div class='input-group'style="margin-bottom: 15px;">
+                <span class='input-group-addon'>线色：</span>
+                <input type="text" id="lineColor" value="" class='form-control'/>
+                <span class='input-group-addon'><img src='./css/colorpicker.png' id="cp1"
+                                                     style="cursor:pointer z-index: 9999;" /></span>
+            </div>
+
+            <div class='input-group'style="margin-bottom: 15px;">
+                <span class='input-group-addon'>标号宽度：</span>
+                <input type='text' class='form-control' id='symbolWidth' value='40' onchange="symbolWidthChanges()"/>
+            </div>
+            <div class='input-group'style="margin-bottom: 15px;">
+                <span class='input-group-addon'>标号高度：</span>
+                <input type='text' class='form-control' id='symbolHeight' value='40' onchange="symbolHeightChanges()"/>
+            </div>
+            <div class='input-group' style="margin-bottom: 15px;">
+                <span class='input-group-addon'>使用缺省属性：</span>
+                <select class='form-control' id='defaultStyleFlag' onchange="defaultStyleFlagChanges()">
+                    <option value='0'>false</option>
+                    <option value='1'>true</option>
+                </select>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="绘制标号" onclick="plotSymbol()"/>
+        <input type="button" class="btn btn-default" value="取消标绘" onclick="PlottingDrawCancel()"/>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map,symbolLibManager;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0, 0],
+        zoom: 2,
+        maxZoom: 18
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    function loadSymbolLib(){
+        symbolLibManager = plotting.getSymbolLibManager();
+        symbolLibManager.on(L.supermap.plotting.event.initializecompleted,initializeCompleted);
+        symbolLibManager.initializeAsync();
+    }
+    function initializeCompleted(){
+        initHtml();
+    }
+    function initHtml() {
+        document.getElementById("lineWidth").value = plotting.getDefaultStyle().lineWidth;
+        document.getElementById("lineStyle").value = '0,0';
+        document.getElementById("lineColor").value = plotting.getDefaultStyle().lineColor;
+        document.getElementById("symbolWidth").value = plotting.getDefaultStyle().dotSymbolSize;
+        document.getElementById("symbolHeight").value = plotting.getDefaultStyle().dotSymbolSize;
+        if (plotting.getDefaultStyle().defaultFlag)
+            document.getElementById("defaultStyleFlag").value = 1;
+        else
+            document.getElementById("defaultStyleFlag").value = 0;
+    }
+    function lineWidthChanges() {
+        PlottingDrawCancel();
+        plotting.getDefaultStyle().lineWidth = document.getElementById("lineWidth").value;
+    }
+
+    function lineStyleChanges() {
+        PlottingDrawCancel();
+        plotting.getDefaultStyle().lineType = document.getElementById("lineStyle").value;
+    }
+
+    function symbolWidthChanges() {
+        PlottingDrawCancel();
+        plotting.getDefaultStyle().dotSymbolSize = document.getElementById("symbolWidth").value;
+        document.getElementById("symbolHeight").value = plotting.getDefaultStyle().dotSymbolSize;
+    }
+
+    function symbolHeightChanges() {
+        PlottingDrawCancel();
+        plotting.getDefaultStyle().dotSymbolSize = document.getElementById("symbolHeight").value;
+        document.getElementById("symbolWidth").value = plotting.getDefaultStyle().dotSymbolSize;
+    }
+
+    function defaultStyleFlagChanges() {
+        PlottingDrawCancel();
+        if (document.getElementById("defaultStyleFlag").selectedIndex === 0) {
+            plotting.getDefaultStyle().defaultFlag = false;
+        } else {
+            plotting.getDefaultStyle().defaultFlag = true;
+        }
+    }
+
+    function plotSymbol(){
+        drawControl.handler.serverUrl = serverUrl;
+        drawControl.handler.libID = 421;
+        drawControl.handler.code = 20100;
+        drawControl.handler.enable();
+    }
+    function PlottingDrawCancel(){
+        drawControl.handler.disable();
+    }
+    function PlottingClear(){
+        plottingLayer.removeAllFeatures();
+    }
+
+    $(document).ready(function () {
+        $("#cp1").colorpicker({
+            ishex: true,
+            fillcolor: true,
+            event: 'mouseover',
+            target: $("#lineColor"),
+            success: lineColorChanges
+
+        });
+        $("#_creset").css("font-size", "12px");
+        $("#_creset").css("padding-right", "20px");
+        $("#colorpanel").css({"z-index": "9999"});
+    });
+    function lineColorChanges() {
+        PlottingDrawCancel();
+        plotting.getDefaultStyle().lineColor = document.getElementById("lineColor").value;
+    }
+    window.onload = function(){
+        loadSymbolLib();
+    };
+</script>
+</body>
+</html>

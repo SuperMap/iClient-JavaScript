@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_filetransfer"></title>
+    <script type="text/javascript" include="bootstrap,fileupLoad,zTree" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 15px;right: 10px;width: 320px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center' style=" font-size: 16px;color: #ffffff;">态势图上传下载</h5></div>
+    <div class='panel-body content' style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+        <div class='input-group' style="margin-top: 15px;margin-left: 10px  margin-bottom: 10px;">
+            <input type="file" style='width:200px;float: left;' id="smlFile" name="smlFile"> </input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button"  value="上传" onclick="uploadSmlFile()"/>
+        </div>&nbsp;&nbsp;
+        <div class='input-group' style="margin-left: 10px;  margin-bottom: 10px;">
+            文件URL:
+            <input  type="text" readonly style='width:140px;' id="downloadUrl" name="downloadUrl" value=""> </input>&nbsp;
+            <input type="button"  value="下载" onclick="downloadSmlFileOnServer()"/>
+        </div>
+        <div class='input-group' style="margin-left: 10px;margin-bottom: 15px  margin-bottom: 10px;">
+            文件名称:
+            <input  type="text" readonly style='width:140px;' id="smlFileName" name="smlFileName" value=""> </input>&nbsp;
+            <input type="button"  value="删除" onclick="deleteSmlFileOnServer()" />
+        </div>
+    </div>
+</div>
+<div id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 216px;width: 320px;background: #FFF;z-index: 9999;display: block;">
+    <div class="winTitle" style=" background: #1E90FF;">
+        <span class="title_left">态势图文件列表</span>
+    </div>
+    <div id="filetree" class="winContent" style="  padding: 5px;overflow-y: auto;height: 400px;"></div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet,plottingPanel" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+   var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [35,104],
+        maxZoom: 18,
+        zoom: 3
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    var sitDataManager = plotting.getSitDataManager();
+
+   function getSMLInfosSucess(evt){
+       L.supermap.plotting.initSMLInfosPanel("filetree", evt.smlInfoList, function(clickSmlFileName){
+           var result = sitDataManager.downloadSmlFileURL(clickSmlFileName);
+           document.getElementById("downloadUrl").value = serverUrl + result;
+           document.getElementById("smlFileName").value =clickSmlFileName;
+           sitDataManager.openSmlFileOnServer(clickSmlFileName);
+       })
+   }
+
+    //获取态势图列表
+    function getSMLInfos() {
+        sitDataManager.getSMLInfos(0, 10, getSMLInfosSucess);
+    }
+
+    //上传态势图
+    function uploadSmlFile(){
+        sitDataManager.uploadSmlFile('smlFile', function(evt){
+            if(evt.success){
+                getSMLInfos();
+            } else {
+
+            }
+        });
+    }
+
+    //下载态势图
+    function downloadSmlFileOnServer(){
+        window.open(document.getElementById("downloadUrl").value);
+    }
+
+    //删除态势图
+    function deleteSmlFileOnServer(){
+        var smlFileName = document.getElementById("smlFileName").value;
+        sitDataManager.deleteSmlFileOnServer(smlFileName, function(evt){
+            if(evt.success){
+                document.getElementById("downloadUrl").value = null;
+                document.getElementById("smlFileName").value = null;
+                plottingLayer.removeAllFeatures();
+                getSMLInfos();
+            } else {
+
+            }
+        });
+    }
+
+    function fileFilter() {
+        var file = document.getElementById('smlFile');
+        file.setAttribute("accept", ".sml");
+
+    }
+    window.onload = function(){
+        getSMLInfos();//初始化页面时获取态势图列表
+        fileFilter();
+    };
+
+</script>
+</body>
+</html>
