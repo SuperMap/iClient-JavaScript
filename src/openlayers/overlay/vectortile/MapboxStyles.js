@@ -79,7 +79,6 @@ export class MapboxStyles extends ol.Observable {
     /**
      * @function ol.supermap.MapboxStyles.getStylesBySourceLayer
      * @param {string} sourceLayer - 数据图层名称。
-     * @returns
      */
     getStylesBySourceLayer(sourceLayer) {
         if (this.layersBySourceLayer[sourceLayer]) {
