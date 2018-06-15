@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <meta charset="UTF-8"> -->
+    <title data-i18n="resources.title_mvtVectorLayer_mapboxStyle_lineStyle"></title>
+    <script type="text/javascript" include="bootstrap,jquery,colorpicker,ionRangeSlider" src="../js/include-web.js"></script>
+    <!--<script type="text/javascript" src="../../dist/include-openlayers.js"></script>-->
+    <!--当前示例使用 ol-debug 原因：ol.format.MVT 默认坐标系为 3857，最新代码未更新该默认设置，需使用ol-debug，设置 defaultDataProjection 参数，以支持4326底图-->
+    <script src="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js"></script>
+    <script type="text/javascript" src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms-debug.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <style>
+        ol {
+            list-style: none;
+            margin-left: -38px;
+        }
+
+        .ol-popup {
+            position: absolute;
+            background-color: rgba(0, 60, 136, 0.7);
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            bottom: 20px;
+            left: 10px;
+            opacity: 0;
+            transition: opacity 100ms ease-in;
+        }
+
+        .editContainer {
+            position: absolute;
+            right: 15px;
+            top: 50px;
+            display: block;
+            transition: opacity 100ms ease-in;
+            border-radius: 5px;
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            box-shadow: 0px 0px 13px 0px rgba(25, 34, 41, 1);
+            background: white;
+
+
+        }
+
+        .editContainer>.mainPanelHeader {
+            width: 100%;
+            padding: 8px 15px;
+            background: rgb(0, 131, 203);
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+
+        }
+
+        .editContainer>.mainPanelHeader>.closeButton {
+            float: right;
+            padding-left: 80px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .editContainer>.editPanel {
+            width: 100%;
+            border: 1px solid grey;
+            background: white;
+            color: grey;
+
+        }
+
+        .borderPanel,
+        .fillPanel {
+            background: white;
+            margin: 10px;
+            padding: 8px 17px 3px;
+            box-shadow: inset 0px 0px 7px 0px rgba(43, 40, 43, 1);
+        }
+
+        .fillPanel {
+            padding-right: 20px;
+        }
+
+        .borderPanelHeader,
+        .fillPanelHeader {
+            padding: 8px 0 8px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body style='margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;'>
+    <div id='map' style='margin:0 auto;width: 100%;height: 100%'></div>
+    <div id="popup" class="ol-popup">
+        <div id="popup-content"></div>
+    </div>
+    <div class="editContainer" id="editorContainer">
+        <div class="mainPanelHeader">
+            <span data-i18n="resources.text_LineStyleEditor"></span>
+            <span class="closeButton" id="closeButton">×</span>
+        </div>
+        <div class="editPanel">
+            <div class="borderPanel">
+                <div class="borderPanelHeader">
+                    <span data-i18n="resources.text_lineBorderLayer"></span>
+                    <span id="border_layers_id"></span>
+                </div>
+                <ol class="borderPanelList">
+                    <li>
+                        <label for="border_input_lineColor" data-i18n="resources.text_lineColor_1"></label>
+                        <input type="text" id="border_input_lineColor" value="" style="width:102px;" />
+                        <span>
+                            <img src='../img/colorpicker.png' id="border_input_lineColor_pic" style="cursor:pointer" />
+                        </span>
+                    </li>
+                    <li>
+                        <label for="border_input_lineOpacity" data-i18n="resources.text_lineOpacity"></label>
+                        <input type="text" id="border_input_lineOpacity" name="border_input_lineOpacity">
+                    </li>
+                    <li>
+                        <label for="border_input_lineWidth" data-i18n="resources.text_lineWidth_1"></label>
+                        <input type="text" id="border_input_lineWidth" name="border_input_lineWidth">
+                    </li>
+                </ol>
+            </div>
+            <div class="fillPanel">
+                <div class="fillPanelHeader">
+                    <span data-i18n="resources.text_lineFillLayer"></span>
+                    <span id="fill_layers_id"></span>
+                </div>
+                <ol class="fillPanelList">
+                    <li>
+                        <label for="fill_input_lineColor" data-i18n="resources.text_lineColor_1"></label>
+                        <input type="text" id="fill_input_lineColor" value="" style="width:102px;" />
+                        <span>
+                            <img src='../img/colorpicker.png' id="fill_input_lineColor_pic" style="cursor:pointer" />
+                        </span>
+                    </li>
+                    <li>
+                        <label for="fill_input_lineOpacity" name="fill_input_lineOpacity" data-i18n="resources.text_lineOpacity"></label>
+                        <input type="text" id="fill_input_lineOpacity">
+                    </li>
+                    <li>
+                        <label for="fill_input_lineWidth" data-i18n="resources.text_lineWidth_1"></label>
+                        <input type="text" id="fill_input_lineWidth" name="fill_input_lineWidth">
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
+            "/iserver/services/map-mvt-California/rest/maps/California";
+        getResolutions = function (zoom, scale, targetMinZoom, targetMaxZoom) {
+            var res = scaleToResolution(scale);
+            var minRes = res * Math.pow(2, zoom - targetMinZoom);
+            var resolutions = [];
+            for (var index = 0; index < targetMaxZoom - targetMinZoom + 1; index++) {
+                resolutions.push(minRes / Math.pow(2, index));
+            }
+            return resolutions;
+        }
+        scaleToResolution = function (scale) {
+            var inchPerMeter = 1 / 0.0254;
+            var meterPerMapUnitValue = Math.PI * 2 * 6378137 / 360;
+            return 1 / (scale * 96 * inchPerMeter * meterPerMapUnitValue);
+        };
+        var vectorLayer;
+        var resolutions = getResolutions(10, 0.00000346145499464224, 0, 16);
+        var map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [-122.228687503369, 38.1364932162598],
+                zoom: 13,
+                minZoom: 13,
+                maxZoom: 13,
+                projection: 'EPSG:4326',
+                resolutions: resolutions
+            })
+        });
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var editorContainer = document.getElementById('editorContainer')
+        info = new ol.control.Control({
+            element: container
+        });
+        var editorContainerInfo = new ol.control.Control({
+            element: editorContainer
+        });
+        info.setMap(map);
+        editorContainerInfo.setMap(map);
+        map.addControl(info);
+        map.addControl(editorContainerInfo);
+        var format = new ol.format.MVT({
+            featureClass: ol.Feature
+        });
+        var style = new ol.supermap.MapboxStyles({
+            url: url,
+            source: 'California',
+            map: map,
+            resolutions: resolutions
+        })
+        var source = new ol.source.VectorTileSuperMapRest({
+            url: url,
+            projection: 'EPSG:4326',
+            tileGrid: new ol.tilegrid.TileGrid({
+                resolutions: resolutions,
+                origin: [-180, 90],
+                tileSize: 512
+            }),
+            tileType: 'ScaleXY',
+            format: format
+        })
+        style.on('styleloaded', function () {
+            vectorLayer = new ol.layer.VectorTile({
+                //设置避让参数
+                declutter: true,
+                source: source,
+                style: style.getStyleFunction()
+            });
+            map.addLayer(vectorLayer);
+            setDefaultEditor("Motorway_L@California");
+        })
+
+        map.on('pointermove', function (e) {
+            var features = map.getFeaturesAtPixel(e.pixel);
+            if (!features) {
+                content.innerHTML = '';
+                container.style.opacity = 0;
+                return;
+            }
+            content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" + (features[0].get('NAME') ?
+                "Name:  " + features[0].get('NAME') : "");
+            container.style.opacity = 1;
+        });
+
+
+        // 获取线边框jq对象
+        var borderJqObject = [];
+        borderJqObject['id'] = $("#border_layers_id");
+        borderJqObject['lineColor'] = $("#border_input_lineColor");
+        borderJqObject['lineOpacity'] = $("#border_input_lineOpacity");
+        borderJqObject['lineWidth'] = $("#border_input_lineWidth");
+        borderJqObject['pic'] = $("#border_input_lineColor_pic");
+        // 获取线填充jq对象
+        var fillJqObject = [];
+        fillJqObject['id'] = $("#fill_layers_id")
+        fillJqObject['lineColor'] = $("#fill_input_lineColor");
+        fillJqObject['lineOpacity'] = $("#fill_input_lineOpacity");
+        fillJqObject['lineWidth'] = $("#fill_input_lineWidth");
+        fillJqObject['pic'] = $("#fill_input_lineColor_pic");
+
+
+        // 点击弹出编辑框
+        map.on('click', function (e) {
+            var features = map.getFeaturesAtPixel(e.pixel);
+            if (!features) {
+                resetStyle(borderJqObject);
+                resetStyle(fillJqObject);
+                return;
+            }
+            var layerName = features[0].get('layer');
+            setDefaultEditor(layerName);
+        });
+
+        // 展示图层信息
+        function showLayerInfo(layerInfo, jqObject) {
+            var layerStyle = layerInfo.style;
+            jqObject['id'].html(layerInfo.id);
+            jqObject['lineColor'].val(layerStyle.lineColor);
+            jqObject['lineOpacity'].val(layerStyle.lineOpacity);
+            jqObject['lineWidth'].val(layerStyle.lineWidth);
+            // 取色器
+            colorPicker(jqObject);
+            var lineOpacityOption = { min: "0", max: "1", step: "0.1", from: layerStyle.lineOpacity, opacitySlider: "true" };
+            var lineWidthOption = { min: "0", max: "100", step: "0.5", from: layerStyle.lineWidth, opacitySlider: "false" }
+            // 透明度滑块
+            slider(jqObject['lineOpacity'], jqObject, lineOpacityOption);
+            // 宽度滑块
+            slider(jqObject['lineWidth'], jqObject, lineWidthOption);
+        }
+
+        // 设置取色器模块
+        function colorPicker(jqObject) {
+            jqObject['pic'].colorpicker({
+                ishex: false,
+                fillcolor: true,
+                event: 'mouseover',
+                target: jqObject['lineColor'],
+                success: function () {
+                    var lineColor = jqObject['lineColor'].val().toString().match(/\d+/g);
+                    var opacity = jqObject['lineOpacity'].val();
+                    lineColor.push(opacity);
+                    lineColor = "rgba(" + lineColor.join(",") + ")"
+                    var styleOption = getEditOption(jqObject);
+                    console.log(styleOption);
+                    styleOption.style.lineColor = lineColor;
+                    console.log(styleOption);
+                    changeStyle(styleOption);
+                }
+            });
+        }
+
+        // 设置滑动模块
+        function slider(target, jqObject, option) {
+            target.ionRangeSlider({
+                type: "single",
+                min: option.min,
+                max: option.max,
+                step: option.step,
+                from: option.from,
+                onChange: function (data) {
+                    var data = data.from;
+                    var styleOption = getEditOption(jqObject);
+                    if (option.opacitySlider === "true") {
+                        styleOption.style.lineOpacity = data;
+                    } else {
+                        styleOption.style.lineWidth = data;
+                    }
+                    changeStyle(styleOption);
+                }
+            });
+            var sliderElement = target.data("ionRangeSlider");
+            sliderElement.update({
+                from: option.from
+            });
+        }
+
+
+        // 改变样式
+        function changeStyle(styleOption) {
+            style.updateStyles([{
+                "id": styleOption.id,
+                "paint": {
+                    "line-width": styleOption.style.lineWidth,
+                    "line-color": styleOption.style.lineColor
+                }
+            }]);
+            source.changed();
+        }
+
+        // 获得编辑信息
+        function getEditOption(jqObject) {
+            var layerId = jqObject['id'].html();
+            var lineColor = jqObject['lineColor'].val();
+            var lineOpacity = jqObject['lineOpacity'].val();
+            var lineWidth = jqObject['lineWidth'].val();
+
+            lineColor = lineColor.toString().match(/\d+/g);
+            lineColor.push(lineOpacity);
+            lineColor = "rgba(" + lineColor.join(",") + ")";
+
+            return {
+                id: layerId,
+                style: {
+                    lineColor: lineColor,
+                    lineWidth: lineWidth
+                }
+            }
+        }
+
+        // 获取图层信息
+        function getLayerInfo(layerName, layerStyle, layerType) {
+            // console.log(layerStyle);
+            if (layerType !== "line") {
+                resetStyle(borderJqObject);
+                resetStyle(fillJqObject);
+                return;
+            }
+            var styleObj = getStyleObject(layerStyle);
+            return {
+                layerName: layerName,
+                id: layerStyle.id,
+                style: styleObj
+            }
+        }
+
+        // 获取图层样式
+        function getStyleObject(layerStyle) {
+            var type = layerStyle.type;
+            var paint = layerStyle.paint;
+            var lineColor = paint["line-color"].toString().match(/\d+/g);
+            if (lineColor[4]) {
+                var opacity = lineColor[3].toString() + "." + lineColor[4].toString();
+            }
+            var opacity = lineColor[3].toString();
+            lineColor = lineColor.slice(0, 3);
+            lineColor = "rgb(" + lineColor.join(",") + ")";
+            return {
+                "lineColor": lineColor,
+                "lineOpacity": opacity,
+                "lineWidth": paint["line-width"]
+            }
+        }
+
+        function resetStyle(jqObject) {
+            jqObject['id'].html("");
+            jqObject['lineColor'].val("");
+            jqObject['lineOpacity'].val("");
+            jqObject['lineWidth'].val("")
+
+            editorContainer.style.display = "none";
+        }
+
+        // 设置默认编辑器
+        function setDefaultEditor(layerName) {
+            var layerStyleArr = style.getStylesBySourceLayer(layerName);
+            if (layerStyleArr[0].type !== 'line') {
+                resetStyle(borderJqObject);
+                resetStyle(fillJqObject);
+                return;
+            }
+            var layerStyle = [];
+            for (var i = 0; i < layerStyleArr.length; i++) {
+                if (layerStyleArr[i].maxzoom === 14) {
+                    layerStyle.push(layerStyleArr[i]);
+                }
+            }
+            var layerType = layerStyle[0].type;
+
+            // 线边框图层样式
+            var lineBorderStyle = layerStyle[0];
+            // 线填充图层样式
+            var lineFillStyle = layerStyle[1];
+            var lineBorderInfo = getLayerInfo(layerName, lineBorderStyle, layerType);
+            var lineFillInfo = getLayerInfo(layerName, lineFillStyle, layerType);
+
+            showLayerInfo(lineBorderInfo, borderJqObject, "boder");
+            showLayerInfo(lineFillInfo, fillJqObject, "fill");
+            editorContainer.style.display = "block";
+        }
+
+        // 点击关闭编辑器
+        $('#closeButton').click(function () {
+            editorContainer.style.display = "none";
+        });
+
+    </script>
+</body>
+
+</html>

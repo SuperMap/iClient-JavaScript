@@ -146,6 +146,12 @@
             inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
+        if (inArray(includes, 'ionRangeSlider')) {
+            inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.css");
+            inputCSS("https://cdn.bootcss.com/normalize/8.0.0/normalize.css");
+            inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.skinHTML5.css");
+            inputScript("https://cdn.bootcss.com/ion-rangeslider/2.2.0/js/ion.rangeSlider.min.js");
+        }
     }
 
     function datGuiI18N() {

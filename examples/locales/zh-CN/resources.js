@@ -363,6 +363,7 @@ window.examplesResources = {
         "title_mvtVectorLayer4326": "iServer MVT矢量瓦片(WGS84)",
         "title_mvtVectorLayer_mapboxStyle": "OSM风格(MVT WGS84)",
         "title_mvtVectorLayer_mapboxStyle_4326": "风格动态切换",
+        "title_mvtVectorLayer_mapboxStyle_lineStyle": "线样式编辑",
         "title_onlineSecurity": "Online SecurityManager使用示例",
         "title_onlineWebMap": "2014当了一回背包客",
         "title_osmBuildings": "openlayers 建筑立体效果",
@@ -1048,6 +1049,13 @@ window.examplesResources = {
         "text_esmode_streaming": "实时展示",
         "text_esmode_history": "历史展示",
         "text_esmode": "展示模式",
+        "text_LineStyleEditor": "线样式编辑器：california",
+        "text_lineBorderLayer": "图层（线边框）: ",
+        "text_lineFillLayer": "图层（线填充）: ",
+        "text_lineColor_1": "线的颜色：",
+        "text_lineOpacity": "线的透明度：",
+        "text_lineWidth_1": "线的宽度：",
+
 
         "btn_overlayAnalyst": "叠加分析",
         "btn_terrainCurvatureCalculation": "地形曲率计算",

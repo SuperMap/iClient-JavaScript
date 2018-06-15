@@ -810,6 +810,13 @@ var exampleConfig = {
                         localIgnore:true,
                         thumbnail: "mvtvectorlayer_mbstyle_beijing.png",
                         fileName: "mvtvectorlayer_mbstyle_beijing"
+                    },
+                    {
+                        name: "线样式编辑",
+                        name_en: "Line Style Edit",
+                        localIgnore:true,
+                        thumbnail: "mvtvectorlayer_mbstyle_linestyle.png",
+                        fileName: "mvtvectorlayer_mbstyle_linestyle"
                     }
 
                 ]
