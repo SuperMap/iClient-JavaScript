@@ -8,10 +8,10 @@ import {
  * @class mapboxgl.supermap.MapvLayer
  * @category  Visualization MapV
  * @classdesc Mapv图层
- * @param map - {Object} 地图
- * @param dataSet -{Object} 数据集
- * @param mapVOptions -{Object} Mapv参数。如：
- *        layerID - {string} 图层ID。<br>
+ * @param {Object} map - 地图 </br>
+ * @param {Object} dataSet - 数据集 </br>
+ * @param {Object} mapVOptions - Mapv参数。</br>
+ * @param {string} mapVOptions.layerID - 图层ID。
  */
 export class MapvLayer {
 
@@ -45,8 +45,8 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.addData
      * @description 追加数据
-     * @param data - {Object} 要追加的数据
-     * @param options -{Object} 要追加的值
+     * @param {Object} data - 要追加的数据 </br>
+     * @param {Object} options - 要追加的值
      */
     addData(data, options) {
         this.renderer.addData(data, options);
@@ -55,9 +55,9 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.update
      * @description 更新图层
-     * @param opt - {Object} 待更新的数据<br>
-     *        data -{Object} mapv数据集<br>
-     *        options -{Object} mapv绘制参数<br>
+     * @param {Object} opt - 待更新的数据</br> 
+     * @param {Object} opt.data - mapv数据集</br>
+     * @param {Object} opt.options - mapv绘制参数
      */
     update(opt) {
         this.renderer.update(opt);
@@ -66,7 +66,7 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.getData
      * @description 获取数据
-     * @return {mapv.DataSet} mapv数据集
+     * @returns {mapv.DataSet} mapv数据集
      */
     getData() {
         if (this.renderer) {
@@ -78,14 +78,14 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.removeData
      * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      * @example
-     *  filter=function(data){
+     * filter=function(data){
      *    if(data.id=="1"){
      *      return true
      *    }
      *    return false;
-     *  }
+     * }
      */
     removeData(filter) {
         this.renderer && this.renderer.removeData(filter);
@@ -134,8 +134,8 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param layerID - {string} 待插入的图层ID。
-     * @param before - {boolean} 是否将本图层插入到图层id为layerID的图层之前(默认为true，如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID - 待插入的图层ID。</br>
+     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.layerID);

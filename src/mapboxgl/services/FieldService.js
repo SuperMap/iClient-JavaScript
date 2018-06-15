@@ -9,12 +9,12 @@ import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common'
  * @category  iServer Data Field
  * @classdesc 字段服务类
  * @example
- *      new mapboxgl.supermap.FieldService(url).getFields(function(result){
- *           //doSomething
- *      });
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 参数。
- * @extends mapboxgl.supermap.ServiceBase
+ * new mapboxgl.supermap.FieldService(url).getFields(function(result){
+ *     //doSomething
+ * });
+ * @param {string} url - 与客户端交互的服务地址。</br>
+ * @param {Object} options - 参数。
+ * @extends {mapboxgl.supermap.ServiceBase}
  */
 export class FieldService extends ServiceBase {
     constructor(url, options) {
@@ -24,8 +24,8 @@ export class FieldService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
-     * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类 </br>
+     * @param {RequestCallback} callback 回调函数 
      */
     getFields(params, callback) {
         var me = this;
@@ -47,7 +47,7 @@ export class FieldService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
-     * @param params -{SuperMap.FieldStatisticsParameters} 查询所需参数类。
+     * @param {SuperMap.FieldStatisticsParameters} params - 查询所需参数类。</br>
      * @param {RequestCallback} callback 回调函数
      */
     getFieldStatisticsInfo(params, callback) {

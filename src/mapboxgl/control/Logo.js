@@ -11,17 +11,14 @@ import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
  * (start code)
  *  map.addControl(new mapboxgl.supermap.LogoControl(),'bottom-right');
  * (end)
- * @param options -{Object} logo控件配置项</br>
- *        imageUrl - {string} logo图片地址</br>
- *        width - {string} logo图片宽</br>
- *        height - {string} logo图片高</br>
- *        link - {string} 跳转链接</br>
- *        alt - {string} logo图片失效时显示文本
+ * @param {Object} options - logo控件配置项</br>
+ * @param {string} options.imageUrl - logo图片地址</br>
+ * @param {string} options.width - logo图片宽</br>
+ * @param {string} options.height - logo图片高</br>
+ * @param {string} options.link - logo图片跳转链接</br>
+ * @param {string} options.alt - logo图片失效时显示文本
  */
 export class Logo {
-
-
-
     constructor(options) {
         //logo图片地址
         this.imageUrl = null;
@@ -39,7 +36,7 @@ export class Logo {
     /**
      * @function mapboxgl.supermap.LogoControl.prototype.onAdd
      * @description 添加一个logo
-     * @return {div} 返回创建的logo元素
+     * @returns {div} 返回创建的logo元素
      */
     onAdd(map) {
         this._map = map;

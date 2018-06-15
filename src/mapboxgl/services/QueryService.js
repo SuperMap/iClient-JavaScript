@@ -15,14 +15,14 @@ import {
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL查询，几何查询，距离查询
- * @extends mapboxgl.supermap.ServiceBase
- * @param url - {string} 地图查询服务访问地址。
- * @param options - {Object} 服务交互时所需的可选参数。
+ * @extends {mapboxgl.supermap.ServiceBase}
+ * @param {string} url - 地图查询服务访问地址。</br>
+ * @param {Object} options - 服务交互时所需的可选参数。</br>
  * @example
- *    new mapboxgl.supermap.QueryService(url)
- *      .queryByBounds(param,function(result){
- *          //doSomething
- *      })
+ * new mapboxgl.supermap.QueryService(url)
+ * .queryByBounds(param,function(result){
+ *     //doSomething
+ * })
  */
 export class QueryService extends ServiceBase {
 
@@ -33,9 +33,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
-     * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.QueryByBoundsParameters} params - 通过Bounds查询的相关参数类</br>
+     * @param {RequestCallback} callback - 回调函数</br>
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryByBounds(params, callback, resultFormat) {
         var me = this;
@@ -58,9 +58,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.QueryService.prototype.queryByDistance
      * @description 地图距离查询服务
-     * @param params - {QueryByDistanceParameters} Distance查询相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.QueryByDistanceParameters} params - Distance查询相关参数类</br>
+     * @param {RequestCallback} callback - 回调函数</br>
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -82,9 +82,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.QueryService.prototype.queryBySQL
      * @description 地图SQL查询服务
-     * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.QueryBySQLParameters} params - SQL查询相关参数类</br>
+     * @param {RequestCallback} callback - 回调函数</br>
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -106,9 +106,9 @@ export class QueryService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务
-     * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @param {SuperMap.QueryByGeometryParameters} params - Geometry查询相关参数类</br>
+     * @param {RequestCallback} callback - 回调函数</br>
+     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
      */
     queryByGeometry(params, callback, resultFormat) {
         var me = this;

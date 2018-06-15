@@ -11,7 +11,7 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
      * @description 将 geoJSON 对象转为SuperMap几何图形
-     * @param geoJSON - {Object} geoJSON 对象
+     * @param {Object} geoJSON - geoJSON 对象
      */
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {
@@ -52,8 +52,8 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.isArray
      * @description 判断是否为数组格式
-     * @param obj - {Object} 待判断对象
-     * @return {boolean} 是否是数组
+     * @param {Object} obj - 待判断对象
+     * @returns {boolean} 是否是数组
      */
     static isArray(obj) {
         return Object.prototype.toString.call(obj) == '[object Array]'
@@ -63,7 +63,7 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式
-     * @param smObj - {Object} 待转参数
+     * @param {Object} smObj - 待转参数
      */
     static toGeoJSON(smObj) {
         if (smObj) {
@@ -75,8 +75,8 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.toProcessingParam
      * @description 将Region节点数组转为Processing服务需要的分析参数
-     * @param points - Region各个节点数组
-     * @return processing服务裁剪、查询分析的分析参数
+     * @param {Array} points - Region各个节点数组
+     * @returns {Object} processing 服务裁剪、查询分析的分析参数
      */
     static toProcessingParam(points) {
         var geometryParam = {};
@@ -99,9 +99,9 @@ export class Util {
     /**
      * @function mapboxgl.supermap.Util.extend
      * @description 对象拷贝赋值
-     * @param dest - 目标对象
-     * @param arguments - 待拷贝的对象
-     * @return 赋值后的目标对象
+     * @param {Object} dest - 目标对象
+     * @param {Object} arguments - 待拷贝的对象
+     * @returns {Object} 赋值后的目标对象
      */
     static extend(dest) {
         for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {

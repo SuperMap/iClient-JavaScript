@@ -7,16 +7,16 @@ import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
  * @class mapboxgl.supermap.ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类 
- * @extends mapboxgl.supermap.ServiceBase
+ * @extends {mapboxgl.supermap.ServiceBase}
  * @example
- *      new mapboxgl.supermap.ThemeService(url,{
- *            projection:projection
- *      }).getThemeInfo(params,function(result){
- *           //doSomething
- *      });
- * @param url - {string} 服务的访问地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ * new mapboxgl.supermap.ThemeService(url,{
+ *      projection:projection
+ * }).getThemeInfo(params,function(result){
+ *      //doSomething
+ * });
+ * @param {string} url - 服务的访问地址。</br>
+ * @param {Object} options - 交互服务时所需可选参数。</br>
+ * @param {SuperMap.ServerType} options.serverType - 服务来源 iServer|iPortal|online
  */
 export class ThemeService extends ServiceBase {
 
@@ -27,8 +27,8 @@ export class ThemeService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息
-     * @param params - {SuperMap.ThemeParameters} 专题图参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.ThemeParameters} params - 专题图参数类</br>
+     * @param {RequestCallback} callback - 回调函数
      */
     getThemeInfo(params, callback) {
         var me = this;

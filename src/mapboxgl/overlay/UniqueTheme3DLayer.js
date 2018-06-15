@@ -6,10 +6,10 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @class mapboxgl.supermap.UniqueTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维单值专题图
- * @param  id -{string} 专题图图层id
- * @param  layerOptions -{Object} 专题图图层配置项,参数继承自Theme3DLayer,新增参数如下：<br>
- *            height -{number} 如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度<br>
- *            colorStops -{Array} 数据颜色分段数组<br>
+ * @param {string} id - 专题图图层id</br>
+ * @param {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer,</br>
+ * @param {number} layerOptions.height - 新增参数，如果数据指定的heightField(默认为height)没有可以表示高度的字段，可以为所有数据统一设置一个高度</br>
+ * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组
  */
 export class UniqueTheme3DLayer extends Theme3DLayer {
 
@@ -27,7 +27,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     /**
      * @function  mapboxgl.supermap.UniqueTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式
-     * @return {Object}  mapbox gl样式对象
+     * @returns {Object} mapbox gl样式对象
      */
     getLayerStyleOptions() {
         var opacity = this.opacity == null ? 1 : this.opacity;
@@ -62,7 +62,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     /**
      * @function mapboxgl.supermap.UniqueTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式
-     * @returns {Object}  mapbox gl样式对象
+     * @returns {Object} mapbox gl样式对象
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

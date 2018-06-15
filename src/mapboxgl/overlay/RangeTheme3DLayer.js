@@ -6,50 +6,48 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @class mapboxgl.supermap.RangeTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维分段专题图
- * @param  id -{string} 专题图图层id
- * @param  layerOptions -{Object} 专题图图层配置项,参数继承自Theme3DLayer,新增参数如下：<br>
- *            heightStops -{Array} 数据高度分段数组<br>
- *            colorStops -{Array} 数据颜色分段数组<br>
- *            base -{number} 数据分段线性增量<br>
- *            legendRatio -{number} 图例数值扩大系数<br>
+ * @param  {string} id - 专题图图层id</br>
+ * @param  {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer</br>
+ * @param  {Array} layerOptions.heightStops - 新增参数，数据高度分段数组</br>
+ * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组</br>
+ * @param  {number} layerOptions.base - 新增参数，数据分段线性增量</br>
+ * @param  {number} layerOptions.legendRatio - 新增参数，图例数值扩大系数
  * @example
  * new mapboxgl.supermap.RangeTheme3DLayer(layerId, map, {
- *           enableHighlight:true,
- *           // 设置分段
- *           heightField: "floor",
- *           heightStops: [[1, 10], [10, 100]],
- *           colorStops: [
- *               [0, 'rgba(33, 41, 52, 0.8)'], [20, 'rgba(69,117,180, 0.7)'], [50, 'rgba(116,173,209, 0.7)'], [100, 'rgba(171,217,233, 0.7)']
- *           ],
- *           // 显示图例
- *           showLegend: true,
- *           legendTheme: 'dark',
- *           legendTitle: "图例"
- *       });
+ *      enableHighlight:true,
+ *      // 设置分段
+ *      heightField: "floor",
+ *      heightStops: [[1, 10], [10, 100]],
+ *      colorStops: [[0, 'rgba(33, 41, 52, 0.8)'], [20, 'rgba(69,117,180, 0.7)'], [50, 'rgba(116,173,209, 0.7)'], [100, 'rgba(171,217,233, 0.7)']],
+ *      // 显示图例
+ *      showLegend: true,
+ *      legendTheme: 'dark',
+ *      legendTitle: "图例"
+ * });
  */
 export class RangeTheme3DLayer extends Theme3DLayer {
 
     constructor(id, layerOptions) {
         super(id, layerOptions);
         /**
-         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.heightStops -{Array}
+         * @member  {Array} mapboxgl.supermap.RangeTheme3DLayer.prototype.heightStops 
          * @description 数据高度分段数组
          */
         this.heightStops = null;
 
         /**
-         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.colorStops -{Array}
+         * @member  {Array} mapboxgl.supermap.RangeTheme3DLayer.prototype.colorStops 
          * @description 数据颜色分段数组
          */
         this.colorStops = null;
         /**
-         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.base -{number}
+         * @member  {number} mapboxgl.supermap.RangeTheme3DLayer.prototype.base 
          * @description 数据分段线性增量
          */
         this.base = null;
 
         /**
-         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio -{number}
+         * @member  {number} mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio 
          * @description 图例数值扩大系数
          */
         this.legendRatio = 1;
@@ -60,7 +58,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     /**
      * @function  mapboxgl.supermap.RangeTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式
-     * @return {Object}  mapbox gl样式对象
+     * @returns {Object} mapbox gl样式对象
      */
     getLayerStyleOptions() {
         var opacity = this.opacity == null ? 1 : this.opacity;
@@ -102,7 +100,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     /**
      * @function mapboxgl.supermap.RangeTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式
-     * @returns {Object}  mapbox gl样式对象
+     * @returns {Object} mapbox gl样式对象
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

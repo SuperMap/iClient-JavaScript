@@ -12,15 +12,15 @@ import {
  * @class mapboxgl.supermap.LayerInfoService
  * @category  iServer Map Layer
  * @classdesc 图层信息服务类 
- * @extends mapboxgl.supermap.ServiceBase
+ * @extends {mapboxgl.supermap.ServiceBase}
  * @example
- *      new mapboxgl.supermap.LayerInfoService(url).getLayersInfo(function(result){
- *           //doSomething
- *      })
- * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
- *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
- * @param options - {Object} 服务所需可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ * new mapboxgl.supermap.LayerInfoService(url).getLayersInfo(function(result){
+ *     //doSomething
+ * })
+ * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：</br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+ * @param {Object} options - 服务所需可选参数。</br>
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class LayerInfoService extends ServiceBase {
 
@@ -31,8 +31,8 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
-     * @param {RequestCallback} callback 回调函数
-     * @return {mapboxgl.supermap.LayerInfoService} 返回图层信息类
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {mapboxgl.supermap.LayerInfoService} 返回图层信息类
      */
     getLayersInfo(callback) {
         var me = this;
@@ -51,8 +51,8 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改
-     * @param params - {SuperMap.SetLayerInfoParameters} 设置图层信息参数类
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.SetLayerInfoParameters} params - 设置图层信息参数类</br>
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayerInfo(params, callback) {
         if (!params) {
@@ -82,8 +82,8 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改
-     * @param params - {SuperMap.SetLayersInfoParameters}  设置图层信息参数类,包括临时图层。
-     * @param {RequestCallback} callback 回调函数
+     * @param {SuperMap.SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。</br>
+     * @param {RequestCallback} callback - 回调函数
      */
     setLayersInfo(params, callback) {
         if (!params) {
@@ -113,7 +113,7 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
-     * @param params - {SuperMap.SetLayerStatusParameters} 子图层显示控制参数类
+     * @param {SuperMap.SetLayerStatusParameters} params - 子图层显示控制参数类 </br>
      * @param {RequestCallback} callback 回调函数
      */
     setLayerStatus(params, callback) {

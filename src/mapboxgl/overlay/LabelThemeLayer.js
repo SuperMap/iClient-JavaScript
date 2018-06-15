@@ -14,50 +14,50 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @class mapboxgl.supermap.LabelThemeLayer
  * @category  Visualization Theme
  * @classdesc  标签专题图层。
- * @param name - {string} 图层名。
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        themeField - {string}  指定创建专题图字段。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends mapboxgl.supermap.GeoFeatureThemeLayer
+ * @param {string} name - 图层名。</br>
+ * @param {Object} opt_options - 参数。</br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。</br>
+ * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明度。</br>
+ * @param {string} opt_options.themeField - 指定创建专题图字段。</br>
+ * @param {Object} opt_options.style - 专题图样式。</br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。</br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。</br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
  */
 export class Label extends GeoFeature {
 
     constructor(name, opt_options) {
         super(name, opt_options);
         /**
-         * @member mapboxgl.supermap.LabelThemeLayer.prototype.isOverLay -{boolean}
-         * @description 是否进行压盖处理，如果设为true，将隐藏被压盖的标签，默认为true。
+         * @member {boolean} [mapboxgl.supermap.LabelThemeLayer.prototype.isOverLay=true] 
+         * @description 是否进行压盖处理，如果设为true，将隐藏被压盖的标签。
          */
         this.isOverLay = true;
         /**
-         * @member mapboxgl.supermap.LabelThemeLayer.prototype.isAvoid -{boolean}
-         * @description 是否进行地图边缘的避让处理，如果设为true，将把与地图边缘相交的标签移到地图范围内，默认为 true，在地图边缘处做避让处理。
+         * @member {boolean} [mapboxgl.supermap.LabelThemeLayer.prototype.isAvoid=true] 
+         * @description 是否进行地图边缘的避让处理，如果设为true，将把与地图边缘相交的标签移到地图范围内，在地图边缘处做避让处理。
          */
         this.isAvoid = true;
 
         /**
-         * @member mapboxgl.supermap.LabelThemeLayer.prototype.themeField -{string}
-         * @description  用于指定专题要素样式的属性字段名称。<br>
-         *               此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。<br>
-         *               使用标签分组显示还需要设置 styleGroups 属性。<br>
+         * @member {string} mapboxgl.supermap.LabelThemeLayer.prototype.themeField 
+         * @description  用于指定专题要素样式的属性字段名称。</br>
+         *               此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。</br>
+         *               使用标签分组显示还需要设置 styleGroups 属性。</br>
          */
         this.themeField = null;
 
         /**
-         * @member mapboxgl.supermap.LabelThemeLayer.prototype.styleGroups -{Array<Object>}
-         * @description  分组样式。 使用此属性需要设置 themeField 属性。<br>
-         *      1.没有同时设置 themeField 和 styleGroups，则所有专题要素都使用本图层的 style 进行渲染；<br>
-         *      2.同时设置 themeField 和 styleGroups，则按照 themeField 指定的字段名称获取用户数据（feature）attributes 中对应的属性值；<br>
-         *          a.如果属性值等于 styleGroups 数组里某个元素定义的 value 值，则此专题要素取 styleGroups 数组中该元素定义的 style 进行渲染。<br>
-         *          b.如果属性值不等于 styleGroups 数组里任何元素定义的 value 值，则此专题要素按照本图层的 style 进行渲染。<br>
-         *      此数组每个元素对象必须有两个属性：value : 与字段 themeField 相对应的属性值；style：专题要素 style。
+         * @member {Array<Object>} mapboxgl.supermap.LabelThemeLayer.prototype.styleGroups 
+         * @description 分组样式。使用此属性需要设置 themeField 属性。</br>
+         *              1.没有同时设置 themeField 和 styleGroups，则所有专题要素都使用本图层的 style 进行渲染；</br>
+         *              2.同时设置 themeField 和 styleGroups，则按照 themeField 指定的字段名称获取用户数据（feature）attributes 中对应的属性值；</br>
+         *                  a.如果属性值等于 styleGroups 数组里某个元素定义的 value 值，则此专题要素取 styleGroups 数组中该元素定义的 style 进行渲染。</br>
+         *                  b.如果属性值不等于 styleGroups 数组里任何元素定义的 value 值，则此专题要素按照本图层的 style 进行渲染。</br>
+         *              此数组每个元素对象必须有两个属性：value : 与字段 themeField 相对应的属性值；style：专题要素 style。
          */
         this.styleGroups = null;
 
@@ -101,10 +101,10 @@ export class Label extends GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.redrawThematicFeatures
-     * @description 重绘所有专题要素。
-     *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
+     * @description 重绘所有专题要素。</br>
+     *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。</br>
      *              地图漫游时调用此方法进行图层刷新。
-     * @param bounds -{mapboxgl.LngLatBounds} 重绘范围
+     * @param {mapboxgl.LngLatBounds} bounds - 重绘范围
      */
     redrawThematicFeatures(bounds) {
         if (!this.labelFeatures || this.labelFeatures.length == 0) {
@@ -123,7 +123,7 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.createThematicFeature
      * @description 创建专题图要素
-     * @param feature - {Object} 要创建的专题图形要素
+     * @param {Object} feature - 要创建的专题图形要素
      */
     createThematicFeature(feature) {
         //赋 style
@@ -151,8 +151,8 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素
-     * @param labelFeatures -{Array<SuperMap.Feature.Vector>}  所有标签要素的数组。
-     * @return {Array<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
+     * @param {Array<SuperMap.Feature.Vector>} labelFeatures - 所有标签要素的数组。
+     * @returns {Array<SuperMap.Feature.Vector>} 最终要绘制的标签要素数组。
      */
     getDrawnLabels(labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
@@ -315,8 +315,8 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param feat -{SuperMap.Feature.Vector} 矢量要素对象
-     * @return {Array<SuperMap.ThemeStyle>} 专题要素的 Style
+     * @param {SuperMap.Feature.Vector} feat - 矢量要素对象
+     * @returns {Array<SuperMap.ThemeStyle>} 专题要素的 Style
      */
     getStyleByData(feat) {
         var feature = feat;
@@ -364,8 +364,8 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.setLabelsStyle
      * @description 设置标签要素的Style
-     * @param labelFeatures -{Array<SuperMap.Feature.Vector>} 需要设置 Style 的标签要素数组。
-     * @return {Array<SuperMap.Feature.Vector>}  赋予 Style 后的标签要素数组。
+     * @param {Array<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
+     * @returns {Array<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
      */
     setLabelsStyle(labelFeatures) {
         var fea, labelFeas = [];
@@ -392,7 +392,7 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.setStyle
      * @description 设置标签要素的Style
-     * @param feat -{SuperMap.Feature.Vector} 需要赋予 style 的要素。
+     * @param {SuperMap.Feature.Vector} feat - 需要赋予 style 的要素。
      */
     setStyle(feat) {
         var feature = feat;
@@ -442,8 +442,8 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标
-     * @param feature -{SuperMap.Feature.Vector}  标签要素。
-     * @return {mapboxgl.Point} 标签位置
+     * @param {SuperMap.Feature.Vector} feature - 标签要素。
+     * @returns {mapboxgl.Point} 标签位置
      */
     getLabelPxLocation(feature) {
         var geoText = feature.geometry;
@@ -470,10 +470,10 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围
      *
-     * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
-     * @param loc - {mapboxgl.Point} 标签位置
+     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。</br>
+     * @param {mapboxgl.Point} loc - 标签位置
      *
-     * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     calculateLabelBounds(feature, loc) {
         var geoText = feature.geometry;
@@ -515,10 +515,10 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算bounds的效率。
      *
-     * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
-     * @param loc - {mapboxgl.Point} 标签位置
+     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。</br>
+     * @param {mapboxgl.Point} loc - 标签位置
      *
-     * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     calculateLabelBounds2(feature, loc) {
         var labB, left, bottom, top, right;
@@ -596,7 +596,7 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getLabelInfo
      * @description 根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等
-     * @return {Object} 绘制后的标签信息
+     * @returns {Object} 绘制后的标签信息
      */
     getLabelInfo(location, style) {
         var LABEL_ALIGN = {
@@ -695,11 +695,11 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.rotationBounds
      * @description 旋转bounds。
      *
-     * @param bounds -{SuperMap.Bounds}  要旋转的bounds。
-     * @param rotationCenterPoi -{Object}  旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param angle -{number}  旋转角度（顺时针）。
+     * @param {SuperMap.Bounds} bounds - 要旋转的bounds。</br>
+     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。</br>
+     * @param {number} angle - 旋转角度（顺时针）。
      *
-     * @return {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+     * @returns {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     rotationBounds(bounds, rotationCenterPoi, angle) {
         var ltPoi = new mapboxgl.Point(bounds.left, bounds.top);
@@ -727,13 +727,13 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getRotatedLocation
      * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
      *
-     * @param x -{number}  旋转点横坐标。
-     * @param y -{number}  旋转点纵坐标。
-     * @param rx -{number}  旋转中心点横坐标。
-     * @param ry -{number}  旋转中心点纵坐标。
-     * @param angle -{number} 旋转角度
+     * @param {number} x - 旋转点横坐标。</br>
+     * @param {number} y - 旋转点纵坐标。</br>
+     * @param {number} rx - 旋转中心点横坐标。</br>
+     * @param {number} ry - 旋转中心点纵坐标。</br>
+     * @param {number} angle - 旋转角度
      *
-     * @return {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @returns {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
      */
     getRotatedLocation(x, y, rx, ry, angle) {
         var loc = {}, x0, y0;
@@ -754,10 +754,10 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getAvoidInfo
      * @description 获取避让的信息。
      *
-     * @param bounds -{SuperMap.Bounds}  地图像素范围。
-     * @param quadrilateral -{Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @param {SuperMap.Bounds} bounds - 地图像素范围。</br>
+     * @param {Array<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      *
-     * @return {Object} 避让的信息
+     * @returns {Object} 避让的信息
      */
     getAvoidInfo(bounds, quadrilateral) {
         if (quadrilateral.length !== 5) {
@@ -800,9 +800,8 @@ export class Label extends GeoFeature {
             return null;
         }
 
-
         //内部函数：设置避让信息
-        //参数：vec-{Object}  quadrilateral四边形单个节点。如：{"x":1,"y":1}。
+        //参数：{Object} vec- quadrilateral四边形单个节点。如：{"x":1,"y":1}。
         function setInfo(vec) {
             //四边形不在bounds内的节点
             if (!bounds.contains(vec.x, vec.y)) {
@@ -851,10 +850,10 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖
      *
-     * @param quadrilateral -{Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
-     * @param quadrilateral2 -{Array<Object>}  第二个四边形节点数组。
+     * @param {Array<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。</br>
+     * @param {Array<Object>} quadrilateral2 - 第二个四边形节点数组。
      *
-     * @return {boolean} 是否压盖，true表示压盖
+     * @returns {boolean} 是否压盖，true表示压盖
      */
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
@@ -898,9 +897,9 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面。(射线法)
      *
-     * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param poly - {Array<Object>}  多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
-     * @return {boolean} 点是否在多边形内
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。</br>
+     * @param {Array<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+     * @returns {boolean} 点是否在多边形内
      */
     isPointInPoly(pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {

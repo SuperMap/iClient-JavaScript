@@ -15,48 +15,48 @@ import {
 /**
  * @class mapboxgl.supermap.ThemeLayer
  * @classdesc 专题图基类。
- * @param name - {string} 专题图图层名。
- * @param options -{Object} 可选参数，如：</br>
- *        id - {string} 专题图层ID。</br>
- *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
- *        opacity - {number} 图层透明的。</br>
+ * @param {string} name - 专题图图层名。</br>
+ * @param {Object} options -可选参数。</br>
+ * @param {string} options.id - 专题图层ID。</br>
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。</br>
+ * @param {mapboxgl.Map} options.map - 当前mapboxgl map对象。</br>
+ * @param {number} options.opacity - 图层透明度。
  */
 export class Theme {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         /**
-         * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
+         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name 
          * @description 专题图图层名称
          */
         this.name = name;
 
         /**
-         * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
+         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name 
          * @description 专题图图层id
          */
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
-         * @member mapboxgl.supermap.ThemeLayer.prototype.opacity -{float}
+         * @member {float} mapboxgl.supermap.ThemeLayer.prototype.opacity 
          * @description 图层透明度
          */
         this.opacity = 1;
 
         /**
-         * @member mapboxgl.supermap.ThemeLayer.prototype.visibility - {boolean}
-         * @description 图层是否可见，默认为 true。
+         * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.visibility=true]
+         * @description 图层是否可见
          */
         this.visibility = true;
 
         /**
-         * @member mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating -{boolean}
-         * @description 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
+         * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating=true] 
+         * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
          */
         this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
 
         /**
-         * @member mapboxgl.supermap.ThemeLayer.prototype.map -{mapboxgl.Map}
+         * @member {mapboxgl.Map} mapboxgl.supermap.ThemeLayer.prototype.map 
          * @description map对象
          */
         this.map = options.map;
@@ -101,7 +101,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.destroyFeatures
      * @description 销毁某个要素
-     * @param features -{Object} 将被销毁的要素
+     * @param {Object} features - 将被销毁的要素
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -119,7 +119,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param visibility - {boolean} 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} visibility - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
      */
     setVisibility(visibility) {
         if (visibility !== this.visibility) {
@@ -132,7 +132,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.display
      * @description 临时隐藏或者显示图层。通过对CSS控制产生即时效果，重新渲染失效。一般用 setVisibility 方法来动态控制图层的显示和隐藏。
-     * @param display - {boolean}
+     * @param {boolean} display - 是否显示图层
      */
     display(display) {
         this.div.style.display = display ? "block" : "none";
@@ -141,7 +141,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
-     * @param opacity - {number} 不透明度
+     * @param {number} opacity - 不透明度
      */
     setOpacity(opacity) {
         if (opacity !== this.opacity) {
@@ -158,7 +158,7 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.addFeatures
-     * @param features -{mapboxgl.supermap.ThemeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -169,7 +169,7 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.removeFeatures
-     * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
+     * @param {Array<SuperMap.Feature.Vector>} features - 要删除feature的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
@@ -228,7 +228,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @return {SuperMap.Feature.Vector} 用户加入图层的有效数据。
+     * @returns {SuperMap.Feature.Vector} 用户加入图层的有效数据。
      */
     getFeatures() {
         var len = this.features.length;
@@ -243,9 +243,9 @@ export class Theme {
      * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
-     * @param property - {string} feature 的某个属性名称。
-     * @param value - {string} property 所对应的值。
-     * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
+     * @param {string} property - feature 的某个属性名称。</br>
+     * @param {string} value - property 所对应的值。
+     * @returns {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
     getFeatureBy(property, value) {
         var feature = null;
@@ -261,8 +261,8 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatureById
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param featureId - {string} 矢量要素的属性 id。
-     * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
+     * @param {string} featureId - 矢量要素的属性id。
+     * @returns {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -271,9 +271,9 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param attrName - {string} 属性的 key。
-     * @param attrValue - {string} 矢量要素的属性 id。
-     * @return {Array<SuperMap.Feature.Vector>}一个匹配的 feature 数组。
+     * @param {string} attrName - 属性的 key。</br>
+     * @param {string} attrValue - 矢量要素的属性 id。
+     * @returns {Array<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -292,7 +292,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
-     * @param extent - {mapboxgl.LngLatBounds} 重绘的范围。
+     * @param {mapboxgl.LngLatBounds} extent - 重绘的范围。
      */
     redrawThematicFeatures(extent) { // eslint-disable-line no-unused-vars
     }
@@ -300,9 +300,9 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.on
      * @description 添加专题要素事件监听。添加专题要素事件监听。
-     * @param event - {Event} 监听事件
-     * @param callback - {function} 回调函数
-     * @param context - {string} 信息
+     * @param {Event} event - 监听事件</br>
+     * @param {function} callback - 回调函数</br>
+     * @param {string} context - 信息
      */
     on(event, callback, context) { // eslint-disable-line no-unused-vars
         if (this.renderer) {
@@ -316,9 +316,9 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.off
      * @description 移除专题要素事件监听。
-     * @param event - {Event} 监听事件
-     * @param callback - {function} 回调函数
-     * @param context - {string} 信息
+     * @param {Event} event - 监听事件 </br>
+     * @param {function} callback - 回调函数 </br>
+     * @param {string} context - 信息
      */
     off(event, callback, context) { // eslint-disable-line no-unused-vars
         var me = this;
@@ -346,7 +346,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标
-     * @param coordinate - {Object} 坐标位置。
+     * @param {Object} coordinate - 坐标位置。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
@@ -365,8 +365,8 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素
-     * @param features -{mapboxgl.supermap.ThemeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
-     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {
         if (CommonUtil.isArray(features)) {
@@ -401,8 +401,8 @@ export class Theme {
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link mapboxgl.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param features -{mapboxgl.supermap.ThemeFeature|Object} 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
-     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);
@@ -521,8 +521,8 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param layerID - {string} 待插入的图层ID。
-     * @param before - {boolean} 是否将本图层插入到图层id为layerID的图层之前(默认为true，如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID - 待插入的图层ID。</br>
+     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.div.id);

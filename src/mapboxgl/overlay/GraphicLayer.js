@@ -19,30 +19,30 @@ const defaultProps = {
  * @class mapboxgl.supermap.GraphicLayer
  * @category  Visualization Graphic
  * @classdesc 高效率点图层
- * @param id - {string} 图层id
- * @param {Object} options -  图层配置项
- * @param {Array<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组
- * @param {Array<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255],
- * @param {number} options.radius - 半径,默认10
- * @param {number} options.opacity - 不透明度,默认0.8
- * @param {Array} options.highlightColor - 高亮颜色，目前只支持rgba数组
- * @param {number} options.radiusScale - 点放大倍数
- * @param {number} options.radiusMinPixels - 半径最小值(像素)
- * @param {number} options.radiusMaxPixels - 半径最大值(像素)
- * @param {number} options.strokeWidth - 边框大小
- * @param {boolean} options.outline - 是否显示边框
+ * @param {string} id - 图层id </br>
+ * @param {Object} options -  图层配置项 </br>
+ * @param {Array<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 </br>
+ * @param {Array<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持rgba数组。 </br>
+ * @param {number} [options.radius=10] - 半径。 </br>
+ * @param {number} [options.opacity=0.8] - 不透明度。 </br>
+ * @param {Array} options.highlightColor - 高亮颜色，目前只支持rgba数组 </br>
+ * @param {number} options.radiusScale - 点放大倍数 </br>
+ * @param {number} options.radiusMinPixels - 半径最小值(像素) </br>
+ * @param {number} options.radiusMaxPixels - 半径最大值(像素) </br>
+ * @param {number} options.strokeWidth - 边框大小 </br>
+ * @param {boolean} options.outline - 是否显示边框 
  */
 export class GraphicLayer {
 
     constructor(id, options) {
         let opt = Util.extend(this, defaultProps, options);
         /**
-         * @member mapboxgl.supermap.GraphicLayer.prototype.id - {string}
+         * @member {string} mapboxgl.supermap.GraphicLayer.prototype.id 
          * @description 高效率点图层id
          */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
         /**
-         * @member mapboxgl.supermap.GraphicLayer.prototype.graphics - {Array<mapboxgl.supermap.Graphic>}
+         * @member {Array<mapboxgl.supermap.Graphic>} mapboxgl.supermap.GraphicLayer.prototype.graphics 
          * @description 点要素对象数组
          */
         this.graphics =  [].concat(opt.graphics);
@@ -51,8 +51,8 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.addTo
      * @description 图层添加到地图
-     * @param {Object}  map - 地图对象
-     * @return this
+     * @param {Object} map - 地图对象
+     * @returns this
      */
     addTo(map) {
         this.onAdd(map);
@@ -141,15 +141,15 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.setStyle
      * @description 设置图层整体样式
-     * @param {Object} styleOptions - 样式对象
-     * @param {Array<number>} styleOptions.color - 点颜色
-     * @param {number} styleOptions.radius - 点半径
-     * @param {number} styleOptions.opacity - 不透明度
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
-     * @param {number} styleOptions.radiusScale - 点放大倍数
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
-     * @param {number} styleOptions.strokeWidth - 边框大小
+     * @param {Object} styleOptions - 样式对象 </br>
+     * @param {Array<number>} styleOptions.color - 点颜色 </br>
+     * @param {number} styleOptions.radius - 点半径 </br>
+     * @param {number} styleOptions.opacity - 不透明度 </br>
+     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组 </br>
+     * @param {number} styleOptions.radiusScale - 点放大倍数 </br>
+     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素) </br>
+     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素) </br>
+     * @param {number} styleOptions.strokeWidth - 边框大小 </br>
      * @param {boolean} styleOptions.outline - 是否显示边框
      */
     setStyle(styleOptions) {
@@ -172,7 +172,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.setGraphics
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-     * @param {Array<mapboxgl.supermap.Graphic>}  graphics - 点要素对象数组
+     * @param {Array<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组
      */
     setGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -192,7 +192,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.addGraphics
      * @description 添加点要素，不会覆盖之前的要素
-     * @param {Array<mapboxgl.supermap.Graphic>}  graphics - 点要素对象数组
+     * @param {Array<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -265,7 +265,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.getState
      * @description 获取当前地图及图层状态
-     * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
      */
     getState() {
         let map = this.map;

@@ -8,13 +8,13 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务
  * @example
- *      new mapboxgl.supermap.AddressMatchService(url,options)
- *      .code(function(result){
- *          //doSomething
- *      })
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 交互时所需可选参数。
- * @extends mapboxgl.supermap.ServiceBase
+ * new mapboxgl.supermap.AddressMatchService(url,options)
+ * .code(function(result){
+ *     //doSomething
+ * })
+ * @param {string} url - 与客户端交互的服务地址。</br>
+ * @param {Object} options - 交互时所需可选参数。
+ * @extends {mapboxgl.supermap.ServiceBase}
  */
 export class AddressMatchService extends ServiceBase {
     constructor(url, options) {
@@ -24,8 +24,8 @@ export class AddressMatchService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params - {Object} 正向匹配参数。
-     * @param {RequestCallback} callback 请求结果的回调函数。
+     * @param {Object} params - 正向匹配参数。</br>
+     * @param {RequestCallback} callback - 请求结果的回调函数。
      */
     code(params, callback) {
         var me = this;
@@ -45,8 +45,8 @@ export class AddressMatchService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params -{Object} 反向匹配参数。
-     * @param {RequestCallback} callback请求结果的回调函数。
+     * @param {Object} params -反向匹配参数。 </br>
+     * @param {RequestCallback} callback - 请求结果的回调函数。
      */
     decode(params, callback) {
         var me = this;

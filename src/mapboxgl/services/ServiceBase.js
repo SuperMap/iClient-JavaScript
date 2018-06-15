@@ -5,11 +5,11 @@ import '../core/Base';
  * @class mapboxgl.supermap.ServiceBase
  * @category  iServer
  * @description mapboxgl.supermap服务基类
- * @param url - {string} 与客户端交互的服务地址。
- * @param options - {Object} 可选参数。如：<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false
+ * @param {string} url - 与客户端交互的服务地址。</br>
+ * @param {Object} options - 可选参数。</br>
+ * @param {string} options.proxy - 服务代理地址</br>
+ * @param {SuperMap.ServerType} options.serverType - 服务来源 iServer|iPortal|online </br>
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
 export class ServiceBase extends mapboxgl.Evented {
 

@@ -1,5 +1,6 @@
 var olapi = "https://openlayers.org/en/latest/apidoc/";
 var lfapi = "http://leafletjs.com/reference-1.3.0.html";
+var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var typeLinks = {
     //openlayers
     "ol.Map": olapi + "ol.Map.html",
@@ -41,6 +42,9 @@ var typeLinks = {
     "L.Layer": lfapi + '#layer',
     "L.LayerGroup": lfapi + '#layergroup',
     "L.TileLayer": lfapi + '#tilelayer',
-    "L.CircleMarker": lfapi + '#circlemarker'
+    "L.CircleMarker": lfapi + '#circlemarker',
+
+    //mapboxgl
+    "mapboxgl.Evented": mbglapi + '#Evented'
 }
 exports.typeLinks = typeLinks;

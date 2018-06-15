@@ -7,18 +7,18 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @class mapboxgl.supermap.DataFlowService
  * @category  iServer DataFlow
  * @classdesc 实时数据服务
- * @extends mapboxgl.supermap.ServiceBase
+ * @extends {mapboxgl.supermap.ServiceBase}
  * @example
- *      new mapboxgl.supermap.DataFlowService(url)
- *      .queryChart(param,function(result){
- *          //doSomething
- *      })
- * @param url - {string} 与客户端交互的实时数据服务地址。
- * @param options - {Object} 加载实时数据可选参数。如：<br>
- *        style - {function} 设置数据加载样式。<br>
- *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
- *        excludeField - -{Object} 排除字段
+ * new mapboxgl.supermap.DataFlowService(url)
+ * .queryChart(param,function(result){
+ *     //doSomething
+ * })
+ * @param {string} url - 与客户端交互的实时数据服务地址。
+ * @param {Object} options - 加载实时数据可选参数。</br>
+ * @param {function} options.style - 设置数据加载样式。</br>
+ * @param {function} options.onEachFeature - 设置每个数据加载popup等。</br>
+ * @param {Array<Object>} options.geometry - 设置增添的几何要素对象数组。</br>
+ * @param {Object} options.excludeField - 排除字段。
  */
 export class DataFlowService extends ServiceBase {
 
@@ -63,7 +63,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param obj {JSON} json格式的要素数据
+     * @param {JSON} obj - json格式的要素数据
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);
@@ -82,7 +82,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {Object} 排除字段
+     * @param {Object} excludeField - 排除字段
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -93,7 +93,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
+     * @param {Array<Object>} geometry - 设置增添的几何要素对象数组。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

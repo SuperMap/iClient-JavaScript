@@ -1,6 +1,4 @@
-import {
-    baiduMapLayer
-} from "mapv";
+import {baiduMapLayer} from "mapv";
 import mapboxgl from 'mapbox-gl';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
@@ -9,11 +7,11 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @private
  * @class MapvRenderer
  * @classdesc MapV图层渲染
- * @param map - {string} 地图
- * @param layer -{Object} 图层
- * @param dataSet -{Object} 数据集
- * @param options -{Object} 交互时所需可选参数。
- * @extends BaseLayer
+ * @param {Object} map - 地图 </br>
+ * @param {Object} layer - 图层</br>
+ * @param {Object} dataSet - 数据集</br>
+ * @param {Object} options - 交互时所需可选参数 
+ * @extends {BaseLayer}
  *
  */
 export class MapvRenderer extends BaseLayer {
@@ -50,7 +48,7 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.clickEvent
      * @description  点击绑定事件
-     * @param e - {Object} 事件
+     * @param {Object} e - 事件
      */
     clickEvent(e) {
         var pixel = e.point;
@@ -60,7 +58,7 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.mousemoveEvent
      * @description  鼠标移动事件
-     * @param e - {Object} 事件
+     * @param {Object} e - 事件
      */
     mousemoveEvent(e) {
         var pixel = e.point;
@@ -68,7 +66,7 @@ export class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function  MapvRenderer.prototype.bindEvent
+     * @function MapvRenderer.prototype.bindEvent
      * @description 绑定事件
      */
     bindEvent() {
@@ -111,8 +109,8 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 添加数据
-     * @param data - {oject} 待添加的数据
-     * @param options - {oject} 待添加的数据信息
+     * @param {oject} data - 待添加的数据 </br>
+     * @param {oject} options - 待添加的数据信息
      */
     addData(data, options) {
         var _data = data;
@@ -128,9 +126,9 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.update
      * @description 更新图层
-     * @param opt - {Object} 待更新的数据<br>
-     *        data -{Object} mapv数据集<br>
-     *        options -{Object} mapv绘制参数<br>
+     * @param {Object} opt - 待更新的数据<br>
+     * @param {Object} opt.data - mapv数据集<br>
+     * @param {Object} opt.options - mapv绘制参数 
      */
     update(opt) {
         var update = opt || {};
@@ -157,7 +155,7 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -187,8 +185,8 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapVRenderer.prototype.updateData
-     * @param dataSet - {Object} 数据集
-     * @param options - {Object} 数据项配置
+     * @param {Object} dataSet - 数据集 </br>
+     * @param {Object} options - 数据项配置 </br>
      * @description  更新数据
      */
     updateData(dataSet, options) {
@@ -404,7 +402,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.clear
-     * @param context - {object} 当前环境
+     * @param {object} context - 当前环境
      * @description 清除环境
      */
     clear(context) {

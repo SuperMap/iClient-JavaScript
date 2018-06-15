@@ -6,16 +6,16 @@ import {Bounds, DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} fro
 
 /**
  * @class mapboxgl.supermap.ChartService
- *  @category  iServer Map Chart
+ * @category  iServer Map Chart
  * @classdesc 海图服务。
- * @extends mapboxgl.supermap.ServiceBase
+ * @extends {mapboxgl.supermap.ServiceBase}
  * @example
- *      new mapboxgl.supermap.ChartService(url)
- *      .queryChart(param,function(result){
- *          //doSomething
- *      })
- * @param url - {string} 与客户端交互的海图服务地址。
- * @param options -{Object} 交互时所需可选参数。
+ * new mapboxgl.supermap.ChartService(url)
+ * .queryChart(param,function(result){
+ *     //doSomething
+ * })
+ * @param {string} url - 与客户端交互的海图服务地址。</br>
+ * @param {Object} options - 交互时所需可选参数。
  *
  */
 export class ChartService extends ServiceBase {
@@ -26,9 +26,9 @@ export class ChartService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
-     * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
+     * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。</br>
+     * @param {RequestCallback} callback 回调函数。</br>
+     * @param {SuperMap.DataFormat} resultFormat - 返回的结果格式类型。
      */
     queryChart(params, callback, resultFormat) {
         var me = this,
