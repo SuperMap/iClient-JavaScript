@@ -144,8 +144,6 @@
         if (inArray(includes, 'easyui')) {
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
-            //inputScript("../../../iClient9Website/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
-            //inputCSS("../../../iClient9Website/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
         }
         if (inArray(includes, 'jquery-colorpicker')) {
             inputScript("http://iclient.supermap.io/libs/colorpicker/js/colorpicker.js");
