@@ -131,7 +131,7 @@
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.colorpicker.js");
         }
         if (inArray(includes, 'fileupLoad')) {
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
+            //inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/fileupLoad.js");
         }
         if (inArray(includes, 'sticklr')) {
@@ -146,10 +146,10 @@
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
         }
         if (inArray(includes, 'jquery-colorpicker')) {
-            inputScript("http://iclient.supermap.io/libs/colorpicker/js/colorpicker.js");
-            inputCSS("http://iclient.supermap.io/libs/colorpicker/css/colorpicker.css");
-            //inputScript("../../../iClient9Website/libs/colorpicker/js/colorpicker.js");
-            //inputCSS("../../../iClient9Website/libs/colorpicker/css/colorpicker.css");
+            // inputScript("http://iclient.supermap.io/libs/colorpicker/js/colorpicker.js");
+            // inputCSS("http://iclient.supermap.io/libs/colorpicker/css/colorpicker.css");
+            inputScript("../../../iclient9-web/libs/colorpicker/js/colorpicker.js");
+            inputCSS("../../../iclient9-web/libs/colorpicker/css/colorpicker.css");
         }
         if (inArray(includes, 'lazyload')) {
             inputScript("https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js");
