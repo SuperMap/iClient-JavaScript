@@ -16,6 +16,7 @@
         }
 
         #map {
+            position: absolute;
             left: 200px;
             right: 0px;
             width: 100%;
@@ -65,7 +66,8 @@
     </div>
 </div>
 <div id="map"></div>
-<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet,PlottingPanel" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript" include="StylePanel" src="../js/PlottingPanel/PlottingPanel.Include.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
