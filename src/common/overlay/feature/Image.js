@@ -2,88 +2,81 @@ import {SuperMap} from '../../SuperMap';
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Image
  * @category Visualization Theme
- * 图片参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 图片参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 export class Image extends ShapeParameters {
 
 
     /**
-     * Constructor: SuperMap.Feature.ShapeParameters.Image
-     * 创建一个图片参数对象。
-     *
-     * Parameters:
-     * x - {Number} 左上角横坐标，必设参数。
-     * y - {Number} 左上角纵坐标，必设参数。
-     * image - {String/Cavans} 图片地址或cavans对象，必设参数。
-     * width - {Number} 绘制到画布上的宽度，默认为图片高度。
-     * height - {Number} 绘制到画布上的高度，默认为图片高度。
-     *
-     * Returns:
-     * {<SuperMap.Feature.ShapeParameters.Image>} 图片参数对象。
+     * @function SuperMap.Feature.ShapeParameters.Image.prototype.constructor
+     * @description 创建一个图片参数对象。
+     * @param {number} x - 左上角横坐标，必设参数。
+     * @param {number} y - 左上角纵坐标，必设参数。
+     * @param {(string|Object)} image - 图片地址或Cavans对象，必设参数。
+     * @param {number} width - 绘制到画布上的宽度，默认为图片高度。
+     * @param {number} height - 绘制到画布上的高度，默认为图片高度。
+     * @param {number} sx - 从图片中裁剪的左上角横坐标。
+     * @param {number} sy - 从图片中裁剪的左上角纵坐标。
+     * @param {number} sWidth - 从图片中裁剪的宽度，默认为图片高度。
+     * @param {number} sHeight - 绘制到画布上的高度，默认为图片高度。
+     * @returns {SuperMap.Feature.ShapeParameters.Image} 圆形参数对象。
      */
-    //     * sx - {Number} 从图片中裁剪的左上角横坐标。
-    //     * sy - {Number} 从图片中裁剪的左上角纵坐标。
-    //     * sWidth - {Number} 从图片中裁剪的宽度，默认为图片高度。
-    //     * sHeight - {Number} 绘制到画布上的高度，默认为图片高度。
     constructor(x, y, image, width, height, sx, sy, sWidth, sHeight) {
         super(x, y, image, width, height, sx, sy, sWidth, sHeight);
         /**
-         * APIProperty: x
-         * {Number} 图片左上角横坐标。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.x
+         * @description 左上角横坐标，必设参数。
          */
         this.x = x;
-
+        
         /**
-         * APIProperty: y
-         * {Number} 左上角纵坐标。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.y
+         * @description 左上角纵坐标，必设参数。
          */
         this.y = y;
 
         /**
-         * APIProperty: image
-         * {String} 图片地址。
+         * @member {(string|Object)} SuperMap.Feature.ShapeParameters.Image.prototype.image
+         * @description 图片地址。
          */
         this.image = image;
 
         /**
-         * APIProperty: width
-         * {Number} 绘制到画布上的宽度，默认为图片高度。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.width
+         * @description 绘制到画布上的宽度，默认为图片高度。
          */
         this.width = width;
-
+        
         /**
-         * APIProperty: height
-         * {Number} 绘制到画布上的高度，默认为图片高度。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.height
+         * @description 绘制到画布上的高度，默认为图片高度。
          */
         this.height = height;
 
         /**
-         * Property: sx
-         * {Number} 从图片中裁剪的左上角横坐标。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sx
+         * @description 从图片中裁剪的左上角横坐标。
          */
         this.sx = sx;
 
         /**
-         * Property: sy
-         * {Number} 从图片中裁剪的左上角纵坐标。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sy
+         * @description 从图片中裁剪的左上角纵坐标。
          */
         this.sy = sy;
 
         /**
-         * Property: sWidth
-         * {Number} 从图片中裁剪的宽度，默认为图片高度。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sWidth
+         * @description 从图片中裁剪的宽度，默认为图片高度。
          */
         this.sWidth = sWidth;
 
         /**
-         * Property: sHeight
-         * {Number} 绘制到画布上的高度，默认为图片高度。
+         * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sHeight
+         * @description 绘制到画布上的高度，默认为图片高度。
          */
         this.sHeight = sHeight;
 
@@ -93,8 +86,8 @@ export class Image extends ShapeParameters {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象。
+     * @function SuperMap.Feature.ShapeParameters.Image.prototype.destroy
+     * @description 销毁对象。
      */
     destroy() {
         this.x = null;

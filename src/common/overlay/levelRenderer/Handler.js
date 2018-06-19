@@ -6,85 +6,63 @@ import {SUtil} from './SUtil';
  * @private
  * @class  SuperMap.LevelRenderer.Handler
  * @category Visualization Theme
- * Handler 控制模块。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Eventful>
+ * @classdesc Handler控制模块。
+ * @extends {SuperMap.LevelRenderer.Eventful}
  */
 export class Handler extends Eventful {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Handler
-     * 构造函数。
-     *
-     * Parameters:
-     * root - {HTMLElement} 绘图区域。
-     * storage - {<SuperMap.LevelRenderer.Storage>} Storage 实例。
-     * painter - {<SuperMap.LevelRenderer.Painter>} Painter 实例。
-     *
+     * @function SuperMap.LevelRenderer.Handler.constructor
+     * @description 构造函数。
+     * @param {HTMLElement} root - 绘图区域</br>
+     * @param {SuperMap.LevelRenderer.Storage} storage - Storage 实例</br>
+     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例</br>
      */
     constructor(root, storage, painter) {
         super(root, storage, painter);
         /**
-         * Property: root
-         * {HTMLElement} 绘图区域。
-         *
+         * @member {HTMLElement} SuperMap.LevelRenderer.Handler.prototype.root
+         * @description 绘图区域
          */
         this.root = root;
-
         /**
-         * Property: storage
-         * {<SuperMap.LevelRenderer.Storage>} Storage 实例。
-         *
+         * @member {SuperMap.LevelRenderer.Storage} SuperMap.LevelRenderer.Handler.prototype.storage
+         * @description Storage 实例
          */
         this.storage = storage;
-
         /**
-         * Property: painter
-         * {<SuperMap.LevelRenderer.Painter>} Painter 实例。
-         *
+         * @member {SuperMap.LevelRenderer.Painter} SuperMap.LevelRenderer.Handler.prototype.Painter
+         * @description Painter 实例
          */
         this.painter = painter;
-
         /**
-         * Property: _lastX
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._lastX=0]
+         * @description 上一次鼠标位置x坐标值
          */
         this._lastX = 0;
-
         /**
-         * Property: _lastY
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._lastY=0]
+         * @description 上一次鼠标位置y坐标值
          */
         this._lastY = 0;
-
         /**
-         * Property: _mouseX
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._mouseX=0]
+         * @description 当前鼠标位置x坐标值
          */
         this._mouseX = 0;
-
         /**
-         * Property: _mouseY
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._mouseY=0]
+         * @description 当前鼠标位置y坐标值
          */
         this._mouseY = 0;
-
         /**
-         * Property: _findHover
-         * {Function} 查找 Hover 图形。
-         *
+         * @member {Function} SuperMap.LevelRenderer.Handler.prototype._findHover
+         * @description 查找 Hover 图形
          */
         this._findHover = null;
-
         /**
-         * Property: _domHover
-         * {Object} 高亮 DOM。
-         *
+         * @member {Object} SuperMap.LevelRenderer.Handler.prototype._domHover
+         * @description 高亮 DOM
          */
         this._domHover = null;
 
@@ -571,8 +549,8 @@ export class Handler extends Eventful {
          *
          * Parameters:
          * shape - {Object} 图形。
-         * x - {Number} 鼠标 x。
-         * y - {Number} 鼠标 y。
+         * x - {number} 鼠标 x。
+         * y - {number} 鼠标 y。
          *
          * Returns:
          * {Boolean} 是否找到图形。
@@ -662,10 +640,9 @@ export class Handler extends Eventful {
         // 辅助函数 end
     }
 
-
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Handler.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为null。
      */
     destroy() {
         this.dispose();
@@ -680,47 +657,34 @@ export class Handler extends Eventful {
 
 
     /**
-     * APIMethod: on
-     * 自定义事件绑定。
-     *
-     * Parameters:
-     * eventName - {string} 事件名称，resize、hover、drag 等。
-     * handler - {Function} 响应函数。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Handler>} this。
+     * @function SuperMap.LevelRenderer.Handler.prototype.on
+     * @description 自定义事件绑定。
+     * @param {string} eventName - 事件名称，resize、hover、drag等。
+     * @param {function} handler - 响应函数。
+     * @returns {SuperMap.LevelRenderer.Handler} this。
      */
     on(eventName, handler) {
         this.bind(eventName, handler);
         return this;
     }
 
-
     /**
-     * APIMethod: un
-     * 自定义事件解除绑定。
-     *
-     * Parameters:
-     * eventName - {string} 事件名称，resize、hover、drag 等。
-     * handler - {Function} 响应函数。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Handler>} this。
+     * @function SuperMap.LevelRenderer.Handler.prototype.un
+     * @description 自定义事件解除绑定。
+     * @param {string} eventName - 事件名称，resize、hover、drag等。
+     * @param {function} handler - 响应函数。
+     * @returns {SuperMap.LevelRenderer.Handler} this。
      */
     un(eventName, handler) {
         this.unbind(eventName, handler);
         return this;
     }
 
-
     /**
-     * APIMethod: trigger
-     * 事件触发。
-     *
-     * Parameters:
-     * eventName - {string} 事件名称，resize、hover、drag 等。
-     * eventArgs - {event} dom事件对象。
-     *
+     * @function SuperMap.LevelRenderer.Handler.prototype.trigger
+     * @description 事件触发。
+     * @param {string} eventName - 事件名称，resize、hover、drag等。
+     * @param {event} eventArgs - dom事件对象。
      */
     trigger(eventName, eventArgs) {
         var EVENT = Config.EVENT;
@@ -738,10 +702,9 @@ export class Handler extends Eventful {
         }
     }
 
-
     /**
-     * APIMethod: dispose
-     * 释放，解绑所有事件。
+     * @function SuperMap.LevelRenderer.Handler.prototype.dispose
+     * @description 释放，解绑所有事件。
      */
     dispose() {
         var root = this.root;
@@ -1145,10 +1108,10 @@ export class Handler extends Eventful {
 
 
     // SMIC-方法扩展 - start
+  
     /**
-     * Method: getLastHoverOne
-     * 获取单个高亮图形。
-     *
+     * @function SuperMap.LevelRenderer.Handler.prototype.getLastHoverOne
+     * @description 获取单个高亮图形
      */
     getLastHoverOne() {
         if (this._lastHover) {

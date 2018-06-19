@@ -2,33 +2,26 @@
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Http
  * @category Visualization Theme
- * LevelRenderer 工具-Http
- *
+ * @classdesc LevelRenderer 工具-Http
  */
 export class Http {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Http
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Http.constructor
+     * @description 构造函数。
      */
     constructor() {
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Http"
-
     }
 
     /**
-     * Method: get
-     * get请求。
-     *
-     * Parameters:
-     * url - {string|IHTTPGetOption}
-     * onsuccess - {Function}
-     * onerror - {Function}
-     * opts - {Object} 额外参数
-     *
-     * Returns:
-     * {Number} cos 值。
+     * @function SuperMap.LevelRenderer.Tool.Http.prototype.get
+     * @description get请求。
+     * @param {(string|IHTTPGetOption)} url - 请求url
+     * @param {function} onsuccess - 请求成功函数
+     * @param {function} onerror - 请求失败函数 
+     * @param {Object} opts - 额外参数
+     * @returns {number} cos值
      */
     get(url, onsuccess, onerror) {
         if (typeof(url) === 'object') {

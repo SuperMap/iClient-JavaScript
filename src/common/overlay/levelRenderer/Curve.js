@@ -1,41 +1,39 @@
 import {Vector} from './Vector';
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Curve
  * @category Visualization Theme
- * LevelRenderer 工具-曲线
+ * @classdesc LevelRenderer 工具-曲线
  *
  */
 export class Curve {
-
+    
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Curve
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.constructor
+     * @description 构造函数。
      */
     constructor() {
         /**
-         * Property: vector
-         * {<SuperMap.LevelRenderer.Tool.Vector>} 矢量工具
+         * @member {SuperMap.LevelRenderer.Tool.Vector} SuperMap.LevelRenderer.Tool.Curve.prototype.vector
+         * @description 矢量工具。
          */
         this.vector = new Vector();
 
         /**
-         * Property: EPSILON
-         * {Number} e
+         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.EPSILON
+         * @description e。
          */
         this.EPSILON = 1e-4;
 
         /**
-         * Property: THREE_SQRT
-         * {Number} 3 的平方根
+         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.THREE_SQRT
+         * @description 3 的平方根。
          */
         this.THREE_SQRT = Math.sqrt(3);
 
         /**
-         * Property: ONE_THIRD
-         * {Number} 1/3
+         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.ONE_THIRD
+         * @description 1/3。
          */
         this.ONE_THIRD = 1 / 3;
 
@@ -43,7 +41,7 @@ export class Curve {
     }
 
 
-    /**
+    /*
      * Method: evalCubicCoeff
      *
      * Parameters:
@@ -62,16 +60,12 @@ export class Curve {
      return ((a * t + b) * t + c) * t + d;
      },
      */
-
+    
     /**
-     * Method: isAroundZero
-     * 判断一个值是否趋于0，判断参考值：1e-4。
-     *
-     * Parameters:
-     * val - {Number} 值。
-     *
-     * Returns:
-     * {Boolean} 值是否趋于0。
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.isAroundZero
+     * @description 判断一个值是否趋于0，判断参考值：1e-4。
+     * @param {number} val - 值。
+     * @returns {boolean} 值是否趋于0。
      */
     isAroundZero(val) {
         return val > -this.EPSILON && val < this.EPSILON;
@@ -79,14 +73,10 @@ export class Curve {
 
 
     /**
-     * Method: isNotAroundZero
-     * 判断一个值是否不趋于0，判断参考值：1e-4。
-     *
-     * Parameters:
-     * val - {Number} 值。
-     *
-     * Returns:
-     * {Boolean} 值是否不趋于0。
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.isNotAroundZero
+     * @description 判断一个值是否不趋于0，判断参考值：1e-4。
+     * @param {number} val - 值。
+     * @returns {boolean} 值是否不趋于0。
      */
     isNotAroundZero(val) {
         return val > this.EPSILON || val < -this.EPSILON;
@@ -94,18 +84,14 @@ export class Curve {
 
 
     /**
-     * APIMethod: cubicAt
-     * 计算三次贝塞尔值
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * p3 - {Number}
-     * t - {Number}
-     *
-     * Returns:
-     * {number} 三次贝塞尔值
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicAt
+     * @description 计算三次贝塞尔值
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} p3 - 点p3。
+     * @param {number} t - t值。
+     * @returns {number} 三次贝塞尔值。
      */
     cubicAt(p0, p1, p2, p3, t) {
         var onet = 1 - t;
@@ -115,18 +101,14 @@ export class Curve {
 
 
     /**
-     * APIMethod: cubicDerivativeAt
-     * 计算三次贝塞尔导数值
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * p3 - {Number}
-     * t - {Number}
-     *
-     * Returns:
-     * {number} 三次贝塞尔导数值
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicDerivativeAt
+     * @description 计算三次贝塞尔导数值
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} p3 - 点p3。
+     * @param {number} t - t值。
+     * @returns {number} 三次贝塞尔导数值。
      */
     cubicDerivativeAt(p0, p1, p2, p3, t) {
         var onet = 1 - t;
@@ -136,21 +118,17 @@ export class Curve {
         );
     }
 
-
+    
     /**
-     * APIMethod: cubicRootAt
-     * 计算三次贝塞尔方程根，使用盛金公式
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * p3 - {Number}
-     * val - {Number}
-     * roots -{Array<number>} 有效根数目
-     *
-     * Returns:
-     * {number} 有效根
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicRootAt
+     * @description 计算三次贝塞尔方程根，使用盛金公式
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} p3 - 点p3。
+     * @param {number} val - 值。
+     * @param {Array<number>} roots - 有效根数目。
+     * @returns {number} 有效根。
      */
     cubicRootAt(p0, p1, p2, p3, val, roots) {
         // Evaluate roots of cubic functions
@@ -228,20 +206,16 @@ export class Curve {
         return n;
     }
 
-
+    
     /**
-     * APIMethod: cubicExtrema
-     * 计算三次贝塞尔方程极限值的位置
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * p3 - {Number}
-     * extrema - {Array<number>}
-     *
-     * Returns:
-     * {number} 有效数目
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicRootAt
+     * @description 计算三次贝塞尔方程极限值的位置
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} p3 - 点p3。
+     * @param {Array<number>} extrema - 值。
+     * @returns {number} 有效数目。
      */
     cubicExtrema(p0, p1, p2, p3, extrema) {
         var b = 6 * p2 - 12 * p1 + 6 * p0;
@@ -275,21 +249,17 @@ export class Curve {
         return n;
     }
 
-
+    
     /**
-     * APIMethod cubicSubdivide
-     * 细分三次贝塞尔曲线
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * p3 - {Number}
-     * t - {Number}
-     * out - {Array{Number}}
-     *
-     * Returns:
-     * {number} out
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicSubdivide
+     * @description 细分三次贝塞尔曲线
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} p3 - 点p3。
+     * @param {number} t - t值。
+     * @param {Array<number>} out - 投射点。
+     * @returns {number} 投射点。
      */
     cubicSubdivide(p0, p1, p2, p3, t, out) {
         var p01 = (p1 - p0) * t + p0;
@@ -314,24 +284,20 @@ export class Curve {
 
 
     /**
-     * APIMethod: cubicProjectPoint
-     * 投射点到三次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
-     *
-     * Parameters:
-     * x0 - {Number}
-     * y0 - {Number}
-     * x1 - {Number}
-     * y1 - {Number}
-     * x2 - {Number}
-     * y2 - {Number}
-     * x3 - {Number}
-     * y3 - {Number}
-     * x - {Number}
-     * y - {Number}
-     * out - {Array{Number}}  投射点
-     *
-     * Returns:
-     * {number} out
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicProjectPoint
+     * @description 投射点到三次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
+     * @param {number} x0 - 点p0横坐标。
+     * @param {number} y0 - 点p0纵坐标。
+     * @param {number} x1 - 点p1横坐标。
+     * @param {number} y1 - 点p1纵坐标。
+     * @param {number} x2 - 点p2横坐标。
+     * @param {number} y2 - 点p2纵坐标。
+     * @param {number} x3 - 点p3横坐标。
+     * @param {number} y3 - 点p3纵坐标。
+     * @param {number} x - 点p横坐标。
+     * @param {number} y - 点p纵坐标。
+     * @param {Array<number>} out - 投射点。
+     * @returns {number} 投射点。
      */
     cubicProjectPoint(x0, y0, x1, y1, x2, y2, x3, y3, x, y, out) {
         // 临时变量
@@ -402,36 +368,28 @@ export class Curve {
 
 
     /**
-     * APIMethod: quadraticAt
-     * 计算二次方贝塞尔值
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * t - {Number}
-     *
-     * Returns:
-     * {number} 二次方贝塞尔值
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticAt
+     * @description 计算二次方贝塞尔值。
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} t - t值。
+     * @returns {number} 二次方贝塞尔值。
      */
     quadraticAt(p0, p1, p2, t) {
         var onet = 1 - t;
         return onet * (onet * p0 + 2 * t * p1) + t * t * p2;
     }
 
-
+    
     /**
-     * APIMethod: quadraticDerivativeAt
-     * 计算二次方贝塞尔导数值
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * t - {Number}
-     *
-     * Returns:
-     * {number} 二次方贝塞尔导数值
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticAt
+     * @description 计算二次方贝塞尔导数值。
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} t - t值。
+     * @returns {number} 二次方贝塞尔导数值。
      */
     quadraticDerivativeAt(p0, p1, p2, t) {
         return 2 * ((1 - t) * (p1 - p0) + t * (p2 - p1));
@@ -439,18 +397,14 @@ export class Curve {
 
 
     /**
-     * APIMethod: quadraticRootAt
-     * 计算二次方贝塞尔方程根
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     * val - {Number}
-     * roots - {Array{Number}}
-     *
-     * Returns:
-     * {number} 有效根数目
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticRootAt
+     * @description 计算二次方贝塞尔方程根
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @param {number} val - 值。
+     * @param {Array<number>} roots - 有效根数目。
+     * @returns {number} 有效根数目。
      */
     quadraticRootAt(p0, p1, p2, val, roots) {
         var a = p0 - 2 * p1 + p2;
@@ -489,16 +443,12 @@ export class Curve {
 
 
     /**
-     * APIMethod: quadraticExtremum
-     * 计算二次贝塞尔方程极限值
-     *
-     * Parameters:
-     * p0 - {Number}
-     * p1 - {Number}
-     * p2 - {Number}
-     *
-     * Returns:
-     * {number}  二次贝塞尔方程极限值
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticExtremum
+     * @description 计算二次贝塞尔方程极限值
+     * @param {number} p0 - 点p0。
+     * @param {number} p1 - 点p1。
+     * @param {number} p2 - 点p2。
+     * @returns {number} 二次贝塞尔方程极限值。
      */
     quadraticExtremum(p0, p1, p2) {
         var divider = p0 + p2 - 2 * p1;
@@ -510,24 +460,20 @@ export class Curve {
         }
     }
 
-
+    
     /**
-     * APIMethod: quadraticProjectPoint
-     * 投射点到二次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
-     *
-     * Parameters:
-     * x0 - {Number}
-     * y0 - {Number}
-     * x1 - {Number}
-     * y1 - {Number}
-     * x2 - {Number}
-     * y2 - {Number}
-     * x - {Number}
-     * y - {Number}
-     * out - {Array{Number}}  投射点
-     *
-     * Returns:
-     * {number} 投射距离
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticProjectPoint
+     * @description 投射点到二次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
+     * @param {number} x0 - 点p0横坐标。
+     * @param {number} y0 - 点p0纵坐标。
+     * @param {number} x1 - 点p1横坐标。
+     * @param {number} y1 - 点p1纵坐标。
+     * @param {number} x2 - 点p2横坐标。
+     * @param {number} y2 - 点p2纵坐标。
+     * @param {number} x - 点p横坐标。
+     * @param {number} y - 点p纵坐标。
+     * @param {Array<number>} out - 投射点。
+     * @returns {number} 投射距离。
      */
     quadraticProjectPoint(x0, y0, x1, y1, x2, y2, x, y, out) {
         // 临时变量

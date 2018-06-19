@@ -3,9 +3,9 @@
 /**
  * @class SuperMap.LonLat
  * @classdesc  这个类用来表示经度和纬度对。
- * @param lon - {number} 地图单位上的X轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的x坐标。
- * @param lat - {number} 地图单位上的Y轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的y坐标。
- * @param location - {Array<float>} [lon, lat]  如果要同时设置，则使用传入横纵坐标组成的数组。
+ * @param {number} lon - 地图单位上的X轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的x坐标。
+ * @param {number} lat - 地图单位上的Y轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的y坐标。
+ * @param {Array.<float>} location - 如果要同时设置，则使用传入横纵坐标组成的数组。
  * @example
  * var lonLat = new SuperMap.LonLat(30,45);
  */
@@ -18,14 +18,14 @@ export class LonLat {
             lon = lon[0];
         }
         /**
-         * @member SuperMap.LonLat.prototype.lon  -{float}
-         * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
+         * @member {float} [SuperMap.LonLat.prototype.lon=0.0]
+         * @description 地图的单位的X轴（横轴）坐标。
          */
         this.lon = lon ? Util.toFloat(lon) : 0.0;
 
         /**
-         * @member SuperMap.LonLat.prototype.lat  -{float}
-         * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
+         * @member {float} [SuperMap.LonLat.prototype.lat=0.0]
+         * @description 地图的单位的Y轴（纵轴）坐标。
          */
         this.lat = lat ? Util.toFloat(lat) : 0.0;
         this.CLASS_NAME = "SuperMap.LonLat";
@@ -74,9 +74,8 @@ export class LonLat {
      * var lonLat1 = new SuperMap.LonLat(100,50);
      * //lonLat2 是新的对象
      * var lonLat2 = lonLat1.add(100,50);
-     *
-     * @param lon - {float} 传入的精度参数。
-     * @param lat - {float} 传入的纬度参数。
+     * @param {float} lon - 传入的精度参数。
+     * @param {float} lat - 传入的纬度参数。
      * @returns {SuperMap.LonLat} 返回一个新的LonLat对象，此对象的经纬度是由传
      *      入的经纬度与当前的经纬度相加所得。
      */
@@ -95,8 +94,7 @@ export class LonLat {
      * var lonLat1 = new SuperMap.LonLat(100,50);
      * var lonLat2 = new SuperMap.LonLat(100,50);
      * var isEquals = lonLat1.equals(lonLat2);
-     *
-     * @param ll - {SuperMap.LonLat} 需要进行比较的坐标对象。
+     * @param {SuperMap.LonLat} ll - 需要进行比较的坐标对象。
      * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
      *      致或传入的ll参数为NULL则返回false。
      */
@@ -121,8 +119,7 @@ export class LonLat {
      * var lonLat2 = lonLat1.wrapDateLine(
      *      new SuperMap.Bounds(-180,-90,180,90)
      *  );
-     *
-     * @param maxExtent - {SuperMap.Bounds} 最大边界的范围。
+     * @param {SuperMap.Bounds} maxExtent - 最大边界的范围。
      * @returns {SuperMap.LonLat} 将坐标转换到范围对象以内，并返回新的坐标。
      */
     wrapDateLine(maxExtent) {
@@ -164,8 +161,7 @@ export class LonLat {
      * @example
      * var str = "100,50";
      * var lonLat = SuperMap.LonLat.fromString(str);
-     *
-     * @param str - {string} 字符串的格式：Lon+","+Lat。如："100,50"
+     * @param {string} str - 字符串的格式：Lon+","+Lat。如："100,50"
      * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
      */
     static fromString(str) {
@@ -176,7 +172,7 @@ export class LonLat {
     /**
      * @function SuperMap.LonLat.fromArray
      * @description 通过数组生成一个<SuperMap.LonLat>对象
-     * @param arr - {Array<float>} 数组的格式，长度只能为2,：[Lon,Lat]。如： [5,-42]
+     * @param {Array.<float>} arr - 数组的格式，长度只能为2,：[Lon,Lat]。如：[5,-42]
      * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
      */
     static fromArray(arr) {

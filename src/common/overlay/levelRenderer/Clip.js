@@ -1,48 +1,26 @@
 import {Easing as AEasing} from './Easing';
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Animation.Clip
  * @category Visualization Theme
- * 动画片段
+ * @classdec 动画片段
  *
  */
 export class Clip {
-
-
+    
     /**
-     * 动画主控制器
-     * @config target
-     * @config life(1000)
-     * @config delay(0)
-     * @config loop(true)
-     * @config gap(0)
-     * @config onframe
-     * @config easing(optional)
-     * @config ondestroy(optional)
-     * @config onrestart(optional)
-     */
-
-
-    /**
-     * Constructor: SuperMap.LevelRenderer.Animation.Clip
-     * 构造函数。
-     *
-     *
-     * Parameters:
-     * options - {Object} 可选参数：
-     *
-     * Symbolizer properties:
-     * target - {Object} 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
-     * life - {Number} 动画时长，默认值：1000。
-     * delay - {Number}  动画延迟时间。默认值：0。
-     * loop - {Boolean}  是否循环，默认值：true。
-     * gap - {Number}  循环的间隔时间。默认值：0。
-     * onframe - {Object}  帧。
-     * easing - {Boolean}
-     * ondestroy - {Boolean}
-     * onrestart - {Boolean}
-     *
+     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.constructor
+     * @description 构造函数。
+     * @param {Object} options - 参数。
+     * @param {Object} options.target - 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
+     * @param {number} [options.life=1000] - 动画时长。
+     * @param {number} [options.delay=0] - 动画延迟时间。
+     * @param {boolean} [options.loop=true] - 是否循环。
+     * @param {number} [options.gap=0] - 循环的间隔时间。
+     * @param {Object} options.onframe -  帧。
+     * @param {boolean} options.easing - 是否消除。
+     * @param {boolean} options.ondestroy - 是否销毁。
+     * @param {boolean} options.onrestart - 是否重播。
      */
     constructor(options) {
         this._targetPool = options.target || {};
@@ -75,8 +53,8 @@ export class Clip {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
 

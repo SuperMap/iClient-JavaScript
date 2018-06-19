@@ -10,8 +10,8 @@ import {Util} from './Util';
 export var Event = SuperMap.Event = {
 
     /**
-     * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
-     * @type {Boolean}
+     * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
+     * @type {boolean}
      * @default false
      */
     observers: false,
@@ -89,7 +89,7 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description Cross browser event element detection.
-     * @param event - {Event}
+     * @param {Event} event - The event
      * @returns {HTMLElement} The element that caused the event
      */
     element: function (event) {
@@ -98,8 +98,8 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a single touch
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isSingleTouch: function (event) {
         return event.touches && event.touches.length === 1;
@@ -107,8 +107,8 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a multi touch
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isMultiTouch: function (event) {
         return event.touches && event.touches.length > 1;
@@ -116,8 +116,8 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a left click.
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isLeftClick: function (event) {
         return (((event.which) && (event.which === 1)) ||
@@ -126,8 +126,8 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a right mouse click.
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isRightClick: function (event) {
         return (((event.which) && (event.which === 3)) ||
@@ -136,8 +136,8 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description Stops an event from propagating.
-     * @param event - {Event}
-     * @param allowDefault - {Boolean} If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
+     * @param {Event} event - The event
+     * @param {boolean} allowDefault - If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
      */
     stop: function (event, allowDefault) {
 
@@ -157,8 +157,8 @@ export var Event = SuperMap.Event = {
     },
 
     /**
-     * @param event - {Event}
-     * @param tagName - {string} html标签名
+     * @param {Event} event - The event
+     * @param {string} tagName - html标签名
      * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
      */
     findElement: function (event, tagName) {
@@ -172,10 +172,10 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description 监听事件，注册事件处理方法。
-     * @param elementParam - {HTMLElement | string} 待监听的DOM对象或者其id标识。
-     * @param name - {string} 监听事件的类别名称。
-     * @param observer - {function} 注册的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
+     * @param {(HTMLElement|string)} elementParam - 待监听的DOM对象或者其id标识。
+     * @param {string} name - 监听事件的类别名称。
+     * @param {function} observer - 注册的事件处理方法。
+     * @param {boolean} useCapture - 是否捕获。
      */
     observe: function (elementParam, name, observer, useCapture) {
         var element = Util.getElement(elementParam);
@@ -229,7 +229,7 @@ export var Event = SuperMap.Event = {
      *   element's cached observers, calling stopObserving on each one,
      *   skipping those entries which can no longer be removed.
      *
-     * @param elementParam - {HTMLElement | string}
+     * @param {(HTMLElement|string)} elementParam -
      */
     stopObservingElement: function (elementParam) {
         var element = Util.getElement(elementParam);
@@ -238,8 +238,8 @@ export var Event = SuperMap.Event = {
         this._removeElementObservers(SuperMap.Event.observers[cacheID]);
     },
 
-    /*
-     * @param elementObservers - {Array<Object>} Array of (element, name,
+    /**
+     * @param {Array.<Object>} elementObservers - Array of (element, name,
      *                                         observer, usecapture) objects,
      *                                         taken directly from hashtable
      */
@@ -256,11 +256,11 @@ export var Event = SuperMap.Event = {
     /**
      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
      * 保持一致才能确保事件移除成功。
-     * @param elementParam - {HTMLElement | string} 被监听的DOM元素或者其id。
-     * @param name - {string} 需要移除的被监听事件名称。
-     * @param observer - {function} 需要移除的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
-     * @returns {Boolean} Whether or not the event observer was removed
+     * @param {(HTMLElement|string)} elementParam - 被监听的DOM元素或者其id。
+     * @param {string} name - 需要移除的被监听事件名称。
+     * @param {function} observer - 需要移除的事件处理方法。
+     * @param {boolean} useCapture - 是否捕获。
+     * @returns {boolean} Whether or not the event observer was removed
      */
     stopObserving: function (elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;

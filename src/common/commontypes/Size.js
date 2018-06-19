@@ -3,8 +3,8 @@
 /**
  * @class  SuperMap.Size
  * @classdesc 此类描绘一对高宽值的实例。
- * @param  w -{number} 宽度，默认值为0.0
- * @param  h -{number} 高度 ，默认值为0.0
+ * @param {number} [w=0.0] - 宽度
+ * @param {number} [h=0.0] - 高度
  *
  * @example
  * var size = new SuperMap.Size(31,46);
@@ -13,14 +13,14 @@ export class Size {
 
     constructor(w, h) {
         /**
-         * @member SuperMap.Size.prototype.w -{number}
-         * @description  宽，默认值为0.0
+         * @member {number} [SuperMap.Size.prototype.w=0.0]
+         * @description 宽度
          */
         this.w = w ? parseFloat(w) : 0.0;
 
         /**
-         * @member SuperMap.Size.prototype.h -{number}
-         * @description 高，默认值为0.0
+         * @member {number} [SuperMap.Size.prototype.h=0.0]
+         * @description 高度
          */
         this.h = w ? parseFloat(h) : 0.0;
         this.CLASS_NAME = "SuperMap.Size";
@@ -63,8 +63,8 @@ export class Size {
      * var size2 = new SuperMap.Size(31,46);
      * var isEquals = size.equals(size2);
      *
-     * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
-     * @returns {Boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
+     * @param {SuperMap.Size} sz - 用于比较相等的Size对象。
+     * @returns {boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
      *
      */
     equals(sz) {

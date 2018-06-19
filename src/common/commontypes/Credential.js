@@ -6,8 +6,8 @@
  * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens"下申请value <br>
  * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.."的value<br>
  * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。
- * @param value - {string}  访问受安全限制的服务时用于通过安全认证的验证信息。
- * @param name - {string}  验证信息前缀，name=value部分的name部分，默认为“token”。
+ * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
+ * @param {string} name - 验证信息前缀，name=value部分的name部分，默认为“token”。
  * @example
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
@@ -18,14 +18,14 @@ export class Credential {
     constructor(value, name) {
 
         /**
-         * @member SuperMap.Bounds.prototype.value -{string}
+         * @member {string} SuperMap.Bounds.prototype.value
          * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
          */
         this.value = value ? value : "";
 
         /**
-         * @member SuperMap.Bounds.prototype.name -{string}
-         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+         * @member {string} [SuperMap.Bounds.prototype.name="token"]
+         * @description 验证信息前缀，name=value部分的name部分。
          */
         this.name = name ? name : "token";
         this.CLASS_NAME = "SuperMap.Credential";

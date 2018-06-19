@@ -7,7 +7,7 @@ import {LineString} from './LineString';
  * 作为最后的一个点来自动关闭线环。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.LineString}
- * @param points {Array<SuperMap.Geometry.Point>} 组成线性环的点。
+ * @param {Array.<SuperMap.Geometry.Point>} points 组成线性环的点。
  * @example
  * var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
  *      new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
@@ -22,10 +22,9 @@ export class LinearRing extends LineString {
     constructor(points) {
         super(points);
         /**
-         * @member SuperMap.Geometry.LinearRing.prototype.componentTypes -{Array<string>}
+         * @member {Array.<string>} [SuperMap.Geometry.LinearRing.prototype.componentTypes=["SuperMap.Geometry.Point"]]
          * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
          * @readonly
-         * @default ["{@link SuperMap.Geometry.Point}"]
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
         this.CLASS_NAME = "SuperMap.Geometry.LinearRing";
@@ -36,9 +35,9 @@ export class LinearRing extends LineString {
      * @description 添加一个点到几何图形数组中，如果这个点将要被添加到组件数组的末端，并且与数组中已经存在的最后一个点相同，
      * 重复的点是不能被添加的。这将影响未关闭环的关闭。
      * 这个方法可以通过将非空索引（组件数组的下标）作为第二个参数重写。
-     * @param point - {SuperMap.Geometry.Point} 点对象。
-     * @param index - {Integer} 插入组件数组的下标。
-     * @returns {Boolean} 点对象是否添加成功。
+     * @param {SuperMap.Geometry.Point} point - 点对象。
+     * @param {integer} index - 插入组件数组的下标。
+     * @returns {boolean} 点对象是否添加成功。
      */
     addComponent(point, index) {
         var added = false;
@@ -62,8 +61,8 @@ export class LinearRing extends LineString {
     /**
      * @function SuperMap.Geometry.LinearRing.prototype.removeComponent
      * @description 从几何组件中删除一个点。
-     * @param point - {SuperMap.Geometry.Point} 点对象。
-     * @returns {Boolean} 点对象是否删除。
+     * @param {SuperMap.Geometry.Point} point - 点对象。
+     * @returns {boolean} 点对象是否删除。
      */
     removeComponent(point) { // eslint-disable-line no-unused-vars
         var removed = this.components && (this.components.length > 3);
@@ -102,7 +101,7 @@ export class LinearRing extends LineString {
     /**
      * @function SuperMap.Geometry.LinearRing.prototype.getVertices
      * @description 返回几何图形的所有点的列表。
-     * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
+     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
      * 如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象所有点的列表。
      */

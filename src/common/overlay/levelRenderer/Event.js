@@ -1,22 +1,20 @@
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Event
  * @category Visualization Theme
- * LevelRenderer 工具-事件辅助类
+ * @classdesc LevelRenderer 工具-事件辅助类
  *
  */
 export class Event {
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Event
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Event.prototype.constructor
+     * @description 构造函数。
      */
     constructor() {
         /**
-         * Property: stop
-         * {Function} 停止冒泡和阻止默认行为
+         * @member {function} SuperMap.LevelRenderer.Tool.Event.prototype.stop
+         * @description 停止冒泡和阻止默认行为
          */
         this.stop = typeof window.addEventListener === 'function'
             ? function (e) {
@@ -34,14 +32,10 @@ export class Event {
 
 
     /**
-     * APIMethod: getX
-     * 提取鼠标（手指）x坐标。
-     *
-     * Parameters:
-     * e - {Event} 事件。
-     *
-     * Returns:
-     * {Number} 鼠标（手指）x坐标。
+     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getX
+     * @description 提取鼠标（手指）x坐标。
+     * @param {Event} e - 事件。
+     * @returns {number} 鼠标（手指）x坐标。
      */
     getX(e) {
         return typeof e.zrenderX != 'undefined' && e.zrenderX
@@ -52,14 +46,10 @@ export class Event {
 
 
     /**
-     * APIMethod: getY
-     * 提取鼠标y坐标。
-     *
-     * Parameters:
-     * e - {Event} 事件。
-     *
-     * Returns:
-     * {Number} 鼠标（手指）y坐标。
+     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getY
+     * @description 提取鼠标（手指）y坐标。
+     * @param {Event} e - 事件。
+     * @returns {number} 鼠标（手指）y坐标。
      */
     getY(e) {
         return typeof e.zrenderY != 'undefined' && e.zrenderY
@@ -70,14 +60,10 @@ export class Event {
 
 
     /**
-     * APIMethod: getDelta
-     * 提取鼠标滚轮变化。
-     *
-     * Parameters:
-     * e - {Event} 事件。
-     *
-     * Returns:
-     * {Number} 滚轮变化，正值说明滚轮是向上滚动，如果是负值说明滚轮是向下滚动。
+     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getDelta
+     * @description 提取鼠标滚轮变化。
+     * @param {Event} e - 事件。
+     * @returns {number} 滚轮变化，正值说明滚轮是向上滚动，如果是负值说明滚轮是向下滚动。
      */
     getDelta(e) {
         return typeof e.zrenderDelta != 'undefined' && e.zrenderDelta

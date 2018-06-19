@@ -1,8 +1,7 @@
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Env
  * @category Visualization Theme
- * 环境识别
+ * @classdesc 环境识别
  *
  */
 export class Env {

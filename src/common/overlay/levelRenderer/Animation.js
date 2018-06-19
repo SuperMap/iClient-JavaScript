@@ -5,27 +5,21 @@ import {SUtil} from './SUtil';
 import {Util as CommonUtil} from "../../commontypes/Util";
 
 /**
- * @private
  * @class SuperMap.LevelRenderer.Animation
  * @classdesc 动画主类, 调度和管理所有动画控制器
- * @category Visualization Theme。
- * @extends SuperMap.LevelRenderer.Eventful
+ * @category Visualization Theme
+ * @extends {SuperMap.LevelRenderer.Eventful}
  */
 export class Animation extends Eventful {
 
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Animation
-     * 构造函数。
-     *
-     * Parameters:
-     * options - {Object} 动画参数选项，可设属性如下：
-     *
-     * Symbolizer properties:
-     * onframe - {Object} onframe。
-     * stage - {Object} stage。
-     *
-     * (code)
+    /**
+     * @function SuperMap.LevelRenderer.Animation.prototype.constructor
+     * @description 构造函数。
+     * @param {Object} options - 动画参数。
+     * @param {Object} options.onframe - onframe。
+     * @param {Object} options.stage - stage。
+     * (start code)
      *     var animation = new SuperMap.LevelRenderer.Animation();
      *     var obj = {
      *         x: 100,
@@ -48,38 +42,33 @@ export class Animation extends Eventful {
 
         options = options || {};
         /**
-         * Property: stage
-         * {Object}
-         *
+         * @member {Object} SuperMap.LevelRenderer.Animation.prototype.stage
+         * @description stage。
          */
         this.stage = {};
 
         /**
-         * Property: onframe
-         * {Object}
-         *
+         * @member {Object} SuperMap.LevelRenderer.Animation.prototype.onframe
+         * @description onframe。
          */
         this.onframe = function () {
         };
 
         /**
-         * Property: _clips
-         * {Array}
-         *
+         * @member {Array} SuperMap.LevelRenderer.Animation.prototype._clips
+         * @description _clips。
          */
         this._clips = [];
-
+        
         /**
-         * Property: _running
-         * {Boolean}
-         *
+         * @member {boolean} SuperMap.LevelRenderer.Animation.prototype._running
+         * @description _running。
          */
         this._running = false;
 
         /**
-         * Property: _time
-         * {Number}
-         *
+         * @member {number} SuperMap.LevelRenderer.Animation.prototype._time
+         * @description _time。
          */
         this._time = 0;
 
@@ -91,12 +80,9 @@ export class Animation extends Eventful {
 
 
     /**
-     * APIMethod: add
-     * 添加动画片段
-     *
-     * Parameters:
-     * clip - {<SuperMap.LevelRenderer.Animation.Clip>} 动画片段
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.add
+     * @description 添加动画片段。
+     * @param {SuperMap.LevelRenderer.Animation.Clip} clip - 动画片段。
      */
     add(clip) {
         this._clips.push(clip);
@@ -104,12 +90,9 @@ export class Animation extends Eventful {
 
 
     /**
-     * APIMethod: remove
-     * 删除动画片段
-     *
-     * Parameters:
-     * clip - {<SuperMap.LevelRenderer.Animation.Clip>} 动画片段
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.remove
+     * @description 删除动画片段。
+     * @param {SuperMap.LevelRenderer.Animation.Clip} clip - 动画片段。
      */
     remove(clip) {
         var idx = new Util().indexOf(this._clips, clip);
@@ -120,8 +103,8 @@ export class Animation extends Eventful {
 
 
     /**
-     * Method: _update
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.update
+     * @description 更新动画片段。
      */
     _update() {
         var time = new Date().getTime();
@@ -170,9 +153,8 @@ export class Animation extends Eventful {
 
 
     /**
-     * APIMethod: start
-     * 开始运行动画
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.start
+     * @description 开始运行动画。
      */
     start() {
         var requestAnimationFrame = window.requestAnimationFrame
@@ -200,9 +182,8 @@ export class Animation extends Eventful {
 
 
     /**
-     * APIMethod: stop
-     * 停止运行动画
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.stop
+     * @description 停止运行动画。
      */
     stop() {
         this._running = false;
@@ -210,9 +191,8 @@ export class Animation extends Eventful {
 
 
     /**
-     * APIMethod: clear
-     * 清除所有动画片段
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.clear
+     * @description 清除所有动画片段。
      */
     clear() {
         this._clips = [];
@@ -220,20 +200,14 @@ export class Animation extends Eventful {
 
 
     /**
-     * Method: animate
-     * 对一个目标创建一个animator对象，可以指定目标中的属性使用动画
-     *
-     * Parameters:
-     * target - {Object} target
-     * options - {Object} 动画参数选项，可设属性如下：
-     *
-     * Symbolizer properties:
-     * loop - {Boolean} 是否循环播放动画。默认值：false。
-     * getter - {Function} 如果指定getter函数，会通过getter函数取属性值。默认值：null。
-     * setter - {Function} 如如果指定setter函数，会通过setter函数设置属性值。默认值：null。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.prototype.animate
+     * @description 对一个目标创建一个animator对象，可以指定目标中的属性使用动画。
+     * @param {Object} target - 目标对象。
+     * @param {Object} options - 动画参数选项。
+     * @param {boolean} [options.loop=false] - 是否循环播放动画。
+     * @param {function} [options.getter=null] - 如果指定getter函数，会通过getter函数取属性值。
+     * @param {function} [options.setter=null] - 如果指定setter函数，会通过setter函数设置属性值。
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator。
      */
     animate(target, options) {
         options = options || {};
@@ -337,80 +311,77 @@ export class Animation extends Eventful {
 }
 
 /**
- * @private
  * @class SuperMap.LevelRenderer.Animation.Animator
  */
 export class Animator {
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Animation.Animator
-     * 构造函数。
-     *
-     * Parameters:
-     * target - {Object} target
-     * loop - {Boolean} 是否循环播放动画。默认值：false。
-     * getter - {Function} 如果指定getter函数，会通过getter函数取属性值。默认值：null。
-     * setter - {Function} 如如果指定setter函数，会通过setter函数设置属性值。默认值：null。
-     *
+    /**
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.animate
+     * @description 构造函数
+     * @param {Object} target - 目标对象。
+     * @param {Object} options - 动画参数选项。
+     * @param {boolean} [loop=false] - 是否循环播放动画。
+     * @param {function} [getter=null] - 如果指定getter函数，会通过getter函数取属性值。
+     * @param {function} [setter=null] - 如果指定setter函数，会通过setter函数设置属性值。
      */
     constructor(target, loop, getter, setter) {
         /**
-         * Property: _tracks
-         * {Object}
+         * @member {Object} uperMap.LevelRenderer.Animation.Animator.prototype._tracks
+         * @description _tracks。
          */
         this._tracks = {};
 
         /**
-         * Property: _target
-         * {Object}
+         * @member {Object} uperMap.LevelRenderer.Animation.Animator.prototype._target
+         * @description _target。
          */
         this._target = target;
-
+        
         /**
-         * Property: _loop
-         * {Boolean}
+         * @member {boolean} uperMap.LevelRenderer.Animation.Animator.prototype._loop
+         * @description _loop。
          */
         this._loop = loop || false;
 
         /**
-         * Property: _getter
-         * {Function}
+         * @member {function} uperMap.LevelRenderer.Animation.Animator.prototype._getter
+         * @description _getter。
          */
         this._getter = getter || _defaultGetter;
 
         /**
-         * Property: _setter
-         * {Function}
+         * @member {function} uperMap.LevelRenderer.Animation.Animator.prototype._setter
+         * @description _setter。
          */
         this._setter = setter || _defaultSetter;
 
         /**
-         * Property: _clipCount
-         * {Number}
+         * @member {number} uperMap.LevelRenderer.Animation.Animator.prototype._clipCount
+         * @description _clipCount。
          */
         this._clipCount = 0;
 
         /**
-         * Property: _delay
-         * {Number}
+         * @member {number} uperMap.LevelRenderer.Animation.Animator.prototype._delay
+         * @description _delay。
          */
         this._delay = 0;
 
         /**
-         * Property: _doneList
-         * {Array}
+         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._doneList
+         * @description _doneList。
          */
         this._doneList = [];
 
         /**
-         * Property: _onframeList
-         * {Array}
+         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._onframeList
+         * @description _onframeList。
          */
         this._onframeList = [];
 
         /**
-         * Property: _clipList
-         * {Array}
+         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._clipList
+         * @description _clipList。
          */
         this._clipList = [];
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.Animator";
@@ -426,15 +397,11 @@ export class Animator {
 
 
     /**
-     * Method: when
-     * 设置动画关键帧
-     *
-     * Parameters:
-     * time - {Number} 关键帧时间，单位是ms
-     * props - {Object} 关键帧的属性值，key-value表示
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.when
+     * @description 设置动画关键帧
+     * @param {number} time - 关键帧时间，单位是ms
+     * @param {Object} props - 关键帧的属性值，key-value表示
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
      */
     when(time /* ms */, props) {
         for (var propName in props) {
@@ -463,14 +430,10 @@ export class Animator {
 
 
     /**
-     * Method: during
-     * 添加动画每一帧的回调函数
-     *
-     * Parameters:
-     * callback - {Function} callback
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.during
+     * @description 添加动画每一帧的回调函数
+     * @param {RequestCallback} callback - 回调函数
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
      */
     during(callback) {
         this._onframeList.push(callback);
@@ -479,14 +442,10 @@ export class Animator {
 
 
     /**
-     * Method: start
-     * 开始执行动画
-     *
-     * Parameters:
-     * easing - {String|Function} 动画缓动函数。详见：<SuperMap.LevelRenderer.Animation.easing>。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.start
+     * @description 开始执行动画
+     * @param {(string|function)} easing - 动画缓动函数。详见：<{@link SuperMap.LevelRenderer.Animation.easing}>。
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
      */
     start(easing) {
         var self = this;
@@ -681,8 +640,8 @@ export class Animator {
 
 
     /**
-     * Method: stop
-     * 停止动画
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.stop
+     * @description 停止动画
      */
     stop() {
         for (var i = 0; i < this._clipList.length; i++) {
@@ -694,30 +653,22 @@ export class Animator {
 
 
     /**
-     * Method: delay
-     * 设置动画延迟开始的时间
-     *
-     * Parameters:
-     * time - {Number} time 单位ms
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.delay
+     * @description 设置动画延迟开始的时间
+     * @param {number} time - 时间，单位ms
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
      */
     delay(time) {
         this._delay = time;
         return this;
     }
 
-
+    
     /**
-     * Method: done
-     * 添加动画结束的回调
-     *
-     * Parameters:
-     * cb - {Function} Function
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.done
+     * @description 添加动画结束的回调
+     * @param {function} cb - Function
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
      */
     done(cb) {
         if (cb) {

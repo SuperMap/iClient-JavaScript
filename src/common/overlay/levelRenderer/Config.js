@@ -2,8 +2,9 @@ export class Config {
 
 }
 /**
- * APIProperty: EVENT
- * {Object} 事件
+ * @enum EVENT
+ * @description 事件
+ * @type {Object}
  */
 Config.EVENT = {
     //窗口大小变化
@@ -62,17 +63,18 @@ Config.EVENT = {
 };
 
 /**
- * APIProperty: catchBrushException
- * {Boolean} 是否异常捕获
+ * @enum catchBrushException
+ * @description 是否异常捕获
+ * @type {boolean}
  */
 Config.catchBrushException = false;
 
 /**
- * APIProperty: debugMode
- * {Boolean} debug 日志选项：catchBrushException 为 true 下有效
- *
+ * @enum debugMode
+ * @description debug 日志选项：catchBrushException 为 true 下有效。
  * 0 : 不生成debug数据，发布用
  * 1 : 异常抛出，调试用
  * 2 : 控制台输出，调试用
+ * @type {boolean}
  */
 Config.debugMode = 0;

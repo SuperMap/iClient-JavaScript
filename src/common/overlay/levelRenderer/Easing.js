@@ -1,62 +1,66 @@
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Animation.easing
  * @category Visualization Theme
- * 缓动
+ * @classdesc 缓动
  */
 // 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
 // http://sole.github.io/tween.js/examples/03_graphs.html
 export class Easing {
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Animation.easing
-     * 构造函数。
-     *
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.constructor
+     * @description 构造函数。
      */
     constructor() {
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.easing";
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
 
     }
 
 
-    // 线性
-    /*
-     * @param {number} k
-     * @return {number} 返回输入值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.Linear
+     * @description 线性缓动
+     * @param {number} k - 参数
+     * @return {number} 输入值
      */
     Linear(k) {
         return k;
     }
 
 
-    // 二次方的缓动（t^2）
-    /*
-     * @param {number} k
-     * @return {number} 返回二次方的缓动的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuadraticIn
+     * @description 二次方的缓动（t^2）
+     * @param {number} k - 参数
+     * @return {number} 二次方的缓动的值
      */
     QuadraticIn(k) {
         return k * k;
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按二次方缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuadraticOut
+     * @description 返回按二次方缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按二次方缓动退出的值
      */
     QuadraticOut(k) {
         return k * (2 - k);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按二次方缓动进入和退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuadraticInOut
+     * @description 返回按二次方缓动进入和退出的值
+     * @param {number} k - 参数
+     * @return {number} 按二次方缓动进入和退出的值
      */
     QuadraticInOut(k) {
         if ((k *= 2) < 1) {
@@ -66,26 +70,31 @@ export class Easing {
     }
 
 
-    // 三次方的缓动（t^3）
-    /*
-     * @param {number} k
-     * @return {number} 返回按三次方缓动的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.CubicIn
+     * @description 三次方的缓动（t^3）
+     * @param {number} k - 参数
+     * @return {number} 按三次方缓动的值
      */
     CubicIn(k) {
         return k * k * k;
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按三次方缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.CubicOut
+     * @description 返回按三次方缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按三次方缓动退出的值
      */
     CubicOut(k) {
         return --k * k * k + 1;
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按三次方缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.CubicInOut
+     * @description 返回按三次方缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按三次方缓动进入退出的值
      */
     CubicInOut(k) {
         if ((k *= 2) < 1) {
@@ -95,26 +104,31 @@ export class Easing {
     }
 
 
-    // 四次方的缓动（t^4）
-    /*
-     * @param {number} k
-     * @return {number} 返回按四次方缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuarticIn
+     * @description  返回按四次方缓动进入的值
+     * @param {number} k - 参数
+     * @return {number}  按四次方缓动进入的值
      */
     QuarticIn(k) {
         return k * k * k * k;
     }
-
-    /*
-     * @param {number} k
-     * @return {number} 返回按四次方缓动退出的值
+    
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuarticOut
+     * @description  返回按四次方缓动退出的值
+     * @param {number} k - 参数
+     * @return {number}  按四次方缓动退出的值
      */
     QuarticOut(k) {
         return 1 - (--k * k * k * k);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按四次方缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuarticInOut
+     * @description  返回按四次方缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number}  按四次方缓动进入退出的值
      */
     QuarticInOut(k) {
         if ((k *= 2) < 1) {
@@ -125,25 +139,31 @@ export class Easing {
 
 
     // 五次方的缓动（t^5）
-    /*
-     * @param {number} k
-     * @return {number} 返回按五次方缓动的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuinticIn
+     * @description  返回按五次方缓动的值
+     * @param {number} k - 参数
+     * @return {number}  按五次方缓动的值
      */
     QuinticIn(k) {
         return k * k * k * k * k;
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按五次方缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuinticOut
+     * @description  返回按五次方缓动退出的值
+     * @param {number} k - 参数
+     * @return {number}  按五次方缓动退出的值
      */
     QuinticOut(k) {
         return --k * k * k * k * k + 1;
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按五次方缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.QuinticInOut
+     * @description 返回按五次方缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按五次方缓动进入退出的值
      */
     QuinticInOut(k) {
         if ((k *= 2) < 1) {
@@ -154,25 +174,31 @@ export class Easing {
 
 
     // 正弦曲线的缓动（sin(t)）
-    /*
-     * @param {number} k
-     * @return {number} 返回按正弦曲线的缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.SinusoidalIn
+     * @description 返回按正弦曲线的缓动进入的值
+     * @param {number} k - 参数
+     * @return {number} 按正弦曲线的缓动进入的值
      */
     SinusoidalIn(k) {
         return 1 - Math.cos(k * Math.PI / 2);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按正弦曲线的缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.SinusoidalOut
+     * @description 返回按正弦曲线的缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按正弦曲线的缓动退出的值
      */
     SinusoidalOut(k) {
         return Math.sin(k * Math.PI / 2);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按正弦曲线的缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.SinusoidalInOut
+     * @description 返回按正弦曲线的缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按正弦曲线的缓动进入退出的值
      */
     SinusoidalInOut(k) {
         return 0.5 * (1 - Math.cos(Math.PI * k));
@@ -180,25 +206,31 @@ export class Easing {
 
 
     // 指数曲线的缓动（2^t）
-    /*
-     * @param {number} k
-     * @return {number} 返回按指数曲线的缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.ExponentialIn
+     * @description 返回按指数曲线的缓动进入的值
+     * @param {number} k - 参数
+     * @return {number} 按指数曲线的缓动进入的值
      */
     ExponentialIn(k) {
         return k === 0 ? 0 : Math.pow(1024, k - 1);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按指数曲线的缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.ExponentialOut
+     * @description 返回按指数曲线的缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按指数曲线的缓动退出的值
      */
     ExponentialOut(k) {
         return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按指数曲线的缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.ExponentialInOut
+     * @description 返回按指数曲线的缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按指数曲线的缓动进入退出的值
      */
     ExponentialInOut(k) {
         if (k === 0) {
@@ -215,25 +247,31 @@ export class Easing {
 
 
     // 圆形曲线的缓动（sqrt(1-t^2)）
-    /*
-     * @param {number} k
-     * @return {number} 返回按圆形曲线的缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.CircularIn
+     * @description 返回按圆形曲线的缓动进入的值
+     * @param {number} k - 参数
+     * @return {number} 按圆形曲线的缓动进入的值
      */
     CircularIn(k) {
         return 1 - Math.sqrt(1 - k * k);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按圆形曲线的缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.CircularOut
+     * @description 返回按圆形曲线的缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按圆形曲线的缓动退出的值
      */
     CircularOut(k) {
         return Math.sqrt(1 - (--k * k));
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按圆形曲线的缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.CircularInOut
+     * @description 返回按圆形曲线的缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按圆形曲线的缓动进入退出的值
      */
     CircularInOut(k) {
         if ((k *= 2) < 1) {
@@ -244,9 +282,11 @@ export class Easing {
 
 
     // 创建类似于弹簧在停止前来回振荡的动画
-    /*
-     * @param {number} k
-     * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.ElasticIn
+     * @description 返回按类似于弹簧在停止前来回振荡的动画的缓动进入的值
+     * @param {number} k - 参数
+     * @return {number} 按类似于弹簧在停止前来回振荡的动画的缓动进入的值
      */
     ElasticIn(k) {
         var s;
@@ -268,9 +308,11 @@ export class Easing {
             Math.sin((k - s) * (2 * Math.PI) / p));
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.ElasticOut
+     * @description 返回按类似于弹簧在停止前来回振荡的动画的缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按类似于弹簧在停止前来回振荡的动画的缓动退出的值
      */
     ElasticOut(k) {
         var s;
@@ -292,9 +334,11 @@ export class Easing {
             Math.sin((k - s) * (2 * Math.PI) / p) + 1);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.ElasticInOut
+     * @description 返回按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
      */
     ElasticInOut(k) {
         var s;
@@ -323,27 +367,33 @@ export class Easing {
 
 
     // 在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动
-    /*
-     * @param {number} k
-     * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.BackIn
+     * @description 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
+     * @param {number} k - 参数
+     * @return {number} 按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
      */
     BackIn(k) {
         var s = 1.70158;
         return k * k * ((s + 1) * k - s);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.BackOut
+     * @description 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
      */
     BackOut(k) {
         var s = 1.70158;
         return --k * k * ((s + 1) * k + s) + 1;
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.BackInOut
+     * @description 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
      */
     BackInOut(k) {
         var s = 1.70158 * 1.525;
@@ -355,17 +405,21 @@ export class Easing {
 
 
     // 创建弹跳效果
-    /*
-     * @param {number} k
-     * @return {number} 返回按弹跳效果的缓动进入的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.BounceIn
+     * @description 返回按弹跳效果的缓动进入的值
+     * @param {number} k - 参数
+     * @return {number} 按弹跳效果的缓动进入的值
      */
     BounceIn(k) {
         return 1 - this.BounceOut(1 - k);
     }
 
-    /*
-     * @param {number} k
-     * @return {number} 返回按弹跳效果的缓动退出的值
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.BounceOut
+     * @description 返回按弹跳效果的缓动退出的值
+     * @param {number} k - 参数
+     * @return {number} 按弹跳效果的缓动退出的值
      */
     BounceOut(k) {
         if (k < (1 / 2.75)) {
@@ -378,10 +432,12 @@ export class Easing {
             return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;
         }
     }
-
-    /*
-     * @param {number} k
-     * @return {number} 返回按弹跳效果的缓动进入退出的值
+    
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.BounceInOut
+     * @description 返回按弹跳效果的缓动进入退出的值
+     * @param {number} k - 参数
+     * @return {number} 按弹跳效果的缓动进入退出的值
      */
     BounceInOut(k) {
         if (k < 0.5) {

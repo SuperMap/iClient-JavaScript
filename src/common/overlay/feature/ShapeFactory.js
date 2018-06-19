@@ -18,77 +18,60 @@ import {SmicSector} from '../levelRenderer/SmicSector';
 import {Util} from '../../commontypes/Util';
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
- * 图形工厂类。
+ * @classdesc 图形工厂类。
  *
  * 目前支持创建的图形有：
- *
  * 用于统计专题图：
  * 点 - 参数对象： <SuperMap.Feature.ShapeParameters.Point>
- *
  * 线 - 参数对象： <SuperMap.Feature.ShapeParameters.Line>
- *
  * 面 - 参数对象： <SuperMap.Feature.ShapeParameters.Polygon>
- *
  * 矩形 - 参数对象： <SuperMap.Feature.ShapeParameters.Rectangle>
- *
  * 扇形 - 参数对象： <SuperMap.Feature.ShapeParameters.Sector>
- *
  * 标签 - 参数对象： <SuperMap.Feature.ShapeParameters.Label>
- *
  * 图片 - 参数对象： <SuperMap.Feature.ShapeParameters.Image>
  *
- *
  * 用于符号专题图：
- * 圆形 -  参数对象：<SuperMap.Feature.ShapeParameters.Cilcle>
+ * 圆形 -  参数对象：<{@link SuperMap.Feature.ShapeParameters.Cilcle}>
  */
 export class ShapeFactory {
 
 
 
     /**
-     * Constructor: SuperMap.Feature.ShapeFactory
-     * 构建图形工厂对象。
-     *
-     * Parameters:
-     * shapeParameters - {Object}  图形参数对象，<SuperMap.Feature.ShapeParameters> 子类对象，可选参数。
-     *
-     * Returns:
-     * {Object} 返回图形工厂类对象。
+     * @function SuperMap.Feature.ShapeFactory.prototype.constructor
+     * @description 构建图形工厂对象。
+     * @param {Object} shapeParameters - 图形参数对象，<{@link SuperMap.Feature.ShapeParameters}> 子类对象，可选参数。
+     * @returns {SuperMap.Feature.ShapeFactory} 返回图形工厂类对象。
      */
     constructor(shapeParameters) {
         /**
-         * APIProperty: shapeParameters
-         * {Object} 图形参数对象， <SuperMap.Feature.ShapeParameters> 子类对象。必设参数，默认值 null。
+         * @member {Object} SuperMap.Feature.ShapeParameters.prototype.shapeParameters
+         * @description  图形参数对象，<{@link SuperMap.Feature.ShapeParameters}> 子类对象。必设参数，默认值 null。
          */
         this.shapeParameters = shapeParameters;
 
         this.CLASS_NAME = "SuperMap.Feature.ShapeFactory";
     }
 
-
+    
     /**
-     * APIMethod: destroy
-     * 销毁图形工厂类对象。
+     * @function  SuperMap.Feature.ShapeParameters.prototype.destroy
+     * @description 销毁图形工厂类对象。
      */
     destroy() {
         this.shapeParameters = null;
     }
 
-
+    
     /**
-     * APIMethod: createShape
-     * 创建一个图形。具体图形由 shapeParameters 决定。
-     *
-     * Parameters:
-     * shapeParameters - {Object} 图形参数对象， <SuperMap.Feature.ShapeParameters> 子类对象。
+     * @function  SuperMap.Feature.ShapeParameters.prototype.createShape
+     * @description 创建一个图形。具体图形由 shapeParameters 决定。
+     * @param {Object} shapeParameters - 图形参数对象，<{@link SuperMap.Feature.ShapeParameters}> 子类对象。
      * 此参数可选，如果使用此参数（不为 null），shapeParameters 属性值将被修改为参数的值，然后再使用 shapeParameters 属性值创建图形；
      * 如果不使用此参数，createShape 方法将直接使用 shapeParameters 属性创建图形。
-     *
-     * Returns:
-     * {Object} - 图形对象（或 null - 图形创建失败）。
+     * @returns {Object} 图形对象（或 null - 图形创建失败）。
      */
     createShape(shapeParameters) {
         if (shapeParameters) {
@@ -275,16 +258,12 @@ export class ShapeFactory {
         return null
     }
 
-
+    
     /**
-     * Function: ShapeFactory.transformStyle
-     * 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
-     *
-     * Parameters:
-     * style - {Object} 用户 style。
-     *
-     * Returns:
-     * {Object} 符合 levelRenderer 的 tyle。
+     * @function  SuperMap.Feature.ShapeParameters.prototype.transformStyle
+     * @description 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
+     * @param {Object} style - 用户 style。
+     * @returns {Object} 符合 levelRenderer 的 style。
      */
     static transformStyle(style) {
         var newStyle = {};
@@ -394,23 +373,14 @@ export class ShapeFactory {
     }
 
     /**
-     * APIFunction: ShapeFactory.Background
-     * 创建一个矩形背景框图形对象。
-     *
-     * Parameters:
-     * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-     * box - {Array{Number}} 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
-     * setting - {Object} 图表配置参数，必设参数。
-     *
-     * 本函数中图形配置对象 setting 可设属性：
-     *
-     * Symbolizer properties:
-     * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
-     * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
-     * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
-     *
-     * Returns:
-     * {Object} 背景框图形，一个可视化图形（矩形）对象。
+     * @function  SuperMap.Feature.ShapeParameters.prototype.Background
+     * @description 创建一个矩形背景框图形对象。
+     * @param {SuperMap.Feature.ShapeFactory} shapeFactory - 图形工厂对象，必设参数。
+     * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
+     * @param {Object} setting - 图表配置参数，必设参数。本函数中图形配置对象 setting 可设属性：
+     * @param {Object} setting.backgroundStyle - 背景样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Rectangle#style>。
+     * @param {Array} [setting.backgroundRadius=[0,0,0,0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
+     * @returns {Object} 背景框图形，一个可视化图形（矩形）对象。
      */
     static Background(shapeFactory, box, setting) {
         var sets = setting ? setting : {};
@@ -441,46 +411,29 @@ export class ShapeFactory {
     }
 
     /**
-     * APIFunction: ShapeFactory.GraphAxis
-     * 创建一个统计图表坐标轴图形对象组。
-     *
-     * Parameters:
-     * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-     * dataViewBox - {Array{Number}} 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
-     * setting - {Object} 图表配置参数，必设参数。
-     * xShapeInfo - {Object} X 方向上的图形信息对象，包含两个属性，
-     * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
-     * 如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-     * width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-     * xShapeInfo 包含两个属性
-     *
-     * Symbolizer properties:
-     * xPositions - {Array{Number}} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-     * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-     *
-     * 本函数中图形配置对象 setting 可设属性：
-     *
-     * Symbolizer properties:
-     * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。
-     * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。
-     * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。
-     * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
-     * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
-     * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
-     * 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
-     * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
-     * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，
-     * 否则沿数据视图框下面条边等距排布标签。
-     * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
-     * axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
-     * 数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。
-     * useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
- * xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。
- * axis3DParameter - {Number} 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：0。
- *
- * Returns:
- * {Array{Object}} 统计图表坐标轴图形对象数组。
- */
+     * @function  SuperMap.Feature.ShapeParameters.prototype.GraphAxis
+     * @description 创建一个统计图表坐标轴图形对象组。
+     * @param {SuperMap.Feature.ShapeFactory} shapeFactory - 图形工厂对象，必设参数。
+     * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
+     * @param {Object} setting - 图表配置参数，必设参数。
+     * @param {Object} setting.axisStyle - 坐标轴样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Line#style>。
+     * @param {boolean} [setting.axisUseArrow=false] - 坐标轴是否使用箭头。
+     * @param {number} [setting.axisYTick=0] - y 轴刻度数量，0表示不使用箭头。
+     * @param {Array.<string>} setting.axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
+     * @param {Object} setting.axisYLabelsStyle - y 轴上的标签组样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Label#style>。
+     * @param {Array.<number>} [setting.axisYLabelsOffset=[0,0]] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
+     * @param {Array.<string>} setting.axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+     * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，否则沿数据视图框下面条边等距排布标签。
+     * @param {Object} setting.axisXLabelsStyle - x 轴上的标签组样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Label#style>。
+     * @param {Array.<number>} [setting.axisXLabelsOffset=[0,0]] - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。
+     * @param {boolean} setting.useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
+     * @param {Object} setting.xReferenceLineStyle - 水平参考线样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Line#style>。
+     * @param {number} [setting.axis3DParameter=0] - 3D 坐标轴参数，此属性值在大于等于 15 时有效。
+     * @param {Object} xShapeInfo - X 方向上的图形信息对象，包含两个属性。
+     * @param {Array.<number>} xShapeInfo.xPositions - 图形在 x 轴方向上的像素坐标值，是一个一维数组，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+     * @param {number} xShapeInfo.width - 图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+     * @returns {Array.<Object>} 统计图表坐标轴图形对象数组。
+     */
     static GraphAxis(shapeFactory, dataViewBox, setting, xShapeInfo) {
         var dvb = dataViewBox;
         var sets = setting ? setting : {};
@@ -801,20 +754,15 @@ export class ShapeFactory {
         // 组装并返回构成坐标轴的图形
         return ((refLines.concat(axisMain)).concat(yLabels)).concat(xLabels).concat(arrows);
     }
-
+    
     /**
-     * APIFunction: ShapeFactory.ShapeStyleTool
-     * 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
-     *
-     * Parameters:
-     * defaultStyle - {Object} 默认 style，此样式对象可设属性根据图形类型参考 <SuperMap.Feature.ShapeParameters> 子类对象的 style 属性。
-     * style - {Object} 图形对象基础 style，此参数控制图形的基础样式，
-     * 可设属性根据图形类型参考 <SuperMap.Feature.ShapeParameters> 子类对象的 style 属性。
-     * 优先级低于 styleGroup，styleByCodomain。
-     * styleGroup - {Array{Object}} 一个 style 数组，优先级低于 styleByCodomain，高于 style。
-     * 此数组每个元素是样式对象，其可设属性根据图形类型参考 <SuperMap.Feature.ShapeParameters> 子类对象的 style 属性。
-     * 通过 index 参数从 styleGroup 中取 style。
-     * styleByCodomain - {Array{Object}} 按数据（参数 value）所在值域范围控制数据的可视化对象样式。
+     * @function  SuperMap.Feature.ShapeParameters.prototype.ShapeStyleTool
+     * @description 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
+     * @param {Object} defaultStyle - 默认style，此样式对象可设属性根据图形类型参考 <{@link SuperMap.Feature.ShapeParameters}> 子类对象的 style 属性。
+     * @param {Object} style - 图形对象基础 style，此参数控制图形的基础样式，可设属性根据图形类型参考 <{@link SuperMap.Feature.ShapeParameters}> 子类对象的 style 属性。优先级低于 styleGroup，styleByCodomain。
+     * @param {Array.<Object>} styleGroup - 一个 style 数组，优先级低于 styleByCodomain，高于 style。此数组每个元素是样式对象，
+     * 其可设属性根据图形类型参考 <{@link SuperMap.Feature.ShapeParameters}> 子类对象的 style 属性。通过 index 参数从 styleGroup 中取 style。
+     * @param {Array.<Object>} styleByCodomain - 按数据（参数 value）所在值域范围控制数据的可视化对象样式。
      * (start code)
      * // styleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
      * // start: 值域值下限（包含）;
@@ -852,11 +800,9 @@ export class ShapeFactory {
  *  }
      * ]
      * (end)
-     * index - {Number} styleGroup 的索引值，用于取出 styleGroup 指定的 style。
-     * value - {Number} 数据值，用于取出 styleByCodomain 指定的 style。
-     *
-     * Returns:
-     * {Object} 合并后的样式 （style） 对象。
+     * @param {number} index - styleGroup 的索引值，用于取出 styleGroup 指定的 style。
+     * @param {number} value - 数据值，用于取出 styleByCodomain 指定的 style。
+     * @returns {Object} 合并后的样式 （style） 对象。
      */
     static ShapeStyleTool(defaultStyle, style, styleGroup, styleByCodomain, index, value) {
         // 用 defaultStyle 初始化 style 对象

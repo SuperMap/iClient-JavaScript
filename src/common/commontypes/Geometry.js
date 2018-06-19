@@ -13,28 +13,28 @@ export class Geometry {
     constructor() {
         this.CLASS_NAME = "SuperMap.Geometry";
         /**
-         * @member SuperMap.Geometry.prototype.id -{string}
+         * @member {string} SuperMap.Geometry.prototype.id
          * @description  此几何对象的唯一标示符。
          *
          */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
-         * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
+         * @member {SuperMap.Geometry} SuperMap.Geometry.prototype.parent
          * @description This is set when a Geometry is added as component
          * of another geometry
          */
         this.parent = null;
 
         /**
-         * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
+         * @member {SuperMap.Bounds} SuperMap.Geometry.prototype.bounds
          * @description 几何对象的范围
          *
          */
         this.bounds = null;
 
         /**
-         * @member SuperMap.Geometry.prototype.SRID -{interger}
+         * @member {interger} SuperMap.Geometry.prototype.SRID
          * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
          * @example
          *   var geometry= new SuperMap.Geometry();
@@ -69,7 +69,7 @@ export class Geometry {
     /**
      * @function SuperMap.Geometry.prototype.setBounds
      * @description 设置此几何对象的bounds。
-     * @param bounds - {SuperMap.Bounds}
+     * @param {SuperMap.Bounds} bounds - 范围
      */
     setBounds(bounds) {
         if (bounds) {
@@ -96,7 +96,7 @@ export class Geometry {
      * @description Extend the existing bounds to include the new bounds.
      * If geometry's bounds is not yet set, then set a new Bounds.
      *
-     * @param newBounds - {SuperMap.Bounds}
+     * @param {SuperMap.Bounds} newBounds - 范围
      */
     extendBounds(newBounds) {
         var bounds = this.getBounds();
@@ -111,7 +111,7 @@ export class Geometry {
     /**
      * @function SuperMap.Geometry.prototype.getBounds
      * @description 获得几何图形的边界。如果没有设置边界，可通过计算获得。
-     * @returns {SuperMap.Bounds}返回的几何对象的边界。
+     * @returns {SuperMap.Bounds} 返回的几何对象的边界。
      */
     getBounds() {
         if (this.bounds == null) {
@@ -134,7 +134,7 @@ export class Geometry {
     /**
      * @function SuperMap.Geometry.prototype.getVertices
      * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
-     * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
+     * @param {boolean} nodes - 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
      * @returns {Array} 几何图形的顶点列表。
      */
     getVertices(nodes) { // eslint-disable-line no-unused-vars

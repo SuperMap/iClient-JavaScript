@@ -1,9 +1,7 @@
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Eventful
  * @category Visualization Theme
- * 事件分发器超类，所有支持事件处理的类均是此类的子类。
- *
+ * @classdesc 事件分发器超类，所有支持事件处理的类均是此类的子类。
  * 此类不可实例化。
  *
  */
@@ -12,32 +10,29 @@ export class Eventful {
 
 
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Eventful
-     * 构造函数。
-     *
-     * 对象可以通过 onxxxx 绑定事件。
-     *
+    /**
+     * @function SuperMap.LevelRenderer.Eventful.prototype.constructor
+     * @description 构造函数。对象可以通过 onxxxx 绑定事件。
      * 支持的事件：
      * Symbolizer properties:
-     * onclick - {Function} 默认值：null。
-     * onmouseover - {Function} 默认值：null。
-     * onmouseout - {Function} 默认值：null。
-     * onmousemove - {Function} 默认值：null。
-     * onmousewheel - {Function} 默认值：null。
-     * onmousedown - {Function} 默认值：null。
-     * onmouseup - {Function} 默认值：null。
-     * ondragstart - {Function} 默认值：null。
-     * ondragend - {Function} 默认值：null。
-     * ondragenter - {Function} 默认值：null。
-     * ondragleave - {Function} 默认值：null。
-     * ondragover - {Function} 默认值：null。
-     * ondrop - {Function} 默认值：null。
+     * onclick - {function} 默认值：null。
+     * onmouseover - {function} 默认值：null。
+     * onmouseout - {function} 默认值：null。
+     * onmousemove - {function} 默认值：null。
+     * onmousewheel - {function} 默认值：null。
+     * onmousedown - {function} 默认值：null。
+     * onmouseup - {function} 默认值：null。
+     * ondragstart - {function} 默认值：null。
+     * ondragend - {function} 默认值：null。
+     * ondragenter - {function} 默认值：null。
+     * ondragleave - {function} 默认值：null。
+     * ondragover - {function} 默认值：null。
+     * ondrop - {function} 默认值：null。
      */
     constructor() {
         /**
-         * Property: _handlers
-         * {Object} 事件处理对象（事件分发器）。
+         * @member {Object} SuperMap.LevelRenderer.Eventful.prototype._handlers
+         * @description 事件处理对象（事件分发器）。
          */
         this._handlers = {};
 
@@ -46,8 +41,8 @@ export class Eventful {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function {Object} SuperMap.LevelRenderer.Eventful.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this._handlers = null;
@@ -55,16 +50,12 @@ export class Eventful {
 
 
     /**
-     * APIMethod: one
-     * 单次触发绑定，dispatch后销毁。
-     *
-     * Parameters:
-     * event - {String} 事件名。
-     * handler - {Boolean} 响应函数。
-     * context - {Object} context。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Eventful>} this。
+     * @function SuperMap.LevelRenderer.Eventful.prototype.one
+     * @description 单次触发绑定，dispatch后销毁。
+     * @param {string} event - 事件名。
+     * @param {boolean} handler - 响应函数。
+     * @param {Object} context - context。
+     * @returns {SuperMap.LevelRenderer.Eventful} this
      */
     one(event, handler, context) {
         var _h = this._handlers;
@@ -88,16 +79,12 @@ export class Eventful {
 
 
     /**
-     * APIMethod: bind
-     * 绑定事件。
-     *
-     * Parameters:
-     * event - {String} 事件名。
-     * handler - {Boolean} 事件处理函数。
-     * context - {Object} context。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Eventful>} this。
+     * @function SuperMap.LevelRenderer.Eventful.prototype.bind
+     * @description 绑定事件。
+     * @param {string} event - 事件名。
+     * @param {boolean} handler - 响应函数。
+     * @param {Object} context - context。
+     * @returns {SuperMap.LevelRenderer.Eventful} this
      */
     bind(event, handler, context) {
         var _h = this._handlers;
@@ -121,15 +108,11 @@ export class Eventful {
 
 
     /**
-     * APIMethod: unbind
-     * 解绑事件。
-     *
-     * Parameters:
-     * event - {String} 事件名。
-     * handler - {Boolean} 事件处理函数。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Eventful>} this。
+     * @function SuperMap.LevelRenderer.Eventful.prototype.unbind
+     * @description 解绑事件。
+     * @param {string} event - 事件名。
+     * @param {boolean} handler - 响应函数。
+     * @returns {SuperMap.LevelRenderer.Eventful} this
      */
     unbind(event, handler) {
         var _h = this._handlers;
@@ -162,14 +145,10 @@ export class Eventful {
 
 
     /**
-     * APIMethod: dispatch
-     * 事件分发。
-     *
-     * Parameters:
-     * type - {String} 事件类型。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Eventful>} this。
+     * @function SuperMap.LevelRenderer.Eventful.prototype.dispatch
+     * @description 事件分发。
+     * @param {string} type - 事件类型。
+     * @returns {SuperMap.LevelRenderer.Eventful} this
      */
     dispatch(type) {
         if (this._handlers[type]) {
@@ -214,14 +193,10 @@ export class Eventful {
 
 
     /**
-     * APIMethod: dispatchWithContext
-     * 带有context的事件分发, 最后一个参数是事件回调的 context。
-     *
-     * Parameters:
-     * type - {String} 事件类型。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Eventful>} this。
+     * @function SuperMap.LevelRenderer.Eventful.prototype.dispatchWithContext
+     * @description 带有context的事件分发，最后一个参数是事件回调的 context。
+     * @param {string} type - 事件类型。
+     * @returns {SuperMap.LevelRenderer.Eventful} this
      */
     dispatchWithContext(type) {
         if (this._handlers[type]) {

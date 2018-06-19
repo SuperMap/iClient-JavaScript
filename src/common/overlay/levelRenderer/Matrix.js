@@ -2,21 +2,19 @@
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Matrix
  * @category Visualization Theme
- * LevelRenderer 工具-3x2矩阵操作类
- *
+ * @classdesc LevelRenderer 工具-3x2矩阵操作类
  */
 export class Matrix {
 
-
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Matrix
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Matrix.constructor
+     * @description 构造函数。
      */
+   
     constructor() {
         /**
-         * Property: ArrayCtor
-         * {Object} 数组类型控制
+         * @member {Object} SuperMap.LevelRenderer.Tool.Matrix.prototype.ArrayCtor
+         * @description 数组类型控制
          */
         this.ArrayCtor = typeof Float32Array === 'undefined'
             ? Array
@@ -27,11 +25,9 @@ export class Matrix {
 
 
     /**
-     * APIMethod: create
-     * 创建一个单位矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 单位矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.create
+     * @description 创建一个单位矩阵。
+     * @returns {(Float32Array|Array.<number>)} 单位矩阵。
      */
     create() {
         var ArrayCtor = this.ArrayCtor;
@@ -42,16 +38,11 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: identity
-     * 设置矩阵为单位矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 单位矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.identity
+     * @description 设置矩阵为单位矩阵。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @returns {(Float32Array|Array.<number>)} 单位矩阵。
      */
     identity(out) {
         out[0] = 1;
@@ -65,15 +56,10 @@ export class Matrix {
 
 
     /**
-     * APIMethod: copy
-     * 复制矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * m - {Float32Array|Array.<Number>} 原始矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 克隆矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.copy
+     * @description 复制矩阵。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @returns {(Float32Array|Array.<number>)} 克隆矩阵。
      */
     copy(out, m) {
         out[0] = m[0];
@@ -85,18 +71,13 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: mul
-     * 矩阵相乘。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * m1 - {Float32Array|Array.<Number>} 矩阵m1。
-     * m2- {Float32Array|Array.<Number>} 矩阵m2。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.mul
+     * @description 矩阵相乘。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @param {(Float32Array|Array.<number>)} m1 - 矩阵m1。
+     * @param {(Float32Array|Array.<number>)} m2- 矩阵m2。
+     * @returns {(Float32Array|Array.<number>)} 结果矩阵。
      */
     mul(out, m1, m2) {
         out[0] = m1[0] * m2[0] + m1[2] * m2[1];
@@ -108,18 +89,13 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: translate
-     * 平移变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 平移参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.mul
+     * @description 平移变换。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @param {(Float32Array|Array.<number>)} a - 矩阵。
+     * @param {(Float32Array|Array.<number>)} v- 平移参数。
+     * @returns {(Float32Array|Array.<number>)} 结果矩阵。
      */
     translate(out, a, v) {
         out[0] = a[0];
@@ -131,18 +107,13 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: rotate
-     * 旋转变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * rad- {Float32Array|Array.<Number>} 旋转参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.rotate
+     * @description 平移变换。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @param {(Float32Array|Array.<number>)} a - 矩阵。
+     * @param {(Float32Array|Array.<number>)} rad - 旋转参数。
+     * @returns {(Float32Array|Array.<number>)} 结果矩阵。
      */
     rotate(out, a, rad) {
         var aa = a[0];
@@ -163,18 +134,13 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: scale
-     * 缩放变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 缩放参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.scale
+     * @description 缩放变换。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @param {(Float32Array|Array.<number>)} a - 矩阵。
+     * @param {(Float32Array|Array.<number>)} v - 缩放参数。
+     * @returns {(Float32Array|Array.<number>)} 结果矩阵。
      */
     scale(out, a, v) {
         var vx = v[0];
@@ -188,17 +154,12 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: invert
-     * 求逆矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.invert
+     * @description 求逆矩阵。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @param {(Float32Array|Array.<number>)} a - 矩阵。
+     * @returns {(Float32Array|Array.<number>)} 结果矩阵。
      */
     invert(out, a) {
         var aa = a[0];
@@ -223,18 +184,13 @@ export class Matrix {
         return out;
     }
 
-
     /**
-     * APIMethod: mulVector
-     * 矩阵左乘向量。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 缩放参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.mulVector
+     * @description 矩阵左乘向量。
+     * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+     * @param {(Float32Array|Array.<number>)} a - 矩阵。
+     * @param {(Float32Array|Array.<number>)} v - 缩放参数。
+     * @returns {(Float32Array|Array.<number>)} 结果矩阵。
      */
     mulVector(out, a, v) {
         var aa = a[0];

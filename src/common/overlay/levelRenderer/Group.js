@@ -4,13 +4,10 @@ import {Eventful} from './Eventful';
 import {Transformable} from './Transformable';
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Group
  * @category Visualization Theme
- * Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Transformable>
+ * @classdesc Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
+ * @extends {SuperMap.LevelRenderer.Transformable}
  *
  * (code)
  *     var g = new SuperMap.LevelRenderer.Group();
@@ -32,61 +29,54 @@ import {Transformable} from './Transformable';
 export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Group
-     * 构造函数。
-     *
-     * Parameters:
-     * options - {Array} Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.constructor
+     * @description 构造函数。
+     * @param {Array} options - Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
      */
     constructor(options) {
         super(options)
         options = options || {};
         /**
-         * APIProperty: id
-         * {String} Group 的唯一标识。
+         * @member {string} SuperMap.LevelRenderer.Group.prototype.id
+         * @description Group 的唯一标识。
          */
         this.id = null;
 
         /**
-         * APIProperty: type
-         * {Readonly{String}} 类型，默认值：'group'。
+         * @readonly
+         * @member {string} [SuperMap.LevelRenderer.Group.prototype.type='group']
+         * @description 类型。
          */
         this.type = 'group';
 
         //http://www.w3.org/TR/2dcontext/#clipping-region
         /**
-         * APIProperty: clipShape
-         * {String} 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
-         *
+         * @member {string} SuperMap.LevelRenderer.Group.prototype.clipShape
+         * @description 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
          */
         this.clipShape = null;
 
         /**
-         * Property: _children
-         * {Array}
-         *
+         * @member {Array} SuperMap.LevelRenderer.Group.prototype._children
+         * @description _children。
          */
         this._children = [];
 
         /**
-         * Property: _storage
-         * {Array}
-         *
+         * @member {Array} SuperMap.LevelRenderer.Group.prototype._storage
+         * @description _storage。
          */
         this._storage = null;
 
         /**
-         * Property: __dirty
-         * {Boolean} 默认值：true。
-         *
+         * @member {boolean} [SuperMap.LevelRenderer.Group.prototype.__dirty=true]
+         * @description __dirty。
          */
         this.__dirty = true;
 
         /**
-         * APIProperty: ignore
-         * {Boolean} 是否忽略该 Group 及其所有子节点。默认值：false。
-         *
+         * @member {boolean} [SuperMap.LevelRenderer.Group.prototype.ignore=false]
+         * @description 是否忽略该 Group 及其所有子节点。
          */
         this.ignore = false;
         CommonUtil.extend(this, options);
@@ -96,8 +86,8 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Group.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this.id = null;
@@ -113,11 +103,9 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: children
-     * 复制并返回一份新的包含所有儿子节点的数组。
-     *
-     * Returns:
-     * {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+     * @function SuperMap.LevelRenderer.Group.prototype.children
+     * @description 复制并返回一份新的包含所有儿子节点的数组。
+     * @returns {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
      */
     children() {
         return this._children.slice();
@@ -125,14 +113,10 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: childAt
-     * 获取指定 index 的儿子节点。
-     *
-     * Parameters:
-     * idx - {Number} 节点索引。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Shape>} 图形。
+     * @function SuperMap.LevelRenderer.Group.prototype.childAt
+     * @description 获取指定 index 的儿子节点
+     * @param {number} idx - 节点索引。
+     * @returns {SuperMap.LevelRenderer.Shape} 图形。
      */
     childAt(idx) {
         return this._children[idx];
@@ -140,12 +124,9 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: addChild
-     * 添加子节点，可以是 Shape 或者 Group。
-     *
-     * Parameters:
-     * child - {<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>} 节点图形。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.addChild
+     * @description 添加子节点，可以是 Shape 或者 Group。
+     * @param {(SuperMap.LevelRenderer.Shape|SuperMap.LevelRenderer.Group)} child - 节点图形。
      */
     // TODO Type Check
     addChild(child) {
@@ -175,12 +156,9 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: removeChild
-     * 移除子节点。
-     *
-     * Parameters:
-     * child - {<SuperMap.LevelRenderer.Shape>} 需要移除的子节点图形。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.removeChild
+     * @description 移除子节点。
+     * @param {SuperMap.LevelRenderer.Shape} child - 需要移除的子节点图形。
      */
     removeChild(child) {
         var idx = CommonUtil.indexOf(this._children, child);
@@ -200,13 +178,10 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: eachChild
-     * 遍历所有子节点。
-     *
-     * Parameters:
-     * cb - {Function} 回调函数。
-     * context - {Object} 上下文。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.eachChild
+     * @description 遍历所有子节点。
+     * @param {function} cb - 回调函数。
+     * @param {Object} context - 上下文。
      */
     eachChild(cb, context) {
         var haveContext = !!context;
@@ -222,13 +197,10 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: traverse
-     * 深度优先遍历所有子孙节点。
-     *
-     * Parameters:
-     * cb - {Function} 回调函数。
-     * context - {Object} 上下文。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.traverse
+     * @description 深度优先遍历所有子孙节点。
+     * @param {function} cb - 回调函数。
+     * @param {Object} context - 上下文。
      */
     traverse(cb, context) {
         var haveContext = !!context;
@@ -248,12 +220,9 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: addChildrenToStorage
-     * 把子图形添加到仓库。
-     *
-     * Parameters:
-     * storage - {<SuperMap.LevelRenderer.Storage>} 图形仓库。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.addChildrenToStorage
+     * @description 把子图形添加到仓库。
+     * @param {SuperMap.LevelRenderer.Storage} storage - 图形仓库。
      */
     addChildrenToStorage(storage) {
         for (var i = 0; i < this._children.length; i++) {
@@ -267,12 +236,9 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: delChildrenFromStorage
-     * 从仓库把子图形删除。
-     *
-     * Parameters:
-     * storage - {<SuperMap.LevelRenderer.Storage>} 图形仓库。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.delChildrenFromStorage
+     * @description 从仓库把子图形删除。
+     * @param {SuperMap.LevelRenderer.Storage} storage - 图形仓库。
      */
     delChildrenFromStorage(storage) {
         for (var i = 0; i < this._children.length; i++) {
@@ -284,11 +250,10 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
         }
     }
 
-
+    
     /**
-     * Method: modSelf。
-     * 是否  修改。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.modSelf
+     * @description 是否修改。
      */
     modSelf() {
         this.__dirty = true;

@@ -2,18 +2,16 @@ import {Curve} from './Curve';
 import {Vector} from './Vector';
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.ComputeBoundingBox
  * @category Visualization Theme
- * LevelRenderer 工具-图形 Bounds 计算
+ * @classdesc LevelRenderer 工具-图形 Bounds 计算
  *
  */
 export class ComputeBoundingBox {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.ComputeBoundingBox
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.constructor
+     * @description 构造函数。
      */
     constructor() {
         if (arguments.length === 3) {
@@ -24,14 +22,11 @@ export class ComputeBoundingBox {
     }
 
     /**
-     * APIMethod: computeBoundingBox
-     * 从顶点数组中计算出最小包围盒，写入`min`和`max`中。
-     *
-     * Parameters:
-     * points - {Array{Object}} 顶点数组。
-     * min - {Number}
-     * max - {Number}
-     *
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.computeBoundingBox
+     * @description 从顶点数组中计算出最小包围盒，写入'min'和'max'中。
+     * @param {Array.<Object>} points - 顶点数组。
+     * @param {Array} min - 最小
+     * @param {Array} max - 最大
      */
     computeBoundingBox(points, min, max) {
         if (points.length === 0) {
@@ -63,21 +58,16 @@ export class ComputeBoundingBox {
         max[0] = right;
         max[1] = bottom;
     }
-
+    
     /**
-     * APIMethod: cubeBezier
-     * 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入`min`和`max`中。
-     *
-     * 原：computeCubeBezierBoundingBox
-     *
-     * Parameters:
-     * p0 - {Array{Number}}
-     * p1 - {Array{Number}}
-     * p2 - {Array{Number}}
-     * p3 - {Array{Number}}
-     * min - {Array{Number}}
-     * max - {Array{Number}}
-     *
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.cubeBezier
+     * @description 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入'min'和'max'中。原：computeCubeBezierBoundingBox。
+     * @param {Array<number>} p0 - 三阶贝塞尔曲线p0点
+     * @param {Array{number}} p1 - 三阶贝塞尔曲线p1点
+     * @param {Array<number>} p2 - 三阶贝塞尔曲线p2点
+     * @param {Array<number>} p3 - 三阶贝塞尔曲线p3点
+     * @param {Array<number>} min - 最小
+     * @param {Array<number>} max - 最大
      */
     cubeBezier(p0, p1, p2, p3, min, max) {
         var curve = new Curve();
@@ -106,20 +96,15 @@ export class ComputeBoundingBox {
         max[0] = right;
         max[1] = bottom;
     }
-
+    
     /**
-     * APIMethod: quadraticBezier
-     * 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入`min`和`max`中
-     *
-     * 原：computeQuadraticBezierBoundingBox
-     *
-     * Parameters:
-     * p0 - {Array{Number}}
-     * p1 - {Array{Number}}
-     * p2 - {Array{Number}}
-     * min - {Array{Number}}
-     * max - {Array{Number}}
-     *
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.quadraticBezier
+     * @description 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入'min'和'max'中。原：computeQuadraticBezierBoundingBox。
+     * @param {Array<number>} p0 - 二阶贝塞尔曲线p0点
+     * @param {Array{number}} p1 - 二阶贝塞尔曲线p1点
+     * @param {Array<number>} p2 - 二阶贝塞尔曲线p2点
+     * @param {Array<number>} min - 最小
+     * @param {Array<number>} max - 最大
      */
     quadraticBezier(p0, p1, p2, min, max) {
         var curve = new Curve();
@@ -152,22 +137,18 @@ export class ComputeBoundingBox {
         max[0] = Math.max(p0[0], p2[0], x1, x2);
         max[1] = Math.max(p0[1], p2[1], y1, y2);
     }
-
+    
     /**
-     * APIMethod: arc
-     * 从圆弧中计算出最小包围盒，写入`min`和`max`中
-     *
-     * 原：computeArcBoundingBox
-     *
-     * Parameters:
-     * x - {Number}  圆弧中心点 x
-     * y - {Number}  圆弧中心点 y
-     * r - {Number}  圆弧半径
-     * startAngle - {Number}  圆弧开始角度
-     * endAngle - {Number}  圆弧结束角度
-     * anticlockwise - {Number}  是否是顺时针
-     * min - {Number}
-     * max - {Number}
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.arc
+     * @description 从圆弧中计算出最小包围盒，写入'min'和'max'中。原：computeArcBoundingBox。
+     * @param {number} x - 圆弧中心点 x
+     * @param {number} y - 圆弧中心点 y
+     * @param {number} r - 圆弧半径
+     * @param {number} startAngle - 圆弧开始角度
+     * @param {number} endAngle - 圆弧结束角度
+     * @param {number} anticlockwise - 是否是顺时针
+     * @param {number} min - 最小
+     * @param {number} max - 最大
      */
     arc(x, y, r, startAngle, endAngle, anticlockwise, min, max) {
         var vec2 = new Vector();

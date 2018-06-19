@@ -9,7 +9,7 @@ import './LinearRing';
  * @classdesc  多边形几何对象类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
- * @param components - {Array<SuperMap.Geometry.LinearRing>} 用来生成多边形的线环数组。
+ * @param {Array.<SuperMap.Geometry.LinearRing>} components - 用来生成多边形的线环数组。
  * @example
  * var points =[new SuperMap.Geometry.Point(0,4010338),
  *      new SuperMap.Geometry.Point(1063524,4010338),
@@ -25,10 +25,9 @@ export class Polygon extends Collection {
     constructor(components) {
         super(components);
         /**
-         * @member SuperMap.Geometry.Polygon.prototype.componentTypes -{Array<string>}
+         * @member {Array.<string>} [SuperMap.Geometry.Polygon.prototype.componentTypes=["SuperMap.Geometry.LinearRing"]]
          * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
          * @readonly
-         * @default ["{@link SuperMap.Geometry.LinearRing}"]
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];
         this.CLASS_NAME = "SuperMap.Geometry.Polygon";

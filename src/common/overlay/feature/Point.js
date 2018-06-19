@@ -2,44 +2,37 @@ import {SuperMap} from '../../SuperMap';
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Point
  * @category Visualization Theme
- * 点参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 点参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 export class Point extends ShapeParameters {
 
     /**
-     * Constructor: SuperMap.Feature.ShapeParameters.Point
-     * 创建一个图形点参数对象。
-     *
-     * Parameters:
-     * x - {Number} 点 x 坐标，必设参数
-     * y - {Number} 点 y 坐标，必设参数。
-     *
-     * Returns:
-     * {<SuperMap.Feature.ShapeParameters.Point>} 图形点参数对象。
+     * @function SuperMap.Feature.ShapeParameters.Point.prototype.constructor
+     * @description 创建一个图形点参数对象。
+     * @param {number} x - 点 x 坐标，必设参数。
+     * @param {number} y - 点 y 坐标，必设参数。
+     * @returns {SuperMap.Feature.ShapeParameters.Point} 标签参数对象。
      */
     constructor(x, y) {
         super(x, y);
         /**
-         * APIProperty: x
-         * {Number} 点 x 坐标。
+         * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.x
+         * @description 点 x 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
         /**
-         * APIProperty: y
-         * {Number} 点 y 坐标。
+         * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.y
+         * @description 点 y 坐标。
          */
         this.y = !isNaN(y) ? y : 0;
 
         /**
-         * Property: y
-         * {Number} 点的半径。style.pointRadius 默认值。
+         * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.r
+         * @description 点的半径。
          */
         this.r = 6;
 
@@ -47,10 +40,10 @@ export class Point extends ShapeParameters {
         this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Point";
     }
 
-
+    
     /**
-     * APIMethod: destroy
-     * 销毁对象。
+     * @function SuperMap.Feature.ShapeParameters.Point.prototype.destroy
+     * @description 销毁对象。
      */
     destroy() {
         this.x = null;

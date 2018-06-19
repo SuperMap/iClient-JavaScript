@@ -6,10 +6,10 @@ import {Bounds} from '../Bounds';
  * @class  SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
  * @category BaseTypes Geometry
- * @param  x - {float} 矩形左下角点的横坐标。
- * @param y - {float} 矩形左下角点的纵坐标。
- * @param width - {float} 矩形的宽度。
- * @param height -  {float} 矩形的高度。
+ * @param {float} x - 矩形左下角点的横坐标。
+ * @param {float} y - 矩形左下角点的纵坐标。
+ * @param {float} width - 矩形的宽度。
+ * @param {float} height -  矩形的高度。
  * @extends {SuperMap.Geometry}
  * @example
  *  //x为矩形左下角点的横坐标；y为矩形左下角点的纵坐标；w为矩形的宽度；h为矩形的高度
@@ -26,25 +26,25 @@ export class Rectangle extends Geometry {
     constructor(x, y, width, height) {
         super(x, y, width, height);
         /**
-         * @member SuperMap.Geometry.Rectangle.prototype.x -{float}
+         * @member {float} SuperMap.Geometry.Rectangle.prototype.x
          * @description 矩形左下角点的横坐标。
          */
         this.x = x;
 
         /**
-         * @member SuperMap.Geometry.Rectangle.prototype.y -{float}
+         * @member {float} SuperMap.Geometry.Rectangle.prototype.y
          * @description 矩形左下角点的纵坐标。
          */
         this.y = y;
 
         /**
-         * @member SuperMap.Geometry.Rectangle.prototype.width -{float}
+         * @member {float} SuperMap.Geometry.Rectangle.prototype.width
          * @description 矩形的宽度。
          */
         this.width = width;
 
         /**
-         * @member SuperMap.Geometry.Rectangle.prototype.height -{float}
+         * @member {float} SuperMap.Geometry.Rectangle.prototype.height
          * @description 矩形的高度。
          */
         this.height = height;

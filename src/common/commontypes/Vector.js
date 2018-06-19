@@ -9,10 +9,10 @@ import {Util} from './Util';
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
  * 其中，默认的样式在 <SuperMap.Feature.Vector.style> 类中定义，如果没有特别的指定将使用默认的样式，
- * @extends SuperMap.Feature
- * @param geometry - {SuperMap.Geometry} 代表要素的几何形状。
- * @param attributes - {Object} 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的可选对象。
- * @param style - {Object} 一个可选的样式对象。
+ * @extends {SuperMap.Feature}
+ * @param {SuperMap.Geometry} geometry - 代表要素的几何形状。
+ * @param {Object} attributes - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的可选对象。
+ * @param {Object} style - 一个可选的样式对象。
  * @example
  * var geometry = new SuperMap.Geometry.Point(-115,10);
  *  var style = {
@@ -30,19 +30,19 @@ export class Vector extends Feature {
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
         /**
-         * @member SuperMap.Feature.Vector.prototype.fid -{string}
+         * @member {string} SuperMap.Feature.Vector.prototype.fid
          * @description fid
          */
         this.fid = null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.geometry -{SuperMap.Geometry}
+         * @member {SuperMap.Geometry} SuperMap.Feature.Vector.prototype.geometry
          * @description 该属性用于存放几何信息。
          */
         this.geometry = geometry ? geometry : null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.attributes -{Object}
+         * @member {Object} SuperMap.Feature.Vector.prototype.attributes
          * @description 描述要素的任意的可序列化属性。
          */
         this.attributes = {};
@@ -52,7 +52,7 @@ export class Vector extends Feature {
         }
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.bounds -{SuperMap.Bounds}
+         * @member {SuperMap.Bounds} SuperMap.Feature.Vector.prototype.bounds
          * @description The box bounding that feature's geometry, that
          *     property can be set by an <SuperMap.Format> object when
          *     deserializing the feature, so in most cases it represents an
@@ -61,19 +61,19 @@ export class Vector extends Feature {
         this.bounds = null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.state -{string}
+         * @member {string} SuperMap.Feature.Vector.prototype.state
          * @description state
          */
         this.state = null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.style -{Object}
+         * @member {Object} SuperMap.Feature.Vector.prototype.style
          * @description 要素的样式属性，地图查询返回的feature的style，8C变为null。
          */
         this.style = style ? style : null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.url -{string}
+         * @member {string} SuperMap.Feature.Vector.prototype.url 
          * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 <SuperMap.HTTP> 。
          */
         this.url = null;
@@ -277,7 +277,7 @@ export class Vector extends Feature {
     /**
      * @function SuperMap.Feature.Vector.prototype.toState
      * @description Sets the new state
-     * @param state - {string}
+     * @param {string} state - 状态
      */
     toState(state) {
         if (state === SuperMap.State.UPDATE) {

@@ -2,32 +2,24 @@ import {SuperMap} from '../../SuperMap';
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Polygon
  * @category Visualization Theme
- * 面参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 面参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 export class Polygon extends ShapeParameters {
-
+    
     /**
-     * Constructor: SuperMap.Feature.ShapeParameters.Polygon
-     * 创建一个图形面参数对象。
-     *
-     * Parameters:
-     * pointList - {Array} 面要素节点数组，二维数组，必设参数。
-     *
-     * Returns:
-     * {<SuperMap.Feature.ShapeParameters.Polygon>} 图形面参数对象。
+     * @function SuperMap.Feature.ShapeParameters.Polygon.prototype.constructor
+     * @description 创建一个图形面参数对象。
+     * @param {Array} pointList - 横坐标，必设参数。
+     * @returns {SuperMap.Feature.ShapeParameters.Polygon} 标签参数对象。
      */
     constructor(pointList) {
         super(pointList);
         /**
-         * APIProperty: pointList
-         * {Array} 面要素节点数组，二维数组。
-         *
+         * @member {Array} SuperMap.Feature.ShapeParameters.Polygon.prototype.pointList
+         * @description 面要素节点数组，二维数组。
          * 数组形如：
          * (start code)
          *  [
@@ -40,17 +32,17 @@ export class Polygon extends ShapeParameters {
         this.pointList = pointList;
 
         /**
-         * Property: holePolygonPointLists
-         * {Array} 岛洞面多边形顶点数组（三维数组）
+         * @member {Array} SuperMap.Feature.ShapeParameters.Polygon.prototype.holePolygonPointLists
+         * @description 岛洞面多边形顶点数组（三维数组）
          */
         this.holePolygonPointLists = null;
 
         this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Polygon";
     }
-
+    
     /**
-     * APIMethod: destroy
-     * 销毁对象。
+     * @function SuperMap.Feature.ShapeParameters.Polygon.prototype.destroy
+     * @description 销毁对象。
      */
     destroy() {
         this.pointList = null;

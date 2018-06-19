@@ -2,45 +2,38 @@ import {SuperMap} from '../../SuperMap';
 import {ShapeParameters} from './ShapeParameters';
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Label
  * @category Visualization Theme
- * 标签参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 标签参数对象。
+ * @extent {SuperMap.Feature.ShapeParameters}
  */
 export class Label extends ShapeParameters {
-
+    
     /**
-     * Constructor: SuperMap.Feature.ShapeParameters.Label
-     * 创建一个标签参数对象。
-     *
-     * Parameters:
-     * x - {Number} 横坐标，必设参数。
-     * y - {Number} 纵坐标，必设参数。
-     * text - {String} 图形中的附加文本，必设参数。
-     *
-     * Returns:
-     * {<SuperMap.Feature.ShapeParameters.Label>} 标签参数对象。
+     * @function SuperMap.Feature.ShapeParameters.Label.prototype.constructor
+     * @description 创建一个标签参数对象。
+     * @param {number} x - 横坐标，必设参数。
+     * @param {number} y - 纵坐标，必设参数。
+     * @param {string} text - 图形中的附加文本，必设参数。
+     * @returns {SuperMap.Feature.ShapeParameters.Label} 标签参数对象。
      */
     constructor(x, y, text) {
         super(x, y, text);
         /**
-         * APIProperty: x
-         * {Number} 标签 x 坐标。
+         * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.x
+         * @description 标签 x 坐标。
          */
         this.x = x;
-
+        
         /**
-         * APIProperty: y
-         * {Number} 标签 y 坐标。
+         * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.y
+         * @description 标签 y 坐标。
          */
         this.y = y;
 
         /**
-         * APIProperty: text
-         * {String} 标签的文本内容。
+         * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.text
+         * @description 标签的文本内容。
          */
         this.text = text;
 
@@ -49,8 +42,8 @@ export class Label extends ShapeParameters {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象。
+     * @function SuperMap.Feature.ShapeParameters.Label.prototype.destroy
+     * @description 销毁对象。
      */
     destroy() {
         this.x = null;

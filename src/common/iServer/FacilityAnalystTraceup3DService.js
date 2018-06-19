@@ -15,7 +15,7 @@ import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DPara
  */
 export class FacilityAnalystTraceup3DService extends CommonServiceBase {
 
-    /*
+    /**
      * @function SuperMap.FacilityAnalystTraceup3DService.constructor
      * @description 上游追踪资源服务类构造函数。
      * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>

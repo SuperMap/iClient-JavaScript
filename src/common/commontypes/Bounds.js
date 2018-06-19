@@ -29,31 +29,31 @@ export class Bounds {
             left = left[0];
         }
         /**
-         * @member SuperMap.Bounds.prototype.left - {number}
+         * @member {number} SuperMap.Bounds.prototype.left
          * @description 最小的水平坐标系。
          */
         this.left = left != null ? Util.toFloat(left) : this.left;
 
         /**
-         * @member SuperMap.Bounds.prototype.bottom - {number}
+         * @member {number} SuperMap.Bounds.prototype.bottom
          * @description 最小的垂直坐标系。
          */
         this.bottom = bottom != null ? Util.toFloat(bottom) : this.bottom;
 
         /**
-         * @member SuperMap.Bounds.prototype.right - {number}
+         * @member {number} SuperMap.Bounds.prototype.right
          * @description 最大的水平坐标系。
          */
         this.right = right != null ? Util.toFloat(right) : this.right;
 
         /**
-         * @member SuperMap.Bounds.prototype.top - {number}
+         * @member {number} SuperMap.Bounds.prototype.top
          * @description 最大的垂直坐标系。
          */
         this.top = top != null ? Util.toFloat(top) : this.top;
 
         /**
-         * @member SuperMap.Bounds.prototype.centerLonLat - {SuperMap.LonLat}
+         * @member {SuperMap.LonLat} SuperMap.Bounds.prototype.centerLonLat
          * @description bounds的地图空间的中心点。用 getCenterLonLat() 获得。
          */
         this.centerLonLat = null;
@@ -80,7 +80,7 @@ export class Bounds {
      * var bounds1 = new SuperMap.Bounds(-180,-90,180,90);
      * var bounds2 = new SuperMap.Bounds(-180,-90,180,90);
      * var isEquals = bounds1.equals(bounds2);
-     * @param bounds - {SuperMap.Bounds} 需要进行计较的 bounds。
+     * @param {SuperMap.Bounds} bounds - 需要进行计较的 bounds。
      * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回true,不一致或传入的 bounds 参数为NULL则返回false。
      */
     equals(bounds) {
@@ -456,7 +456,7 @@ export class Bounds {
      *      new SuperMap.Bounds(-170,-90,120,80)
      *  );
      * @param {SuperMap.Bounds} bounds - 目标边界。
-     * @param {Object} options - 可选参数。<br>
+     * @param {Object} options - 参数。<br>
      * @param {boolean} options.inclusive - 边缘重合也看成相交，默认为true。如果是false，
      *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
      *                               这种情况被认为没有相交。<br>
@@ -535,9 +535,9 @@ export class Bounds {
      *      new SuperMap.Bounds(-170,-90,100,80),true,true
      *  );
      * @param {SuperMap.Bounds} bounds - 目标边界。
-     * @param {boolean} partial - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。默认为false，
-     *                            如果设为false，整个目标边界全部被包含在当前边界范围内。
-     * @param {boolean} inclusive - 边缘共享被视为包含。默认为true。
+     * @param {boolean} [partial=false] - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。
+     *                             如果设为false，整个目标边界全部被包含在当前边界范围内。
+     * @param {boolean} [inclusive=true] - 边缘共享被视为包含。
      * @returns {boolean} 传入的边界被当前边界包含。
      */
     containsBounds(bounds, partial, inclusive) {
@@ -589,8 +589,8 @@ export class Bounds {
      * var newBounds = bounds.wrapDateLine(maxExtent);
      * @param {SuperMap.Bounds} maxExtent - 最大的边界范围（一般是全球范围）。
      * @param {Object} options - 可选选项参数。<br>
-     * @param {float} options.leftTolerance - left允许的误差。默认为0。<br>
-     * @param {float} options.rightTolerance - right允许的误差。默认为0。
+     * @param {float} [options.leftTolerance=0] - left允许的误差。<br>
+     * @param {float} [options.rightTolerance=0] - right允许的误差。
      * @returns {SuperMap.Bounds} 克隆当前边界。如果当前边界完全在最大范围之外此函数则返回一个不同值的边界，
      *                            若落在最大边界的左边，则给当前的bounds值加上最大范围的宽度，即向右移动，
      *                            若落在右边，则向左移动，即给当前的bounds值加上负的最大范围的宽度。
@@ -686,7 +686,7 @@ export class Bounds {
      * @description 通过边界框数组创建Bounds。
      * @example
      * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
-     * @param {Array.<float>} bbox - 边界值数组。 (e.g. <i>[5,42,10,45]</i>)
+     * @param {Array.<float>} bbox - 边界值数组。(e.g. <i>[5,42,10,45]</i>)
      * @param {boolean} reverseAxisOrder - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
      * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
      */

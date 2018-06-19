@@ -6,9 +6,8 @@ import {Curve} from './Curve';
  * @class SuperMap.Geometry.LineString
  * @classdesc 几何对象线串类。
  * @category BaseTypes Geometry
- * @param points - {Array<SuperMap.Geometry.Point>} 用来生成线串的点数组。
+ * @param {Array.<SuperMap.Geometry.Point>} points - 用来生成线串的点数组。
  * @extends {SuperMap.Geometry.Curve}
- *
  * @example
  * var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
  *     new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
@@ -27,8 +26,8 @@ export class LineString extends Curve {
     /**
      * @function SuperMap.Geometry.LineString.prototype.removeComponent
      * @description 只有在线串上有三个或更多的点的时候，才会允许移除点（否则结果将会是单一的点）。
-     * @param point - {SuperMap.Geometry.Point} 将被删除的点。
-     * @returns {Boolean} 删除的点。
+     * @param {SuperMap.Geometry.Point} point - 将被删除的点。
+     * @returns {boolean} 删除的点。
      */
     removeComponent(point) { // eslint-disable-line no-unused-vars
         var removed = this.components && (this.components.length > 2);
@@ -79,7 +78,7 @@ export class LineString extends Curve {
     /**
      * @function SuperMap.Geometry.LineString.prototype.getVertices
      * @description 返回几何图形的所有顶点的列表。
-     * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
+     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
      * 如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何图形的顶点列表。
      */
@@ -101,14 +100,13 @@ export class LineString extends Curve {
     /**
      * @function SuperMap.Geometry.LineString.calculateCircle
      * @description 三点画圆弧
-     * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-     * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的圆弧控制点。
+     * @param {Array.<SuperMap.Geometry.Point>} points - 传入的待计算的初始点串。
+     * @returns {Array.<SuperMap.Geometry.Point>} 计算出相应的圆弧控制点。
      * @example
      * var points = [];
      * points.push(new SuperMap.Geometry.Point(-50,30));
      * points.push(new SuperMap.Geometry.Point(-30,50));
      * points.push(new SuperMap.Geometry.Point(2,60));
-     *
      * var circle = SuperMap.Geometry.LineString.calculateCircle(points);
      */
     static calculateCircle(points) {
@@ -252,7 +250,7 @@ export class LineString extends Curve {
      * @function SuperMap.Geometry.LineString.createLineEPS
      * @description 根据点的类型画出不同类型的曲线
      * 点的类型有三种, LTypeArc, LTypeCurve, NONE
-     * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
+     * @param {Array.<SuperMap.Geometry.Point>} points - 传入的待计算的初始点串。
      * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
      * @example
      * var points = [];
@@ -260,7 +258,6 @@ export class LineString extends Curve {
      * points.push(new SuperMap.Geometry.Point(-30,50,"LTypeArc"));
      * points.push(new SuperMap.Geometry.Point(2,60));
      * points.push(new SuperMap.Geometry.Point(8,20));
-     *
      * var lineEPS = SuperMap.Geometry.LineString.createLineEPS(points);
      */
     static createLineEPS(points) {

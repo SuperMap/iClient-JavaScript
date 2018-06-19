@@ -7,8 +7,8 @@
  * @description In addition to the mandatory C and P parameters, an arbitrary number of
  * objects can be passed, which will extend C.
  * @memberOf SuperMap
- * @param C - {Object} the class that inherits
- * @param P - {Object} the superclass to inherit from
+ * @param {Object} C - the class that inherits
+ * @param {Object} P - the superclass to inherit from
  */
 SuperMap.inherit = function (C, P) {
     var F = function () {
@@ -29,7 +29,7 @@ SuperMap.inherit = function (C, P) {
 /**
  * @description 实现多重继承
  * @memberOf SuperMap
- * @param ...mixins {Class|Object}继承的类
+ * @param {Class|Object} ...mixins - 继承的类
  */
 SuperMap.mixin = function (...mixins) {
 
@@ -80,9 +80,9 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否以指定的子字符串开头.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串以指定的子字符串开头,则返回true;否则返回false.
+     * @param {string} str - 目标字符串.
+     * @param {string} sub - 查找的子字符串.
+     * @returns {boolean} 目标字符串以指定的子字符串开头，则返回true；否则返回false。
      */
     startsWith: function (str, sub) {
         return (str.indexOf(sub) == 0);
@@ -90,9 +90,9 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否包含指定的子字符串.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串中包含指定的子字符串,则返回true;否则返回false.
+     * @param {string} str - 目标字符串.
+     * @param {string} sub - 查找的子字符串.
+     * @returns {boolean} 目标字符串中包含指定的子字符串,则返回true；否则返回false.
      */
     contains: function (str, sub) {
         return (str.indexOf(sub) != -1);
@@ -100,7 +100,7 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description 删除一个字符串的开头和结尾处的所有空白字符.
-     * @param str - {string} (可能)存在空白字符填塞的字符串.
+     * @param {string} str - (可能)存在空白字符填塞的字符串.
      * @returns {string} 删除开头和结尾处空白字符后的字符串.
      */
     trim: function (str) {
@@ -111,7 +111,7 @@ export var StringExt = SuperMap.String = {
      * @description 骆驼式("-")连字符的字符串处理.
      * 例如: "chicken-head" becomes "chickenHead",
      *       "-chicken-head" becomes "ChickenHead".
-     * @param str - {string} 要处理的字符串,原始内容不应被修改.
+     * @param {string} str - 要处理的字符串,原始内容不应被修改.
      * @returns {string}
      */
     camelize: function (str) {
@@ -155,9 +155,9 @@ export var StringExt = SuperMap.String = {
      *         args = null;
      *       返回值:"${a.b}"
      * (end)
-     * @param template - {string} 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
-     * @param context - {Object} 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
-     * @param args - {Array} 可选参数传递给在context对象上找到的函数.
+     * @param {string} template - 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
+     * @param {Object} context - 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
+     * @param {Array} args - 可选参数传递给在context对象上找到的函数.
      * @returns {string} 从 context 对象属性中替换字符串标记位的字符串.
      */
     format: function (template, context, args) {
@@ -225,7 +225,7 @@ export var StringExt = SuperMap.String = {
      * SuperMap.String.isNumeric("4") // true
      * SuperMap.String.isNumeric(" 4 ") // false
      * (end)
-     * @returns {Boolean} 字符串包含唯一的数值,返回true;否则返回false.
+     * @returns {boolean} 字符串包含唯一的数值,返回true;否则返回false.
      */
     isNumeric: function (value) {
         return SuperMap.String.numberRegEx.test(value);
@@ -233,8 +233,7 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description 把一个看似数值型的字符串转化为一个数值.
-     *
-     * @returns {number|string} 如果能转换为数值则返回数值,否则返回字符串本身.
+     * @returns {(number|string)} 如果能转换为数值则返回数值,否则返回字符串本身.
      */
     numericIf: function (value) {
         return SuperMap.String.isNumeric(value) ? parseFloat(value) : value;
@@ -266,8 +265,8 @@ export var NumberExt = SuperMap.Number = {
 
     /**
      * @description 限制浮点数的有效数字位数.
-     * @param num - {number}
-     * @param sig - {integer}
+     * @param {number} num - 浮点数
+     * @param {integer} sig - 有效位数
      * @returns {number} 将数字四舍五入到指定数量的有效位数.
      */
     limitSigDigs: function (num, sig) {
@@ -280,10 +279,10 @@ export var NumberExt = SuperMap.Number = {
 
     /**
      * @description 数字格式化输出.
-     * @param num  - {number}
-     * @param dec  - {integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
-     * @param tsep - {string} 千位分隔符. 默认为",".
-     * @param dsep - {string} 小数点分隔符. 默认为".".
+     * @param {number} num - 数字
+     * @param {integer} dec  - 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
+     * @param {string} tsep - 千位分隔符. 默认为",".
+     * @param {string} dsep - 小数点分隔符. 默认为".".
      * @returns {string} 数字格式化后的字符串.
      */
     format: function (num, dec, tsep, dsep) {
@@ -329,7 +328,7 @@ if (!Number.prototype.limitSigDigs) {
     /**
      * APIMethod: Number.limitSigDigs
      * 限制浮点数的有效数字位数.
-     * @param sig - {integer}
+     * @param {integer} sig -有效位数
      * @returns {integer} 将数字四舍五入到指定数量的有效位数.
      *           如果传入值为 null、0、或者是负数, 返回值 0
      */
@@ -347,8 +346,8 @@ if (!Number.prototype.limitSigDigs) {
 export var FunctionExt = SuperMap.Function = {
     /**
      * @description 绑定函数到对象.方便创建this的作用域.
-     * @param func - {function} 输入函数.
-     * @param object - {Object} 对象绑定到输入函数(作为输入函数的this对象).
+     * @param {function} func - 输入函数.
+     * @param {Object} object - 对象绑定到输入函数(作为输入函数的this对象).
      * @returns {function} object参数作为func函数的this对象.
      */
     bind: function (func, object) {
@@ -366,8 +365,8 @@ export var FunctionExt = SuperMap.Function = {
 
     /**
      * @description 绑定函数到对象,在调用该函数时配置并使用事件对象作为第一个参数.
-     * @param func - {function} 用于监听事件的函数.
-     * @param object - {Object} this 对象的引用.
+     * @param {function} func - 用于监听事件的函数.
+     * @param {Object} object - this 对象的引用.
      * @returns {function}
      */
     bindAsEventListener: function (func, object) {
@@ -380,7 +379,7 @@ export var FunctionExt = SuperMap.Function = {
      * @description 该函数仅仅返回false.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
      * @example
      * document.onclick = SuperMap.Function.False;
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     False: function () {
         return false;
@@ -390,7 +389,7 @@ export var FunctionExt = SuperMap.Function = {
      * @description 该函数仅仅返回true.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
      * @example
      * document.onclick = SuperMap.Function.True;
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     True: function () {
         return true;
@@ -416,12 +415,12 @@ export var ArrayExt = SuperMap.Array = {
     /**
      * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
      * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
-     * @param array - {Array} 要过滤的数组..
-     * @param callback - {function} 数组中的每一个元素调用该函数.<br>
+     * @param {Array} array - 要过滤的数组.
+     * @param {function} callback - 数组中的每一个元素调用该函数.<br>
      *     如果函数的返回值为true,该元素将包含在返回的数组中.该函数有三个参数: 数组中的元素,元素的索引,数组自身.<br>
      *     如果设置了可选参数caller,在调用callback时,使用可选参数caller设置为callback的参数.<br>
-     * @param caller - {Object} 在调用callback时,使用可选参数caller设置为callback的参数.
-     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素.
+     * @param {Object} caller - 在调用callback时，使用可选参数caller设置为callback的参数。
+     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素。
      */
     filter: function (array, callback, caller) {
         var selected = [];

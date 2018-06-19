@@ -1,10 +1,9 @@
 import {Util} from './Util';
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Color
  * @category Visualization Theme
- * LevelRenderer 工具-颜色辅助类
+ * @classdesc LevelRenderer 工具-颜色辅助类
  *
  */
 export class Color {
@@ -13,27 +12,20 @@ export class Color {
 
     constructor() {
         /**
-         * Property: util
-         * {<SuperMap.LevelRenderer.Tool.Util>} LevelRenderer 基础工具对象
+         * @member {SuperMap.LevelRenderer.Tool.Util} SuperMap.LevelRenderer.Tool.Color.prototype.util
+         * @description LevelRenderer 基础工具对象。
          */
         this.util = new Util();
-
+        
         /**
-         * Property: _ctx
-         * {Object} _ctx
+         * @member {Object} SuperMap.LevelRenderer.Tool.Color.prototype._ctx
+         * @description _ctx。
          */
         this._ctx = null;
 
         /**
-         * Property: palette
-         * {Array} 默认色板
-         * 色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
-         *
-         * [
-         * '#ff9277', '#dddd00', '#ffc877', '#bbe3ff', '#d5ffbb', '#bbbbff', '#ddb000', '#b0dd00', '#e2bbff', '#ffbbe3',
-         * '#ff7777', '#ff9900', '#83dd00', '#77e3ff', '#778fff', '#c877ff', '#ff77ab', '#ff6600', '#aa8800', '#77c7ff',  '
-         * #ad77ff', '#ff77ff', '#dd0083', '#777700', '#00aa00', '#0088aa', '#8400dd', '#aa0088', '#dd0000', '#772e00'
-         * ];
+         * @member {Array} SuperMap.LevelRenderer.Tool.Color.prototype.palette
+         * @description 默认色板。色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
          */
         this.palette = [
             '#ff9277', ' #dddd00', ' #ffc877', ' #bbe3ff', ' #d5ffbb',
@@ -43,34 +35,34 @@ export class Color {
             '#ad77ff', ' #ff77ff', ' #dd0083', ' #777700', ' #00aa00',
             '#0088aa', ' #8400dd', ' #aa0088', ' #dd0000', ' #772e00'
         ];
-
+        
         /**
-         * Property: _palette
-         * {Array} 复位色板，用于复位  palette
+         * @member {Array} SuperMap.LevelRenderer.Tool.Color.prototype._palette
+         * @description 复位色板，用于复位  palette
          */
         this._palette = this.palette;
-
+        
         /**
-         * Property: highlightColor
-         * {String} 高亮色
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype.highlightColor
+         * @description 高亮色
          */
         this.highlightColor = 'rgba(0,0,255,1)';
 
         /**
-         * Property: _highlightColor
-         * {String} 复位高亮色
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype._highlightColor
+         * @description 复位高亮色
          */
         this._highlightColor = this.highlightColor;
 
         /**
-         * Property: colorRegExp
-         * {String} 颜色格式，正则表达式。
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype.colorRegExp
+         * @description 颜色格式，正则表达式。
          */
         this.colorRegExp = /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i;
-
+        
         /**
-         * Property: _nameColors
-         * {String} 颜色名。
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype._nameColors
+         * @description 颜色名。
          */
         this._nameColors = {
             aliceblue: '#f0f8ff',
@@ -226,35 +218,28 @@ export class Color {
     }
 
     /**
-     * APIMethod: customPalette
-     * 自定义调色板。
-     *
-     * Parameters:
-     * userPalete - {Array} 颜色板。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.customPalette
+     * @description 自定义调色板。
+     * @param {Array} userPalete - 颜色板。
      */
     customPalette(userPalete) {
         this.palette = userPalete;
     }
 
     /**
-     * APIMethod: resetPalette
-     * 复位默认色板。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.resetPalette
+     * @description 复位默认色板。
      */
     resetPalette() {
         this.palette = this._palette;
     }
 
     /**
-     * APIMethod: getColor
-     * 获取色板颜色。
-     *
-     * Parameters:
-     * idx - {Number} 色板位置。
-     * userPalete - {Array} 色板。
-     *
-     * Returns:
-     * {String} 颜色值。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getColor
+     * @description 获取色板颜色。
+     * @param {number} idx - 色板位置。
+     * @param {Array} userPalete - 色板。
+     * @returns {string} 颜色值。
      */
     getColor(idx, userPalete) {
         idx = idx | 0;
@@ -263,51 +248,42 @@ export class Color {
     }
 
     /**
-     * APIMethod: customHighlight
-     * 自定义默认高亮颜色。
-     *
-     * Parameters:
-     * userHighlightColor - {String} 自定义高亮色。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.customHighlight
+     * @description 自定义默认高亮颜色。
+     * @param {string} userHighlightColor - 自定义高亮色。
      */
     customHighlight(userHighlightColor) {
         this.highlightColor = userHighlightColor;
     }
 
     /**
-     * APIMethod: resetHighlight
-     * 重置默认高亮颜色。将当前的高亮色作为默认高亮颜色
-     *
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.resetHighlight
+     * @description 重置默认高亮颜色。将当前的高亮色作为默认高亮颜色
      */
     resetHighlight() {
         this.highlightColor = this._highlightColor;
     }
 
     /**
-     * APIMethod: getHighlightColor
-     * 获取默认高亮颜色
-     *
-     * Returns:
-     * {String} 颜色值。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getHighlightColor
+     * @description 获取默认高亮颜色
+     * @returns {string} 颜色值。
      */
     getHighlightColor() {
         return this.highlightColor;
     }
-
+    
     /**
-     * APIMethod: getRadialGradient
-     * 径向渐变。
-     *
-     * Parameters:
-     * x0 - {Number} 渐变起点。
-     * y0 - {Number}
-     * r0 - {Number}
-     * x1 - {Number} 渐变终点。
-     * y1 - {Number}
-     * r1 - {Number}
-     * colorList - {Array} 颜色列表。
-     *
-     * Returns:
-     * {CanvasGradient} Cavans 渐变颜色。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getRadialGradient
+     * @description 径向渐变。
+     * @param {number} x0 - 渐变起点横坐标。
+     * @param {number} y0 - 渐变起点纵坐标。
+     * @param {number} r0 - 半径
+     * @param {number} x1 - 渐变终点横坐标。
+     * @param {number} y1 - 渐变终点纵坐标。
+     * @param {number} r1 - 半径
+     * @param {Array} colorList - 颜色列表。
+     * @returns {CanvasGradient} Cavans 渐变颜色。
      */
     getRadialGradient(x0, y0, r0, x1, y1, r1, colorList) {
         var util = this.util;
@@ -324,20 +300,16 @@ export class Color {
         return gradient;
     }
 
-
+    
     /**
-     * APIMethod: getLinearGradient
-     * 线性渐变。
-     *
-     * Parameters:
-     * x0 - {Number} 渐变起点。
-     * y0 - {Number}
-     * x1 - {Number} 渐变终点。
-     * y1 - {Number}
-     * colorList - {Array} 颜色列表。
-     *
-     * Returns:
-     * {CanvasGradient} Cavans 渐变颜色。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getLinearGradient
+     * @description 线性渐变。
+     * @param {number} x0 - 渐变起点横坐标。
+     * @param {number} y0 - 渐变起点纵坐标。
+     * @param {number} x1 - 渐变终点横坐标。
+     * @param {number} y1 - 渐变终点纵坐标。
+     * @param {Array} colorList - 颜色列表。
+     * @returns {CanvasGradient} Cavans 渐变颜色。
      */
     getLinearGradient(x0, y0, x1, y1, colorList) {
         var util = this.util;
@@ -354,17 +326,12 @@ export class Color {
     }
 
     /**
-     * APIMethod: getStepColors
-     * 获取两种颜色之间渐变颜色数组。
-     *
-     * Parameters:
-     * start - {color} 起始颜色。
-     * end - {color} 结束颜色。
-     * step - {Number} 渐变级数。
-     * colorList - {Array} 颜色列表。
-     *
-     * Returns:
-     * {Array} 颜色数组。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getStepColors
+     * @description 获取两种颜色之间渐变颜色数组。
+     * @param {Object} start - 起始颜色对象。
+     * @param {Object} end - 结束颜色对象。
+     * @param {number} step - 渐变级数。
+     * @returns {Array} 颜色数组。
      */
     getStepColors(start, end, step) {
         start = this.toRGBA(start);
@@ -400,15 +367,11 @@ export class Color {
     }
 
     /**
-     * APIMethod: getGradientColors
-     * 获取指定级数的渐变颜色数组。
-     *
-     * Parameters:
-     * colors - {Array{String}} 颜色组。
-     * step - {Number}  渐变级数，默认值 20。
-     *
-     * Returns:
-     * {Array{String}} 颜色数组。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getGradientColors
+     * @description 获取指定级数的渐变颜色数组。
+     * @param {Array.<string>} colors - 颜色数组。
+     * @param {number} [step=20] - 渐变级数。
+     * @returns {Array<string>} 颜色数组。
      */
     getGradientColors(colors, step) {
         var ret = [];
@@ -429,17 +392,13 @@ export class Color {
         }
         return ret;
     }
-
+    
     /**
-     * APIMethod: toColor
-     *  颜色值数组转为指定格式颜色。
-     *
-     * Parameters:
-     * data - {Array} 颜色值数组。
-     * format - {String}  格式，默认rgb
-     *
-     * Returns:
-     * {String} 颜色。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toColor
+     * @description 颜色值数组转为指定格式颜色。
+     * @param {Array} data - 颜色值数组。
+     * @param {string} format - 格式，默认'rgb'
+     * @returns {string} 颜色。
      */
     toColor(data, format) {
         format = format || 'rgb';
@@ -475,14 +434,10 @@ export class Color {
     }
 
     /**
-     * APIMethod: toArray
-     *  颜色字符串转换为rgba数组。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {Array{Number}} 颜色值数组。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toArray
+     * @description 颜色字符串转换为rgba数组。
+     * @param {string} color - 颜色。
+     * @returns {Array.<number>} 颜色值数组。
      */
     toArray(color) {
         color = this.trim(color);
@@ -505,15 +460,11 @@ export class Color {
     }
 
     /**
-     * APIMethod: convert
-     *  颜色格式转化。
-     *
-     * Parameters:
-     * color - {String} 颜色值数组。
-     * format - {String} 格式，默认rgb
-     *
-     * Returns:
-     * {String} 颜色。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.convert
+     * @description 颜色格式转化。
+     * @param {Array} data - 颜色值数组。
+     * @param {string} format - 格式，默认'rgb'
+     * @returns {string} 颜色。
      */
     convert(color, format) {
         if (!this.isCalculableColor(color)) {
@@ -543,140 +494,100 @@ export class Color {
     }
 
     /**
-     * APIMethod: toRGBA
-     *  转换为rgba格式的颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} rgba颜色，rgba(r,g,b,a)。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toRGBA
+     * @description 转换为rgba格式的颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} 颜色。
      */
     toRGBA(color) {
         return this.convert(color, 'rgba');
     }
 
     /**
-     * APIMethod: toRGB
-     *  转换为rgb数字格式的颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} rgb颜色，rgb(0,0,0)格式
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toRGB
+     * @description 转换为rgb数字格式的颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} 颜色。
      */
     toRGB(color) {
         return this.convert(color, 'rgb');
     }
 
     /**
-     * APIMethod: toHex
-     *  转换为16进制颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} 16进制颜色，#rrggbb格式
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHex
+     * @description 转换为16进制颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} 16进制颜色，#rrggbb格式
      */
     toHex(color) {
         return this.convert(color, 'hex');
     }
 
     /**
-     * APIMethod: toHSVA
-     *  转换为HSV颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} HSVA颜色，hsva(h,s,v,a)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSVA
+     * @description 转换为HSV颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} HSVA颜色，hsva(h,s,v,a)
      */
     toHSVA(color) {
         return this.convert(color, 'hsva');
     }
-
+    
     /**
-     * APIMethod: toHSV
-     *  转换为HSV颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} HSV颜色，hsv(h,s,v)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSV
+     * @description 转换为HSV颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} HSV颜色，hsv(h,s,v)
      */
     toHSV(color) {
         return this.convert(color, 'hsv');
     }
 
     /**
-     * APIMethod: toHSBA
-     *  转换为HSBA颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} HSBA颜色，hsba(h,s,b,a)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSBA
+     * @description 转换为HSBA颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} HSBA颜色，hsba(h,s,b,a)
      */
     toHSBA(color) {
         return this.convert(color, 'hsba');
     }
 
     /**
-     * APIMethod: toHSB
-     *  转换为HSB颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} HSB颜色，hsb(h,s,b)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSB
+     * @description 转换为HSB颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} HSB颜色，hsb(h,s,b)
      */
     toHSB(color) {
         return this.convert(color, 'hsb');
     }
 
     /**
-     * APIMethod: toHSLA
-     *  转换为HSLA颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} HSLA颜色，hsla(h,s,l,a)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSLA
+     * @description 转换为HSLA颜色。
+     * @param {string} color - 颜色。
+     * @returns {string} HSLA颜色，hsla(h,s,l,a)
      */
     toHSLA(color) {
         return this.convert(color, 'hsla');
     }
 
     /**
-     * APIMethod: toHSL
-     *  转换为HSL颜色。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} HSL颜色，hsl(h,s,l)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSL
+     * @description 转换为HSL颜色。
+     * @param {string} color - 颜色。
+     * @returns {string}  HSL颜色，hsl(h,s,l)
      */
     toHSL(color) {
         return this.convert(color, 'hsl');
     }
-
+    
     /**
-     * APIMethod: toName
-     * 转换颜色名。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} 颜色名
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.toName
+     * @description 转换颜色名。
+     * @param {string} color - 颜色。
+     * @returns {string} 颜色名
      */
     toName(color) {
         for (var key in this._nameColors) {
@@ -686,30 +597,22 @@ export class Color {
         }
         return null;
     }
-
+    
     /**
-     * APIMethod: trim
-     * 移除颜色中多余空格。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} 无空格颜色
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.trim
+     * @description 移除颜色中多余空格。
+     * @param {string} color - 颜色。
+     * @returns {string} 无空格颜色
      */
     trim(color) {
         return String(color).replace(/\s+/g, '');
     }
 
     /**
-     * APIMethod: normalize
-     * 颜色规范化。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} 规范化后的颜色
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.normalize
+     * @description 颜色规范化。
+     * @param {string} color - 颜色。
+     * @returns {string} 规范化后的颜色
      */
     normalize(color) {
         // 颜色名
@@ -735,15 +638,11 @@ export class Color {
     }
 
     /**
-     * APIMethod: lift
-     * 颜色加深或减淡，当level>0加深，当level<0减淡。
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     * level - {Number} 升降程度,取值区间[-1,1]。
-     *
-     * Returns:
-     * {String} 加深或减淡后颜色值
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.lift
+     * @description 颜色加深或减淡，当level>0加深，当level<0减淡。
+     * @param {string} color - 颜色。
+     * @param {number} level - 升降程度，取值区间[-1,1]。
+     * @returns {string} 加深或减淡后颜色值
      */
     lift(color, level) {
         if (!this.isCalculableColor(color)) {
@@ -765,16 +664,12 @@ export class Color {
         }
         return 'rgb(' + data.join(',') + ')';
     }
-
+    
     /**
-     * APIMethod: reverse
-     * 颜色翻转,[255-r,255-g,255-b,1-a]
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {String} 翻转颜色
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.reverse
+     * @description 颜色翻转。[255-r,255-g,255-b,1-a]
+     * @param {string} color - 颜色。
+     * @returns {string} 翻转颜色
      */
     reverse(color) {
         if (!this.isCalculableColor(color)) {
@@ -788,18 +683,14 @@ export class Color {
         );
         return this.toColor(data, 'rgb');
     }
-
+    
     /**
-     * APIMethod: mix
-     * 简单两种颜色混合
-     *
-     * Parameters:
-     * color1 - {String} 第一种颜色。
-     * color2 - {String} 第二种颜色。
-     * weight - {Number} 混合权重[0-1]。
-     *
-     * Returns:
-     * {String} 结果色,rgb(r,g,b)或rgba(r,g,b,a)
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.mix
+     * @description 简单两种颜色混合
+     * @param {string} color1 - 第一种颜色。
+     * @param {string} color2 - 第二种颜色。
+     * @param {number} weight - 混合权重[0-1]。
+     * @returns {string} 结果色。rgb(r,g,b)或rgba(r,g,b,a)
      */
     mix(color1, color2, weight) {
         if (!this.isCalculableColor(color1) || !this.isCalculableColor(color2)) {
@@ -837,55 +728,34 @@ export class Color {
     }
 
     /**
-     * APIMethod: random
-     * 随机颜色
-     *
-     * Returns:
-     * {String} 颜色值，#rrggbb格式
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.random
+     * @description 随机颜色
+     * @returns {string}  颜色值，#rrggbb格式
      */
     random() {
         return '#' + Math.random().toString(16).slice(2, 8);
     }
-
+    
     /**
-     * APIMethod: getData
-     * 获取颜色值数组,返回值范围:
-     *
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.getData
+     * @description 获取颜色值数组，返回值范围。
      * RGB 范围[0-255]
-     *
      * HSL/HSV/HSB 范围[0-1]
-     *
      * A透明度范围[0-1]
-     *
      * 支持格式：
-     *
      * #rgb
-     *
      * #rrggbb
-     *
      * rgb(r,g,b)
-     *
      * rgb(r%,g%,b%)
-     *
      * rgba(r,g,b,a)
-     *
      * hsb(h,s,b) // hsv与hsb等价
-     *
      * hsb(h%,s%,b%)
-     *
      * hsba(h,s,b,a)
-     *
      * hsl(h,s,l)
-     *
      * hsl(h%,s%,l%)
-     *
      * hsla(h,s,l,a)
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {Array{Number}} 颜色值数组或null
+     * @param {string} color - 颜色。
+     * @returns {Array.<number>} 颜色值数组或null
      */
     getData(color) {
         color = this.normalize(color);
@@ -947,15 +817,11 @@ export class Color {
     }
 
     /**
-     * APIMethod: alpha
-     * 设置颜色透明度
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     * a - {Number} 透明度,区间[0,1]。
-     *
-     * Returns:
-     * {String} rgba颜色值
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.alpha
+     * @description 设置颜色透明度
+     * @param {string} color - 颜色。
+     * @param {number} a - 透明度,区间[0,1]。
+     * @returns {string} rgba颜色值
      */
     alpha(color, a) {
         if (!this.isCalculableColor(color)) {
@@ -971,15 +837,11 @@ export class Color {
     }
 
     /**
-     * APIMethod: map
-     * 数组映射
-     *
-     * Parameters:
-     * array - {String} 数组。
-     * fun - {Number} 函数。
-     *
-     * Returns:
-     * {String} 数组映射结果
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.map
+     * @description 数组映射
+     * @param {Array} array - 数组。
+     * @param {function} fun - 函数。
+     * @returns {string} 数组映射结果
      */
     map(array, fun) {
         if (typeof fun !== 'function') {
@@ -993,15 +855,11 @@ export class Color {
     }
 
     /**
-     * APIMethod: adjust
-     * 调整值区间
-     *
-     * Parameters:
-     * value - {Number} 数组。
-     * region - {Array(Number)} 区间。
-     *
-     * Returns:
-     * {Number} 调整后的值
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.adjust
+     * @description 调整值区间
+     * @param {Array.<number>} value - 数组。
+     * @param {Array.<number>} region - 区间。
+     * @returns {number} 调整后的值
      */
     adjust(value, region) {
         // < to <= & > to >=
@@ -1015,22 +873,17 @@ export class Color {
     }
 
     /**
-     * APIMethod: isCalculableColor
-     * 判断是否是可计算的颜色
-     *
-     * Parameters:
-     * color - {String} 颜色。
-     *
-     * Returns:
-     * {Boolean} 是否是可计算的颜色
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.isCalculableColor
+     * @description 判断是否是可计算的颜色
+     * @param {string} color - 颜色。
+     * @returns {boolean} 是否是可计算的颜色
      */
     isCalculableColor(color) {
         return color instanceof Array || typeof color === 'string';
     }
 
     /**
-     * APIMethod: _HSV_2_RGB
-     * 参见 http:// www.easyrgb.com/index.php?X=MATH
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype._HSV_2_RGB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
      */
     _HSV_2_RGB(data) {
         var H = data[0];
@@ -1092,8 +945,7 @@ export class Color {
     }
 
     /**
-     * APIMethod: _HSL_2_RGB
-     * 参见 http:// www.easyrgb.com/index.php?X=MATH
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype._HSL_2_RGB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
      */
     _HSL_2_RGB(data) {
         var H = data[0];
@@ -1125,8 +977,7 @@ export class Color {
     }
 
     /**
-     * APIMethod: _HUE_2_RGB
-     * 参见 http:// www.easyrgb.com/index.php?X=MATH
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype._HUE_2_RGB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
      */
     _HUE_2_RGB(v1, v2, vH) {
         if (vH < 0) {
@@ -1148,8 +999,7 @@ export class Color {
     }
 
     /**
-     * APIMethod: _RGB_2_HSB
-     * 参见 http:// www.easyrgb.com/index.php?X=MATH
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype._RGB_2_HSB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
      */
     _RGB_2_HSB(data) {
         // RGB from 0 to 255
@@ -1197,8 +1047,7 @@ export class Color {
     }
 
     /**
-     * APIMethod: _RGB_2_HSL
-     * 参见 http:// www.easyrgb.com/index.php?X=MATH
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype._RGB_2_HSL。参见{@link http://www.easyrgb.com/index.php?X=MATH}
      */
     _RGB_2_HSL(data) {
 
