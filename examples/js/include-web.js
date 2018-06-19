@@ -130,7 +130,7 @@
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.colorpicker.js");
         }
         if (inArray(includes, 'fileupLoad')) {
-            //inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/fileupLoad.js");
         }
         if (inArray(includes, 'sticklr')) {
@@ -140,16 +140,6 @@
         if (inArray(includes, 'responsive')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
         }
-        if (inArray(includes, 'easyui')) {
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
-        }
-        if (inArray(includes, 'jquery-colorpicker')) {
-            // inputScript("http://iclient.supermap.io/libs/colorpicker/js/colorpicker.js");
-            // inputCSS("http://iclient.supermap.io/libs/colorpicker/css/colorpicker.css");
-            inputScript("../../../iclient9-web/libs/colorpicker/js/colorpicker.js");
-            inputCSS("../../../iclient9-web/libs/colorpicker/css/colorpicker.css");
-        }
         if (inArray(includes, 'lazyload')) {
             inputScript("https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js");
         }
@@ -157,6 +147,15 @@
             inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
+		if (inArray(includes, 'plottingPanel')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/jquery.ztree.core.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/css/zTreeStyle.css");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css");
+        }
+
     }
 
     function datGuiI18N() {

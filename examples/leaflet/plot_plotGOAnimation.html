@@ -120,8 +120,9 @@
     editControl.addTo(map);
     L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
     L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
-
-    goAnimationManager = L.supermap.plotting.getControl(map, serverUrl).getGOAnimationManager();
+	var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    var goAnimationManager = plotting.getGOAnimationManager();
+	
     window.setInterval("execute()",100);
 
     //播放动画
