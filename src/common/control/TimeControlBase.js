@@ -5,12 +5,12 @@ import {Events} from '../commontypes/Events';
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
  * @category  Control
- * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
- *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {number}的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {boolean} 是否重复循环。默认为true。<br>
- *        reverse - {boolean} 是否反向。默认为false。<br>
+ * @param {Object} options - 该类开放的可选属性。
+ * @param {number} [options.speed=1] - 速度。不能小于0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。
+ * @param {number} options.startTime - 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。
+ * @param {number} options.endTime - 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
+ * @param {boolean} [options.repeat=true] - 是否重复循环。
+ * @param {boolean} [options.reverse=false] - 是否反向。
  */
 export class TimeControlBase {
 
@@ -22,57 +22,57 @@ export class TimeControlBase {
 
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.speed -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.speed
          * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
          */
         this.speed = (options.speed && options.speed >= 0) ? options.speed : 1;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.frequency -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.frequency
          * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
          */
         this.frequency = (options.speed && options.frequency >= 0) ? options.frequency : 1000;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.startTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.startTime
          * @description 记录的起始时间，必须为数字，
          *              如果不设置，初始化时为0，建议设置
          */
         this.startTime = (options.startTime && options.startTime != null) ? options.startTime : 0;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.endTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.endTime
          * @description 记录的结束时间，必须为数字，
          *              如果不设置，初始化时以当前时间进行设置，建议设置
          */
         this.endTime = (options.endTime && options.endTime != null && options.endTime >= me.startTime) ? options.endTime : +new Date();
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
+         * @member {boolean} SuperMap.TimeControlBase.prototype.repeat
          * @description 是否重复循环，默认为true。
          */
         this.repeat = (options.repeat !== undefined) ? options.repeat : true;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
+         * @member {boolean} SuperMap.TimeControlBase.prototype.reverse
          * @description 是否反向，默认为false。
          */
         this.reverse = (options.reverse !== undefined) ? options.reverse : false;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.currentTime
          * @description 记录近期的时间，也就是当前帧运行到的时间。
          */
         this.currentTime = null;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.oldTime
          * @description 记录上一帧的时间，也就是之前运行到的时间。
          */
         this.oldTime = null;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.running -{boolean}
+         * @member {boolean} SuperMap.TimeControlBase.prototype.running
          * @description 记录当前是否处于运行中，默认为false。
          */
         this.running = false;
@@ -80,7 +80,7 @@ export class TimeControlBase {
 
         /**
          * @private
-         * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
+         * @member {Array.<string>} SuperMap.TimeControlBase.prototype.EVENT_TYPES
          * @description 此类支持的事件类型。
          *
          */
@@ -88,7 +88,7 @@ export class TimeControlBase {
 
         /**
          * @private
-         * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
+         * @member {SuperMap.Events} SuperMap.TimeControlBase.prototype.events
          * @description 事件
          */
         me.events = new Events(this, null, this.EVENT_TYPES);
@@ -110,7 +110,7 @@ export class TimeControlBase {
 
     /**
      * @function SuperMap.TimeControlBase.prototype.updateOptions
-     * @param options - {Object} 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
+     * @param {Object} options - 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
      */
     updateOptions(options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
@@ -206,7 +206,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setSpeed
      * @description 设置步长。
-     * @param speed - {number}步长，必须为非负数，默认为1
+     * @param {number} speed - 步长，必须为非负数，默认为1
      * @return {boolean} true代表设置成功，false设置失败（speed小于0时失败）
      */
     setSpeed(speed) {
@@ -232,7 +232,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setFrequency
      * @description 设置刷新频率。
-     * @param frequency - {number}刷新频率，单位为ms，默认为1s
+     * @param {number} [frequency=1000] - 刷新频率，单位为ms。
      * @return {boolean} true代表设置成功，false设置失败（frequency小于0时失败）
      */
     setFrequency(frequency) {
@@ -258,7 +258,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setStartTime
      * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
-     * @param startTime - {number}需要设置的起始时间
+     * @param {number} startTime - 需要设置的起始时间
      * @return {boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
      */
     setStartTime(startTime) {
@@ -291,7 +291,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setEndTime
      * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
-     * @param endTime - {number}需要设置的结束时间
+     * @param {number} endTime - 需要设置的结束时间
      * @return {boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
      */
     setEndTime(endTime) {
@@ -324,7 +324,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setCurrentTime
      * @description 设置当前时间
-     * @param currentTime - {number}需要设置的当前时间
+     * @param {number} currentTime - 需要设置的当前时间
      * @return {boolean} true代表设置成功，false设置失败
      */
     setCurrentTime(currentTime) {
@@ -354,7 +354,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setRepeat
      * @description 设置是否重复循环
-     * @param repeat - {boolean} 是否重复循环
+     * @param {boolean} repeat - 是否重复循环
      */
     setRepeat(repeat) {
         this.repeat = repeat;
@@ -374,7 +374,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setReverse
      * @description 设置是否反向
-     * @param reverse - {boolean} 是否反向
+     * @param {boolean} reverse - 是否反向
      */
     setReverse(reverse) {
         this.reverse = reverse;

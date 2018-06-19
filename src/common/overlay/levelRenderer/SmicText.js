@@ -5,10 +5,7 @@ import {SUtil} from './SUtil';
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicText
  * @category Visualization Theme
- * 文本。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @extends {SuperMap.LevelRenderer.Shape}
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicText({
@@ -25,43 +22,41 @@ import {SUtil} from './SUtil';
 export class SmicText extends Shape {
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicText.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 横坐标，必设参数。
-     * y - {Number} 纵坐标，必设参数。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * maxWidth - {Number} 最大宽度限制。默认值：null。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
+     * @param {number} style.x - 横坐标，必设参数。
+     * @param {number} style.y - 纵坐标，必设参数。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {number} style.maxWidth - 最大宽度限制。默认值：null。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {string} style.brushType -画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicText
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     constructor(options) {
         super(options);
         /**
-         * APIProperty: type
-         * {String} 图形类型.
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicText.prototype.type
+         * @description 图形类型.
          */
         this.type = 'smictext';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
@@ -72,8 +67,8 @@ export class SmicText extends Shape {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this.type = null;
@@ -83,12 +78,11 @@ export class SmicText extends Shape {
 
 
     /**
-     * APIMethod: brush
-     * 笔触。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.brush
+     * @description 笔触。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * isHighlight - {Boolean} 是否使用高亮属性。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {boolean} isHighlight - 是否使用高亮属性。
      *
      */
     brush(ctx, isHighlight) {
@@ -312,8 +306,8 @@ export class SmicText extends Shape {
 
 
     /**
-     * Method: getRect
-     * 返回文字包围盒矩形
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRect
+     * @description 返回文字包围盒矩形
      */
     getRect(style) {
         if (style.__rect) {
@@ -359,8 +353,8 @@ export class SmicText extends Shape {
 
 
     /**
-     * Method: getRectNoRotation
-     * 返回忽略旋转和maxWidth时文字包围盒矩形
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRectNoRotation
+     * @description 返回忽略旋转和maxWidth时文字包围盒矩形
      */
     getRectNoRotation(style) {
 
@@ -438,12 +432,11 @@ export class SmicText extends Shape {
 
 
     /**
-     * Method: getTextBackground
-     * 获取文本背景框范围
-     *
-     * Parameters:
-     * style - {Object} 样式。
-     * redo - {Boolean} 是否强制重新计算 textBackground。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getTextBackground
+     * @description 获取文本背景框范围
+     * 
+     * @param {Object} style - 样式。
+     * @param {boolean} redo - 是否强制重新计算 textBackground。
      */
     getTextBackground(style, redo) {
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
@@ -495,18 +488,15 @@ export class SmicText extends Shape {
 
 
     /**
-     * Method: getRotatedLocation
-     * 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
-     *
-     * Parameters:
-     * x - {Number}  旋转点横坐标。
-     * y - {Number}  旋转点纵坐标。
-     * rx - {Number}  旋转中心点横坐标。
-     * ry - {Number}  旋转中心点纵坐标。
-     * angle - {Number} 旋转角度（度）。
-     *
-     * Returns:
-     * {Array} 旋转后的坐标位置，长度为 2 的一维数组，数组第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRotatedLocation
+     * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
+     * 
+     * @param {number} x - 旋转点横坐标。
+     * @param {number} y - 旋转点纵坐标。
+     * @param {number} rx - 旋转中心点横坐标。
+     * @param {number} ry - 旋转中心点纵坐标。
+     * @param {number} angle - 旋转角度（度）。
+     * @return {Array} 旋转后的坐标位置，长度为 2 的一维数组，数组第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getRotatedLocation(x, y, rx, ry, angle) {
         var loc = new Array(), x0, y0;

@@ -5,7 +5,7 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.iPortalServicesQueryParam
  * @classdesc iPortal服务查询参数
  * @category iPortal/Online
- * @param params -{Object} 服务参数
+ * @param {Object} params - 服务参数
  *
  */
 export class IPortalServicesQueryParam {

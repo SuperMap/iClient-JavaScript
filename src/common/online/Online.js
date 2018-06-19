@@ -51,7 +51,7 @@ export class Online {
     /**
      * @function SuperMap.Online.prototype.queryDatas
      * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
-     * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
+     * @param {SuperMap.OnlineQueryDatasParameter} parameter - myDatas服务资源查询参数
      * @returns {Promise} 返回包含所有数据服务信息的Promise对象
      */
     queryDatas(parameter) {

@@ -12,11 +12,11 @@ import {ShapeFactory} from './feature/ShapeFactory';
  *              它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  *              此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
  * @extends SuperMap.Feature.Theme
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Theme} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
  */
 export class Graph extends Theme {
@@ -26,25 +26,25 @@ export class Graph extends Theme {
         super(data, layer, fields, setting, lonlat, options);
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.shapeFactory -{SuperMap.Feature.ShapeFactory}
+         * @member {SuperMap.Feature.ShapeFactory} SuperMap.Feature.Theme.Graph.prototype.shapeFactory
          * @description 内置的图形工厂对象，调用其 createShape 方法创建图形。
          */
         this.shapeFactory = new ShapeFactory();
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.shapeParameters -{Object}
+         * @member {Object} SuperMap.Feature.Theme.Graph.prototype.shapeParameters
          * @description 当前图形参数对象，<SuperMap.Feature.ShapeParameters> 的子类对象。
          */
         this.shapeParameters = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.RelativeCoordinate -{bool}
+         * @member {boolean} SuperMap.Feature.Theme.Graph.prototype.RelativeCoordinate
          * @description 图形是否已经计算了相对坐标。
          */
         this.RelativeCoordinate = false;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.setting -{Object}
+         * @member {Object} SuperMap.Feature.Theme.Graph.prototype.setting
          * @description 图表配置对象，该对象控制着图表的可视化显示。<br>
          *              下面是此配置对象的 7 个基础可设属性：<br>
          *              Symbolizer properties:<br>
@@ -63,57 +63,66 @@ export class Graph extends Theme {
         this.setting = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.origonPoint - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.origonPoint 
          * @description 专题要素（图表）原点，图表左上角点像素坐标，是长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         this.origonPoint = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.chartBox - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.chartBox - 
          * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
          *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
          */
         this.chartBox = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.chartBounds - {SuperMap.Bounds} {ReadOnly}
+         * @readonly
+         * @member {SuperMap.Bounds} SuperMap.Feature.Theme.Graph.prototype.chartBounds - 
          * @description 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
          */
         this.chartBounds = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.width - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.width 
          * @description 专题要素（图表）宽度 ，必设属性。
          */
         this.width = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.height - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.height
          * @description 专题要素（图表）高度 ，必设属性。
          */
         this.height = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.XOffset - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.XOffset
          * @description 专题要素（图表）在 X 方向上的偏移值，单位像素。
          */
         this.XOffset = 0;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.YOffset - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.YOffset
          * @description 专题要素（图表）在 Y 方向上的偏移值，单位像素。
          */
         this.YOffset = 0;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBParameter - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBParameter 
          * @description 数据视图框参数，长度为 4 的一维数组（数组元素值 >= 0），[leftOffset, bottomOffset, rightOffset, topOffset]，chartBox 内偏距值。
          *               此属性用于指定数据视图框 dataViewBox 的范围。
          */
         this.DVBParameter = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.dataViewBox - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.dataViewBox 
          * @description 数据视图框，长度为 4 的一维数组，[left, bottom, right, top]。
          *              dataViewBox 是统计专题要素最核心的内容，它负责解释数据在一个像素区域里的数据可视化含义，
          *              这种含义用可视化图形表达出来，这些表示数据的图形和一些辅助图形组合在一起构成统计专题图表。
@@ -121,57 +130,66 @@ export class Graph extends Theme {
         this.dataViewBox = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBCodomain - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBCodomain 
          * @description 数据视图框的内允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
          *              dataViewBox 中允许的数据范围，对数据溢出值域范围情况的处理需要在 assembleShapes 中进行。
          */
         this.DVBCodomain = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint 
          * @description 数据视图框中心点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         this.DVBCenterPoint = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue - {string} {ReadOnly}
+         * @readonly
+         * @member {string} SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue 
          * @description 单位值。在 assembleShapes() 中初始化其具体意义，例如：饼图的 DVBUnitValue 可以定义为"360/数据总和"，
          *              折线图的 DVBUnitValue 可以定义为 "DVBCodomain/DVBHeight"。
          */
         this.DVBUnitValue = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint 
          * @description 数据视图框原点，数据视图框左上角点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         this.DVBOrigonPoint = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBWidth - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.DVBWidth 
          * @description 数据视图框宽度。
          */
         this.DVBWidth = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBHeight - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.DVBHeight 
          * @description 数据视图框高度。
          */
         this.DVBHeight = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.origonPointOffset - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.origonPointOffset
          * @description 数据视图框原点相对于图表框的原点偏移量，长度为 2 的一维数组，第一个元素表示 x 偏移量，第二个元素表示 y 偏移量。
          */
         this.origonPointOffset = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.fields - {Array<string>}
+         * @readonly
+         * @member {Array.<string>} SuperMap.Feature.Theme.Graph.prototype.fields 
          * @description 数据{SuperMap.Feature.Vector}属性字段。
          */
         this.fields = fields || [];
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<number>}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.dataValues
          * @description 图表展示的数据值，通过 fields 从数据feature属性中获得。
          */
         this.dataValues = null;
@@ -325,8 +343,8 @@ export class Graph extends Theme {
     /**
      * @function SuperMap.Feature.Theme.Graph.prototype.resetLocation
      * @description 根据地理位置 lonlat 重置专题要素（图表）位置。
-     * @param lonlat - {SuperMap.LonLat} 专题要素新的像素中心位置。
-     * @return {Array<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @param {SuperMap.LonLat} lonlat - 专题要素新的像素中心位置。
+     * @return {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
         if (lonlat) {
@@ -452,7 +470,7 @@ export class Graph extends Theme {
     /**
      * @function SuperMap.Feature.Theme.Graph.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
-     * @param lonlat - {SuperMap.Lonlat} 带转换的地理坐标。
+     * @param {SuperMap.Lonlat} lonlat - 带转换的地理坐标。
      * @return 屏幕像素坐标。
      */
     getLocalXY(lonlat) {
@@ -464,10 +482,10 @@ export class Graph extends Theme {
 /**
  * @function SuperMap.Feature.Theme.getDataValues
  * @description 根据字段名数组获取指定数据（feature）的属性值数组。属性值类型必须为 Number。
- * @param data - {SuperMap.Feature.Vector} 数据。
- * @param fields - {Array<string>} 字段名数组。
- * @param decimalNumber - {number} 小数位处理参数，对获取到的属性数据值进行小数位处理。
- * @return {Array<string>} 字段名数组对应的属性数据值数组。
+ * @param {SuperMap.Feature.Vector} data - 数据。
+ * @param {Array.<string>} fields - 字段名数组。
+ * @param {number} decimalNumber - 小数位处理参数，对获取到的属性数据值进行小数位处理。
+ * @return {Array.<string>} 字段名数组对应的属性数据值数组。
  */
 Theme.getDataValues = function (data, fields, decimalNumber) {
     if (!data.attributes) {

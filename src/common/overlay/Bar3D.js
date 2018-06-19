@@ -9,11 +9,11 @@ import {Graph} from './Graph';
  * @classdesc 三维柱状图 。
  * @category Visualization Theme
  * @extends SuperMap.Feature.Theme.Graph
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
  *
  * @description 图表 Bar3D 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
@@ -378,8 +378,8 @@ export class Bar3D extends Graph {
      *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
      *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
      *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:</br>
-     *                  xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
+     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
+     *                  xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *                  width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
     calculateXShapeInfo() {

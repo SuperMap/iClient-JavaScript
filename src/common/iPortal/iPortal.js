@@ -11,7 +11,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @classdesc 对接SuperMap iPortal 基础服务
  * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
- * @param iportalUrl -{string} 地址
+ * @param {string} iportalUrl - 地址
  *
  */
 export class IPortal extends IPortalServiceBase {
@@ -53,7 +53,7 @@ export class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.deleteServices
-     * @param ids -{Array} 服务的序号
+     * @param {Array} ids - 服务的序号
      * @description 删除服务
      * @returns {Promise} 返回包含服务删除操作状态的Promise对象
      */
@@ -64,7 +64,7 @@ export class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.queryMaps
-     * @param queryParams -{SuperMap.iPortalMapsQueryParam} 查询参数
+     * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数
      * @description 获取地图信息
      * @returns {Promise} 返回包含所有地图服务信息的Promise对象
      */

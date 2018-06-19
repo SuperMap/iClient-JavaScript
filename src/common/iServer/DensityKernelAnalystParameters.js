@@ -5,7 +5,7 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.DensityKernelAnalystParameters
  * @category  iServer SpatialAnalyst DensityAnalyst
  * @classdesc 核密度分析参数类。
- * @param {Object} options - 参数。</br>
+ * @param {Object} options - 参数。
  * @param {string} options.dataset - 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 核密度分析的范围，用于确定结果栅格数据集的范围。如果缺省，则默认为原数据集的范围。</br>
  * @param {number} options.searchRadius - 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>

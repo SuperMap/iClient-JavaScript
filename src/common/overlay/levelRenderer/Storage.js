@@ -5,47 +5,46 @@ import {Group} from './Group';
  * @private
  * @class  SuperMap.LevelRenderer.Storage
  * @category Visualization Theme
- * 内容（图像）仓库 (M) 。
+ * @classdesc 内容（图像）仓库 (M) 。
  */
 export class Storage {
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Storage
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Storage.constructor
+     * @description 构造函数。
      */
     constructor() {
         /**
-         * Property: _elements
-         * {Object} 所有常规形状，id 索引的 map。
-         *
+         * @member {Object} SuperMap.LevelRenderer.Storage.prototype._elements
+         * @description 所有常规形状，id 索引的 map。
          */
         this._elements = {};
 
         /**
-         * Property: _hoverElements
-         * {Array} 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
+         * @member {Array} SuperMap.LevelRenderer.Storage.prototype._hoverElements
+         * @description 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
          *
          */
         this._hoverElements = [];
 
         /**
-         * Property: _roots
-         * {Array} _roots。
+         * @member {Array} SuperMap.LevelRenderer.Storage.prototype._roots
+         * @description _roots。
          *
          */
         this._roots = [];
 
         /**
-         * Property: _shapeList
-         * {Array}  _shapeList。
+         * @member {Array} SuperMap.LevelRenderer.Storage.prototype._shapeList
+         * @description _shapeList。
          *
          */
         this._shapeList = [];
 
         /**
-         * Property: _shapeListOffset
-         * {Number}  _shapeListOffset。默认值：0。
+         * @member {number} SuperMap.LevelRenderer.Storage.prototype._shapeListOffset
+         * @description _shapeListOffset。默认值：0。
          *
          */
         this._shapeListOffset = 0;
@@ -54,8 +53,8 @@ export class Storage {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Storage.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this.dispose();
@@ -64,20 +63,15 @@ export class Storage {
     }
 
     /**
-     * APIMethod: iterShape
-     * 遍历迭代器。
-     *
-     * Parameters:
-     * fun - {Function} 迭代回调函数，return true终止迭代。
-     * option - {Object} 迭代参数，缺省为仅降序遍历普通层图形。可设属性如下：
-     *
-     * Symbolizer properties:
-     * hover - {Boolean} 是否是高亮层图形。默认值：true。
-     * normal - {String} 是否是普通层图形，迭代时是否指定及z轴顺序。可设值：'down' ，'up'；默认值："down"。
-     * update - {Boolean} 是否在迭代前更新形状列表。默认值：false。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @function SuperMap.LevelRenderer.Storage.prototype.iterShape
+     * @description 遍历迭代器。
+     * 
+     * @param {Function} fun - 迭代回调函数，return true终止迭代。
+     * @param {Object} option - 迭代参数，缺省为仅降序遍历普通层图形。
+     * @param {boolean} [hover=true] - 是否是高亮层图形。
+     * @param {string} [normal='down'] - 是否是普通层图形，迭代时是否指定及z轴顺序。可设值：'down' ，'up'。
+     * @param {boolean} [update=false] - 是否在迭代前更新形状列表。
+     * @return {SuperMap.LevelRenderer.Storage} this。
      */
     iterShape(fun, option) {
         if (!option) {
@@ -134,14 +128,9 @@ export class Storage {
     }
 
     /**
-     * APIMethod: getHoverShapes
-     * 返回 hover 层的形状数组。
-     *
-     * Parameters:
-     * update - {Boolean} 是否在返回前更新图形的变换。默认值：false。
-     *
-     * Returns:
-     * {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+     * @function SuperMap.LevelRenderer.Storage.prototype.getHoverShapes
+     * @param {boolean} [update=false] - 是否在返回前更新图形的变换。
+     * @return {Array.<SuperMap.LevelRenderer.Shape>} 图形数组。
      */
     getHoverShapes(update) {
         // hoverConnect
@@ -170,14 +159,11 @@ export class Storage {
     }
 
     /**
-     * APIMethod: getShapeList
-     * 返回所有图形的绘制队列。
+     * @function SuperMap.LevelRenderer.Storage.prototype.getShapeList
+     * @description 返回所有图形的绘制队列。
      *
-     * Parameters:
-     * update - {Boolean} 是否在返回前更新该数组。默认值：false。  详见：<SuperMap.LevelRenderer.Shape> updateShapeList。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Shape>} 图形。
+     * @param {boolean} [update=false] - 是否在返回前更新该数组。  详见：<SuperMap.LevelRenderer.Shape> updateShapeList。
+     * @return {SuperMap.LevelRenderer.Shape} 图形。
      */
     getShapeList(update) {
         if (update) {
@@ -187,10 +173,8 @@ export class Storage {
     }
 
     /**
-     * APIMethod: updateShapeList
-     * 更新图形的绘制队列。
-     * 每次绘制前都会调用，该方法会先深度优先遍历整个树，更新所有Group和Shape的变换并且把所有可见的Shape保存到数组中，
-     * 最后根据绘制的优先级（zlevel > z > 插入顺序）排序得到绘制队列。
+     * @function SuperMap.LevelRenderer.Storage.prototype.updateShapeList
+     * @description 更新图形的绘制队列。每次绘制前都会调用，该方法会先深度优先遍历整个树，更新所有Group和Shape的变换并且把所有可见的Shape保存到数组中，最后根据绘制的优先级（zlevel > z > 插入顺序）排序得到绘制队列。 
      */
     updateShapeList() {
         this._shapeListOffset = 0;
@@ -210,8 +194,9 @@ export class Storage {
     }
 
     /**
-     * Method: _updateAndAddShape
-     * 跟新并添加图形。
+     * @function SuperMap.LevelRenderer.Storage.prototype._updateAndAddShape
+     * @description 更新并添加图形。
+     * 
      */
     _updateAndAddShape(el, clipShapes) {
         if (el.ignore) {
@@ -256,15 +241,12 @@ export class Storage {
     }
 
     /**
-     * APIMethod: mod
-     * 修改图形(Shape)或者组(Group)。
-     *
-     * Parameters:
-     * elId - {String} 唯一标识。
-     * params - {Object} 参数。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @function SuperMap.LevelRenderer.Storage.prototype.mod
+     * @description 修改图形(Shape)或者组(Group)。
+     * 
+     * @param {String} elId - 唯一标识。
+     * @param {Object} params - 参数。
+     * @return {SuperMap.LevelRenderer.Storage} this。
      */
     mod(elId, params) {
         var el = this._elements[elId];
@@ -301,16 +283,12 @@ export class Storage {
     }
 
     /**
-     * APIMethod: drift
-     * 移动指定的图形(Shape)的位置。
-     *
-     * Parameters:
-     * shapeId - {String} 唯一标识。
-     * dx - {Number}
-     * dy - {Number}
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @function SuperMap.LevelRenderer.Storage.prototype.drift
+     * @description 移动指定的图形(Shape)的位置。
+     * @param {string} shapeId - 唯一标识。
+     * @param {number} dx 
+     * @param {number} dy 
+     * @return {SuperMap.LevelRenderer.Storage} this。
      */
     drift(shapeId, dx, dy) {
         var shape = this._elements[shapeId];
@@ -333,14 +311,10 @@ export class Storage {
     }
 
     /**
-     * APIMethod: addHover
-     * 添加高亮层数据。
-     *
-     * Parameters:
-     * shape - {<SuperMap.LevelRenderer.Shape>} 图形。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @function SuperMap.LevelRenderer.Storage.prototype.addHover
+     * @description 添加高亮层数据。
+     * @param {SuperMap.LevelRenderer.Shape} shape - 图形。
+     * @return {SuperMap.LevelRenderer.Storage} this。
      */
     addHover(shape) {
         shape.updateNeedTransform();
@@ -349,11 +323,9 @@ export class Storage {
     }
 
     /**
-     * APIMethod: delHover
-     * 清空高亮层数据。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @function SuperMap.LevelRenderer.Storage.prototype.delHover
+     * @description 清空高亮层数据。
+     * @return {SuperMap.LevelRenderer.Storage} this。 
      */
     delHover() {
         this._hoverElements = [];
@@ -361,22 +333,19 @@ export class Storage {
     }
 
     /**
-     * APIMethod: hasHoverShape
-     * 是否有图形在高亮层里。
-     *
-     * Returns:
-     * {Boolean} 是否有图形在高亮层里。
+     * @function SuperMap.LevelRenderer.Storage.prototype.hasHoverShape
+     * @description 是否有图形在高亮层里。
+     * @return {boolean} 是否有图形在高亮层里。
      */
     hasHoverShape() {
         return this._hoverElements.length > 0;
     }
 
     /**
-     * APIMethod: addRoot
-     * 添加图形(Shape)或者组(Group)到根节点。
-     *
-     * Parameters:
-     * el - {<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>} 图形。
+     * @function SuperMap.LevelRenderer.Storage.prototype.addRoot
+     * @description 添加图形(Shape)或者组(Group)到根节点。
+     * 
+     * @param {(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)} el - 图形。
      *
      */
     addRoot(el) {
@@ -389,11 +358,10 @@ export class Storage {
     }
 
     /**
-     * APIMethod: delRoot
-     * 删除指定的图形(Shape)或者组(Group)。
+     * @function SuperMap.LevelRenderer.Storage.prototype.delRoot
+     * @description 删除指定的图形(Shape)或者组(Group)。
      *
-     * Parameters:
-     * elId - {Array{String}} 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
+     * @param {Array.{string}} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
      *
      */
     delRoot(elId) {
@@ -440,14 +408,11 @@ export class Storage {
     }
 
     /**
-     * APIMethod: addToMap
-     * 添加图形到 map。
+     * @function SuperMap.LevelRenderer.Storage.prototype.addToMap
+     * @description 添加图形到 map。
      *
-     * Parameters:
-     * el - {<SuperMap.LevelRenderer.Shape>} 图形。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @param {SuperMap.LevelRenderer.Shape} el - 图形。
+     * @return {SuperMap.LevelRenderer.Storage} this。
      */
     addToMap(el) {
         if (el instanceof Group) {
@@ -461,28 +426,22 @@ export class Storage {
     }
 
     /**
-     * APIMethod: get
-     * 获取指定图形。
+     * @function SuperMap.LevelRenderer.Storage.prototype.get
+     * @description 获取指定图形。
      *
-     * Parameters:
-     * elId - {String} 图形 id。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Shape>} 图形。
+     * @param {string} elId - 图形 id。
+     * @return {SuperMap.LevelRenderer.Shape} 图形。
      */
     get(elId) {
         return this._elements[elId];
     }
 
     /**
-     * APIMethod: delFromMap
-     * 从 map 中删除指定图形。
-     *
-     * Parameters:
-     * elId - {String} 图形id。
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Storage>} this。
+     * @function SuperMap.LevelRenderer.Storage.prototype.delFromMap
+     * @description 从 map 中删除指定图形。
+     * 
+     * @param {string} elId - 图形id。
+     * @return {SuperMap.LevelRenderer.Storage} this。
      */
     delFromMap(elId) {
         var el = this._elements[elId];
@@ -498,8 +457,8 @@ export class Storage {
     }
 
     /**
-     * APIMethod: dispose
-     * 清空并且释放 Storage。
+     * @function SuperMap.LevelRenderer.Storage.prototype.dispose
+     * @description 清空并且释放 Storage。
      */
     dispose() {
         this._elements = null;

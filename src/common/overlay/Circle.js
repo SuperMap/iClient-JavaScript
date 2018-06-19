@@ -19,11 +19,11 @@ import {RankSymbol} from './RankSymbol';
  *            circleHoverAble - {boolean} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。<br>
  *            circleClickAble - {boolean} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends SuperMap.Feature.Theme.RankSymbol
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
 export class Circle extends RankSymbol {

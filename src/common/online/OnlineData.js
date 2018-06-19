@@ -6,8 +6,8 @@ import {OnlineServiceBase} from './OnlineServiceBase';
  * @class SuperMap.OnlineData
  * @classdesc Online myData服务
  * @category iPortal/Online
- * @param serviceRootUrl -{string} 服务根地址
- * @param options -{string} 服务相关参数
+ * @param {string} serviceRootUrl - 服务根地址
+ * @param {string} options - 服务相关参数
  */
 export class OnlineData extends OnlineServiceBase {
 

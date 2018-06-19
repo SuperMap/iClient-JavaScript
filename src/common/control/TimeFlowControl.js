@@ -5,18 +5,18 @@ import {TimeControlBase} from './TimeControlBase';
  * @class SuperMap.TimeFlowControl
  * @classdesc 时间管理类。
  * @category  Control
- * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
+ * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
  * @extends SuperMap.TimeControlBase
- * @param callback - {function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
- * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
- *        frequency -  {number} 刷新频率(单位ms)，默认为1000ms。<br>
- *        startTime - {number}起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {number}结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {boolean} 是否重复循环。默认为true。<br>
- *        reverse - {boolean} 是否反向。默认为false。
+ * @param {function} callback - 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+ * @param {Object} options - 该类开放的可选属性。
+ * @param {number} [options.speed=1] - 步长(单位ms)。不能小于0，（每次刷新的数据之间的间隔为1ms）。
+ * @param {number} [options.frequency=1000] - 刷新频率(单位ms)，默认为1000ms。
+ * @param {number} options.startTime - 起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。
+ * @param {number} options.endTime - 结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
+ * @param {boolean} [options.repeat=true] - 是否重复循环。默认为true。
+ * @param {boolean} [options.reverse=false] - 是否反向。
  */
 export class TimeFlowControl extends TimeControlBase {
 

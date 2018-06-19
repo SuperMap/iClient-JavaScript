@@ -6,11 +6,11 @@ import {ClientType} from '../REST';
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
  * @category Security
- * @param options - {Object} 参数。如：<br>
- *        name - {string} 申请服务名称。<br>
- *        serviceIds - {number}服务ID。<br>
- *        clientType - {{@link SuperMap.ClientType}} 服务端类型。<br>
- *        limitation - {number}有效期
+ * @param {Object} options - 参数。
+ * @param {string} options.name - 申请服务名称。
+ * @param {number} options.serviceIds - 服务ID。
+ * @param {SuperMap.ClientType} options.clientType - 服务端类型。
+ * @param {number} options.limitation - 有效期
  */
 export class KeyServiceParameter {
 

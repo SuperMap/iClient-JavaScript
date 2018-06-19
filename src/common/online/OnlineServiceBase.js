@@ -8,7 +8,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @class SuperMap.OnlineServiceBase
  * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
  * @category iPortal/Online
- * @param options -{Object} 服务参数
+ * @param {Object} options - 服务参数
  */
 export class OnlineServiceBase {
 
@@ -22,10 +22,10 @@ export class OnlineServiceBase {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
-     * @param method - {string} 请求方式, 'get','put','post','delete'
-     * @param url - {string} 服务地址
-     * @param param -{Object} Url查询参数
-     * @param requestOptions -{Object} http请求参数, 比如请求头，超时时间等
+     * @param {string} method - 请求方式, 'get','put','post','delete'
+     * @param {string} url - 服务地址
+     * @param {Object} param - Url查询参数
+     * @param {Object} requestOptions - http请求参数, 比如请求头，超时时间等
      * @return {Promise}  返回包含请求结果的Promise对象
      */
     request(method, url, param, requestOptions) {
@@ -38,7 +38,7 @@ export class OnlineServiceBase {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url - {string} 对接的online服务地址
+     * @param {string} url - 对接的online服务地址
      */
     createCredentialUrl(url) {
         var newUrl = url,

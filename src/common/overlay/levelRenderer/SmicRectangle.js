@@ -4,10 +4,8 @@ import {Shape} from './Shape';
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicRectangle
  * @category Visualization Theme
- * 矩形。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 矩形。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
@@ -25,47 +23,45 @@ import {Shape} from './Shape';
 export class SmicRectangle extends Shape {
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 左上角 x 坐标，必设参数。
-     * y - {Number} 左上角 y 坐标，必设参数。
-     * width - {Number} 宽度，必设参数。
-     * height - {Number} 高度，必设参数。
-     * radius - {Array} 矩形圆角，可以用数组分别指定四个角的圆角，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 则 radius为 [r1、r2、r3、r4 ]。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 左上角 x 坐标，必设参数。
+     * @param {number} style.y - 左上角 y 坐标，必设参数。
+     * @param {number} style.width - 宽度，必设参数。
+     * @param {number} style.height - 高度，必设参数。
+     * @param {Array} style.radius - 矩形圆角，可以用数组分别指定四个角的圆角，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 则 radius为 [r1、r2、r3、r4 ]。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicRectangle
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicRectangle.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     constructor(options) {
         super(options);
         /**
-         * Property: type
-         * {String} 图形类型.
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.type
+         * @description 图形类型.
          */
         this.type = 'smicrectangle';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
@@ -76,8 +72,8 @@ export class SmicRectangle extends Shape {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this.type = null;
@@ -177,12 +173,11 @@ export class SmicRectangle extends Shape {
 
 
     /**
-     * APIMethod: _buildRadiusPath
-     * 创建矩形路径。
+     * @function SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.buildPath
+     * @description 创建矩形路径。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * style - {Object} style。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {Object} style - style。
      *
      */
     buildPath(ctx, style) {
@@ -207,15 +202,11 @@ export class SmicRectangle extends Shape {
 
 
     /**
-     * APIMethod: getRect
-     * 计算返回矩形包围盒矩阵。
-     * 该包围盒是直接从四个控制点计算，并非最小包围盒。
-     *
-     * Parameters:
-     * style - {Object} style
-     *
-     * Returns:
-     * {Object} 边框对象。包含属性：x，y，width，height。
+     * @function SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.getRect
+     * @description 计算返回矩形包围盒矩阵。该包围盒是直接从四个控制点计算，并非最小包围盒。
+     * 
+     * @param {Object} style - style
+     * @return {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {

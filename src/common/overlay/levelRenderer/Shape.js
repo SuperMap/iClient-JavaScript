@@ -8,20 +8,17 @@ import {SUtil} from './SUtil';
  * @private
  * @class  SuperMap.LevelRenderer.Shape
  * @category Visualization Theme
- * 图形（shape）基类。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Eventful>
- *  - <SuperMap.LevelRenderer.Transformable>
+ * @classdesc 图形（shape）基类。
+ * @extends SuperMap.LevelRenderer.Eventful
+ * @extends SuperMap.LevelRenderer.Transformable
  */
 export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     constructor(options) {
@@ -29,137 +26,132 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
         options = options || {};
         /**
-         * APIProperty: id
-         * {String} 唯一标识。
+         * @member {string} SuperMap.LevelRenderer.Shape.prototype.id
+         * @description 唯一标识。
          */
         this.id = null;
 
         /**
-         * APIProperty: style
-         * {Object} 基础绘制样式。
-         *
-         * Symbolizer properties:
-         * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-         * color - {String} 填充颜色。默认值："#000000'"。
-         * strokeColor - {String} 描边颜色。默认值："#000000'"。
-         * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-         * lineWidth - {Number} 描边宽度。默认值：1。
-         * opacity - {Number} 绘制透明度。默认值：1。
-         * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-         * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-         * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-         * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-         * text - {String} 图形中的附加文本。默认值：""。
-         * textColor - {String} 文本颜色。默认值："#000000'"。
-         * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-         * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-         * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-         * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.style
+         * @description 基础绘制样式。
+         * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+         * @param {string} style.color - 填充颜色。默认值："#000000'"。
+         * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+         * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+         * @param {number} style.lineWidth - 描边宽度。默认值：1。
+         * @param {number} style.opacity - 绘制透明度。默认值：1。
+         * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+         * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+         * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+         * @param {number} style.shadowOffsetY -  阴影纵向偏移。默认值：0。
+         * @param {string} style.text -  图形中的附加文本。默认值：""。
+         * @param {string} style.textColor -  文本颜色。默认值："#000000'"。
+         * @param {string} style.textFont -  附加文本样式。示例:'bold 18px verdana'。
+         * @param {string} style.textPosition -  附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+         * @param {string} style.textAlign -  附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
          *
          */
         this.style = {};
 
         /**
-         * APIProperty: style.__rect
-         * {Object} 包围图形的最小矩形盒子。该对象包含以下属性：
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.style.__rect
+         * @description 包围图形的最小矩形盒子。
          *
-         * Symbolizer properties:
-         * x - {Number} 左上角顶点x轴坐标。
-         * y - {Number} 左上角顶点y轴坐标。
-         * width - {Number} 包围盒矩形宽度。
-         * height - {Number} 包围盒矩形高度。
+         * @param {number} x - 左上角顶点x轴坐标。
+         * @param {number} y - 左上角顶点y轴坐标。
+         * @param {number} width - 包围盒矩形宽度。
+         * @param {number} height - 包围盒矩形高度。
          */
 
         /**
-         * Property: highlightStyle
-         * {Object} 高亮样式。
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.highlightStyle
+         * @description 高亮样式。
          *
-         * Symbolizer properties:
-         * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-         * color - {String} 填充颜色。默认值："#000000'"。
-         * strokeColor - {String} 描边颜色。默认值："#000000'"。
-         * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-         * lineWidth - {Number} 描边宽度。默认值：1。
-         * opacity - {Number} 绘制透明度。默认值：1。
-         * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-         * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-         * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-         * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-         * text - {String} 图形中的附加文本。默认值：""。
-         * textColor - {String} 文本颜色。默认值："#000000'"。
-         * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-         * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-         * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-         * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         * @param {string} highlightStyle.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+         * @param {string} highlightStyle.color -  填充颜色。默认值："#000000'"。
+         * @param {string} highlightStyle.strokeColor - 描边颜色。默认值："#000000'"。
+         * @param {string} highlightStyle.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+         * @param {number} highlightStyle.lineWidth - 描边宽度。默认值：1。
+         * @param {number} highlightStyle.opacity -  绘制透明度。默认值：1。
+         * @param {number} highlightStyle.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+         * @param {number} highlightStyle.shadowColor - 阴影颜色。默认值："#000000'"。
+         * @param {number} highlightStyle.shadowOffsetX - 阴影横向偏移。默认值：0。
+         * @param {number} highlightStyle.shadowOffsetY - 阴影纵向偏移。默认值：0。
+         * @param {string} highlightStyle.text - 图形中的附加文本。默认值：""。
+         * @param {string} highlightStyle.textColor - 文本颜色。默认值："#000000'"。
+         * @param {string} highlightStyle.textFont - 附加文本样式。示例:'bold 18px verdana'。
+         * @param {string} highlightStyle.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+         * @param {string} highlightStyle.textAlign -  附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * @param {string} highlightStyle.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
          */
         this.highlightStyle = null;
 
         /**
-         * APIProperty: parent
-         * {Object} 父节点，只读属性。<SuperMap.LevelRenderer.Group>
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.parent
+         * @description 父节点，只读属性。<SuperMap.LevelRenderer.Group>
          */
         this.parent = null;
 
         /**
-         * Property: __dirty
-         * {Boolean}
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.__dirty
+         * @description {Boolean}
          */
         this.__dirty = true;
 
         /**
-         * Property: __clipShapes
-         * {Array}
+         * @member {Array} SuperMap.LevelRenderer.Shape.prototype.__clipShapes
+         * @description {Array}
+         * 
          */
         this.__clipShapes = [];
 
         /**
-         * APIProperty: invisible
-         * {Boolean} 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.invisible
+         * @description 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
          */
         this.invisible = false;
 
         /**
-         * APIProperty: ignore
-         * {Boolean} 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.ignore
+         * @description 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
          */
         this.ignore = false;
 
         /**
-         * APIProperty: zlevel
-         * {Number} z 层 level，决定绘画在哪层 canvas 中。默认值：0。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.zlevel
+         * @description z 层 level，决定绘画在哪层 canvas 中。默认值：0。
          */
         this.zlevel = 0;
 
         /**
-         * APIProperty: draggable
-         * {Boolean} 是否可拖拽。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.draggable
+         * @description 是否可拖拽。默认值：false。
          */
         this.draggable = false;
 
         /**
-         * APIProperty: clickable
-         * {Boolean} 是否可点击。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.clickable
+         * @description 是否可点击。默认值：false。
          */
         this.clickable = false;
 
         /**
-         * APIProperty: hoverable
-         * {Boolean} 是否可以 hover。默认值：true。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.hoverable
+         * @description 是否可以 hover。默认值：true。
          */
         this.hoverable = true;
 
         /**
-         * APIProperty: z
-         * {Number} z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，
-         * 但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。
-         * 默认值：0。
+         * @member {number} SuperMap.LevelRenderer.Shape.prototype.z
+         * @description z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。默认值：0。
          */
         this.z = 0;
 
         //地理扩展
         /**
-         * APIProperty: refOriginalPosition
-         * {Array} 图形参考原点位置，图形的参考中心位置。
+         * @member {Array} SuperMap.LevelRenderer.Shape.prototype.refOriginalPosition
+         * @description 图形参考原点位置，图形的参考中心位置。
          * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          *
          * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
@@ -177,30 +169,30 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
         this.refOriginalPosition = [0, 0];
 
         /**
-         * APIProperty: refDataID
-         * {String} 图形所关联数据的 ID。
+         * @member {string} SuperMap.LevelRenderer.Shape.prototype.refDataID
+         * @description 图形所关联数据的 ID。
          *
          */
         this.refDataID = null;
 
         /**
-         * APIProperty: isHoverByRefDataID
-         * {Boolean} 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.isHoverByRefDataID
+         * @description 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
          *
          */
         this.isHoverByRefDataID = false;
 
         /**
-         * APIProperty: refDataHoverGroup
-         * {String} 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
+         *  @member {string} SuperMap.LevelRenderer.Shape.prototype.refDataHoverGroup 
+         *  @description 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
          * 一旦设置此属性，且属性值有效，只有关联同一个数据的图形且此属性相同的图形才会高亮。
          *
          */
         this.refDataHoverGroup = null;
 
         /**
-         * APIProperty: dataInfo
-         * {Object} 图形的数据信息。
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.dataInfo
+         * @description 图形的数据信息。
          *
          */
         this.dataInfo = null;
@@ -208,8 +200,8 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
         this.id = this.id  || CommonUtil.createUniqueID("smShape_");
         this.CLASS_NAME = "SuperMap.LevelRenderer.Shape";
         /**
-         * APIMethod: getTansform
-         * 变换鼠标位置到 shape 的局部坐标空间
+         * @function SuperMap.LevelRenderer.Shape.prototype.getTansform
+         * @description 变换鼠标位置到 shape 的局部坐标空间
          *
          */
         this.getTansform = (function () {
@@ -236,8 +228,8 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this.id = null;
@@ -264,15 +256,12 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: brush
-     * 绘制图形。
+     * @function SuperMap.LevelRenderer.Shape.prototype.brush
+     * @description 绘制图形。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * isHighlight - {Boolean} 是否使用高亮属性。
-     * updateCallback - {Function} 需要异步加载资源的 shape 可以通过这个 callback(e),
-     * 让painter更新视图，base.brush 没用，需要的话重载 brush。
-     *
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {Boolean} isHighlight - 是否使用高亮属性。
+     * @param {Function} updateCallback - 需要异步加载资源的 shape 可以通过这个 callback(e),让painter更新视图，base.brush 没用，需要的话重载 brush。
      */
     brush(ctx, isHighlight) {
 
@@ -312,15 +301,12 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: beforeBrush
-     * 具体绘制操作前的一些公共操作。
+     * @function SuperMap.LevelRenderer.Shape.prototype.beforeBrush
+     * @description 具体绘制操作前的一些公共操作。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * isHighlight - {Boolean} 是否使用高亮属性。
-     *
-     * Returns:
-     * {Object} 处理后的样式。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {boolean} isHighlight - 是否使用高亮属性。
+     * @return {Object} 处理后的样式。
      */
     beforeBrush(ctx, isHighlight) {
         var style = this.style;
@@ -356,11 +342,10 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: afterBrush
-     * 绘制后的处理。
+     * @function SuperMap.LevelRenderer.Shape.prototype.afterBrush
+     * @description 绘制后的处理。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
      *
      */
     afterBrush(ctx) {
@@ -369,12 +354,11 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: setContext
-     * 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
+     * @function SuperMap.LevelRenderer.Shape.prototype.setContext
+     * @description 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * style - {Object} 样式。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {Object} style - 样式。
      *
      */
     setContext(ctx, style) {
@@ -405,7 +389,7 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: doClip
+     * @function SuperMap.LevelRenderer.Shape.prototype.doClip
      *
      */
     doClip(ctx) {
@@ -441,13 +425,12 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: getHighlightStyle
-     * 根据默认样式扩展高亮样式
-     *
-     * Parameters:
-     * style - {Object} 样式。
-     * highlightStyle - {Object} 高亮样式。
-     * brushTypeOnly - {String} brushTypeOnly。
+     * @function SuperMap.LevelRenderer.Shape.prototype.getHighlightStyle
+     * @description 根据默认样式扩展高亮样式
+     * 
+     * @param {Object} style - 样式。
+     * @param {Object} highlightStyle - 高亮样式。
+     * @param {string} brushTypeOnly - brushTypeOnly。
      *
      */
     getHighlightStyle(style, highlightStyle, brushTypeOnly) {
@@ -516,8 +499,8 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: getHighlightZoom
-     * 高亮放大效果参数，当前统一设置为6，如有需要差异设置，通过 this.type 判断实例类型
+     * @function SuperMap.LevelRenderer.Shape.prototype.getHighlightZoom
+     * @description 高亮放大效果参数，当前统一设置为6，如有需要差异设置，通过 this.type 判断实例类型
      *
      */
     getHighlightZoom() {
@@ -526,12 +509,11 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: drift
-     * 移动位置
+     * @function SuperMap.LevelRenderer.Shape.prototype.drift
+     * @description 移动位置
      *
-     * Parameters:
-     * dx - {Object} 横坐标变化。
-     * dy - {Object} 纵坐标变化。
+     * @param {Object} dx - 横坐标变化。
+     * @param {Object} dy - 纵坐标变化。
      *
      */
     drift(dx, dy) {
@@ -543,12 +525,11 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: buildPath
-     * 构建绘制的Path。子类必须重新实现此方法。
+     * @function SuperMap.LevelRenderer.Shape.prototype.buildPath
+     * @description 构建绘制的Path。子类必须重新实现此方法。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * style - {Object} 样式。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {Object} style - 样式。
      */
     buildPath(ctx, style) { // eslint-disable-line no-unused-vars
         SUtil.Util_log('buildPath not implemented in ' + this.type);
@@ -556,11 +537,10 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: getRect
-     * 计算返回包围盒矩形。子类必须重新实现此方法。
+     * @function SuperMap.LevelRenderer.Shape.prototype.getRect
+     * @description 计算返回包围盒矩形。子类必须重新实现此方法。
      *
-     * Parameters:
-     * style - {Object} 样式。
+     * @param {Object} style - 样式。
      */
     getRect(style) { // eslint-disable-line no-unused-vars
         SUtil.Util_log('getRect not implemented in ' + this.type);
@@ -568,12 +548,11 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: isCover
-     * 判断鼠标位置是否在图形内。
+     * @function SuperMap.LevelRenderer.Shape.prototype.isCover
+     * @description 判断鼠标位置是否在图形内。
      *
-     * Parameters:
-     * x - {Number} x。
-     * y - {Number} y。
+     * @param {number} x - x。
+     * @param {number} y - y。
      */
     isCover(x, y) {
         var originPos = this.getTansform(x, y);
@@ -600,13 +579,12 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: drawText
-     * 绘制附加文本。
+     * @function SuperMap.LevelRenderer.Shape.prototype.drawText
+     * @description 绘制附加文本。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * style - {String} 样式。
-     * normalStyle - {String} normalStyle 默认样式，用于定位文字显示。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {string} style - 样式。
+     * @param {string} normalStyle - normalStyle 默认样式，用于定位文字显示。
      */
     drawText(ctx, style, normalStyle) {
         if (typeof(style.text) == 'undefined' || style.text === false) {
@@ -805,8 +783,8 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: modSelf
-     * 图形发生改变
+     * @function SuperMap.LevelRenderer.Shape.prototype.modSelf
+     * @description 图形发生改变
      */
     modSelf() {
         this.__dirty = true;
@@ -820,8 +798,8 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * APIMethod: isSilent
-     * 图形是否会触发事件，通过 bind 绑定的事件
+     * @function SuperMap.LevelRenderer.Shape.prototype.isSilent
+     * @description 图形是否会触发事件，通过 bind 绑定的事件
      */
     isSilent() {
         return !(
@@ -835,13 +813,12 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
 
     /**
-     * Method: setCtxGlobalAlpha
-     * 设置 Cavans 上下文全局透明度
+     * @function SuperMap.LevelRenderer.Shape.prototype.setCtxGlobalAlpha
+     * @description 设置 Cavans 上下文全局透明度
      *
-     * Parameters:
-     * _ctx - {Object} Cavans 上下文
-     * type - {String} one of 'stroke', 'fill', or 'reset'
-     * style - {Object} Symbolizer hash
+     * @param {Object} _ctx - Cavans 上下文
+     * @param {string} type - one of 'stroke', 'fill', or 'reset'
+     * @param {Object} style - Symbolizer hash
      */
     setCtxGlobalAlpha(_ctx, type, style) {
         if (type === "fill") {
@@ -854,8 +831,8 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
     }
 
     /**
-     * Method: SuperMap.LevelRenderer.Shape._fillText
-     * 填充文本
+     * @function SuperMap.LevelRenderer.Shape.prototype._fillText
+     * @description 填充文本
      */
     static _fillText(ctx, text, x, y, textFont, textAlign, textBaseline) {
         if (textFont) {
@@ -889,19 +866,16 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
     }
 
     /**
-     * Method: SuperMap.LevelRenderer.Shape._getTextRect
-     * 返回矩形区域，用于局部刷新和文字定位
+     * @function SuperMap.LevelRenderer.Shape._getTextRect
+     * @description 返回矩形区域，用于局部刷新和文字定位
      *
-     * Parameters:
-     * text - {String} text。
-     * x - {Number} x。
-     * y - {Number} y。
-     * textFont - {String} textFont。
-     * textAlign - {String} textAlign。
-     * textBaseline - {String} textBaseline。
-     *
-     * Returns:
-     * {Object} 矩形区域。
+     * @param {string} text - text。
+     * @param {number} x - x。
+     * @param {number} y - y。
+     * @param {string} textFont -  textFont。
+     * @param {string} textAlign - textAlign。
+     * @param {string} textBaseline - textBaseline。
+     * @return {Object} 矩形区域。
      */
     static _getTextRect(text, x, y, textFont, textAlign, textBaseline) {
         var width = SUtil.Util_area.getTextWidth(text, textFont);

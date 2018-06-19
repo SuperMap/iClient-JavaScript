@@ -6,7 +6,7 @@ import {IManagerCreateNodeParam} from './iManagerCreateNodeParam';
  * @class SuperMap.iManager
  * @classdesc iManager服务类。
  * @category iManager
- * @param serviceUrl - {string} iManager首页地址。
+ * @param {string} serviceUrl - iManager首页地址。
  *
  */
 export class IManager extends IManagerServiceBase {
@@ -26,7 +26,7 @@ export class IManager extends IManagerServiceBase {
 
     /**
      * @function SuperMap.iManager.prototype.createIServer
-     * @param createParam - {SuperMap.iManagerCreateNodeParam} 创建参数。
+     * @param {SuperMap.iManagerCreateNodeParam} createParam - 创建参数。
      * @description 创建iServer。
      * @returns {Promise} Promise对象。
      */
@@ -36,7 +36,7 @@ export class IManager extends IManagerServiceBase {
 
     /**
      * @function SuperMap.iManager.prototype.createIPortal
-     * @param createParam - {SuperMap.iManagerCreateNodeParam} 创建参数。
+     * @param {SuperMap.iManagerCreateNodeParam} createParam - 创建参数。
      * @description 创建iPortal。
      * @returns {Promise} Promise对象。
      */
@@ -64,7 +64,7 @@ export class IManager extends IManagerServiceBase {
 
     /**
      * @function SuperMap.iManager.prototype.startNodes
-     * @param ids - {Array}  需要启动节点的id数组.e.g:['1']。
+     * @param {Array} ids - 需要启动节点的id数组.e.g:['1']。
      * @description 启动节点。
      * @returns {Promise} Promise对象。
      */
@@ -74,7 +74,7 @@ export class IManager extends IManagerServiceBase {
 
     /**
      * @function SuperMap.iManager.prototype.stopNodes
-     * @param ids - {Array}  需要停止节点的id数组.e.g:['1']。
+     * @param {Array} ids - 需要停止节点的id数组.e.g:['1']。
      * @description 停止节点。
      * @returns {Promise} Promise对象。
      */

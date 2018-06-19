@@ -4,10 +4,8 @@ import {Shape} from './Shape';
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicEllipse
  * @category Visualization Theme
- * 椭圆。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 椭圆。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
@@ -30,46 +28,44 @@ import {Shape} from './Shape';
 export class SmicEllipse extends Shape {
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicEllipse.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 圆心 x 坐标，必设参数。
-     * y - {Number} 圆心 y 坐标，必设参数。
-     * a - {Number} 横轴半径，必设参数。
-     * b - {Number} 纵轴半径，必设参数。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 圆心 x 坐标，必设参数。
+     * @param {number} style.y - 圆心 y 坐标，必设参数。
+     * @param {number} style.a - 横轴半径，必设参数。
+     * @param {number} style.b - 纵轴半径，必设参数。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicEllipse
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     constructor(options) {
         super(options);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.type
+         * @description 图形类型。
          */
         this.type = 'smicellipse';
 
@@ -82,8 +78,8 @@ export class SmicEllipse extends Shape {
 
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
     destroy() {
         this.type = null;
@@ -92,12 +88,11 @@ export class SmicEllipse extends Shape {
 
 
     /**
-     * APIMethod: buildPath
-     * 构建椭圆的 Path。
+     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.buildPath
+     * @description 构建椭圆的 Path。
      *
-     * Parameters:
-     * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-     * style - {Object} style。
+     * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+     * @param {Object} style - style。
      *
      */
     buildPath(ctx, style) {
@@ -124,14 +119,12 @@ export class SmicEllipse extends Shape {
 
 
     /**
-     * APIMethod: getRect
-     * 计算返回椭圆包围盒矩形
+     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.getRect
+     * @description 计算返回椭圆包围盒矩形
      *
-     * Parameters:
-     * style - {Object} style
-     *
-     * Returns:
-     * {Object} 边框对象。包含属性：x，y，width，height。
+     * @param {Object} style - style
+     * @return {Object} 边框对象。包含属性：x，y，width，height。
+     * 
      */
     getRect(style) {
         if (style.__rect) {

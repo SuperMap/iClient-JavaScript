@@ -16,7 +16,7 @@ import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
  *      的实例。
  * @category BaseTypes Format
  * @extends SuperMap.Format
- * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
+ * @param {Object} options - 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
 export class WKT extends Format {
 
@@ -35,7 +35,7 @@ export class WKT extends Format {
          * Property values are functions that do the actual data extraction.
          */
         this.extract = {
-            /*
+            /**
              * @description Return a space delimited string of point coordinates.
              * @param {SuperMap.Geometry.Point} point
              * @returns  {String} A string of coordinates representing the point
@@ -44,7 +44,7 @@ export class WKT extends Format {
                 return point.x + ' ' + point.y;
             },
 
-            /*
+            /**
              * @description  Return a comma delimited string of point coordinates from a multipoint.
              * @param {SuperMap.Geometry.MultiPoint} multipoint
              * @returns  {String} A string of point coordinate strings representing
@@ -60,7 +60,7 @@ export class WKT extends Format {
                 return array.join(',');
             },
 
-            /*
+            /**
              * @description  Return a comma delimited string of point coordinates from a line.
              * @param {SuperMap.Geometry.LineString} linestring
              * @returns  {String} A string of point coordinate strings representing
@@ -74,7 +74,7 @@ export class WKT extends Format {
                 return array.join(',');
             },
 
-            /*
+            /**
              * @description  Return a comma delimited string of linestring strings from a multilinestring.
              * @param {SuperMap.Geometry.MultiLineString} multilinestring
              * @returns  {String} A string of of linestring strings representing
@@ -90,7 +90,7 @@ export class WKT extends Format {
                 return array.join(',');
             },
 
-            /*
+            /**
              * @description  Return a comma delimited string of linear ring arrays from a polygon.
              * @param {SuperMap.Geometry.Polygon} polygon
              * @returns  {String} An array of linear ring arrays representing the polygon
@@ -105,7 +105,7 @@ export class WKT extends Format {
                 return array.join(',');
             },
 
-            /*
+            /**
              * @description  Return an array of polygon arrays from a multipolygon.
              * @param {SuperMap.Geometry.MultiPolygon} multipolygon
              * @returns  {String} An array of polygon arrays representing
@@ -121,7 +121,7 @@ export class WKT extends Format {
                 return array.join(',');
             },
 
-            /*
+            /**
              * @description  Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <SuperMap.Geometry.Collection>
              * @param {SuperMap.Geometry.Collection} collection
              * @returns  {String} internal WKT representation of the collection
@@ -136,13 +136,13 @@ export class WKT extends Format {
 
         };
 
-        /*
+        /**
          * @private
          * @description Object with properties corresponding to the geometry types.
          * Property values are functions that do the actual parsing.
          */
         this.parse = {
-            /*
+            /**
              * @private
              * @description  Return point feature given a point WKT fragment.
              * @param {String} str A WKT fragment representing the point
@@ -155,7 +155,7 @@ export class WKT extends Format {
                 );
             },
 
-            /*
+            /**
              * @description  Return a multipoint feature given a multipoint WKT fragment.
              * @param {String} A WKT fragment representing the multipoint
              * @returns  {SuperMap.Feature.Vector} A multipoint feature
@@ -174,7 +174,7 @@ export class WKT extends Format {
                 );
             },
 
-            /*
+            /**
              * @description  Return a linestring feature given a linestring WKT fragment.
              * @param {String} A WKT fragment representing the linestring
              * @returns  {SuperMap.Feature.Vector} A linestring feature
@@ -191,7 +191,7 @@ export class WKT extends Format {
                 );
             },
 
-            /*
+            /**
              * @description  Return a multilinestring feature given a multilinestring WKT fragment.
              * @param {String} A WKT fragment representing the multilinestring
              * @returns  {SuperMap.Feature.Vector} A multilinestring feature
@@ -210,7 +210,7 @@ export class WKT extends Format {
                 );
             },
 
-            /*
+            /**
              * @description  Return a polygon feature given a polygon WKT fragment.
              * @param {String} A WKT fragment representing the polygon
              * @returns  {SuperMap.Feature.Vector} A polygon feature
@@ -231,7 +231,7 @@ export class WKT extends Format {
                 );
             },
 
-            /*
+            /**
              * @private
              * @description  Return a multipolygon feature given a multipolygon WKT fragment.
              * @param {String} A WKT fragment representing the multipolygon
@@ -252,7 +252,7 @@ export class WKT extends Format {
             },
 
 
-            /*
+            /**
              * @description  Return an array of features given a geometrycollection WKT fragment.
              * @param {String} A WKT fragment representing the geometrycollection
              * @returns  {Array} An array of SuperMap.Feature.Vector
@@ -280,7 +280,7 @@ export class WKT extends Format {
      * array of vector features.  Supports WKT for POINT, MULTIPOINT,
      * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
      * GEOMETRYCOLLECTION.
-     * @param wkt - {string} A WKT string
+     * @param {string} wkt - A WKT string
      * @returns {SuperMap.Feature.Vector|Array} A feature or array of features for
      * GEOMETRYCOLLECTION WKT.
      */
@@ -302,7 +302,7 @@ export class WKT extends Format {
     /**
      * @function SuperMap.Format.WKT.prototype.write
      * @description Serialize a feature or array of features into a WKT string.
-     * @param features - {SuperMap.Feature.Vector|Array} A feature or array of features
+     * @param {(SuperMap.Feature.Vector|Array)} features - A feature or array of features
      * @returns {string} The WKT string representation of the input geometries
      */
     write(features) {
@@ -334,7 +334,7 @@ export class WKT extends Format {
     /**
      * @function SuperMap.Format.WKT.prototype.extractGeometry
      * @description Entry point to construct the WKT for a single Geometry object.
-     * @param geometry - {SuperMap.Geometry}
+     * @param {SuperMap.Geometry} geometry 
      * @returns {string} A WKT string of representing the geometry
      */
     extractGeometry(geometry) {

@@ -5,7 +5,7 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.iManagerCreateNodeParam
  * @classdesc iManager 创建节点参数。
  * @category iManager
- * @param params - {Object} iManager创建节点参数。
+ * @param {Object} params - iManager创建节点参数。
  *
  */
 export class IManagerCreateNodeParam {

@@ -8,7 +8,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
  * @category iPortal/Online
- * @param url - {string} iPortal服务地址
+ * @param {string} url - iPortal服务地址
  */
 export class IPortalServiceBase {
 
@@ -21,10 +21,10 @@ export class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param method -{string} 请求类型
-     * @param url -{string} 服务地址
-     * @param param -{Object} 请求参数
-     * @param requestOptions -{Object} fetch请求配置项
+     * @param {string} method - 请求类型
+     * @param {string} url - 服务地址
+     * @param {Object} param - 请求参数
+     * @param {Object} requestOptions - fetch请求配置项
      * @returns {Promise} 返回包含请求结果的Promise对象
      */
 
@@ -36,10 +36,10 @@ export class IPortalServiceBase {
     }
 
 
-    /*
+    /**
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url -{string} 创建证书url地址
+     * @param {string} url - 创建证书url地址
      * @return {string} 携带token或key的新地址
      */
 
@@ -62,7 +62,7 @@ export class IPortalServiceBase {
     }
 
 
-    /*
+    /**
      * @function SuperMap.iPortalServiceBase.prototype.getCredential
      * @description 获取token
      * @return {string } 返回获取的token

@@ -9,14 +9,14 @@ export class Util {
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Util
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Tool.Util.constructor
+     * @description 构造函数。
      *
      */
     constructor() {
         /**
-         * Property: BUILTIN_OBJECT
-         * {Object} 用于处理merge时无法遍历Date等对象的问题
+         * @member {Object} SuperMap.LevelRenderer.Tool.Util.prototype.BUILTIN_OBJECT
+         * @description 用于处理merge时无法遍历Date等对象的问题
          */
         this.BUILTIN_OBJECT = {
             '[object Function]': 1,
@@ -27,8 +27,7 @@ export class Util {
         };
 
         /**
-         * Property: _ctx
-         * {Object}
+         * @member {Object} SuperMap.LevelRenderer.Tool.Util.prototype._ctx
          */
         this._ctx = null;
 
@@ -74,14 +73,11 @@ export class Util {
 
 
     /**
-     * APIMethod: clone
-     * 对一个object进行深度拷贝。
-     *
-     * Parameters:
-     * source - {Object} 需要进行拷贝的对象。
-     *
-     * Returns:
-     * {Object} 拷贝后的新对象。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.clone
+     * @description 对一个object进行深度拷贝。
+     * 
+     * @param {Object} source - 需要进行拷贝的对象。
+     * @return {Object} 拷贝后的新对象。
      */
     clone(source) {
         var BUILTIN_OBJECT = this.BUILTIN_OBJECT;
@@ -109,17 +105,14 @@ export class Util {
 
 
     /**
-     * Method: mergeItem
-     * 合并源对象的单个属性到目标对象。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.mergeItem
+     * @description 合并源对象的单个属性到目标对象。
      *
-     * Parameters:
-     * target - {Object} 目标对象。
-     * source - {Object} 源对象。
-     * key - {String} 键。
-     * overwrite - {Boolean} 是否覆盖。
-     *
-     * Returns:
-     * {Object} 目标对象。
+     * @param {Object} target - 目标对象。
+     * @param {Object} source - 源对象。
+     * @param {String} key - 键。
+     * @param {Boolean} overwrite - 是否覆盖。
+     * @return {Object} 目标对象
      */
     mergeItem(target, source, key, overwrite) {
         var BUILTIN_OBJECT = this.BUILTIN_OBJECT;
@@ -142,16 +135,13 @@ export class Util {
 
 
     /**
-     * APIMethod: merge
-     * 合并源对象的属性到目标对象。
-     *
-     * Parameters:
-     * target - {Object} 目标对象。
-     * source - {Object} 源对象。
-     * overwrite - {Boolean} 是否覆盖。
-     *
-     * Returns:
-     * {Object} 目标对象。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.merge
+     * @description 合并源对象的属性到目标对象。
+     * 
+     * @param {Object} target - 目标对象。
+     * @param {Object} source - 源对象。
+     * @param {Boolean} overwrite - 是否覆盖。
+     * @return {Object} 目标对象。
      */
     merge(target, source, overwrite) {
         for (var i in source) {
@@ -163,11 +153,9 @@ export class Util {
 
 
     /**
-     * Method: getContext
-     * 获取 Cavans 上下文
-     *
-     * Returns:
-     * {Object} Cavans 上下文。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.getContext
+     * @description 获取 Canvas 上下文。
+     * @return {Object} 上下文。
      */
     getContext() {
         if (!this._ctx) {
@@ -178,11 +166,9 @@ export class Util {
 
 
     /**
-     * APIMethod: getPixelContext
-     * 获取像素拾取专用的上下文
-     *
-     * Returns:
-     * {Object}像素拾取专用的上下文。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.getPixelContext
+     * @description 获取像素拾取专用的上下文。
+     * @return {Object} 像素拾取专用的上下文。
      */
     getPixelContext() {
         if (!this._pixelCtx) {
@@ -196,14 +182,11 @@ export class Util {
 
 
     /**
-     * APIMethod: adjustCanvasSize
-     * 如果坐标处在_canvas外部，改变_canvas的大小
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.adjustCanvasSize
+     * @description 如果坐标处在_canvas外部，改变_canvas的大小，修改canvas的大小 需要重新设置translate
      *
-     * 注意 修改canvas的大小 需要重新设置translate
-     *
-     * Parameters:
-     * x - {Number} 横坐标。
-     * y - {Number} 纵坐标。
+     * @param {number} x - 横坐标。
+     * @param {number} y - 纵坐标。
      *
      */
     adjustCanvasSize(x, y) {
@@ -251,11 +234,9 @@ export class Util {
 
 
     /**
-     * APIMethod: getPixelOffset
-     * 获取像素canvas的偏移量
-     *
-     * Returns:
-     * {Object}偏移量。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.getPixelOffset
+     * @description 获取像素canvas的偏移量。
+     * @return {Object} 偏移量。
      */
     getPixelOffset() {
         return {
@@ -266,11 +247,9 @@ export class Util {
 
 
     /**
-     * APIMethod: indexOf
-     * 查询数组中元素的index
-     *
-     * Returns:
-     * {Object}偏移量。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.indexOf
+     * @description 查询数组中元素的index
+     * @return {Object} 偏移量。
      */
     indexOf(array, value) {
         if (array.indexOf) {
@@ -286,15 +265,12 @@ export class Util {
 
 
     /**
-     * APIMethod: inherits
-     * 构造类继承关系
-     *
-     * Parameters:
-     * clazz - {Function} 源类。
-     * baseClazz - {Function} 基类。
-     *
-     * Returns:
-     * {Object}偏移量。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.inherits
+     * @description 构造类继承关系
+     * 
+     * @param {Function} clazz - 源类。
+     * @param {Function} baseClazz - 基类。
+     * @return {Object} 偏移量。
      */
     inherits(clazz, baseClazz) {
         var clazzPrototype = clazz.prototype;

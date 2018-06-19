@@ -6,42 +6,42 @@ import {ClientType} from '../REST';
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
  * @category Security
- * @param options - {Object} token申请参数。
+ * @param {Object} options - token申请参数。
  */
 export class TokenServiceParameter {
     constructor(options) {
         /**
-         * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
+         * @member {string} SuperMap.TokenServiceParameter.prototype.userName
          * @description 用户名。
          */
         this.userName = null;
 
         /**
-         * @member SuperMap.TokenServiceParameter.prototype.password -{string}
+         * @member {string} SuperMap.TokenServiceParameter.prototype.password
          * @description 密码。
          */
         this.password = null;
 
         /**
-         * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
+         * @member {string} SuperMap.TokenServiceParameter.prototype.clientType
          * @description token申请的客户端标识类型。
          */
         this.clientType = ClientType.NONE;
 
         /**
-         * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+         * @member {string} SuperMap.TokenServiceParameter.prototype.ip
          * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
          */
 
         this.ip = null;
         /**
-         * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+         * @member {string} SuperMap.TokenServiceParameter.prototype.referer
          * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
          */
         this.referer = null;
 
         /**
-         * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+         * @member {number} SuperMap.TokenServiceParameter.prototype.expiration
          * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
          */
         this.expiration = 60;
