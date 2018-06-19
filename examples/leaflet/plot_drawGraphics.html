@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_drawGraphics"></title>
-    <script type="text/javascript" include="bootstrap-css,easyui,jquery-colorpicker" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap-css,plottingPanel" src="../js/include-web.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -88,7 +88,7 @@
     drawControl.addTo(map);
     var editControl = L.supermap.plotting.editControl();
     editControl.addTo(map);
-
+    L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
     L.supermap.plotting.getControl(map, serverUrl).getSymbolLibManager().initializeAsync();
     //对象标注
     function createSymbolText(){
@@ -549,10 +549,6 @@
     function clearMap(){
         plottingLayer.removeAllFeatures();
     }
-    window.onload = function(){
-        L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
-    };
-
 </script>
 </body>
 </html>

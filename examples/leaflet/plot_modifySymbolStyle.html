@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_modifySymbolStyle"></title>
-    <script type="text/javascript" include="bootstrap-css,jquery-colorpicker,easyui" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap-css,plottingPanel" src="../js/include-web.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -62,6 +62,7 @@
     drawControl.addTo(map);
     var editControl = L.supermap.plotting.editControl();
     editControl.addTo(map);
+    L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
     function loadSymbolLib(){
         var symbolLibManager = L.supermap.plotting.getControl(map, serverUrl).getSymbolLibManager();
         symbolLibManager.on(L.supermap.plotting.event.initializecompleted,symbolLibInitializeCompleted);
@@ -88,7 +89,7 @@
         plottingLayer.removeAllFeatures();
     }
     window.onload = function(){
-        L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+
         loadSymbolLib();
     };
 </script>
