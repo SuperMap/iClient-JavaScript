@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_plotSymbol"></title>
-    <script type="text/javascript" include="bootstrap,zTree" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,zTree,easyui" src="../js/include-web.js"></script>
     <style type="text/css">
         #map {
+			position: absolute;
             left: 200px;
             right: 0px;
             width: 100%;
@@ -41,7 +42,7 @@
 <div id="map">
 </div>
 <script type="text/javascript" include="leaflet,iclient9-leaflet,iclient9-plot-leaflet" src="../../dist/include-leaflet.js"></script>
-<script type="text/javascript" include="PlotPanel" src="../js/PlottingPanel/PlottingPanel.Include.js"></script>
+<script type="text/javascript" include="PlotPanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-world/rest/maps/World";
