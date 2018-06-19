@@ -197,8 +197,8 @@
     function clearLayer() {
         cancelDraw();
 
-        for(var i = 0; i < map.getPlottingLayers().length; i++){
-            map.getPlottingLayers().removeAllFeatures();
+        for (var i = 0; i < map.getPlottingLayers().length; i++) {
+            map.getPlottingLayers()[i].removeAllFeatures();
         }
     }
     window.onload = function(){
