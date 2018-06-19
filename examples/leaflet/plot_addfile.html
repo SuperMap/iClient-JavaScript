@@ -82,7 +82,9 @@
 
     function clearLayers() {
         widgets.alert.clearAlert();
-        map.getPlottingLayers()[0].removeAllFeatures();
+        for (var i = 0; i < map.getPlottingLayers().length; i++) {
+            map.getPlottingLayers()[i].removeAllFeatures();
+        }
     }
 
 </script>
