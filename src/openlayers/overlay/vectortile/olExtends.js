@@ -4,18 +4,21 @@ import ol from 'openlayers';
 export var olExtends = function (targetMap) {
 
     window.targetMapCache = targetMap;
-    ol.format.MVT.prototype.readProjection = function (source) {// eslint-disable-line no-unused-vars
+    //解决 new ol.format.MVT({featureClass: ol.Feature})时，非3857显示异常的问题。ol即将发布的5.0版本已解决。
+    ol.format.MVT.prototype.readProjection = function (source) { // eslint-disable-line no-unused-vars
         return new ol.proj.Projection({
             code: '',
             units: ol.proj.Units.TILE_PIXELS
         });
     };
+    //解决olms.js插件，在使用ol.js时沿线标注不显示的问题，因为ol.geom.LineString.getFlatMidpoint未非公开方法
     if (!ol.geom.LineString.getFlatMidpoint) {
         ol.geom.LineString.prototype.getFlatMidpoint = function () {
             return this.getCoordinateAt(0.5);
         };
     }
-    ol.render.canvas.Replay.prototype.applyFill = function (state, geometry) {// eslint-disable-line no-unused-vars
+    //解决面填充时不能整版填充的问题。ol即将发布的5.0版本已解决。
+    ol.render.canvas.Replay.prototype.applyFill = function (state, geometry) { // eslint-disable-line no-unused-vars
         var fillStyle = state.fillStyle;
         var fillInstruction = [ol.render.canvas.Instruction.SET_FILL_STYLE, fillStyle];
         if (typeof fillStyle !== 'string') {
@@ -24,6 +27,7 @@ export var olExtends = function (targetMap) {
         }
         this.instructions.push(fillInstruction);
     };
+    //解决在多面时，第一个面是逆时针时无法显示的问题。该问题由组件修复。
     ol.format.MVT.prototype.createFeature_ = function (pbf, rawFeature, opt_options) {
         var type = rawFeature.type;
         if (type === 0) {
@@ -54,7 +58,6 @@ export var olExtends = function (targetMap) {
                     if (!ol.geom.flat.orient.linearRingIsClockwise(flatCoordinates, offset, end, 2)) {
                         endss.push(ends.slice(prevEndIndex, i + 1));
                         prevEndIndex = i + 1;
-
                     }
                     offset = end;
                 }
@@ -85,7 +88,7 @@ export var olExtends = function (targetMap) {
 
         return feature;
     };
-
+    //解决中文沿线表述显示不符合中文阅读习惯的问题
     ol.geom.flat.textpath.lineString = function (
         flatCoordinates, offset, end, stride, text, measure, startM, maxAngle) {
         var result = [];
@@ -202,10 +205,10 @@ export var olExtends = function (targetMap) {
         }
         return result;
     };
+    //以下两个方法解决在大数据量图斑时，内存疯长的问题。该改法引发新问题:无法点选要素
     ol.layer.VectorTile.prototype.setFastRender = function (fastRender) {
         return this.fastRender = fastRender;
     };
-
     ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function (context, frameState, layerState) {
         var layer = this.getLayer();
         var declutterReplays = layer.getDeclutter() ? {} : null;

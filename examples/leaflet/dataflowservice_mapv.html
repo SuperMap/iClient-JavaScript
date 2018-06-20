@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_dataFlowService"></title>
+    <script type="text/javascript" include="widgets" src="../js/include-web.js"></script>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" include='mapv' src="../../dist/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
+        var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "54.223.164.155:8800");
+        var token = "0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..";
+        var map,
+            urlMap = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+            urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
+            urlDataFlow = wsHost + "/iserver/services/dataflowTest2/dataflow";
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG3857,
+            center: [37, 108.42],
+            maxZoom: 18,
+            zoom: 5
+        });
+        L.supermap.tiledMapLayer(urlMap).addTo(map);
+        if (!window.isLocal) {
+            SuperMap.SecurityManager.registerToken(urlDataFlow, token);
+        }
+
+        var popup = L.popup({
+            offset: L.point(0, 0),
+            autoPan: true
+        });
+        //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
+        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
+            render: 'mapv',
+            pointToLayer: function (geoJsonPoint, latlng) {
+                return L.marker(latlng, {
+                    icon: L.icon({
+                        iconUrl: '../img/taxi.png',
+                        iconAnchor: [16, 16]
+                    })
+                });
+            },
+            onEachFeature: function (feature, layer) {
+                popup.setLatLng(L.GeoJSON.coordsToLatLng(feature.geometry.coordinates))
+                    .setContent(feature.properties.time);
+                if (!popup.isOpen()) {
+                    popup.addTo(map);
+                }
+            },
+        });
+        dataFlowLayer.addTo(map);
+
+        //模拟实时数据
+        //查询expectCount个线数据，每两秒将expectCount个点通过dataFlowService广播给iSevrer的dataflow服务,模拟expectCount个小汽车的移动轨迹
+        //该测试数据有21331个数据
+        var expectCount = 10000;
+        query();
+        var timer, featureResult, dataFlowBroadcast;
+
+        function query() {
+            widgets.loader.showLoader();
+            var ids = [];
+            while (ids.length < expectCount) {
+                var n = Math.round(Math.random() * 21331);
+                if (ids.indexOf(n) === -1) {
+                    ids.push(n);
+                }
+            }
+            var str = "(" + ids.join() + ")";
+            var param = new SuperMap.QueryBySQLParameters({
+                expectCount: expectCount,
+                queryParams: {
+                    name: "County_Road_ln@China",
+                    attributeFilter: "SMID in " + str,
+                }
+            });
+            L.supermap
+                .queryService(urlQuery)
+                .queryBySQL(param, function (serviceResult) {
+
+                    featureResult = serviceResult;
+                    dataFlowBroadcast = L.supermap.dataFlowService(urlDataFlow).initBroadcast();
+                    dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
+                        widgets.loader.removeLoader();
+                        broadcast();
+                        timer = window.setInterval("broadcast()", 2000);
+                    })
+                });
+        }
+
+        var count = 0;
+
+        function broadcast() {
+            var features = [];
+
+            for (var index = 0; index < featureResult.result.recordsets[0].features.features.length; index++) {
+                var geometry = featureResult.result.recordsets[0].features.features[index].geometry;
+                var point = geometry.coordinates[(count % geometry.coordinates.length)];
+                //处理多线
+                if (L.Util.isArray(point[0])) {
+                    point = point[0];
+                }
+                var data = {
+                    geometry: {
+                        coordinates: [point[0], point[1]],
+                        type: "Point"
+                    },
+                    type: "Feature",
+                    properties: {
+                        id: index + 1,
+                        time: new Date()
+                    }
+                };
+                features.push(data);
+            }
+            dataFlowBroadcast.broadcast(features);
+            count += 2;
+        }
+    </script>
+</body>
+
+</html>

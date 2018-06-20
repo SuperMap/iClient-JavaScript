@@ -1,16 +1,16 @@
 var widgets = {
-    loader:{
+    loader: {
         //显示loading
-        showLoader:null,
+        showLoader: null,
         //设置loading文本，默认文本为'loading'
-        setLoaderText:null,
+        setLoaderText: null,
         //设置loader显示相关属性
-        setAttributes:null,
+        setAttributes: null,
         //移除掉loader
-        removeLoader:null
+        removeLoader: null
     },
 
-    alert:{
+    alert: {
         //弹出自定义弹框
         showAlert: null,
         //clear alert
@@ -29,7 +29,8 @@ var widgets = {
     // withBorder：提示框是否加边框；
     function showAlert(msg, state, width, withBorder, opacity) {
         //提示框颜色
-        var className = "alert-", border, alpha;
+        var className = "alert-",
+            border, alpha;
         className += state ? "success" : "danger";
         //提示框宽度
         if (width === null || typeof (width) === 'undefined') {
@@ -37,7 +38,9 @@ var widgets = {
             width = 300;
         }
         //是否开启边框
-        border = withBorder ? {"border": "1px solid"} : "none";
+        border = withBorder ? {
+            "border": "1px solid"
+        } : "none";
         //设置透明度[0,1]之间
         alpha = opacity;
         if (alertDiv) {
@@ -67,7 +70,9 @@ var widgets = {
 
         if (!type) {
             type = "loader-default";
-            attributes = attributes || {'data-half': true}
+            attributes = attributes || {
+                'data-half': true
+            }
         }
 
         var $body = document.getElementsByTagName('body');
@@ -85,12 +90,11 @@ var widgets = {
 
     /*设置loading文本，默认文本为"loading"*/
     function setLoaderText(text, textAttributeField) {
-        if (text != null) {
-            var txtAttrField = textAttributeField != null ? textAttributeField : "data-text";
-            var attributes = {};
-            attributes[txtAttrField] = text;
-            setAttributes(attributes);
-        }
+        text = text || 'loading...';
+        var txtAttrField = textAttributeField != null ? textAttributeField : "data-text";
+        var attributes = {};
+        attributes[txtAttrField] = text;
+        setAttributes(attributes);
     }
 
     /*设置loader显示相关属性*/
@@ -137,7 +141,7 @@ var widgets = {
 
     widgets.loader.showLoader = showLoader;
     widgets.loader.setLoaderText = setLoaderText;
-    widgets.loader.setAttributes=setAttributes;
+    widgets.loader.setAttributes = setAttributes;
     widgets.loader.removeLoader = removeLoader;
 
 })(widgets, window.jQuery);

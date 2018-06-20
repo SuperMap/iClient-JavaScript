@@ -1,5 +1,5 @@
 var olapi = "https://openlayers.org/en/latest/apidoc/";
-var lfapi = "http://leafletjs.com/reference-1.3.0.html";
+var lfapi = "http://leafletjs.com/reference-1.2.0.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var typeLinks = {
     //openlayers
@@ -27,6 +27,7 @@ var typeLinks = {
     "ol.source.State": olapi + "ol.source.html#.State",
 
     //leaflet
+    "L.Marker": lfapi + '#marker',
     "L.Bounds": lfapi + "#bounds",
     "L.Polygon": lfapi + "#polygon",
     "L.Polyline": lfapi + "#polyline",
@@ -43,6 +44,7 @@ var typeLinks = {
     "L.LayerGroup": lfapi + '#layergroup',
     "L.TileLayer": lfapi + '#tilelayer',
     "L.CircleMarker": lfapi + '#circlemarker',
+    "L.Path-option": lfapi + '#path-option',
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented'

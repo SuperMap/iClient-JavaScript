@@ -117,7 +117,7 @@ export var EchartsLayer = L.Layer.extend({
                     var mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
-                    
+
                     if (!me.options.loadWhileAnimating) {
                         for (var item in ecLayers) {
                             if (!ecLayers.hasOwnProperty(item)) {
@@ -260,7 +260,8 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     if (data[1] === null) {
         data[1] = L.CRS.EPSG3857.projection.MAX_LATITUDE;
     }
-    data[1] = this.fixLat(data[1]);
+    //平面坐标系不能这么处理
+    //data[1] = this.fixLat(data[1]);
 
     var px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
 
