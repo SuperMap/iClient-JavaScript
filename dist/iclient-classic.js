@@ -122,8 +122,8 @@ var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {
  *     var size = new SuperMap.Size(100, 100);
  *     var obj = {}；
  *     SuperMap.Util.extend(obj, size);
- * @param destination - {Object} 目标对象。
- * @param source - {Object} 源对象，其属性将被设置到目标对象上。
+ * @param {Object} destination - 目标对象。
+ * @param {Object} source - 源对象，其属性将被设置到目标对象上。
  * @return {Object} 目标对象。
  */
 
@@ -159,8 +159,8 @@ _SuperMap.SuperMap.Util.extend = function (destination, source) {
 };
 /**
  * @description 对象拷贝。
- * @param des - {Object} 目标对象。
- * @param soc - {Object} 源对象
+ * @param {Object} des - 目标对象。
+ * @param {Object} soc - 源对象
  */
 _SuperMap.SuperMap.Util.copy = function (des, soc) {
     des = des || {};
@@ -176,7 +176,7 @@ _SuperMap.SuperMap.Util.copy = function (des, soc) {
 };
 /**
  * @description 销毁对象，将其属性置空
- * @param obj - {Object} 目标对象。
+ * @param {Object} obj - 目标对象。
  */
 _SuperMap.SuperMap.Util.reset = function (obj) {
     obj = obj || {};
@@ -201,8 +201,7 @@ _SuperMap.SuperMap.Util.reset = function (obj) {
 
 /**
  * @description 获取HTML元素数组。
- * @param argument - {String | HTMLElement | Window}
- * @return {Array<HTMLElement>} HTML元素数组。
+ * @return {Array.<HTMLElement>} HTML元素数组。
  */
 _SuperMap.SuperMap.Util.getElement = function () {
     var elements = [];
@@ -222,7 +221,7 @@ _SuperMap.SuperMap.Util.getElement = function () {
 
 /**
  * @description instance of的跨浏览器实现。
- * @param o - {Object} 对象。
+ * @param {Object} o - 对象。
  * @return {boolean} 是否是页面元素
  */
 _SuperMap.SuperMap.Util.isElement = function (o) {
@@ -231,7 +230,7 @@ _SuperMap.SuperMap.Util.isElement = function (o) {
 
 /**
  * @description 判断一个对象是否是数组。
- * @param a - {Object} 对象。
+ * @param {Object} a - 对象。
  * @return {boolean} 是否是数组。
  */
 _SuperMap.SuperMap.Util.isArray = function (a) {
@@ -240,8 +239,8 @@ _SuperMap.SuperMap.Util.isArray = function (a) {
 
 /**
  * @description 从数组中删除某一项。
- * @param array - {Array} 数组。
- * @param item - {Object} 数组中要删除的一项。
+ * @param {Array} array - 数组。
+ * @param {Object} item - 数组中要删除的一项。
  * @return {Array} 执行删除操作后的数组。
  */
 _SuperMap.SuperMap.Util.removeItem = function (array, item) {
@@ -256,8 +255,8 @@ _SuperMap.SuperMap.Util.removeItem = function (array, item) {
 
 /**
  * @description 获取某对象再数组中的索引值。
- * @param array - {Array} 数组。
- * @param obj - {Object} 对象。
+ * @param {Array} array - 数组。
+ * @param {Object} obj - 对象。
  * @return {number} 某对象再数组中的索引值。
  */
 _SuperMap.SuperMap.Util.indexOf = function (array, obj) {
@@ -280,14 +279,14 @@ _SuperMap.SuperMap.Util.indexOf = function (array, obj) {
 
 /**
  * @description 修改某DOM元素的许多属性。
- * @param element - {HTMLElement} 待修改的DOM元素。
- * @param id - {string} DOM元素的id。
- * @param px - {SuperMap.Pixel} 包含DOM元素的style属性的left和top属性。
- * @param sz - {SuperMap.Size} 包含DOM元素的width和height属性。
- * @param position - {string} DOM元素的position属性。
- * @param border - {string} DOM元素的style属性的border属性。
- * @param overflow - {string} DOM元素的style属性的overflow属性。
- * @param opacity - {number} 不透明度值。取值范围为 (0.0 - 1.0)。
+ * @param {HTMLElement} element - 待修改的DOM元素。
+ * @param {string} id - DOM元素的id。
+ * @param {SuperMap.Pixel} px - 包含DOM元素的style属性的left和top属性。
+ * @param {SuperMap.Size} sz - 包含DOM元素的width和height属性。
+ * @param {string} position - DOM元素的position属性。
+ * @param {string} border - DOM元素的style属性的border属性。
+ * @param {string} overflow - DOM元素的style属性的overflow属性。
+ * @param {number} opacity - 不透明度值。取值范围为 (0.0 - 1.0)。
  */
 _SuperMap.SuperMap.Util.modifyDOMElement = function (element, id, px, sz, position, border, overflow, opacity) {
 
@@ -325,8 +324,8 @@ _SuperMap.SuperMap.Util.modifyDOMElement = function (element, id, px, sz, positi
  *     another properties, by analogy with SuperMap.Util.extend() from
  *     Prototype.js.
  *
- * @param to -{Object} The destination object.
- * @param from -{Object} The source object.  Any properties of this object that
+ * @param {Object} to - The destination object.
+ * @param {Object} from - The source object.  Any properties of this object that
  *     are undefined in the to object will be set on the to object.
  *
  * @return {Object} A reference to the to object.  Note that the to argument is modified
@@ -359,9 +358,9 @@ _SuperMap.SuperMap.Util.applyDefaults = function (to, from) {
 };
 
 /**
- * @param params - {Object} 参数对象。
- * @return {string} HTTP的GEI请求中的参数字符串。
  * @description 将参数对象转换为HTTP的GEI请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
+ * @param {Object} params - 参数对象。
+ * @return {string} HTTP的GEI请求中的参数字符串。
  */
 _SuperMap.SuperMap.Util.getParameterString = function (params) {
     var paramsArray = [];
@@ -392,8 +391,8 @@ _SuperMap.SuperMap.Util.getParameterString = function (params) {
 
 /**
  * @description 给url追加参数。
- * @param url - {string} 待追加参数的url字符串。
- * @param paramStr - {string} 待追加的参数。
+ * @param {string} url - 待追加参数的url字符串。
+ * @param {string} paramStr - 待追加的参数。
  * @return {string} The new url
  */
 _SuperMap.SuperMap.Util.urlAppend = function (url, paramStr) {
@@ -414,8 +413,8 @@ _SuperMap.SuperMap.Util.DEFAULT_PRECISION = 14;
 
 /**
  * @description 将字符串以接近的精度转换为数字。
- * @param number - {string} 字符串。
- * @param precision - {number} 精度。
+ * @param {string} number - 字符串。
+ * @param {number} precision - 精度。
  * @return {number} 数字。
  */
 _SuperMap.SuperMap.Util.toFloat = function (number, precision) {
@@ -430,7 +429,7 @@ _SuperMap.SuperMap.Util.toFloat = function (number, precision) {
 
 /**
  * @description 角度转弧度。
- * @param x - {number} 角度。
+ * @param {number} x - 角度。
  * @return {number} 弧度。
  */
 _SuperMap.SuperMap.Util.rad = function (x) {
@@ -439,7 +438,7 @@ _SuperMap.SuperMap.Util.rad = function (x) {
 
 /**
  * @description 从URL字符串中解析出参数对象。
- * @param url - {string} url。
+ * @param {string} url - url。
  * @return {Object} 解析出的参数对象。
  */
 _SuperMap.SuperMap.Util.getParameters = function (url) {
@@ -499,7 +498,7 @@ _SuperMap.SuperMap.Util.lastSeqID = 0;
 
 /**
  * @description 创建唯一ID值。
- * @param prefix {string} 前缀。
+ * @param {string} prefix - 前缀。
  * @return {string} 唯一的ID值。
  */
 _SuperMap.SuperMap.Util.createUniqueID = function (prefix) {
@@ -620,7 +619,7 @@ _SuperMap.SuperMap.Util.extend(_SuperMap.SuperMap.INCHES_PER_UNIT, {
 _SuperMap.SuperMap.DOTS_PER_INCH = 96;
 
 /**
- * @param scale - {number}
+ * @param {number} scale - 比例尺
  * @return {number} 返回正常的scale值
  */
 _SuperMap.SuperMap.Util.normalizeScale = function (scale) {
@@ -629,8 +628,9 @@ _SuperMap.SuperMap.Util.normalizeScale = function (scale) {
 };
 
 /**
- * @param scale - {number} 比例尺。
- * @param units - {string} 比例尺单位。
+ * @description 比例尺转分辨率。
+ * @param {number} scale - 比例尺。
+ * @param {string} units - 比例尺单位。
  * @return {number} 分辨率。
  */
 _SuperMap.SuperMap.Util.getResolutionFromScale = function (scale, units) {
@@ -647,8 +647,8 @@ _SuperMap.SuperMap.Util.getResolutionFromScale = function (scale, units) {
 
 /**
  * @description 分辨率转比例尺。
- * @param resolution - {number} 分辨率。
- * @param units - {string} 分辨率单位。
+ * @param {number} resolution - 分辨率。
+ * @param {string} units - 分辨率单位。
  * @return {number} 比例尺。
  */
 _SuperMap.SuperMap.Util.getScaleFromResolution = function (resolution, units) {
@@ -769,7 +769,7 @@ _SuperMap.SuperMap.INCHES_PER_UNIT["yard"] = _SuperMap.SuperMap.INCHES_PER_UNIT.
 
 /**
  * @description 判断一个 URL 请求是否在当前域中。
- * @param url - {string}  URL 请求字符串。
+ * @param {string} url - URL 请求字符串。
  * @return {boolean} URL请求是否在当前域中。
  */
 _SuperMap.SuperMap.Util.isInTheSameDomain = function (url) {
@@ -820,11 +820,11 @@ _SuperMap.SuperMap.Util.isInTheSameDomain = function (url) {
 
 /**
  * @description 计算iServer服务的REST图层的显示分辨率，需要从iServer的REST图层表述中获取viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
- * @param viewBounds - {SuperMap.Bounds} 地图的参照可视范围，即地图初始化时默认的地图显示范围。
- * @param viewer - {SuperMap.Size} 地图初始化时默认的地图图片的尺寸。
- * @param scale - {number} 地图初始化时默认的显示比例尺。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
+ * @param {SuperMap.Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
+ * @param {SuperMap.Size} viewer - 地图初始化时默认的地图图片的尺寸。
+ * @param {number} scale - 地图初始化时默认的显示比例尺。
+ * @param {string} coordUnit - 投影坐标系统的地图单位。
+ * @param {number} datumAxis - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
  * @return {number} 返回图层显示分辨率。
  */
 _SuperMap.SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
@@ -855,7 +855,7 @@ _SuperMap.SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coor
 
 /**
  * @description 将对象转换成 JSON 字符串。
- * @param obj - {Object} 要转换成 JSON 的 Object 对象。
+ * @param {Object} obj - 要转换成 JSON 的 Object 对象。
  * @return {string} 返回转换后的 JSON 对象。
  */
 _SuperMap.SuperMap.Util.toJSON = function (obj) {
@@ -919,10 +919,10 @@ _SuperMap.SuperMap.Util.toJSON = function (obj) {
 
 /**
  * @description 根据比例尺和dpi计算屏幕分辨率。
- * @param scale - {number} 比例尺。
- * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
+ * @param {number} scale - 比例尺。
+ * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
+ * @param {string} coordUnit - 投影坐标系统的地图单位。
+ * @param {number} datumAxis - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
  * @return {number} 返回当前比例尺下的屏幕分辨率。
  */
 _SuperMap.SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
@@ -947,10 +947,10 @@ _SuperMap.SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordU
 
 /**
  * @description 根据resolution、dpi、coordUnit和datumAxis计算比例尺。
- * @param resolution - {number} 用于计算比例尺的地图分辨率。
- * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
+ * @param {number} resolution - 用于计算比例尺的地图分辨率。
+ * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
+ * @param {string} coordUnit - 投影坐标系统的地图单位。
+ * @param {number} datumAxis - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
  * @return {number} 返回当前屏幕分辨率下的比例尺。
  */
 _SuperMap.SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, datumAxis) {
@@ -973,7 +973,7 @@ _SuperMap.SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, c
 
 /**
  * @description 转换查询结果。
- * @param result - {Object} 查询结果。
+ * @param {Object} result - 查询结果。
  * @return {Object} 转换后的查询结果。
  */
 _SuperMap.SuperMap.Util.transformResult = function (result) {
@@ -985,8 +985,8 @@ _SuperMap.SuperMap.Util.transformResult = function (result) {
 
 /**
  * @description 属性拷贝，不拷贝方法类名(CLASS_NAME)等。
- * @param destination - {Object} 拷贝目标。
- * @param source - {Object} 源对象。
+ * @param {Object} destination - 拷贝目标。
+ * @param {Object} source - 源对象。
  *
  */
 _SuperMap.SuperMap.Util.copyAttributes = function (destination, source) {
@@ -1004,9 +1004,9 @@ _SuperMap.SuperMap.Util.copyAttributes = function (destination, source) {
 
 /**
  * @description 将源对象上的属性拷贝到目标对象上。（不拷贝 CLASS_NAME 和方法）
- * @param destination - {Object} 目标对象。
- * @param source - {Object} 源对象。
- * @param clip - {Array<string>} 源对象中禁止拷贝到目标对象的属性，目的是防止目标对象上不可修改的属性被篡改。
+ * @param {Object} destination - 目标对象。
+ * @param {Object} source - 源对象。
+ * @param {Array.<string>} clip - 源对象中禁止拷贝到目标对象的属性，目的是防止目标对象上不可修改的属性被篡改。
  *
  */
 _SuperMap.SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
@@ -1038,7 +1038,7 @@ _SuperMap.SuperMap.Util.copyAttributesWithClip = function (destination, source, 
 
 /**
  * @description 克隆一份Object对象
- * @param obj - {Object}  需要克隆的对象。
+ * @param {Object} obj - 需要克隆的对象。
  * @return {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
  */
 _SuperMap.SuperMap.Util.cloneObject = function (obj) {
@@ -1076,10 +1076,10 @@ _SuperMap.SuperMap.Util.cloneObject = function (obj) {
 
 /**
  * @description 判断两条线段是不是有交点。
- * @param a1 - {SuperMap.Geometry.Point}  第一条线段的起始节点。
- * @param a2 - {SuperMap.Geometry.Point}  第一条线段的结束节点。
- * @param b1 - {SuperMap.Geometry.Point}  第二条线段的起始节点。
- * @param b2 - {SuperMap.Geometry.Point}  第二条线段的结束节点。
+ * @param {SuperMap.Geometry.Point} a1 - 第一条线段的起始节点。
+ * @param {SuperMap.Geometry.Point} a2 - 第一条线段的结束节点。
+ * @param {SuperMap.Geometry.Point} b1 - 第二条线段的起始节点。
+ * @param {SuperMap.Geometry.Point} b2 - 第二条线段的结束节点。
  * @return {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
  */
 _SuperMap.SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
@@ -1120,9 +1120,9 @@ _SuperMap.SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
 
 /**
  * @description 获取文本外接矩形宽度与高度。
- * @param style - {SuperMap.Style} 文本样式。
- * @param text - {string} 文本内容。
- * @param element - {Object} DOM元素。
+ * @param {SuperMap.Style} style - 文本样式。
+ * @param {string} text - 文本内容。
+ * @param {Object} element - DOM元素。
  * @return {Object} 返回裁剪后的宽度，高度信息。
  */
 _SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
@@ -3583,8 +3583,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 从服务器获取一个token,在此之前要注册服务器信息
-         * @param url {string}-服务器域名+端口，如：http://localhost:8092
-         * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
+         * @param {string} url -服务器域名+端口，如：http://localhost:8092
+         * @param {SuperMap.TokenServiceParameter} tokenParam - token申请参数
          * @return {Promise} 返回包含token信息的Promise对象
          */
 
@@ -3600,7 +3600,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 注册安全服务器相关信息
-         * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
+         * @param {SuperMap.ServerInfo} serverInfos - 服务器信息
          */
 
     }, {
@@ -3618,8 +3618,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 服务请求都会自动带上这个token
-         * @param url {string} -服务器域名+端口：如http://localhost:8090
-         * @param token -{string} token
+         * @param {string} url -服务器域名+端口：如http://localhost:8090
+         * @param {string} token - token
          */
 
     }, {
@@ -3635,8 +3635,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 注册key,ids为数组(存在一个key对应多个服务)
-         * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-         * @param key -{string} key
+         * @param {Array} ids - 可以是服务id数组或者url地址数组或者webAPI类型数组
+         * @param {string} key - key
          */
 
     }, {
@@ -3656,7 +3656,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 获取服务器信息
-         * @param url {string}-服务器域名+端口，如：http://localhost:8092
+         * @param {string} url -服务器域名+端口，如：http://localhost:8092
          * @returns {SuperMap.ServerInfo} 服务器信息
          */
 
@@ -3669,7 +3669,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 根据Url获取token
-         * @param url -{string} 服务器域名+端口，如：http://localhost:8092
+         * @param {string} url - 服务器域名+端口，如：http://localhost:8092
          * @returns {string} token
          */
 
@@ -3686,7 +3686,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 根据Url获取key
-         * @param id -{string} id
+         * @param {string} id - id
          * @returns {string} key
          */
 
@@ -3700,10 +3700,10 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登录验证
-         * @param url -{string} iServer首页地址，如：http://localhost:8090/iserver
-         * @param username -{string} 用户名
-         * @param password -{string} 密码
-         * @param rememberme -{boolean} 是否记住
+         * @param {string} url - iServer首页地址，如：http://localhost:8090/iserver
+         * @param {string} username - 用户名
+         * @param {string} password - 密码
+         * @param {boolean} rememberme - 是否记住
          * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
          */
 
@@ -3730,7 +3730,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登出
-         * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
+         * @param {string} url - iServer首页地址,如：http://localhost:8090/iserver
          * @returns {Promise} 是否登出成功
          */
 
@@ -3755,8 +3755,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description Online登录验证
-         * @param callbackLocation -{string} 跳转位置
-         * @param newTab -{boolean}是否新窗口打开
+         * @param {string} callbackLocation - 跳转位置
+         * @param {boolean} newTab -是否新窗口打开
          */
 
     }, {
@@ -3768,9 +3768,9 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iPortal登录验证
-         * @param url -{string} iportal首页地址
-         * @param username -{string} 用户名
-         * @param password -{string} 密码
+         * @param {string} url - iportal首页地址
+         * @param {string} username - 用户名
+         * @param {string} password - 密码
          * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
          */
 
@@ -3797,7 +3797,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iPortal登出
-         * @param url -{string} iportal首页地址
+         * @param {string} url - iportal首页地址
          * @returns {Promise} 如果登出成功，返回true;否则返回false
          */
 
@@ -3823,13 +3823,12 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iManager登录验证
-         * @param url -{string} iManager地址。<br>
-         *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
-         * @param loginInfoParams -{Object} iManager 登录参数<br>
-         *        userName -{string} 用户名<br>
-         *        password-{string} 密码
-         * @param options -{Object} <br>
-         *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+         * @param {string} url - iManager地址。地址参数为iManager首页地址，如： http://localhost:8390/imanager
+         * @param {Object} loginInfoParams - iManager 登录参数。
+         * @param {string} loginInfoParams.userName - 用户名
+         * @param {string} loginInfoParams.password - 密码
+         * @param {Object} options  
+         * @param {boolean} options.isNewTab - 不同域时是否在新窗口打开登录页面
          * @return {Promise} 返回包含iManager登录请求结果的Promise对象
          */
 
@@ -3980,8 +3979,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @description In addition to the mandatory C and P parameters, an arbitrary number of
  * objects can be passed, which will extend C.
  * @memberOf SuperMap
- * @param C - {Object} the class that inherits
- * @param P - {Object} the superclass to inherit from
+ * @param {Object} C - the class that inherits
+ * @param {Object} P - the superclass to inherit from
  */
 _SuperMap.SuperMap.inherit = function (C, P) {
     var F = function F() {};
@@ -4000,7 +3999,7 @@ _SuperMap.SuperMap.inherit = function (C, P) {
 /**
  * @description 实现多重继承
  * @memberOf SuperMap
- * @param ...mixins {Class|Object}继承的类
+ * @param {Class|Object} ...mixins - 继承的类
  */
 _SuperMap.SuperMap.mixin = function () {
     for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
@@ -4052,9 +4051,9 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否以指定的子字符串开头.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串以指定的子字符串开头,则返回true;否则返回false.
+     * @param {string} str - 目标字符串.
+     * @param {string} sub - 查找的子字符串.
+     * @returns {boolean} 目标字符串以指定的子字符串开头，则返回true；否则返回false。
      */
     startsWith: function startsWith(str, sub) {
         return str.indexOf(sub) == 0;
@@ -4062,9 +4061,9 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否包含指定的子字符串.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串中包含指定的子字符串,则返回true;否则返回false.
+     * @param {string} str - 目标字符串.
+     * @param {string} sub - 查找的子字符串.
+     * @returns {boolean} 目标字符串中包含指定的子字符串,则返回true；否则返回false.
      */
     contains: function contains(str, sub) {
         return str.indexOf(sub) != -1;
@@ -4072,7 +4071,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 删除一个字符串的开头和结尾处的所有空白字符.
-     * @param str - {string} (可能)存在空白字符填塞的字符串.
+     * @param {string} str - (可能)存在空白字符填塞的字符串.
      * @returns {string} 删除开头和结尾处空白字符后的字符串.
      */
     trim: function trim(str) {
@@ -4083,7 +4082,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
      * @description 骆驼式("-")连字符的字符串处理.
      * 例如: "chicken-head" becomes "chickenHead",
      *       "-chicken-head" becomes "ChickenHead".
-     * @param str - {string} 要处理的字符串,原始内容不应被修改.
+     * @param {string} str - 要处理的字符串,原始内容不应被修改.
      * @returns {string}
      */
     camelize: function camelize(str) {
@@ -4127,9 +4126,9 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
      *         args = null;
      *       返回值:"${a.b}"
      * (end)
-     * @param template - {string} 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
-     * @param context - {Object} 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
-     * @param args - {Array} 可选参数传递给在context对象上找到的函数.
+     * @param {string} template - 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
+     * @param {Object} context - 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
+     * @param {Array} args - 可选参数传递给在context对象上找到的函数.
      * @returns {string} 从 context 对象属性中替换字符串标记位的字符串.
      */
     format: function format(template, context, args) {
@@ -4195,7 +4194,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
      * SuperMap.String.isNumeric("4") // true
      * SuperMap.String.isNumeric(" 4 ") // false
      * (end)
-     * @returns {Boolean} 字符串包含唯一的数值,返回true;否则返回false.
+     * @returns {boolean} 字符串包含唯一的数值,返回true;否则返回false.
      */
     isNumeric: function isNumeric(value) {
         return _SuperMap.SuperMap.String.numberRegEx.test(value);
@@ -4203,8 +4202,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 把一个看似数值型的字符串转化为一个数值.
-     *
-     * @returns {number|string} 如果能转换为数值则返回数值,否则返回字符串本身.
+     * @returns {(number|string)} 如果能转换为数值则返回数值,否则返回字符串本身.
      */
     numericIf: function numericIf(value) {
         return _SuperMap.SuperMap.String.isNumeric(value) ? parseFloat(value) : value;
@@ -4236,8 +4234,8 @@ var NumberExt = exports.NumberExt = _SuperMap.SuperMap.Number = {
 
     /**
      * @description 限制浮点数的有效数字位数.
-     * @param num - {number}
-     * @param sig - {integer}
+     * @param {number} num - 浮点数
+     * @param {integer} sig - 有效位数
      * @returns {number} 将数字四舍五入到指定数量的有效位数.
      */
     limitSigDigs: function limitSigDigs(num, sig) {
@@ -4250,10 +4248,10 @@ var NumberExt = exports.NumberExt = _SuperMap.SuperMap.Number = {
 
     /**
      * @description 数字格式化输出.
-     * @param num  - {number}
-     * @param dec  - {integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
-     * @param tsep - {string} 千位分隔符. 默认为",".
-     * @param dsep - {string} 小数点分隔符. 默认为".".
+     * @param {number} num - 数字
+     * @param {integer} dec  - 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
+     * @param {string} tsep - 千位分隔符. 默认为",".
+     * @param {string} dsep - 小数点分隔符. 默认为".".
      * @returns {string} 数字格式化后的字符串.
      */
     format: function format(num, dec, tsep, dsep) {
@@ -4297,7 +4295,7 @@ if (!Number.prototype.limitSigDigs) {
     /**
      * APIMethod: Number.limitSigDigs
      * 限制浮点数的有效数字位数.
-     * @param sig - {integer}
+     * @param {integer} sig -有效位数
      * @returns {integer} 将数字四舍五入到指定数量的有效位数.
      *           如果传入值为 null、0、或者是负数, 返回值 0
      */
@@ -4315,8 +4313,8 @@ if (!Number.prototype.limitSigDigs) {
 var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
     /**
      * @description 绑定函数到对象.方便创建this的作用域.
-     * @param func - {function} 输入函数.
-     * @param object - {Object} 对象绑定到输入函数(作为输入函数的this对象).
+     * @param {function} func - 输入函数.
+     * @param {Object} object - 对象绑定到输入函数(作为输入函数的this对象).
      * @returns {function} object参数作为func函数的this对象.
      */
     bind: function bind(func, object) {
@@ -4332,8 +4330,8 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
 
     /**
      * @description 绑定函数到对象,在调用该函数时配置并使用事件对象作为第一个参数.
-     * @param func - {function} 用于监听事件的函数.
-     * @param object - {Object} this 对象的引用.
+     * @param {function} func - 用于监听事件的函数.
+     * @param {Object} object - this 对象的引用.
      * @returns {function}
      */
     bindAsEventListener: function bindAsEventListener(func, object) {
@@ -4346,7 +4344,7 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
      * @description 该函数仅仅返回false.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
      * @example
      * document.onclick = SuperMap.Function.False;
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     False: function False() {
         return false;
@@ -4356,7 +4354,7 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
      * @description 该函数仅仅返回true.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
      * @example
      * document.onclick = SuperMap.Function.True;
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     True: function True() {
         return true;
@@ -4381,12 +4379,12 @@ var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
     /**
      * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
      * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
-     * @param array - {Array} 要过滤的数组..
-     * @param callback - {function} 数组中的每一个元素调用该函数.<br>
+     * @param {Array} array - 要过滤的数组.
+     * @param {function} callback - 数组中的每一个元素调用该函数.<br>
      *     如果函数的返回值为true,该元素将包含在返回的数组中.该函数有三个参数: 数组中的元素,元素的索引,数组自身.<br>
      *     如果设置了可选参数caller,在调用callback时,使用可选参数caller设置为callback的参数.<br>
-     * @param caller - {Object} 在调用callback时,使用可选参数caller设置为callback的参数.
-     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素.
+     * @param {Object} caller - 在调用callback时，使用可选参数caller设置为callback的参数。
+     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素。
      */
     filter: function filter(array, callback, caller) {
         var selected = [];
@@ -6353,18 +6351,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Events
  * @classdesc 事件类。
- * @param object - {Object} 当前事件对象被添加到的JS对象。
- * @param element - {HTMLElement} 响应浏览器事件的dom元素。
- * @param eventTypes - {Array<string>} 自定义应用事件的数组。
- * @param fallThrough - {boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
- * @param options - {Object} 事件对象选项。
+ * @param {Object} object - 当前事件对象被添加到的JS对象。
+ * @param {HTMLElement} element - 响应浏览器事件的dom元素。
+ * @param {Array.<string>} eventTypes - 自定义应用事件的数组。
+ * @param {boolean} fallThrough - 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+ * @param {Object} options - 事件对象选项。
  */
 var Events = exports.Events = function () {
     function Events(object, element, eventTypes, fallThrough, options) {
         _classCallCheck(this, Events);
 
         /**
-         * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
+         * @member {Array.<string>} SuperMap.Events.prototype.BROWSER_EVENTS
          * @description 支持的事件。
          * @constant
          * @default [
@@ -6378,47 +6376,47 @@ var Events = exports.Events = function () {
         this.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
         /**
-         * @member SuperMap.Events.prototype.listeners -{Object}
+         * @member {Object} SuperMap.Events.prototype.listeners
          * @description Hashtable of Array(function): events listener functions
          */
         this.listeners = {};
 
         /**
-         * @member SuperMap.Events.prototype.object  -{Object}
+         * @member {Object} SuperMap.Events.prototype.object
          * @description  发布应用程序事件的对象。
          */
         this.object = object;
 
         /**
-         * @member SuperMap.Events.prototype.element  -{HTMLElement}
+         * @member {HTMLElement} SuperMap.Events.prototype.element
          * @description 接受浏览器事件的DOM节点。
          */
         this.element = null;
 
         /**
-         * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
+         * @member {Array.<string>} SuperMap.Events.prototype.eventTypes
          * @description 支持的事件类型列表。
          */
         this.eventTypes = [];
 
         /**
-         * @member SuperMap.Events.prototype.eventHandler -{function}
+         * @member {function} SuperMap.Events.prototype.eventHandler
          * @description 绑定在元素上的事件处理器对象。
          */
         this.eventHandler = null;
 
         /**
-         * @member SuperMap.Events.prototype.fallThrough -{boolean}
+         * @member {boolean} SuperMap.Events.prototype.fallThrough
          * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
          */
         this.fallThrough = fallThrough;
 
         /**
-         * @member SuperMap.Events.prototype.includeXY -{boolean}
+         * @member {boolean} SuperMap.Events.prototype.includeXY
          * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
-         *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
-         *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-         *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+         *              可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
+         *              事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+         *              设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
          * @example
          *  function named(evt) {
          *        this.xy = this.object.events.getMousePosition(evt);
@@ -6427,7 +6425,7 @@ var Events = exports.Events = function () {
         this.includeXY = false;
 
         /**
-         * @member SuperMap.Events.prototype.extensions - {Object}
+         * @member {Object} SuperMap.Events.prototype.extensions
          * @description 事件扩展。Keys代表事件类型，values代表事件对象。
          * @example
          * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
@@ -6467,11 +6465,11 @@ var Events = exports.Events = function () {
         this.extensions = {};
 
         /**
-         * @member SuperMap.Events.prototype.extensionCount - {Object}
+         * @member {Object} SuperMap.Events.prototype.extensionCount
          */
         this.extensionCount = {};
         /**
-         * @member SuperMap.Events.prototype.clearMouseListener - {Object}
+         * @member {Object} SuperMap.Events.prototype.clearMouseListener
          */
         this.clearMouseListener = null;
 
@@ -6523,7 +6521,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.addEventType
          * @description 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
-         * @param eventName - {string} 事件名。
+         * @param {string} eventName - 事件名。
          */
 
     }, {
@@ -6538,7 +6536,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.attachToElement
          * @description 给dom元素绑定浏览器事件。
-         * @param element - {HTMLDOMElement} 绑定浏览器事件的dom元素。
+         * @param {HTMLDOMElement} element - 绑定浏览器事件的dom元素。
          */
 
     }, {
@@ -6591,7 +6589,7 @@ var Events = exports.Events = function () {
          * events.register("loadend", object, loadEndListener);
          *
          *
-         * @param  object - {Object} 添加监听的对象。
+         * @param {Object} object - 添加监听的对象。
          */
 
     }, {
@@ -6607,11 +6605,11 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.register
          * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
-         *                指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
-         * @param type - {string} 事件注册者的名字。
-         * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
-         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
-         * @param priority - {boolean|Object} 当为true时将新的监听加在事件队列的前面。
+         *              指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
+         * @param {string} type - 事件注册者的名字。
+         * @param {Object} obj - 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
+         * @param {function} func - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
+         * @param {(boolean|Object)} priority - 当为true时将新的监听加在事件队列的前面。
          */
 
     }, {
@@ -6646,9 +6644,9 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.registerPriority
          * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束。
-         * @param type - {string} 事件注册者的名字。
-         * @param obj - {Object} 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性。
-         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
+         * @param {string} type - 事件注册者的名字。
+         * @param {Object} obj - 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性。
+         * @param {function} func - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
          */
 
     }, {
@@ -6678,7 +6676,7 @@ var Events = exports.Events = function () {
          * events.unregister("loadstart", object, loadStartListener);
          * events.unregister("loadend", object, loadEndListener);
          *
-         * @param object - {Object} 移除监听的对象。
+         * @param {Object} object - 移除监听的对象。
          */
 
     }, {
@@ -6694,9 +6692,9 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.unregister
          * @description 取消注册。
-         * @param type - {string} 事件类型。
-         * @param obj - {Object} 默认为 this.object。
-         * @param func - {function} 事件监听。
+         * @param {string} type - 事件类型。
+         * @param {Object} obj - 默认为 this.object。
+         * @param {function} func - 事件监听。
          */
 
     }, {
@@ -6719,7 +6717,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.remove
          * @description 删除某个事件类型的所有监听，如果该事件类型没有注册，则不做任何操作。
-         * @param type - {string} 事件类型。
+         * @param {string} type - 事件类型。
          */
 
     }, {
@@ -6733,8 +6731,8 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.triggerEvent
          * @description 触发一个特定的注册事件。
-         * @param type - {string} 触发事件类型。
-         * @param evt - {Event} 事件对象。
+         * @param {string} type - 触发事件类型。
+         * @param {Event} evt - 事件对象。
          * @returns {boolean} 返回监听对象，如果返回是falee，则停止监听。
          */
 
@@ -6783,7 +6781,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.handleBrowserEvent
          * @description 对triggerEvent函数的包装，给事件对象设置了xy属性(即当前鼠标点的xy坐标)。
-         * @param evt - {Event} 事件对象。
+         * @param {Event} evt - 事件对象。
          */
 
     }, {
@@ -6834,7 +6832,7 @@ var Events = exports.Events = function () {
 
         /**
          * @function SuperMap.Events.prototype.getMousePosition
-         * @param evt - {Event} 事件对象。
+         * @param {Event} evt - 事件对象。
          * @returns {SuperMap.Pixel} 当前的鼠标的xy坐标点。
          */
 
@@ -7979,8 +7977,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *    .getKernelDensityJobs(function(result){
  *       //doSomething
  * })
- * @param url -{string} 分布式分析服务地址。
- * @param options - {Object} 可选参数
+ * @param {string} url -分布式分析服务地址。
+ * @param {Object} options - 可选参数
  */
 var ProcessingService = exports.ProcessingService = function (_CommonServiceBase) {
     _inherits(ProcessingService, _CommonServiceBase);
@@ -8005,8 +8003,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
-     * @param callback - {function} 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @param {function} callback - 请求结果的回调函数。
+     * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
      */
 
 
@@ -8032,9 +8030,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
          * @description 获取某一个密度分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8059,10 +8057,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addKernelDensityJob
          * @description 新建一个密度分析。
-         * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8089,8 +8087,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
          * @description 获取密度分析的状态。
-         * @param id - {string}密度分析的id。
-         * @return {Object} 密度分析的状态
+         * @param {string} id - 密度分析的id。
+         * @returns {Object} 密度分析的状态
          */
 
     }, {
@@ -8102,8 +8100,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobs
          * @description 获取点聚合分析的列表。
-         * @param callback - {function}  请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8128,9 +8126,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
          * @description 获取某一个点聚合分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8155,10 +8153,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addSummaryMeshJob
          * @description 新建一个点聚合分析。
-         * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SummaryMeshJobParameter} params - 点聚合分析任务参数类。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8185,8 +8183,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
          * @description 获取点聚合分析的状态。
-         * @param id - {string} 点聚合分析的id。
-         * @return {Object} 点聚合分析的状态
+         * @param {string} id - 点聚合分析的id。
+         * @returns {Object} 点聚合分析的状态
          */
 
     }, {
@@ -8198,8 +8196,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getQueryJobs
          * @description 获取单对象查询分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8224,9 +8222,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
          * @description 获取某一个单对象查询分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8251,10 +8249,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addQueryJob
          * @description 新建一个单对象查询分析。
-         * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number}seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8282,8 +8280,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
          * @description 获取单对象查询分析的状态。
-         * @param id - {string}单对象查询分析的id。
-         * @return {Object} 单对象查询分析的状态
+         * @param {string} id - 单对象查询分析的id。
+         * @returns {Object} 单对象查询分析的状态
          */
 
     }, {
@@ -8295,8 +8293,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
          * @description 获取区域汇总分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8321,9 +8319,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
          * @description 获取某一个区域汇总分析。
-         * @param id - {string}区域汇总分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 区域汇总分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8348,10 +8346,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addSummaryRegionJob
          * @description 新建一个区域汇总分析。
-         * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SummaryRegionJobParameter} params -创建一个区域汇总分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8378,8 +8376,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
          * @description 获取区域汇总分析的状态。
-         * @param id - {string}区域汇总分析的id。
-         * @return {Object} 区域汇总分析的状态
+         * @param {string} id - 区域汇总分析的id。
+         * @returns {Object} 区域汇总分析的状态
          */
 
     }, {
@@ -8391,8 +8389,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobs
          * @description 获取矢量裁剪分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8417,9 +8415,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
          * @description 获取某一个矢量裁剪分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8444,10 +8442,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addVectorClipJob
          * @description 新建一个矢量裁剪分析。
-         * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8476,8 +8474,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
          * @description 获取矢量裁剪分析的状态。
-         * @param id - {string}矢量裁剪分析的id。
-         * @return {Object} 矢量裁剪分析的状态
+         * @param {string} id - 矢量裁剪分析的id。
+         * @returns {Object} 矢量裁剪分析的状态
          */
 
     }, {
@@ -8489,8 +8487,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJobs
          * @description 获取叠加分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8515,9 +8513,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
          * @description 获取某一个叠加分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8542,10 +8540,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addOverlayGeoJob
          * @description 新建一个叠加分析。
-         * @param params -{SuperMap.OverlayGeoJobParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.OverlayGeoJobParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8573,8 +8571,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
          * @description 获取叠加分析的状态。
-         * @param id - {string}叠加分析的id。
-         * @return {Object} 叠加分析的状态
+         * @param {string} id - 叠加分析的id。
+         * @returns {Object} 叠加分析的状态
          */
 
     }, {
@@ -8586,8 +8584,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobs
          * @description 获取缓冲区分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8612,9 +8610,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
          * @description 获取某一个缓冲区分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8639,10 +8637,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addBuffersJob
          * @description 新建一个缓冲区分析。
-         * @param params -{SuperMap.BuffersAnalystJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8670,8 +8668,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
          * @description 获取缓冲区分析的状态。
-         * @param id - {string}缓冲区分析的id。
-         * @return {Object} 缓冲区分析的状态
+         * @param {string} id - 缓冲区分析的id。
+         * @returns {Object} 缓冲区分析的状态
          */
 
     }, {
@@ -8683,8 +8681,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobs
          * @description 获取拓扑检查分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8709,9 +8707,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
          * @description 获取某一个拓扑检查分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8736,10 +8734,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addTopologyValidatorJob
          * @description 新建一个拓扑检查分析。
-         * @param params -{SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8767,8 +8765,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
          * @description 获取拓扑检查分析的状态。
-         * @param id - {string}拓扑检查分析的id。
-         * @return {Object} 拓扑检查分析的状态
+         * @param {string} id - 拓扑检查分析的id。
+         * @returns {Object} 拓扑检查分析的状态
          */
 
     }, {
@@ -8780,8 +8778,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobs
          * @description 获取属性汇总分析的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8806,9 +8804,9 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
          * @description 获取某一个属性汇总分析。
-         * @param id - {string}空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {string} id - 空间分析的id。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8833,10 +8831,10 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addSummaryAttributesJob
          * @description 新建一个属性汇总分析。
-         * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
+         * @param {function} callback - 请求结果的回调函数。
+         * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @param {SuperMap.DataFormat} resultFormat - 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
@@ -8864,8 +8862,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobState
          * @description 获取属性汇总分析的状态。
-         * @param id - {string} 属性汇总分析的id。
-         * @return {Object} 属性汇总分析的状态
+         * @param {string} id - 属性汇总分析的id。
+         * @returns {Object} 属性汇总分析的状态
          */
 
     }, {
@@ -9089,29 +9087,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  * @category BaseTypes Format
- * @param options - {Object} 可选参数。<br>
- *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} options.keepData - 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
 var Format = exports.Format = function () {
     function Format(options) {
         _classCallCheck(this, Format);
 
         /**
-         * @member SuperMap.Format.prototype.data - {Object}
+         * @member {Object} SuperMap.Format.prototype.data 
          * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
          */
         this.data = null;
 
         /**
          * APIProperty: keepData
-         * @member SuperMap.Format.prototype.keepData - {Object}
+         * @member {Object} SuperMap.Format.prototype.keepData
          * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
          */
         this.keepData = false;
 
         _Util.Util.extend(this, options);
         /**
-         * @member SuperMap.Format.prototype.options - {Object}
+         * @member {Object} SuperMap.Format.prototype.options
          * @description 可选参数。
          */
         this.options = options;
@@ -9134,7 +9132,7 @@ var Format = exports.Format = function () {
         /**
          * @function SuperMap.Format.prototype.read
          * @description 来从字符串中读取数据。
-         * @param data - {string} 读取的数据。
+         * @param {string} data - 读取的数据。
          */
 
     }, {
@@ -9146,7 +9144,7 @@ var Format = exports.Format = function () {
         /**
          * @function SuperMap.Format.prototype.write
          * @description 将对象写成字符串。
-         * @param object - {Object} 可序列化的对象。
+         * @param {Object} object - 可序列化的对象。
          * @return {string} 对象被写成字符串。
          */
 
@@ -9201,7 +9199,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         _classCallCheck(this, JSONFormat);
 
         /**
-         * @member SuperMap.Format.JSON.prototype.indent - {string}
+         * @member {string} SuperMap.Format.JSON.prototype.indent
          * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
          */
         var _this = _possibleConstructorReturn(this, (JSONFormat.__proto__ || Object.getPrototypeOf(JSONFormat)).call(this, options));
@@ -9209,31 +9207,31 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         _this.indent = "    ";
 
         /**
-         * @member SuperMap.Format.JSON.prototype.space -{string}
+         * @member {string} SuperMap.Format.JSON.prototype.space
          * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
          */
         _this.space = " ";
 
         /**
-         * @member SuperMap.Format.JSON.prototype.newline - {string}
+         * @member {string} SuperMap.Format.JSON.prototype.newline
          * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
          */
         _this.newline = "\n";
 
         /**
-         * @member SuperMap.Format.JSON.prototype.level - {integer}
+         * @member {integer} SuperMap.Format.JSON.prototype.level 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         _this.level = 0;
 
         /**
-         * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
+         * @member {boolean} SuperMap.Format.JSON.prototype.pretty 
          * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
          */
         _this.pretty = false;
 
         /**
-         * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
+         * @member {boolean} SuperMap.Format.JSON.prototype.nativeJSON 
          * @description 判断浏览器是否原生支持JSON格式数据。
          */
         _this.nativeJSON = function () {
@@ -9249,7 +9247,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.object
              * @description 把对象转换为JSON字符串。
-             * @param object - {Object} 可序列化的对象。
+             * @param {Object} object - 可序列化的对象。
              * @return {string} JSON字符串。
              */
             'object': function object(_object) {
@@ -9291,7 +9289,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.array
              * @description 把数组转换成JSON字符串。
-             * @param array - {Array} 可序列化的数组。
+             * @param {Array} array - 可序列化的数组。
              * @return {string} JSON字符串。
              */
             'array': function array(_array) {
@@ -9318,7 +9316,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.string
              * @description 把字符串转换成JSON字符串。
-             * @param string - {string} 可序列化的字符串。
+             * @param {string} string - 可序列化的字符串。
              * @return {string} JSON字符串。
              */
             'string': function string(_string) {
@@ -9352,7 +9350,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.number
              * @description 把数字转换成JSON字符串。
-             * @param number - {number} 可序列化的数字。
+             * @param {number} number - 可序列化的数字。
              * @return {string} JSON字符串。
              */
             'number': function number(_number) {
@@ -9362,7 +9360,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.boolean
              * @description Transform a boolean into a JSON string.
-             * @param bool - {boolean} The boolean to be serialized.
+             * @param {boolean} bool - The boolean to be serialized.
              * @return {string} A JSON string representing the boolean.
              */
             'boolean': function boolean(bool) {
@@ -9372,7 +9370,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.object
              * @description 将日期对象转换成JSON字符串。
-             * @param date - {Date} 可序列化的日期对象。
+             * @param {Date} date - 可序列化的日期对象。
              * @return {string} JSON字符串。
              */
             'date': function date(_date) {
@@ -9390,8 +9388,8 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
     /**
      * @function SuperMap.Format.JSON.prototype.read
      * @description 将一个符合json结构的字符串进行解析。
-     * @param json - {string} 符合json结构的字符串。
-     * @param filter - {function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
+     * @param {string} json - 符合json结构的字符串。
+     * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
      * @return {Object} 对象，数组，字符串或数字。
      */
 
@@ -9418,8 +9416,8 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         /**
          * @function SuperMap.Format.JSON.prototype.write
          * @description 序列化一个对象到一个符合JSON格式的字符串。
-         * @param value - {object}|{string}|<Array>|{number}|{boolean} 需要被序列化的对象，数组，字符串，数字，布尔值。
-         * @param pretty - {boolean}
+         * @param {(object|string|Array|number|boolean)} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
+         * @param {boolean} pretty 
          * @return {string} 符合JSON格式的字符串。
          *
          */
@@ -9512,8 +9510,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens"下申请value <br>
  * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.."的value<br>
  * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。
- * @param value - {string}  访问受安全限制的服务时用于通过安全认证的验证信息。
- * @param name - {string}  验证信息前缀，name=value部分的name部分，默认为“token”。
+ * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
+ * @param {string} name - 验证信息前缀，name=value部分的name部分，默认为“token”。
  * @example
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
@@ -9523,14 +9521,14 @@ var Credential = exports.Credential = function () {
         _classCallCheck(this, Credential);
 
         /**
-         * @member SuperMap.Bounds.prototype.value -{string}
+         * @member {string} SuperMap.Bounds.prototype.value
          * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
          */
         this.value = value ? value : "";
 
         /**
-         * @member SuperMap.Bounds.prototype.name -{string}
-         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+         * @member {string} [SuperMap.Bounds.prototype.name="token"]
+         * @description 验证信息前缀，name=value部分的name部分。
          */
         this.name = name ? name : "token";
         this.CLASS_NAME = "SuperMap.Credential";
@@ -9636,9 +9634,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @extends SuperMap.REST.CommonServiceBase
- * @param url - {string} 服务地址
- * @param options - {Object} 地址匹配服务可选参数
+ * @extends {SuperMap.REST.CommonServiceBase}
+ * @param {string} url - 服务地址
+ * @param {Object} options - 参数
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -9655,8 +9653,8 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.code
      * @description 正向匹配
-     * @param params - {SuperMap.GeoCodingParameter} 正向匹配参数
-     * @param callback - {function} 回调函数
+     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数
+     * @param {function} callback - 回调函数
      */
 
 
@@ -9680,8 +9678,8 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         /**
          * @function SuperMap.REST.AddressMatchService.prototype.decode
          * @description 反向匹配
-         * @param params - {SuperMap.GeoDeCodingParameter} 反向匹配参数
-         * @param callback - {function} 回调函数
+         * @param {SuperMap.GeoDeCodingParameter} params -  反向匹配参数
+         * @param {function} callback - 回调函数
          */
 
     }, {
@@ -11187,16 +11185,15 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -11210,7 +11207,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(scope, this._id);
+  this._clearFn.call(window, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -11237,7 +11234,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(48);
-// On some exotic environments, it's not clear which object `setimmediate` was
+// On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
@@ -11534,8 +11531,8 @@ var _Util = __webpack_require__(1);
 var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
-     * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
-     * @type {Boolean}
+     * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
+     * @type {boolean}
      * @default false
      */
     observers: false,
@@ -11612,7 +11609,7 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Cross browser event element detection.
-     * @param event - {Event}
+     * @param {Event} event - The event
      * @returns {HTMLElement} The element that caused the event
      */
     element: function element(event) {
@@ -11621,8 +11618,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a single touch
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isSingleTouch: function isSingleTouch(event) {
         return event.touches && event.touches.length === 1;
@@ -11630,8 +11627,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a multi touch
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isMultiTouch: function isMultiTouch(event) {
         return event.touches && event.touches.length > 1;
@@ -11639,8 +11636,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a left click.
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isLeftClick: function isLeftClick(event) {
         return event.which && event.which === 1 || event.button && event.button === 1;
@@ -11648,8 +11645,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a right mouse click.
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isRightClick: function isRightClick(event) {
         return event.which && event.which === 3 || event.button && event.button === 2;
@@ -11657,8 +11654,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Stops an event from propagating.
-     * @param event - {Event}
-     * @param allowDefault - {Boolean} If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
+     * @param {Event} event - The event
+     * @param {boolean} allowDefault - If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
      */
     stop: function stop(event, allowDefault) {
 
@@ -11678,8 +11675,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
     },
 
     /**
-     * @param event - {Event}
-     * @param tagName - {string} html标签名
+     * @param {Event} event - The event
+     * @param {string} tagName - html标签名
      * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
      */
     findElement: function findElement(event, tagName) {
@@ -11692,10 +11689,10 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description 监听事件，注册事件处理方法。
-     * @param elementParam - {HTMLElement | string} 待监听的DOM对象或者其id标识。
-     * @param name - {string} 监听事件的类别名称。
-     * @param observer - {function} 注册的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
+     * @param {(HTMLElement|string)} elementParam - 待监听的DOM对象或者其id标识。
+     * @param {string} name - 监听事件的类别名称。
+     * @param {function} observer - 注册的事件处理方法。
+     * @param {boolean} useCapture - 是否捕获。
      */
     observe: function observe(elementParam, name, observer, useCapture) {
         var element = _Util.Util.getElement(elementParam);
@@ -11747,7 +11744,7 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
      *   element's cached observers, calling stopObserving on each one,
      *   skipping those entries which can no longer be removed.
      *
-     * @param elementParam - {HTMLElement | string}
+     * @param {(HTMLElement|string)} elementParam -
      */
     stopObservingElement: function stopObservingElement(elementParam) {
         var element = _Util.Util.getElement(elementParam);
@@ -11756,8 +11753,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
         this._removeElementObservers(_SuperMap.SuperMap.Event.observers[cacheID]);
     },
 
-    /*
-     * @param elementObservers - {Array<Object>} Array of (element, name,
+    /**
+     * @param {Array.<Object>} elementObservers - Array of (element, name,
      *                                         observer, usecapture) objects,
      *                                         taken directly from hashtable
      */
@@ -11774,11 +11771,11 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
     /**
      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
      * 保持一致才能确保事件移除成功。
-     * @param elementParam - {HTMLElement | string} 被监听的DOM元素或者其id。
-     * @param name - {string} 需要移除的被监听事件名称。
-     * @param observer - {function} 需要移除的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
-     * @returns {Boolean} Whether or not the event observer was removed
+     * @param {(HTMLElement|string)} elementParam - 被监听的DOM元素或者其id。
+     * @param {string} name - 需要移除的被监听事件名称。
+     * @param {function} observer - 需要移除的事件处理方法。
+     * @param {boolean} useCapture - 是否捕获。
+     * @returns {boolean} Whether or not the event observer was removed
      */
     stopObserving: function stopObserving(elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;
@@ -11870,9 +11867,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Pixel
  * @classdesc 此类用x,y坐标描绘屏幕坐标（像素点）。
- * @param x - {number} x坐标，默认为0.0
- * @param y - {number} y坐标，默认为0.0
- * @param mode - {string} 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+ * @param {number} [x=0.0] - x坐标
+ * @param {number} [y=0.0] - y坐标
+ * @param {string} mode - 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
  *
  * @example
  * //单独创建一个对象
@@ -11887,19 +11884,19 @@ var Pixel = exports.Pixel = function () {
         _classCallCheck(this, Pixel);
 
         /**
-         * @member SuperMap.Pixel.prototype.x -{number}
-         * @description x坐标，默认为0.0
+         * @member {number} [SuperMap.Pixel.prototype.x=0.0]
+         * @description x坐标
          */
         this.x = x ? parseFloat(x) : 0.0;
 
         /**
-         * @member SuperMap.Pixel.prototype.y -{number}
-         * @description y坐标，默认为0.0
+         * @member {number} [SuperMap.Pixel.prototype.y=0.0]
+         * @description y坐标
          */
         this.y = y ? parseFloat(y) : 0.0;
 
         /**
-         * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
+         * @member {SuperMap.Pixel.Mode} SuperMap.Pixel.prototype.mode
          * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
          * 值有<br>
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
@@ -11908,8 +11905,6 @@ var Pixel = exports.Pixel = function () {
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
          *
          * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-         *
-         * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
          */
         this.mode = mode;
         this.CLASS_NAME = "SuperMap.Pixel";
@@ -11974,8 +11969,8 @@ var Pixel = exports.Pixel = function () {
          * var pixcel2 = new SuperMap.Pixel(100,50);
          * var isEquals = pixcel.equals(pixcel2);
          *
-         * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
-         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+         * @param {SuperMap.Pixel} px - 用于比较相等的 pixel 对象。
+         * @returns {boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
          */
 
     }, {
@@ -11996,7 +11991,7 @@ var Pixel = exports.Pixel = function () {
          * var pixcel2 = new SuperMap.Pixel(110,30);
          * var distance = pixcel.distanceTo(pixcel2);
          *
-         * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
+         * @param {SuperMap.Pixel} px - 用于计算的一个 pixel
          * @returns {float} 作为参数传入的像素与当前像素点的距离。
          */
 
@@ -12014,8 +12009,8 @@ var Pixel = exports.Pixel = function () {
          * //pixcel2是新的对象
          * var pixcel2 = pixcel.add(20,30);
          *
-         * @param x - {number} 传入的x值。
-         * @param y - {number} 传入的y值。
+         * @param {number} x - 传入的x值。
+         * @param {number} y - 传入的y值。
          * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
          *      入的x,y相加得到。
          */
@@ -12038,7 +12033,7 @@ var Pixel = exports.Pixel = function () {
          * //pixcel3 是新的对象
          * var pixcel3 = pixcel.offset(pixcel2);
          *
-         * @param px - {SuperMap.Pixel}  传入的 <SuperMap.Pixel> 对象。
+         * @param {SuperMap.Pixel} px - 传入的 <SuperMap.Pixel> 对象。
          * @returns {SuperMap.Pixel} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
          *      值与传入的Pixel对象的x，y值相加得到。
          */
@@ -12109,12 +12104,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
  * @category ElasticSearch
- * @param url - {string} ElasticSearch服务地址。
- * @param options - {Object} 可选参数。如:</br>
- *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>
- *         openGeoFence - {boolean} 是否开启地理围栏验证，默认为不开启。</br>
- *         outOfGeoFence - {function} 数据超出地理围栏后执行的函数。</br>
- *         geoFence - {Object} 地理围栏。</br>
+ * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} options - 参数。
+ * @param {function} options.change - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
+ * @param {boolean} options.openGeoFence - 是否开启地理围栏验证，默认为不开启。
+ * @param {function} options.outOfGeoFence - 数据超出地理围栏后执行的函数。
+ * @param {Object} options.geoFence - 地理围栏。
  */
 
 var ElasticSearch = exports.ElasticSearch = function () {
@@ -12123,12 +12118,12 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         options = options || {};
         /**
-         *  @member SuperMap.ElasticSearch.prototype.url -{string}
+         *  @member {string} SuperMap.ElasticSearch.prototype.url 
          *  @description ElasticSearch服务地址
          */
         this.url = url;
         /**
-         *  @member SuperMap.ElasticSearch.prototype.client -{Object}
+         *  @member {Object} SuperMap.ElasticSearch.prototype.client
          *  @description client ES客户端
          */
         this.client = new _elasticsearch2.default.Client({
@@ -12136,23 +12131,23 @@ var ElasticSearch = exports.ElasticSearch = function () {
         });
         /**
          *  @deprecated
-         *  @member SuperMap.ElasticSearch.prototype.change -{function}
+         *  @member {function} SuperMap.ElasticSearch.prototype.change
          *  @description 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
          */
         this.change = null;
         /**
-         *  @member SuperMap.ElasticSearch.prototype.openGeoFence -{boolean}
+         *  @member {boolean} SuperMap.ElasticSearch.prototype.openGeoFence
          *  @description 是否开启地理围栏验证，默认为不开启。
          */
         this.openGeoFence = false;
         /**
-         *  @member SuperMap.ElasticSearch.prototype.outOfGeoFence -{function}
+         *  @member {function} SuperMap.ElasticSearch.prototype.outOfGeoFence
          *  @description 数据超出地理围栏后执行的函数
          */
         this.outOfGeoFence = null;
 
         /**
-         * @member SuperMap.ElasticSearch.prototype.geoFence -{Object}
+         * @member {Object} SuperMap.ElasticSearch.prototype.geoFence
          * @description 地理围栏
          * @example {
         *    radius: 1000,//单位是m
@@ -12171,13 +12166,13 @@ var ElasticSearch = exports.ElasticSearch = function () {
         this.EVENT_TYPES = ['change', 'error', 'outOfGeoFence'];
 
         /**
-         * @member SuperMap.ElasticSearch.prototype.events -{SuperMap.Events}
+         * @member {SuperMap.Events} SuperMap.ElasticSearch.prototype.events
          * @description 事件
          */
         this.events = new _Events.Events(this, null, this.EVENT_TYPES);
 
         /**
-         * @member SuperMap.ElasticSearch.prototype.eventListeners -{Object}
+         * @member {Object} SuperMap.ElasticSearch.prototype.eventListeners
          * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
          * 相当于调用 SuperMap.Events.on(eventListeners)。
          */
@@ -12191,7 +12186,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
     /**
      * @function  SuperMap.ElasticSearch.prototype.setGeoFence
      * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
-     * @param geoFence - {SuperMap.Geometry} 地理围栏。
+     * @param {SuperMap.Geometry} geoFence - 地理围栏。
      */
 
     _createClass(ElasticSearch, [{
@@ -12202,11 +12197,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.bulk
-         * @description 批量操作API，允许执行多个索引/删除操作。</br>
+         * @description 批量操作API，允许执行多个索引/删除操作。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12217,11 +12212,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.clearScroll
-         * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。</br>
+         * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
          *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12232,11 +12227,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.count
-         * @description 获取集群、索引、类型或查询的文档个数。</br>
+         * @description 获取集群、索引、类型或查询的文档个数。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12248,10 +12243,10 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.count
          * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
-         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}</br>
-         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12262,11 +12257,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
-         * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
+         * @description 根据其ID从特定索引中删除键入的JSON文档。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12277,11 +12272,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
-         * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
+         * @description 根据其ID从特定索引中删除键入的JSON文档。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12295,8 +12290,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 根据其ID删除脚本。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12310,8 +12305,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 根据其ID删除模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12325,8 +12320,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 检查给定文档是否存在。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12340,8 +12335,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 检查资源是否存在。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12355,8 +12350,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12370,8 +12365,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12385,8 +12380,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 从索引获取一个基于其id的类型的JSON文档。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12400,8 +12395,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 获取脚本。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12415,8 +12410,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 通过索引，类型和ID获取文档的源。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12430,8 +12425,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 获取模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12445,8 +12440,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12460,8 +12455,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 从当前集群获取基本信息。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12475,8 +12470,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12490,8 +12485,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 在同一请求中执行多个搜索请求。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         * @param {Object} params - 参数。
+         * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
          *     回调参数：error,response。结果存储在response.responses中
          */
 
@@ -12515,8 +12510,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 在同一请求中执行多个搜索模板请求。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12530,8 +12525,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 多termvectors API允许一次获得多个termvectors。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12545,8 +12540,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 测试连接。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12560,8 +12555,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 添加脚本。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12575,8 +12570,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 添加模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12590,8 +12585,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 重新索引。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12605,8 +12600,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 重新索引。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12620,8 +12615,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 搜索模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12635,8 +12630,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12647,11 +12642,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.search
-         * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
+         * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         * @param {Object} params - 参数。
+         * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
          *     回调参数：error,response,结果存储在response.responses中
          */
 
@@ -12671,11 +12666,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.searchShards
-         * @description  返回要执行搜索请求的索引和分片。</br>
+         * @description  返回要执行搜索请求的索引和分片。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12686,11 +12681,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.searchTemplate
-         * @description  搜索模板。</br>
+         * @description  搜索模板。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12701,11 +12696,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.suggest
-         * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。</br>
+         * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12716,11 +12711,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.termvectors
-         * @description 返回有关特定文档字段中的术语的信息和统计信息。</br>
+         * @description 返回有关特定文档字段中的术语的信息和统计信息。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12731,11 +12726,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.update
-         * @description 更新文档的部分。</br>
+         * @description 更新文档的部分。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -12746,11 +12741,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.update
-         * @description 通过查询API来更新文档。</br>
+         * @description 通过查询API来更新文档。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {

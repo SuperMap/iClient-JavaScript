@@ -51,7 +51,7 @@ export class Math {
      * @param {boolean} [isDegrees=false] - angle参数是否为角度计算，angle为以弧度计量的角度。
      * @returns {number} 弧度值。
      */
-    eToRadian(angle) {
+    degreeToRadian(angle) {
         return angle * this._radians;
     }
 

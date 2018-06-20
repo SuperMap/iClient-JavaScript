@@ -122,8 +122,8 @@ var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {
  *     var size = new SuperMap.Size(100, 100);
  *     var obj = {}；
  *     SuperMap.Util.extend(obj, size);
- * @param destination - {Object} 目标对象。
- * @param source - {Object} 源对象，其属性将被设置到目标对象上。
+ * @param {Object} destination - 目标对象。
+ * @param {Object} source - 源对象，其属性将被设置到目标对象上。
  * @return {Object} 目标对象。
  */
 
@@ -159,8 +159,8 @@ _SuperMap.SuperMap.Util.extend = function (destination, source) {
 };
 /**
  * @description 对象拷贝。
- * @param des - {Object} 目标对象。
- * @param soc - {Object} 源对象
+ * @param {Object} des - 目标对象。
+ * @param {Object} soc - 源对象
  */
 _SuperMap.SuperMap.Util.copy = function (des, soc) {
     des = des || {};
@@ -176,7 +176,7 @@ _SuperMap.SuperMap.Util.copy = function (des, soc) {
 };
 /**
  * @description 销毁对象，将其属性置空
- * @param obj - {Object} 目标对象。
+ * @param {Object} obj - 目标对象。
  */
 _SuperMap.SuperMap.Util.reset = function (obj) {
     obj = obj || {};
@@ -201,8 +201,7 @@ _SuperMap.SuperMap.Util.reset = function (obj) {
 
 /**
  * @description 获取HTML元素数组。
- * @param argument - {String | HTMLElement | Window}
- * @return {Array<HTMLElement>} HTML元素数组。
+ * @return {Array.<HTMLElement>} HTML元素数组。
  */
 _SuperMap.SuperMap.Util.getElement = function () {
     var elements = [];
@@ -222,7 +221,7 @@ _SuperMap.SuperMap.Util.getElement = function () {
 
 /**
  * @description instance of的跨浏览器实现。
- * @param o - {Object} 对象。
+ * @param {Object} o - 对象。
  * @return {boolean} 是否是页面元素
  */
 _SuperMap.SuperMap.Util.isElement = function (o) {
@@ -231,7 +230,7 @@ _SuperMap.SuperMap.Util.isElement = function (o) {
 
 /**
  * @description 判断一个对象是否是数组。
- * @param a - {Object} 对象。
+ * @param {Object} a - 对象。
  * @return {boolean} 是否是数组。
  */
 _SuperMap.SuperMap.Util.isArray = function (a) {
@@ -240,8 +239,8 @@ _SuperMap.SuperMap.Util.isArray = function (a) {
 
 /**
  * @description 从数组中删除某一项。
- * @param array - {Array} 数组。
- * @param item - {Object} 数组中要删除的一项。
+ * @param {Array} array - 数组。
+ * @param {Object} item - 数组中要删除的一项。
  * @return {Array} 执行删除操作后的数组。
  */
 _SuperMap.SuperMap.Util.removeItem = function (array, item) {
@@ -256,8 +255,8 @@ _SuperMap.SuperMap.Util.removeItem = function (array, item) {
 
 /**
  * @description 获取某对象再数组中的索引值。
- * @param array - {Array} 数组。
- * @param obj - {Object} 对象。
+ * @param {Array} array - 数组。
+ * @param {Object} obj - 对象。
  * @return {number} 某对象再数组中的索引值。
  */
 _SuperMap.SuperMap.Util.indexOf = function (array, obj) {
@@ -280,14 +279,14 @@ _SuperMap.SuperMap.Util.indexOf = function (array, obj) {
 
 /**
  * @description 修改某DOM元素的许多属性。
- * @param element - {HTMLElement} 待修改的DOM元素。
- * @param id - {string} DOM元素的id。
- * @param px - {SuperMap.Pixel} 包含DOM元素的style属性的left和top属性。
- * @param sz - {SuperMap.Size} 包含DOM元素的width和height属性。
- * @param position - {string} DOM元素的position属性。
- * @param border - {string} DOM元素的style属性的border属性。
- * @param overflow - {string} DOM元素的style属性的overflow属性。
- * @param opacity - {number} 不透明度值。取值范围为 (0.0 - 1.0)。
+ * @param {HTMLElement} element - 待修改的DOM元素。
+ * @param {string} id - DOM元素的id。
+ * @param {SuperMap.Pixel} px - 包含DOM元素的style属性的left和top属性。
+ * @param {SuperMap.Size} sz - 包含DOM元素的width和height属性。
+ * @param {string} position - DOM元素的position属性。
+ * @param {string} border - DOM元素的style属性的border属性。
+ * @param {string} overflow - DOM元素的style属性的overflow属性。
+ * @param {number} opacity - 不透明度值。取值范围为 (0.0 - 1.0)。
  */
 _SuperMap.SuperMap.Util.modifyDOMElement = function (element, id, px, sz, position, border, overflow, opacity) {
 
@@ -325,8 +324,8 @@ _SuperMap.SuperMap.Util.modifyDOMElement = function (element, id, px, sz, positi
  *     another properties, by analogy with SuperMap.Util.extend() from
  *     Prototype.js.
  *
- * @param to -{Object} The destination object.
- * @param from -{Object} The source object.  Any properties of this object that
+ * @param {Object} to - The destination object.
+ * @param {Object} from - The source object.  Any properties of this object that
  *     are undefined in the to object will be set on the to object.
  *
  * @return {Object} A reference to the to object.  Note that the to argument is modified
@@ -359,9 +358,9 @@ _SuperMap.SuperMap.Util.applyDefaults = function (to, from) {
 };
 
 /**
- * @param params - {Object} 参数对象。
- * @return {string} HTTP的GEI请求中的参数字符串。
  * @description 将参数对象转换为HTTP的GEI请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
+ * @param {Object} params - 参数对象。
+ * @return {string} HTTP的GEI请求中的参数字符串。
  */
 _SuperMap.SuperMap.Util.getParameterString = function (params) {
     var paramsArray = [];
@@ -392,8 +391,8 @@ _SuperMap.SuperMap.Util.getParameterString = function (params) {
 
 /**
  * @description 给url追加参数。
- * @param url - {string} 待追加参数的url字符串。
- * @param paramStr - {string} 待追加的参数。
+ * @param {string} url - 待追加参数的url字符串。
+ * @param {string} paramStr - 待追加的参数。
  * @return {string} The new url
  */
 _SuperMap.SuperMap.Util.urlAppend = function (url, paramStr) {
@@ -414,8 +413,8 @@ _SuperMap.SuperMap.Util.DEFAULT_PRECISION = 14;
 
 /**
  * @description 将字符串以接近的精度转换为数字。
- * @param number - {string} 字符串。
- * @param precision - {number} 精度。
+ * @param {string} number - 字符串。
+ * @param {number} precision - 精度。
  * @return {number} 数字。
  */
 _SuperMap.SuperMap.Util.toFloat = function (number, precision) {
@@ -430,7 +429,7 @@ _SuperMap.SuperMap.Util.toFloat = function (number, precision) {
 
 /**
  * @description 角度转弧度。
- * @param x - {number} 角度。
+ * @param {number} x - 角度。
  * @return {number} 弧度。
  */
 _SuperMap.SuperMap.Util.rad = function (x) {
@@ -439,7 +438,7 @@ _SuperMap.SuperMap.Util.rad = function (x) {
 
 /**
  * @description 从URL字符串中解析出参数对象。
- * @param url - {string} url。
+ * @param {string} url - url。
  * @return {Object} 解析出的参数对象。
  */
 _SuperMap.SuperMap.Util.getParameters = function (url) {
@@ -499,7 +498,7 @@ _SuperMap.SuperMap.Util.lastSeqID = 0;
 
 /**
  * @description 创建唯一ID值。
- * @param prefix {string} 前缀。
+ * @param {string} prefix - 前缀。
  * @return {string} 唯一的ID值。
  */
 _SuperMap.SuperMap.Util.createUniqueID = function (prefix) {
@@ -620,7 +619,7 @@ _SuperMap.SuperMap.Util.extend(_SuperMap.SuperMap.INCHES_PER_UNIT, {
 _SuperMap.SuperMap.DOTS_PER_INCH = 96;
 
 /**
- * @param scale - {number}
+ * @param {number} scale - 比例尺
  * @return {number} 返回正常的scale值
  */
 _SuperMap.SuperMap.Util.normalizeScale = function (scale) {
@@ -629,8 +628,9 @@ _SuperMap.SuperMap.Util.normalizeScale = function (scale) {
 };
 
 /**
- * @param scale - {number} 比例尺。
- * @param units - {string} 比例尺单位。
+ * @description 比例尺转分辨率。
+ * @param {number} scale - 比例尺。
+ * @param {string} units - 比例尺单位。
  * @return {number} 分辨率。
  */
 _SuperMap.SuperMap.Util.getResolutionFromScale = function (scale, units) {
@@ -647,8 +647,8 @@ _SuperMap.SuperMap.Util.getResolutionFromScale = function (scale, units) {
 
 /**
  * @description 分辨率转比例尺。
- * @param resolution - {number} 分辨率。
- * @param units - {string} 分辨率单位。
+ * @param {number} resolution - 分辨率。
+ * @param {string} units - 分辨率单位。
  * @return {number} 比例尺。
  */
 _SuperMap.SuperMap.Util.getScaleFromResolution = function (resolution, units) {
@@ -769,7 +769,7 @@ _SuperMap.SuperMap.INCHES_PER_UNIT["yard"] = _SuperMap.SuperMap.INCHES_PER_UNIT.
 
 /**
  * @description 判断一个 URL 请求是否在当前域中。
- * @param url - {string}  URL 请求字符串。
+ * @param {string} url - URL 请求字符串。
  * @return {boolean} URL请求是否在当前域中。
  */
 _SuperMap.SuperMap.Util.isInTheSameDomain = function (url) {
@@ -820,11 +820,11 @@ _SuperMap.SuperMap.Util.isInTheSameDomain = function (url) {
 
 /**
  * @description 计算iServer服务的REST图层的显示分辨率，需要从iServer的REST图层表述中获取viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
- * @param viewBounds - {SuperMap.Bounds} 地图的参照可视范围，即地图初始化时默认的地图显示范围。
- * @param viewer - {SuperMap.Size} 地图初始化时默认的地图图片的尺寸。
- * @param scale - {number} 地图初始化时默认的显示比例尺。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
+ * @param {SuperMap.Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
+ * @param {SuperMap.Size} viewer - 地图初始化时默认的地图图片的尺寸。
+ * @param {number} scale - 地图初始化时默认的显示比例尺。
+ * @param {string} coordUnit - 投影坐标系统的地图单位。
+ * @param {number} datumAxis - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
  * @return {number} 返回图层显示分辨率。
  */
 _SuperMap.SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
@@ -855,7 +855,7 @@ _SuperMap.SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coor
 
 /**
  * @description 将对象转换成 JSON 字符串。
- * @param obj - {Object} 要转换成 JSON 的 Object 对象。
+ * @param {Object} obj - 要转换成 JSON 的 Object 对象。
  * @return {string} 返回转换后的 JSON 对象。
  */
 _SuperMap.SuperMap.Util.toJSON = function (obj) {
@@ -919,10 +919,10 @@ _SuperMap.SuperMap.Util.toJSON = function (obj) {
 
 /**
  * @description 根据比例尺和dpi计算屏幕分辨率。
- * @param scale - {number} 比例尺。
- * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
+ * @param {number} scale - 比例尺。
+ * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
+ * @param {string} coordUnit - 投影坐标系统的地图单位。
+ * @param {number} datumAxis - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
  * @return {number} 返回当前比例尺下的屏幕分辨率。
  */
 _SuperMap.SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
@@ -947,10 +947,10 @@ _SuperMap.SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordU
 
 /**
  * @description 根据resolution、dpi、coordUnit和datumAxis计算比例尺。
- * @param resolution - {number} 用于计算比例尺的地图分辨率。
- * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
+ * @param {number} resolution - 用于计算比例尺的地图分辨率。
+ * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
+ * @param {string} coordUnit - 投影坐标系统的地图单位。
+ * @param {number} datumAxis - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
  * @return {number} 返回当前屏幕分辨率下的比例尺。
  */
 _SuperMap.SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, datumAxis) {
@@ -973,7 +973,7 @@ _SuperMap.SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, c
 
 /**
  * @description 转换查询结果。
- * @param result - {Object} 查询结果。
+ * @param {Object} result - 查询结果。
  * @return {Object} 转换后的查询结果。
  */
 _SuperMap.SuperMap.Util.transformResult = function (result) {
@@ -985,8 +985,8 @@ _SuperMap.SuperMap.Util.transformResult = function (result) {
 
 /**
  * @description 属性拷贝，不拷贝方法类名(CLASS_NAME)等。
- * @param destination - {Object} 拷贝目标。
- * @param source - {Object} 源对象。
+ * @param {Object} destination - 拷贝目标。
+ * @param {Object} source - 源对象。
  *
  */
 _SuperMap.SuperMap.Util.copyAttributes = function (destination, source) {
@@ -1004,9 +1004,9 @@ _SuperMap.SuperMap.Util.copyAttributes = function (destination, source) {
 
 /**
  * @description 将源对象上的属性拷贝到目标对象上。（不拷贝 CLASS_NAME 和方法）
- * @param destination - {Object} 目标对象。
- * @param source - {Object} 源对象。
- * @param clip - {Array<string>} 源对象中禁止拷贝到目标对象的属性，目的是防止目标对象上不可修改的属性被篡改。
+ * @param {Object} destination - 目标对象。
+ * @param {Object} source - 源对象。
+ * @param {Array.<string>} clip - 源对象中禁止拷贝到目标对象的属性，目的是防止目标对象上不可修改的属性被篡改。
  *
  */
 _SuperMap.SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
@@ -1038,7 +1038,7 @@ _SuperMap.SuperMap.Util.copyAttributesWithClip = function (destination, source, 
 
 /**
  * @description 克隆一份Object对象
- * @param obj - {Object}  需要克隆的对象。
+ * @param {Object} obj - 需要克隆的对象。
  * @return {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
  */
 _SuperMap.SuperMap.Util.cloneObject = function (obj) {
@@ -1076,10 +1076,10 @@ _SuperMap.SuperMap.Util.cloneObject = function (obj) {
 
 /**
  * @description 判断两条线段是不是有交点。
- * @param a1 - {SuperMap.Geometry.Point}  第一条线段的起始节点。
- * @param a2 - {SuperMap.Geometry.Point}  第一条线段的结束节点。
- * @param b1 - {SuperMap.Geometry.Point}  第二条线段的起始节点。
- * @param b2 - {SuperMap.Geometry.Point}  第二条线段的结束节点。
+ * @param {SuperMap.Geometry.Point} a1 - 第一条线段的起始节点。
+ * @param {SuperMap.Geometry.Point} a2 - 第一条线段的结束节点。
+ * @param {SuperMap.Geometry.Point} b1 - 第二条线段的起始节点。
+ * @param {SuperMap.Geometry.Point} b2 - 第二条线段的结束节点。
  * @return {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
  */
 _SuperMap.SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
@@ -1120,9 +1120,9 @@ _SuperMap.SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
 
 /**
  * @description 获取文本外接矩形宽度与高度。
- * @param style - {SuperMap.Style} 文本样式。
- * @param text - {string} 文本内容。
- * @param element - {Object} DOM元素。
+ * @param {SuperMap.Style} style - 文本样式。
+ * @param {string} text - 文本内容。
+ * @param {Object} element - DOM元素。
  * @return {Object} 返回裁剪后的宽度，高度信息。
  */
 _SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
@@ -3293,7 +3293,7 @@ var Util = exports.Util = function () {
     /**
      * @function ol.supermap.Util.toGeoJSON
      * @description 将传入对象转为 GeoJSON 格式
-     * @param smObj - {Object} 待转参数
+     * @param {Object} smObj - 待转参数
      */
 
 
@@ -3309,7 +3309,7 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.toSuperMapGeometry
          * @description 将 geoJSON 对象转为SuperMap几何图形
-         * @param geoJSON - {Object} geoJSON 对象
+         * @param {Object} geoJSON - geoJSON 对象
          */
 
     }, {
@@ -3325,10 +3325,10 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.resolutionToScale
          * @description 通过分辨率计算比例尺
-         * @param resolution - {number} 分辨率
-         * @param dpi - {number} 屏幕分辨率
-         * @param mapUnit - {string} 地图单位
-         * @return {number} 比例尺
+         * @param {number} resolution - 分辨率
+         * @param {number} dpi - 屏幕分辨率
+         * @param {string} mapUnit - 地图单位
+         * @returns {number} 比例尺
          */
 
     }, {
@@ -3345,8 +3345,8 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.toSuperMapBounds
          * @description 转为SuperMapBounds格式
-         * @param bounds {Array<number>} bounds数组
-         * @return {SuperMap.Bounds} 返回SuperMap的Bounds对象
+         * @param {Array.<number>} bounds - bounds数组
+         * @returns {SuperMap.Bounds} 返回SuperMap的Bounds对象
          */
 
     }, {
@@ -3358,8 +3358,8 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.toProcessingParam
          * @description 将Region节点数组转为Processing服务需要的分析参数
-         * @param points - Region各个节点数组
-         * @return processing服务裁剪、查询分析的分析参数
+         * @param {Array} points - Region各个节点数组
+         * @returns processing服务裁剪、查询分析的分析参数
          */
 
     }, {
@@ -3386,10 +3386,10 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.scaleToResolution
          * @description 通过比例尺计算分辨率
-         * @param scale - {number} 比例尺
-         * @param dpi - {number} 屏幕分辨率
-         * @param mapUnit - {string} 地图单位
-         * @return {number} 分辨率
+         * @param {number} scale - 比例尺
+         * @param {number} dpi - 屏幕分辨率
+         * @param {string} mapUnit - 地图单位
+         * @returns {number} 分辨率
          */
 
     }, {
@@ -3406,8 +3406,8 @@ var Util = exports.Util = function () {
          * @private
          * @function ol.supermap.Util.getMeterPerMapUnit
          * @description 获取每地图单位多少米
-         * @param mapUnit mapUnit - {string} 地图单位
-         * @return {number} 返回每地图单位多少米
+         * @param {string} mapUnit - 地图单位
+         * @returns {number} 返回每地图单位多少米
          */
 
     }, {
@@ -3435,8 +3435,8 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.isArray
          * @description 判断是否为数组格式
-         * @param obj - {Object} 待判断对象
-         * @return {boolean} 是否是数组
+         * @param {Object} obj - 待判断对象
+         * @returns {boolean} 是否是数组
          */
 
     }, {
@@ -3448,8 +3448,8 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.Csv2GeoJSON
          * @description 将 csv 格式转为 GeoJSON
-         * @param csv - {Object} csv 对象
-         * @param options - {Object} 转换参数
+         * @param {Object} csv - csv 对象
+         * @param {Object} options - 转换参数
          */
 
     }, {
@@ -3536,8 +3536,8 @@ var Util = exports.Util = function () {
         /**
          * @function ol.supermap.Util.createCanvasContext2D
          * @description 创建2D画布
-         * @param opt_width - {number} 画布宽度
-         * @param opt_height - {number} 画布高度
+         * @param {number} opt_width - 画布宽度
+         * @param {number} opt_height - 画布高度
          */
 
     }, {
@@ -4501,18 +4501,15 @@ var SUtil = exports.SUtil = function () {
         key: 'SUtil_smoothBezier',
 
         /**
-         * APIFunction: SuperMap.LevelRenderer.SUtil_smoothBezier
-         * 贝塞尔平滑曲线。
+         * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothBezier
+         * @description 贝塞尔平滑曲线。
          *
-         * Parameters:
-         * points - {Array} 线段顶点数组。
-         * smooth - {Number} 平滑等级, 0-1。
-         * isLoop - {Boolean} isLoop。
-         * constraint - {Array} 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
-         * originalPosition - {Array} 参考原点。默认值：[0, 0]。
-         *
-         * Returns:
-         * {Array} 生成的平滑节点数组。
+         * @param {Array} points - 线段顶点数组。
+         * @param {number} smooth - 平滑等级, 0-1。
+         * @param {boolean} isLoop - isLoop。
+         * @param {Array} constraint - 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
+         * @param {Array} [originalPosition=[0, 0]] - 参考原点。
+         * @return {Array} 生成的平滑节点数组。
          */
         value: function SUtil_smoothBezier(points, smooth, isLoop, constraint, originalPosition) {
             if (!originalPosition || originalPosition !== 2) {
@@ -4595,17 +4592,14 @@ var SUtil = exports.SUtil = function () {
         }
 
         /**
-         * APIFunction: SuperMap.LevelRenderer.SUtil_smoothSpline
-         * 插值折线。
+         * @function SuperMap.LevelRenderer.SUtil.SUtil_smoothSpline
+         * @description 插值折线。
          *
-         * Parameters:
-         * points - {Array} 线段顶点数组。
-         * isLoop - {Boolean} isLoop。
-         * constraint - {Array} 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
-         * originalPosition - {Array} 参考原点。默认值：[0, 0]。
-         *
-         * Returns:
-         * {Array} 生成的平滑节点数组。
+         * @param {Array} points - 线段顶点数组。
+         * @param {boolean} isLoop - isLoop。
+         * @param {Array} constraint - 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
+         * @param {Array} originalPosition - 参考原点。默认值：[0, 0]。
+         * @return {Array} 生成的平滑节点数组。
          */
 
     }, {
@@ -4663,8 +4657,8 @@ var SUtil = exports.SUtil = function () {
         }
 
         /**
-         * APIFunction: SuperMap.LevelRenderer.SUtil_dashedLineTo
-         * 虚线 lineTo。
+         * @function SuperMap.LevelRenderer.SUtil.SUtil_dashedLineTo
+         * @description 虚线 lineTo。
          */
 
     }, {
@@ -4765,21 +4759,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape
  * @category Visualization Theme
- * 图形（shape）基类。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Eventful>
- *  - <SuperMap.LevelRenderer.Transformable>
+ * @classdesc 图形（shape）基类。
+ * @extends SuperMap.LevelRenderer.Eventful
+ * @extends SuperMap.LevelRenderer.Transformable
  */
 var Shape = exports.Shape = function (_SuperMap$mixin) {
     _inherits(Shape, _SuperMap$mixin);
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function Shape(options) {
@@ -4789,137 +4780,132 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
 
         options = options || {};
         /**
-         * APIProperty: id
-         * {String} 唯一标识。
+         * @member {string} SuperMap.LevelRenderer.Shape.prototype.id
+         * @description 唯一标识。
          */
         _this.id = null;
 
         /**
-         * APIProperty: style
-         * {Object} 基础绘制样式。
-         *
-         * Symbolizer properties:
-         * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-         * color - {String} 填充颜色。默认值："#000000'"。
-         * strokeColor - {String} 描边颜色。默认值："#000000'"。
-         * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-         * lineWidth - {Number} 描边宽度。默认值：1。
-         * opacity - {Number} 绘制透明度。默认值：1。
-         * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-         * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-         * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-         * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-         * text - {String} 图形中的附加文本。默认值：""。
-         * textColor - {String} 文本颜色。默认值："#000000'"。
-         * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-         * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-         * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-         * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.style
+         * @description 基础绘制样式。
+         * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+         * @param {string} style.color - 填充颜色。默认值："#000000'"。
+         * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+         * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+         * @param {number} style.lineWidth - 描边宽度。默认值：1。
+         * @param {number} style.opacity - 绘制透明度。默认值：1。
+         * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+         * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+         * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+         * @param {number} style.shadowOffsetY -  阴影纵向偏移。默认值：0。
+         * @param {string} style.text -  图形中的附加文本。默认值：""。
+         * @param {string} style.textColor -  文本颜色。默认值："#000000'"。
+         * @param {string} style.textFont -  附加文本样式。示例:'bold 18px verdana'。
+         * @param {string} style.textPosition -  附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+         * @param {string} style.textAlign -  附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
          *
          */
         _this.style = {};
 
         /**
-         * APIProperty: style.__rect
-         * {Object} 包围图形的最小矩形盒子。该对象包含以下属性：
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.style.__rect
+         * @description 包围图形的最小矩形盒子。
          *
-         * Symbolizer properties:
-         * x - {Number} 左上角顶点x轴坐标。
-         * y - {Number} 左上角顶点y轴坐标。
-         * width - {Number} 包围盒矩形宽度。
-         * height - {Number} 包围盒矩形高度。
+         * @param {number} x - 左上角顶点x轴坐标。
+         * @param {number} y - 左上角顶点y轴坐标。
+         * @param {number} width - 包围盒矩形宽度。
+         * @param {number} height - 包围盒矩形高度。
          */
 
         /**
-         * Property: highlightStyle
-         * {Object} 高亮样式。
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.highlightStyle
+         * @description 高亮样式。
          *
-         * Symbolizer properties:
-         * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-         * color - {String} 填充颜色。默认值："#000000'"。
-         * strokeColor - {String} 描边颜色。默认值："#000000'"。
-         * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-         * lineWidth - {Number} 描边宽度。默认值：1。
-         * opacity - {Number} 绘制透明度。默认值：1。
-         * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-         * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-         * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-         * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-         * text - {String} 图形中的附加文本。默认值：""。
-         * textColor - {String} 文本颜色。默认值："#000000'"。
-         * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-         * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-         * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-         * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         * @param {string} highlightStyle.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+         * @param {string} highlightStyle.color -  填充颜色。默认值："#000000'"。
+         * @param {string} highlightStyle.strokeColor - 描边颜色。默认值："#000000'"。
+         * @param {string} highlightStyle.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+         * @param {number} highlightStyle.lineWidth - 描边宽度。默认值：1。
+         * @param {number} highlightStyle.opacity -  绘制透明度。默认值：1。
+         * @param {number} highlightStyle.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+         * @param {number} highlightStyle.shadowColor - 阴影颜色。默认值："#000000'"。
+         * @param {number} highlightStyle.shadowOffsetX - 阴影横向偏移。默认值：0。
+         * @param {number} highlightStyle.shadowOffsetY - 阴影纵向偏移。默认值：0。
+         * @param {string} highlightStyle.text - 图形中的附加文本。默认值：""。
+         * @param {string} highlightStyle.textColor - 文本颜色。默认值："#000000'"。
+         * @param {string} highlightStyle.textFont - 附加文本样式。示例:'bold 18px verdana'。
+         * @param {string} highlightStyle.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+         * @param {string} highlightStyle.textAlign -  附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * @param {string} highlightStyle.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
          */
         _this.highlightStyle = null;
 
         /**
-         * APIProperty: parent
-         * {Object} 父节点，只读属性。<SuperMap.LevelRenderer.Group>
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.parent
+         * @description 父节点，只读属性。<SuperMap.LevelRenderer.Group>
          */
         _this.parent = null;
 
         /**
-         * Property: __dirty
-         * {Boolean}
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.__dirty
+         * @description {Boolean}
          */
         _this.__dirty = true;
 
         /**
-         * Property: __clipShapes
-         * {Array}
+         * @member {Array} SuperMap.LevelRenderer.Shape.prototype.__clipShapes
+         * @description {Array}
+         * 
          */
         _this.__clipShapes = [];
 
         /**
-         * APIProperty: invisible
-         * {Boolean} 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.invisible
+         * @description 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
          */
         _this.invisible = false;
 
         /**
-         * APIProperty: ignore
-         * {Boolean} 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.ignore
+         * @description 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
          */
         _this.ignore = false;
 
         /**
-         * APIProperty: zlevel
-         * {Number} z 层 level，决定绘画在哪层 canvas 中。默认值：0。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.zlevel
+         * @description z 层 level，决定绘画在哪层 canvas 中。默认值：0。
          */
         _this.zlevel = 0;
 
         /**
-         * APIProperty: draggable
-         * {Boolean} 是否可拖拽。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.draggable
+         * @description 是否可拖拽。默认值：false。
          */
         _this.draggable = false;
 
         /**
-         * APIProperty: clickable
-         * {Boolean} 是否可点击。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.clickable
+         * @description 是否可点击。默认值：false。
          */
         _this.clickable = false;
 
         /**
-         * APIProperty: hoverable
-         * {Boolean} 是否可以 hover。默认值：true。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.hoverable
+         * @description 是否可以 hover。默认值：true。
          */
         _this.hoverable = true;
 
         /**
-         * APIProperty: z
-         * {Number} z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，
-         * 但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。
-         * 默认值：0。
+         * @member {number} SuperMap.LevelRenderer.Shape.prototype.z
+         * @description z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。默认值：0。
          */
         _this.z = 0;
 
         //地理扩展
         /**
-         * APIProperty: refOriginalPosition
-         * {Array} 图形参考原点位置，图形的参考中心位置。
+         * @member {Array} SuperMap.LevelRenderer.Shape.prototype.refOriginalPosition
+         * @description 图形参考原点位置，图形的参考中心位置。
          * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          *
          * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
@@ -4937,30 +4923,30 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         _this.refOriginalPosition = [0, 0];
 
         /**
-         * APIProperty: refDataID
-         * {String} 图形所关联数据的 ID。
+         * @member {string} SuperMap.LevelRenderer.Shape.prototype.refDataID
+         * @description 图形所关联数据的 ID。
          *
          */
         _this.refDataID = null;
 
         /**
-         * APIProperty: isHoverByRefDataID
-         * {Boolean} 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
+         * @member {boolean} SuperMap.LevelRenderer.Shape.prototype.isHoverByRefDataID
+         * @description 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
          *
          */
         _this.isHoverByRefDataID = false;
 
         /**
-         * APIProperty: refDataHoverGroup
-         * {String} 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
+         *  @member {string} SuperMap.LevelRenderer.Shape.prototype.refDataHoverGroup 
+         *  @description 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
          * 一旦设置此属性，且属性值有效，只有关联同一个数据的图形且此属性相同的图形才会高亮。
          *
          */
         _this.refDataHoverGroup = null;
 
         /**
-         * APIProperty: dataInfo
-         * {Object} 图形的数据信息。
+         * @member {Object} SuperMap.LevelRenderer.Shape.prototype.dataInfo
+         * @description 图形的数据信息。
          *
          */
         _this.dataInfo = null;
@@ -4968,8 +4954,8 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         _this.id = _this.id || _Util.Util.createUniqueID("smShape_");
         _this.CLASS_NAME = "SuperMap.LevelRenderer.Shape";
         /**
-         * APIMethod: getTansform
-         * 变换鼠标位置到 shape 的局部坐标空间
+         * @function SuperMap.LevelRenderer.Shape.prototype.getTansform
+         * @description 变换鼠标位置到 shape 的局部坐标空间
          *
          */
         _this.getTansform = function () {
@@ -4996,8 +4982,8 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -5027,15 +5013,12 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: brush
-         * 绘制图形。
+         * @function SuperMap.LevelRenderer.Shape.prototype.brush
+         * @description 绘制图形。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * isHighlight - {Boolean} 是否使用高亮属性。
-         * updateCallback - {Function} 需要异步加载资源的 shape 可以通过这个 callback(e),
-         * 让painter更新视图，base.brush 没用，需要的话重载 brush。
-         *
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Boolean} isHighlight - 是否使用高亮属性。
+         * @param {Function} updateCallback - 需要异步加载资源的 shape 可以通过这个 callback(e),让painter更新视图，base.brush 没用，需要的话重载 brush。
          */
 
     }, {
@@ -5077,15 +5060,12 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: beforeBrush
-         * 具体绘制操作前的一些公共操作。
+         * @function SuperMap.LevelRenderer.Shape.prototype.beforeBrush
+         * @description 具体绘制操作前的一些公共操作。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * isHighlight - {Boolean} 是否使用高亮属性。
-         *
-         * Returns:
-         * {Object} 处理后的样式。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {boolean} isHighlight - 是否使用高亮属性。
+         * @return {Object} 处理后的样式。
          */
 
     }, {
@@ -5119,11 +5099,10 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: afterBrush
-         * 绘制后的处理。
+         * @function SuperMap.LevelRenderer.Shape.prototype.afterBrush
+         * @description 绘制后的处理。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
          *
          */
 
@@ -5134,12 +5113,11 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: setContext
-         * 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
+         * @function SuperMap.LevelRenderer.Shape.prototype.setContext
+         * @description 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} 样式。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - 样式。
          *
          */
 
@@ -5160,7 +5138,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: doClip
+         * @function SuperMap.LevelRenderer.Shape.prototype.doClip
          *
          */
 
@@ -5190,13 +5168,12 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: getHighlightStyle
-         * 根据默认样式扩展高亮样式
-         *
-         * Parameters:
-         * style - {Object} 样式。
-         * highlightStyle - {Object} 高亮样式。
-         * brushTypeOnly - {String} brushTypeOnly。
+         * @function SuperMap.LevelRenderer.Shape.prototype.getHighlightStyle
+         * @description 根据默认样式扩展高亮样式
+         * 
+         * @param {Object} style - 样式。
+         * @param {Object} highlightStyle - 高亮样式。
+         * @param {string} brushTypeOnly - brushTypeOnly。
          *
          */
 
@@ -5263,8 +5240,8 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: getHighlightZoom
-         * 高亮放大效果参数，当前统一设置为6，如有需要差异设置，通过 this.type 判断实例类型
+         * @function SuperMap.LevelRenderer.Shape.prototype.getHighlightZoom
+         * @description 高亮放大效果参数，当前统一设置为6，如有需要差异设置，通过 this.type 判断实例类型
          *
          */
 
@@ -5275,12 +5252,11 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: drift
-         * 移动位置
+         * @function SuperMap.LevelRenderer.Shape.prototype.drift
+         * @description 移动位置
          *
-         * Parameters:
-         * dx - {Object} 横坐标变化。
-         * dy - {Object} 纵坐标变化。
+         * @param {Object} dx - 横坐标变化。
+         * @param {Object} dy - 纵坐标变化。
          *
          */
 
@@ -5292,12 +5268,11 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 构建绘制的Path。子类必须重新实现此方法。
+         * @function SuperMap.LevelRenderer.Shape.prototype.buildPath
+         * @description 构建绘制的Path。子类必须重新实现此方法。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} 样式。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - 样式。
          */
 
     }, {
@@ -5308,11 +5283,10 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回包围盒矩形。子类必须重新实现此方法。
+         * @function SuperMap.LevelRenderer.Shape.prototype.getRect
+         * @description 计算返回包围盒矩形。子类必须重新实现此方法。
          *
-         * Parameters:
-         * style - {Object} 样式。
+         * @param {Object} style - 样式。
          */
 
     }, {
@@ -5323,12 +5297,11 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: isCover
-         * 判断鼠标位置是否在图形内。
+         * @function SuperMap.LevelRenderer.Shape.prototype.isCover
+         * @description 判断鼠标位置是否在图形内。
          *
-         * Parameters:
-         * x - {Number} x。
-         * y - {Number} y。
+         * @param {number} x - x。
+         * @param {number} y - y。
          */
 
     }, {
@@ -5353,13 +5326,12 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: drawText
-         * 绘制附加文本。
+         * @function SuperMap.LevelRenderer.Shape.prototype.drawText
+         * @description 绘制附加文本。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {String} 样式。
-         * normalStyle - {String} normalStyle 默认样式，用于定位文字显示。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {string} style - 样式。
+         * @param {string} normalStyle - normalStyle 默认样式，用于定位文字显示。
          */
 
     }, {
@@ -5550,8 +5522,8 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: modSelf
-         * 图形发生改变
+         * @function SuperMap.LevelRenderer.Shape.prototype.modSelf
+         * @description 图形发生改变
          */
 
     }, {
@@ -5567,8 +5539,8 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: isSilent
-         * 图形是否会触发事件，通过 bind 绑定的事件
+         * @function SuperMap.LevelRenderer.Shape.prototype.isSilent
+         * @description 图形是否会触发事件，通过 bind 绑定的事件
          */
 
     }, {
@@ -5578,13 +5550,12 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: setCtxGlobalAlpha
-         * 设置 Cavans 上下文全局透明度
+         * @function SuperMap.LevelRenderer.Shape.prototype.setCtxGlobalAlpha
+         * @description 设置 Cavans 上下文全局透明度
          *
-         * Parameters:
-         * _ctx - {Object} Cavans 上下文
-         * type - {String} one of 'stroke', 'fill', or 'reset'
-         * style - {Object} Symbolizer hash
+         * @param {Object} _ctx - Cavans 上下文
+         * @param {string} type - one of 'stroke', 'fill', or 'reset'
+         * @param {Object} style - Symbolizer hash
          */
 
     }, {
@@ -5600,8 +5571,8 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: SuperMap.LevelRenderer.Shape._fillText
-         * 填充文本
+         * @function SuperMap.LevelRenderer.Shape.prototype._fillText
+         * @description 填充文本
          */
 
     }], [{
@@ -5636,19 +5607,16 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: SuperMap.LevelRenderer.Shape._getTextRect
-         * 返回矩形区域，用于局部刷新和文字定位
+         * @function SuperMap.LevelRenderer.Shape._getTextRect
+         * @description 返回矩形区域，用于局部刷新和文字定位
          *
-         * Parameters:
-         * text - {String} text。
-         * x - {Number} x。
-         * y - {Number} y。
-         * textFont - {String} textFont。
-         * textAlign - {String} textAlign。
-         * textBaseline - {String} textBaseline。
-         *
-         * Returns:
-         * {Object} 矩形区域。
+         * @param {string} text - text。
+         * @param {number} x - x。
+         * @param {number} y - y。
+         * @param {string} textFont -  textFont。
+         * @param {string} textAlign - textAlign。
+         * @param {string} textBaseline - textBaseline。
+         * @return {Object} 矩形区域。
          */
 
     }, {
@@ -6268,7 +6236,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
         _classCallCheck(this, GeoJSON);
 
         /**
-         * @member SuperMap.Format.GeoJSON.prototype.ignoreExtraDims - {boolean}
+         * @member {boolean} SuperMap.Format.GeoJSON.prototype.ignoreExtraDims
          * @description 忽略维度超过2的几何要素。
          */
         var _this = _possibleConstructorReturn(this, (GeoJSON.__proto__ || Object.getPrototypeOf(GeoJSON)).call(this, options));
@@ -6277,14 +6245,14 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
 
         _this.CLASS_NAME = "SuperMap.Format.GeoJSON";
         /**
-         * @member SuperMap.Format.GeoJSON.prototype.parseCoords - {Object}
+         * @member {Object} SuperMap.Format.GeoJSON.prototype.parseCoords 
          * @description 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
          */
         _this.parseCoords = {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.point
              * @description 将一组坐标成一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的一组坐标。
+             * @param {Object} array - GeoJSON片段中的一组坐标。
              * @return {SuperMap.Geometry} 一个几何对象。
              */
             "point": function point(array) {
@@ -6297,7 +6265,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
              * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @param {Object} array - GeoJSON片段中的坐标组数组。
              * @return {SuperMap.Geometry} 一个几何对象。
              */
             "multipoint": function multipoint(array) {
@@ -6317,7 +6285,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.linestring
              * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @param {Object} array - GeoJSON片段中的坐标组数组。
              * @return {SuperMap.Geometry} 一个几何对象。
              */
             "linestring": function linestring(array) {
@@ -6337,7 +6305,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
              * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @param {Object} array - GeoJSON片段中的坐标组数组。
              * @return {SuperMap.Geometry} 一个几何对象。
              */
             "multilinestring": function multilinestring(array) {
@@ -6377,7 +6345,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
              * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @param {Object} array - GeoJSON片段中的坐标组数组。
              * @return {SuperMap.Geometry} 一个几何对象。
              */
             "multipolygon": function multipolygon(array) {
@@ -6397,7 +6365,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.box
              * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @param {Object} array - GeoJSON片段中的坐标组数组。
              * @return {SuperMap.Geometry} 一个几何对象。
              */
             "box": function box(array) {
@@ -6416,7 +6384,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.feature
              * @description 返回一个表示单个要素对象的GeoJSON的一部分。
-             * @param feature - iServer要素对象
+             * @param {Object} feature - iServer要素对象
              * @return {Object} 一个表示点的对象。
              */
             'feature': function feature(_feature) {
@@ -6443,7 +6411,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.geometry
              * @description 返回一个表示单个几何对象的GeoJSON的一部分。
-             * @param geometry -iServer 几何对象
+             * @param {Object} geometry -iServer 几何对象
              * @return {Object} 一个表示几何体的对象。
              */
             'geometry': function geometry(_geometry) {
@@ -6472,7 +6440,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.point
              * @description 从一个点对象中返回一个坐标组。
-             * @param point - {SuperMap.Geometry.Point} 一个点对象。
+             * @param {SuperMap.Geometry.Point} point - 一个点对象。
              * @return {Array} 一个表示一个点的坐标组。
              */
             'point': function point(_point) {
@@ -6488,7 +6456,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.point
              * @description 从一个文本对象中返回一个坐标组。
-             * @param geo 一个文本对象。
+             * @param {Object} geo - 一个文本对象。
              * @return {Array} 一个表示一个点的坐标组。
              */
             'text': function text(geo) {
@@ -6498,7 +6466,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.multipoint
              * @description 从一个多点对象中返一个坐标组数组。
-             * @param multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
+             * @param {SuperMap.Geometry.MultiPoint} multipoint - 多点对象。
              * @return {Array} 一个表示多点的坐标组数组。
              */
             'multipoint': function multipoint(_multipoint) {
@@ -6512,7 +6480,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.linestring
              * @description 从一个线对象中返回一个坐标组数组。
-             * @param linestring - {SuperMap.Geometry.Linestring} 线对象。
+             * @param {SuperMap.Geometry.Linestring} linestring - 线对象。
              * @return {Array} 一个表示线对象的坐标组数组。
              */
             'linestring': function linestring(_linestring) {
@@ -6526,7 +6494,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.multilinestring
              * @description 从一个多线对象中返回一个线数组。
-             * @param multilinestring - {SuperMap.Geometry.MultiLinestring} 多线对象
+             * @param {SuperMap.Geometry.MultiLinestring} multilinestring - 多线对象
              *
              * @return {Array} 一个表示多线的线数组。
              */
@@ -6541,7 +6509,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.polygon
              * @description 从一个面对象中返回一组线环。
-             * @polygon - {SuperMap.Geometry.Polygon} 面对象。
+             * @param {SuperMap.Geometry.Polygon} polygon - 面对象。
              * @return {Array} 一组表示面的线环。
              */
             'polygon': function polygon(_polygon) {
@@ -6555,7 +6523,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.multipolygon
              * @description 从一个多面对象中返回一组面。
-             * @param multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
+             * @param {SuperMap.Geometry.MultiPolygon} multipolygon - 多面对象。
              * @return {Array} 一组表示多面的面。
              */
             'multipolygon': function multipolygon(_multipolygon) {
@@ -6569,7 +6537,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
             /**
              * @function SuperMap.Format.GeoJSON.extract.collection
              * @description 从一个几何要素集合中一组几何要素数组。
-             * @param collection - {SuperMap.Geometry.Collection} 几何要素集合。
+             * @param {SuperMap.Geometry.Collection} collection - 几何要素集合。
              * @return {Array} 一组表示几何要素集合的几何要素数组。
              */
             'collection': function collection(_collection) {
@@ -6590,17 +6558,12 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
     /**
      * @function SuperMap.Format.GeoJSON.prototype.read
      * @description 反序列化一个 GeoJSON 字符串。
-     * @param json - {string}  GeoJSON 字符串
-     * @param type - {string} 可选的字符串，它决定了输出的格式。
-     *     支持的值有："Geometry","Feature",和"FeatureCollection",
-     *     如果此值为null，则会使用默认值"FeaureCollection"。
-     * @param filter - {function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
-     *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
-     *     某个类相应的对象，或者将日期字符串转化成Date对象。
-     *
-     * @return {Object}    返回值依赖于type参数的值。<br>
-     *     如果type等于"FeatureCollection"（默认值），返回值将会是 <SuperMap.Feature.Vector> 数组。<br>
-     *     如果type为"Geometry",输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。 <br>
+     * @param {string} json - GeoJSON 字符串
+     * @param {string} [type=FeaureCollection] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature",和"FeatureCollection",如果此值为null。
+     * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
+     * @return {Object}  返回值依赖于type参数的值。
+     *     如果type等于"FeatureCollection"（默认值），返回值将会是 <SuperMap.Feature.Vector> 数组。
+     *     如果type为"Geometry",输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。
      *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
      */
 
@@ -6714,7 +6677,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
         /**
          * @function SuperMap.Format.GeoJSON.prototype.parseFeature
          * @description 将一个GeoJSON中的feature转化成<SuperMap.Feature.Vector>对象。
-         * @param obj - {Object} 从GeoJSON对象中创建一个对象。
+         * @param {Object} obj - 从GeoJSON对象中创建一个对象。
          * @return {SuperMap.Feature.Vector} 一个要素。
          */
 
@@ -6743,7 +6706,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
         /**
          * @function SuperMap.Format.GeoJSON.prototype.parseGeometry
          * @description 将一个GeoJSON中的几何要素转化成<SuperMap.Geometry>对象。
-         * @param obj - {Object} 从GeoJSON对象中创建一个对象。
+         * @param {Object} obj - 从GeoJSON对象中创建一个对象。
          * @return {SuperMap.Geometry} 一个几何要素。
          */
 
@@ -6784,8 +6747,8 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
         /**
          * @function SuperMap.Format.GeoJSON.write
          * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
-         * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
-         * @param pretty - {boolean} 是否使用换行和缩进来控制输出。默认值为false。
+         * @param {Object} obj - 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
+         * @param {boolean} pretty - 是否使用换行和缩进来控制输出。默认值为false。
          * @return {string} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
          */
 
@@ -6825,7 +6788,7 @@ var GeoJSON = exports.GeoJSON = function (_JSONFormat) {
         /**
          * @function SuperMap.Format.GeoJSON.createCRSObject
          * @description 从一个要素对象中创建一个坐标参考系对象。
-         * @param object - {SuperMap.Feature.Vector} 要素对象
+         * @param {SuperMap.Feature.Vector} object - 要素对象
          * @return {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
          */
 
@@ -7972,9 +7935,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Geometry.LineString
  * @classdesc 几何对象线串类。
  * @category BaseTypes Geometry
- * @param points - {Array<SuperMap.Geometry.Point>} 用来生成线串的点数组。
+ * @param {Array.<SuperMap.Geometry.Point>} points - 用来生成线串的点数组。
  * @extends {SuperMap.Geometry.Curve}
- *
  * @example
  * var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
  *     new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
@@ -7998,8 +7960,8 @@ var LineString = exports.LineString = function (_Curve) {
     /**
      * @function SuperMap.Geometry.LineString.prototype.removeComponent
      * @description 只有在线串上有三个或更多的点的时候，才会允许移除点（否则结果将会是单一的点）。
-     * @param point - {SuperMap.Geometry.Point} 将被删除的点。
-     * @returns {Boolean} 删除的点。
+     * @param {SuperMap.Geometry.Point} point - 将被删除的点。
+     * @returns {boolean} 删除的点。
      */
 
 
@@ -8060,7 +8022,7 @@ var LineString = exports.LineString = function (_Curve) {
         /**
          * @function SuperMap.Geometry.LineString.prototype.getVertices
          * @description 返回几何图形的所有顶点的列表。
-         * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
+         * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
          * 如果没有设置此参数，则返回所有顶点。
          * @returns {Array} 几何图形的顶点列表。
          */
@@ -8082,14 +8044,13 @@ var LineString = exports.LineString = function (_Curve) {
         /**
          * @function SuperMap.Geometry.LineString.calculateCircle
          * @description 三点画圆弧
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的圆弧控制点。
+         * @param {Array.<SuperMap.Geometry.Point>} points - 传入的待计算的初始点串。
+         * @returns {Array.<SuperMap.Geometry.Point>} 计算出相应的圆弧控制点。
          * @example
          * var points = [];
          * points.push(new SuperMap.Geometry.Point(-50,30));
          * points.push(new SuperMap.Geometry.Point(-30,50));
          * points.push(new SuperMap.Geometry.Point(2,60));
-         *
          * var circle = SuperMap.Geometry.LineString.calculateCircle(points);
          */
 
@@ -8231,7 +8192,7 @@ var LineString = exports.LineString = function (_Curve) {
          * @function SuperMap.Geometry.LineString.createLineEPS
          * @description 根据点的类型画出不同类型的曲线
          * 点的类型有三种, LTypeArc, LTypeCurve, NONE
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
+         * @param {Array.<SuperMap.Geometry.Point>} points - 传入的待计算的初始点串。
          * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
          * @example
          * var points = [];
@@ -8239,7 +8200,6 @@ var LineString = exports.LineString = function (_Curve) {
          * points.push(new SuperMap.Geometry.Point(-30,50,"LTypeArc"));
          * points.push(new SuperMap.Geometry.Point(2,60));
          * points.push(new SuperMap.Geometry.Point(8,20));
-         *
          * var lineEPS = SuperMap.Geometry.LineString.createLineEPS(points);
          */
 
@@ -8346,10 +8306,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 点几何对象类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
- * @param  x - {float} x-坐标
- * @param y - {float} y-坐标
- * @param type - {string} 用来存储点的类型
- * @param tag -  {float} 用来存储额外的属性，比如差值分析中的Z值。
+ * @param {float} x - x坐标
+ * @param {float} y - y坐标
+ * @param {string} type - 用来存储点的类型
+ * @param {float} tag - 用来存储额外的属性，比如差值分析中的Z值。
  * @example
  * var point = new SuperMap.Geometry.Point(-111.04, 45.68);
  */
@@ -8360,7 +8320,7 @@ var Point = exports.Point = function (_Geometry) {
         _classCallCheck(this, Point);
 
         /**
-         * @member SuperMap.Geometry.Point.prototype.x -{float}
+         * @member {float} SuperMap.Geometry.Point.prototype.x
          * @description 横坐标。
          */
         var _this = _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, x, y, type, tag));
@@ -8368,19 +8328,19 @@ var Point = exports.Point = function (_Geometry) {
         _this.x = parseFloat(x);
 
         /**
-         * @member SuperMap.Geometry.Point.prototype.y -{float}
+         * @member {float} SuperMap.Geometry.Point.prototype.y
          * @description 纵坐标。
          */
         _this.y = parseFloat(y);
 
         /**
-         * @member SuperMap.Geometry.Point.prototype.tag -{string}
+         * @member {string} SuperMap.Geometry.Point.prototype.tag
          * @description  用来存储额外的属性，比如差值分析中的Z值。
          */
         _this.tag = tag || tag == 0 ? parseFloat(tag) : null;
 
         /**
-         * @member SuperMap.Geometry.Point.prototype.tag -{string}
+         * @member {string} SuperMap.Geometry.Point.prototype.tag
          * @description  用来存储点的类型
          */
         _this.type = type || "Point";
@@ -8426,9 +8386,8 @@ var Point = exports.Point = function (_Geometry) {
          * var point= new SuperMap.Geometry.Point(0,0);
          * var point1={x:0,y:0};
          * var result= point.equals(point1);
-         * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
-         *
-         * @returns {Boolean} 两个点对象是否相等（true为相等，false为不等）。
+         * @param {SuperMap.Geometry.Point} geom - 需要判断的点对象。
+         * @returns {boolean} 两个点对象是否相等（true为相等，false为不等）。
          */
 
     }, {
@@ -8444,8 +8403,8 @@ var Point = exports.Point = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Point.prototype.move
          * @description 沿着x、y轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
-         * @param x - {float} x轴正方向上的偏移量。
-         * @param y - {float} y轴正方向上偏移量。
+         * @param {float} x - x轴正方向上的偏移量。
+         * @param {float} y - y轴正方向上偏移量。
          */
 
     }, {
@@ -8484,8 +8443,7 @@ var Point = exports.Point = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Point.prototype.getVertices
          * @description 返回点对象的所有顶点的列表。
-         * @param nodes - {Boolean} 对于点对象此参数不起作用，直接返回点。
-         *
+         * @param {boolean} nodes - 对于点对象此参数不起作用，直接返回点。
          * @returns {Array} 几何图形的顶点列表。
          */
 
@@ -8521,88 +8479,80 @@ var _SuperMap = __webpack_require__(0);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters
  * @category Visualization Theme
- * 图形参数基类，此类不可实例化
+ * @classdesc 图形参数基类，此类不可实例化
  */
 var ShapeParameters = exports.ShapeParameters = function () {
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters
-   * 图形参数对象。
-   *
-   * Returns:
-   * {Object} 图形参数对象。
+   * @function SuperMap.Feature.ShapeParameters.prototype.constructor
+   * @description 图形参数对象。
+   * @returns {SuperMap.Feature.ShapeParameters} 图形参数对象。
    */
   function ShapeParameters() {
     _classCallCheck(this, ShapeParameters);
 
     /**
-     * APIProperty: refOriginalPosition
-     * {Array} 图形参考原点位置，图形的参考中心位置。
+     * @member {Array} [SuperMap.Feature.ShapeParameters.prototype.refOriginalPosition=[0,0]]
+     * @description 图形参考原点位置，图形的参考中心位置。
      * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     *
      * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
      * 但 refOriginalPosition 可以改变图形的参考位置，例如： refOriginalPosition = [80, 80],
      * 图形圆的 style.x = 20, style.y = 20，那么圆在 canvas 中的实际位置是 [100, 100]。
-     *
      * 图形（Shape） 的所有位置相关属性都是以 refOriginalPosition 为参考中心，
      * 也就是说图形的所有位置信息在 canvas 中都是以 refOriginalPosition 为参考的相对位置，只有
      * refOriginalPosition 的值为 [0, 0] 时，图形的位置信息才是 canvas 绝对位置。
-     *
      * 图形的位置信息通常有：style.pointList，style.x，style.y。
-     *
-     * refOriginalPosition。默认值是： [0, 0]。
      */
     this.refOriginalPosition = [0, 0];
 
     /**
-     * APIProperty: refDataID
-     * {String} 图形所关联数据的 ID （ <SuperMap.Feature.Vector> 的 id ）。
+     * @member {string} SuperMap.Feature.ShapeParameters.prototype.refDataID
+     * @description 图形所关联数据的 ID（<{@link SuperMap.Feature.Vector}> 的 id）。
      */
     this.refDataID = null;
 
     /**
-     * APIProperty: isHoverByRefDataID
-     * {Boolean} 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
+     * @member {boolean} SuperMap.Feature.ShapeParameters.prototype.isHoverByRefDataID
+     * @description 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
      */
     this.isHoverByRefDataID = false;
 
     /**
-     * APIProperty: refDataHoverGroup
-     * {String} 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
+     * @member {string} SuperMap.Feature.ShapeParameters.prototype.refDataHoverGroup
+     * @description 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
      * 一旦设置此属性，且属性值有效，只有关联同一个数据的图形且此属性相同的图形才会高亮。
      */
     this.refDataHoverGroup = null;
 
     /**
-     * APIProperty: dataInfo
-     * {Object} 图形携带的附加数据。
+     * @member {Object} SuperMap.Feature.ShapeParameters.prototype.dataInfo
+     * @description 图形携带的附加数据。
      */
     this.dataInfo = null;
 
     /**
-     * APIProperty: clickable
-     * {Boolean} 是否可点击。
+     * @member {boolean} SuperMap.Feature.ShapeParameters.prototype.clickable
+     * @description 是否可点击。
      */
     this.clickable = true;
 
     /**
-     * APIProperty: hoverable
-     * {Boolean} 是否可 hover。
+     * @member {boolean} SuperMap.Feature.ShapeParameters.prototype.hoverable
+     * @description 是否可点击。
      */
     this.hoverable = true;
 
     /**
-     * Property: style。
-     * {Object} 图形样式对象，可设样式属性在子类中确定。
+     * @member {Object} SuperMap.Feature.ShapeParameters.prototype.style
+     * @description 图形样式对象，可设样式属性在子类中确定。
      */
     this.style = null;
 
     /**
-     * Property: highlightStyle
-     * {Object} 高亮样式对象，可设样式属性与 style 的可设样式属性相同。
+     * @member {Object} SuperMap.Feature.ShapeParameters.prototype.highlightStyle
+     * @description 高亮样式对象，可设样式属性与 style 的可设样式属性相同。
      */
     this.highlightStyle = {};
 
@@ -8610,8 +8560,8 @@ var ShapeParameters = exports.ShapeParameters = function () {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -8689,50 +8639,37 @@ var _Util = __webpack_require__(1);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
- * 图形工厂类。
+ * @classdesc 图形工厂类。
  *
  * 目前支持创建的图形有：
- *
  * 用于统计专题图：
  * 点 - 参数对象： <SuperMap.Feature.ShapeParameters.Point>
- *
  * 线 - 参数对象： <SuperMap.Feature.ShapeParameters.Line>
- *
  * 面 - 参数对象： <SuperMap.Feature.ShapeParameters.Polygon>
- *
  * 矩形 - 参数对象： <SuperMap.Feature.ShapeParameters.Rectangle>
- *
  * 扇形 - 参数对象： <SuperMap.Feature.ShapeParameters.Sector>
- *
  * 标签 - 参数对象： <SuperMap.Feature.ShapeParameters.Label>
- *
  * 图片 - 参数对象： <SuperMap.Feature.ShapeParameters.Image>
  *
- *
  * 用于符号专题图：
- * 圆形 -  参数对象：<SuperMap.Feature.ShapeParameters.Cilcle>
+ * 圆形 -  参数对象：<{@link SuperMap.Feature.ShapeParameters.Cilcle}>
  */
 var ShapeFactory = exports.ShapeFactory = function () {
 
     /**
-     * Constructor: SuperMap.Feature.ShapeFactory
-     * 构建图形工厂对象。
-     *
-     * Parameters:
-     * shapeParameters - {Object}  图形参数对象，<SuperMap.Feature.ShapeParameters> 子类对象，可选参数。
-     *
-     * Returns:
-     * {Object} 返回图形工厂类对象。
+     * @function SuperMap.Feature.ShapeFactory.prototype.constructor
+     * @description 构建图形工厂对象。
+     * @param {Object} shapeParameters - 图形参数对象，<{@link SuperMap.Feature.ShapeParameters}> 子类对象，可选参数。
+     * @returns {SuperMap.Feature.ShapeFactory} 返回图形工厂类对象。
      */
     function ShapeFactory(shapeParameters) {
         _classCallCheck(this, ShapeFactory);
 
         /**
-         * APIProperty: shapeParameters
-         * {Object} 图形参数对象， <SuperMap.Feature.ShapeParameters> 子类对象。必设参数，默认值 null。
+         * @member {Object} SuperMap.Feature.ShapeParameters.prototype.shapeParameters
+         * @description  图形参数对象，<{@link SuperMap.Feature.ShapeParameters}> 子类对象。必设参数，默认值 null。
          */
         this.shapeParameters = shapeParameters;
 
@@ -8740,8 +8677,8 @@ var ShapeFactory = exports.ShapeFactory = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁图形工厂类对象。
+     * @function  SuperMap.Feature.ShapeParameters.prototype.destroy
+     * @description 销毁图形工厂类对象。
      */
 
 
@@ -8752,16 +8689,12 @@ var ShapeFactory = exports.ShapeFactory = function () {
         }
 
         /**
-         * APIMethod: createShape
-         * 创建一个图形。具体图形由 shapeParameters 决定。
-         *
-         * Parameters:
-         * shapeParameters - {Object} 图形参数对象， <SuperMap.Feature.ShapeParameters> 子类对象。
+         * @function  SuperMap.Feature.ShapeParameters.prototype.createShape
+         * @description 创建一个图形。具体图形由 shapeParameters 决定。
+         * @param {Object} shapeParameters - 图形参数对象，<{@link SuperMap.Feature.ShapeParameters}> 子类对象。
          * 此参数可选，如果使用此参数（不为 null），shapeParameters 属性值将被修改为参数的值，然后再使用 shapeParameters 属性值创建图形；
          * 如果不使用此参数，createShape 方法将直接使用 shapeParameters 属性创建图形。
-         *
-         * Returns:
-         * {Object} - 图形对象（或 null - 图形创建失败）。
+         * @returns {Object} 图形对象（或 null - 图形创建失败）。
          */
 
     }, {
@@ -8958,14 +8891,10 @@ var ShapeFactory = exports.ShapeFactory = function () {
         }
 
         /**
-         * Function: ShapeFactory.transformStyle
-         * 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
-         *
-         * Parameters:
-         * style - {Object} 用户 style。
-         *
-         * Returns:
-         * {Object} 符合 levelRenderer 的 tyle。
+         * @function  SuperMap.Feature.ShapeParameters.prototype.transformStyle
+         * @description 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
+         * @param {Object} style - 用户 style。
+         * @returns {Object} 符合 levelRenderer 的 style。
          */
 
     }], [{
@@ -9078,23 +9007,14 @@ var ShapeFactory = exports.ShapeFactory = function () {
         }
 
         /**
-         * APIFunction: ShapeFactory.Background
-         * 创建一个矩形背景框图形对象。
-         *
-         * Parameters:
-         * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-         * box - {Array{Number}} 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
-         * setting - {Object} 图表配置参数，必设参数。
-         *
-         * 本函数中图形配置对象 setting 可设属性：
-         *
-         * Symbolizer properties:
-         * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
-         * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
-         * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
-         *
-         * Returns:
-         * {Object} 背景框图形，一个可视化图形（矩形）对象。
+         * @function  SuperMap.Feature.ShapeParameters.prototype.Background
+         * @description 创建一个矩形背景框图形对象。
+         * @param {SuperMap.Feature.ShapeFactory} shapeFactory - 图形工厂对象，必设参数。
+         * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
+         * @param {Object} setting - 图表配置参数，必设参数。本函数中图形配置对象 setting 可设属性：
+         * @param {Object} setting.backgroundStyle - 背景样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Rectangle#style>。
+         * @param {Array} [setting.backgroundRadius=[0,0,0,0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
+         * @returns {Object} 背景框图形，一个可视化图形（矩形）对象。
          */
 
     }, {
@@ -9128,46 +9048,29 @@ var ShapeFactory = exports.ShapeFactory = function () {
         }
 
         /**
-         * APIFunction: ShapeFactory.GraphAxis
-         * 创建一个统计图表坐标轴图形对象组。
-         *
-         * Parameters:
-         * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-         * dataViewBox - {Array{Number}} 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
-         * setting - {Object} 图表配置参数，必设参数。
-         * xShapeInfo - {Object} X 方向上的图形信息对象，包含两个属性，
-         * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
-         * 如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-         * width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-         * xShapeInfo 包含两个属性
-         *
-         * Symbolizer properties:
-         * xPositions - {Array{Number}} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-         * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-         *
-         * 本函数中图形配置对象 setting 可设属性：
-         *
-         * Symbolizer properties:
-         * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。
-         * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。
-         * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。
-         * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
-         * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
-         * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
-         * 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
-         * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
-         * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，
-         * 否则沿数据视图框下面条边等距排布标签。
-         * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
-         * axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
-         * 数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。
-         * useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
-        * xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。
-        * axis3DParameter - {Number} 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：0。
-        *
-        * Returns:
-        * {Array{Object}} 统计图表坐标轴图形对象数组。
-        */
+         * @function  SuperMap.Feature.ShapeParameters.prototype.GraphAxis
+         * @description 创建一个统计图表坐标轴图形对象组。
+         * @param {SuperMap.Feature.ShapeFactory} shapeFactory - 图形工厂对象，必设参数。
+         * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
+         * @param {Object} setting - 图表配置参数，必设参数。
+         * @param {Object} setting.axisStyle - 坐标轴样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Line#style>。
+         * @param {boolean} [setting.axisUseArrow=false] - 坐标轴是否使用箭头。
+         * @param {number} [setting.axisYTick=0] - y 轴刻度数量，0表示不使用箭头。
+         * @param {Array.<string>} setting.axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
+         * @param {Object} setting.axisYLabelsStyle - y 轴上的标签组样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Label#style>。
+         * @param {Array.<number>} [setting.axisYLabelsOffset=[0,0]] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
+         * @param {Array.<string>} setting.axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+         * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，否则沿数据视图框下面条边等距排布标签。
+         * @param {Object} setting.axisXLabelsStyle - x 轴上的标签组样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Label#style>。
+         * @param {Array.<number>} [setting.axisXLabelsOffset=[0,0]] - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。
+         * @param {boolean} setting.useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
+         * @param {Object} setting.xReferenceLineStyle - 水平参考线样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Line#style>。
+         * @param {number} [setting.axis3DParameter=0] - 3D 坐标轴参数，此属性值在大于等于 15 时有效。
+         * @param {Object} xShapeInfo - X 方向上的图形信息对象，包含两个属性。
+         * @param {Array.<number>} xShapeInfo.xPositions - 图形在 x 轴方向上的像素坐标值，是一个一维数组，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         * @param {number} xShapeInfo.width - 图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+         * @returns {Array.<Object>} 统计图表坐标轴图形对象数组。
+         */
 
     }, {
         key: 'GraphAxis',
@@ -9483,18 +9386,13 @@ var ShapeFactory = exports.ShapeFactory = function () {
         }
 
         /**
-         * APIFunction: ShapeFactory.ShapeStyleTool
-         * 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
-         *
-         * Parameters:
-         * defaultStyle - {Object} 默认 style，此样式对象可设属性根据图形类型参考 <SuperMap.Feature.ShapeParameters> 子类对象的 style 属性。
-         * style - {Object} 图形对象基础 style，此参数控制图形的基础样式，
-         * 可设属性根据图形类型参考 <SuperMap.Feature.ShapeParameters> 子类对象的 style 属性。
-         * 优先级低于 styleGroup，styleByCodomain。
-         * styleGroup - {Array{Object}} 一个 style 数组，优先级低于 styleByCodomain，高于 style。
-         * 此数组每个元素是样式对象，其可设属性根据图形类型参考 <SuperMap.Feature.ShapeParameters> 子类对象的 style 属性。
-         * 通过 index 参数从 styleGroup 中取 style。
-         * styleByCodomain - {Array{Object}} 按数据（参数 value）所在值域范围控制数据的可视化对象样式。
+         * @function  SuperMap.Feature.ShapeParameters.prototype.ShapeStyleTool
+         * @description 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
+         * @param {Object} defaultStyle - 默认style，此样式对象可设属性根据图形类型参考 <{@link SuperMap.Feature.ShapeParameters}> 子类对象的 style 属性。
+         * @param {Object} style - 图形对象基础 style，此参数控制图形的基础样式，可设属性根据图形类型参考 <{@link SuperMap.Feature.ShapeParameters}> 子类对象的 style 属性。优先级低于 styleGroup，styleByCodomain。
+         * @param {Array.<Object>} styleGroup - 一个 style 数组，优先级低于 styleByCodomain，高于 style。此数组每个元素是样式对象，
+         * 其可设属性根据图形类型参考 <{@link SuperMap.Feature.ShapeParameters}> 子类对象的 style 属性。通过 index 参数从 styleGroup 中取 style。
+         * @param {Array.<Object>} styleByCodomain - 按数据（参数 value）所在值域范围控制数据的可视化对象样式。
          * (start code)
          * // styleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
          * // start: 值域值下限（包含）;
@@ -9532,11 +9430,9 @@ var ShapeFactory = exports.ShapeFactory = function () {
         *  }
          * ]
          * (end)
-         * index - {Number} styleGroup 的索引值，用于取出 styleGroup 指定的 style。
-         * value - {Number} 数据值，用于取出 styleByCodomain 指定的 style。
-         *
-         * Returns:
-         * {Object} 合并后的样式 （style） 对象。
+         * @param {number} index - styleGroup 的索引值，用于取出 styleGroup 指定的 style。
+         * @param {number} value - 数据值，用于取出 styleByCodomain 指定的 style。
+         * @returns {Object} 合并后的样式 （style） 对象。
          */
 
     }, {
@@ -9707,28 +9603,28 @@ var Geometry = exports.Geometry = function () {
 
         this.CLASS_NAME = "SuperMap.Geometry";
         /**
-         * @member SuperMap.Geometry.prototype.id -{string}
+         * @member {string} SuperMap.Geometry.prototype.id
          * @description  此几何对象的唯一标示符。
          *
          */
         this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
-         * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
+         * @member {SuperMap.Geometry} SuperMap.Geometry.prototype.parent
          * @description This is set when a Geometry is added as component
          * of another geometry
          */
         this.parent = null;
 
         /**
-         * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
+         * @member {SuperMap.Bounds} SuperMap.Geometry.prototype.bounds
          * @description 几何对象的范围
          *
          */
         this.bounds = null;
 
         /**
-         * @member SuperMap.Geometry.prototype.SRID -{interger}
+         * @member {interger} SuperMap.Geometry.prototype.SRID
          * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
          * @example
          *   var geometry= new SuperMap.Geometry();
@@ -9767,7 +9663,7 @@ var Geometry = exports.Geometry = function () {
         /**
          * @function SuperMap.Geometry.prototype.setBounds
          * @description 设置此几何对象的bounds。
-         * @param bounds - {SuperMap.Bounds}
+         * @param {SuperMap.Bounds} bounds - 范围
          */
 
     }, {
@@ -9798,7 +9694,7 @@ var Geometry = exports.Geometry = function () {
          * @description Extend the existing bounds to include the new bounds.
          * If geometry's bounds is not yet set, then set a new Bounds.
          *
-         * @param newBounds - {SuperMap.Bounds}
+         * @param {SuperMap.Bounds} newBounds - 范围
          */
 
     }, {
@@ -9815,7 +9711,7 @@ var Geometry = exports.Geometry = function () {
         /**
          * @function SuperMap.Geometry.prototype.getBounds
          * @description 获得几何图形的边界。如果没有设置边界，可通过计算获得。
-         * @returns {SuperMap.Bounds}返回的几何对象的边界。
+         * @returns {SuperMap.Bounds} 返回的几何对象的边界。
          */
 
     }, {
@@ -9843,7 +9739,7 @@ var Geometry = exports.Geometry = function () {
         /**
          * @function SuperMap.Geometry.prototype.getVertices
          * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
-         * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
+         * @param {boolean} nodes - 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
          * @returns {Array} 几何图形的顶点列表。
          */
 
@@ -9940,31 +9836,31 @@ var Bounds = exports.Bounds = function () {
             left = left[0];
         }
         /**
-         * @member SuperMap.Bounds.prototype.left - {number}
+         * @member {number} SuperMap.Bounds.prototype.left
          * @description 最小的水平坐标系。
          */
         this.left = left != null ? _Util.Util.toFloat(left) : this.left;
 
         /**
-         * @member SuperMap.Bounds.prototype.bottom - {number}
+         * @member {number} SuperMap.Bounds.prototype.bottom
          * @description 最小的垂直坐标系。
          */
         this.bottom = bottom != null ? _Util.Util.toFloat(bottom) : this.bottom;
 
         /**
-         * @member SuperMap.Bounds.prototype.right - {number}
+         * @member {number} SuperMap.Bounds.prototype.right
          * @description 最大的水平坐标系。
          */
         this.right = right != null ? _Util.Util.toFloat(right) : this.right;
 
         /**
-         * @member SuperMap.Bounds.prototype.top - {number}
+         * @member {number} SuperMap.Bounds.prototype.top
          * @description 最大的垂直坐标系。
          */
         this.top = top != null ? _Util.Util.toFloat(top) : this.top;
 
         /**
-         * @member SuperMap.Bounds.prototype.centerLonLat - {SuperMap.LonLat}
+         * @member {SuperMap.LonLat} SuperMap.Bounds.prototype.centerLonLat
          * @description bounds的地图空间的中心点。用 getCenterLonLat() 获得。
          */
         this.centerLonLat = null;
@@ -9994,7 +9890,7 @@ var Bounds = exports.Bounds = function () {
          * var bounds1 = new SuperMap.Bounds(-180,-90,180,90);
          * var bounds2 = new SuperMap.Bounds(-180,-90,180,90);
          * var isEquals = bounds1.equals(bounds2);
-         * @param bounds - {SuperMap.Bounds} 需要进行计较的 bounds。
+         * @param {SuperMap.Bounds} bounds - 需要进行计较的 bounds。
          * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回true,不一致或传入的 bounds 参数为NULL则返回false。
          */
 
@@ -10404,7 +10300,7 @@ var Bounds = exports.Bounds = function () {
          *      new SuperMap.Bounds(-170,-90,120,80)
          *  );
          * @param {SuperMap.Bounds} bounds - 目标边界。
-         * @param {Object} options - 可选参数。<br>
+         * @param {Object} options - 参数。<br>
          * @param {boolean} options.inclusive - 边缘重合也看成相交，默认为true。如果是false，
          *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
          *                               这种情况被认为没有相交。<br>
@@ -10469,9 +10365,9 @@ var Bounds = exports.Bounds = function () {
          *      new SuperMap.Bounds(-170,-90,100,80),true,true
          *  );
          * @param {SuperMap.Bounds} bounds - 目标边界。
-         * @param {boolean} partial - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。默认为false，
-         *                            如果设为false，整个目标边界全部被包含在当前边界范围内。
-         * @param {boolean} inclusive - 边缘共享被视为包含。默认为true。
+         * @param {boolean} [partial=false] - 目标边界的任意部分都包含在当前边界中则被认为是包含关系。
+         *                             如果设为false，整个目标边界全部被包含在当前边界范围内。
+         * @param {boolean} [inclusive=true] - 边缘共享被视为包含。
          * @returns {boolean} 传入的边界被当前边界包含。
          */
 
@@ -10528,8 +10424,8 @@ var Bounds = exports.Bounds = function () {
          * var newBounds = bounds.wrapDateLine(maxExtent);
          * @param {SuperMap.Bounds} maxExtent - 最大的边界范围（一般是全球范围）。
          * @param {Object} options - 可选选项参数。<br>
-         * @param {float} options.leftTolerance - left允许的误差。默认为0。<br>
-         * @param {float} options.rightTolerance - right允许的误差。默认为0。
+         * @param {float} [options.leftTolerance=0] - left允许的误差。<br>
+         * @param {float} [options.rightTolerance=0] - right允许的误差。
          * @returns {SuperMap.Bounds} 克隆当前边界。如果当前边界完全在最大范围之外此函数则返回一个不同值的边界，
          *                            若落在最大边界的左边，则给当前的bounds值加上最大范围的宽度，即向右移动，
          *                            若落在右边，则向左移动，即给当前的bounds值加上负的最大范围的宽度。
@@ -10634,7 +10530,7 @@ var Bounds = exports.Bounds = function () {
          * @description 通过边界框数组创建Bounds。
          * @example
          * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
-         * @param {Array.<float>} bbox - 边界值数组。 (e.g. <i>[5,42,10,45]</i>)
+         * @param {Array.<float>} bbox - 边界值数组。(e.g. <i>[5,42,10,45]</i>)
          * @param {boolean} reverseAxisOrder - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
          * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
          */
@@ -10723,11 +10619,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *              它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  *              此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
  * @extends SuperMap.Feature.Theme
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Theme} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
  */
 var Graph = exports.Graph = function (_Theme) {
@@ -10737,7 +10633,7 @@ var Graph = exports.Graph = function (_Theme) {
         _classCallCheck(this, Graph);
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.shapeFactory -{SuperMap.Feature.ShapeFactory}
+         * @member {SuperMap.Feature.ShapeFactory} SuperMap.Feature.Theme.Graph.prototype.shapeFactory
          * @description 内置的图形工厂对象，调用其 createShape 方法创建图形。
          */
         var _this = _possibleConstructorReturn(this, (Graph.__proto__ || Object.getPrototypeOf(Graph)).call(this, data, layer, fields, setting, lonlat, options));
@@ -10745,19 +10641,19 @@ var Graph = exports.Graph = function (_Theme) {
         _this.shapeFactory = new _ShapeFactory.ShapeFactory();
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.shapeParameters -{Object}
+         * @member {Object} SuperMap.Feature.Theme.Graph.prototype.shapeParameters
          * @description 当前图形参数对象，<SuperMap.Feature.ShapeParameters> 的子类对象。
          */
         _this.shapeParameters = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.RelativeCoordinate -{bool}
+         * @member {boolean} SuperMap.Feature.Theme.Graph.prototype.RelativeCoordinate
          * @description 图形是否已经计算了相对坐标。
          */
         _this.RelativeCoordinate = false;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.setting -{Object}
+         * @member {Object} SuperMap.Feature.Theme.Graph.prototype.setting
          * @description 图表配置对象，该对象控制着图表的可视化显示。<br>
          *              下面是此配置对象的 7 个基础可设属性：<br>
          *              Symbolizer properties:<br>
@@ -10776,57 +10672,66 @@ var Graph = exports.Graph = function (_Theme) {
         _this.setting = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.origonPoint - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.origonPoint 
          * @description 专题要素（图表）原点，图表左上角点像素坐标，是长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         _this.origonPoint = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.chartBox - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.chartBox - 
          * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
          *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
          */
         _this.chartBox = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.chartBounds - {SuperMap.Bounds} {ReadOnly}
+         * @readonly
+         * @member {SuperMap.Bounds} SuperMap.Feature.Theme.Graph.prototype.chartBounds - 
          * @description 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
          */
         _this.chartBounds = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.width - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.width 
          * @description 专题要素（图表）宽度 ，必设属性。
          */
         _this.width = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.height - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.height
          * @description 专题要素（图表）高度 ，必设属性。
          */
         _this.height = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.XOffset - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.XOffset
          * @description 专题要素（图表）在 X 方向上的偏移值，单位像素。
          */
         _this.XOffset = 0;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.YOffset - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.YOffset
          * @description 专题要素（图表）在 Y 方向上的偏移值，单位像素。
          */
         _this.YOffset = 0;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBParameter - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBParameter 
          * @description 数据视图框参数，长度为 4 的一维数组（数组元素值 >= 0），[leftOffset, bottomOffset, rightOffset, topOffset]，chartBox 内偏距值。
          *               此属性用于指定数据视图框 dataViewBox 的范围。
          */
         _this.DVBParameter = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.dataViewBox - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.dataViewBox 
          * @description 数据视图框，长度为 4 的一维数组，[left, bottom, right, top]。
          *              dataViewBox 是统计专题要素最核心的内容，它负责解释数据在一个像素区域里的数据可视化含义，
          *              这种含义用可视化图形表达出来，这些表示数据的图形和一些辅助图形组合在一起构成统计专题图表。
@@ -10834,57 +10739,66 @@ var Graph = exports.Graph = function (_Theme) {
         _this.dataViewBox = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBCodomain - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBCodomain 
          * @description 数据视图框的内允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
          *              dataViewBox 中允许的数据范围，对数据溢出值域范围情况的处理需要在 assembleShapes 中进行。
          */
         _this.DVBCodomain = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint 
          * @description 数据视图框中心点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         _this.DVBCenterPoint = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue - {string} {ReadOnly}
+         * @readonly
+         * @member {string} SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue 
          * @description 单位值。在 assembleShapes() 中初始化其具体意义，例如：饼图的 DVBUnitValue 可以定义为"360/数据总和"，
          *              折线图的 DVBUnitValue 可以定义为 "DVBCodomain/DVBHeight"。
          */
         _this.DVBUnitValue = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint 
          * @description 数据视图框原点，数据视图框左上角点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         _this.DVBOrigonPoint = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBWidth - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.DVBWidth 
          * @description 数据视图框宽度。
          */
         _this.DVBWidth = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.DVBHeight - {number}{ReadOnly}
+         * @readonly
+         * @member {number} SuperMap.Feature.Theme.Graph.prototype.DVBHeight 
          * @description 数据视图框高度。
          */
         _this.DVBHeight = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.origonPointOffset - {Array<number>} {ReadOnly}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.origonPointOffset
          * @description 数据视图框原点相对于图表框的原点偏移量，长度为 2 的一维数组，第一个元素表示 x 偏移量，第二个元素表示 y 偏移量。
          */
         _this.origonPointOffset = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.fields - {Array<string>}
+         * @readonly
+         * @member {Array.<string>} SuperMap.Feature.Theme.Graph.prototype.fields 
          * @description 数据{SuperMap.Feature.Vector}属性字段。
          */
         _this.fields = fields || [];
 
         /**
-         * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<number>}
+         * @readonly
+         * @member {Array.<number>} SuperMap.Feature.Theme.Graph.prototype.dataValues
          * @description 图表展示的数据值，通过 fields 从数据feature属性中获得。
          */
         _this.dataValues = null;
@@ -11045,8 +10959,8 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Graph.prototype.resetLocation
          * @description 根据地理位置 lonlat 重置专题要素（图表）位置。
-         * @param lonlat - {SuperMap.LonLat} 专题要素新的像素中心位置。
-         * @return {Array<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         * @param {SuperMap.LonLat} lonlat - 专题要素新的像素中心位置。
+         * @return {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
 
     }, {
@@ -11183,7 +11097,7 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Graph.prototype.getLocalXY
          * @description 地理坐标转为像素坐标。
-         * @param lonlat - {SuperMap.Lonlat} 带转换的地理坐标。
+         * @param {SuperMap.Lonlat} lonlat - 带转换的地理坐标。
          * @return 屏幕像素坐标。
          */
 
@@ -11200,10 +11114,10 @@ var Graph = exports.Graph = function (_Theme) {
 /**
  * @function SuperMap.Feature.Theme.getDataValues
  * @description 根据字段名数组获取指定数据（feature）的属性值数组。属性值类型必须为 Number。
- * @param data - {SuperMap.Feature.Vector} 数据。
- * @param fields - {Array<string>} 字段名数组。
- * @param decimalNumber - {number} 小数位处理参数，对获取到的属性数据值进行小数位处理。
- * @return {Array<string>} 字段名数组对应的属性数据值数组。
+ * @param {SuperMap.Feature.Vector} data - 数据。
+ * @param {Array.<string>} fields - 字段名数组。
+ * @param {number} decimalNumber - 小数位处理参数，对获取到的属性数据值进行小数位处理。
+ * @return {Array.<string>} 字段名数组对应的属性数据值数组。
  */
 
 
@@ -11269,16 +11183,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Util = exports.Util = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Util
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Tool.Util.constructor
+     * @description 构造函数。
      *
      */
     function Util() {
         _classCallCheck(this, Util);
 
         /**
-         * Property: BUILTIN_OBJECT
-         * {Object} 用于处理merge时无法遍历Date等对象的问题
+         * @member {Object} SuperMap.LevelRenderer.Tool.Util.prototype.BUILTIN_OBJECT
+         * @description 用于处理merge时无法遍历Date等对象的问题
          */
         this.BUILTIN_OBJECT = {
             '[object Function]': 1,
@@ -11289,8 +11203,7 @@ var Util = exports.Util = function () {
         };
 
         /**
-         * Property: _ctx
-         * {Object}
+         * @member {Object} SuperMap.LevelRenderer.Tool.Util.prototype._ctx
          */
         this._ctx = null;
 
@@ -11334,14 +11247,11 @@ var Util = exports.Util = function () {
     }
 
     /**
-     * APIMethod: clone
-     * 对一个object进行深度拷贝。
-     *
-     * Parameters:
-     * source - {Object} 需要进行拷贝的对象。
-     *
-     * Returns:
-     * {Object} 拷贝后的新对象。
+     * @function SuperMap.LevelRenderer.Tool.Util.prototype.clone
+     * @description 对一个object进行深度拷贝。
+     * 
+     * @param {Object} source - 需要进行拷贝的对象。
+     * @return {Object} 拷贝后的新对象。
      */
 
 
@@ -11372,17 +11282,14 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * Method: mergeItem
-         * 合并源对象的单个属性到目标对象。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.mergeItem
+         * @description 合并源对象的单个属性到目标对象。
          *
-         * Parameters:
-         * target - {Object} 目标对象。
-         * source - {Object} 源对象。
-         * key - {String} 键。
-         * overwrite - {Boolean} 是否覆盖。
-         *
-         * Returns:
-         * {Object} 目标对象。
+         * @param {Object} target - 目标对象。
+         * @param {Object} source - 源对象。
+         * @param {String} key - 键。
+         * @param {Boolean} overwrite - 是否覆盖。
+         * @return {Object} 目标对象
          */
 
     }, {
@@ -11401,16 +11308,13 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * APIMethod: merge
-         * 合并源对象的属性到目标对象。
-         *
-         * Parameters:
-         * target - {Object} 目标对象。
-         * source - {Object} 源对象。
-         * overwrite - {Boolean} 是否覆盖。
-         *
-         * Returns:
-         * {Object} 目标对象。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.merge
+         * @description 合并源对象的属性到目标对象。
+         * 
+         * @param {Object} target - 目标对象。
+         * @param {Object} source - 源对象。
+         * @param {Boolean} overwrite - 是否覆盖。
+         * @return {Object} 目标对象。
          */
 
     }, {
@@ -11424,11 +11328,9 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * Method: getContext
-         * 获取 Cavans 上下文
-         *
-         * Returns:
-         * {Object} Cavans 上下文。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.getContext
+         * @description 获取 Canvas 上下文。
+         * @return {Object} 上下文。
          */
 
     }, {
@@ -11441,11 +11343,9 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * APIMethod: getPixelContext
-         * 获取像素拾取专用的上下文
-         *
-         * Returns:
-         * {Object}像素拾取专用的上下文。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.getPixelContext
+         * @description 获取像素拾取专用的上下文。
+         * @return {Object} 像素拾取专用的上下文。
          */
 
     }, {
@@ -11461,14 +11361,11 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * APIMethod: adjustCanvasSize
-         * 如果坐标处在_canvas外部，改变_canvas的大小
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.adjustCanvasSize
+         * @description 如果坐标处在_canvas外部，改变_canvas的大小，修改canvas的大小 需要重新设置translate
          *
-         * 注意 修改canvas的大小 需要重新设置translate
-         *
-         * Parameters:
-         * x - {Number} 横坐标。
-         * y - {Number} 纵坐标。
+         * @param {number} x - 横坐标。
+         * @param {number} y - 纵坐标。
          *
          */
 
@@ -11518,11 +11415,9 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * APIMethod: getPixelOffset
-         * 获取像素canvas的偏移量
-         *
-         * Returns:
-         * {Object}偏移量。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.getPixelOffset
+         * @description 获取像素canvas的偏移量。
+         * @return {Object} 偏移量。
          */
 
     }, {
@@ -11535,11 +11430,9 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * APIMethod: indexOf
-         * 查询数组中元素的index
-         *
-         * Returns:
-         * {Object}偏移量。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.indexOf
+         * @description 查询数组中元素的index
+         * @return {Object} 偏移量。
          */
 
     }, {
@@ -11557,15 +11450,12 @@ var Util = exports.Util = function () {
         }
 
         /**
-         * APIMethod: inherits
-         * 构造类继承关系
-         *
-         * Parameters:
-         * clazz - {Function} 源类。
-         * baseClazz - {Function} 基类。
-         *
-         * Returns:
-         * {Object}偏移量。
+         * @function SuperMap.LevelRenderer.Tool.Util.prototype.inherits
+         * @description 构造类继承关系
+         * 
+         * @param {Function} clazz - 源类。
+         * @param {Function} baseClazz - 基类。
+         * @return {Object} 偏移量。
          */
 
     }, {
@@ -11624,8 +11514,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>
  *            getArea和getLength函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
  * @category BaseTypes Geometry
- * @extends SuperMap.Geometry
- * @param components - {SuperMap.Geometry[]}几何对象数组。
+ * @extends {SuperMap.Geometry}
+ * @param {Array.<SuperMap.Geometry>} components - 几何对象数组。
  * @example
  * var point1 = new SuperMap.Geometry.Point(10,20);
  * var point2 = new SuperMap.Geometry.Point(30,40);
@@ -11639,7 +11529,7 @@ var Collection = exports.Collection = function (_Geometry) {
 
         /**
          * @description 存储几何对象的数组。
-         * @member SuperMap.Geometry.Collection.prototype.components -{Array<SuperMap.Geometry>}
+         * @member {Array.<SuperMap.Geometry>} SuperMap.Geometry.Collection.prototype.components
          */
         var _this = _possibleConstructorReturn(this, (Collection.__proto__ || Object.getPrototypeOf(Collection)).call(this));
 
@@ -11647,7 +11537,7 @@ var Collection = exports.Collection = function (_Geometry) {
 
         /**
          * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-         * @member SuperMap.Geometry.Collection.prototype.componentTypes -{Array<string>}
+         * @member {Array.<string>} SuperMap.Geometry.Collection.prototype.componentTypes
          */
         _this.componentTypes = null;
         if (components != null) {
@@ -11733,7 +11623,7 @@ var Collection = exports.Collection = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Collection.prototype.addComponents
          * @description 给几何图形对象添加元素。
-         * @param components -{Array<SuperMap.Geometry>} 几何对象组件。
+         * @param {Array.<SuperMap.Geometry>} components - 几何对象组件。
          * @example
          * var collection = new SuperMap.Geometry.Collection();
          * collection.addComponents(new SuerpMap.Geometry.Point(10,10));
@@ -11753,11 +11643,9 @@ var Collection = exports.Collection = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Collection.prototype.addComponent
          * @description 添加一个几何对象到集合中。如果设置了componentTypes类型，则添加的几何对象必须是componentTypes中的类型
-         *
-         * @param component - {SuperMap.Geometry} 待添加的几何对象
-         * @param index - {int} 几何对象插入的位置
-         *
-         * @returns {Boolean} 是否添加成功
+         * @param {SuperMap.Geometry} component - 待添加的几何对象
+         * @param {int} index - 几何对象插入的位置
+         * @returns {boolean} 是否添加成功
          */
 
     }, {
@@ -11786,9 +11674,8 @@ var Collection = exports.Collection = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Collection.prototype.removeComponents
          * @description 清除几何对象。
-         *
-         * @param components -{Array<SuperMap.Geometry>} 需要清除的几何对象。
-         * @returns {Boolean} 元素是否被删除。
+         * @param {Array.<SuperMap.Geometry>} components - 需要清除的几何对象。
+         * @returns {boolean} 元素是否被删除。
          */
 
     }, {
@@ -11808,8 +11695,8 @@ var Collection = exports.Collection = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Collection.prototype.removeComponent
          * @description 从集合中移除一个几何对象
-         * @param component -{SuperMap.Geometry} 要移除的几何对象
-         * @returns {Boolean} 几何对象是否移除成功
+         * @param {SuperMap.Geometry} component - 要移除的几何对象
+         * @returns {boolean} 几何对象是否移除成功
          */
 
     }, {
@@ -11825,7 +11712,7 @@ var Collection = exports.Collection = function (_Geometry) {
 
         /**
          * @function SuperMap.Geometry.Collection.prototype.getArea
-         * @description 计算几何对象的面积。注意，这个方法在 <SuperMap.Geometry.Polygon> 类中需要重写。
+         * @description 计算几何对象的面积。注意，这个方法在 {@link SuperMap.Geometry.Polygon} 类中需要重写。
          * @returns {number} 几何图形的面积，是几何对象中所有组成部分的面积之和。
          */
 
@@ -11842,8 +11729,8 @@ var Collection = exports.Collection = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Collection.prototype.equals
          * @description 判断两个几何图形是否相等。如果所有的 components 具有相同的坐标，则认为是相等的。
-         * @param geometry - {SuperMap.Geometry} 需要判断的几何图形。
-         * @returns {Boolean} 输入的几何图形与当前几何图形是否相等。
+         * @param {SuperMap.Geometry} geometry - 需要判断的几何图形。
+         * @returns {boolean} 输入的几何图形与当前几何图形是否相等。
          */
 
     }, {
@@ -11868,7 +11755,7 @@ var Collection = exports.Collection = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.Collection.prototype.getVertices
          * @description 返回几何对象的所有结点的列表。
-         * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
+         * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
          * @returns {Array} 几何对象的顶点列表。
          */
 
@@ -12622,8 +12509,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 从服务器获取一个token,在此之前要注册服务器信息
-         * @param url {string}-服务器域名+端口，如：http://localhost:8092
-         * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
+         * @param {string} url -服务器域名+端口，如：http://localhost:8092
+         * @param {SuperMap.TokenServiceParameter} tokenParam - token申请参数
          * @return {Promise} 返回包含token信息的Promise对象
          */
 
@@ -12639,7 +12526,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 注册安全服务器相关信息
-         * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
+         * @param {SuperMap.ServerInfo} serverInfos - 服务器信息
          */
 
     }, {
@@ -12657,8 +12544,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 服务请求都会自动带上这个token
-         * @param url {string} -服务器域名+端口：如http://localhost:8090
-         * @param token -{string} token
+         * @param {string} url -服务器域名+端口：如http://localhost:8090
+         * @param {string} token - token
          */
 
     }, {
@@ -12674,8 +12561,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 注册key,ids为数组(存在一个key对应多个服务)
-         * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-         * @param key -{string} key
+         * @param {Array} ids - 可以是服务id数组或者url地址数组或者webAPI类型数组
+         * @param {string} key - key
          */
 
     }, {
@@ -12695,7 +12582,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 获取服务器信息
-         * @param url {string}-服务器域名+端口，如：http://localhost:8092
+         * @param {string} url -服务器域名+端口，如：http://localhost:8092
          * @returns {SuperMap.ServerInfo} 服务器信息
          */
 
@@ -12708,7 +12595,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 根据Url获取token
-         * @param url -{string} 服务器域名+端口，如：http://localhost:8092
+         * @param {string} url - 服务器域名+端口，如：http://localhost:8092
          * @returns {string} token
          */
 
@@ -12725,7 +12612,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description 根据Url获取key
-         * @param id -{string} id
+         * @param {string} id - id
          * @returns {string} key
          */
 
@@ -12739,10 +12626,10 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登录验证
-         * @param url -{string} iServer首页地址，如：http://localhost:8090/iserver
-         * @param username -{string} 用户名
-         * @param password -{string} 密码
-         * @param rememberme -{boolean} 是否记住
+         * @param {string} url - iServer首页地址，如：http://localhost:8090/iserver
+         * @param {string} username - 用户名
+         * @param {string} password - 密码
+         * @param {boolean} rememberme - 是否记住
          * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
          */
 
@@ -12769,7 +12656,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登出
-         * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
+         * @param {string} url - iServer首页地址,如：http://localhost:8090/iserver
          * @returns {Promise} 是否登出成功
          */
 
@@ -12794,8 +12681,8 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description Online登录验证
-         * @param callbackLocation -{string} 跳转位置
-         * @param newTab -{boolean}是否新窗口打开
+         * @param {string} callbackLocation - 跳转位置
+         * @param {boolean} newTab -是否新窗口打开
          */
 
     }, {
@@ -12807,9 +12694,9 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iPortal登录验证
-         * @param url -{string} iportal首页地址
-         * @param username -{string} 用户名
-         * @param password -{string} 密码
+         * @param {string} url - iportal首页地址
+         * @param {string} username - 用户名
+         * @param {string} password - 密码
          * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
          */
 
@@ -12836,7 +12723,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iPortal登出
-         * @param url -{string} iportal首页地址
+         * @param {string} url - iportal首页地址
          * @returns {Promise} 如果登出成功，返回true;否则返回false
          */
 
@@ -12862,13 +12749,12 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iManager登录验证
-         * @param url -{string} iManager地址。<br>
-         *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
-         * @param loginInfoParams -{Object} iManager 登录参数<br>
-         *        userName -{string} 用户名<br>
-         *        password-{string} 密码
-         * @param options -{Object} <br>
-         *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+         * @param {string} url - iManager地址。地址参数为iManager首页地址，如： http://localhost:8390/imanager
+         * @param {Object} loginInfoParams - iManager 登录参数。
+         * @param {string} loginInfoParams.userName - 用户名
+         * @param {string} loginInfoParams.password - 密码
+         * @param {Object} options  
+         * @param {boolean} options.isNewTab - 不同域时是否在新窗口打开登录页面
          * @return {Promise} 返回包含iManager登录请求结果的Promise对象
          */
 
@@ -13027,7 +12913,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 作为最后的一个点来自动关闭线环。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.LineString}
- * @param points {Array<SuperMap.Geometry.Point>} 组成线性环的点。
+ * @param {Array.<SuperMap.Geometry.Point>} points 组成线性环的点。
  * @example
  * var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
  *      new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
@@ -13043,10 +12929,9 @@ var LinearRing = exports.LinearRing = function (_LineString) {
         _classCallCheck(this, LinearRing);
 
         /**
-         * @member SuperMap.Geometry.LinearRing.prototype.componentTypes -{Array<string>}
+         * @member {Array.<string>} [SuperMap.Geometry.LinearRing.prototype.componentTypes=["SuperMap.Geometry.Point"]]
          * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
          * @readonly
-         * @default ["{@link SuperMap.Geometry.Point}"]
          */
         var _this = _possibleConstructorReturn(this, (LinearRing.__proto__ || Object.getPrototypeOf(LinearRing)).call(this, points));
 
@@ -13060,9 +12945,9 @@ var LinearRing = exports.LinearRing = function (_LineString) {
      * @description 添加一个点到几何图形数组中，如果这个点将要被添加到组件数组的末端，并且与数组中已经存在的最后一个点相同，
      * 重复的点是不能被添加的。这将影响未关闭环的关闭。
      * 这个方法可以通过将非空索引（组件数组的下标）作为第二个参数重写。
-     * @param point - {SuperMap.Geometry.Point} 点对象。
-     * @param index - {Integer} 插入组件数组的下标。
-     * @returns {Boolean} 点对象是否添加成功。
+     * @param {SuperMap.Geometry.Point} point - 点对象。
+     * @param {integer} index - 插入组件数组的下标。
+     * @returns {boolean} 点对象是否添加成功。
      */
 
 
@@ -13090,8 +12975,8 @@ var LinearRing = exports.LinearRing = function (_LineString) {
         /**
          * @function SuperMap.Geometry.LinearRing.prototype.removeComponent
          * @description 从几何组件中删除一个点。
-         * @param point - {SuperMap.Geometry.Point} 点对象。
-         * @returns {Boolean} 点对象是否删除。
+         * @param {SuperMap.Geometry.Point} point - 点对象。
+         * @returns {boolean} 点对象是否删除。
          */
 
     }, {
@@ -13137,7 +13022,7 @@ var LinearRing = exports.LinearRing = function (_LineString) {
         /**
          * @function SuperMap.Geometry.LinearRing.prototype.getVertices
          * @description 返回几何图形的所有点的列表。
-         * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
+         * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
          * 如果没有设置此参数，则返回所有顶点。
          * @returns {Array} 几何对象所有点的列表。
          */
@@ -13609,7 +13494,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 几何对象多点类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
- * @param components - {Array<SuperMap.Geometry.Point>} 点对象数组。
+ * @param {Array.<SuperMap.Geometry.Point>} components - 点对象数组。
  * @example
  * var point1 = new SuperMap.Geometry.Point(5,6);
  * var poine2 = new SuperMap.Geometry.Point(7,8);
@@ -13622,10 +13507,9 @@ var MultiPoint = exports.MultiPoint = function (_Collection) {
         _classCallCheck(this, MultiPoint);
 
         /**
-         * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
+         * @member {Array.<string>} [SuperMap.Geometry.MultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
          * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
          * @readonly
-         * @default ["{@link SuperMap.Geometry.Point}"]
          */
         var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
 
@@ -13637,8 +13521,8 @@ var MultiPoint = exports.MultiPoint = function (_Collection) {
     /**
      * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
      * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
-     * @param point - {SuperMap.Geometry.Point} 添加的点。
-     * @param index - {integer} 可选的下标。
+     * @param {SuperMap.Geometry.Point} point - 添加的点。
+     * @param {integer} index - 可选的下标。
      */
 
 
@@ -13651,7 +13535,7 @@ var MultiPoint = exports.MultiPoint = function (_Collection) {
         /**
          * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
          * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
-         * @param point - {SuperMap.Geometry.Point} 移除的点对象。
+         * @param {SuperMap.Geometry.Point} point - 移除的点对象。
          */
 
     }, {
@@ -13687,9 +13571,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.LonLat
  * @classdesc  这个类用来表示经度和纬度对。
- * @param lon - {number} 地图单位上的X轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的x坐标。
- * @param lat - {number} 地图单位上的Y轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的y坐标。
- * @param location - {Array<float>} [lon, lat]  如果要同时设置，则使用传入横纵坐标组成的数组。
+ * @param {number} lon - 地图单位上的X轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的x坐标。
+ * @param {number} lat - 地图单位上的Y轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的y坐标。
+ * @param {Array.<float>} location - 如果要同时设置，则使用传入横纵坐标组成的数组。
  * @example
  * var lonLat = new SuperMap.LonLat(30,45);
  */
@@ -13702,14 +13586,14 @@ var LonLat = exports.LonLat = function () {
             lon = lon[0];
         }
         /**
-         * @member SuperMap.LonLat.prototype.lon  -{float}
-         * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
+         * @member {float} [SuperMap.LonLat.prototype.lon=0.0]
+         * @description 地图的单位的X轴（横轴）坐标。
          */
         this.lon = lon ? _Util.Util.toFloat(lon) : 0.0;
 
         /**
-         * @member SuperMap.LonLat.prototype.lat  -{float}
-         * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
+         * @member {float} [SuperMap.LonLat.prototype.lat=0.0]
+         * @description 地图的单位的Y轴（纵轴）坐标。
          */
         this.lat = lat ? _Util.Util.toFloat(lat) : 0.0;
         this.CLASS_NAME = "SuperMap.LonLat";
@@ -13768,9 +13652,8 @@ var LonLat = exports.LonLat = function () {
          * var lonLat1 = new SuperMap.LonLat(100,50);
          * //lonLat2 是新的对象
          * var lonLat2 = lonLat1.add(100,50);
-         *
-         * @param lon - {float} 传入的精度参数。
-         * @param lat - {float} 传入的纬度参数。
+         * @param {float} lon - 传入的精度参数。
+         * @param {float} lat - 传入的纬度参数。
          * @returns {SuperMap.LonLat} 返回一个新的LonLat对象，此对象的经纬度是由传
          *      入的经纬度与当前的经纬度相加所得。
          */
@@ -13791,8 +13674,7 @@ var LonLat = exports.LonLat = function () {
          * var lonLat1 = new SuperMap.LonLat(100,50);
          * var lonLat2 = new SuperMap.LonLat(100,50);
          * var isEquals = lonLat1.equals(lonLat2);
-         *
-         * @param ll - {SuperMap.LonLat} 需要进行比较的坐标对象。
+         * @param {SuperMap.LonLat} ll - 需要进行比较的坐标对象。
          * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
          *      致或传入的ll参数为NULL则返回false。
          */
@@ -13819,8 +13701,7 @@ var LonLat = exports.LonLat = function () {
          * var lonLat2 = lonLat1.wrapDateLine(
          *      new SuperMap.Bounds(-180,-90,180,90)
          *  );
-         *
-         * @param maxExtent - {SuperMap.Bounds} 最大边界的范围。
+         * @param {SuperMap.Bounds} maxExtent - 最大边界的范围。
          * @returns {SuperMap.LonLat} 将坐标转换到范围对象以内，并返回新的坐标。
          */
 
@@ -13868,8 +13749,7 @@ var LonLat = exports.LonLat = function () {
          * @example
          * var str = "100,50";
          * var lonLat = SuperMap.LonLat.fromString(str);
-         *
-         * @param str - {string} 字符串的格式：Lon+","+Lat。如："100,50"
+         * @param {string} str - 字符串的格式：Lon+","+Lat。如："100,50"
          * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
@@ -13883,7 +13763,7 @@ var LonLat = exports.LonLat = function () {
         /**
          * @function SuperMap.LonLat.fromArray
          * @description 通过数组生成一个<SuperMap.LonLat>对象
-         * @param arr - {Array<float>} 数组的格式，长度只能为2,：[Lon,Lat]。如： [5,-42]
+         * @param {Array.<float>} arr - 数组的格式，长度只能为2,：[Lon,Lat]。如：[5,-42]
          * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
@@ -13996,44 +13876,39 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Eventful
  * @category Visualization Theme
- * 事件分发器超类，所有支持事件处理的类均是此类的子类。
- *
+ * @classdesc 事件分发器超类，所有支持事件处理的类均是此类的子类。
  * 此类不可实例化。
  *
  */
 var Eventful = exports.Eventful = function () {
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Eventful
-     * 构造函数。
-     *
-     * 对象可以通过 onxxxx 绑定事件。
-     *
+    /**
+     * @function SuperMap.LevelRenderer.Eventful.prototype.constructor
+     * @description 构造函数。对象可以通过 onxxxx 绑定事件。
      * 支持的事件：
      * Symbolizer properties:
-     * onclick - {Function} 默认值：null。
-     * onmouseover - {Function} 默认值：null。
-     * onmouseout - {Function} 默认值：null。
-     * onmousemove - {Function} 默认值：null。
-     * onmousewheel - {Function} 默认值：null。
-     * onmousedown - {Function} 默认值：null。
-     * onmouseup - {Function} 默认值：null。
-     * ondragstart - {Function} 默认值：null。
-     * ondragend - {Function} 默认值：null。
-     * ondragenter - {Function} 默认值：null。
-     * ondragleave - {Function} 默认值：null。
-     * ondragover - {Function} 默认值：null。
-     * ondrop - {Function} 默认值：null。
+     * onclick - {function} 默认值：null。
+     * onmouseover - {function} 默认值：null。
+     * onmouseout - {function} 默认值：null。
+     * onmousemove - {function} 默认值：null。
+     * onmousewheel - {function} 默认值：null。
+     * onmousedown - {function} 默认值：null。
+     * onmouseup - {function} 默认值：null。
+     * ondragstart - {function} 默认值：null。
+     * ondragend - {function} 默认值：null。
+     * ondragenter - {function} 默认值：null。
+     * ondragleave - {function} 默认值：null。
+     * ondragover - {function} 默认值：null。
+     * ondrop - {function} 默认值：null。
      */
     function Eventful() {
         _classCallCheck(this, Eventful);
 
         /**
-         * Property: _handlers
-         * {Object} 事件处理对象（事件分发器）。
+         * @member {Object} SuperMap.LevelRenderer.Eventful.prototype._handlers
+         * @description 事件处理对象（事件分发器）。
          */
         this._handlers = {};
 
@@ -14041,8 +13916,8 @@ var Eventful = exports.Eventful = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function {Object} SuperMap.LevelRenderer.Eventful.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -14053,16 +13928,12 @@ var Eventful = exports.Eventful = function () {
         }
 
         /**
-         * APIMethod: one
-         * 单次触发绑定，dispatch后销毁。
-         *
-         * Parameters:
-         * event - {String} 事件名。
-         * handler - {Boolean} 响应函数。
-         * context - {Object} context。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Eventful>} this。
+         * @function SuperMap.LevelRenderer.Eventful.prototype.one
+         * @description 单次触发绑定，dispatch后销毁。
+         * @param {string} event - 事件名。
+         * @param {boolean} handler - 响应函数。
+         * @param {Object} context - context。
+         * @returns {SuperMap.LevelRenderer.Eventful} this
          */
 
     }, {
@@ -14088,16 +13959,12 @@ var Eventful = exports.Eventful = function () {
         }
 
         /**
-         * APIMethod: bind
-         * 绑定事件。
-         *
-         * Parameters:
-         * event - {String} 事件名。
-         * handler - {Boolean} 事件处理函数。
-         * context - {Object} context。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Eventful>} this。
+         * @function SuperMap.LevelRenderer.Eventful.prototype.bind
+         * @description 绑定事件。
+         * @param {string} event - 事件名。
+         * @param {boolean} handler - 响应函数。
+         * @param {Object} context - context。
+         * @returns {SuperMap.LevelRenderer.Eventful} this
          */
 
     }, {
@@ -14123,15 +13990,11 @@ var Eventful = exports.Eventful = function () {
         }
 
         /**
-         * APIMethod: unbind
-         * 解绑事件。
-         *
-         * Parameters:
-         * event - {String} 事件名。
-         * handler - {Boolean} 事件处理函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Eventful>} this。
+         * @function SuperMap.LevelRenderer.Eventful.prototype.unbind
+         * @description 解绑事件。
+         * @param {string} event - 事件名。
+         * @param {boolean} handler - 响应函数。
+         * @returns {SuperMap.LevelRenderer.Eventful} this
          */
 
     }, {
@@ -14166,14 +14029,10 @@ var Eventful = exports.Eventful = function () {
         }
 
         /**
-         * APIMethod: dispatch
-         * 事件分发。
-         *
-         * Parameters:
-         * type - {String} 事件类型。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Eventful>} this。
+         * @function SuperMap.LevelRenderer.Eventful.prototype.dispatch
+         * @description 事件分发。
+         * @param {string} type - 事件类型。
+         * @returns {SuperMap.LevelRenderer.Eventful} this
          */
 
     }, {
@@ -14220,14 +14079,10 @@ var Eventful = exports.Eventful = function () {
         }
 
         /**
-         * APIMethod: dispatchWithContext
-         * 带有context的事件分发, 最后一个参数是事件回调的 context。
-         *
-         * Parameters:
-         * type - {String} 事件类型。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Eventful>} this。
+         * @function SuperMap.LevelRenderer.Eventful.prototype.dispatchWithContext
+         * @description 带有context的事件分发，最后一个参数是事件回调的 context。
+         * @param {string} type - 事件类型。
+         * @returns {SuperMap.LevelRenderer.Eventful} this
          */
 
     }, {
@@ -14765,7 +14620,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc  多边形几何对象类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
- * @param components - {Array<SuperMap.Geometry.LinearRing>} 用来生成多边形的线环数组。
+ * @param {Array.<SuperMap.Geometry.LinearRing>} components - 用来生成多边形的线环数组。
  * @example
  * var points =[new SuperMap.Geometry.Point(0,4010338),
  *      new SuperMap.Geometry.Point(1063524,4010338),
@@ -14782,10 +14637,9 @@ var Polygon = exports.Polygon = function (_Collection) {
         _classCallCheck(this, Polygon);
 
         /**
-         * @member SuperMap.Geometry.Polygon.prototype.componentTypes -{Array<string>}
+         * @member {Array.<string>} [SuperMap.Geometry.Polygon.prototype.componentTypes=["SuperMap.Geometry.LinearRing"]]
          * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
          * @readonly
-         * @default ["{@link SuperMap.Geometry.LinearRing}"]
          */
         var _this = _possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this, components));
 
@@ -14847,7 +14701,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 几何对象多多边形类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
- * @param  components - {Array<SuperMap.Geometry.Polygon>} 形成 MultiPolygon 的多边形数组。
+ * @param  {Array.<SuperMap.Geometry.Polygon>} components - 形成 MultiPolygon 的多边形数组。
  * @example
  * var points1 = [new SuperMap.Geometry.Point(10,10),new SuperMap.Geometry.Point(0,0)];
  * var points2 = [new SuperMap.Geometry.Point(10,10),new SuperMap.Geometry.Point(0,0),new SuperMap.Geometry.Point(3,3),new SuperMap.Geometry.Point(10,10)];
@@ -14867,10 +14721,9 @@ var MultiPolygon = exports.MultiPolygon = function (_Collection) {
     _classCallCheck(this, MultiPolygon);
 
     /**
-     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+     * @member {Array.<string>} [SuperMap.Geometry.MultiPolygon.prototype.componentTypes=["SuperMap.Geometry.Polygon"]]
      * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
      * @readonly
-     * @default ["{@link SuperMap.Geometry.Polygon}"]
      */
     var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
 
@@ -14913,7 +14766,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 几何对象多线类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
- * @param components - {Array<SuperMap.Geometry.LineString>} LineString数组。
+ * @param {Array.<SuperMap.Geometry.LineString>} components - LineString数组。
  * @example
  * var multi = new SuperMap.Geometry.MultiLineString([
  *      new SuperMap.Geometry.LineString([
@@ -14929,10 +14782,9 @@ var MultiLineString = exports.MultiLineString = function (_Collection) {
     _classCallCheck(this, MultiLineString);
 
     /**
-     * @member SuperMap.Geometry.MultiLineString.prototype.componentTypes -{Array<string>}
+     * @member {Array.<string>} [SuperMap.Geometry.MultiLineString.prototype.componentTypes=["SuperMap.Geometry.LineString"]]
      * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
      * @readonly
-     * @default ["{@link SuperMap.Geometry.LineString}"]
      */
     var _this = _possibleConstructorReturn(this, (MultiLineString.__proto__ || Object.getPrototypeOf(MultiLineString)).call(this, components));
 
@@ -14970,8 +14822,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @description In addition to the mandatory C and P parameters, an arbitrary number of
  * objects can be passed, which will extend C.
  * @memberOf SuperMap
- * @param C - {Object} the class that inherits
- * @param P - {Object} the superclass to inherit from
+ * @param {Object} C - the class that inherits
+ * @param {Object} P - the superclass to inherit from
  */
 _SuperMap.SuperMap.inherit = function (C, P) {
     var F = function F() {};
@@ -14990,7 +14842,7 @@ _SuperMap.SuperMap.inherit = function (C, P) {
 /**
  * @description 实现多重继承
  * @memberOf SuperMap
- * @param ...mixins {Class|Object}继承的类
+ * @param {Class|Object} ...mixins - 继承的类
  */
 _SuperMap.SuperMap.mixin = function () {
     for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
@@ -15042,9 +14894,9 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否以指定的子字符串开头.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串以指定的子字符串开头,则返回true;否则返回false.
+     * @param {string} str - 目标字符串.
+     * @param {string} sub - 查找的子字符串.
+     * @returns {boolean} 目标字符串以指定的子字符串开头，则返回true；否则返回false。
      */
     startsWith: function startsWith(str, sub) {
         return str.indexOf(sub) == 0;
@@ -15052,9 +14904,9 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否包含指定的子字符串.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串中包含指定的子字符串,则返回true;否则返回false.
+     * @param {string} str - 目标字符串.
+     * @param {string} sub - 查找的子字符串.
+     * @returns {boolean} 目标字符串中包含指定的子字符串,则返回true；否则返回false.
      */
     contains: function contains(str, sub) {
         return str.indexOf(sub) != -1;
@@ -15062,7 +14914,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 删除一个字符串的开头和结尾处的所有空白字符.
-     * @param str - {string} (可能)存在空白字符填塞的字符串.
+     * @param {string} str - (可能)存在空白字符填塞的字符串.
      * @returns {string} 删除开头和结尾处空白字符后的字符串.
      */
     trim: function trim(str) {
@@ -15073,7 +14925,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
      * @description 骆驼式("-")连字符的字符串处理.
      * 例如: "chicken-head" becomes "chickenHead",
      *       "-chicken-head" becomes "ChickenHead".
-     * @param str - {string} 要处理的字符串,原始内容不应被修改.
+     * @param {string} str - 要处理的字符串,原始内容不应被修改.
      * @returns {string}
      */
     camelize: function camelize(str) {
@@ -15117,9 +14969,9 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
      *         args = null;
      *       返回值:"${a.b}"
      * (end)
-     * @param template - {string} 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
-     * @param context - {Object} 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
-     * @param args - {Array} 可选参数传递给在context对象上找到的函数.
+     * @param {string} template - 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
+     * @param {Object} context - 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
+     * @param {Array} args - 可选参数传递给在context对象上找到的函数.
      * @returns {string} 从 context 对象属性中替换字符串标记位的字符串.
      */
     format: function format(template, context, args) {
@@ -15185,7 +15037,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
      * SuperMap.String.isNumeric("4") // true
      * SuperMap.String.isNumeric(" 4 ") // false
      * (end)
-     * @returns {Boolean} 字符串包含唯一的数值,返回true;否则返回false.
+     * @returns {boolean} 字符串包含唯一的数值,返回true;否则返回false.
      */
     isNumeric: function isNumeric(value) {
         return _SuperMap.SuperMap.String.numberRegEx.test(value);
@@ -15193,8 +15045,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 把一个看似数值型的字符串转化为一个数值.
-     *
-     * @returns {number|string} 如果能转换为数值则返回数值,否则返回字符串本身.
+     * @returns {(number|string)} 如果能转换为数值则返回数值,否则返回字符串本身.
      */
     numericIf: function numericIf(value) {
         return _SuperMap.SuperMap.String.isNumeric(value) ? parseFloat(value) : value;
@@ -15226,8 +15077,8 @@ var NumberExt = exports.NumberExt = _SuperMap.SuperMap.Number = {
 
     /**
      * @description 限制浮点数的有效数字位数.
-     * @param num - {number}
-     * @param sig - {integer}
+     * @param {number} num - 浮点数
+     * @param {integer} sig - 有效位数
      * @returns {number} 将数字四舍五入到指定数量的有效位数.
      */
     limitSigDigs: function limitSigDigs(num, sig) {
@@ -15240,10 +15091,10 @@ var NumberExt = exports.NumberExt = _SuperMap.SuperMap.Number = {
 
     /**
      * @description 数字格式化输出.
-     * @param num  - {number}
-     * @param dec  - {integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
-     * @param tsep - {string} 千位分隔符. 默认为",".
-     * @param dsep - {string} 小数点分隔符. 默认为".".
+     * @param {number} num - 数字
+     * @param {integer} dec  - 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
+     * @param {string} tsep - 千位分隔符. 默认为",".
+     * @param {string} dsep - 小数点分隔符. 默认为".".
      * @returns {string} 数字格式化后的字符串.
      */
     format: function format(num, dec, tsep, dsep) {
@@ -15287,7 +15138,7 @@ if (!Number.prototype.limitSigDigs) {
     /**
      * APIMethod: Number.limitSigDigs
      * 限制浮点数的有效数字位数.
-     * @param sig - {integer}
+     * @param {integer} sig -有效位数
      * @returns {integer} 将数字四舍五入到指定数量的有效位数.
      *           如果传入值为 null、0、或者是负数, 返回值 0
      */
@@ -15305,8 +15156,8 @@ if (!Number.prototype.limitSigDigs) {
 var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
     /**
      * @description 绑定函数到对象.方便创建this的作用域.
-     * @param func - {function} 输入函数.
-     * @param object - {Object} 对象绑定到输入函数(作为输入函数的this对象).
+     * @param {function} func - 输入函数.
+     * @param {Object} object - 对象绑定到输入函数(作为输入函数的this对象).
      * @returns {function} object参数作为func函数的this对象.
      */
     bind: function bind(func, object) {
@@ -15322,8 +15173,8 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
 
     /**
      * @description 绑定函数到对象,在调用该函数时配置并使用事件对象作为第一个参数.
-     * @param func - {function} 用于监听事件的函数.
-     * @param object - {Object} this 对象的引用.
+     * @param {function} func - 用于监听事件的函数.
+     * @param {Object} object - this 对象的引用.
      * @returns {function}
      */
     bindAsEventListener: function bindAsEventListener(func, object) {
@@ -15336,7 +15187,7 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
      * @description 该函数仅仅返回false.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
      * @example
      * document.onclick = SuperMap.Function.False;
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     False: function False() {
         return false;
@@ -15346,7 +15197,7 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
      * @description 该函数仅仅返回true.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
      * @example
      * document.onclick = SuperMap.Function.True;
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     True: function True() {
         return true;
@@ -15371,12 +15222,12 @@ var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
     /**
      * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
      * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
-     * @param array - {Array} 要过滤的数组..
-     * @param callback - {function} 数组中的每一个元素调用该函数.<br>
+     * @param {Array} array - 要过滤的数组.
+     * @param {function} callback - 数组中的每一个元素调用该函数.<br>
      *     如果函数的返回值为true,该元素将包含在返回的数组中.该函数有三个参数: 数组中的元素,元素的索引,数组自身.<br>
      *     如果设置了可选参数caller,在调用callback时,使用可选参数caller设置为callback的参数.<br>
-     * @param caller - {Object} 在调用callback时,使用可选参数caller设置为callback的参数.
-     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素.
+     * @param {Object} caller - 在调用callback时，使用可选参数caller设置为callback的参数。
+     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素。
      */
     filter: function filter(array, callback, caller) {
         var selected = [];
@@ -15434,22 +15285,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理几何专题要素型专题图层基类。
- * @param name - {string} 图层名称
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {mapboxgl.Map} 当前mapboxgl map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends ol.source.Theme
+ * @param {string} name - 图层名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {(string|Object)} opt_options.attributions - 版权信息。</br>
+ * @param {string} opt_options.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} - 资源状态。<br>
+ * @param {Object} opt_options.style - 专题图样式。<br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {ol.source.Theme}
  */
 
 var GeoFeature = exports.GeoFeature = function (_Theme) {
@@ -15499,7 +15350,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
         /**
          * @function ol.source.GeoFeature.prototype.addFeatures
          * @description 添加要素
-         * @param features - {Object} 要素对象
+         * @param {Object} features - 要素对象
          */
 
     }, {
@@ -15520,7 +15371,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
         /**
          * @function ol.source.GeoFeature.prototype.removeFeatures
          * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-         * @param features - {Object} 要删除的要素对象
+         * @param {Object} features - 要删除的要素对象
          */
 
     }, {
@@ -15546,7 +15397,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
         /**
          * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
          * @description 重绘所有专题要素。
-         * @param extent -{Object} 视图范围数据
+         * @param {Object} extent - 视图范围数据
          */
 
     }, {
@@ -15624,7 +15475,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
         /**
          * @function ol.source.GeoFeature.prototype.createThematicFeature
          * @description 创建专题要素
-         * @param feature - {Object} 要素对象
+         * @param {Object} feature - 要素对象
          */
 
     }, {
@@ -15670,7 +15521,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
 
         /**
          * @function ol.source.GeoFeature.prototype.clear
-         * @description  清除的内容包括数据（features） 、专题要素、缓存。
+         * @description  清除的内容包括数据（features）、专题要素、缓存。
          */
 
     }, {
@@ -15685,7 +15536,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
         /**
          * @function ol.source.GeoFeature.prototype.getCacheCount
          * @description 获取当前缓存数量。
-         * @return {Number} 返回当前缓存数量。
+         * @returns {Number} 返回当前缓存数量。
          */
 
     }, {
@@ -15696,7 +15547,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
 
         /**
          * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-         * @param cacheCount -{number} 缓存总数
+         * @param {number} cacheCount - 缓存总数
          * @description 设置最大缓存条数
          */
 
@@ -15711,7 +15562,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
 
         /**
          * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-         * @param featureID -{number} 要素ID。
+         * @param {number} featureID - 要素ID。
          * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
          */
 
@@ -15805,23 +15656,18 @@ var _Util = __webpack_require__(1);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.Feature.Theme
  * @category Visualization Theme
- * 专题要素基类，此类不可实例化。
+ * @classdesc 专题要素基类，此类不可实例化。
  */
 var Theme = exports.Theme = function () {
 
     /**
-     * Constructor: SuperMap.Feature.Theme
-     * 构造函数。
-     *
-     * Parameters:
-     * data - {Object}  用户数据，用于生成可视化 shape，必设参数。
-     * layer - {<SuperMap.Layer.Theme>} 此专题要素所在图层，必设参数。
-     *
-     * Returns:
-     * {<SuperMap.Feature.Theme>} 返回一个专题要素。
+     * @function SuperMap.Feature.Theme.prototype.constructor
+     * @description 构造函数。
+     * @param {Object} data - 用户数据，用于生成可视化 shape，必设参数。
+     * @param {SuperMap.Layer.Theme} layer - 此专题要素所在图层，必设参数。
+     * @returns {SuperMap.Feature.Theme} 返回一个专题要素。
      */
     function Theme(data, layer) {
         _classCallCheck(this, Theme);
@@ -15835,38 +15681,41 @@ var Theme = exports.Theme = function () {
         }
 
         /**
-         * Property: id
-         * {String} 专题要素唯一标识。
+         * @member {string} SuperMap.Feature.Theme.prototype.id
+         * @description 专题要素唯一标识。
          */
         this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
 
         /**
-         * APIProperty: lonlat
-         * {<SuperMap.LonLat>} 专题要素地理参考位置。子类中必须根据用户数据（或地理位置参数）对其赋值。
+         * @member {SuperMap.LonLat} SuperMap.Feature.Theme.prototype.lonlat
+         * @description 专题要素地理参考位置。子类中必须根据用户数据（或地理位置参数）对其赋值。
          */
         this.lonlat = null;
 
         /**
-         * APIProperty: location
-         * {Array} 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         * @member {Array} SuperMap.Feature.Theme.prototype.location
+         * @description 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
         this.location = [];
 
         /**
-         * APIProperty: data
-         * {Object} {ReadOnly} 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如： <SuperMap.Feature.Vector> 。
+         * @readonly
+         * @member {Object} SuperMap.Feature.Theme.prototype.data
+         * @description 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如：<SuperMap.Feature.Vector>。
          */
         this.data = data;
 
         /**
-         * APIProperty: shapes
-         * {Array} {ReadOnly} 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
+         * @readonly
+         * @member {Array} SuperMap.Feature.Theme.prototype.shapes
+         * @description 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
          */
         this.shapes = [];
 
         /**
-         * APIProperty: layer
-         * {<SuperMap.Layer.Theme>} {ReadOnly} 此专题要素所在专题图层。
+         * @readonly
+         * @member {SuperMap.Layer.Theme} SuperMap.Feature.Theme.prototype.layer
+         * @description 此专题要素所在专题图层。
          */
         this.layer = layer;
 
@@ -15874,8 +15723,8 @@ var Theme = exports.Theme = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁专题要素。
+     * @function SuperMap.Feature.Theme.prototype.destroy
+     * @description 销毁专题要素。
      */
 
 
@@ -15891,14 +15740,10 @@ var Theme = exports.Theme = function () {
         }
 
         /**
-         * Method: getLocalXY
-         * 地理坐标转为像素坐标。
-         *
-         * Parameters:
-         * coordinate - {<SuperMap.Geometry.Point>/<SuperMap.Geometry.GeoText>/<SuperMap.LonLat>} 地理坐标点。
-         *
-         * Returns:
-         * {Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         * @function SuperMap.Feature.Theme.prototype.getLocalXY
+         * @description 地理坐标转为像素坐标。
+         * @param {(SuperMap.Geometry.Point|SuperMap.Geometry.GeoText|SuperMap.LonLat)} coordinate - 地理坐标点。
+         * @returns {Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
 
     }, {
@@ -15959,10 +15804,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicPolygon
  * @category Visualization Theme
- * 多边形。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 多边形。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
@@ -15979,11 +15822,10 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
     _inherits(SmicPolygon, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * pointList - {Array} 节点数组，二维数组。默认值：null，必设参数。其形式如下：
+     * @param {Array} pointList - 节点数组，二维数组。默认值：null，必设参数。其形式如下：
      * (code)
      * (start code)
      *  [
@@ -15992,49 +15834,48 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
      *  [25, 30]
      *   ]
      * (end)
-     * smooth - {string} 是否做平滑插值, 平滑算法可以选择 "bezier", "spline"。默认值："";
-     * smoothConstraint - {Number} 平滑约束。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {string} style.smooth - 是否做平滑插值, 平滑算法可以选择 "bezier", "spline"。默认值："";
+     * @param {number} style.smoothConstraint - 平滑约束。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicPolygon
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicPolygon(options) {
         _classCallCheck(this, SmicPolygon);
 
         /**
-         * Property: type
-         * {String} 图形类型.
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.type
+         * @description 图形类型.
          */
         var _this = _possibleConstructorReturn(this, (SmicPolygon.__proto__ || Object.getPrototypeOf(SmicPolygon)).call(this, options));
 
         _this.type = 'smicpolygon';
 
         /**
-         * APIProperty: _holePolygonPointList
-         * {Array} 岛洞面多边形顶点数组（三维数组）
+         * @member {Array} SuperMap.LevelRenderer.Shape.SmicPolygon.prototype._holePolygonPointList
+         * @description 岛洞面多边形顶点数组（三维数组）
          *
          */
         _this.holePolygonPointLists = null;
@@ -16047,8 +15888,8 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -16061,12 +15902,11 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
         }
 
         /**
-         * APIMethod: brush
-         * 笔触。
+         * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.brush
+         * @description 笔触。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * isHighlight - {Boolean} 是否使用高亮属性。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {boolean} isHighlight - 是否使用高亮属性。
          *
          */
 
@@ -16179,12 +16019,11 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建多边形路径。
+         * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.buildPath
+         * @description 创建多边形路径。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -16344,15 +16183,12 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回多边形包围盒矩阵。
-         * 该包围盒是直接从四个控制点计算，并非最小包围盒。
-         *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @function SuperMap.LevelRenderer.Shape.SmicPolygon.prototype.getRect
+         * @description 计算返回多边形包围盒矩阵。该包围盒是直接从四个控制点计算，并非最小包围盒。
+         * 
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
+         * 
          */
 
     }, {
@@ -16430,8 +16266,9 @@ var Config = exports.Config = function Config() {
     _classCallCheck(this, Config);
 };
 /**
- * APIProperty: EVENT
- * {Object} 事件
+ * @enum EVENT
+ * @description 事件
+ * @type {Object}
  */
 
 
@@ -16492,18 +16329,19 @@ Config.EVENT = {
 };
 
 /**
- * APIProperty: catchBrushException
- * {Boolean} 是否异常捕获
+ * @enum catchBrushException
+ * @description 是否异常捕获
+ * @type {boolean}
  */
 Config.catchBrushException = false;
 
 /**
- * APIProperty: debugMode
- * {Boolean} debug 日志选项：catchBrushException 为 true 下有效
- *
+ * @enum debugMode
+ * @description debug 日志选项：catchBrushException 为 true 下有效。
  * 0 : 不生成debug数据，发布用
  * 1 : 异常抛出，调试用
  * 2 : 控制台输出，调试用
+ * @type {boolean}
  */
 Config.debugMode = 0;
 
@@ -16526,15 +16364,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Vector
  * @category Visualization Theme
- * LevelRenderer 二维向量类
+ * @classdesc LevelRenderer 二维向量类
  *
  */
 var Vector = exports.Vector = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Vector
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Vector.constructor
+     * @description 构造函数
      */
     function Vector() {
         _classCallCheck(this, Vector);
@@ -16545,15 +16382,12 @@ var Vector = exports.Vector = function () {
     }
 
     /**
-     * APIMethod: create
-     * 创建一个向量。
-     *
-     * Parameters:
-     * x - {Number} x 坐标。
-     * y - {Number} y 坐标。
-     *
-     * Returns:
-     * {Vector2} 向量。
+     * @function SuperMap.LevelRenderer.Tool.Vector.prototype.create
+     * @description 创建一个向量。
+     * 
+     * @param {number} x - x坐标
+     * @param {number} y - Y坐标
+     * @return {Vector2} 向量。
      */
 
 
@@ -16570,15 +16404,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: copy
-         * 复制一个向量。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v - {Vector2} 向量。
-         *
-         * Returns:
-         * {Vector2} 克隆向量。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.copy
+         * @description 复制一个向量。
+         * 
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v - 向量。
+         * @return {Vector2} 克隆向量。
          */
 
     }, {
@@ -16590,16 +16421,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: set
-         * 设置向量的两个项。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * a - {Number} 项 a。
-         * b - {Number} 项 b。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.set
+         * @description 设置向量的两个项。
+         * 
+         * @param {Vector2} out - 基础向量。
+         * @param {number} a - 项 a。
+         * @param {number} b - 项 b。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16611,16 +16439,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: add
-         * 向量相加。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.add
+         * @description 向量相加。
+         * 
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16632,17 +16457,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: scaleAndAdd
-         * 向量缩放后相加。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2（缩放向量）。
-         * a - {Number} 缩放参数。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.scaleAndAdd
+         * @description 向量缩放后相加。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2（缩放向量）。
+         * @param {number} a - 缩放参数。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16654,16 +16475,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: sub
-         * 向量相减。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.sub
+         * @description 向量相减。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16675,14 +16492,10 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: len
-         * 向量长度。
-         *
-         * Parameters:
-         * v - {Vector2} 向量。
-         *
-         * Returns:
-         * {Number} 向量长度。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.len
+         * @description 向量长度。
+         * @param {Vector2} v - 向量。
+         * @return {number} 向量长度。
          */
 
     }, {
@@ -16692,14 +16505,10 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: lenSquare
-         * 向量长度平方。
-         *
-         * Parameters:
-         * v - {Vector2} 向量。
-         *
-         * Returns:
-         * {Number} 向量长度平方。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.lenSquare
+         * @description 向量长度平方。
+         * @param {Vector2} v - 向量。
+         * @return {number} 向量长度平方。
          */
 
     }, {
@@ -16709,16 +16518,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: mul
-         * 向量乘法。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.mul
+         * @description 向量乘法。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16730,16 +16535,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: div
-         * 向量除法。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.div
+         * @description 向量除法。
+         * 
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16751,15 +16553,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: dot
-         * 向量点乘。
-         *
-         * Parameters:
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Number} 向量点乘。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.dot
+         * @description 向量点乘。
+         * 
+         * @param  {Vector2} v1 - 向量 v1。
+         * @param  {Vector2} v2 - 向量 v2。
+         * @return {number} 向量点乘。
          */
 
     }, {
@@ -16769,16 +16568,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: scale
-         * 向量缩放。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.scale
+         * @description 向量缩放。
          *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v - {Vector2} 向量 v。
-         * s - {Number} 缩放参数。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v - 向量v。
+         * @param {number} s -缩放参数。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16790,15 +16586,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: normalize
-         * 向量归一化。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.normalize
+         * @description 向量归一化。
          *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v - {Vector2} 向量 v。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v - 向量 v。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16816,15 +16609,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: distance
-         * 计算向量间距离。
-         *
-         * Parameters:
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Number} 向量间距离。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.distance
+         * @description 计算向量间距离。
+         * 
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {number} 向量间距离。
          */
 
     }, {
@@ -16834,15 +16624,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: distanceSquare
-         * 向量距离平方。
-         *
-         * Parameters:
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Number} 向量距离平方。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.distanceSquare
+         * @description 向量距离平方。
+         * 
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {number} 向量距离平方。
          */
 
     }, {
@@ -16852,15 +16639,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: negate
-         * 求负向量。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v - {Vector2} 向量 v。
-         *
-         * Returns:
-         * {Vector2} 负向量。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.negate
+         * @description 求负向量。
+         * 
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v - 向量 v。
+         * @return {Vector2} 负向量。
          */
 
     }, {
@@ -16872,17 +16656,14 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: lerp
-         * 插值两个点。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.lerp
+         * @description 两点之间线性插值。
          *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         * t - {Number} 。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @param {number} t
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16894,16 +16675,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: applyTransform
-         * 矩阵左乘向量。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v - {Vector2} 向量 v。
-         * m - {Vector2} 向量 m。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.applyTransform
+         * @description 矩阵左乘向量。
+         * 
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16917,16 +16695,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: min
-         * 求两个向量最小值。
-         *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.min
+         * @description 求两个向量最小值。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16938,16 +16712,13 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: max
-         * 求两个向量最大值。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.max
+         * @description 求两个向量最大值。
          *
-         * Parameters:
-         * out - {Vector2} 基础向量。
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Vector2} 结果。
+         * @param {Vector2} out - 基础向量。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {Vector2} 结果。
          */
 
     }, {
@@ -16959,14 +16730,11 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: length
-         * 向量长度。
-         *
-         * Parameters:
-         * v - {Vector2} 向量。
-         *
-         * Returns:
-         * {Number} 向量长度。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.length
+         * @description 向量长度。
+         * 
+         * @param {Vector2} v - 向量。
+         * @return {number} 向量长度。
          */
 
     }, {
@@ -16976,14 +16744,11 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: lengthSquare
-         * 向量长度平方。
-         *
-         * Parameters:
-         * v - {Vector2} 向量。
-         *
-         * Returns:
-         * {Number} 向量长度平方。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.lengthSquare
+         * @description 向量长度平方。
+         * 
+         * @param {Vector2} v - 向量。
+         * @return {number} 向量长度平方。
          */
 
     }, {
@@ -16993,15 +16758,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: dist
-         * 计算向量间距离。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.dist
+         * @description 计算向量间距离。
          *
-         * Parameters:
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Number} 向量间距离。
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {number} 向量间距离。
          */
 
     }, {
@@ -17011,15 +16773,12 @@ var Vector = exports.Vector = function () {
         }
 
         /**
-         * APIMethod: distSquare
-         * 向量距离平方。
-         *
-         * Parameters:
-         * v1 - {Vector2} 向量 v1。
-         * v2 - {Vector2} 向量 v2。
-         *
-         * Returns:
-         * {Number} 向量距离平方。
+         * @function SuperMap.LevelRenderer.Tool.Vector.prototype.distSquare
+         * @description 向量距离平方。
+         * 
+         * @param {Vector2} v1 - 向量 v1。
+         * @param {Vector2} v2 - 向量 v2。
+         * @return {number} 向量距离平方
          */
 
     }, {
@@ -17051,50 +16810,48 @@ var _Vector = __webpack_require__(65);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Curve
  * @category Visualization Theme
- * LevelRenderer 工具-曲线
+ * @classdesc LevelRenderer 工具-曲线
  *
  */
 var Curve = exports.Curve = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Curve
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.constructor
+     * @description 构造函数。
      */
     function Curve() {
         _classCallCheck(this, Curve);
 
         /**
-         * Property: vector
-         * {<SuperMap.LevelRenderer.Tool.Vector>} 矢量工具
+         * @member {SuperMap.LevelRenderer.Tool.Vector} SuperMap.LevelRenderer.Tool.Curve.prototype.vector
+         * @description 矢量工具。
          */
         this.vector = new _Vector.Vector();
 
         /**
-         * Property: EPSILON
-         * {Number} e
+         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.EPSILON
+         * @description e。
          */
         this.EPSILON = 1e-4;
 
         /**
-         * Property: THREE_SQRT
-         * {Number} 3 的平方根
+         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.THREE_SQRT
+         * @description 3 的平方根。
          */
         this.THREE_SQRT = Math.sqrt(3);
 
         /**
-         * Property: ONE_THIRD
-         * {Number} 1/3
+         * @member {number} SuperMap.LevelRenderer.Tool.Curve.prototype.ONE_THIRD
+         * @description 1/3。
          */
         this.ONE_THIRD = 1 / 3;
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Curve";
     }
 
-    /**
+    /*
      * Method: evalCubicCoeff
      *
      * Parameters:
@@ -17115,14 +16872,10 @@ var Curve = exports.Curve = function () {
      */
 
     /**
-     * Method: isAroundZero
-     * 判断一个值是否趋于0，判断参考值：1e-4。
-     *
-     * Parameters:
-     * val - {Number} 值。
-     *
-     * Returns:
-     * {Boolean} 值是否趋于0。
+     * @function SuperMap.LevelRenderer.Tool.Curve.prototype.isAroundZero
+     * @description 判断一个值是否趋于0，判断参考值：1e-4。
+     * @param {number} val - 值。
+     * @returns {boolean} 值是否趋于0。
      */
 
 
@@ -17133,14 +16886,10 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * Method: isNotAroundZero
-         * 判断一个值是否不趋于0，判断参考值：1e-4。
-         *
-         * Parameters:
-         * val - {Number} 值。
-         *
-         * Returns:
-         * {Boolean} 值是否不趋于0。
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.isNotAroundZero
+         * @description 判断一个值是否不趋于0，判断参考值：1e-4。
+         * @param {number} val - 值。
+         * @returns {boolean} 值是否不趋于0。
          */
 
     }, {
@@ -17150,18 +16899,14 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: cubicAt
-         * 计算三次贝塞尔值
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * p3 - {Number}
-         * t - {Number}
-         *
-         * Returns:
-         * {number} 三次贝塞尔值
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicAt
+         * @description 计算三次贝塞尔值
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} p3 - 点p3。
+         * @param {number} t - t值。
+         * @returns {number} 三次贝塞尔值。
          */
 
     }, {
@@ -17172,18 +16917,14 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: cubicDerivativeAt
-         * 计算三次贝塞尔导数值
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * p3 - {Number}
-         * t - {Number}
-         *
-         * Returns:
-         * {number} 三次贝塞尔导数值
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicDerivativeAt
+         * @description 计算三次贝塞尔导数值
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} p3 - 点p3。
+         * @param {number} t - t值。
+         * @returns {number} 三次贝塞尔导数值。
          */
 
     }, {
@@ -17194,19 +16935,15 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: cubicRootAt
-         * 计算三次贝塞尔方程根，使用盛金公式
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * p3 - {Number}
-         * val - {Number}
-         * roots -{Array<number>} 有效根数目
-         *
-         * Returns:
-         * {number} 有效根
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicRootAt
+         * @description 计算三次贝塞尔方程根，使用盛金公式
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} p3 - 点p3。
+         * @param {number} val - 值。
+         * @param {Array<number>} roots - 有效根数目。
+         * @returns {number} 有效根。
          */
 
     }, {
@@ -17288,18 +17025,14 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: cubicExtrema
-         * 计算三次贝塞尔方程极限值的位置
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * p3 - {Number}
-         * extrema - {Array<number>}
-         *
-         * Returns:
-         * {number} 有效数目
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicRootAt
+         * @description 计算三次贝塞尔方程极限值的位置
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} p3 - 点p3。
+         * @param {Array<number>} extrema - 值。
+         * @returns {number} 有效数目。
          */
 
     }, {
@@ -17337,19 +17070,15 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod cubicSubdivide
-         * 细分三次贝塞尔曲线
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * p3 - {Number}
-         * t - {Number}
-         * out - {Array{Number}}
-         *
-         * Returns:
-         * {number} out
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicSubdivide
+         * @description 细分三次贝塞尔曲线
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} p3 - 点p3。
+         * @param {number} t - t值。
+         * @param {Array<number>} out - 投射点。
+         * @returns {number} 投射点。
          */
 
     }, {
@@ -17376,24 +17105,20 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: cubicProjectPoint
-         * 投射点到三次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
-         *
-         * Parameters:
-         * x0 - {Number}
-         * y0 - {Number}
-         * x1 - {Number}
-         * y1 - {Number}
-         * x2 - {Number}
-         * y2 - {Number}
-         * x3 - {Number}
-         * y3 - {Number}
-         * x - {Number}
-         * y - {Number}
-         * out - {Array{Number}}  投射点
-         *
-         * Returns:
-         * {number} out
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.cubicProjectPoint
+         * @description 投射点到三次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
+         * @param {number} x0 - 点p0横坐标。
+         * @param {number} y0 - 点p0纵坐标。
+         * @param {number} x1 - 点p1横坐标。
+         * @param {number} y1 - 点p1纵坐标。
+         * @param {number} x2 - 点p2横坐标。
+         * @param {number} y2 - 点p2纵坐标。
+         * @param {number} x3 - 点p3横坐标。
+         * @param {number} y3 - 点p3纵坐标。
+         * @param {number} x - 点p横坐标。
+         * @param {number} y - 点p纵坐标。
+         * @param {Array<number>} out - 投射点。
+         * @returns {number} 投射点。
          */
 
     }, {
@@ -17466,17 +17191,13 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: quadraticAt
-         * 计算二次方贝塞尔值
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * t - {Number}
-         *
-         * Returns:
-         * {number} 二次方贝塞尔值
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticAt
+         * @description 计算二次方贝塞尔值。
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} t - t值。
+         * @returns {number} 二次方贝塞尔值。
          */
 
     }, {
@@ -17487,17 +17208,13 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: quadraticDerivativeAt
-         * 计算二次方贝塞尔导数值
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * t - {Number}
-         *
-         * Returns:
-         * {number} 二次方贝塞尔导数值
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticAt
+         * @description 计算二次方贝塞尔导数值。
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} t - t值。
+         * @returns {number} 二次方贝塞尔导数值。
          */
 
     }, {
@@ -17507,18 +17224,14 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: quadraticRootAt
-         * 计算二次方贝塞尔方程根
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         * val - {Number}
-         * roots - {Array{Number}}
-         *
-         * Returns:
-         * {number} 有效根数目
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticRootAt
+         * @description 计算二次方贝塞尔方程根
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @param {number} val - 值。
+         * @param {Array<number>} roots - 有效根数目。
+         * @returns {number} 有效根数目。
          */
 
     }, {
@@ -17559,16 +17272,12 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: quadraticExtremum
-         * 计算二次贝塞尔方程极限值
-         *
-         * Parameters:
-         * p0 - {Number}
-         * p1 - {Number}
-         * p2 - {Number}
-         *
-         * Returns:
-         * {number}  二次贝塞尔方程极限值
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticExtremum
+         * @description 计算二次贝塞尔方程极限值
+         * @param {number} p0 - 点p0。
+         * @param {number} p1 - 点p1。
+         * @param {number} p2 - 点p2。
+         * @returns {number} 二次贝塞尔方程极限值。
          */
 
     }, {
@@ -17584,22 +17293,18 @@ var Curve = exports.Curve = function () {
         }
 
         /**
-         * APIMethod: quadraticProjectPoint
-         * 投射点到二次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
-         *
-         * Parameters:
-         * x0 - {Number}
-         * y0 - {Number}
-         * x1 - {Number}
-         * y1 - {Number}
-         * x2 - {Number}
-         * y2 - {Number}
-         * x - {Number}
-         * y - {Number}
-         * out - {Array{Number}}  投射点
-         *
-         * Returns:
-         * {number} 投射距离
+         * @function SuperMap.LevelRenderer.Tool.Curve.prototype.quadraticProjectPoint
+         * @description 投射点到二次贝塞尔曲线上，返回投射距离。投射点有可能会有一个或者多个，这里只返回其中距离最短的一个。
+         * @param {number} x0 - 点p0横坐标。
+         * @param {number} y0 - 点p0纵坐标。
+         * @param {number} x1 - 点p1横坐标。
+         * @param {number} y1 - 点p1纵坐标。
+         * @param {number} x2 - 点p2横坐标。
+         * @param {number} y2 - 点p2纵坐标。
+         * @param {number} x - 点p横坐标。
+         * @param {number} y - 点p纵坐标。
+         * @param {Array<number>} out - 投射点。
+         * @returns {number} 投射距离。
          */
 
     }, {
@@ -17695,55 +17400,51 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Transformable
  * @category Visualization Theme
- * 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。
- *
- * 此类不可实例化。
- *
+ * @classdesc 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。此类不可实例化。
  */
 var Transformable = exports.Transformable = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Transformable
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Transformable.constructor
+     * @description 构造函数。
      */
     function Transformable() {
         _classCallCheck(this, Transformable);
 
         /**
-         * APIProperty: position
-         * {Array{Number}} 平移， 默认值：[0, 0]。
+         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.position 
+         * @description 平移， 默认值：[0, 0]。
          */
         this.position = [0, 0];
 
         /**
-         * APIProperty: rotation
-         * {Array{Number}} 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
+         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.rotation
+         * @description 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
          */
         this.rotation = [0, 0, 0];
 
         /**
-         * APIProperty: scale
-         * {Array{Number}} 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
+         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.scale
+         * @description 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
          */
         this.scale = [1, 1, 0, 0];
 
         /**
-         * Property: needLocalTransform
-         * {Boolean} 是否变换。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Transformable.prototype.needLocalTransform
+         * @description 是否变换。默认值：false。
          */
         this.needLocalTransform = false;
 
         /**
-         * APIProperty: needTransform
-         * {Boolean} 是否有坐标变换。默认值：false。
+         * @member {boolean} SuperMap.LevelRenderer.Transformable.prototype.needTransform
+         * @description 是否有坐标变换。默认值：false。
          */
         this.needTransform = false;
 
         this.CLASS_NAME = "SuperMap.LevelRenderer.Transformable";
         /**
-         * APIMethod: lookAt
-         * 设置图形的朝向。
-         *
+         * @function SuperMap.LevelRenderer.Transformable.prototype.lookAt
+         * @description 设置图形的朝向。
          */
         this.lookAt = function () {
             var v = _SUtil.SUtil.Util_vector.create();
@@ -17780,8 +17481,8 @@ var Transformable = exports.Transformable = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Transformable.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -17796,9 +17497,8 @@ var Transformable = exports.Transformable = function () {
         }
 
         /**
-         * Method: updateNeedTransform
-         * 更新  needLocalTransform
-         *
+         * @function SuperMap.LevelRenderer.Transformable.prototype.updateNeedTransform
+         * @description 更新 needLocalTransform
          */
 
     }, {
@@ -17813,10 +17513,8 @@ var Transformable = exports.Transformable = function () {
         }
 
         /**
-         * APIMethod: updateTransform
-         * 判断是否需要有坐标变换，更新 needTransform 属性。
-         * 如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
-         *
+         * @function SuperMap.LevelRenderer.Transformable.prototype.updateTransform
+         * @description 判断是否需要有坐标变换，更新 needTransform 属性。如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
          */
 
     }, {
@@ -17900,11 +17598,10 @@ var Transformable = exports.Transformable = function () {
         }
 
         /**
-         * APIMethod: setTransform
-         * 将自己的 transform 应用到 context 上。
-         *
-         * Parameters:
-         * ctx - {Context2D} Context2D 上下文。
+         * @function SuperMap.LevelRenderer.Transformable.prototype.setTransform
+         * @description 将自己的 transform 应用到 context 上。
+         * 
+         * @param {Context2D} ctx - Context2D 上下文。
          */
 
     }, {
@@ -17917,9 +17614,8 @@ var Transformable = exports.Transformable = function () {
         }
 
         /**
-         * APIMethod: decomposeTransform
-         * 分解`transform`矩阵到`position`, `rotation`, `scale` 。
-         *
+         * @function SuperMap.LevelRenderer.Transformable.prototype.decomposeTransform
+         * @description 分解`transform`矩阵到`position`, `rotation`, `scale` 。
          */
 
     }, {
@@ -17985,76 +17681,69 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Sector
  * @category Visualization Theme
- * 扇形参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 扇形参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 var Sector = exports.Sector = function (_ShapeParameters) {
   _inherits(Sector, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Sector
-   * 创建一个扇形参数对象。
-   *
-   * Parameters:
-   * x - {Number} 圆心 x 坐标，必设参数。
-   * y - {Number} 圆心 y 坐标，必设参数。
-   * r - {Number} 外圆半径，必设参数。
-   * startAngle - {Number} 起始角度，必设参数。取值范围[0, 360)。
-   * endAngle - {Number} 结束角度，必设参数。取值范围(0, 360]。
-   * r0 - {Number} 内圆半径，指定后将出现内弧，同时扇边长度为`r - r0`。取值范围[0, r)，默认值：0。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Sector>} 扇形参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Sector.prototype.constructor
+   * @description 创建一个扇形参数对象。
+   * @param {number} x - 圆心 x 坐标，必设参数。
+   * @param {number} y - 圆心 y 坐标，必设参数。
+   * @param {number} r - 外圆半径，必设参数。
+   * @param {number} startAngle - 起始角度，必设参数。取值范围[0, 360)。
+   * @param {number} endAngle - 结束角度，必设参数。取值范围(0, 360]。
+   * @param {number} [r0=0] - 内圆半径，指定后将出现内弧，同时扇边长度为'r - r0'。取值范围[0, r)。
+   * @returns {SuperMap.Feature.ShapeParameters.Sector} 扇形参数对象。
    */
   function Sector(x, y, r, startAngle, endAngle, r0, clockWise) {
     _classCallCheck(this, Sector);
 
     /**
-     * APIProperty: x
-     * {Number} 圆心 x 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.x
+     * @description  圆心 x 坐标。
      */
     var _this = _possibleConstructorReturn(this, (Sector.__proto__ || Object.getPrototypeOf(Sector)).call(this, x, y, r, startAngle, endAngle, r0, clockWise));
 
     _this.x = !isNaN(x) ? x : 0;
 
     /**
-     * APIProperty: y
-     * {Number} 圆心 y 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.Y
+     * @description  圆心 Y 坐标。
      */
     _this.y = !isNaN(y) ? y : 0;
 
     /**
-     * APIProperty: r
-     * {Number} 外圆半径。
+     * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.r
+     * @description  外圆半径。
      */
     _this.r = !isNaN(r) ? r : 0;
 
     /**
-     * APIProperty: startAngle
-     * {Number} 起始角度。取值范围[0, 360)，默认值：null。
+     * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.startAngle
+     * @description  起始角度。取值范围[0, 360)，默认值：null。
      */
     _this.startAngle = !isNaN(startAngle) ? startAngle : 0;
 
     /**
-     * APIProperty: endAngle
-     * {Number} 结束角度。取值范围(0, 360]，默认值：null。
+     * @member {number} SuperMap.Feature.ShapeParameters.Sector.prototype.endAngle
+     * @description  结束角度。取值范围(0, 360]，默认值：null。
      */
     _this.endAngle = !isNaN(endAngle) ? endAngle : 0;
 
     /**
-     * APIProperty: r0
-     * {Number} 内圆半径，指定后将出现内弧，同时扇边长度为 r 减 r0。取值范围[0, r)，默认值：0。
+     * @member {number} [SuperMap.Feature.ShapeParameters.Sector.prototype.r0=0]
+     * @description 内圆半径，指定后将出现内弧，同时扇边长度为 r 减 r0。取值范围[0, r)。
      */
     _this.r0 = !isNaN(r0) ? r0 : 0;
 
     /**
-     * Property: clockWise
-     * {Boolean} 是否是顺时针。默认值：false。
+     * @member {number} [SuperMap.Feature.ShapeParameters.Sector.prototype.clockWise=false]
+     * @description 是否是顺时针。默认值：false。
      */
     _this.clockWise = clockWise;
 
@@ -18063,8 +17752,8 @@ var Sector = exports.Sector = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Sector.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -18116,34 +17805,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Polygon
  * @category Visualization Theme
- * 面参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 面参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 var Polygon = exports.Polygon = function (_ShapeParameters) {
   _inherits(Polygon, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Polygon
-   * 创建一个图形面参数对象。
-   *
-   * Parameters:
-   * pointList - {Array} 面要素节点数组，二维数组，必设参数。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Polygon>} 图形面参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Polygon.prototype.constructor
+   * @description 创建一个图形面参数对象。
+   * @param {Array} pointList - 横坐标，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Polygon} 标签参数对象。
    */
   function Polygon(pointList) {
     _classCallCheck(this, Polygon);
 
     /**
-     * APIProperty: pointList
-     * {Array} 面要素节点数组，二维数组。
-     *
+     * @member {Array} SuperMap.Feature.ShapeParameters.Polygon.prototype.pointList
+     * @description 面要素节点数组，二维数组。
      * 数组形如：
      * (start code)
      *  [
@@ -18158,8 +17839,8 @@ var Polygon = exports.Polygon = function (_ShapeParameters) {
     _this.pointList = pointList;
 
     /**
-     * Property: holePolygonPointLists
-     * {Array} 岛洞面多边形顶点数组（三维数组）
+     * @member {Array} SuperMap.Feature.ShapeParameters.Polygon.prototype.holePolygonPointLists
+     * @description 岛洞面多边形顶点数组（三维数组）
      */
     _this.holePolygonPointLists = null;
 
@@ -18168,8 +17849,8 @@ var Polygon = exports.Polygon = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Polygon.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -18215,48 +17896,41 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Point
  * @category Visualization Theme
- * 点参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 点参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 var Point = exports.Point = function (_ShapeParameters) {
   _inherits(Point, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Point
-   * 创建一个图形点参数对象。
-   *
-   * Parameters:
-   * x - {Number} 点 x 坐标，必设参数
-   * y - {Number} 点 y 坐标，必设参数。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Point>} 图形点参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Point.prototype.constructor
+   * @description 创建一个图形点参数对象。
+   * @param {number} x - 点 x 坐标，必设参数。
+   * @param {number} y - 点 y 坐标，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Point} 标签参数对象。
    */
   function Point(x, y) {
     _classCallCheck(this, Point);
 
     /**
-     * APIProperty: x
-     * {Number} 点 x 坐标。
+     * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.x
+     * @description 点 x 坐标。
      */
     var _this = _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, x, y));
 
     _this.x = !isNaN(x) ? x : 0;
 
     /**
-     * APIProperty: y
-     * {Number} 点 y 坐标。
+     * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.y
+     * @description 点 y 坐标。
      */
     _this.y = !isNaN(y) ? y : 0;
 
     /**
-     * Property: y
-     * {Number} 点的半径。style.pointRadius 默认值。
+     * @member {number}  SuperMap.Feature.ShapeParameters.Point.prototype.r
+     * @description 点的半径。
      */
     _this.r = 6;
 
@@ -18265,8 +17939,8 @@ var Point = exports.Point = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Point.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -19529,7 +19203,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
  * @category iPortal/Online
- * @param url - {string} iPortal服务地址
+ * @param {string} url - iPortal服务地址
  */
 var IPortalServiceBase = exports.IPortalServiceBase = function () {
     function IPortalServiceBase(url) {
@@ -19543,10 +19217,10 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param method -{string} 请求类型
-     * @param url -{string} 服务地址
-     * @param param -{Object} 请求参数
-     * @param requestOptions -{Object} fetch请求配置项
+     * @param {string} method - 请求类型
+     * @param {string} url - 服务地址
+     * @param {Object} param - 请求参数
+     * @param {Object} requestOptions - fetch请求配置项
      * @returns {Promise} 返回包含请求结果的Promise对象
      */
 
@@ -19559,10 +19233,10 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
             });
         }
 
-        /*
+        /**
          * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
          * @description 追加授权信息
-         * @param url -{string} 创建证书url地址
+         * @param {string} url - 创建证书url地址
          * @return {string} 携带token或key的新地址
          */
 
@@ -19586,7 +19260,7 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
             return newUrl;
         }
 
-        /*
+        /**
          * @function SuperMap.iPortalServiceBase.prototype.getCredential
          * @description 获取token
          * @return {string } 返回获取的token
@@ -19658,10 +19332,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
  * 其中，默认的样式在 <SuperMap.Feature.Vector.style> 类中定义，如果没有特别的指定将使用默认的样式，
- * @extends SuperMap.Feature
- * @param geometry - {SuperMap.Geometry} 代表要素的几何形状。
- * @param attributes - {Object} 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的可选对象。
- * @param style - {Object} 一个可选的样式对象。
+ * @extends {SuperMap.Feature}
+ * @param {SuperMap.Geometry} geometry - 代表要素的几何形状。
+ * @param {Object} attributes - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的可选对象。
+ * @param {Object} style - 一个可选的样式对象。
  * @example
  * var geometry = new SuperMap.Geometry.Point(-115,10);
  *  var style = {
@@ -19680,7 +19354,7 @@ var Vector = exports.Vector = function (_Feature) {
         _classCallCheck(this, Vector);
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.fid -{string}
+         * @member {string} SuperMap.Feature.Vector.prototype.fid
          * @description fid
          */
         var _this = _possibleConstructorReturn(this, (Vector.__proto__ || Object.getPrototypeOf(Vector)).call(this, null, null, attributes));
@@ -19688,13 +19362,13 @@ var Vector = exports.Vector = function (_Feature) {
         _this.fid = null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.geometry -{SuperMap.Geometry}
+         * @member {SuperMap.Geometry} SuperMap.Feature.Vector.prototype.geometry
          * @description 该属性用于存放几何信息。
          */
         _this.geometry = geometry ? geometry : null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.attributes -{Object}
+         * @member {Object} SuperMap.Feature.Vector.prototype.attributes
          * @description 描述要素的任意的可序列化属性。
          */
         _this.attributes = {};
@@ -19704,7 +19378,7 @@ var Vector = exports.Vector = function (_Feature) {
         }
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.bounds -{SuperMap.Bounds}
+         * @member {SuperMap.Bounds} SuperMap.Feature.Vector.prototype.bounds
          * @description The box bounding that feature's geometry, that
          *     property can be set by an <SuperMap.Format> object when
          *     deserializing the feature, so in most cases it represents an
@@ -19713,19 +19387,19 @@ var Vector = exports.Vector = function (_Feature) {
         _this.bounds = null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.state -{string}
+         * @member {string} SuperMap.Feature.Vector.prototype.state
          * @description state
          */
         _this.state = null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.style -{Object}
+         * @member {Object} SuperMap.Feature.Vector.prototype.style
          * @description 要素的样式属性，地图查询返回的feature的style，8C变为null。
          */
         _this.style = style ? style : null;
 
         /**
-         * @member SuperMap.Feature.Vector.prototype.url -{string}
+         * @member {string} SuperMap.Feature.Vector.prototype.url 
          * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 <SuperMap.HTTP> 。
          */
         _this.url = null;
@@ -19934,7 +19608,7 @@ var Vector = exports.Vector = function (_Feature) {
         /**
          * @function SuperMap.Feature.Vector.prototype.toState
          * @description Sets the new state
-         * @param state - {string}
+         * @param {string} state - 状态
          */
 
     }, {
@@ -20012,18 +19686,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Events
  * @classdesc 事件类。
- * @param object - {Object} 当前事件对象被添加到的JS对象。
- * @param element - {HTMLElement} 响应浏览器事件的dom元素。
- * @param eventTypes - {Array<string>} 自定义应用事件的数组。
- * @param fallThrough - {boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
- * @param options - {Object} 事件对象选项。
+ * @param {Object} object - 当前事件对象被添加到的JS对象。
+ * @param {HTMLElement} element - 响应浏览器事件的dom元素。
+ * @param {Array.<string>} eventTypes - 自定义应用事件的数组。
+ * @param {boolean} fallThrough - 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+ * @param {Object} options - 事件对象选项。
  */
 var Events = exports.Events = function () {
     function Events(object, element, eventTypes, fallThrough, options) {
         _classCallCheck(this, Events);
 
         /**
-         * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
+         * @member {Array.<string>} SuperMap.Events.prototype.BROWSER_EVENTS
          * @description 支持的事件。
          * @constant
          * @default [
@@ -20037,47 +19711,47 @@ var Events = exports.Events = function () {
         this.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
         /**
-         * @member SuperMap.Events.prototype.listeners -{Object}
+         * @member {Object} SuperMap.Events.prototype.listeners
          * @description Hashtable of Array(function): events listener functions
          */
         this.listeners = {};
 
         /**
-         * @member SuperMap.Events.prototype.object  -{Object}
+         * @member {Object} SuperMap.Events.prototype.object
          * @description  发布应用程序事件的对象。
          */
         this.object = object;
 
         /**
-         * @member SuperMap.Events.prototype.element  -{HTMLElement}
+         * @member {HTMLElement} SuperMap.Events.prototype.element
          * @description 接受浏览器事件的DOM节点。
          */
         this.element = null;
 
         /**
-         * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
+         * @member {Array.<string>} SuperMap.Events.prototype.eventTypes
          * @description 支持的事件类型列表。
          */
         this.eventTypes = [];
 
         /**
-         * @member SuperMap.Events.prototype.eventHandler -{function}
+         * @member {function} SuperMap.Events.prototype.eventHandler
          * @description 绑定在元素上的事件处理器对象。
          */
         this.eventHandler = null;
 
         /**
-         * @member SuperMap.Events.prototype.fallThrough -{boolean}
+         * @member {boolean} SuperMap.Events.prototype.fallThrough
          * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
          */
         this.fallThrough = fallThrough;
 
         /**
-         * @member SuperMap.Events.prototype.includeXY -{boolean}
+         * @member {boolean} SuperMap.Events.prototype.includeXY
          * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
-         *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
-         *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-         *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+         *              可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
+         *              事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+         *              设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
          * @example
          *  function named(evt) {
          *        this.xy = this.object.events.getMousePosition(evt);
@@ -20086,7 +19760,7 @@ var Events = exports.Events = function () {
         this.includeXY = false;
 
         /**
-         * @member SuperMap.Events.prototype.extensions - {Object}
+         * @member {Object} SuperMap.Events.prototype.extensions
          * @description 事件扩展。Keys代表事件类型，values代表事件对象。
          * @example
          * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
@@ -20126,11 +19800,11 @@ var Events = exports.Events = function () {
         this.extensions = {};
 
         /**
-         * @member SuperMap.Events.prototype.extensionCount - {Object}
+         * @member {Object} SuperMap.Events.prototype.extensionCount
          */
         this.extensionCount = {};
         /**
-         * @member SuperMap.Events.prototype.clearMouseListener - {Object}
+         * @member {Object} SuperMap.Events.prototype.clearMouseListener
          */
         this.clearMouseListener = null;
 
@@ -20182,7 +19856,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.addEventType
          * @description 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
-         * @param eventName - {string} 事件名。
+         * @param {string} eventName - 事件名。
          */
 
     }, {
@@ -20197,7 +19871,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.attachToElement
          * @description 给dom元素绑定浏览器事件。
-         * @param element - {HTMLDOMElement} 绑定浏览器事件的dom元素。
+         * @param {HTMLDOMElement} element - 绑定浏览器事件的dom元素。
          */
 
     }, {
@@ -20250,7 +19924,7 @@ var Events = exports.Events = function () {
          * events.register("loadend", object, loadEndListener);
          *
          *
-         * @param  object - {Object} 添加监听的对象。
+         * @param {Object} object - 添加监听的对象。
          */
 
     }, {
@@ -20266,11 +19940,11 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.register
          * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
-         *                指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
-         * @param type - {string} 事件注册者的名字。
-         * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
-         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
-         * @param priority - {boolean|Object} 当为true时将新的监听加在事件队列的前面。
+         *              指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
+         * @param {string} type - 事件注册者的名字。
+         * @param {Object} obj - 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
+         * @param {function} func - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
+         * @param {(boolean|Object)} priority - 当为true时将新的监听加在事件队列的前面。
          */
 
     }, {
@@ -20305,9 +19979,9 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.registerPriority
          * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束。
-         * @param type - {string} 事件注册者的名字。
-         * @param obj - {Object} 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性。
-         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
+         * @param {string} type - 事件注册者的名字。
+         * @param {Object} obj - 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性。
+         * @param {function} func - 回调函数，如果没有特定的回调，则这个函数不做任何事情。
          */
 
     }, {
@@ -20337,7 +20011,7 @@ var Events = exports.Events = function () {
          * events.unregister("loadstart", object, loadStartListener);
          * events.unregister("loadend", object, loadEndListener);
          *
-         * @param object - {Object} 移除监听的对象。
+         * @param {Object} object - 移除监听的对象。
          */
 
     }, {
@@ -20353,9 +20027,9 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.unregister
          * @description 取消注册。
-         * @param type - {string} 事件类型。
-         * @param obj - {Object} 默认为 this.object。
-         * @param func - {function} 事件监听。
+         * @param {string} type - 事件类型。
+         * @param {Object} obj - 默认为 this.object。
+         * @param {function} func - 事件监听。
          */
 
     }, {
@@ -20378,7 +20052,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.remove
          * @description 删除某个事件类型的所有监听，如果该事件类型没有注册，则不做任何操作。
-         * @param type - {string} 事件类型。
+         * @param {string} type - 事件类型。
          */
 
     }, {
@@ -20392,8 +20066,8 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.triggerEvent
          * @description 触发一个特定的注册事件。
-         * @param type - {string} 触发事件类型。
-         * @param evt - {Event} 事件对象。
+         * @param {string} type - 触发事件类型。
+         * @param {Event} evt - 事件对象。
          * @returns {boolean} 返回监听对象，如果返回是falee，则停止监听。
          */
 
@@ -20442,7 +20116,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.handleBrowserEvent
          * @description 对triggerEvent函数的包装，给事件对象设置了xy属性(即当前鼠标点的xy坐标)。
-         * @param evt - {Event} 事件对象。
+         * @param {Event} evt - 事件对象。
          */
 
     }, {
@@ -20493,7 +20167,7 @@ var Events = exports.Events = function () {
 
         /**
          * @function SuperMap.Events.prototype.getMousePosition
-         * @param evt - {Event} 事件对象。
+         * @param {Event} evt - 事件对象。
          * @returns {SuperMap.Pixel} 当前的鼠标的xy坐标点。
          */
 
@@ -20551,9 +20225,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Pixel
  * @classdesc 此类用x,y坐标描绘屏幕坐标（像素点）。
- * @param x - {number} x坐标，默认为0.0
- * @param y - {number} y坐标，默认为0.0
- * @param mode - {string} 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+ * @param {number} [x=0.0] - x坐标
+ * @param {number} [y=0.0] - y坐标
+ * @param {string} mode - 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
  *
  * @example
  * //单独创建一个对象
@@ -20568,19 +20242,19 @@ var Pixel = exports.Pixel = function () {
         _classCallCheck(this, Pixel);
 
         /**
-         * @member SuperMap.Pixel.prototype.x -{number}
-         * @description x坐标，默认为0.0
+         * @member {number} [SuperMap.Pixel.prototype.x=0.0]
+         * @description x坐标
          */
         this.x = x ? parseFloat(x) : 0.0;
 
         /**
-         * @member SuperMap.Pixel.prototype.y -{number}
-         * @description y坐标，默认为0.0
+         * @member {number} [SuperMap.Pixel.prototype.y=0.0]
+         * @description y坐标
          */
         this.y = y ? parseFloat(y) : 0.0;
 
         /**
-         * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
+         * @member {SuperMap.Pixel.Mode} SuperMap.Pixel.prototype.mode
          * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
          * 值有<br>
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
@@ -20589,8 +20263,6 @@ var Pixel = exports.Pixel = function () {
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
          *
          * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-         *
-         * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
          */
         this.mode = mode;
         this.CLASS_NAME = "SuperMap.Pixel";
@@ -20655,8 +20327,8 @@ var Pixel = exports.Pixel = function () {
          * var pixcel2 = new SuperMap.Pixel(100,50);
          * var isEquals = pixcel.equals(pixcel2);
          *
-         * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
-         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+         * @param {SuperMap.Pixel} px - 用于比较相等的 pixel 对象。
+         * @returns {boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
          */
 
     }, {
@@ -20677,7 +20349,7 @@ var Pixel = exports.Pixel = function () {
          * var pixcel2 = new SuperMap.Pixel(110,30);
          * var distance = pixcel.distanceTo(pixcel2);
          *
-         * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
+         * @param {SuperMap.Pixel} px - 用于计算的一个 pixel
          * @returns {float} 作为参数传入的像素与当前像素点的距离。
          */
 
@@ -20695,8 +20367,8 @@ var Pixel = exports.Pixel = function () {
          * //pixcel2是新的对象
          * var pixcel2 = pixcel.add(20,30);
          *
-         * @param x - {number} 传入的x值。
-         * @param y - {number} 传入的y值。
+         * @param {number} x - 传入的x值。
+         * @param {number} y - 传入的y值。
          * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
          *      入的x,y相加得到。
          */
@@ -20719,7 +20391,7 @@ var Pixel = exports.Pixel = function () {
          * //pixcel3 是新的对象
          * var pixcel3 = pixcel.offset(pixcel2);
          *
-         * @param px - {SuperMap.Pixel}  传入的 <SuperMap.Pixel> 对象。
+         * @param {SuperMap.Pixel} px - 传入的 <SuperMap.Pixel> 对象。
          * @returns {SuperMap.Pixel} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
          *      值与传入的Pixel对象的x，y值相加得到。
          */
@@ -20788,15 +20460,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.style.CloverShape
  * @category  Visualization Graphic
  * @classdesc 三叶草要素风格
- * @extends ol.style.Image{@linkdoc-openlayers/ol.style.Image}
- * @param options - {Object} 三叶草形要素风格参数。如：<br>
- *        angle - {number} 三叶草每个扇叶的圆心角,默认为30，单位弧度。<br>
- *        count - {number} 扇叶数量， 默认是三个<br>
- *        fill - [{ol.style.Fill}]{@linkdoc-openlayers/ol.style.Fill} 填充样式<br>
- *        stroke - [{ol.style.Stroke}]{@linkdoc-openlayers/ol.style.Stroke} 边框样式<br>
- *        strokeOpacity - {number}透明度<br>
- *        fillOpacity - {number}填充透明度<br>
- *        radius - {number} 半径<br>
+ * @extends {ol.style.Image}
+ * @param {Object} options - 三叶草形要素风格参数。<br>
+ * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。<br>
+ * @param {number} [options.count=3] - 扇叶数量。<br>
+ * @param {ol.style.Fill} options.fill - 填充样式<br>
+ * @param {ol.style.Stroke} options.stroke - 边框样式<br>
+ * @param {number} options.strokeOpacity - 透明度<br>
+ * @param {number} options.fillOpacity - 填充透明度<br>
+ * @param {number} options.radius - 半径<br>
  */
 var CloverShape = exports.CloverShape = function (_ol$style$RegularShap) {
     _inherits(CloverShape, _ol$style$RegularShap);
@@ -20862,12 +20534,12 @@ var CloverShape = exports.CloverShape = function (_ol$style$RegularShap) {
         /**
          * @function  ol.style.CloverShape.prototype.drawSector
          * @description 绘制扇形
-         * @param ctx - {CanvasRenderingContext2D} context对象
-         * @param x - {number} 中心点 x
-         * @param y - {number} 中心点 y
-         * @param r - {number} 中心点 r
-         * @param sAngle - {number} 扇叶起始角度
-         * @param eAngle - {number} 扇叶终止角度
+         * @param {CanvasRenderingContext2D} ctx - context对象
+         * @param {number} x - 中心点 x
+         * @param {number} y - 中心点 y
+         * @param {number} r - 中心点 r
+         * @param {number} sAngle - 扇叶起始角度
+         * @param {number} eAngle - 扇叶终止角度
          */
 
     }, {
@@ -20960,18 +20632,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.Theme
  * @classdesc 专题图基类。
- * @param name - {string} 专题图图层名称
- * @param opt_option-{Object} 可选参数，如：</br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前openlayers的map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @param {string} name - 专题图图层名称
+ * @param {Object} opt_option - 参数。</br>
+ * @param {string} opt_option.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_option.map - 当前openlayers的map对象。</br>
+ * @param {number} opt_option.opacity - 图层透明度。</br>
+ * @param {(string|Object)} opt_option.attributions - 版权信息。 </br>
+ * @param {string} opt_option.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_option.projection - 投影信息。</br>
+ * @param {number} [opt_option.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_option.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_option.state - 资源状态。
+ * @extends {ol.source.ImageCanvas}
  */
 var Theme = exports.Theme = function (_ol$source$ImageCanva) {
     _inherits(Theme, _ol$source$ImageCanva);
@@ -21092,7 +20764,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.destroyFeatures
          * @description 销毁某个要素
-         * @param features -{Object} 将被销毁的要素
+         * @param {Object} features - 将被销毁的要素
          */
 
     }, {
@@ -21112,8 +20784,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.setOpacity
-         * @description 设置图层的不透明度,取值[0-1]之间。
-         * @param opacity - {number} 不透明度
+         * @description 设置图层的不透明度，取值[0-1]之间。
+         * @param {number} opacity - 不透明度
          */
 
     }, {
@@ -21132,8 +20804,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.addFeatures
-         * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
-         * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
+         * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+         * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
          *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
          *              feature 将储存于 features 属性中，其存储形式为数组。
          */
@@ -21144,7 +20816,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.removeFeatures
-         * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
+         * @param {Array.<SuperMap.Feature.Vector>} features - 要删除feature的数组。
          * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
          *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
          *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
@@ -21228,8 +20900,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
          * @function ol.source.Theme.prototype.getFeatureBy
          * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
          *              返回此 feature（并且只返回第一个）。
-         * @param property - {string} feature 的某个属性名称。
-         * @param value - {string} property 所对应的值。
+         * @param {string} property - feature 的某个属性名称。
+         * @param {string} value - property 所对应的值。
          * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
          */
 
@@ -21250,7 +20922,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.getFeatureById
          * @description 通过给定一个 id，返回对应的矢量要素。
-         * @param featureId - {string} 矢量要素的属性 id。
+         * @param {string} featureId - 矢量要素的属性 id。
          * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
          */
 
@@ -21263,9 +20935,9 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.getFeaturesByAttribute
          * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-         * @param attrName - {string} 属性的 key。
-         * @param attrValue - {string} 矢量要素的属性 id。
-         * @return {Array<SuperMap.Feature.Vector>}一个匹配的 feature 数组。
+         * @param {string} attrName - 属性的 key。
+         * @param {string} attrValue - 矢量要素的属性 id。
+         * @return {Array.<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
          */
 
     }, {
@@ -21288,7 +20960,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.redrawThematicFeatures
          * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
-         * @param extent - {Array} 当前级别下计算出的地图范围
+         * @param {Array} extent - 当前级别下计算出的地图范围
          */
 
     }, {
@@ -21299,8 +20971,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.on
          * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
-         * @param event - {string} 事件名称。
-         * @param callback - {Function} 事件回调函数。
+         * @param {string} event - 事件名称。
+         * @param {RequestCallback} callback - 事件回调函数。
          */
 
     }, {
@@ -21320,8 +20992,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.fire
          * @description 添加专题要素事件监听
-         * @param type - {string} 事件类型。
-         * @param event - {string} 事件名称。
+         * @param {string} type - 事件类型。
+         * @param {string} event - 事件名称。
          */
 
     }, {
@@ -21385,8 +21057,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.un
          * @description 移除专题要素事件监听
-         * @param event - {string} 事件名称。
-         * @param callback - {Function} 事件回调函数。
+         * @param {string} event - 事件名称。
+         * @param {RequestCallback} callback - 事件回调函数。
          */
 
     }, {
@@ -21428,7 +21100,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.getLocalXY
          * @description 获取坐标系统
-         * @param coordinate - {Object} 坐标位置。
+         * @param {Object} coordinate - 坐标位置。
          */
 
     }, {
@@ -21460,9 +21132,9 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.rotate
          * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-         * @param pixelP - {number} 像素坐标点位置。
-         * @param rotation - {number} 旋转角度
-         * @param center - {number} 中心位置。
+         * @param {number} pixelP - 像素坐标点位置。
+         * @param {number} rotation - 旋转角度
+         * @param {number} center - 中心位置。
          */
 
     }, {
@@ -21476,10 +21148,10 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.scale
          * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
-         * @param pixelP - {Object} 像素点
-         * @param center - {Object} 中心点
-         * @param scaleRatio - {number} 缩放倍数
-         * @return {Array<number>} 返回数组形比例
+         * @param {Object} pixelP - 像素点
+         * @param {Object} center - 中心点
+         * @param {number} scaleRatio - 缩放倍数
+         * @return {Array.<number>} 返回数组形比例
          */
 
     }, {
@@ -21493,7 +21165,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Theme.prototype.toiClientFeature
          * @description 转为 iClient 要素
-         * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+         * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
          * @return {SuperMap.Feature.Vector} 转换后的iClient要素
          */
 
@@ -21535,8 +21207,8 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
          * @function ol.source.Theme.prototype.toFeature
          * @deprecated
          * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-         * @param features -{ol.supermap.ThemeFeature|Object|ol.Feature} 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
-         * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+         * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+         * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
          */
 
     }, {
@@ -21613,8 +21285,8 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类
- * @param geometry - {Object} 要量算的几何对象
- * @param attributes - {Object} 属性
+ * @param {Object} geometry - 要量算的几何对象
+ * @param {Object} attributes - 属性
  */
 
 var ThemeFeature = exports.ThemeFeature = function () {
@@ -21833,10 +21505,10 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.getValidStyleFromLayerInfo
          * @description 通过图层信息获取有效的样式
-         * @param layerInfo - {Object} 图层信息
-         * @param feature - [{ol.Feature}]{@linkdoc-openlayers/ol.Feature} 要素
-         * @param url - {string} 图层数据地址
-         * @return {ol.style.Style} 返回图层样式
+         * @param {Object} layerInfo - 图层信息
+         * @param {ol.Feature} feature - 要素
+         * @param {string} url - 图层数据地址
+         * @returns {ol.style.Style} 返回图层样式
          */
         value: function getValidStyleFromLayerInfo(layerInfo, feature, url) {
             var type = feature.getGeometry().getType().toUpperCase(),
@@ -22049,12 +21721,12 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.getStyleFromCarto
          * @description 从Carto中获取有效的样式
-         * @param zoom -{number} 缩放级别
-         * @param scale - {number} 比例尺
-         * @param shader -{Array} 渲染器对象数组
-         * @param feature -{Object} 要素
-         * @param fromServer -{string} 服务源
-         * @param url -{string} 地址
+         * @param {number} zoom -缩放级别
+         * @param {number} scale - 比例尺
+         * @param {Array} shader - 渲染器对象数组
+         * @param {Object} feature - 要素
+         * @param {string} fromServer - 服务源
+         * @param {string} url - 地址
          */
 
     }, {
@@ -22132,8 +21804,8 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.toOLPointStyle
          * @description 点样式
-         * @param style -{Object} 样式参数
-         * @return {ol.style.Style} 获取点样式
+         * @param {Object} style - 样式参数
+         * @returns {ol.style.Style} 获取点样式
          */
 
     }, {
@@ -22163,8 +21835,8 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.toOLLineStyle
          * @description 线样式
-         * @param style -{Object} 样式参数
-         * @return {ol.style.Style} 获取线的样式
+         * @param {Object} style - 样式参数
+         * @returns {ol.style.Style} 获取线的样式
          */
 
     }, {
@@ -22186,8 +21858,8 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.toOLPolygonStyle
          * @description 面样式
-         * @param style -{Object} 样式参数
-         * @return {ol.style.Style} 获取面的样式
+         * @param {Object} style -样式参数
+         * @returns {ol.style.Style} 获取面的样式
          */
 
     }, {
@@ -22214,9 +21886,9 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.toOLTextStyle
          * @description 文本样式
-         * @param style -{Object} 样式对象
-         * @param text -{string} 文本参数
-         * @return {ol.style.Style} 获取的文本样式
+         * @param {Object} style -样式对象
+         * @param {string} text -文本参数
+         * @returns {ol.style.Style} 获取的文本样式
          */
 
     }, {
@@ -22243,8 +21915,8 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.dashStyle
          * @description 符号样式
-         * @param style -{Object} 样式参数
-         * @param widthFactor -{number} 宽度系数
+         * @param {Object} style - 样式参数
+         * @param {number} widthFactor - 宽度系数
          */
 
     }, {
@@ -22283,7 +21955,7 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.getStyleFromiPortalMarker
          * @description 从iPortal标记获取样式
-         * @param icon -{Object} 图标参数
+         * @param {Object} icon - 图标参数
          */
 
     }, {
@@ -22309,9 +21981,9 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.getStyleFromiPortalStyle
          * @description 从iPortal标记获取样式
-         * @param iPortalStyle -{Object} iportal样式
-         * @param type - {string} 样式类型
-         * @param fStyle -{Object} 要素样式
+         * @param {Object} iPortalStyle - iportal样式
+         * @param {string} type - 样式类型
+         * @param {Object} fStyle - 要素样式
          */
 
     }, {
@@ -22383,9 +22055,9 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.hexToRgba
          * @description 十六进制转RGBA格式
-         * @param hex -{Object} 十六进制格式参数
-         * @param opacity -{number} Alpha参数
-         * @return {string} 生成的RGBA格式
+         * @param {Object} hex - 十六进制格式参数
+         * @param {number} opacity -Alpha参数
+         * @returns {string} 生成的RGBA格式
          */
 
     }, {
@@ -22412,7 +22084,7 @@ var StyleUtils = exports.StyleUtils = function () {
         /**
          * @function ol.supermap.StyleUtils.getDefaultStyle
          * @description 获取默认风格
-         * @param type -{string} 类型参数
+         * @param {string} type - 类型参数
            */
 
     }, {
@@ -22461,10 +22133,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicRectangle
  * @category Visualization Theme
- * 矩形。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 矩形。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
@@ -22483,48 +22153,46 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
     _inherits(SmicRectangle, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 左上角 x 坐标，必设参数。
-     * y - {Number} 左上角 y 坐标，必设参数。
-     * width - {Number} 宽度，必设参数。
-     * height - {Number} 高度，必设参数。
-     * radius - {Array} 矩形圆角，可以用数组分别指定四个角的圆角，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 则 radius为 [r1、r2、r3、r4 ]。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 左上角 x 坐标，必设参数。
+     * @param {number} style.y - 左上角 y 坐标，必设参数。
+     * @param {number} style.width - 宽度，必设参数。
+     * @param {number} style.height - 高度，必设参数。
+     * @param {Array} style.radius - 矩形圆角，可以用数组分别指定四个角的圆角，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 则 radius为 [r1、r2、r3、r4 ]。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicRectangle
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicRectangle.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicRectangle(options) {
         _classCallCheck(this, SmicRectangle);
 
         /**
-         * Property: type
-         * {String} 图形类型.
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.type
+         * @description 图形类型.
          */
         var _this = _possibleConstructorReturn(this, (SmicRectangle.__proto__ || Object.getPrototypeOf(SmicRectangle)).call(this, options));
 
@@ -22537,8 +22205,8 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -22637,12 +22305,11 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
         }
 
         /**
-         * APIMethod: _buildRadiusPath
-         * 创建矩形路径。
+         * @function SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.buildPath
+         * @description 创建矩形路径。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -22669,15 +22336,11 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回矩形包围盒矩阵。
-         * 该包围盒是直接从四个控制点计算，并非最小包围盒。
-         *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @function SuperMap.LevelRenderer.Shape.SmicRectangle.prototype.getRect
+         * @description 计算返回矩形包围盒矩阵。该包围盒是直接从四个控制点计算，并非最小包围盒。
+         * 
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -22740,10 +22403,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicImage
  * @category Visualization Theme
- * 图片绘制。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 图片绘制。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicImage({
@@ -22761,55 +22422,53 @@ var SmicImage = exports.SmicImage = function (_Shape) {
     _inherits(SmicImage, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicImage.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 左上角横坐标，必设参数。
-     * y - {Number} 左上角纵坐标，必设参数。
-     * image - {String/Cavans} 图片地址或cavans对象，必设参数。
-     * width - {Number} 绘制到画布上的宽度，默认为图片高度。
-     * height - {Number} 绘制到画布上的高度，默认为图片高度。
-     * sx - {Number} 从图片中裁剪的左上角横坐标。
-     * sy - {Number} 从图片中裁剪的左上角纵坐标。
-     * sWidth - {Number} 从图片中裁剪的宽度，默认为图片高度。
-     * sHeight - {Number} 绘制到画布上的高度，默认为图片高度。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 左上角横坐标，必设参数。
+     * @param {number} style.y - 左上角纵坐标，必设参数。
+     * @param {(string/Cavans)} style.image - 图片地址或cavans对象，必设参数。
+     * @param {number} style.width - 绘制到画布上的宽度，默认为图片高度。
+     * @param {number} style.height - 绘制到画布上的高度，默认为图片高度。
+     * @param {number} style.sx - 从图片中裁剪的左上角横坐标。
+     * @param {number} style.sy - 从图片中裁剪的左上角纵坐标。
+     * @param {number} style.sWidth - 从图片中裁剪的宽度，默认为图片高度。
+     * @param {number} style.sHeight - 绘制到画布上的高度，默认为图片高度。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicImage
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicImage.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicImage(options) {
         _classCallCheck(this, SmicImage);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicImage.prototype.type
+         * @description  图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicImage.__proto__ || Object.getPrototypeOf(SmicImage)).call(this, options));
 
         _this.type = 'smicimage';
 
         /**
-         * Property: _imageCache
-         * {String} 图片缓存。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicImage.prototype._imageCache
+         * @description 图片缓存。
          */
         _this._imageCache = {};
         if (!_this.refOriginalPosition || _this.refOriginalPosition.length !== 2) {
@@ -22820,8 +22479,8 @@ var SmicImage = exports.SmicImage = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -22834,12 +22493,11 @@ var SmicImage = exports.SmicImage = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建图片。
-         *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.buildPath
+         * @description 创建图片。
+         * 
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -22950,14 +22608,11 @@ var SmicImage = exports.SmicImage = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回图片的包围盒矩形。
+         * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.getRect
+         * @description 计算返回图片的包围盒矩形。
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -22977,14 +22632,12 @@ var SmicImage = exports.SmicImage = function (_Shape) {
         }
 
         /**
-         * APIMethod: clearCache
-         * 清除图片缓存。
+         * @function SuperMap.LevelRenderer.Shape.SmicImage.prototype.clearCache
+         * @description 清除图片缓存。
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
+         * 
          */
 
     }, {
@@ -23032,10 +22685,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicBrokenLine
  * @category Visualization Theme
- * 折线(ic)。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 折线(ic)。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
@@ -23053,11 +22704,10 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
     _inherits(SmicBrokenLine, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * pointList - {Array} 节点数组，二维数组。默认值：null，必设参数。其形式如下：
+     * @param {Array} pointList - 节点数组，二维数组。默认值：null，必设参数。其形式如下：
      * (code)
      * (start code)
      *  [
@@ -23066,53 +22716,52 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
      *  [25, 30]
      *   ]
      * (end)
-     * smooth - {string} 是否做平滑插值, 平滑算法可以选择 "bezier", "spline"。默认值："";
-     * smoothConstraint - {Number} 平滑约束。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {string} smooth - 是否做平滑插值, 平滑算法可以选择 "bezier", "spline"。默认值："";
+     * @param {number} smoothConstraint - 平滑约束。
+     * @param {string} strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} lineWidth - 描边宽度。默认值：1。
+     * @param {number} opacity - 绘制透明度。默认值：1。
+     * @param {number} shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} text - 图形中的附加文本。默认值：""。
+     * @param {string} textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicBrokenLine
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicBrokenLine(options) {
         _classCallCheck(this, SmicBrokenLine);
 
         /**
-         * Property: brushTypeOnly
-         * {String}  线条只能描边。
+         * @member {string}  SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.brushTypeOnly
+         * @description 线条只能描边。
          */
         var _this = _possibleConstructorReturn(this, (SmicBrokenLine.__proto__ || Object.getPrototypeOf(SmicBrokenLine)).call(this, options));
 
         _this.brushTypeOnly = 'stroke';
 
         /**
-         * Property: textPosition
-         * {String} 文本位置。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.textPosition
+         * @description 文本位置。
          */
         _this.textPosition = 'end';
 
         /**
-         * Property: type
-         * {String} 图形类型.
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.type
+         * @description 图形类型.
          */
         _this.type = 'smicbroken-line';
         if (!_this.refOriginalPosition || _this.refOriginalPosition.length !== 2) {
@@ -23124,8 +22773,8 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -23140,12 +22789,11 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建折线路径。
+         * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.buildPath
+         * @description 创建折线路径。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -23290,15 +22938,11 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回折线包围盒矩形。
-         * 该包围盒是直接从四个控制点计算，并非最小包围盒。
+         * @function SuperMap.LevelRenderer.Shape.SmicBrokenLine.prototype.getRect
+         * @description 计算返回折线包围盒矩形。该包围盒是直接从四个控制点计算，并非最小包围盒。
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -23345,10 +22989,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicText
  * @category Visualization Theme
- * 文本。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @extends {SuperMap.LevelRenderer.Shape}
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicText({
@@ -23366,44 +23007,42 @@ var SmicText = exports.SmicText = function (_Shape) {
     _inherits(SmicText, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicText.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 横坐标，必设参数。
-     * y - {Number} 纵坐标，必设参数。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * maxWidth - {Number} 最大宽度限制。默认值：null。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
+     * @param {number} style.x - 横坐标，必设参数。
+     * @param {number} style.y - 纵坐标，必设参数。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {number} style.maxWidth - 最大宽度限制。默认值：null。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {string} style.brushType -画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicText
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicText(options) {
         _classCallCheck(this, SmicText);
 
         /**
-         * APIProperty: type
-         * {String} 图形类型.
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicText.prototype.type
+         * @description 图形类型.
          */
         var _this = _possibleConstructorReturn(this, (SmicText.__proto__ || Object.getPrototypeOf(SmicText)).call(this, options));
 
@@ -23416,8 +23055,8 @@ var SmicText = exports.SmicText = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -23430,12 +23069,11 @@ var SmicText = exports.SmicText = function (_Shape) {
         }
 
         /**
-         * APIMethod: brush
-         * 笔触。
+         * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.brush
+         * @description 笔触。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * isHighlight - {Boolean} 是否使用高亮属性。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {boolean} isHighlight - 是否使用高亮属性。
          *
          */
 
@@ -23659,8 +23297,8 @@ var SmicText = exports.SmicText = function (_Shape) {
         }
 
         /**
-         * Method: getRect
-         * 返回文字包围盒矩形
+         * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRect
+         * @description 返回文字包围盒矩形
          */
 
     }, {
@@ -23708,8 +23346,8 @@ var SmicText = exports.SmicText = function (_Shape) {
         }
 
         /**
-         * Method: getRectNoRotation
-         * 返回忽略旋转和maxWidth时文字包围盒矩形
+         * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRectNoRotation
+         * @description 返回忽略旋转和maxWidth时文字包围盒矩形
          */
 
     }, {
@@ -23789,12 +23427,11 @@ var SmicText = exports.SmicText = function (_Shape) {
         }
 
         /**
-         * Method: getTextBackground
-         * 获取文本背景框范围
-         *
-         * Parameters:
-         * style - {Object} 样式。
-         * redo - {Boolean} 是否强制重新计算 textBackground。
+         * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getTextBackground
+         * @description 获取文本背景框范围
+         * 
+         * @param {Object} style - 样式。
+         * @param {boolean} redo - 是否强制重新计算 textBackground。
          */
 
     }, {
@@ -23848,18 +23485,15 @@ var SmicText = exports.SmicText = function (_Shape) {
         }
 
         /**
-         * Method: getRotatedLocation
-         * 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
-         *
-         * Parameters:
-         * x - {Number}  旋转点横坐标。
-         * y - {Number}  旋转点纵坐标。
-         * rx - {Number}  旋转中心点横坐标。
-         * ry - {Number}  旋转中心点纵坐标。
-         * angle - {Number} 旋转角度（度）。
-         *
-         * Returns:
-         * {Array} 旋转后的坐标位置，长度为 2 的一维数组，数组第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         * @function SuperMap.LevelRenderer.Shape.SmicText.prototype.getRotatedLocation
+         * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
+         * 
+         * @param {number} x - 旋转点横坐标。
+         * @param {number} y - 旋转点纵坐标。
+         * @param {number} rx - 旋转中心点横坐标。
+         * @param {number} ry - 旋转中心点纵坐标。
+         * @param {number} angle - 旋转角度（度）。
+         * @return {Array} 旋转后的坐标位置，长度为 2 的一维数组，数组第一个元素表示 x 坐标，第二个元素表示 y 坐标。
          */
 
     }, {
@@ -23903,10 +23537,9 @@ var _Util = __webpack_require__(29);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Color
  * @category Visualization Theme
- * LevelRenderer 工具-颜色辅助类
+ * @classdesc LevelRenderer 工具-颜色辅助类
  *
  */
 var Color = exports.Color = function () {
@@ -23914,57 +23547,50 @@ var Color = exports.Color = function () {
         _classCallCheck(this, Color);
 
         /**
-         * Property: util
-         * {<SuperMap.LevelRenderer.Tool.Util>} LevelRenderer 基础工具对象
+         * @member {SuperMap.LevelRenderer.Tool.Util} SuperMap.LevelRenderer.Tool.Color.prototype.util
+         * @description LevelRenderer 基础工具对象。
          */
         this.util = new _Util.Util();
 
         /**
-         * Property: _ctx
-         * {Object} _ctx
+         * @member {Object} SuperMap.LevelRenderer.Tool.Color.prototype._ctx
+         * @description _ctx。
          */
         this._ctx = null;
 
         /**
-         * Property: palette
-         * {Array} 默认色板
-         * 色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
-         *
-         * [
-         * '#ff9277', '#dddd00', '#ffc877', '#bbe3ff', '#d5ffbb', '#bbbbff', '#ddb000', '#b0dd00', '#e2bbff', '#ffbbe3',
-         * '#ff7777', '#ff9900', '#83dd00', '#77e3ff', '#778fff', '#c877ff', '#ff77ab', '#ff6600', '#aa8800', '#77c7ff',  '
-         * #ad77ff', '#ff77ff', '#dd0083', '#777700', '#00aa00', '#0088aa', '#8400dd', '#aa0088', '#dd0000', '#772e00'
-         * ];
+         * @member {Array} SuperMap.LevelRenderer.Tool.Color.prototype.palette
+         * @description 默认色板。色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
          */
         this.palette = ['#ff9277', ' #dddd00', ' #ffc877', ' #bbe3ff', ' #d5ffbb', '#bbbbff', ' #ddb000', ' #b0dd00', ' #e2bbff', ' #ffbbe3', '#ff7777', ' #ff9900', ' #83dd00', ' #77e3ff', ' #778fff', '#c877ff', ' #ff77ab', ' #ff6600', ' #aa8800', ' #77c7ff', '#ad77ff', ' #ff77ff', ' #dd0083', ' #777700', ' #00aa00', '#0088aa', ' #8400dd', ' #aa0088', ' #dd0000', ' #772e00'];
 
         /**
-         * Property: _palette
-         * {Array} 复位色板，用于复位  palette
+         * @member {Array} SuperMap.LevelRenderer.Tool.Color.prototype._palette
+         * @description 复位色板，用于复位  palette
          */
         this._palette = this.palette;
 
         /**
-         * Property: highlightColor
-         * {String} 高亮色
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype.highlightColor
+         * @description 高亮色
          */
         this.highlightColor = 'rgba(0,0,255,1)';
 
         /**
-         * Property: _highlightColor
-         * {String} 复位高亮色
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype._highlightColor
+         * @description 复位高亮色
          */
         this._highlightColor = this.highlightColor;
 
         /**
-         * Property: colorRegExp
-         * {String} 颜色格式，正则表达式。
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype.colorRegExp
+         * @description 颜色格式，正则表达式。
          */
         this.colorRegExp = /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i;
 
         /**
-         * Property: _nameColors
-         * {String} 颜色名。
+         * @member {string} SuperMap.LevelRenderer.Tool.Color.prototype._nameColors
+         * @description 颜色名。
          */
         this._nameColors = {
             aliceblue: '#f0f8ff',
@@ -24120,11 +23746,9 @@ var Color = exports.Color = function () {
     }
 
     /**
-     * APIMethod: customPalette
-     * 自定义调色板。
-     *
-     * Parameters:
-     * userPalete - {Array} 颜色板。
+     * @function SuperMap.LevelRenderer.Tool.Color.prototype.customPalette
+     * @description 自定义调色板。
+     * @param {Array} userPalete - 颜色板。
      */
 
 
@@ -24135,9 +23759,8 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: resetPalette
-         * 复位默认色板。
-         *
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.resetPalette
+         * @description 复位默认色板。
          */
 
     }, {
@@ -24147,15 +23770,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getColor
-         * 获取色板颜色。
-         *
-         * Parameters:
-         * idx - {Number} 色板位置。
-         * userPalete - {Array} 色板。
-         *
-         * Returns:
-         * {String} 颜色值。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getColor
+         * @description 获取色板颜色。
+         * @param {number} idx - 色板位置。
+         * @param {Array} userPalete - 色板。
+         * @returns {string} 颜色值。
          */
 
     }, {
@@ -24167,11 +23786,9 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: customHighlight
-         * 自定义默认高亮颜色。
-         *
-         * Parameters:
-         * userHighlightColor - {String} 自定义高亮色。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.customHighlight
+         * @description 自定义默认高亮颜色。
+         * @param {string} userHighlightColor - 自定义高亮色。
          */
 
     }, {
@@ -24181,9 +23798,8 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: resetHighlight
-         * 重置默认高亮颜色。将当前的高亮色作为默认高亮颜色
-         *
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.resetHighlight
+         * @description 重置默认高亮颜色。将当前的高亮色作为默认高亮颜色
          */
 
     }, {
@@ -24193,11 +23809,9 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getHighlightColor
-         * 获取默认高亮颜色
-         *
-         * Returns:
-         * {String} 颜色值。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getHighlightColor
+         * @description 获取默认高亮颜色
+         * @returns {string} 颜色值。
          */
 
     }, {
@@ -24207,20 +23821,16 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getRadialGradient
-         * 径向渐变。
-         *
-         * Parameters:
-         * x0 - {Number} 渐变起点。
-         * y0 - {Number}
-         * r0 - {Number}
-         * x1 - {Number} 渐变终点。
-         * y1 - {Number}
-         * r1 - {Number}
-         * colorList - {Array} 颜色列表。
-         *
-         * Returns:
-         * {CanvasGradient} Cavans 渐变颜色。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getRadialGradient
+         * @description 径向渐变。
+         * @param {number} x0 - 渐变起点横坐标。
+         * @param {number} y0 - 渐变起点纵坐标。
+         * @param {number} r0 - 半径
+         * @param {number} x1 - 渐变终点横坐标。
+         * @param {number} y1 - 渐变终点纵坐标。
+         * @param {number} r1 - 半径
+         * @param {Array} colorList - 颜色列表。
+         * @returns {CanvasGradient} Cavans 渐变颜色。
          */
 
     }, {
@@ -24241,18 +23851,14 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getLinearGradient
-         * 线性渐变。
-         *
-         * Parameters:
-         * x0 - {Number} 渐变起点。
-         * y0 - {Number}
-         * x1 - {Number} 渐变终点。
-         * y1 - {Number}
-         * colorList - {Array} 颜色列表。
-         *
-         * Returns:
-         * {CanvasGradient} Cavans 渐变颜色。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getLinearGradient
+         * @description 线性渐变。
+         * @param {number} x0 - 渐变起点横坐标。
+         * @param {number} y0 - 渐变起点纵坐标。
+         * @param {number} x1 - 渐变终点横坐标。
+         * @param {number} y1 - 渐变终点纵坐标。
+         * @param {Array} colorList - 颜色列表。
+         * @returns {CanvasGradient} Cavans 渐变颜色。
          */
 
     }, {
@@ -24272,17 +23878,12 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getStepColors
-         * 获取两种颜色之间渐变颜色数组。
-         *
-         * Parameters:
-         * start - {color} 起始颜色。
-         * end - {color} 结束颜色。
-         * step - {Number} 渐变级数。
-         * colorList - {Array} 颜色列表。
-         *
-         * Returns:
-         * {Array} 颜色数组。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getStepColors
+         * @description 获取两种颜色之间渐变颜色数组。
+         * @param {Object} start - 起始颜色对象。
+         * @param {Object} end - 结束颜色对象。
+         * @param {number} step - 渐变级数。
+         * @returns {Array} 颜色数组。
          */
 
     }, {
@@ -24316,15 +23917,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getGradientColors
-         * 获取指定级数的渐变颜色数组。
-         *
-         * Parameters:
-         * colors - {Array{String}} 颜色组。
-         * step - {Number}  渐变级数，默认值 20。
-         *
-         * Returns:
-         * {Array{String}} 颜色数组。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getGradientColors
+         * @description 获取指定级数的渐变颜色数组。
+         * @param {Array.<string>} colors - 颜色数组。
+         * @param {number} [step=20] - 渐变级数。
+         * @returns {Array<string>} 颜色数组。
          */
 
     }, {
@@ -24350,15 +23947,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toColor
-         *  颜色值数组转为指定格式颜色。
-         *
-         * Parameters:
-         * data - {Array} 颜色值数组。
-         * format - {String}  格式，默认rgb
-         *
-         * Returns:
-         * {String} 颜色。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toColor
+         * @description 颜色值数组转为指定格式颜色。
+         * @param {Array} data - 颜色值数组。
+         * @param {string} format - 格式，默认'rgb'
+         * @returns {string} 颜色。
          */
 
     }, {
@@ -24393,14 +23986,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toArray
-         *  颜色字符串转换为rgba数组。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {Array{Number}} 颜色值数组。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toArray
+         * @description 颜色字符串转换为rgba数组。
+         * @param {string} color - 颜色。
+         * @returns {Array.<number>} 颜色值数组。
          */
 
     }, {
@@ -24426,15 +24015,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: convert
-         *  颜色格式转化。
-         *
-         * Parameters:
-         * color - {String} 颜色值数组。
-         * format - {String} 格式，默认rgb
-         *
-         * Returns:
-         * {String} 颜色。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.convert
+         * @description 颜色格式转化。
+         * @param {Array} data - 颜色值数组。
+         * @param {string} format - 格式，默认'rgb'
+         * @returns {string} 颜色。
          */
 
     }, {
@@ -24467,14 +24052,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toRGBA
-         *  转换为rgba格式的颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} rgba颜色，rgba(r,g,b,a)。
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toRGBA
+         * @description 转换为rgba格式的颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} 颜色。
          */
 
     }, {
@@ -24484,14 +24065,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toRGB
-         *  转换为rgb数字格式的颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} rgb颜色，rgb(0,0,0)格式
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toRGB
+         * @description 转换为rgb数字格式的颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} 颜色。
          */
 
     }, {
@@ -24501,14 +24078,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHex
-         *  转换为16进制颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} 16进制颜色，#rrggbb格式
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHex
+         * @description 转换为16进制颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} 16进制颜色，#rrggbb格式
          */
 
     }, {
@@ -24518,14 +24091,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHSVA
-         *  转换为HSV颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} HSVA颜色，hsva(h,s,v,a)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSVA
+         * @description 转换为HSV颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} HSVA颜色，hsva(h,s,v,a)
          */
 
     }, {
@@ -24535,14 +24104,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHSV
-         *  转换为HSV颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} HSV颜色，hsv(h,s,v)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSV
+         * @description 转换为HSV颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} HSV颜色，hsv(h,s,v)
          */
 
     }, {
@@ -24552,14 +24117,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHSBA
-         *  转换为HSBA颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} HSBA颜色，hsba(h,s,b,a)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSBA
+         * @description 转换为HSBA颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} HSBA颜色，hsba(h,s,b,a)
          */
 
     }, {
@@ -24569,14 +24130,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHSB
-         *  转换为HSB颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} HSB颜色，hsb(h,s,b)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSB
+         * @description 转换为HSB颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} HSB颜色，hsb(h,s,b)
          */
 
     }, {
@@ -24586,14 +24143,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHSLA
-         *  转换为HSLA颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} HSLA颜色，hsla(h,s,l,a)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSLA
+         * @description 转换为HSLA颜色。
+         * @param {string} color - 颜色。
+         * @returns {string} HSLA颜色，hsla(h,s,l,a)
          */
 
     }, {
@@ -24603,14 +24156,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toHSL
-         *  转换为HSL颜色。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} HSL颜色，hsl(h,s,l)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toHSL
+         * @description 转换为HSL颜色。
+         * @param {string} color - 颜色。
+         * @returns {string}  HSL颜色，hsl(h,s,l)
          */
 
     }, {
@@ -24620,14 +24169,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: toName
-         * 转换颜色名。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} 颜色名
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.toName
+         * @description 转换颜色名。
+         * @param {string} color - 颜色。
+         * @returns {string} 颜色名
          */
 
     }, {
@@ -24642,14 +24187,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: trim
-         * 移除颜色中多余空格。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} 无空格颜色
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.trim
+         * @description 移除颜色中多余空格。
+         * @param {string} color - 颜色。
+         * @returns {string} 无空格颜色
          */
 
     }, {
@@ -24659,14 +24200,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: normalize
-         * 颜色规范化。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} 规范化后的颜色
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.normalize
+         * @description 颜色规范化。
+         * @param {string} color - 颜色。
+         * @returns {string} 规范化后的颜色
          */
 
     }, {
@@ -24695,15 +24232,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: lift
-         * 颜色加深或减淡，当level>0加深，当level<0减淡。
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         * level - {Number} 升降程度,取值区间[-1,1]。
-         *
-         * Returns:
-         * {String} 加深或减淡后颜色值
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.lift
+         * @description 颜色加深或减淡，当level>0加深，当level<0减淡。
+         * @param {string} color - 颜色。
+         * @param {number} level - 升降程度，取值区间[-1,1]。
+         * @returns {string} 加深或减淡后颜色值
          */
 
     }, {
@@ -24730,14 +24263,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: reverse
-         * 颜色翻转,[255-r,255-g,255-b,1-a]
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {String} 翻转颜色
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.reverse
+         * @description 颜色翻转。[255-r,255-g,255-b,1-a]
+         * @param {string} color - 颜色。
+         * @returns {string} 翻转颜色
          */
 
     }, {
@@ -24754,16 +24283,12 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: mix
-         * 简单两种颜色混合
-         *
-         * Parameters:
-         * color1 - {String} 第一种颜色。
-         * color2 - {String} 第二种颜色。
-         * weight - {Number} 混合权重[0-1]。
-         *
-         * Returns:
-         * {String} 结果色,rgb(r,g,b)或rgba(r,g,b,a)
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.mix
+         * @description 简单两种颜色混合
+         * @param {string} color1 - 第一种颜色。
+         * @param {string} color2 - 第二种颜色。
+         * @param {number} weight - 混合权重[0-1]。
+         * @returns {string} 结果色。rgb(r,g,b)或rgba(r,g,b,a)
          */
 
     }, {
@@ -24805,11 +24330,9 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: random
-         * 随机颜色
-         *
-         * Returns:
-         * {String} 颜色值，#rrggbb格式
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.random
+         * @description 随机颜色
+         * @returns {string}  颜色值，#rrggbb格式
          */
 
     }, {
@@ -24819,44 +24342,25 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: getData
-         * 获取颜色值数组,返回值范围:
-         *
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.getData
+         * @description 获取颜色值数组，返回值范围。
          * RGB 范围[0-255]
-         *
          * HSL/HSV/HSB 范围[0-1]
-         *
          * A透明度范围[0-1]
-         *
          * 支持格式：
-         *
          * #rgb
-         *
          * #rrggbb
-         *
          * rgb(r,g,b)
-         *
          * rgb(r%,g%,b%)
-         *
          * rgba(r,g,b,a)
-         *
          * hsb(h,s,b) // hsv与hsb等价
-         *
          * hsb(h%,s%,b%)
-         *
          * hsba(h,s,b,a)
-         *
          * hsl(h,s,l)
-         *
          * hsl(h%,s%,l%)
-         *
          * hsla(h,s,l,a)
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {Array{Number}} 颜色值数组或null
+         * @param {string} color - 颜色。
+         * @returns {Array.<number>} 颜色值数组或null
          */
 
     }, {
@@ -24911,15 +24415,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: alpha
-         * 设置颜色透明度
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         * a - {Number} 透明度,区间[0,1]。
-         *
-         * Returns:
-         * {String} rgba颜色值
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.alpha
+         * @description 设置颜色透明度
+         * @param {string} color - 颜色。
+         * @param {number} a - 透明度,区间[0,1]。
+         * @returns {string} rgba颜色值
          */
 
     }, {
@@ -24938,15 +24438,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: map
-         * 数组映射
-         *
-         * Parameters:
-         * array - {String} 数组。
-         * fun - {Number} 函数。
-         *
-         * Returns:
-         * {String} 数组映射结果
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.map
+         * @description 数组映射
+         * @param {Array} array - 数组。
+         * @param {function} fun - 函数。
+         * @returns {string} 数组映射结果
          */
 
     }, {
@@ -24963,15 +24459,11 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: adjust
-         * 调整值区间
-         *
-         * Parameters:
-         * value - {Number} 数组。
-         * region - {Array(Number)} 区间。
-         *
-         * Returns:
-         * {Number} 调整后的值
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.adjust
+         * @description 调整值区间
+         * @param {Array.<number>} value - 数组。
+         * @param {Array.<number>} region - 区间。
+         * @returns {number} 调整后的值
          */
 
     }, {
@@ -24988,14 +24480,10 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: isCalculableColor
-         * 判断是否是可计算的颜色
-         *
-         * Parameters:
-         * color - {String} 颜色。
-         *
-         * Returns:
-         * {Boolean} 是否是可计算的颜色
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype.isCalculableColor
+         * @description 判断是否是可计算的颜色
+         * @param {string} color - 颜色。
+         * @returns {boolean} 是否是可计算的颜色
          */
 
     }, {
@@ -25005,8 +24493,7 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: _HSV_2_RGB
-         * 参见 http:// www.easyrgb.com/index.php?X=MATH
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype._HSV_2_RGB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
          */
 
     }, {
@@ -25071,8 +24558,7 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: _HSL_2_RGB
-         * 参见 http:// www.easyrgb.com/index.php?X=MATH
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype._HSL_2_RGB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
          */
 
     }, {
@@ -25107,8 +24593,7 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: _HUE_2_RGB
-         * 参见 http:// www.easyrgb.com/index.php?X=MATH
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype._HUE_2_RGB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
          */
 
     }, {
@@ -25133,8 +24618,7 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: _RGB_2_HSB
-         * 参见 http:// www.easyrgb.com/index.php?X=MATH
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype._RGB_2_HSB。参见{@link http://www.easyrgb.com/index.php?X=MATH}
          */
 
     }, {
@@ -25185,8 +24669,7 @@ var Color = exports.Color = function () {
         }
 
         /**
-         * APIMethod: _RGB_2_HSL
-         * 参见 http:// www.easyrgb.com/index.php?X=MATH
+         * @function SuperMap.LevelRenderer.Tool.Color.prototype._RGB_2_HSL。参见{@link http://www.easyrgb.com/index.php?X=MATH}
          */
 
     }, {
@@ -25276,10 +24759,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicPoint
  * @category Visualization Theme
- * 点。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 点。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
@@ -25302,47 +24783,45 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
     _inherits(SmicPoint, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicPoint.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 圆心x坐标，必设参数。
-     * y - {Number} 圆心y坐标，必设参数。
-     * r - {Number} 半径，必设参数。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 圆心x坐标，必设参数。
+     * @param {number} style.y - 圆心y坐标，必设参数。
+     * @param {number} style.r - 半径，必设参数。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY -  阴影纵向偏移。默认值：0。
+     * @param {string} style.text -  图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicPoint
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicPoint.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicPoint(options) {
         _classCallCheck(this, SmicPoint);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicPoint.prototype.type
+         * @description 图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicPoint.__proto__ || Object.getPrototypeOf(SmicPoint)).call(this, options));
 
@@ -25356,8 +24835,8 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function cdestroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -25369,12 +24848,11 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建点触。
+         * @function SuperMap.LevelRenderer.Shape.SmicPoint.prototype.buildPath
+         * @description 创建点触。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -25391,15 +24869,11 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回点的包围盒矩形。
-         * 该包围盒是直接从四个控制点计算，并非最小包围盒。
+         * @function SuperMap.LevelRenderer.Shape.SmicPoint.prototype.getRect
+         * @description 计算返回点的包围盒矩形。该包围盒是直接从四个控制点计算，并非最小包围盒。
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -25461,75 +24935,54 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Circle
  * @classdesc 圆形参数对象。
  * @category Visualization Theme
- * @extends SuperMap.Feature.ShapeParameters
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 
 var Circle = exports.Circle = function (_ShapeParameters) {
   _inherits(Circle, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Circle
-   * 创建一个圆形参数对象。
-   *
-   * Parameters:
-   * x - {Number} 圆心 x 坐标，必设参数。
-   * y - {Number} 圆心 y 坐标，必设参数。
-   * r - {Number} 圆半径，必设参数。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Circle>} 圆形参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Circle.prototype.constructor
+   * @description 创建一个圆形参数对象。
+   * @param {number} x - 圆心 x 坐标，必设参数。
+   * @param {Number} y - 圆心 y 坐标，必设参数。
+   * @param {Number} r - 圆半径，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Circle} 圆形参数对象。
    */
   function Circle(x, y, r) {
     _classCallCheck(this, Circle);
 
     /**
-     * APIProperty: x
-     * {Number} 圆心 x 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Circle.prototype.x
+     * @description 圆心 x 坐标。
      */
     var _this = _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this, x, y, r));
 
     _this.x = !isNaN(x) ? x : 0;
 
     /**
-     * APIProperty: y
-     * {Number} 圆心 y 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Circle.prototype.y
+     * @description 圆心 y 坐标。
      */
     _this.y = !isNaN(y) ? y : 0;
 
     /**
-     * APIProperty: r
-     * {Number} 圆半径。
+     * @member {number} SuperMap.Feature.ShapeParameters.Circle.prototype.r
+     * @description 圆半径。
      */
     _this.r = !isNaN(r) ? r : 0;
 
     _this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Circle";
-    /**
-     * APIProperty: style
-     * {Object} 圆形样式对象，可设属性如下：
-     *
-     * Symbolizer properties:
-     * brushType - {string} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {string} 填充颜色,默认值"#000000"
-     * strokeColor - {string} 描边颜色,默认值为'#000000'
-     * lineCape — {string} 线帽样式，可以是 butt, round, square，默认是butt
-     * lineWidth - {number} 描边宽度、默认是1
-     * opacity - {number} 绘制透明度、默认是1，不透明
-     * shadowBlur - {number} 阴影模糊度，大于0有效，默认是0
-     * shadowColor - {string} 阴影颜色，默认是'#000000'
-     * shadowOffsetX - {number} 阴影横向偏移，默认是0
-     * shadowOffsetY - {number} 阴影纵向偏移，默认是0
-     */
 
     return _this;
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Circle.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -25576,34 +25029,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Line
  * @category Visualization Theme
- * 线参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 线参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 var Line = exports.Line = function (_ShapeParameters) {
   _inherits(Line, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Line
-   * 创建一个图形线参数对象。
-   *
-   * Parameters:
-   * pointList - {Array} 线要素节点数组，二维数组，必设参数。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Line>} 图形线参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Line.prototype.constructor
+   * @description 创建一个图形线参数对象。
+   * @param {Array} pointList - 线要素节点数组，二维数组，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Line} 圆形参数对象。
    */
   function Line(pointList) {
     _classCallCheck(this, Line);
 
     /**
-     * APIProperty: pointList
-     * {Array} 线要素节点数组，二维数组。
-     *
+     * @member {Array} SuperMap.Feature.ShapeParameters.Line.prototype.pointList
+     * @description 线要素节点数组，二维数组。
      * 数组形如：
      * (start code)
      *  [
@@ -25623,8 +25068,8 @@ var Line = exports.Line = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Line.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -27917,7 +27362,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         _classCallCheck(this, JSONFormat);
 
         /**
-         * @member SuperMap.Format.JSON.prototype.indent - {string}
+         * @member {string} SuperMap.Format.JSON.prototype.indent
          * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
          */
         var _this = _possibleConstructorReturn(this, (JSONFormat.__proto__ || Object.getPrototypeOf(JSONFormat)).call(this, options));
@@ -27925,31 +27370,31 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         _this.indent = "    ";
 
         /**
-         * @member SuperMap.Format.JSON.prototype.space -{string}
+         * @member {string} SuperMap.Format.JSON.prototype.space
          * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
          */
         _this.space = " ";
 
         /**
-         * @member SuperMap.Format.JSON.prototype.newline - {string}
+         * @member {string} SuperMap.Format.JSON.prototype.newline
          * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
          */
         _this.newline = "\n";
 
         /**
-         * @member SuperMap.Format.JSON.prototype.level - {integer}
+         * @member {integer} SuperMap.Format.JSON.prototype.level 
          * @description 用于格式化输出, 表示的是缩进级别。
          */
         _this.level = 0;
 
         /**
-         * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
+         * @member {boolean} SuperMap.Format.JSON.prototype.pretty 
          * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
          */
         _this.pretty = false;
 
         /**
-         * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
+         * @member {boolean} SuperMap.Format.JSON.prototype.nativeJSON 
          * @description 判断浏览器是否原生支持JSON格式数据。
          */
         _this.nativeJSON = function () {
@@ -27965,7 +27410,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.object
              * @description 把对象转换为JSON字符串。
-             * @param object - {Object} 可序列化的对象。
+             * @param {Object} object - 可序列化的对象。
              * @return {string} JSON字符串。
              */
             'object': function object(_object) {
@@ -28007,7 +27452,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.array
              * @description 把数组转换成JSON字符串。
-             * @param array - {Array} 可序列化的数组。
+             * @param {Array} array - 可序列化的数组。
              * @return {string} JSON字符串。
              */
             'array': function array(_array) {
@@ -28034,7 +27479,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.string
              * @description 把字符串转换成JSON字符串。
-             * @param string - {string} 可序列化的字符串。
+             * @param {string} string - 可序列化的字符串。
              * @return {string} JSON字符串。
              */
             'string': function string(_string) {
@@ -28068,7 +27513,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.number
              * @description 把数字转换成JSON字符串。
-             * @param number - {number} 可序列化的数字。
+             * @param {number} number - 可序列化的数字。
              * @return {string} JSON字符串。
              */
             'number': function number(_number) {
@@ -28078,7 +27523,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.boolean
              * @description Transform a boolean into a JSON string.
-             * @param bool - {boolean} The boolean to be serialized.
+             * @param {boolean} bool - The boolean to be serialized.
              * @return {string} A JSON string representing the boolean.
              */
             'boolean': function boolean(bool) {
@@ -28088,7 +27533,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.object
              * @description 将日期对象转换成JSON字符串。
-             * @param date - {Date} 可序列化的日期对象。
+             * @param {Date} date - 可序列化的日期对象。
              * @return {string} JSON字符串。
              */
             'date': function date(_date) {
@@ -28106,8 +27551,8 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
     /**
      * @function SuperMap.Format.JSON.prototype.read
      * @description 将一个符合json结构的字符串进行解析。
-     * @param json - {string} 符合json结构的字符串。
-     * @param filter - {function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
+     * @param {string} json - 符合json结构的字符串。
+     * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
      * @return {Object} 对象，数组，字符串或数字。
      */
 
@@ -28134,8 +27579,8 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
         /**
          * @function SuperMap.Format.JSON.prototype.write
          * @description 序列化一个对象到一个符合JSON格式的字符串。
-         * @param value - {object}|{string}|<Array>|{number}|{boolean} 需要被序列化的对象，数组，字符串，数字，布尔值。
-         * @param pretty - {boolean}
+         * @param {(object|string|Array|number|boolean)} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
+         * @param {boolean} pretty 
          * @return {string} 符合JSON格式的字符串。
          *
          */
@@ -28228,29 +27673,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  * @category BaseTypes Format
- * @param options - {Object} 可选参数。<br>
- *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} options.keepData - 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
 var Format = exports.Format = function () {
     function Format(options) {
         _classCallCheck(this, Format);
 
         /**
-         * @member SuperMap.Format.prototype.data - {Object}
+         * @member {Object} SuperMap.Format.prototype.data 
          * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
          */
         this.data = null;
 
         /**
          * APIProperty: keepData
-         * @member SuperMap.Format.prototype.keepData - {Object}
+         * @member {Object} SuperMap.Format.prototype.keepData
          * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
          */
         this.keepData = false;
 
         _Util.Util.extend(this, options);
         /**
-         * @member SuperMap.Format.prototype.options - {Object}
+         * @member {Object} SuperMap.Format.prototype.options
          * @description 可选参数。
          */
         this.options = options;
@@ -28273,7 +27718,7 @@ var Format = exports.Format = function () {
         /**
          * @function SuperMap.Format.prototype.read
          * @description 来从字符串中读取数据。
-         * @param data - {string} 读取的数据。
+         * @param {string} data - 读取的数据。
          */
 
     }, {
@@ -28285,7 +27730,7 @@ var Format = exports.Format = function () {
         /**
          * @function SuperMap.Format.prototype.write
          * @description 将对象写成字符串。
-         * @param object - {Object} 可序列化的对象。
+         * @param {Object} object - 可序列化的对象。
          * @return {string} 对象被写成字符串。
          */
 
@@ -28325,8 +27770,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens"下申请value <br>
  * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.."的value<br>
  * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。
- * @param value - {string}  访问受安全限制的服务时用于通过安全认证的验证信息。
- * @param name - {string}  验证信息前缀，name=value部分的name部分，默认为“token”。
+ * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
+ * @param {string} name - 验证信息前缀，name=value部分的name部分，默认为“token”。
  * @example
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
@@ -28336,14 +27781,14 @@ var Credential = exports.Credential = function () {
         _classCallCheck(this, Credential);
 
         /**
-         * @member SuperMap.Bounds.prototype.value -{string}
+         * @member {string} SuperMap.Bounds.prototype.value
          * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
          */
         this.value = value ? value : "";
 
         /**
-         * @member SuperMap.Bounds.prototype.name -{string}
-         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+         * @member {string} [SuperMap.Bounds.prototype.name="token"]
+         * @description 验证信息前缀，name=value部分的name部分。
          */
         this.name = name ? name : "token";
         this.CLASS_NAME = "SuperMap.Credential";
@@ -28462,9 +27907,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 文本标签类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
- * @param x {float} x-坐标，必设参数。
- * @param y {float} y-坐标，必设参数。
- * @param text {string} 标签中的文本内容，必设参数。
+ * @param {float} x - x坐标，必设参数。
+ * @param {float} y - y坐标，必设参数。
+ * @param {string} text - 标签中的文本内容，必设参数。
  */
 var GeoText = exports.GeoText = function (_Geometry) {
     _inherits(GeoText, _Geometry);
@@ -28473,7 +27918,7 @@ var GeoText = exports.GeoText = function (_Geometry) {
         _classCallCheck(this, GeoText);
 
         /**
-         * @member SuperMap.Geometry.GeoText.prototype.x -{float}
+         * @member {float} SuperMap.Geometry.GeoText.prototype.x
          * @description 横坐标。
          */
         var _this = _possibleConstructorReturn(this, (GeoText.__proto__ || Object.getPrototypeOf(GeoText)).call(this, x, y, text));
@@ -28481,19 +27926,19 @@ var GeoText = exports.GeoText = function (_Geometry) {
         _this.x = parseFloat(x);
 
         /**
-         * @member SuperMap.Geometry.GeoText.prototype.y -{float}
+         * @member {float} SuperMap.Geometry.GeoText.prototype.y
          * @description 纵坐标。
          */
         _this.y = parseFloat(y);
 
         /**
-         * @member SuperMap.Geometry.GeoText.prototype.text -{string}
+         * @member {string} SuperMap.Geometry.GeoText.prototype.text
          * @description 标签中的文本内容。
          */
         _this.text = text.toString();
 
         /**
-         * @member SuperMap.Geometry.GeoText.prototype.bsInfo -{Object}
+         * @member {Object} SuperMap.Geometry.GeoText.prototype.bsInfo
          * @description 标签范围的基础信息，包含下面2个属性。
          *  * w: bounds 的宽；
          *  * h: bounds 的高度；
@@ -28525,7 +27970,7 @@ var GeoText = exports.GeoText = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.GeoText.prototype.getCentroid
          * @description 获取标签对象的质心。
-         * @return {SuperMap.Geometry.Point} 标签对象的质心。
+         * @returns {SuperMap.Geometry.Point} 标签对象的质心。
          */
 
     }, {
@@ -28564,11 +28009,11 @@ var GeoText = exports.GeoText = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByLabel
          * @description 根据绘制好的标签获取文字标签的像素范围，参数的单位是像素；此方法相对于 getLabelPxBoundsByText 效率较低，但支持所有格式的文本。
-         * @param locationPixel - {Object} 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param labelWidth - {string} 标签的宽度，如：“90px”。
-         * @param labelHeight - {string}  标签的高度。
-         * @param style - {Object}  标签的style。
-         * @return {SuperMap.Bounds}  标签的像素范围。
+         * @param {Object} locationPixel - 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
+         * @param {string} labelWidth - 标签的宽度，如：“90px”。
+         * @param {string} labelHeight - 标签的高度。
+         * @param {Object} style - 标签的style。
+         * @returns {SuperMap.Bounds} 标签的像素范围。
          */
 
     }, {
@@ -28640,9 +28085,9 @@ var GeoText = exports.GeoText = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByText
          * @description 根据文本内容获取文字标签的像素范围
-         * @param locationPixel - {Object} 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param style - {Object} 标签的样式
-         * @return {SuperMap.Bounds}  标签的像素范围。
+         * @param {Object} locationPixel - 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
+         * @param {Object} style - 标签的样式
+         * @returns {SuperMap.Bounds} 标签的像素范围。
          */
 
     }, {
@@ -28709,8 +28154,8 @@ var GeoText = exports.GeoText = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.GeoText.prototype.getLabelPxSize
          * @description 获取label的像素大小
-         * @param style - {Object} 标签样式。
-         * @return {Object} 标签大小对象，属性w表示标签的宽度，属性h表示标签的高度。
+         * @param {Object} style - 标签样式。
+         * @returns {Object} 标签大小对象，属性w表示标签的宽度，属性h表示标签的高度。
          */
 
     }, {
@@ -28767,8 +28212,8 @@ var GeoText = exports.GeoText = function (_Geometry) {
         /**
          * @function SuperMap.Geometry.GeoText.prototype.getTextCount
          * @description 获取text中的字符个数。
-         * @param text - {string} 字符串。
-         * @return {Object} 字符个数统计结果，属性cnC表示中文字符个数，属性enC表示英文字符个数，属性textC表示字符总个数。
+         * @param {string} text - 字符串。
+         * @returns {Object} 字符个数统计结果，属性cnC表示中文字符个数，属性enC表示英文字符个数，属性textC表示字符总个数。
          */
 
     }, {
@@ -28829,8 +28274,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Geometry.Curve
  * @classdesc 几何对象曲线类。
  * @category BaseTypes Geometry
- * @extends SuperMap.Geometry.MultiPoint
- * @param components - {Array<SuperMap.Geometry.Point>}几何对象数组。
+ * @extends {SuperMap.Geometry.MultiPoint}
+ * @param {Array.<SuperMap.Geometry.Point>} components - 几何对象数组。
  * @example
  * var point1 = new SuperMap.Geometry.Point(10,20);
  * var point2 = new SuperMap.Geometry.Point(30,40);
@@ -28843,10 +28288,9 @@ var Curve = exports.Curve = function (_MultiPoint) {
     _classCallCheck(this, Curve);
 
     /**
-     * @member SuperMap.Geometry.Curve.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @member {Array.<string>} [SuperMap.Geometry.Curve.prototype.componentType=["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"]]
+     * @description components存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
      * @readonly
-     * @default ["{@link SuperMap.Geometry.Point}", "{@link SuperMap.PointWithMeasure}"]
      */
     var _this = _possibleConstructorReturn(this, (Curve.__proto__ || Object.getPrototypeOf(Curve)).call(this, points));
 
@@ -28898,8 +28342,8 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
  * @class ol.supermap.VectorTileStyles
  * @classdesc 矢量瓦片风格
  * @category  Visualization VectorTile
- * @param options -{Object} 交互时所需可选参数
- * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
+ * @param {Object} options - 交互时所需可选参数
+ * @extends {ol.Observable}
  */
 
 var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
@@ -29013,7 +28457,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
             VectorTileStyles.setLayerName(e.layerName);
         });
 
-        /*
+        /**
          * @function VectorTileStyles.prototype.getDefaultSelectedPointStyle
          * @description 设置默认选择后的点样式
          */
@@ -29028,7 +28472,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
             });
         }
 
-        /*
+        /**
          * @function VectorTileStyles.prototype.getDefaultSelectedLineStyle
          * @description 设置默认选择后的线样式
          */
@@ -29041,7 +28485,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
             });
         }
 
-        /*
+        /**
          * @function VectorTileStyles.prototype.getDefaultSelectedRegionStyle
          * @description 设置默认选择后的面样式
          */
@@ -29057,7 +28501,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
             });
         }
 
-        /*
+        /**
          * @function VectorTileStyles.prototype.getDefaultSelectedTextStyle
          * @description 设置默认选择后的文本样式
          */
@@ -29081,7 +28525,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
     /**
      * @function ol.supermap.VectorTileStyles.setCartoShaders
      * @description 设置Carto的阴影
-     * @param cartoShaders -{Array} Carto阴影
+     * @param {Array} cartoShaders - Carto阴影
      */
 
 
@@ -29092,7 +28536,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.prototype.getFeatureStyle
          * @description 获取要素样式
-         * @param feature -{Object} 要素
+         * @param {Object} feature - 要素
          */
         value: function getFeatureStyle(feature) {
             var selectedStyle;
@@ -29137,7 +28581,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setClientCartoShaders
          * @description 设置客户端Carto的阴影
-         * @param clientCartoShaders -{Array} 客户端Carto阴影
+         * @param {Array} clientCartoShaders - 客户端Carto阴影
          */
 
     }, {
@@ -29160,7 +28604,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function VectorTileStyles.setCartoCss
          * @description 设置cartoCss的样式
-         * @param cartoCss -{Object} cartoCss的样式
+         * @param {Object} cartoCss - cartoCss的样式
          */
 
     }, {
@@ -29183,7 +28627,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setDonotNeedServerCartoCss
          * @description 设置是否需要CartoCss服务
-         * @param donotNeedServerCartoCss - {Object} 是否需要CartoCss服务
+         * @param {Object} donotNeedServerCartoCss - 是否需要CartoCss服务
          */
 
     }, {
@@ -29206,7 +28650,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setLayersInfo
          * @description 设置图层信息服务
-         * @param layersInfo -{Object} 图层信息
+         * @param {Object} layersInfo - 图层信息
          */
 
     }, {
@@ -29229,7 +28673,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setUrl
          * @description 设置地址
-         * @param url -{string} 地址
+         * @param {string} url - 地址
          */
 
     }, {
@@ -29252,7 +28696,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setView
          * @description 设置视图
-         * @param view -{Object} 视图
+         * @param {Object} view - 视图
          */
 
     }, {
@@ -29275,7 +28719,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedId
          * @description 设置选择序号
-         * @param selectedId -{number} 选择序号
+         * @param {number} selectedId - 选择序号
          */
 
     }, {
@@ -29298,7 +28742,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setLayerName
          * @description 设置图层名称
-         * @param layerName -{string} 图层名称
+         * @param {string} layerName - 图层名称
          */
 
     }, {
@@ -29321,7 +28765,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedPointStyle
          * @description 设置选择后点样式
-         * @param selectedPointStyle -{Object} 选择后点样式
+         * @param {Object} selectedPointStyle - 选择后点样式
          */
 
     }, {
@@ -29333,7 +28777,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedLineStyle
          * @description 设置选择后线样式
-         * @param selectedLineStyle -{Object} 选择后线样式
+         * @param {Object} selectedLineStyle - 选择后线样式
          */
 
     }, {
@@ -29345,7 +28789,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedRegionStyle
          * @description 设置选择后面样式
-         * @param selectedRegionStyle -{Object} 选择后面样式
+         * @param {Object} selectedRegionStyle - 选择后面样式
          */
 
     }, {
@@ -29357,7 +28801,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedRegionStyle
          * @description 设置选择后文本样式
-         * @param selectedTextStyle -{Object} 选择后文本样式
+         * @param {Object} selectedTextStyle - 选择后文本样式
          */
 
     }, {
@@ -29369,7 +28813,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.getSelectedStyle
          * @description 设置选择后的样式
-         * @param type -{string} 选择后的样式
+         * @param {string} type - 选择后的样式
          */
 
     }, {
@@ -29392,7 +28836,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.getLayerInfo
          * @description 获取图层的信息
-         * @param layerName -{string} 图层名
+         * @param {string} layerName - 图层名
          */
 
     }, {
@@ -29432,8 +28876,8 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.VectorTileStyles.getStyle
          * @description 获取样式
-         * @param originalLayerName -{string} 原始图层信息
-         * @param feature -{Object} 要素对象
+         * @param {string} originalLayerName - 原始图层信息
+         * @param {Object} feature - 要素对象
          */
 
     }, {
@@ -29477,12 +28921,12 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
                 return styleArray;
             }
 
-            /*
+            /**
              * @function ol.supermap.VectorTileStyles.prototype.mergeTextFeatureStyle
              * @description 合并文本要素样式
-             * @param layerInfo -{string} 图层信息
-             * @param feature -{Object} 获取的要素
-             * @param url -{string} 地址
+             * @param {string} layerInfo - 图层信息
+             * @param {Object} feature - 获取的要素
+             * @param {string} url - 地址
              */
             function mergeTextFeatureStyle(layerInfo, feature, url) {
                 var textFeatureStyle = _StyleUtils.StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
@@ -29529,14 +28973,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc Mapv渲染器。
  * @private
- * @param options - {Object} 可选参数。如：<br>
- *        paneName - {string} 窗口名。<br>
- *        enableMassClear - {} 。<br>
- *        context - {string} 内容。<br>
- *        zIndex - {number} 层级。<br>
- *        width - {number} 画布宽。<br>
- *        height - {number} 画布高。<br>
- *        mixBlendMode - {string} 最小混合模式。
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.paneName - 窗口名。<br>
+ * @param {string} options.context - 内容。<br>
+ * @param {number} options.zIndex - 层级。<br>
+ * @param {number} options.width - 画布宽。<br>
+ * @param {number} options.height - 画布高。<br>
+ * @param {string} options.mixBlendMode - 最小混合模式。
  */
 var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
     function MapvCanvasLayer(options) {
@@ -29586,8 +29029,8 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
 
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} 地图宽度
-         * @param mapHeight - {number} 地图高度
+         * @param {number} mapWidth - 地图宽度
+         * @param {number} mapHeight - 地图高度
          * @description 调整地图大小
          */
 
@@ -29610,7 +29053,7 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
          * @description 获取容器
-         * @return {Element} 包含Mapv图层的dom对象
+         * @returns {Element} 包含Mapv图层的dom对象
          */
 
     }, {
@@ -29621,7 +29064,7 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
 
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
-         * @param zIndex - {number} 层级参数
+         * @param {number} zIndex - 层级参数
          * @description 设置图层层级
          */
 
@@ -29684,20 +29127,19 @@ var BaiduMapLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Functi
  * @class MapvLayer
  * @classdesc MapV图层类。
  * @private
- * @param map - {Object} 地图
- * @param dataSet - {Object} 数据集
- * @param options - {Object} 参数，如：<br>
- *        paneName - {string} 窗口名。<br>
- *        enableMassClear - {} 。<br>
- *        context - {string} 内容。<br>
- *        zIndex - {number} 层级。<br>
- *        width - {number} 画布宽。<br>
- *        height - {number} 画布高。<br>
- *        mixBlendMode - {string} 最小混合模式。
- * @param mapWidth - {number} 地图宽度
- * @param mapHeight - {number} 地图高度
- * @param source - {Object} 资源
- * @extends BaiduMapLayer
+ * @param {Object} map - 地图
+ * @param {Object} dataSet - 数据集
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.paneName - 窗口名。<br>
+ * @param {string} options.context - 内容。<br>
+ * @param {number} options.zIndex - 层级。<br>
+ * @param {number} options.width - 画布宽。<br>
+ * @param {number} options.height - 画布高。<br>
+ * @param {string} options.mixBlendMode - 最小混合模式。
+ * @param {number} mapWidth - 地图宽度
+ * @param {number} mapHeight - 地图高度
+ * @param {Object} source - 资源
+ * @extends {BaiduMapLayer}
  */
 
 var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
@@ -29743,7 +29185,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
 
     /**
      * @function MapvLayer.prototype.init
-     * @param options - {Object} 参数
+     * @param {Object} options - 参数
      * @description 初始化参数
      */
 
@@ -29763,7 +29205,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
 
         /**
          * @function MapvLayer.prototype.clickEvent
-         * @param e - {Object} 事件参数
+         * @param {Object} e - 事件参数
          * @description 点击事件
          */
 
@@ -29776,7 +29218,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
 
         /**
          * @function MapvLayer.prototype.mousemoveEvent
-         * @param e - {Object} 事件参数
+         * @param {Object} e - 事件参数
          * @description 鼠标移动事件
          */
 
@@ -29880,8 +29322,8 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
         /**
          * @function MapvLayer.prototype.addData
          * @description 添加数据
-         * @param data - {oject} 待添加的数据
-         * @param options - {oject} 待添加的数据信息
+         * @param {Object} data - 待添加的数据
+         * @param {Object} options - 待添加的数据信息
          */
 
     }, {
@@ -29898,9 +29340,8 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
         /**
          * @function MapvLayer.prototype.update
          * @description 更新图层
-         * @param opt - {Object} 待更新的数据<br>
-         *        data -{Object} mapv数据集<br>
-         *        options -{Object} mapv绘制参数<br>
+         * @param {Object} opt - 待更新的数据<br>
+         * @param {Object} opt.data - mapv数据集<br>
          */
 
     }, {
@@ -29936,7 +29377,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
         /**
          * @function MapvLayer.prototype.removeData
          * @description 删除符合过滤条件的数据
-         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+         * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
          */
 
     }, {
@@ -30174,16 +29615,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.style.HitCloverShape
  * @category  Visualization Graphic
  * @classdesc 三叶草要素高亮风格
- * @extends ol.style.Image{@linkdoc-openlayers/ol.style.Image}
- * @param options - {Object} 三叶草形要素风格参数。如：<br>
- *        angle - {number} 三叶草每个扇叶的圆心角,默认为30，单位弧度。<br>
- *        fill - [{ol.style.Fill}]{@linkdoc-openlayers/ol.style.Fill} 填充样式<br>
- *        stroke -[{ol.style.Stroke}]{@linkdoc-openlayers/ol.style.Stroke} 边框样式<br>
- *        strokeOpacity - {number}透明度<br>
- *        fillOpacity - {number}填充透明度<br>
- *        radius - {number} 半径<br>
- *        sAngle - {number} 扇叶起始角度<br>
- *        eAngle - {number} 扇叶终止角度
+ * @extends {ol.style.Image}
+ * @param {Object} options - 三叶草形要素风格参数。<br>
+ * @param {number} options.angle - 三叶草每个扇叶的圆心角,默认为30，单位弧度。<br>
+ * @param {ol.style.Fill} options.fill - 填充样式<br>
+ * @param {ol.style.Stroke} options.stroke - 边框样式<br>
+ * @param {number} options.strokeOpacity - 透明度<br>
+ * @param {number} options.fillOpacity - 填充透明度<br>
+ * @param {number} options.radius - 半径<br>
+ * @param {number} options.sAngle - 扇叶起始角度<br>
+ * @param {number} options.eAngle - 扇叶终止角度
  */
 var HitCloverShape = exports.HitCloverShape = function (_CloverShape) {
     _inherits(HitCloverShape, _CloverShape);
@@ -30277,33 +29718,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Graph
  * @category  Visualization Theme
  * @classdesc 统计专题图图层基类。
- * @param chartsType -{string} 图表类别
- * @param name - {string} 图层名称
- * @param opt_options - {Object} 参数。如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        themeFields - {string} 指定创建专题图字段。 <br>
- *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
- *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        symbolSetting - {Object} 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：
- *  * Symbolizer properties:
- *  * codomain - {Array{number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- *  * maxR - {number} 圆形的最大半径。
- *  * minR - {number} 圆形的最小半径。
- *  * fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。
- *  * circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
- *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- *  * circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。
- *  * circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- *  * circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
- * @extends ol.source.Theme
+ * @param {string} chartsType - 图表类别
+ * @param {string} name - 图层名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {string|Object} opt_options.attributions - 版权信息。 </br>
+ * @param {string} opt_options.logo - Logo</br>
+ * @param opt_options.projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
+ * @param {number} opt_options.ratio - 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
+ * @param {Array.<number>} opt_options.resolutions - 分辨率数组。</br>
+ * @param {string} opt_options.themeFields - 指定创建专题图字段。 <br>
+ * @param {boolean} opt_options.isOverLay - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
+ * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {Object} opt_options.symbolSetting - 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>）
+ * @extends {ol.source.Theme}
  */
 var Graph = exports.Graph = function (_Theme) {
     _inherits(Graph, _Theme);
@@ -30346,7 +29777,7 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.setChartsType
          * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
-         * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
+         * @param {string} chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。
          */
 
     }, {
@@ -30359,7 +29790,7 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.addFeatures
          * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-         * @param features - {Object} 待填加得要素
+         * @param {Object} features - 待填加得要素
          */
 
     }, {
@@ -30382,7 +29813,7 @@ var Graph = exports.Graph = function (_Theme) {
          * @description 重绘所有专题要素。
          *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
          *              地图漫游时调用此方法进行图层刷新。
-         * @param extent - {Object} 重绘的范围
+         * @param {Object} extent - 重绘的范围
          *
          */
 
@@ -30428,7 +29859,7 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.createThematicFeature
          * @description  向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象
-         * @param feature - {Object} 待填加得要素
+         * @param {Object} feature - 待填加得要素
          *
          */
 
@@ -30554,7 +29985,7 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.getShapesByFeatureID
          * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-         * @param featureID - {number} 要素ID。
+         * @param {number} featureID - 要素ID。
          */
 
     }, {
@@ -30577,8 +30008,8 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.isQuadrilateralOverLap
          * @description  判断两个四边形是否有压盖。
-         * @param quadrilateral - {Array<Object>} 四边形节点数组。
-         * @param quadrilateral2 - {Array<Object>} 第二个四边形节点数组。
+         * @param {Array.<Object>} quadrilateral - 四边形节点数组。
+         * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
          */
 
     }, {
@@ -30623,8 +30054,8 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.isPointInPoly
          * @description  判断一个点是否在多边形里面。(射线法)
-         * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param poly - {Array<Object>} 多边形节点数组。
+         * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+         * @param {Array.<Object>} poly - 多边形节点数组。
          */
 
     }, {
@@ -30639,8 +30070,8 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.isChartInMap
          * @description  判断图表是否在地图里。
-         * @param mapPxBounds - {SuperMap.Bounds} 地图像素范围。
-         * @param chartPxBounds - {Array<Object>} 图表范围的四边形节点数组。
+         * @param {SuperMap.Bounds} mapPxBounds - 地图像素范围。
+         * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
          */
 
     }, {
@@ -30674,7 +30105,7 @@ var Graph = exports.Graph = function (_Theme) {
         /**
          * @function ol.source.Graph.prototype.removeFeatures
          * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature
-         * @param features - {Object} 要删除的要素
+         * @param {Object} features - 要删除的要素
          */
 
     }, {
@@ -30953,23 +30384,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Label
  * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
- * @param name - {string} 名称
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        themeField - {string}  指定创建专题图字段。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends ol.source.GeoFeature
+ * @param {string} name - 名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {string|Object} opt_options.attributions - 版权信息。</br>
+ * @param {string} opt_options.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array.<number>} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {string} opt_options.themeField - 指定创建专题图字段。<br>
+ * @param {Object} opt_options.style - 专题图样式。<br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {ol.source.GeoFeature}
  */
 var Label = exports.Label = function (_GeoFeature) {
     _inherits(Label, _GeoFeature);
@@ -31040,8 +30471,8 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.createThematicFeature
          * @description 创建专题要素
-         * @param feature - {SuperMap.Feature.Vector} 矢量要素
-         * @return {SuperMap.Feature.Theme.Vector} 专题图矢量要素
+         * @param {SuperMap.Feature.Vector} feature - 矢量要素
+         * @returns {SuperMap.Feature.Theme.Vector} 专题图矢量要素
          */
 
     }, {
@@ -31070,7 +30501,7 @@ var Label = exports.Label = function (_GeoFeature) {
          * @description 重绘所有专题要素。
          *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
          *              地图漫游时调用此方法进行图层刷新。
-         * @param bounds -{Array<number>} 重绘范围
+         * @param {Array.<number>} bounds - 重绘范围
          */
 
     }, {
@@ -31091,8 +30522,8 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.getDrawnLabels
          * @description 获取经（压盖）处理后将要绘制在图层上的标签要素
-         * @param labelFeatures -{Array<SuperMap.Feature.Vector>}  所有标签要素的数组。
-         * @return {Array<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
+         * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 所有标签要素的数组。
+         * @returns {Array<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
          */
 
     }, {
@@ -31256,8 +30687,8 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.getStyleByData
          * @description 根据用户数据（feature）设置专题要素的 Style
-         * @param feat -{SuperMap.Feature.Vector} 矢量要素对象
-         * @return {Array<SuperMap.ThemeStyle>} 专题要素的 Style
+         * @param {SuperMap.Feature.Vector} feat - 矢量要素对象
+         * @returns {Array.<SuperMap.ThemeStyle>} 专题要素的 Style
          */
 
     }, {
@@ -31307,8 +30738,8 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.setLabelsStyle
          * @description 设置标签要素的Style
-         * @param labelFeatures -{Array<SuperMap.Feature.Vector>} 需要设置 Style 的标签要素数组。
-         * @return {Array<SuperMap.Feature.Vector>}  赋予 Style 后的标签要素数组。
+         * @param {Array<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
+         * @returns {Array.<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
          */
 
     }, {
@@ -31339,7 +30770,7 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.setStyle
          * @description 设置标签要素的Style
-         * @param feat -{SuperMap.Feature.Vector} 需要赋予 style 的要素。
+         * @param {SuperMap.Feature.Vector} feat - 需要赋予 style 的要素。
          */
 
     }, {
@@ -31391,8 +30822,8 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.getLabelPxLocation
          * @description 获取标签要素的像素坐标
-         * @param feature -{SuperMap.Feature.Vector}  标签要素。
-         * @return {Object} 标签位置,例如：{"x":1,"y":1}
+         * @param {SuperMap.Feature.Vector} feature - 标签要素。
+         * @returns {Object} 标签位置，例如：{"x":1,"y":1}
          */
 
     }, {
@@ -31418,11 +30849,9 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.calculateLabelBounds
          * @description 获得标签要素的最终范围
-         *
-         * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
-         * @param loc - {Object} 标签位置,例如：{"x":1,"y":1}
-         *
-         * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+         * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
+         * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}
+         * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
          */
 
     }, {
@@ -31460,11 +30889,9 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.calculateLabelBounds2
          * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算bounds的效率。
-         *
-         * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
-         * @param loc - {Object} 标签位置,例如：{"x":1,"y":1}
-         *
-         * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+         * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
+         * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}
+         * @returns {Array.<Object>} 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
          */
 
     }, {
@@ -31539,7 +30966,7 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.getLabelInfo
          * @description 根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等
-         * @return {Object} 绘制后的标签信息
+         * @returns {Object} 绘制后的标签信息
          */
 
     }, {
@@ -31633,12 +31060,10 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.rotationBounds
          * @description 旋转bounds。
-         *
-         * @param bounds -{SuperMap.Bounds}  要旋转的bounds。
-         * @param rotationCenterPoi -{Object}  旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param angle -{number}  旋转角度（顺时针）。
-         *
-         * @return {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+         * @param {SuperMap.Bounds} bounds - 要旋转的bounds。
+         * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
+         * @param {number} angle - 旋转角度（顺时针）。
+         * @returns {Array.<Object>} bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
          */
 
     }, {
@@ -31668,14 +31093,12 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.getRotatedLocation
          * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
-         *
-         * @param x -{number}  旋转点横坐标。
-         * @param y -{number}  旋转点纵坐标。
-         * @param rx -{number}  旋转中心点横坐标。
-         * @param ry -{number}  旋转中心点纵坐标。
-         * @param angle -{number} 旋转角度
-         *
-         * @return {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+         * @param {number} x - 旋转点横坐标。
+         * @param {number} y - 旋转点纵坐标。
+         * @param {number} rx - 旋转中心点横坐标。
+         * @param {number} ry - 旋转中心点纵坐标。
+         * @param {number} angle - 旋转角度
+         * @returns {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
          */
 
     }, {
@@ -31700,11 +31123,9 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.getAvoidInfo
          * @description 获取避让的信息。
-         *
-         * @param bounds -{SuperMap.Bounds}  地图像素范围。
-         * @param quadrilateral -{Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
-         *
-         * @return {Object} 避让的信息
+         * @param {SuperMap.Bounds} bounds - 地图像素范围。
+         * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+         * @returns {Object} 避让的信息
          */
 
     }, {
@@ -31796,11 +31217,9 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.isQuadrilateralOverLap
          * @description 判断两个四边形是否有压盖
-         *
-         * @param quadrilateral -{Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
-         * @param quadrilateral2 -{Array<Object>}  第二个四边形节点数组。
-         *
-         * @return {boolean} 是否压盖，true表示压盖
+         * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+         * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
+         * @returns {boolean} 是否压盖，true表示压盖
          */
 
     }, {
@@ -31846,10 +31265,9 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.isPointInPoly
          * @description 判断一个点是否在多边形里面。(射线法)
-         *
-         * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param poly - {Array<Object>}  多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
-         * @return {boolean} 点是否在多边形内
+         * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+         * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+         * @returns {boolean} 点是否在多边形内
          */
 
     }, {
@@ -31907,23 +31325,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Range
  * @category  Visualization Theme
  * @classdesc 分段专题图图层源。
- * @param name - {string} 名称
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        themeField - {string}  指定创建专题图字段。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends ol.source.GeoFeature
+ * @param {string} name - 名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明的。</br>
+ * @param {(string|Object)} opt_options.attributions - 版权信息。 </br>
+ * @param {string} opt_options.logo - Logo</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {string} opt_options.themeField - 指定创建专题图字段。<br>
+ * @param {Object} opt_options.style - 专题图样式。<br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {ol.source.GeoFeature}
  */
 var Range = exports.Range = function (_GeoFeature) {
     _inherits(Range, _GeoFeature);
@@ -31960,7 +31378,7 @@ var Range = exports.Range = function (_GeoFeature) {
          * @private
          * @function ol.source.Range.prototype.createThematicFeature
          * @description 创建专题图要素
-         * @param feature -{Object} 要创建的专题图形要素
+         * @param {Object} feature - 要创建的专题图形要素
          */
 
     }, {
@@ -31991,7 +31409,7 @@ var Range = exports.Range = function (_GeoFeature) {
          * @private
          * @function ol.source.Range.prototype.getStyleByData
          * @description 通过数据获取style
-         * @param fea -{Object} 要素数据
+         * @param {Object} fea - 要素数据
          */
 
     }, {
@@ -32077,24 +31495,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Unique
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
- * @param name - {String} 图层名称
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明度。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        themeField - {string}  指定创建专题图字段。<br>
- *        style - {Object} 专题图样式。<br>
- *        styleGroups - {Object} 各专题类型样式组。<br>
- *        isHoverAble - {boolean} 是否开启hover事件。<br>
- *        highlightStyle - {Object} 开启hover事件后，触发的样式风格。
- * @extends ol.source.GeoFeature
+ * @param {String} name - 图层名称
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明度。</br>
+ * @param {(string|Object)} opt_options.attributions - 版权信息。</br>
+ * @param {string} opt_options.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。必须是1或更高。</br>
+ * @param {Array} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {string} opt_options.themeField - 指定创建专题图字段。<br>
+ * @param {Object} opt_options.style - 专题图样式。<br>
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
+ * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
+ * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @extends {ol.source.GeoFeature}
  */
 var Unique = exports.Unique = function (_GeoFeature) {
     _inherits(Unique, _GeoFeature);
@@ -32131,7 +31549,7 @@ var Unique = exports.Unique = function (_GeoFeature) {
          * @private
          * @function ol.source.Unique.prototype.createThematicFeature
          * @description 创建专题要素。
-         * @param feature -{Object} 要素
+         * @param {Object} feature - 要素
          */
 
     }, {
@@ -32158,7 +31576,7 @@ var Unique = exports.Unique = function (_GeoFeature) {
          * @private
          * @function ol.source.Unique.prototype.getStyleByData
          * @description 根据用户数据（feature）设置专题要素的 Style
-         * @param fea {Object} 用户要素数据
+         * @param {Object} fea - 用户要素数据
          */
 
     }, {
@@ -32521,9 +31939,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类
- * @param geometry - [ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 几何对象
- * @param attributes - {Object} 要素属性
- * @extends ol.Object{@linkdoc-openlayers/ol.Object}
+ * @param {ol.geom.Point} geometry - 几何对象
+ * @param {Object} attributes - 要素属性
+ * @extends {ol.Object}
  */
 var Graphic = exports.Graphic = function (_ol$Object) {
     _inherits(Graphic, _ol$Object);
@@ -32544,7 +31962,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
     /**
      * @function ol.Graphic.prototype.clone
      * @description 克隆当前要素
-     * @return {ol.Graphic} 克隆后的要素
+     * @returns {ol.Graphic} 克隆后的要素
      */
 
 
@@ -32562,7 +31980,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getId
          * @description 获取当前ID
-         * @return {string} id
+         * @returns {string} id
          */
 
     }, {
@@ -32574,7 +31992,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.setId
          * @description 设置当前要素ID
-         * @param id -{string} 要素ID
+         * @param {string} id - 要素ID
          */
 
     }, {
@@ -32586,7 +32004,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getGeometry
          * @description 获取当前要素几何信息
-         * @return [ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 要素几何信息
+         * @returns {ol.geom.Point} 要素几何信息
          */
 
     }, {
@@ -32598,7 +32016,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.setGeometry
          * @description 设置当前要素几何信息
-         * @param geometry -[ol.geom.Point]{@linkdoc-openlayers/ol.geom.Point} 要素几何信息
+         * @param {ol.geom.Point} geometry - 要素几何信息
          */
 
     }, {
@@ -32610,7 +32028,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.setAttributes
          * @description 设置要素属性
-         * @param attributes - {Object} 属性对象
+         * @param {Object} attributes - 属性对象
          */
 
     }, {
@@ -32622,7 +32040,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getAttributes
          * @description 获取要素属性
-         * @return {Object} 要素属性
+         * @returns {Object} 要素属性
          */
 
     }, {
@@ -32634,7 +32052,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getStyle
          * @description 获取样式
-         * @return [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} ol.style.Image子类样式对象
+         * @returns {ol.style.Image} ol.style.Image子类样式对象
          */
 
     }, {
@@ -32646,7 +32064,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.setStyle
          * @description 设置样式
-         * @param style - [ol.style.Image]{@linkdoc-openlayers/ol.style.Image} 样式，ol.style.Image子类样式对象
+         * @param {ol.style.Image} style - 样式，ol.style.Image子类样式对象
          */
 
     }, {
@@ -32665,7 +32083,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.prototype.getStyleFunction
          * @description 获取样式函数
-         * @return {Function} 样式函数
+         * @returns {Function} 样式函数
          */
 
     }, {
@@ -32677,7 +32095,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         /**
          * @function ol.Graphic.createStyleFunction
          * @description  新建样式函数
-         * @param obj - {Object} 对象参数
+         * @param {Object} obj - 对象参数
          */
 
     }, {
@@ -34116,18 +33534,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Tianditu
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
- * @param opt_options - {Object} 参数。
- *        url - {string} 服务地址。<br>
- *        layerType - {string} 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
- *        attributions - {string} 版权描述信息。<br>
- *        cacheSize - {number} 缓冲大小。<br>
- *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
- *        style - {string} 图层风格。<br>
- *        format - {string} 格式。<br>
- *        isLabel - {boolean} 是否是标注图层<br>
- *        opaque - {boolean} 是否透明。<br>
- *        tileProxy - {string} 代理地址
- * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
+ * @param {Object} opt_options - 参数。
+ * @param {string} opt_options.url - 服务地址。<br>
+ * @param {string} opt_options.layerType - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
+ * @param {string} opt_options.attributions - 版权描述信息。<br>
+ * @param {number} opt_options.cacheSize - 缓冲大小。<br>
+ * @param {function} opt_options.tileLoadFunction - 切片加载完成后执行函数。<br>
+ * @param {string} opt_options.style - 图层风格。<br>
+ * @param {string} opt_options.format - 格式。<br>
+ * @param {boolean} opt_options.isLabel - 是否是标注图层<br>
+ * @param {boolean} opt_options.opaque - 是否透明。<br>
+ * @param {string} opt_options.tileProxy - 代理地址
+ * @extends {ol.source.WMTS}
  */
 var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
     _inherits(Tianditu, _ol$source$WMTS);
@@ -34199,8 +33617,8 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
     /**
      * @function ol.source.Tianditu.getTileGrid
      * @description 获取瓦片网格
-     * @param projection - {Object} 投影参考对象
-     * @return {ol.tilegrid.WMTS} 返回瓦片网格对象
+     * @param {Object} projection - 投影参考对象
+     * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
      */
 
 
@@ -34216,7 +33634,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
         /**
          * @function ol.source.Tianditu.default4326TileGrid
          * @description 获取默认4326网格瓦片
-         * @return {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
+         * @returns {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
          */
 
     }, {
@@ -34241,7 +33659,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
         /**
          * @function ol.source.Tianditu.default3857TileGrid
          * @description 获取默认3857网格瓦片
-         * @return {ol.tilegrid.WMTS} 返回默认3857网格瓦片对象
+         * @returns {ol.tilegrid.WMTS} 返回默认3857网格瓦片对象
          */
 
     }, {
@@ -34403,7 +33821,7 @@ var polygonStyle = exports.polygonStyle = {
  * @private
  */
 var DeafultCanvasStyle = exports.DeafultCanvasStyle = {
-    /*
+    /**
      * @constant ol.supermap.DeafultCanvasStyle.prototype.TEXT
      * @description 默认文本样式
      */
@@ -34523,7 +33941,7 @@ var polygonMap = exports.polygonMap = {
  * @description 地图样式
  */
 var StyleMap = exports.StyleMap = {
-    /*
+    /**
      * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
      * @description CartoCSS中的style属性名与Canvas的style属性名的对应表
      */
@@ -34558,7 +33976,7 @@ var StyleMap = exports.StyleMap = {
         "POLYGON": polygonMap,
         "MULTIPOLYGON": polygonMap
     },
-    /*
+    /**
      * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
      * @description 服务端传过来的style属性名与Canvas的style属性名的对应表
      */
@@ -34660,7 +34078,7 @@ var StyleMap = exports.StyleMap = {
             defaultValue: 0
         }
     },
-    /*
+    /**
      * @constant ol.supermap.StyleMap.prototype.CartoCompOpMap
      * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
      */
@@ -34735,16 +34153,16 @@ _openlayers2.default.supermap.control = _openlayers2.default.supermap.control ||
  * @class ol.supermap.control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
- * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
+ * @extends {ol.control.Control}
  * @example
  *      var control = new ol.supermap.control.Logo();
  *      map.addControl(control);
- * @param options - {Object} logo控件配置项。配置项有如下:</br>
- *        imageUrl - {string} logo图片地址。</br>
- *        width - {number} logo图片宽。</br>
- *        height - {number} logo图片高。</br>
- *        link - {string} 跳转链接。</br>
- *        alt - {string} logo图片失效时显示文本。
+ * @param {Object} options - logo控件配置项。</br>
+ * @param {string} options.imageUrl - logo图片地址。</br>
+ * @param {number} options.width - logo图片宽。</br>
+ * @param {number} options.height - logo图片高。</br>
+ * @param {string} options.link - 跳转链接。</br>
+ * @param {string} options.alt - logo图片失效时显示文本。
  */
 
 var Logo = exports.Logo = function (_ol$control$Control) {
@@ -34765,7 +34183,7 @@ var Logo = exports.Logo = function (_ol$control$Control) {
         _this.options = options;
         _this.element = options.element = initLayerout.call(_this);
 
-        /*
+        /**
          * @function ol.supermap.control.Logo.prototype.initLayerout
          * @description 初始化图层信息
          */
@@ -34799,7 +34217,7 @@ var Logo = exports.Logo = function (_ol$control$Control) {
             return div;
         }
 
-        /*
+        /**
          * @function ol.supermap.control.Logo.prototype.setDivStyle
          * @div 获取div对象
          * @description 设置对象style
@@ -34954,19 +34372,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Animation.easing
  * @category Visualization Theme
- * 缓动
+ * @classdesc 缓动
  */
 // 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
 // http://sole.github.io/tween.js/examples/03_graphs.html
 var Easing = exports.Easing = function () {
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Animation.easing
-     * 构造函数。
-     *
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.constructor
+     * @description 构造函数。
      */
     function Easing() {
         _classCallCheck(this, Easing);
@@ -34974,9 +34390,9 @@ var Easing = exports.Easing = function () {
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.easing";
     }
 
-    /*
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+    /**
+     * @function SuperMap.LevelRenderer.Animation.easing.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -34984,10 +34400,11 @@ var Easing = exports.Easing = function () {
         key: "destroy",
         value: function destroy() {}
 
-        // 线性
-        /*
-         * @param {number} k
-         * @return {number} 返回输入值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.Linear
+         * @description 线性缓动
+         * @param {number} k - 参数
+         * @return {number} 输入值
          */
 
     }, {
@@ -34996,10 +34413,11 @@ var Easing = exports.Easing = function () {
             return k;
         }
 
-        // 二次方的缓动（t^2）
-        /*
-         * @param {number} k
-         * @return {number} 返回二次方的缓动的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuadraticIn
+         * @description 二次方的缓动（t^2）
+         * @param {number} k - 参数
+         * @return {number} 二次方的缓动的值
          */
 
     }, {
@@ -35008,9 +34426,11 @@ var Easing = exports.Easing = function () {
             return k * k;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按二次方缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuadraticOut
+         * @description 返回按二次方缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按二次方缓动退出的值
          */
 
     }, {
@@ -35019,9 +34439,11 @@ var Easing = exports.Easing = function () {
             return k * (2 - k);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按二次方缓动进入和退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuadraticInOut
+         * @description 返回按二次方缓动进入和退出的值
+         * @param {number} k - 参数
+         * @return {number} 按二次方缓动进入和退出的值
          */
 
     }, {
@@ -35033,10 +34455,11 @@ var Easing = exports.Easing = function () {
             return -0.5 * (--k * (k - 2) - 1);
         }
 
-        // 三次方的缓动（t^3）
-        /*
-         * @param {number} k
-         * @return {number} 返回按三次方缓动的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.CubicIn
+         * @description 三次方的缓动（t^3）
+         * @param {number} k - 参数
+         * @return {number} 按三次方缓动的值
          */
 
     }, {
@@ -35045,9 +34468,11 @@ var Easing = exports.Easing = function () {
             return k * k * k;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按三次方缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.CubicOut
+         * @description 返回按三次方缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按三次方缓动退出的值
          */
 
     }, {
@@ -35056,9 +34481,11 @@ var Easing = exports.Easing = function () {
             return --k * k * k + 1;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按三次方缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.CubicInOut
+         * @description 返回按三次方缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按三次方缓动进入退出的值
          */
 
     }, {
@@ -35070,10 +34497,11 @@ var Easing = exports.Easing = function () {
             return 0.5 * ((k -= 2) * k * k + 2);
         }
 
-        // 四次方的缓动（t^4）
-        /*
-         * @param {number} k
-         * @return {number} 返回按四次方缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuarticIn
+         * @description  返回按四次方缓动进入的值
+         * @param {number} k - 参数
+         * @return {number}  按四次方缓动进入的值
          */
 
     }, {
@@ -35082,9 +34510,11 @@ var Easing = exports.Easing = function () {
             return k * k * k * k;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按四次方缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuarticOut
+         * @description  返回按四次方缓动退出的值
+         * @param {number} k - 参数
+         * @return {number}  按四次方缓动退出的值
          */
 
     }, {
@@ -35093,9 +34523,11 @@ var Easing = exports.Easing = function () {
             return 1 - --k * k * k * k;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按四次方缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuarticInOut
+         * @description  返回按四次方缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number}  按四次方缓动进入退出的值
          */
 
     }, {
@@ -35108,9 +34540,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 五次方的缓动（t^5）
-        /*
-         * @param {number} k
-         * @return {number} 返回按五次方缓动的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuinticIn
+         * @description  返回按五次方缓动的值
+         * @param {number} k - 参数
+         * @return {number}  按五次方缓动的值
          */
 
     }, {
@@ -35119,9 +34553,11 @@ var Easing = exports.Easing = function () {
             return k * k * k * k * k;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按五次方缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuinticOut
+         * @description  返回按五次方缓动退出的值
+         * @param {number} k - 参数
+         * @return {number}  按五次方缓动退出的值
          */
 
     }, {
@@ -35130,9 +34566,11 @@ var Easing = exports.Easing = function () {
             return --k * k * k * k * k + 1;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按五次方缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.QuinticInOut
+         * @description 返回按五次方缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按五次方缓动进入退出的值
          */
 
     }, {
@@ -35145,9 +34583,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 正弦曲线的缓动（sin(t)）
-        /*
-         * @param {number} k
-         * @return {number} 返回按正弦曲线的缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.SinusoidalIn
+         * @description 返回按正弦曲线的缓动进入的值
+         * @param {number} k - 参数
+         * @return {number} 按正弦曲线的缓动进入的值
          */
 
     }, {
@@ -35156,9 +34596,11 @@ var Easing = exports.Easing = function () {
             return 1 - Math.cos(k * Math.PI / 2);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按正弦曲线的缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.SinusoidalOut
+         * @description 返回按正弦曲线的缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按正弦曲线的缓动退出的值
          */
 
     }, {
@@ -35167,9 +34609,11 @@ var Easing = exports.Easing = function () {
             return Math.sin(k * Math.PI / 2);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按正弦曲线的缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.SinusoidalInOut
+         * @description 返回按正弦曲线的缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按正弦曲线的缓动进入退出的值
          */
 
     }, {
@@ -35179,9 +34623,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 指数曲线的缓动（2^t）
-        /*
-         * @param {number} k
-         * @return {number} 返回按指数曲线的缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.ExponentialIn
+         * @description 返回按指数曲线的缓动进入的值
+         * @param {number} k - 参数
+         * @return {number} 按指数曲线的缓动进入的值
          */
 
     }, {
@@ -35190,9 +34636,11 @@ var Easing = exports.Easing = function () {
             return k === 0 ? 0 : Math.pow(1024, k - 1);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按指数曲线的缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.ExponentialOut
+         * @description 返回按指数曲线的缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按指数曲线的缓动退出的值
          */
 
     }, {
@@ -35201,9 +34649,11 @@ var Easing = exports.Easing = function () {
             return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按指数曲线的缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.ExponentialInOut
+         * @description 返回按指数曲线的缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按指数曲线的缓动进入退出的值
          */
 
     }, {
@@ -35222,9 +34672,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 圆形曲线的缓动（sqrt(1-t^2)）
-        /*
-         * @param {number} k
-         * @return {number} 返回按圆形曲线的缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.CircularIn
+         * @description 返回按圆形曲线的缓动进入的值
+         * @param {number} k - 参数
+         * @return {number} 按圆形曲线的缓动进入的值
          */
 
     }, {
@@ -35233,9 +34685,11 @@ var Easing = exports.Easing = function () {
             return 1 - Math.sqrt(1 - k * k);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按圆形曲线的缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.CircularOut
+         * @description 返回按圆形曲线的缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按圆形曲线的缓动退出的值
          */
 
     }, {
@@ -35244,9 +34698,11 @@ var Easing = exports.Easing = function () {
             return Math.sqrt(1 - --k * k);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按圆形曲线的缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.CircularInOut
+         * @description 返回按圆形曲线的缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按圆形曲线的缓动进入退出的值
          */
 
     }, {
@@ -35259,9 +34715,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 创建类似于弹簧在停止前来回振荡的动画
-        /*
-         * @param {number} k
-         * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.ElasticIn
+         * @description 返回按类似于弹簧在停止前来回振荡的动画的缓动进入的值
+         * @param {number} k - 参数
+         * @return {number} 按类似于弹簧在停止前来回振荡的动画的缓动进入的值
          */
 
     }, {
@@ -35285,9 +34743,11 @@ var Easing = exports.Easing = function () {
             return -(a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p));
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.ElasticOut
+         * @description 返回按类似于弹簧在停止前来回振荡的动画的缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按类似于弹簧在停止前来回振荡的动画的缓动退出的值
          */
 
     }, {
@@ -35311,9 +34771,11 @@ var Easing = exports.Easing = function () {
             return a * Math.pow(2, -10 * k) * Math.sin((k - s) * (2 * Math.PI) / p) + 1;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.ElasticInOut
+         * @description 返回按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
          */
 
     }, {
@@ -35341,9 +34803,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动
-        /*
-         * @param {number} k
-         * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.BackIn
+         * @description 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
+         * @param {number} k - 参数
+         * @return {number} 按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
          */
 
     }, {
@@ -35353,9 +34817,11 @@ var Easing = exports.Easing = function () {
             return k * k * ((s + 1) * k - s);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.BackOut
+         * @description 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
          */
 
     }, {
@@ -35365,9 +34831,11 @@ var Easing = exports.Easing = function () {
             return --k * k * ((s + 1) * k + s) + 1;
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.BackInOut
+         * @description 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
          */
 
     }, {
@@ -35381,9 +34849,11 @@ var Easing = exports.Easing = function () {
         }
 
         // 创建弹跳效果
-        /*
-         * @param {number} k
-         * @return {number} 返回按弹跳效果的缓动进入的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.BounceIn
+         * @description 返回按弹跳效果的缓动进入的值
+         * @param {number} k - 参数
+         * @return {number} 按弹跳效果的缓动进入的值
          */
 
     }, {
@@ -35392,9 +34862,11 @@ var Easing = exports.Easing = function () {
             return 1 - this.BounceOut(1 - k);
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按弹跳效果的缓动退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.BounceOut
+         * @description 返回按弹跳效果的缓动退出的值
+         * @param {number} k - 参数
+         * @return {number} 按弹跳效果的缓动退出的值
          */
 
     }, {
@@ -35411,9 +34883,11 @@ var Easing = exports.Easing = function () {
             }
         }
 
-        /*
-         * @param {number} k
-         * @return {number} 返回按弹跳效果的缓动进入退出的值
+        /**
+         * @function SuperMap.LevelRenderer.Animation.easing.BounceInOut
+         * @description 返回按弹跳效果的缓动进入退出的值
+         * @param {number} k - 参数
+         * @return {number} 按弹跳效果的缓动进入退出的值
          */
 
     }, {
@@ -35448,46 +34922,26 @@ var _Easing = __webpack_require__(147);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Animation.Clip
  * @category Visualization Theme
- * 动画片段
+ * @classdec 动画片段
  *
  */
 var Clip = exports.Clip = function () {
 
     /**
-     * 动画主控制器
-     * @config target
-     * @config life(1000)
-     * @config delay(0)
-     * @config loop(true)
-     * @config gap(0)
-     * @config onframe
-     * @config easing(optional)
-     * @config ondestroy(optional)
-     * @config onrestart(optional)
-     */
-
-    /**
-     * Constructor: SuperMap.LevelRenderer.Animation.Clip
-     * 构造函数。
-     *
-     *
-     * Parameters:
-     * options - {Object} 可选参数：
-     *
-     * Symbolizer properties:
-     * target - {Object} 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
-     * life - {Number} 动画时长，默认值：1000。
-     * delay - {Number}  动画延迟时间。默认值：0。
-     * loop - {Boolean}  是否循环，默认值：true。
-     * gap - {Number}  循环的间隔时间。默认值：0。
-     * onframe - {Object}  帧。
-     * easing - {Boolean}
-     * ondestroy - {Boolean}
-     * onrestart - {Boolean}
-     *
+     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.constructor
+     * @description 构造函数。
+     * @param {Object} options - 参数。
+     * @param {Object} options.target - 动画对象，可以是数组，如果是数组的话会批量分发 onframe 等事件。
+     * @param {number} [options.life=1000] - 动画时长。
+     * @param {number} [options.delay=0] - 动画延迟时间。
+     * @param {boolean} [options.loop=true] - 是否循环。
+     * @param {number} [options.gap=0] - 循环的间隔时间。
+     * @param {Object} options.onframe -  帧。
+     * @param {boolean} options.easing - 是否消除。
+     * @param {boolean} options.ondestroy - 是否销毁。
+     * @param {boolean} options.onrestart - 是否重播。
      */
     function Clip(options) {
         _classCallCheck(this, Clip);
@@ -35521,8 +34975,8 @@ var Clip = exports.Clip = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Animation.Clip.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -35618,27 +35072,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class SuperMap.LevelRenderer.Animation
  * @classdesc 动画主类, 调度和管理所有动画控制器
- * @category Visualization Theme。
- * @extends SuperMap.LevelRenderer.Eventful
+ * @category Visualization Theme
+ * @extends {SuperMap.LevelRenderer.Eventful}
  */
 var Animation = exports.Animation = function (_Eventful) {
     _inherits(Animation, _Eventful);
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Animation
-     * 构造函数。
-     *
-     * Parameters:
-     * options - {Object} 动画参数选项，可设属性如下：
-     *
-     * Symbolizer properties:
-     * onframe - {Object} onframe。
-     * stage - {Object} stage。
-     *
-     * (code)
+    /**
+     * @function SuperMap.LevelRenderer.Animation.prototype.constructor
+     * @description 构造函数。
+     * @param {Object} options - 动画参数。
+     * @param {Object} options.onframe - onframe。
+     * @param {Object} options.stage - stage。
+     * (start code)
      *     var animation = new SuperMap.LevelRenderer.Animation();
      *     var obj = {
      *         x: 100,
@@ -35663,37 +35111,32 @@ var Animation = exports.Animation = function (_Eventful) {
 
         options = options || {};
         /**
-         * Property: stage
-         * {Object}
-         *
+         * @member {Object} SuperMap.LevelRenderer.Animation.prototype.stage
+         * @description stage。
          */
         _this.stage = {};
 
         /**
-         * Property: onframe
-         * {Object}
-         *
+         * @member {Object} SuperMap.LevelRenderer.Animation.prototype.onframe
+         * @description onframe。
          */
         _this.onframe = function () {};
 
         /**
-         * Property: _clips
-         * {Array}
-         *
+         * @member {Array} SuperMap.LevelRenderer.Animation.prototype._clips
+         * @description _clips。
          */
         _this._clips = [];
 
         /**
-         * Property: _running
-         * {Boolean}
-         *
+         * @member {boolean} SuperMap.LevelRenderer.Animation.prototype._running
+         * @description _running。
          */
         _this._running = false;
 
         /**
-         * Property: _time
-         * {Number}
-         *
+         * @member {number} SuperMap.LevelRenderer.Animation.prototype._time
+         * @description _time。
          */
         _this._time = 0;
 
@@ -35705,12 +35148,9 @@ var Animation = exports.Animation = function (_Eventful) {
     }
 
     /**
-     * APIMethod: add
-     * 添加动画片段
-     *
-     * Parameters:
-     * clip - {<SuperMap.LevelRenderer.Animation.Clip>} 动画片段
-     *
+     * @function SuperMap.LevelRenderer.Animation.prototype.add
+     * @description 添加动画片段。
+     * @param {SuperMap.LevelRenderer.Animation.Clip} clip - 动画片段。
      */
 
 
@@ -35721,12 +35161,9 @@ var Animation = exports.Animation = function (_Eventful) {
         }
 
         /**
-         * APIMethod: remove
-         * 删除动画片段
-         *
-         * Parameters:
-         * clip - {<SuperMap.LevelRenderer.Animation.Clip>} 动画片段
-         *
+         * @function SuperMap.LevelRenderer.Animation.prototype.remove
+         * @description 删除动画片段。
+         * @param {SuperMap.LevelRenderer.Animation.Clip} clip - 动画片段。
          */
 
     }, {
@@ -35739,8 +35176,8 @@ var Animation = exports.Animation = function (_Eventful) {
         }
 
         /**
-         * Method: _update
-         *
+         * @function SuperMap.LevelRenderer.Animation.prototype.update
+         * @description 更新动画片段。
          */
 
     }, {
@@ -35791,9 +35228,8 @@ var Animation = exports.Animation = function (_Eventful) {
         }
 
         /**
-         * APIMethod: start
-         * 开始运行动画
-         *
+         * @function SuperMap.LevelRenderer.Animation.prototype.start
+         * @description 开始运行动画。
          */
 
     }, {
@@ -35819,9 +35255,8 @@ var Animation = exports.Animation = function (_Eventful) {
         }
 
         /**
-         * APIMethod: stop
-         * 停止运行动画
-         *
+         * @function SuperMap.LevelRenderer.Animation.prototype.stop
+         * @description 停止运行动画。
          */
 
     }, {
@@ -35831,9 +35266,8 @@ var Animation = exports.Animation = function (_Eventful) {
         }
 
         /**
-         * APIMethod: clear
-         * 清除所有动画片段
-         *
+         * @function SuperMap.LevelRenderer.Animation.prototype.clear
+         * @description 清除所有动画片段。
          */
 
     }, {
@@ -35843,20 +35277,14 @@ var Animation = exports.Animation = function (_Eventful) {
         }
 
         /**
-         * Method: animate
-         * 对一个目标创建一个animator对象，可以指定目标中的属性使用动画
-         *
-         * Parameters:
-         * target - {Object} target
-         * options - {Object} 动画参数选项，可设属性如下：
-         *
-         * Symbolizer properties:
-         * loop - {Boolean} 是否循环播放动画。默认值：false。
-         * getter - {Function} 如果指定getter函数，会通过getter函数取属性值。默认值：null。
-         * setter - {Function} 如如果指定setter函数，会通过setter函数设置属性值。默认值：null。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+         * @function SuperMap.LevelRenderer.Animation.prototype.animate
+         * @description 对一个目标创建一个animator对象，可以指定目标中的属性使用动画。
+         * @param {Object} target - 目标对象。
+         * @param {Object} options - 动画参数选项。
+         * @param {boolean} [options.loop=false] - 是否循环播放动画。
+         * @param {function} [options.getter=null] - 如果指定getter函数，会通过getter函数取属性值。
+         * @param {function} [options.setter=null] - 如果指定setter函数，会通过setter函数设置属性值。
+         * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator。
          */
 
     }, {
@@ -35959,84 +35387,81 @@ var Animation = exports.Animation = function (_Eventful) {
 }(_Eventful2.Eventful);
 
 /**
- * @private
  * @class SuperMap.LevelRenderer.Animation.Animator
  */
 
 
 var Animator = exports.Animator = function () {
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Animation.Animator
-     * 构造函数。
-     *
-     * Parameters:
-     * target - {Object} target
-     * loop - {Boolean} 是否循环播放动画。默认值：false。
-     * getter - {Function} 如果指定getter函数，会通过getter函数取属性值。默认值：null。
-     * setter - {Function} 如如果指定setter函数，会通过setter函数设置属性值。默认值：null。
-     *
+    /**
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.animate
+     * @description 构造函数
+     * @param {Object} target - 目标对象。
+     * @param {Object} options - 动画参数选项。
+     * @param {boolean} [loop=false] - 是否循环播放动画。
+     * @param {function} [getter=null] - 如果指定getter函数，会通过getter函数取属性值。
+     * @param {function} [setter=null] - 如果指定setter函数，会通过setter函数设置属性值。
      */
     function Animator(target, loop, getter, setter) {
         _classCallCheck(this, Animator);
 
         /**
-         * Property: _tracks
-         * {Object}
+         * @member {Object} uperMap.LevelRenderer.Animation.Animator.prototype._tracks
+         * @description _tracks。
          */
         this._tracks = {};
 
         /**
-         * Property: _target
-         * {Object}
+         * @member {Object} uperMap.LevelRenderer.Animation.Animator.prototype._target
+         * @description _target。
          */
         this._target = target;
 
         /**
-         * Property: _loop
-         * {Boolean}
+         * @member {boolean} uperMap.LevelRenderer.Animation.Animator.prototype._loop
+         * @description _loop。
          */
         this._loop = loop || false;
 
         /**
-         * Property: _getter
-         * {Function}
+         * @member {function} uperMap.LevelRenderer.Animation.Animator.prototype._getter
+         * @description _getter。
          */
         this._getter = getter || _defaultGetter;
 
         /**
-         * Property: _setter
-         * {Function}
+         * @member {function} uperMap.LevelRenderer.Animation.Animator.prototype._setter
+         * @description _setter。
          */
         this._setter = setter || _defaultSetter;
 
         /**
-         * Property: _clipCount
-         * {Number}
+         * @member {number} uperMap.LevelRenderer.Animation.Animator.prototype._clipCount
+         * @description _clipCount。
          */
         this._clipCount = 0;
 
         /**
-         * Property: _delay
-         * {Number}
+         * @member {number} uperMap.LevelRenderer.Animation.Animator.prototype._delay
+         * @description _delay。
          */
         this._delay = 0;
 
         /**
-         * Property: _doneList
-         * {Array}
+         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._doneList
+         * @description _doneList。
          */
         this._doneList = [];
 
         /**
-         * Property: _onframeList
-         * {Array}
+         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._onframeList
+         * @description _onframeList。
          */
         this._onframeList = [];
 
         /**
-         * Property: _clipList
-         * {Array}
+         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._clipList
+         * @description _clipList。
          */
         this._clipList = [];
         this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.Animator";
@@ -36051,15 +35476,11 @@ var Animator = exports.Animator = function () {
     }
 
     /**
-     * Method: when
-     * 设置动画关键帧
-     *
-     * Parameters:
-     * time - {Number} 关键帧时间，单位是ms
-     * props - {Object} 关键帧的属性值，key-value表示
-     *
-     * Returns:
-     * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+     * @function SuperMap.LevelRenderer.Animation.Animator.prototype.when
+     * @description 设置动画关键帧
+     * @param {number} time - 关键帧时间，单位是ms
+     * @param {Object} props - 关键帧的属性值，key-value表示
+     * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
      */
 
 
@@ -36089,14 +35510,10 @@ var Animator = exports.Animator = function () {
         }
 
         /**
-         * Method: during
-         * 添加动画每一帧的回调函数
-         *
-         * Parameters:
-         * callback - {Function} callback
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+         * @function SuperMap.LevelRenderer.Animation.Animator.prototype.during
+         * @description 添加动画每一帧的回调函数
+         * @param {RequestCallback} callback - 回调函数
+         * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
          */
 
     }, {
@@ -36107,14 +35524,10 @@ var Animator = exports.Animator = function () {
         }
 
         /**
-         * Method: start
-         * 开始执行动画
-         *
-         * Parameters:
-         * easing - {String|Function} 动画缓动函数。详见：<SuperMap.LevelRenderer.Animation.easing>。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+         * @function SuperMap.LevelRenderer.Animation.Animator.prototype.start
+         * @description 开始执行动画
+         * @param {(string|function)} easing - 动画缓动函数。详见：<{@link SuperMap.LevelRenderer.Animation.easing}>。
+         * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
          */
 
     }, {
@@ -36286,8 +35699,8 @@ var Animator = exports.Animator = function () {
         }
 
         /**
-         * Method: stop
-         * 停止动画
+         * @function SuperMap.LevelRenderer.Animation.Animator.prototype.stop
+         * @description 停止动画
          */
 
     }, {
@@ -36301,14 +35714,10 @@ var Animator = exports.Animator = function () {
         }
 
         /**
-         * Method: delay
-         * 设置动画延迟开始的时间
-         *
-         * Parameters:
-         * time - {Number} time 单位ms
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+         * @function SuperMap.LevelRenderer.Animation.Animator.prototype.delay
+         * @description 设置动画延迟开始的时间
+         * @param {number} time - 时间，单位ms
+         * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
          */
 
     }, {
@@ -36319,14 +35728,10 @@ var Animator = exports.Animator = function () {
         }
 
         /**
-         * Method: done
-         * 添加动画结束的回调
-         *
-         * Parameters:
-         * cb - {Function} Function
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Animation.Animator>} Animator
+         * @function SuperMap.LevelRenderer.Animation.Animator.prototype.done
+         * @description 添加动画结束的回调
+         * @param {function} cb - Function
+         * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator
          */
 
     }, {
@@ -36372,89 +35777,67 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Handler
  * @category Visualization Theme
- * Handler 控制模块。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Eventful>
+ * @classdesc Handler控制模块。
+ * @extends {SuperMap.LevelRenderer.Eventful}
  */
 var Handler = exports.Handler = function (_Eventful) {
     _inherits(Handler, _Eventful);
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Handler
-     * 构造函数。
-     *
-     * Parameters:
-     * root - {HTMLElement} 绘图区域。
-     * storage - {<SuperMap.LevelRenderer.Storage>} Storage 实例。
-     * painter - {<SuperMap.LevelRenderer.Painter>} Painter 实例。
-     *
+     * @function SuperMap.LevelRenderer.Handler.constructor
+     * @description 构造函数。
+     * @param {HTMLElement} root - 绘图区域</br>
+     * @param {SuperMap.LevelRenderer.Storage} storage - Storage 实例</br>
+     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例</br>
      */
     function Handler(root, storage, painter) {
         _classCallCheck(this, Handler);
 
         /**
-         * Property: root
-         * {HTMLElement} 绘图区域。
-         *
+         * @member {HTMLElement} SuperMap.LevelRenderer.Handler.prototype.root
+         * @description 绘图区域
          */
         var _this = _possibleConstructorReturn(this, (Handler.__proto__ || Object.getPrototypeOf(Handler)).call(this, root, storage, painter));
 
         _this.root = root;
-
         /**
-         * Property: storage
-         * {<SuperMap.LevelRenderer.Storage>} Storage 实例。
-         *
+         * @member {SuperMap.LevelRenderer.Storage} SuperMap.LevelRenderer.Handler.prototype.storage
+         * @description Storage 实例
          */
         _this.storage = storage;
-
         /**
-         * Property: painter
-         * {<SuperMap.LevelRenderer.Painter>} Painter 实例。
-         *
+         * @member {SuperMap.LevelRenderer.Painter} SuperMap.LevelRenderer.Handler.prototype.Painter
+         * @description Painter 实例
          */
         _this.painter = painter;
-
         /**
-         * Property: _lastX
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._lastX=0]
+         * @description 上一次鼠标位置x坐标值
          */
         _this._lastX = 0;
-
         /**
-         * Property: _lastY
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._lastY=0]
+         * @description 上一次鼠标位置y坐标值
          */
         _this._lastY = 0;
-
         /**
-         * Property: _mouseX
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._mouseX=0]
+         * @description 当前鼠标位置x坐标值
          */
         _this._mouseX = 0;
-
         /**
-         * Property: _mouseY
-         * {Number} 默认值：0。
-         *
+         * @member {number} [SuperMap.LevelRenderer.Handler.prototype._mouseY=0]
+         * @description 当前鼠标位置y坐标值
          */
         _this._mouseY = 0;
-
         /**
-         * Property: _findHover
-         * {Function} 查找 Hover 图形。
-         *
+         * @member {Function} SuperMap.LevelRenderer.Handler.prototype._findHover
+         * @description 查找 Hover 图形
          */
         _this._findHover = null;
-
         /**
-         * Property: _domHover
-         * {Object} 高亮 DOM。
-         *
+         * @member {Object} SuperMap.LevelRenderer.Handler.prototype._domHover
+         * @description 高亮 DOM
          */
         _this._domHover = null;
 
@@ -36928,8 +36311,8 @@ var Handler = exports.Handler = function (_Eventful) {
          *
          * Parameters:
          * shape - {Object} 图形。
-         * x - {Number} 鼠标 x。
-         * y - {Number} 鼠标 y。
+         * x - {number} 鼠标 x。
+         * y - {number} 鼠标 y。
          *
          * Returns:
          * {Boolean} 是否找到图形。
@@ -37020,8 +36403,8 @@ var Handler = exports.Handler = function (_Eventful) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Handler.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为null。
      */
 
 
@@ -37039,15 +36422,11 @@ var Handler = exports.Handler = function (_Eventful) {
         }
 
         /**
-         * APIMethod: on
-         * 自定义事件绑定。
-         *
-         * Parameters:
-         * eventName - {string} 事件名称，resize、hover、drag 等。
-         * handler - {Function} 响应函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Handler>} this。
+         * @function SuperMap.LevelRenderer.Handler.prototype.on
+         * @description 自定义事件绑定。
+         * @param {string} eventName - 事件名称，resize、hover、drag等。
+         * @param {function} handler - 响应函数。
+         * @returns {SuperMap.LevelRenderer.Handler} this。
          */
 
     }, {
@@ -37058,15 +36437,11 @@ var Handler = exports.Handler = function (_Eventful) {
         }
 
         /**
-         * APIMethod: un
-         * 自定义事件解除绑定。
-         *
-         * Parameters:
-         * eventName - {string} 事件名称，resize、hover、drag 等。
-         * handler - {Function} 响应函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Handler>} this。
+         * @function SuperMap.LevelRenderer.Handler.prototype.un
+         * @description 自定义事件解除绑定。
+         * @param {string} eventName - 事件名称，resize、hover、drag等。
+         * @param {function} handler - 响应函数。
+         * @returns {SuperMap.LevelRenderer.Handler} this。
          */
 
     }, {
@@ -37077,13 +36452,10 @@ var Handler = exports.Handler = function (_Eventful) {
         }
 
         /**
-         * APIMethod: trigger
-         * 事件触发。
-         *
-         * Parameters:
-         * eventName - {string} 事件名称，resize、hover、drag 等。
-         * eventArgs - {event} dom事件对象。
-         *
+         * @function SuperMap.LevelRenderer.Handler.prototype.trigger
+         * @description 事件触发。
+         * @param {string} eventName - 事件名称，resize、hover、drag等。
+         * @param {event} eventArgs - dom事件对象。
          */
 
     }, {
@@ -37105,8 +36477,8 @@ var Handler = exports.Handler = function (_Eventful) {
         }
 
         /**
-         * APIMethod: dispose
-         * 释放，解绑所有事件。
+         * @function SuperMap.LevelRenderer.Handler.prototype.dispose
+         * @description 释放，解绑所有事件。
          */
 
     }, {
@@ -37484,10 +36856,10 @@ var Handler = exports.Handler = function (_Eventful) {
         }
 
         // SMIC-方法扩展 - start
+
         /**
-         * Method: getLastHoverOne
-         * 获取单个高亮图形。
-         *
+         * @function SuperMap.LevelRenderer.Handler.prototype.getLastHoverOne
+         * @description 获取单个高亮图形
          */
 
     }, {
@@ -37542,74 +36914,73 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Painter
  * @category Visualization Theme
- * Painter 绘图模块。
+ * @classdesc Painter 绘图模块。
  */
 var Painter = exports.Painter = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Painter
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Painter.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * root - {HTMLElement} 绘图区域（DIV）。
-     * storage - {<SuperMap.LevelRenderer.Storage>} Storage 实例。
+     * @param {HTMLElement} root - 绘图区域（DIV）。
+     * @param {SuperMap.LevelRenderer.Storage} storage - Storage 实例。
      *
      */
     function Painter(root, storage) {
         _classCallCheck(this, Painter);
 
         /**
-         * APIProperty: root
-         * {HTMLElement} 绘图容器。
+         * @member {HTMLElement} SuperMap.LevelRenderer.Painter.prototype.root
+         * @description  绘图容器。
          *
          */
         this.root = root;
 
         /**
-         * APIProperty: storage
-         * {Array} 图形仓库。
+         * @member {Array} SuperMap.LevelRenderer.Painter.prototype.storage
+         * @description 图形仓库。
          *
          */
         this.storage = storage;
 
         /**
-         * Property: _domRoot
-         * {HTMLElement} 容器根 dom 对象。
+         * @member {HTMLElement} SuperMap.LevelRenderer.Painter.prototype._domRoot
+         * @description 容器根 dom 对象。
          *
          */
         this._domRoot = null;
 
         /**
-         * Property: _layers
-         * {Object} 绘制层对象。
+         * @member {Object} SuperMap.LevelRenderer.Painter.prototype._layers
+         * @description 绘制层对象。
          *
          */
         this._layers = {};
 
         /**
-         * Property: _zlevelList
-         * {Array} 层列表。
+         * @member {Array} SuperMap.LevelRenderer.Painter.prototype._zlevelList
+         * @description  层列表。
          *
          */
         this._zlevelList = [];
 
         /**
-         * Property: _layerConfig
-         * {Object} 绘制层配置对象。
+         * @member {Object} SuperMap.LevelRenderer.Painter.prototype._layerConfig
+         * @description 绘制层配置对象。
          *
          */
         this._layerConfig = {};
 
         /**
-         * Property: _bgDom
-         * {Object} 背景层 Canvas （Dom）。
+         * @member {Object} SuperMap.LevelRenderer.Painter.prototype._bgDom
+         * @description 背景层 Canvas （Dom）。
          *
          */
         this._bgDom = null;
 
         /**
-         * Property: shapeToImage
-         * {Function} 形状转图像函数。
+         * @member {Function} SuperMap.LevelRenderer.Painter.prototype.shapeToImage
+         * @description 形状转图像函数。
          *
          */
         this.shapeToImage = null;
@@ -37673,8 +37044,8 @@ var Painter = exports.Painter = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Painter.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -37689,16 +37060,11 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: render
-         * 渲染。
+         * @function SuperMap.LevelRenderer.Painter.prototype.render
+         * @description 渲染。首次绘图，创建各种 dom 和 context。
          *
-         * 首次绘图，创建各种 dom 和 context。
-         *
-         * Parameters:
-         * callback - {Function} 绘画结束后的回调函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @param {Function} callback - 绘画结束后的回调函数。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -37711,15 +37077,12 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: refresh
-         * 刷新。
+         * @function SuperMap.LevelRenderer.Painter.prototype.refresh
+         * @description 刷新。
          *
-         * Parameters:
-         * callback - {Function} 刷新结束后的回调函数。
-         * paintAll - {Boolean} 强制绘制所有 shape。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @param {Function} callback - 刷新结束后的回调函数。
+         * @param {boolean} paintAll - 强制绘制所有 shape。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -37852,14 +37215,11 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: getLayer
-         * 获取 zlevel 所在层，如果不存在则会创建一个新的层。
+         * @function SuperMap.LevelRenderer.Painter.prototype.getLayer
+         * @description 获取 zlevel 所在层，如果不存在则会创建一个新的层。
          *
-         * Parameters:
-         * zlevel - {Number} zlevel。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @param {number} zlevel - zlevel。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -37905,11 +37265,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * Method: getLayers
-         * 获取所有已创建的层。
-         *
-         * Returns:
-         * {Array{<Painter.Layer>}} 已创建的层
+         * @function SuperMap.LevelRenderer.Painter.prototype.getLayers
+         * @description 获取所有已创建的层。
+         * @return {Array.<Painter.Layer>} 已创建的层
          */
 
     }, {
@@ -37961,15 +37319,12 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: refreshShapes
-         * 更新的图形元素列表。
+         * @function SuperMap.LevelRenderer.Painter.prototype.refreshShapes
+         * @description 更新的图形元素列表。
          *
-         * Parameters:
-         * shapeList - {Number} 需要更新的图形元素列表。
-         * callback - {Number} 视图更新后回调函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @param {number} shapeList - 需要更新的图形元素列表。
+         * @param {number} callback - 视图更新后回调函数。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -37985,11 +37340,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: clear
-         * 清除 hover 层外所有内容。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @function SuperMap.LevelRenderer.Painter.prototype.clear
+         * @description 清除 hover 层外所有内容。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -38006,22 +37359,19 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: modLayer
-         * 修改指定 zlevel 的绘制参数。
+         * @function SuperMap.LevelRenderer.Painter.prototype.modLayer
+         * @description 修改指定 zlevel 的绘制参数。
          *
-         * Parameters:
-         * zlevel - {String} zlevel。
-         * config - {Object} 配置对象。可用属性如下：
-         *
-         * Symbolizer properties:
-         * clearColor - {String} 每次清空画布的颜色。默认值：0。
-         * motionBlur - {Boolean} 是否开启动态模糊。默认值：false。
-         * lastFrameAlpha - {Number}  在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
-         * position - {Array{Number}}  层的平移。
-         * rotation - {Array{Number}}  层的旋转。
-         * scale - {Array{Number}}  层的缩放。
-         * zoomable - {Boolean} 层是否支持鼠标缩放操作。默认值：false。
-         * panable - {Boolean} 层是否支持鼠标平移操作。默认值：false。
+         * @param {string} zlevel - zlevel。
+         * @param {Object} config - 配置对象。
+         * @param {string} [config.clearColor=0] - 每次清空画布的颜色。
+         * @param {boolean} [config.motionBlur=false] - 是否开启动态模糊。
+         * @param {number} [config.lastFrameAlpha=0.7] - 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
+         * @param {Array.{number}} config.position - 层的平移。
+         * @param {Array.{number}} config.rotation - 层的旋转。
+         * @param {Array.{number}} config.scale - 层的缩放。
+         * @param {boolean} config.zoomable - 层是否支持鼠标缩放操作。默认值：false。
+         * @param {boolean} config.panable - 层是否支持鼠标平移操作。默认值：false。
          *
          */
 
@@ -38044,12 +37394,10 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: delLayer
-         * 删除指定层。
+         * @function SuperMap.LevelRenderer.Painter.prototype.delLayer
+         * @description 删除指定层。
          *
-         * Parameters:
-         * zlevel - {Ntring} 层所在的 zlevel。
-         *
+         * @param {string} zlevel - 层所在的 zlevel。
          */
 
     }, {
@@ -38072,11 +37420,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: refreshHover
-         * 刷新 hover 层。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @function SuperMap.LevelRenderer.Painter.prototype.refreshHover
+         * @description 刷新 hover 层。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -38093,11 +37439,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: clearHover
-         * 清除 hover 层所有内容。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @function SuperMap.LevelRenderer.Painter.prototype.clearHover
+         * @description 清除 hover 层所有内容。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -38110,11 +37454,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: resize
-         * 区域大小变化后重绘。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Painter>} this。
+         * @function SuperMap.LevelRenderer.Painter.prototype.resize
+         * @description 区域大小变化后重绘。
+         * @return {SuperMap.LevelRenderer.Painter} this。
          */
 
     }, {
@@ -38148,11 +37490,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: clearLayer
-         * 清除指定的一个层。
-         *
-         * Parameters:
-         * zLevel - {Number} 层。
+         * @function SuperMap.LevelRenderer.Painter.prototype.clearLayer
+         * @description 清除指定的一个层。
+         * @param {number} zLevel - 层。
          */
 
     }, {
@@ -38165,8 +37505,8 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: dispose
-         * 释放。
+         * @function SuperMap.LevelRenderer.Painter.prototype.dispose
+         * @description 释放。
          *
          */
 
@@ -38182,9 +37522,8 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * Method: getDomHover
-         * 获取 Hover 层的 Dom。
-         *
+         * @function SuperMap.LevelRenderer.Painter.prototype.getDomHover
+         * @description 获取 Hover 层的 Dom。
          */
 
     }, {
@@ -38194,16 +37533,12 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: toDataURL
-         * 图像导出。
-         *
-         * Parameters:
-         * type - {String} 图片类型。
-         * backgroundColor - {String} 背景色。默认值：'#fff'。
-         * args - {Object}。
-         *
-         * Returns:
-         * {String} 图片的Base64 url。
+         * @function SuperMap.LevelRenderer.Painter.prototype.toDataURL
+         * @description 图像导出。
+         * @param {string} type - 图片类型。
+         * @param {string} backgroundColor - 背景色。默认值：'#fff'。
+         * @param {Object} args
+         * @return {string} 图片的Base64 url。
          */
 
     }, {
@@ -38246,11 +37581,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: getWidth
-         * 获取绘图区域宽度。
-         *
-         * Returns:
-         * {Number} 绘图区域宽度。
+         * @function SuperMap.LevelRenderer.Painter.prototype.getWidth
+         * @description  获取绘图区域宽度。
+         * @return {number} 绘图区域宽度。
          */
 
     }, {
@@ -38260,11 +37593,9 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * APIMethod: getHeight
-         * 获取绘图区域高度。
-         *
-         * Returns:
-         * {Number} 绘图区域高度。
+         * @function SuperMap.LevelRenderer.Painter.prototype.getHeight
+         * @description 获取绘图区域高度。
+         * @return {number} 绘图区域高度。
          */
 
     }, {
@@ -38409,11 +37740,9 @@ var Painter = exports.Painter = function () {
 
         // SMIC-方法扩展 - start
         /**
-         * APIMethod: updateHoverLayer
-         * 更新设置显示高亮图层。
-         *
-         * Parameters:
-         * shapes - {Array} 图形数组。
+         * @function SuperMap.LevelRenderer.Painter.prototype.updateHoverLayer
+         * @description 更新设置显示高亮图层。
+         * @param {Array} shapes - 图形数组。
          */
 
     }, {
@@ -38434,16 +37763,13 @@ var Painter = exports.Painter = function () {
         }
 
         /**
-         * Method: createDom
-         * 创建 Dom。
+         * @function SuperMap.LevelRenderer.Painter.prototype.createDom
+         * @description 创建 Dom。
          *
-         * Parameters:
-         * id - {String} Dom id
-         * type - {String} Dom type
-         * painter - {<SuperMap.LevelRenderer.Painter>} Painter 实例。
-         *
-         * Returns:
-         * {Object} Dom
+         * @param {string} id - Dom id
+         * @param {string} type - Dom type
+         * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例。
+         * @return {Object} Dom
          */
 
     }], [{
@@ -38475,10 +37801,8 @@ var Painter = exports.Painter = function () {
 /**
  * @private
  * @class Painter.Layer
- * 绘制层类。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Transformable>
+ * @classdesc 绘制层类。
+ * @extends SuperMap.LevelRenderer.Transformable
  */
 
 
@@ -38486,113 +37810,112 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
     _inherits(PaintLayer, _Transformable);
 
     /**
-     * Constructor: Painter.Layer
-     * 构造函数。
+     * @function Painter.Layer.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * id - {String} id。
-     * painter - {<SuperMap.LevelRenderer.Painter>} Painter 实例。
+     * @param {string} id - id。
+     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例。
      *
      */
     function PaintLayer(id, painter) {
         _classCallCheck(this, PaintLayer);
 
         /**
-         * Property: dom
-         * {Object} dom。
+         * @member {Object} Painter.Layer.prototype.dom
+         * @description  dom。
          */
         var _this = _possibleConstructorReturn(this, (PaintLayer.__proto__ || Object.getPrototypeOf(PaintLayer)).call(this, id, painter));
 
         _this.dom = null;
 
         /**
-         * Property: domBack
-         * {Object} domBack。
+         * @member {Object} Painter.Layer.prototype.domBack
+         * @description domBack。
          */
         _this.domBack = null;
 
         /**
-         * Property: ctxBack
-         * {Object} ctxBack。
+         * @member {Object} Painter.Layer.prototype.ctxBack
+         * @description ctxBack。
          */
         _this.ctxBack = null;
 
         /**
-         * Property: painter
-         * {<SuperMap.LevelRenderer.Painter>} painter。
+         * @member {SuperMap.LevelRenderer.Painter} Painter.Layer.prototype.painter
+         * @description painter。
          */
         _this.painter = painter;
 
         /**
-         * Property: unusedCount
-         * {Number} unusedCount。
+         * @member {number} Painter.Layer.prototype.unusedCount
+         * @description unusedCount。
          */
         _this.unusedCount = 0;
 
         /**
-         * Property: config
-         * {Object} config。
+         * @member {Object} Painter.Layer.prototype.config
+         * @description  config。
          */
         _this.config = null;
 
         /**
-         * Property: dirty
-         * {Boolean} dirty。
+         * @member {boolean} Painter.Layer.prototype.dirty
+         * @description dirty。
          */
         _this.dirty = true;
 
         /**
-         * Property: elCount
-         * {Number} elCount。
+         * @member {number} Painter.Layer.prototype.elCount
+         * @description elCount。
          */
         _this.elCount = 0;
 
         // Configs
         /**
-         * Property: clearColor
-         * {String} 每次清空画布的颜色。默认值：0；
+         * @member {string} Painter.Layer.prototype.clearColor
+         * @description 每次清空画布的颜色。默认值：0；
          */
         _this.clearColor = 0;
 
         /**
-         * Property: motionBlur
-         * {Boolean} 是否开启动态模糊。默认值：false；
+         * @member {boolean} Painter.Layer.prototype.motionBlur
+         * @description 是否开启动态模糊。默认值：false；
          */
         _this.motionBlur = false;
 
         /**
-         * Property: lastFrameAlpha
-         * {Number} 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显
+         * @member {number} Painter.Layer.prototype.lastFrameAlpha
+         * @description 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显
          */
         _this.lastFrameAlpha = 0.7;
 
         /**
-         * Property: zoomable
-         * {Boolean} 层是否支持鼠标平移操作。默认值：false；
+         * @member {boolean} Painter.Layer.prototype.zoomable
+         * @description 层是否支持鼠标平移操作。默认值：false；
          */
         _this.zoomable = false;
 
         /**
-         * Property: panable
-         * {Boolean} 层是否支持鼠标缩放操作。默认值：false；
+         * @member {boolean} Painter.Layer.prototype.panable
+         * @description 层是否支持鼠标缩放操作。默认值：false；
          */
         _this.panable = false;
 
         /**
-         * Property: maxZoom
-         * {Number} maxZoom。默认值：Infinity。
+         * @member {number} Painter.Layer.prototype.maxZoom
+         * @description maxZoom。默认值：Infinity。
          */
         _this.maxZoom = Infinity;
 
         /**
-         * Property: minZoom
-         * {Number} minZoom。默认值：0。
+         * @member {number} Painter.Layer.prototype.minZoom
+         * @description minZoom。默认值：0。
          */
         _this.minZoom = 0;
 
         /**
-         * Property: ctx
-         * {Object} Cavans 上下文。
+         * @member {number} Painter.Layer.prototype.ctx
+         * @description Canvas 上下文。
          */
         _this.ctx = null;
         _this.dom = Painter.createDom(_Util.Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
@@ -38610,8 +37933,8 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
     }
 
     /**
-     * Method: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function Painter.Layer.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -38639,8 +37962,8 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
         }
 
         /**
-         * Method: initContext
-         * 初始化 Canvan 2D 上下文。
+         * @function Painter.Layer.prototype.initContext
+         * @description 初始化 Canvan 2D 上下文。
          */
 
     }, {
@@ -38653,8 +37976,8 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
         }
 
         /**
-         * Method: createBackBuffer
-         * 创建备份缓冲。
+         * @function Painter.Layer.prototype.createBackBuffer
+         * @description  创建备份缓冲。
          */
 
     }, {
@@ -38669,12 +37992,11 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
         }
 
         /**
-         * Method: resize
-         * 改变大小。
+         * @function Painter.Layer.prototype.resize
+         * @description 改变大小。
          *
-         * Parameters:
-         * width - {Number} 宽。
-         * height - {Number} 高。
+         * @param {number} width - 宽。
+         * @param {number} height - 高。
          */
 
     }, {
@@ -38701,8 +38023,8 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
         }
 
         /**
-         * Method: clear
-         * 清空该层画布。
+         * @function Painter.Layer.prototype.clear
+         * @description 清空该层画布。
          */
 
     }, {
@@ -38779,13 +38101,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Group
  * @category Visualization Theme
- * Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Transformable>
+ * @classdesc Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
+ * @extends {SuperMap.LevelRenderer.Transformable}
  *
  * (code)
  *     var g = new SuperMap.LevelRenderer.Group();
@@ -38808,12 +38127,9 @@ var Group = exports.Group = function (_SuperMap$mixin) {
     _inherits(Group, _SuperMap$mixin);
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Group
-     * 构造函数。
-     *
-     * Parameters:
-     * options - {Array} Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
-     *
+     * @function SuperMap.LevelRenderer.Group.prototype.constructor
+     * @description 构造函数。
+     * @param {Array} options - Group 的配置（options）项，可以是 Group 的自有属性，也可以是自定义的属性。
      */
     function Group(options) {
         _classCallCheck(this, Group);
@@ -38822,50 +38138,46 @@ var Group = exports.Group = function (_SuperMap$mixin) {
 
         options = options || {};
         /**
-         * APIProperty: id
-         * {String} Group 的唯一标识。
+         * @member {string} SuperMap.LevelRenderer.Group.prototype.id
+         * @description Group 的唯一标识。
          */
         _this.id = null;
 
         /**
-         * APIProperty: type
-         * {Readonly{String}} 类型，默认值：'group'。
+         * @readonly
+         * @member {string} [SuperMap.LevelRenderer.Group.prototype.type='group']
+         * @description 类型。
          */
         _this.type = 'group';
 
         //http://www.w3.org/TR/2dcontext/#clipping-region
         /**
-         * APIProperty: clipShape
-         * {String} 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
-         *
+         * @member {string} SuperMap.LevelRenderer.Group.prototype.clipShape
+         * @description 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
          */
         _this.clipShape = null;
 
         /**
-         * Property: _children
-         * {Array}
-         *
+         * @member {Array} SuperMap.LevelRenderer.Group.prototype._children
+         * @description _children。
          */
         _this._children = [];
 
         /**
-         * Property: _storage
-         * {Array}
-         *
+         * @member {Array} SuperMap.LevelRenderer.Group.prototype._storage
+         * @description _storage。
          */
         _this._storage = null;
 
         /**
-         * Property: __dirty
-         * {Boolean} 默认值：true。
-         *
+         * @member {boolean} [SuperMap.LevelRenderer.Group.prototype.__dirty=true]
+         * @description __dirty。
          */
         _this.__dirty = true;
 
         /**
-         * APIProperty: ignore
-         * {Boolean} 是否忽略该 Group 及其所有子节点。默认值：false。
-         *
+         * @member {boolean} [SuperMap.LevelRenderer.Group.prototype.ignore=false]
+         * @description 是否忽略该 Group 及其所有子节点。
          */
         _this.ignore = false;
         _Util.Util.extend(_this, options);
@@ -38875,8 +38187,8 @@ var Group = exports.Group = function (_SuperMap$mixin) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Group.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -38895,11 +38207,9 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: children
-         * 复制并返回一份新的包含所有儿子节点的数组。
-         *
-         * Returns:
-         * {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+         * @function SuperMap.LevelRenderer.Group.prototype.children
+         * @description 复制并返回一份新的包含所有儿子节点的数组。
+         * @returns {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
          */
 
     }, {
@@ -38909,14 +38219,10 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: childAt
-         * 获取指定 index 的儿子节点。
-         *
-         * Parameters:
-         * idx - {Number} 节点索引。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Shape>} 图形。
+         * @function SuperMap.LevelRenderer.Group.prototype.childAt
+         * @description 获取指定 index 的儿子节点
+         * @param {number} idx - 节点索引。
+         * @returns {SuperMap.LevelRenderer.Shape} 图形。
          */
 
     }, {
@@ -38926,12 +38232,9 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: addChild
-         * 添加子节点，可以是 Shape 或者 Group。
-         *
-         * Parameters:
-         * child - {<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>} 节点图形。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.addChild
+         * @description 添加子节点，可以是 Shape 或者 Group。
+         * @param {(SuperMap.LevelRenderer.Shape|SuperMap.LevelRenderer.Group)} child - 节点图形。
          */
         // TODO Type Check
 
@@ -38963,12 +38266,9 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: removeChild
-         * 移除子节点。
-         *
-         * Parameters:
-         * child - {<SuperMap.LevelRenderer.Shape>} 需要移除的子节点图形。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.removeChild
+         * @description 移除子节点。
+         * @param {SuperMap.LevelRenderer.Shape} child - 需要移除的子节点图形。
          */
 
     }, {
@@ -38990,13 +38290,10 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: eachChild
-         * 遍历所有子节点。
-         *
-         * Parameters:
-         * cb - {Function} 回调函数。
-         * context - {Object} 上下文。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.eachChild
+         * @description 遍历所有子节点。
+         * @param {function} cb - 回调函数。
+         * @param {Object} context - 上下文。
          */
 
     }, {
@@ -39014,13 +38311,10 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * APIMethod: traverse
-         * 深度优先遍历所有子孙节点。
-         *
-         * Parameters:
-         * cb - {Function} 回调函数。
-         * context - {Object} 上下文。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.traverse
+         * @description 深度优先遍历所有子孙节点。
+         * @param {function} cb - 回调函数。
+         * @param {Object} context - 上下文。
          */
 
     }, {
@@ -39042,12 +38336,9 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: addChildrenToStorage
-         * 把子图形添加到仓库。
-         *
-         * Parameters:
-         * storage - {<SuperMap.LevelRenderer.Storage>} 图形仓库。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.addChildrenToStorage
+         * @description 把子图形添加到仓库。
+         * @param {SuperMap.LevelRenderer.Storage} storage - 图形仓库。
          */
 
     }, {
@@ -39063,12 +38354,9 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: delChildrenFromStorage
-         * 从仓库把子图形删除。
-         *
-         * Parameters:
-         * storage - {<SuperMap.LevelRenderer.Storage>} 图形仓库。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.delChildrenFromStorage
+         * @description 从仓库把子图形删除。
+         * @param {SuperMap.LevelRenderer.Storage} storage - 图形仓库。
          */
 
     }, {
@@ -39084,9 +38372,8 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         }
 
         /**
-         * Method: modSelf。
-         * 是否  修改。
-         *
+         * @function SuperMap.LevelRenderer.Group.prototype.modSelf
+         * @description 是否修改。
          */
 
     }, {
@@ -39123,48 +38410,47 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Storage
  * @category Visualization Theme
- * 内容（图像）仓库 (M) 。
+ * @classdesc 内容（图像）仓库 (M) 。
  */
 var Storage = exports.Storage = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Storage
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Storage.constructor
+     * @description 构造函数。
      */
     function Storage() {
         _classCallCheck(this, Storage);
 
         /**
-         * Property: _elements
-         * {Object} 所有常规形状，id 索引的 map。
-         *
+         * @member {Object} SuperMap.LevelRenderer.Storage.prototype._elements
+         * @description 所有常规形状，id 索引的 map。
          */
         this._elements = {};
 
         /**
-         * Property: _hoverElements
-         * {Array} 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
+         * @member {Array} SuperMap.LevelRenderer.Storage.prototype._hoverElements
+         * @description 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
          *
          */
         this._hoverElements = [];
 
         /**
-         * Property: _roots
-         * {Array} _roots。
+         * @member {Array} SuperMap.LevelRenderer.Storage.prototype._roots
+         * @description _roots。
          *
          */
         this._roots = [];
 
         /**
-         * Property: _shapeList
-         * {Array}  _shapeList。
+         * @member {Array} SuperMap.LevelRenderer.Storage.prototype._shapeList
+         * @description _shapeList。
          *
          */
         this._shapeList = [];
 
         /**
-         * Property: _shapeListOffset
-         * {Number}  _shapeListOffset。默认值：0。
+         * @member {number} SuperMap.LevelRenderer.Storage.prototype._shapeListOffset
+         * @description _shapeListOffset。默认值：0。
          *
          */
         this._shapeListOffset = 0;
@@ -39173,8 +38459,8 @@ var Storage = exports.Storage = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Storage.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -39187,20 +38473,15 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: iterShape
-         * 遍历迭代器。
-         *
-         * Parameters:
-         * fun - {Function} 迭代回调函数，return true终止迭代。
-         * option - {Object} 迭代参数，缺省为仅降序遍历普通层图形。可设属性如下：
-         *
-         * Symbolizer properties:
-         * hover - {Boolean} 是否是高亮层图形。默认值：true。
-         * normal - {String} 是否是普通层图形，迭代时是否指定及z轴顺序。可设值：'down' ，'up'；默认值："down"。
-         * update - {Boolean} 是否在迭代前更新形状列表。默认值：false。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @function SuperMap.LevelRenderer.Storage.prototype.iterShape
+         * @description 遍历迭代器。
+         * 
+         * @param {Function} fun - 迭代回调函数，return true终止迭代。
+         * @param {Object} option - 迭代参数，缺省为仅降序遍历普通层图形。
+         * @param {boolean} [hover=true] - 是否是高亮层图形。
+         * @param {string} [normal='down'] - 是否是普通层图形，迭代时是否指定及z轴顺序。可设值：'down' ，'up'。
+         * @param {boolean} [update=false] - 是否在迭代前更新形状列表。
+         * @return {SuperMap.LevelRenderer.Storage} this。
          */
 
     }, {
@@ -39260,14 +38541,9 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: getHoverShapes
-         * 返回 hover 层的形状数组。
-         *
-         * Parameters:
-         * update - {Boolean} 是否在返回前更新图形的变换。默认值：false。
-         *
-         * Returns:
-         * {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+         * @function SuperMap.LevelRenderer.Storage.prototype.getHoverShapes
+         * @param {boolean} [update=false] - 是否在返回前更新图形的变换。
+         * @return {Array.<SuperMap.LevelRenderer.Shape>} 图形数组。
          */
 
     }, {
@@ -39300,14 +38576,11 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: getShapeList
-         * 返回所有图形的绘制队列。
+         * @function SuperMap.LevelRenderer.Storage.prototype.getShapeList
+         * @description 返回所有图形的绘制队列。
          *
-         * Parameters:
-         * update - {Boolean} 是否在返回前更新该数组。默认值：false。  详见：<SuperMap.LevelRenderer.Shape> updateShapeList。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Shape>} 图形。
+         * @param {boolean} [update=false] - 是否在返回前更新该数组。  详见：<SuperMap.LevelRenderer.Shape> updateShapeList。
+         * @return {SuperMap.LevelRenderer.Shape} 图形。
          */
 
     }, {
@@ -39320,10 +38593,8 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: updateShapeList
-         * 更新图形的绘制队列。
-         * 每次绘制前都会调用，该方法会先深度优先遍历整个树，更新所有Group和Shape的变换并且把所有可见的Shape保存到数组中，
-         * 最后根据绘制的优先级（zlevel > z > 插入顺序）排序得到绘制队列。
+         * @function SuperMap.LevelRenderer.Storage.prototype.updateShapeList
+         * @description 更新图形的绘制队列。每次绘制前都会调用，该方法会先深度优先遍历整个树，更新所有Group和Shape的变换并且把所有可见的Shape保存到数组中，最后根据绘制的优先级（zlevel > z > 插入顺序）排序得到绘制队列。 
          */
 
     }, {
@@ -39346,8 +38617,9 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * Method: _updateAndAddShape
-         * 跟新并添加图形。
+         * @function SuperMap.LevelRenderer.Storage.prototype._updateAndAddShape
+         * @description 更新并添加图形。
+         * 
          */
 
     }, {
@@ -39394,15 +38666,12 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: mod
-         * 修改图形(Shape)或者组(Group)。
-         *
-         * Parameters:
-         * elId - {String} 唯一标识。
-         * params - {Object} 参数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @function SuperMap.LevelRenderer.Storage.prototype.mod
+         * @description 修改图形(Shape)或者组(Group)。
+         * 
+         * @param {String} elId - 唯一标识。
+         * @param {Object} params - 参数。
+         * @return {SuperMap.LevelRenderer.Storage} this。
          */
 
     }, {
@@ -39438,16 +38707,12 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: drift
-         * 移动指定的图形(Shape)的位置。
-         *
-         * Parameters:
-         * shapeId - {String} 唯一标识。
-         * dx - {Number}
-         * dy - {Number}
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @function SuperMap.LevelRenderer.Storage.prototype.drift
+         * @description 移动指定的图形(Shape)的位置。
+         * @param {string} shapeId - 唯一标识。
+         * @param {number} dx 
+         * @param {number} dy 
+         * @return {SuperMap.LevelRenderer.Storage} this。
          */
 
     }, {
@@ -39472,14 +38737,10 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: addHover
-         * 添加高亮层数据。
-         *
-         * Parameters:
-         * shape - {<SuperMap.LevelRenderer.Shape>} 图形。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @function SuperMap.LevelRenderer.Storage.prototype.addHover
+         * @description 添加高亮层数据。
+         * @param {SuperMap.LevelRenderer.Shape} shape - 图形。
+         * @return {SuperMap.LevelRenderer.Storage} this。
          */
 
     }, {
@@ -39491,11 +38752,9 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: delHover
-         * 清空高亮层数据。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @function SuperMap.LevelRenderer.Storage.prototype.delHover
+         * @description 清空高亮层数据。
+         * @return {SuperMap.LevelRenderer.Storage} this。 
          */
 
     }, {
@@ -39506,11 +38765,9 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: hasHoverShape
-         * 是否有图形在高亮层里。
-         *
-         * Returns:
-         * {Boolean} 是否有图形在高亮层里。
+         * @function SuperMap.LevelRenderer.Storage.prototype.hasHoverShape
+         * @description 是否有图形在高亮层里。
+         * @return {boolean} 是否有图形在高亮层里。
          */
 
     }, {
@@ -39520,11 +38777,10 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: addRoot
-         * 添加图形(Shape)或者组(Group)到根节点。
-         *
-         * Parameters:
-         * el - {<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>} 图形。
+         * @function SuperMap.LevelRenderer.Storage.prototype.addRoot
+         * @description 添加图形(Shape)或者组(Group)到根节点。
+         * 
+         * @param {(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)} el - 图形。
          *
          */
 
@@ -39540,11 +38796,10 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: delRoot
-         * 删除指定的图形(Shape)或者组(Group)。
+         * @function SuperMap.LevelRenderer.Storage.prototype.delRoot
+         * @description 删除指定的图形(Shape)或者组(Group)。
          *
-         * Parameters:
-         * elId - {Array{String}} 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
+         * @param {Array.{string}} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
          *
          */
 
@@ -39594,14 +38849,11 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: addToMap
-         * 添加图形到 map。
+         * @function SuperMap.LevelRenderer.Storage.prototype.addToMap
+         * @description 添加图形到 map。
          *
-         * Parameters:
-         * el - {<SuperMap.LevelRenderer.Shape>} 图形。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @param {SuperMap.LevelRenderer.Shape} el - 图形。
+         * @return {SuperMap.LevelRenderer.Storage} this。
          */
 
     }, {
@@ -39618,14 +38870,11 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: get
-         * 获取指定图形。
+         * @function SuperMap.LevelRenderer.Storage.prototype.get
+         * @description 获取指定图形。
          *
-         * Parameters:
-         * elId - {String} 图形 id。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Shape>} 图形。
+         * @param {string} elId - 图形 id。
+         * @return {SuperMap.LevelRenderer.Shape} 图形。
          */
 
     }, {
@@ -39635,14 +38884,11 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: delFromMap
-         * 从 map 中删除指定图形。
-         *
-         * Parameters:
-         * elId - {String} 图形id。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Storage>} this。
+         * @function SuperMap.LevelRenderer.Storage.prototype.delFromMap
+         * @description 从 map 中删除指定图形。
+         * 
+         * @param {string} elId - 图形id。
+         * @return {SuperMap.LevelRenderer.Storage} this。
          */
 
     }, {
@@ -39661,8 +38907,8 @@ var Storage = exports.Storage = function () {
         }
 
         /**
-         * APIMethod: dispose
-         * 清空并且释放 Storage。
+         * @function SuperMap.LevelRenderer.Storage.prototype.dispose
+         * @description 清空并且释放 Storage。
          */
 
     }, {
@@ -39705,9 +38951,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @private
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @class SuperMap.LevelRenderer.Render
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @category Visualization Theme
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Render 接口类，对外可用的所有接口都在这里。内部使用
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 非 get 接口统一返回 this 对象，支持链式调用。
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @classdesc Render 接口类，对外可用的所有接口都在这里。内部使用非 get 接口统一返回 this 对象，支持链式调用。
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
@@ -39729,55 +38973,52 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Render = exports.Render = function () {
 
-    /*
-     * Constructor: SuperMap.LevelRenderer.Render
-     * 构造函数。
+    /**
+     * @function SuperMap.LevelRenderer.Render.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * id - {String} 唯一标识。
-     * dom - {HTMLElement} Dom 对象。
+     * @param {string} id - 唯一标识。
+     * @param {HTMLElement} dom - Dom 对象。
      */
     function Render(id, dom) {
         _classCallCheck(this, Render);
 
         /**
-         * Property: id
-         * {String}  唯一标识。
-         *
+         * @member {string} SuperMap.LevelRenderer.Render.prototype.id
+         * @description 唯一标识。
          */
         this.id = id;
 
         /**
-         * Property: storage
-         * {<SuperMap.LevelRenderer.Storage>} 图形仓库对象。
-         *
+         * @member {SuperMap.LevelRenderer.Storage} SuperMap.LevelRenderer.Render.prototype.storage
+         * @description 图形仓库对象。
          */
         this.storage = new _Storage.Storage();
 
         /**
-         * Property: painter
-         * {<SuperMap.LevelRenderer.Painter>} 绘制器对象。
+         * @member {SuperMap.LevelRenderer.Painter} SuperMap.LevelRenderer.Render.prototype.painter
+         * @description 绘制器对象。
          *
          */
         this.painter = new _Painter.Painter(dom, this.storage);
 
         /**
-         * Property: handler
-         * {<SuperMap.LevelRenderer.Handler>} 事件处理对象。
+         * @member {SuperMap.LevelRenderer.Handler} SuperMap.LevelRenderer.Render.prototype.handler
+         * @description 事件处理对象。
          *
          */
         this.handler = new _Handler.Handler(dom, this.storage, this.painter);
 
         /**
-         * Property: animatingElements
-         * {Array} 动画控制数组。
+         * @member {Array} SuperMap.LevelRenderer.Render.prototype.animatingElements
+         * @description 动画控制数组。
          *
          */
         this.animatingElements = [];
 
         /**
-         * Property: animation
-         * {<SuperMap.LevelRenderer.animation.Animation>} 动画对象。
+         * @member {SuperMap.LevelRenderer.animation.Animation} SuperMap.LevelRenderer.Render.prototype.animation
+         * @description 动画对象。
          *
          */
         this.animation = new _Animation.Animation({
@@ -39787,8 +39028,8 @@ var Render = exports.Render = function () {
         });
 
         /**
-         * Property: _needsRefreshNextFrame
-         * {Boolean} 是否需要刷新下一帧。
+         * @member {boolean} SuperMap.LevelRenderer.Render.prototype._needsRefreshNextFrame
+         * @description 是否需要刷新下一帧。
          *
          */
         this._needsRefreshNextFrame = false;
@@ -39797,8 +39038,8 @@ var Render = exports.Render = function () {
     }
 
     /**
-     * Method: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Render.prototype.destory
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -39815,11 +39056,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: getId
-         * 获取实例唯一标识。
-         *
-         * Returns:
-         * {String} 实例唯一标识。
+         * @function SuperMap.LevelRenderer.Render.prototype.getId
+         * @description 获取实例唯一标识。
+         * @return {string} 实例唯一标识。
          */
 
     }, {
@@ -39829,14 +39068,11 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: addShape
-         * 添加图形形状到根节点。
+         * @function SuperMap.LevelRenderer.Render.prototype.addShape
+         * @description 添加图形形状到根节点。
          *
-         * Parameters:
-         * shape - {<SuperMap.LevelRenderer.Shape>} 图形对象，可用属性全集，详见各 shape。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {SuperMap.LevelRenderer.Shape} shape - 图形对象，可用属性全集，详见各 shape。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39847,8 +39083,8 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: addGroup
-         * 添加组到根节点。
+         * @function SuperMap.LevelRenderer.Render.prototype.addGroup
+         * @description 添加组到根节点。
          *
          * (code)
          * //添加组到根节点例子
@@ -39867,11 +39103,8 @@ var Render = exports.Render = function () {
          * render.render();
          * (end)
          *
-         * Parameters:
-         * group - {<SuperMap.LevelRenderer.Group>} 组对象。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {SuperMap.LevelRenderer.Group} group - 组对象。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39882,14 +39115,11 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: delShape
-         * 从根节点删除图形形状。
+         * @function SuperMap.LevelRenderer.Render.prototype.delShape
+         * @description 从根节点删除图形形状。
          *
-         * Parameters:
-         * shapeId - {String} 图形对象唯一标识。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} shapeId - 图形对象唯一标识。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39900,14 +39130,11 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: delGroup
-         * 从根节点删除组。
+         * @function SuperMap.LevelRenderer.Render.prototype.delGroup
+         * @description 从根节点删除组。
          *
-         * Parameters:
-         * groupId - {String} 组对象唯一标识。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} groupId - 组对象唯一标识。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39918,15 +39145,12 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * Method: modShape
-         * 修改图形形状。
+         * @function SuperMap.LevelRenderer.Render.prototype.modShape
+         * @description 修改图形形状。
          *
-         * Parameters:
-         * shapeId - {String} 图形对象唯一标识。
-         * shape - {<SuperMap.LevelRenderer.Shape>} 图形对象。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} shapeId - 图形对象唯一标识。
+         * @param {SuperMap.LevelRenderer.Shape} shape - 图形对象。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39937,15 +39161,12 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * Method: modGroup
-         * 修改组。
+         * @function SuperMap.LevelRenderer.Render.prototype.modGroup
+         * @description 修改组。
          *
-         * Parameters:
-         * groupId - {String} 组对象唯一标识。
-         * group - {<SuperMap.LevelRenderer.Group>} 组对象。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} groupId - 组对象唯一标识。
+         * @param {SuperMap.LevelRenderer.Group} group - 组对象。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39956,25 +39177,20 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * Method: modLayer
-         * 修改指定 zlevel 的绘制配置项。
+         * @function SuperMap.LevelRenderer.Render.prototype.modLayer
+         * @description 修改指定 zlevel 的绘制配置项。
          *
-         * Parameters:
-         * zLevel - {String} 组对象唯一标识。
-         * config - {Object} 配置对象。可用属性如下：
-         *
-         * Symbolizer properties:
-         * clearColor - {String} 每次清空画布的颜色。默认值：0。
-         * motionBlur - {Boolean} 是否开启动态模糊。默认值：false。
-         * lastFrameAlpha - {Number}  在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
-         * position - {Array{Number}}  层的平移。
-         * rotation - {Array{Number}}  层的旋转。
-         * scale - {Array{Number}}  层的缩放。
-         * zoomable - {Boolean} 层是否支持鼠标缩放操作。默认值：false。
-         * panable - {Boolean} 层是否支持鼠标平移操作。默认值：false。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} zLevel - 组对象唯一标识。
+         * @param {Object} config - 配置对象。
+         * @param {string} clearColor - 每次清空画布的颜色。默认值：0。
+         * @param {noolean} motionBlur - 是否开启动态模糊。默认值：false。
+         * @param {number}  lastFrameAlpha - 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
+         * @param {Array.{number}} position - 层的平移。
+         * @param {Array.{number}} rotation - 层的旋转。
+         * @param {Array.{number}} scale - 层的缩放。
+         * @param {boolean} zoomable - 层是否支持鼠标缩放操作。默认值：false。
+         * @param {boolean} panable - 层是否支持鼠标平移操作。默认值：false。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -39985,14 +39201,11 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: addHoverShape
-         * 添加额外高亮层显示，仅提供添加方法，每次刷新后高亮层图形均被清空。
+         * @function SuperMap.LevelRenderer.Render.prototype.addHoverShape
+         * @description 添加额外高亮层显示，仅提供添加方法，每次刷新后高亮层图形均被清空。
          *
-         * Parameters:
-         * shape - {<SuperMap.LevelRenderer.Shape>} 图形对象。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {SuperMap.LevelRenderer.Shape} shape - 图形对象。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40003,14 +39216,11 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: render
-         * 渲染。
+         * @function SuperMap.LevelRenderer.Render.prototype.render
+         * @description 渲染。
          *
-         * Parameters:
-         * callback - {Function} 渲染结束后回调函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @callback {Function} callback - 渲染结束后回调函数。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40022,14 +39232,11 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: refresh
-         * 视图更新。
+         * @function SuperMap.LevelRenderer.Render.prototype.refresh
+         * @description 视图更新。
          *
-         * Parameters:
-         * callback - {Function} 视图更新后回调函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @callback {Function} callback - 视图更新后回调函数。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40041,11 +39248,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: refreshNextFrame
-         * 标记视图在浏览器下一帧需要绘制。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @function SuperMap.LevelRenderer.Render.prototype.refreshNextFrame
+         * @description 标记视图在浏览器下一帧需要绘制。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40056,14 +39261,10 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: refreshHover
-         * 绘制（视图更新）高亮层。
-         *
-         * Parameters:
-         * callback - {Function} 视图更新后回调函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @function SuperMap.LevelRenderer.Render.prototype.refreshHover
+         * @description 绘制（视图更新）高亮层。
+         * @callback {Function} callback - 视图更新后回调函数。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40074,15 +39275,12 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: refreshShapes
-         * 视图更新。
+         * @function SuperMap.LevelRenderer.Render.prototype.refreshShapes
+         * @description 视图更新。
          *
-         * Parameters:
-         * shapeList - {Array<SuperMap.LevelRenderer.Shape>} 需要更新的图形列表。
-         * callback - {Function} 视图更新后回调函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {Array.<SuperMap.LevelRenderer.Shape>} shapeList - 需要更新的图形列表。
+         * @callback {Function} callback - 视图更新后回调函数。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40093,11 +39291,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: resize
-         * 调整视图大小。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @function SuperMap.LevelRenderer.Render.prototype.resize
+         * @description 调整视图大小。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40108,8 +39304,8 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: animate
-         * 动画。
+         * @function SuperMap.LevelRenderer.Render.prototype.animate
+         * @description 动画。
          *
          * (code)
          *     zr.animate(circle.id, 'style', false)
@@ -40118,13 +39314,10 @@ var Render = exports.Render = function () {
          *         .start()
          * (end)
          *
-         * Parameters:
-         * el - {Array{<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>}} 动画对象。
-         * path - {String} 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>,path需为空字符串。
-         * loop - {Function} 动画是否循环。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.animation.Animator>} Animator。
+         * @param {Array{(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)}} el - 动画对象。
+         * @param {string} path - 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>,path需为空字符串。
+         * @param {Function} loop - 动画是否循环。
+         * @return {SuperMap.LevelRenderer.animation.Animator} Animator。
          */
 
     }, {
@@ -40180,8 +39373,8 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: clearAnimation
-         * 停止所有动画。
+         * @function SuperMap.LevelRenderer.Render.prototype.clearAnimation
+         * @description 停止所有动画。
          *
          */
 
@@ -40192,11 +39385,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: getWidth
-         * 获取视图宽度。
-         *
-         * Returns:
-         * {Number} 视图宽度。
+         * @function SuperMap.LevelRenderer.Render.prototype.getWidth
+         * @description 获取视图宽度。
+         * @return {number} 视图宽度。
          */
 
     }, {
@@ -40206,11 +39397,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: getHeight
-         * 获取视图高度。
-         *
-         * Returns:
-         * {Number} 视图高度。
+         * @function SuperMap.LevelRenderer.Render.prototype.getHeight
+         * @description 获取视图高度。
+         * @return {number} 视图高度。
          */
 
     }, {
@@ -40220,16 +39409,13 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: toDataURL
-         * 图像导出。
+         * @function SuperMap.LevelRenderer.Render.prototype.toDataURL
+         * @description 图像导出。
          *
-         * Parameters:
-         * type - {string} 类型。
-         * backgroundColor - {string} 背景色，默认值："#FFFFFF"。
-         * args - {string} 参数。
-         *
-         * Returns:
-         * {String} 图片的 Base64 url。
+         * @param {string} type - 类型。
+         * @param {string} backgroundColor - 背景色，默认值："#FFFFFF"。
+         * @param {string} args - 参数。
+         * @return {string} 图片的 Base64 url。
          */
 
     }, {
@@ -40239,16 +39425,13 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: shapeToImage
-         * 将常规 shape 转成 image shape。
+         * @function SuperMap.LevelRenderer.Render.prototype.shapeToImage
+         * @description 将常规 shape 转成 image shape。
          *
-         * Parameters:
-         * e - {<SuperMap.LevelRenderer.Shape>} 图形。
-         * width - {Number} 宽度。
-         * height - {Number} 高度。
-         *
-         * Returns:
-         * {Object} image shape。
+         * @param {SuperMap.LevelRenderer.Shape} e - 图形。
+         * @param {number} width - 宽度。
+         * @param {number} height - 高度。
+         * @return {Object} image shape。
          */
 
     }, {
@@ -40259,15 +39442,12 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: on
-         * 事件绑定。
+         * @function SuperMap.LevelRenderer.Render.prototype.on
+         * @description 事件绑定。
          *
-         * Parameters:
-         * eventName - {String} 事件名称。
-         * eventHandler - {Function} 响应函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} eventName - 事件名称。
+         * @param {Function} eventHandler - 响应函数。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40278,15 +39458,12 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: un
-         * 事件解绑定，参数为空则解绑所有自定义事件。
+         * @function SuperMap.LevelRenderer.Render.prototype.un
+         * @description 事件解绑定，参数为空则解绑所有自定义事件。
          *
-         * Parameters:
-         * eventName - {String} 事件名称。
-         * eventHandler - {Function} 响应函数。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} eventName - 事件名称。
+         * @param {Function} eventHandler - 响应函数。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40297,15 +39474,12 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: trigger
-         * 事件触发。
+         * @function SuperMap.LevelRenderer.Render.prototype.trigger
+         * @description  事件触发。
          *
-         * Parameters:
-         * eventName - {String} 事件名称，resize，hover，drag，etc。
-         * event - {event} event dom事件对象。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {string} eventName - 事件名称，resize，hover，drag，etc。
+         * @param {event} event - event dom事件对象。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40316,11 +39490,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: clear
-         * 清除当前 Render 下所有类图的数据和显示，clear 后 MVC 和已绑定事件均还存在在，Render 可用。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @function SuperMap.LevelRenderer.Render.prototype.clear
+         * @description 清除当前 Render 下所有类图的数据和显示，clear 后 MVC 和已绑定事件均还存在在，Render 可用。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40332,9 +39504,8 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: dispose
-         * 释放当前 Render 实例（删除包括 dom，数据、显示和事件绑定），dispose后 Render 不可用。
-         *
+         * @function SuperMap.LevelRenderer.Render.prototype.dispose
+         * @description 释放当前 Render 实例（删除包括 dom，数据、显示和事件绑定），dispose后 Render 不可用。
          */
 
     }, {
@@ -40359,14 +39530,11 @@ var Render = exports.Render = function () {
 
         // SMIC-方法扩展 - start
         /**
-         * APIMethod: updateHoverShapes
-         * 更新设置显示高亮图层。
+         * @function SuperMap.LevelRenderer.Render.prototype.updateHoverShapes
+         * @description 更新设置显示高亮图层。
          *
-         * Parameters:
-         * shapes - {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @param {Array.<SuperMap.LevelRenderer.Shape>} shapes - 图形数组。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40377,11 +39545,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: getAllShapes
-         * 获取所有图形。
-         *
-         * Returns:
-         * {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+         * @function SuperMap.LevelRenderer.Render.prototype.getAllShapes
+         * @description 获取所有图形。
+         * @return {Array.<SuperMap.LevelRenderer.Shape>} 图形数组。
          */
 
     }, {
@@ -40391,11 +39557,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: clearAll
-         *  清除高亮和图形图层。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} this。
+         * @function SuperMap.LevelRenderer.Render.prototype.clearAll
+         * @description 清除高亮和图形图层。
+         * @return {SuperMap.LevelRenderer.Render} this。
          */
 
     }, {
@@ -40407,11 +39571,9 @@ var Render = exports.Render = function () {
         }
 
         /**
-         * APIMethod: getHoverOne
-         * 获取单个高亮图形，当前鼠标对应。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Shape>} 高亮图形。
+         * @function SuperMap.LevelRenderer.Render.prototype.getHoverOne
+         * @description 获取单个高亮图形，当前鼠标对应。
+         * @return {SuperMap.LevelRenderer.Shape} 高亮图形。
          */
 
     }, {
@@ -40480,11 +39642,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.RankSymbol::setting> 的基础属性只有 5 个，
  * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  * 此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
  * @extends SuperMap.Feature.Theme.Graph
  *
@@ -40498,12 +39660,12 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
                 /**
                  * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
                  * @description 符号配置对象，该对象控制着图表的可视化显示。
-                 * 下面是此配置对象的 5 个基础可设属性：</br>
-                 * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
-                 * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
-                 * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
-                 * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+                 * 下面是此配置对象的 5 个基础可设属性：
+                 * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+                 * @param {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+                 * @param {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+                 * @param {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+                 * @param {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
                  * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
                  * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
                  */
@@ -40536,11 +39698,11 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
                  * @function SuperMap.Feature.Theme.RankSymbol.prototype.initBaseParameter
                  * @description 初始化专题要素（图形）基础参数。
                  * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
-                 * 调用此函数关系到 setting 对象的以下属性</br>
-                 * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+                 * 调用此函数关系到 setting 对象的以下属性。
+                 * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
                  * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
                  * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
-                 * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
+                 * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
                  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
                  * @returns {boolean} 初始化参数是否成功。
                  */
@@ -40660,10 +39822,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicSector
  * @category Visualization Theme
- * 扇形。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 扇形。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
@@ -40684,51 +39844,49 @@ var SmicSector = exports.SmicSector = function (_Shape) {
     _inherits(SmicSector, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicSector.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 圆心 x 坐标，必设参数。
-     * y - {Number} 圆心 y 坐标，必设参数。
-     * r - {Number} 外圆半径，必设参数。
-     * r0 - {Number} 内圆半径，指定后将出现内弧，同时扇边长度为`r - r0`。取值范围[0, r)，默认值：0。
-     * startAngle - {Number} 起始角度，必设参数。取值范围[0, 360)。
-     * endAngle - {Number} 结束角度，必设参数。取值范围(0, 360。
-     * clockWise - {Boolean} 是否是顺时针。默认值：false。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 圆心 x 坐标，必设参数。
+     * @param {number} style.y - 圆心 y 坐标，必设参数。
+     * @param {number} style.r - 外圆半径，必设参数。
+     * @param {number} style.r0 - 内圆半径，指定后将出现内弧，同时扇边长度为`r - r0`。取值范围[0, r)，默认值：0。
+     * @param {number} style.startAngle - 起始角度，必设参数。取值范围[0, 360)。
+     * @param {number} style.endAngle - 结束角度，必设参数。取值范围(0, 360。
+     * @param {boolean} style.clockWise - 是否是顺时针。默认值：false。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicSector
-     * 构造函数。
-     *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @function SuperMap.LevelRenderer.Shape.SmicSector.constructor
+     * @description 构造函数。
+     * 
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicSector(options) {
         _classCallCheck(this, SmicSector);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicSector.protptype.type
+         * @description 图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicSector.__proto__ || Object.getPrototypeOf(SmicSector)).call(this, options));
 
@@ -40741,8 +39899,8 @@ var SmicSector = exports.SmicSector = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -40754,12 +39912,11 @@ var SmicSector = exports.SmicSector = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建扇形路径。
-         *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.buildPath
+         * @description 创建扇形路径。
+         * 
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -40809,14 +39966,12 @@ var SmicSector = exports.SmicSector = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 返回扇形包围盒矩形
+         * @function SuperMap.LevelRenderer.Shape.SmicSector.prototype.getRect
+         * @description 返回扇形包围盒矩形
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
+         * 
          */
 
     }, {
@@ -40900,10 +40055,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicCircle
  * @category Visualization Theme
- * 圆形
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 圆形
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
@@ -40926,47 +40079,45 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
     _inherits(SmicCircle, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicCircle.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {number} 圆心x坐标,必设参数
-     * y - {number} 圆心y坐标，必设参数
-     * r - {number} 半径，必设参数
-     * brushType - {string} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {string} 填充颜色,默认值"#000000"
-     * strokeColor - {string} 描边颜色,默认值为'#000000'
-     * lineCape — {string} 线帽样式，可以是 butt, round, square，默认是butt
-     * lineWidth - {number} 描边宽度、默认是1
-     * opacity - {number} 绘制透明度、默认是1，不透明
-     * shadowBlur - {number} 阴影模糊度，大于0有效，默认是0
-     * shadowColor - {string} 阴影颜色，默认是'#000000'
-     * shadowOffsetX - {number} 阴影横向偏移，默认是0
-     * shadowOffsetY - {number} 阴影纵向偏移，默认是0
-     * text - {string} 图形中的附加文本，默认是0
-     * textColor - {string} 文本颜色，默认是'#000000'
-     * textFont - {string} 附加文本样式，eg:'bold 18px verdana'
-     * textPosition - {string} 附加文本位置, 可以是 inside, left, right, top, bottom
-     * textAlign - {string} 默认根据textPosition自动设置，附加文本水平对齐。可以是start, end, left, right, center
-     * textBaseline {string} 默认根据textPosition自动设置，附加文本垂直对齐。可以是top, bottom, middle, alphabetic, hanging, ideographic
+     * @param {number} x - 圆心x坐标,必设参数
+     * @param {number} y - 圆心y坐标，必设参数
+     * @param {number} r - 半径，必设参数
+     * @param {string} brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} color - 填充颜色,默认值"#000000"
+     * @param {string} strokeColor - 描边颜色,默认值为'#000000'
+     * @param {string} lineCape — 线帽样式，可以是 butt, round, square，默认是butt
+     * @param {number} lineWidth - 描边宽度、默认是1
+     * @param {number} opacity - 绘制透明度、默认是1，不透明
+     * @param {number} shadowBlur - 阴影模糊度，大于0有效，默认是0
+     * @param {string} shadowColor - 阴影颜色，默认是'#000000'
+     * @param {number} shadowOffsetX - 阴影横向偏移，默认是0
+     * @param {number} shadowOffsetY - 阴影纵向偏移，默认是0
+     * @param {string} text - 图形中的附加文本，默认是0
+     * @param {string} textColor - 文本颜色，默认是'#000000'
+     * @param {string} textFont - 附加文本样式，eg:'bold 18px verdana'
+     * @param {string} textPosition - 附加文本位置, 可以是 inside, left, right, top, bottom
+     * @param {string} textAlign - 默认根据textPosition自动设置，附加文本水平对齐。可以是start, end, left, right, center
+     * @param {string} textBaseline 默认根据textPosition自动设置，附加文本垂直对齐。可以是top, bottom, middle, alphabetic, hanging, ideographic
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicCircle
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicCircle.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicCircle(options) {
         _classCallCheck(this, SmicCircle);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicCircle.prototype.type
+         * @description 图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicCircle.__proto__ || Object.getPrototypeOf(SmicCircle)).call(this, options));
 
@@ -40980,8 +40131,8 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicCircle.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -40993,12 +40144,11 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建图形路径。
-         *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @function SuperMap.LevelRenderer.Shape.SmicCircle.prototype.buildPath
+         * @description 创建图形路径。
+         * 
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -41020,14 +40170,12 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 返回圆形包围盒矩形
-         *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @function SuperMap.LevelRenderer.Shape.SmicCircle.prototype.getRect
+         * @description 返回圆形包围盒矩形
+         * 
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
+         * 
          */
 
     }, {
@@ -41085,22 +40233,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Matrix
  * @category Visualization Theme
- * LevelRenderer 工具-3x2矩阵操作类
- *
+ * @classdesc LevelRenderer 工具-3x2矩阵操作类
  */
 var Matrix = exports.Matrix = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Matrix
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Matrix.constructor
+     * @description 构造函数。
      */
+
     function Matrix() {
         _classCallCheck(this, Matrix);
 
         /**
-         * Property: ArrayCtor
-         * {Object} 数组类型控制
+         * @member {Object} SuperMap.LevelRenderer.Tool.Matrix.prototype.ArrayCtor
+         * @description 数组类型控制
          */
         this.ArrayCtor = typeof Float32Array === 'undefined' ? Array : Float32Array;
 
@@ -41108,11 +40255,9 @@ var Matrix = exports.Matrix = function () {
     }
 
     /**
-     * APIMethod: create
-     * 创建一个单位矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 单位矩阵。
+     * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.create
+     * @description 创建一个单位矩阵。
+     * @returns {(Float32Array|Array.<number>)} 单位矩阵。
      */
 
 
@@ -41128,14 +40273,10 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: identity
-         * 设置矩阵为单位矩阵。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 单位矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.identity
+         * @description 设置矩阵为单位矩阵。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @returns {(Float32Array|Array.<number>)} 单位矩阵。
          */
 
     }, {
@@ -41151,15 +40292,10 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: copy
-         * 复制矩阵。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * m - {Float32Array|Array.<Number>} 原始矩阵。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 克隆矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.copy
+         * @description 复制矩阵。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @returns {(Float32Array|Array.<number>)} 克隆矩阵。
          */
 
     }, {
@@ -41175,16 +40311,12 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: mul
-         * 矩阵相乘。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * m1 - {Float32Array|Array.<Number>} 矩阵m1。
-         * m2- {Float32Array|Array.<Number>} 矩阵m2。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 结果矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.mul
+         * @description 矩阵相乘。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @param {(Float32Array|Array.<number>)} m1 - 矩阵m1。
+         * @param {(Float32Array|Array.<number>)} m2- 矩阵m2。
+         * @returns {(Float32Array|Array.<number>)} 结果矩阵。
          */
 
     }, {
@@ -41200,16 +40332,12 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: translate
-         * 平移变换。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * a - {Float32Array|Array.<Number>} 矩阵。
-         * v- {Float32Array|Array.<Number>} 平移参数。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 结果矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.mul
+         * @description 平移变换。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @param {(Float32Array|Array.<number>)} a - 矩阵。
+         * @param {(Float32Array|Array.<number>)} v- 平移参数。
+         * @returns {(Float32Array|Array.<number>)} 结果矩阵。
          */
 
     }, {
@@ -41225,16 +40353,12 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: rotate
-         * 旋转变换。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * a - {Float32Array|Array.<Number>} 矩阵。
-         * rad- {Float32Array|Array.<Number>} 旋转参数。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 结果矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.rotate
+         * @description 平移变换。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @param {(Float32Array|Array.<number>)} a - 矩阵。
+         * @param {(Float32Array|Array.<number>)} rad - 旋转参数。
+         * @returns {(Float32Array|Array.<number>)} 结果矩阵。
          */
 
     }, {
@@ -41259,16 +40383,12 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: scale
-         * 缩放变换。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * a - {Float32Array|Array.<Number>} 矩阵。
-         * v- {Float32Array|Array.<Number>} 缩放参数。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 结果矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.scale
+         * @description 缩放变换。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @param {(Float32Array|Array.<number>)} a - 矩阵。
+         * @param {(Float32Array|Array.<number>)} v - 缩放参数。
+         * @returns {(Float32Array|Array.<number>)} 结果矩阵。
          */
 
     }, {
@@ -41286,15 +40406,11 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: invert
-         * 求逆矩阵。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * a - {Float32Array|Array.<Number>} 矩阵。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 结果矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.invert
+         * @description 求逆矩阵。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @param {(Float32Array|Array.<number>)} a - 矩阵。
+         * @returns {(Float32Array|Array.<number>)} 结果矩阵。
          */
 
     }, {
@@ -41323,16 +40439,12 @@ var Matrix = exports.Matrix = function () {
         }
 
         /**
-         * APIMethod: mulVector
-         * 矩阵左乘向量。
-         *
-         * Parameters:
-         * out - {Float32Array|Array.<Number>} 单位矩阵。
-         * a - {Float32Array|Array.<Number>} 矩阵。
-         * v- {Float32Array|Array.<Number>} 缩放参数。
-         *
-         * Returns:
-         * {Float32Array|Array.<Number>} 结果矩阵。
+         * @function SuperMap.LevelRenderer.Tool.Matrix.prototype.mulVector
+         * @description 矩阵左乘向量。
+         * @param {(Float32Array|Array.<number>)} out - 单位矩阵。
+         * @param {(Float32Array|Array.<number>)} a - 矩阵。
+         * @param {(Float32Array|Array.<number>)} v - 缩放参数。
+         * @returns {(Float32Array|Array.<number>)} 结果矩阵。
          */
 
     }, {
@@ -41374,22 +40486,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Math
  * @category Visualization Theme
- * LevelRenderer 工具-数学辅助类
- *
+ * @classdesc LevelRenderer 工具-数学辅助类
  */
 var Math = exports.Math = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Math
-     * 构造函数。
-     *
-     */
+    * @function SuperMap.LevelRenderer.Tool.Math.constructor
+    * @description 构造函数。
+    */
+
     function Math() {
         _classCallCheck(this, Math);
 
         /**
-         * Property: _radians
-         * {Number} 角度与弧度转化参数
+         * @member {number} SuperMap.LevelRenderer.Tool.Math._radians
+         * @description 角度与弧度转化参数
          */
         this._radians = window.Math.PI / 180;
 
@@ -41397,15 +40508,11 @@ var Math = exports.Math = function () {
     }
 
     /**
-     * APIMethod: sin
-     * 正弦函数。
-     *
-     * Parameters:
-     * angle - {Number} 弧度（角度）参数。
-     * isDegrees - {Boolean} angle参数是否为角度计算，默认为false，angle为以弧度计量的角度。
-     *
-     * Returns:
-     * {Number} sin 值。
+     * @function SuperMap.LevelRenderer.Tool.Math.prototype.sin
+     * @description 正弦函数。
+     * @param {number} angle - 弧度（角度）参数。
+     * @param {boolean} [isDegrees=false] - angle参数是否为角度计算，angle为以弧度计量的角度。
+     * @returns {number} sin 值。
      */
 
 
@@ -41416,15 +40523,11 @@ var Math = exports.Math = function () {
         }
 
         /**
-         * APIMethod: cos
-         * 正弦函数。
-         *
-         * Parameters:
-         * angle - {Number} 弧度（角度）参数。
-         * isDegrees - {Boolean} angle参数是否为角度计算，默认为false，angle为以弧度计量的角度。
-         *
-         * Returns:
-         * {Number} cos 值。
+         * @function SuperMap.LevelRenderer.Tool.Math.prototype.cos
+         * @description 余弦函数。
+         * @param {number} angle - 弧度（角度）参数。
+         * @param {boolean} [isDegrees=false] - angle参数是否为角度计算，angle为以弧度计量的角度。
+         * @returns {number} cos 值。
          */
 
     }, {
@@ -41434,14 +40537,11 @@ var Math = exports.Math = function () {
         }
 
         /**
-         * APIMethod: degreeToRadian
-         * 角度转弧度。
-         *
-         * Parameters:
-         * angle - {Number} 角度参数。
-         *
-         * Returns:
-         * {Number} 弧度值。
+         * @function SuperMap.LevelRenderer.Tool.Math.prototype.degreeToRadian
+         * @description 角度转弧度。
+         * @param {number} angle - 弧度（角度）参数。
+         * @param {boolean} [isDegrees=false] - angle参数是否为角度计算，angle为以弧度计量的角度。
+         * @returns {number} 弧度值。
          */
 
     }, {
@@ -41451,14 +40551,11 @@ var Math = exports.Math = function () {
         }
 
         /**
-         * APIMethod: radianToDegree
-         * 弧度转角度。
-         *
-         * Parameters:
-         * angle - {Number} 弧度参数。
-         *
-         * Returns:
-         * {Number} 角度。
+         * @function SuperMap.LevelRenderer.Tool.Math.prototype.radianToDegree
+         * @description 弧度转角度。
+         * @param {number} angle - 弧度（角度）参数。
+         * @param {boolean} [isDegrees=false] - angle参数是否为角度计算，angle为以弧度计量的角度。
+         * @returns {number} 角度。
          */
 
     }, {
@@ -41493,15 +40590,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Log
  * @category Visualization Theme
- * LevelRenderer 工具-日志
- *
+ * @classdesc LevelRenderer 工具-日志
  */
 var Log = exports.Log = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Log
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Log.constructor
+     * @description 构造函数。
      */
     function Log() {
         _classCallCheck(this, Log);
@@ -41562,15 +40657,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Http
  * @category Visualization Theme
- * LevelRenderer 工具-Http
- *
+ * @classdesc LevelRenderer 工具-Http
  */
 var Http = exports.Http = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Http
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Http.constructor
+     * @description 构造函数。
      */
     function Http() {
         _classCallCheck(this, Http);
@@ -41579,17 +40672,13 @@ var Http = exports.Http = function () {
     }
 
     /**
-     * Method: get
-     * get请求。
-     *
-     * Parameters:
-     * url - {string|IHTTPGetOption}
-     * onsuccess - {Function}
-     * onerror - {Function}
-     * opts - {Object} 额外参数
-     *
-     * Returns:
-     * {Number} cos 值。
+     * @function SuperMap.LevelRenderer.Tool.Http.prototype.get
+     * @description get请求。
+     * @param {(string|IHTTPGetOption)} url - 请求url
+     * @param {function} onsuccess - 请求成功函数
+     * @param {function} onerror - 请求失败函数 
+     * @param {Object} opts - 额外参数
+     * @returns {number} cos值
      */
 
 
@@ -41639,25 +40728,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Event
  * @category Visualization Theme
- * LevelRenderer 工具-事件辅助类
+ * @classdesc LevelRenderer 工具-事件辅助类
  *
  */
 var Event = exports.Event = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Event
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Event.prototype.constructor
+     * @description 构造函数。
      */
     function Event() {
         _classCallCheck(this, Event);
 
         /**
-         * Property: stop
-         * {Function} 停止冒泡和阻止默认行为
+         * @member {function} SuperMap.LevelRenderer.Tool.Event.prototype.stop
+         * @description 停止冒泡和阻止默认行为
          */
         this.stop = typeof window.addEventListener === 'function' ? function (e) {
             e.preventDefault();
@@ -41672,14 +40759,10 @@ var Event = exports.Event = function () {
     }
 
     /**
-     * APIMethod: getX
-     * 提取鼠标（手指）x坐标。
-     *
-     * Parameters:
-     * e - {Event} 事件。
-     *
-     * Returns:
-     * {Number} 鼠标（手指）x坐标。
+     * @function SuperMap.LevelRenderer.Tool.Event.prototype.getX
+     * @description 提取鼠标（手指）x坐标。
+     * @param {Event} e - 事件。
+     * @returns {number} 鼠标（手指）x坐标。
      */
 
 
@@ -41690,14 +40773,10 @@ var Event = exports.Event = function () {
         }
 
         /**
-         * APIMethod: getY
-         * 提取鼠标y坐标。
-         *
-         * Parameters:
-         * e - {Event} 事件。
-         *
-         * Returns:
-         * {Number} 鼠标（手指）y坐标。
+         * @function SuperMap.LevelRenderer.Tool.Event.prototype.getY
+         * @description 提取鼠标（手指）y坐标。
+         * @param {Event} e - 事件。
+         * @returns {number} 鼠标（手指）y坐标。
          */
 
     }, {
@@ -41707,14 +40786,10 @@ var Event = exports.Event = function () {
         }
 
         /**
-         * APIMethod: getDelta
-         * 提取鼠标滚轮变化。
-         *
-         * Parameters:
-         * e - {Event} 事件。
-         *
-         * Returns:
-         * {Number} 滚轮变化，正值说明滚轮是向上滚动，如果是负值说明滚轮是向下滚动。
+         * @function SuperMap.LevelRenderer.Tool.Event.prototype.getDelta
+         * @description 提取鼠标滚轮变化。
+         * @param {Event} e - 事件。
+         * @returns {number} 滚轮变化，正值说明滚轮是向上滚动，如果是负值说明滚轮是向下滚动。
          */
 
     }, {
@@ -41743,10 +40818,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Env
  * @category Visualization Theme
- * 环境识别
+ * @classdesc 环境识别
  *
  */
 var Env = exports.Env = function () {
@@ -41894,18 +40968,16 @@ var _Vector = __webpack_require__(65);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.ComputeBoundingBox
  * @category Visualization Theme
- * LevelRenderer 工具-图形 Bounds 计算
+ * @classdesc LevelRenderer 工具-图形 Bounds 计算
  *
  */
 var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.ComputeBoundingBox
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.constructor
+     * @description 构造函数。
      */
     function ComputeBoundingBox() {
         _classCallCheck(this, ComputeBoundingBox);
@@ -41918,14 +40990,11 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
     }
 
     /**
-     * APIMethod: computeBoundingBox
-     * 从顶点数组中计算出最小包围盒，写入`min`和`max`中。
-     *
-     * Parameters:
-     * points - {Array{Object}} 顶点数组。
-     * min - {Number}
-     * max - {Number}
-     *
+     * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.computeBoundingBox
+     * @description 从顶点数组中计算出最小包围盒，写入'min'和'max'中。
+     * @param {Array.<Object>} points - 顶点数组。
+     * @param {Array} min - 最小
+     * @param {Array} max - 最大
      */
 
 
@@ -41963,19 +41032,14 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
         }
 
         /**
-         * APIMethod: cubeBezier
-         * 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入`min`和`max`中。
-         *
-         * 原：computeCubeBezierBoundingBox
-         *
-         * Parameters:
-         * p0 - {Array{Number}}
-         * p1 - {Array{Number}}
-         * p2 - {Array{Number}}
-         * p3 - {Array{Number}}
-         * min - {Array{Number}}
-         * max - {Array{Number}}
-         *
+         * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.cubeBezier
+         * @description 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入'min'和'max'中。原：computeCubeBezierBoundingBox。
+         * @param {Array<number>} p0 - 三阶贝塞尔曲线p0点
+         * @param {Array{number}} p1 - 三阶贝塞尔曲线p1点
+         * @param {Array<number>} p2 - 三阶贝塞尔曲线p2点
+         * @param {Array<number>} p3 - 三阶贝塞尔曲线p3点
+         * @param {Array<number>} min - 最小
+         * @param {Array<number>} max - 最大
          */
 
     }, {
@@ -42009,18 +41073,13 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
         }
 
         /**
-         * APIMethod: quadraticBezier
-         * 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入`min`和`max`中
-         *
-         * 原：computeQuadraticBezierBoundingBox
-         *
-         * Parameters:
-         * p0 - {Array{Number}}
-         * p1 - {Array{Number}}
-         * p2 - {Array{Number}}
-         * min - {Array{Number}}
-         * max - {Array{Number}}
-         *
+         * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.quadraticBezier
+         * @description 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入'min'和'max'中。原：computeQuadraticBezierBoundingBox。
+         * @param {Array<number>} p0 - 二阶贝塞尔曲线p0点
+         * @param {Array{number}} p1 - 二阶贝塞尔曲线p1点
+         * @param {Array<number>} p2 - 二阶贝塞尔曲线p2点
+         * @param {Array<number>} min - 最小
+         * @param {Array<number>} max - 最大
          */
 
     }, {
@@ -42050,20 +41109,16 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
         }
 
         /**
-         * APIMethod: arc
-         * 从圆弧中计算出最小包围盒，写入`min`和`max`中
-         *
-         * 原：computeArcBoundingBox
-         *
-         * Parameters:
-         * x - {Number}  圆弧中心点 x
-         * y - {Number}  圆弧中心点 y
-         * r - {Number}  圆弧半径
-         * startAngle - {Number}  圆弧开始角度
-         * endAngle - {Number}  圆弧结束角度
-         * anticlockwise - {Number}  是否是顺时针
-         * min - {Number}
-         * max - {Number}
+         * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.arc
+         * @description 从圆弧中计算出最小包围盒，写入'min'和'max'中。原：computeArcBoundingBox。
+         * @param {number} x - 圆弧中心点 x
+         * @param {number} y - 圆弧中心点 y
+         * @param {number} r - 圆弧半径
+         * @param {number} startAngle - 圆弧开始角度
+         * @param {number} endAngle - 圆弧结束角度
+         * @param {number} anticlockwise - 是否是顺时针
+         * @param {number} min - 最小
+         * @param {number} max - 最大
          */
 
     }, {
@@ -42143,85 +41198,83 @@ var _Curve = __webpack_require__(66);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer.Tool.Area
  * @category Visualization Theme
- * LevelRenderer 工具-图形范围判断
+ * @classdesc LevelRenderer 工具-图形范围判断
  *
  */
 var Area = exports.Area = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Area
-     * 构造函数。
-     *
+     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.constructor
+     * @description 构造函数。
      */
     function Area() {
         _classCallCheck(this, Area);
 
         /**
-         * Property: util
-         * {<SuperMap.LevelRenderer.Tool.Util>} 基础工具对象
+         * @member {SuperMap.LevelRenderer.Tool.Util}  SuperMap.LevelRenderer.Tool.Areal.prototype.util
+         * @description 基础工具对象。
          */
         this.util = new _Util.Util();
 
         /**
-         * Property: curve
-         * {<SuperMap.LevelRenderer.Tool.Curve>} 曲线工具对象
+         * @member {SuperMap.LevelRenderer.Tool.Curve}  SuperMap.LevelRenderer.Tool.Areal.prototype.curve
+         * @description 曲线工具对象
          */
         this.curve = new _Curve.Curve();
 
         /**
-         * Property: _ctx
-         * {Object} Cavans2D 渲染上下文
+         * @member {Object} SuperMap.LevelRenderer.Tool.Areal.prototype._ctx
+         * @description Cavans2D 渲染上下文
          */
         this._ctx = null;
 
         /**
-         * Property: _textWidthCache
-         * {Object} 文本宽度缓存
+         * @member {Object} SuperMap.LevelRenderer.Tool.Areal.prototype._textWidthCache
+         * @description 文本宽度缓存
          */
         this._textWidthCache = {};
 
         /**
-         * Property: _textHeightCache
-         * {Object} 文本高度缓存
+         * @member {Object} SuperMap.LevelRenderer.Tool.Areal.prototype._textHeightCache
+         * @description 文本高度缓存
          */
         this._textHeightCache = {};
 
         /**
-         * Property: _textWidthCacheCounter
-         * {Object} 文本宽度缓存数量
+         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype._textWidthCacheCounter
+         * @description 文本宽度缓存数量
          */
         this._textWidthCacheCounter = 0;
 
         /**
-         * Property: _textHeightCacheCounter
-         * {Object} 文本高度缓存数量
+         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype._textHeightCacheCounter
+         * @description 文本高度缓存数量
          */
         this._textHeightCacheCounter = 0;
 
         /**
-         * Property: TEXT_CACHE_MAX
-         * {Object} 文本最大缓存数量
+         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype.TEXT_CACHE_MAX
+         * @description 文本最大缓存数量
          */
         this.TEXT_CACHE_MAX = 5000;
 
         /**
-         * Property: PI2
-         * {Object} 2*PI 的值
+         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype.PI2
+         * @description 2*PI 的值
          */
         this.PI2 = Math.PI * 2;
 
         /**
-         * Property: roots
-         * {Array} 临时数组
+         * @member {Array} SuperMap.LevelRenderer.Tool.Areal.prototype.roots
+         * @description 临时数组
          */
         this.roots = [-1, -1, -1];
 
         /**
-         * Property: extrema
-         * {Array} 临时数组
+         * @member {Array} SuperMap.LevelRenderer.Tool.Areal.prototype.extrema
+         * @description 临时数组
          */
         this.extrema = [-1, -1];
 
@@ -42229,14 +41282,10 @@ var Area = exports.Area = function () {
     }
 
     /**
-     * Method: normalizeRadian
-     * 弧度标准化函数。
-     *
-     * Parameters:
-     * angle - {Number} 弧度值。
-     *
-     * Returns:
-     * {Number} 标准化后的弧度值。
+     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.normalizeRadian
+     * @description 弧度标准化函数。
+     * @param {number} angle - 弧度值。
+     * @returns {number} 标准化后的弧度值。
      */
 
 
@@ -42251,17 +41300,13 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: normalizeRadian
-         * 包含判断。
-         *
-         * Parameters:
-         * shape - {Object} 图形。
-         * area - {Number} 目标区域。
-         * x - {Number} 横坐标。
-         * y - {Number} 纵坐标。
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInside
+         * @description 包含判断。
+         * @param {Object} shape - 图形。
+         * @param {number} area - 目标区域。
+         * @param {number} x - 横坐标。
+         * @param {number} y - 纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置。
          */
 
     }, {
@@ -42305,17 +41350,13 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: _mathMethod
-         * 用数学方法判断，三个方法中最快，但是支持的shape少。
-         *
-         * Parameters:
-         * shape - {Object} 图形。
-         * area - {Number} 目标区域。
-         * x - {Number} 横坐标。
-         * y - {Number} 纵坐标。
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置，true表示坐标处在图形中。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype._mathMethod
+         * @description 包含判断。用数学方法判断，三个方法中最快，但是支持的shape少。
+         * @param {Object} shape - 图形。
+         * @param {number} area - 目标区域。
+         * @param {number} x - 横坐标。
+         * @param {number} y - 纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置，true表示坐标处在图形中。
          */
 
     }, {
@@ -42511,18 +41552,14 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: _buildPathMethod
-         * 通过buildPath方法来判断，三个方法中较快，但是不支持线条类型的 shape
-         *
-         * Parameters:
-         * shape - {Object} 图形。
-         * context - {Object} 上下文。
-         * area - {Number} 目标区域。
-         * x - {Number} 横坐标。
-         * y - {Number} 纵坐标。
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形中。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype._buildPathMethod
+         * @description 包含判断。通过buildPath方法来判断，三个方法中较快，但是不支持线条类型的 shape。
+         * @param {Object} shape - 图形。
+         * @param {Object} context - 上下文。
+         * @param {number} area - 目标区域。
+         * @param {number} x - 横坐标。
+         * @param {number} y - 纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置，true表示坐标处在图形中。
          */
 
     }, {
@@ -42536,17 +41573,13 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isOutside
-         * 图形是否不包含鼠标位置。
-         *
-         * Parameters:
-         * shape - {Object} 图形。
-         * area - {Number} 目标区域。
-         * x - {Number} 横坐标。
-         * y - {Number} 纵坐标。
-         *
-         * Returns:
-         * {Boolean} 图形是否不包含鼠标位置, true表示坐标处在图形外。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isOutside
+         * @description 图形是否不包含鼠标位置。
+         * @param {Object} shape - 图形。
+         * @param {number} area - 目标区域。
+         * @param {number} x - 横坐标。
+         * @param {number} y - 纵坐标。
+         * @returns {boolean} 图形是否不包含鼠标位置, true表示坐标处在图形外。
          */
 
     }, {
@@ -42556,20 +41589,16 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsideLine
-         * 线段包含判断。
-         *
-         * Parameters:
-         * x0 - {Number}
-         * y0 - {Number}
-         * x1 - {Number}
-         * y1 - {Number}
-         * lineWidth - {Number}
-         * x - {Number}
-         * y - {Number}
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideLine
+         * @description 线段包含判断。
+         * @param {number} x0 - 线起始点横坐标。
+         * @param {number} y0 - 线起始点纵坐标。
+         * @param {number} x1 - 线终点横坐标。
+         * @param {number} y1 - 线终点纵坐标。
+         * @param {number} lineWidth - 线宽。
+         * @param {number} x - 鼠标位置横坐标。
+         * @param {number} y - 鼠标位置纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置，true表示坐标处在图形内。
          */
 
     }, {
@@ -42598,24 +41627,18 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: isInsideCubicStroke
-         * 三次贝塞尔曲线描边包含判断。
-         *
-         * Parameters:
-         * x0 - {Number}
-         * y0 - {Number}
-         * x1 - {Number}
-         * y1 - {Number}
-         * x2 - {Number}
-         * y2 - {Number}
-         * x3 - {Number}
-         * y3 - {Number}
-         * lineWidth - {Number}
-         * x - {Number}
-         * y - {Number}
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideCubicStroke
+         * @description 三次贝塞尔曲线描边包含判断。
+         * @param {number} x0 - 点1横坐标。
+         * @param {number} y0 - 点1纵坐标。
+         * @param {number} x1 - 点2横坐标。
+         * @param {number} y1 - 点2纵坐标。
+         * @param {number} x2 - 点3纵坐标。
+         * @param {number} y2 - 点3纵坐标。
+         * @param {number} lineWidth - 线宽。
+         * @param {number} x - 鼠标位置横坐标。
+         * @param {number} y - 鼠标位置纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42634,22 +41657,18 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: isInsideQuadraticStroke
-         * 二次贝塞尔曲线描边包含判断。
-         *
-         * Parameters:
-         * x0 - {Number}
-         * y0 - {Number}
-         * x1 - {Number}
-         * y1 - {Number}
-         * x2 - {Number}
-         * y2 - {Number}
-         * lineWidth - {Number} 纵坐标。
-         * x - {Number}
-         * y - {Number}
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideQuadraticStroke
+         * @description 二次贝塞尔曲线描边包含判断。
+         * @param {number} x0 - 点1横坐标。
+         * @param {number} y0 - 点1纵坐标。
+         * @param {number} x1 - 点2横坐标。
+         * @param {number} y1 - 点2纵坐标。
+         * @param {number} x2 - 点3纵坐标。
+         * @param {number} y2 - 点3纵坐标。
+         * @param {number} lineWidth - 线宽。
+         * @param {number} x - 鼠标位置横坐标。
+         * @param {number} y - 鼠标位置纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42668,22 +41687,18 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: isInsideArcStroke
-         * 圆弧描边包含判断。
-         *
-         * Parameters:
-         * cx - {Number}
-         * cy - {Number}
-         * r - {Number}
-         * startAngle - {Number}
-         * endAngle - {Number}
-         * anticlockwise - {Number}
-         * lineWidth - {Number}
-         * x - {Number}
-         * y - {Number}
-         *
-         * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideArcStroke
+         * @description 圆弧描边包含判断。
+         * @param {number} cx - 圆心横坐标。
+         * @param {number} cy - 圆心纵坐标。
+         * @param {number} r - 圆半径。
+         * @param {number} startAngle - 起始角度。
+         * @param {number} endAngle - 终止角度。
+         * @param {number} anticlockwise - 顺时针还是逆时针。
+         * @param {number} lineWidth - 线宽。
+         * @param {number} x - 鼠标位置横坐标。
+         * @param {number} y - 鼠标位置纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42726,8 +41741,13 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsideBrokenLine
-         * 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideBrokenLine
+         * @description 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
+         * @param {Array} points - 曲线点对象。
+         * @param {number} lineWidth - 线宽。
+         * @param {number} x - 鼠标位置横坐标。
+         * @param {number} y - 鼠标位置纵坐标。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42749,8 +41769,9 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: isInsideRing
-         * 图形 Ring 是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideRing
+         * @description  图形 Ring 是否包含鼠标位置, true表示坐标处在图形内。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42761,8 +41782,9 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsideRect
-         * 图形 Rect 是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideRect
+         * @description 图形 Rect 是否包含鼠标位置, true表示坐标处在图形内。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42772,8 +41794,9 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsideCircle
-         * 图形 Circle 是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideCircle
+         * @description 图形 Circle 是否包含鼠标位置, true表示坐标处在图形内。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42783,8 +41806,9 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsideSector
-         * 图形 Sector 是否包含鼠标位置, true表示坐标处在图形内。
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideSector
+         * @description 图形 Sector 是否包含鼠标位置, true表示坐标处在图形内。
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42794,8 +41818,9 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsidePolygon
-         * 图形 Polygon 是否包含鼠标位置, true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsidePolygon
+         * @description 图形 Polygon 是否包含鼠标位置, true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
+         * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -42816,7 +41841,7 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: windingLine
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingLine
          */
 
     }, {
@@ -42836,7 +41861,7 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: swapExtrema
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.swapExtrema
          */
 
     }, {
@@ -42848,7 +41873,7 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: windingCubic
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingCubic
          */
 
     }, {
@@ -42909,7 +41934,7 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: windingQuadratic
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingQuadratic
          */
 
     }, {
@@ -42953,8 +41978,8 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * Method: windingArc
-         *     // TODO   Arc 旋转
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingArc
+         * // TODO   Arc 旋转
          */
 
     }, {
@@ -43016,8 +42041,8 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: isInsidePath
-         * 与 canvas 一样采用 non-zero winding rule
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsidePath
+         * @description 与 canvas 一样采用 non-zero winding rule
          */
 
     }, {
@@ -43154,8 +42179,8 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: getTextWidth
-         * 测算多行文本宽度
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.getTextWidth
+         * @description 测算多行文本宽度
          */
 
     }, {
@@ -43190,8 +42215,8 @@ var Area = exports.Area = function () {
         }
 
         /**
-         * APIMethod: getTextHeight
-         * 测算多行文本高度
+         * @function SuperMap.LevelRenderer.Tool.Areal.prototype.getTextHeight
+         * @description 测算多行文本高度
          */
 
     }, {
@@ -43256,91 +42281,84 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Image
  * @category Visualization Theme
- * 图片参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 图片参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 var Image = exports.Image = function (_ShapeParameters) {
   _inherits(Image, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Image
-   * 创建一个图片参数对象。
-   *
-   * Parameters:
-   * x - {Number} 左上角横坐标，必设参数。
-   * y - {Number} 左上角纵坐标，必设参数。
-   * image - {String/Cavans} 图片地址或cavans对象，必设参数。
-   * width - {Number} 绘制到画布上的宽度，默认为图片高度。
-   * height - {Number} 绘制到画布上的高度，默认为图片高度。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Image>} 图片参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Image.prototype.constructor
+   * @description 创建一个图片参数对象。
+   * @param {number} x - 左上角横坐标，必设参数。
+   * @param {number} y - 左上角纵坐标，必设参数。
+   * @param {(string|Object)} image - 图片地址或Cavans对象，必设参数。
+   * @param {number} width - 绘制到画布上的宽度，默认为图片高度。
+   * @param {number} height - 绘制到画布上的高度，默认为图片高度。
+   * @param {number} sx - 从图片中裁剪的左上角横坐标。
+   * @param {number} sy - 从图片中裁剪的左上角纵坐标。
+   * @param {number} sWidth - 从图片中裁剪的宽度，默认为图片高度。
+   * @param {number} sHeight - 绘制到画布上的高度，默认为图片高度。
+   * @returns {SuperMap.Feature.ShapeParameters.Image} 圆形参数对象。
    */
-  //     * sx - {Number} 从图片中裁剪的左上角横坐标。
-  //     * sy - {Number} 从图片中裁剪的左上角纵坐标。
-  //     * sWidth - {Number} 从图片中裁剪的宽度，默认为图片高度。
-  //     * sHeight - {Number} 绘制到画布上的高度，默认为图片高度。
   function Image(x, y, image, width, height, sx, sy, sWidth, sHeight) {
     _classCallCheck(this, Image);
 
     /**
-     * APIProperty: x
-     * {Number} 图片左上角横坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.x
+     * @description 左上角横坐标，必设参数。
      */
     var _this = _possibleConstructorReturn(this, (Image.__proto__ || Object.getPrototypeOf(Image)).call(this, x, y, image, width, height, sx, sy, sWidth, sHeight));
 
     _this.x = x;
 
     /**
-     * APIProperty: y
-     * {Number} 左上角纵坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.y
+     * @description 左上角纵坐标，必设参数。
      */
     _this.y = y;
 
     /**
-     * APIProperty: image
-     * {String} 图片地址。
+     * @member {(string|Object)} SuperMap.Feature.ShapeParameters.Image.prototype.image
+     * @description 图片地址。
      */
     _this.image = image;
 
     /**
-     * APIProperty: width
-     * {Number} 绘制到画布上的宽度，默认为图片高度。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.width
+     * @description 绘制到画布上的宽度，默认为图片高度。
      */
     _this.width = width;
 
     /**
-     * APIProperty: height
-     * {Number} 绘制到画布上的高度，默认为图片高度。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.height
+     * @description 绘制到画布上的高度，默认为图片高度。
      */
     _this.height = height;
 
     /**
-     * Property: sx
-     * {Number} 从图片中裁剪的左上角横坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sx
+     * @description 从图片中裁剪的左上角横坐标。
      */
     _this.sx = sx;
 
     /**
-     * Property: sy
-     * {Number} 从图片中裁剪的左上角纵坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sy
+     * @description 从图片中裁剪的左上角纵坐标。
      */
     _this.sy = sy;
 
     /**
-     * Property: sWidth
-     * {Number} 从图片中裁剪的宽度，默认为图片高度。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sWidth
+     * @description 从图片中裁剪的宽度，默认为图片高度。
      */
     _this.sWidth = sWidth;
 
     /**
-     * Property: sHeight
-     * {Number} 绘制到画布上的高度，默认为图片高度。
+     * @member {number} SuperMap.Feature.ShapeParameters.Image.prototype.sHeight
+     * @description 绘制到画布上的高度，默认为图片高度。
      */
     _this.sHeight = sHeight;
 
@@ -43350,8 +42368,8 @@ var Image = exports.Image = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Image.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -43404,49 +42422,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Label
  * @category Visualization Theme
- * 标签参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 标签参数对象。
+ * @extent {SuperMap.Feature.ShapeParameters}
  */
 var Label = exports.Label = function (_ShapeParameters) {
   _inherits(Label, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Label
-   * 创建一个标签参数对象。
-   *
-   * Parameters:
-   * x - {Number} 横坐标，必设参数。
-   * y - {Number} 纵坐标，必设参数。
-   * text - {String} 图形中的附加文本，必设参数。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Label>} 标签参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Label.prototype.constructor
+   * @description 创建一个标签参数对象。
+   * @param {number} x - 横坐标，必设参数。
+   * @param {number} y - 纵坐标，必设参数。
+   * @param {string} text - 图形中的附加文本，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Label} 标签参数对象。
    */
   function Label(x, y, text) {
     _classCallCheck(this, Label);
 
     /**
-     * APIProperty: x
-     * {Number} 标签 x 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.x
+     * @description 标签 x 坐标。
      */
     var _this = _possibleConstructorReturn(this, (Label.__proto__ || Object.getPrototypeOf(Label)).call(this, x, y, text));
 
     _this.x = x;
 
     /**
-     * APIProperty: y
-     * {Number} 标签 y 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.y
+     * @description 标签 y 坐标。
      */
     _this.y = y;
 
     /**
-     * APIProperty: text
-     * {String} 标签的文本内容。
+     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.text
+     * @description 标签的文本内容。
      */
     _this.text = text;
 
@@ -43455,8 +42466,8 @@ var Label = exports.Label = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Label.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -43504,56 +42515,49 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @private
  * @class  SuperMap.Feature.ShapeParameters.Rectangle
  * @category Visualization Theme
- * 矩形参数对象。
- *
- * Inherits:
- *  - <SuperMap.Feature.ShapeParameters>
+ * @classdesc 矩形参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
  */
 var Rectangle = exports.Rectangle = function (_ShapeParameters) {
   _inherits(Rectangle, _ShapeParameters);
 
   /**
-   * Constructor: SuperMap.Feature.ShapeParameters.Rectangle
-   * 创建一个图形矩形参数对象。
-   *
-   * Parameters:
-   * x - {Number} 矩形 x 坐标，必设参数。
-   * y - {Number} 矩形 y 坐标，必设参数。
-   * width - {Number} 矩形 width 坐标，必设参数。
-   * height - {Number} 矩形 height 坐标，必设参数。
-   *
-   * Returns:
-   * {<SuperMap.Feature.ShapeParameters.Rectangle>} 图形矩形参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Rectangle.prototype.constructor
+   * @description 创建一个图形矩形参数对象。
+   * @param {number} x - 矩形 x 坐标，必设参数。
+   * @param {number} y - 矩形 y 坐标，必设参数。
+   * @param {number} width - 矩形 width 坐标，必设参数。
+   * @param {number} height - 矩形 height 坐标，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Rectangle} 图形矩形参数对象。
    */
   function Rectangle(x, y, width, height) {
     _classCallCheck(this, Rectangle);
 
     /**
-     * APIProperty: x
-     * {Number} 左上角 x 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Rectangle.prototype.x
+     * @description 左上角 x 坐标。
      */
     var _this = _possibleConstructorReturn(this, (Rectangle.__proto__ || Object.getPrototypeOf(Rectangle)).call(this, x, y, width, height));
 
     _this.x = !isNaN(x) ? x : 0;
 
     /**
-     * APIProperty: y
-     * {Number} 左上角 y 坐标。
+     * @member {number} SuperMap.Feature.ShapeParameters.Rectangle.prototype.y
+     * @description 左上角 y 坐标。
      */
     _this.y = !isNaN(x) ? y : 0;
 
     /**
-     * APIProperty: width
-     * {Number} 宽度。
+     * @member {number} SuperMap.Feature.ShapeParameters.Rectangle.prototype.width
+     * @description 宽度。
      */
     _this.width = !isNaN(width) ? width : 0;
 
     /**
-     * APIProperty: height
-     * {Number} 高度。
+     * @member {number} SuperMap.Feature.ShapeParameters.Rectangle.prototype.height
+     * @description 高度。
      */
     _this.height = !isNaN(height) ? height : 0;
 
@@ -43562,8 +42566,8 @@ var Rectangle = exports.Rectangle = function (_ShapeParameters) {
   }
 
   /**
-   * APIMethod: destroy
-   * 销毁对象。
+   * @function SuperMap.Feature.ShapeParameters.Rectangle.prototype.destroy
+   * @description 销毁对象。
    */
 
 
@@ -43615,7 +42619,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.OnlineServiceBase
  * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
  * @category iPortal/Online
- * @param options -{Object} 服务参数
+ * @param {Object} options - 服务参数
  */
 var OnlineServiceBase = exports.OnlineServiceBase = function () {
     function OnlineServiceBase(options) {
@@ -43630,10 +42634,10 @@ var OnlineServiceBase = exports.OnlineServiceBase = function () {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
-     * @param method - {string} 请求方式, 'get','put','post','delete'
-     * @param url - {string} 服务地址
-     * @param param -{Object} Url查询参数
-     * @param requestOptions -{Object} http请求参数, 比如请求头，超时时间等
+     * @param {string} method - 请求方式, 'get','put','post','delete'
+     * @param {string} url - 服务地址
+     * @param {Object} param - Url查询参数
+     * @param {Object} requestOptions - http请求参数, 比如请求头，超时时间等
      * @return {Promise}  返回包含请求结果的Promise对象
      */
 
@@ -43650,7 +42654,7 @@ var OnlineServiceBase = exports.OnlineServiceBase = function () {
         /**
          * @function SuperMap.OnlineServiceBase.prototype.createCredentialUrl
          * @description 追加授权信息
-         * @param url - {string} 对接的online服务地址
+         * @param {string} url - 对接的online服务地址
          */
 
     }, {
@@ -43719,8 +42723,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.OnlineData
  * @classdesc Online myData服务
  * @category iPortal/Online
- * @param serviceRootUrl -{string} 服务根地址
- * @param options -{string} 服务相关参数
+ * @param {string} serviceRootUrl - 服务根地址
+ * @param {string} options - 服务相关参数
  */
 var OnlineData = exports.OnlineData = function (_OnlineServiceBase) {
     _inherits(OnlineData, _OnlineServiceBase);
@@ -53915,7 +52919,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.DensityKernelAnalystParameters
  * @category  iServer SpatialAnalyst DensityAnalyst
  * @classdesc 核密度分析参数类。
- * @param {Object} options - 参数。</br>
+ * @param {Object} options - 参数。
  * @param {string} options.dataset - 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 核密度分析的范围，用于确定结果栅格数据集的范围。如果缺省，则默认为原数据集的范围。</br>
  * @param {number} options.searchRadius - 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
@@ -56821,8 +55825,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.iPortalMap
  * @classdesc iPortal地图服务类
  * @category iPortal/Online
- * @param mapUrl -{string}  地图地址
- * @param params -{Object}  服务参数
+ * @param {string} mapUrl - 地图地址
+ * @param {Object} params - 服务参数
  * @extends SuperMap.iPortalServiceBase
  *
  */
@@ -56954,8 +55958,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc iPortal服务
  * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
- * @param seviceUrl -{string} 服务地址
- * @param params -{Object} 服务请求参数
+ * @param {string} seviceUrl - 服务地址
+ * @param {Object} params - 服务请求参数
  *
  */
 var IPortalService = exports.IPortalService = function (_IPortalServiceBase) {
@@ -57071,7 +56075,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.iPortalMapsQueryParam
  * @classdesc iPortal地图资源查询参数
  * @category iPortal/Online
- * @param params -{Object} iPortal地图资源查询具体参数
+ * @param {Object} params - iPortal地图资源查询具体参数
  *
  */
 var IPortalMapsQueryParam = exports.IPortalMapsQueryParam = function IPortalMapsQueryParam(params) {
@@ -57121,7 +56125,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.iPortalServicesQueryParam
  * @classdesc iPortal服务查询参数
  * @category iPortal/Online
- * @param params -{Object} 服务参数
+ * @param {Object} params - 服务参数
  *
  */
 var IPortalServicesQueryParam = exports.IPortalServicesQueryParam = function IPortalServicesQueryParam(params) {
@@ -57170,7 +56174,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.iManagerCreateNodeParam
  * @classdesc iManager 创建节点参数。
  * @category iManager
- * @param params - {Object} iManager创建节点参数。
+ * @param {Object} params - iManager创建节点参数。
  *
  */
 var IManagerCreateNodeParam = exports.IManagerCreateNodeParam = function IManagerCreateNodeParam(params) {
@@ -57216,7 +56220,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.iManagerServiceBase
  * @classdesc iManager服务基类(有权限限制的类需要实现此类)。
  * @category iManager
- * @param url - {string} iManager首页地址，如：http://localhost:8390/imanager。
+ * @param {string} url - iManager首页地址，如：http://localhost:8390/imanager。
  */
 var IManagerServiceBase = exports.IManagerServiceBase = function () {
     function IManagerServiceBase(url) {
@@ -57232,10 +56236,10 @@ var IManagerServiceBase = exports.IManagerServiceBase = function () {
     /**
      * @function SuperMap.iManagerServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求。
-     * @param url - {string} 请求url。
-     * @param method - {string} 请求类型。
-     * @param requestOptions - {Object} 请求选项。
-     * @param param - {Object} 请求参数。
+     * @param {string} url - 请求url。
+     * @param {string} method - 请求类型。
+     * @param {Object} requestOptions - 请求选项。
+     * @param {Object} param - 请求参数。
      * @description 发送请求。
      * @returns {Promise} Promise对象。
      */
@@ -57298,12 +56302,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
  * @category  Control
- * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
- *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {number}的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {boolean} 是否重复循环。默认为true。<br>
- *        reverse - {boolean} 是否反向。默认为false。<br>
+ * @param {Object} options - 该类开放的可选属性。
+ * @param {number} [options.speed=1] - 速度。不能小于0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。
+ * @param {number} options.startTime - 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。
+ * @param {number} options.endTime - 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
+ * @param {boolean} [options.repeat=true] - 是否重复循环。
+ * @param {boolean} [options.reverse=false] - 是否反向。
  */
 var TimeControlBase = exports.TimeControlBase = function () {
     function TimeControlBase(options) {
@@ -57314,64 +56318,64 @@ var TimeControlBase = exports.TimeControlBase = function () {
         options = options || {};
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.speed -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.speed
          * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
          */
         this.speed = options.speed && options.speed >= 0 ? options.speed : 1;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.frequency -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.frequency
          * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
          */
         this.frequency = options.speed && options.frequency >= 0 ? options.frequency : 1000;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.startTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.startTime
          * @description 记录的起始时间，必须为数字，
          *              如果不设置，初始化时为0，建议设置
          */
         this.startTime = options.startTime && options.startTime != null ? options.startTime : 0;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.endTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.endTime
          * @description 记录的结束时间，必须为数字，
          *              如果不设置，初始化时以当前时间进行设置，建议设置
          */
         this.endTime = options.endTime && options.endTime != null && options.endTime >= me.startTime ? options.endTime : +new Date();
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
+         * @member {boolean} SuperMap.TimeControlBase.prototype.repeat
          * @description 是否重复循环，默认为true。
          */
         this.repeat = options.repeat !== undefined ? options.repeat : true;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
+         * @member {boolean} SuperMap.TimeControlBase.prototype.reverse
          * @description 是否反向，默认为false。
          */
         this.reverse = options.reverse !== undefined ? options.reverse : false;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.currentTime
          * @description 记录近期的时间，也就是当前帧运行到的时间。
          */
         this.currentTime = null;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
+         * @member {number} SuperMap.TimeControlBase.prototype.oldTime
          * @description 记录上一帧的时间，也就是之前运行到的时间。
          */
         this.oldTime = null;
 
         /**
-         * @member SuperMap.TimeControlBase.prototype.running -{boolean}
+         * @member {boolean} SuperMap.TimeControlBase.prototype.running
          * @description 记录当前是否处于运行中，默认为false。
          */
         this.running = false;
 
         /**
          * @private
-         * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
+         * @member {Array.<string>} SuperMap.TimeControlBase.prototype.EVENT_TYPES
          * @description 此类支持的事件类型。
          *
          */
@@ -57379,7 +56383,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
 
         /**
          * @private
-         * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
+         * @member {SuperMap.Events} SuperMap.TimeControlBase.prototype.events
          * @description 事件
          */
         me.events = new _Events.Events(this, null, this.EVENT_TYPES);
@@ -57400,7 +56404,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
 
     /**
      * @function SuperMap.TimeControlBase.prototype.updateOptions
-     * @param options - {Object} 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
+     * @param {Object} options - 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
      */
 
 
@@ -57507,7 +56511,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setSpeed
          * @description 设置步长。
-         * @param speed - {number}步长，必须为非负数，默认为1
+         * @param {number} speed - 步长，必须为非负数，默认为1
          * @return {boolean} true代表设置成功，false设置失败（speed小于0时失败）
          */
 
@@ -57537,7 +56541,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setFrequency
          * @description 设置刷新频率。
-         * @param frequency - {number}刷新频率，单位为ms，默认为1s
+         * @param {number} [frequency=1000] - 刷新频率，单位为ms。
          * @return {boolean} true代表设置成功，false设置失败（frequency小于0时失败）
          */
 
@@ -57567,7 +56571,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setStartTime
          * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
-         * @param startTime - {number}需要设置的起始时间
+         * @param {number} startTime - 需要设置的起始时间
          * @return {boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
          */
 
@@ -57604,7 +56608,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setEndTime
          * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
-         * @param endTime - {number}需要设置的结束时间
+         * @param {number} endTime - 需要设置的结束时间
          * @return {boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
          */
 
@@ -57641,7 +56645,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setCurrentTime
          * @description 设置当前时间
-         * @param currentTime - {number}需要设置的当前时间
+         * @param {number} currentTime - 需要设置的当前时间
          * @return {boolean} true代表设置成功，false设置失败
          */
 
@@ -57675,7 +56679,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setRepeat
          * @description 设置是否重复循环
-         * @param repeat - {boolean} 是否重复循环
+         * @param {boolean} repeat - 是否重复循环
          */
 
     }, {
@@ -57699,7 +56703,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setReverse
          * @description 设置是否反向
-         * @param reverse - {boolean} 是否反向
+         * @param {boolean} reverse - 是否反向
          */
 
     }, {
@@ -57797,9 +56801,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Feature
  * @classdesc 要素类组合了地理和属性，Feature 类同时具有 marker 和 lonlat 属性。
- * @param layer - {SuperMap.Layer} 图层。
- * @param lonlat - {SuperMap.LonLat} 经纬度。
- * @param data - {Object} 数据对象。
+ * @param {SuperMap.Layer} layer - 图层。
+ * @param {SuperMap.LonLat} lonlat - 经纬度。
+ * @param {Object} data - 数据对象。
  */
 var Feature = exports.Feature = function () {
   function Feature(layer, lonlat, data) {
@@ -57808,26 +56812,26 @@ var Feature = exports.Feature = function () {
     this.CLASS_NAME = "SuperMap.Feature";
     /**
      * @deprecated
-     * @member SuperMap.Feature.prototype.layer - {SuperMap.Layer}
+     * @member {SuperMap.Layer} SuperMap.Feature.prototype.layer
      * @description 图层。
      */
     this.layer = layer;
 
     /**
-     * @member SuperMap.Feature.prototype.id - {string}
+     * @member {string} SuperMap.Feature.prototype.id
      * @description 要素id。
      */
     this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
 
     /**
-     * @member SuperMap.Feature.prototype.lonlat - {SuperMap.LonLat}
+     * @member {SuperMap.LonLat} SuperMap.Feature.prototype.lonlat
      * @description 经纬度。
      *
      */
     this.lonlat = lonlat;
 
     /**
-     * @member SuperMap.Feature.prototype.data - {Object}
+     * @member {Object} SuperMap.Feature.prototype.data
      * @description 数据对象。
      */
     this.data = data != null ? data : {};
@@ -57878,8 +56882,8 @@ var _Util = __webpack_require__(1);
 var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
-     * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
-     * @type {Boolean}
+     * @description  A hash table cache of the event observers. Keyed by element._eventCacheID
+     * @type {boolean}
      * @default false
      */
     observers: false,
@@ -57956,7 +56960,7 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Cross browser event element detection.
-     * @param event - {Event}
+     * @param {Event} event - The event
      * @returns {HTMLElement} The element that caused the event
      */
     element: function element(event) {
@@ -57965,8 +56969,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a single touch
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isSingleTouch: function isSingleTouch(event) {
         return event.touches && event.touches.length === 1;
@@ -57974,8 +56978,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a multi touch
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isMultiTouch: function isMultiTouch(event) {
         return event.touches && event.touches.length > 1;
@@ -57983,8 +56987,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a left click.
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isLeftClick: function isLeftClick(event) {
         return event.which && event.which === 1 || event.button && event.button === 1;
@@ -57992,8 +56996,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Determine whether event was caused by a right mouse click.
-     * @param event - {Event}
-     * @returns {Boolean}
+     * @param {Event} event - The event
+     * @returns {boolean}
      */
     isRightClick: function isRightClick(event) {
         return event.which && event.which === 3 || event.button && event.button === 2;
@@ -58001,8 +57005,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description Stops an event from propagating.
-     * @param event - {Event}
-     * @param allowDefault - {Boolean} If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
+     * @param {Event} event - The event
+     * @param {boolean} allowDefault - If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
      */
     stop: function stop(event, allowDefault) {
 
@@ -58022,8 +57026,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
     },
 
     /**
-     * @param event - {Event}
-     * @param tagName - {string} html标签名
+     * @param {Event} event - The event
+     * @param {string} tagName - html标签名
      * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
      */
     findElement: function findElement(event, tagName) {
@@ -58036,10 +57040,10 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description 监听事件，注册事件处理方法。
-     * @param elementParam - {HTMLElement | string} 待监听的DOM对象或者其id标识。
-     * @param name - {string} 监听事件的类别名称。
-     * @param observer - {function} 注册的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
+     * @param {(HTMLElement|string)} elementParam - 待监听的DOM对象或者其id标识。
+     * @param {string} name - 监听事件的类别名称。
+     * @param {function} observer - 注册的事件处理方法。
+     * @param {boolean} useCapture - 是否捕获。
      */
     observe: function observe(elementParam, name, observer, useCapture) {
         var element = _Util.Util.getElement(elementParam);
@@ -58091,7 +57095,7 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
      *   element's cached observers, calling stopObserving on each one,
      *   skipping those entries which can no longer be removed.
      *
-     * @param elementParam - {HTMLElement | string}
+     * @param {(HTMLElement|string)} elementParam -
      */
     stopObservingElement: function stopObservingElement(elementParam) {
         var element = _Util.Util.getElement(elementParam);
@@ -58100,8 +57104,8 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
         this._removeElementObservers(_SuperMap.SuperMap.Event.observers[cacheID]);
     },
 
-    /*
-     * @param elementObservers - {Array<Object>} Array of (element, name,
+    /**
+     * @param {Array.<Object>} elementObservers - Array of (element, name,
      *                                         observer, usecapture) objects,
      *                                         taken directly from hashtable
      */
@@ -58118,11 +57122,11 @@ var Event = exports.Event = _SuperMap.SuperMap.Event = {
     /**
      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
      * 保持一致才能确保事件移除成功。
-     * @param elementParam - {HTMLElement | string} 被监听的DOM元素或者其id。
-     * @param name - {string} 需要移除的被监听事件名称。
-     * @param observer - {function} 需要移除的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
-     * @returns {Boolean} Whether or not the event observer was removed
+     * @param {(HTMLElement|string)} elementParam - 被监听的DOM元素或者其id。
+     * @param {string} name - 需要移除的被监听事件名称。
+     * @param {function} observer - 需要移除的事件处理方法。
+     * @param {boolean} useCapture - 是否捕获。
+     * @returns {boolean} Whether or not the event observer was removed
      */
     stopObserving: function stopObserving(elementParam, name, observer, useCapture) {
         useCapture = useCapture || false;
@@ -58223,10 +57227,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class  SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
  * @category BaseTypes Geometry
- * @param  x - {float} 矩形左下角点的横坐标。
- * @param y - {float} 矩形左下角点的纵坐标。
- * @param width - {float} 矩形的宽度。
- * @param height -  {float} 矩形的高度。
+ * @param {float} x - 矩形左下角点的横坐标。
+ * @param {float} y - 矩形左下角点的纵坐标。
+ * @param {float} width - 矩形的宽度。
+ * @param {float} height -  矩形的高度。
  * @extends {SuperMap.Geometry}
  * @example
  *  //x为矩形左下角点的横坐标；y为矩形左下角点的纵坐标；w为矩形的宽度；h为矩形的高度
@@ -58244,7 +57248,7 @@ var Rectangle = exports.Rectangle = function (_Geometry) {
     _classCallCheck(this, Rectangle);
 
     /**
-     * @member SuperMap.Geometry.Rectangle.prototype.x -{float}
+     * @member {float} SuperMap.Geometry.Rectangle.prototype.x
      * @description 矩形左下角点的横坐标。
      */
     var _this = _possibleConstructorReturn(this, (Rectangle.__proto__ || Object.getPrototypeOf(Rectangle)).call(this, x, y, width, height));
@@ -58252,19 +57256,19 @@ var Rectangle = exports.Rectangle = function (_Geometry) {
     _this.x = x;
 
     /**
-     * @member SuperMap.Geometry.Rectangle.prototype.y -{float}
+     * @member {float} SuperMap.Geometry.Rectangle.prototype.y
      * @description 矩形左下角点的纵坐标。
      */
     _this.y = y;
 
     /**
-     * @member SuperMap.Geometry.Rectangle.prototype.width -{float}
+     * @member {float} SuperMap.Geometry.Rectangle.prototype.width
      * @description 矩形的宽度。
      */
     _this.width = width;
 
     /**
-     * @member SuperMap.Geometry.Rectangle.prototype.height -{float}
+     * @member {float} SuperMap.Geometry.Rectangle.prototype.height
      * @description 矩形的高度。
      */
     _this.height = height;
@@ -58325,8 +57329,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class  SuperMap.Size
  * @classdesc 此类描绘一对高宽值的实例。
- * @param  w -{number} 宽度，默认值为0.0
- * @param  h -{number} 高度 ，默认值为0.0
+ * @param {number} [w=0.0] - 宽度
+ * @param {number} [h=0.0] - 高度
  *
  * @example
  * var size = new SuperMap.Size(31,46);
@@ -58336,14 +57340,14 @@ var Size = exports.Size = function () {
         _classCallCheck(this, Size);
 
         /**
-         * @member SuperMap.Size.prototype.w -{number}
-         * @description  宽，默认值为0.0
+         * @member {number} [SuperMap.Size.prototype.w=0.0]
+         * @description 宽度
          */
         this.w = w ? parseFloat(w) : 0.0;
 
         /**
-         * @member SuperMap.Size.prototype.h -{number}
-         * @description 高，默认值为0.0
+         * @member {number} [SuperMap.Size.prototype.h=0.0]
+         * @description 高度
          */
         this.h = w ? parseFloat(h) : 0.0;
         this.CLASS_NAME = "SuperMap.Size";
@@ -58390,8 +57394,8 @@ var Size = exports.Size = function () {
          * var size2 = new SuperMap.Size(31,46);
          * var isEquals = size.equals(size2);
          *
-         * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
-         * @returns {Boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
+         * @param {SuperMap.Size} sz - 用于比较相等的Size对象。
+         * @returns {boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
          *
          */
 
@@ -62331,15 +61335,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
  * `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js"></script>`
  * @category  Visualization VectorTile
- * @param {Object} options 初始化参数。<br>
- * @param {string | undefined} options.url - iServer UGCV5(MVT) 地图服务地址，例如 `http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test` , 与 `options.style` 互斥，优先级低于 `options.style`。
- * @param {Object | undefined} options.style - Mapbox style 对象。 与 `options.url` 互斥，优先级高于 `options.url`。
+ * @param {Object} options - 初始化参数。<br>
+ * @param {(string|undefined)} options.url - iServer UGCV5(MVT) 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
+ * @param {(Object|undefined)} options.style - Mapbox style 对象。与options.url互斥，优先级高于options.url。
  * @param {Array.<number>} options.resolutions - 地图分辨率数组，用于映射zoom值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
- * 默认值为`[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]`。
- * @param {!(string|Array.<string>)} options.source - Mapbox Style `source` key值或者 `layer`的 id 数组。
- * 当配置`source` key值时，source为该值的layer会被加载；
- * 当配置为`layer`的 id 数组时，指定的layer会被加载，注意被指定的layer需要有相同的source。
- * @param {ol.Map} options.map - Openlayers 地图对象，仅用于填充Mapbox Style中的 `background`,如没有配置`background`可不设置该参数。
+ * 默认值为[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
+ * @param {!(string|Array.<string>)} options.source - Mapbox Style 'source'的 key 值或者 'layer'的 id 数组。
+ * 当配置'source'的 key 值时，source为该值的layer会被加载；
+ * 当配置为'layer'的 id 数组时，指定的layer会被加载，注意被指定的layer需要有相同的source。
+ * @param {ol.Map} options.map - Openlayers 地图对象，仅用于填充Mapbox Style中的 background,如没有配置 background 可不设置该参数。
  * @example
  *  var mbStyle = new ol.supermap.MapboxStyles({
             url: url,
@@ -62395,8 +61399,8 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
     }
     /**
      * @function ol.supermap.MapboxStyles.getStyleFunction
-     * @description 获取`ol.FeatureStyleFunction`。
-     * @return {ol.FeatureStyleFunction} `ol.FeatureStyleFunction`
+     * @description 获取ol.FeatureStyleFunction。
+     * @returns {ol.FeatureStyleFunction} `ol.FeatureStyleFunction`
      */
 
 
@@ -62408,7 +61412,6 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
         /**
          * @function ol.supermap.MapboxStyles.getStylesBySourceLayer
          * @param {string} sourceLayer - 数据图层名称。
-         * @return 
          */
 
     }, {
@@ -62693,17 +61696,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.HeatMap
  * @classdesc 热力图层类
  * @category Visualization HeatMap
- * @param name -{string} 图层名称
- * @param options - {Object} 构造参数，如下：<br>
- *        map - [ol.Map]{@linkdoc-openlayers/ol.Map.html} openlayers 的 map对象。必传参数。</br>
- *        id - {string} 专题图层ID。</br>
- *        featureWeight - {string} 对应 feature 属性中的热点权重字段名称，权重值类型为float。<br>
- *        radius - {number} 热点渲染的最大半径（热点像素半径），默认为 50，单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
- *        loadWhileAnimating - {boolean} 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
- *        opacity - {number} 图层透明度。</br>
- *        colors - {Array<string>} 颜色线性渐变数组,颜色值必须为canvas所支。默认为['blue','cyan','lime','yellow','red']。</br>
- *        useGeoUnit - {boolean} 使用地理单位，默认是false，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @param {string} name - 图层名称
+ * @param {Object} options - 构造参数。<br>
+ * @param {ol.Map} options.map - openlayers 的 map对象。必传参数。</br>
+ * @param {string} options.id - 专题图层ID。</br>
+ * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为float。<br>
+ * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
+ * @param {number} options.opacity - 图层透明度。</br>
+ * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为canvas所支持的。</br>
+ * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false表示默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。</br>
+ * @extends {ol.source.ImageCanvas}
  */
 var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
     _inherits(HeatMap, _ol$source$ImageCanva);
@@ -62780,8 +61783,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
     /**
      * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param features - {Object|Array<ol.Feature>|ol.Feature}待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
-     *
+     * @param {(Object|Array.<ol.Feature>|ol.Feature)}features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
      * @example
      * var geojson = {
      *      "type": "FeatureCollection",
@@ -62817,7 +61819,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.setOpacity
          * @description 设置图层的不透明度,取值[0-1]之间。
-         * @param opacity - {number} 不透明度
+         * @param {number} opacity - 不透明度
          */
 
     }, {
@@ -62838,7 +61840,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.updateHeatPoints
          * @description 刷新热点图显示
-         * @param bounds - {ol.LngLatBounds} 当前显示范围
+         * @param {ol.LngLatBounds} resolution - 当前显示范围
          * @private
          */
 
@@ -62855,7 +61857,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.convertFastToPixelPoints
          * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
-         * @param resolution - {number} 当前分辨率
+         * @param {number} resolution - 当前分辨率
          * @private
          */
 
@@ -62916,8 +61918,8 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.draw
          * @description 绘制热点图
-         * @param data -{Array} convertToPixelPoints方法计算出的点
-         * @param maxWeight -{number}
+         * @param {Array} data - convertToPixelPoints方法计算出的点
+         * @param {number} maxWeight -最大权重
          * @private
          */
 
@@ -62948,8 +61950,8 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.colorize
          * @description 根据渐变色重置热点图rgb值
-         * @param pixels 像素RGBA值
-         * @param gradient 渐变canvas.getImageData.data
+         * @param {Object} pixels - 像素RGBA值
+         * @param {Array} gradient - 渐变canvas.getImageData.data
          * @private
          */
 
@@ -62969,7 +61971,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.drawCircle
          * @description 绘制热点半径圆
-         * @param r -{number} 热点半径
+         * @param {number} r - 热点半径
          * @private
          */
 
@@ -63024,7 +62026,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.getLocalXY
          * @description 获取坐标系统
-         * @param coordinate - {Object} 坐标位置。
+         * @param {Object} coordinate - 坐标位置。
          */
 
     }, {
@@ -63056,9 +62058,9 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.rotate
          * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
-         * @param pixelP - {number} 像素坐标点位置。
-         * @param rotation - {number} 旋转角度
-         * @param center - {number} 中心位置。
+         * @param {number} pixelP - 像素坐标点位置。
+         * @param {number} rotation - 旋转角度
+         * @param {number} center - 中心位置。
          */
 
     }, {
@@ -63072,10 +62074,10 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.scale
          * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
-         * @param pixelP - {Object} 像素点
-         * @param center - {Object} 中心点
-         * @param scaleRatio - {number} 缩放倍数
-         * @return {Array<number>} 返回数组形比例
+         * @param {Object} pixelP - 像素点
+         * @param {Object} center - 中心点
+         * @param {number} scaleRatio - 缩放倍数
+         * @returns {Array.<number>} 返回数组形比例
          */
 
     }, {
@@ -63089,7 +62091,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.removeFeatures
          * @description 移除指定的热点信息。
-         * @param features - {Array<SuperMap.Feature.Vector>} 热点信息数组。
+         * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
          */
 
     }, {
@@ -63139,8 +62141,8 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.toiClientFeature
          * @description 转为 iClient 要素
-         * @param features - {Object|Array<ol.Feature>}待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
-         * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+         * @param {Object|Array<ol.Feature>} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
+         * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
          */
 
     }, {
@@ -63222,8 +62224,8 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
  * @class ol.source.VectorTileSuperMapRest
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
- * @param options -{Object} 参数。
- * @extends ol.source.VectorTile{@linkdoc-openlayers/ol.source.VectorTile}
+ * @param {Object} options - 参数。
+ * @extends {ol.source.VectorTile}
  */
 
 var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$source$VectorTile) {
@@ -63362,8 +62364,8 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
          * @private
          * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片
-         * @param tile -{onject} 瓦片类
-         * @param tileUrl -{string} 瓦片地址
+         * @param {Object} tile -瓦片类
+         * @param {string} tileUrl - 瓦片地址
          */
         function tileLoadFunction(tile, tileUrl) {
             var regWidth = new RegExp("(^|\\?|&)" + 'width' + "=([^&]*)(\\s|&|$)");
@@ -63420,8 +62422,8 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
 
     /**
      * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
-     * @param url - {string} 地址
-     * @param mapJSONObj - {Object} 地图JSON
+     * @param {string} url - 地址
+     * @param {Object} mapJSONObj - 地图JSON
      * @description 获取地图JSON信息
      */
 
@@ -63561,8 +62563,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Turf
  * @category  Visualization Turf
  * @classdesc Turf.js图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
+ * @param {Object} opt_options - 参数
+ * @extends {ol.source.Vector}
  */
 var Turf = exports.Turf = function (_ol$source$Vector) {
     _inherits(Turf, _ol$source$Vector);
@@ -63718,10 +62720,10 @@ var Turf = exports.Turf = function (_ol$source$Vector) {
     /**
      * @function ol.source.turf.prototype.process
      * @description 执行Turf.js提供的相关空间分析方法
-     * @param type -{string} Turf.js提供的空间分析方法名
-     * @param args -{Object} Turf.js提供的空间分析方法对应的参数对象
+     * @param {string} type - Turf.js提供的空间分析方法名
+     * @param {Object} args - Turf.js提供的空间分析方法对应的参数对象
      * @param callback -{function} 空间分析完成执行的回调函数，返回执行的结果
-     * @param addFeaturesToMap -{boolean} 是否添加到map
+     * @param {boolean} addFeaturesToMap - 是否添加到map
      */
 
 
@@ -63803,22 +62805,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.RankSymbol
  * @category  Visualization Theme
  * @classdesc 等级符号专题图图层源。
- * @param name - {string} 专题图层名
- * @param symbolType -{string} 标志类型
- * @param opt_options -{Object} 参数，如：<br>
- *        id - {string} 专题图层ID。</br>
- *        map - {ol.Map} 当前map对象。</br>
- *        opacity - {number} 图层透明的。</br>
- *        attributions - {string|Object} 版权信息。 </br>
- *        logo - {string} Logo</br>
- *        projection - [{ol.proj.Projection}]{@linkdoc-openlayers/ol.proj.Projection} 投影信息。</br>
- *        ratio - {number} 视图比, 1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。 默认值是1.5。</br>
- *        resolutions - {Array} 分辨率数组。</br>
- *        state - {[ol.source.html#.State]}{@linkdoc-openlayers/ol.source.html#.State} 资源状态。<br>
- *        themeFields - {string} 指定创建专题图字段。 <br>
- *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
- *        chartsType - {string}图表类型。目前可用："Bar", "Line", "Pie"。<br>
- *        chartsSetting - {Object} 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:<br>
+ * @param {string} name - 专题图层名
+ * @param {string} symbolType - 标志类型
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} opt_options.id - 专题图层ID。</br>
+ * @param {ol.Map} opt_options.map - 当前map对象。</br>
+ * @param {number} opt_options.opacity - 图层透明度。</br>
+ * @param {(string|Object)} opt_options.attributions - 版权信息。 </br>
+ * @param {string} opt_options.logo - Logo。</br>
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
+ * @param {Array} opt_options.resolutions - 分辨率数组。</br>
+ * @param {ol.source.State} opt_options.state - 资源状态。<br>
+ * @param {string} opt_options.themeFields - 指定创建专题图字段。 <br>
+ * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。<br>
+ * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。<br>
+ * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性：<br>
  *  * width - {number} 专题要素（图表）宽度，必设参数。
  *  * height - {number} 专题要素（图表）高度，必设参数。
  *  * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
@@ -63828,7 +62830,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *  它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
  *  如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @extends ol.source.Graph
+ * @extends {ol.source.Graph}
  */
 var RankSymbol = exports.RankSymbol = function (_Graph) {
     _inherits(RankSymbol, _Graph);
@@ -63862,7 +62864,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
         /**
          * @function ol.source.RankSymbol.prototype.setSymbolType
          * @description 设置标志符号
-         * @param symbolType -{string} 符号类型
+         * @param {string} symbolType - 符号类型
          */
 
     }, {
@@ -63876,7 +62878,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
          * @private
          * @function ol.source.RankSymbol.prototype.createThematicFeature
          * @description 创建专题图形要素
-         * @param feature -{Object} 要创建的专题图形要素
+         * @param {Object} feature - 要创建的专题图形要素
          */
 
     }, {
@@ -63948,8 +62950,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Mapv
  * @category  Visualization MapV
  * @classdesc MapV图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @param {Object} opt_options - 参数
+ * @extends {ol.source.ImageCanvas}
  */
 var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
     _inherits(Mapv, _ol$source$ImageCanva);
@@ -64021,8 +63023,8 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
     /**
      * @function ol.source.Mapv.prototype.addData
      * @description 追加数据
-     * @param data - {Object} 要追加的数据
-     * @param options -{Object} 要追加的值
+     * @param {Object} data - 要追加的数据
+     * @param {Object} options - 要追加的值
      */
 
 
@@ -64035,7 +63037,7 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Mapv.prototype.getData
          * @description 获取数据
-         * @return {mapv.DataSet} mapv数据集
+         * @returns {mapv.DataSet} mapv数据集
          */
 
     }, {
@@ -64050,7 +63052,7 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Mapv.prototype.removeData
          * @description 删除符合过滤条件的数据
-         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+         * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
          * @example
          *  filter=function(data){
          *    if(data.id=="1"){
@@ -64080,9 +63082,8 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Mapv.prototype.update
          * @description 更新数据
-         * @param options - {Object} 待更新的数据<br>
-         *        data -{Object} mapv数据集<br>
-         *        options -{Object} mapv绘制参数<br>
+         * @param {Object} options - 待更新的数据<br>
+         * @param {Object} options.data - mapv数据集<br>
          */
 
     }, {
@@ -64149,23 +63150,21 @@ var CSS_TRANSFORM = function () {
  * @class GraphicWebGLRenderer
  * @classdesc 高效率点图层 webgl渲染器。
  * @category Visualization Graphic
- * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param layer - {Array<L.supermap.graphicLayer>} 高效率点图层
+ * @extends {L.Layer}
+ * @param {Array.<L.supermap.graphicLayer>} layer - 高效率点图层
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
- *
  * @param {Array<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255],
- * @param {number} options.radius - 半径,默认10
- * @param {number} options.opacity - 不透明度,默认0.8
+ * @param {number} [options.radius=10] - 半径。
+ * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组
  * @param {number} options.radiusScale - 点放大倍数
  * @param {number} options.radiusMinPixels - 半径最小值(像素)
  * @param {number} options.radiusMaxPixels - 半径最大值(像素)
  * @param {number} options.strokeWidth - 边框大小
  * @param {boolean} options.outline - 是否显示边框
- *
  * @param {function} options.onClick - 点击事件
  * @param {function} options.onHover - 悬停事件
  */
@@ -64259,7 +63258,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = function (_ol$Object) 
          * @private
          * @function  GraphicWebGLRenderer.prototype.getCanvas
          * @description 返回画布
-         * @return {HTMLCanvasElement} canvas对象
+         * @returns {HTMLCanvasElement} canvas对象
          */
 
     }, {
@@ -64548,23 +63547,21 @@ function scale(pixelP, center, scaleRatio) {
  * @class GraphicCanvasRenderer
  * @classdesc 高效率点图层 canvas渲染器。
  * @category Visualization Graphic
- * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param layer - {Array<L.supermap.graphicLayer>} 高效率点图层
+ * @extends {L.Layer}
+ * @param {Array.<L.supermap.graphicLayer>} layer - 高效率点图层
  * @param {Object} options - 图层参数。
  * @param {number} options.width - 地图宽度
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
- *
- * @param {Array<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255],
- * @param {number} options.radius - 半径,默认10
- * @param {number} options.opacity - 不透明度,默认0.8
+ * @param {Array.<number>} options.color - 颜色，目前只支持rgba数组。默认[0, 0, 0, 255],
+ * @param {number} [options.radius=10] - 半径。
+ * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组
  * @param {number} options.radiusScale - 点放大倍数
  * @param {number} options.radiusMinPixels - 半径最小值(像素)
  * @param {number} options.radiusMaxPixels - 半径最大值(像素)
  * @param {number} options.strokeWidth - 边框大小
  * @param {boolean} options.outline - 是否显示边框
- *
  * @param {function} options.onClick - 点击事件
  * @param {function} options.onHover - 悬停事件
  */
@@ -64609,7 +63606,7 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = function (_ol$Object
          * @private
          * @function  GraphicCanvasRenderer.prototype.getCanvas
          * @description 返回画布
-         * @return {HTMLCanvasElement} canvas对象
+         * @returns {HTMLCanvasElement} canvas对象
          */
 
     }, {
@@ -64750,13 +63747,13 @@ var Renderer = ["canvas", "webgl"];
  * @class ol.source.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
- * @param options -{Object} 图形参数。如：<br>
- *        graphics - {ol.Graphic} 高效率点图层点要素。<br>
- *        map - [ol.Map]{@linkdoc-openlayers/ol.Map.html} openlayers 面对象。<br>
- *        isHighLight - {boolean} 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
- *        highLightStyle - [ol.style]{@linkdoc-openlayers/ol.style.html} 高亮风格，默认为 defaultHighLightStyle。<br>
- *        onClick - {function} 点击事件方法。将在下个版本弃用。<br>
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @param {Object} options - 图形参数。<br>
+ * @param {ol.Graphic} options.graphics - 高效率点图层点要素。<br>
+ * @param {ol.map} options.map - openlayers 地图对象。<br>
+ * @param {boolean} options.isHighLight - 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
+ * @param {ol.style} options.highLightStyle - 高亮风格，默认为 defaultHighLightStyle。<br>
+ * @param {function} options.onClick - 点击事件方法。将在下个版本弃用。<br>
+ * @extends {ol.source.ImageCanvas}
  */
 
 var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
@@ -64853,10 +63850,10 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
          * @private
          * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
          * @description 获取在视图上的要素
-         * @param coordinate -{string} 坐标
-         * @param resolution -{number} 分辨率
-         * @param callback -{function}  回调函数
-         * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
+         * @param {string} coordinate -坐标
+         * @param {number} resolution -分辨率
+         * @param {RequestCallback} callback -回调函数
+         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
             var graphics = me.getGraphicsInExtent();
@@ -64897,7 +63894,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
     /**
      * @function ol.source.Graphic.prototype.setGraphics
      * @description 设置绘制的点要素，会覆盖之前的所有要素
-     * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
+     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组
      */
 
 
@@ -64914,7 +63911,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Graphic.prototype.addGraphics
          * @description 追加点要素，不会覆盖之前的要素
-         * @param {Array<ol.Graphic>}  graphics - 点要素对象数组
+         * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组
          */
 
     }, {
@@ -64962,9 +63959,9 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Graphic.prototype.setStyle
-         * @description 设置图层要素整体样式(接口仅在wengl渲染时有用)
+         * @description 设置图层要素整体样式(接口仅在webgl渲染时有用)
          * @param {Object} styleOptions - 样式对象
-         * @param {Array<number>} styleOptions.color - 点颜色
+         * @param {Array.<number>} styleOptions.color - 点颜色
          * @param {number} styleOptions.radius - 点半径
          * @param {number} styleOptions.opacity - 不透明度
          * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
@@ -64998,7 +63995,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Graphic.prototype.getLayerState
          * @description 获取当前地图及图层状态
-         * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+         * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
          */
 
     }, {
@@ -65066,10 +64063,10 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Graphic.prototype._highLight
          * @description 高亮显示选中要素
-         * @param center - {Array<number>} 中心点
-         * @param image - {ol.style.Style} 点样式
-         * @param selectGraphic - {ol.Graphic} 高效率点图层点要素
-         * @param evtPixel - [ol.Pixel]{@linkdoc-openlayers/ol.html#.Pixel} 当前选中的屏幕像素坐标
+         * @param {Array.<number>} center - 中心点
+         * @param {ol.style.Style} image - 点样式
+         * @param {ol.Graphic} selectGraphic - 高效率点图层点要素
+         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标
          * @private
          */
 
@@ -65128,7 +64125,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.Graphic.prototype.getGraphicsInExtent
          * @description 在指定范围中获取几何要素面积
-         * @param extent -{Object} 长度范围
+         * @param {Object} extent - 长度范围
          */
 
     }, {
@@ -65189,8 +64186,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.DataFlow
  * @category  iServer DataFlow
  * @classdesc 实时数据图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
+ * @param {Object} opt_options - 参数。
+ * @extends {ol.source.Vector}
  */
 var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
     _inherits(DataFlow, _ol$source$Vector);
@@ -65225,7 +64222,7 @@ var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
     /**
      * @function ol.source.DataFlow.prototype.setPrjCoordSys
      * @description 设置坐标参考系
-     * @param prjCoordSys - {Object} 参考系
+     * @param {Object} prjCoordSys - 参考系
      */
 
 
@@ -65240,7 +64237,7 @@ var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
         /**
          * @function ol.source.DataFlow.prototype.setExcludeField
          * @description 设置唯一字段
-         * @param excludeField - {Object} 排除字段。
+         * @param {Object} excludeField - 排除字段。
          */
 
     }, {
@@ -65254,7 +64251,7 @@ var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
         /**
          * @function ol.source.DataFlow.prototype.setGeometry
          * @description 设置几何图形
-         * @param geometry - {Object} 要素图形
+         * @param {Object} geometry - 要素图形
          */
 
     }, {
@@ -68116,7 +67113,7 @@ module.exports = function (proj4) {
 /* 346 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 347 */
@@ -69794,14 +68791,14 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
  * @classdesc 对接iPortal/Online地图类。
- * @param id - {string} iPortal|Online 地图ID
- * @param options - {Object} 参数。如：<br>
- *        target - {string} 目标类型。<br>
- *        map - {ol.map} 地图对象。<br>
- *        server - {string} 服务地址。<br>
- *        credentialKey - {string} 凭证密钥。<br>
- *        credentialValue - {string} 凭证值。
- * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
+ * @param {string}  id - iPortal|Online 地图ID
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.target - 目标类型。<br>
+ * @param {ol.map} options.map - 地图对象。<br>
+ * @param {string} options.server - 服务地址。<br>
+ * @param {string} options.credentialKey - 凭证密钥。<br>
+ * @param {string} options.credentialValue - 凭证值。
+ * @extends {ol.Observable}
  */
 
 var WebMap = exports.WebMap = function (_ol$Observable) {
@@ -69869,7 +68866,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createLayersByJson
          * @description 通过json创建图层
-         * @param layersJson - {JSON} 图层的json信息
+         * @param {JSON} layersJson - 图层的json信息
          */
 
     }, {
@@ -69926,7 +68923,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         /**
          * @function ol.supermap.WebMap.prototype.addLayer
          * @description 添加图层
-         * @param layer -{ol.layer.Vector} ol图层
+         * @param {ol.layer.Vector} layer - ol图层
          */
 
     }, {
@@ -69961,10 +68958,10 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
          * @description 通过比例尺获取分辨率
-         * @param scales - {Array<number>} 排序比例尺数组
-         * @param dpi - {number}屏幕分辨率
-         * @param units - {string} 地图的单位
-         * @param datum - {SuperMap.Datum} 大地参照系类
+         * @param {Array.<number>} scales - 排序比例尺数组
+         * @param {number} dpi - 屏幕分辨率
+         * @param {string} units - 地图的单位
+         * @param {SuperMap.Datum} datum - 大地参照系类
          */
 
     }, {
@@ -69984,8 +68981,8 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createLayer
          * @description 创建图层
-         * @param type - {string} 图层类型
-         * @param layerInfo - {Object} 图层信息
+         * @param {string} type - 图层类型
+         * @param {Object} layerInfo - 图层信息
          */
 
     }, {
@@ -70087,11 +69084,11 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
          * @description 获取WMTS图层的分辨率数组和标识矩阵
-         * @param wellKnownScaleSet - {Object} 图层的分辨率数据集
-         * @param units - {Object} 地图的单位元
-         * @param scales - {Array<number>} 排序比例尺数组
-         * @param mapOrigin - {Object} 原始地图
-         * @param mapExtent - {Object} 地图的程度
+         * @param {Object} wellKnownScaleSet - 图层的分辨率数据集
+         * @param {Object} units - 地图的单位元
+         * @param {Array.<number>} scales - 排序比例尺数组
+         * @param {Object} mapOrigin - 原始地图
+         * @param {Object} mapExtent - 地图的程度
          */
 
     }, {
@@ -70124,9 +69121,9 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createTiandituLayer
          * @description 创建天地图图层
-         * @param layerInfo - {Object} 图层信息
-         * @param epsgCode - {number} epsg编码
-         * @return {ol.layer.Tile} 获取天地图的图层
+         * @param {Object} layerInfo - 图层信息
+         * @param {number} epsgCode - epsg编码
+         * @returns {ol.layer.Tile} 获取天地图的图层
          */
 
     }, {
@@ -70148,8 +69145,8 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createMarkersLayer
          * @description 创建图标图层
-         * @param layerInfo - {Object} 图层信息
-         * @return {ol.layer.Vector} 返回Marker图层对象
+         * @param {Object} layerInfo - 图层信息
+         * @returns {ol.layer.Vector} 返回Marker图层对象
          */
 
     }, {
@@ -70174,8 +69171,8 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createVectorLayer
          * @description 创建矢量要素图层
-         * @param layerInfo - {Object} 图层信息
-         * @return {ol.layer.Vector} 返回矢量要素图层对象
+         * @param {Object} layerInfo - 图层信息
+         * @returns {ol.layer.Vector} 返回矢量要素图层对象
          */
 
     }, {
@@ -70235,8 +69232,8 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createWmsLayer
          * @description 创建Wms图层
-         * @param layerInfo - {Object} 图层信息
-         * @return {ol.layer.Tile} 返回Wms图层对象
+         * @param {Object} layerInfo - 图层信息
+         * @returns {ol.layer.Tile} 返回Wms图层对象
          */
 
     }, {
@@ -70265,8 +69262,8 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
          * @private
          * @function ol.supermap.WebMap.prototype.createThemeLayer
          * @description 创建专题图图层
-         * @param layerInfo - {Object} 图层信息
-         * @return {L.Layer} 返回专题图图层对象
+         * @param {Object} layerInfo - 图层信息
+         * @returns {L.Layer} 返回专题图图层对象
          */
 
     }, {
@@ -71117,23 +70114,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.TileSuperMapRest
  * @category iServer Map
  * @classdesc SuperMap iServer TileImage图层源。
- * @param options - {Object} 可选参数。如：<br>
- *        url - {string} 服务地址。<br>
- *        tileGrid - [{ol.tilegrid.TileGrid}}]{@linkdoc-openlayers/ol.tilegrid.TileGrid} 瓦片网格对象。<br>
- *        serverType - {SuperMap.ServerType} 服务类型。<br>
- *        redirect - {boolean} 是否重定向，默认为false。<br>
- *        transparent - {boolean} 瓦片是否透明，默认为true。<br>
- *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
- *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
- *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
- *        clipRegion - [{ol.geom.Geometry}]{@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
- *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
- *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。<br>
- *        tileProxy - {string} 代理地址。<br>
- *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
- * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.url - 服务地址。<br>
+ * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} options.tileGrid - 瓦片网格对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务类型。<br>
+ * @param {boolean} [options.redirect=false] - 是否重定向。<br>
+ * @param {boolean} [options.transparent=true] - 瓦片是否透明。<br>
+ * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存。<br>
+ * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
+ * @param {string} options.layersID - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
+ * @param {boolean} options.clipRegionEnabled - 是否只地图只显示该区域覆盖的部分。true表示地图只显示该区域覆盖的部分。<br>
+ * @param {(ol.geom.Geometry|ol.geom.Geometry)} options.clipRegion - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
+ * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
+ * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
+ * @param {string} options.tileversion - 切片版本名称，_cache 为 true 时有效。<br>
+ * @param {string} options.tileProxy - 代理地址。<br>
+ * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @extends {ol.source.TileImage}
  */
 var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage) {
     _inherits(TileSuperMapRest, _ol$source$TileImage);
@@ -71355,7 +70352,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
     /**
      * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
-     * @param tileSets - {Object} 瓦片集合
+     * @param {Object} tileSets - 瓦片集合
      */
 
 
@@ -71428,7 +70425,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
         /**
          * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
          * @description 更新当前切片集索引，目前主要提供给控件使用。
-         * @param index - {number} 索引号
+         * @param {number} index - 索引号
          */
 
     }, {
@@ -71440,8 +70437,8 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
         /**
          * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
          * @description 更改URL请求参数中的切片版本号,并重绘。
-         * @param version - {Object} 版本信息
-         * @return {boolean} 是否成功
+         * @param {Object} version - 版本信息
+         * @returns {boolean} 是否成功
          */
 
     }, {
@@ -71459,8 +70456,8 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
         /**
          * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
          * @description 从 MapJSON 中获取参数对象
-         * @param url - {string} 地址
-         * @param mapJSONObj -{Object} 地图JSON对象
+         * @param {string} url - 地址
+         * @param {Object} mapJSONObj - 地图JSON对象
          */
 
     }], [{
@@ -71516,11 +70513,11 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
         /**
          * @function  ol.source.TileSuperMapRest.createTileGrid
          * @description 创建切片网格
-         * @param extent - {number} 长度
-         * @param maxZoom - {number} 最大的放大级别
-         * @param minZoom - {number} 最小的放大级别
-         * @param tileSize - {number} 瓦片的尺寸
-         * @param origin - {number} 原点
+         * @param {number} extent - 长度
+         * @param {number} maxZoom - 最大的放大级别
+         * @param {number} minZoom - 最小的放大级别
+         * @param {number} tileSize - 瓦片的尺寸
+         * @param {number} origin - 原点
          * */
 
     }, {
@@ -71575,10 +70572,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.SuperMapCloud
  * @category  ThirdPartyMap
  * @classdesc 超图云地图图层源。
- * @param opt_options - {Object} 可选参数：如：<br>
- *        url - {string} 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
- *        tileProxy - {string} 代理地址址
- * @extends ol.source.XYZ{@linkdoc-openlayers/ol.source.XYZ}
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} url - 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
+ * @param {string} tileProxy - 代理地址址
+ * @extends {ol.source.XYZ}
  */
 var SuperMapCloud = exports.SuperMapCloud = function (_ol$source$XYZ) {
     _inherits(SuperMapCloud, _ol$source$XYZ);
@@ -71664,23 +70661,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.ImageSuperMapRest
  * @category iServer Map
  * @classdesc SuperMap iServer Image图层源。
- * @param options - {Object} 服务参数：<br>
- *        url - {string} 服务地址。<br>
- *        tileGrid - [{ol.tilegrid.TileGrid}]{@linkdoc-openlayers/ol.tilegrid.TileGrid} 瓦片网格对象。<br>
- *        serverType - {SuperMap.ServerType} 服务类型。<br>
- *        redirect - {boolean} 是否重定向，默认为false。<br>
- *        transparent - {boolean} 瓦片是否透明，默认为true。<br>
- *        cacheEnabled - {boolean} 是否使用服务端的缓存，默认为 true，即使用服务端的缓存。<br>
- *        prjCoordSys - {Object} 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
- *        layersID - {string} 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
- *        clipRegionEnabled - {boolean} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
- *        clipRegion - [{ol.geom.Geometry}]{@linkdoc-openlayers/ol.geom.Geometry} 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为 false。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
- *        overlapDisplayedOptions - {@link SuperMap.OverlapDisplayedOptions} 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
- *        tileversion - {string} 切片版本名称，_cache 为 true 时有效。<br>
- *        tileProxy - {string} 代理地址。
- *        format - {string} 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
- * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
+ * @param {Object} options - 参数。<br>
+ * @param {string} options.url - 服务地址。<br>
+ * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} options.tileGrid - 瓦片网格对象。<br>
+ * @param {SuperMap.ServerType} options.serverType - 服务类型。<br>
+ * @param {boolean} [options.redirect=false] - 是否重定向。<br>
+ * @param {boolean} [options.transparent=true] - 瓦片是否透明。<br>
+ * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存，true表示使用服务端的缓存。<br>
+ * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。<br>
+ * @param {string} options.layersID - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。<br>
+ * @param {boolean} options.clipRegionEnabled - 是否只地图只显示该区域覆盖的部分。true表示地图只显示该区域覆盖的部分。<br>
+ * @param {(ol.geom.Geometry|ol.geom.Geometry)} options.clipRegion - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。<br>
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。<br>
+ * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
+ * @param {string} options.tileversion - 切片版本名称，_cache 为 true 时有效。<br>
+ * @param {string} options.tileProxy - 代理地址。
+ * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @extends {ol.source.TileImage}
  */
 var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileImage) {
     _inherits(ImageSuperMapRest, _ol$source$TileImage);
@@ -71702,12 +70699,12 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         //为url添加安全认证信息片段
         layerUrl = appendCredential(options.url, layerUrl, options.serverType);
 
-        /*
+        /**
          * @function ol.source.ImageSuperMapRest.prototype.appendCredential
          * @description 添加凭据
-         * @param url - {string} 地址
-         * @param serverType - {Object} 服务类型
-         * @return {string} 添加生成后的新地址
+         * @param {string} url - 地址
+         * @param {Object} serverType - 服务类型
+         * @returns {string} 添加生成后的新地址
          */
         function appendCredential(id, url, serverType) {
             var newUrl = url,
@@ -71809,13 +70806,13 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         }
         var me = _this;
 
-        /*
+        /**
          * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
-         * @param tileCoord - {Object} 瓦片坐标系
-         * @param pixelRatio - {Object} 像素密度
-         * @param projection - {string} 投影参考系
+         * @param {Object} tileCoord - 瓦片坐标系
+         * @param {Object} pixelRatio - 像素密度
+         * @param {string} projection - 投影参考系
          * @description 瓦片地址参数
-         * @return {string} 返回瓦片地址参数
+         * @returns {string} 返回瓦片地址参数
          */
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!this.tileGrid) {
@@ -71841,8 +70838,8 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
 
     /**
      * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
-     * @param url - {string} 地址
-     * @param mapJSONObj - {Object} 地图JSON
+     * @param {string} url - 地址
+     * @param {Object} mapJSONObj - 地图JSON
      * @description 获取地图JSON信息
      */
 
@@ -71899,13 +70896,13 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
 
         /**
          * @function ol.source.ImageSuperMapRest.createTileGrid
-         * @param extent - {number} 长度
-         * @param maxZoom - {number} 最大的放大级别
-         * @param minZoom - {number} 最小的放大级别
-         * @param tileSize - {number} 瓦片的尺寸
-         * @param origin - {number} 原点
+         * @param {number} extent - 长度
+         * @param {number} maxZoom - 最大的放大级别
+         * @param {number} minZoom - 最小的放大级别
+         * @param {number} tileSize - 瓦片的尺寸
+         * @param {number} origin - 原点
          * @description 创建网格切片
-         * @return {ol.tilegrid.TileGrid} 创建的网格切片
+         * @returns {ol.tilegrid.TileGrid} 创建的网格切片
          */
 
     }, {
@@ -71962,10 +70959,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.BaiduMap
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
- * @param opt_options - {Object} 创建地图参数可选参数：<br>
- *        url - {string} 服务地址。<br>
- *        tileProxy - {string} 代理地址
- * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
+ * @param {Object} opt_options - 参数。<br>
+ * @param {string} url - 服务地址。<br>
+ * @param {string} tileProxy - 代理地址
+ * @extends {ol.source.TileImage}
  */
 var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
     _inherits(BaiduMap, _ol$source$TileImage);
@@ -72030,7 +71027,7 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
     /**
      * @function ol.source.BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网
-     * @return {ol.tilegrid.TileGrid} 返回瓦片格网对象
+     * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象
      */
 
 
@@ -72190,16 +71187,16 @@ _openlayers2.default.supermap.control = _openlayers2.default.supermap.control ||
  * @class ol.supermap.control.ChangeTileVersion
  * @category  Control
  * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置
- * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
- * @param options -{options} 可选参数。如：<br>
- *        title - {string} 提示信息。<br>
- *        tooltip - {string} 提示显示位置 top | right | bottom | left。<br>
- *        collapsed - {boolean} 是否折叠。<br>
- *        lastText - {string} 上一个版本的按钮布局。<br>
- *        nextText - {string} 下一个版本的按钮布局。<br>
- *        ico - {string} 控件显示的logo。<br>
- *        orientation - {string} 方向horizontal|vertical。<br>
- *        switch - {boolean} 是否显示上/下一个版本切换控件
+ * @extends {ol.control.Control}
+ * @param {options} options -参数。<br>
+ * @param {string} options.title - 提示信息。<br>
+ * @param {string} options.tooltip - 提示显示位置 top | right | bottom | left。<br>
+ * @param {boolean} options.collapsed - 是否折叠。<br>
+ * @param {string} options.lastText - 上一个版本的按钮布局。<br>
+ * @param {string} options.nextText - 下一个版本的按钮布局。<br>
+ * @param {string} options.ico - 控件显示的logo。<br>
+ * @param {string} options.orientation - 方向horizontal|vertical。<br>
+ * @param {boolean} options.switch - 是否显示上/下一个版本切换控件
  * @example
  * var control = new ol.supermap.control.ChangeTileVersion({
  *           layer: baseLayer,
@@ -72257,7 +71254,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
             _this.setLayer(options.layer);
         }
 
-        /*
+        /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.initLayout
          * @description 初始化
          */
@@ -72331,7 +71328,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
                 this._sliderContainer.style.width = 150 + 'px';
             }
 
-            /*
+            /**
              * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
              * @description 为元素添加事件
              */
@@ -72355,13 +71352,13 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
             return this._container;
         }
 
-        /*
+        /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.createElement
          * @description 新建元素
-         * @param tagName -{string} 标签名
-         * @param className -{string} 类名
-         * @param container -{Object} 容器
-         * @return {object|Element} 元素
+         * @param {string} tagName - 标签名
+         * @param {string} className - 类名
+         * @param {Object} container - 容器
+         * @returns {object|Element} 元素
          */
         function createElement(tagName, className, container) {
             var el = document.createElement(tagName);
@@ -72373,14 +71370,14 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
             return el;
         }
 
-        /*
+        /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
          * @description 为元素添加事件
-         * @param obj -{Object} 事件对象集
-         * @param type -{string} 事件类型
-         * @param fn -{Object} 容器
-         * @param context -{Object} 当前环境
-         * @return {addDomEvent} 添加的事件
+         * @param {Object} obj - 事件对象集
+         * @param {string} type - 事件类型
+         * @param {Object} fn -容器
+         * @param {Object} context -当前环境
+         * @returns {addDomEvent} 添加的事件
          */
         function addDomEvent(obj, type, fn, context) {
             var handler = function handler(e) {
@@ -72442,7 +71439,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version -{Object} 版本信息
+     * @param {Object} version - 版本信息
      */
 
 
@@ -72456,7 +71453,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.setVersionName
          * @description 设置版本号
-         * @param content -{string} 版本内容
+         * @param {string} content -版本内容
          */
 
     }, {
@@ -72473,8 +71470,8 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.setToolTip
          * @description 设置提示信息
-         * @param tooltip -{string} 工具提示
-         * @return {this} this
+         * @param {string} tooltip - 工具提示
+         * @returns {this} this
          */
 
     }, {
@@ -72487,7 +71484,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.updateLength
          * @description 更新进度条长度
-         * @param length -{number} 进度条长度
+         * @param {number} length - 进度条长度
          */
 
     }, {
@@ -72503,7 +71500,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.setLayer
          * @description 绑定图层
-         * @param layer -{Object} 图层
+         * @param {Object} layer - 图层
          */
 
     }, {
@@ -72528,7 +71525,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.update
          * @description 更新缓存切片集及进度条长度
-         * @param tileVersions -{Object} 待更新的切片版本
+         * @param {Object} tileVersions - 待更新的切片版本
          */
 
     }, {
@@ -72568,7 +71565,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.nextTilesVersion
          * @description 下一个版本，第一次不进行加减，是无版本的状态
-         * @return {this} this
+         * @returns {this} this
          */
 
     }, {
@@ -72590,7 +71587,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion
          * @description 获取上一个版本信息
-         * @return {this} this
+         * @returns {this} this
          */
 
     }, {
@@ -72607,7 +71604,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.tilesVersion
          * @description 根据指定版本号请求版本
-         * @param version -{Object} 版本信息
+         * @param {Object} version - 版本信息
          */
 
     }, {
@@ -72713,10 +71710,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicStar
  * @category Visualization Theme
- * n 角星（n>3）。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc n 角星（n>3）。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicStar({
@@ -72736,49 +71731,47 @@ var SmicStar = exports.SmicStar = function (_Shape) {
     _inherits(SmicStar, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicStar.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} n 角星外接圆心 x 坐标，必设参数。
-     * y - {Number} n 角星外接圆心 y 坐标，必设参数。
-     * r - {Number} n 角星外接圆半径，必设参数。
-     * r0 - {Number} n 角星内部顶点（凹点）的外接圆半径。如果不指定此参数，则自动计算：取相隔外部顶点连线的交点作内部顶点。
-     * n - {Number} 指明几角星，必设参数。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - n 角星外接圆心 x 坐标，必设参数。
+     * @param {number} style.y - n 角星外接圆心 y 坐标，必设参数。
+     * @param {number} style.r - n 角星外接圆半径，必设参数。
+     * @param {number} style.r0 - n 角星内部顶点（凹点）的外接圆半径。如果不指定此参数，则自动计算：取相隔外部顶点连线的交点作内部顶点。
+     * @param {number} style.n -指明几角星，必设参数。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicStar
-     * 构造函数。
-     *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @function SuperMap.LevelRenderer.Shape.SmicStar.constructor
+     * @description 构造函数。
+     * 
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicStar(options) {
         _classCallCheck(this, SmicStar);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicStar.prototype.type
+         * @description 图形类型。  
          */
         var _this = _possibleConstructorReturn(this, (SmicStar.__proto__ || Object.getPrototypeOf(SmicStar)).call(this, options));
 
@@ -72793,8 +71786,8 @@ var SmicStar = exports.SmicStar = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicStar.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -72806,12 +71799,11 @@ var SmicStar = exports.SmicStar = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建n  角星（n>3）路径。
+         * @function SuperMap.LevelRenderer.Shape.SmicStar.prototype.buildPath
+         * @description 创建n  角星（n>3）路径。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -72875,14 +71867,11 @@ var SmicStar = exports.SmicStar = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 返回 n 角星包围盒矩形。
+         * @function SuperMap.LevelRenderer.Shape.SmicStar.prototype.getRect
+         * @description 返回 n 角星包围盒矩形。
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -72945,10 +71934,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicRing
  * @category Visualization Theme
- * 圆环。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 圆环。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
@@ -72966,47 +71953,44 @@ var SmicRing = exports.SmicRing = function (_Shape) {
     _inherits(SmicRing, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicRing.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 圆心 x 坐标，必设参数。
-     * y - {Number} 圆心 y 坐标，必设参数。
-     * r - {Number} 外圆半径，必设参数。
-     * r0 - {Number} 内圆半径，必设参数。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} x - 圆心 x 坐标，必设参数。
+     * @param {number} y - 圆心 y 坐标，必设参数。
+     * @param {number} r - 外圆半径，必设参数。
+     * @param {number} r0 - 内圆半径，必设参数。
+     * @param {string} brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} color - 填充颜色。默认值："#000000'"。
+     * @param {string} strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} lineWidth -描边宽度。默认值：1。
+     * @param {number} opacity - 绘制透明度。默认值：1。
+     * @param {number} shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} text -图形中的附加文本。默认值：""。
+     * @param {string} textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicRing
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicRing.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
-     *
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      */
     function SmicRing(options) {
         _classCallCheck(this, SmicRing);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicRing.prototype.type
+         * @description 图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicRing.__proto__ || Object.getPrototypeOf(SmicRing)).call(this, options));
 
@@ -73020,8 +72004,8 @@ var SmicRing = exports.SmicRing = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicRing.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -73033,12 +72017,11 @@ var SmicRing = exports.SmicRing = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建圆环路径。
+         * @function SuperMap.LevelRenderer.Shape.SmicRing.prototype.buildPath
+         * @description 创建圆环路径。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -73058,14 +72041,11 @@ var SmicRing = exports.SmicRing = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回圆环包围盒矩阵
+         * @function SuperMap.LevelRenderer.Shape.SmicRing.prototype.getRect
+         * @description 计算返回圆环包围盒矩阵
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -73130,58 +72110,54 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicIsogon
  * @category Visualization Theme
- * 正多边形。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 正多边形。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  */
 var SmicIsogon = exports.SmicIsogon = function (_Shape) {
     _inherits(SmicIsogon, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 正 n 边形外接圆心 x 坐标，必设参数。
-     * y - {Number} 正 n 边形外接圆心 y 坐标，必设参数。
-     * r - {Number} 正n边形外接圆半径，必设参数。
-     *ｎ - {Number} 指明正几边形，必设参数（n>=3）。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} x - 正 n 边形外接圆心 x 坐标，必设参数。
+     * @param {number} y - 正 n 边形外接圆心 y 坐标，必设参数。
+     * @param {number} r - 正n边形外接圆半径，必设参数。
+     * @param {number} ｎ - 指明正几边形，必设参数（n>=3）。
+     * @param {string} brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} color -  填充颜色。默认值："#000000'"。
+     * @param {string} strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} lineWidth - 描边宽度。默认值：1。
+     * @param {number} opacity - 绘制透明度。默认值：1。
+     * @param {number} shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} text - 图形中的附加文本。默认值：""。
+     * @param {string} textColor -文本颜色。默认值："#000000'"。
+     * @param {string} textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
 
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicIsogon
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicIsogon.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicIsogon(options) {
         _classCallCheck(this, SmicIsogon);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.type
+         * @description 图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicIsogon.__proto__ || Object.getPrototypeOf(SmicIsogon)).call(this, options));
 
@@ -73194,8 +72170,8 @@ var SmicIsogon = exports.SmicIsogon = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -73207,12 +72183,11 @@ var SmicIsogon = exports.SmicIsogon = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 创建n角星（n>=3）路径。
+         * @function SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.buildPath
+         * @description 创建n角星（n>=3）路径。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -73263,14 +72238,11 @@ var SmicIsogon = exports.SmicIsogon = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回正多边形的包围盒矩形。
+         * @function SuperMap.LevelRenderer.Shape.SmicIsogon.prototype.getRect
+         * @description 计算返回正多边形的包围盒矩形。
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
          */
 
     }, {
@@ -73333,10 +72305,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @private
  * @class  SuperMap.LevelRenderer.Shape.SmicEllipse
  * @category Visualization Theme
- * 椭圆。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Shape>
+ * @classdesc 椭圆。
+ * @extends SuperMap.LevelRenderer.Shape
  *
  * (code)
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
@@ -73360,46 +72330,44 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
     _inherits(SmicEllipse, _Shape);
 
     /**
-     * Property: style
-     * {Object} 绘制样式。
+     * @member {Object} SuperMap.LevelRenderer.Shape.SmicEllipse.style
+     * @description 绘制样式。
      *
-     * Symbolizer properties:
-     * x - {Number} 圆心 x 坐标，必设参数。
-     * y - {Number} 圆心 y 坐标，必设参数。
-     * a - {Number} 横轴半径，必设参数。
-     * b - {Number} 纵轴半径，必设参数。
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+     * @param {number} style.x - 圆心 x 坐标，必设参数。
+     * @param {number} style.y - 圆心 y 坐标，必设参数。
+     * @param {number} style.a - 横轴半径，必设参数。
+     * @param {number} style.b - 纵轴半径，必设参数。
+     * @param {string} style.brushType - 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+     * @param {string} style.color - 填充颜色。默认值："#000000'"。
+     * @param {string} style.strokeColor - 描边颜色。默认值："#000000'"。
+     * @param {string} style.lineCape - 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+     * @param {number} style.lineWidth - 描边宽度。默认值：1。
+     * @param {number} style.opacity - 绘制透明度。默认值：1。
+     * @param {number} style.shadowBlur - 阴影模糊度，大于0有效。默认值：0。
+     * @param {number} style.shadowColor - 阴影颜色。默认值："#000000'"。
+     * @param {number} style.shadowOffsetX - 阴影横向偏移。默认值：0。
+     * @param {number} style.shadowOffsetY - 阴影纵向偏移。默认值：0。
+     * @param {string} style.text - 图形中的附加文本。默认值：""。
+     * @param {string} style.textColor - 文本颜色。默认值："#000000'"。
+     * @param {string} style.textFont - 附加文本样式。示例:'bold 18px verdana'。
+     * @param {string} style.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+     * @param {string} style.textAlign - 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+     * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
     /**
-     * Constructor: SuperMap.LevelRenderer.Shape.SmicEllipse
-     * 构造函数。
+     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.constructor
+     * @description 构造函数。
      *
-     * Parameters:
-     * options - {Array} shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
+     * @param {Array} options - shape 的配置（options）项，可以是 shape 的自有属性，也可以是自定义的属性。
      *
      */
     function SmicEllipse(options) {
         _classCallCheck(this, SmicEllipse);
 
         /**
-         * Property: type
-         * {String} 图形类型。
+         * @member {string} SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.type
+         * @description 图形类型。
          */
         var _this = _possibleConstructorReturn(this, (SmicEllipse.__proto__ || Object.getPrototypeOf(SmicEllipse)).call(this, options));
 
@@ -73414,8 +72382,8 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
      */
 
 
@@ -73427,12 +72395,11 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
         }
 
         /**
-         * APIMethod: buildPath
-         * 构建椭圆的 Path。
+         * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.buildPath
+         * @description 构建椭圆的 Path。
          *
-         * Parameters:
-         * ctx - {CanvasRenderingContext2D} Context2D 上下文。
-         * style - {Object} style。
+         * @param {CanvasRenderingContext2D} ctx - Context2D 上下文。
+         * @param {Object} style - style。
          *
          */
 
@@ -73461,14 +72428,12 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
         }
 
         /**
-         * APIMethod: getRect
-         * 计算返回椭圆包围盒矩形
+         * @function SuperMap.LevelRenderer.Shape.SmicEllipse.prototype.getRect
+         * @description 计算返回椭圆包围盒矩形
          *
-         * Parameters:
-         * style - {Object} style
-         *
-         * Returns:
-         * {Object} 边框对象。包含属性：x，y，width，height。
+         * @param {Object} style - style
+         * @return {Object} 边框对象。包含属性：x，y，width，height。
+         * 
          */
 
     }, {
@@ -73529,16 +72494,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @private
  * @class  SuperMap.LevelRenderer
  * @category Visualization Theme
- * LevelRenderer 渲染器。
- *
+ * @classdesc LevelRenderer 渲染器
  */
 var LevelRenderer = exports.LevelRenderer = function () {
 
     /**
-     * Constructor: SuperMap.LevelRenderer
-     * 构造函数。
-     *
-     * (code)
+     * @function SuperMap.LevelRenderer.constructor
+     * @description 构造函数。
+     * @example 
      * //在渲染器上加上图形
      * var levelRenderer = new SuperMap.LevelRenderer();
      * var zr = levelRenderer.init(document.getElementById('lRendertest'));
@@ -73552,14 +72515,13 @@ var LevelRenderer = exports.LevelRenderer = function () {
      *     }
      * }));
      * zr.render();
-     * (end)
      */
     function LevelRenderer() {
         _classCallCheck(this, LevelRenderer);
 
         /**
-         * Property: _instances
-         * {Object} LevelRenderer 实例 map 索引。
+         * @member {Object} SuperMap.LevelRenderer.prototype._instances
+         * @description LevelRenderer 实例 map 索引
          */
         LevelRenderer._instances = {};
 
@@ -73567,11 +72529,10 @@ var LevelRenderer = exports.LevelRenderer = function () {
         LevelRenderer.Tool = {};
 
         /**
-         * Property: version
-         * {String} 版本。zRender（Baidu） 的版本号，
-         * 记录当前 LevelRenderer 是在 zRender 的那个版本上构建而来。
-         * 在每次完整评判和实施由 zRender（Baidu）升级带来的 LevelRenderer 升级后修改。
-         *
+         * @member {string} SuperMap.LevelRenderer.prototype.version
+         * @description 版本。zRender（Baidu）的版本号
+         *              记录当前 LevelRenderer 是在 zRender 的那个版本上构建而来。
+         *              在每次完整评判和实施由 zRender（Baidu）升级带来的 LevelRenderer 升级后修改。
          */
         this.version = '2.0.4';
 
@@ -73579,8 +72540,8 @@ var LevelRenderer = exports.LevelRenderer = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁对象，释放资源。调用此函数后所有属性将被置为 null。
+     * @function SuperMap.LevelRenderer.prototype.destroy
+     * @description 销毁对象，释放资源。调用此函数后所有属性将被置为null。
      */
 
 
@@ -73592,17 +72553,10 @@ var LevelRenderer = exports.LevelRenderer = function () {
         }
 
         /**
-         * APIMethod: init
-         * 创建 LevelRenderer 实例。
-         *
-         * 不让外部直接 new LevelRenderer 实例，为啥？。
-         * 不为啥，提供全局可控同时减少全局污染和降低命名冲突的风险！
-         *
-         * Parameters:
-         * dom - {HTMLElement} 绘图容器。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer>} LevelRenderer 实例。
+         * @function SuperMap.LevelRenderer.prototype.init
+         * @description 创建 LevelRenderer 实例。
+         * @param {HTMLElement} dom - 绘图容器。
+         * @returns {SuperMap.LevelRenderer} LevelRenderer 实例。
          */
 
     }, {
@@ -73614,18 +72568,12 @@ var LevelRenderer = exports.LevelRenderer = function () {
         }
 
         /**
-         * APIMethod: dispose
-         * LevelRenderer 实例销毁。
-         *
-         * 在 SuperMap.LevelRenderer._instances 里的索引也会删除了。
-         * 管生就得管死，可以通过 zrender.dispose(zr) 销毁指定 SuperMap.LevelRenderer.Render 实例。
-         * 当然也可以直接 zr.dispose() 自己销毁
-         *
-         * Parameters:
-         * zr - {<SuperMap.LevelRenderer.Render>} ZRender对象，不传则销毁全部。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer>} this。
+         * @function SuperMap.LevelRenderer.prototype.dispose
+         * @description LevelRenderer 实例销毁。
+         *              可以通过 zrender.dispose(zr) 销毁指定 SuperMap.LevelRenderer.Render 实例。
+         *              也可以通过 zr.dispose() 直接销毁
+         * @param {SuperMap.LevelRenderer.Render} zr - ZRender对象，不传此参数则销毁全部。
+         * @returns {SuperMap.LevelRenderer} this。
          */
 
     }, {
@@ -73645,14 +72593,10 @@ var LevelRenderer = exports.LevelRenderer = function () {
         }
 
         /**
-         * APIMethod: getInstance
-         * 获取 SuperMap.LevelRenderer.Render 实例。
-         *
-         * Parameters:
-         * id - {String} ZRender对象索引。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer.Render>} SuperMap.LevelRenderer.Render 实例。
+         * @function SuperMap.LevelRenderer.prototype.getInstance
+         * @description 获取 SuperMap.LevelRenderer.Render 实例。
+         * @param {string} id - ZRender对象索引。
+         * @returns {SuperMap.LevelRenderer.Render} SuperMap.LevelRenderer.Render 实例。
          */
 
     }, {
@@ -73662,19 +72606,11 @@ var LevelRenderer = exports.LevelRenderer = function () {
         }
 
         /**
-         * APIMethod: delInstance
-         * 删除 zrender 实例，SuperMap.LevelRenderer.Render 实例 dispose 时会调用，
-         * 删除后 getInstance 则返回 undefined
-         * ps: 仅是删除，删除的实例不代表已经 dispose 了~~
-         *     这是一个摆脱全局 zrender.dispose() 自动销毁的后门，
-         *     take care of yourself~
-         *
-         *
-         * Parameters:
-         * id - {String} SuperMap.LevelRenderer.Render 对象索引。
-         *
-         * Returns:
-         * {<SuperMap.LevelRenderer>} this。
+         * @function SuperMap.LevelRenderer.prototype.delInstance
+         * @description 删除 zrender 实例，SuperMap.LevelRenderer.Render 实例 dispose 时会调用，删除后 getInstance 则返回 undefined
+         * @param {string} id - ZRender对象索引。
+         * @param {string} id - SuperMap.LevelRenderer.Render 对象索引。
+         * @returns {SuperMap.LevelRenderer} this。
          */
 
     }, {
@@ -73934,15 +72870,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 矢量专题要素类。
  * @category Visualization Theme
  * @extends SuperMap.Feature.Theme
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
- * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
- * @param style - {Object} 样式。
- * @param options - {Object} 创建专题要素时的可选参数。<br>
- *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2, 单位：像素。<br>
- *        isHoverAble - {boolean} 图形是否可 hover，默认 true。<br>
- *        isMultiHover - {boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
- *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
- *        highlightStyle - {Object} 高亮样式。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
+ * @param {SuperMap.Layer} layer - 此专题要素所在图层，必设参数。
+ * @param {Object} style - 样式。
+ * @param {Object} options - 创建专题要素时的可选参数。
+ * @param {number} nodesClipPixel - 节点抽稀像素距离，默认值 2, 单位：像素。
+ * @param {boolean} isHoverAble - 图形是否可 hover，默认 true。
+ * @param {boolean} [isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
+ * @param {boolean} [isClickAble=true] - 图形是否可点击。
+ * @param {Object} highlightStyle - 高亮样式。
  */
 var ThemeVector = exports.ThemeVector = function (_Theme) {
     _inherits(ThemeVector, _Theme);
@@ -74074,7 +73010,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.lineToTF
          * @description 转换线和线环要素。
-         * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 LineString 或 LineRing。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 LineString 或 LineRing。
          */
 
     }, {
@@ -74153,7 +73089,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.multiPointToTF
          * @description 转多点要素。
-         * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 MultiPoint。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 MultiPoint。
          */
 
     }, {
@@ -74238,7 +73174,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.multiLineStringToTF
          * @description 转换多线要素。
-         * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 MultiLineString。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 MultiLineString。
          */
 
     }, {
@@ -74255,7 +73191,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.multiPolygonToTF
          * @description 转换多面要素。
-         * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 MultiPolygon。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 MultiPolygon。
          */
 
     }, {
@@ -74272,7 +73208,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.pointToTF
          * @description 转换点要素。
-         * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Point。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 Point。
          */
 
     }, {
@@ -74322,7 +73258,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.polygonToThemeFeature
          * @description 转换面要素。
-         * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 Polygon。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 Polygon。
          */
 
     }, {
@@ -74445,7 +73381,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.rectangleToTF
          * @description 转换矩形要素。
-         * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Rectangle。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 Rectangle。
          */
 
     }, {
@@ -74503,7 +73439,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.geoTextToTF
          * @description 转换文本要素。
-         * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 GeoText。
+         * @param {SuperMap.Geometry} geometry - 用户数据几何地理信息，这里必须是 GeoText。
          */
 
     }, {
@@ -74586,7 +73522,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         /**
          * @function SuperMap.Feature.Theme.Vector.prototype.getLocalXY
          * @description 地理坐标转为像素坐标。
-         * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。
+         * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。
          */
 
     }, {
@@ -74636,29 +73572,26 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 环状图。
  * @category Visualization Theme
  * @description 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
- * 图表 Ring 配置对象 chartsSetting（SuperMap.Layer.Graph::chartsSetting） 可设属性如下：</br>
- * width - {number} 专题要素（图表）宽度，必设参数。</br>
- * height - {number} 专题要素（图表）高度，必设参数。</br>
- * codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
- * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {boolean} 是否使用图表背景框，默认不使用。</br>
- * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- * backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- *innerRingRadius - {number} 环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。</br>
- *sectorStyle - {Object} 环状图中扇形的基础 style，此参数控制环状图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
- * sectorStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为环状图扇形赋 style，此参数按字段控制环状图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
- * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的环状图扇形使用 style1，字段 POP_1995 对应的环状图扇形使用 style2 ，字段 POP_1999 对应的环状图扇形使用 style3。</br>
- * sectorStyleByCodomain - {Array<Object>} 按环状图扇形代表的数据值所在值域范围控制环状图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。</br>
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。</br>
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。</br>
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。</br>
- * @param setting - {Object} 图表配置对象，必设参数。</br>
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。</br>
+ * @param {Object} chartsSetting - 图表 Ring 配置对象。
+ * @param {number} chartsSetting.width - 专题要素（图表）宽度，必设参数。
+ * @param {number} chartsSetting.height - 专题要素（图表）高度，必设参数。
+ * @param {Array.<number>} chartsSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ * @param {number} chartsSetting.XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @param {number} chartsSetting.YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @param {Array.<number>} chartsSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。
+ * @param {number} chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @param {boolean} chartsSetting.useBackground - 是否使用图表背景框，默认不使用。
+ * @param {Object} chartsSetting.backgroundStyle - 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
+ * @param {Array.<number>} chartsSetting.backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
+ * @param {number} chartsSetting.innerRingRadius - 环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。
+ * @param {Object} chartsSetting.sectorStyle - 环状图中扇形的基础 style，此参数控制环状图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。
+ * @param {Array.<Object>} sectorStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为环状图扇形赋 style，此参数按字段控制环状图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的环状图扇形使用 style1，字段 POP_1995 对应的环状图扇形使用 style2 ，字段 POP_1999 对应的环状图扇形使用 style3。
+ * @param {Array.<Object>} sectorStyleByCodomain - 按环状图扇形代表的数据值所在值域范围控制环状图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
  * @example
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
@@ -74696,9 +73629,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      }
  *  }
  * ]
- * sectorHoverStyle - {Object} 环状图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * sectorHoverAble - {Object} 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
- * sectorClickAble - {Object} 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {Object} sectorHoverStyle - 环状图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
+ * @param {Object} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {Object} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
  *
  * @extends {SuperMap.Feature.Theme.Graph}
  */
@@ -74916,11 +73849,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的图形点使用 style1，字段 POP_1995 对应的图形点使用 style2 ，字段 POP_1999 对应的图形点使用 style3。</br>
  * pointStyleByCodomain - {Array<Object>} 按图形点代表的数据值所在值域范围控制图形点样式，优先级高于 pointStyle 和 pointStyleByFields。</br>
  *
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
  * @example
  * // pointStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
@@ -75207,11 +74140,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * sectorStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
  * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。</br>
  * sectorStyleByCodomain - {Array<Object>} 按饼图扇形代表的数据值所在值域范围控制饼图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
  * @example
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
@@ -75512,23 +74445,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * ]
  *
  * @extends SuperMap.Feature.Theme.Graph
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
 var Line = exports.Line = function (_Graph) {
     _inherits(Line, _Graph);
 
-    /*
+    /**
      * @function SuperMap.Feature.Theme.Line.prototype.Constructor
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
-     * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
-     * @param setting - {Object} 图表配置对象，必设参数。
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+     * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+     * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+     * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+     * @param {Object} setting - 图表配置对象，必设参数。
+     * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
      * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
      */
     function Line(data, layer, fields, setting, lonlat, options) {
@@ -75792,11 +74725,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *            circleHoverAble - {boolean} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。<br>
  *            circleClickAble - {boolean} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends SuperMap.Feature.Theme.RankSymbol
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
 var Circle = exports.Circle = function (_RankSymbol) {
@@ -75976,11 +74909,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 三维柱状图 。
  * @category Visualization Theme
  * @extends SuperMap.Feature.Theme.Graph
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
  *
  * @description 图表 Bar3D 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
@@ -76334,8 +75267,8 @@ var Bar3D = exports.Bar3D = function (_Graph) {
          *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
          *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
          *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-         * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:</br>
-         *                  xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
+         * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
+         *                  xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *                  width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          */
 
@@ -76507,11 +75440,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *  }
  * ]
  * @extends SuperMap.Feature.Theme.Graph
- * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
- * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<string>} data 属性中的参与此图表生成的属性字段名称，必设参数。
- * @param setting - {Object} 图表配置对象，必设参数。
- * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 属性中的参与此图表生成的属性字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
  */
 var Bar = exports.Bar = function (_Graph) {
@@ -82374,12 +81307,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
  * @category ElasticSearch
- * @param url - {string} ElasticSearch服务地址。
- * @param options - {Object} 可选参数。如:</br>
- *         change - {function} 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。</br>
- *         openGeoFence - {boolean} 是否开启地理围栏验证，默认为不开启。</br>
- *         outOfGeoFence - {function} 数据超出地理围栏后执行的函数。</br>
- *         geoFence - {Object} 地理围栏。</br>
+ * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} options - 参数。
+ * @param {function} options.change - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
+ * @param {boolean} options.openGeoFence - 是否开启地理围栏验证，默认为不开启。
+ * @param {function} options.outOfGeoFence - 数据超出地理围栏后执行的函数。
+ * @param {Object} options.geoFence - 地理围栏。
  */
 
 var ElasticSearch = exports.ElasticSearch = function () {
@@ -82388,12 +81321,12 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         options = options || {};
         /**
-         *  @member SuperMap.ElasticSearch.prototype.url -{string}
+         *  @member {string} SuperMap.ElasticSearch.prototype.url 
          *  @description ElasticSearch服务地址
          */
         this.url = url;
         /**
-         *  @member SuperMap.ElasticSearch.prototype.client -{Object}
+         *  @member {Object} SuperMap.ElasticSearch.prototype.client
          *  @description client ES客户端
          */
         this.client = new _elasticsearch2.default.Client({
@@ -82401,23 +81334,23 @@ var ElasticSearch = exports.ElasticSearch = function () {
         });
         /**
          *  @deprecated
-         *  @member SuperMap.ElasticSearch.prototype.change -{function}
+         *  @member {function} SuperMap.ElasticSearch.prototype.change
          *  @description 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
          */
         this.change = null;
         /**
-         *  @member SuperMap.ElasticSearch.prototype.openGeoFence -{boolean}
+         *  @member {boolean} SuperMap.ElasticSearch.prototype.openGeoFence
          *  @description 是否开启地理围栏验证，默认为不开启。
          */
         this.openGeoFence = false;
         /**
-         *  @member SuperMap.ElasticSearch.prototype.outOfGeoFence -{function}
+         *  @member {function} SuperMap.ElasticSearch.prototype.outOfGeoFence
          *  @description 数据超出地理围栏后执行的函数
          */
         this.outOfGeoFence = null;
 
         /**
-         * @member SuperMap.ElasticSearch.prototype.geoFence -{Object}
+         * @member {Object} SuperMap.ElasticSearch.prototype.geoFence
          * @description 地理围栏
          * @example {
         *    radius: 1000,//单位是m
@@ -82436,13 +81369,13 @@ var ElasticSearch = exports.ElasticSearch = function () {
         this.EVENT_TYPES = ['change', 'error', 'outOfGeoFence'];
 
         /**
-         * @member SuperMap.ElasticSearch.prototype.events -{SuperMap.Events}
+         * @member {SuperMap.Events} SuperMap.ElasticSearch.prototype.events
          * @description 事件
          */
         this.events = new _Events.Events(this, null, this.EVENT_TYPES);
 
         /**
-         * @member SuperMap.ElasticSearch.prototype.eventListeners -{Object}
+         * @member {Object} SuperMap.ElasticSearch.prototype.eventListeners
          * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
          * 相当于调用 SuperMap.Events.on(eventListeners)。
          */
@@ -82456,7 +81389,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
     /**
      * @function  SuperMap.ElasticSearch.prototype.setGeoFence
      * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
-     * @param geoFence - {SuperMap.Geometry} 地理围栏。
+     * @param {SuperMap.Geometry} geoFence - 地理围栏。
      */
 
     _createClass(ElasticSearch, [{
@@ -82467,11 +81400,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.bulk
-         * @description 批量操作API，允许执行多个索引/删除操作。</br>
+         * @description 批量操作API，允许执行多个索引/删除操作。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82482,11 +81415,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.clearScroll
-         * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。</br>
+         * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
          *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82497,11 +81430,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.count
-         * @description 获取集群、索引、类型或查询的文档个数。</br>
+         * @description 获取集群、索引、类型或查询的文档个数。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82513,10 +81446,10 @@ var ElasticSearch = exports.ElasticSearch = function () {
         /**
          * @function  SuperMap.ElasticSearch.prototype.count
          * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
-         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}</br>
-         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
+         * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82527,11 +81460,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
-         * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
+         * @description 根据其ID从特定索引中删除键入的JSON文档。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82542,11 +81475,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.delete
-         * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
+         * @description 根据其ID从特定索引中删除键入的JSON文档。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82560,8 +81493,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 根据其ID删除脚本。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82575,8 +81508,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 根据其ID删除模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82590,8 +81523,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 检查给定文档是否存在。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82605,8 +81538,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 检查资源是否存在。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82620,8 +81553,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82635,8 +81568,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82650,8 +81583,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 从索引获取一个基于其id的类型的JSON文档。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82665,8 +81598,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 获取脚本。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82680,8 +81613,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 通过索引，类型和ID获取文档的源。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82695,8 +81628,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 获取模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82710,8 +81643,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82725,8 +81658,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 从当前集群获取基本信息。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82740,8 +81673,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82755,8 +81688,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 在同一请求中执行多个搜索请求。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         * @param {Object} params - 参数。
+         * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
          *     回调参数：error,response。结果存储在response.responses中
          */
 
@@ -82780,8 +81713,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 在同一请求中执行多个搜索模板请求。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82795,8 +81728,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 多termvectors API允许一次获得多个termvectors。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82810,8 +81743,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 测试连接。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82825,8 +81758,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 添加脚本。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82840,8 +81773,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 添加模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82855,8 +81788,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 重新索引。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82870,8 +81803,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 重新索引。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82885,8 +81818,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description 搜索模板。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82900,8 +81833,8 @@ var ElasticSearch = exports.ElasticSearch = function () {
          * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82912,11 +81845,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.search
-         * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
+         * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 请求返回的回调函数。也可以使用then表达式获取返回结果。<br>
+         * @param {Object} params - 参数。
+         * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
          *     回调参数：error,response,结果存储在response.responses中
          */
 
@@ -82936,11 +81869,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.searchShards
-         * @description  返回要执行搜索请求的索引和分片。</br>
+         * @description  返回要执行搜索请求的索引和分片。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82951,11 +81884,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.searchTemplate
-         * @description  搜索模板。</br>
+         * @description  搜索模板。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82966,11 +81899,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.suggest
-         * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。</br>
+         * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82981,11 +81914,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.termvectors
-         * @description 返回有关特定文档字段中的术语的信息和统计信息。</br>
+         * @description 返回有关特定文档字段中的术语的信息和统计信息。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -82996,11 +81929,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.update
-         * @description 更新文档的部分。</br>
+         * @description 更新文档的部分。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -83011,11 +81944,11 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /**
          * @function  SuperMap.ElasticSearch.prototype.update
-         * @description 通过查询API来更新文档。</br>
+         * @description 通过查询API来更新文档。
          * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
          * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
-         * @param params - {Object} 参数。
-         * @param callback - {function} 回调函数。
+         * @param {Object} params - 参数。
+         * @param {function} callback - 回调函数。
          */
 
     }, {
@@ -83161,44 +82094,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
  * @category Security
- * @param options - {Object} token申请参数。
+ * @param {Object} options - token申请参数。
  */
 var TokenServiceParameter = exports.TokenServiceParameter = function () {
   function TokenServiceParameter(options) {
     _classCallCheck(this, TokenServiceParameter);
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
+     * @member {string} SuperMap.TokenServiceParameter.prototype.userName
      * @description 用户名。
      */
     this.userName = null;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
+     * @member {string} SuperMap.TokenServiceParameter.prototype.password
      * @description 密码。
      */
     this.password = null;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
+     * @member {string} SuperMap.TokenServiceParameter.prototype.clientType
      * @description token申请的客户端标识类型。
      */
     this.clientType = _REST.ClientType.NONE;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+     * @member {string} SuperMap.TokenServiceParameter.prototype.ip
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
     this.ip = null;
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @member {string} SuperMap.TokenServiceParameter.prototype.referer
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
     this.referer = null;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+     * @member {number} SuperMap.TokenServiceParameter.prototype.expiration
      * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
      */
     this.expiration = 60;
@@ -83258,35 +82191,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  * @category Security
- * @param type - {string} 服务器类型
- * @param options - {Object} 服务器信息相关可选参数。如：<br>
- *        server - {string} 服务器地址,如：http://supermapiserver:8090/iserver<br>
- *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json<br>
- *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ * @param {string} type - 服务器类型
+ * @param {Object} options - 服务器信息相关可选参数。
+ * @param {string} options.server - 服务器地址,如：http://supermapiserver:8090/iserver
+ * @param {string} options.tokenServiceUrl - 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ * @param {string} options.keyServiceUrl - 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
 var ServerInfo = exports.ServerInfo = function ServerInfo(type, options) {
     _classCallCheck(this, ServerInfo);
 
     /**
-     * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
+     * @member {SuperMap.ServerType} SuperMap.ServerInfo.prototype.type
      * @description 服务器类型
      */
     this.type = type;
 
     /**
-     * @member SuperMap.ServerInfo.prototype.server -{string}
+     * @member {string} SuperMap.ServerInfo.prototype.server
      * @description 必填，服务器地址
      */
     this.server = null;
 
     /**
-     * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
+     * @member {string} SuperMap.ServerInfo.prototype.tokenServiceUrl
      * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
      */
     this.tokenServiceUrl = null;
 
     /**
-     * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
+     * @member {string} SuperMap.ServerInfo.prototype.keyServiceUrl
      * @description 非必填。如：http://supermapiserver:8092/web/mycontent/keys/register.json
      */
     this.keyServiceUrl = null;
@@ -83347,11 +82280,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
  * @category Security
- * @param options - {Object} 参数。如：<br>
- *        name - {string} 申请服务名称。<br>
- *        serviceIds - {number}服务ID。<br>
- *        clientType - {{@link SuperMap.ClientType}} 服务端类型。<br>
- *        limitation - {number}有效期
+ * @param {Object} options - 参数。
+ * @param {string} options.name - 申请服务名称。
+ * @param {number} options.serviceIds - 服务ID。
+ * @param {SuperMap.ClientType} options.clientType - 服务端类型。
+ * @param {number} options.limitation - 有效期
  */
 var KeyServiceParameter = exports.KeyServiceParameter = function () {
     function KeyServiceParameter(options) {
@@ -83440,7 +82373,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.OnlineQueryDatasParameter
  * @classdesc myDatas服务资源查询参数
  * @category iPortal/Online
- * @param options -{Object} 查询参数
+ * @param {Object} options - 查询参数
  */
 var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () {
   function OnlineQueryDatasParameter(options) {
@@ -83621,7 +82554,7 @@ var Online = exports.Online = function () {
         /**
          * @function SuperMap.Online.prototype.queryDatas
          * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
-         * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
+         * @param {SuperMap.OnlineQueryDatasParameter} parameter - myDatas服务资源查询参数
          * @returns {Promise} 返回包含所有数据服务信息的Promise对象
          */
 
@@ -91306,7 +90239,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DService = function (_CommonServiceBase) {
     _inherits(FacilityAnalystTraceup3DService, _CommonServiceBase);
 
-    /*
+    /**
      * @function SuperMap.FacilityAnalystTraceup3DService.constructor
      * @description 上游追踪资源服务类构造函数。
      * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -94158,7 +93091,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 对接SuperMap iPortal 基础服务
  * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
- * @param iportalUrl -{string} 地址
+ * @param {string} iportalUrl - 地址
  *
  */
 var IPortal = exports.IPortal = function (_IPortalServiceBase) {
@@ -94212,7 +93145,7 @@ var IPortal = exports.IPortal = function (_IPortalServiceBase) {
 
         /**
          * @function SuperMap.iPortal.prototype.deleteServices
-         * @param ids -{Array} 服务的序号
+         * @param {Array} ids - 服务的序号
          * @description 删除服务
          * @returns {Promise} 返回包含服务删除操作状态的Promise对象
          */
@@ -94226,7 +93159,7 @@ var IPortal = exports.IPortal = function (_IPortalServiceBase) {
 
         /**
          * @function SuperMap.iPortal.prototype.queryMaps
-         * @param queryParams -{SuperMap.iPortalMapsQueryParam} 查询参数
+         * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数
          * @description 获取地图信息
          * @returns {Promise} 返回包含所有地图服务信息的Promise对象
          */
@@ -95230,16 +94163,15 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -95253,7 +94185,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(scope, this._id);
+  this._clearFn.call(window, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -95280,7 +94212,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(486);
-// On some exotic environments, it's not clear which object `setimmediate` was
+// On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
@@ -95576,7 +94508,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.iManager
  * @classdesc iManager服务类。
  * @category iManager
- * @param serviceUrl - {string} iManager首页地址。
+ * @param {string} serviceUrl - iManager首页地址。
  *
  */
 var IManager = exports.IManager = function (_IManagerServiceBase) {
@@ -95603,7 +94535,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 
         /**
          * @function SuperMap.iManager.prototype.createIServer
-         * @param createParam - {SuperMap.iManagerCreateNodeParam} 创建参数。
+         * @param {SuperMap.iManagerCreateNodeParam} createParam - 创建参数。
          * @description 创建iServer。
          * @returns {Promise} Promise对象。
          */
@@ -95616,7 +94548,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 
         /**
          * @function SuperMap.iManager.prototype.createIPortal
-         * @param createParam - {SuperMap.iManagerCreateNodeParam} 创建参数。
+         * @param {SuperMap.iManagerCreateNodeParam} createParam - 创建参数。
          * @description 创建iPortal。
          * @returns {Promise} Promise对象。
          */
@@ -95653,7 +94585,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 
         /**
          * @function SuperMap.iManager.prototype.startNodes
-         * @param ids - {Array}  需要启动节点的id数组.e.g:['1']。
+         * @param {Array} ids - 需要启动节点的id数组.e.g:['1']。
          * @description 启动节点。
          * @returns {Promise} Promise对象。
          */
@@ -95666,7 +94598,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 
         /**
          * @function SuperMap.iManager.prototype.stopNodes
-         * @param ids - {Array}  需要停止节点的id数组.e.g:['1']。
+         * @param {Array} ids - 需要停止节点的id数组.e.g:['1']。
          * @description 停止节点。
          * @returns {Promise} Promise对象。
          */
@@ -95735,18 +94667,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.TimeFlowControl
  * @classdesc 时间管理类。
  * @category  Control
- * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
+ * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
  * @extends SuperMap.TimeControlBase
- * @param callback - {function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
- * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
- *        frequency -  {number} 刷新频率(单位ms)，默认为1000ms。<br>
- *        startTime - {number}起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {number}结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {boolean} 是否重复循环。默认为true。<br>
- *        reverse - {boolean} 是否反向。默认为false。
+ * @param {function} callback - 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+ * @param {Object} options - 该类开放的可选属性。
+ * @param {number} [options.speed=1] - 步长(单位ms)。不能小于0，（每次刷新的数据之间的间隔为1ms）。
+ * @param {number} [options.frequency=1000] - 刷新频率(单位ms)，默认为1000ms。
+ * @param {number} options.startTime - 起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。
+ * @param {number} options.endTime - 结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
+ * @param {boolean} [options.repeat=true] - 是否重复循环。默认为true。
+ * @param {boolean} [options.reverse=false] - 是否反向。
  */
 var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
     _inherits(TimeFlowControl, _TimeControlBase);
@@ -96017,7 +94949,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      的实例。
  * @category BaseTypes Format
  * @extends SuperMap.Format
- * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
+ * @param {Object} options - 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
 var WKT = exports.WKT = function (_Format) {
     _inherits(WKT, _Format);
@@ -96040,7 +94972,7 @@ var WKT = exports.WKT = function (_Format) {
                                                   * Property values are functions that do the actual data extraction.
                                                   */
         _this.extract = {
-            /*
+            /**
              * @description Return a space delimited string of point coordinates.
              * @param {SuperMap.Geometry.Point} point
              * @returns  {String} A string of coordinates representing the point
@@ -96049,7 +94981,7 @@ var WKT = exports.WKT = function (_Format) {
                 return _point.x + ' ' + _point.y;
             },
 
-            /*
+            /**
              * @description  Return a comma delimited string of point coordinates from a multipoint.
              * @param {SuperMap.Geometry.MultiPoint} multipoint
              * @returns  {String} A string of point coordinate strings representing
@@ -96064,7 +94996,7 @@ var WKT = exports.WKT = function (_Format) {
             },
 
 
-            /*
+            /**
              * @description  Return a comma delimited string of point coordinates from a line.
              * @param {SuperMap.Geometry.LineString} linestring
              * @returns  {String} A string of point coordinate strings representing
@@ -96079,7 +95011,7 @@ var WKT = exports.WKT = function (_Format) {
             },
 
 
-            /*
+            /**
              * @description  Return a comma delimited string of linestring strings from a multilinestring.
              * @param {SuperMap.Geometry.MultiLineString} multilinestring
              * @returns  {String} A string of of linestring strings representing
@@ -96094,7 +95026,7 @@ var WKT = exports.WKT = function (_Format) {
             },
 
 
-            /*
+            /**
              * @description  Return a comma delimited string of linear ring arrays from a polygon.
              * @param {SuperMap.Geometry.Polygon} polygon
              * @returns  {String} An array of linear ring arrays representing the polygon
@@ -96108,7 +95040,7 @@ var WKT = exports.WKT = function (_Format) {
             },
 
 
-            /*
+            /**
              * @description  Return an array of polygon arrays from a multipolygon.
              * @param {SuperMap.Geometry.MultiPolygon} multipolygon
              * @returns  {String} An array of polygon arrays representing
@@ -96123,7 +95055,7 @@ var WKT = exports.WKT = function (_Format) {
             },
 
 
-            /*
+            /**
              * @description  Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <SuperMap.Geometry.Collection>
              * @param {SuperMap.Geometry.Collection} collection
              * @returns  {String} internal WKT representation of the collection
@@ -96137,13 +95069,13 @@ var WKT = exports.WKT = function (_Format) {
             }
         };
 
-        /*
+        /**
          * @private
          * @description Object with properties corresponding to the geometry types.
          * Property values are functions that do the actual parsing.
          */
         _this.parse = {
-            /*
+            /**
              * @private
              * @description  Return point feature given a point WKT fragment.
              * @param {String} str A WKT fragment representing the point
@@ -96155,7 +95087,7 @@ var WKT = exports.WKT = function (_Format) {
                 return new _Vector.Vector(new _Point.Point(coords[0], coords[1]));
             },
 
-            /*
+            /**
              * @description  Return a multipoint feature given a multipoint WKT fragment.
              * @param {String} A WKT fragment representing the multipoint
              * @returns  {SuperMap.Feature.Vector} A multipoint feature
@@ -96172,7 +95104,7 @@ var WKT = exports.WKT = function (_Format) {
                 return new _Vector.Vector(new _MultiPoint.MultiPoint(components));
             },
 
-            /*
+            /**
              * @description  Return a linestring feature given a linestring WKT fragment.
              * @param {String} A WKT fragment representing the linestring
              * @returns  {SuperMap.Feature.Vector} A linestring feature
@@ -96187,7 +95119,7 @@ var WKT = exports.WKT = function (_Format) {
                 return new _Vector.Vector(new _LineString.LineString(components));
             },
 
-            /*
+            /**
              * @description  Return a multilinestring feature given a multilinestring WKT fragment.
              * @param {String} A WKT fragment representing the multilinestring
              * @returns  {SuperMap.Feature.Vector} A multilinestring feature
@@ -96204,7 +95136,7 @@ var WKT = exports.WKT = function (_Format) {
                 return new _Vector.Vector(new _MultiLineString.MultiLineString(components));
             },
 
-            /*
+            /**
              * @description  Return a polygon feature given a polygon WKT fragment.
              * @param {String} A WKT fragment representing the polygon
              * @returns  {SuperMap.Feature.Vector} A polygon feature
@@ -96223,7 +95155,7 @@ var WKT = exports.WKT = function (_Format) {
                 return new _Vector.Vector(new _Polygon.Polygon(components));
             },
 
-            /*
+            /**
              * @private
              * @description  Return a multipolygon feature given a multipolygon WKT fragment.
              * @param {String} A WKT fragment representing the multipolygon
@@ -96241,7 +95173,7 @@ var WKT = exports.WKT = function (_Format) {
                 return new _Vector.Vector(new _MultiPolygon.MultiPolygon(components));
             },
 
-            /*
+            /**
              * @description  Return an array of features given a geometrycollection WKT fragment.
              * @param {String} A WKT fragment representing the geometrycollection
              * @returns  {Array} An array of SuperMap.Feature.Vector
@@ -96269,7 +95201,7 @@ var WKT = exports.WKT = function (_Format) {
      * array of vector features.  Supports WKT for POINT, MULTIPOINT,
      * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
      * GEOMETRYCOLLECTION.
-     * @param wkt - {string} A WKT string
+     * @param {string} wkt - A WKT string
      * @returns {SuperMap.Feature.Vector|Array} A feature or array of features for
      * GEOMETRYCOLLECTION WKT.
      */
@@ -96294,7 +95226,7 @@ var WKT = exports.WKT = function (_Format) {
         /**
          * @function SuperMap.Format.WKT.prototype.write
          * @description Serialize a feature or array of features into a WKT string.
-         * @param features - {SuperMap.Feature.Vector|Array} A feature or array of features
+         * @param {(SuperMap.Feature.Vector|Array)} features - A feature or array of features
          * @returns {string} The WKT string representation of the input geometries
          */
 
@@ -96329,7 +95261,7 @@ var WKT = exports.WKT = function (_Format) {
         /**
          * @function SuperMap.Format.WKT.prototype.extractGeometry
          * @description Entry point to construct the WKT for a single Geometry object.
-         * @param geometry - {SuperMap.Geometry}
+         * @param {SuperMap.Geometry} geometry 
          * @returns {string} A WKT string of representing the geometry
          */
 
@@ -96402,7 +95334,7 @@ var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
      * @description 生成代表一个具体的日期字符串，该日期遵循ISO 8601标准(详情查看{@link http://tools.ietf.org/html/rfc3339})。
      * @example
      *  var dateString = SuperMap.Date.toISOString(new Date());
-     * @param date - {Date} 日期对象。
+     * @param {Date} date - 日期对象。
      * @returns {string} 一个代表日期的字符串。(例如 "2010-08-07T16:58:23.123Z")。
      */
     toISOString: function () {
@@ -96439,7 +95371,7 @@ var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
      * @description 从一个字符串生成一个日期对象。
      * @example
      *  var date = SuperMap.Date.parse("2010-08-07");
-     * @param str - {string} 代表日期的字符串。(例如： "2010", "2010-08", "2010-08-07", "2010-08-07T16:58:23.123Z","2010-08-07T11:58:23.123-06").
+     * @param {string} str - 代表日期的字符串。(例如： "2010", "2010-08", "2010-08-07", "2010-08-07T16:58:23.123Z","2010-08-07T11:58:23.123-06").
      * @returns {Date} 日期对象，如果字符串无法被解析，则返回一个无效的日期。(例如  isNaN(date.getTime())).
      */
     parse: function parse(str) {
