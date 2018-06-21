@@ -21235,7 +21235,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
                 geometry = new _iclientCommon.LineString(points);
             }
             if (geometry instanceof _openlayers2.default.geom.Polygon) {
-                var _coords = geometry.getCoordinates()[0];
+                var _coords = geometry.getCoordinates()[0][0];
                 var _points = [];
                 for (var _i = 0; _i < _coords.length; _i++) {
                     _points.push(new _iclientCommon.GeometryPoint(_coords[_i][0], _coords[_i][1]));

@@ -561,7 +561,7 @@ export class Theme extends ol.source.ImageCanvas {
             geometry = new LineString(points);
         }
         if (geometry instanceof ol.geom.Polygon) {
-            let coords = geometry.getCoordinates()[0];
+            let coords = geometry.getCoordinates()[0][0];
             let points = [];
             for (let i = 0; i < coords.length; i++) {
                 points.push(new GeometryPoint(coords[i][0], coords[i][1]));
