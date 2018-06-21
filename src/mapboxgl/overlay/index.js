@@ -10,6 +10,7 @@ export {Unique} from './UniqueThemeLayer';
 export {GraphicLayer} from "./GraphicLayer";
 export {ThreeLayer} from './ThreeLayer';
 export {HeatMapLayer} from './HeatMapLayer';
+export {DeckglLayer} from './DeckglLayer';
 export * from './graphic';
 export * from './mapv';
 export * from './theme';

@@ -15,7 +15,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@turf/turf": "^4.7.1",
-    "deck.gl": "5.1.3",
     "echarts": "4.0.4",
     "mapv": "2.0.14",
     "openlayers": "4.6.4",

@@ -47,6 +47,7 @@ var typeLinks = {
     "L.Path-option": lfapi + '#path-option',
 
     //mapboxgl
-    "mapboxgl.Evented": mbglapi + '#Evented'
+    "mapboxgl.Evented": mbglapi + '#Evented',
+    "mapboxgl.Map": mbglapi + '#map'
 }
 exports.typeLinks = typeLinks;

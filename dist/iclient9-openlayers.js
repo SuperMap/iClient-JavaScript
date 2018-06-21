@@ -61012,6 +61012,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var olExtends = exports.olExtends = function olExtends(targetMap) {
 
     window.targetMapCache = targetMap;
+    //解决 new ol.format.MVT({featureClass: ol.Feature})时，非3857显示异常的问题。ol即将发布的5.0版本已解决。
     _openlayers2.default.format.MVT.prototype.readProjection = function (source) {
         // eslint-disable-line no-unused-vars
         return new _openlayers2.default.proj.Projection({
@@ -61019,11 +61020,13 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
             units: _openlayers2.default.proj.Units.TILE_PIXELS
         });
     };
+    //解决olms.js插件，在使用ol.js时沿线标注不显示的问题，因为ol.geom.LineString.getFlatMidpoint未非公开方法
     if (!_openlayers2.default.geom.LineString.getFlatMidpoint) {
         _openlayers2.default.geom.LineString.prototype.getFlatMidpoint = function () {
             return this.getCoordinateAt(0.5);
         };
     }
+    //解决面填充时不能整版填充的问题。ol即将发布的5.0版本已解决。
     _openlayers2.default.render.canvas.Replay.prototype.applyFill = function (state, geometry) {
         // eslint-disable-line no-unused-vars
         var fillStyle = state.fillStyle;
@@ -61034,6 +61037,7 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
         }
         this.instructions.push(fillInstruction);
     };
+    //解决在多面时，第一个面是逆时针时无法显示的问题。该问题由组件修复。
     _openlayers2.default.format.MVT.prototype.createFeature_ = function (pbf, rawFeature, opt_options) {
         var type = rawFeature.type;
         if (type === 0) {
@@ -61089,7 +61093,7 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
 
         return feature;
     };
-
+    //解决中文沿线表述显示不符合中文阅读习惯的问题
     _openlayers2.default.geom.flat.textpath.lineString = function (flatCoordinates, offset, end, stride, text, measure, startM, maxAngle) {
         var result = [];
 
@@ -61205,10 +61209,10 @@ var olExtends = exports.olExtends = function olExtends(targetMap) {
         }
         return result;
     };
+    //以下两个方法解决在大数据量图斑时，内存疯长的问题。该改法引发新问题:无法点选要素
     _openlayers2.default.layer.VectorTile.prototype.setFastRender = function (fastRender) {
         return this.fastRender = fastRender;
     };
-
     _openlayers2.default.renderer.canvas.VectorTileLayer.prototype.postCompose = function (context, frameState, layerState) {
         var layer = this.getLayer();
         var declutterReplays = layer.getDeclutter() ? {} : null;
@@ -67113,7 +67117,7 @@ module.exports = function (proj4) {
 /* 346 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","D:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 347 */
@@ -94163,15 +94167,16 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
+var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -94185,7 +94190,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(window, this._id);
+  this._clearFn.call(scope, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -94212,7 +94217,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(486);
-// On some exotic environments, it's not clear which object `setimmeidate` was
+// On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;

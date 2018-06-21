@@ -315,56 +315,56 @@ var exampleConfig = {
                     {
                         name: "北京",
                         name_en: "Beijing",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_Beijing.png",
                         fileName: "mvtVectorTile_Beijing"
                     },
                     {
                         name: "北京-暗夜风格",
                         name_en: "Beijing - dark-blue style",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_Beijing_dark.png",
                         fileName: "mvtVectorTile_Beijing_dark"
                     },
                     {
                         name: "北京-深海风格",
                         name_en: "Beijing - fiord style",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_Beijing_fiordcolor.png",
                         fileName: "mvtVectorTile_Beijing_fiordcolor"
                     },
                     {
                         name: "北京-淡绿风格",
                         name_en: "Beijing - klokantech style",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_Beijing_klokantech.png",
                         fileName: "mvtVectorTile_Beijing_klokantech"
                     },
                     {
                         name: "北京-OSM风格",
                         name_en: "Beijing - OSM style",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_Beijing_osm.png",
                         fileName: "mvtVectorTile_Beijing_OSM"
                     },
                     {
                         name: "北京-淡灰风格",
                         name_en: "Beijing - positron style",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_Beijing_positron.png",
                         fileName: "mvtVectorTile_Beijing_positron"
                     },
                     {
                         name: "风格切换",
                         name_en: "style switch",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_changeStyle.png",
                         fileName: "mvtVectorTile_changeStyle"
                     },
                     {
                         name: "预缓存(MVT)",
                         name_en: "precache(MVT)",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mvt_UGCV5.png",
                         fileName: "mvtVectorTile_precache"
                     }
@@ -461,31 +461,31 @@ var exampleConfig = {
                     }, {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mb_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "纽约出租车分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mb_echartScatterMillionsNewYorkTaxi.png",
                         fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mb_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mb_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mb_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }
@@ -532,6 +532,63 @@ var exampleConfig = {
                         fileName: "echartsGL_GlobalWind"
                     }
                 ]
+            },
+            "DeckGL": {
+                name: "DeckGL",
+                name_en: "DeckGL",
+                content: [{
+                    name: "路径图（线）",
+                    name_en: "path",
+                    thumbnail: "mb_deckglLayer_pathLayer.png",
+                    fileName: "deckglLayer_pathLayer"
+                }, {
+                    name: "曲线",
+                    name_en: "arcLine",
+                    thumbnail: "mb_deckglLayer_arcLayer.png",
+                    fileName: "deckglLayer_arcLayer"
+                }, {
+                    name: "多边形(建筑物)",
+                    name_en: "polygon",
+                    thumbnail: "mb_deckglLayer_polygonLayer.png",
+                    fileName: "deckglLayer_polygonLayer"
+                }, {
+                    name: "蜂巢图",
+                    name_en: "honeycomb",
+                    thumbnail: "mb_deckglLayer_hexagonLayer.png",
+                    fileName: "deckglLayer_hexagonLayer"
+                }, {
+                    name: "纽约城市建筑变化图",
+                    name_en: "New York Construction",
+                    thumbnail: "mb_deckgl_nyBuilding.png",
+                    fileName: "deckglLayer_nyBuilding"
+                }, {
+                    name: "加州地震分布图",
+                    name_en: "California Earthquakes",
+                    thumbnail: "mb_deckglLayer_scatterPlot.png",
+                    fileName: "deckglLayer_scatterPlot"
+                }, {
+                    name: "纽约城市人口分布图",
+                    name_en: "New york city population",
+                    thumbnail: "mb_deckglLayer_nyc_census.png",
+                    fileName: "deckglLayer_nyc_census"
+                }, {
+                    name: "旧金山等高线图",
+                    name_en: "San Francisco Elevation Contour",
+                    localIgnore: true,
+                    thumbnail: "mb_deckglLayer_sfcontour.png",
+                    fileName: "deckglLayer_sfcontour"
+                }, {
+                    name: "旧金山街道树分布密度图",
+                    name_en: "San Francisco Street Tree Map",
+                    thumbnail: "mb_deckglLayer_sftrees.png",
+                    fileName: "deckglLayer_sftrees"
+                }, {
+                    name: "英国通勤图",
+                    name_en: "Commute Patterns in the UK",
+                    localIgnore: true,
+                    thumbnail: "mb_deckglLayer_ukcommute.png",
+                    fileName: "deckglLayer_ukcommute"
+                },]
             },
             "MapV": {
                 name: "MapV",
@@ -606,7 +663,7 @@ var exampleConfig = {
                     {
                         name: "2018年2月北京房价",
                         name_en: "Beijing house prices(2018.2)",
-                        localIgnore:true,
+                        localIgnore: true,
                         thumbnail: "mb_mapvLianjia.png",
                         fileName: "mapvLinanJiaData"
                     }
@@ -744,7 +801,7 @@ var exampleConfig = {
     "GTC": {
         name: "GTC",
         name_en: "GTC",
-        localIgnore:true,
+        localIgnore: true,
         content: {
             "GTC2017": {
                 name: "2017",

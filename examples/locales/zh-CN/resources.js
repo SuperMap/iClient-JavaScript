@@ -408,6 +408,16 @@ window.examplesResources = {
         "title_lianjia": "2018年2月北京房价信息",
         "title_mapvLianjia_Beijing_price": "2018年2月北京房价",
         "title_l_echartsEarthquake1": "2008到2017年地震情况统计",
+        "title_mb_deckglLayer_arcLayer": "曲线图层",
+        "title_mb_deckglLayer_pathLayer": "线路图层",
+        "title_mb_deckglLayer_polygonLayer": "多边形图层",
+        "title_mb_deckglLayer_hexagonLayer": "蜂巢图层",
+        "title_mb_deckglLayer_nyBuilding": "纽约城市建筑",
+        "title_mb_deckglLayer_nyc_census": "纽约城市人口",
+        "title_mb_deckglLayer_scatterPlot": "加州地震分布图",
+        "title_mb_deckglLayer_sfcontour": "旧金山等高线",
+        "title_mb_deckglLayer_sftrees": "旧金山街道树分布密度图",
+        "title_mb_deckglLayer_ukcommute": "英国通勤图",
 
 
         "text_code": "正向匹配",
@@ -1055,6 +1065,13 @@ window.examplesResources = {
         "text_lineColor_1": "线的颜色：",
         "text_lineOpacity": "线的透明度：",
         "text_lineWidth_1": "线的宽度：",
+        "text_paly": "开始",
+        "text_pause": "暂停",
+        "text_mb_deckglLayer_nyc_census": "该数据集包含纽约市2010年人口普查地区人口数据",
+        "text_mb_deckglLayer_sfcontour": "旧金山大陆和金银岛/ Yerba岛的立面轮廓",
+        "text_mb_deckglLayer_scatterPlot": "加利福尼亚州2.5级地震的地点，规模和磁性类型",
+        "text_mb_deckglLayer_sftrees": "三维六进制密度地图显示旧金山的每条街道",
+        "text_mb_deckglLayer_ukcommute": "使用3d弧线的原始目的地地图显示英格兰和威尔士居民的通勤模式",
 
 
         "btn_overlayAnalyst": "叠加分析",

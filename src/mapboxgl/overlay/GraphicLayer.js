@@ -19,39 +19,45 @@ const defaultProps = {
  * @class mapboxgl.supermap.GraphicLayer
  * @category  Visualization Graphic
  * @classdesc 高效率点图层
- * @param {string} id - 图层id </br>
- * @param {Object} options -  图层配置项 </br>
- * @param {Array<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 </br>
- * @param {Array<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持rgba数组。 </br>
- * @param {number} [options.radius=10] - 半径。 </br>
- * @param {number} [options.opacity=0.8] - 不透明度。 </br>
- * @param {Array} options.highlightColor - 高亮颜色，目前只支持rgba数组 </br>
- * @param {number} options.radiusScale - 点放大倍数 </br>
- * @param {number} options.radiusMinPixels - 半径最小值(像素) </br>
- * @param {number} options.radiusMaxPixels - 半径最大值(像素) </br>
- * @param {number} options.strokeWidth - 边框大小 </br>
- * @param {boolean} options.outline - 是否显示边框 
+ * @param {string} id - 图层id。
+ * @param {Object} options -  图层配置项。
+ * @param {Array<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 。
+ * @param {Array<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持rgba数组。
+ * @param {number} [options.radius=10] - 半径。
+ * @param {number} [options.opacity=0.8] - 不透明度。
+ * @param {Array} options.highlightColor - 高亮颜色，目前只支持rgba数组。
+ * @param {number} options.radiusScale - 点放大倍数。
+ * @param {number} options.radiusMinPixels - 半径最小值(像素)。
+ * @param {number} options.radiusMaxPixels - 半径最大值(像素)。
+ * @param {number} options.strokeWidth - 边框大小。
+ * @param {boolean} options.outline - 是否显示边框
  */
 export class GraphicLayer {
 
     constructor(id, options) {
         let opt = Util.extend(this, defaultProps, options);
         /**
-         * @member {string} mapboxgl.supermap.GraphicLayer.prototype.id 
+         * @member {string} mapboxgl.supermap.GraphicLayer.prototype.id
          * @description 高效率点图层id
          */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
         /**
-         * @member {Array<mapboxgl.supermap.Graphic>} mapboxgl.supermap.GraphicLayer.prototype.graphics 
+         * @member {Array<mapboxgl.supermap.Graphic>} mapboxgl.supermap.GraphicLayer.prototype.graphics
          * @description 点要素对象数组
          */
-        this.graphics =  [].concat(opt.graphics);
+        this.graphics = [].concat(opt.graphics);
+
+        /**
+         * @member {boolean} [mapboxgl.supermap.GraphicLayer.prototype.visibility=true]
+         * @description 图层显示状态属性
+         */
+        this.visibility = true;
     }
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.addTo
-     * @description 图层添加到地图
-     * @param {Object} map - 地图对象
+     * @description 图层添加到地图，将在下个版本废弃，请使用onAdd()代替
+     * @param {mapboxgl.Map} map - mapboxgl 地图对象。
      * @returns this
      */
     addTo(map) {
@@ -59,7 +65,10 @@ export class GraphicLayer {
     }
 
     /**
-     *增加onAdd接口是为了给map.addLayer()方法使用
+     * @function mapboxgl.supermap.GraphicLayer.prototype.onAdd
+     * @description 图层添加到地图
+     * @param {mapboxgl.Map} map - mapboxgl 地图对象。
+     * @return {mapboxgl.supermap.GraphicLayer}
      */
     onAdd(map) {
         this.map = map;
@@ -98,8 +107,8 @@ export class GraphicLayer {
             strokeWidth: strokeWidth,
             outline: outline,
             getPosition: function (point) {
-                if(!point){
-                    return [0,0,0];
+                if (!point) {
+                    return [0, 0, 0];
                 }
                 let lngLat = point && point.getLngLat();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
@@ -141,15 +150,15 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.setStyle
      * @description 设置图层整体样式
-     * @param {Object} styleOptions - 样式对象 </br>
-     * @param {Array<number>} styleOptions.color - 点颜色 </br>
-     * @param {number} styleOptions.radius - 点半径 </br>
-     * @param {number} styleOptions.opacity - 不透明度 </br>
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组 </br>
-     * @param {number} styleOptions.radiusScale - 点放大倍数 </br>
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素) </br>
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素) </br>
-     * @param {number} styleOptions.strokeWidth - 边框大小 </br>
+     * @param {Object} styleOptions - 样式对象
+     * @param {Array<number>} styleOptions.color - 点颜色
+     * @param {number} styleOptions.radius - 点半径
+     * @param {number} styleOptions.opacity - 不透明度
+     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
+     * @param {number} styleOptions.radiusScale - 点放大倍数
+     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
+     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
+     * @param {number} styleOptions.strokeWidth - 边框大小
      * @param {boolean} styleOptions.outline - 是否显示边框
      */
     setStyle(styleOptions) {
@@ -261,6 +270,45 @@ export class GraphicLayer {
     removeFromMap() {
         this.remove();
     }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.moveTo
+     * @description 将图层移动到某个图层之前。
+     * @param {string} layerID - 待插入的图层ID。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     */
+    moveTo(layerID, before) {
+        var layer = document.getElementById(this.id);
+        before = before !== undefined ? before : true;
+        if (before) {
+            var beforeLayer = document.getElementById(layerID);
+            if (layer && beforeLayer) {
+                beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+            }
+            return;
+        }
+        var nextLayer = document.getElementById(layerID);
+        if (layer) {
+            if (nextLayer.nextSibling) {
+                nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+                return;
+            }
+            nextLayer.parentNode.appendChild(layer);
+        }
+    }
+
+    /**
+     * @function mapboxgl.supermap.GraphicLayer.prototype.setVisibility
+     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @param {boolean} visibility - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     */
+    setVisibility(visibility) {
+        if (this.canvas && visibility !== this.visibility) {
+            this.visibility = visibility;
+            this.canvas.style.display = visibility ? "block" : "none";
+        }
+    }
+
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.getState

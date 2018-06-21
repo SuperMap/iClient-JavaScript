@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_mb_deckglLayer_scatterPlot"></title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #title {
+            position: absolute;
+            color: white;
+            left: 40%;
+            top: 30px;
+            text-align: center;
+            width: 500px;
+            z-index: 2;
+        }
+
+        #title > h3 {
+            margin: 10px 0;
+            letter-spacing: 0.1em;
+        }
+
+        #title > h6 {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .whiteBackground {
+            background-color: rgba(225, 225, 225, 0.1);
+            border-top: 1px dotted;
+            border-image: linear-gradient(to right, rgba(114, 159, 207, 1), rgba(104, 104, 104, 1) 200px, rgba(104, 104, 104, 0) 75%) 30;
+        }
+
+        .legendContainer {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            color: white;
+            padding: 10px 10px 0px 10px;
+            z-index: 1000;
+        }
+
+        .legendHead {
+            align-self: flex-end;
+        }
+
+        .legendBody {
+            padding-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="title">
+    <h3 data-i18n="resources.title_mb_deckglLayer_scatterPlot"></h3>
+    <h6 data-i18n="resources.text_mb_deckglLayer_scatterPlot"></h6>
+</div>
+<div class="legendContainer whiteBackground">
+    <div class="legendHead _flex">
+        <div>Point</div>
+        <div>Point color</div>
+        <div>by Magnitude</div>
+    </div>
+    <div class="legendBody _flex">
+        <svg width="120">
+            <g transform="translate(0, 0)">
+                <rect width="30" height="20" style="fill: rgb(118, 42, 131);"></rect>
+                <text x="38" y="14" fill="white">[ 2.50, 3.31 ]</text>
+            </g>
+            <g transform="translate(0, 24)">
+                <rect width="30" height="20" style="fill: rgb(175, 141, 195);"></rect>
+                <text x="38" y="14" fill="white">( 3.31, 4.13 ]</text>
+            </g>
+            <g transform="translate(0, 48)">
+                <rect width="30" height="20" style="fill: rgb(231, 212, 232);"></rect>
+                <text x="38" y="14" fill="white">( 4.13, 4.94 ]</text>
+            </g>
+            <g transform="translate(0, 72)">
+                <rect width="30" height="20" style="fill: rgb(217, 240, 211);"></rect>
+                <text x="38" y="14" fill="white">( 4.94, 5.76 ]</text>
+            </g>
+            <g transform="translate(0, 96)">
+                <rect width="30" height="20" style="fill: rgb(127, 191, 123);"></rect>
+                <text x="38" y="14" fill="white">( 5.76, 6.57 ]</text>
+            </g>
+            <g transform="translate(0, 120)">
+                <rect width="30" height="20" style="fill: rgb(27, 120, 55);"></rect>
+                <text x="38" y="14" fill="white">( 6.57, 7.39 ]</text>
+            </g>
+        </svg>
+    </div>
+
+</div>
+<div id="map"></div>
+<script type="text/javascript" include="papaparse,bootstrap,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="deck" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var map, deckglLayer;
+    var attribution = "Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span> with <span>© <a href='https://www.mapbox.com' target='_blank'>MapBox</a></span>";
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [-121.40334, 38.19812],
+        zoom: 5.5
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    widgets.loader.showLoader("data loading...");
+
+    $.get('../data/deck.gl/earthquakes_data.csv', function (csvstr) {
+        widgets.loader.removeLoader();
+        var result = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
+        addLayer(result.data);
+    });
+
+    function addLayer(points) {
+        var popup = new mapboxgl.Popup({closeOnClick: false}).addTo(map);
+        deckglLayer = new mapboxgl.supermap.DeckglLayer("scatter-plot", {
+            data: points,
+            props: {
+                radiusScale: 300,
+                radiusMaxPixels: 500,
+                opacity: 0.3,
+                autoHighlight: true,
+                highlightColor: [255, 255, 0, 255],
+                onHover: function (e) {
+                    if (!popup) {
+                        popup = new mapboxgl.Popup({
+                            anchor: 'bottom',
+                            closeButton: false,
+                            offset: {
+                                'bottom': [0, -10],
+                            }
+                        });
+                    }
+                    if (!e.object || e.object.Magnitude < 2.73) {
+                        popup.remove();
+                        return;
+                    }
+                    popup.setLngLat(map.unproject([e.x, e.y])).setHTML("Magnitude: " + e.object.Magnitude);
+                    popup.addTo(map);
+                }
+            },
+            callback: {
+                getPosition: function (feature) {
+                    if (!feature || !feature.Longitude || !feature.Latitude) {
+                        return [0, 0, 0];
+                    }
+                    return [Number(feature.Longitude), Number(feature.Latitude), 0];
+                },
+                getColor: function (feature) {
+                    if (feature.Magnitude >= 2.5 && feature.Magnitude <= 3.31) {
+                        return [118, 42, 131];
+                    } else if (feature.Magnitude > 3.31 && feature.Magnitude <= 4.13) {
+                        return [175, 141, 195];
+                    } else if (feature.Magnitude > 4.13 && feature.Magnitude <= 4.94) {
+                        return [231, 212, 232];
+                    } else if (feature.Magnitude > 4.94 && feature.Magnitude <= 5.76) {
+                        return [217, 240, 211];
+                    } else if (feature.Magnitude > 5.76 && feature.Magnitude <= 6.57) {
+                        return [127, 191, 123];
+                    } else if (feature.Magnitude >= 6.57) {
+                        return [27, 120, 55];
+                    }
+
+                    return [0, 0, 0, 0]
+                },
+                getRadius: function (feature) {
+                    if (feature.Magnitude < 2.73) {
+                        return Number(feature.Magnitude);
+                    }
+                    return Math.pow(Number(feature.Magnitude), 2.5);
+                }
+            }
+        });
+        map.addLayer(deckglLayer);
+
+    }
+
+</script>
+</body>
+</html>

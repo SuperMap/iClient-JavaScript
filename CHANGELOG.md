@@ -198,6 +198,12 @@
 
 - 废弃 ` mapboxgl.supermap.ThemeLayer.toFeature` 方法，由 ` mapboxgl.supermap.ThemeLayer.toiClientFeature` 方法代替
 
+- 新增deck.gl图层：
+
+    - `mapboxgl.supermap.DeckglLayer`
+
+- `mapboxgl.supermap.GraphicLayer` 类新增 `setVisibility` , `moveTo` 接口，支持设置图层的显示、隐藏和移动
+
 ### Classic
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -294,6 +300,8 @@
 - 新增高性能点图层示例
 
 - 新增`echarts` 增量高性能图层示例
+
+- 新增`deckgl` 模块以及示例
 
 ### Classic
 

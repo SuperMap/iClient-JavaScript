@@ -48,10 +48,10 @@
             document.writeln("<script>Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();}); </script>");
             jQueryInclude = true;
         }
-
         if (inArray(includes, 'jquery') && !jQueryInclude) {
             inputScript("https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js");
         }
+
         if (inArray(includes, 'bootstrap')) {
             inputScript("https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js");
             inputCSS("http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css");
@@ -64,22 +64,25 @@
         if (inArray(includes, 'bootstrap-js')) {
             inputScript("http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js");
         }
+
+        if (inArray(includes, 'jquery-ui')) {
+            inputCSS("https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.css");
+            inputScript("https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js");
+        }
+
         if (inArray(includes, 'template')) {
             inputScript("http://iclient.supermap.io/libs/art-template/template-web.js");
         }
-
         if (inArray(includes, 'randomcolor')) {
             inputScript("http://cdn.bootcss.com/randomcolor/0.5.2/randomColor.min.js");
         }
         if (inArray(includes, 'papaparse')) {
             inputScript("http://cdn.bootcss.com/PapaParse/4.3.2/papaparse.min.js");
         }
-
         if (inArray(includes, 'moment')) {
             inputScript("http://cdn.bootcss.com/moment.js/2.18.1/moment.min.js");
             inputScript("http://cdn.bootcss.com/moment.js/2.18.1/locale/zh-cn.js");
         }
-
         if (inArray(includes, 'bootstrap-datetimepicker')) {
             inputCSS("http://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css");
             inputScript("http://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js");
@@ -107,7 +110,6 @@
         if (inArray(includes, 'ace')) {
             inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
         }
-
         if (inArray(includes, 'widgets.alert')) {
             inputScript("../js/widgets.js");
         }
@@ -116,7 +118,6 @@
             inputCSS("https://cdn.bootcss.com/css-loader/2.2.0/css-loader.css");
             inputScript("../js/widgets.js");
         }
-
         if (inArray(includes, 'zTree')) {
             inputCSS("https://cdn.bootcss.com/zTree.v3/3.5.29/css/zTreeStyle/zTreeStyle.min.css");
             inputScript("https://cdn.bootcss.com/zTree.v3/3.5.29/js/jquery.ztree.all.min.js");
