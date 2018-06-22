@@ -14,10 +14,12 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "echarts": "4.0.4",
-    "mapv": "2.0.14",
-    "mapbox-gl": "0.43.0",
-    "three": "^0.90.0",
+
+    "echarts": "4.1.0",
+    "mapv": "2.0.20",
+    "mapbox-gl": "0.45.0",
+ 
+    "three": "^0.92.0",
     "@supermap/iclient-common": "9.0.1"
   }
 }

@@ -36,12 +36,12 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'mapbox-gl')) {
-            inputCSS("https://cdn.bootcss.com/mapbox-gl/0.43.0/mapbox-gl.css");
-            inputScript("https://cdn.bootcss.com/mapbox-gl/0.43.0/mapbox-gl.js");
+            inputCSS("https://cdn.bootcss.com/mapbox-gl/0.45.0/mapbox-gl.css");
+            inputScript("https://cdn.bootcss.com/mapbox-gl/0.45.0/mapbox-gl.js");
         }
         if (inArray(includes, 'draw')) {
-            inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw/mapbox-gl-draw.css");
-            inputScript("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw/mapbox-gl-draw.js");
+            inputCSS("http://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.0.9/mapbox-gl-draw.css");
+            inputScript("http://iclient.supermap.io/web/libs/mapbox-gl-js/plugins/mapbox-gl-draw/1.0.9/mapbox-gl-draw.js");
         }
         if (inArray(includes, 'compare')) {
             inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-compare/mapbox-gl-compare.css");
@@ -51,11 +51,11 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("https://cdn.bootcss.com/echarts/4.0.4/echarts.min.js");
+            inputScript("https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (inArray(includes, 'three')) {
-            inputScript("https://cdn.bootcss.com/three.js/90/three.min.js");
+            inputScript("https://cdn.bootcss.com/three.js/92/three.min.js");
         }
         if(inArray(includes,'deck')){
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
@@ -81,10 +81,10 @@
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/GLTFLoader.js");
         }
         if (inArray(includes, 'proj4')) {
-            inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");
+            inputScript("https://cdn.bootcss.com/proj4js/2.4.4/proj4.js");
         }
         if (inArray(includes, 'echarts-gl')) {
-            inputScript("http://iclient.supermap.io/libs/echarts-gl/1.1.0/echarts-gl.min.js");
+            inputScript("http://iclient.supermap.io/web/libs/echarts-gl/1.1.1/echarts-gl.min.js");
         }
         if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");

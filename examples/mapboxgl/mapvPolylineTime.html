@@ -18,11 +18,12 @@
             width: 100%;
         }
     </style>
-    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="mapv,proj4" src="../../dist/include-mapboxgl.js"></script>
+   
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map"></div>
+<script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+<script type="text/javascript" include="mapv,proj4" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
@@ -65,6 +66,9 @@
         var maxLength = 0;
         for (var i = 0; i < rs.length; i++) {
             var item = rs[i].split(',');
+            
+           
+            
             var coordinates = [];
             if (item.length > maxLength) {
                 maxLength = item.length;
@@ -73,16 +77,18 @@
                 if (item.length === 1) {
                     continue;
                 }
-                coordinates.push(proj4('EPSG:3857', 'EPSG:4326', [item[j], item[j + 1]]));
+                coordinates.push(proj4('EPSG:3857', 'EPSG:4326', [parseInt(item[j]), parseInt(item[j + 1])]));
                 timeData.push({
                     geometry: {
                         type: 'Point',
-                        coordinates: proj4('EPSG:3857', 'EPSG:4326', [item[j], item[j + 1]])
+                        coordinates: proj4('EPSG:3857', 'EPSG:4326', [parseInt(item[j]), parseInt(item[j + 1])])
                     },
                     count: 1,
                     time: j
                 });
             }
+           
+            
             data.push({
                 geometry: {
                     type: 'LineString',

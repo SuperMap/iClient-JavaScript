@@ -108,13 +108,13 @@
     "jsonsql": "^0.2.5",
     "leaflet": "^1.2.0",
     "lodash.topairs": "^4.3.0",
-    "mapbox-gl": "0.43.0",
+    "mapbox-gl": "0.45.0",
     "mapv": "2.0.20",
     "ol-mapbox-style": "^2.11.2",
     "openlayers": "^4.6.5",
     "pbf": "3.0.2",
-    "proj4": "2.3.15",
+    "proj4": "2.4.4",
     "promise-polyfill": "^6.0.2",
-    "three": "^0.90.0"
+    "three": "^0.92.0"
   }
 }
