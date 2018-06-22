@@ -139,10 +139,6 @@
     </li>
 
     <li>
-        <a class="glyphicon glyphicon-retweet notArrow" data-i18n="[title]resources.text_screenshot" onclick="mapToImg1()"></a>
-    </li>
-
-    <li>
         <a class="glyphicon glyphicon-adjust notArrow" data-i18n="[title]resources.text_avoid"></a>
         <ul>
             <li><input type="button" data-i18n="[value]resources.btn_avoidEdit" onclick="drawAvoidRegion()"
@@ -224,7 +220,7 @@
         cancelDraw();
 
         for(var i = 0; i < map.getPlottingLayers().length; i++){
-            map.getPlottingLayers().removeAllFeatures();
+            map.getPlottingLayers()[i].removeAllFeatures();
         }
     }
 
@@ -346,14 +342,29 @@
         }
     }
 
-    //截屏
-    function mapToImg1() {
-        MapToImg && MapToImg.excute(map);
+    //绘制避让区域
+    function drawAvoidRegion() {
+        if(editControl.getSelectedFeatures().length === 0){
+            return;
+        }
+        editControl.avoidEdit(true);
     }
 
     //绘制避让区域
-    function drawAvoidRegion() {
-        editControl.avoidEdit();
+    function doneAvoidEdit() {
+        editControl.avoidEdit(false);
+    }
+
+    //绘制避让区域
+    function deleteAvoidEdit() {
+        if(editControl.getSelectedFeatures().length === 0){
+            return;
+        } else {
+            if(editControl._avoidEditing === true){
+                editControl.avoidEdit(false);
+            }
+            editControl.getSelectedFeatures()[0].removeAvoidRegions();
+        }
     }
 
     //创建组合对象
@@ -383,7 +394,7 @@
     function unGroupObject() {
         var features = editControl.getSelectedFeatures();
         for (var i = features.length - 1; i >= 0; i--) {
-            if (features[i] instanceof L.GroupObject) {
+            if (features[i] instanceof L.supermap.plotting.GroupObject) {
                 var subLayers = plottingLayer.unGroupObject(features[i]);
                 editControl.selectFeatures(subLayers);
             }
