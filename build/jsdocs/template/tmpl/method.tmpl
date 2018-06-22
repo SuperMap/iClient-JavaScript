@@ -51,7 +51,7 @@ var self = this;
     <?js= this.partial('details.tmpl', data) ?>
     
     <?js if (data.fires && fires.length) { ?>
-    <h5>Fires:</h5>
+    <h5>Fires</h5>
     <ul><?js fires.forEach(function(f) { ?>
         <li><?js= self.linkto(f) ?></li>
     <?js }); ?></ul>
