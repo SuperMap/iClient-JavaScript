@@ -37,18 +37,19 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'ol')) {
-            inputCSS("https://cdn.bootcss.com/openlayers/4.6.4/ol.css");
-            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol.js");
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
-            inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
+            inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
         }
         if (inArray(includes, 'ol-mapbox-style')) {
             inputScript("http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
         }
+        
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
@@ -59,11 +60,11 @@
             inputCSS("../../dist/iclient9-openlayers.min.css");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("http://cdn.bootcss.com/echarts/4.0.4/echarts.min.js");
+            inputScript("https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js");
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/ol3Echarts.js");
-        }
+            inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/1.3.4/ol3Echarts.min.js");
+        }    
         if (inArray(includes, 'osmbuildings')) {
             inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");
         }
@@ -72,9 +73,10 @@
         }
 
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.css");
-            inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.js");
+            inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
+            inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.js");
         }
+       
     }
 
     load();

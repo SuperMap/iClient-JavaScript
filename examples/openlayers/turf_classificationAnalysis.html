@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_turfClassificationAnalysis"></title>
-    <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -96,6 +95,7 @@
     </div>
 </div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         nearestDataUrl = host + "/iserver/services/map-china400/rest/maps/China_4326",
@@ -303,7 +303,7 @@
         },
 
         nearestAnalyze: function (sourcePoints, coordinate) {
-            turfSource.process("Classification.nearest", {
+            turfSource.process("Classification.nearestPoint", {
                 "targetPoint": [coordinate[0], coordinate[1]],
                 "points": sourcePoints
             }, function (result) {

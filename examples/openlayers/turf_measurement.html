@@ -32,7 +32,7 @@
             <option value='midpoint'>midpoint</option>
             <option value='square'>square</option>
             <option value='greatCircle'>greatCircle</option>
-            <option value='bezier'>bezier</option>
+            <option value='bezierSpline'>bezierSpline</option>
             <option value='buffer'>buffer</option>
             <option value='circle'>circle</option>
         </select>
@@ -338,7 +338,7 @@
                 $('#calc').val(resources.text_getPolygon);
 
             }
-            else if (choose === 'bezier') {
+            else if (choose === 'bezierSpline') {
                 widgets.alert.clearAlert();
                 $('.panel-heading>h5').text(resources.text_bezier);
                 map.getView().animate({zoom: 12}, {
@@ -394,7 +394,7 @@
                 "greatCircle": greatCircle,
                 "square": square,
                 "center": center,
-                "bezier": bezier,
+                "bezierSpline": bezierSpline,
                 "buffer": buffer,
                 "circle": circle,
             };
@@ -821,10 +821,10 @@
         }
     }
 
-    //turf bezier
-    function bezier() {
+    //turf bezierSpline
+    function bezierSpline() {
         if (geo) {
-            resultSource.process("Transformation.bezier", {
+            resultSource.process("Transformation.bezierSpline", {
                 "line": geo,
                 "resolution": 10000,
                 "sharpness": 0.85
@@ -846,7 +846,7 @@
                     resultSource.process("Transformation.buffer", {
                         "geojson": point,
                         "radius": radius,
-                        "steps": steps,
+                        "steps": parseFloat(steps),
                         "units": unit,
                     });
                 });
@@ -872,7 +872,7 @@
                 resultSource.process("Transformation.circle", {
                     "center": point,
                     "radius": radius,
-                    "steps": steps,
+                    "steps": parseFloat(steps),
                     "units": unit,
                     "properties": {}
                 });

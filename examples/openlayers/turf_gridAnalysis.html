@@ -52,7 +52,7 @@
         <p></p>
         <div class='input-group'>
             <span class='input-group-addon'><span data-i18n="resources.text_unitGridSize"></span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
-            <input id='cellSize' type='text' class='form-control' value='50'/>
+            <input id='cellSide' type='text' class='form-control' value='50'/>
         </div>
         <p></p>
         <div class='input-group'>
@@ -301,20 +301,20 @@
         },
         //格网分析
         createHexGrid: function () {
-            var cellDiameter = $("#cellSize").val();
+            var cellSide = $("#cellSide").val();
             var units = $("#units option:selected").val();
             var triangles = $("#triangles").get(0).checked;
 
             turfSource.process("Grids.hexGrid", {
                 "bbox": bbox,
-                "cellDiameter": cellDiameter,
+                "cellSide": cellSide,
                 "units": units,
                 "triangles": triangles
             });
         },
 
         createPointGrid: function () {
-            var cellSide = $("#cellSize").val();
+            var cellSide = $("#cellSide").val();
             var units = $("#units option:selected").val();
             var iscentered = $('#iscentered').get(0).checked;
             var isbboxIsMask = $('#isbboxIsMask').get(0).checked;
@@ -329,24 +329,24 @@
         },
 
         createSquareGrid: function () {
-            var cellSize = $("#cellSize").val();
+            var cellSide = $("#cellSide").val();
             var units = $("#units option:selected").val();
             var completelyWithin = $("#completelyWithin").get(0).checked;
 
             turfSource.process("Grids.squareGrid", {
                 "bbox": bbox,
-                "cellSize": cellSize,
+                "cellSide": cellSide,
                 "units": units,
                 "completelyWithin": completelyWithin
             });
         },
 
         createTriangleGrid: function () {
-            var cellSize = $("#cellSize").val();
+            var cellSide = $("#cellSide").val();
             var units = $("#units option:selected").val();
             turfSource.process("Grids.triangleGrid", {
                 "bbox": bbox,
-                "cellSize": cellSize,
+                "cellSide": cellSide,
                 "units": units
             });
         },
