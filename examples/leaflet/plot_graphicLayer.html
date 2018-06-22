@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_graphicLayer"></title>
+    <title data-i18n="resources.title_plotSymbolPerformance"></title>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -47,7 +47,7 @@
         L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, function(result){
             for (var i = 0; i < count; ++i) {
                 var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-                var dotSymbol = L.PlottingObject.createSymbol(421, 10100, L.latLng(coordinates[0], coordinates[1]), {serverUrl:serverUrl,symbolData: result.result, textContent: "常住人口"}, null, null);
+                var dotSymbol = L.supermap.plotting.PlottingObject.createSymbol(421, 10100, L.latLng(coordinates[0], coordinates[1]), {serverUrl:serverUrl,symbolData: result.result, textContent: "常住人口"}, null, null);
                 features.push(dotSymbol);
             }
             graphicLayer.addFeatures(features);
@@ -76,7 +76,7 @@
                 for(var i = 0; i < count; ++i){
                     var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
                     var randomIndex = Math.floor(10 * Math.random());
-                    var dotSymbol = L.PlottingObject.createSymbol(421, randomCode[randomIndex], L.latLng(coordinates[0], coordinates[1]), {serverUrl:serverUrl,symbolData: randomSymbolData[randomIndex]}, null, null);
+                    var dotSymbol = L.supermap.plotting.PlottingObject.createSymbol(421, randomCode[randomIndex], L.latLng(coordinates[0], coordinates[1]), {serverUrl:serverUrl,symbolData: randomSymbolData[randomIndex]}, null, null);
                     features.push(dotSymbol);
                 }
                 graphicLayer.addFeatures(features);
