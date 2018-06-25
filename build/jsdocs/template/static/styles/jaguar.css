@@ -1,6 +1,7 @@
 html,
 body {
-    font: 1em "jaf-bernino-sans", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+    font-size: 1em;
+    font-family: "Helvetica Neue", Helvetica, Arial, "Heiti SC", "Microsoft Yahei", sans-serif;
     background-color: #fff;
 }
 
