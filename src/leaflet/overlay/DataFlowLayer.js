@@ -17,17 +17,17 @@ import {
  * @extends {L.LayerGroup}
  * @param {string} url - 实时数据图层服务地址
  * @param {Object} options - 设置图层参数。
- * @param {Object} [options.render='normal'] - 绘制方式。可选值为`'normal'`，`'mapv'`。</br>
-                                                `'normal'` 表示以 { {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} } 方式绘制实时数据。`'mapv'` 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。</br>
+ * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。</br>
+                                               'normal'表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制实时数据。'mapv'表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。</br>
  * @param {Object} [options.geometry] - GeoJSON几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
- * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。</br>
+ * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。</br>
                                            `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
- * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
                                             `function (feature) {
                                                     return {
                                                         fillColor: "red",

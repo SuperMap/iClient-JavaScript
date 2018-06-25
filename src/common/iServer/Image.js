@@ -10,13 +10,13 @@ import '../REST';
  * @classdesc UGC 影像图层类。
  * @extends {SuperMap.UGCSubLayer}
  * @param {Object} options - 参数。<br>
- * @param {SuperMap.ColorSpaceType} colorSpaceType - 返回影像图层的色彩显示模式。<br>
- * @param {number} brightness - 影像图层的亮度。<br>
- * @param {Array.<number>} displayBandIndexes - 返回当前影像图层显示的波段索引。<br>
- * @param {number} contrast - 影像图层的对比度。<br>
- * @param {boolean} transparent - 是否背景透明。<br>
- * @param {SuperMap.ServerColor} transparentColor - 返回背景透明色。<br>
- * @param {number} transparentColorTolerance - 背景透明色容限。
+ * @param {SuperMap.ColorSpaceType} options.colorSpaceType - 返回影像图层的色彩显示模式。
+ * @param {number} options.brightness - 影像图层的亮度。
+ * @param {Array.<number>} options.displayBandIndexes - 返回当前影像图层显示的波段索引。
+ * @param {number} options.contrast - 影像图层的对比度。
+ * @param {boolean} options.transparent - 是否背景透明。
+ * @param {SuperMap.ServerColor} options.transparentColor - 返回背景透明色。
+ * @param {number} options.transparentColorTolerance - 背景透明色容限。
  */
 export class UGCImage extends UGCSubLayer {
 

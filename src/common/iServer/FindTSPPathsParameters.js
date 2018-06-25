@@ -11,10 +11,10 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  *            旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
  *            最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  * @param {Object} options - 参数。<br>
- *        {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。<br>
- *        {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。<br>
- *        {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合，必设字段。<br>
- *        {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。<br>
+ * @param {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。<br>
+ * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。<br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合，必设字段。<br>
+ * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。<br>
  */
 export class FindTSPPathsParameters {
 

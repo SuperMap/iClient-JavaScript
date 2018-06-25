@@ -7,10 +7,10 @@ import {ServerStyle} from './ServerStyle';
  * @category  iServer Map Theme
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
  *            通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。<br>
- * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。<br>
- * @param SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
+ * @param {Object} options - 参数。
+ * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。
+ * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。
+ * @param {SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
  */
 export class ThemeFlow {
 

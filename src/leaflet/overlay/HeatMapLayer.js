@@ -20,10 +20,10 @@ import {
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为float。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
- * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
  * @param {number} options.opacity - 图层透明度。
- * @param {Array.<string>} colors - 颜色线性渐变数组,颜色值必须为canvas所支持的。默认为['blue','cyan','lime','yellow','red']。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
+ * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
+ * @param {Array.<string>} colors - 颜色线性渐变数组,颜色值必须为canvas所支持的。默认为['blue','cyan','lime','yellow','red']。
  * @extends {L.Layer}
  */
 export var HeatMapLayer = L.Layer.extend({
