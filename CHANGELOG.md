@@ -84,6 +84,8 @@
 
 - 废弃 ` L.supermap.ThemeLayer.toFeature` 方法，由 ` L.supermap.ThemeLayer.toiClientFeature` 方法代替
     
+- `L.supermap.ThemeLayer.addFeatures` 方法，支持传入  `L.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
+
 
 ### for OpenLayers
 
@@ -110,8 +112,6 @@
 - 新增热力图资源：
 
     - `ol.supermap.HeatMapSource`
-    
-- 废弃 `ol.source.Theme` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
 
 - 增加 `ol.style.CloverShape` `ol.style.HitCloverShape` 类，`ol.source.Graphic` 支持三叶草要素风格
 
@@ -154,6 +154,8 @@
 - GeoJSON数据处理对接iServer数据类型"RECTANGLE"
 
 - 废弃 `ol.source.Theme.toFeature` 方法，由 ` ol.source.Theme.toiClientFeature` 方法代替
+
+- `ol.source.Theme.addFeatures` 方法，支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJOSN` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
 
 ### for MapboxGL
 
@@ -204,6 +206,9 @@
 
 - `mapboxgl.supermap.GraphicLayer` 类新增 `setVisibility` , `moveTo` 接口，支持设置图层的显示、隐藏和移动
 
+- `mapboxgl.supermap.ThemeLayer.addFeatures` 方法，支持传入  `mapboxgl.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
+
+
 ### Classic
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -232,6 +237,7 @@
 - 修复 `ol.source.TileSuperMapRest` 的 `redirect` 参数默认为 `false` 但运行为 `true` 的问题
 - 修复请求无法携带cookie问题
 - 修复缓冲区分析SRID参数不可用问题
+- 修复 `ol.source.Theme.addFeatures` 在传入 `ol.Feature` 数据格式数组时，未支持完所有的 `ol.geom.Geometry` 格式类型的问题
 
 ### for MapboxGL
 

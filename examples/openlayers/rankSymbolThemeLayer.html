@@ -49,15 +49,13 @@
                 // 省居民消费水平（单位：元）信息
                 var provinceInfo = chinaConsumptionLevel[i];
                 var geo = new ol.geom.Point([provinceInfo[1], provinceInfo[2]]);
-                var attrs = {};
-                attrs.NAME = provinceInfo[0];
-                attrs.CON2009 = provinceInfo[3];
                 //ThemeFeature 格式类型
                 // var fea = new ol.supermap.ThemeFeature(geo, attrs);
                 //支持传入 ol.Feature 格式类型：
                 var fea = new ol.Feature({
                     geometry: geo,
-                    Properties: attrs
+                    NAME: provinceInfo[0],
+                    CON2009: provinceInfo[3]
                 });
 
                 features.push(fea);

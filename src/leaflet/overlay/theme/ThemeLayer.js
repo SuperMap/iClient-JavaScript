@@ -419,7 +419,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
-     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature: function (features) {

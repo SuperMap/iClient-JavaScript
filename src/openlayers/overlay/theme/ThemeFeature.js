@@ -1,10 +1,7 @@
 import ol from 'openlayers';
 import {
     GeometryVector,
-    GeometryPoint,
-    LineString,
-    LinearRing,
-    Polygon,
+    GeoJSON as GeoJSONFormat,
     GeoText
 } from '@supermap/iclient-common';
 
@@ -13,7 +10,7 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类
- * @param {Object} geometry - 要量算的几何对象
+ * @param {Object} geometry - 要量算的几何对象，支持 ol.geom.Geometry 和 GeoText 标签数组类型 geometry = [x,y,text]
  * @param {Object} attributes - 属性
  */
 export class ThemeFeature {
@@ -25,34 +22,22 @@ export class ThemeFeature {
 
     /**
      * @function ol.supermap.ThemeFeature.prototype.toFeature
-     * @description 转为矢量要素
+     * @description 转为矢量要素，
      */
     toFeature() {
         var geometry = this.geometry;
-        if (geometry instanceof ol.geom.Point) {
-            geometry = new GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
-        }
-        if (geometry instanceof ol.geom.LineString) {
-            let coords = geometry.getCoordinates();
-            let points = [];
-            for (let i = 0; i < coords.length; i++) {
-                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
-            }
-            geometry = new LineString(points);
-        }
-        if (geometry instanceof ol.geom.Polygon) {
-            let coords = geometry.getCoordinates();
-            let points = [];
-            for (let i = 0; i < coords.length; i++) {
-                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
-            }
-            var linearRings = new LinearRing(points);
-            geometry = new Polygon([linearRings]);
-        }
-        if (geometry.length === 3) {
+        if (geometry instanceof ol.geom.Geometry) {
+            //先把数据属性与要素合并
+            let featureOption = this.attributes;
+            featureOption.geometry = geometry;
+            let olFeature = new ol.Feature(featureOption);
+            return new GeoJSONFormat().read((new ol.format.GeoJSON()).writeFeature(olFeature), "Feature");
+
+        } else if (geometry.length === 3) {
             geometry = new GeoText(geometry[0], geometry[1], geometry[2]);
+            return new GeometryVector(geometry, this.attributes);
         }
-        return new GeometryVector(geometry, this.attributes);
+
     }
 }
 

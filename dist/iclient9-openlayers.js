@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -2877,13 +2862,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.CommonServiceBase
  * @category  iServer
  * @classdesc 对接iServer各种服务的Service的基类。
- * @param url - {string} 服务地址。
- * @param options - {Object} 可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {boolean} options.withCredentials - 请求是否携带cookie,默认为false。
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
@@ -2996,16 +2981,16 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function  SuperMap.CommonServiceBase.prototype.request
          * @description: 该方法用于向服务发送请求。
-         * @param options - {Object} 参数。
-         *        method - {string} 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
-         *        url - {string}  发送请求的地址。<br>
-         *        params - {Object} 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
-         *        data - {String } 发送到服务器的数据。<br>
-         *        success - {function} 请求成功后的回调函数。<br>
-         *        failure - {function} 请求失败后的回调函数。<br>
-         *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
-         *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
-         *        withCredentials - {boolean} 请求是否携带cookie。<br>
+         * @param {Object} options - 参数。
+         * @param {string} options.method - 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
+         * @param {string} options.url - 发送请求的地址。<br>
+         * @param {Object} options.params - 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
+         * @param {String} options.data - 发送到服务器的数据。<br>
+         * @param {function} options.success - 请求成功后的回调函数。<br>
+         * @param {function} options.failure - 请求失败后的回调函数。<br>
+         * @param {Object} options.scope - 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
+         * @param {boolean} options.isInTheSameDomain - 请求是否在当前域中。<br>
+         * @param {boolean} options.withCredentials - 请求是否携带cookie。<br>
          */
 
     }, {
@@ -3045,7 +3030,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getCredential
          * @description  获取凭据信息
-         * @param url - {string} 服务地址。
+         * @param {string} url - 服务地址。
          * @return {SuperMap.Credential} 凭据信息对象。
          */
 
@@ -3080,7 +3065,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
          * @description 请求成功后执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3093,7 +3078,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
          * @description 请求失败后执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3172,7 +3157,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
          * @description 状态完成，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3187,7 +3172,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
          * @description 状态失败，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param{Object}  result - 服务器返回的结果对象。
          */
 
     }, {
@@ -18133,10 +18118,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @category  iServer Map Theme
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
  *            通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。<br>
- * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。<br>
- * @param SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
+ * @param {Object} options - 参数。
+ * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。
+ * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。
+ * @param {SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
  */
 var ThemeFlow = exports.ThemeFlow = function () {
     function ThemeFlow(options) {
@@ -21197,6 +21182,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
                     }
                     //ol.Feature 数据类型
                     if (features[i] instanceof _openlayers2.default.Feature) {
+                        //_toFeature 统一处理 ol.Feature 所有 geometry 类型
                         featuresTemp.push(this._toFeature(features[i]));
                         continue;
                     }
@@ -21231,38 +21217,14 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         value: function toFeature(features) {
             return this.toiClientFeature(features);
         }
+
+        //统一处理 ol.feature所有 geometry 类型
+
     }, {
         key: '_toFeature',
         value: function _toFeature(feature) {
-            var geometry = feature.getGeometry(),
-                attributes = feature.getProperties()["Properties"] ? feature.getProperties()["Properties"] : {};
-            //热点图支支持传入点对象要素
-            if (geometry instanceof _openlayers2.default.geom.Point) {
-                geometry = new _iclientCommon.GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
-                //固定属性字段为 "Properties"
-            }
-            if (geometry instanceof _openlayers2.default.geom.LineString) {
-                var coords = geometry.getCoordinates();
-                var points = [];
-                for (var i = 0; i < coords.length; i++) {
-                    points.push(new _iclientCommon.GeometryPoint(coords[i][0], coords[i][1]));
-                }
-                geometry = new _iclientCommon.LineString(points);
-            }
-            if (geometry instanceof _openlayers2.default.geom.Polygon) {
-                var _coords = geometry.getCoordinates()[0][0];
-                var _points = [];
-                for (var _i = 0; _i < _coords.length; _i++) {
-                    _points.push(new _iclientCommon.GeometryPoint(_coords[_i][0], _coords[_i][1]));
-                }
-                var linearRings = new _iclientCommon.LinearRing(_points);
-                geometry = new _iclientCommon.Polygon([linearRings]);
-            }
-
-            if (geometry && geometry.length === 3) {
-                geometry = new _iclientCommon.GeoText(geometry[0], geometry[1], geometry[2]);
-            }
-            return new _iclientCommon.GeometryVector(geometry, attributes);
+            var geoFeature = new _openlayers2.default.format.GeoJSON().writeFeature(feature);
+            return new _iclientCommon.GeoJSON().read(geoFeature, "Feature");
         }
     }]);
 
@@ -21300,7 +21262,7 @@ _openlayers2.default.supermap = _openlayers2.default.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类
- * @param {Object} geometry - 要量算的几何对象
+ * @param {Object} geometry - 要量算的几何对象，支持 ol.geom.Geometry 和 GeoText 标签数组类型 geometry = [x,y,text]
  * @param {Object} attributes - 属性
  */
 
@@ -21314,7 +21276,7 @@ var ThemeFeature = exports.ThemeFeature = function () {
 
     /**
      * @function ol.supermap.ThemeFeature.prototype.toFeature
-     * @description 转为矢量要素
+     * @description 转为矢量要素，
      */
 
 
@@ -21322,30 +21284,16 @@ var ThemeFeature = exports.ThemeFeature = function () {
         key: 'toFeature',
         value: function toFeature() {
             var geometry = this.geometry;
-            if (geometry instanceof _openlayers2.default.geom.Point) {
-                geometry = new _iclientCommon.GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
-            }
-            if (geometry instanceof _openlayers2.default.geom.LineString) {
-                var coords = geometry.getCoordinates();
-                var points = [];
-                for (var i = 0; i < coords.length; i++) {
-                    points.push(new _iclientCommon.GeometryPoint(coords[i][0], coords[i][1]));
-                }
-                geometry = new _iclientCommon.LineString(points);
-            }
-            if (geometry instanceof _openlayers2.default.geom.Polygon) {
-                var _coords = geometry.getCoordinates();
-                var _points = [];
-                for (var _i = 0; _i < _coords.length; _i++) {
-                    _points.push(new _iclientCommon.GeometryPoint(_coords[_i][0], _coords[_i][1]));
-                }
-                var linearRings = new _iclientCommon.LinearRing(_points);
-                geometry = new _iclientCommon.Polygon([linearRings]);
-            }
-            if (geometry.length === 3) {
+            if (geometry instanceof _openlayers2.default.geom.Geometry) {
+                //先把数据属性与要素合并
+                var featureOption = this.attributes;
+                featureOption.geometry = geometry;
+                var olFeature = new _openlayers2.default.Feature(featureOption);
+                return new _iclientCommon.GeoJSON().read(new _openlayers2.default.format.GeoJSON().writeFeature(olFeature), "Feature");
+            } else if (geometry.length === 3) {
                 geometry = new _iclientCommon.GeoText(geometry[0], geometry[1], geometry[2]);
+                return new _iclientCommon.GeometryVector(geometry, this.attributes);
             }
-            return new _iclientCommon.GeometryVector(geometry, this.attributes);
         }
     }]);
 
@@ -48049,13 +47997,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc UGC 影像图层类。
  * @extends {SuperMap.UGCSubLayer}
  * @param {Object} options - 参数。<br>
- * @param {SuperMap.ColorSpaceType} colorSpaceType - 返回影像图层的色彩显示模式。<br>
- * @param {number} brightness - 影像图层的亮度。<br>
- * @param {Array.<number>} displayBandIndexes - 返回当前影像图层显示的波段索引。<br>
- * @param {number} contrast - 影像图层的对比度。<br>
- * @param {boolean} transparent - 是否背景透明。<br>
- * @param {SuperMap.ServerColor} transparentColor - 返回背景透明色。<br>
- * @param {number} transparentColorTolerance - 背景透明色容限。
+ * @param {SuperMap.ColorSpaceType} options.colorSpaceType - 返回影像图层的色彩显示模式。
+ * @param {number} options.brightness - 影像图层的亮度。
+ * @param {Array.<number>} options.displayBandIndexes - 返回当前影像图层显示的波段索引。
+ * @param {number} options.contrast - 影像图层的对比度。
+ * @param {boolean} options.transparent - 是否背景透明。
+ * @param {SuperMap.ServerColor} options.transparentColor - 返回背景透明色。
+ * @param {number} options.transparentColorTolerance - 背景透明色容限。
  */
 var UGCImage = exports.UGCImage = function (_UGCSubLayer) {
   _inherits(UGCImage, _UGCSubLayer);
@@ -51541,10 +51489,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *            旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
  *            最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  * @param {Object} options - 参数。<br>
- *        {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。<br>
- *        {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。<br>
- *        {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合，必设字段。<br>
- *        {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。<br>
+ * @param {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。<br>
+ * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。<br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合，必设字段。<br>
+ * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。<br>
  */
 var FindTSPPathsParameters = exports.FindTSPPathsParameters = function () {
   function FindTSPPathsParameters(options) {
@@ -67225,7 +67173,7 @@ module.exports = function (proj4) {
 /* 346 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 347 */

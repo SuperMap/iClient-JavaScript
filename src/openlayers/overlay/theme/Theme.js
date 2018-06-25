@@ -7,9 +7,6 @@ import {
     GeoJSON as GeoJSONFormat,
     LonLat,
     GeometryPoint,
-    LineString,
-    LinearRing,
-    Polygon,
     GeoText,
     LevelRenderer
 } from '@supermap/iclient-common';
@@ -512,6 +509,7 @@ export class Theme extends ol.source.ImageCanvas {
                 }
                 //ol.Feature 数据类型
                 if (features[i] instanceof ol.Feature) {
+                    //_toFeature 统一处理 ol.Feature 所有 geometry 类型
                     featuresTemp.push(this._toFeature(features[i]));
                     continue;
                 }
@@ -544,36 +542,10 @@ export class Theme extends ol.source.ImageCanvas {
         return this.toiClientFeature(features);
     }
 
+    //统一处理 ol.feature所有 geometry 类型
     _toFeature(feature) {
-        var geometry = feature.getGeometry(),
-            attributes = feature.getProperties()["Properties"] ? feature.getProperties()["Properties"] : {};
-        //热点图支支持传入点对象要素
-        if (geometry instanceof ol.geom.Point) {
-            geometry = new GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
-            //固定属性字段为 "Properties"
-        }
-        if (geometry instanceof ol.geom.LineString) {
-            let coords = geometry.getCoordinates();
-            let points = [];
-            for (let i = 0; i < coords.length; i++) {
-                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
-            }
-            geometry = new LineString(points);
-        }
-        if (geometry instanceof ol.geom.Polygon) {
-            let coords = geometry.getCoordinates()[0][0];
-            let points = [];
-            for (let i = 0; i < coords.length; i++) {
-                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
-            }
-            var linearRings = new LinearRing(points);
-            geometry = new Polygon([linearRings]);
-        }
-
-        if (geometry && geometry.length === 3) {
-            geometry = new GeoText(geometry[0], geometry[1], geometry[2]);
-        }
-        return new GeometryVector(geometry, attributes);
+        let geoFeature = (new ol.format.GeoJSON()).writeFeature(feature);
+        return new GeoJSONFormat().read(geoFeature, "Feature");
     }
 
 }
