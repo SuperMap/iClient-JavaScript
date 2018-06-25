@@ -20,7 +20,6 @@
         radius, steps, point;
 
     var map = L.map('map', {
-        preferCanvas: true,
         crs: L.CRS.EPSG4326,
         center: {lon: 116.383572, lat: 39.914714},
         maxZoom: 18,
@@ -58,7 +57,7 @@
                 <option value='midpoint'>midpoint</option>
                 <option value='square'>square</option>
                 <option value='greatCircle'>greatCircle</option>
-                <option value='bezier'>bezier</option>
+                <option value='bezierSpline'>bezierSpline</option>
                 <option value='buffer'>buffer</option>
                 <option value='circle'>circle</option>
                 </select>
@@ -257,7 +256,7 @@
 
                 $('#calc').val(resources.text_getScenicSpotCenter);
             }
-            else if (choose === 'bezier') {
+            else if (choose === 'bezierSpline') {
                 $('.panel-heading>h5').text(resources.text_bezier);
                 setDefaultCenter(40.676116230453765, 116.55439124389999, 12);
                 clearControl();
@@ -339,7 +338,7 @@
                 "greatCircle": greatCircle,
                 "square": square,
                 "center": center,
-                "bezier": bezier,
+                "bezierSpline": bezierSpline,
                 "buffer": buffer,
                 "circle": circle,
             };
@@ -552,7 +551,6 @@
     //清空当前图层
     function removeLayer() {
         map.eachLayer(function (layer) {
-
             if (layer !== baseLayer) {
                 layer.removeFrom(map);
             }
@@ -796,13 +794,13 @@
         });
     }
 
-    //turf bezier
-    function bezier() {
+    //turf bezierSpline
+    function bezierSpline() {
         if (coordinate) {
             turfLayer.process("Helper.lineString", {
                 "coordinates": coordinate,
             }, function (line) {
-                resultLayer.process("Transformation.bezier", {
+                resultLayer.process("Transformation.bezierSpline", {
                     "line": line,
                     "resolution": 10000,
                     "sharpness": 0.85
@@ -825,7 +823,7 @@
                     resultLayer.process("Transformation.buffer", {
                         "geojson": point,
                         "radius": radius,
-                        "steps": steps,
+                        "steps": parseFloat(steps),
                         "units": unit,
                     });
                 });
@@ -853,7 +851,7 @@
                 resultLayer.process("Transformation.circle", {
                     "center": point,
                     "radius": radius,
-                    "steps": steps,
+                    "steps": parseFloat(steps),
                     "units": unit,
                     "properties": {},
                 });

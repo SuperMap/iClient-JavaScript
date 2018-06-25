@@ -36,20 +36,20 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
-            inputCSS("http://cdn.bootcss.com/leaflet/1.2.0/leaflet.css");
-            inputScript("http://cdn.bootcss.com/leaflet/1.2.0/leaflet-src.js");
+            inputCSS("https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css");
+            inputScript("https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
-            inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
+            inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("http://cdn.bootcss.com/echarts/4.0.4/echarts.min.js");
+            inputScript("https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js");
         }
         if (inArray(includes, 'd3')) {
-            inputScript("https://cdn.bootcss.com/d3/4.10.2/d3.min.js");
+            inputScript("http://iclient.supermap.io/web/libs/d3/5.5.0/d3.min.js");
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
@@ -58,13 +58,13 @@
             inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
         }
         if (inArray(includes, 'elasticsearch')) {
-            inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
+            inputScript("http://cdn.bootcss.com/elasticsearch/15.0.0/elasticsearch.min.js");
         }
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            inputScript("../../dist/iclient9-leaflet.min.js");
+            inputScript("../../dist/iclient9-leaflet.js");
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/iclient9-leaflet.min.css");
@@ -73,33 +73,34 @@
             inputScript("http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-Leaflet.js");
+            inputScript("http://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-Leaflet.js");
         }
         if (inArray(includes, 'leaflet.markercluster')) {
-            inputCSS("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/MarkerCluster.Default.css");
-            inputCSS("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/MarkerCluster.css");
-            inputScript("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/leaflet.markercluster.js");
+            inputCSS("https://cdn.bootcss.com/leaflet.markercluster/1.3.0/MarkerCluster.Default.css");
+            inputCSS("https://cdn.bootcss.com/leaflet.markercluster/1.3.0/MarkerCluster.css");
+            inputScript("https://cdn.bootcss.com/leaflet.markercluster/1.3.0/leaflet.markercluster.js");
         }
         if (inArray(includes, 'leaflet-icon-pulse')) {
             inputCSS("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
             inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
         }
         if (inArray(includes, 'leaflet.draw')) {
-            inputCSS("http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.css");
-            inputScript("http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.js");
+            inputCSS("http://cdn.bootcss.com/leaflet.draw/1.0.2/leaflet.draw.css");
+            inputScript("http://cdn.bootcss.com/leaflet.draw/1.0.2/leaflet.draw.js");
         }
         if (inArray(includes, 'leaflet.pm')) {
-            inputCSS("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.css");
-            inputScript("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.js");
+            inputCSS("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.pm/0.25.0/leaflet.pm.min.css");
+            inputScript("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.pm/0.25.0/leaflet.pm.min.js");
         }
         if (inArray(includes, 'leaflet.miniMap')) {
-            inputCSS("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-miniMap/dist/Control.MiniMap.min.css");
-            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-miniMap/dist/Control.MiniMap.min.js");
+            inputCSS("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.css");
+            inputScript("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.js");
         }
         if (inArray(includes, 'leaflet.sidebyside')) {
             inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js");
         }
     }
+
 
     load();
     window.isLocal = false;

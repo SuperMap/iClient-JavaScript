@@ -168,7 +168,7 @@
         },
 
         nearestAnalyze: function (sourcePoints, pointLnglat) {
-            turfLayer.process("Classification.nearest", {
+            turfLayer.process("Classification.nearestPoint", {
                 "targetPoint": [pointLnglat.lng, pointLnglat.lat],
                 "points": sourcePoints
             }, function (result) {

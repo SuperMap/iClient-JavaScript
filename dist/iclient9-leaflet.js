@@ -2889,13 +2889,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.CommonServiceBase
  * @category  iServer
  * @classdesc 对接iServer各种服务的Service的基类。
- * @param url - {string} 服务地址。
- * @param options - {Object} 可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {boolean} options.withCredentials - 请求是否携带cookie,默认为false。
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
@@ -3008,16 +3008,16 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function  SuperMap.CommonServiceBase.prototype.request
          * @description: 该方法用于向服务发送请求。
-         * @param options - {Object} 参数。
-         *        method - {string} 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
-         *        url - {string}  发送请求的地址。<br>
-         *        params - {Object} 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
-         *        data - {String } 发送到服务器的数据。<br>
-         *        success - {function} 请求成功后的回调函数。<br>
-         *        failure - {function} 请求失败后的回调函数。<br>
-         *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
-         *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
-         *        withCredentials - {boolean} 请求是否携带cookie。<br>
+         * @param {Object} options - 参数。
+         * @param {string} options.method - 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
+         * @param {string} options.url - 发送请求的地址。<br>
+         * @param {Object} options.params - 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
+         * @param {String} options.data - 发送到服务器的数据。<br>
+         * @param {function} options.success - 请求成功后的回调函数。<br>
+         * @param {function} options.failure - 请求失败后的回调函数。<br>
+         * @param {Object} options.scope - 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
+         * @param {boolean} options.isInTheSameDomain - 请求是否在当前域中。<br>
+         * @param {boolean} options.withCredentials - 请求是否携带cookie。<br>
          */
 
     }, {
@@ -3057,7 +3057,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getCredential
          * @description  获取凭据信息
-         * @param url - {string} 服务地址。
+         * @param {string} url - 服务地址。
          * @return {SuperMap.Credential} 凭据信息对象。
          */
 
@@ -3092,7 +3092,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
          * @description 请求成功后执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3105,7 +3105,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
          * @description 请求失败后执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3184,7 +3184,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
          * @description 状态完成，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3199,7 +3199,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
          * @description 状态失败，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param{Object}  result - 服务器返回的结果对象。
          */
 
     }, {
@@ -18138,10 +18138,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @category  iServer Map Theme
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
  *            通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。<br>
- * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。<br>
- * @param SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
+ * @param {Object} options - 参数。
+ * @param {boolean} options.flowEnabled - 是否流动显示标签或符号。
+ * @param {boolean} options.leaderLineDisplayed - 是否显示标签或符号和它标注的对象之间的牵引线。
+ * @param {SuperMap.ServerStyle} options.leaderLineStyle - 标签或符号与其标注对象之间牵引线的风格。
  */
 var ThemeFlow = exports.ThemeFlow = function () {
     function ThemeFlow(options) {
@@ -49649,13 +49649,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc UGC 影像图层类。
  * @extends {SuperMap.UGCSubLayer}
  * @param {Object} options - 参数。<br>
- * @param {SuperMap.ColorSpaceType} colorSpaceType - 返回影像图层的色彩显示模式。<br>
- * @param {number} brightness - 影像图层的亮度。<br>
- * @param {Array.<number>} displayBandIndexes - 返回当前影像图层显示的波段索引。<br>
- * @param {number} contrast - 影像图层的对比度。<br>
- * @param {boolean} transparent - 是否背景透明。<br>
- * @param {SuperMap.ServerColor} transparentColor - 返回背景透明色。<br>
- * @param {number} transparentColorTolerance - 背景透明色容限。
+ * @param {SuperMap.ColorSpaceType} options.colorSpaceType - 返回影像图层的色彩显示模式。
+ * @param {number} options.brightness - 影像图层的亮度。
+ * @param {Array.<number>} options.displayBandIndexes - 返回当前影像图层显示的波段索引。
+ * @param {number} options.contrast - 影像图层的对比度。
+ * @param {boolean} options.transparent - 是否背景透明。
+ * @param {SuperMap.ServerColor} options.transparentColor - 返回背景透明色。
+ * @param {number} options.transparentColorTolerance - 背景透明色容限。
  */
 var UGCImage = exports.UGCImage = function (_UGCSubLayer) {
   _inherits(UGCImage, _UGCSubLayer);
@@ -53141,10 +53141,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *            旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
  *            最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  * @param {Object} options - 参数。<br>
- *        {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。<br>
- *        {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。<br>
- *        {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合，必设字段。<br>
- *        {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。<br>
+ * @param {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。<br>
+ * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点。<br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合，必设字段。<br>
+ * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。<br>
  */
 var FindTSPPathsParameters = exports.FindTSPPathsParameters = function () {
   function FindTSPPathsParameters(options) {
@@ -62259,10 +62259,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为float。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
- * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
  * @param {number} options.opacity - 图层透明度。
- * @param {Array.<string>} colors - 颜色线性渐变数组,颜色值必须为canvas所支持的。默认为['blue','cyan','lime','yellow','red']。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
+ * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
+ * @param {Array.<string>} colors - 颜色线性渐变数组,颜色值必须为canvas所支持的。默认为['blue','cyan','lime','yellow','red']。
  * @extends {L.Layer}
  */
 var HeatMapLayer = exports.HeatMapLayer = _leaflet2["default"].Layer.extend({
@@ -62896,26 +62896,27 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
         "Measurement.destination": ["origin", "distance", "bearing", "units"],
         "Measurement.distance": ["from", "to", "units"],
         "Measurement.envelope": ["geojson"],
-        "Measurement.lineDistance": ["geojson", "units"],
+        "Measurement.length": ["geojson", "units"],
         "Measurement.midpoint": ["point1", "point2"],
-        "Measurement.pointOnSurface": ["fc"],
+        "Measurement.pointOnFeature": ["geojson"],
         "Measurement.polygonTangents": ["point", "polygon"],
         "Measurement.rhumbBearing": ["start", "end", "final"],
         "Measurement.rhumbDestination": ["origin", "distance", "bearing", "units"],
         "Measurement.rhumbDistance": ["from", "to", "units"],
         "Measurement.square": ["bbox"],
         "Measurement.greatCircle": ["start", "end", "properties", "npoints", "offset"],
+        "CoordinateMutation.cleanCoords": ["geojson", "mutate"],
         "CoordinateMutation.flip": ["geojson", "mutate"],
         "CoordinateMutation.rewind": ["geojson", "reverse", "mutate"],
         "CoordinateMutation.round": ["num", "precision"],
         "CoordinateMutation.truncate": ["geojson", "precision", "coordinates", "mutate"],
         "Transformation.bboxClip": ["feature", "bbox"],
-        "Transformation.bezier": ["line", "resolution", "sharpness"],
+        "Transformation.bezierSpline": ["line", "resolution", "sharpness"],
         "Transformation.buffer": ["geojson", "radius", "units", "steps"],
         "Transformation.circle": ["center", "radius", "steps", "units", "properties"],
-        "Transformation.clone": ["geojson", "cloneAll"],
+        "Transformation.clone": ["geojson"],
         "Transformation.concave": ["points", "maxEdge", "units"],
-        "Transformation.convex": ["feature"],
+        "Transformation.convex": ["geojson", "concavity"],
         "Transformation.difference": ["polygon1", "polygon2"],
         "Transformation.dissolve": ["featureCollection", "propertyName"],
         "Transformation.intersect": ["poly1", "poly2"],
@@ -62926,6 +62927,7 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
         "Transformation.transformTranslate": ["geojson", "distance", "direction", "units", "zTranslation", "mutate"],
         "Transformation.transformScale": ["geojson", "factor", "origin", "mutate"],
         "Transformation.union": ["A"],
+        "Transformation.voronoi": ["points", "bbox"],
         "featureConversion.combine": ["fc"],
         "featureConversion.explode": ["geojson"],
         "featureConversion.flatten": ["geojson"],
@@ -62944,34 +62946,32 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
         "Misc.mask": ["polygon", "mask"],
         "Misc.pointOnLine": ["lines", "pt", "units"],
         "Misc.sector": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
+        "Misc.shortestPath": ["start", "end", "obstacles", "units", "resolution"],
         "Misc.unkinkPolygon": ["geojson"],
-        "Helper.featureCollection": ["features"],
-        "Helper.feature": ["geometry", "properties"],
-        "Helper.geometryCollection": ["geometries", "properties"],
-        "Helper.lineString": ["coordinates", "properties"],
-        "Helper.multiLineString": ["coordinates", "properties"],
-        "Helper.multiPoint": ["coordinates", "properties"],
-        "Helper.multiPolygon": ["coordinates", "properties"],
-        "Helper.point": ["coordinates", "properties"],
-        "Helper.polygon": ["coordinates", "properties"],
-        "Data.random": ["type", "count", "options"],
+        "Helper.featureCollection": ["features", "bbox", "id"],
+        "Helper.feature": ["geometry", "properties", "bbox", "id"],
+        "Helper.geometryCollection": ["geometries", "properties", "bbox", "id"],
+        "Helper.lineString": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiLineString": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiPoint": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiPolygon": ["coordinates", "properties", "bbox", "id"],
+        "Helper.point": ["coordinates", "properties", "bbox", "id"],
+        "Helper.polygon": ["coordinates", "properties", "bbox", "id"],
         "Data.sample": ["featurecollection", "num"],
         "Interpolation.interpolate": ["points", "cellSize", "gridType", "property", "units", "weight"],
-        "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "options"],
-        "Interpolation.isolines": ["pointGrid", "breaks", "zProperty", "propertiesToAllIsolines", "propertiesPerIsoline"],
+        "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "commonProperties", "breaksProperties"],
+        "Interpolation.isolines": ["pointGrid", "breaks", "zProperty", "commonProperties", "breaksProperties"],
         "Interpolation.planepoint": ["point", "triangle"],
         "Interpolation.tin": ["points", "z"],
-        "Interpolation.idw": ["controlPoints", "valueField", "weight", "cellWidth", "units"],
-        "Joins.inside": ["point", "polygon", "ignoreBoundary"],
-        "Joins.within": ["points", "polygons"],
-        "Joins.tag": ["points", "polygons", "field", "outField"],
-        "Grids.hexGrid": ["bbox", "cellDiameter", "units", "triangles"],
-        "Grids.pointGrid": ["bbox", "cellSide", "units", "centered", "bboxIsMask"],
-        "Grids.squareGrid": ["bbox", "cellSize", "units", "completelyWithin"],
-        "Grids.triangleGrid": ["bbox", "cellSize", "units"],
-        "Classification.nearest": ["targetPoint", "points"],
+        "Joins.pointsWithinPolygon": ["points", "polygons"],
+        "Joins.tag": ["points", "polygons", "field", "outField", "mask", "properties"],
+        "Grids.hexGrid": ["bbox", "cellSide", "units", "triangles"],
+        "Grids.pointGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Grids.squareGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Grids.triangleGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Classification.nearestPoint": ["targetPoint", "points"],
         "Aggregation.collect": ["polygons", "points", "inProperty", "outProperty"],
-        "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints"],
+        "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints", "mutate"],
         "Aggregation.clustersKmeans": ["points", "numberOfClusters", "mutate"],
         "Meta.coordAll": ["geojson"],
         "Meta.coordEach": ["geojson", "callback", "excludeWrapCoord"],
@@ -62980,10 +62980,10 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
         "Meta.featureReduce": ["geojson", "callback", "initialValue"],
         "Meta.flattenEach": ["geojson", "callback"],
         "Meta.flattenReduce": ["geojson", "callback", "initialValue"],
-        "Meta.getCoord": ["obj"],
-        "Meta.getCoords": ["obj"],
-        "Meta.getGeom": ["obj"],
-        "Meta.getGeomType": ["obj"],
+        "Meta.getCoord": ["coord"],
+        "Meta.getCoords": ["coords"],
+        "Meta.getGeom": ["geojson"],
+        "Meta.getGeomType": ["geojson", "name"],
         "Meta.geomEach": ["geojson", "callback"],
         "Meta.geomReduce": ["geojson", "callback", "initialValue"],
         "Meta.propEach": ["geojson", "callback"],
@@ -63001,18 +63001,22 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
         "Booleans.booleanContains": ["feature1", "feature2"],
         "Booleans.booleanCrosses": ["feature1", "feature2"],
         "Booleans.booleanDisjoint": ["feature1", "feature2"],
+        "Booleans.booleanEqual": ["feature1", "feature2"],
         "Booleans.booleanOverlap": ["feature1", "feature2"],
+        "Booleans.booleanParallel": ["feature1", "feature2"],
+        "Booleans.booleanPointInPolygon": ["point", "polygon", "ignoreBoundary"],
         "Booleans.booleanPointOnLine": ["point", "linestring", "ignoreEndVertices"],
         "UnitConversion.bearingToAngle": ["bearing"],
         "UnitConversion.convertArea": ["area", "originalUnit", "finalUnit"],
-        "UnitConversion.convertDistance": ["distance", "originalUnit", "finalUnit"],
-        "UnitConversion.degrees2radians": ["degrees"],
-        "UnitConversion.distanceToRadians": ["distance", "units"],
-        "UnitConversion.distanceToDegrees": ["distance", "units"],
-        "UnitConversion.radiansToDistance": ["radians", "units"],
-        "UnitConversion.radians2degrees": ["radians"]
+        "UnitConversion.convertLength": ["length", "originalUnit", "finalUnit"],
+        "UnitConversion.degreesToradians": ["degrees"],
+        "UnitConversion.lengthToRadians": ["distance", "units"],
+        "UnitConversion.lengthToDegrees": ["distance", "units"],
+        "UnitConversion.radiansToLength": ["radians", "units"],
+        "UnitConversion.radiansToDegrees": ["radians"],
+        "UnitConversion.toMercator": ["geojson", "mutate"],
+        "UnitConversion.toWgs84": ["geojson", "mutate"]
     },
-
     options: {
         attribution: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
@@ -63022,6 +63026,66 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
         _leaflet2["default"].Util.setOptions(this, options);
         _leaflet2["default"].stamp(this);
         this._layers = {};
+    },
+    // 5.0.0 及以上版本参数配置
+    turfOptionMap: {
+        "Measurement.along": ["line", "distance", { units: "" }],
+        "Measurement.bboxPolygon": ["bbox", { properties: "", id: "" }],
+        "Measurement.bearing": ["start", "end", { "final": "" }],
+        "Measurement.center": ["geojson", { properties: "" }],
+        "Measurement.destination": ["origin", "distance", "bearing", { units: "", properties: "" }],
+        "Measurement.distance": ["from", "to", { units: "" }],
+        "Measurement.length": ["geojson", { units: "" }],
+        "Measurement.rhumbBearing": ["start", "end", { "final": "" }],
+        "Measurement.rhumbDestination": ["origin", "distance", "bearing", { units: "", properties: "" }],
+        "Measurement.rhumbDistance": ["from", "to", { units: "" }],
+        "Measurement.greatCircle": ["start", "end", { properties: "", npoints: "", offset: "" }],
+        "CoordinateMutation.cleanCoords": ["geojson", { mutate: "" }],
+        "CoordinateMutation.flip": ["geojson", { mutate: "" }],
+        "CoordinateMutation.rewind": ["geojson", { mutate: "", reverse: "" }],
+        "CoordinateMutation.truncate": ["geojson", { precision: "", coordinates: "", mutate: "" }],
+        "Transformation.bezierSpline": ["line", { resolution: "", sharpness: "" }],
+        "Transformation.buffer": ["geojson", "radius", { units: "", steps: "" }],
+        "Transformation.circle": ["center", "radius", { units: "", steps: "", properties: "" }],
+        "Transformation.concave": ["points", { maxEdge: "", units: "" }],
+        "Transformation.convex": ["geojson", { concavity: "" }],
+        "Transformation.dissolve": ["featureCollection", { propertyName: "" }],
+        "Transformation.lineOffset": ["geojson", "distance", { units: "" }],
+        "Transformation.simplify": ["geojson", { tolerance: "", highQuality: "" }],
+        "Transformation.transformRotate": ["geojson", "angle", { pivot: "", mutate: "" }],
+        "Transformation.transformTranslate": ["geojson", "distance", "direction", { units: "", zTranslation: "", mutate: "" }],
+        "Transformation.transformScale": ["geojson", "factor", { origin: "", mutate: "" }],
+        "Transformation.voronoi": ["points", { bbox: "" }],
+        "featureConversion.lineStringToPolygon": ["lines", { properties: "", autoComplete: "", orderCoords: "" }],
+        "featureConversion.polygonToLineString": ["polygon", { properties: "" }],
+        "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", { steps: "", units: "" }],
+        "Misc.lineChunk": ["geojson", "segmentLength", { units: "", reverse: "" }],
+        "Misc.lineOverlap": ["line1", "line2", { tolerance: "" }],
+        "Misc.lineSliceAlong": ["line", "startDist", "stopDist", { units: "" }],
+        "Misc.pointOnLine": ["lines", "pt", { units: "" }],
+        "Misc.sector": ["center", "radius", "bearing1", "bearing2", { units: "", steps: "", properties: "" }],
+        "Misc.shortestPath": ["start", "end", { obstacles: "", units: "", resolution: "" }],
+        "Helper.feature": ["geometry", "properties", { bbox: "", id: "" }],
+        "Helper.geometryCollection": ["geometries", "properties", { bbox: "", id: "" }],
+        "Helper.lineString": ["coordinates", "properties", { bbox: "", id: "" }],
+        "Helper.multiLineString": ["coordinates", "properties", { bbox: "", id: "" }],
+        "Helper.multiPoint": ["coordinates", "properties", { bbox: "", id: "" }],
+        "Helper.multiPolygon": ["coordinates", "properties", { bbox: "", id: "" }],
+        "Helper.point": ["coordinates", "properties", { bbox: "", id: "" }],
+        "Helper.polygon": ["coordinates", "properties", { bbox: "", id: "" }],
+        "Interpolation.interpolate": ["points", "cellSize", { gridType: "", property: "", units: "", weight: "" }],
+        "Interpolation.isobands": ["pointGrid", "breaks", { zProperty: "", commonProperties: "", breaksProperties: "" }],
+        "Interpolation.isolines": ["pointGrid", "breaks", { zProperty: "", commonProperties: "", breaksProperties: "" }],
+        "Grids.hexGrid": ["bbox", "cellSide", { units: "", triangles: "", properties: "", mask: "" }],
+        "Grids.pointGrid": ["bbox", "cellSide", { units: "", mask: "", properties: "" }],
+        "Grids.squareGrid": ["bbox", "cellSide", { units: "", mask: "", properties: "" }],
+        "Grids.triangleGrid": ["bbox", "cellSide", { units: "", mask: "", properties: "" }],
+        "Aggregation.clustersDbscan": ["points", "maxDistance", { units: "", minPoints: "", mutate: "" }],
+        "Aggregation.clustersKmeans": ["points", { numberOfClusters: "", mutate: "" }],
+        "Booleans.booleanPointInPolygon": ["point", "polygon", { ignoreBoundary: "" }],
+        "Booleans.booleanPointOnLine": ["point", "linestring", { ignoreEndVertices: "" }],
+        "UnitConversion.toMercator": ["geojson", { mutate: "" }],
+        "UnitConversion.toWgs84": ["geojson", { mutate: "" }]
     },
 
     /**
@@ -63033,7 +63097,13 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
      * @param {boolean} addFeaturesToMap - 是否添加到map
      */
     process: function process(type, args, callback, addFeaturesToMap) {
-        var result = turf[type.split('.')[1]].apply(this, this.parse(type, args));
+        // 兼容版本4到5
+        var result;
+        try {
+            result = turf[type.split('.')[1]].apply(this, this.parse(type, args));
+        } catch (e) {
+            result = turf[type.split('.')[1]].apply(this, this.parseOption(type, args));
+        }
         addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
         if (addFeaturesToMap) {
             this.addData([result]);
@@ -63055,6 +63125,23 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
                 return args[key];
             });
         }
+        return result;
+    },
+    parseOption: function parseOption(type, args) {
+        var result = [];
+        var tempArgs = this.turfOptionMap[type];
+        tempArgs.map(function (key) {
+            if (key instanceof Object) {
+                var options = key;
+                Object.keys(options).forEach(function (k) {
+                    options[k] = args[k];
+                });
+                result.push(options);
+            } else {
+                result.push(args[key]);
+            }
+            return args;
+        });
         return result;
     }
 });
@@ -66627,17 +66714,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @extends {L.LayerGroup}
  * @param {string} url - 实时数据图层服务地址
  * @param {Object} options - 设置图层参数。
- * @param {Object} [options.render='normal'] - 绘制方式。可选值为`'normal'`，`'mapv'`。</br>
-                                                `'normal'` 表示以 { {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} } 方式绘制实时数据。`'mapv'` 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。</br>
+ * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。</br>
+                                               'normal'表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制实时数据。'mapv'表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。</br>
  * @param {Object} [options.geometry] - GeoJSON几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
- * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。</br>
+ * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。</br>
                                            `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
- * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
                                             `function (feature) {
                                                     return {
                                                         fillColor: "red",
@@ -71815,7 +71902,7 @@ module.exports = function (proj4) {
 /* 386 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","F:\\map_study\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"F:\\map_study\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 387 */
@@ -95981,16 +96068,15 @@ process.umask = function () {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-var scope = typeof global !== "undefined" && global || typeof self !== "undefined" && self || window;
 var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function () {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 };
 exports.setInterval = function () {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 };
 exports.clearTimeout = exports.clearInterval = function (timeout) {
   if (timeout) {
@@ -96004,7 +96090,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function () {};
 Timeout.prototype.close = function () {
-  this._clearFn.call(scope, this._id);
+  this._clearFn.call(window, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -96031,7 +96117,7 @@ exports._unrefActive = exports.active = function (item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(516);
-// On some exotic environments, it's not clear which object `setimmediate` was
+// On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
