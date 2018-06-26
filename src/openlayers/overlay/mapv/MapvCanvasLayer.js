@@ -38,8 +38,8 @@ export class MapvCanvasLayer {
         if (me.context == '2d') {
             canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
         }
-        canvas.style.width = canvas.width + "px";
-        canvas.style.height = canvas.height + "px";
+        canvas.style.width = me.width + "px";
+        canvas.style.height = me.height + "px";
     }
 
     /**
@@ -57,12 +57,10 @@ export class MapvCanvasLayer {
      * @description 调整地图大小
      */
     resize(mapWidth, mapHeight) {
-        this.canvas.width = mapWidth;
-        this.canvas.height = mapHeight;
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-        this.canvas.width = parseInt(this.width) * devicePixelRatio;
-        this.canvas.height = parseInt(this.height) * devicePixelRatio;
+        this.canvas.width = mapWidth  * devicePixelRatio;
+        this.canvas.height = mapHeight  * devicePixelRatio;
         if (this.context == '2d') {
             this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
         }

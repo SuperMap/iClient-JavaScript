@@ -26,11 +26,64 @@
             margin: 0;
             margin-right: 10px;
         }
+
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+        }
+
+        .ol-popup:after,
+        .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
     </style>
 </head>
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
     <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
     <div id='menu' class="mapboxgl-ctrl">
         <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
         <label for='basic' data-i18n="resources.text_vectorDefaultStyle"></label>
@@ -51,8 +104,36 @@
     <script type="text/javascript" src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
     <script type="text/javascript">
-    console.log(olms);
-        var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") + "/iserver/services/map-beijing/rest/maps/beijingMap";
+        var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
+            "/iserver/services/map-beijing/rest/maps/beijingMap";
+        /**
+         * Elements that make up the popup.
+         */
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        /**
+         * Create an overlay to anchor the popup to the map.
+         */
+        var overlay = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+
+
+        /**
+         * Add a click handler to hide the popup.
+         * @return {boolean} Don't follow the href.
+         */
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
         var stylesJson = {
             'basic': "beijing.json",
             'dark': "beijingDark.json",
@@ -61,9 +142,10 @@
             'osm': "beijingOSM.json",
             'positron': "beijingPositron.json"
         }
-        var vectorLayer,currentStyleID,styles = {};
+        var vectorLayer, currentStyleID, styles = {};
         var map = new ol.Map({
             target: 'map',
+            overlays: [overlay],
             controls: ol.control.defaults({
                     attributionOptions: {
                         collapsed: false
@@ -76,7 +158,21 @@
                 zoom: 11
             })
         });
+        var targetStyle;
         switchStyle(null, 'basic');
+        map.on('click', function (e) {
+            var features = map.getFeaturesAtPixel(e.pixel);
+            if (features) {
+                var coordinate = e.coordinate;
+                content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" +
+                    (features[0].get('NAME') ? "Name:  " + features[0].get('NAME') + "<br />" : "") +
+                    (features[0].get('道路名称') ? "道路名称:  " + features[0].get('道路名称') + "<br />" : "");
+                overlay.setPosition(coordinate);
+                targetStyle.setSelectedId(features[0].getId(), features[0].get('layer'));
+                vectorLayer.changed();
+            }
+
+        });
         var layerList = document.getElementById('menu');
         var inputs = layerList.getElementsByTagName('input');
 
@@ -95,7 +191,7 @@
             }
             if (styles[styleID]) {
                 options.style = styles[styleID];
-                var targetStyle = new ol.supermap.MapboxStyles(options);
+                targetStyle = new ol.supermap.MapboxStyles(options);
                 targetStyle.on('styleLoaded', function () {
                     styleLoaded(styleID, this);
                 });
@@ -103,7 +199,7 @@
                 $.get('../data/styles/' + stylesJson[styleID], function (json) {
                     styles[styleID] = json;
                     options.style = styles[styleID];
-                    var targetStyle = new ol.supermap.MapboxStyles(options);
+                    targetStyle = new ol.supermap.MapboxStyles(options);
                     targetStyle.on('styleloaded', function () {
                         styleLoaded(styleID, this);
                     });

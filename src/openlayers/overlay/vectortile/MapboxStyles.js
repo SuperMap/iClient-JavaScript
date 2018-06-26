@@ -1,6 +1,11 @@
 import ol from 'openlayers';
-import {FetchRequest, CommonUtil} from "@supermap/iclient-common";
-import {olExtends} from './olExtends'
+import {
+    FetchRequest,
+    CommonUtil
+} from "@supermap/iclient-common";
+import {
+    olExtends
+} from './olExtends'
 
 
 /**
@@ -55,6 +60,30 @@ export class MapboxStyles extends ol.Observable {
         this.url = options.url ? options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true' : "";
         this.resolutions = options.resolutions;
         this.style = options.style;
+        this.selectedStyle = options.selectedStyle || function () {
+            return new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 1)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255, 0, 0, 1)',
+                    width: 10
+                }),
+                text: new ol.style.Text({
+                    font: 'normal 400 11.19px "Microsoft YaHei"',
+                    placement: 'point',
+                    fill: new ol.style.Fill({
+                        color: 'blue'
+                    })
+                }),
+                image: new ol.style.Circle({
+                    radius: 5,
+                    fill: new ol.style.Fill({
+                        color: 'blue'
+                    })
+                })
+            })
+        }
         this.layersBySourceLayer = {};
         olExtends(this.map);
         if (this.style) {
@@ -93,6 +122,12 @@ export class MapboxStyles extends ol.Observable {
         }
         this.layersBySourceLayer[sourceLayer] = layers;
         return layers;
+    }
+    setSelectedId(selectedId, sourceLayer) {
+        this.selectedObject = {
+            selectedId: selectedId,
+            sourceLayer: sourceLayer
+        };
     }
     updateStyles(layerStyles) {
         if (Object.prototype.toString.call(layerStyles) !== '[object Array]') {
@@ -146,11 +181,37 @@ export class MapboxStyles extends ol.Observable {
         if (this.map) {
             window.olms.applyBackground(this.map, mbStyle);
         }
-        this.featureStyleFuntion = window.olms.stylefunction({
+        this.featureStyleFuntion = this._getStyleFunction(mbStyle, spriteData, spriteImageUrl)
+    }
+    _getStyleFunction(mbStyle, spriteData, spriteImageUrl) {
+        var fun = window.olms.stylefunction({
             setStyle: function () {},
             set: function () {},
             changed: function () {}
         }, mbStyle, this.source, this.resolutions, spriteData, spriteImageUrl);
+        return (feature, resolution) => {
+            const style = fun(feature, resolution);
+            if (this.selectedObject && this.selectedObject.selectedId === feature.getId() && this.selectedObject.sourceLayer === feature.get('layer')) {
+                const styleIndex = style && style[0] ? style[0].getZIndex() : 99999;
+                let selectStyles = this.selectedStyle(feature, resolution);
+                if (!Array.isArray(selectStyles)) {
+                    selectStyles = [selectStyles];
+                }
+                for (const selectStyle of selectStyles) {
+                    if (feature.getGeometry().getType() === 'Point' && style[0].getText() && selectStyle.getText()) {
+                        selectStyle.setFill(null);
+                        selectStyle.setStroke(null);
+                        selectStyle.setImage();
+                        selectStyle.getText().setText(style[0].getText().getText());
+                    }
+                    selectStyle.setZIndex(styleIndex);
+                }
+                return selectStyles;
+
+            }
+            return style;
+        }
+
     }
     _withPath(url, path) {
         if (path && url.indexOf('http') != 0) {

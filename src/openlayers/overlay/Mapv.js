@@ -1,6 +1,10 @@
 import ol from 'openlayers';
-import {MapvLayer} from './mapv/MapvLayer';
-import {Util} from '../core/Util';
+import {
+    MapvLayer
+} from './mapv/MapvLayer';
+import {
+    Util
+} from '../core/Util';
 
 /**
  * @class ol.source.Mapv
@@ -29,15 +33,15 @@ export class Mapv extends ol.source.ImageCanvas {
         this.mapvOptions = opt_options.mapvOptions;
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
-            var mapWidth = size[0] * pixelRatio;
-            var mapHeight = size[1] * pixelRatio;
-            var width = this.map.getSize()[0] * pixelRatio;
-            var height = this.map.getSize()[1] * pixelRatio;
+            var mapWidth = size[0] / pixelRatio;
+            var mapHeight = size[1] / pixelRatio;
+            var width = this.map.getSize()[0];
+            var height = this.map.getSize()[1];
             if (!this.layer) {
                 this.layer = new MapvLayer(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
             }
             this.layer.pixelRatio = pixelRatio;
-            this.layer.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+            this.layer.offset = [(mapWidth - width) / 2 , (mapHeight - height) / 2 ];
             if (!this.rotate) {
                 this.rotate = this.map.getView().getRotation();
             } else {
@@ -56,11 +60,11 @@ export class Mapv extends ol.source.ImageCanvas {
             }
             var canvas2 = this.context.canvas;
             this.context.clearRect(0, 0, canvas2.width, canvas2.height);
-            canvas2.width = mapWidth;
-            canvas2.height = mapHeight;
-            canvas2.style.width = mapWidth + "px";
-            canvas2.style.height = mapHeight + "px";
-            this.context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            canvas2.width = size[0];
+            canvas2.height = size[0];
+            canvas2.style.width = size[0] + "px";
+            canvas2.style.height = size[0] + "px";
+            this.context.drawImage(canvas, 0, 0, size[0], size[0], 0, 0, size[0], size[0]);
             if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
                 this.resolution = resolution;
                 this.extent = extent;

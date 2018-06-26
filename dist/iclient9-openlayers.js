@@ -2842,9 +2842,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _FetchRequest = __webpack_require__(20);
 
-var _Events = __webpack_require__(81);
+var _Events = __webpack_require__(82);
 
-var _Credential = __webpack_require__(118);
+var _Credential = __webpack_require__(119);
 
 var _SecurityManager = __webpack_require__(35);
 
@@ -2852,7 +2852,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _JSON = __webpack_require__(116);
+var _JSON = __webpack_require__(117);
 
 var _BaseTypes = __webpack_require__(58);
 
@@ -3678,7 +3678,7 @@ var _MultiPolygon = __webpack_require__(56);
 
 var _ServerStyle = __webpack_require__(13);
 
-var _Route = __webpack_require__(77);
+var _Route = __webpack_require__(78);
 
 var _Util = __webpack_require__(1);
 
@@ -4466,25 +4466,25 @@ exports.SUtil = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Area = __webpack_require__(165);
+var _Area = __webpack_require__(166);
 
-var _Color = __webpack_require__(96);
+var _Color = __webpack_require__(97);
 
-var _ComputeBoundingBox = __webpack_require__(164);
+var _ComputeBoundingBox = __webpack_require__(165);
 
 var _Curve = __webpack_require__(66);
 
-var _Env = __webpack_require__(163);
+var _Env = __webpack_require__(164);
 
-var _Event = __webpack_require__(162);
+var _Event = __webpack_require__(163);
 
-var _Http = __webpack_require__(161);
+var _Http = __webpack_require__(162);
 
-var _Log = __webpack_require__(160);
+var _Log = __webpack_require__(161);
 
-var _Math = __webpack_require__(159);
+var _Math = __webpack_require__(160);
 
-var _Matrix = __webpack_require__(158);
+var _Matrix = __webpack_require__(159);
 
 var _Util = __webpack_require__(29);
 
@@ -6032,7 +6032,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(78);
+__webpack_require__(79);
 
 __webpack_require__(267);
 
@@ -6191,7 +6191,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Vector = __webpack_require__(80);
+var _Vector = __webpack_require__(81);
 
 var _Util = __webpack_require__(1);
 
@@ -6199,7 +6199,7 @@ var _Bounds = __webpack_require__(27);
 
 var _Collection = __webpack_require__(30);
 
-var _JSON = __webpack_require__(116);
+var _JSON = __webpack_require__(117);
 
 var _Point = __webpack_require__(22);
 
@@ -7281,7 +7281,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DatasourceConnectionInfo = __webpack_require__(111);
+var _DatasourceConnectionInfo = __webpack_require__(112);
 
 var _REST = __webpack_require__(2);
 
@@ -7923,7 +7923,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(22);
 
-var _Curve2 = __webpack_require__(120);
+var _Curve2 = __webpack_require__(121);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8193,7 +8193,7 @@ var LineString = exports.LineString = function (_Curve) {
          * @description 根据点的类型画出不同类型的曲线
          * 点的类型有三种, LTypeArc, LTypeCurve, NONE
          * @param {Array.<SuperMap.Geometry.Point>} points - 传入的待计算的初始点串。
-         * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
+         * @returns {Array.<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
          * @example
          * var points = [];
          * points.push(new SuperMap.Geometry.Point(-50,30));
@@ -8602,9 +8602,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
-var _Line = __webpack_require__(99);
+var _Line = __webpack_require__(70);
 
 var _Polygon = __webpack_require__(69);
 
@@ -8612,27 +8612,27 @@ var _Rectangle = __webpack_require__(168);
 
 var _Sector = __webpack_require__(68);
 
-var _Label = __webpack_require__(167);
+var _Label = __webpack_require__(100);
 
-var _Image = __webpack_require__(166);
+var _Image = __webpack_require__(167);
 
-var _Circle = __webpack_require__(98);
+var _Circle = __webpack_require__(99);
 
-var _SmicPoint = __webpack_require__(97);
+var _SmicPoint = __webpack_require__(98);
 
-var _SmicText = __webpack_require__(95);
+var _SmicText = __webpack_require__(96);
 
-var _SmicCircle = __webpack_require__(157);
+var _SmicCircle = __webpack_require__(158);
 
-var _SmicBrokenLine = __webpack_require__(94);
+var _SmicBrokenLine = __webpack_require__(95);
 
-var _SmicImage = __webpack_require__(93);
+var _SmicImage = __webpack_require__(94);
 
 var _SmicPolygon = __webpack_require__(63);
 
-var _SmicRectangle = __webpack_require__(92);
+var _SmicRectangle = __webpack_require__(93);
 
-var _SmicSector = __webpack_require__(156);
+var _SmicSector = __webpack_require__(157);
 
 var _Util = __webpack_require__(1);
 
@@ -9803,7 +9803,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Size = __webpack_require__(285);
 
-var _Pixel = __webpack_require__(82);
+var _Pixel = __webpack_require__(83);
 
 var _LonLat = __webpack_require__(43);
 
@@ -10615,7 +10615,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 统计专题要素基类。
  * @category Visualization Theme
  * @description 此类定义了统计专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
- *              统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.Graph::setting> 的基础属性只有 7 个，
+ *              统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.Graph.setting> 的基础属性只有 7 个，
  *              它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  *              此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
  * @extends SuperMap.Feature.Theme
@@ -10654,20 +10654,17 @@ var Graph = exports.Graph = function (_Theme) {
 
         /**
          * @member {Object} SuperMap.Feature.Theme.Graph.prototype.setting
-         * @description 图表配置对象，该对象控制着图表的可视化显示。<br>
-         *              下面是此配置对象的 7 个基础可设属性：<br>
-         *              Symbolizer properties:<br>
-         *              width - {number}专题要素（图表）宽度，必设参数。<br>
-         *              height - {number}专题要素（图表）高度，必设参数。<br>
-         *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
-         *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
-         *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
-         *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox
-         *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-         *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
-         *                                       如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
-         *              除了以上 7 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
-         *              请在此类的子类中查看 setting 对象的可设属性和属性含义。
+         * @description 图表配置对象，该对象控制着图表的可视化显示。
+         * @param {number} width - 专题要素（图表）宽度，必设参数。
+         * @param {number} height - 专题要素（图表）高度，必设参数。
+         * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+         * @param {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+         * @param {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+         * @param {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox
+         *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+         * @param {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+         *                                       如果不设置此参数，在取数据值时不对数据做小数位处理。
+         *             
          */
         _this.setting = null;
 
@@ -10854,16 +10851,16 @@ var Graph = exports.Graph = function (_Theme) {
 
         /**
          * @function SuperMap.Feature.Theme.Graph.prototype.initBaseParameter
-         * @description 初始化专题要素（图表）基础参数。在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。<br>
-         *              调用此函数关系到 setting 对象的以下属性。<br>
-         *              width - {number} 专题要素（图表）宽度，必设参数。<br>
-         *              height - {number} 专题要素（图表）高度，必设参数。<br>
-         *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
-         *              XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
-         *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
-         *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox。<br>
-         *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-         *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+         * @description 初始化专题要素（图表）基础参数。在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
+         *              调用此函数关系到 setting 对象的以下属性。
+         * @param {number} width - 专题要素（图表）宽度，必设参数。
+         * @param {number} height - 专题要素（图表）高度，必设参数。
+         * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+         * @param {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+         * @param {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+         * @param {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox。
+         *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+         * @param {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
          * @return {Boolean} 初始化参数是否成功。
          */
 
@@ -14360,7 +14357,7 @@ var _Util = __webpack_require__(1);
 
 var _UGCMapLayer2 = __webpack_require__(214);
 
-var _JoinItem = __webpack_require__(78);
+var _JoinItem = __webpack_require__(79);
 
 var _DatasetInfo = __webpack_require__(257);
 
@@ -15272,7 +15269,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _Theme2 = __webpack_require__(84);
+var _Theme2 = __webpack_require__(85);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15647,7 +15644,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(22);
 
-var _GeoText = __webpack_require__(119);
+var _GeoText = __webpack_require__(120);
 
 var _LonLat = __webpack_require__(43);
 
@@ -15807,7 +15804,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 多边形。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
  *         style: {
  *             // 100x100 的正方形
@@ -15816,7 +15813,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  */
 var SmicPolygon = exports.SmicPolygon = function (_Shape) {
     _inherits(SmicPolygon, _Shape);
@@ -16942,7 +16939,7 @@ var Curve = exports.Curve = function () {
          * @param {number} p2 - 点p2。
          * @param {number} p3 - 点p3。
          * @param {number} val - 值。
-         * @param {Array<number>} roots - 有效根数目。
+         * @param {Array.<number>} roots - 有效根数目。
          * @returns {number} 有效根。
          */
 
@@ -17031,7 +17028,7 @@ var Curve = exports.Curve = function () {
          * @param {number} p1 - 点p1。
          * @param {number} p2 - 点p2。
          * @param {number} p3 - 点p3。
-         * @param {Array<number>} extrema - 值。
+         * @param {Array.<number>} extrema - 值。
          * @returns {number} 有效数目。
          */
 
@@ -17077,7 +17074,7 @@ var Curve = exports.Curve = function () {
          * @param {number} p2 - 点p2。
          * @param {number} p3 - 点p3。
          * @param {number} t - t值。
-         * @param {Array<number>} out - 投射点。
+         * @param {Array.<number>} out - 投射点。
          * @returns {number} 投射点。
          */
 
@@ -17117,7 +17114,7 @@ var Curve = exports.Curve = function () {
          * @param {number} y3 - 点p3纵坐标。
          * @param {number} x - 点p横坐标。
          * @param {number} y - 点p纵坐标。
-         * @param {Array<number>} out - 投射点。
+         * @param {Array.<number>} out - 投射点。
          * @returns {number} 投射点。
          */
 
@@ -17230,7 +17227,7 @@ var Curve = exports.Curve = function () {
          * @param {number} p1 - 点p1。
          * @param {number} p2 - 点p2。
          * @param {number} val - 值。
-         * @param {Array<number>} roots - 有效根数目。
+         * @param {Array.<number>} roots - 有效根数目。
          * @returns {number} 有效根数目。
          */
 
@@ -17303,7 +17300,7 @@ var Curve = exports.Curve = function () {
          * @param {number} y2 - 点p2纵坐标。
          * @param {number} x - 点p横坐标。
          * @param {number} y - 点p纵坐标。
-         * @param {Array<number>} out - 投射点。
+         * @param {Array.<number>} out - 投射点。
          * @returns {number} 投射距离。
          */
 
@@ -17412,19 +17409,19 @@ var Transformable = exports.Transformable = function () {
         _classCallCheck(this, Transformable);
 
         /**
-         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.position 
+         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.position 
          * @description 平移， 默认值：[0, 0]。
          */
         this.position = [0, 0];
 
         /**
-         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.rotation
+         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.rotation
          * @description 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
          */
         this.rotation = [0, 0, 0];
 
         /**
-         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.scale
+         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.scale
          * @description 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
          */
         this.scale = [1, 1, 0, 0];
@@ -17448,7 +17445,7 @@ var Transformable = exports.Transformable = function () {
          */
         this.lookAt = function () {
             var v = _SUtil.SUtil.Util_vector.create();
-            // {Array{Number}|Float32Array} target
+            // {Array.<Number>|Float32Array} target
             return function (target) {
                 if (!this.transform) {
                     this.transform = _SUtil.SUtil.Util_matrix.create();
@@ -17686,6 +17683,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 扇形参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
+
 var Sector = exports.Sector = function (_ShapeParameters) {
   _inherits(Sector, _ShapeParameters);
 
@@ -17775,6 +17773,21 @@ var Sector = exports.Sector = function (_ShapeParameters) {
   return Sector;
 }(_ShapeParameters2.ShapeParameters);
 
+/**
+ * @typedef {Object} SuperMap.Feature.ShapeParameters.Sector.style
+ * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
+ * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。
+ * @property {boolean} stroke - 是否描边，不需要描边则设置为 false，默认值为 false。此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string} strokeColor - 十六进制描边颜色。
+ * @property {number} strokeWidth - 描边宽度，默认值 1。
+ * @property {number} strokeOpacity - 描边的不透明度。取值范围[0, 1]，默认值 1。
+ * @property {number} shadowBlur - 阴影模糊度，（大于 0 有效; 默认值 0）。
+ * @property {string} shadowColor - 阴影颜色; 默认值 '#000000'。
+ * @property {number} shadowOffsetX - 阴影 X 方向偏移值; 默认值 0。
+ * @property {number} shadowOffsetY - 阴影 Y 方向偏移值; 默认值 0。
+ */
+
 _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Sector = Sector;
 
@@ -17810,6 +17823,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 面参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
+
 var Polygon = exports.Polygon = function (_ShapeParameters) {
   _inherits(Polygon, _ShapeParameters);
 
@@ -17866,11 +17880,129 @@ var Polygon = exports.Polygon = function (_ShapeParameters) {
   return Polygon;
 }(_ShapeParameters2.ShapeParameters);
 
+/**
+ * @typedef {Object} SuperMap.Feature.ShapeParameters.Polygon.style
+ * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
+ * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。
+ * @property {boolean} stroke - 是否描边，不需要描边则设置为 false，默认值为 false。此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string} strokeColor - 十六进制描边颜色。
+ * @property {number} strokeWidth - 描边宽度，默认值 1。
+ * @property {number} strokeOpacity - 描边的不透明度。取值范围[0, 1]，默认值 1。
+ * @property {string} strokeLinecap - 线帽样式；strokeLinecap 有三种类型 ：“butt", "round", "square"; 默认为"butt"。
+ * @property {string} strokeLineJoin - 线段连接样式；strokeLineJoin 有三种类型： “miter", "round", "bevel"; 默认为"miter"。
+ * @property {string} strokeDashstyle - 虚线类型； strokeDashstyle 有八种类型 ：“dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"; 默认值 "solid"。solid 表示实线。
+ * @property {number} shadowBlur - 阴影模糊度，（大于 0 有效; 默认值 0）。
+ * @property {string} shadowColor - 阴影颜色; 默认值 '#000000'。
+ * @property {number} shadowOffsetX - 阴影 X 方向偏移值; 默认值 0。
+ * @property {number} shadowOffsetY - 阴影 Y 方向偏移值; 默认值 0。
+*/
+
 _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Polygon = Polygon;
 
 /***/ }),
 /* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Line = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _ShapeParameters2 = __webpack_require__(23);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class  SuperMap.Feature.ShapeParameters.Line
+ * @category Visualization Theme
+ * @classdesc 线参数对象。
+ * @extends {SuperMap.Feature.ShapeParameters}
+ */
+var Line = exports.Line = function (_ShapeParameters) {
+  _inherits(Line, _ShapeParameters);
+
+  /**
+   * @function SuperMap.Feature.ShapeParameters.Line.prototype.constructor
+   * @description 创建一个图形线参数对象。
+   * @param {Array} pointList - 线要素节点数组，二维数组，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Line} 圆形参数对象。
+   */
+  function Line(pointList) {
+    _classCallCheck(this, Line);
+
+    /**
+     * @member {Array} SuperMap.Feature.ShapeParameters.Line.prototype.pointList
+     * @description 线要素节点数组，二维数组。
+     * 数组形如：
+     * (start code)
+     *  [
+     *  [10, 20],         //节点
+     *  [30, 40],
+     *  [25, 30]         //最后一个节点和第一个节点不必相同，绘制时自动封闭
+     *   ]
+     * (end)
+     */
+    var _this = _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, pointList));
+
+    _this.pointList = pointList;
+
+    _this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Line";
+
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.Feature.ShapeParameters.Line.prototype.destroy
+   * @description 销毁对象。
+   */
+
+
+  _createClass(Line, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.pointList = null;
+      _get(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'destroy', this).call(this);
+    }
+  }]);
+
+  return Line;
+}(_ShapeParameters2.ShapeParameters);
+
+/**
+* @typedef {Object} SuperMap.Feature.ShapeParameters.Line.style
+* @property {string} strokeColor - 十六进制线颜色。
+* @property {number}  strokeWidth - 线宽度，默认值 1。
+* @property {string} strokeLinecap - 线帽样式；strokeLinecap 有三种类型 ：“butt", "round", "square"; 默认为"butt"。
+* @property {string} strokeLineJoin - 线段连接样式；strokeLineJoin 有三种类型： “miter", "round", "bevel"; 默认为"miter"。
+* @property {string} strokeDashstyle - 虚线类型； strokeDashstyle 有八种类型 ：“dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"; 默认值 "solid"。solid 表示实线。
+* @property {number}  strokeOpacity - 线的不透明度。取值范围[0, 1]，默认值 1。
+* @property {number}  shadowBlur - 阴影模糊度，（大于 0 有效; 默认值 0）。
+* @property {string} shadowColor - 阴影颜色; 默认值 '#000000'。
+* @property {number}  shadowOffsetX - 阴影 X 方向偏移值; 默认值 0。
+* @property {number}  shadowOffsetY - 阴影 Y 方向偏移值; 默认值 0。
+*/
+
+
+_SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
+_SuperMap.SuperMap.Feature.ShapeParameters.Line = Line;
+
+/***/ }),
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17901,6 +18033,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 点参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
+
 var Point = exports.Point = function (_ShapeParameters) {
   _inherits(Point, _ShapeParameters);
 
@@ -17958,11 +18091,27 @@ var Point = exports.Point = function (_ShapeParameters) {
   return Point;
 }(_ShapeParameters2.ShapeParameters);
 
+/**
+ * @typedef {Object} SuperMap.Feature.ShapeParameters.Point.style
+ * @property {number} pointRadius - 点的半径，默认值：6。
+ * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
+ * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。
+ * @property {boolean} stroke - 是否描边，不需要描边则设置为 false，默认值为 false。此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string} strokeColor - 十六进制描边颜色。
+ * @property {number} strokeWidth - 描边宽度，默认值 1。
+ * @property {number} strokeOpacity - 描边的不透明度。取值范围[0, 1]，默认值 1。
+ * @property {number} shadowBlur - 阴影模糊度，（大于 0 有效; 默认值 0）。
+ * @property {string} shadowColor - 阴影颜色; 默认值 '#000000'。
+ * @property {number} shadowOffsetX - 阴影 X 方向偏移值; 默认值 0。
+ * @property {number} shadowOffsetY - 阴影 Y 方向偏移值; 默认值 0。
+ */
+
 _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Point = Point;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17993,7 +18142,7 @@ var LabelMatrixCell = exports.LabelMatrixCell = function LabelMatrixCell() {
 _SuperMap.SuperMap.LabelMatrixCell = LabelMatrixCell;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18092,7 +18241,7 @@ var ThemeOffset = exports.ThemeOffset = function () {
 _SuperMap.SuperMap.ThemeOffset = ThemeOffset;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18201,7 +18350,7 @@ var ThemeFlow = exports.ThemeFlow = function () {
 _SuperMap.SuperMap.ThemeFlow = ThemeFlow;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18224,11 +18373,11 @@ var _Theme2 = __webpack_require__(25);
 
 var _ThemeLabelItem = __webpack_require__(225);
 
-var _ThemeUniqueItem = __webpack_require__(106);
+var _ThemeUniqueItem = __webpack_require__(107);
 
-var _ThemeFlow = __webpack_require__(73);
+var _ThemeFlow = __webpack_require__(74);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(73);
 
 var _ThemeLabelText = __webpack_require__(224);
 
@@ -18574,7 +18723,7 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
 _SuperMap.SuperMap.ThemeLabel = ThemeLabel;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18673,7 +18822,7 @@ var ThiessenAnalystParameters = exports.ThiessenAnalystParameters = function () 
 _SuperMap.SuperMap.ThiessenAnalystParameters = ThiessenAnalystParameters;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18775,7 +18924,7 @@ var SurfaceAnalystParameters = exports.SurfaceAnalystParameters = function () {
 _SuperMap.SuperMap.SurfaceAnalystParameters = SurfaceAnalystParameters;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19043,7 +19192,7 @@ var Route = exports.Route = function (_Collection) {
 _SuperMap.SuperMap.Route = Route;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19174,7 +19323,7 @@ var JoinItem = exports.JoinItem = function () {
 _SuperMap.SuperMap.JoinItem = JoinItem;
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19193,7 +19342,7 @@ var _REST = __webpack_require__(2);
 
 var _SecurityManager = __webpack_require__(35);
 
-var _Credential = __webpack_require__(118);
+var _Credential = __webpack_require__(119);
 
 var _FetchRequest = __webpack_require__(20);
 
@@ -19300,7 +19449,7 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
 _SuperMap.SuperMap.iPortalServiceBase = IPortalServiceBase;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19656,7 +19805,7 @@ var Vector = exports.Vector = function (_Feature) {
 _SuperMap.SuperMap.Feature.Vector = Vector;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19673,7 +19822,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Pixel = __webpack_require__(82);
+var _Pixel = __webpack_require__(83);
 
 var _Event = __webpack_require__(283);
 
@@ -20205,7 +20354,7 @@ _SuperMap.SuperMap.Events = Events;
 _SuperMap.SuperMap.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20431,7 +20580,7 @@ var Pixel = exports.Pixel = function () {
 _SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20598,7 +20747,7 @@ var CloverShape = exports.CloverShape = function (_ol$style$RegularShap) {
 _openlayers2.default.style.CloverShape = CloverShape;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20619,7 +20768,7 @@ var _Util = __webpack_require__(6);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _ThemeFeature = __webpack_require__(85);
+var _ThemeFeature = __webpack_require__(86);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21234,7 +21383,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
 _openlayers2.default.source.Theme = Theme;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21303,7 +21452,7 @@ var ThemeFeature = exports.ThemeFeature = function () {
 _openlayers2.default.supermap.ThemeFeature = ThemeFeature;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21320,7 +21469,7 @@ module.exports = function (eccent, sinphi) {
 };
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21344,7 +21493,7 @@ module.exports = function (ml, e0, e1, e2, e3) {
 };
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21356,7 +21505,7 @@ module.exports = function (a, e, sinphi) {
 };
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21378,7 +21527,7 @@ module.exports = function (destination, source) {
 };
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21387,7 +21536,7 @@ module.exports = function (destination, source) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var parseCode = __webpack_require__(360);
-var extend = __webpack_require__(89);
+var extend = __webpack_require__(90);
 var projections = __webpack_require__(356);
 var deriveConstants = __webpack_require__(353);
 
@@ -21421,7 +21570,7 @@ Projection.projections.start();
 module.exports = Projection;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21440,9 +21589,9 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _StyleMap = __webpack_require__(144);
+var _StyleMap = __webpack_require__(145);
 
-var _DeafultCanvasStyle = __webpack_require__(143);
+var _DeafultCanvasStyle = __webpack_require__(144);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22069,7 +22218,7 @@ var StyleUtils = exports.StyleUtils = function () {
 _openlayers2.default.supermap.StyleUtils = StyleUtils;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22099,7 +22248,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 矩形。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
  *         style: {
  *             x: 0,
@@ -22110,7 +22259,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  */
 var SmicRectangle = exports.SmicRectangle = function (_Shape) {
     _inherits(SmicRectangle, _Shape);
@@ -22339,7 +22488,7 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22368,8 +22517,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category Visualization Theme
  * @classdesc 图片绘制。
  * @extends SuperMap.LevelRenderer.Shape
- *
- * (code)
+ * 
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicImage({
  *         style: {
  *             image: 'test.jpg',
@@ -22378,7 +22527,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  *
  */
 var SmicImage = exports.SmicImage = function (_Shape) {
@@ -22617,7 +22766,7 @@ SmicImage._needsRefresh = [];
 SmicImage._refreshTimeout = null;
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22651,7 +22800,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 折线(ic)。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
  *         style: {
  *             pointList: [[0, 0], [100, 100], [100, 0]],
@@ -22660,7 +22809,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
@@ -22923,7 +23072,7 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22954,7 +23103,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category Visualization Theme
  * @extends {SuperMap.LevelRenderer.Shape}
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicText({
  *         style: {
  *             text: 'Label',
@@ -22964,7 +23113,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  */
 var SmicText = exports.SmicText = function (_Shape) {
     _inherits(SmicText, _Shape);
@@ -23482,7 +23631,7 @@ var SmicText = exports.SmicText = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23884,7 +24033,7 @@ var Color = exports.Color = function () {
          * @description 获取指定级数的渐变颜色数组。
          * @param {Array.<string>} colors - 颜色数组。
          * @param {number} [step=20] - 渐变级数。
-         * @returns {Array<string>} 颜色数组。
+         * @returns {Array.<string>} 颜色数组。
          */
 
     }, {
@@ -24695,7 +24844,7 @@ var Color = exports.Color = function () {
 }();
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24725,7 +24874,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 点。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
  *       style: {
  *           x: 100,
@@ -24739,7 +24888,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *       }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  *
  */
 var SmicPoint = exports.SmicPoint = function (_Shape) {
@@ -24872,7 +25021,7 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24966,7 +25115,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Circle = Circle;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24975,7 +25124,7 @@ _SuperMap.SuperMap.Feature.ShapeParameters.Circle = Circle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Line = undefined;
+exports.Label = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -24992,66 +25141,99 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @class  SuperMap.Feature.ShapeParameters.Line
+ * @class SuperMap.Feature.ShapeParameters.Label
  * @category Visualization Theme
- * @classdesc 线参数对象。
- * @extends {SuperMap.Feature.ShapeParameters}
+ * @classdesc 标签参数对象。
+ * @extent {SuperMap.Feature.ShapeParameters}
  */
-var Line = exports.Line = function (_ShapeParameters) {
-  _inherits(Line, _ShapeParameters);
+
+var Label = exports.Label = function (_ShapeParameters) {
+  _inherits(Label, _ShapeParameters);
 
   /**
-   * @function SuperMap.Feature.ShapeParameters.Line.prototype.constructor
-   * @description 创建一个图形线参数对象。
-   * @param {Array} pointList - 线要素节点数组，二维数组，必设参数。
-   * @returns {SuperMap.Feature.ShapeParameters.Line} 圆形参数对象。
+   * @function SuperMap.Feature.ShapeParameters.Label.prototype.constructor
+   * @description 创建一个标签参数对象。
+   * @param {number} x - 横坐标，必设参数。
+   * @param {number} y - 纵坐标，必设参数。
+   * @param {string} text - 图形中的附加文本，必设参数。
+   * @returns {SuperMap.Feature.ShapeParameters.Label} 标签参数对象。
    */
-  function Line(pointList) {
-    _classCallCheck(this, Line);
+  function Label(x, y, text) {
+    _classCallCheck(this, Label);
 
     /**
-     * @member {Array} SuperMap.Feature.ShapeParameters.Line.prototype.pointList
-     * @description 线要素节点数组，二维数组。
-     * 数组形如：
-     * (start code)
-     *  [
-     *  [10, 20],         //节点
-     *  [30, 40],
-     *  [25, 30]         //最后一个节点和第一个节点不必相同，绘制时自动封闭
-     *   ]
-     * (end)
+     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.x
+     * @description 标签 x 坐标。
      */
-    var _this = _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, pointList));
+    var _this = _possibleConstructorReturn(this, (Label.__proto__ || Object.getPrototypeOf(Label)).call(this, x, y, text));
 
-    _this.pointList = pointList;
+    _this.x = x;
 
-    _this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Line";
+    /**
+     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.y
+     * @description 标签 y 坐标。
+     */
+    _this.y = y;
 
+    /**
+     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.text
+     * @description 标签的文本内容。
+     */
+    _this.text = text;
+
+    _this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Label";
     return _this;
   }
 
   /**
-   * @function SuperMap.Feature.ShapeParameters.Line.prototype.destroy
+   * @function SuperMap.Feature.ShapeParameters.Label.prototype.destroy
    * @description 销毁对象。
    */
 
 
-  _createClass(Line, [{
+  _createClass(Label, [{
     key: 'destroy',
     value: function destroy() {
-      this.pointList = null;
-      _get(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'destroy', this).call(this);
+      this.x = null;
+      this.y = null;
+      this.text = null;
+
+      _get(Label.prototype.__proto__ || Object.getPrototypeOf(Label.prototype), 'destroy', this).call(this);
     }
   }]);
 
-  return Line;
+  return Label;
 }(_ShapeParameters2.ShapeParameters);
 
+/**
+* @typedef {Object} SuperMap.Feature.ShapeParameters.Label.style
+* @property {boolean} fill - 是否填充，不需要填充则设置为 false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+* @property {string} fillColor - 十六进制填充颜色。默认值为 "#000000"。
+* @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。
+* @property {boolean} stroke - 是否描边，不需要描边则设置为false，默认值为 false。此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+* @property {string} strokeColor - 十六进制描边颜色。
+* @property {number} strokeOpacity - 描边的不透明度。取值范围[0, 1]，默认值 1。
+* @property {number} strokeWidth -描边宽度，默认值 1。
+* @property {number} maxWidth - 最大宽度限制。默认值：null。
+* @property {number} fontSize - 标签文本字体大小。默认值 12，单位是像素。
+* @property {string} fontStyle - 标签文本字体样式。可设值："normal", "italic", "oblique"; 默认值："normal" 。
+* @property {string} fontVariant - 标签文本字体变体。可设值："normal", "small-caps"; 默认值："normal" 。
+* @property {string} fontWeight - 标签文本字体粗细。可设值："normal", "bold", "bolder", "lighter"; 默认值："normal" 。
+* @property {string} fontFamily - 标签文本字体系列。fontFamily 值是字体族名称或/及类族名称的一个优先表，每个值逗号分割，浏览器会使用它可识别的第一个值。
+* 可以使用具体的字体名称（"times"、"courier"、"arial"）或字体系列名称（"serif"、"sans-serif"、"cursive"、"fantasy"、"monospace"）。默认值："arial,sans-serif".
+* @property {string} labelBaseline - 标签文本垂直对齐, 可以是 'top', 'bottom', 'middle'，默认值 'middle'。
+* @property {string} labelAlign - 标签文本水平对齐。可以是 'left', 'right', 'center'; 默认值 'center'。
+* @property {number} shadowBlur - 阴影模糊度，大于 0 有效。默认值：0。
+* @property {number} shadowColor - 阴影颜色。默认值："#000000'"。
+* @property {number} shadowOffsetX - 阴影横向偏移。默认值：0。
+* @property {number} shadowOffsetY - 阴影纵向偏移。默认值：0。
+*/
+
 _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
-_SuperMap.SuperMap.Feature.ShapeParameters.Line = Line;
+_SuperMap.SuperMap.Feature.ShapeParameters.Label = Label;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25202,7 +25384,7 @@ var UGCLayer = exports.UGCLayer = function () {
 _SuperMap.SuperMap.UGCLayer = UGCLayer;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25372,7 +25554,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
 _SuperMap.SuperMap.ThemeRange = ThemeRange;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25393,9 +25575,9 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(25);
 
-var _ThemeFlow = __webpack_require__(73);
+var _ThemeFlow = __webpack_require__(74);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(73);
 
 var _ThemeGraduatedSymbolStyle = __webpack_require__(216);
 
@@ -25585,7 +25767,7 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
 _SuperMap.SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25729,7 +25911,7 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
 _SuperMap.SuperMap.ThemeDotDensity = ThemeDotDensity;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25750,9 +25932,9 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(25);
 
-var _ThemeFlow = __webpack_require__(73);
+var _ThemeFlow = __webpack_require__(74);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(73);
 
 var _ThemeGraphAxes = __webpack_require__(220);
 
@@ -26136,7 +26318,7 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
 _SuperMap.SuperMap.ThemeGraph = ThemeGraph;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26159,7 +26341,7 @@ var _Theme2 = __webpack_require__(25);
 
 var _ServerStyle = __webpack_require__(13);
 
-var _ThemeUniqueItem = __webpack_require__(106);
+var _ThemeUniqueItem = __webpack_require__(107);
 
 var _REST = __webpack_require__(2);
 
@@ -26316,7 +26498,7 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
 _SuperMap.SuperMap.ThemeUnique = ThemeUnique;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26446,7 +26628,7 @@ var ThemeUniqueItem = exports.ThemeUniqueItem = function () {
 _SuperMap.SuperMap.ThemeUniqueItem = ThemeUniqueItem;
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26465,7 +26647,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(75);
+var _ThiessenAnalystParameters = __webpack_require__(76);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -26551,7 +26733,7 @@ var GeometryThiessenAnalystParameters = exports.GeometryThiessenAnalystParameter
 _SuperMap.SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26570,7 +26752,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _OverlayAnalystParameters = __webpack_require__(109);
+var _OverlayAnalystParameters = __webpack_require__(110);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -26705,7 +26887,7 @@ var GeometryOverlayAnalystParameters = exports.GeometryOverlayAnalystParameters 
 _SuperMap.SuperMap.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters;
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26768,7 +26950,7 @@ var OverlayAnalystParameters = exports.OverlayAnalystParameters = function () {
 _SuperMap.SuperMap.OverlayAnalystParameters = OverlayAnalystParameters;
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26787,7 +26969,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferAnalystParameters = __webpack_require__(112);
+var _BufferAnalystParameters = __webpack_require__(113);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -26890,7 +27072,7 @@ var GeometryBufferAnalystParameters = exports.GeometryBufferAnalystParameters = 
 _SuperMap.SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters;
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27054,7 +27236,7 @@ var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
 _SuperMap.SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27119,7 +27301,7 @@ var BufferAnalystParameters = exports.BufferAnalystParameters = function () {
 _SuperMap.SuperMap.BufferAnalystParameters = BufferAnalystParameters;
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27197,7 +27379,7 @@ var AggregationParameter = exports.AggregationParameter = function () {
 _SuperMap.SuperMap.AggregationParameter = AggregationParameter;
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27257,7 +27439,7 @@ var AggQueryBuilderParameter = exports.AggQueryBuilderParameter = function () {
 _SuperMap.SuperMap.AggQueryBuilderParameter = AggQueryBuilderParameter;
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27287,7 +27469,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27304,7 +27486,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(117);
+var _Format2 = __webpack_require__(118);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27613,7 +27795,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 _SuperMap.SuperMap.Format.JSON = JSONFormat;
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27710,7 +27892,7 @@ var Format = exports.Format = function () {
 _SuperMap.SuperMap.Format = Format;
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27828,7 +28010,7 @@ Credential.CREDENTIAL = null;
 _SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27855,7 +28037,7 @@ var _Point = __webpack_require__(22);
 
 __webpack_require__(21);
 
-__webpack_require__(82);
+__webpack_require__(83);
 
 __webpack_require__(43);
 
@@ -28212,7 +28394,7 @@ var GeoText = exports.GeoText = function (_Geometry) {
 _SuperMap.SuperMap.Geometry.GeoText = GeoText;
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28268,7 +28450,7 @@ var Curve = exports.Curve = function (_MultiPoint) {
 _SuperMap.SuperMap.Geometry.Curve = Curve;
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28287,7 +28469,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _StyleUtils = __webpack_require__(91);
+var _StyleUtils = __webpack_require__(92);
 
 var _Util = __webpack_require__(6);
 
@@ -28918,7 +29100,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
 _openlayers2.default.supermap.VectorTileStyles = VectorTileStyles;
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28975,8 +29157,8 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
             if (me.context == '2d') {
                 canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
             }
-            canvas.style.width = canvas.width + "px";
-            canvas.style.height = canvas.height + "px";
+            canvas.style.width = me.width + "px";
+            canvas.style.height = me.height + "px";
         }
 
         /**
@@ -29000,12 +29182,10 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
     }, {
         key: 'resize',
         value: function resize(mapWidth, mapHeight) {
-            this.canvas.width = mapWidth;
-            this.canvas.height = mapHeight;
             var global$2 = typeof window === 'undefined' ? {} : window;
             var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
-            this.canvas.width = parseInt(this.width) * devicePixelRatio;
-            this.canvas.height = parseInt(this.height) * devicePixelRatio;
+            this.canvas.width = mapWidth * devicePixelRatio;
+            this.canvas.height = mapHeight * devicePixelRatio;
             if (this.context == '2d') {
                 this.canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
             }
@@ -29053,7 +29233,7 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
 }();
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29072,7 +29252,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _MapvCanvasLayer = __webpack_require__(122);
+var _MapvCanvasLayer = __webpack_require__(123);
 
 var _mapv = __webpack_require__(312);
 
@@ -29141,6 +29321,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
         map.on('movestart', _this.moveStartEvent.bind(_this));
         map.on('moveend', _this.moveEndEvent.bind(_this));
         map.getView().on('change:center', _this.zoomEvent.bind(_this));
+        map.getView().on('change:size', _this.sizeEvent.bind(_this));
         map.on('pointerdrag', _this.dragEvent.bind(_this));
         _this.bindEvent();
         return _this;
@@ -29212,6 +29393,16 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
         key: 'zoomEvent',
         value: function zoomEvent() {
             this.clear(this.getContext());
+        }
+        /**
+         * @function MapvLayer.prototype.zoomEvent
+         * @description 缩放事件
+         */
+
+    }, {
+        key: 'sizeEvent',
+        value: function sizeEvent() {
+            this.canvasLayer.resize();
         }
 
         /**
@@ -29414,7 +29605,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
                     var x = (coordinate[0] - self._mapCenter[0]) / self._reselutions,
                         y = (self._mapCenter[1] - coordinate[1]) / self._reselutions;
                     var scaledP = [x + self._mapCenterPx[0], y + self._mapCenterPx[1]];
-                    scaledP = scale(scaledP, self._mapCenterPx, self.pixelRatio);
+                    scaledP = scale(scaledP, self._mapCenterPx, 1);
                     /*//有旋转量的时候处理旋转
                     if (self._rotation !== 0) {
                         var rotatedP = rotate(scaledP, self._rotation, self._mapCenterPx);
@@ -29491,7 +29682,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
 }(BaiduMapLayer);
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29501,7 +29692,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Graphic = __webpack_require__(132);
+var _Graphic = __webpack_require__(133);
 
 Object.defineProperty(exports, 'OverlayGraphic', {
   enumerable: true,
@@ -29510,7 +29701,7 @@ Object.defineProperty(exports, 'OverlayGraphic', {
   }
 });
 
-var _CloverShape = __webpack_require__(83);
+var _CloverShape = __webpack_require__(84);
 
 Object.defineProperty(exports, 'CloverShape', {
   enumerable: true,
@@ -29519,7 +29710,7 @@ Object.defineProperty(exports, 'CloverShape', {
   }
 });
 
-var _HitCloverShape = __webpack_require__(125);
+var _HitCloverShape = __webpack_require__(126);
 
 Object.defineProperty(exports, 'HitCloverShape', {
   enumerable: true,
@@ -29547,7 +29738,7 @@ Object.defineProperty(exports, 'GraphicWebGLRenderer', {
 });
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29564,7 +29755,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _CloverShape2 = __webpack_require__(83);
+var _CloverShape2 = __webpack_require__(84);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29646,7 +29837,7 @@ var HitCloverShape = exports.HitCloverShape = function (_CloverShape) {
 _openlayers2.default.style.HitCloverShape = HitCloverShape;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29667,7 +29858,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _Theme2 = __webpack_require__(84);
+var _Theme2 = __webpack_require__(85);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30135,7 +30326,7 @@ var Graph = exports.Graph = function (_Theme) {
 _openlayers2.default.source.Graph = Graph;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30312,7 +30503,7 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
 _openlayers2.default.supermap.DataFlowService = DataFlowService;
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30486,7 +30677,7 @@ var Label = exports.Label = function (_GeoFeature) {
          * @function ol.source.Label.prototype.getDrawnLabels
          * @description 获取经（压盖）处理后将要绘制在图层上的标签要素
          * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 所有标签要素的数组。
-         * @returns {Array<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
+         * @returns {Array.<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
          */
 
     }, {
@@ -30701,7 +30892,7 @@ var Label = exports.Label = function (_GeoFeature) {
         /**
          * @function ol.source.Label.prototype.setLabelsStyle
          * @description 设置标签要素的Style
-         * @param {Array<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
+         * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
          * @returns {Array.<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
          */
 
@@ -31255,7 +31446,7 @@ var Label = exports.Label = function (_GeoFeature) {
 _openlayers2.default.source.Label = Label;
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31425,7 +31616,7 @@ var Range = exports.Range = function (_GeoFeature) {
 _openlayers2.default.source.Range = Range;
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31591,7 +31782,7 @@ var Unique = exports.Unique = function (_GeoFeature) {
 _openlayers2.default.source.Unique = Unique;
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31873,7 +32064,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
 _openlayers2.default.supermap.FeatureService = FeatureService;
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32108,7 +32299,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
 _openlayers2.default.Graphic = Graphic;
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32121,7 +32312,7 @@ module.exports = function (phi, sphi, cphi, en) {
 };
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32259,7 +32450,7 @@ exports.inverse = function (p) {
 exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32981,7 +33172,7 @@ function getMinNorthing(zoneLetter) {
 }
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33002,7 +33193,7 @@ module.exports = function (array) {
 };
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33014,8 +33205,8 @@ var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
 var datum_transform = __webpack_require__(349);
 var adjust_axis = __webpack_require__(348);
-var proj = __webpack_require__(90);
-var toPoint = __webpack_require__(136);
+var proj = __webpack_require__(91);
+var toPoint = __webpack_require__(137);
 module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
@@ -33081,7 +33272,7 @@ module.exports = function transform(source, dest, point) {
 };
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33090,7 +33281,7 @@ module.exports = function transform(source, dest, point) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var D2R = 0.01745329251994329577;
-var extend = __webpack_require__(89);
+var extend = __webpack_require__(90);
 
 function mapit(obj, key, v) {
   obj[key] = v.map(function (aa) {
@@ -33278,7 +33469,7 @@ module.exports = function (wkt, self) {
 };
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33415,15 +33606,15 @@ module.exports = function (defData) {
 };
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var globals = __webpack_require__(359);
-var parseProj = __webpack_require__(139);
-var wkt = __webpack_require__(138);
+var parseProj = __webpack_require__(140);
+var wkt = __webpack_require__(139);
 
 function defs(name) {
   /*global console*/
@@ -33468,7 +33659,7 @@ globals(defs);
 module.exports = defs;
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33651,7 +33842,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
 _openlayers2.default.source.Tianditu = Tianditu;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33696,7 +33887,7 @@ var MapExtend = exports.MapExtend = function () {
 }();
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33829,7 +34020,7 @@ var DeafultCanvasStyle = exports.DeafultCanvasStyle = {
 };
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34084,7 +34275,7 @@ var StyleMap = exports.StyleMap = {
 };
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34210,7 +34401,7 @@ var Logo = exports.Logo = function (_ol$control$Control) {
 _openlayers2.default.supermap.control.Logo = Logo;
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34320,7 +34511,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
 _openlayers2.default.supermap.MapService = MapService;
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34867,7 +35058,7 @@ var Easing = exports.Easing = function () {
 }();
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34880,7 +35071,7 @@ exports.Clip = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Easing = __webpack_require__(147);
+var _Easing = __webpack_require__(148);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35003,7 +35194,7 @@ var Clip = exports.Clip = function () {
 }();
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35022,7 +35213,7 @@ var _Util = __webpack_require__(29);
 
 var _Eventful2 = __webpack_require__(51);
 
-var _Clip = __webpack_require__(148);
+var _Clip = __webpack_require__(149);
 
 var _SUtil = __webpack_require__(11);
 
@@ -35711,7 +35902,7 @@ var Animator = exports.Animator = function () {
 }();
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36842,7 +37033,7 @@ var Handler = exports.Handler = function (_Eventful) {
 }(_Eventful2.Eventful);
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36857,7 +37048,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Transformable2 = __webpack_require__(67);
 
-var _SmicImage = __webpack_require__(93);
+var _SmicImage = __webpack_require__(94);
 
 var _Util = __webpack_require__(1);
 
@@ -37330,9 +37521,9 @@ var Painter = exports.Painter = function () {
          * @param {string} [config.clearColor=0] - 每次清空画布的颜色。
          * @param {boolean} [config.motionBlur=false] - 是否开启动态模糊。
          * @param {number} [config.lastFrameAlpha=0.7] - 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
-         * @param {Array.{number}} config.position - 层的平移。
-         * @param {Array.{number}} config.rotation - 层的旋转。
-         * @param {Array.{number}} config.scale - 层的缩放。
+         * @param {Array.<number>} config.position - 层的平移。
+         * @param {Array.<number>} config.rotation - 层的旋转。
+         * @param {Array.<number>} config.scale - 层的缩放。
          * @param {boolean} config.zoomable - 层是否支持鼠标缩放操作。默认值：false。
          * @param {boolean} config.panable - 层是否支持鼠标平移操作。默认值：false。
          *
@@ -38034,7 +38225,7 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
 }(_Transformable2.Transformable);
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38172,7 +38363,7 @@ var Group = exports.Group = function (_SuperMap$mixin) {
         /**
          * @function SuperMap.LevelRenderer.Group.prototype.children
          * @description 复制并返回一份新的包含所有儿子节点的数组。
-         * @returns {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+         * @returns {Array.<SuperMap.LevelRenderer.Shape>} 图形数组。
          */
 
     }, {
@@ -38350,7 +38541,7 @@ var Group = exports.Group = function (_SuperMap$mixin) {
 }(_SuperMap.SuperMap.mixin(_Eventful.Eventful, _Transformable.Transformable));
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38365,7 +38556,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Util = __webpack_require__(29);
 
-var _Group = __webpack_require__(152);
+var _Group = __webpack_require__(153);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38762,7 +38953,7 @@ var Storage = exports.Storage = function () {
          * @function SuperMap.LevelRenderer.Storage.prototype.delRoot
          * @description 删除指定的图形(Shape)或者组(Group)。
          *
-         * @param {Array.{string}} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
+         * @param {Array.<string>} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
          *
          */
 
@@ -38899,7 +39090,7 @@ var Storage = exports.Storage = function () {
 }();
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38922,13 +39113,13 @@ var _Util = __webpack_require__(29);
 
 var _Util2 = __webpack_require__(1);
 
-var _Storage = __webpack_require__(153);
+var _Storage = __webpack_require__(154);
 
-var _Painter = __webpack_require__(151);
+var _Painter = __webpack_require__(152);
 
-var _Handler = __webpack_require__(150);
+var _Handler = __webpack_require__(151);
 
-var _Animation = __webpack_require__(149);
+var _Animation = __webpack_require__(150);
 
 var _SUtil = __webpack_require__(11);
 
@@ -39148,9 +39339,9 @@ var Render = exports.Render = function () {
          * @param {string} clearColor - 每次清空画布的颜色。默认值：0。
          * @param {noolean} motionBlur - 是否开启动态模糊。默认值：false。
          * @param {number}  lastFrameAlpha - 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
-         * @param {Array.{number}} position - 层的平移。
-         * @param {Array.{number}} rotation - 层的旋转。
-         * @param {Array.{number}} scale - 层的缩放。
+         * @param {Array.<number>} position - 层的平移。
+         * @param {Array.<number>} rotation - 层的旋转。
+         * @param {Array.<number>} scale - 层的缩放。
          * @param {boolean} zoomable - 层是否支持鼠标缩放操作。默认值：false。
          * @param {boolean} panable - 层是否支持鼠标平移操作。默认值：false。
          * @return {SuperMap.LevelRenderer.Render} this。
@@ -39270,14 +39461,14 @@ var Render = exports.Render = function () {
          * @function SuperMap.LevelRenderer.Render.prototype.animate
          * @description 动画。
          *
-         * (code)
+         * @example
          *     zr.animate(circle.id, 'style', false)
          *         .when(1000, {x: 10} )
          *         .done(function(){ // Animation done })
          *         .start()
-         * (end)
+         * 
          *
-         * @param {Array{(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)}} el - 动画对象。
+         * @param {Array.<(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)>} el - 动画对象。
          * @param {string} path - 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>,path需为空字符串。
          * @param {Function} loop - 动画是否循环。
          * @return {SuperMap.LevelRenderer.animation.Animator} Animator。
@@ -39572,7 +39763,7 @@ var Render = exports.Render = function () {
 }();
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39602,7 +39793,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 符号专题要素基类。
  * @category Visualization Theme
  * @description 此类定义了符号专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
- * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.RankSymbol::setting> 的基础属性只有 5 个，
+ * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.RankSymbol.setting> 的基础属性只有 5 个，
  * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  * 此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
@@ -39662,11 +39853,11 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
                  * @description 初始化专题要素（图形）基础参数。
                  * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
                  * 调用此函数关系到 setting 对象的以下属性。
-                 * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
-                 * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
-                 * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
-                 * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
-                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+                 * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+                 * @param {number} XOffset - 专题要素（图形）在 X 方向上的偏移值，单位像素。
+                 * @param {number} YOffset - 专题要素（图形）在 Y 方向上的偏移值，单位像素。
+                 * @param {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+                 * @param {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
                  * @returns {boolean} 初始化参数是否成功。
                  */
 
@@ -39756,7 +39947,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.RankSymbol = RankSymbol;
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39788,7 +39979,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 扇形。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
  *         style: {
  *             x: 100,
@@ -39800,7 +39991,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  *
  */
 var SmicSector = exports.SmicSector = function (_Shape) {
@@ -39991,7 +40182,7 @@ var SmicSector = exports.SmicSector = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40021,7 +40212,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 圆形
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
  *         style: {
  *             x: 100,
@@ -40035,7 +40226,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 var SmicCircle = exports.SmicCircle = function (_Shape) {
@@ -40178,7 +40369,7 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40431,7 +40622,7 @@ var Matrix = exports.Matrix = function () {
 }();
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40532,7 +40723,7 @@ var Math = exports.Math = function () {
 }();
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40600,7 +40791,7 @@ var Log = exports.Log = function () {
 }();
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40676,7 +40867,7 @@ var Http = exports.Http = function () {
 }();
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40766,7 +40957,7 @@ var Event = exports.Event = function () {
 }();
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40911,7 +41102,7 @@ var Env = exports.Env = function () {
 }();
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40997,12 +41188,12 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
         /**
          * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.cubeBezier
          * @description 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入'min'和'max'中。原：computeCubeBezierBoundingBox。
-         * @param {Array<number>} p0 - 三阶贝塞尔曲线p0点
-         * @param {Array{number}} p1 - 三阶贝塞尔曲线p1点
-         * @param {Array<number>} p2 - 三阶贝塞尔曲线p2点
-         * @param {Array<number>} p3 - 三阶贝塞尔曲线p3点
-         * @param {Array<number>} min - 最小
-         * @param {Array<number>} max - 最大
+         * @param {Array.<number>} p0 - 三阶贝塞尔曲线p0点
+         * @param {Array.<number>} p1 - 三阶贝塞尔曲线p1点
+         * @param {Array.<number>} p2 - 三阶贝塞尔曲线p2点
+         * @param {Array.<number>} p3 - 三阶贝塞尔曲线p3点
+         * @param {Array.<number>} min - 最小
+         * @param {Array.<number>} max - 最大
          */
 
     }, {
@@ -41038,11 +41229,11 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
         /**
          * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.quadraticBezier
          * @description 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入'min'和'max'中。原：computeQuadraticBezierBoundingBox。
-         * @param {Array<number>} p0 - 二阶贝塞尔曲线p0点
-         * @param {Array{number}} p1 - 二阶贝塞尔曲线p1点
-         * @param {Array<number>} p2 - 二阶贝塞尔曲线p2点
-         * @param {Array<number>} min - 最小
-         * @param {Array<number>} max - 最大
+         * @param {Array.<number>} p0 - 二阶贝塞尔曲线p0点
+         * @param {Array.<number>} p1 - 二阶贝塞尔曲线p1点
+         * @param {Array.<number>} p2 - 二阶贝塞尔曲线p2点
+         * @param {Array.<number>} min - 最小
+         * @param {Array.<number>} max - 最大
          */
 
     }, {
@@ -41141,7 +41332,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 }();
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42218,7 +42409,7 @@ var Area = exports.Area = function () {
 }();
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42359,99 +42550,6 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Image = Image;
 
 /***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Label = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _ShapeParameters2 = __webpack_require__(23);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class  SuperMap.Feature.ShapeParameters.Label
- * @category Visualization Theme
- * @classdesc 标签参数对象。
- * @extent {SuperMap.Feature.ShapeParameters}
- */
-var Label = exports.Label = function (_ShapeParameters) {
-  _inherits(Label, _ShapeParameters);
-
-  /**
-   * @function SuperMap.Feature.ShapeParameters.Label.prototype.constructor
-   * @description 创建一个标签参数对象。
-   * @param {number} x - 横坐标，必设参数。
-   * @param {number} y - 纵坐标，必设参数。
-   * @param {string} text - 图形中的附加文本，必设参数。
-   * @returns {SuperMap.Feature.ShapeParameters.Label} 标签参数对象。
-   */
-  function Label(x, y, text) {
-    _classCallCheck(this, Label);
-
-    /**
-     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.x
-     * @description 标签 x 坐标。
-     */
-    var _this = _possibleConstructorReturn(this, (Label.__proto__ || Object.getPrototypeOf(Label)).call(this, x, y, text));
-
-    _this.x = x;
-
-    /**
-     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.y
-     * @description 标签 y 坐标。
-     */
-    _this.y = y;
-
-    /**
-     * @member {number} SuperMap.Feature.ShapeParameters.Label.prototype.text
-     * @description 标签的文本内容。
-     */
-    _this.text = text;
-
-    _this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Label";
-    return _this;
-  }
-
-  /**
-   * @function SuperMap.Feature.ShapeParameters.Label.prototype.destroy
-   * @description 销毁对象。
-   */
-
-
-  _createClass(Label, [{
-    key: 'destroy',
-    value: function destroy() {
-      this.x = null;
-      this.y = null;
-      this.text = null;
-
-      _get(Label.prototype.__proto__ || Object.getPrototypeOf(Label.prototype), 'destroy', this).call(this);
-    }
-  }]);
-
-  return Label;
-}(_ShapeParameters2.ShapeParameters);
-
-_SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
-_SuperMap.SuperMap.Feature.ShapeParameters.Label = Label;
-
-/***/ }),
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42483,6 +42581,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 矩形参数对象。
  * @extends {SuperMap.Feature.ShapeParameters}
  */
+
 var Rectangle = exports.Rectangle = function (_ShapeParameters) {
   _inherits(Rectangle, _ShapeParameters);
 
@@ -42548,6 +42647,24 @@ var Rectangle = exports.Rectangle = function (_ShapeParameters) {
 
   return Rectangle;
 }(_ShapeParameters2.ShapeParameters);
+
+/**
+ * @typedef {Object} SuperMap.Feature.ShapeParameters.Rectangle.style
+ * @property {boolean} fill - 是否填充，不需要填充则设置为false，默认值为 true。此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string}  fillColor - 十六进制填充颜色。默认值为 "#000000"。
+ * @property {number} fillOpacity - 填充不透明度。取值范围[0, 1]，默认值 1。
+ * @property {boolean} stroke - 是否描边，不需要描边则设置为 false，默认值为 false。此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染。
+ * @property {string}  strokeColor - 十六进制描边颜色。
+ * @property {number} strokeWidth - 描边宽度，默认值 1。
+ * @property {number} strokeOpacity - 描边的不透明度。取值范围[0, 1]，默认值 1。
+ * @property {string}  strokeLinecap - 线帽样式；strokeLinecap 有三种类型 ：“butt", "round", "square"; 默认为"butt"。
+ * @property {string}  strokeLineJoin - 线段连接样式；strokeLineJoin 有三种类型： “miter", "round", "bevel"; 默认为"miter"。
+ * @property {string}  strokeDashstyle - 虚线类型； strokeDashstyle 有八种类型 ：“dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"; 默认值 "solid"。solid 表示实线。
+ * @property {number} shadowBlur - 阴影模糊度，（大于 0 有效; 默认值 0）。
+ * @property {string}  shadowColor - 阴影颜色; 默认值 '#000000'。
+ * @property {number} shadowOffsetX - 阴影 X 方向偏移值; 默认值 0。
+ * @property {number} shadowOffsetY - 阴影 Y 方向偏移值; 默认值 0。
+*/
 
 _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Rectangle = Rectangle;
@@ -43793,19 +43910,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(78);
-
-__webpack_require__(103);
-
-__webpack_require__(102);
+__webpack_require__(79);
 
 __webpack_require__(104);
 
-__webpack_require__(74);
-
-__webpack_require__(101);
+__webpack_require__(103);
 
 __webpack_require__(105);
+
+__webpack_require__(75);
+
+__webpack_require__(102);
+
+__webpack_require__(106);
 
 __webpack_require__(183);
 
@@ -43878,7 +43995,7 @@ var ThemeParameters = exports.ThemeParameters = function () {
     /**
      * @member {Object} SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter
      * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
-     *  * values：{Array<number>} - 就是要过滤的值；<br>
+     *  * values：{Array.<number>} - 就是要过滤的值；<br>
      *  * fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
      *  * fieldValuesDisplayMode：{string} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
      */
@@ -45626,7 +45743,7 @@ var _Util = __webpack_require__(1);
 
 var _Geometry = __webpack_require__(26);
 
-__webpack_require__(77);
+__webpack_require__(78);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45779,7 +45896,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(77);
+__webpack_require__(78);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -46831,9 +46948,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThemeLabel = __webpack_require__(74);
+var _ThemeLabel = __webpack_require__(75);
 
-var _LabelMatrixCell2 = __webpack_require__(71);
+var _LabelMatrixCell2 = __webpack_require__(72);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -46924,7 +47041,7 @@ var _Util = __webpack_require__(1);
 
 var _ServerStyle = __webpack_require__(13);
 
-var _LabelMatrixCell2 = __webpack_require__(71);
+var _LabelMatrixCell2 = __webpack_require__(72);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47023,7 +47140,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LabelMatrixCell2 = __webpack_require__(71);
+var _LabelMatrixCell2 = __webpack_require__(72);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47324,7 +47441,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-__webpack_require__(75);
+__webpack_require__(76);
 
 var _InterpolationAnalystParameters = __webpack_require__(31);
 
@@ -48361,7 +48478,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCLayer = __webpack_require__(100);
+var _UGCLayer = __webpack_require__(101);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48530,7 +48647,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCLayer2 = __webpack_require__(100);
+var _UGCLayer2 = __webpack_require__(101);
 
 __webpack_require__(213);
 
@@ -50113,17 +50230,17 @@ var _Util = __webpack_require__(1);
 
 var _LonLat = __webpack_require__(43);
 
-var _ThemeLabel = __webpack_require__(74);
+var _ThemeLabel = __webpack_require__(75);
 
-var _ThemeUnique = __webpack_require__(105);
+var _ThemeUnique = __webpack_require__(106);
 
-var _ThemeGraph = __webpack_require__(104);
+var _ThemeGraph = __webpack_require__(105);
 
-var _ThemeDotDensity = __webpack_require__(103);
+var _ThemeDotDensity = __webpack_require__(104);
 
-var _ThemeGraduatedSymbol = __webpack_require__(102);
+var _ThemeGraduatedSymbol = __webpack_require__(103);
 
-var _ThemeRange = __webpack_require__(101);
+var _ThemeRange = __webpack_require__(102);
 
 var _UGCSubLayer2 = __webpack_require__(53);
 
@@ -50372,7 +50489,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 数据服务中数据集SQL查询参数类。
  * @param {Object} options - 参数。</br>
  * @param {SuperMap.FilterParameter} options.queryParameter - 查询过滤条件参数。</br>
- * @param {Array<string>} options.datasetNames - 数据集集合中的数据集名称列表。</br>
+ * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。</br>
  * @param {boolean} options.returnContent - 是否直接返回查询结果。</br>
  * @param {number} options.fromIndex - 查询结果的最小索引号。</br>
  * @param {number} options.toIndex - 查询结果的最大索引号。</br>
@@ -51226,7 +51343,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _SurfaceAnalystParameters = __webpack_require__(76);
+var _SurfaceAnalystParameters = __webpack_require__(77);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -51710,7 +51827,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {Object} options - 参数。<br>
  * @param {boolean} options.isAnalyzeById - 是否通过节点 ID 指定路径分析的结点。<br>
  * @param {boolean} options.hasLeastEdgeCount - 是否按照弧段数最少的进行最佳路径分析。<br>
- * @param {Array<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
  * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。
  */
 var FindPathParameters = exports.FindPathParameters = function () {
@@ -53016,7 +53133,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(75);
+var _ThiessenAnalystParameters = __webpack_require__(76);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -53289,7 +53406,7 @@ var _Util = __webpack_require__(1);
 
 var _FilterParameter = __webpack_require__(15);
 
-var _SurfaceAnalystParameters = __webpack_require__(76);
+var _SurfaceAnalystParameters = __webpack_require__(77);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -53430,7 +53547,7 @@ var _DataReturnOption = __webpack_require__(54);
 
 var _FilterParameter = __webpack_require__(15);
 
-var _OverlayAnalystParameters = __webpack_require__(109);
+var _OverlayAnalystParameters = __webpack_require__(110);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -54856,7 +54973,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DatasourceConnectionInfo = __webpack_require__(111);
+var _DatasourceConnectionInfo = __webpack_require__(112);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -55030,7 +55147,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferAnalystParameters = __webpack_require__(112);
+var _BufferAnalystParameters = __webpack_require__(113);
 
 var _DataReturnOption = __webpack_require__(54);
 
@@ -55776,7 +55893,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _iPortalServiceBase = __webpack_require__(79);
+var _iPortalServiceBase = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -55908,7 +56025,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _iPortalServiceBase = __webpack_require__(79);
+var _iPortalServiceBase = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56257,7 +56374,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(81);
+var _Events = __webpack_require__(82);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -60818,7 +60935,7 @@ Object.defineProperty(exports, 'ChartService', {
   }
 });
 
-var _DataFlowService = __webpack_require__(127);
+var _DataFlowService = __webpack_require__(128);
 
 Object.defineProperty(exports, 'DataFlowService', {
   enumerable: true,
@@ -60827,7 +60944,7 @@ Object.defineProperty(exports, 'DataFlowService', {
   }
 });
 
-var _FeatureService = __webpack_require__(131);
+var _FeatureService = __webpack_require__(132);
 
 Object.defineProperty(exports, 'FeatureService', {
   enumerable: true,
@@ -60863,7 +60980,7 @@ Object.defineProperty(exports, 'LayerInfoService', {
   }
 });
 
-var _MapService = __webpack_require__(146);
+var _MapService = __webpack_require__(147);
 
 Object.defineProperty(exports, 'MapService', {
   enumerable: true,
@@ -61349,6 +61466,30 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
         _this.url = options.url ? options.url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true' : "";
         _this.resolutions = options.resolutions;
         _this.style = options.style;
+        _this.selectedStyle = options.selectedStyle || function () {
+            return new _openlayers2.default.style.Style({
+                fill: new _openlayers2.default.style.Fill({
+                    color: 'rgba(255, 0, 0, 1)'
+                }),
+                stroke: new _openlayers2.default.style.Stroke({
+                    color: 'rgba(255, 0, 0, 1)',
+                    width: 10
+                }),
+                text: new _openlayers2.default.style.Text({
+                    font: 'normal 400 11.19px "Microsoft YaHei"',
+                    placement: 'point',
+                    fill: new _openlayers2.default.style.Fill({
+                        color: 'blue'
+                    })
+                }),
+                image: new _openlayers2.default.style.Circle({
+                    radius: 5,
+                    fill: new _openlayers2.default.style.Fill({
+                        color: 'blue'
+                    })
+                })
+            });
+        };
         _this.layersBySourceLayer = {};
         (0, _olExtends.olExtends)(_this.map);
         if (_this.style) {
@@ -61420,6 +61561,14 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
             return layers;
         }
     }, {
+        key: 'setSelectedId',
+        value: function setSelectedId(selectedId, sourceLayer) {
+            this.selectedObject = {
+                selectedId: selectedId,
+                sourceLayer: sourceLayer
+            };
+        }
+    }, {
         key: 'updateStyles',
         value: function updateStyles(layerStyles) {
             if (Object.prototype.toString.call(layerStyles) !== '[object Array]') {
@@ -61481,11 +61630,61 @@ var MapboxStyles = exports.MapboxStyles = function (_ol$Observable) {
             if (this.map) {
                 window.olms.applyBackground(this.map, mbStyle);
             }
-            this.featureStyleFuntion = window.olms.stylefunction({
+            this.featureStyleFuntion = this._getStyleFunction(mbStyle, spriteData, spriteImageUrl);
+        }
+    }, {
+        key: '_getStyleFunction',
+        value: function _getStyleFunction(mbStyle, spriteData, spriteImageUrl) {
+            var _this3 = this;
+
+            var fun = window.olms.stylefunction({
                 setStyle: function setStyle() {},
                 set: function set() {},
                 changed: function changed() {}
             }, mbStyle, this.source, this.resolutions, spriteData, spriteImageUrl);
+            return function (feature, resolution) {
+                var style = fun(feature, resolution);
+                if (_this3.selectedObject && _this3.selectedObject.selectedId === feature.getId() && _this3.selectedObject.sourceLayer === feature.get('layer')) {
+                    var styleIndex = style && style[0] ? style[0].getZIndex() : 99999;
+                    var selectStyles = _this3.selectedStyle(feature, resolution);
+                    if (!Array.isArray(selectStyles)) {
+                        selectStyles = [selectStyles];
+                    }
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = selectStyles[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var selectStyle = _step2.value;
+
+                            if (feature.getGeometry().getType() === 'Point' && style[0].getText() && selectStyle.getText()) {
+                                selectStyle.setFill(null);
+                                selectStyle.setStroke(null);
+                                selectStyle.setImage();
+                                selectStyle.getText().setText(style[0].getText().getText());
+                            }
+                            selectStyle.setZIndex(styleIndex);
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+
+                    return selectStyles;
+                }
+                return style;
+            };
         }
     }, {
         key: '_withPath',
@@ -61520,7 +61719,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _DeafultCanvasStyle = __webpack_require__(143);
+var _DeafultCanvasStyle = __webpack_require__(144);
 
 Object.keys(_DeafultCanvasStyle).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -61532,7 +61731,7 @@ Object.keys(_DeafultCanvasStyle).forEach(function (key) {
   });
 });
 
-var _StyleMap = __webpack_require__(144);
+var _StyleMap = __webpack_require__(145);
 
 Object.keys(_StyleMap).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -61544,7 +61743,7 @@ Object.keys(_StyleMap).forEach(function (key) {
   });
 });
 
-var _VectorTileStyles = __webpack_require__(121);
+var _VectorTileStyles = __webpack_require__(122);
 
 Object.defineProperty(exports, 'VectorTileStyles', {
   enumerable: true,
@@ -61582,7 +61781,7 @@ Object.defineProperty(exports, 'GeoFeature', {
   }
 });
 
-var _Theme = __webpack_require__(84);
+var _Theme = __webpack_require__(85);
 
 Object.defineProperty(exports, 'Theme', {
   enumerable: true,
@@ -61591,7 +61790,7 @@ Object.defineProperty(exports, 'Theme', {
   }
 });
 
-var _ThemeFeature = __webpack_require__(85);
+var _ThemeFeature = __webpack_require__(86);
 
 Object.defineProperty(exports, 'ThemeFeature', {
   enumerable: true,
@@ -61611,7 +61810,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _MapvCanvasLayer = __webpack_require__(122);
+var _MapvCanvasLayer = __webpack_require__(123);
 
 Object.defineProperty(exports, 'MapvCanvasLayer', {
   enumerable: true,
@@ -61620,7 +61819,7 @@ Object.defineProperty(exports, 'MapvCanvasLayer', {
   }
 });
 
-var _MapvLayer = __webpack_require__(123);
+var _MapvLayer = __webpack_require__(124);
 
 Object.defineProperty(exports, 'MapvLayer', {
   enumerable: true,
@@ -62108,7 +62307,7 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
         /**
          * @function ol.source.HeatMap.prototype.toiClientFeature
          * @description 转为 iClient 要素
-         * @param {Object|Array<ol.Feature>} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
+         * @param {Object|Array.<ol.Feature>} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
          * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
          */
 
@@ -62175,7 +62374,7 @@ var _Util = __webpack_require__(6);
 
 var _iclientCommon = __webpack_require__(4);
 
-__webpack_require__(121);
+__webpack_require__(122);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62851,7 +63050,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _Graph2 = __webpack_require__(126);
+var _Graph2 = __webpack_require__(127);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62883,10 +63082,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性：<br>
  *  * width - {number} 专题要素（图表）宽度，必设参数。
  *  * height - {number} 专题要素（图表）高度，必设参数。
- *  * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * codomain - {Array.<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
  *  * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。
  *  * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- *  * dataViewBoxParameter - {Array{number}} 数据视图框 dataViewBox 参数，
+ *  * dataViewBoxParameter - {Array.<number>} 数据视图框 dataViewBox 参数，
  *  它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
  *  如果不设置此参数，在取数据值时不对数据做小数位处理。
@@ -62994,7 +63193,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _MapvLayer = __webpack_require__(123);
+var _MapvLayer = __webpack_require__(124);
 
 var _Util = __webpack_require__(6);
 
@@ -63039,15 +63238,15 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             // eslint-disable-line no-unused-vars
-            var mapWidth = size[0] * pixelRatio;
-            var mapHeight = size[1] * pixelRatio;
-            var width = this.map.getSize()[0] * pixelRatio;
-            var height = this.map.getSize()[1] * pixelRatio;
+            var mapWidth = size[0] / pixelRatio;
+            var mapHeight = size[1] / pixelRatio;
+            var width = this.map.getSize()[0];
+            var height = this.map.getSize()[1];
             if (!this.layer) {
                 this.layer = new _MapvLayer.MapvLayer(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
             }
             this.layer.pixelRatio = pixelRatio;
-            this.layer.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+            this.layer.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
             if (!this.rotate) {
                 this.rotate = this.map.getView().getRotation();
             } else {
@@ -63066,11 +63265,11 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
             }
             var canvas2 = this.context.canvas;
             this.context.clearRect(0, 0, canvas2.width, canvas2.height);
-            canvas2.width = mapWidth;
-            canvas2.height = mapHeight;
-            canvas2.style.width = mapWidth + "px";
-            canvas2.style.height = mapHeight + "px";
-            this.context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            canvas2.width = size[0];
+            canvas2.height = size[0];
+            canvas2.style.width = size[0] + "px";
+            canvas2.style.height = size[0] + "px";
+            this.context.drawImage(canvas, 0, 0, size[0], size[0], 0, 0, size[0], size[0]);
             if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
                 this.resolution = resolution;
                 this.extent = extent;
@@ -63216,7 +63415,7 @@ var CSS_TRANSFORM = function () {
  * @param {number} options.width - 地图宽度
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
- * @param {Array<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255],
+ * @param {Array.<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255],
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组
@@ -63770,17 +63969,17 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-__webpack_require__(142);
+__webpack_require__(143);
 
 var _Util = __webpack_require__(6);
 
-var _HitCloverShape = __webpack_require__(125);
+var _HitCloverShape = __webpack_require__(126);
 
-var _CloverShape = __webpack_require__(83);
+var _CloverShape = __webpack_require__(84);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _graphic = __webpack_require__(124);
+var _graphic = __webpack_require__(125);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64232,7 +64431,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _DataFlowService = __webpack_require__(127);
+var _DataFlowService = __webpack_require__(128);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64361,7 +64560,7 @@ Object.defineProperty(exports, 'DataFlow', {
   }
 });
 
-var _Graph = __webpack_require__(126);
+var _Graph = __webpack_require__(127);
 
 Object.defineProperty(exports, 'Graph', {
   enumerable: true,
@@ -64379,7 +64578,7 @@ Object.defineProperty(exports, 'Graphic', {
   }
 });
 
-var _Label = __webpack_require__(128);
+var _Label = __webpack_require__(129);
 
 Object.defineProperty(exports, 'Label', {
   enumerable: true,
@@ -64397,7 +64596,7 @@ Object.defineProperty(exports, 'Mapv', {
   }
 });
 
-var _Range = __webpack_require__(129);
+var _Range = __webpack_require__(130);
 
 Object.defineProperty(exports, 'Range', {
   enumerable: true,
@@ -64424,7 +64623,7 @@ Object.defineProperty(exports, 'Turf', {
   }
 });
 
-var _Unique = __webpack_require__(130);
+var _Unique = __webpack_require__(131);
 
 Object.defineProperty(exports, 'Unique', {
   enumerable: true,
@@ -64451,7 +64650,7 @@ Object.defineProperty(exports, 'HeatMap', {
   }
 });
 
-var _index = __webpack_require__(124);
+var _index = __webpack_require__(125);
 
 Object.keys(_index).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -64514,9 +64713,9 @@ var e0fn = __webpack_require__(49);
 var e1fn = __webpack_require__(48);
 var e2fn = __webpack_require__(47);
 var e3fn = __webpack_require__(46);
-var gN = __webpack_require__(88);
+var gN = __webpack_require__(89);
 var asinz = __webpack_require__(37);
-var imlfn = __webpack_require__(87);
+var imlfn = __webpack_require__(88);
 exports.init = function () {
   this.sin_p12 = Math.sin(this.lat0);
   this.cos_p12 = Math.cos(this.lat0);
@@ -64826,7 +65025,7 @@ var msfnz = __webpack_require__(38);
 var mlfn = __webpack_require__(45);
 var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(44);
-var imlfn = __webpack_require__(87);
+var imlfn = __webpack_require__(88);
 var EPSLN = 1.0e-10;
 exports.init = function () {
 
@@ -65015,7 +65214,7 @@ exports.names = ["Mollweide", "moll"];
 "use strict";
 
 
-var pj_mlfn = __webpack_require__(133);
+var pj_mlfn = __webpack_require__(134);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function (arg, es, en) {
@@ -65080,7 +65279,7 @@ var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(44);
 var pj_enfn = __webpack_require__(324);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(133);
+var pj_mlfn = __webpack_require__(134);
 var pj_inv_mlfn = __webpack_require__(323);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
@@ -65466,7 +65665,7 @@ var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(44);
 var mlfn = __webpack_require__(45);
 var EPSLN = 1.0e-10;
-var gN = __webpack_require__(88);
+var gN = __webpack_require__(89);
 var MAX_ITER = 20;
 exports.init = function () {
   /* Place parameters in static storage for common use
@@ -65673,7 +65872,7 @@ module.exports = function (eccent, q) {
 
 
 var adjust_lon = __webpack_require__(7);
-var qsfnz = __webpack_require__(86);
+var qsfnz = __webpack_require__(87);
 var msfnz = __webpack_require__(38);
 var iqsfnz = __webpack_require__(330);
 /*
@@ -65844,7 +66043,7 @@ exports.names = ["gnom"];
 
 var EPSLN = 1.0e-10;
 var msfnz = __webpack_require__(38);
-var qsfnz = __webpack_require__(86);
+var qsfnz = __webpack_require__(87);
 var adjust_lon = __webpack_require__(7);
 var asinz = __webpack_require__(37);
 exports.init = function () {
@@ -65970,7 +66169,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 var HALF_PI = Math.PI / 2;
 var FORTPI = Math.PI / 4;
 var EPSLN = 1.0e-10;
-var qsfnz = __webpack_require__(86);
+var qsfnz = __webpack_require__(87);
 var adjust_lon = __webpack_require__(7);
 /*
   reference
@@ -66257,10 +66456,10 @@ var e0fn = __webpack_require__(49);
 var e1fn = __webpack_require__(48);
 var e2fn = __webpack_require__(47);
 var e3fn = __webpack_require__(46);
-var gN = __webpack_require__(88);
+var gN = __webpack_require__(89);
 var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(44);
-var imlfn = __webpack_require__(87);
+var imlfn = __webpack_require__(88);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
 exports.init = function () {
@@ -67137,7 +67336,7 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(134);
+var tmerc = __webpack_require__(135);
 exports.dependsOn = 'tmerc';
 exports.init = function () {
   if (!this.zone) {
@@ -67162,7 +67361,7 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 "use strict";
 
 
-var projs = [__webpack_require__(134), __webpack_require__(344), __webpack_require__(343), __webpack_require__(340), __webpack_require__(339), __webpack_require__(338), __webpack_require__(337), __webpack_require__(336), __webpack_require__(335), __webpack_require__(334), __webpack_require__(333), __webpack_require__(332), __webpack_require__(331), __webpack_require__(329), __webpack_require__(328), __webpack_require__(327), __webpack_require__(326), __webpack_require__(325), __webpack_require__(322), __webpack_require__(321), __webpack_require__(320), __webpack_require__(319)];
+var projs = [__webpack_require__(135), __webpack_require__(344), __webpack_require__(343), __webpack_require__(340), __webpack_require__(339), __webpack_require__(338), __webpack_require__(337), __webpack_require__(336), __webpack_require__(335), __webpack_require__(334), __webpack_require__(333), __webpack_require__(332), __webpack_require__(331), __webpack_require__(329), __webpack_require__(328), __webpack_require__(327), __webpack_require__(326), __webpack_require__(325), __webpack_require__(322), __webpack_require__(321), __webpack_require__(320), __webpack_require__(319)];
 module.exports = function (proj4) {
   projs.forEach(function (proj) {
     proj4.Proj.projections.add(proj);
@@ -67173,7 +67372,7 @@ module.exports = function (proj4) {
 /* 346 */
 /***/ (function(module) {
 
-module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 347 */
@@ -67184,7 +67383,7 @@ module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.1
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var mgrs = __webpack_require__(135);
+var mgrs = __webpack_require__(136);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -68093,7 +68292,7 @@ exports.rnb72 = {
 
 var Datum = __webpack_require__(352);
 var Ellipsoid = __webpack_require__(351);
-var extend = __webpack_require__(89);
+var extend = __webpack_require__(90);
 var datum = __webpack_require__(350);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
@@ -68361,9 +68560,9 @@ module.exports = function (defs) {
 "use strict";
 
 
-var defs = __webpack_require__(140);
-var wkt = __webpack_require__(138);
-var projStr = __webpack_require__(139);
+var defs = __webpack_require__(141);
+var wkt = __webpack_require__(139);
+var projStr = __webpack_require__(140);
 function testObj(code) {
   return typeof code === 'string';
 }
@@ -68403,8 +68602,8 @@ module.exports = parse;
 "use strict";
 
 
-var proj = __webpack_require__(90);
-var transform = __webpack_require__(137);
+var proj = __webpack_require__(91);
+var transform = __webpack_require__(138);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -68473,13 +68672,13 @@ module.exports = proj4;
 
 var proj4 = __webpack_require__(361);
 proj4.defaultDatum = 'WGS84'; //default datum
-proj4.Proj = __webpack_require__(90);
+proj4.Proj = __webpack_require__(91);
 proj4.WGS84 = new proj4.Proj('WGS84');
 proj4.Point = __webpack_require__(347);
-proj4.toPoint = __webpack_require__(136);
-proj4.defs = __webpack_require__(140);
-proj4.transform = __webpack_require__(137);
-proj4.mgrs = __webpack_require__(135);
+proj4.toPoint = __webpack_require__(137);
+proj4.defs = __webpack_require__(141);
+proj4.transform = __webpack_require__(138);
+proj4.mgrs = __webpack_require__(136);
 proj4.version = __webpack_require__(346).version;
 __webpack_require__(345)(proj4);
 module.exports = proj4;
@@ -68819,23 +69018,23 @@ var _iclientCommon = __webpack_require__(4);
 
 var _Util = __webpack_require__(6);
 
-var _StyleUtils = __webpack_require__(91);
+var _StyleUtils = __webpack_require__(92);
 
-var _Graphic = __webpack_require__(132);
+var _Graphic = __webpack_require__(133);
 
-var _ThemeFeature = __webpack_require__(85);
+var _ThemeFeature = __webpack_require__(86);
 
-var _FeatureService = __webpack_require__(131);
+var _FeatureService = __webpack_require__(132);
 
-var _Tianditu = __webpack_require__(141);
+var _Tianditu = __webpack_require__(142);
 
-var _Unique = __webpack_require__(130);
+var _Unique = __webpack_require__(131);
 
-var _Range = __webpack_require__(129);
+var _Range = __webpack_require__(130);
 
-var _Label = __webpack_require__(128);
+var _Label = __webpack_require__(129);
 
-var _Logo = __webpack_require__(145);
+var _Logo = __webpack_require__(146);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71147,7 +71346,7 @@ Object.defineProperty(exports, 'SuperMapCloud', {
   }
 });
 
-var _Tianditu = __webpack_require__(141);
+var _Tianditu = __webpack_require__(142);
 
 Object.defineProperty(exports, 'Tianditu', {
   enumerable: true,
@@ -71185,7 +71384,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _StyleUtils = __webpack_require__(91);
+var _StyleUtils = __webpack_require__(92);
 
 Object.defineProperty(exports, 'StyleUtils', {
   enumerable: true,
@@ -71203,7 +71402,7 @@ Object.defineProperty(exports, 'Util', {
   }
 });
 
-var _MapExtend = __webpack_require__(142);
+var _MapExtend = __webpack_require__(143);
 
 Object.defineProperty(exports, 'MapExtend', {
   enumerable: true,
@@ -71230,7 +71429,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _MapService = __webpack_require__(146);
+var _MapService = __webpack_require__(147);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71731,7 +71930,7 @@ Object.defineProperty(exports, 'ChangeTileVersion', {
   }
 });
 
-var _Logo = __webpack_require__(145);
+var _Logo = __webpack_require__(146);
 
 Object.defineProperty(exports, 'Logo', {
   enumerable: true,
@@ -71773,7 +71972,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc n 角星（n>3）。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicStar({
  *         style: {
  *             x: 200,
@@ -71784,7 +71983,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 var SmicStar = exports.SmicStar = function (_Shape) {
@@ -71997,7 +72196,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 圆环。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
  *         style: {
  *             x: 100,
@@ -72007,7 +72206,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  */
 var SmicRing = exports.SmicRing = function (_Shape) {
     _inherits(SmicRing, _Shape);
@@ -72368,7 +72567,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 椭圆。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
  *       style: {
  *           x: 100,
@@ -72383,7 +72582,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *       }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 var SmicEllipse = exports.SmicEllipse = function (_Shape) {
@@ -72546,7 +72745,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Render = __webpack_require__(154);
+var _Render = __webpack_require__(155);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72700,71 +72899,71 @@ exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformab
 
 var _LevelRenderer = __webpack_require__(378);
 
-var _Render = __webpack_require__(154);
+var _Render = __webpack_require__(155);
 
-var _Animation = __webpack_require__(149);
+var _Animation = __webpack_require__(150);
 
-var _Area = __webpack_require__(165);
+var _Area = __webpack_require__(166);
 
-var _Clip = __webpack_require__(148);
+var _Clip = __webpack_require__(149);
 
-var _Color = __webpack_require__(96);
+var _Color = __webpack_require__(97);
 
-var _ComputeBoundingBox = __webpack_require__(164);
+var _ComputeBoundingBox = __webpack_require__(165);
 
 var _Config = __webpack_require__(64);
 
 var _Curve = __webpack_require__(66);
 
-var _Easing = __webpack_require__(147);
+var _Easing = __webpack_require__(148);
 
-var _Env = __webpack_require__(163);
+var _Env = __webpack_require__(164);
 
-var _Event = __webpack_require__(162);
+var _Event = __webpack_require__(163);
 
 var _Eventful = __webpack_require__(51);
 
-var _Group = __webpack_require__(152);
+var _Group = __webpack_require__(153);
 
-var _Handler = __webpack_require__(150);
+var _Handler = __webpack_require__(151);
 
-var _Http = __webpack_require__(161);
+var _Http = __webpack_require__(162);
 
-var _Log = __webpack_require__(160);
+var _Log = __webpack_require__(161);
 
-var _Math = __webpack_require__(159);
+var _Math = __webpack_require__(160);
 
-var _Matrix = __webpack_require__(158);
+var _Matrix = __webpack_require__(159);
 
-var _Painter = __webpack_require__(151);
+var _Painter = __webpack_require__(152);
 
 var _Shape = __webpack_require__(12);
 
-var _SmicBrokenLine = __webpack_require__(94);
+var _SmicBrokenLine = __webpack_require__(95);
 
-var _SmicCircle = __webpack_require__(157);
+var _SmicCircle = __webpack_require__(158);
 
 var _SmicEllipse = __webpack_require__(377);
 
-var _SmicImage = __webpack_require__(93);
+var _SmicImage = __webpack_require__(94);
 
 var _SmicIsogon = __webpack_require__(376);
 
-var _SmicPoint = __webpack_require__(97);
+var _SmicPoint = __webpack_require__(98);
 
 var _SmicPolygon = __webpack_require__(63);
 
-var _SmicRectangle = __webpack_require__(92);
+var _SmicRectangle = __webpack_require__(93);
 
 var _SmicRing = __webpack_require__(375);
 
-var _SmicSector = __webpack_require__(156);
+var _SmicSector = __webpack_require__(157);
 
 var _SmicStar = __webpack_require__(374);
 
-var _SmicText = __webpack_require__(95);
+var _SmicText = __webpack_require__(96);
 
-var _Storage = __webpack_require__(153);
+var _Storage = __webpack_require__(154);
 
 var _Transformable = __webpack_require__(67);
 
@@ -72831,15 +73030,15 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _ShapeParameters = __webpack_require__(23);
 
-var _Circle = __webpack_require__(98);
+var _Circle = __webpack_require__(99);
 
-var _Image = __webpack_require__(166);
+var _Image = __webpack_require__(167);
 
-var _Label = __webpack_require__(167);
+var _Label = __webpack_require__(100);
 
-var _Line = __webpack_require__(99);
+var _Line = __webpack_require__(70);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
 var _Polygon = __webpack_require__(69);
 
@@ -72903,17 +73102,17 @@ var _Polygon = __webpack_require__(55);
 
 var _MultiPolygon = __webpack_require__(56);
 
-var _Curve = __webpack_require__(120);
+var _Curve = __webpack_require__(121);
 
-var _GeoText = __webpack_require__(119);
+var _GeoText = __webpack_require__(120);
 
-var _SmicPoint = __webpack_require__(97);
+var _SmicPoint = __webpack_require__(98);
 
-var _SmicBrokenLine = __webpack_require__(94);
+var _SmicBrokenLine = __webpack_require__(95);
 
-var _SmicText = __webpack_require__(95);
+var _SmicText = __webpack_require__(96);
 
-var _SmicRectangle = __webpack_require__(92);
+var _SmicRectangle = __webpack_require__(93);
 
 var _SmicPolygon = __webpack_require__(63);
 
@@ -73632,32 +73831,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 环状图。
  * @category Visualization Theme
  * @description 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
- * @param {Object} chartsSetting - 图表 Ring 配置对象。
- * @param {number} chartsSetting.width - 专题要素（图表）宽度，必设参数。
- * @param {number} chartsSetting.height - 专题要素（图表）高度，必设参数。
- * @param {Array.<number>} chartsSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- * @param {number} chartsSetting.XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @param {number} chartsSetting.YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- * @param {Array.<number>} chartsSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。
- * @param {number} chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @param {boolean} chartsSetting.useBackground - 是否使用图表背景框，默认不使用。
- * @param {Object} chartsSetting.backgroundStyle - 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
- * @param {Array.<number>} chartsSetting.backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
- * @param {number} chartsSetting.innerRingRadius - 环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。
- * @param {Object} chartsSetting.sectorStyle - 环状图中扇形的基础 style，此参数控制环状图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。
- * @param {Array.<Object>} sectorStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为环状图扇形赋 style，此参数按字段控制环状图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的环状图扇形使用 style1，字段 POP_1995 对应的环状图扇形使用 style2 ，字段 POP_1999 对应的环状图扇形使用 style3。
- * @param {Array.<Object>} sectorStyleByCodomain - 按环状图扇形代表的数据值所在值域范围控制环状图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
+ 
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.Feature.Theme.Ring.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- *
  * @example
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Sector.style> 。
  * // sectorStyleByCodomain 数组形如：
  * [
  *   {
@@ -73834,6 +74018,25 @@ var Ring = exports.Ring = function (_Graph) {
     return Ring;
 }(_Graph2.Graph);
 
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Ring.setting
+ * @property {number} width - 专题要素（图表）宽度，必设参数。
+ * @property {number} height - 专题要素（图表）高度，必设参数。
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ * @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @property {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。
+ * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @property {boolean} useBackground - 是否使用图表背景框，默认不使用。
+ * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式，此样式对象对象可设属性。
+ * @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
+ * @property {number} innerRingRadius - 环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。
+ * @property {SuperMap.Feature.ShapeParameters.Sector.style} sectorStyle - 环状图中扇形的基础 style，此参数控制环状图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Sector.style>} sectorStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields|L.supermap.graphThemeLayer.themeFields|ol.source.Graph.themeFields|mapboxgl.supermap.GraphThemeLayer.themeFields>）为环状图扇形赋 style，此参数按字段控制环状图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的环状图扇形使用 style1，字段 POP_1995 对应的环状图扇形使用 style2 ，字段 POP_1999 对应的环状图扇形使用 style3。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Sector.style>} sectorStyleByCodomain - 按环状图扇形代表的数据值所在值域范围控制环状图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
+ 
+ */
+
 _SuperMap.SuperMap.Feature.Theme.Ring = Ring;
 
 /***/ }),
@@ -73856,7 +74059,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -73870,56 +74073,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Point
  * @classdesc 点状图。
  * @category Visualization Theme
- * @description 图表 Point 配置对象 chartsSetting(SuperMap.Layer.Graph::chartsSetting) 可设属性如下：</br>
- * width - {number} 专题要素（图表）宽度，必设参数。</br>
- * height - {number} 专题要素（图表）高度，必设参数。</br>
- * codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
- *                     它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- *                     当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
- * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {boolean} 是否使用图表背景框。</br>
- * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- * backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
- *                 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- * xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
- *                 长度为 2 的数组，第一个元素表示第一个（沿 x 轴方向）图形点与数据视图框左端的空白间距，第二个元素表示最后一个（沿 x 轴方向）图形点与数据视图框右端端的空白间距 。</br>
- * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
- * axisYTick - {number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
- * axisYLabels - {Array<string>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
- * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- * axisYLabelsOffset - {Array<number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
- *                 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- * axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
- *                 标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
- *                 否则沿数据视图框下面条边等距排布标签。</br>
- * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- * axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
- *                 数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- * useXReferenceLine - {Boolean} 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
- * xReferenceLineStyle - {Object} 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * pointStyle - {Object} 点状图中图形点基础 style，此参数控制图形点基础样式，优先级低于 pointStyleByFields 和 pointStyleByCodomain。
- *               此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Point::style> 。</br>
- * pointStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为图形点赋 style，此参数按字段控制图形点样式，
- *               优先级低于 pointStyleByCodomain，高于 pointStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Point::style> 。
- *               此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的图形点使用 style1，字段 POP_1995 对应的图形点使用 style2 ，字段 POP_1999 对应的图形点使用 style3。</br>
- * pointStyleByCodomain - {Array<Object>} 按图形点代表的数据值所在值域范围控制图形点样式，优先级高于 pointStyle 和 pointStyleByFields。</br>
- *
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.Feature.Theme.Point.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- *
  * @example
  * // pointStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Point::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Point.style> 。
  * // pointStyleByCodomain 数组形如：
  * [
  *   {
@@ -74087,10 +74250,10 @@ var Point = exports.Point = function (_Graph) {
          *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *              本函数中图形配置对象 setting 可设属性：<br>
-         *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+         *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
          *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
-         *         xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
+         *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
          *         width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          */
 
@@ -74147,6 +74310,47 @@ var Point = exports.Point = function (_Graph) {
     return Point;
 }(_Graph2.Graph);
 
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Point.setting
+ * @property {number} width - 专题要素（图表）宽度，必设参数。
+ * @property {number} height - 专题要素（图表）高度，必设参数。
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @property {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，
+ *                     它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+ *                     当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
+ * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * @property {boolean} useBackground - 是否使用图表背景框。
+ * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
+ * @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
+ *                 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
+ * @property {Array.<number>} xShapeBlank - 水平方向上的图形空白间隔参数。
+ *                 长度为 2 的数组，第一个元素表示第一个（沿 x 轴方向）图形点与数据视图框左端的空白间距，第二个元素表示最后一个（沿 x 轴方向）图形点与数据视图框右端端的空白间距 。</br>
+ * @property {Object} axisStyle - 坐标轴样式。
+ * @property {boolean} axisUseArrow - 坐标轴是否使用箭头，默认值：false，不使用箭头。
+ * @property {number} axisYTick - y 轴刻度数量，默认值：0 ，不使用刻度。
+ * @property {Array.<string>} axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} axisYLabelsStyle - y 轴上的标签组样式。
+ * @property {Array.<number>} axisYLabelsOffset - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
+ * @property {Array.<string>} axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+ *                 标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
+ *                 否则沿数据视图框下面条边等距排布标签。
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} axisXLabelsStyle - x 轴上的标签组样式。
+ * @property {Array.<number>} axisXLabelsOffset - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                 数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。
+ * @property {boolean} useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} xReferenceLineStyle - 水平参考线样式。
+ * @property {SuperMap.Feature.ShapeParameters.Point.style} pointStyle - 点状图中图形点基础 style，此参数控制图形点基础样式，优先级低于 pointStyleByFields 和 pointStyleByCodomain。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Point.style>} pointStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为图形点赋 style，此参数按字段控制图形点样式，
+ *               优先级低于 pointStyleByCodomain，高于 pointStyle。此数组中的元素是样式对象。
+ *               此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ * pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的图形点使用 style1，字段 POP_1995 对应的图形点使用 style2 ，字段 POP_1999 对应的图形点使用 style3。</br>
+ * @property {Array.<Object>} pointStyleByCodomain - 按图形点代表的数据值所在值域范围控制图形点样式，优先级高于 pointStyle 和 pointStyleByFields。</br>
+ */
+
+
 _SuperMap.SuperMap.Feature.Theme.Point = Point;
 
 /***/ }),
@@ -74183,34 +74387,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Pie
  * @classdesc 饼图。
  * @category Visualization Theme
- * @description 图表 Pie 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
- * width - {number} 专题要素（图表）宽度，必设参数。</br>
- * height - {number} 专题要素（图表）高度，必设参数。</br>
- * codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
- * decimalNumber - {Array<number>}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {boolean} 是否使用图表背景框，默认不使用。</br>
- * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- * backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- * sectorStyle - {Object} 饼图中扇形的基础 style，此参数控制饼图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
- * sectorStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。</br>
- * sectorStyleByCodomain - {Array<Object>} 按饼图扇形代表的数据值所在值域范围控制饼图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
- * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
- * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
- * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
- * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- *
  * @example
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Sector.style> 。
  * // sectorStyleByCodomain 数组形如：
  * [
  *   {
@@ -74386,6 +74567,31 @@ var Pie = exports.Pie = function (_Graph) {
     return Pie;
 }(_Graph2.Graph);
 
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Pie.setting
+ * @property {number} width - 专题要素（图表）宽度，必设参数。
+ * @property {number} height - 专题要素（图表）高度，必设参数。
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @property {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，
+ * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
+ * @property {Array.<number>} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * @property {boolean} useBackground - 是否使用图表背景框，默认不使用。
+ * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
+ * @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Sector.style} sectorStyle - 饼图中扇形的基础 style，此参数控制饼图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Sector.style>} sectorStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。</br>
+ * @property {Array.<Object>} sectorStyleByCodomain - 按饼图扇形代表的数据值所在值域范围控制饼图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ *
+ */
+
 _SuperMap.SuperMap.Feature.Theme.Pie = Pie;
 
 /***/ }),
@@ -74408,9 +74614,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
-var _Line = __webpack_require__(99);
+var _Line = __webpack_require__(70);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -74424,54 +74630,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Line
  * @classdesc 折线图。
  * @category Visualization Theme
- * @description 图表 Line 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>）可设属性如下：<br>
- *              width - {number} 专题要素（图表）宽度，必设参数。<br>
- *              height - {number} 专题要素（图表）高度，必设参数。<br>
- *              codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- *              XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
- *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
- *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
- *                      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- *                      当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。<br>
- *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
- *              useBackground - {boolean} 是否使用图表背景框。<br>
- *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Rectangle::style>。<br>
- *              backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
- *                      则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。<br>
- *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。长度为 2 的数组，第一元素表示折线左端点与数据视图框左端的空白间距，
- *                       第二个元素表示折线右端点右端与数据视图框右端端的空白间距。<br>
- *              axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style>。<br>
- *              axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。<br>
- *              axisYTick - {number} y 轴刻度数量，默认值：0 ，不使用刻度。<br>
- *              axisYLabels - {Array<string>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。<br>
- *              axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。<br>
- *              axisYLabelsOffset - {Array<number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
- *                       数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
- *              axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
- *                       标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
- *                       否则沿数据视图框下面条边等距排布标签。<br>
- *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。<br>
- *              axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
- *                       数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
- *              useXReferenceLine - {Boolean} 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。<br>
- *              xReferenceLineStyle - {Object} 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style>。<br>
- *              lineStyle - {Object} 折线图中折线 style，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style>。<br>
- *              pointStyle - {Object} 折线图中折线节点基础 style，此参数控制折线节点基础样式，优先级低于 pointStyleByFields 和 pointStyleByCodomain。
- *                       此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Point::style> 。<br>
- *              pointStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为折线节点赋 style，此参数按字段控制折线节点样式，
- *                       优先级低于 pointStyleByCodomain，高于 pointStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Point::style> 。
- *                       此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- *                       pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的折线节点使用 style1，字段 POP_1995 对应的折线节点使用 style2 ，字段 POP_1999 对应的折线节点使用 style3。<br>
- *              pointStyleByCodomain - {Array<Object>} 按折线节点代表的数据值所在值域范围控制折线节点样式，优先级高于 pointStyle 和 pointStyleByFields。<br>
- *              pointHoverStyle - {Object} 折线节点 hover 状态时的样式，pointHoverAble 为 true 时有效。<br>
- *              pointHoverAble - {boolean} 是否允许折线节点使用 hover 状态，默认允许。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。<br>
- *              pointClickAble - {boolean} 是否允许折线节点被点击，默认允许。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。
  * @example
  * // pointStyleByCodomain 参数用法示例
  * // pointStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Point::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Point.style> 。
  * // pointStyleByCodomain 数组形如：
  * [
  *   {
@@ -74507,8 +74671,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.Feature.Theme.Graph
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
- * @param {Array<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
+ * @param {SuperMap.Feature.Theme.Line.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
@@ -74676,10 +74840,10 @@ var Line = exports.Line = function (_Graph) {
          *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *              本函数中图形配置对象 setting 可设属性：<br>
-         *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+         *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
          *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
-         *         xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。<br>
+         *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。<br>
          *         width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          */
 
@@ -74736,6 +74900,51 @@ var Line = exports.Line = function (_Graph) {
     return Line;
 }(_Graph2.Graph);
 
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Line.setting
+ * @property {number} width - 专题要素（图表）宽度，必设参数。
+ * @property {number} height - 专题要素（图表）高度，必设参数。
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+ * @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @property {Array.<number>} dataViewBoxParameter - {Array.<number>} 数据视图框 dataViewBox 参数，
+ *                      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+ *                      当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。<br>
+ * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
+ * @property {boolean} useBackground - 是否使用图表背景框。<br>
+ * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
+ * @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
+ *                      则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。<br>
+ * @property {Array.<number>} xShapeBlank - 水平方向上的图形空白间隔参数。长度为 2 的数组，第一元素表示折线左端点与数据视图框左端的空白间距，
+ *                       第二个元素表示折线右端点右端与数据视图框右端端的空白间距。<br>
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} axisStyle - 坐标轴样式。
+ * @property {boolean} axisUseArrow - 坐标轴是否使用箭头，默认值：false，不使用箭头。<br>
+ * @property {number} axisYTick - y 轴刻度数量，默认值：0 ，不使用刻度。<br>
+ * @property {Array.<string>}  axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。<br>
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} axisYLabelsStyle - y 轴上的标签组样式。
+ * @property {Array.<number>} axisYLabelsOffset - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                       数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
+ * @property {Array.<string>} axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+ *                       标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
+ *                       否则沿数据视图框下面条边等距排布标签。<br>
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} axisXLabelsStyle - x 轴上的标签组样式。
+ * @property {Array.<number>} axisXLabelsOffset - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                       数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
+ * @property {boolean} useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。<br>
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} xReferenceLineStyle - 水平参考线样式。
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} lineStyle - 折线图中折线 style。
+ * @property {SuperMap.Feature.ShapeParameters.Point.style} pointStyle - 折线图中折线节点基础 style，此参数控制折线节点基础样式，优先级低于 pointStyleByFields 和 pointStyleByCodomain。
+ * @property {SuperMap.Feature.ShapeParameters.Point.style} pointStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为折线节点赋 style，此参数按字段控制折线节点样式，
+ *                       优先级低于 pointStyleByCodomain，高于 pointStyle。此数组中的元素是样式对象。
+ *                       此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields|L.supermap.graphThemeLayer.themeFields|ol.source.Graph.themeFields|mapboxgl.supermap.GraphThemeLayer.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ *                       pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的折线节点使用 style1，字段 POP_1995 对应的折线节点使用 style2 ，字段 POP_1999 对应的折线节点使用 style3。<br>
+ * @property {Array.<Object>} pointStyleByCodomain - 按折线节点代表的数据值所在值域范围控制折线节点样式，优先级高于 pointStyle 和 pointStyleByFields。<br>
+ * @property {Object} pointHoverStyle - 折线节点 hover 状态时的样式，pointHoverAble 为 true 时有效。<br>
+ * @property {boolean} pointHoverAble - 是否允许折线节点使用 hover 状态，默认允许。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。<br>
+ * @property {boolean} pointClickAble - 是否允许折线节点被点击，默认允许。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。
+ 
+ */
+
 _SuperMap.SuperMap.Feature.Theme.Line = Line;
 
 /***/ }),
@@ -74758,11 +74967,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Theme = __webpack_require__(62);
 
-var _Circle = __webpack_require__(98);
+var _Circle = __webpack_require__(99);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _RankSymbol2 = __webpack_require__(155);
+var _RankSymbol2 = __webpack_require__(156);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74774,21 +74983,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
  * @category Visualization Theme
- * @description 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
- *            codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- *            maxR - {number} 圆形的最大半径。<br>
- *            minR - {number} 圆形的最小半径。<br>
- *            fillColor - {string} 圆形的填充色，如：fillColor: "#FFB980"。<br>
- *            circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。<br>
- *            decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
- *            circleHoverStyle - {Object} 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。<br>
- *            circleHoverAble - {boolean} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。<br>
- *            circleClickAble - {boolean} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends SuperMap.Feature.Theme.RankSymbol
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层，必设参数。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.Feature.Theme.Circle.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
@@ -74930,6 +75129,20 @@ var Circle = exports.Circle = function (_RankSymbol) {
     return Circle;
 }(_RankSymbol2.RankSymbol);
 
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Circle.setting
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ * @property {number} maxR - 圆形的最大半径。
+ * @property {number} minR - 圆形的最小半径。
+ * @property {string} fillColor - 圆形的填充色，如：fillColor: "#FFB980"。
+ * @property {Object} circleStyle - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @property {Object} circleHoverStyle - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ * @property {boolean} circleHoverAble - 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * @property {boolean} circleClickAble - 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * 
+ */
+
 _SuperMap.SuperMap.Feature.Theme.Circle = Circle;
 
 /***/ }),
@@ -74972,57 +75185,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.Feature.Theme.Bar3D.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
  *
- * @description 图表 Bar3D 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
- *              width - {number} 专题要素（图表）宽度，必设参数。</br>
- *              height - {number} 专题要素（图表）高度，必设参数。</br>
- *              codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- *              XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 25, 20, 20]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
- *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- *              useBackground - {boolean} 是否使用图表背景框，默认使用。</br>
- *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- *              backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
- *              bar3DParameter - {number} 3D 柱状参数，3d柱形正面相对于背面向 x 轴和 y 轴负方向偏移的绝对值，默认值：10。</br>
- *              useAxis - {boolean} 是否使用坐标轴，默认使用坐标轴。</br>
- *              axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- *              axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：true，使用箭头。</br>
- *              axisYTick - {number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
- *              axisYLabels - {Array<string>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
- *              axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- *              axisYLabelsOffset - {Array<number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- *              axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，否则沿数据视图框下面条边等距排布标签。</br>
- *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- *              axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：-10；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：10。</br>
- *              useXReferenceLine - {boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
- *              xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- *              axis3DParameter - {number} 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：20。</br>
- *              barFaceStyle - {Object} 3d 柱状图柱条正面基础 style，此参数控制柱条正面基础样式，优先级低于 barFaceStyleByFields 和 barFaceStyleByCodomain。此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style>。</br>
- *              barFaceStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条正面赋 style，此参数按字段控制柱条正面样式，优先级低于 barFaceStyleByCodomain，高于 barFaceStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barFaceStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条正面使用 style1，字段 POP_1995 对应的柱条正面使用 style2 ，字段 POP_1999 对应的柱条正面使用 style3。</br>
- *              barFaceStyleByCodomain - {Array<Object>} 按柱条正面代表的数据值所在值域范围控制柱条正面样式，优先级高于 barFaceStyle 和 barFaceStyleByFields。</br>
- *              barSideStyle - {Object} 3d 柱状图柱条侧面基础 style，此参数控制柱条侧面基础样式，优先级低于 barSideStyleByFields 和 barSideStyleByCodomain此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。</br>
- *              barSideStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条侧面赋style，此数按字段控制柱条侧面样式，优先级低于 barSideStyleByCodomain，高于 barSideStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barSideStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条侧面使用 style1，字段 POP_1995对应的柱条侧面使用style2，字段POP_1999对应的柱条侧面使用style3。默认值：barFaceStyleByFields。</br>
- *              barSideStyleByCodomain - {Array<Object>} 按柱条侧面代表的数据值所在值域范围控制柱条侧面样式，优先级高于 barSideStyle 和 barSideStyleByFields。默认值：barFaceStyleByCodomain。</br>
- *              barFaceHoverStyle - {Object} 3d 柱条正面 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
- *              barSideHoverStyle - {Object} 3d 柱条侧面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
- *              barTopHoverStyle - {Object} 3d 柱条顶面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
- *              barHoverAble - {boolean} 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
- *              barClickAble - {boolean} 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
- *              barTopStyle - {Object} 3d 柱状图柱条顶面基础 style，此参数控制柱条顶面基础样式，优先级低于 barTopStyleByFields 和 barTopStyleByCodomain此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。</br>
- *              barTopStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条顶面赋 style，此参数按字段控制柱条顶面样式，优先级低于 barTopStyleByCodomain，高于 barTopStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barTopStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条顶面使用 style1，字段 POP_1995 对应的柱条顶面使用 style2 ，字段 POP_1999 对应的柱条顶面使用 style3。默认值：barFaceStyleByFields。</br>
- *              barTopStyleByCodomain - {Array<Object>} 按柱条顶面代表的数据值所在值域范围控制柱条顶面样式，优先级高于 barTopStyle 和 barTopStyleByFields。默认值：barFaceStyleByCodomain。</br>
+ 
  *
  * @example
  * // barFaceStyleByCodomain 用法示例如下：
  * // barFaceStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon.style> 。
  * // barFaceStyleByCodomain 数组形如：
  * [
  *   {
@@ -75060,7 +75234,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * // barSideStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon.style> 。
  * // barSideStyleByCodomain 数组形如：
  * [
  *   {
@@ -75098,7 +75272,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * // barTopStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性：<SuperMap.Feature.ShapeParameters.Polygon.style> 。
  * // barTopStyleByCodomain 数组形如：
  * [
  *   {
@@ -75324,11 +75498,11 @@ var Bar3D = exports.Bar3D = function (_Graph) {
          *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *              本函数中图形配置对象 setting 可设属性:</br>
-         *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+         *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
          *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
          *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
-         *                  xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         *                  xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *                  width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          */
 
@@ -75383,6 +75557,48 @@ var Bar3D = exports.Bar3D = function (_Graph) {
 
     return Bar3D;
 }(_Graph2.Graph);
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Bar3D.setting
+ * @property {number} width - 专题要素（图表）宽度，必设参数。
+ * @property {number} height - 专题要素（图表）高度，必设参数。
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+ * @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+ * @property {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 25, 20, 20]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
+ * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * @property {boolean} useBackground - 是否使用图表背景框，默认使用。
+ * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
+ * @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
+ * @property {Array.<number>} xShapeBlank - 水平方向上的图形空白间隔参数。长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
+ * @property {number} bar3DParameter - 3D 柱状参数，3d柱形正面相对于背面向 x 轴和 y 轴负方向偏移的绝对值，默认值：10。</br>
+ * @property {boolean} useAxis - 是否使用坐标轴，默认使用坐标轴。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} axisStyle - 坐标轴样式。
+ * @property {boolean} axisUseArrow -坐标轴是否使用箭头，默认值：true，使用箭头。</br>
+ * @property {number} axisYTick - y 轴刻度数量，默认值：0 ，不使用刻度。</br>
+ * @property {Array.<string>}  axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} axisYLabelsStyle - y 轴上的标签组样式。
+ * @property {Array.<number>} axisYLabelsOffset - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
+ * @property {Array.<string>}  axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，否则沿数据视图框下面条边等距排布标签。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} axisXLabelsStyle - x 轴上的标签组样式。
+ * @property {Array.<number>} axisXLabelsOffset - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：-10；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：10。</br>
+ * @property {boolean} useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} xReferenceLineStyle - 水平参考线样式。
+ * @property {number} axis3DParameter - 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：20。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Polygon.style} barFaceStyle - 3d 柱状图柱条正面基础 style，此参数控制柱条正面基础样式，优先级低于 barFaceStyleByFields 和 barFaceStyleByCodomain。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} barFaceStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为柱条正面赋 style，此参数按字段控制柱条正面样式，优先级低于 barFaceStyleByCodomain，高于 barFaceStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barFaceStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条正面使用 style1，字段 POP_1995 对应的柱条正面使用 style2 ，字段 POP_1999 对应的柱条正面使用 style3。</br>
+ * @property {Array.<Object>} barFaceStyleByCodomain - 按柱条正面代表的数据值所在值域范围控制柱条正面样式，优先级高于 barFaceStyle 和 barFaceStyleByFields。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Polygon.style} barSideStyle - 3d 柱状图柱条侧面基础 style，此参数控制柱条侧面基础样式，优先级低于 barSideStyleByFields 和 barSideStyleByCodomain。默认值：barFaceStyle。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} barSideStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为柱条侧面赋style，此数按字段控制柱条侧面样式，优先级低于 barSideStyleByCodomain，高于 barSideStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barSideStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条侧面使用 style1，字段 POP_1995对应的柱条侧面使用style2，字段POP_1999对应的柱条侧面使用style3。默认值：barFaceStyleByFields。</br>
+ * @property {Array.<Object>} barSideStyleByCodomain - 按柱条侧面代表的数据值所在值域范围控制柱条侧面样式，优先级高于 barSideStyle 和 barSideStyleByFields。默认值：barFaceStyleByCodomain。</br>
+ * @property {Object} barFaceHoverStyle - 3d 柱条正面 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
+ * @property {Object} barSideHoverStyle - 3d 柱条侧面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
+ * @property {Object}  barTopHoverStyle - 3d 柱条顶面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
+ * @property {boolean} barHoverAble - 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+ * @property {boolean} barClickAble - 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+ * @property {SuperMap.Feature.ShapeParameters.Polygon.style} barTopStyle - 3d 柱状图柱条顶面基础 style，此参数控制柱条顶面基础样式，优先级低于 barTopStyleByFields 和 barTopStyleByCodomain。默认值：barFaceStyle。
+ * @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} barTopStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为柱条顶面赋 style，此参数按字段控制柱条顶面样式，优先级低于 barTopStyleByCodomain，高于 barTopStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barTopStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条顶面使用 style1，字段 POP_1995 对应的柱条顶面使用 style2 ，字段 POP_1999 对应的柱条顶面使用 style3。默认值：barFaceStyleByFields。</br>
+ * @property {Array.<Object>} barTopStyleByCodomain - 按柱条顶面代表的数据值所在值域范围控制柱条顶面样式，优先级高于 barTopStyle 和 barTopStyleByFields。默认值：barFaceStyleByCodomain。</br>
+ */
 
 _SuperMap.SuperMap.Feature.Theme.Bar3D = Bar3D;
 
@@ -75408,11 +75624,15 @@ var _ShapeFactory = __webpack_require__(24);
 
 var _Polygon = __webpack_require__(69);
 
-var _Color = __webpack_require__(96);
+var _Color = __webpack_require__(97);
 
 var _Util = __webpack_require__(1);
 
 var _Graph2 = __webpack_require__(28);
+
+__webpack_require__(100);
+
+__webpack_require__(70);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75424,50 +75644,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Bar
  * @classdesc 柱状图 。
  * @category Visualization Theme
- * @description 图表 Bar 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
- *              width - {number} 专题要素（图表）宽度，必设参数。</br>
- *              height - {number} 专题要素（图表）高度，必设参数。</br>
- *              codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- *              XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）
- *                                                     在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；
- *                                                     不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
- *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- *              useBackground - {boolean} 是否使用图表背景框，默认使用。</br>
- *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- *              backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
- *                                         则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
- *                                            第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
- *              showShadow - {boolean} 阴影开关 默认是打开。</br>
- *              barShadowStyle - {Object} 阴影样式,如：{shadowBlur : 8, shadowOffsetX: 2 , shadowOffsetY : 2,shadowColor : "rgba(100,100,100,0.8)"}</br>
- *              barLinearGradient - {Array<string>} 按字段设置柱条样式[渐变开始颜色,渐变终止颜色]  与 themeLayer.themeFields 中的字段一一对应），
- *                                                  如：[["#00FF00","#00CD00"],["#00CCFF","#5E87A2"],["#00FF66","#669985"],["#CCFF00","#94A25E"],["#FF9900","#A2945E"]]</br>
- *              useAxis - {boolean} 是否使用坐标轴，默认使用坐标轴。</br>
- *              axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- *              axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
- *              axisYTick - {number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
- *              axisYLabels - {Array<string>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
- *              axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- *              axisYLabelsOffset - {Array<number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- *              axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签,否则沿数据视图框下面条边等距排布标签。</br>
- *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- *              axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- *              useXReferenceLine - {boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
- *              xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- *              barStyle - {Object} 柱状图柱条基础 style，此参数控制柱条基础样式，优先级低于 barStyleByFields 和 barStyleByCodomain。此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。</br>
- *              barStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条赋 style，此参数按字段控制柱条样式，优先级低于 barStyleByCodomain，高于 barStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条使用 style1，字段 POP_1995 对应的柱条使用 style2 ，字段 POP_1999 对应的柱条使用 style3。</br>
- *              barStyleByCodomain - {Array<Object>} 按柱条代表的数据值所在值域范围控制柱条样式，优先级高于 barStyle 和 barStyleByFields。</br>
- *              barHoverStyle - {Object} 柱条 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
- *              barHoverAble - {Object} 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
- *              barClickAble - {Object} 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
  * @example
  * // barStyleByCodomain参数用法如下：
  * // barStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Polygon.style> 。
  * // barStyleByCodomain 数组形如：
  * [
  *   {
@@ -75503,7 +75685,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
  * @param {Array.<string>} fields - data 属性中的参与此图表生成的属性字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.Feature.Theme.Bar.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
  */
@@ -75675,11 +75857,11 @@ var Bar = exports.Bar = function (_Graph) {
          *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *              本函数中图形配置对象 setting 可设属性：
-         *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+         *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
          *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
          *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
-         *         xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
          *         width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *
          */
@@ -75776,6 +75958,47 @@ var Bar = exports.Bar = function (_Graph) {
     return Bar;
 }(_Graph2.Graph);
 
+/**
+* @typedef {Object} SuperMap.Feature.Theme.Bar.setting
+* @property {number} width - 专题要素（图表）宽度，必设参数。
+* @property {number} height - 专题要素（图表）高度，必设参数。
+* @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+* @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+* @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+* @property {Array.<number>} dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）
+*                                                     在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；
+*                                                     不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
+* @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+* @property {boolean} useBackground - 是否使用图表背景框，默认使用。
+* @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
+* @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
+*                                         则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
+* @property {Array.<number>} xShapeBlank - 水平方向上的图形空白间隔参数。长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
+*                                            第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
+* @property {boolean} showShadow - 阴影开关 默认是打开。
+* @property {Object} barShadowStyle - 阴影样式,如：{shadowBlur : 8, shadowOffsetX: 2 , shadowOffsetY : 2,shadowColor : "rgba(100,100,100,0.8)"}</br>
+* @property {Array.<string>} barLinearGradient - 按字段设置柱条样式[渐变开始颜色,渐变终止颜色]  与 themeLayer.themeFields 中的字段一一对应），
+*                                                  如：[["#00FF00","#00CD00"],["#00CCFF","#5E87A2"],["#00FF66","#669985"],["#CCFF00","#94A25E"],["#FF9900","#A2945E"]]</br>
+* @property {boolean} useAxis - 是否使用坐标轴，默认使用坐标轴。</br>
+* @property {SuperMap.Feature.ShapeParameters.Line.style} axisStyle - 坐标轴样式。
+* @property {boolean} axisUseArrow - 坐标轴是否使用箭头，默认值：false，不使用箭头。
+* @property {number} axisYTick - y 轴刻度数量，默认值：0 ，不使用刻度。
+* @property {Array.<string>}  axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
+* @property {SuperMap.Feature.ShapeParameters.Label.style} axisYLabelsStyle - y 轴上的标签组样式。
+* @property {Array.<number>} axisYLabelsOffset - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
+* @property {Array.<string>}  axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签,否则沿数据视图框下面条边等距排布标签。</br>
+* @property {SuperMap.Feature.ShapeParameters.Label.style} axisXLabelsStyle - x 轴上的标签组样式。
+* @property {Array.<number>} axisXLabelsOffset - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
+* @property {boolean} useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
+* @property {SuperMap.Feature.ShapeParameters.Line.style} xReferenceLineStyle - 水平参考线样式。
+* @property {Object} barStyle - 柱状图柱条基础 style，此参数控制柱条基础样式，优先级低于 barStyleByFields 和 barStyleByCodomain。Graph
+* @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} barStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields|L.supermap.graphThemeLayer.themeFields|ol.source.Graph.themeFields|mapboxgl.supermap.GraphThemeLayer.themeFields>）为柱条赋 style，此参数按字段控制柱条样式，优先级低于 barStyleByCodomain，高于 barStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条使用 style1，字段 POP_1995 对应的柱条使用 style2 ，字段 POP_1999 对应的柱条使用 style3。</br>
+* @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} barStyleByCodomain - 按柱条代表的数据值所在值域范围控制柱条样式，优先级高于 barStyle 和 barStyleByFields。</br>
+* @property {Object} barHoverStyle - 柱条 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
+* @property {Object} barHoverAble - 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+* @property {Object} barClickAble - 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+*/
+
 _SuperMap.SuperMap.Feature.Theme.Bar = Bar;
 
 /***/ }),
@@ -75804,7 +76027,7 @@ var _Pie = __webpack_require__(384);
 
 var _Point = __webpack_require__(383);
 
-var _RankSymbol = __webpack_require__(155);
+var _RankSymbol = __webpack_require__(156);
 
 var _Ring = __webpack_require__(382);
 
@@ -76791,7 +77014,7 @@ function keys(object) {
 var toPairs = createToPairs(keys);
 
 module.exports = toPairs;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(115)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(116)))
 
 /***/ }),
 /* 392 */
@@ -81351,7 +81574,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(81);
+var _Events = __webpack_require__(82);
 
 var _elasticsearch = __webpack_require__(395);
 
@@ -81422,7 +81645,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /*
          * Constant: EVENT_TYPES
-         * {Array<String>}
+         * {Array.<String>}
          * 此类支持的事件类型。
          *
          */
@@ -82442,12 +82665,12 @@ var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () 
     options = options || {};
 
     /**
-     * @member SuperMap.OnlineQueryDatasParameter.prototype.userNames -{Array<string>}
+     * @member SuperMap.OnlineQueryDatasParameter.prototype.userNames -{Array.<string>}
      * @description 数据作者名。可以根据数据作者名查询，默认查询全部。
      */
     this.userNames = null;
     /**
-     * @member SuperMap.OnlineQueryDatasParameter.prototype.types  -{Array<Object>}
+     * @member SuperMap.OnlineQueryDatasParameter.prototype.types  -{Array.<Object>}
      * @description  数据类型
      */
     this.types = null;
@@ -82467,12 +82690,12 @@ var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () 
      */
     this.serviceId = null;
     /**
-     * @member SuperMap.OnlineQueryDatasParameter.prototype.ids  -{Array<integer>}
+     * @member SuperMap.OnlineQueryDatasParameter.prototype.ids  -{Array.<integer>}
      * @description  由数据项 id 组成的整型数组。
      */
     this.ids = null;
     /**
-     * @member SuperMap.OnlineQueryDatasParameter.prototype.keywords  -{Array<string>}
+     * @member SuperMap.OnlineQueryDatasParameter.prototype.keywords  -{Array.<string>}
      * @description 关键字。
      */
     this.keywords = null;
@@ -82482,12 +82705,12 @@ var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () 
      */
     this.orderBy = null;
     /**
-     * @member SuperMap.OnlineQueryDatasParameter.prototype.tags  -{Array<string>}
+     * @member SuperMap.OnlineQueryDatasParameter.prototype.tags  -{Array.<string>}
      * @description 数据的标签。
      */
     this.tags = null;
     /**
-     * @member SuperMap.OnlineQueryDatasParameter.prototype.filterFields  -{Array<string>}
+     * @member SuperMap.OnlineQueryDatasParameter.prototype.filterFields  -{Array.<string>}
      * @description 用于关键字查询时的过滤字段。
      */
     this.filterFields = null;
@@ -83544,11 +83767,11 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(110);
+var _GeometryBufferAnalystParameters = __webpack_require__(111);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(108);
+var _GeometryOverlayAnalystParameters = __webpack_require__(109);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(107);
+var _GeometryThiessenAnalystParameters = __webpack_require__(108);
 
 var _InterpolationAnalystParameters = __webpack_require__(31);
 
@@ -83718,7 +83941,7 @@ var _SpatialAnalystBase2 = __webpack_require__(10);
 
 var _DatasetThiessenAnalystParameters = __webpack_require__(253);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(107);
+var _GeometryThiessenAnalystParameters = __webpack_require__(108);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -84268,7 +84491,7 @@ var _DatasetSurfaceAnalystParameters = __webpack_require__(255);
 
 var _GeometrySurfaceAnalystParameters = __webpack_require__(235);
 
-var _SurfaceAnalystParameters = __webpack_require__(76);
+var _SurfaceAnalystParameters = __webpack_require__(77);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -85488,7 +85711,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Vector = __webpack_require__(80);
+var _Vector = __webpack_require__(81);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -86523,7 +86746,7 @@ var _SpatialAnalystBase2 = __webpack_require__(10);
 
 var _DatasetOverlayAnalystParameters = __webpack_require__(256);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(108);
+var _GeometryOverlayAnalystParameters = __webpack_require__(109);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -88549,7 +88772,7 @@ var _REST = __webpack_require__(2);
 
 var _Util = __webpack_require__(1);
 
-var _AggregationParameter2 = __webpack_require__(113);
+var _AggregationParameter2 = __webpack_require__(114);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -88647,7 +88870,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _AggQueryBuilderParameter = __webpack_require__(114);
+var _AggQueryBuilderParameter = __webpack_require__(115);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -90100,9 +90323,9 @@ var _REST = __webpack_require__(2);
 
 var _Util = __webpack_require__(1);
 
-var _AggregationParameter2 = __webpack_require__(113);
+var _AggregationParameter2 = __webpack_require__(114);
 
-__webpack_require__(114);
+__webpack_require__(115);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -92072,7 +92295,7 @@ var _SpatialAnalystBase2 = __webpack_require__(10);
 
 var _DatasetBufferAnalystParameters = __webpack_require__(268);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(110);
+var _GeometryBufferAnalystParameters = __webpack_require__(111);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -92459,15 +92682,15 @@ exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.Interpola
 
 var _AddressMatchService = __webpack_require__(479);
 
-var _AggQueryBuilderParameter = __webpack_require__(114);
+var _AggQueryBuilderParameter = __webpack_require__(115);
 
-var _AggregationParameter = __webpack_require__(113);
+var _AggregationParameter = __webpack_require__(114);
 
 var _AreaSolarRadiationParameters = __webpack_require__(271);
 
 var _AreaSolarRadiationService = __webpack_require__(478);
 
-var _BufferAnalystParameters = __webpack_require__(112);
+var _BufferAnalystParameters = __webpack_require__(113);
 
 var _BufferAnalystService = __webpack_require__(477);
 
@@ -92515,7 +92738,7 @@ var _DatasetSurfaceAnalystParameters = __webpack_require__(255);
 
 var _DatasetThiessenAnalystParameters = __webpack_require__(253);
 
-var _DatasourceConnectionInfo = __webpack_require__(111);
+var _DatasourceConnectionInfo = __webpack_require__(112);
 
 var _DensityAnalystService = __webpack_require__(470);
 
@@ -92597,13 +92820,13 @@ var _GeoDecodingParameter = __webpack_require__(272);
 
 var _GeoHashGridAggParameter = __webpack_require__(452);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(110);
+var _GeometryBufferAnalystParameters = __webpack_require__(111);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(108);
+var _GeometryOverlayAnalystParameters = __webpack_require__(109);
 
 var _GeometrySurfaceAnalystParameters = __webpack_require__(235);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(107);
+var _GeometryThiessenAnalystParameters = __webpack_require__(108);
 
 var _GeoRelationAnalystParameters = __webpack_require__(234);
 
@@ -92655,7 +92878,7 @@ var _InterpolationKrigingAnalystParameters = __webpack_require__(207);
 
 var _InterpolationRBFAnalystParameters = __webpack_require__(209);
 
-var _JoinItem = __webpack_require__(78);
+var _JoinItem = __webpack_require__(79);
 
 var _KernelDensityJobParameter = __webpack_require__(206);
 
@@ -92663,7 +92886,7 @@ var _KernelDensityJobsService = __webpack_require__(440);
 
 var _LabelImageCell = __webpack_require__(205);
 
-var _LabelMatrixCell = __webpack_require__(71);
+var _LabelMatrixCell = __webpack_require__(72);
 
 var _LabelMixedTextStyle = __webpack_require__(223);
 
@@ -92691,7 +92914,7 @@ var _OutputSetting = __webpack_require__(18);
 
 var _OverlapDisplayedOptions = __webpack_require__(213);
 
-var _OverlayAnalystParameters = __webpack_require__(109);
+var _OverlayAnalystParameters = __webpack_require__(110);
 
 var _OverlayAnalystService = __webpack_require__(436);
 
@@ -92723,7 +92946,7 @@ var _QueryParameters = __webpack_require__(34);
 
 var _QueryService = __webpack_require__(52);
 
-var _Route = __webpack_require__(77);
+var _Route = __webpack_require__(78);
 
 var _RouteCalculateMeasureParameters = __webpack_require__(194);
 
@@ -92781,7 +93004,7 @@ var _SummaryRegionJobsService = __webpack_require__(420);
 
 var _SupplyCenter = __webpack_require__(419);
 
-var _SurfaceAnalystParameters = __webpack_require__(76);
+var _SurfaceAnalystParameters = __webpack_require__(77);
 
 var _SurfaceAnalystParametersSetting = __webpack_require__(254);
 
@@ -92793,15 +93016,15 @@ var _TerrainCurvatureCalculationService = __webpack_require__(417);
 
 var _Theme = __webpack_require__(25);
 
-var _ThemeDotDensity = __webpack_require__(103);
+var _ThemeDotDensity = __webpack_require__(104);
 
-var _ThemeFlow = __webpack_require__(73);
+var _ThemeFlow = __webpack_require__(74);
 
-var _ThemeGraduatedSymbol = __webpack_require__(102);
+var _ThemeGraduatedSymbol = __webpack_require__(103);
 
 var _ThemeGraduatedSymbolStyle = __webpack_require__(216);
 
-var _ThemeGraph = __webpack_require__(104);
+var _ThemeGraph = __webpack_require__(105);
 
 var _ThemeGraphAxes = __webpack_require__(220);
 
@@ -92819,7 +93042,7 @@ var _ThemeGridUnique = __webpack_require__(181);
 
 var _ThemeGridUniqueItem = __webpack_require__(180);
 
-var _ThemeLabel = __webpack_require__(74);
+var _ThemeLabel = __webpack_require__(75);
 
 var _ThemeLabelAlongLine = __webpack_require__(222);
 
@@ -92833,21 +93056,21 @@ var _ThemeLabelUniqueItem = __webpack_require__(416);
 
 var _ThemeMemoryData = __webpack_require__(226);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(73);
 
 var _ThemeParameters = __webpack_require__(179);
 
-var _ThemeRange = __webpack_require__(101);
+var _ThemeRange = __webpack_require__(102);
 
 var _ThemeRangeItem = __webpack_require__(215);
 
 var _ThemeService = __webpack_require__(415);
 
-var _ThemeUnique = __webpack_require__(105);
+var _ThemeUnique = __webpack_require__(106);
 
-var _ThemeUniqueItem = __webpack_require__(106);
+var _ThemeUniqueItem = __webpack_require__(107);
 
-var _ThiessenAnalystParameters = __webpack_require__(75);
+var _ThiessenAnalystParameters = __webpack_require__(76);
 
 var _ThiessenAnalystService = __webpack_require__(414);
 
@@ -92873,7 +93096,7 @@ var _TransportationAnalystResultSetting = __webpack_require__(258);
 
 var _TransferSolutionParameters = __webpack_require__(175);
 
-var _UGCLayer = __webpack_require__(100);
+var _UGCLayer = __webpack_require__(101);
 
 var _UGCMapLayer = __webpack_require__(214);
 
@@ -93138,7 +93361,7 @@ var _iPortalService = __webpack_require__(275);
 
 var _iPortalMap = __webpack_require__(274);
 
-var _iPortalServiceBase = __webpack_require__(79);
+var _iPortalServiceBase = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -93273,7 +93496,7 @@ var _iPortalMapsQueryParam = __webpack_require__(276);
 
 var _iPortalService = __webpack_require__(275);
 
-var _iPortalServiceBase = __webpack_require__(79);
+var _iPortalServiceBase = __webpack_require__(80);
 
 var _iPortalServicesQueryParam = __webpack_require__(277);
 
@@ -94214,7 +94437,7 @@ process.umask = function () {
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(115), __webpack_require__(485)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(116), __webpack_require__(485)))
 
 /***/ }),
 /* 487 */
@@ -94278,7 +94501,7 @@ __webpack_require__(486);
 // `setimmediate` library.
 exports.setImmediate = typeof self !== "undefined" && self.setImmediate || typeof global !== "undefined" && global.setImmediate || undefined && undefined.setImmediate;
 exports.clearImmediate = typeof self !== "undefined" && self.clearImmediate || typeof global !== "undefined" && global.clearImmediate || undefined && undefined.clearImmediate;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(115)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(116)))
 
 /***/ }),
 /* 488 */
@@ -94978,11 +95201,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(117);
+var _Format2 = __webpack_require__(118);
 
 var _BaseTypes = __webpack_require__(58);
 
-var _Vector = __webpack_require__(80);
+var _Vector = __webpack_require__(81);
 
 var _Point = __webpack_require__(22);
 
@@ -95356,11 +95579,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WKT = exports.GeoJSON = exports.JSONFormat = exports.Format = undefined;
 
-var _Format = __webpack_require__(117);
+var _Format = __webpack_require__(118);
 
 var _GeoJSON = __webpack_require__(16);
 
-var _JSON = __webpack_require__(116);
+var _JSON = __webpack_require__(117);
 
 var _WKT = __webpack_require__(494);
 
@@ -95482,9 +95705,9 @@ exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolyg
 
 var _Collection = __webpack_require__(30);
 
-var _Curve = __webpack_require__(120);
+var _Curve = __webpack_require__(121);
 
-var _GeoText = __webpack_require__(119);
+var _GeoText = __webpack_require__(120);
 
 var _LinearRing = __webpack_require__(36);
 
@@ -95532,13 +95755,13 @@ var _BaseTypes = __webpack_require__(58);
 
 var _Bounds = __webpack_require__(27);
 
-var _Credential = __webpack_require__(118);
+var _Credential = __webpack_require__(119);
 
 var _Date = __webpack_require__(496);
 
 var _Event = __webpack_require__(283);
 
-var _Events = __webpack_require__(81);
+var _Events = __webpack_require__(82);
 
 var _Feature = __webpack_require__(282);
 
@@ -95546,13 +95769,13 @@ var _Geometry = __webpack_require__(26);
 
 var _LonLat = __webpack_require__(43);
 
-var _Pixel = __webpack_require__(82);
+var _Pixel = __webpack_require__(83);
 
 var _Size = __webpack_require__(285);
 
 var _Util = __webpack_require__(1);
 
-var _Vector = __webpack_require__(80);
+var _Vector = __webpack_require__(81);
 
 exports.Collection = _index.Collection;
 exports.Curve = _index.Curve;

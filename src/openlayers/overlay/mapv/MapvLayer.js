@@ -54,6 +54,7 @@ export class MapvLayer extends BaiduMapLayer {
         map.on('movestart', this.moveStartEvent.bind(this));
         map.on('moveend', this.moveEndEvent.bind(this));
         map.getView().on('change:center', this.zoomEvent.bind(this));
+        map.getView().on('change:size', this.sizeEvent.bind(this));
         map.on('pointerdrag', this.dragEvent.bind(this));
         this.bindEvent();
     }
@@ -109,6 +110,14 @@ export class MapvLayer extends BaiduMapLayer {
     zoomEvent() {
         this.clear(this.getContext());
     }
+    /**
+     * @function MapvLayer.prototype.zoomEvent
+     * @description 缩放事件
+     */
+    sizeEvent() {
+        this.canvasLayer.resize();
+    }
+
 
     /**
      * @function MapvLayer.prototype.moveStartEvent
@@ -281,7 +290,7 @@ export class MapvLayer extends BaiduMapLayer {
                 var x = (coordinate[0] - self._mapCenter[0]) / self._reselutions,
                     y = (self._mapCenter[1] - coordinate[1]) / self._reselutions;
                 var scaledP = [x + self._mapCenterPx[0], y + self._mapCenterPx[1]];
-                scaledP = scale(scaledP, self._mapCenterPx, self.pixelRatio);
+                scaledP = scale(scaledP, self._mapCenterPx,1);
                 /*//有旋转量的时候处理旋转
                 if (self._rotation !== 0) {
                     var rotatedP = rotate(scaledP, self._rotation, self._mapCenterPx);
