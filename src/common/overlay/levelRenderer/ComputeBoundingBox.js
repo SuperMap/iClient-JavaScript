@@ -62,12 +62,12 @@ export class ComputeBoundingBox {
     /**
      * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.cubeBezier
      * @description 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入'min'和'max'中。原：computeCubeBezierBoundingBox。
-     * @param {Array<number>} p0 - 三阶贝塞尔曲线p0点
-     * @param {Array{number}} p1 - 三阶贝塞尔曲线p1点
-     * @param {Array<number>} p2 - 三阶贝塞尔曲线p2点
-     * @param {Array<number>} p3 - 三阶贝塞尔曲线p3点
-     * @param {Array<number>} min - 最小
-     * @param {Array<number>} max - 最大
+     * @param {Array.<number>} p0 - 三阶贝塞尔曲线p0点
+     * @param {Array.<number>} p1 - 三阶贝塞尔曲线p1点
+     * @param {Array.<number>} p2 - 三阶贝塞尔曲线p2点
+     * @param {Array.<number>} p3 - 三阶贝塞尔曲线p3点
+     * @param {Array.<number>} min - 最小
+     * @param {Array.<number>} max - 最大
      */
     cubeBezier(p0, p1, p2, p3, min, max) {
         var curve = new Curve();
@@ -100,11 +100,11 @@ export class ComputeBoundingBox {
     /**
      * @function SuperMap.LevelRenderer.Tool.ComputeBoundingBox.prototype.quadraticBezier
      * @description 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入'min'和'max'中。原：computeQuadraticBezierBoundingBox。
-     * @param {Array<number>} p0 - 二阶贝塞尔曲线p0点
-     * @param {Array{number}} p1 - 二阶贝塞尔曲线p1点
-     * @param {Array<number>} p2 - 二阶贝塞尔曲线p2点
-     * @param {Array<number>} min - 最小
-     * @param {Array<number>} max - 最大
+     * @param {Array.<number>} p0 - 二阶贝塞尔曲线p0点
+     * @param {Array.<number>} p1 - 二阶贝塞尔曲线p1点
+     * @param {Array.<number>} p2 - 二阶贝塞尔曲线p2点
+     * @param {Array.<number>} min - 最小
+     * @param {Array.<number>} max - 最大
      */
     quadraticBezier(p0, p1, p2, min, max) {
         var curve = new Curve();

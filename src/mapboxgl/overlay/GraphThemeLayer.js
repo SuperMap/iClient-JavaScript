@@ -24,7 +24,7 @@ import {Theme} from './theme/ThemeLayer';
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表</br>
  * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。</br>
  * @param {Object} opt_options.symbolSetting - 符号 Circle 配置对象</br>
- * @param {Array<number>} opt_options.symbolSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * @param {Array.<number>} opt_options.symbolSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * @param {number} opt_options.symbolSetting.maxR - 圆形的最大半径。</br>
  * @param {number} opt_options.symbolSetting.minR - 圆形的最小半径。</br>
  * @param {String} opt_options.symbolSetting.fillColor - 圆形的填充色，如：fillColor: "#FFB980"。</br>
@@ -61,7 +61,7 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象。
-     * @param {Array<mapboxgl.supermap.ThemeFeature>} features - 待添加的要素
+     * @param {Array.<mapboxgl.supermap.ThemeFeature>} features - 待添加的要素
      */
     addFeatures(features) {
         var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
@@ -260,8 +260,8 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
-     * @param {Array<Object>} quadrilateral - 四边形节点数组。</br>
-     * @param {Array<Object>} quadrilateral2 - 第二个四边形节点数组。
+     * @param {Array.<Object>} quadrilateral - 四边形节点数组。</br>
+     * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
      */
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
@@ -304,7 +304,7 @@ export class Graph extends Theme {
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。(射线法)
      * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。</br>
-     * @param {Array<Object>} poly - 多边形节点数组。
+     * @param {Array.<Object>} poly - 多边形节点数组。
      */
     isPointInPoly(pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
@@ -319,7 +319,7 @@ export class Graph extends Theme {
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.isChartInMap
      * @description  判断图表是否在地图里。
      * @param {SuperMap.Bounds} mapPxBounds - 地图像素范围。</br>
-     * @param {Array<Object>} chartPxBounds - 图表范围的四边形节点数组。
+     * @param {Array.<Object>} chartPxBounds - 图表范围的四边形节点数组。
      */
     isChartInMap(mapPxBounds, chartPxBounds) {
         var mb = mapPxBounds;

@@ -371,7 +371,7 @@ export class Color {
      * @description 获取指定级数的渐变颜色数组。
      * @param {Array.<string>} colors - 颜色数组。
      * @param {number} [step=20] - 渐变级数。
-     * @returns {Array<string>} 颜色数组。
+     * @returns {Array.<string>} 颜色数组。
      */
     getGradientColors(colors, step) {
         var ret = [];

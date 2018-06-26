@@ -9,7 +9,7 @@ import {SUtil} from './SUtil';
  * @classdesc 多边形。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
  *         style: {
  *             // 100x100 的正方形
@@ -18,7 +18,7 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  */
 export class SmicPolygon extends Shape {
 

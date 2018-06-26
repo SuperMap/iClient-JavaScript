@@ -17,7 +17,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {Object} options - 加载实时数据可选参数。</br>
  * @param {function} options.style - 设置数据加载样式。</br>
  * @param {function} options.onEachFeature - 设置每个数据加载popup等。</br>
- * @param {Array<Object>} options.geometry - 设置增添的几何要素对象数组。</br>
+ * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。</br>
  * @param {Object} options.excludeField - 排除字段。
  */
 export class DataFlowService extends ServiceBase {
@@ -93,7 +93,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param {Array<Object>} geometry - 设置增添的几何要素对象数组。
+     * @param {Array.<Object>} geometry - 设置增添的几何要素对象数组。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

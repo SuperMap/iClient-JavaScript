@@ -466,9 +466,9 @@ export class Painter {
      * @param {string} [config.clearColor=0] - 每次清空画布的颜色。
      * @param {boolean} [config.motionBlur=false] - 是否开启动态模糊。
      * @param {number} [config.lastFrameAlpha=0.7] - 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
-     * @param {Array.{number}} config.position - 层的平移。
-     * @param {Array.{number}} config.rotation - 层的旋转。
-     * @param {Array.{number}} config.scale - 层的缩放。
+     * @param {Array.<number>} config.position - 层的平移。
+     * @param {Array.<number>} config.rotation - 层的旋转。
+     * @param {Array.<number>} config.scale - 层的缩放。
      * @param {boolean} config.zoomable - 层是否支持鼠标缩放操作。默认值：false。
      * @param {boolean} config.panable - 层是否支持鼠标平移操作。默认值：false。
      *

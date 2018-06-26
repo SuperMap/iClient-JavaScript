@@ -9,7 +9,7 @@ import {SUtil} from './SUtil';
  * @classdesc 折线(ic)。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
  *         style: {
  *             pointList: [[0, 0], [100, 100], [100, 0]],
@@ -18,7 +18,7 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 export class SmicBrokenLine extends Shape {

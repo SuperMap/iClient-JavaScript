@@ -20,10 +20,10 @@ import {FeatureTheme} from '@supermap/iclient-common';
  * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
  * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度，必设参数。</br>
  * @param {number} opt_options.chartsSetting.height - 专题要素（图表）高度，必设参数。</br>
- * @param {Array<number>} opt_options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * @param {Array.<number>} opt_options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * @param {number} opt_options.chartsSetting.XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
  * @param {number} opt_options.chartsSetting.YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * @param {Array<number>} opt_options.chartsSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。</br>
+ * @param {Array.<number>} opt_options.chartsSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。</br>
  * @param {number} opt_options.chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @extends {mapboxgl.supermap.GraphThemeLayer}
  */

@@ -8,21 +8,11 @@ import {RankSymbol} from './RankSymbol';
  * @class SuperMap.Feature.Theme.Circle
  * @classdesc 圆类。
  * @category Visualization Theme
- * @description 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
- *            codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- *            maxR - {number} 圆形的最大半径。<br>
- *            minR - {number} 圆形的最小半径。<br>
- *            fillColor - {string} 圆形的填充色，如：fillColor: "#FFB980"。<br>
- *            circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。<br>
- *            decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
- *            circleHoverStyle - {Object} 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。<br>
- *            circleHoverAble - {boolean} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。<br>
- *            circleClickAble - {boolean} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends SuperMap.Feature.Theme.RankSymbol
  * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
  * @param {SuperMap.Layer.RankSymbol} layer - 此专题要素所在图层，必设参数。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {Object} setting - 图表配置对象，必设参数。
+ * @param {SuperMap.Feature.Theme.Circle.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
@@ -149,5 +139,19 @@ export class Circle extends RankSymbol {
     }
 
 }
+
+/**
+ * @typedef {Object} SuperMap.Feature.Theme.Circle.setting
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ * @property {number} maxR - 圆形的最大半径。
+ * @property {number} minR - 圆形的最小半径。
+ * @property {string} fillColor - 圆形的填充色，如：fillColor: "#FFB980"。
+ * @property {Object} circleStyle - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @property {Object} circleHoverStyle - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ * @property {boolean} circleHoverAble - 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * @property {boolean} circleClickAble - 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * 
+ */
 
 SuperMap.Feature.Theme.Circle = Circle;

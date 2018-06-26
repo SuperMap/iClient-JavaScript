@@ -7,7 +7,7 @@ import {Util} from "../../core/Util";
  * @class mapboxgl.supermap.Graphic
  * @classdesc 高效率点图层点要素类。
  * @category  Visualization Graphic
- * @param {(Object|Array<number>)} lngLat - 坐标。格式：经纬度数组或包含{lng,lat}格式对象</br>
+ * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含{lng,lat}格式对象</br>
  * @param {Object} style - 图形参数。</br>
  * @param {Array} style.color - 点颜色。目前只支持rgba数组 </br>
  * @param {Object} style.radius - 点半径</br>

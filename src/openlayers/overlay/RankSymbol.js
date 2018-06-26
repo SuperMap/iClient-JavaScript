@@ -24,10 +24,10 @@ import {Graph} from './Graph';
  * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性：<br>
  *  * width - {number} 专题要素（图表）宽度，必设参数。
  *  * height - {number} 专题要素（图表）高度，必设参数。
- *  * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ *  * codomain - {Array.<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
  *  * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。
  *  * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- *  * dataViewBoxParameter - {Array{number}} 数据视图框 dataViewBox 参数，
+ *  * dataViewBoxParameter - {Array.<number>} 数据视图框 dataViewBox 参数，
  *  它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
  *  如果不设置此参数，在取数据值时不对数据做小数位处理。

@@ -407,7 +407,7 @@ export class HeatMap extends ol.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素
-     * @param {Object|Array<ol.Feature>} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
+     * @param {Object|Array.<ol.Feature>} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 ol.Feature 格式
      * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {

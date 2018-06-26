@@ -20,9 +20,6 @@
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base.js?$",
         "include": [
             "src/common","src/mapboxgl"
-        ],
-        "exclude": [
-            "src/common/overlay/feature","src/common/overlay/levelRenderer"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/linkdoc"],

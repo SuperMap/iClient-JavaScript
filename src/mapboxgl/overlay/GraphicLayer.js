@@ -21,8 +21,8 @@ const defaultProps = {
  * @classdesc 高效率点图层
  * @param {string} id - 图层id。
  * @param {Object} options -  图层配置项。
- * @param {Array<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 。
- * @param {Array<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持rgba数组。
+ * @param {Array.<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持rgba数组。
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array} options.highlightColor - 高亮颜色，目前只支持rgba数组。
@@ -42,7 +42,7 @@ export class GraphicLayer {
          */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
         /**
-         * @member {Array<mapboxgl.supermap.Graphic>} mapboxgl.supermap.GraphicLayer.prototype.graphics
+         * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.GraphicLayer.prototype.graphics
          * @description 点要素对象数组
          */
         this.graphics = [].concat(opt.graphics);
@@ -151,7 +151,7 @@ export class GraphicLayer {
      * @function mapboxgl.supermap.GraphicLayer.prototype.setStyle
      * @description 设置图层整体样式
      * @param {Object} styleOptions - 样式对象
-     * @param {Array<number>} styleOptions.color - 点颜色
+     * @param {Array.<number>} styleOptions.color - 点颜色
      * @param {number} styleOptions.radius - 点半径
      * @param {number} styleOptions.opacity - 不透明度
      * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
@@ -181,7 +181,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.setGraphics
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-     * @param {Array<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组
+     * @param {Array.<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组
      */
     setGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -201,7 +201,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.addGraphics
      * @description 添加点要素，不会覆盖之前的要素
-     * @param {Array<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组
+     * @param {Array.<mapboxgl.supermap.Graphic>} graphics - 点要素对象数组
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];

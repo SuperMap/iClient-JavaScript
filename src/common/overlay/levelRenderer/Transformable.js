@@ -14,19 +14,19 @@ export class Transformable {
      */
     constructor() {
         /**
-         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.position 
+         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.position 
          * @description 平移， 默认值：[0, 0]。
          */
         this.position = [0, 0];
 
         /**
-         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.rotation
+         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.rotation
          * @description 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
          */
         this.rotation = [0, 0, 0];
 
         /**
-         * @member {Array.{number}} SuperMap.LevelRenderer.Transformable.prototype.scale
+         * @member {Array.<number>} SuperMap.LevelRenderer.Transformable.prototype.scale
          * @description 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
          */
         this.scale = [1, 1, 0, 0];
@@ -50,7 +50,7 @@ export class Transformable {
          */
         this.lookAt = (function () {
             var v = SUtil.Util_vector.create();
-            // {Array{Number}|Float32Array} target
+            // {Array.<Number>|Float32Array} target
             return function (target) {
                 if (!this.transform) {
                     this.transform = SUtil.Util_matrix.create();

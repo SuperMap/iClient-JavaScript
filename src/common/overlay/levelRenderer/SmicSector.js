@@ -8,7 +8,7 @@ import {SUtil} from './SUtil';
  * @classdesc 扇形。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
  *         style: {
  *             x: 100,
@@ -20,7 +20,7 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  *
  */
 export class SmicSector extends Shape {

@@ -127,7 +127,7 @@ export class Curve {
      * @param {number} p2 - 点p2。
      * @param {number} p3 - 点p3。
      * @param {number} val - 值。
-     * @param {Array<number>} roots - 有效根数目。
+     * @param {Array.<number>} roots - 有效根数目。
      * @returns {number} 有效根。
      */
     cubicRootAt(p0, p1, p2, p3, val, roots) {
@@ -214,7 +214,7 @@ export class Curve {
      * @param {number} p1 - 点p1。
      * @param {number} p2 - 点p2。
      * @param {number} p3 - 点p3。
-     * @param {Array<number>} extrema - 值。
+     * @param {Array.<number>} extrema - 值。
      * @returns {number} 有效数目。
      */
     cubicExtrema(p0, p1, p2, p3, extrema) {
@@ -258,7 +258,7 @@ export class Curve {
      * @param {number} p2 - 点p2。
      * @param {number} p3 - 点p3。
      * @param {number} t - t值。
-     * @param {Array<number>} out - 投射点。
+     * @param {Array.<number>} out - 投射点。
      * @returns {number} 投射点。
      */
     cubicSubdivide(p0, p1, p2, p3, t, out) {
@@ -296,7 +296,7 @@ export class Curve {
      * @param {number} y3 - 点p3纵坐标。
      * @param {number} x - 点p横坐标。
      * @param {number} y - 点p纵坐标。
-     * @param {Array<number>} out - 投射点。
+     * @param {Array.<number>} out - 投射点。
      * @returns {number} 投射点。
      */
     cubicProjectPoint(x0, y0, x1, y1, x2, y2, x3, y3, x, y, out) {
@@ -403,7 +403,7 @@ export class Curve {
      * @param {number} p1 - 点p1。
      * @param {number} p2 - 点p2。
      * @param {number} val - 值。
-     * @param {Array<number>} roots - 有效根数目。
+     * @param {Array.<number>} roots - 有效根数目。
      * @returns {number} 有效根数目。
      */
     quadraticRootAt(p0, p1, p2, val, roots) {
@@ -472,7 +472,7 @@ export class Curve {
      * @param {number} y2 - 点p2纵坐标。
      * @param {number} x - 点p横坐标。
      * @param {number} y - 点p纵坐标。
-     * @param {Array<number>} out - 投射点。
+     * @param {Array.<number>} out - 投射点。
      * @returns {number} 投射距离。
      */
     quadraticProjectPoint(x0, y0, x1, y1, x2, y2, x, y, out) {

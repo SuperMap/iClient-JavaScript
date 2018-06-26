@@ -7,7 +7,7 @@ import {Shape} from './Shape';
  * @classdesc 点。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
  *       style: {
  *           x: 100,
@@ -21,7 +21,7 @@ import {Shape} from './Shape';
  *       }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  *
  */
 export class SmicPoint extends Shape {

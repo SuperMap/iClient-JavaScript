@@ -169,7 +169,7 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.removeFeatures
-     * @param {Array<SuperMap.Feature.Vector>} features - 要删除feature的数组。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除feature的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
@@ -273,7 +273,7 @@ export class Theme {
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性的 key。</br>
      * @param {string} attrValue - 矢量要素的属性 id。
-     * @returns {Array<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
+     * @returns {Array.<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,

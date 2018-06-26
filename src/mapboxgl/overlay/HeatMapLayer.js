@@ -20,7 +20,7 @@ import {
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。</br>
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。</br>
  * @param {number} options.opacity - 图层透明度。</br>
- * @param {Array<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。</br>
+ * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。</br>
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
  * @extends {mapboxgl.Evented}
  */
@@ -66,7 +66,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.opacity = _options.opacity ? _options.opacity : 1;
 
         /**
-         * @member {Array<string>} [mapboxgl.supermap.HeatMapLayer.prototype.colors=['blue','cyan','lime','yellow','red']]
+         * @member {Array.<string>} [mapboxgl.supermap.HeatMapLayer.prototype.colors=['blue','cyan','lime','yellow','red']]
          * @description 颜色线性渐变数组,颜色值必须为canvas所支。
          */
         this.colors = _options.colors ? _options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
@@ -98,7 +98,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.featureWeight = _options.featureWeight ? _options.featureWeight : null;
 
         /**
-         * @member {Array<SuperMap.Feature.Vector>} mapboxgl.supermap.HeatMapLayer.prototype.features 
+         * @member {Array.<SuperMap.Feature.Vector>} mapboxgl.supermap.HeatMapLayer.prototype.features 
          * @description 热点信息数组，记录存储图层上添加的所有热点信息。
          */
         this.features = [];
@@ -496,7 +496,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.HeatMapLayer.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array<SuperMap.Feature.Vector>} features - 热点信息数组。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {

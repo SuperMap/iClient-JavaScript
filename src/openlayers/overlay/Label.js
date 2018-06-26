@@ -139,7 +139,7 @@ export class Label extends GeoFeature {
      * @function ol.source.Label.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素
      * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 所有标签要素的数组。
-     * @returns {Array<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
+     * @returns {Array.<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
      */
     getDrawnLabels(labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
@@ -342,7 +342,7 @@ export class Label extends GeoFeature {
     /**
      * @function ol.source.Label.prototype.setLabelsStyle
      * @description 设置标签要素的Style
-     * @param {Array<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
+     * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
      * @returns {Array.<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
      */
     setLabelsStyle(labelFeatures) {

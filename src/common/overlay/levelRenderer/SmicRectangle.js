@@ -7,7 +7,7 @@ import {Shape} from './Shape';
  * @classdesc 矩形。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
  *         style: {
  *             x: 0,
@@ -18,7 +18,7 @@ import {Shape} from './Shape';
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  */
 export class SmicRectangle extends Shape {
 

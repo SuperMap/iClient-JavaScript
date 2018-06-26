@@ -251,7 +251,7 @@ export class LineString extends Curve {
      * @description 根据点的类型画出不同类型的曲线
      * 点的类型有三种, LTypeArc, LTypeCurve, NONE
      * @param {Array.<SuperMap.Geometry.Point>} points - 传入的待计算的初始点串。
-     * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
+     * @returns {Array.<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
      * @example
      * var points = [];
      * points.push(new SuperMap.Geometry.Point(-50,30));

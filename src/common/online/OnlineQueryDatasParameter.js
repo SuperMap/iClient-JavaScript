@@ -13,12 +13,12 @@ export class OnlineQueryDatasParameter {
         options = options || {};
 
         /**
-         * @member SuperMap.OnlineQueryDatasParameter.prototype.userNames -{Array<string>}
+         * @member SuperMap.OnlineQueryDatasParameter.prototype.userNames -{Array.<string>}
          * @description 数据作者名。可以根据数据作者名查询，默认查询全部。
          */
         this.userNames = null;
         /**
-         * @member SuperMap.OnlineQueryDatasParameter.prototype.types  -{Array<Object>}
+         * @member SuperMap.OnlineQueryDatasParameter.prototype.types  -{Array.<Object>}
          * @description  数据类型
          */
         this.types = null;
@@ -38,12 +38,12 @@ export class OnlineQueryDatasParameter {
          */
         this.serviceId = null;
         /**
-         * @member SuperMap.OnlineQueryDatasParameter.prototype.ids  -{Array<integer>}
+         * @member SuperMap.OnlineQueryDatasParameter.prototype.ids  -{Array.<integer>}
          * @description  由数据项 id 组成的整型数组。
          */
         this.ids = null;
         /**
-         * @member SuperMap.OnlineQueryDatasParameter.prototype.keywords  -{Array<string>}
+         * @member SuperMap.OnlineQueryDatasParameter.prototype.keywords  -{Array.<string>}
          * @description 关键字。
          */
         this.keywords = null;
@@ -53,12 +53,12 @@ export class OnlineQueryDatasParameter {
          */
         this.orderBy = null;
         /**
-         * @member SuperMap.OnlineQueryDatasParameter.prototype.tags  -{Array<string>}
+         * @member SuperMap.OnlineQueryDatasParameter.prototype.tags  -{Array.<string>}
          * @description 数据的标签。
          */
         this.tags = null;
         /**
-         * @member SuperMap.OnlineQueryDatasParameter.prototype.filterFields  -{Array<string>}
+         * @member SuperMap.OnlineQueryDatasParameter.prototype.filterFields  -{Array.<string>}
          * @description 用于关键字查询时的过滤字段。
          */
         this.filterFields = null;

@@ -20,9 +20,6 @@
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
         "include": [
             "src/common","src/openlayers"
-        ],
-        "exclude": [
-            "src/common/overlay/feature","src/common/overlay/levelRenderer"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/linkdoc"],

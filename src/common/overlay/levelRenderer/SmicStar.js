@@ -8,7 +8,7 @@ import {SUtil} from './SUtil';
  * @classdesc n 角星（n>3）。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicStar({
  *         style: {
  *             x: 200,
@@ -19,7 +19,7 @@ import {SUtil} from './SUtil';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 export class SmicStar extends Shape {

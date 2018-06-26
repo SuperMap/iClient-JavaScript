@@ -201,9 +201,9 @@ export class Render {
      * @param {string} clearColor - 每次清空画布的颜色。默认值：0。
      * @param {noolean} motionBlur - 是否开启动态模糊。默认值：false。
      * @param {number}  lastFrameAlpha - 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显。默认值：0.7。
-     * @param {Array.{number}} position - 层的平移。
-     * @param {Array.{number}} rotation - 层的旋转。
-     * @param {Array.{number}} scale - 层的缩放。
+     * @param {Array.<number>} position - 层的平移。
+     * @param {Array.<number>} rotation - 层的旋转。
+     * @param {Array.<number>} scale - 层的缩放。
      * @param {boolean} zoomable - 层是否支持鼠标缩放操作。默认值：false。
      * @param {boolean} panable - 层是否支持鼠标平移操作。默认值：false。
      * @return {SuperMap.LevelRenderer.Render} this。
@@ -299,14 +299,14 @@ export class Render {
      * @function SuperMap.LevelRenderer.Render.prototype.animate
      * @description 动画。
      *
-     * (code)
+     * @example
      *     zr.animate(circle.id, 'style', false)
      *         .when(1000, {x: 10} )
      *         .done(function(){ // Animation done })
      *         .start()
-     * (end)
+     * 
      *
-     * @param {Array{(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)}} el - 动画对象。
+     * @param {Array.<(SuperMap.LevelRenderer.Shape/SuperMap.LevelRenderer.Group)>} el - 动画对象。
      * @param {string} path - 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>,path需为空字符串。
      * @param {Function} loop - 动画是否循环。
      * @return {SuperMap.LevelRenderer.animation.Animator} Animator。

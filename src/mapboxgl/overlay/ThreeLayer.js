@@ -87,7 +87,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.ThreeLayer.prototype.toThreeMesh
      * @description 创建threejs Mesh对象。将地理坐标转换成threejs 3D模型（适用于挤压模型，如城市建筑）。
-     * @param {Array<Object>} coordinates - 坐标点数组</br>
+     * @param {Array.<Object>} coordinates - 坐标点数组</br>
      * @param {number} amount - 高度</br>
      * @param {THREE.Material} material - Threejs 材质对象。参考：[THREE.Material]{@link https://threejs.org/docs/index.html#api/extras/core/Material} </br>
      * @param {boolean} removeDuplicated - 是否移除重复的坐标点
@@ -119,7 +119,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @function mapboxgl.supermap.ThreeLayer.prototype.addObject
      * @description 设置threejs 3D对象的坐标（经纬度） 
      * @param {THREE.Object3D} object3D - threejs 3D对象。参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象</br>
-     * @param {(Array<number>|Object)} coordinate - 添加的three对象坐标（经纬度）
+     * @param {(Array.<number>|Object)} coordinate - 添加的three对象坐标（经纬度）
      * @returns {this} this
      */
     addObject(object3D, coordinate) {
@@ -219,7 +219,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @function mapboxgl.supermap.ThreeLayer.prototype.setPosition
      * @description 设置threejs 3D对象的坐标（经纬度） 
      * @param {THREE.Object3D} object3D - threejs 3D对象，参考：[THREE.Object3D]{@link https://threejs.org/docs/index.html#api/core/Object3D}及子类对象 </br>
-     * @param {(Array<number>|Object)} coordinate - 添加的three对象坐标（经纬度）
+     * @param {(Array.<number>|Object)} coordinate - 添加的three对象坐标（经纬度）
      * @returns {this} this对象
      */
     setPosition(object3D, coordinate) {
@@ -236,7 +236,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.ThreeLayer.prototype.lngLatToPosition
      * @description 经纬度转threejs 3D失量对象
-     * @param {(Array<number>|Object)} lngLat - 经纬度坐标
+     * @param {(Array.<number>|Object)} lngLat - 经纬度坐标
      * @returns {THREE.Vector3} threejs 3D失量对象。参考：[THREE.Vector3]{@link https://threejs.org/docs/index.html#api/math/Vector3}
      */
     lngLatToPosition(lngLat) {
@@ -250,7 +250,7 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @description 计算距离指定坐标给定距离的新坐标的threejs 3D失量对象
      * @param {number} x - x轴距离,单位米 </br>
      * @param {number} y - y轴距离,单位米 </br>
-     * @param {(Array<number>|Object)} lngLat - 源坐标
+     * @param {(Array.<number>|Object)} lngLat - 源坐标
      * @returns {THREE.Vector3} 目标点的threejs 3D失量对象。参考：[THREE.Vector3]{@link https://threejs.org/docs/index.html#api/math/Vector3}
      */
     distanceToThreeVector3(x, y, lngLat) {
@@ -271,8 +271,8 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.ThreeLayer.prototype.removeDuplicatedCoordinates
      * @description 移除数组中的重复坐标
-     * @param {(Array<Array<number>>)} coordinates - 坐标数组
-     * @returns {(Array<Array<number>>)} 新的坐标数组
+     * @param {(Array.<Array.<number>>)} coordinates - 坐标数组
+     * @returns {(Array.<Array.<number>>)} 新的坐标数组
      */
     removeDuplicatedCoordinates(coordinates) {
         function equals(point1, point2) {
@@ -295,7 +295,7 @@ export class ThreeLayer extends mapboxgl.Evented {
     /**
      * @function mapboxgl.supermap.ThreeLayer.prototype.getCoordinatesCenter
      * @description 获取给定坐标数组的中心坐标
-     * @param {(Array<Array<number>>)} coordinates - 坐标数组
+     * @param {(Array.<Array.<number>>)} coordinates - 坐标数组
      * @returns {Object} 包含经纬度的坐标对象
      */
     getCoordinatesCenter(coordinates) {

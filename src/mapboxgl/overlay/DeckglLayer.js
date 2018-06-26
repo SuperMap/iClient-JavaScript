@@ -12,7 +12,7 @@ import './graphic';
  * @param {string} layerTypeID - 高效率图层类型ID，必选参数，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
  *                 "polygon-layer" 高效率面图层、 "arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
  * @param {Object} options -  图层配置项，包括以下参数：
- * @param {Array<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型，
+ * @param {Array.<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型，
  * @param {Object} options.callback - deckgl 图层回调函数配置项，
  * @param {Object} options.layerId - DeckglLayer 图层 Dom 元素ID，
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
@@ -83,7 +83,7 @@ export class DeckglLayer {
          */
         this.layerTypeID = layerTypeID;
         /**
-         * @member mapboxgl.supermap.DeckglLayer.prototype.graphics - {Array<mapboxgl.supermap.Graphic>}
+         * @member mapboxgl.supermap.DeckglLayer.prototype.graphics - {Array.<mapboxgl.supermap.Graphic>}
          * @description 点要素对象数组
          */
         this.data = [].concat(options.data);
@@ -197,7 +197,7 @@ export class DeckglLayer {
      * @function mapboxgl.supermap.DeckglLayer.prototype.setStyle
      * @description 设置图层整体样式
      * @param {Object} styleOptions - 样式对象
-     * @param {Array<number>} styleOptions.color - 点颜色
+     * @param {Array.<number>} styleOptions.color - 点颜色
      * @param {number} styleOptions.radius - 点半径
      * @param {number} styleOptions.opacity - 不透明度
      * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
@@ -215,7 +215,7 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.setData
      * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-     * @param {Array<Object>}  data - 点要素对象数组
+     * @param {Array.<Object>}  data - 点要素对象数组
      */
     setData(data) {
         this.data = this.data || [];
@@ -237,7 +237,7 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.addData
      * @description 添加点要素，不会覆盖之前的要素
-     * @param {Array<Object>}  data - 点要素对象数组
+     * @param {Array.<Object>}  data - 点要素对象数组
      */
     addData(data) {
         this.data = this.data || [];

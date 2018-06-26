@@ -7,7 +7,7 @@ import {Shape} from './Shape';
  * @classdesc 圆环。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
  *         style: {
  *             x: 100,
@@ -17,7 +17,7 @@ import {Shape} from './Shape';
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  */
 export class SmicRing extends Shape {
 

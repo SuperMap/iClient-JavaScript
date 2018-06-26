@@ -61,7 +61,7 @@ export class ElasticSearch {
 
         /*
          * Constant: EVENT_TYPES
-         * {Array<String>}
+         * {Array.<String>}
          * 此类支持的事件类型。
          *
          */

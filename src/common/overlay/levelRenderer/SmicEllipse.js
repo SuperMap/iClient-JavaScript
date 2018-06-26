@@ -7,7 +7,7 @@ import {Shape} from './Shape';
  * @classdesc 椭圆。
  * @extends SuperMap.LevelRenderer.Shape
  *
- * (code)
+ * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
  *       style: {
  *           x: 100,
@@ -22,7 +22,7 @@ import {Shape} from './Shape';
  *       }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ * 
  *
  */
 export class SmicEllipse extends Shape {

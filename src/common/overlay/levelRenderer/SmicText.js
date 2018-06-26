@@ -7,7 +7,7 @@ import {SUtil} from './SUtil';
  * @category Visualization Theme
  * @extends {SuperMap.LevelRenderer.Shape}
  *
- * (code)
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicText({
  *         style: {
  *             text: 'Label',
@@ -17,7 +17,7 @@ import {SUtil} from './SUtil';
  *         }
  *     });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  */
 export class SmicText extends Shape {
 

@@ -6,8 +6,8 @@ import {Shape} from './Shape';
  * @category Visualization Theme
  * @classdesc 图片绘制。
  * @extends SuperMap.LevelRenderer.Shape
- *
- * (code)
+ * 
+ * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicImage({
  *         style: {
  *             image: 'test.jpg',
@@ -16,7 +16,7 @@ import {Shape} from './Shape';
  *         }
  *   });
  *   levelRenderer.addShape(shape);
- * (end)
+ *
  *
  */
 export class SmicImage extends Shape {

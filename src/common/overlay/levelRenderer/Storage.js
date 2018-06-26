@@ -361,7 +361,7 @@ export class Storage {
      * @function SuperMap.LevelRenderer.Storage.prototype.delRoot
      * @description 删除指定的图形(Shape)或者组(Group)。
      *
-     * @param {Array.{string}} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
+     * @param {Array.<string>} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
      *
      */
     delRoot(elId) {

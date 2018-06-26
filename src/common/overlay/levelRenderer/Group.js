@@ -105,7 +105,7 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
     /**
      * @function SuperMap.LevelRenderer.Group.prototype.children
      * @description 复制并返回一份新的包含所有儿子节点的数组。
-     * @returns {Array<SuperMap.LevelRenderer.Shape>} 图形数组。
+     * @returns {Array.<SuperMap.LevelRenderer.Shape>} 图形数组。
      */
     children() {
         return this._children.slice();
