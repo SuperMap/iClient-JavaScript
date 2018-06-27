@@ -32,6 +32,16 @@
         return false;
     }
 
+    function supportES6() {
+        var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
+        try {
+            (new Function(code))();
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
     //加载类库资源文件
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
@@ -54,10 +64,16 @@
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
-            inputScript("../../dist/iclient9-openlayers.min.js");
+            if (!inArray(excludes, 'iclient9-openlayers')) {
+                if (supportES6()) {
+                    inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
+                } else {
+                    inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
+                }
+            }
         }
         if (!inArray(excludes, 'iclient9-openlayers-css')) {
-            inputCSS("../../dist/iclient9-openlayers.min.css");
+            inputCSS("../../dist/openlayers/iclient9-openlayers.min.css");
         }
         if (inArray(includes, 'echarts')) {
             inputScript("https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js");

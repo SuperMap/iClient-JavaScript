@@ -31,6 +31,16 @@
         return false;
     }
 
+    function supportES6() {
+        var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
+        try {
+            (new Function(code))();
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
     //加载类库资源文件
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
@@ -64,10 +74,14 @@
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            inputScript("../../dist/iclient9-leaflet.js");
+            if (supportES6()) {
+                inputScript("../../dist/leaflet/iclient9-leaflet-es6.min.js");
+            } else {
+                inputScript("../../dist/leaflet/iclient9-leaflet.min.js");
+            }
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
-            inputCSS("../../dist/iclient9-leaflet.min.css");
+            inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript("http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");

@@ -248,8 +248,8 @@ export class ShapeFactory {
 
             //创建图形
             let shape = new SmicCircle();
-            shape.style = new ShapeFactory.transformStyle(style);
-            shape.highlightStyle = new ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
 
             return shape;

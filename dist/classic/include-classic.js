@@ -31,6 +31,16 @@
         return false;
     }
 
+    function supportES6() {
+        var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
+        try {
+            (new Function(code))();
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
     //加载类库资源文件
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
@@ -56,7 +66,13 @@
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/heatmap.css");
         }
         if (!inArray(excludes, 'iclient-classic')) {
-            inputScript("../../dist/iclient-classic.min.js");
+            if (!inArray(excludes, 'iclient-classic')) {
+                if (supportES6()) {
+                    inputScript("../../dist/classic/iclient-classic-es6.min.js");
+                } else {
+                    inputScript("../../dist/classic/iclient-classic.min.js");
+                }
+            }
         }
         if (inArray(includes, 'tianditu')) {
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/layer/Tianditu.js");

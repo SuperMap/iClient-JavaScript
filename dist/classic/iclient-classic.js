@@ -1,10 +1,10 @@
 /*!
  * 
- *     iclient-classic.(http://iclient.supermap.io)
- *     Copyright© 2000-2017 SuperMap Software Co. Ltd
- *     license: Apache-2.0
- *     version: v9.0.1
- * 
+ *          iclient-classic.(http://iclient.supermap.io)
+ *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
+ *          license: Apache-2.0
+ *          version: v9.0.1
+ *         
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -2705,13 +2705,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.CommonServiceBase
  * @category  iServer
  * @classdesc 对接iServer各种服务的Service的基类。
- * @param url - {string} 服务地址。
- * @param options - {Object} 可选参数。如：<br>
- *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- *        proxy - {string} 服务代理地址<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        withCredentials - {boolean} 请求是否携带cookie,默认为false。<br>
- *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {boolean} options.withCredentials - 请求是否携带cookie,默认为false。
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
@@ -2824,16 +2824,16 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function  SuperMap.CommonServiceBase.prototype.request
          * @description: 该方法用于向服务发送请求。
-         * @param options - {Object} 参数。
-         *        method - {string} 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
-         *        url - {string}  发送请求的地址。<br>
-         *        params - {Object} 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
-         *        data - {String } 发送到服务器的数据。<br>
-         *        success - {function} 请求成功后的回调函数。<br>
-         *        failure - {function} 请求失败后的回调函数。<br>
-         *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
-         *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
-         *        withCredentials - {boolean} 请求是否携带cookie。<br>
+         * @param {Object} options - 参数。
+         * @param {string} options.method - 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
+         * @param {string} options.url - 发送请求的地址。<br>
+         * @param {Object} options.params - 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
+         * @param {String} options.data - 发送到服务器的数据。<br>
+         * @param {function} options.success - 请求成功后的回调函数。<br>
+         * @param {function} options.failure - 请求失败后的回调函数。<br>
+         * @param {Object} options.scope - 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
+         * @param {boolean} options.isInTheSameDomain - 请求是否在当前域中。<br>
+         * @param {boolean} options.withCredentials - 请求是否携带cookie。<br>
          */
 
     }, {
@@ -2873,7 +2873,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getCredential
          * @description  获取凭据信息
-         * @param url - {string} 服务地址。
+         * @param {string} url - 服务地址。
          * @return {SuperMap.Credential} 凭据信息对象。
          */
 
@@ -2908,7 +2908,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
          * @description 请求成功后执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -2921,7 +2921,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
          * @description 请求失败后执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3000,7 +3000,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
          * @description 状态完成，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param {Object} result - 服务器返回的结果对象。
          */
 
     }, {
@@ -3015,7 +3015,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
          * @description 状态失败，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
+         * @param{Object}  result - 服务器返回的结果对象。
          */
 
     }, {
@@ -11267,7 +11267,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -11391,9 +11391,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -12160,7 +12160,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
 
         /*
          * Constant: EVENT_TYPES
-         * {Array<String>}
+         * {Array.<String>}
          * 此类支持的事件类型。
          *
          */

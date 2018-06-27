@@ -1,10 +1,10 @@
 /*!
  * 
- *     iclient9-leaflet.(http://iclient.supermap.io)
- *     Copyright© 2000-2017 SuperMap Software Co. Ltd
- *     license: Apache-2.0
- *     version: v9.0.1
- * 
+ *          iclient9-openlayers.(http://iclient.supermap.io)
+ *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
+ *          license: Apache-2.0
+ *          version: v9.0.1
+ *         
  */
 @font-face {
     font-family: 'supermapol-icons';
@@ -452,44 +452,43 @@
 }
 .supermapol-icons-customize:before {
   content: "\E91D";
-}.leaflet-control-ctv {
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.4);
-    background: none repeat scroll 0% 0% #FFF;
-    border: 1px solid #dddddd;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+}.ol-control-ctv {
+    top: 5.5em;
+    left: .5em;
+    border-radius: 2px;
 }
 
-a.leaflet-control-ctv-toggle {
-    width: 34px;
-    height: 34px;
+button.ol-control-ctv-toggle {
+    width: 26px;
+    height: 26px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
     display: block;
-    line-height: 34px !important;
-    font-weight: bolder;
+    line-height: 26px !important;
     text-align: center;
     text-decoration: none;
-    color: #000;
-    font-size: 1.3em;
+    font-size: 1em;
 }
 
-.leaflet-control-ctv p.leaflet-control-ctv-value {
+.ol-control-ctv p.ol-control-ctv-value {
     line-height: 26px;
     text-align: center;
     text-decoration: none;
-    color: #000;
     font-weight: bold;
-    font-size: 1.1em;
+    color: white;
+    background-color: rgba(0,60,136,.5);
+    border: none;
+    border-radius: 2px;
+    font-size: 0.8em;
     display: none;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal p.leaflet-control-ctv-value {
-    line-height: 34px;
-    height: 34px;
+.ol-control-ctv.ol-control-ctv-horizontal p.ol-control-ctv-value {
+    line-height: 26px;
+    height: 26px;
+    padding: 0 4px;
     margin: 0px 0px 0px 0px;
     border-right: 1px solid #CCC;
     min-width: 35px;
@@ -499,93 +498,86 @@ a.leaflet-control-ctv-toggle {
     white-space: nowrap;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical p.leaflet-control-ctv-value {
-    min-height: 25px;
+.ol-control-ctv.ol-control-ctv-vertical p.ol-control-ctv-value {
+    min-height: 28px;
     max-height: 100px;
     line-height: 26px;
-    margin: 0px 0px 5px 0px;
+    margin: 0px 0px 2px 0px;
     border-bottom: 1px solid #CCC;
-    width: 34px;
+    width: 28px;
     white-space: pre-wrap;
 }
 
-.leaflet-control-ctv input.leaflet-ctv-slider {
-    margin: 0px;
-}
-
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .leaflet-ctv-slider-main {
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-main {
     display: inline;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical .leaflet-ctv-slider-main {
+.ol-control-ctv.ol-control-ctv-vertical .ol-ctv-slider-main {
     display: block;
 }
 
-.leaflet-control-ctv input.leaflet-ctv-slider,
-.leaflet-control-ctv .leaflet-ctv-slider-container {
+.ol-control-ctv input.ol-ctv-slider,
+.ol-control-ctv .ol-ctv-slider-container {
     display: none;
     padding: 0px;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .leaflet-ctv-slider-container {
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-container {
     float: right;
     clear: none;
     width: 90%;
-    height: 34px;
+    height: 24px;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal input.leaflet-ctv-slider {
-    height: 34px;
+.ol-control-ctv.ol-control-ctv-horizontal input.ol-ctv-slider {
+    height: 24px;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical input.leaflet-ctv-slider {
+.ol-control-ctv.ol-control-ctv-vertical input.ol-ctv-slider {
     writing-mode: bt-lr;
-    width: 34px;
+    width: 24px;
     height: 100%;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-expanded p.leaflet-control-ctv-value {
+.ol-control-ctv.ol-control-ctv-expanded p.ol-control-ctv-value {
     display: block;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-expanded a.leaflet-control-ctv-toggle {
+.ol-control-ctv.ol-control-ctv-expanded button.ol-control-ctv-toggle {
     display: none;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-expanded input.leaflet-ctv-slider,
-.leaflet-control-ctv.leaflet-control-ctv-expanded .leaflet-ctv-slider-container {
+.ol-control-ctv.ol-control-ctv-expanded input.ol-ctv-slider,
+.ol-control-ctv.ol-control-ctv-expanded .ol-ctv-slider-container {
     display: inherit;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical .leaflet-ctv-slider-container {
-    width: 34px;
+.ol-control-ctv.ol-control-ctv-vertical .ol-ctv-slider-container {
+    width: 28px;
     transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical .leaflet-ctv-slider-container {
+.ol-control-ctv.ol-control-ctv-vertical .ol-ctv-slider-container {
     margin: 10px 0px;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .leaflet-ctv-slider-container {
-    margin: 0px 10px;
-}
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical.leaflet-control-ctv-incdec .leaflet-ctv-slider-container {
+.ol-control-ctv.ol-control-ctv-vertical.ol-control-ctv-incdec .ol-ctv-slider-container {
     margin: 0px 0px;
 }
 
-.leaflet-control-ctv input[type=range] {
+.ol-control-ctv input[type=range] {
     -webkit-appearance: none;
     width: 100%;
 }
 
-.leaflet-control-ctv input[type=range]:focus {
+.ol-control-ctv input[type=range]:focus {
     outline: none;
 }
 
-.leaflet-control-ctv input[type=range]::-webkit-slider-runnable-track {
+.ol-control-ctv input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
@@ -595,7 +587,7 @@ a.leaflet-control-ctv-toggle {
     border: 0px solid rgba(0, 0, 0, 0);
 }
 
-.leaflet-control-ctv input[type=range]::-webkit-slider-thumb {
+.ol-control-ctv input[type=range]::-webkit-slider-thumb {
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
     border: 0px solid rgba(0, 0, 0, 0);
     height: 16px;
@@ -607,11 +599,11 @@ a.leaflet-control-ctv-toggle {
     margin-top: -5.5px;
 }
 
-.leaflet-control-ctv input[type=range]:focus::-webkit-slider-runnable-track {
+.ol-control-ctv input[type=range]:focus::-webkit-slider-runnable-track {
     background: #eaeaea;
 }
 
-.leaflet-control-ctv input[type=range]::-moz-range-track {
+.ol-control-ctv input[type=range]::-moz-range-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
@@ -621,7 +613,7 @@ a.leaflet-control-ctv-toggle {
     border: 0px solid rgba(0, 0, 0, 0);
 }
 
-.leaflet-control-ctv input[type=range]::-moz-range-thumb {
+.ol-control-ctv input[type=range]::-moz-range-thumb {
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
     border: 0px solid rgba(0, 0, 0, 0);
     height: 16px;
@@ -631,7 +623,7 @@ a.leaflet-control-ctv-toggle {
     cursor: pointer;
 }
 
-.leaflet-control-ctv input[type=range]::-ms-track {
+.ol-control-ctv input[type=range]::-ms-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
@@ -640,21 +632,21 @@ a.leaflet-control-ctv-toggle {
     color: transparent;
 }
 
-.leaflet-control-ctv input[type=range]::-ms-fill-lower {
+.ol-control-ctv input[type=range]::-ms-fill-lower {
     background: #d0d0d0;
     border: 0px solid rgba(0, 0, 0, 0);
     border-radius: 50px;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
 }
 
-.leaflet-control-ctv input[type=range]::-ms-fill-upper {
+.ol-control-ctv input[type=range]::-ms-fill-upper {
     background: #dddddd;
     border: 0px solid rgba(0, 0, 0, 0);
     border-radius: 50px;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
 }
 
-.leaflet-control-ctv input[type=range]::-ms-thumb {
+.ol-control-ctv input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
     border: 0px solid rgba(0, 0, 0, 0);
     width: 16px;
@@ -664,25 +656,26 @@ a.leaflet-control-ctv-toggle {
     height: 5px;
 }
 
-.leaflet-control-ctv input[type=range]:focus::-ms-fill-lower {
+.ol-control-ctv input[type=range]:focus::-ms-fill-lower {
     background: #dddddd;
 }
 
-.leaflet-control-ctv input[type=range]:focus::-ms-fill-upper {
+.ol-control-ctv input[type=range]:focus::-ms-fill-upper {
     background: #eaeaea;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical input[type=range]::-moz-range-track {
+.ol-control-ctv.ol-control-ctv-vertical input[type=range]::-moz-range-track {
     height: 100%;
     width: 5px;
 }
 
-.leaflet-ctv-slider-next, .leaflet-ctv-slider-last {
-    width: 34px;
-    height: 34px;
+.ol-ctv-slider-next, .ol-ctv-slider-last {
+    width: 26px;
+    height: 26px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
-    line-height: 32px !important;
+    background-color: white;
+    line-height: 26px !important;
     font-weight: bolder;
     text-align: center;
     vertical-align: middle;
@@ -698,49 +691,53 @@ a.leaflet-control-ctv-toggle {
     user-select: none;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-expanded .leaflet-ctv-slider-next,
-.leaflet-control-ctv.leaflet-control-ctv-expanded .leaflet-ctv-slider-last {
+.ol-control-ctv.ol-control-ctv-expanded{
+    box-shadow: 0 0 0.1px rgba(0,0,0,.2);
+}
+
+.ol-control-ctv.ol-control-ctv-expanded .ol-ctv-slider-next,
+.ol-control-ctv.ol-control-ctv-expanded .ol-ctv-slider-last {
     display: block;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .leaflet-ctv-slider-next,
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .leaflet-ctv-slider-last {
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-next,
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-last {
     float: right;
 }
 
-.leaflet-control-ctv input[type=range]::-moz-focus-outer {
+.ol-control-ctv input[type=range]::-moz-focus-outer {
     border: 0;
 }
 
-.leaflet-ctv-slider-incdec {
+.ol-ctv-slider-incdec {
     cursor: pointer;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    .leaflet-control-ctv.leaflet-control-ctv-vertical input[type=range] {
-        transform-origin: 17px 17px;
-        -webkit-transform-origin: 17px 17px;
-        -moz-transform-origin: 17px 17px;
+    .ol-control-ctv.ol-control-ctv-vertical input[type=range] {
+        transform-origin: 10px 17px;
+        -webkit-transform-origin: 10px 17px;
+        -moz-transform-origin: 10px 17px;
         transform: rotate(90deg);
         -webkit-transform: rotate(90deg);
         -moz-transform: rotate(90deg);
-        height: 34px;
+        height: 28px;
     }
 }
 
-.leaflet-control-ctv .tooltip .tooltip-text {
+.ol-control-ctv .tooltip .tooltip-text {
     display: none;
     width: 120px;
     background-color: black;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
+    padding: 2px 0;
     position: absolute;
     z-index: 1;
 }
 
-.leaflet-control-ctv .tooltip .tooltip-text::after {
+.ol-control-ctv .tooltip .tooltip-text::after {
     content: "";
     position: absolute;
     margin-left: -5px;
@@ -749,56 +746,56 @@ a.leaflet-control-ctv-toggle {
 }
 
 /* 提示在下侧 */
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .tooltip .tooltip-text.tooltip-bottom {
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-bottom {
     top: 120%;
     left: 50%;
     margin-left: -60px;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .tooltip .tooltip-text.tooltip-bottom::after {
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-bottom::after {
     bottom: 100%;
     left: 50%;
     border-color: transparent transparent black transparent;
 }
 
 /* 提示在上侧 */
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .tooltip .tooltip-text.tooltip-top {
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-top {
     bottom: 120%;
     left: 50%;
     margin-left: -60px;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .tooltip .tooltip-text.tooltip-top::after {
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-top::after {
     top: 100%;
     left: 50%;
     border-color: black transparent transparent transparent;
 }
 
 /* 提示在右侧 */
-.leaflet-control-ctv.leaflet-control-ctv-vertical .tooltip .tooltip-text.tooltip-right {
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-right {
     top: 50%;
     left: 120%;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical .tooltip .tooltip-text.tooltip-right::after {
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-right::after {
     top: 33%;
     right: 100%;
     border-color: transparent black transparent transparent;
 }
 
 /* 提示在左侧 */
-.leaflet-control-ctv.leaflet-control-ctv-vertical .tooltip .tooltip-text.tooltip-left {
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-left {
     top: 50%;
     right: 110%;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-vertical .tooltip .tooltip-text.tooltip-left::after {
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-left::after {
     top: 33%;
     left: 104%;
     border-color: transparent transparent transparent black;
 }
 
-.leaflet-control-ctv.leaflet-control-ctv-horizontal .tooltip:hover .tooltip-text,
-.leaflet-control-ctv.leaflet-control-ctv-vertical .tooltip:hover .tooltip-text {
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip:hover .tooltip-text,
+.ol-control-ctv.ol-control-ctv-vertical .tooltip:hover .tooltip-text {
     display: block;
 }

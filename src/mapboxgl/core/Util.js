@@ -28,7 +28,7 @@ export class Util {
                 bounds[0],
                 bounds[1],
                 bounds[2],
-                bounds[3],
+                bounds[3]
             );
         }
         return new Bounds(

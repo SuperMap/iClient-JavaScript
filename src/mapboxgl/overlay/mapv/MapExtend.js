@@ -65,7 +65,7 @@ export var setBackground = function (map, color) {
  * @param {Object} source - 源，非必填，默认为vector-tiles类型</br>
  * @param {Object} sourceLayers - 源图层，非必填，默认与id对应
  */
-export var setPaintProperty = function (map, layerIds, type, paint, source, sourceLayers,) {
+export var setPaintProperty = function (map, layerIds, type, paint, source, sourceLayers) {
     if (layerIds && map) {
         if (Object.prototype.toString.call(layerIds) !== '[object Array]') {
             layerIds = [layerIds];

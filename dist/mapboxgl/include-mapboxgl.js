@@ -31,6 +31,16 @@
         return false;
     }
 
+    function supportES6() {
+        var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
+        try {
+            (new Function(code))();
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
     //加载类库资源文件
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
@@ -58,10 +68,16 @@
             inputScript("https://cdn.bootcss.com/three.js/92/three.min.js");
         }
         if(inArray(includes,'deck')){
-            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
+            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
-            inputScript("../../dist/iclient9-mapboxgl.min.js");
+            if (!inArray(excludes, 'iclient9-mapboxgl')) {
+                if (supportES6()) {
+                    inputScript("../../dist/mapboxgl/iclient9-mapboxgl-es6.js");
+                } else {
+                    inputScript("../../dist/mapboxgl/iclient9-mapboxgl.min.js");
+                }
+            }
         }
         if(inArray(includes,'LoaderSupport')){
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderCommons.js");
