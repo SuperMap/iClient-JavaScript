@@ -465,7 +465,7 @@ var exampleConfig = {
                         thumbnail: "mb_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
-                        name: "纽约出租车分布图（140万点数据绘制）",
+                        name: "纽约出租车上车点分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
                         localIgnore: true,
                         thumbnail: "mb_echartScatterMillionsNewYorkTaxi.png",

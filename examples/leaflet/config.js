@@ -681,7 +681,7 @@ var exampleConfig = {
                         thumbnail: "l_echartsCellMap.png",
                         fileName: "echartsCellMap"
                     }, {
-                        name: "2008到2017年地震情况统计",
+                        name: "2008到2017年地震概况统计",
                         name_en: "2008 to 2017 years of earthquake statistics",
                         thumbnail: "l_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
@@ -698,7 +698,7 @@ var exampleConfig = {
                         thumbnail: "l_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
-                        name: "纽约出租车分布图（140万点数据绘制）",
+                        name: "纽约出租车上车点分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
                         localIgnore:true,
                         thumbnail: "l_echartScatterMillionsNewYorkTaxi.png",

@@ -630,7 +630,7 @@ var exampleConfig = {
                         fileName: "echartsCellMap"
                     },
                     {
-                        name: "2005到2016年地震发生情况",
+                        name: "2005到2016年地震概况统计",
                         name_en: "Earthquake occurrences(2005-2016)",
                         thumbnail: "ol_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
@@ -727,7 +727,7 @@ var exampleConfig = {
                     thumbnail: "mapvBeijingVillage.png",
                     fileName: "mapvBeijingVillage"
                 }, {
-                    name: "2018年2月北京房价",
+                    name: "2018年2月北京房价信息",
                     name_en: "Beijing house prices(2018.2)",
                     localIgnore:true,
                     thumbnail: "mapvLianjia.png",
