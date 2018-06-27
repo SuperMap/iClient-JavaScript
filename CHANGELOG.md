@@ -10,6 +10,8 @@
 
 - 客户端专题图 `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置改参数为true , `addFeatures` 方法可添加底图坐标要素
 
+- 修改`L.supermap.imageMapLayer`的出图方式为整屏出图
+
 - `L.supermap.wmtsLayer` , `L.supermap.tiandituTileLayer` , `L.supermap.baiduTileLayer` , `L.supermap.cloudTileLayer` , `L.supermap.imageMapLayer` , `L.supermap.tiledMapLayer` 新增 `options.tileProxy` 参数，支持获取代理服务下相关底图数据
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -86,6 +88,7 @@
     
 - `L.supermap.ThemeLayer.addFeatures` 方法，支持传入  `L.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
 
+- 服务类`L.supermap.ServiceBase`及其子类新增 `options.withCredentials` 参数,使服务请求支持携带cookie
 
 ### for OpenLayers
 
@@ -157,6 +160,8 @@
 
 - `ol.source.Theme.addFeatures` 方法，支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJOSN` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
 
+- 服务类`ol.supermap.ServiceBase`及其子类新增 `options.withCredentials` 参数,使服务请求支持携带cookie
+
 ### for MapboxGL
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
@@ -208,11 +213,15 @@
 
 - `mapboxgl.supermap.ThemeLayer.addFeatures` 方法，支持传入  `mapboxgl.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
 
+- 服务类`mapboxgl.supermap.ServiceBase`及其子类新增 `options.withCredentials` 参数,使服务请求支持携带cookie
 
 ### Classic
 
 - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+
 - `SuperMap.ElasticSearch.update` 增加 `callback` 参数
+
+- 所有服务增加 `withCredentials` 参数,使服务请求支持携带cookie
 
 ## Fixed
 
@@ -228,6 +237,8 @@
 - 修复请求无法携带cookie问题
 - 修复缓冲区分析SRID参数不可用问题
 - 修复 `L.supermap.mapVLayer` 加载大量数据图层过于卡顿问题
+- 优化 `L.supermap.echartsLayer` ECharts图层性能
+- 修复 `L.supermap.graphicLayer` 高性能图层大数据量内存性能问题
 
 ### for OpenLayers
 
@@ -240,6 +251,7 @@
 - 修复缓冲区分析SRID参数不可用问题
 - 修复 `ol.source.Theme.addFeatures` 在传入 `ol.Feature` 数据格式数组时，未支持完所有的 `ol.geom.Geometry` 格式类型的问题
 - 修复 `ol.source.Mapv` 加载大量数据图层过于卡顿问题
+- 修复 `ol.source.Graphic` 高性能图层大数据量内存性能问题
 
 ### for MapboxGL
 
@@ -249,6 +261,7 @@
 - 修复移除客户端3D专题图图层报错问题
 - 修复请求无法携带cookie问题
 - 修复 `mapboxgl.supermap.MapvLayer` 加载大量数据图层过于卡顿问题
+- 修复 `mapboxgl.supermap.GraphicLayer` 高性能图层大数据量内存性能问题
 
 ### Classic
 
@@ -256,6 +269,12 @@
 - 修复 `SuperMap.Layer.MapVLayer` 加载大量数据图层过于卡顿问题
 
 ## Examples
+
+- 所有示例国际化，支持中英文
+
+- 示例使用的三方库以及插件升级至最新版
+
+- 接口输出的文本内容由中文改成英文
 
 ### for Leaflet
 
@@ -268,6 +287,10 @@
 - iServer - 网络分析
 
   - 修复 “最佳路径分析” 示例显示错误的问题
+
+- ElasticSearch - 可视化
+
+  - 修改 “航班监控” 示例
 
 - 可视化 - 热力图
   
@@ -284,9 +307,11 @@
   - 新增 “纽约145万出租车-webgl” 示例
 
   
-- 可视化 - Echarts
+- 可视化 - ECharts
 
   - 新增 “2005到2016年地震概况统计” 示例
+  
+  - 新增 “2018年2月北京房价信息” 示例
   
   - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
 
@@ -316,11 +341,13 @@
   
   - 新增 webgl渲染示例，包括 “纽约出租车18万点-webgl渲染” 以及 “纽约145万出租车-webgl” 示例
 
-- 可视化 - Echarts
+- 可视化 - ECharts
 
   - 新增包括 “全国空气质量图”、“迁徙图”、“热力图”、“线路图”、“线特效”、“世界飞机航线图”、“微博签到图”、“格网图” 等示例
   
   - 新增 “2005到2016年地震概况统计” 示例
+  
+  - 新增 “2018年2月北京房价信息” 示例
   
   - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
 
@@ -351,7 +378,7 @@
   
   - 新增 “蜂巢图”、“纽约出租车上车点” 以及 “面” 示例
 
-- 可视化 - Echarts
+- 可视化 - ECharts
   
   - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
 
@@ -360,6 +387,8 @@
 ### Classic
 
 ## Web Site &amp;&amp; Docs
+
+- 站点页面底部添加联系方式
 
 - API 侧边栏分类显示
 
@@ -494,7 +523,7 @@
 
 - 新增客户端标签专题图图层: Label
 - 新增 SuperMap.CORS , SuperMap.RequestTimeout两个配置
-- 新增ECharts可视化图层：EchartsLayer
+- 新增ECharts可视化图层：EChartsLayer
 - WebMap支持加载专题图层
 - 天地图图层(Tianditu)options参数变更
 - 新增layerType ，style ，format ，isLabel 配置
@@ -634,14 +663,14 @@
 ### for Leaflet
 
 - 修复非3857,4326投影下的TiledMapLayer偏移问题
-- 修复EchartsLayer在浏览器窗口大小改变时显示错位问题
+- 修复EChartsLayer在浏览器窗口大小改变时显示错位问题
 - 修复MapVLayer 无法选中要素的问题
 - 修复图层信息设置服务(LayerInfoService)更新图层信息失败问题
 - 修复客户端专题图缩放不同步问题
 - 修复ImageMapLayer，TiledMapLayer支持L.point形式的tilesize
 - 修复非4326投影下统计专题图不显示的问题
 - 修复WKT格式转换错误问题
-- 修复mapv图层(MapVLayer)和ECharts图层(EchartsLayer)移除事件
+- 修复mapv图层(MapVLayer)和ECharts图层(EChartsLayer)移除事件
 
     thanks @[shanligang](https://github.com/shanligang)
 
