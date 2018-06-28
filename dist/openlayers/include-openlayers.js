@@ -87,7 +87,9 @@
         if (inArray(includes, 'animatedclusterlayer')) {
             inputScript("http://iclient.supermap.io/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
         }
-
+        if (inArray(includes, 'proj4')) {
+            inputScript("https://cdn.bootcss.com/proj4js/2.4.4/proj4.js");
+        }
         if (inArray(includes, 'layerswitcher')) {
             inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
             inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.js");

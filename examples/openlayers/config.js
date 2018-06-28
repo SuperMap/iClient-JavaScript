@@ -817,7 +817,15 @@ var exampleConfig = {
                         localIgnore:true,
                         thumbnail: "mvtvectorlayer_mbstyle_linestyle.png",
                         fileName: "mvtvectorlayer_mbstyle_linestyle"
+                    },
+                    {
+                        name: "土地利用",
+                        name_en: "Land Use",
+                        localIgnore:true,
+                        thumbnail: "mvtvectorlayer_mbstyle_landuse.png",
+                        fileName: "mvtvectorlayer_mbstyle_landuse"
                     }
+
 
                 ]
             },

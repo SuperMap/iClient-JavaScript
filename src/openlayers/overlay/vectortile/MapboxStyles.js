@@ -157,6 +157,8 @@ export class MapboxStyles extends ol.Observable {
         if (mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
             const sizeFactor = spriteScale == 0.5 ? '@2x' : '';
+            //兼容一下iServer 等iServer修改
+            mbStyle.sprite = mbStyle.sprite.replace('@2x', "");
             const spriteUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.json');
             FetchRequest.get(spriteUrl)
                 .then(response =>

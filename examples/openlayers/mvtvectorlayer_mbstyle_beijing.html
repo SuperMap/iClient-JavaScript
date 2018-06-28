@@ -190,6 +190,8 @@
             source: 'vector-tiles',
             map: map
         }
+        overlay.setPosition(undefined);
+        closer.blur();
         if (styles[styleID]) {
             options.style = styles[styleID];
             targetStyle = new ol.supermap.MapboxStyles(options);

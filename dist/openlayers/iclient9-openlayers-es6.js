@@ -1275,7 +1275,7 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   }
 
   function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -1399,9 +1399,9 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -77810,6 +77810,8 @@ class MapboxStyles_MapboxStyles extends external_ol_default.a.Observable {
         if (mbStyle.sprite) {
             const spriteScale = window.devicePixelRatio >= 1.5 ? 0.5 : 1;
             const sizeFactor = spriteScale == 0.5 ? '@2x' : '';
+            //兼容一下iServer 等iServer修改
+            mbStyle.sprite = mbStyle.sprite.replace('@2x', "");
             const spriteUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.json');
             FetchRequest.get(spriteUrl)
                 .then(response =>

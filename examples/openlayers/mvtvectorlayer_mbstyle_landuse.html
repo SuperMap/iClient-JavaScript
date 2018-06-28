@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_mvtVectorLayer"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_mvtVectorLayer_mapboxStyle_landuse"></title>
     <!--<script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>-->
     <link href="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css" rel="stylesheet">
     <!--当前示例使用 ol-debug 原因：ol.format.MVT 默认坐标系为 3857，最新代码未更新该默认设置，需使用ol-debug，设置 defaultDataProjection 参数，以支持4326底图-->
     <script src="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js"></script>
     <script type="text/javascript" src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
     <script type="text/javascript" src="../../dist/openlayers/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/proj4js/2.4.4/proj4.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -34,7 +34,10 @@
     </div>
     <script type="text/javascript">
         var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
-            "/iserver/services/map-mvt-California/rest/maps/California";
+            "/iserver/services/map-mvt-landuse/rest/maps/landuse";
+        proj4.defs("EPSG:2362",
+            "+proj=tmerc +lat_0=0 +lon_0=114 +k=1 +x_0=38500000 +y_0=0 +a=6378140 +b=6356755.288157528 +units=m +no_defs "
+        );
         getResolutions = function (zoom, scale, targetMinZoom, targetMaxZoom) {
             var res = scaleToResolution(scale);
             var minRes = res * Math.pow(2, zoom - targetMinZoom);
@@ -47,20 +50,21 @@
         }
         scaleToResolution = function (scale) {
             var inchPerMeter = 1 / 0.0254;
-            var meterPerMapUnitValue = Math.PI * 2 * 6378137 / 360;
-            return 1 / (scale * 96 * inchPerMeter * meterPerMapUnitValue);
+            return 1 / (scale * 96 * inchPerMeter);
         };
         var vectorLayer;
-        //通过缓存sci文件已知第10级的比例尺是0.00000346145499464224，计算0到16级的分辨率
-        var resolutions = getResolutions(10, 0.00000346145499464224, 0, 16);
+        //通过缓存sci文件已知第9级的比例尺是0.00000346726346971252，计算0到16级的分辨率
+        var resolutions = getResolutions(9, 0.00000346726346971252, 0, 16);
+        var projection = ol.proj.get('EPSG:2362');
+        projection.setExtent([32876993.777095847, -10001970.421227315, 52880934.619550481, 10001970.421227315])
         var map = new ol.Map({
             target: 'map',
             view: new ol.View({
-                center: [-122.228687503369, 38.1364932162598],
-                zoom: 10,
-                minZoom: 10,
-                maxZoom: 14,
-                projection: 'EPSG:4326',
+                center: [37981118.1854434, 2645345.86991791],
+                zoom: 13,
+                minZoom: 11,
+                maxZoom: 15,
+                projection: projection,
                 resolutions: resolutions
             })
         });
@@ -71,17 +75,10 @@
         });
         info.setMap(map);
         map.addControl(info);
-        var format = new ol.format.MVT({
-            featureClass: ol.Feature
-
-        });
-        // format.defaultDataProjection = new ol.proj.Projection({
-        //     code: 'EPSG:4326',
-        //     units: ol.proj.Units.TILE_PIXELS
-        // });
         var style = new ol.supermap.MapboxStyles({
+            map: map,
             url: url,
-            source: 'California',
+            source: 'landuse',
             resolutions: resolutions
         })
         style.on('styleloaded', function () {
@@ -90,32 +87,19 @@
                 declutter: true,
                 source: new ol.source.VectorTileSuperMapRest({
                     url: url,
-                    projection: 'EPSG:4326',
+                    projection: projection,
                     tileGrid: new ol.tilegrid.TileGrid({
                         resolutions: resolutions,
-                        origin: [-180, 90],
+                        origin: [32876993.777095847, 10001970.421227315],
                         tileSize: 512
                     }),
                     tileType: 'ScaleXY',
-                    format: format
+                    format:  new ol.format.MVT()
                 }),
                 style: style.getStyleFunction()
             });
             map.addLayer(vectorLayer);
         })
-
-        map.on('pointermove', function (e) {
-            var features = map.getFeaturesAtPixel(e.pixel);
-            if (!features) {
-                content.innerHTML = '';
-                container.style.opacity = 0;
-                return;
-            }
-            content.innerHTML = "Layer: " + features[0].get('layer') + "<br />" + (features[0].get('NAME') ?
-                "Name:  " + features[0].get('NAME') : "");
-            container.style.opacity = 1;
-
-        });
     </script>
 </body>
 
