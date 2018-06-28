@@ -24832,9 +24832,9 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
         var len = uItems ? uItems.length : 0;
         Util_Util.extend(res, obj);
         res.items = [];
-        res.defaultStyle = new ServerStyle_ServerStyle.fromJson(obj.defaultStyle);
+        res.defaultStyle = ServerStyle_ServerStyle.fromJson(obj.defaultStyle);
         for (var i = 0; i < len; i++) {
-            res.items.push(new ThemeUniqueItem_ThemeUniqueItem.fromObj(uItems[i]));
+            res.items.push(ThemeUniqueItem_ThemeUniqueItem.fromObj(uItems[i]));
         }
         return res;
     }

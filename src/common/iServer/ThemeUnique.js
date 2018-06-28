@@ -125,9 +125,9 @@ export class ThemeUnique extends Theme {
         var len = uItems ? uItems.length : 0;
         Util.extend(res, obj);
         res.items = [];
-        res.defaultStyle = new ServerStyle.fromJson(obj.defaultStyle);
+        res.defaultStyle = ServerStyle.fromJson(obj.defaultStyle);
         for (var i = 0; i < len; i++) {
-            res.items.push(new ThemeUniqueItem.fromObj(uItems[i]));
+            res.items.push(ThemeUniqueItem.fromObj(uItems[i]));
         }
         return res;
     }

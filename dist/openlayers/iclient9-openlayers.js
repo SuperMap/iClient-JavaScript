@@ -26669,9 +26669,9 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
             var len = uItems ? uItems.length : 0;
             _Util.Util.extend(res, obj);
             res.items = [];
-            res.defaultStyle = new _ServerStyle.ServerStyle.fromJson(obj.defaultStyle);
+            res.defaultStyle = _ServerStyle.ServerStyle.fromJson(obj.defaultStyle);
             for (var i = 0; i < len; i++) {
-                res.items.push(new _ThemeUniqueItem.ThemeUniqueItem.fromObj(uItems[i]));
+                res.items.push(_ThemeUniqueItem.ThemeUniqueItem.fromObj(uItems[i]));
             }
             return res;
         }
