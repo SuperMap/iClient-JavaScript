@@ -4,268 +4,293 @@
 
 ### for Leaflet
 
-- `L.supermap.webmap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据
+- `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型，默认为 "png"表述类型
 
-- 客户端专题图新增支持 `L.CircleMarker` `L.Circle`
+- `L.supermap.wmtsLayer` , `L.supermap.tiandituTileLayer` , `L.supermap.baiduTileLayer` , `L.supermap.cloudTileLayer` , `L.supermap.imageMapLayer` , `L.supermap.tiledMapLayer` 新增 `options.tileProxy` 参数，支持设置代理地址
 
-- 客户端专题图 `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置改参数为true , `addFeatures` 方法可添加底图坐标要素
+- 修改 `L.supermap.imageMapLayer` 的出图方式为整屏出图
 
-- 修改`L.supermap.imageMapLayer`的出图方式为整屏出图
+- 新增全局配置 `SuperMap.setCORS` `SuperMap.isCORS` 设置或获取是否支持跨域
 
-- `L.supermap.wmtsLayer` , `L.supermap.tiandituTileLayer` , `L.supermap.baiduTileLayer` , `L.supermap.cloudTileLayer` , `L.supermap.imageMapLayer` , `L.supermap.tiledMapLayer` 新增 `options.tileProxy` 参数，支持获取代理服务下相关底图数据
+- 新增全局配置 `SuperMap.setRequestTimeout` `SuperMap.getRequestTimeout` 设置或获取请求超时时间
+- `L.supermap.ServiceBase` 及其子类
 
-- 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 新增 `options.proxy` 参数，支持设置代理地址
 
-- `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
+  - 新增 `options.withCredentials` 参数,使服务请求支持携带cookie
 
-- `L.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
+- `SuperMap.Format.GeoJSON` 支持 iServer 数据类型 "RECTANGLE"
 
-- `L.supermap.spatialAnalystService` 新增 `geometrybatchAnalysis` 接口，支持几何要素批量空间分析
+- `L.Proj.CRS` 增加 `options.dpi` 参数，支持自定义dpi
 
-- 几何要素叠加分析新增支持多个要素进行分析
+- iServer - 空间分析
 
-    - `SuperMap.SpatialAnalystBase` 类 `serviceProcessCompleted` 接口支持处理批量返回结果
+  - `L.supermap.spatialAnalystService` 增加 `geometrybatchAnalysis` 接口，支持 Geometry 批量空间分析
 
-    - `GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数
+  - `SuperMap.GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数，支持批量空间对象叠加分析
+  
+  - `SuperMap.GenerateSpatialDataParameters` 增加 `attributeFilter` 参数,支持在动态分段时设置过滤参数
 
-- `L.supermap.ThemeLayer` 及其子类新增 `options.id`参数
+- iServer - 实时数据
 
-- 废弃 `L.supermap.graphic` 类的 `setCanvas` 和 `getCanvas` 接口，改用 `setStyle` 和 `getStyle` 接口
+  - `L.supermap.dataFlowLayer` 增加 `mapv` 渲染方式，提高绘制marker的能力，`options` 新增 `render` 参数,可选值为 `normal`，`mapv`，默认为 `normal`
 
-- 废弃 `L.supermap.circleStyle` 类的 `getCanvas` 接口，改用 `getStyle` 接口
+- ElasticSearch
 
-- 增加 `L.supermap.cloverStyle`  `L.supermap.imageStyle` 类，`L.supermap.graphic` 支持三叶草要素风格、自定义图形要素风格
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
-- 新增热力图层：
+  - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
-    - `L.supermap.heatMapLayer`
+- 可视化 - 客户端专题图
 
-- `L.supermap.ThemeLayer` 及其子类支持传入 GeoJOSN 规范数据类型
+  - `L.supermap.ThemeLayer` 及其子类 
+    - `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置该参数为true , `addFeatures` 方法可添加底图坐标要素
 
-- 废弃 `L.supermap.graphThemeLaye` 类的 `_createFeature` 接口
+    - `addFeatures` 方法支持 `L.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
 
-- 废弃 `L.supermap.GeoFeatureThemeLayer` 类的 `_createFeature` 接口
+    - 废弃`_createFeature` 接口,由 `toiClientFeature` 接口代替
 
-- `L.supermap.ThemeLayer` 类新增 `toFeature` 接口
+    - 新增 `options.id` 参数
 
-- `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
+  - `SuperMap.ThemeStyle` 的参数 `strokeDashstyle` 支持类型 `dashot` 更改为 `dashdot`
 
-- 高性能图层 `L.supermap.GraphicLayer` 新增接口：
+- 可视化 - 高性能点图层
+
+  - 高性能点图层 `L.supermap.GraphicLayer` 
+
+    - 支持`webgl`渲染，`options` 新增 `render` 参数,可选值为 `canvas` , `webgl`，默认为 `canvas`
+
+    - `options` 新增 `webgl` 渲染相关参数，如：`color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,`radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`，`onClick`,`onHover`
     
-    - 默认支持`webgl`渲染 
-        - `options` 新增 `render` 参数,可选值为`canvas`,`webgl`,
-        - `options` 新增 `webgl` 绘制相关参数，如：
-             `color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,
-             `radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`,
-             `onClick`,`onHover`
+    - 增加 `setGraphics` 接口，支持设置点要素
     
-    - `setGraphics`: 设置点要素
+    - 增加 `addGraphics` 接口，支持追加点要素
     
-    - `addGraphics`: 追加点要素
+    - 增加 `clear` 接口，支持释放图层资源
     
-    - `clear`: 释放图层资源
-    
-    - `removeGraphics`: 移除所有要素
+    - 增加 `removeGraphics` 接口，支持移除所有要素
 
+  - 高性能点图层要素类 `L.supermap.Graphic`
 
-- 高性能图层要素类 `L.supermap.Graphic` 更改接口和参数：
-    
-    - options参数 `latlng` 更改为 `latLng`
-    
-    - options新增参数 `attributes`,支持设置要素属性
-    
-    - 增加 `setAttributes`和`getAttributes`接口
-    
+    - 废弃 `setCanvas` 和 `getCanvas` 接口，改用 `setStyle` 和 `getStyle` 接口
+
+    - `options` 参数 `latlng` 更改为 `latLng`
+
+    - `options` 新增参数 `attributes` ,支持设置要素属性
+
+    - 增加 `setAttributes` 和 `getAttributes`接口
+
     - `setLatlng` 接口更改为 `setLatLng`
-    
-- `L.supermap.imageMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
 
-- `L.supermap.tiledMapLayer` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+  - 废弃 `L.supermap.circleStyle` 类的 `getCanvas` 接口，改用 `getStyle` 接口
 
-- GeoJSON数据处理对接iServer数据类型"RECTANGLE"
+  - 增加 `L.supermap.cloverStyle`  `L.supermap.imageStyle` 类，支持三叶草要素风格、自定义图形要素风格
 
-- 废弃 ` L.supermap.ThemeLayer.toFeature` 方法，由 ` L.supermap.ThemeLayer.toiClientFeature` 方法代替
-    
-- `L.supermap.ThemeLayer.addFeatures` 方法，支持传入  `L.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
+- 可视化 - 热力图
 
-- 服务类`L.supermap.ServiceBase`及其子类新增 `options.withCredentials` 参数,使服务请求支持携带cookie
+  - 新增热力图层 `L.supermap.heatMapLayer`
 
 ### for OpenLayers
 
-- `ol.supermap.WebMap` 新增支持加载 "MapEditor" , "DataInsights" , "ISERVER" 格式 json 数据
+- `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型，默认为 "png"表述类型
 
-- 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
-
-- `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
-
-- `ol.source.Tianditu` , `ol.source.BaiduMap` , `ol.source.SuperMapCloud` , `ol.source.ImageSuperMapRest` , `ol.source.TileSuperMapRest` 新增 `options.tileProxy` 参数，支持获取代理服务下相关底图数据
-
-- `ol.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
-
-- `ol.supermap.SpatialAnalystService` 新增 `geometrybatchAnalysis` 接口，支持几何要素批量空间分析
-
-- 几何要素叠加分析新增支持多个要素进行分析
-
-    - `SuperMap.SpatialAnalystBase` 类 `serviceProcessCompleted` 接口支持处理批量返回结果
-
-    - `GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数
-
-- `ol.source.Theme` 及其子类新增 `options.id`参数
-
-- 新增热力图资源：
-
-    - `ol.supermap.HeatMapSource`
-
-- 增加 `ol.style.CloverShape` `ol.style.HitCloverShape` 类，`ol.source.Graphic` 支持三叶草要素风格
+- `ol.source.Tianditu` , `ol.source.BaiduMap` , `ol.source.SuperMapCloud` , `ol.source.ImageSuperMapRest` , `ol.source.TileSuperMapRest` 新增 `options.tileProxy` 参数，持设置代理地址
 
 - 废弃 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 类的 `options._cache` 参数，由 `options.cacheEnabled` 代替
 
-- 废弃 `ol.source.Graphic` 类的 `onClick` 参数
+- 新增全局配置 `SuperMap.setCORS` `SuperMap.isCORS` 设置或获取是否支持跨域
 
-- `ol.source.Graphic` 类新增 `isHighLight` 参数，支持高亮响应事件
+- 新增全局配置 `SuperMap.setRequestTimeout` `SuperMap.getRequestTimeout` 设置或获取请求超时时间
 
-- `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
+- `ol.supermap.ServiceBase` 及其子类
 
-- `ol.source.Graphic` 新增接口：
+  - 新增 `options.proxy` 参数，支持设置代理地址
 
-    - 默认支持`webgl`渲染 
-       - `options` 新增 `render` 参数,可选值为`canvas`,`webgl`,
-          - `options` 新增 `webgl` 绘制相关参数，如：
-             `color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,
-             `radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`,
-             `onClick`,`onHover`
+  - 新增 `options.withCredentials` 参数,使服务请求支持携带cookie
+
+- `SuperMap.Format.GeoJSON` 支持 iServer 数据类型 "RECTANGLE"
+
+- iServer - 空间分析
+
+    - `ol.supermap.spatialAnalystService` 增加 `geometrybatchAnalysis` 接口，支持 Geometry 批量空间分析
+
+    - `SuperMap.GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数，支持批量空间对象叠加分析
+  
+    - `SuperMap.GenerateSpatialDataParameters` 增加 `attributeFilter` 参数,支持在动态分段时设置过滤参数
+
+- ElasticSearch
+
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+
+  - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
+
+- 可视化 - 客户端专题图
+
+  - `ol.supermap.Theme` 及其子类
+    - `addFeatures` 方法支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJOSN` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
+
+    - `toFeature` 方法,由 `toiClientFeature` 方法代替
+
+    - 新增 `options.id` 参数
+
+  - `SuperMap.ThemeStyle` 的参数 `strokeDashstyle` 支持类型 `dashot` 更改为 `dashdot`
+
+- 可视化 - 高性能点图层
+
+  - 高性能点图层源 `ol.source.Graphic` 
+
+    - 支持`webgl`渲染，`options` 新增 `render` 参数,可选值为 `canvas` , `webgl`，默认为 `canvas`
+
+    - `options` 新增 `webgl` 渲染相关参数，如：`color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,`radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`，`onClick`,`onHover`
+
+    - `options` 新增 `isHighLight` 参数，支持高亮响应事件
+
+    - 废弃 `onClick` 参数
     
-    - `setGraphics`: 设置点要素
+    - 增加 `setGraphics` 接口，支持设置点要素
     
-    - `addGraphics`: 追加点要素
+    - 增加 `addGraphics` 接口，支持追加点要素
     
-    - `clear`: 释放图层资源
+    - 增加 `clear` 接口，支持释放图层资源
     
-    - `removeGraphics`: 移除所有要素
+    - 增加 `removeGraphics` 接口，支持移除所有要素
 
+  - 高性能点图层要素类 `ol.Graphic`
 
-- 高性能图层要素类 `ol.Graphic` 更改接口和参数：
-    
-    - options新增参数 `attributes`,支持设置要素属性
-    
-    - 增加 `setAttributes`和`getAttributes`接口
-    
-- `ol.source.ImageSuperMapRest` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+    - `options` 新增参数 `attributes` ,支持设置要素属性
 
-- `ol.source.TileSuperMapRest` 新增`options.format`参数，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"，表述类型
+    - 新增 `setAttributes` 和 `getAttributes`接口
 
-- GeoJSON数据处理对接iServer数据类型"RECTANGLE"
+- 可视化 - 矢量瓦片
 
-- 废弃 `ol.source.Theme.toFeature` 方法，由 ` ol.source.Theme.toiClientFeature` 方法代替
+  - 新增  `ol.supermap.MapboxStyles` 样式类，矢量瓦片支持使用 Mapbox 规范样式
 
-- `ol.source.Theme.addFeatures` 方法，支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJOSN` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
+- 可视化 - 热力图
 
-- 服务类`ol.supermap.ServiceBase`及其子类新增 `options.withCredentials` 参数,使服务请求支持携带cookie
+  - 新增热力图源 `ol.source.HeatMap`
 
 ### for MapboxGL
 
-- 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+- 新增全局配置 `SuperMap.setCORS` `SuperMap.isCORS` 设置或获取是否支持跨域
 
-- `SuperMap.ElasticSearch.update` 方法新增 `callback` 参数
+- 新增全局配置 `SuperMap.setRequestTimeout` `SuperMap.getRequestTimeout` 设置或获取请求超时时间
 
-- `mapboxgl.supermap.ServiceBase` 及其子类新增 `options.proxy`参数
+- `mapboxgl.supermap.ServiceBase` 及其子类
 
-- `mapboxgl.supermap.SpatialAnalystService` 新增 `geometrybatchAnalysis` 接口，支持几何要素批量空间分析
+  - 新增 `options.proxy` 参数，支持设置代理地址
 
-- 几何要素叠加分析新增支持多个要素进行分析
+  - 新增 `options.withCredentials` 参数,使服务请求支持携带cookie
 
-    - `SuperMap.SpatialAnalystBase` 类 `serviceProcessCompleted` 接口支持处理批量返回结果
+- `SuperMap.Format.GeoJSON` 支持 iServer 数据类型 "RECTANGLE"
 
-    - `GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数
+- iServer - 空间分析
 
-- `mapboxgl.supermap.ThemeLayer` 类新增 `options.id`参数
+  - `mapboxgl.supermap.spatialAnalystService` 增加 `geometrybatchAnalysis` 接口，支持 Geometry 批量空间分析
 
-- `mapboxgl.supermap.ThemeLayer` 类新增 `moveTo`接口，支持调整专题图层显示顺序
+  - `SuperMap.GeometryOverlayAnalystParameters` 新增 `operateGeometries` 和 `sourceGeometries` 参数，支持批量空间对象叠加分析
+  
+  - `SuperMap.GenerateSpatialDataParameters` 增加 `attributeFilter` 参数,支持在动态分段时设置过滤参数
 
-- 新增three图层：
+- ElasticSearch
 
-    - `mapboxgl.supermap.ThreeLayer`
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
-- 新增热力图层：
+  - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
-    - `mapboxgl.supermap.HeatMapLayer`
-    
-- 新增高性能点图层：
+- 可视化 - 客户端专题图
 
-    - `mapboxgl.supermap.GraphicLayer`
+  - `mapboxgl.supermap.ThemeLayer` 及其子类
+    - `addFeatures` 方法，支持传入  `mapboxgl.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
 
-- `mapboxgl.supermap.ThemeLayer` 类新增 `setVisibility`接口，支持设置图层的显示和隐藏
+    - 废弃 `toFeature` 方法，由 `toiClientFeature` 方法代替
 
-- 废弃 `mapboxgl.supermap.ThemeLayer` 类的 `toiClientFeature` 接口，改用 `toFeature`接口
+    - 新增 `options.id`参数
 
-- `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
+    - 新增 `moveTo`接口，支持调整专题图层显示顺序
 
-- GeoJSON数据处理对接iServer数据类型"RECTANGLE"
+    - 新增 `setVisibility`接口，支持设置图层的显示和隐藏
 
+    - 废弃 `toiClientFeature` 接口，由 `toFeature` 接口代替
 
-- 废弃 ` mapboxgl.supermap.ThemeLayer.toFeature` 方法，由 ` mapboxgl.supermap.ThemeLayer.toiClientFeature` 方法代替
+  - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
-- 新增deck.gl图层：
+- 可视化 - 高性能点图层
 
-    - `mapboxgl.supermap.DeckglLayer`
+  - 新增高性能点图层 `mapboxgl.supermap.GraphicLayer`
 
-- `mapboxgl.supermap.GraphicLayer` 类新增 `setVisibility` , `moveTo` 接口，支持设置图层的显示、隐藏和移动
+- 可视化 - threejs
 
-- `mapboxgl.supermap.ThemeLayer.addFeatures` 方法，支持传入  `mapboxgl.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
+ - 新增three图层 `mapboxgl.supermap.ThreeLayer`
 
-- 服务类`mapboxgl.supermap.ServiceBase`及其子类新增 `options.withCredentials` 参数,使服务请求支持携带cookie
+- 可视化 - 热力图
+
+ - 新增热力图层 `mapboxgl.supermap.HeatMapLayer`
+
+- 可视化 - deck.gl
+
+  - 新增deck.gl图层 `mapboxgl.supermap.DeckglLayer`
 
 ### Classic
 
-- 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+- ElasticSearch
 
-- `SuperMap.ElasticSearch.update` 增加 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
-- 所有服务增加 `withCredentials` 参数,使服务请求支持携带cookie
+  - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
+
 
 ## Fixed
 
 ### for Leaflet
 
+- 修复在不支持跨域情况下，jsonp请求发送失败的问题
+- 修复 `SuperMap.SurfaceAnalystParametersSetting` 的 `clipRegion` 不起作用的问题
 - 修复客户端专题图无法加载 `L.Polygon` 的问题
-- 修改 `L.supermap.imageMapLayer` 的出图方式为整张image出图
 - 修改矢量瓦片字体默认粗体的问题
 - 修改 `L.supermap.imageMapLayer` `L.supermap.tiledMapLayer` 通过 `key` `token` 授权失败的问题
 - 修改 `L.supermap.tiandituLayer` 显示级别多一级的问题
 - 修改 `L.supermap.mapVLayer` 在高分屏时无法选中要素的问题
 - 修改 `L.supermap.echartsLayer` 删除其他图层 `zoomend` `moveend` 事件的问题
-- 修复请求无法携带cookie问题
 - 修复缓冲区分析SRID参数不可用问题
 - 修复 `L.supermap.mapVLayer` 加载大量数据图层过于卡顿问题
-- 优化 `L.supermap.echartsLayer` ECharts图层性能
+- 优化 `L.supermap.echartsLayer` 图层性能
 - 修复 `L.supermap.graphicLayer` 高性能图层大数据量内存性能问题
+- 修复 `L.supermap.mapVLayer`的 `cleardata` 方法失败的问题
+- 修复 `L.supermap.mapVLayer` 在浏览器缩放比例非100%时，要素偏移，点击事件获取不到要素的问题
+- 修复`L.supermap.themeFeature` 的 `geometry` 不支持传入`L.CircleMarker` `L.Circle`的问题
 
 ### for OpenLayers
 
-- 修复 `ol.source.DataFlow` 修改传入父类参数无效的问题
+- 修复在不支持跨域情况下，jsonp请求发送失败的问题
+- 修复 `SuperMap.SurfaceAnalystParametersSetting` 的 `clipRegion` 不起作用的问题
+- 修复 `ol.source.DataFlow` 传入父类参数无效的问题
 - 修复 `ol.source.DataFlow` 的 `dataUpdated` 事件返回参数为空的问题
-- 修复 `ol.source.Graphic` 在高分辨率屏下显示错位的问题
+- 修复 `ol.source.Graphic` 在浏览器缩放比例非100%显示错位的问题
 - 修改 `ol.source.TileSuperMapRest` `ol.source.ImageSuperMapRest` 通过 `key` `token` 授权失败的问题
 - 修复 `ol.source.TileSuperMapRest` 的 `redirect` 参数默认为 `false` 但运行为 `true` 的问题
-- 修复请求无法携带cookie问题
 - 修复缓冲区分析SRID参数不可用问题
-- 修复 `ol.source.Theme.addFeatures` 在传入 `ol.Feature` 数据格式数组时，未支持完所有的 `ol.geom.Geometry` 格式类型的问题
 - 修复 `ol.source.Mapv` 加载大量数据图层过于卡顿问题
 - 修复 `ol.source.Graphic` 高性能图层大数据量内存性能问题
+- 修复 `ol.source.Mapv` 在浏览器缩放比例非100%时，要素偏移，点击事件获取不到要素的问题
 
 ### for MapboxGL
 
+- 修复在不支持跨域情况下，jsonp请求发送失败的问题
+- 修复 `SuperMap.SurfaceAnalystParametersSetting` 的 `clipRegion` 不起作用的问题
 - 修复多个客户端专题图叠加偏移的问题
 - 修复 `mapboxgl.supermap.MapvLayer` 的 `clearData` 失败的问题
 - 修复客户端3D专题图高亮时底色穿透问题
 - 修复移除客户端3D专题图图层报错问题
-- 修复请求无法携带cookie问题
-- 修复 `mapboxgl.supermap.MapvLayer` 加载大量数据图层过于卡顿问题
-- 修复 `mapboxgl.supermap.GraphicLayer` 高性能图层大数据量内存性能问题
+- 修复 `mapboxgl.supermap.MapvLayer` 加载大量数据图层卡顿问题
+- 修复 `mapboxgl.supermap.GraphicLayer` 大数据量内存性能问题
+- 修复 `mapboxgl.supermap.MapvLayer` 在浏览器缩放比例非100%时，要素偏移，点击事件获取不到要素的问题
+
+    thanks @[zhang6685979](https://github.com/zhang6685979)
+
+    pullrequest： [https://github.com/SuperMap/iClient-JavaScript/pull/15](https://github.com/SuperMap/iClient-JavaScript/pull/15)
 
 ### Classic
 
-- 修复请求无法携带cookie问题
 - 修复 `SuperMap.Layer.MapVLayer` 加载大量数据图层过于卡顿问题
 
 ## Examples
@@ -274,15 +299,21 @@
 
 - 示例使用的三方库以及插件升级至最新版
 
-- 接口输出的文本内容由中文改成英文
-
 ### for Leaflet
 
+- iServer - 数据
+
+  - 新增 “聚合查询” 示例
+  
 - iServer - 空间分析
   
   - 新增 “几何要素批量空间分析” 示例
   
   - 新增 “批量几何要素叠加分析” 示例
+
+- iServer - 网络分析
+  
+  - 修复 “最佳路径分析” 示例路径线截断的问题
   
 - iServer - 网络分析
 
@@ -305,17 +336,16 @@
   - 新增 “随机点-三叶草” 示例
   
   - 新增 “纽约145万出租车-webgl” 示例
-
   
 - 可视化 - ECharts
 
   - 新增 “2005到2016年地震概况统计” 示例
   
   - 新增 “2018年2月北京房价信息” 示例
+
+  - 新增  “车辆模型监控” 示例
   
   - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
- 
-  - 新增  “车辆模型监控” 示例
 
 - 可视化 - MapV
   
@@ -368,11 +398,11 @@
   
   - 新增 “批量几何要素叠加分析” 示例
 
-- 新增 可视化 - 热力图 功能模块及其示例
+- 新增 可视化 - 热力图 分类及示例
 
-- 新增 可视化 - threejs  功能模块及其示例
+- 新增 可视化 - threejs  分类及示例
 
-- 新增 可视化 - 高性能点图层  功能模块及其示例
+- 新增 可视化 - 高性能点图层  分类及示例
 
 - 可视化 - MapV
   
@@ -384,9 +414,13 @@
   
   - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
 
-- 新增 可视化 - DeckGL 功能模块及其示例
+- 新增 可视化 - DeckGL 分类及示例
 
 ### Classic
+
+- 分析 - 网络分析
+  
+  - 修复 “最佳路径分析” 示例路径线截断的问题
 
 ## Web Site &amp;&amp; Docs
 
@@ -394,21 +428,17 @@
 
 - API 侧边栏分类显示
 
-### for Leaflet
-- 修复`L.supermap.wmtsLayer` `L.supermap.cloudTileLayer` `L.supermap.tiledMapLayer` 的 `options.transparent` 为 `{boolean}`类型
-
-### for OpenLayers
-
-### for MapboxGL
-
-- `ThemeLayer.removeFromMap` `ThemeLayer.toiClientFeature` `ThemeLayer.resizeEvent` 增加api docs
-
-### Classic
+- 优化 API 内容
 
 ## Code Quality
 
 ## Project
 - 新增ISSUE模板
+- 移动SuperMap iClient 8C 库的位置至 src/classic 下
+- npm
+  - 修复 `turf` 引用错误的问题
+  - 提出css，方便单独引用
+  - 增加dist文件夹
 
 # 9.0.1 (2017-12-27) #
 

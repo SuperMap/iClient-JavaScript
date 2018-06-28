@@ -32,7 +32,7 @@ import * as Util from "../core/Util";
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {string} options.attribution - 版权信息。
  * @param {string} options.tileProxy - 启用托管地址。
- * @param {string} [format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型。
+ * @param {string} [format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  */
 export var TiledMapLayer = L.TileLayer.extend({
 

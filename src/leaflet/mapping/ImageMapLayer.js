@@ -30,7 +30,7 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
  * @param {string} options.attribution - 版权信息。
  * @param {number} options.updateInterval - 平移时图层延迟刷新间隔时间。
  * @param {string} options.tileProxy - 启用托管地址。
- * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型。
+ * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  */
 
 export var ImageMapLayer = Layer.extend({

@@ -28,7 +28,7 @@ import {Util} from '../core/Util';
  * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
  * @param {string} options.tileversion - 切片版本名称，_cache 为 true 时有效。<br>
  * @param {string} options.tileProxy - 代理地址。
- * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型，默认为 "png"。
  * @extends {ol.source.TileImage}
  */
 export class ImageSuperMapRest extends ol.source.TileImage {
