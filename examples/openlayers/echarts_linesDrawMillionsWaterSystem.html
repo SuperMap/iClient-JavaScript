@@ -93,7 +93,7 @@
 
         xhr.onload = function (e) {
             var rawData = new Float32Array(this.response);
-            echartslayer.$chart.appendData({
+            echartslayer.appendData({
                 seriesIndex: 0,
                 data: rawData
             });
