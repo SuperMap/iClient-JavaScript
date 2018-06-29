@@ -143,10 +143,8 @@
 
     - `options` 新增 `webgl` 渲染相关参数，如：`color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,`radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`，`onClick`,`onHover`
 
-    - `options` 新增 `isHighLight` 参数，支持高亮响应事件
+    - 废弃 `onClick` 参数, `options` 新增 `isHighLight` 参数,增加 `graphichighlighted` 事件，支持高亮响应
 
-    - 废弃 `onClick` 参数
-    
     - 增加 `setGraphics` 接口，支持设置点要素
     
     - 增加 `addGraphics` 接口，支持追加点要素
@@ -220,11 +218,11 @@
 
 - 可视化 - threejs
 
- - 新增three图层 `mapboxgl.supermap.ThreeLayer`
+  - 新增three图层 `mapboxgl.supermap.ThreeLayer`
 
 - 可视化 - 热力图
 
- - 新增热力图层 `mapboxgl.supermap.HeatMapLayer`
+  - 新增热力图层 `mapboxgl.supermap.HeatMapLayer`
 
 - 可视化 - deck.gl
 
@@ -276,6 +274,7 @@
 ### for MapboxGL
 
 - 修复在不支持跨域情况下，jsonp请求发送失败的问题
+- 修复 `mapboxgl.supermap.ThemeLayer` 及其子类无法使用 `map.addLayer` `map.getLayer` `map.moveLayer` `map.removeLayer` `map.setLayoutProperty` 操作的问题
 - 修复 `SuperMap.SurfaceAnalystParametersSetting` 的 `clipRegion` 不起作用的问题
 - 修复多个客户端专题图叠加偏移的问题
 - 修复 `mapboxgl.supermap.MapvLayer` 的 `clearData` 失败的问题
@@ -439,6 +438,10 @@
   - 修复 `turf` 引用错误的问题
   - 提出css，方便单独引用
   - 增加dist文件夹
+
+## Pull Request
+- [https://github.com/boundlessgeo/ol-mapbox-style/pull/83]{https://github.com/boundlessgeo/ol-mapbox-style/pull/83}
+- [https://github.com/boundlessgeo/ol-mapbox-style/pull/76]{https://github.com/boundlessgeo/ol-mapbox-style/pull/76}
 
 # 9.0.1 (2017-12-27) #
 
