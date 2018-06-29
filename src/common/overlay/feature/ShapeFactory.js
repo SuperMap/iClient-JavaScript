@@ -21,18 +21,16 @@ import {Util} from '../../commontypes/Util';
  * @class  SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
  * @classdesc 图形工厂类。
- *
- * 目前支持创建的图形有：
- * 用于统计专题图：
- * 点 - 参数对象： <SuperMap.Feature.ShapeParameters.Point>
- * 线 - 参数对象： <SuperMap.Feature.ShapeParameters.Line>
- * 面 - 参数对象： <SuperMap.Feature.ShapeParameters.Polygon>
- * 矩形 - 参数对象： <SuperMap.Feature.ShapeParameters.Rectangle>
- * 扇形 - 参数对象： <SuperMap.Feature.ShapeParameters.Sector>
- * 标签 - 参数对象： <SuperMap.Feature.ShapeParameters.Label>
- * 图片 - 参数对象： <SuperMap.Feature.ShapeParameters.Image>
- *
- * 用于符号专题图：
+ * 目前支持创建的图形有：<br>
+ * 用于统计专题图：<br>
+ * 点 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Point}> <br>
+ * 线 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Line}> <br>
+ * 面 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Polygon}> <br>
+ * 矩形 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Rectangle}> <br>
+ * 扇形 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Sector}> <br>
+ * 标签 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Label}> <br>
+ * 图片 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Image}> <br>
+ * 用于符号专题图：<br>
  * 圆形 -  参数对象：<{@link SuperMap.Feature.ShapeParameters.Cilcle}>
  */
 export class ShapeFactory {

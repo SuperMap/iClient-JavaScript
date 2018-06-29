@@ -51,8 +51,8 @@ import {Graph} from './Graph';
  *  }
  * ]
  * @param {Object} sectorHoverStyle - 环状图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * @param {Object} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
- * @param {Object} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {boolean} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {boolean} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
  *
  * @extends {SuperMap.Feature.Theme.Graph}
  */

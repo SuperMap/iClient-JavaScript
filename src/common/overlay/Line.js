@@ -52,7 +52,6 @@ import {Graph} from './Graph';
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Line.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
 export class Line extends Graph {
     /**
