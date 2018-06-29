@@ -440,8 +440,8 @@
   - 增加dist文件夹
 
 ## Pull Request
-- [https://github.com/boundlessgeo/ol-mapbox-style/pull/83]{https://github.com/boundlessgeo/ol-mapbox-style/pull/83}
-- [https://github.com/boundlessgeo/ol-mapbox-style/pull/76]{https://github.com/boundlessgeo/ol-mapbox-style/pull/76}
+- [https://github.com/boundlessgeo/ol-mapbox-style/pull/83](https://github.com/boundlessgeo/ol-mapbox-style/pull/83)
+- [https://github.com/boundlessgeo/ol-mapbox-style/pull/76](https://github.com/boundlessgeo/ol-mapbox-style/pull/76)
 
 # 9.0.1 (2017-12-27) #
 
