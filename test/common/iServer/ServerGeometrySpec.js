@@ -45,7 +45,7 @@ describe('ServerGeometry', () => {
         };
         var serverGeometry_LINEM = new ServerGeometry(options_LINEM);
         var toGeometry_LINEM = serverGeometry_LINEM.toGeometry();
-        expect(toGeometry_LINEM).not.toBeNull();
+        expect(toGeometry_LINEM).toBeNull();
         serverGeometry_LINEM.destroy();
         var options_REGION = {
             type: GeometryType.REGION
