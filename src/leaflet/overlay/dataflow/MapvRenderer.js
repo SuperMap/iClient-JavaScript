@@ -114,11 +114,10 @@ export var MapvRenderer = MapVLayer.extend({
         };
         mapvOps.strokeStyle = options.color;
         mapvOps.lineWidth = options.width;
-        mapvOps.globalAlpha = options.opacity;
+        mapvOps.globalAlpha = options.fillOpacity || options.opacity;
         mapvOps.lineCap = options.lineCap;
         mapvOps.lineJoin = options.lineJoin;
         mapvOps.fillStyle = options.fillColor;
-        mapvOps.globalAlpha = options.fillOpacity;
         mapvOps.size = options.radius;
         return mapvOps;
     }

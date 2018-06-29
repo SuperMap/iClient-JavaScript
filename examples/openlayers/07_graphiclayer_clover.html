@@ -140,21 +140,24 @@
             }
 
             map.once('postrender', function () {
+                var source = new ol.source.Graphic({
+                    graphics: graphics,
+                    render: "canvas",
+                    map: map,
+                    isHighLight: true
+                });
+                source.on('graphichighlighted', function (e) {
+                    if (e.value.graphic) {
+                        var coords = e.value.graphic.getGeometry().getCoordinates();
+                        content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," +
+                            coords[1] + "]";
+                        overlay.setPosition(coords);
+                        return;
+                    }
+                    overlay.setPosition(undefined);
+                });
                 var graphicLayer = new ol.layer.Image({
-                    source: new ol.source.Graphic({
-                        graphics: graphics,
-                        render:"canvas",
-                        map: map,
-                        onClick: function (graphic) {
-                            if (graphic) {
-                                var coords = graphic.getGeometry().getCoordinates();
-                                content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
-                                overlay.setPosition(graphic.getGeometry().getCoordinates());
-                                return;
-                            }
-                            overlay.setPosition(undefined);
-                        }
-                    })
+                    source: source
                 });
                 map.addLayer(graphicLayer);
             })
