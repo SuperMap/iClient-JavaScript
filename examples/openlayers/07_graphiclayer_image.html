@@ -94,8 +94,8 @@
                 img.onload = function () {
                     var imageStyle = new ol.style.Icon(({
                         img: this,
-                        size: [20, 20],
-                        imgSize: [20, 20]
+                        size: [32, 32],
+                        imgSize: [32, 32]
                     }));
                     var features = Papa.parse(nycData, {skipEmptyLines: true, header: true}).data;
                     var counts = features.length;    //矢量点的个数

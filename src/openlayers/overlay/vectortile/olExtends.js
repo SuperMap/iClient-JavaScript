@@ -75,15 +75,17 @@ export var olExtends = function (targetMap) {
                     geometryType === ol.geom.GeometryType.MULTI_LINE_STRING ? new ol.geom.MultiLineString(null) :
                     null;
             }
-            geom.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates, ends);
-            feature = new this.featureClass_();
-            if (this.geometryName_) {
-                feature.setGeometryName(this.geometryName_);
+            if (geom) {
+                geom.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates, ends);
+                feature = new this.featureClass_();
+                if (this.geometryName_) {
+                    feature.setGeometryName(this.geometryName_);
+                }
+                var geometry = ol.format.Feature.transformWithOptions(geom, false, this.adaptOptions(opt_options));
+                feature.setGeometry(geometry);
+                feature.setId(id);
+                feature.setProperties(values);
             }
-            var geometry = ol.format.Feature.transformWithOptions(geom, false, this.adaptOptions(opt_options));
-            feature.setGeometry(geometry);
-            feature.setId(id);
-            feature.setProperties(values);
         }
 
         return feature;
