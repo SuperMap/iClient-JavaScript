@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -21,7 +22,8 @@
             min-width: 50px;
         }
 
-        .ol-popup:after, .ol-popup:before {
+        .ol-popup:after,
+        .ol-popup:before {
             top: 100%;
             border: solid transparent;
             content: " ";
@@ -46,108 +48,121 @@
         }
     </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="ol-popup">
-    <div id="popup-content"></div>
-</div>
-<script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/ChinaDark";
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var overlay = new ol.Overlay(({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    }));
-    var map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 12,
-            projection: 'EPSG:3857'
-        }),
-        overlays: [overlay],
-        renderer: ['canvas']
-    });
-
-    var colorCount = 10;
-    var colors = getRandomColors(colorCount);
-    widgets.loader.showLoader();
-    $.get('../data/nyc_taxi_18W.csv', function (nycData) {
-        new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
-            var mapJSONObj = serviceResult.result;
-            var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
-            var layer = new ol.layer.Tile({
-                source: new ol.source.TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-
-            var randomCircleStyles = [];
-            for (var i = 0; i < colorCount; i++) {
-                randomCircleStyles.push(new ol.style.RegularShape({
-                    radius: Math.floor(Math.random() * 10 + 1),
-                    fill: new ol.style.Fill({
-                        color: colors[i]
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: colors[i]
-                    }),
-                    points: 3,
-                }));
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="ol-popup">
+        <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript">
+        var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
+            "/iserver/services/map-china400/rest/maps/ChinaDark";
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
             }
-            var features = Papa.parse(nycData, {skipEmptyLines: true, header: true}).data;
+        }));
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
+                    }
+                })
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 12,
+                projection: 'EPSG:3857'
+            }),
+            overlays: [overlay],
+            renderer: ['canvas']
+        });
 
-            var count = features.length;   //矢量点的个数
-            var graphics = new Array(count);
-            for (var i = 0; i < count; ++i) {
-                var coordinates = [Number(features[i].X), Number(features[i].Y)];
-                if (coordinates[0] === coordinates[1]) {
-                    continue;
+        var colorCount = 10;
+        var colors = getRandomColors(colorCount);
+        widgets.loader.showLoader();
+        $.get('../data/nyc_taxi_18W.csv', function (nycData) {
+            new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+                var mapJSONObj = serviceResult.result;
+                var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+                var layer = new ol.layer.Tile({
+                    source: new ol.source.TileSuperMapRest(options)
+                });
+                map.addLayer(layer);
+
+                var randomCircleStyles = [];
+                for (var i = 0; i < colorCount; i++) {
+                    randomCircleStyles.push(new ol.style.RegularShape({
+                        radius: Math.floor(Math.random() * 10 + 1),
+                        fill: new ol.style.Fill({
+                            color: colors[i]
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: colors[i]
+                        }),
+                        points: 3,
+                    }));
                 }
-                coordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857');
-                graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
-                graphics[i].setStyle(randomCircleStyles[Math.floor(Math.random() * colorCount)]);
-            }
-            map.once('postrender', function () {
-                var graphicLayer = new ol.layer.Image({
-                    source: new ol.source.Graphic({
+                var features = Papa.parse(nycData, {
+                    skipEmptyLines: true,
+                    header: true
+                }).data;
+
+                var count = features.length; //矢量点的个数
+                var graphics = new Array(count);
+                for (var i = 0; i < count; ++i) {
+                    var coordinates = [Number(features[i].X), Number(features[i].Y)];
+                    if (coordinates[0] === coordinates[1]) {
+                        continue;
+                    }
+                    coordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857');
+                    graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
+                    graphics[i].setStyle(randomCircleStyles[Math.floor(Math.random() * colorCount)]);
+                }
+                map.once('postrender', function () {
+                    var source = new ol.source.Graphic({
                         graphics: graphics,
                         render: "canvas",
-                        map: map,
-                        onClick: function (graphic) {
-                            if (graphic) {
-                                var coords = graphic.getGeometry().getCoordinates();
-                                content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
-                                overlay.setPosition(graphic.getGeometry().getCoordinates());
-                                return;
-                            }
-                            overlay.setPosition(undefined);
-                        }
+                        map: map
                     })
+                    source.on('graphichighlighted', function (e) {
+                        if (e.value.graphic) {
+                            var coords = e.value.graphic.getGeometry().getCoordinates();
+                            content.innerHTML = resources.text_coordinate + ":[" +
+                                coords[0] + "," +
+                                coords[1] + "]";
+                            overlay.setPosition(coords);
+                            return;
+                        }
+                        overlay.setPosition(undefined);
+                    })
+                    var graphicLayer = new ol.layer.Image({
+                        source: source
+                    });
+                    map.addLayer(graphicLayer);
+                    widgets.loader.removeLoader();
                 });
-                map.addLayer(graphicLayer);
-                widgets.loader.removeLoader();
+
             });
 
+
         });
 
-
-    });
-
-    function getRandomColors(count) {
-        return randomColor({
-            luminosity: 'bright',
-            hue: 'random',
-            alpha: 0.5,
-            format: 'rgba',
-            count: count
-        });
-    }
-</script>
+        function getRandomColors(count) {
+            return randomColor({
+                luminosity: 'bright',
+                hue: 'random',
+                alpha: 0.5,
+                format: 'rgba',
+                count: count
+            });
+        }
+    </script>
 </body>
+
 </html>

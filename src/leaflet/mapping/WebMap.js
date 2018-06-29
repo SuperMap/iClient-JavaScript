@@ -833,7 +833,7 @@ export var WebMap = L.LayerGroup.extend({
                 if (result && result.features) {
                     features = result.features;
                     for (var fi = 0, felen = features.length; fi < felen; fi++) {
-                        feature = new ServerFeature.fromJson(features[fi]).toFeature();
+                        feature = ServerFeature.fromJson(features[fi]).toFeature();
                         addedFeatures.push(feature);
                     }
                     var newEpsgCode = '4326',

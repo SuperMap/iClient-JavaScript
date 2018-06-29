@@ -1,10 +1,21 @@
 import ol from 'openlayers';
 import '../core/MapExtend';
-import {Util} from '../core/Util';
-import {HitCloverShape} from './graphic/HitCloverShape';
-import {CloverShape} from './graphic/CloverShape';
-import {CommonUtil} from '@supermap/iclient-common';
-import {GraphicCanvasRenderer, GraphicWebGLRenderer} from './graphic/';
+import {
+    Util
+} from '../core/Util';
+import {
+    HitCloverShape
+} from './graphic/HitCloverShape';
+import {
+    CloverShape
+} from './graphic/CloverShape';
+import {
+    CommonUtil
+} from '@supermap/iclient-common';
+import {
+    GraphicCanvasRenderer,
+    GraphicWebGLRenderer
+} from './graphic/';
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -25,11 +36,15 @@ const Renderer = ["canvas", "webgl"];
  * @classdesc 高效率点图层源。
  * @param {Object} options - 图形参数。<br>
  * @param {ol.Graphic} options.graphics - 高效率点图层点要素。<br>
+ * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
  * @param {ol.map} options.map - openlayers 地图对象。<br>
  * @param {boolean} options.isHighLight - 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
  * @param {ol.style} options.highLightStyle - 高亮风格，默认为 defaultHighLightStyle。<br>
+ * @deprecated
  * @param {function} options.onClick - 点击事件方法。将在下个版本弃用。<br>
  * @extends {ol.source.ImageCanvas}
+ * 
+ * @fires ol.source.Graphic#graphichighlighted
  */
 export class Graphic extends ol.source.ImageCanvas {
 
@@ -46,12 +61,9 @@ export class Graphic extends ol.source.ImageCanvas {
         this.graphics_ = [].concat(options.graphics);
         this.map = options.map;
         CommonUtil.extend(this, options);
-        this.renderer = options.renderer;
-        //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
+        this.render = options.render || Renderer[0];
         if (!Util.supportWebGL2()) {
-            this.renderer = Renderer[0];
-        } else {
-            this.renderer = (!options.renderer || options.renderer === Renderer[1]) ? Renderer[1] : Renderer[0];
+            this.render = Renderer[0];
         }
         this.highLightStyle = options.highLightStyle;
         //是否支持高亮，默认支持
@@ -62,7 +74,7 @@ export class Graphic extends ol.source.ImageCanvas {
         const me = this;
 
         //todo 将被弃用
-        if (options.onClick) {
+        if (options.onClick || this.isHighLight) {
             me.map.on('click', function (e) {
                 let coordinate = e.coordinate;
                 let resolution = e.frameState.viewState.resolution;
@@ -75,10 +87,11 @@ export class Graphic extends ol.source.ImageCanvas {
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
             if (!renderer) {
-                this.renderer = renderer = createRenderer(size, pixelRatio);
+                renderer = createRenderer(size, pixelRatio);
             }
             let graphics = this.getGraphicsInExtent(extent);
             renderer._clearBuffer();
+            renderer.selected = this.selected;
             renderer.drawGraphics(graphics);
             return renderer.getCanvas();
         }
@@ -87,7 +100,10 @@ export class Graphic extends ol.source.ImageCanvas {
         function createRenderer(size, pixelRatio) {
             let renderer;
             if (me.render === Renderer[0]) {
-                renderer = new GraphicCanvasRenderer(me, {size, pixelRatio});
+                renderer = new GraphicCanvasRenderer(me, {
+                    size,
+                    pixelRatio
+                });
             } else {
                 let optDefault = CommonUtil.extend({}, defaultProps);
                 let opt = CommonUtil.extend(optDefault, {
@@ -150,7 +166,24 @@ export class Graphic extends ol.source.ImageCanvas {
                     if (me.isHighLight) {
                         me._highLight(center, image, graphics[i], evtPixel);
                     }
-                    return callback(graphics[i]);
+                    /**
+                     * graphichighlighted 事件，要素高亮后触发
+                     * @event ol.source.Graphic#graphichighlighted
+                     * @type {Object}
+                     * @property {string} type  - graphichighlighted
+                     * @property {Object} value 
+                     * @property {ol.Graphic} value.graphic  ol.Graphic
+                     */
+                    this.dispatchEvent({
+                        type: 'graphichighlighted',
+                        value: {
+                            graphic: graphics[i]
+                        }
+                    });
+                    if (callback) {
+                        callback(graphics[i]);
+                    }
+                    return;
                 }
                 if (me.isHighLight) {
                     me._highLightClose();

@@ -1,8 +1,18 @@
-﻿import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {Theme} from './Theme';
-import {ServerColor} from './ServerColor';
-import {ThemeGridUniqueItem} from './ThemeGridUniqueItem';
+﻿import {
+    SuperMap
+} from '../SuperMap';
+import {
+    Util
+} from '../commontypes/Util';
+import {
+    Theme
+} from './Theme';
+import {
+    ServerColor
+} from './ServerColor';
+import {
+    ThemeGridUniqueItem
+} from './ThemeGridUniqueItem';
 
 /**
  * @class SuperMap.ThemeGridUnique
@@ -99,9 +109,9 @@ export class ThemeGridUnique extends Theme {
         var len = uItems ? uItems.length : 0;
         Util.extend(res, obj);
         res.items = [];
-        res.defaultcolor = new ServerColor.fromJson(obj.defaultcolor);
+        res.defaultcolor = ServerColor.fromJson(obj.defaultcolor);
         for (var i = 0; i < len; i++) {
-            res.items.push(new ThemeGridUniqueItem.fromObj(uItems[i]));
+            res.items.push(ThemeGridUniqueItem.fromObj(uItems[i]));
         }
         return res;
     }

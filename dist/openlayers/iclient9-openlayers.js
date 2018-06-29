@@ -3976,7 +3976,7 @@ var ServerGeometry = exports.ServerGeometry = function () {
         key: 'toGeoLinem',
         value: function toGeoLinem() {
             var me = this;
-            return new _Route.Route.fromJson(me);
+            return _Route.Route.fromJson(me);
         }
 
         /**
@@ -8682,18 +8682,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class  SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
  * @classdesc 图形工厂类。
- *
- * 目前支持创建的图形有：
- * 用于统计专题图：
- * 点 - 参数对象： <SuperMap.Feature.ShapeParameters.Point>
- * 线 - 参数对象： <SuperMap.Feature.ShapeParameters.Line>
- * 面 - 参数对象： <SuperMap.Feature.ShapeParameters.Polygon>
- * 矩形 - 参数对象： <SuperMap.Feature.ShapeParameters.Rectangle>
- * 扇形 - 参数对象： <SuperMap.Feature.ShapeParameters.Sector>
- * 标签 - 参数对象： <SuperMap.Feature.ShapeParameters.Label>
- * 图片 - 参数对象： <SuperMap.Feature.ShapeParameters.Image>
- *
- * 用于符号专题图：
+ * 目前支持创建的图形有：<br>
+ * 用于统计专题图：<br>
+ * 点 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Point}> <br>
+ * 线 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Line}> <br>
+ * 面 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Polygon}> <br>
+ * 矩形 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Rectangle}> <br>
+ * 扇形 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Sector}> <br>
+ * 标签 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Label}> <br>
+ * 图片 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Image}> <br>
+ * 用于符号专题图：<br>
  * 圆形 -  参数对象：<{@link SuperMap.Feature.ShapeParameters.Cilcle}>
  */
 var ShapeFactory = exports.ShapeFactory = function () {
@@ -10664,7 +10662,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {Object} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
  */
 var Graph = exports.Graph = function (_Theme) {
     _inherits(Graph, _Theme);
@@ -21431,7 +21428,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
                         continue;
                     }
                     //iServer服务器返回数据格式
-                    featuresTemp.push(new _iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+                    featuresTemp.push(_iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
                 }
                 return featuresTemp;
             }
@@ -44699,9 +44696,9 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
             var len = uItems ? uItems.length : 0;
             _Util.Util.extend(res, obj);
             res.items = [];
-            res.defaultcolor = new _ServerColor.ServerColor.fromJson(obj.defaultcolor);
+            res.defaultcolor = _ServerColor.ServerColor.fromJson(obj.defaultcolor);
             for (var i = 0; i < len; i++) {
-                res.items.push(new _ThemeGridUniqueItem.ThemeGridUniqueItem.fromObj(uItems[i]));
+                res.items.push(_ThemeGridUniqueItem.ThemeGridUniqueItem.fromObj(uItems[i]));
             }
             return res;
         }
@@ -63469,16 +63466,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {string} opt_options.themeFields - 指定创建专题图字段。 <br>
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。<br>
  * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。<br>
- * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性：<br>
- *  * width - {number} 专题要素（图表）宽度，必设参数。
- *  * height - {number} 专题要素（图表）高度，必设参数。
- *  * codomain - {Array.<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- *  * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。
- *  * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- *  * dataViewBoxParameter - {Array.<number>} 数据视图框 dataViewBox 参数，
- *  它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
- *  * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
- *  如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下几个基础可设属性：<br>
+ * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度，必设参数。
+ * @param {number} opt_options.chartsSetting.height - 专题要素（图表）高度，必设参数。
+ * @param {Array.<number>} opt_options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+ * @param {number} opt_options.chartsSetting.XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @param {number} opt_options.chartsSetting.YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @param {Array.<number>} opt_options.chartsSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox（由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
+ * @param {number} opt_options.chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @extends {ol.source.Graph}
  */
 var RankSymbol = exports.RankSymbol = function (_Graph) {
@@ -64229,16 +64224,16 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = function (_ol$Object
         _iclientCommon.CommonUtil.extend(_this, opt);
         _this.highLightStyle = _this.layer.highLightStyle;
 
-        var _pixelRatio = _this.pixelRatio;
-        var _size = _this.size;
-
-        _this.mapWidth = _size[0] * _pixelRatio;
-        _this.mapHeight = _size[1] * _pixelRatio;
-        _this.width = _this.map.getSize()[0] * _pixelRatio;
-        _this.height = _this.map.getSize()[1] * _pixelRatio;
+        _this.mapWidth = _this.size[0];
+        _this.mapHeight = _this.size[1];
+        _this.width = _this.map.getSize()[0];
+        _this.height = _this.map.getSize()[1];
 
         _this.context = _Util.Util.createCanvasContext2D(_this.mapWidth, _this.mapHeight);
+        _this.context.scale(_this.pixelRatio, _this.pixelRatio);
         _this.canvas = _this.context.canvas;
+        _this.canvas.style.width = _this.width + "px";
+        _this.canvas.style.height = _this.height + "px";
         return _this;
     }
 
@@ -64275,16 +64270,15 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = function (_ol$Object
         value: function drawGraphics(graphics) {
             this.graphics_ = graphics || [];
 
-            var pixelRatio = this.pixelRatio;
-            var mapWidth = this.mapWidth;
-            var mapHeight = this.mapHeight;
+            var mapWidth = this.mapWidth / this.pixelRatio;
+            var mapHeight = this.mapHeight / this.pixelRatio;
             var width = this.width;
             var height = this.height;
 
-            var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+            var offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
             var vectorContext = _openlayers2.default.render.toContext(this.context, {
                 size: [mapWidth, mapHeight],
-                pixelRatio: 1
+                pixelRatio: this.pixelRatio
             });
 
             var me = this,
@@ -64328,7 +64322,7 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = function (_ol$Object
                 var pixelP = map.getPixelFromCoordinate(coordinate);
                 var rotation = -map.getView().getRotation();
                 var center = map.getPixelFromCoordinate(map.getView().getCenter());
-                var scaledP = scale(pixelP, center, pixelRatio);
+                var scaledP = scale(pixelP, center, 1);
                 var rotatedP = rotate(scaledP, rotation, center);
                 var result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
                 var pixelGeometry = new _openlayers2.default.geom.Point(result);
@@ -64398,11 +64392,15 @@ var Renderer = ["canvas", "webgl"];
  * @classdesc 高效率点图层源。
  * @param {Object} options - 图形参数。<br>
  * @param {ol.Graphic} options.graphics - 高效率点图层点要素。<br>
+ * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
  * @param {ol.map} options.map - openlayers 地图对象。<br>
  * @param {boolean} options.isHighLight - 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
  * @param {ol.style} options.highLightStyle - 高亮风格，默认为 defaultHighLightStyle。<br>
+ * @deprecated
  * @param {function} options.onClick - 点击事件方法。将在下个版本弃用。<br>
  * @extends {ol.source.ImageCanvas}
+ * 
+ * @fires ol.source.Graphic#graphichighlighted
  */
 
 var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
@@ -64424,12 +64422,9 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         _this.graphics_ = [].concat(options.graphics);
         _this.map = options.map;
         _iclientCommon.CommonUtil.extend(_this, options);
-        _this.renderer = options.renderer;
-        //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
+        _this.render = options.render || Renderer[0];
         if (!_Util.Util.supportWebGL2()) {
-            _this.renderer = Renderer[0];
-        } else {
-            _this.renderer = !options.renderer || options.renderer === Renderer[1] ? Renderer[1] : Renderer[0];
+            _this.render = Renderer[0];
         }
         _this.highLightStyle = options.highLightStyle;
         //是否支持高亮，默认支持
@@ -64440,7 +64435,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         var me = _this;
 
         //todo 将被弃用
-        if (options.onClick) {
+        if (options.onClick || _this.isHighLight) {
             me.map.on('click', function (e) {
                 var coordinate = e.coordinate;
                 var resolution = e.frameState.viewState.resolution;
@@ -64454,10 +64449,11 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             // eslint-disable-line no-unused-vars
             if (!renderer) {
-                this.renderer = renderer = createRenderer(size, pixelRatio);
+                renderer = createRenderer(size, pixelRatio);
             }
             var graphics = this.getGraphicsInExtent(extent);
             renderer._clearBuffer();
+            renderer.selected = this.selected;
             renderer.drawGraphics(graphics);
             return renderer.getCanvas();
         }
@@ -64465,7 +64461,10 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
         function createRenderer(size, pixelRatio) {
             var renderer = void 0;
             if (me.render === Renderer[0]) {
-                renderer = new _graphic.GraphicCanvasRenderer(me, { size: size, pixelRatio: pixelRatio });
+                renderer = new _graphic.GraphicCanvasRenderer(me, {
+                    size: size,
+                    pixelRatio: pixelRatio
+                });
             } else {
                 var optDefault = _iclientCommon.CommonUtil.extend({}, defaultProps);
                 var opt = _iclientCommon.CommonUtil.extend(optDefault, {
@@ -64528,7 +64527,24 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                     if (me.isHighLight) {
                         me._highLight(center, image, graphics[i], evtPixel);
                     }
-                    return callback(graphics[i]);
+                    /**
+                     * graphichighlighted 事件，要素高亮后触发
+                     * @event ol.source.Graphic#graphichighlighted
+                     * @type {Object}
+                     * @property {string} type  - graphichighlighted
+                     * @property {Object} value 
+                     * @property {ol.Graphic} value.graphic  ol.Graphic
+                     */
+                    this.dispatchEvent({
+                        type: 'graphichighlighted',
+                        value: {
+                            graphic: graphics[i]
+                        }
+                    });
+                    if (callback) {
+                        callback(graphics[i]);
+                    }
+                    return;
                 }
                 if (me.isHighLight) {
                     me._highLightClose();
@@ -72317,7 +72333,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                     if (result && result.features) {
                         features = result.features;
                         for (var fi = 0, felen = features.length; fi < felen; fi++) {
-                            feature = new _iclientCommon.ServerFeature.fromJson(features[fi]).toFeature();
+                            feature = _iclientCommon.ServerFeature.ServerFeature.fromJson(features[fi]).toFeature();
                             addedFeatures.push(feature);
                         }
                         var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
@@ -72816,7 +72832,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
  * @param {string} options.tileversion - 切片版本名称，_cache 为 true 时有效。<br>
  * @param {string} options.tileProxy - 代理地址。<br>
- * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型，默认为 "png"。
  * @extends {ol.source.TileImage}
  */
 var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage) {
@@ -73363,7 +73379,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。<br>
  * @param {string} options.tileversion - 切片版本名称，_cache 为 true 时有效。<br>
  * @param {string} options.tileProxy - 代理地址。
- * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "git" 四种表述类型，默认为 "png"。
+ * @param {string} options.format - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型，默认为 "png"。
  * @extends {ol.source.TileImage}
  */
 var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileImage) {
@@ -76302,8 +76318,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *  }
  * ]
  * @param {Object} sectorHoverStyle - 环状图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * @param {Object} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
- * @param {Object} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {boolean} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {boolean} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
  *
  * @extends {SuperMap.Feature.Theme.Graph}
  */
@@ -77102,7 +77118,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Line.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
 var Line = exports.Line = function (_Graph) {
     _inherits(Line, _Graph);
@@ -77417,7 +77432,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Circle.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
 var Circle = exports.Circle = function (_RankSymbol) {
     _inherits(Circle, _RankSymbol);
@@ -77615,7 +77629,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Bar3D.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
  *
  
  *
@@ -78115,7 +78128,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 属性中的参与此图表生成的属性字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Bar.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
  */
 var Bar = exports.Bar = function (_Graph) {
     _inherits(Bar, _Graph);
@@ -78548,7 +78560,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
- * @category BaseTypes Style
+ * @category Visualization Theme
  * @param options -{Object} 可选参数。如：<br>
  *         fill - {boolean} 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
  *         fillColor - {string} 十六进制填充颜色。默认值为 "#000000"。<br>
@@ -89836,17 +89848,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 点密度差值分析参数类。
  * @param {Object} options - 参数。</br>
- *        {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
- *        {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
- *        {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
- *        {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。</br>
- *        {string} options.outputDatasetName - 插值分析结果数据集的名称。必设参数</br>
- *        {string} options.outputDatasourceName - 插值分析结果数据源的名称。必设参数</br>
- *        {string} options.pixelFormat - 指定结果栅格数据集存储的像素格式。</br>
- *        {string} options.dataset - 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ * @param {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
+ * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
+ * @param {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ * @param {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。</br>
+ * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。必设参数</br>
+ * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。必设参数</br>
+ * @param {string} options.pixelFormat - 指定结果栅格数据集存储的像素格式。</br>
+ * @param {string} options.dataset - 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。
  * @extends {SuperMap.InterpolationAnalystParameters}
  * @example
  * var myInterpolationDensityAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({

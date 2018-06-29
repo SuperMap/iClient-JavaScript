@@ -3620,7 +3620,7 @@ var ServerGeometry = exports.ServerGeometry = function () {
         key: 'toGeoLinem',
         value: function toGeoLinem() {
             var me = this;
-            return new _Route.Route.fromJson(me);
+            return _Route.Route.fromJson(me);
         }
 
         /**
@@ -8489,18 +8489,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class  SuperMap.Feature.ShapeFactory
  * @category Visualization Theme
  * @classdesc 图形工厂类。
- *
- * 目前支持创建的图形有：
- * 用于统计专题图：
- * 点 - 参数对象： <SuperMap.Feature.ShapeParameters.Point>
- * 线 - 参数对象： <SuperMap.Feature.ShapeParameters.Line>
- * 面 - 参数对象： <SuperMap.Feature.ShapeParameters.Polygon>
- * 矩形 - 参数对象： <SuperMap.Feature.ShapeParameters.Rectangle>
- * 扇形 - 参数对象： <SuperMap.Feature.ShapeParameters.Sector>
- * 标签 - 参数对象： <SuperMap.Feature.ShapeParameters.Label>
- * 图片 - 参数对象： <SuperMap.Feature.ShapeParameters.Image>
- *
- * 用于符号专题图：
+ * 目前支持创建的图形有：<br>
+ * 用于统计专题图：<br>
+ * 点 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Point}> <br>
+ * 线 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Line}> <br>
+ * 面 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Polygon}> <br>
+ * 矩形 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Rectangle}> <br>
+ * 扇形 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Sector}> <br>
+ * 标签 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Label}> <br>
+ * 图片 - 参数对象 <{@link SuperMap.Feature.ShapeParameters.Image}> <br>
+ * 用于符号专题图：<br>
  * 圆形 -  参数对象：<{@link SuperMap.Feature.ShapeParameters.Cilcle}>
  */
 var ShapeFactory = exports.ShapeFactory = function () {
@@ -10471,7 +10469,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {Object} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
  */
 var Graph = exports.Graph = function (_Theme) {
     _inherits(Graph, _Theme);
@@ -21244,7 +21241,7 @@ var Theme = function () {
                         continue;
                     }
                     //iServer服务器返回数据格式
-                    featuresTemp.push(new _iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+                    featuresTemp.push(_iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
                 }
                 return featuresTemp;
             }
@@ -38876,9 +38873,9 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
             var len = uItems ? uItems.length : 0;
             _Util.Util.extend(res, obj);
             res.items = [];
-            res.defaultcolor = new _ServerColor.ServerColor.fromJson(obj.defaultcolor);
+            res.defaultcolor = _ServerColor.ServerColor.fromJson(obj.defaultcolor);
             for (var i = 0; i < len; i++) {
-                res.items.push(new _ThemeGridUniqueItem.ThemeGridUniqueItem.fromObj(uItems[i]));
+                res.items.push(_ThemeGridUniqueItem.ThemeGridUniqueItem.fromObj(uItems[i]));
             }
             return res;
         }
@@ -63698,8 +63695,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *  }
  * ]
  * @param {Object} sectorHoverStyle - 环状图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * @param {Object} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
- * @param {Object} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {boolean} sectorHoverAble - 是否允许环状图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
+ * @param {boolean} sectorClickAble - 是否允许环状图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽环状图扇形对专题图层事件的响应。
  *
  * @extends {SuperMap.Feature.Theme.Graph}
  */
@@ -64498,7 +64495,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Line.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
 var Line = exports.Line = function (_Graph) {
     _inherits(Line, _Graph);
@@ -64813,7 +64809,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Circle.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
 var Circle = exports.Circle = function (_RankSymbol) {
     _inherits(Circle, _RankSymbol);
@@ -65011,7 +65006,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Bar3D.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
  *
  
  *
@@ -65511,7 +65505,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {Array.<string>} fields - data 属性中的参与此图表生成的属性字段名称，必设参数。
  * @param {SuperMap.Feature.Theme.Bar.setting} setting - 图表配置对象，必设参数。
  * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
  */
 var Bar = exports.Bar = function (_Graph) {
     _inherits(Bar, _Graph);
@@ -65944,7 +65937,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
- * @category BaseTypes Style
+ * @category Visualization Theme
  * @param options -{Object} 可选参数。如：<br>
  *         fill - {boolean} 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
  *         fillColor - {string} 十六进制填充颜色。默认值为 "#000000"。<br>
@@ -77232,17 +77225,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 点密度差值分析参数类。
  * @param {Object} options - 参数。</br>
- *        {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
- *        {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
- *        {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
- *        {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。</br>
- *        {string} options.outputDatasetName - 插值分析结果数据集的名称。必设参数</br>
- *        {string} options.outputDatasourceName - 插值分析结果数据源的名称。必设参数</br>
- *        {string} options.pixelFormat - 指定结果栅格数据集存储的像素格式。</br>
- *        {string} options.dataset - 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ * @param {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
+ * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
+ * @param {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ * @param {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。</br>
+ * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。必设参数</br>
+ * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。必设参数</br>
+ * @param {string} options.pixelFormat - 指定结果栅格数据集存储的像素格式。</br>
+ * @param {string} options.dataset - 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。
  * @extends {SuperMap.InterpolationAnalystParameters}
  * @example
  * var myInterpolationDensityAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({

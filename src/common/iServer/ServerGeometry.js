@@ -242,7 +242,7 @@ export class ServerGeometry {
      */
     toGeoLinem() {
         var me = this;
-        return new Route.fromJson(me);
+        return Route.fromJson(me);
     }
 
     /**

@@ -1,6 +1,10 @@
 import ol from "openlayers";
-import {CommonUtil} from "@supermap/iclient-common";
-import {Util} from '../../core/Util';
+import {
+    CommonUtil
+} from "@supermap/iclient-common";
+import {
+    Util
+} from '../../core/Util';
 
 //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
 function rotate(pixelP, rotation, center) {
@@ -48,24 +52,23 @@ export class GraphicCanvasRenderer extends ol.Object {
         CommonUtil.extend(this, opt);
         this.highLightStyle = this.layer.highLightStyle;
 
-        let _pixelRatio = this.pixelRatio;
-        let _size = this.size;
-
-        this.mapWidth = _size[0] * _pixelRatio;
-        this.mapHeight = _size[1] * _pixelRatio;
-        this.width = this.map.getSize()[0] * _pixelRatio;
-        this.height = this.map.getSize()[1] * _pixelRatio;
+        this.mapWidth = this.size[0];
+        this.mapHeight = this.size[1];
+        this.width = this.map.getSize()[0];
+        this.height = this.map.getSize()[1];
 
         this.context = Util.createCanvasContext2D(this.mapWidth, this.mapHeight);
+        this.context.scale(this.pixelRatio, this.pixelRatio);
         this.canvas = this.context.canvas;
+        this.canvas.style.width = this.width + "px";
+        this.canvas.style.height = this.height + "px";
     }
 
     update() {
         this.layer.changed();
     }
 
-    _clearBuffer() {
-    }
+    _clearBuffer() {}
 
 
     /**
@@ -86,19 +89,20 @@ export class GraphicCanvasRenderer extends ol.Object {
     drawGraphics(graphics) {
         this.graphics_ = graphics || [];
 
-        let pixelRatio = this.pixelRatio;
-        let mapWidth = this.mapWidth;
-        let mapHeight = this.mapHeight;
+        let mapWidth = this.mapWidth / this.pixelRatio;
+        let mapHeight = this.mapHeight / this.pixelRatio;
         let width = this.width;
         let height = this.height;
 
-        let offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+        let offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
         let vectorContext = ol.render.toContext(this.context, {
             size: [mapWidth, mapHeight],
-            pixelRatio: 1
+            pixelRatio: this.pixelRatio
         });
 
-        let me = this, layer = me.layer, map = layer.map;
+        let me = this,
+            layer = me.layer,
+            map = layer.map;
         graphics.map(function (graphic) {
             let style = graphic.getStyle();
             if (me.selected === graphic) {
@@ -137,7 +141,7 @@ export class GraphicCanvasRenderer extends ol.Object {
             let pixelP = map.getPixelFromCoordinate(coordinate);
             let rotation = -map.getView().getRotation();
             let center = map.getPixelFromCoordinate(map.getView().getCenter());
-            let scaledP = scale(pixelP, center, pixelRatio);
+            let scaledP = scale(pixelP, center, 1);
             let rotatedP = rotate(scaledP, rotation, center);
             let result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
             let pixelGeometry = new ol.geom.Point(result);

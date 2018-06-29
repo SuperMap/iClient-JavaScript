@@ -21,8 +21,8 @@ import * as Util from "../core/Util";
  * @param {Object} options - 影像图层参数。
  * @param {number} options.layersID - 图层ID，如果有layersID，则是在使用专题图。
  * @param {boolean} options.redirect - 是否从定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
- * @param {boolean} options.transparent - 是否背景透明。
- * @param {boolean} options.cacheEnabled - 启用缓存。
+ * @param {boolean} [options.transparent = true] - 是否背景透明。
+ * @param {boolean} [options.cacheEnabled = true] - 启用缓存。
  * @param {boolean} options.clipRegionEnabled - 是否启用地图裁剪。
  * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
  * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
@@ -41,8 +41,8 @@ export var TiledMapLayer = L.TileLayer.extend({
         layersID: null,
         //如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流
         redirect: false,
-        transparent: null,
-        cacheEnabled: null,
+        transparent: true,
+        cacheEnabled: true,
         clipRegionEnabled: false,
         //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}
         prjCoordSys: null,

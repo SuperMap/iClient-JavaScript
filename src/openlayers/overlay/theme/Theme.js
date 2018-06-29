@@ -519,7 +519,7 @@ export class Theme extends ol.source.ImageCanvas {
                     continue;
                 }
                 //iServer服务器返回数据格式
-                featuresTemp.push(new ServerFeature.fromJson(features[i]).toFeature());
+                featuresTemp.push(ServerFeature.fromJson(features[i]).toFeature());
             }
             return featuresTemp;
         }
