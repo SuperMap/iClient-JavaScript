@@ -722,7 +722,7 @@ var exampleConfig = {
                         thumbnail: "l_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }, {
-                        name: "车辆模型监控",
+                        name: "车辆监控模拟",
                         name_en: "Car Animation",
                         thumbnail: "l_echartsAnimatorCar.png",
                         fileName: "echartsAnimatorCar"

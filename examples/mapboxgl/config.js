@@ -488,6 +488,11 @@ var exampleConfig = {
                         localIgnore: true,
                         thumbnail: "mb_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
+                    }, {
+                        name: "车辆监控模拟",
+                        name_en: "Car Animation",
+                        thumbnail: "mb_echartsAnimatorCar.png",
+                        fileName: "echartsAnimatorCar"
                     }
                 ]
             },
