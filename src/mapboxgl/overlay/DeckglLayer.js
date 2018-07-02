@@ -151,6 +151,7 @@ export class DeckglLayer {
      */
     removeFromMap() {
         this.remove();
+        this.clear();
     }
 
     /**
@@ -285,6 +286,7 @@ export class DeckglLayer {
     // todo 还有哪些资源应该被释放？
     clear() {
         this.removeData();
+        this.deckGL.finalize();
     }
 
     /**

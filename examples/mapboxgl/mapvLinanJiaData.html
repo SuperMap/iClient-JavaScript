@@ -143,7 +143,9 @@
                 }
             };
             var popup = new mapboxgl.Popup({closeOnClick: false});
-            new mapboxgl.supermap.MapvLayer(map, dataSet, mapvOptions);
+            //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+            var mapVLayer = new mapboxgl.supermap.MapvLayer("", dataSet, mapvOptions);
+            map.addLayer(mapVLayer);
         });
     }
 </script>

@@ -15,11 +15,11 @@ import {
 /**
  * @class mapboxgl.supermap.ThemeLayer
  * @classdesc 专题图基类。
- * @param {string} name - 专题图图层名。</br>
- * @param {Object} options -可选参数。</br>
- * @param {string} options.id - 专题图层ID。</br>
- * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。</br>
- * @param {mapboxgl.Map} options.map - 当前mapboxgl map对象。</br>
+ * @param {string} name - 专题图图层名。
+ * @param {Object} options -可选参数。
+ * @param {string} options.id - 专题图层ID。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {mapboxgl.Map} options.map - 当前mapboxgl map对象，将在下个版本弃用，请用map.addLayer()方法添加图层。
  * @param {number} options.opacity - 图层透明度。
  */
 export class Theme {
@@ -27,21 +27,21 @@ export class Theme {
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         /**
-         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name 
+         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name
          * @description 专题图图层名称
          */
         this.name = name;
 
         /**
-         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name 
+         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.id
          * @description 专题图图层id
          */
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
-         * @member {float} mapboxgl.supermap.ThemeLayer.prototype.opacity 
+         * @member {float} mapboxgl.supermap.ThemeLayer.prototype.opacity
          * @description 图层透明度
          */
-        this.opacity = 1;
+        this.opacity = options.opacity ? options.opacity : 1;
 
         /**
          * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.visibility=true]
@@ -50,19 +50,66 @@ export class Theme {
         this.visibility = true;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating=true] 
+         * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating=true]
          * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
          */
         this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
 
         /**
-         * @member {mapboxgl.Map} mapboxgl.supermap.ThemeLayer.prototype.map 
+         * @member {mapboxgl.Map} mapboxgl.supermap.ThemeLayer.prototype.map
          * @description map对象
          */
-        this.map = options.map;
+        this.map = options.map ? options.map : null;
 
         this.features = [];
         this.TFEvents = [];
+
+        //todo 保留之前创建图层同时添加到图层的用法，在下个版本遗弃
+        if (this.map) {
+            this.map.addLayer(this);
+        }
+
+    }
+
+    /**
+     * @function mapboxgl.supermap.ThemeLayer.prototype.onAdd
+     * @description 向底图添加该图层
+     */
+    onAdd(map) {
+        this.map = map;
+        this._createCanvasContainer();
+
+        //处理用户预先（在图层添加到 map 前）监听的事件
+        this.addTFEvents();
+        this.map.on('resize', this.resizeEvent.bind(this));
+        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
+        this.map.on('zoomend', this.zoomEndEvent.bind(this));
+        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
+        this.map.on('rotate', this.rotateEvent.bind(this));
+        this.map.on('rotateend', this.rotateEndEvent.bind(this));
+        this.map.on('dragend', this.dragEndEvent.bind(this));
+        this.map.on('movestart', this.moveStartEvent.bind(this));
+        this.map.on('move', this.moveEvent.bind(this));
+        this.map.on('moveend', this.moveEndEvent.bind(this));
+        this.map.on('remove', this.removeFromMap.bind(this));
+
+        this.refresh();
+    }
+
+    /**
+     * @function mapboxgl.supermap.HeatMapLayer.prototype.refresh
+     * @description 强制刷新当前热点显示，在图层热点数组发生变化后调用，更新显示。
+     */
+    refresh() {
+        if (this.features.length === 0) {
+            return;
+        }
+        if (this.map) {
+            this.redrawThematicFeatures(this.map.getBounds());
+        }
+    }
+
+    _createCanvasContainer() {
         this.movingOffset = [0, 0];
         this.mapContainer = this.map.getCanvasContainer();
         this.div = document.createElement('div');
@@ -77,25 +124,10 @@ export class Theme {
         this.div.width = parseInt(canvas.width);
         this.div.height = parseInt(canvas.height);
         container.appendChild(this.div);
-        if (opt_options.opacity) {
-            this.setOpacity(options.opacity);
-        }
+        this.setOpacity(this.opacity);
         this.levelRenderer = new LevelRenderer();
         this.renderer = this.levelRenderer.init(this.div);
         this.renderer.clear();
-        //处理用户预先（在图层添加到 map 前）监听的事件
-        this.addTFEvents();
-        this.map.on('resize', this.resizeEvent.bind(this));
-        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
-        this.map.on('zoomend', this.zoomEndEvent.bind(this));
-        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
-        this.map.on('rotate', this.rotateEvent.bind(this));
-        this.map.on('rotateend', this.rotateEndEvent.bind(this));
-        this.map.on('dragend', this.dragEndEvent.bind(this));
-        this.map.on('movestart', this.moveStartEvent.bind(this));
-        this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('moveend', this.moveEndEvent.bind(this));
-        this.map.on('remove', this.removeFromMap.bind(this));
     }
 
     /**
@@ -511,10 +543,10 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.removeFromMap
-     * @description 移除事件
+     * @description 移除图层
      */
     removeFromMap() {
-        this.map.getCanvasContainer().removeChild(this.div);
+        this.mapContainer.removeChild(this.div);
         this.removeAllFeatures();
     }
 
@@ -525,16 +557,16 @@ export class Theme {
      * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
      */
     moveTo(layerID, before) {
-        var layer = document.getElementById(this.div.id);
+        const layer = document.getElementById(this.div.id);
         before = before !== undefined ? before : true;
         if (before) {
-            var beforeLayer = document.getElementById(layerID);
+            const beforeLayer = document.getElementById(layerID);
             if (layer && beforeLayer) {
                 beforeLayer.parentNode.insertBefore(layer, beforeLayer);
             }
             return;
         }
-        var nextLayer = document.getElementById(layerID);
+        const nextLayer = document.getElementById(layerID);
         if (layer) {
             if (nextLayer.nextSibling) {
                 nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);

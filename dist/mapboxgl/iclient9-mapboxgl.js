@@ -2413,436 +2413,6 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CommonServiceBase = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _FetchRequest = __webpack_require__(20);
-
-var _Events = __webpack_require__(71);
-
-var _Credential = __webpack_require__(102);
-
-var _SecurityManager = __webpack_require__(35);
-
-var _Util = __webpack_require__(1);
-
-var _REST = __webpack_require__(2);
-
-var _JSON = __webpack_require__(100);
-
-var _BaseTypes = __webpack_require__(49);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.CommonServiceBase
- * @category  iServer
- * @classdesc 对接iServer各种服务的Service的基类。
- * @param {string} url - 服务地址。
- * @param {Object} options - 参数。<br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {string} options.proxy - 服务代理地址。
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
- * @param {boolean} options.withCredentials - 请求是否携带cookie,默认为false。
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
- */
-var CommonServiceBase = exports.CommonServiceBase = function () {
-    function CommonServiceBase(url, options) {
-        _classCallCheck(this, CommonServiceBase);
-
-        var me = this;
-
-        this.EVENT_TYPES = ["processCompleted", "processFailed"];
-
-        this.events = null;
-
-        this.eventListeners = null;
-
-        this.url = null;
-
-        this.urls = null;
-
-        this.proxy = null;
-
-        this.serverType = null;
-
-        this.index = null;
-
-        this.length = null;
-
-        this.options = null;
-
-        this.totalTimes = null;
-
-        this.POLLING_TIMES = 3;
-
-        this._processSuccess = null;
-
-        this._processFailed = null;
-
-        this.isInTheSameDomain = null;
-
-        this.withCredentials = false;
-
-        if (_Util.Util.isArray(url)) {
-            me.urls = url;
-            me.length = url.length;
-            me.totalTimes = me.length;
-            if (me.length === 1) {
-                me.url = url[0];
-            } else {
-                me.index = parseInt(Math.random() * me.length);
-                me.url = url[me.index];
-            }
-        } else {
-            me.totalTimes = 1;
-            me.url = url;
-        }
-
-        if (_Util.Util.isArray(url) && !me.isServiceSupportPolling()) {
-            me.url = url[0];
-            me.totalTimes = 1;
-        }
-
-        me.serverType = me.serverType || _REST.ServerType.ISERVER;
-
-        options = options || {};
-
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
-
-        me.isInTheSameDomain = _Util.Util.isInTheSameDomain(me.url);
-
-        me.events = new _Events.Events(me, null, me.EVENT_TYPES, true);
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
-        }
-
-        this.CLASS_NAME = "SuperMap.CommonServiceBase";
-    }
-
-    /**
-     * @function SuperMap.CommonServiceBase.prototype.destroy
-     * @description 释放资源，将引用的资源属性置空。
-     */
-
-
-    _createClass(CommonServiceBase, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            if (_Util.Util.isArray(me.urls)) {
-                me.urls = null;
-                me.index = null;
-                me.length = null;
-                me.totalTimes = null;
-            }
-            me.url = null;
-            me.options = null;
-            me._processSuccess = null;
-            me._processFailed = null;
-            me.isInTheSameDomain = null;
-
-            me.EVENT_TYPES = null;
-            if (me.events) {
-                me.events.destroy();
-                me.events = null;
-            }
-            if (me.eventListeners) {
-                me.eventListeners = null;
-            }
-        }
-
-        /**
-         * @function  SuperMap.CommonServiceBase.prototype.request
-         * @description: 该方法用于向服务发送请求。
-         * @param {Object} options - 参数。
-         * @param {string} options.method - 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
-         * @param {string} options.url - 发送请求的地址。<br>
-         * @param {Object} options.params - 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
-         * @param {String} options.data - 发送到服务器的数据。<br>
-         * @param {function} options.success - 请求成功后的回调函数。<br>
-         * @param {function} options.failure - 请求失败后的回调函数。<br>
-         * @param {Object} options.scope - 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
-         * @param {boolean} options.isInTheSameDomain - 请求是否在当前域中。<br>
-         * @param {boolean} options.withCredentials - 请求是否携带cookie。<br>
-         */
-
-    }, {
-        key: 'request',
-        value: function request(options) {
-            var me = this;
-            options.url = options.url || me.url;
-            options.proxy = options.proxy || me.proxy;
-            options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
-            options.isInTheSameDomain = me.isInTheSameDomain;
-            //为url添加安全认证信息片段
-            var credential = this.getCredential(options.url);
-            if (credential) {
-                //当url中含有?，并且?在url末尾的时候直接添加token *网络分析等服务请求url会出现末尾是?的情况*
-                //当url中含有?，并且?不在url末尾的时候添加&token
-                //当url中不含有?，在url末尾添加?token
-                var endStr = options.url.substring(options.url.length - 1, options.url.length);
-                if (options.url.indexOf("?") > -1 && endStr === "?") {
-                    options.url += credential.getUrlParameters();
-                } else if (options.url.indexOf("?") > -1 && endStr !== "?") {
-                    options.url += "&" + credential.getUrlParameters();
-                } else {
-                    options.url += "?" + credential.getUrlParameters();
-                }
-            }
-
-            me.calculatePollingTimes();
-            me._processSuccess = options.success;
-            me._processFailed = options.failure;
-            options.scope = me;
-            options.success = me.getUrlCompleted;
-            options.failure = me.getUrlFailed;
-            me.options = options;
-            me._commit(me.options);
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.getCredential
-         * @description  获取凭据信息
-         * @param {string} url - 服务地址。
-         * @return {SuperMap.Credential} 凭据信息对象。
-         */
-
-    }, {
-        key: 'getCredential',
-        value: function getCredential(url) {
-            var keyUrl = url,
-                credential = void 0,
-                value = void 0;
-            switch (this.serverType) {
-                case _REST.ServerType.IPORTAL:
-                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _Credential.Credential(value, "token") : null;
-                    if (!credential) {
-                        value = _SecurityManager.SecurityManager.getKey(keyUrl);
-                        credential = value ? new _Credential.Credential(value, "key") : null;
-                    }
-                    break;
-                case _REST.ServerType.ONLINE:
-                    value = _SecurityManager.SecurityManager.getKey(keyUrl);
-                    credential = value ? new _Credential.Credential(value, "key") : null;
-                    break;
-                default:
-                    //iServer or others
-                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _Credential.Credential(value, "token") : null;
-                    break;
-            }
-            return credential;
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
-         * @description 请求成功后执行此方法。
-         * @param {Object} result - 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'getUrlCompleted',
-        value: function getUrlCompleted(result) {
-            var me = this;
-            me._processSuccess(result);
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
-         * @description 请求失败后执行此方法。
-         * @param {Object} result - 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'getUrlFailed',
-        value: function getUrlFailed(result) {
-            var me = this;
-            if (me.totalTimes > 0) {
-                me.totalTimes--;
-                me.ajaxPolling();
-            } else {
-                me._processFailed(result);
-            }
-        }
-
-        /**
-         *
-         * @function SuperMap.CommonServiceBase.prototype.ajaxPolling
-         * @description 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
-         */
-
-    }, {
-        key: 'ajaxPolling',
-        value: function ajaxPolling() {
-            var me = this,
-                url = me.options.url,
-                re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
-            me.index = parseInt(Math.random() * me.length);
-            me.url = me.urls[me.index];
-            url = url.replace(re, re.exec(me.url)[0]);
-            me.options.url = url;
-            me.options.isInTheSameDomain = _Util.Util.isInTheSameDomain(url);
-            me._commit(me.options);
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.calculatePollingTimes
-         * @description 计算剩余请求失败执行次数。
-         */
-
-    }, {
-        key: 'calculatePollingTimes',
-        value: function calculatePollingTimes() {
-            var me = this;
-            if (me.times) {
-                if (me.totalTimes > me.POLLING_TIMES) {
-                    if (me.times > me.POLLING_TIMES) {
-                        me.totalTimes = me.POLLING_TIMES;
-                    } else {
-                        me.totalTimes = me.times;
-                    }
-                } else {
-                    if (me.times < me.totalTimes) {
-                        me.totalTimes = me.times;
-                    }
-                }
-            } else {
-                if (me.totalTimes > me.POLLING_TIMES) {
-                    me.totalTimes = me.POLLING_TIMES;
-                }
-            }
-            me.totalTimes--;
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.isServiceSupportPolling
-         * @description 判断服务是否支持轮询。
-         */
-
-    }, {
-        key: 'isServiceSupportPolling',
-        value: function isServiceSupportPolling() {
-            var me = this;
-            return !(me.CLASS_NAME === "SuperMap.REST.ThemeService" || me.CLASS_NAME === "SuperMap.REST.EditFeaturesService");
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
-         * @description 状态完成，执行此方法。
-         * @param {Object} result - 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'serviceProcessCompleted',
-        value: function serviceProcessCompleted(result) {
-            result = _Util.Util.transformResult(result);
-            this.events.triggerEvent("processCompleted", {
-                result: result
-            });
-        }
-
-        /**
-         * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
-         * @description 状态失败，执行此方法。
-         * @param{Object}  result - 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'serviceProcessFailed',
-        value: function serviceProcessFailed(result) {
-            result = _Util.Util.transformResult(result);
-            var error = result.error || result;
-            this.events.triggerEvent("processFailed", {
-                error: error
-            });
-        }
-    }, {
-        key: '_commit',
-        value: function _commit(options) {
-            if (options.method === "POST" || options.method === "PUT") {
-                if (options.params) {
-                    options.url = _Util.Util.urlAppend(options.url, _Util.Util.getParameterString(options.params || {}));
-                }
-                options.params = options.data;
-            }
-            _FetchRequest.FetchRequest.commit(options.method, options.url, options.params, {
-                headers: options.headers,
-                withCredentials: options.withCredentials,
-                timeout: options.async ? 0 : null,
-                proxy: options.proxy
-            }).then(function (response) {
-                if (response.text) {
-                    return response.text();
-                }
-                if (response.json) {
-                    return response.json();
-                }
-                return response;
-            }).then(function (text) {
-                var result = text;
-                if (typeof text === "string") {
-                    result = new _JSON.JSONFormat().read(text);
-                }
-                if (!result || result.error || result.code >= 300 && result.code !== 304) {
-                    if (result && result.error) {
-                        result = {
-                            error: result.error
-                        };
-                    } else {
-                        result = {
-                            error: result
-                        };
-                    }
-                }
-                if (result.error) {
-                    var failure = options.scope ? _BaseTypes.FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(result);
-                } else {
-                    result.succeed = result.succeed == undefined ? true : result.succeed;
-                    var success = options.scope ? _BaseTypes.FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(result);
-                }
-            });
-        }
-    }]);
-
-    return CommonServiceBase;
-}();
-
-_SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
-
-/**
- * 服务器请求回调函数
- * @callback RequestCallback
- * @example
- * var requestCallback = function (serviceResult){
- *      console.log(serviceResult.result);
- * }
- * new QueryService(url).queryByBounds(param, requestCallback);
- * @param {Object} serviceResult
- * @param {Object} serviceResult.result 服务器返回结果
- * @param {Object} serviceResult.object 发布应用程序事件的对象
- * @param {Object} serviceResult.type 事件类型
- * @param {Object} serviceResult.element 接受浏览器事件的DOM节点
- */
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 exports.ElasticSearch = exports.ThemeStyle = exports.CartoCSS = exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = exports.OnlineServiceBase = exports.FilterField = exports.DataItemOrderBy = exports.DataItemType = exports.ServiceStatus = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.GeometryBatchAnalystService = exports.ThiessenAnalystService = undefined;
 exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.OutputSetting = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = undefined;
 exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoHashGridAggParameter = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GeoBoundingBoxQueryBuilderParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FilterAggParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferSetting = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AggQueryBuilderParameter = exports.AggregationParameter = exports.AddressMatchService = exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = undefined;
@@ -3274,6 +2844,436 @@ exports.TokenServiceParameter = _security.TokenServiceParameter;
 exports.CartoCSS = _style.CartoCSS;
 exports.ThemeStyle = _style.ThemeStyle;
 exports.ElasticSearch = _thirdparty.ElasticSearch;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CommonServiceBase = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _FetchRequest = __webpack_require__(20);
+
+var _Events = __webpack_require__(71);
+
+var _Credential = __webpack_require__(102);
+
+var _SecurityManager = __webpack_require__(35);
+
+var _Util = __webpack_require__(1);
+
+var _REST = __webpack_require__(2);
+
+var _JSON = __webpack_require__(100);
+
+var _BaseTypes = __webpack_require__(49);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.CommonServiceBase
+ * @category  iServer
+ * @classdesc 对接iServer各种服务的Service的基类。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 参数。<br>
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {string} options.proxy - 服务代理地址。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {boolean} options.withCredentials - 请求是否携带cookie,默认为false。
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+ */
+var CommonServiceBase = exports.CommonServiceBase = function () {
+    function CommonServiceBase(url, options) {
+        _classCallCheck(this, CommonServiceBase);
+
+        var me = this;
+
+        this.EVENT_TYPES = ["processCompleted", "processFailed"];
+
+        this.events = null;
+
+        this.eventListeners = null;
+
+        this.url = null;
+
+        this.urls = null;
+
+        this.proxy = null;
+
+        this.serverType = null;
+
+        this.index = null;
+
+        this.length = null;
+
+        this.options = null;
+
+        this.totalTimes = null;
+
+        this.POLLING_TIMES = 3;
+
+        this._processSuccess = null;
+
+        this._processFailed = null;
+
+        this.isInTheSameDomain = null;
+
+        this.withCredentials = false;
+
+        if (_Util.Util.isArray(url)) {
+            me.urls = url;
+            me.length = url.length;
+            me.totalTimes = me.length;
+            if (me.length === 1) {
+                me.url = url[0];
+            } else {
+                me.index = parseInt(Math.random() * me.length);
+                me.url = url[me.index];
+            }
+        } else {
+            me.totalTimes = 1;
+            me.url = url;
+        }
+
+        if (_Util.Util.isArray(url) && !me.isServiceSupportPolling()) {
+            me.url = url[0];
+            me.totalTimes = 1;
+        }
+
+        me.serverType = me.serverType || _REST.ServerType.ISERVER;
+
+        options = options || {};
+
+        if (options) {
+            _Util.Util.extend(this, options);
+        }
+
+        me.isInTheSameDomain = _Util.Util.isInTheSameDomain(me.url);
+
+        me.events = new _Events.Events(me, null, me.EVENT_TYPES, true);
+        if (me.eventListeners instanceof Object) {
+            me.events.on(me.eventListeners);
+        }
+
+        this.CLASS_NAME = "SuperMap.CommonServiceBase";
+    }
+
+    /**
+     * @function SuperMap.CommonServiceBase.prototype.destroy
+     * @description 释放资源，将引用的资源属性置空。
+     */
+
+
+    _createClass(CommonServiceBase, [{
+        key: 'destroy',
+        value: function destroy() {
+            var me = this;
+            if (_Util.Util.isArray(me.urls)) {
+                me.urls = null;
+                me.index = null;
+                me.length = null;
+                me.totalTimes = null;
+            }
+            me.url = null;
+            me.options = null;
+            me._processSuccess = null;
+            me._processFailed = null;
+            me.isInTheSameDomain = null;
+
+            me.EVENT_TYPES = null;
+            if (me.events) {
+                me.events.destroy();
+                me.events = null;
+            }
+            if (me.eventListeners) {
+                me.eventListeners = null;
+            }
+        }
+
+        /**
+         * @function  SuperMap.CommonServiceBase.prototype.request
+         * @description: 该方法用于向服务发送请求。
+         * @param {Object} options - 参数。
+         * @param {string} options.method - 请求方式，包括"GET"，"POST"，"PUT"，"DELETE"。<br>
+         * @param {string} options.url - 发送请求的地址。<br>
+         * @param {Object} options.params - 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
+         * @param {String} options.data - 发送到服务器的数据。<br>
+         * @param {function} options.success - 请求成功后的回调函数。<br>
+         * @param {function} options.failure - 请求失败后的回调函数。<br>
+         * @param {Object} options.scope - 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
+         * @param {boolean} options.isInTheSameDomain - 请求是否在当前域中。<br>
+         * @param {boolean} options.withCredentials - 请求是否携带cookie。<br>
+         */
+
+    }, {
+        key: 'request',
+        value: function request(options) {
+            var me = this;
+            options.url = options.url || me.url;
+            options.proxy = options.proxy || me.proxy;
+            options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
+            options.isInTheSameDomain = me.isInTheSameDomain;
+            //为url添加安全认证信息片段
+            var credential = this.getCredential(options.url);
+            if (credential) {
+                //当url中含有?，并且?在url末尾的时候直接添加token *网络分析等服务请求url会出现末尾是?的情况*
+                //当url中含有?，并且?不在url末尾的时候添加&token
+                //当url中不含有?，在url末尾添加?token
+                var endStr = options.url.substring(options.url.length - 1, options.url.length);
+                if (options.url.indexOf("?") > -1 && endStr === "?") {
+                    options.url += credential.getUrlParameters();
+                } else if (options.url.indexOf("?") > -1 && endStr !== "?") {
+                    options.url += "&" + credential.getUrlParameters();
+                } else {
+                    options.url += "?" + credential.getUrlParameters();
+                }
+            }
+
+            me.calculatePollingTimes();
+            me._processSuccess = options.success;
+            me._processFailed = options.failure;
+            options.scope = me;
+            options.success = me.getUrlCompleted;
+            options.failure = me.getUrlFailed;
+            me.options = options;
+            me._commit(me.options);
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.getCredential
+         * @description  获取凭据信息
+         * @param {string} url - 服务地址。
+         * @return {SuperMap.Credential} 凭据信息对象。
+         */
+
+    }, {
+        key: 'getCredential',
+        value: function getCredential(url) {
+            var keyUrl = url,
+                credential = void 0,
+                value = void 0;
+            switch (this.serverType) {
+                case _REST.ServerType.IPORTAL:
+                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "token") : null;
+                    if (!credential) {
+                        value = _SecurityManager.SecurityManager.getKey(keyUrl);
+                        credential = value ? new _Credential.Credential(value, "key") : null;
+                    }
+                    break;
+                case _REST.ServerType.ONLINE:
+                    value = _SecurityManager.SecurityManager.getKey(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "key") : null;
+                    break;
+                default:
+                    //iServer or others
+                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "token") : null;
+                    break;
+            }
+            return credential;
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
+         * @description 请求成功后执行此方法。
+         * @param {Object} result - 服务器返回的结果对象。
+         */
+
+    }, {
+        key: 'getUrlCompleted',
+        value: function getUrlCompleted(result) {
+            var me = this;
+            me._processSuccess(result);
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
+         * @description 请求失败后执行此方法。
+         * @param {Object} result - 服务器返回的结果对象。
+         */
+
+    }, {
+        key: 'getUrlFailed',
+        value: function getUrlFailed(result) {
+            var me = this;
+            if (me.totalTimes > 0) {
+                me.totalTimes--;
+                me.ajaxPolling();
+            } else {
+                me._processFailed(result);
+            }
+        }
+
+        /**
+         *
+         * @function SuperMap.CommonServiceBase.prototype.ajaxPolling
+         * @description 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
+         */
+
+    }, {
+        key: 'ajaxPolling',
+        value: function ajaxPolling() {
+            var me = this,
+                url = me.options.url,
+                re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
+            me.index = parseInt(Math.random() * me.length);
+            me.url = me.urls[me.index];
+            url = url.replace(re, re.exec(me.url)[0]);
+            me.options.url = url;
+            me.options.isInTheSameDomain = _Util.Util.isInTheSameDomain(url);
+            me._commit(me.options);
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.calculatePollingTimes
+         * @description 计算剩余请求失败执行次数。
+         */
+
+    }, {
+        key: 'calculatePollingTimes',
+        value: function calculatePollingTimes() {
+            var me = this;
+            if (me.times) {
+                if (me.totalTimes > me.POLLING_TIMES) {
+                    if (me.times > me.POLLING_TIMES) {
+                        me.totalTimes = me.POLLING_TIMES;
+                    } else {
+                        me.totalTimes = me.times;
+                    }
+                } else {
+                    if (me.times < me.totalTimes) {
+                        me.totalTimes = me.times;
+                    }
+                }
+            } else {
+                if (me.totalTimes > me.POLLING_TIMES) {
+                    me.totalTimes = me.POLLING_TIMES;
+                }
+            }
+            me.totalTimes--;
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.isServiceSupportPolling
+         * @description 判断服务是否支持轮询。
+         */
+
+    }, {
+        key: 'isServiceSupportPolling',
+        value: function isServiceSupportPolling() {
+            var me = this;
+            return !(me.CLASS_NAME === "SuperMap.REST.ThemeService" || me.CLASS_NAME === "SuperMap.REST.EditFeaturesService");
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
+         * @description 状态完成，执行此方法。
+         * @param {Object} result - 服务器返回的结果对象。
+         */
+
+    }, {
+        key: 'serviceProcessCompleted',
+        value: function serviceProcessCompleted(result) {
+            result = _Util.Util.transformResult(result);
+            this.events.triggerEvent("processCompleted", {
+                result: result
+            });
+        }
+
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
+         * @description 状态失败，执行此方法。
+         * @param{Object}  result - 服务器返回的结果对象。
+         */
+
+    }, {
+        key: 'serviceProcessFailed',
+        value: function serviceProcessFailed(result) {
+            result = _Util.Util.transformResult(result);
+            var error = result.error || result;
+            this.events.triggerEvent("processFailed", {
+                error: error
+            });
+        }
+    }, {
+        key: '_commit',
+        value: function _commit(options) {
+            if (options.method === "POST" || options.method === "PUT") {
+                if (options.params) {
+                    options.url = _Util.Util.urlAppend(options.url, _Util.Util.getParameterString(options.params || {}));
+                }
+                options.params = options.data;
+            }
+            _FetchRequest.FetchRequest.commit(options.method, options.url, options.params, {
+                headers: options.headers,
+                withCredentials: options.withCredentials,
+                timeout: options.async ? 0 : null,
+                proxy: options.proxy
+            }).then(function (response) {
+                if (response.text) {
+                    return response.text();
+                }
+                if (response.json) {
+                    return response.json();
+                }
+                return response;
+            }).then(function (text) {
+                var result = text;
+                if (typeof text === "string") {
+                    result = new _JSON.JSONFormat().read(text);
+                }
+                if (!result || result.error || result.code >= 300 && result.code !== 304) {
+                    if (result && result.error) {
+                        result = {
+                            error: result.error
+                        };
+                    } else {
+                        result = {
+                            error: result
+                        };
+                    }
+                }
+                if (result.error) {
+                    var failure = options.scope ? _BaseTypes.FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(result);
+                } else {
+                    result.succeed = result.succeed == undefined ? true : result.succeed;
+                    var success = options.scope ? _BaseTypes.FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(result);
+                }
+            });
+        }
+    }]);
+
+    return CommonServiceBase;
+}();
+
+_SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
+
+/**
+ * 服务器请求回调函数
+ * @callback RequestCallback
+ * @example
+ * var requestCallback = function (serviceResult){
+ *      console.log(serviceResult.result);
+ * }
+ * new QueryService(url).queryByBounds(param, requestCallback);
+ * @param {Object} serviceResult
+ * @param {Object} serviceResult.result 服务器返回结果
+ * @param {Object} serviceResult.object 发布应用程序事件的对象
+ * @param {Object} serviceResult.type 事件类型
+ * @param {Object} serviceResult.element 接受浏览器事件的DOM节点
+ */
 
 /***/ }),
 /* 7 */
@@ -4016,7 +4016,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _GeoJSON = __webpack_require__(16);
 
@@ -4156,7 +4156,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5769,7 +5769,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6942,7 +6942,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FetchRequest = __webpack_require__(20);
 
@@ -7623,9 +7623,6 @@ _SuperMap.SuperMap.Util.RequestJSONPPromise = {
                 if (keysCount == 0) {
                     return false;
                 }
-                if (splitQuestUrl == null) {
-                    splitQuestUrl = new Array();
-                }
                 splitQuestUrl.push(sectionURL);
                 sectionURL = url;
                 keysCount = 0;
@@ -7653,9 +7650,6 @@ _SuperMap.SuperMap.Util.RequestJSONPPromise = {
                         sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
-                            if (splitQuestUrl == null) {
-                                splitQuestUrl = new Array();
-                            }
                             splitQuestUrl.push(sectionURL);
                             sectionURL = url;
                             keysCount = 0;
@@ -7671,9 +7665,6 @@ _SuperMap.SuperMap.Util.RequestJSONPPromise = {
                     sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
                 }
             }
-        }
-        if (splitQuestUrl == null) {
-            splitQuestUrl = new Array();
         }
         splitQuestUrl.push(sectionURL);
         me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
@@ -12902,7 +12893,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _GeoJSON = __webpack_require__(16);
 
@@ -13888,7 +13879,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _QueryParameters = __webpack_require__(34);
 
@@ -15007,7 +14998,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _ThemeLayer = __webpack_require__(75);
 
@@ -20813,7 +20804,7 @@ __webpack_require__(4);
 
 var _ThemeFeature = __webpack_require__(110);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20822,11 +20813,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class mapboxgl.supermap.ThemeLayer
  * @classdesc 专题图基类。
- * @param {string} name - 专题图图层名。</br>
- * @param {Object} options -可选参数。</br>
- * @param {string} options.id - 专题图层ID。</br>
- * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。</br>
- * @param {mapboxgl.Map} options.map - 当前mapboxgl map对象。</br>
+ * @param {string} name - 专题图图层名。
+ * @param {Object} options -可选参数。
+ * @param {string} options.id - 专题图层ID。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {mapboxgl.Map} options.map - 当前mapboxgl map对象，将在下个版本弃用，请用map.addLayer()方法添加图层。
  * @param {number} options.opacity - 图层透明度。
  */
 var Theme = function () {
@@ -20835,21 +20826,21 @@ var Theme = function () {
 
         var options = opt_options ? opt_options : {};
         /**
-         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name 
+         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name
          * @description 专题图图层名称
          */
         this.name = name;
 
         /**
-         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.name 
+         * @member {string} mapboxgl.supermap.ThemeLayer.prototype.id
          * @description 专题图图层id
          */
         this.id = options.id ? options.id : _iclientCommon.CommonUtil.createUniqueID("themeLayer_");
         /**
-         * @member {float} mapboxgl.supermap.ThemeLayer.prototype.opacity 
+         * @member {float} mapboxgl.supermap.ThemeLayer.prototype.opacity
          * @description 图层透明度
          */
-        this.opacity = 1;
+        this.opacity = options.opacity ? options.opacity : 1;
 
         /**
          * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.visibility=true]
@@ -20858,62 +20849,100 @@ var Theme = function () {
         this.visibility = true;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating=true] 
+         * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating=true]
          * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
          */
         this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
 
         /**
-         * @member {mapboxgl.Map} mapboxgl.supermap.ThemeLayer.prototype.map 
+         * @member {mapboxgl.Map} mapboxgl.supermap.ThemeLayer.prototype.map
          * @description map对象
          */
-        this.map = options.map;
+        this.map = options.map ? options.map : null;
 
         this.features = [];
         this.TFEvents = [];
-        this.movingOffset = [0, 0];
-        this.mapContainer = this.map.getCanvasContainer();
-        this.div = document.createElement('div');
-        this.div.id = this.id;
-        this.div.style.position = 'absolute';
-        var container = this.map.getCanvasContainer();
-        var canvas = this.map.getCanvas();
-        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
-        this.div.style.width = canvas.style.width;
-        this.div.style.height = canvas.style.height;
-        this.div.className = "themeLayer";
-        this.div.width = parseInt(canvas.width);
-        this.div.height = parseInt(canvas.height);
-        container.appendChild(this.div);
-        if (opt_options.opacity) {
-            this.setOpacity(options.opacity);
+
+        //todo 保留之前创建图层同时添加到图层的用法，在下个版本遗弃
+        if (this.map) {
+            this.map.addLayer(this);
         }
-        this.levelRenderer = new _iclientCommon.LevelRenderer();
-        this.renderer = this.levelRenderer.init(this.div);
-        this.renderer.clear();
-        //处理用户预先（在图层添加到 map 前）监听的事件
-        this.addTFEvents();
-        this.map.on('resize', this.resizeEvent.bind(this));
-        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
-        this.map.on('zoomend', this.zoomEndEvent.bind(this));
-        this.map.on('rotatestart', this.rotateStartEvent.bind(this));
-        this.map.on('rotate', this.rotateEvent.bind(this));
-        this.map.on('rotateend', this.rotateEndEvent.bind(this));
-        this.map.on('dragend', this.dragEndEvent.bind(this));
-        this.map.on('movestart', this.moveStartEvent.bind(this));
-        this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('moveend', this.moveEndEvent.bind(this));
-        this.map.on('remove', this.removeFromMap.bind(this));
     }
 
     /**
-     * @function mapboxgl.supermap.ThemeLayer.prototype.destroyFeatures
-     * @description 销毁某个要素
-     * @param {Object} features - 将被销毁的要素
+     * @function mapboxgl.supermap.ThemeLayer.prototype.onAdd
+     * @description 向底图添加该图层
      */
 
 
     _createClass(Theme, [{
+        key: 'onAdd',
+        value: function onAdd(map) {
+            this.map = map;
+            this._createCanvasContainer();
+
+            //处理用户预先（在图层添加到 map 前）监听的事件
+            this.addTFEvents();
+            this.map.on('resize', this.resizeEvent.bind(this));
+            this.map.on('zoomstart', this.zoomStartEvent.bind(this));
+            this.map.on('zoomend', this.zoomEndEvent.bind(this));
+            this.map.on('rotatestart', this.rotateStartEvent.bind(this));
+            this.map.on('rotate', this.rotateEvent.bind(this));
+            this.map.on('rotateend', this.rotateEndEvent.bind(this));
+            this.map.on('dragend', this.dragEndEvent.bind(this));
+            this.map.on('movestart', this.moveStartEvent.bind(this));
+            this.map.on('move', this.moveEvent.bind(this));
+            this.map.on('moveend', this.moveEndEvent.bind(this));
+            this.map.on('remove', this.removeFromMap.bind(this));
+
+            this.refresh();
+        }
+
+        /**
+         * @function mapboxgl.supermap.HeatMapLayer.prototype.refresh
+         * @description 强制刷新当前热点显示，在图层热点数组发生变化后调用，更新显示。
+         */
+
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            if (this.features.length === 0) {
+                return;
+            }
+            if (this.map) {
+                this.redrawThematicFeatures(this.map.getBounds());
+            }
+        }
+    }, {
+        key: '_createCanvasContainer',
+        value: function _createCanvasContainer() {
+            this.movingOffset = [0, 0];
+            this.mapContainer = this.map.getCanvasContainer();
+            this.div = document.createElement('div');
+            this.div.id = this.id;
+            this.div.style.position = 'absolute';
+            var container = this.map.getCanvasContainer();
+            var canvas = this.map.getCanvas();
+            this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+            this.div.style.width = canvas.style.width;
+            this.div.style.height = canvas.style.height;
+            this.div.className = "themeLayer";
+            this.div.width = parseInt(canvas.width);
+            this.div.height = parseInt(canvas.height);
+            container.appendChild(this.div);
+            this.setOpacity(this.opacity);
+            this.levelRenderer = new _iclientCommon.LevelRenderer();
+            this.renderer = this.levelRenderer.init(this.div);
+            this.renderer.clear();
+        }
+
+        /**
+         * @function mapboxgl.supermap.ThemeLayer.prototype.destroyFeatures
+         * @description 销毁某个要素
+         * @param {Object} features - 将被销毁的要素
+         */
+
+    }, {
         key: 'destroyFeatures',
         value: function destroyFeatures(features) {
             var all = features == undefined;
@@ -21382,13 +21411,13 @@ var Theme = function () {
 
         /**
          * @function mapboxgl.supermap.ThemeLayer.prototype.removeFromMap
-         * @description 移除事件
+         * @description 移除图层
          */
 
     }, {
         key: 'removeFromMap',
         value: function removeFromMap() {
-            this.map.getCanvasContainer().removeChild(this.div);
+            this.mapContainer.removeChild(this.div);
             this.removeAllFeatures();
         }
 
@@ -28416,7 +28445,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _Util = __webpack_require__(10);
 
@@ -28491,7 +28520,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _ThemeLayer = __webpack_require__(75);
 
@@ -52097,7 +52126,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52252,7 +52281,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52341,7 +52370,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52894,7 +52923,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53109,7 +53138,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54085,7 +54114,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54276,7 +54305,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54700,7 +54729,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54820,7 +54849,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54930,7 +54959,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55109,7 +55138,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55202,7 +55231,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55353,7 +55382,7 @@ var _Util = __webpack_require__(10);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55643,7 +55672,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55826,7 +55855,7 @@ var _ServiceBase2 = __webpack_require__(7);
 
 var _Util = __webpack_require__(10);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55968,7 +55997,7 @@ __webpack_require__(4);
 
 var _ServiceBase2 = __webpack_require__(7);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56550,7 +56579,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _Util = __webpack_require__(10);
 
@@ -56717,6 +56746,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         key: 'removeFromMap',
         value: function removeFromMap() {
             this.remove();
+            this.clear();
         }
 
         /**
@@ -56869,6 +56899,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         key: 'clear',
         value: function clear() {
             this.removeData();
+            this.deckGL.finalize();
         }
 
         /**
@@ -57209,7 +57240,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58002,7 +58033,7 @@ var _three = __webpack_require__(107);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _Transform = __webpack_require__(105);
 
@@ -59011,7 +59042,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _Util = __webpack_require__(10);
 
@@ -59277,6 +59308,7 @@ var GraphicLayer = exports.GraphicLayer = function () {
         key: 'clear',
         value: function clear() {
             this.removeGraphics();
+            this.deckGL.finalize();
         }
 
         /**
@@ -59318,6 +59350,7 @@ var GraphicLayer = exports.GraphicLayer = function () {
         key: 'removeFromMap',
         value: function removeFromMap() {
             this.remove();
+            this.clear();
         }
 
         /**
@@ -59497,7 +59530,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _GeoFeatureThemeLayer = __webpack_require__(50);
 
@@ -59784,7 +59817,7 @@ __webpack_require__(4);
 
 var _GraphThemeLayer = __webpack_require__(111);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59895,7 +59928,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _GeoFeatureThemeLayer = __webpack_require__(50);
 
@@ -60239,6 +60272,8 @@ __webpack_require__(4);
 
 var _MapvRenderer = __webpack_require__(109);
 
+var _iclientCommon = __webpack_require__(5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -60247,9 +60282,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class mapboxgl.supermap.MapvLayer
  * @category  Visualization MapV
  * @classdesc Mapv图层
- * @param {Object} map - 地图 </br>
- * @param {Object} dataSet - 数据集 </br>
- * @param {Object} mapVOptions - Mapv参数。</br>
+ * @param {mapboxgl.Map} map - mapboxgl地图对象，将在下个版本弃用，请用map.addLayer()方法添加图层。
+ * @param {Object} dataSet - 数据集
+ * @param {Object} mapVOptions - Mapv参数。
  * @param {string} mapVOptions.layerID - 图层ID。
  */
 var MapvLayer = exports.MapvLayer = function () {
@@ -60257,24 +60292,97 @@ var MapvLayer = exports.MapvLayer = function () {
         _classCallCheck(this, MapvLayer);
 
         this.map = map;
-        this.layerID = mapVOptions.layerID;
+        this.id = mapVOptions.layerID ? mapVOptions.layerID : _iclientCommon.CommonUtil.createUniqueID("mapvLayer_");
         delete mapVOptions["layerID"];
-        this.renderer = new _MapvRenderer.MapvRenderer(map, this, dataSet, mapVOptions);
+
         this.mapVOptions = mapVOptions;
-        this.canvas = this._createCanvas();
-        this.renderer._canvasUpdate();
-        this.mapContainer = map.getCanvasContainer();
-        this.mapContainer.appendChild(this.canvas);
-        this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+        this.dataSet = dataSet;
+        this.visibility = true;
+
+        //保留之前的用法
+        if (this.map) {
+            this.map.addLayer(this);
+        }
     }
 
-    /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
-     * @description 获取左上的距离
-     */
-
-
     _createClass(MapvLayer, [{
+        key: 'onAdd',
+        value: function onAdd(map) {
+            this.map = map;
+            this.renderer = new _MapvRenderer.MapvRenderer(this.map, this, this.dataSet, this.mapVOptions);
+            this.canvas = this._createCanvas();
+            this.renderer._canvasUpdate();
+            this.mapContainer = map.getCanvasContainer();
+            this.mapContainer.appendChild(this.canvas);
+            this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+        }
+
+        /**
+         * @function mapboxgl.supermap.MapvLayer.prototype.removeFromMap
+         * @description 移除图层
+         */
+
+    }, {
+        key: 'removeFromMap',
+        value: function removeFromMap() {
+            this.mapContainer.removeChild(this.canvas);
+            this.clearData();
+        }
+
+        /**
+         * @function mapboxgl.supermap.MapvLayer.prototype.setVisibility
+         * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+         * @param {boolean} visibility - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+         */
+
+    }, {
+        key: 'setVisibility',
+        value: function setVisibility(visibility) {
+            if (visibility !== this.visibility) {
+                this.visibility = visibility;
+                if (visibility) {
+                    this.show();
+                } else {
+                    this.hide();
+                }
+            }
+        }
+
+        /**
+         * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
+         * @description 将图层移动到某个图层之前。
+         * @param {string} layerID - 待插入的图层ID。</br>
+         * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+         */
+
+    }, {
+        key: 'moveTo',
+        value: function moveTo(layerID, before) {
+            var layer = document.getElementById(this.canvas.id);
+            before = before !== undefined ? before : true;
+            if (before) {
+                var beforeLayer = document.getElementById(layerID);
+                if (layer && beforeLayer) {
+                    beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+                }
+                return;
+            }
+            var nextLayer = document.getElementById(layerID);
+            if (layer) {
+                if (nextLayer.nextSibling) {
+                    nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+                    return;
+                }
+                nextLayer.parentNode.appendChild(layer);
+            }
+        }
+
+        /**
+         * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
+         * @description 获取左上的距离
+         */
+
+    }, {
         key: 'getTopLeft',
         value: function getTopLeft() {
             var map = this.map;
@@ -60302,7 +60410,7 @@ var MapvLayer = exports.MapvLayer = function () {
         /**
          * @function mapboxgl.supermap.MapvLayer.prototype.update
          * @description 更新图层
-         * @param {Object} opt - 待更新的数据</br> 
+         * @param {Object} opt - 待更新的数据</br>
          * @param {Object} opt.data - mapv数据集</br>
          * @param {Object} opt.options - mapv绘制参数
          */
@@ -60377,7 +60485,7 @@ var MapvLayer = exports.MapvLayer = function () {
         key: '_createCanvas',
         value: function _createCanvas() {
             var canvas = document.createElement('canvas');
-            canvas.id = this.layerID;
+            canvas.id = this.id;
             canvas.style.position = 'absolute';
             canvas.style.top = 0 + "px";
             canvas.style.left = 0 + "px";
@@ -60393,34 +60501,6 @@ var MapvLayer = exports.MapvLayer = function () {
             return canvas;
         }
 
-        /**
-         * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
-         * @description 将图层移动到某个图层之前。
-         * @param {string} layerID - 待插入的图层ID。</br>
-         * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
-         */
-
-    }, {
-        key: 'moveTo',
-        value: function moveTo(layerID, before) {
-            var layer = document.getElementById(this.layerID);
-            before = before !== undefined ? before : true;
-            if (before) {
-                var beforeLayer = document.getElementById(layerID);
-                if (layer && beforeLayer) {
-                    beforeLayer.parentNode.insertBefore(layer, beforeLayer);
-                }
-                return;
-            }
-            var nextLayer = document.getElementById(layerID);
-            if (layer) {
-                if (nextLayer.nextSibling) {
-                    nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
-                    return;
-                }
-                nextLayer.parentNode.appendChild(layer);
-            }
-        }
         /**
          * @function mapboxgl.supermap.MapvLayer.prototype.setZIndex
          * @description 设置canvas层级
@@ -60461,7 +60541,7 @@ var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
 __webpack_require__(4);
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 var _GeoFeatureThemeLayer = __webpack_require__(50);
 
@@ -73145,7 +73225,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _TransferSolutionParameters = __webpack_require__(140);
 
@@ -73277,7 +73357,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _TransferPathParameters = __webpack_require__(141);
 
@@ -73488,7 +73568,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73888,7 +73968,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _ThemeParameters = __webpack_require__(144);
 
@@ -74861,7 +74941,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _StopQueryParameters = __webpack_require__(153);
 
@@ -75076,7 +75156,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _SetLayerStatusParameters = __webpack_require__(155);
 
@@ -75268,7 +75348,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 __webpack_require__(156);
 
@@ -75431,7 +75511,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 __webpack_require__(157);
 
@@ -76696,7 +76776,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _MeasureParameters = __webpack_require__(165);
 
@@ -76962,7 +77042,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77462,7 +77542,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _ServerTheme = __webpack_require__(192);
 
@@ -77649,7 +77729,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _GetGridCellInfosParameters = __webpack_require__(193);
 
@@ -77858,7 +77938,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -79996,7 +80076,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _Util = __webpack_require__(1);
 
@@ -80215,7 +80295,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FacilityAnalystUpstream3DParameters = __webpack_require__(210);
 
@@ -80315,7 +80395,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FacilityAnalystTraceup3DParameters = __webpack_require__(211);
 
@@ -80424,7 +80504,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FacilityAnalystTracedown3DParameters = __webpack_require__(212);
 
@@ -80644,7 +80724,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FacilityAnalystSources3DParameters = __webpack_require__(214);
 
@@ -80746,7 +80826,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FacilityAnalystSinks3DParameters = __webpack_require__(215);
 
@@ -80861,7 +80941,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _EditFeaturesParameters = __webpack_require__(216);
 
@@ -81136,7 +81216,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _Util = __webpack_require__(1);
 
@@ -81575,7 +81655,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _QueryParameters = __webpack_require__(34);
 
@@ -81788,7 +81868,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -82354,7 +82434,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _CommonServiceBase2 = __webpack_require__(5);
+var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FetchRequest = __webpack_require__(20);
 
@@ -82535,7 +82615,7 @@ var _ClipParameter = __webpack_require__(226);
 
 var _ColorDictionary = __webpack_require__(225);
 
-var _CommonServiceBase = __webpack_require__(5);
+var _CommonServiceBase = __webpack_require__(6);
 
 var _ComputeWeightMatrixParameters = __webpack_require__(224);
 
@@ -85633,7 +85713,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _iclientCommon = __webpack_require__(6);
+var _iclientCommon = __webpack_require__(5);
 
 Object.defineProperty(exports, 'SuperMap', {
     enumerable: true,

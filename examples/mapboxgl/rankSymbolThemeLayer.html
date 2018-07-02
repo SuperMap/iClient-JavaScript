@@ -66,7 +66,7 @@
     function addThemeLayer() {
         themeLayer = new mapboxgl.supermap.RankSymbolThemeLayer("RankSymbolLayer", "Circle",
             {
-                map: map,
+//                map: map,//该可选参数将在下个版本遗弃
                 attributions: " ",
                 themeField: "CON2009",
                 // 配置图表参数
@@ -85,7 +85,7 @@
                     circleHoverStyle: {fillOpacity: 1}
                 }
             });
-
+        map.addLayer(themeLayer);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
     }

@@ -65,7 +65,7 @@
 
     function initThemeLayer() {
         themeLayer = new mapboxgl.supermap.LabelThemeLayer("labelThemeLayer", {
-            map: map,
+//                map: map,//该可选参数将在下个版本遗弃
             attributions: " ",
             style: new SuperMap.ThemeStyle({
                 labelRect: true,
@@ -125,6 +125,7 @@
                 }
             ]
         });
+        map.addLayer(themeLayer);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', handleMouseOver);
         addFeatures();

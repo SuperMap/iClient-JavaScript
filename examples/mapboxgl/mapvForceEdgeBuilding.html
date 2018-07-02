@@ -25,7 +25,7 @@
 <div id="map"></div>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({
@@ -54,9 +54,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML(resources.text_iClient9)
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient9)
+        .addTo(map);
 
     var randomCount = 500;
 
@@ -79,13 +79,13 @@
             y: cityCenter.lat - 5 + Math.random() * 10,
         };
         edge_data.push(
-                {"source": ~~(i * Math.random()), "target": '0'}
+            {"source": ~~(i * Math.random()), "target": '0'}
         );
     }
 
     var fbundling = mapv.utilForceEdgeBundling()
-            .nodes(node_data)
-            .edges(edge_data);
+        .nodes(node_data)
+        .edges(edge_data);
 
     var results = fbundling();
 
@@ -134,7 +134,9 @@
         draw: 'simple'
     };
 
-    new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+    //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+    var mapVLinelayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+    map.addLayer(mapVLinelayer);
 
     var dataSet = new mapv.DataSet(timeData);
 
@@ -154,7 +156,10 @@
         draw: 'simple'
     };
 
-    new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+    //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+    var mapVAnimationLinelayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+
+    map.addLayer(mapVAnimationLinelayer);
 
 </script>
 </body>

@@ -237,6 +237,7 @@ export class GraphicLayer {
      */
     clear() {
         this.removeGraphics();
+        this.deckGL.finalize();
     }
 
     /**
@@ -269,6 +270,7 @@ export class GraphicLayer {
      */
     removeFromMap() {
         this.remove();
+        this.clear();
     }
 
     /**

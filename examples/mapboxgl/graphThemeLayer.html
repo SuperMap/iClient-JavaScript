@@ -283,7 +283,7 @@
 
         //设置graphThemeLayer option参数
         themeLayerOptions = {
-            map: map,
+//          map: map,//该可选参数将在下个版本遗弃
             attributions: " ",
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             opacity: 0.9,
@@ -311,6 +311,7 @@
 
         themeLayerOptions.chartsSetting = chartsSettingForBar;
         themeLayer = new mapboxgl.supermap.GraphThemeLayer("BarLayer", "Bar", themeLayerOptions);
+        map.addLayer(themeLayer);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
         themeLayer.addFeatures(features);
@@ -339,6 +340,7 @@
 
         themeLayerOptions.chartsSetting = chartsSettingForBar3D;
         themeLayer = new mapboxgl.supermap.GraphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
+        map.addLayer(themeLayer);
         themeLayer.addFeatures(features);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
@@ -349,6 +351,7 @@
         chartsSettingForPointOrLine.pointStyle.fillColor = "#9966CC";
         themeLayerOptions.chartsSetting = chartsSettingForPointOrLine;
         themeLayer = new mapboxgl.supermap.GraphThemeLayer("LineLayer", "Line", themeLayerOptions);
+        map.addLayer(themeLayer);
         themeLayer.addFeatures(features);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
@@ -359,6 +362,7 @@
         chartsSettingForPointOrLine.pointStyle.fillColor = "#D8361B";
         themeLayerOptions.chartsSetting = chartsSettingForPointOrLine;
         themeLayer = new mapboxgl.supermap.GraphThemeLayer("PointLayer", "Point", themeLayerOptions);
+        map.addLayer(themeLayer);
         themeLayer.addFeatures(features);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
@@ -368,6 +372,7 @@
     function createPieThemeLayer() {
         themeLayerOptions.chartsSetting = chartsSettingForPieOrRing;
         themeLayer = new mapboxgl.supermap.GraphThemeLayer("PieLayer", "Pie", themeLayerOptions);
+        map.addLayer(themeLayer);
         themeLayer.addFeatures(features);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
@@ -378,6 +383,7 @@
         chartsSettingForPieOrRing.innerRingRadius = 20;
         themeLayerOptions.chartsSetting = chartsSettingForPieOrRing;
         themeLayer = new mapboxgl.supermap.GraphThemeLayer("RingSymbolLayer", "Ring", themeLayerOptions);
+        map.addLayer(themeLayer);
         themeLayer.addFeatures(features);
         //专题图层 mousemove 事件
         themeLayer.on('mousemove', showInfoWin);
@@ -429,7 +435,7 @@
             }
             contentHTML += "</div>";
 
-            var tempPoint = map.unproject({x:e.event.x, y:e.event.y});
+            var tempPoint = map.unproject({x: e.event.x, y: e.event.y});
             popup = new mapboxgl.Popup({closeOnClick: false})
                 .setLngLat([tempPoint.lng, tempPoint.lat])
                 .setHTML(contentHTML)

@@ -217,7 +217,9 @@
         });
         geojsonDataSet = new mapv.DataSet(data);
 
-        new mapboxgl.supermap.MapvLayer(map, geojsonDataSet, geojsonOptions);
+        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        var mapVlayer = new mapboxgl.supermap.MapvLayer("", geojsonDataSet, geojsonOptions);
+        map.addLayer(mapVlayer);
 
         var textDataSet = new mapv.DataSet(textData);
 
@@ -229,9 +231,10 @@
             shadowBlue: 10,
             zIndex: 11,
             shadowBlur: 10
-        }
-
-        new mapboxgl.supermap.MapvLayer(map, textDataSet, textOptions);
+        };
+        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        var textLayer = new mapboxgl.supermap.MapvLayer("", textDataSet, textOptions);
+        map.addLayer(textLayer);
 
         var lineDataSet = new mapv.DataSet(lineData);
 
@@ -242,9 +245,10 @@
             lineWidth: 2,
             zIndex: 100,
             draw: 'simple'
-        }
-
-        new mapboxgl.supermap.MapvLayer(map, lineDataSet, lineOptions);
+        };
+        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        var lineLayer = new mapboxgl.supermap.MapvLayer("", lineDataSet, lineOptions);
+        map.addLayer(lineLayer);
 
         var pointOptions = {
             fillStyle: 'rgba(254,175,3,0.7)',
@@ -253,17 +257,17 @@
             size: 5,
             zIndex: 10,
             draw: 'simple'
-        }
+        };
 
 
         var pointDataSet = new mapv.DataSet(pointData);
 
-        new mapboxgl.supermap.MapvLayer(map, pointDataSet, pointOptions);
+        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        var pointLayer = new mapboxgl.supermap.MapvLayer("", pointDataSet, pointOptions);
+        map.addLayer(pointLayer);
 
 
         var timeDataSet = new mapv.DataSet(timeData);
-
-        console.log(timeData);
 
         var timeOptions = {
             fillStyle: 'rgba(255, 250, 250, 0.5)',
@@ -279,9 +283,10 @@
                 duration: 2,
             },
             draw: 'simple'
-        }
-
-        new mapboxgl.supermap.MapvLayer(map, timeDataSet, timeOptions);
+        };
+        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        var timeLayer = new mapboxgl.supermap.MapvLayer("", timeDataSet, timeOptions);
+        map.addLayer(timeLayer);
 
     });
 

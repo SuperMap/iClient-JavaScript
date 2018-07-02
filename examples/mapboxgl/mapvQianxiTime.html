@@ -54,9 +54,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML(resources.text_iClient9)
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient9)
+        .addTo(map);
 
     var data = [];
     var timeData = [];
@@ -125,11 +125,12 @@
                 lineWidth: .2,
                 draw: 'intensity'
             };
+            //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+            var mapVLayer1 = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+            map.addLayer(mapVLayer1);
 
-            new mapboxgl.supermap.MapvLayer(map, dataSet, options);
-
-            var dataSet = new mapv.DataSet(timeData);
-            var options = {
+            var dataSet2 = new mapv.DataSet(timeData);
+            var options2 = {
                 fillStyle: 'rgba(255, 250, 250, 0.9)',
                 size: .5,
                 animation: {
@@ -143,7 +144,9 @@
                 },
                 draw: 'simple'
             };
-            new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+            //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+            var mapVLayer2 = new mapboxgl.supermap.MapvLayer("", dataSet2, options2);
+            map.addLayer(mapVLayer2);
         }
     });
 

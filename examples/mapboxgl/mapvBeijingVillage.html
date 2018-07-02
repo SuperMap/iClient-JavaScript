@@ -54,9 +54,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML(resources.text_iClient9)
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient9)
+        .addTo(map);
 
     $.get('../data/beijing-village.json', function (data) {
 
@@ -69,7 +69,9 @@
             lineWidth: 1,
             draw: 'simple'
         };
-        new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        var mapVLayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+        map.addLayer(mapVLayer);
     });
 
 

@@ -3,30 +3,98 @@ import '../core/Base';
 import {
     MapvRenderer
 } from "./mapv/MapvRenderer";
+import {
+    CommonUtil
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.MapvLayer
  * @category  Visualization MapV
  * @classdesc Mapv图层
- * @param {Object} map - 地图 </br>
- * @param {Object} dataSet - 数据集 </br>
- * @param {Object} mapVOptions - Mapv参数。</br>
+ * @param {mapboxgl.Map} map - mapboxgl地图对象，将在下个版本弃用，请用map.addLayer()方法添加图层。
+ * @param {Object} dataSet - 数据集
+ * @param {Object} mapVOptions - Mapv参数。
  * @param {string} mapVOptions.layerID - 图层ID。
  */
 export class MapvLayer {
 
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
-        this.layerID = mapVOptions.layerID;
+        this.id = mapVOptions.layerID ? mapVOptions.layerID : CommonUtil.createUniqueID("mapvLayer_");
         delete mapVOptions["layerID"];
-        this.renderer = new MapvRenderer(map, this, dataSet, mapVOptions);
+
         this.mapVOptions = mapVOptions;
+        this.dataSet = dataSet;
+        this.visibility = true;
+
+        //保留之前的用法
+        if (this.map) {
+            this.map.addLayer(this);
+        }
+
+    }
+
+    onAdd(map) {
+        this.map = map;
+        this.renderer = new MapvRenderer(this.map, this, this.dataSet, this.mapVOptions);
         this.canvas = this._createCanvas();
         this.renderer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
         this.mapContainer.appendChild(this.canvas);
         this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
     }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.removeFromMap
+     * @description 移除图层
+     */
+    removeFromMap() {
+        this.mapContainer.removeChild(this.canvas);
+        this.clearData();
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.setVisibility
+     * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+     * @param {boolean} visibility - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     */
+    setVisibility(visibility) {
+        if (visibility !== this.visibility) {
+            this.visibility = visibility;
+            if (visibility) {
+                this.show();
+            } else {
+                this.hide();
+            }
+        }
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
+     * @description 将图层移动到某个图层之前。
+     * @param {string} layerID - 待插入的图层ID。</br>
+     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     */
+    moveTo(layerID, before) {
+        const layer = document.getElementById(this.canvas.id);
+        before = before !== undefined ? before : true;
+        if (before) {
+            const beforeLayer = document.getElementById(layerID);
+            if (layer && beforeLayer) {
+                beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+            }
+            return;
+        }
+        const nextLayer = document.getElementById(layerID);
+        if (layer) {
+            if (nextLayer.nextSibling) {
+                nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+                return;
+            }
+            nextLayer.parentNode.appendChild(layer);
+        }
+    }
+
 
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
@@ -55,7 +123,7 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.update
      * @description 更新图层
-     * @param {Object} opt - 待更新的数据</br> 
+     * @param {Object} opt - 待更新的数据</br>
      * @param {Object} opt.data - mapv数据集</br>
      * @param {Object} opt.options - mapv绘制参数
      */
@@ -115,7 +183,7 @@ export class MapvLayer {
 
     _createCanvas() {
         var canvas = document.createElement('canvas');
-        canvas.id = this.layerID;
+        canvas.id = this.id;
         canvas.style.position = 'absolute';
         canvas.style.top = 0 + "px";
         canvas.style.left = 0 + "px";
@@ -131,31 +199,6 @@ export class MapvLayer {
         return canvas;
     }
 
-    /**
-     * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
-     * @description 将图层移动到某个图层之前。
-     * @param {string} layerID - 待插入的图层ID。</br>
-     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
-     */
-    moveTo(layerID, before) {
-        var layer = document.getElementById(this.layerID);
-        before = before !== undefined ? before : true;
-        if (before) {
-            var beforeLayer = document.getElementById(layerID);
-            if (layer && beforeLayer) {
-                beforeLayer.parentNode.insertBefore(layer, beforeLayer);
-            }
-            return;
-        }
-        var nextLayer = document.getElementById(layerID);
-        if (layer) {
-            if (nextLayer.nextSibling) {
-                nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
-                return;
-            }
-            nextLayer.parentNode.appendChild(layer);
-        }
-    }
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.setZIndex
      * @description 设置canvas层级

@@ -55,9 +55,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML(resources.text_iClient9)
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient9)
+        .addTo(map);
 
     var randomCount = 1000;
     var data = [];
@@ -87,7 +87,9 @@
         max: 30,
         draw: 'intensity'
     };
-    new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+    //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+    var mapVlayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+    map.addLayer(mapVlayer);
 
 </script>
 </body>
