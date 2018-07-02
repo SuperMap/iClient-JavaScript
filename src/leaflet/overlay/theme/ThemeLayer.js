@@ -8,6 +8,7 @@ import {
     LevelRenderer
 } from '@supermap/iclient-common';
 import {ThemeFeature} from './ThemeFeature';
+import Attributions from '../../core/Attributions'
 
 /**
  * @class L.supermap.ThemeLayer
@@ -30,7 +31,7 @@ export var ThemeLayer = L.Layer.extend({
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
         TFEvents: [],
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Common.attribution
     },
 
     initialize: function (name, options) {
@@ -394,7 +395,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标
-     * @param {Array} coordinate 
+     * @param {Array} coordinate
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {

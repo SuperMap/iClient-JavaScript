@@ -1275,7 +1275,7 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -1399,9 +1399,9 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -11056,9 +11056,6 @@ SuperMap.Util.RequestJSONPPromise = {
                 if (keysCount == 0) {
                     return false;
                 }
-                if (splitQuestUrl == null) {
-                    splitQuestUrl = new Array();
-                }
                 splitQuestUrl.push(sectionURL);
                 sectionURL = url;
                 keysCount = 0;
@@ -11086,9 +11083,6 @@ SuperMap.Util.RequestJSONPPromise = {
                         sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
-                            if (splitQuestUrl == null) {
-                                splitQuestUrl = new Array();
-                            }
                             splitQuestUrl.push(sectionURL);
                             sectionURL = url;
                             keysCount = 0;
@@ -11104,9 +11098,6 @@ SuperMap.Util.RequestJSONPPromise = {
                     sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
                 }
             }
-        }
-        if (splitQuestUrl == null) {
-            splitQuestUrl = new Array();
         }
         splitQuestUrl.push(sectionURL);
         me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
@@ -72962,7 +72953,7 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
                 if (result && result.features) {
                     features = result.features;
                     for (var fi = 0, felen = features.length; fi < felen; fi++) {
-                        feature = ServerFeature_ServerFeature.ServerFeature.fromJson(features[fi]).toFeature();
+                        feature = ServerFeature_ServerFeature.fromJson(features[fi]).toFeature();
                         addedFeatures.push(feature);
                     }
                     var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
@@ -77445,15 +77436,17 @@ var olExtends = function (targetMap) {
                     geometryType === external_ol_default.a.geom.GeometryType.MULTI_LINE_STRING ? new external_ol_default.a.geom.MultiLineString(null) :
                     null;
             }
-            geom.setFlatCoordinates(external_ol_default.a.geom.GeometryLayout.XY, flatCoordinates, ends);
-            feature = new this.featureClass_();
-            if (this.geometryName_) {
-                feature.setGeometryName(this.geometryName_);
+            if (geom) {
+                geom.setFlatCoordinates(external_ol_default.a.geom.GeometryLayout.XY, flatCoordinates, ends);
+                feature = new this.featureClass_();
+                if (this.geometryName_) {
+                    feature.setGeometryName(this.geometryName_);
+                }
+                var geometry = external_ol_default.a.format.Feature.transformWithOptions(geom, false, this.adaptOptions(opt_options));
+                feature.setGeometry(geometry);
+                feature.setId(id);
+                feature.setProperties(values);
             }
-            var geometry = external_ol_default.a.format.Feature.transformWithOptions(geom, false, this.adaptOptions(opt_options));
-            feature.setGeometry(geometry);
-            feature.setId(id);
-            feature.setProperties(values);
         }
 
         return feature;

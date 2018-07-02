@@ -799,7 +799,7 @@ export class WebMap extends ol.Observable {
                 if (result && result.features) {
                     features = result.features;
                     for (var fi = 0, felen = features.length; fi < felen; fi++) {
-                        feature = ServerFeature.ServerFeature.fromJson(features[fi]).toFeature();
+                        feature = ServerFeature.fromJson(features[fi]).toFeature();
                         addedFeatures.push(feature);
                     }
                     var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,

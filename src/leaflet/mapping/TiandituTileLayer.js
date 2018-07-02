@@ -3,6 +3,7 @@ import "../core/Base";
 import {
     WMTSLayer
 } from "./TileLayer.WMTS";
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.tiandituTileLayer
@@ -33,7 +34,7 @@ export var TiandituTileLayer = WMTSLayer.extend({
     options: {
         layerType: "vec", //(vec:矢量图层，vec:矢量标签图层，img:影像图层,cia:影像标签图层，ter:地形,cta:地形标签图层)
         isLabel: false,
-        attribution: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        attribution: Attributions.Tianditu.attribution,
         url: "http://t{s}.tianditu.com/{layer}_{proj}/wmts?",
         zoomOffset: 1,
         dpi: 96,

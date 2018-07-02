@@ -237,7 +237,7 @@ module.exports = g;
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -361,9 +361,9 @@ module.exports = g;
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -3995,9 +3995,6 @@ SuperMap.Util.RequestJSONPPromise = {
                 if (keysCount == 0) {
                     return false;
                 }
-                if (splitQuestUrl == null) {
-                    splitQuestUrl = new Array();
-                }
                 splitQuestUrl.push(sectionURL);
                 sectionURL = url;
                 keysCount = 0;
@@ -4025,9 +4022,6 @@ SuperMap.Util.RequestJSONPPromise = {
                         sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
-                            if (splitQuestUrl == null) {
-                                splitQuestUrl = new Array();
-                            }
                             splitQuestUrl.push(sectionURL);
                             sectionURL = url;
                             keysCount = 0;
@@ -4043,9 +4037,6 @@ SuperMap.Util.RequestJSONPPromise = {
                     sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
                 }
             }
-        }
-        if (splitQuestUrl == null) {
-            splitQuestUrl = new Array();
         }
         splitQuestUrl.push(sectionURL);
         me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);

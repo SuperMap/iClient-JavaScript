@@ -1,6 +1,6 @@
 import '../core/Base';
 import L from "leaflet";
-
+import Attributions from '../core/Attributions'
 /**
  * @class L.supermap.baiduTileLayer
  * @classdesc 百度地图图层。
@@ -28,7 +28,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
         maxZoom: 19,
         bounds: L.latLngBounds(L.latLng(-85.0511287798, -180), L.latLng(85.0511287798, 180)),
         retina: L.Browser.retina,
-        attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Baidu.attribution
     },
 
     initialize: function (url, options) {

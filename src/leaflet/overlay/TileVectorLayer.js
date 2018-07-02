@@ -14,7 +14,7 @@ import {
     SecurityManager
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
-
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.tiledVectorLayer
@@ -56,7 +56,7 @@ export var TileVectorLayer = VectorGrid.extend({
         subdomains: 'abc',
 
         timeout: 10000,
-        attribution: " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Common.attribution
     },
 
     initialize: function (url, options) {

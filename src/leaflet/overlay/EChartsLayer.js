@@ -1,6 +1,7 @@
 import L from "leaflet";
 import '../core/Base';
 import echarts from "echarts";
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.echartsLayer
@@ -21,7 +22,7 @@ export var EchartsLayer = L.Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io/' target='_blank'>SuperMap iClient</a></span>",
+        attribution: Attributions.ECharts.attribution,
         loadWhileAnimating: false
     },
 
@@ -152,6 +153,7 @@ export var EchartsLayer = L.Layer.extend({
                     });
                     me._enableEchartsContainer();
                 }
+
                 if (this._oldMoveHandler) {
                     leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
 

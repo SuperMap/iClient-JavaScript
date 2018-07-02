@@ -8,6 +8,7 @@ import {
     GeometryPoint as Point,
     GeoText
 } from '@supermap/iclient-common';
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.heatMapLayer
@@ -37,7 +38,7 @@ export var HeatMapLayer = L.Layer.extend({
         colors: ['blue', 'cyan', 'lime', 'yellow', 'red'],
         useGeoUnit: false,
         radius: 50,
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Common.attribution
     },
 
     initialize: function (name, options) {

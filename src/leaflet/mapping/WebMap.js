@@ -55,6 +55,7 @@ import {
 import {
     TiandituTileLayer
 } from '../mapping/TiandituTileLayer';
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.webmap
@@ -64,7 +65,7 @@ import {
  * @param {number} id - iPortal/Online地图id。
  * @param {Object} options - 可选参数。
  * @param {string} options.map - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online服务地址。 
+ * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online服务地址。
  * @param {boolean} options.featureLayerPopupEnable -  是否启动要素图层提示框。
  * @param {string} options.featureLayerPopup - 提示框提示信息。
  * @param {string} options.credentialValue - 证书值。
@@ -80,7 +81,7 @@ export var WebMap = L.LayerGroup.extend({
         featureLayerPopup: null,
         credentialValue: null,
         credentialKey: 'key',
-        attribution: "Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Online.attribution
     },
 
     /**
@@ -799,7 +800,8 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () {});
+                }, function () {
+                });
             } else {
                 var newFeautures = [],
                     features = layerInfo.features;

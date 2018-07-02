@@ -1,6 +1,7 @@
 import L, {Util, Layer, ImageOverlay} from "leaflet";
 import "../core/Base";
 import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} from "@supermap/iclient-common";
+import Attributions from '../core/Attributions'
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用Image资源出图
@@ -71,7 +72,7 @@ export var ImageMapLayer = Layer.extend({
         //服务来源 iServer|iPortal|online。
         serverType: ServerType.ISERVER,
         //版权信息
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        attribution: Attributions.Common.attribution,
         //平移时图层延迟刷新间隔时间。
         updateInterval: 150,
         format: 'png'

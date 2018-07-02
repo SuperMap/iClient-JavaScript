@@ -2223,7 +2223,7 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -2347,9 +2347,9 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -12004,9 +12004,6 @@ SuperMap.Util.RequestJSONPPromise = {
                 if (keysCount == 0) {
                     return false;
                 }
-                if (splitQuestUrl == null) {
-                    splitQuestUrl = new Array();
-                }
                 splitQuestUrl.push(sectionURL);
                 sectionURL = url;
                 keysCount = 0;
@@ -12034,9 +12031,6 @@ SuperMap.Util.RequestJSONPPromise = {
                         sectionURL += me.queryKeys[i] + "=" + tempLeftValue;
                         leftValue = leftValue.substring(leftLength);
                         if (tempLeftValue.length > 0) {
-                            if (splitQuestUrl == null) {
-                                splitQuestUrl = new Array();
-                            }
                             splitQuestUrl.push(sectionURL);
                             sectionURL = url;
                             keysCount = 0;
@@ -12052,9 +12046,6 @@ SuperMap.Util.RequestJSONPPromise = {
                     sectionURL += me.queryKeys[i] + "=" + me.queryValues[i];
                 }
             }
-        }
-        if (splitQuestUrl == null) {
-            splitQuestUrl = new Array();
         }
         splitQuestUrl.push(sectionURL);
         me.send(splitQuestUrl, "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]", config && config.proxy);
@@ -68410,6 +68401,50 @@ var TianDiTu_MercatorCRS = external_L_default.a.CRS.TianDiTu_Mercator = external
 external_L_default.a.CRS.BaiduCRS = BaiduCRS;
 external_L_default.a.CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
 external_L_default.a.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
+// CONCATENATED MODULE: ./src/leaflet/core/Attributions.js
+/**
+ * attribution版权相关配置
+ */
+
+let Attributions = {
+
+    Prefix: `<a href='http://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
+                with <span>© <a href='http://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+
+    Common: {
+        attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`
+    },
+
+    Online: {
+        attribution: `Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>`
+    },
+
+    ECharts: {
+        attribution: `© 2017 百度 ECharts`
+    },
+
+    MapV: {
+        attribution: `© 2017 百度 MapV `
+    },
+
+    Turf: {
+        attribution: `<span>© <a href='http://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>`
+    },
+
+    Baidu: {
+        attribution: `Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方`
+    },
+
+    Cloud: {
+        attribution: `Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo`
+    },
+
+    Tianditu: {
+        attribution: `Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a>`
+    }
+};
+
+/* harmony default export */ var core_Attributions = (Attributions);
 // CONCATENATED MODULE: ./src/leaflet/core/Base.js
 /**
  *SuperMap Leaflet基类
@@ -68421,8 +68456,11 @@ external_L_default.a.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 
 
 
+
 external_L_default.a.supermap = external_L_default.a.supermap || {};
 external_L_default.a.supermap.control = external_L_default.a.supermap.control || {};
+
+external_L_default.a.Control.Attribution.include({options: {position: 'bottomright',prefix: core_Attributions.Prefix}});
 // CONCATENATED MODULE: ./src/leaflet/services/ServiceBase.js
 
 
@@ -69241,7 +69279,7 @@ external_L_default.a.Util.NormalizeScale = NormalizeScale;
  */
 var BaiduTileLayer = external_L_default.a.TileLayer.extend({
 
-    /** 
+    /**
      * @member L.supermap.baiduTileLayer.prototype.url -{string}
      * @description 切片地址
      */
@@ -69252,7 +69290,7 @@ var BaiduTileLayer = external_L_default.a.TileLayer.extend({
         maxZoom: 19,
         bounds: external_L_default.a.latLngBounds(external_L_default.a.latLng(-85.0511287798, -180), external_L_default.a.latLng(85.0511287798, 180)),
         retina: external_L_default.a.Browser.retina,
-        attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Baidu.attribution
     },
 
     initialize: function (url, options) {
@@ -69297,6 +69335,7 @@ external_L_default.a.supermap.baiduTileLayer = baiduTileLayer;
 
 
 
+
 /**
  * @class L.supermap.cloudTileLayer
  * @classdesc 超图云服务图层。
@@ -69331,13 +69370,13 @@ var CloudTileLayer = external_L_default.a.TileLayer.extend({
          */
         mapName: "quanguo",
         /**
-         * @member {String} L.supermap.cloudTileLayer.prototype.type 
+         * @member {String} L.supermap.cloudTileLayer.prototype.type
          * @description 地图投影。
          */
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Cloud.attribution
 
     },
 
@@ -69370,6 +69409,7 @@ var cloudTileLayer = function (url, options) {
 
 external_L_default.a.supermap.cloudTileLayer = cloudTileLayer;
 // CONCATENATED MODULE: ./src/leaflet/mapping/ImageMapLayer.js
+
 
 
 
@@ -69443,7 +69483,7 @@ var ImageMapLayer = external_L_["Layer"].extend({
         //服务来源 iServer|iPortal|online。
         serverType: ServerType.ISERVER,
         //版权信息
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        attribution: core_Attributions.Common.attribution,
         //平移时图层延迟刷新间隔时间。
         updateInterval: 150,
         format: 'png'
@@ -69823,7 +69863,7 @@ var WMTSLayer = external_L_default.a.TileLayer.extend({
         matrixIds: null,
         layer: '',
         requestEncoding: 'KVP',
-        attribution: "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: ''
     },
 
     //todo 自动获取Capabilities
@@ -69903,6 +69943,7 @@ external_L_default.a.supermap.wmtsLayer = wmtsLayer;
 
 
 
+
 /**
  * @class L.supermap.tiandituTileLayer
  * @classdesc 天地图图层类。
@@ -69932,7 +69973,7 @@ var TiandituTileLayer = WMTSLayer.extend({
     options: {
         layerType: "vec", //(vec:矢量图层，vec:矢量标签图层，img:影像图层,cia:影像标签图层，ter:地形,cta:地形标签图层)
         isLabel: false,
-        attribution: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        attribution: core_Attributions.Tianditu.attribution,
         url: "http://t{s}.tianditu.com/{layer}_{proj}/wmts?",
         zoomOffset: 1,
         dpi: 96,
@@ -69961,6 +70002,7 @@ var tiandituTileLayer = function (options) {
 
 external_L_default.a.supermap.tiandituTileLayer = tiandituTileLayer;
 // CONCATENATED MODULE: ./src/leaflet/mapping/TiledMapLayer.js
+
 
 
 
@@ -70013,7 +70055,7 @@ var TiledMapLayer = external_L_default.a.TileLayer.extend({
         serverType: ServerType.ISERVER,
         format: 'png',
 
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Common.attribution
     },
 
     initialize: function (url, options) {
@@ -70117,8 +70159,6 @@ var TiledMapLayer = external_L_default.a.TileLayer.extend({
             return resolutionToScale(resolution, 96, mapUnit);
         }
     },
-
-
 
 
     /**
@@ -71202,6 +71242,7 @@ external_L_default.a.supermap.themeFeature = themeFeature;
 
 
 
+
 /**
  * @class L.supermap.ThemeLayer
  * @classdesc 专题图层基类，调用建议使用其子类实现类。
@@ -71223,7 +71264,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
         TFEvents: [],
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Common.attribution
     },
 
     initialize: function (name, options) {
@@ -71587,7 +71628,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标
-     * @param {Array} coordinate 
+     * @param {Array} coordinate
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {
@@ -73481,6 +73522,7 @@ external_L_default.a.supermap.unicodeMarker = unicodeMarker;
 
 
 
+
 /**
  * @class L.supermap.webmap
  * @classdesc 对接iPortal/Online地图类。
@@ -73489,7 +73531,7 @@ external_L_default.a.supermap.unicodeMarker = unicodeMarker;
  * @param {number} id - iPortal/Online地图id。
  * @param {Object} options - 可选参数。
  * @param {string} options.map - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online服务地址。 
+ * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online服务地址。
  * @param {boolean} options.featureLayerPopupEnable -  是否启动要素图层提示框。
  * @param {string} options.featureLayerPopup - 提示框提示信息。
  * @param {string} options.credentialValue - 证书值。
@@ -73505,7 +73547,7 @@ var WebMap = external_L_default.a.LayerGroup.extend({
         featureLayerPopup: null,
         credentialValue: null,
         credentialKey: 'key',
-        attribution: "Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Online.attribution
     },
 
     /**
@@ -74224,7 +74266,8 @@ var WebMap = external_L_default.a.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () {});
+                }, function () {
+                });
             } else {
                 var newFeautures = [],
                     features = layerInfo.features;
@@ -75222,6 +75265,7 @@ class MapVRenderer_MapVRenderer extends BaseLayer {
 
 
 
+
 /**
  * @class L.supermap.mapVLayer
  * @classdesc MapV图层
@@ -75237,7 +75281,7 @@ var MapVLayer = external_L_default.a.Layer.extend({
 
     options: {
         attributionPrefix: null,
-        attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.MapV.attribution
     },
 
     initialize: function (dataSet, mapVOptions, options) {
@@ -75588,11 +75632,10 @@ var MapvRenderer = MapVLayer.extend({
         };
         mapvOps.strokeStyle = options.color;
         mapvOps.lineWidth = options.width;
-        mapvOps.globalAlpha = options.opacity;
+        mapvOps.globalAlpha = options.fillOpacity || options.opacity;
         mapvOps.lineCap = options.lineCap;
         mapvOps.lineJoin = options.lineJoin;
         mapvOps.fillStyle = options.fillColor;
-        mapvOps.globalAlpha = options.fillOpacity;
         mapvOps.size = options.radius;
         return mapvOps;
     }
@@ -75826,6 +75869,7 @@ var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/_
 
 
 
+
 /**
  * @class L.supermap.echartsLayer
  * @classdesc 百度ECharts图层类。
@@ -75845,7 +75889,7 @@ var EchartsLayer = external_L_default.a.Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io/' target='_blank'>SuperMap iClient</a></span>",
+        attribution: core_Attributions.ECharts.attribution,
         loadWhileAnimating: false
     },
 
@@ -75976,6 +76020,7 @@ var EchartsLayer = external_L_default.a.Layer.extend({
                     });
                     me._enableEchartsContainer();
                 }
+
                 if (this._oldMoveHandler) {
                     leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
 
@@ -79398,7 +79443,7 @@ var TileVectorLayer = VectorGrid.extend({
         subdomains: 'abc',
 
         timeout: 10000,
-        attribution: " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Common.attribution
     },
 
     initialize: function (url, options) {
@@ -79860,6 +79905,7 @@ var external_function_try_return_turf_catch_e_return_ = __webpack_require__(4);
 
 
 
+
 /**
  * @class L.supermap.turfLayer
  * @classdesc Turf图层
@@ -79891,7 +79937,7 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         "Measurement.rhumbDistance": ["from", "to", "units"],
         "Measurement.square": ["bbox"],
         "Measurement.greatCircle": ["start", "end", "properties", "npoints", "offset"],
-        "CoordinateMutation.cleanCoords":["geojson","mutate"],
+        "CoordinateMutation.cleanCoords": ["geojson", "mutate"],
         "CoordinateMutation.flip": ["geojson", "mutate"],
         "CoordinateMutation.rewind": ["geojson", "reverse", "mutate"],
         "CoordinateMutation.round": ["num", "precision"],
@@ -79902,7 +79948,7 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         "Transformation.circle": ["center", "radius", "steps", "units", "properties"],
         "Transformation.clone": ["geojson"],
         "Transformation.concave": ["points", "maxEdge", "units"],
-        "Transformation.convex": ["geojson","concavity"],
+        "Transformation.convex": ["geojson", "concavity"],
         "Transformation.difference": ["polygon1", "polygon2"],
         "Transformation.dissolve": ["featureCollection", "propertyName"],
         "Transformation.intersect": ["poly1", "poly2"],
@@ -79913,7 +79959,7 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         "Transformation.transformTranslate": ["geojson", "distance", "direction", "units", "zTranslation", "mutate"],
         "Transformation.transformScale": ["geojson", "factor", "origin", "mutate"],
         "Transformation.union": ["A"],
-        "Transformation.voronoi": ["points","bbox"],
+        "Transformation.voronoi": ["points", "bbox"],
         "featureConversion.combine": ["fc"],
         "featureConversion.explode": ["geojson"],
         "featureConversion.flatten": ["geojson"],
@@ -79932,32 +79978,32 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         "Misc.mask": ["polygon", "mask"],
         "Misc.pointOnLine": ["lines", "pt", "units"],
         "Misc.sector": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
-        "Misc.shortestPath": ["start", "end", "obstacles", "units","resolution"],
+        "Misc.shortestPath": ["start", "end", "obstacles", "units", "resolution"],
         "Misc.unkinkPolygon": ["geojson"],
-        "Helper.featureCollection": ["features","bbox","id"],
-        "Helper.feature": ["geometry", "properties","bbox","id"],
-        "Helper.geometryCollection": ["geometries", "properties","bbox","id"],
-        "Helper.lineString": ["coordinates", "properties","bbox","id"],
-        "Helper.multiLineString": ["coordinates", "properties","bbox","id"],
-        "Helper.multiPoint": ["coordinates", "properties","bbox","id"],
-        "Helper.multiPolygon": ["coordinates", "properties","bbox","id"],
-        "Helper.point": ["coordinates", "properties","bbox","id"],
-        "Helper.polygon": ["coordinates", "properties","bbox","id"],
+        "Helper.featureCollection": ["features", "bbox", "id"],
+        "Helper.feature": ["geometry", "properties", "bbox", "id"],
+        "Helper.geometryCollection": ["geometries", "properties", "bbox", "id"],
+        "Helper.lineString": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiLineString": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiPoint": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiPolygon": ["coordinates", "properties", "bbox", "id"],
+        "Helper.point": ["coordinates", "properties", "bbox", "id"],
+        "Helper.polygon": ["coordinates", "properties", "bbox", "id"],
         "Data.sample": ["featurecollection", "num"],
         "Interpolation.interpolate": ["points", "cellSize", "gridType", "property", "units", "weight"],
-        "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "commonProperties","breaksProperties"],
+        "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "commonProperties", "breaksProperties"],
         "Interpolation.isolines": ["pointGrid", "breaks", "zProperty", "commonProperties", "breaksProperties"],
         "Interpolation.planepoint": ["point", "triangle"],
         "Interpolation.tin": ["points", "z"],
         "Joins.pointsWithinPolygon": ["points", "polygons"],
-        "Joins.tag": ["points", "polygons", "field", "outField","mask","properties"],
+        "Joins.tag": ["points", "polygons", "field", "outField", "mask", "properties"],
         "Grids.hexGrid": ["bbox", "cellSide", "units", "triangles"],
-        "Grids.pointGrid": ["bbox", "cellSide", "units", "mask","properties"],
-        "Grids.squareGrid": ["bbox", "cellSide", "units", "mask","properties"],
-        "Grids.triangleGrid": ["bbox", "cellSide", "units", "mask","properties"],
+        "Grids.pointGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Grids.squareGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Grids.triangleGrid": ["bbox", "cellSide", "units", "mask", "properties"],
         "Classification.nearestPoint": ["targetPoint", "points"],
         "Aggregation.collect": ["polygons", "points", "inProperty", "outProperty"],
-        "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints","mutate"],
+        "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints", "mutate"],
         "Aggregation.clustersKmeans": ["points", "numberOfClusters", "mutate"],
         "Meta.coordAll": ["geojson"],
         "Meta.coordEach": ["geojson", "callback", "excludeWrapCoord"],
@@ -79969,7 +80015,7 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         "Meta.getCoord": ["coord"],
         "Meta.getCoords": ["coords"],
         "Meta.getGeom": ["geojson"],
-        "Meta.getGeomType": ["geojson","name"],
+        "Meta.getGeomType": ["geojson", "name"],
         "Meta.geomEach": ["geojson", "callback"],
         "Meta.geomReduce": ["geojson", "callback", "initialValue"],
         "Meta.propEach": ["geojson", "callback"],
@@ -80000,11 +80046,11 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         "UnitConversion.lengthToDegrees": ["distance", "units"],
         "UnitConversion.radiansToLength": ["radians", "units"],
         "UnitConversion.radiansToDegrees": ["radians"],
-        "UnitConversion.toMercator": ["geojson","mutate"],
-        "UnitConversion.toWgs84": ["geojson","mutate"]
+        "UnitConversion.toMercator": ["geojson", "mutate"],
+        "UnitConversion.toWgs84": ["geojson", "mutate"]
     },
     options: {
-        attribution: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Turf.attribution
     },
 
     initialize: function (options) {
@@ -80015,64 +80061,68 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
     },
     // 5.0.0 及以上版本参数配置
     turfOptionMap: {
-        "Measurement.along": ["line", "distance", {units:""}],
-        "Measurement.bboxPolygon": ["bbox",{properties:"",id:""}],
-        "Measurement.bearing": ["start", "end", {final:""}],
-        "Measurement.center": ["geojson", {properties:""}],
-        "Measurement.destination": ["origin", "distance", "bearing", {units:"",properties:""}],
-        "Measurement.distance": ["from", "to", {units:""}],
-        "Measurement.length": ["geojson", {units:""}],
-        "Measurement.rhumbBearing": ["start", "end", {final:""}],
-        "Measurement.rhumbDestination": ["origin", "distance", "bearing", {units:"",properties:""}],
-        "Measurement.rhumbDistance": ["from", "to", {units:""}],
-        "Measurement.greatCircle": ["start", "end", {properties:"", npoints:"", offset:""}],
-        "CoordinateMutation.cleanCoords":["geojson",{mutate:""}],
-        "CoordinateMutation.flip": ["geojson", {mutate:""}],
-        "CoordinateMutation.rewind": ["geojson",{mutate:"",reverse:""}],
-        "CoordinateMutation.truncate": ["geojson", {precision:"", coordinates:"", mutate:""}],
-        "Transformation.bezierSpline": ["line", {resolution:"", sharpness:""}],
-        "Transformation.buffer": ["geojson", "radius", {units:"", steps:""}],
-        "Transformation.circle": ["center", "radius",  {units:"", steps:"",properties:""}],
-        "Transformation.concave": ["points", {maxEdge:"", units:""}],
-        "Transformation.convex": ["geojson",{concavity:""}],
-        "Transformation.dissolve": ["featureCollection", {propertyName:""}],
-        "Transformation.lineOffset": ["geojson", "distance", {units:""}],
-        "Transformation.simplify": ["geojson", {tolerance:"", highQuality:""}],
-        "Transformation.transformRotate": ["geojson", "angle", {pivot:"", mutate:""}],
-        "Transformation.transformTranslate": ["geojson", "distance", "direction", {units:"", zTranslation:"", mutate:""}],
-        "Transformation.transformScale": ["geojson", "factor", {origin:"", mutate:""}],
-        "Transformation.voronoi": ["points",{bbox:""}],
-        "featureConversion.lineStringToPolygon": ["lines",{properties:"", autoComplete:"", orderCoords:""}],
-        "featureConversion.polygonToLineString": ["polygon", {properties:""}],
-        "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", {steps:"", units:""}],
-        "Misc.lineChunk": ["geojson", "segmentLength", {units:"", reverse:""}],
-        "Misc.lineOverlap": ["line1", "line2",{tolerance:""}],
-        "Misc.lineSliceAlong": ["line", "startDist", "stopDist", {units:""}],
-        "Misc.pointOnLine": ["lines", "pt",  {units:""}],
-        "Misc.sector": ["center", "radius", "bearing1", "bearing2", {units:"",steps:"",properties:""}],
-        "Misc.shortestPath": ["start", "end", {obstacles:"", units:"",resolution:""}],
-        "Helper.feature": ["geometry", "properties",{bbox:"",id:""}],
-        "Helper.geometryCollection": ["geometries", "properties",{bbox:"",id:""}],
-        "Helper.lineString": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.multiLineString": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.multiPoint": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.multiPolygon": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.point": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.polygon": ["coordinates", "properties",{bbox:"",id:""}],
-        "Interpolation.interpolate": ["points", "cellSize", {gridType:"", property:"", units:"", weight:""}],
-        "Interpolation.isobands": ["pointGrid", "breaks", {zProperty:"", commonProperties:"",breaksProperties:""}],
-        "Interpolation.isolines": ["pointGrid", "breaks", {zProperty:"", commonProperties:"", breaksProperties:""}],
-        "Grids.hexGrid": ["bbox", "cellSide", {units:"", triangles:"",properties:"",mask:""}],
-        "Grids.pointGrid": ["bbox", "cellSide", {units:"", mask:"",properties:""}],
-        "Grids.squareGrid": ["bbox", "cellSide", {units:"", mask:"",properties:""}],
-        "Grids.triangleGrid": ["bbox", "cellSide", {units:"", mask:"",properties:""}],
-        "Aggregation.clustersDbscan": ["points", "maxDistance", {units:"", minPoints:"",mutate:""}],
-        "Aggregation.clustersKmeans": ["points", {numberOfClusters:"", mutate:""}],
-        "Booleans.booleanPointInPolygon": ["point", "polygon", {ignoreBoundary:""}],
-        "Booleans.booleanPointOnLine": ["point", "linestring", {ignoreEndVertices:""}],
-        "UnitConversion.toMercator": ["geojson",{mutate:""}],
-        "UnitConversion.toWgs84": ["geojson",{mutate:""}]
-},
+        "Measurement.along": ["line", "distance", {units: ""}],
+        "Measurement.bboxPolygon": ["bbox", {properties: "", id: ""}],
+        "Measurement.bearing": ["start", "end", {final: ""}],
+        "Measurement.center": ["geojson", {properties: ""}],
+        "Measurement.destination": ["origin", "distance", "bearing", {units: "", properties: ""}],
+        "Measurement.distance": ["from", "to", {units: ""}],
+        "Measurement.length": ["geojson", {units: ""}],
+        "Measurement.rhumbBearing": ["start", "end", {final: ""}],
+        "Measurement.rhumbDestination": ["origin", "distance", "bearing", {units: "", properties: ""}],
+        "Measurement.rhumbDistance": ["from", "to", {units: ""}],
+        "Measurement.greatCircle": ["start", "end", {properties: "", npoints: "", offset: ""}],
+        "CoordinateMutation.cleanCoords": ["geojson", {mutate: ""}],
+        "CoordinateMutation.flip": ["geojson", {mutate: ""}],
+        "CoordinateMutation.rewind": ["geojson", {mutate: "", reverse: ""}],
+        "CoordinateMutation.truncate": ["geojson", {precision: "", coordinates: "", mutate: ""}],
+        "Transformation.bezierSpline": ["line", {resolution: "", sharpness: ""}],
+        "Transformation.buffer": ["geojson", "radius", {units: "", steps: ""}],
+        "Transformation.circle": ["center", "radius", {units: "", steps: "", properties: ""}],
+        "Transformation.concave": ["points", {maxEdge: "", units: ""}],
+        "Transformation.convex": ["geojson", {concavity: ""}],
+        "Transformation.dissolve": ["featureCollection", {propertyName: ""}],
+        "Transformation.lineOffset": ["geojson", "distance", {units: ""}],
+        "Transformation.simplify": ["geojson", {tolerance: "", highQuality: ""}],
+        "Transformation.transformRotate": ["geojson", "angle", {pivot: "", mutate: ""}],
+        "Transformation.transformTranslate": ["geojson", "distance", "direction", {
+            units: "",
+            zTranslation: "",
+            mutate: ""
+        }],
+        "Transformation.transformScale": ["geojson", "factor", {origin: "", mutate: ""}],
+        "Transformation.voronoi": ["points", {bbox: ""}],
+        "featureConversion.lineStringToPolygon": ["lines", {properties: "", autoComplete: "", orderCoords: ""}],
+        "featureConversion.polygonToLineString": ["polygon", {properties: ""}],
+        "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", {steps: "", units: ""}],
+        "Misc.lineChunk": ["geojson", "segmentLength", {units: "", reverse: ""}],
+        "Misc.lineOverlap": ["line1", "line2", {tolerance: ""}],
+        "Misc.lineSliceAlong": ["line", "startDist", "stopDist", {units: ""}],
+        "Misc.pointOnLine": ["lines", "pt", {units: ""}],
+        "Misc.sector": ["center", "radius", "bearing1", "bearing2", {units: "", steps: "", properties: ""}],
+        "Misc.shortestPath": ["start", "end", {obstacles: "", units: "", resolution: ""}],
+        "Helper.feature": ["geometry", "properties", {bbox: "", id: ""}],
+        "Helper.geometryCollection": ["geometries", "properties", {bbox: "", id: ""}],
+        "Helper.lineString": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.multiLineString": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.multiPoint": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.multiPolygon": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.point": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.polygon": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Interpolation.interpolate": ["points", "cellSize", {gridType: "", property: "", units: "", weight: ""}],
+        "Interpolation.isobands": ["pointGrid", "breaks", {zProperty: "", commonProperties: "", breaksProperties: ""}],
+        "Interpolation.isolines": ["pointGrid", "breaks", {zProperty: "", commonProperties: "", breaksProperties: ""}],
+        "Grids.hexGrid": ["bbox", "cellSide", {units: "", triangles: "", properties: "", mask: ""}],
+        "Grids.pointGrid": ["bbox", "cellSide", {units: "", mask: "", properties: ""}],
+        "Grids.squareGrid": ["bbox", "cellSide", {units: "", mask: "", properties: ""}],
+        "Grids.triangleGrid": ["bbox", "cellSide", {units: "", mask: "", properties: ""}],
+        "Aggregation.clustersDbscan": ["points", "maxDistance", {units: "", minPoints: "", mutate: ""}],
+        "Aggregation.clustersKmeans": ["points", {numberOfClusters: "", mutate: ""}],
+        "Booleans.booleanPointInPolygon": ["point", "polygon", {ignoreBoundary: ""}],
+        "Booleans.booleanPointOnLine": ["point", "linestring", {ignoreEndVertices: ""}],
+        "UnitConversion.toMercator": ["geojson", {mutate: ""}],
+        "UnitConversion.toWgs84": ["geojson", {mutate: ""}]
+    },
 
     /**
      * @function L.supermap.turfLayer.prototype.process
@@ -80085,9 +80135,9 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
     process: function (type, args, callback, addFeaturesToMap) {
         // 兼容版本4到5
         var result;
-        try{
+        try {
             result = external_function_try_return_turf_catch_e_return_[type.split('.')[1]].apply(this, this.parse(type, args));
-        }catch(e){
+        } catch (e) {
             result = external_function_try_return_turf_catch_e_return_[type.split('.')[1]].apply(this, this.parseOption(type, args));
         }
         addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
@@ -80113,17 +80163,17 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
         }
         return result;
     },
-    parseOption(type,args){
+    parseOption(type, args) {
         var result = [];
         var tempArgs = this.turfOptionMap[type];
-        tempArgs.map(function(key){
-            if(key instanceof Object){
+        tempArgs.map(function (key) {
+            if (key instanceof Object) {
                 var options = key;
-                Object.keys(options).forEach(function(k){
-                    options[k]=args[k]
+                Object.keys(options).forEach(function (k) {
+                    options[k] = args[k]
                 })
                 result.push(options);
-            }else{
+            } else {
                 result.push(args[key])
             }
             return args;
@@ -80138,6 +80188,7 @@ var turfLayer = function (options) {
 
 external_L_default.a.supermap.turfLayer = turfLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/HeatMapLayer.js
+
 
 
 
@@ -80169,7 +80220,7 @@ var HeatMapLayer = external_L_default.a.Layer.extend({
         colors: ['blue', 'cyan', 'lime', 'yellow', 'red'],
         useGeoUnit: false,
         radius: 50,
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: core_Attributions.Common.attribution
     },
 
     initialize: function (name, options) {

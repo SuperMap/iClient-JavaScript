@@ -34,7 +34,7 @@ export var WMTSLayer = L.TileLayer.extend({
         matrixIds: null,
         layer: '',
         requestEncoding: 'KVP',
-        attribution: "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: ''
     },
 
     //todo 自动获取Capabilities

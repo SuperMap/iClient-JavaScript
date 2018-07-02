@@ -1,6 +1,7 @@
 import L from "leaflet";
 import '../core/Base';
 import {MapVRenderer} from "./mapv/MapVRenderer";
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.mapVLayer
@@ -17,7 +18,7 @@ export var MapVLayer = L.Layer.extend({
 
     options: {
         attributionPrefix: null,
-        attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.MapV.attribution
     },
 
     initialize: function (dataSet, mapVOptions, options) {

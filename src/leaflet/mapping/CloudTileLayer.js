@@ -1,5 +1,6 @@
 import L from "leaflet";
 import "../core/Base";
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.cloudTileLayer
@@ -35,13 +36,13 @@ export var CloudTileLayer = L.TileLayer.extend({
          */
         mapName: "quanguo",
         /**
-         * @member {String} L.supermap.cloudTileLayer.prototype.type 
+         * @member {String} L.supermap.cloudTileLayer.prototype.type
          * @description 地图投影。
          */
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Cloud.attribution
 
     },
 

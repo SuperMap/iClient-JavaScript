@@ -1,6 +1,7 @@
 import L from "leaflet";
 import '../core/Base';
 import * as turf from '@turf/turf';
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.turfLayer
@@ -33,7 +34,7 @@ export var TurfLayer = L.GeoJSON.extend({
         "Measurement.rhumbDistance": ["from", "to", "units"],
         "Measurement.square": ["bbox"],
         "Measurement.greatCircle": ["start", "end", "properties", "npoints", "offset"],
-        "CoordinateMutation.cleanCoords":["geojson","mutate"],
+        "CoordinateMutation.cleanCoords": ["geojson", "mutate"],
         "CoordinateMutation.flip": ["geojson", "mutate"],
         "CoordinateMutation.rewind": ["geojson", "reverse", "mutate"],
         "CoordinateMutation.round": ["num", "precision"],
@@ -44,7 +45,7 @@ export var TurfLayer = L.GeoJSON.extend({
         "Transformation.circle": ["center", "radius", "steps", "units", "properties"],
         "Transformation.clone": ["geojson"],
         "Transformation.concave": ["points", "maxEdge", "units"],
-        "Transformation.convex": ["geojson","concavity"],
+        "Transformation.convex": ["geojson", "concavity"],
         "Transformation.difference": ["polygon1", "polygon2"],
         "Transformation.dissolve": ["featureCollection", "propertyName"],
         "Transformation.intersect": ["poly1", "poly2"],
@@ -55,7 +56,7 @@ export var TurfLayer = L.GeoJSON.extend({
         "Transformation.transformTranslate": ["geojson", "distance", "direction", "units", "zTranslation", "mutate"],
         "Transformation.transformScale": ["geojson", "factor", "origin", "mutate"],
         "Transformation.union": ["A"],
-        "Transformation.voronoi": ["points","bbox"],
+        "Transformation.voronoi": ["points", "bbox"],
         "featureConversion.combine": ["fc"],
         "featureConversion.explode": ["geojson"],
         "featureConversion.flatten": ["geojson"],
@@ -74,32 +75,32 @@ export var TurfLayer = L.GeoJSON.extend({
         "Misc.mask": ["polygon", "mask"],
         "Misc.pointOnLine": ["lines", "pt", "units"],
         "Misc.sector": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
-        "Misc.shortestPath": ["start", "end", "obstacles", "units","resolution"],
+        "Misc.shortestPath": ["start", "end", "obstacles", "units", "resolution"],
         "Misc.unkinkPolygon": ["geojson"],
-        "Helper.featureCollection": ["features","bbox","id"],
-        "Helper.feature": ["geometry", "properties","bbox","id"],
-        "Helper.geometryCollection": ["geometries", "properties","bbox","id"],
-        "Helper.lineString": ["coordinates", "properties","bbox","id"],
-        "Helper.multiLineString": ["coordinates", "properties","bbox","id"],
-        "Helper.multiPoint": ["coordinates", "properties","bbox","id"],
-        "Helper.multiPolygon": ["coordinates", "properties","bbox","id"],
-        "Helper.point": ["coordinates", "properties","bbox","id"],
-        "Helper.polygon": ["coordinates", "properties","bbox","id"],
+        "Helper.featureCollection": ["features", "bbox", "id"],
+        "Helper.feature": ["geometry", "properties", "bbox", "id"],
+        "Helper.geometryCollection": ["geometries", "properties", "bbox", "id"],
+        "Helper.lineString": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiLineString": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiPoint": ["coordinates", "properties", "bbox", "id"],
+        "Helper.multiPolygon": ["coordinates", "properties", "bbox", "id"],
+        "Helper.point": ["coordinates", "properties", "bbox", "id"],
+        "Helper.polygon": ["coordinates", "properties", "bbox", "id"],
         "Data.sample": ["featurecollection", "num"],
         "Interpolation.interpolate": ["points", "cellSize", "gridType", "property", "units", "weight"],
-        "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "commonProperties","breaksProperties"],
+        "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "commonProperties", "breaksProperties"],
         "Interpolation.isolines": ["pointGrid", "breaks", "zProperty", "commonProperties", "breaksProperties"],
         "Interpolation.planepoint": ["point", "triangle"],
         "Interpolation.tin": ["points", "z"],
         "Joins.pointsWithinPolygon": ["points", "polygons"],
-        "Joins.tag": ["points", "polygons", "field", "outField","mask","properties"],
+        "Joins.tag": ["points", "polygons", "field", "outField", "mask", "properties"],
         "Grids.hexGrid": ["bbox", "cellSide", "units", "triangles"],
-        "Grids.pointGrid": ["bbox", "cellSide", "units", "mask","properties"],
-        "Grids.squareGrid": ["bbox", "cellSide", "units", "mask","properties"],
-        "Grids.triangleGrid": ["bbox", "cellSide", "units", "mask","properties"],
+        "Grids.pointGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Grids.squareGrid": ["bbox", "cellSide", "units", "mask", "properties"],
+        "Grids.triangleGrid": ["bbox", "cellSide", "units", "mask", "properties"],
         "Classification.nearestPoint": ["targetPoint", "points"],
         "Aggregation.collect": ["polygons", "points", "inProperty", "outProperty"],
-        "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints","mutate"],
+        "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints", "mutate"],
         "Aggregation.clustersKmeans": ["points", "numberOfClusters", "mutate"],
         "Meta.coordAll": ["geojson"],
         "Meta.coordEach": ["geojson", "callback", "excludeWrapCoord"],
@@ -111,7 +112,7 @@ export var TurfLayer = L.GeoJSON.extend({
         "Meta.getCoord": ["coord"],
         "Meta.getCoords": ["coords"],
         "Meta.getGeom": ["geojson"],
-        "Meta.getGeomType": ["geojson","name"],
+        "Meta.getGeomType": ["geojson", "name"],
         "Meta.geomEach": ["geojson", "callback"],
         "Meta.geomReduce": ["geojson", "callback", "initialValue"],
         "Meta.propEach": ["geojson", "callback"],
@@ -142,11 +143,11 @@ export var TurfLayer = L.GeoJSON.extend({
         "UnitConversion.lengthToDegrees": ["distance", "units"],
         "UnitConversion.radiansToLength": ["radians", "units"],
         "UnitConversion.radiansToDegrees": ["radians"],
-        "UnitConversion.toMercator": ["geojson","mutate"],
-        "UnitConversion.toWgs84": ["geojson","mutate"]
+        "UnitConversion.toMercator": ["geojson", "mutate"],
+        "UnitConversion.toWgs84": ["geojson", "mutate"]
     },
     options: {
-        attribution: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Turf.attribution
     },
 
     initialize: function (options) {
@@ -157,64 +158,68 @@ export var TurfLayer = L.GeoJSON.extend({
     },
     // 5.0.0 及以上版本参数配置
     turfOptionMap: {
-        "Measurement.along": ["line", "distance", {units:""}],
-        "Measurement.bboxPolygon": ["bbox",{properties:"",id:""}],
-        "Measurement.bearing": ["start", "end", {final:""}],
-        "Measurement.center": ["geojson", {properties:""}],
-        "Measurement.destination": ["origin", "distance", "bearing", {units:"",properties:""}],
-        "Measurement.distance": ["from", "to", {units:""}],
-        "Measurement.length": ["geojson", {units:""}],
-        "Measurement.rhumbBearing": ["start", "end", {final:""}],
-        "Measurement.rhumbDestination": ["origin", "distance", "bearing", {units:"",properties:""}],
-        "Measurement.rhumbDistance": ["from", "to", {units:""}],
-        "Measurement.greatCircle": ["start", "end", {properties:"", npoints:"", offset:""}],
-        "CoordinateMutation.cleanCoords":["geojson",{mutate:""}],
-        "CoordinateMutation.flip": ["geojson", {mutate:""}],
-        "CoordinateMutation.rewind": ["geojson",{mutate:"",reverse:""}],
-        "CoordinateMutation.truncate": ["geojson", {precision:"", coordinates:"", mutate:""}],
-        "Transformation.bezierSpline": ["line", {resolution:"", sharpness:""}],
-        "Transformation.buffer": ["geojson", "radius", {units:"", steps:""}],
-        "Transformation.circle": ["center", "radius",  {units:"", steps:"",properties:""}],
-        "Transformation.concave": ["points", {maxEdge:"", units:""}],
-        "Transformation.convex": ["geojson",{concavity:""}],
-        "Transformation.dissolve": ["featureCollection", {propertyName:""}],
-        "Transformation.lineOffset": ["geojson", "distance", {units:""}],
-        "Transformation.simplify": ["geojson", {tolerance:"", highQuality:""}],
-        "Transformation.transformRotate": ["geojson", "angle", {pivot:"", mutate:""}],
-        "Transformation.transformTranslate": ["geojson", "distance", "direction", {units:"", zTranslation:"", mutate:""}],
-        "Transformation.transformScale": ["geojson", "factor", {origin:"", mutate:""}],
-        "Transformation.voronoi": ["points",{bbox:""}],
-        "featureConversion.lineStringToPolygon": ["lines",{properties:"", autoComplete:"", orderCoords:""}],
-        "featureConversion.polygonToLineString": ["polygon", {properties:""}],
-        "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", {steps:"", units:""}],
-        "Misc.lineChunk": ["geojson", "segmentLength", {units:"", reverse:""}],
-        "Misc.lineOverlap": ["line1", "line2",{tolerance:""}],
-        "Misc.lineSliceAlong": ["line", "startDist", "stopDist", {units:""}],
-        "Misc.pointOnLine": ["lines", "pt",  {units:""}],
-        "Misc.sector": ["center", "radius", "bearing1", "bearing2", {units:"",steps:"",properties:""}],
-        "Misc.shortestPath": ["start", "end", {obstacles:"", units:"",resolution:""}],
-        "Helper.feature": ["geometry", "properties",{bbox:"",id:""}],
-        "Helper.geometryCollection": ["geometries", "properties",{bbox:"",id:""}],
-        "Helper.lineString": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.multiLineString": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.multiPoint": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.multiPolygon": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.point": ["coordinates", "properties",{bbox:"",id:""}],
-        "Helper.polygon": ["coordinates", "properties",{bbox:"",id:""}],
-        "Interpolation.interpolate": ["points", "cellSize", {gridType:"", property:"", units:"", weight:""}],
-        "Interpolation.isobands": ["pointGrid", "breaks", {zProperty:"", commonProperties:"",breaksProperties:""}],
-        "Interpolation.isolines": ["pointGrid", "breaks", {zProperty:"", commonProperties:"", breaksProperties:""}],
-        "Grids.hexGrid": ["bbox", "cellSide", {units:"", triangles:"",properties:"",mask:""}],
-        "Grids.pointGrid": ["bbox", "cellSide", {units:"", mask:"",properties:""}],
-        "Grids.squareGrid": ["bbox", "cellSide", {units:"", mask:"",properties:""}],
-        "Grids.triangleGrid": ["bbox", "cellSide", {units:"", mask:"",properties:""}],
-        "Aggregation.clustersDbscan": ["points", "maxDistance", {units:"", minPoints:"",mutate:""}],
-        "Aggregation.clustersKmeans": ["points", {numberOfClusters:"", mutate:""}],
-        "Booleans.booleanPointInPolygon": ["point", "polygon", {ignoreBoundary:""}],
-        "Booleans.booleanPointOnLine": ["point", "linestring", {ignoreEndVertices:""}],
-        "UnitConversion.toMercator": ["geojson",{mutate:""}],
-        "UnitConversion.toWgs84": ["geojson",{mutate:""}]
-},
+        "Measurement.along": ["line", "distance", {units: ""}],
+        "Measurement.bboxPolygon": ["bbox", {properties: "", id: ""}],
+        "Measurement.bearing": ["start", "end", {final: ""}],
+        "Measurement.center": ["geojson", {properties: ""}],
+        "Measurement.destination": ["origin", "distance", "bearing", {units: "", properties: ""}],
+        "Measurement.distance": ["from", "to", {units: ""}],
+        "Measurement.length": ["geojson", {units: ""}],
+        "Measurement.rhumbBearing": ["start", "end", {final: ""}],
+        "Measurement.rhumbDestination": ["origin", "distance", "bearing", {units: "", properties: ""}],
+        "Measurement.rhumbDistance": ["from", "to", {units: ""}],
+        "Measurement.greatCircle": ["start", "end", {properties: "", npoints: "", offset: ""}],
+        "CoordinateMutation.cleanCoords": ["geojson", {mutate: ""}],
+        "CoordinateMutation.flip": ["geojson", {mutate: ""}],
+        "CoordinateMutation.rewind": ["geojson", {mutate: "", reverse: ""}],
+        "CoordinateMutation.truncate": ["geojson", {precision: "", coordinates: "", mutate: ""}],
+        "Transformation.bezierSpline": ["line", {resolution: "", sharpness: ""}],
+        "Transformation.buffer": ["geojson", "radius", {units: "", steps: ""}],
+        "Transformation.circle": ["center", "radius", {units: "", steps: "", properties: ""}],
+        "Transformation.concave": ["points", {maxEdge: "", units: ""}],
+        "Transformation.convex": ["geojson", {concavity: ""}],
+        "Transformation.dissolve": ["featureCollection", {propertyName: ""}],
+        "Transformation.lineOffset": ["geojson", "distance", {units: ""}],
+        "Transformation.simplify": ["geojson", {tolerance: "", highQuality: ""}],
+        "Transformation.transformRotate": ["geojson", "angle", {pivot: "", mutate: ""}],
+        "Transformation.transformTranslate": ["geojson", "distance", "direction", {
+            units: "",
+            zTranslation: "",
+            mutate: ""
+        }],
+        "Transformation.transformScale": ["geojson", "factor", {origin: "", mutate: ""}],
+        "Transformation.voronoi": ["points", {bbox: ""}],
+        "featureConversion.lineStringToPolygon": ["lines", {properties: "", autoComplete: "", orderCoords: ""}],
+        "featureConversion.polygonToLineString": ["polygon", {properties: ""}],
+        "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", {steps: "", units: ""}],
+        "Misc.lineChunk": ["geojson", "segmentLength", {units: "", reverse: ""}],
+        "Misc.lineOverlap": ["line1", "line2", {tolerance: ""}],
+        "Misc.lineSliceAlong": ["line", "startDist", "stopDist", {units: ""}],
+        "Misc.pointOnLine": ["lines", "pt", {units: ""}],
+        "Misc.sector": ["center", "radius", "bearing1", "bearing2", {units: "", steps: "", properties: ""}],
+        "Misc.shortestPath": ["start", "end", {obstacles: "", units: "", resolution: ""}],
+        "Helper.feature": ["geometry", "properties", {bbox: "", id: ""}],
+        "Helper.geometryCollection": ["geometries", "properties", {bbox: "", id: ""}],
+        "Helper.lineString": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.multiLineString": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.multiPoint": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.multiPolygon": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.point": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Helper.polygon": ["coordinates", "properties", {bbox: "", id: ""}],
+        "Interpolation.interpolate": ["points", "cellSize", {gridType: "", property: "", units: "", weight: ""}],
+        "Interpolation.isobands": ["pointGrid", "breaks", {zProperty: "", commonProperties: "", breaksProperties: ""}],
+        "Interpolation.isolines": ["pointGrid", "breaks", {zProperty: "", commonProperties: "", breaksProperties: ""}],
+        "Grids.hexGrid": ["bbox", "cellSide", {units: "", triangles: "", properties: "", mask: ""}],
+        "Grids.pointGrid": ["bbox", "cellSide", {units: "", mask: "", properties: ""}],
+        "Grids.squareGrid": ["bbox", "cellSide", {units: "", mask: "", properties: ""}],
+        "Grids.triangleGrid": ["bbox", "cellSide", {units: "", mask: "", properties: ""}],
+        "Aggregation.clustersDbscan": ["points", "maxDistance", {units: "", minPoints: "", mutate: ""}],
+        "Aggregation.clustersKmeans": ["points", {numberOfClusters: "", mutate: ""}],
+        "Booleans.booleanPointInPolygon": ["point", "polygon", {ignoreBoundary: ""}],
+        "Booleans.booleanPointOnLine": ["point", "linestring", {ignoreEndVertices: ""}],
+        "UnitConversion.toMercator": ["geojson", {mutate: ""}],
+        "UnitConversion.toWgs84": ["geojson", {mutate: ""}]
+    },
 
     /**
      * @function L.supermap.turfLayer.prototype.process
@@ -227,9 +232,9 @@ export var TurfLayer = L.GeoJSON.extend({
     process: function (type, args, callback, addFeaturesToMap) {
         // 兼容版本4到5
         var result;
-        try{
+        try {
             result = turf[type.split('.')[1]].apply(this, this.parse(type, args));
-        }catch(e){
+        } catch (e) {
             result = turf[type.split('.')[1]].apply(this, this.parseOption(type, args));
         }
         addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
@@ -255,17 +260,17 @@ export var TurfLayer = L.GeoJSON.extend({
         }
         return result;
     },
-    parseOption(type,args){
+    parseOption(type, args) {
         var result = [];
         var tempArgs = this.turfOptionMap[type];
-        tempArgs.map(function(key){
-            if(key instanceof Object){
+        tempArgs.map(function (key) {
+            if (key instanceof Object) {
                 var options = key;
-                Object.keys(options).forEach(function(k){
-                    options[k]=args[k]
+                Object.keys(options).forEach(function (k) {
+                    options[k] = args[k]
                 })
                 result.push(options);
-            }else{
+            } else {
                 result.push(args[key])
             }
             return args;

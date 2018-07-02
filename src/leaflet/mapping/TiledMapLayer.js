@@ -9,6 +9,7 @@ import {
     ServerGeometry
 } from '@supermap/iclient-common';
 import * as Util from "../core/Util";
+import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.tiledMapLayer
@@ -57,7 +58,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         serverType: ServerType.ISERVER,
         format: 'png',
 
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        attribution: Attributions.Common.attribution
     },
 
     initialize: function (url, options) {
@@ -161,8 +162,6 @@ export var TiledMapLayer = L.TileLayer.extend({
             return Util.resolutionToScale(resolution, 96, mapUnit);
         }
     },
-
-
 
 
     /**
