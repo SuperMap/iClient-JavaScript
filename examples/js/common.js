@@ -31,7 +31,7 @@
             return;
         }
         var version = getVersion();
-        if (window.preRelease) {
+        if (!version && window.preRelease) {
             version = window.preRelease;
         }
         var versionText = version ? "" + version : "&nbsp;";
