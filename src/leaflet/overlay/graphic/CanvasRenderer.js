@@ -28,7 +28,9 @@ export var GraphicCanvasRenderer = L.Class.extend({
     },
 
     _handleClick: function (evt) {
-        let me = this, layer = me.layer, map = layer._map;
+        let me = this,
+            layer = me.layer,
+            map = layer._map;
         if (!layer.options.onClick) {
             return;
         }
@@ -38,6 +40,9 @@ export var GraphicCanvasRenderer = L.Class.extend({
             let p1, p2, bounds;
             let center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
+            if (!style && this.defaultStyle) {
+                style = this.defaultStyle;
+            }
             if (style.img) {
                 let anchor = style.anchor;
                 p1 = L.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
@@ -68,14 +73,17 @@ function calculateOffset(point, anchor) {
 
 L.Canvas.include({
 
-    drawGraphics: function (graphics) {
+    drawGraphics: function (graphics, defaultStyle) {
         var me = this;
         me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
         graphics.forEach(function (graphic) {
             var style = graphic.getStyle();
+            if (!style && defaultStyle) {
+                style = defaultStyle;
+            }
             if (style.img) { //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else {//绘制canvas
+            } else { //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
         })
@@ -129,5 +137,3 @@ L.Canvas.include({
     }
 
 });
-
-

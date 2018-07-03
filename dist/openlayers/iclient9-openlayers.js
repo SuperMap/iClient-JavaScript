@@ -63989,6 +63989,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = function (_ol$Object) 
                 strokeWidth = state.strokeWidth,
                 outline = state.outline;
 
+            radius = this._pixelToMeter(radius);
             var innerLayerOptions = {
                 id: 'scatter-plot',
                 data: [],
@@ -64056,6 +64057,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = function (_ol$Object) 
                 strokeWidth = _getLayerState2.strokeWidth,
                 outline = _getLayerState2.outline;
 
+            radius = this._pixelToMeter(radius);
             return {
                 color: color,
                 opacity: opacity,
@@ -64129,6 +64131,12 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = function (_ol$Object) 
                 return coordinates;
             }
             return _openlayers2.default.proj.transform(coordinates, projection, 'EPSG:4326');
+        }
+    }, {
+        key: "_pixelToMeter",
+        value: function _pixelToMeter(pixel) {
+            var meterRes = this.map.getView().getResolution();
+            return pixel * meterRes;
         }
     }]);
 
@@ -64273,12 +64281,12 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = function (_ol$Object
                 size: [mapWidth, mapHeight],
                 pixelRatio: this.pixelRatio
             });
-
+            var defaultStyle = this.layer._getDefaultStyle();
             var me = this,
                 layer = me.layer,
                 map = layer.map;
             graphics.map(function (graphic) {
-                var style = graphic.getStyle();
+                var style = graphic.getStyle() || defaultStyle;
                 if (me.selected === graphic) {
                     var defaultHighLightStyle = style;
                     if (style instanceof _openlayers2.default.style.Circle) {
@@ -64389,11 +64397,18 @@ var Renderer = ["canvas", "webgl"];
  * @param {ol.map} options.map - openlayers 地图对象。<br>
  * @param {boolean} options.isHighLight - 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
  * @param {ol.style} options.highLightStyle - 高亮风格，默认为 defaultHighLightStyle。<br>
- * @deprecated
- * @param {function} options.onClick - 点击事件方法。将在下个版本弃用。<br>
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
+ * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
+ * @param {number} [options.opacity=0.8] - 要素透明度。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。
+ * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
+ * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
+ * @param {number} [options.strokeWidth=1] - 边框大小。
+ * @param {boolean} [options.outline=false] - 是否显示边框。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)。
  * @extends {ol.source.ImageCanvas}
  * 
- * @fires ol.source.Graphic#graphichighlighted
  */
 
 var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
@@ -64427,8 +64442,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
 
         var me = _this;
 
-        //todo 将被弃用
-        if (options.onClick || _this.isHighLight) {
+        if (options.onClick) {
             me.map.on('click', function (e) {
                 var coordinate = e.coordinate;
                 var resolution = e.frameState.viewState.resolution;
@@ -64437,18 +64451,16 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
             });
         }
 
-        var renderer = void 0;
-
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             // eslint-disable-line no-unused-vars
-            if (!renderer) {
-                renderer = createRenderer(size, pixelRatio);
+            if (!me.renderer) {
+                me.renderer = createRenderer(size, pixelRatio);
             }
             var graphics = this.getGraphicsInExtent(extent);
-            renderer._clearBuffer();
-            renderer.selected = this.selected;
-            renderer.drawGraphics(graphics);
-            return renderer.getCanvas();
+            me.renderer._clearBuffer();
+            me.renderer.selected = this.selected;
+            me.renderer.drawGraphics(graphics);
+            return me.renderer.getCanvas();
         }
 
         function createRenderer(size, pixelRatio) {
@@ -64520,20 +64532,6 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                     if (me.isHighLight) {
                         me._highLight(center, image, graphics[i], evtPixel);
                     }
-                    /**
-                     * graphichighlighted 事件，要素高亮后触发
-                     * @event ol.source.Graphic#graphichighlighted
-                     * @type {Object}
-                     * @property {string} type  - graphichighlighted
-                     * @property {Object} value 
-                     * @property {ol.Graphic} value.graphic  ol.Graphic
-                     */
-                    this.dispatchEvent({
-                        type: 'graphichighlighted',
-                        value: {
-                            graphic: graphics[i]
-                        }
-                    });
                     if (callback) {
                         callback(graphics[i]);
                     }
@@ -64612,9 +64610,33 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
     }, {
         key: 'update',
         value: function update() {
-            this.renderer.update(this.graphics_);
+            this.renderer.update(this.graphics_, this._getDefaultStyle());
         }
-
+    }, {
+        key: '_getDefaultStyle',
+        value: function _getDefaultStyle() {
+            var target = {};
+            if (this.color) {
+                target.fill = new _openlayers2.default.style.Fill({
+                    color: this.toRGBA(this.color)
+                });
+            }
+            if (this.radius) {
+                target.radius = this.radius;
+            }
+            if (this.outline) {
+                target.stroke = new _openlayers2.default.style.Fill({
+                    color: this.toRGBA(this.color),
+                    width: this.strokeWidth
+                });
+            }
+            return new _openlayers2.default.style.Circle(target);
+        }
+    }, {
+        key: 'toRGBA',
+        value: function toRGBA(colorArray) {
+            return 'rgba(' + colorArray[0] + ',' + colorArray[1] + ',' + colorArray[2] + ',' + (colorArray[3] || 255) / 255 + ')';
+        }
         /**
          * @function ol.source.Graphic.prototype.setStyle
          * @description 设置图层要素整体样式(接口仅在webgl渲染时有用)
@@ -69333,7 +69355,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* 359 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.4.4","_id":"proj4@2.4.4","_inBundle":false,"_integrity":"sha512-yo6qTpBQXnxhcPopKJeVwwOBRzUpEa3vzSFlr38f5mF4Jnfb6NOL/ePIomefWiZmPgkUblHpcwnWVMB8FS3GKw==","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.4","name":"proj4","escapedName":"proj4","rawSpec":"2.4.4","saveSpec":null,"fetchSpec":"2.4.4"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.4.tgz","_shasum":"c03d825e380f6850a4a7af5d20d365f6b72c4042","_spec":"proj4@2.4.4","_where":"F:\\dev\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.2.0"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"^1.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.4"};
+module.exports = {"_from":"proj4@2.4.4","_id":"proj4@2.4.4","_inBundle":false,"_integrity":"sha1-wD2CXjgPaFCkp69dINNl9rcsQEI=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.4","name":"proj4","escapedName":"proj4","rawSpec":"2.4.4","saveSpec":null,"fetchSpec":"2.4.4"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.4.4.tgz","_shasum":"c03d825e380f6850a4a7af5d20d365f6b72c4042","_spec":"proj4@2.4.4","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.2.0"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"^1.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.4"};
 
 /***/ }),
 /* 360 */
@@ -96961,7 +96983,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -97085,9 +97107,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 

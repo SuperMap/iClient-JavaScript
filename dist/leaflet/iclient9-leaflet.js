@@ -65568,24 +65568,26 @@ var emptyFunc = _leaflet2["default"].Util.falseFn;
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
  *
- * @param {Array.<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
- * @param {number} options.radius - 半径,默认10
- * @param {number} options.opacity - 不透明度,默认0.8
- * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组
- * @param {number} options.radiusScale - 点放大倍数
- * @param {number} options.radiusMinPixels - 半径最小值(像素)
- * @param {number} options.radiusMaxPixels - 半径最大值(像素)
- * @param {number} options.strokeWidth - 边框大小
- * @param {boolean} options.outline - 是否显示边框
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]]  - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
+ * @param {number} [options.radius=10] - 半径,默认10
+ * @param {number} [options.opacity=0.8] - 不透明度,默认0.8
+ * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持rgba数组
+ * @param {number} [options.radiusScale=1] - 点放大倍数
+ * @param {number} [options.radiusMinPixels=0] - 半径最小值(像素)
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)
+ * @param {number} [options.strokeWidth=1] - 边框大小
+ * @param {boolean} [options.outline=false] - 是否显示边框
  *
- * @param {function} options.onClick - 点击事件
- * @param {function} options.onHover - 悬停事件
+ * @param {function} [options.onClick] - 点击事件
+ * @param {function} [options.onHover] - 悬停事件
+
  */
 var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].Class.extend({
     initialize: function initialize(layer, options) {
         this.layer = layer;
         var opt = options || {};
         _leaflet2["default"].Util.setOptions(this, opt);
+        this.options.radius = this._pixelToMeter(this.options.radius);
         this._initContainer();
     },
 
@@ -65619,6 +65621,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
         this._refreshData();
         var state = this._getLayerState();
         state.data = this._data || [];
+        this._layerDefaultStyleCache = null;
         this._renderLayer.setNeedsRedraw(true);
         this._renderLayer.setState(state);
     },
@@ -65653,7 +65656,12 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
         canvas.style.height = height + "px";
         return canvas;
     },
-
+    _pixelToMeter: function _pixelToMeter(pixel) {
+        var bounds = this.layer._map.getBounds();
+        var latlngRes = (bounds.getEast() - bounds.getWest()) / this.layer._map.getSize().x;
+        var meterRes = latlngRes * (Math.PI * 6378137 / 180);
+        return pixel * meterRes;
+    },
     _createInnerRender: function _createInnerRender() {
         var me = this;
         var state = this._getLayerState();
@@ -65720,6 +65728,9 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
     },
 
     _getLayerDefaultStyle: function _getLayerDefaultStyle() {
+        if (this._layerDefaultStyleCache) {
+            return this._layerDefaultStyleCache;
+        }
         var _layer$options = this.layer.options,
             color = _layer$options.color,
             opacity = _layer$options.opacity,
@@ -65730,7 +65741,8 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
             strokeWidth = _layer$options.strokeWidth,
             outline = _layer$options.outline;
 
-        return {
+        radius = this._pixelToMeter(radius);
+        this._layerDefaultStyleCache = {
             color: color,
             opacity: opacity,
             radius: radius,
@@ -65740,6 +65752,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
             strokeWidth: strokeWidth,
             outline: outline
         };
+        return this._layerDefaultStyleCache;
     },
 
     _getLayerState: function _getLayerState() {
@@ -65757,6 +65770,7 @@ var GraphicWebGLRenderer = exports.GraphicWebGLRenderer = _leaflet2["default"].C
         for (var key in state) {
             deckOptions[key] = state[key];
         }
+        this._layerDefaultStyleCache = null;
         this._renderLayer.setNeedsRedraw(true);
         deckOptions.layers = [this._renderLayer];
         deckOptions.canvas = this._container;
@@ -65869,6 +65883,9 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = _leaflet2["default"]
                 bounds = void 0;
             var center = map.latLngToLayerPoint(graphics[i].getLatLng());
             var style = graphics[i].getStyle();
+            if (!style && this.defaultStyle) {
+                style = this.defaultStyle;
+            }
             if (style.img) {
                 var anchor = style.anchor;
                 p1 = _leaflet2["default"].point(center.x - style.img.width / 2, center.y - style.img.height / 2);
@@ -65898,11 +65915,14 @@ function calculateOffset(point, anchor) {
 
 _leaflet2["default"].Canvas.include({
 
-    drawGraphics: function drawGraphics(graphics) {
+    drawGraphics: function drawGraphics(graphics, defaultStyle) {
         var me = this;
         me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
         graphics.forEach(function (graphic) {
             var style = graphic.getStyle();
+            if (!style && defaultStyle) {
+                style = defaultStyle;
+            }
             if (style.img) {
                 //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
@@ -66388,18 +66408,18 @@ var CSS_TRANSFORM = function () {
  * @extends {L.Path}
  * @param {Array.<L.supermap.graphic>} graphics - 要素对象
  * @param {Object} options - 图层参数
- * @param {string}   [options.render='webgl']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - webgl渲染时要素颜色
- * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色
- * @param {number} [options.opacity=0.8] - webgl渲染时的要素不透明度
- * @param {number} [options.radius=10] - webgl渲染时的要素半径
+ * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
+ * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
+ * @param {number} [options.opacity=0.8] - 要素透明度。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。
  * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
- * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)
- * @param {number} [options.radiusMaxPixels='Number.MAX_SAFE_INTEGER'] - webgl渲染时的要素半径最大值(像素)
- * @param {number} [options.strokeWidth=1] - 边框大小
- * @param {boolean} [options.outline=false] - 是否显示边框
- * @param {function} options.onClick -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)
- * @param {function} options.onHover -  图层鼠标悬停响应事件(只有webgl渲染时有用)
+ * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
+ * @param {number} [options.strokeWidth=1] - 边框大小。
+ * @param {boolean} [options.outline=false] - 是否显示边框。
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)。
  */
 var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
 
@@ -66408,12 +66428,10 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
         var opt = options || {};
         _leaflet2["default"].Util.setOptions(this, opt);
         //因为跟基类的renderer冲突，所以采用render这个名字
-        var render = this.options.render;
+        this.options.render = this.options.render || Renderer[0];
         //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
         if (!_Detector.Detector.supportWebGL2()) {
             this.options.render = Renderer[0];
-        } else {
-            this.options.render = !render || render === Renderer[1] ? Renderer[1] : Renderer[0];
         }
     },
 
@@ -66436,7 +66454,9 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
      * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形
      */
-    onAdd: function onAdd() {
+    onAdd: function onAdd(map) {
+        this._map = map;
+        this.defaultStyle = this._getDefaultStyle(this.options);
         this._renderer = this._createRenderer();
         this._container = this._renderer._container;
         _leaflet2["default"].Path.prototype.onAdd.call(this);
@@ -66479,7 +66499,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.setStyle
-     * @description 设置图层要素整体样式(接口仅在wengl渲染时有用)
+     * @description 设置图层要素整体样式
      * @param {Object} styleOptions - 样式对象
      * @param {Array.<number>} styleOptions.color - 点颜色
      * @param {number} styleOptions.radius - 点半径
@@ -66504,8 +66524,8 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
             strokeWidth: _opt.strokeWidth,
             outline: _opt.outline
         };
-
         this.options = _leaflet2["default"].Util.extend(this.options, styleOpt, styleOptions);
+        this.defaultStyle = this._getDefaultStyle(this.options);
         this.update();
     },
 
@@ -66634,7 +66654,9 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
             });
         } else {
             var optDefault = _leaflet2["default"].Util.setOptions({}, defaultProps);
-            var opt = _leaflet2["default"].Util.setOptions({ options: optDefault }, this.options);
+            var opt = _leaflet2["default"].Util.setOptions({
+                options: optDefault
+            }, this.options);
             opt = _leaflet2["default"].Util.setOptions(this, opt);
             opt.container = map.getPane("overlayPane");
             opt.width = width;
@@ -66642,6 +66664,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
 
             _renderer = new _graphic.GraphicWebGLRenderer(this, opt);
         }
+        _renderer.defaultStyle = this.defaultStyle;
         this._layerRenderer = _renderer;
         return this._layerRenderer.getRenderer();
     },
@@ -66662,7 +66685,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
      */
     _updatePath: function _updatePath() {
         var graphics = this._getGraphicsInBounds();
-        this._renderer.drawGraphics(graphics);
+        this._renderer.drawGraphics(graphics, this.defaultStyle);
     },
 
     /**
@@ -66679,6 +66702,32 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
             return graphic;
         });
         me._pxBounds = _leaflet2["default"].bounds(_leaflet2["default"].point(0, 0), _leaflet2["default"].point(this._container.width, this._container.height));
+    },
+    _getDefaultStyle: function _getDefaultStyle(options) {
+        var target = {};
+        if (options.color) {
+            target.fill = true;
+            var color = this.toRGBA(options.color);
+            target.color = color;
+            target.fillColor = color;
+        }
+        if (options.opacity) {
+            target.opacity = options.opacity;
+            target.fillOpacity = options.opacity;
+        }
+        if (options.radius) {
+            target.radius = options.radius;
+        }
+        if (options.strokeWidth) {
+            target.weight = options.strokeWidth;
+        }
+        if (options.outline) {
+            target.stroke = options.outline;
+        }
+        return new _graphic.CircleStyle(target).getStyle();
+    },
+    toRGBA: function toRGBA(colorArray) {
+        return "rgba(" + colorArray[0] + "," + colorArray[1] + "," + colorArray[2] + "," + (colorArray[3] || 255) / 255 + ")";
     },
 
     _getGraphicsInBounds: function _getGraphicsInBounds() {
@@ -74100,7 +74149,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /* 400 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.4.4","_id":"proj4@2.4.4","_inBundle":false,"_integrity":"sha512-yo6qTpBQXnxhcPopKJeVwwOBRzUpEa3vzSFlr38f5mF4Jnfb6NOL/ePIomefWiZmPgkUblHpcwnWVMB8FS3GKw==","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.4","name":"proj4","escapedName":"proj4","rawSpec":"2.4.4","saveSpec":null,"fetchSpec":"2.4.4"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.4.tgz","_shasum":"c03d825e380f6850a4a7af5d20d365f6b72c4042","_spec":"proj4@2.4.4","_where":"F:\\dev\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.2.0"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"^1.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.4"};
+module.exports = {"_from":"proj4@2.4.4","_id":"proj4@2.4.4","_inBundle":false,"_integrity":"sha1-wD2CXjgPaFCkp69dINNl9rcsQEI=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.4","name":"proj4","escapedName":"proj4","rawSpec":"2.4.4","saveSpec":null,"fetchSpec":"2.4.4"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.4.4.tgz","_shasum":"c03d825e380f6850a4a7af5d20d365f6b72c4042","_spec":"proj4@2.4.4","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.2.0"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"^1.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.4"};
 
 /***/ }),
 /* 401 */
@@ -98803,7 +98852,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -98927,9 +98976,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 

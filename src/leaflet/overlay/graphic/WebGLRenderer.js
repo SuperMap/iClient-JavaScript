@@ -13,24 +13,26 @@ const emptyFunc = L.Util.falseFn;
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
  *
- * @param {Array.<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
- * @param {number} options.radius - 半径,默认10
- * @param {number} options.opacity - 不透明度,默认0.8
- * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组
- * @param {number} options.radiusScale - 点放大倍数
- * @param {number} options.radiusMinPixels - 半径最小值(像素)
- * @param {number} options.radiusMaxPixels - 半径最大值(像素)
- * @param {number} options.strokeWidth - 边框大小
- * @param {boolean} options.outline - 是否显示边框
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]]  - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
+ * @param {number} [options.radius=10] - 半径,默认10
+ * @param {number} [options.opacity=0.8] - 不透明度,默认0.8
+ * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持rgba数组
+ * @param {number} [options.radiusScale=1] - 点放大倍数
+ * @param {number} [options.radiusMinPixels=0] - 半径最小值(像素)
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)
+ * @param {number} [options.strokeWidth=1] - 边框大小
+ * @param {boolean} [options.outline=false] - 是否显示边框
  *
- * @param {function} options.onClick - 点击事件
- * @param {function} options.onHover - 悬停事件
+ * @param {function} [options.onClick] - 点击事件
+ * @param {function} [options.onHover] - 悬停事件
+
  */
 export var GraphicWebGLRenderer = L.Class.extend({
     initialize: function (layer, options) {
         this.layer = layer;
         let opt = options || {};
         L.Util.setOptions(this, opt);
+        this.options.radius = this._pixelToMeter(this.options.radius);
         this._initContainer();
     },
 
@@ -64,6 +66,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
         this._refreshData();
         let state = this._getLayerState();
         state.data = this._data || [];
+        this._layerDefaultStyleCache = null;
         this._renderLayer.setNeedsRedraw(true);
         this._renderLayer.setState(state);
     },
@@ -99,7 +102,12 @@ export var GraphicWebGLRenderer = L.Class.extend({
         canvas.style.height = height + "px";
         return canvas;
     },
-
+    _pixelToMeter: function (pixel) {
+        const bounds = this.layer._map.getBounds();
+        const latlngRes = (bounds.getEast() - bounds.getWest()) / this.layer._map.getSize().x
+        const meterRes = latlngRes * (Math.PI * 6378137 / 180);
+        return pixel * meterRes;
+    },
     _createInnerRender: function () {
         let me = this;
         let state = this._getLayerState();
@@ -129,8 +137,8 @@ export var GraphicWebGLRenderer = L.Class.extend({
             strokeWidth: strokeWidth,
             outline: outline,
             getPosition: function (point) {
-                if(!point){
-                    return [0,0,0];
+                if (!point) {
+                    return [0, 0, 0];
                 }
                 let lngLat = point && point.getLatLng();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
@@ -167,6 +175,9 @@ export var GraphicWebGLRenderer = L.Class.extend({
     },
 
     _getLayerDefaultStyle: function () {
+        if (this._layerDefaultStyleCache) {
+            return this._layerDefaultStyleCache;
+        }
         let {
             color,
             opacity,
@@ -177,7 +188,8 @@ export var GraphicWebGLRenderer = L.Class.extend({
             strokeWidth,
             outline
         } = this.layer.options;
-        return {
+        radius = this._pixelToMeter(radius);
+        this._layerDefaultStyleCache = {
             color,
             opacity,
             radius,
@@ -187,6 +199,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
             strokeWidth,
             outline
         }
+        return this._layerDefaultStyleCache
 
     },
 
@@ -205,6 +218,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
         for (let key in state) {
             deckOptions[key] = state[key];
         }
+        this._layerDefaultStyleCache = null;
         this._renderLayer.setNeedsRedraw(true);
         deckOptions.layers = [this._renderLayer];
         deckOptions.canvas = this._container;

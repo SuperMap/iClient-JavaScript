@@ -1,6 +1,10 @@
 import ol from "openlayers";
-import {CommonUtil} from "@supermap/iclient-common";
-import {Util} from "../../core/Util";
+import {
+    CommonUtil
+} from "@supermap/iclient-common";
+import {
+    Util
+} from "../../core/Util";
 
 const emptyFunc = () => false;
 const CSS_TRANSFORM = (function () {
@@ -203,6 +207,7 @@ export class GraphicWebGLRenderer extends ol.Object {
             strokeWidth,
             outline
         } = state;
+        radius = this._pixelToMeter(radius);
         let innerLayerOptions = {
             id: 'scatter-plot',
             data: [],
@@ -268,6 +273,7 @@ export class GraphicWebGLRenderer extends ol.Object {
             strokeWidth,
             outline
         } = this._getLayerState();
+        radius = this._pixelToMeter(radius);
         return {
             color,
             opacity,
@@ -338,6 +344,10 @@ export class GraphicWebGLRenderer extends ol.Object {
             return coordinates;
         }
         return ol.proj.transform(coordinates, projection, 'EPSG:4326');
+    }
+    _pixelToMeter(pixel) {
+        const meterRes = this.map.getView().getResolution();
+        return pixel * meterRes;
     }
 
 }

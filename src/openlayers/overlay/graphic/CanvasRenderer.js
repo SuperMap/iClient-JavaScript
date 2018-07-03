@@ -99,12 +99,12 @@ export class GraphicCanvasRenderer extends ol.Object {
             size: [mapWidth, mapHeight],
             pixelRatio: this.pixelRatio
         });
-
+        var defaultStyle = this.layer._getDefaultStyle();
         let me = this,
             layer = me.layer,
             map = layer.map;
         graphics.map(function (graphic) {
-            let style = graphic.getStyle();
+            let style = graphic.getStyle() || defaultStyle;
             if (me.selected === graphic) {
                 let defaultHighLightStyle = style;
                 if (style instanceof ol.style.Circle) {

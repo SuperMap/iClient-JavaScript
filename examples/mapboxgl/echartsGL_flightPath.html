@@ -169,9 +169,6 @@
         return coordinates;
     }
 
-    var mapbox = myChart.getModel().getComponent('mapbox3D').getMapbox();
-    mapbox.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
     function decodeFlightPathData(text) {
         var lines = text.split('\n');
 

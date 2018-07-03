@@ -40,11 +40,18 @@ const Renderer = ["canvas", "webgl"];
  * @param {ol.map} options.map - openlayers 地图对象。<br>
  * @param {boolean} options.isHighLight - 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
  * @param {ol.style} options.highLightStyle - 高亮风格，默认为 defaultHighLightStyle。<br>
- * @deprecated
- * @param {function} options.onClick - 点击事件方法。将在下个版本弃用。<br>
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
+ * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
+ * @param {number} [options.opacity=0.8] - 要素透明度。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。
+ * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
+ * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
+ * @param {number} [options.strokeWidth=1] - 边框大小。
+ * @param {boolean} [options.outline=false] - 是否显示边框。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)。
  * @extends {ol.source.ImageCanvas}
  * 
- * @fires ol.source.Graphic#graphichighlighted
  */
 export class Graphic extends ol.source.ImageCanvas {
 
@@ -73,8 +80,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
         const me = this;
 
-        //todo 将被弃用
-        if (options.onClick || this.isHighLight) {
+        if (options.onClick) {
             me.map.on('click', function (e) {
                 let coordinate = e.coordinate;
                 let resolution = e.frameState.viewState.resolution;
@@ -83,17 +89,16 @@ export class Graphic extends ol.source.ImageCanvas {
             });
         }
 
-        let renderer;
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
-            if (!renderer) {
-                renderer = createRenderer(size, pixelRatio);
+            if (!me.renderer) {
+                me.renderer = createRenderer(size, pixelRatio);
             }
             let graphics = this.getGraphicsInExtent(extent);
-            renderer._clearBuffer();
-            renderer.selected = this.selected;
-            renderer.drawGraphics(graphics);
-            return renderer.getCanvas();
+            me.renderer._clearBuffer();
+            me.renderer.selected = this.selected;
+            me.renderer.drawGraphics(graphics);
+            return me.renderer.getCanvas();
         }
 
 
@@ -166,20 +171,6 @@ export class Graphic extends ol.source.ImageCanvas {
                     if (me.isHighLight) {
                         me._highLight(center, image, graphics[i], evtPixel);
                     }
-                    /**
-                     * graphichighlighted 事件，要素高亮后触发
-                     * @event ol.source.Graphic#graphichighlighted
-                     * @type {Object}
-                     * @property {string} type  - graphichighlighted
-                     * @property {Object} value 
-                     * @property {ol.Graphic} value.graphic  ol.Graphic
-                     */
-                    this.dispatchEvent({
-                        type: 'graphichighlighted',
-                        value: {
-                            graphic: graphics[i]
-                        }
-                    });
                     if (callback) {
                         callback(graphics[i]);
                     }
@@ -241,9 +232,30 @@ export class Graphic extends ol.source.ImageCanvas {
      * @description 更新图层
      */
     update() {
-        this.renderer.update(this.graphics_);
+        this.renderer.update(this.graphics_, this._getDefaultStyle());
     }
+    _getDefaultStyle() {
+        const target = {};
+        if (this.color) {
+            target.fill = new ol.style.Fill({
+                color: this.toRGBA(this.color)
+            })
+        }
+        if (this.radius) {
+            target.radius = this.radius;
+        }
+        if (this.outline) {
+            target.stroke = new ol.style.Fill({
+                color: this.toRGBA(this.color),
+                width: this.strokeWidth
+            })
+        }
+        return new ol.style.Circle(target);
 
+    }
+    toRGBA(colorArray) {
+        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3]||255)/255})`;
+    }
     /**
      * @function ol.source.Graphic.prototype.setStyle
      * @description 设置图层要素整体样式(接口仅在webgl渲染时有用)

@@ -128,18 +128,16 @@
                     var source = new ol.source.Graphic({
                         graphics: graphics,
                         render: "canvas",
-                        map: map
-                    })
-                    source.on('graphichighlighted', function (e) {
-                        if (e.value.graphic) {
-                            var coords = e.value.graphic.getGeometry().getCoordinates();
-                            content.innerHTML = resources.text_coordinate + ":[" +
-                                coords[0] + "," +
-                                coords[1] + "]";
-                            overlay.setPosition(coords);
-                            return;
+                        map: map,
+                        onClick: function (graphic) {
+                            if (graphic) {
+                                var coords = graphic.getGeometry().getCoordinates();
+                                content.innerHTML = resources.text_coordinate + ":[" + coords[0] + "," + coords[1] + "]";
+                                overlay.setPosition(graphic.getGeometry().getCoordinates());
+                                return;
+                            }
+                            overlay.setPosition(undefined);
                         }
-                        overlay.setPosition(undefined);
                     })
                     var graphicLayer = new ol.layer.Image({
                         source: source

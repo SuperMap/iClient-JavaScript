@@ -2223,7 +2223,7 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   }
 
   function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -2347,9 +2347,9 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -76518,7 +76518,9 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
     },
 
     _handleClick: function (evt) {
-        let me = this, layer = me.layer, map = layer._map;
+        let me = this,
+            layer = me.layer,
+            map = layer._map;
         if (!layer.options.onClick) {
             return;
         }
@@ -76528,6 +76530,9 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
             let p1, p2, bounds;
             let center = map.latLngToLayerPoint(graphics[i].getLatLng());
             let style = graphics[i].getStyle();
+            if (!style && this.defaultStyle) {
+                style = this.defaultStyle;
+            }
             if (style.img) {
                 let anchor = style.anchor;
                 p1 = external_L_default.a.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
@@ -76558,14 +76563,17 @@ function calculateOffset(point, anchor) {
 
 external_L_default.a.Canvas.include({
 
-    drawGraphics: function (graphics) {
+    drawGraphics: function (graphics, defaultStyle) {
         var me = this;
         me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
         graphics.forEach(function (graphic) {
             var style = graphic.getStyle();
+            if (!style && defaultStyle) {
+                style = defaultStyle;
+            }
             if (style.img) { //绘制图片
                 me._drawImage.call(me, me._ctx, style, graphic.getLatLng());
-            } else {//绘制canvas
+            } else { //绘制canvas
                 me._drawCanvas.call(me, me._ctx, style, graphic.getLatLng());
             }
         })
@@ -76619,9 +76627,6 @@ external_L_default.a.Canvas.include({
     }
 
 });
-
-
-
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/WebGLRenderer.js
 
 
@@ -76638,24 +76643,26 @@ const WebGLRenderer_emptyFunc = external_L_default.a.Util.falseFn;
  * @param {number} options.height - 地图高度
  * @param {HTMLElement} options.container - 放置渲染器的父元素
  *
- * @param {Array.<number>} options.color - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
- * @param {number} options.radius - 半径,默认10
- * @param {number} options.opacity - 不透明度,默认0.8
- * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组
- * @param {number} options.radiusScale - 点放大倍数
- * @param {number} options.radiusMinPixels - 半径最小值(像素)
- * @param {number} options.radiusMaxPixels - 半径最大值(像素)
- * @param {number} options.strokeWidth - 边框大小
- * @param {boolean} options.outline - 是否显示边框
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]]  - 颜色,目前只支持rgba数组。默认[0, 0, 0, 255]。
+ * @param {number} [options.radius=10] - 半径,默认10
+ * @param {number} [options.opacity=0.8] - 不透明度,默认0.8
+ * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持rgba数组
+ * @param {number} [options.radiusScale=1] - 点放大倍数
+ * @param {number} [options.radiusMinPixels=0] - 半径最小值(像素)
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)
+ * @param {number} [options.strokeWidth=1] - 边框大小
+ * @param {boolean} [options.outline=false] - 是否显示边框
  *
- * @param {function} options.onClick - 点击事件
- * @param {function} options.onHover - 悬停事件
+ * @param {function} [options.onClick] - 点击事件
+ * @param {function} [options.onHover] - 悬停事件
+
  */
 var GraphicWebGLRenderer = external_L_default.a.Class.extend({
     initialize: function (layer, options) {
         this.layer = layer;
         let opt = options || {};
         external_L_default.a.Util.setOptions(this, opt);
+        this.options.radius = this._pixelToMeter(this.options.radius);
         this._initContainer();
     },
 
@@ -76689,6 +76696,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
         this._refreshData();
         let state = this._getLayerState();
         state.data = this._data || [];
+        this._layerDefaultStyleCache = null;
         this._renderLayer.setNeedsRedraw(true);
         this._renderLayer.setState(state);
     },
@@ -76724,7 +76732,12 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
         canvas.style.height = height + "px";
         return canvas;
     },
-
+    _pixelToMeter: function (pixel) {
+        const bounds = this.layer._map.getBounds();
+        const latlngRes = (bounds.getEast() - bounds.getWest()) / this.layer._map.getSize().x
+        const meterRes = latlngRes * (Math.PI * 6378137 / 180);
+        return pixel * meterRes;
+    },
     _createInnerRender: function () {
         let me = this;
         let state = this._getLayerState();
@@ -76754,8 +76767,8 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
             strokeWidth: strokeWidth,
             outline: outline,
             getPosition: function (point) {
-                if(!point){
-                    return [0,0,0];
+                if (!point) {
+                    return [0, 0, 0];
                 }
                 let lngLat = point && point.getLatLng();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
@@ -76792,6 +76805,9 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
     },
 
     _getLayerDefaultStyle: function () {
+        if (this._layerDefaultStyleCache) {
+            return this._layerDefaultStyleCache;
+        }
         let {
             color,
             opacity,
@@ -76802,7 +76818,8 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
             strokeWidth,
             outline
         } = this.layer.options;
-        return {
+        radius = this._pixelToMeter(radius);
+        this._layerDefaultStyleCache = {
             color,
             opacity,
             radius,
@@ -76812,6 +76829,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
             strokeWidth,
             outline
         }
+        return this._layerDefaultStyleCache
 
     },
 
@@ -76830,6 +76848,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
         for (let key in state) {
             deckOptions[key] = state[key];
         }
+        this._layerDefaultStyleCache = null;
         this._renderLayer.setNeedsRedraw(true);
         deckOptions.layers = [this._renderLayer];
         deckOptions.canvas = this._container;
@@ -76941,332 +76960,361 @@ const CSS_TRANSFORM = (function () {
  * @extends {L.Path}
  * @param {Array.<L.supermap.graphic>} graphics - 要素对象
  * @param {Object} options - 图层参数
- * @param {string}   [options.render='webgl']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - webgl渲染时要素颜色
- * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色
- * @param {number} [options.opacity=0.8] - webgl渲染时的要素不透明度
- * @param {number} [options.radius=10] - webgl渲染时的要素半径
+ * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
+ * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
+ * @param {number} [options.opacity=0.8] - 要素透明度。
+ * @param {number} [options.radius=10] - 要素半径，单位像素。
  * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
- * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)
- * @param {number} [options.radiusMaxPixels='Number.MAX_SAFE_INTEGER'] - webgl渲染时的要素半径最大值(像素)
- * @param {number} [options.strokeWidth=1] - 边框大小
- * @param {boolean} [options.outline=false] - 是否显示边框
- * @param {function} options.onClick -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)
- * @param {function} options.onHover -  图层鼠标悬停响应事件(只有webgl渲染时有用)
+ * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
+ * @param {number} [options.strokeWidth=1] - 边框大小。
+ * @param {boolean} [options.outline=false] - 是否显示边框。
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)。
  */
 var GraphicLayer = external_L_default.a.Path.extend({
 
-        initialize: function (graphics, options) {
-            this.graphics = [].concat(graphics);
-            let opt = options || {};
-            external_L_default.a.Util.setOptions(this, opt);
-            //因为跟基类的renderer冲突，所以采用render这个名字
-            let render = this.options.render;
-            //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
-            if (!Detector.supportWebGL2()) {
-                this.options.render = Renderer[0];
-            } else {
-                this.options.render = (!render || render === Renderer[1]) ? Renderer[1] : Renderer[0];
-            }
-        },
+    initialize: function (graphics, options) {
+        this.graphics = [].concat(graphics);
+        let opt = options || {};
+        external_L_default.a.Util.setOptions(this, opt);
+        //因为跟基类的renderer冲突，所以采用render这个名字
+        this.options.render = this.options.render || Renderer[0];
+        //浏览器支持webgl并且指定使用webgl渲染才使用webgl渲染
+        if (!Detector.supportWebGL2()) {
+            this.options.render = Renderer[0];
+        }
+    },
 
-        /**
-         * @private
-         * @function L.supermap.graphicLayer.prototype.getEvents
-         * @description 获取事件
-         * @return {Object} 返回该图层支持的事件对象
-         */
-        getEvents: function () {
-            return {
-                click: this._handleClick.bind(this),
-                resize: this._resize.bind(this),
-                moveend: this._moveEnd.bind(this)
-            };
-        },
+    /**
+     * @private
+     * @function L.supermap.graphicLayer.prototype.getEvents
+     * @description 获取事件
+     * @return {Object} 返回该图层支持的事件对象
+     */
+    getEvents: function () {
+        return {
+            click: this._handleClick.bind(this),
+            resize: this._resize.bind(this),
+            moveend: this._moveEnd.bind(this)
+        };
+    },
 
-        /**
-         * @private
-         * @function L.supermap.graphicLayer.prototype.onAdd
-         * @description 添加图形
-         */
-        onAdd: function () {
-            this._renderer = this._createRenderer();
-            this._container = this._renderer._container;
-            external_L_default.a.Path.prototype.onAdd.call(this);
-        },
+    /**
+     * @private
+     * @function L.supermap.graphicLayer.prototype.onAdd
+     * @description 添加图形
+     */
+    onAdd: function (map) {
+        this._map = map;
+        this.defaultStyle = this._getDefaultStyle(this.options);
+        this._renderer = this._createRenderer();
+        this._container = this._renderer._container;
+        external_L_default.a.Path.prototype.onAdd.call(this);
 
-        /**
-         * @private
-         * @override
-         * @function L.supermap.graphicLayer.prototype.onRemove
-         * @description 移除图层
-         */
-        onRemove: function () {
-            this._renderer._removePath(this);
-        },
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.setGraphics
-         * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-         * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
-         */
-        setGraphics: function (graphics) {
-            this.graphics = this.graphics || [];
-            this.graphics.length = 0;
-            let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-            this.graphics = [].concat(sGraphics);
-            this.update();
-        },
+    /**
+     * @private
+     * @override
+     * @function L.supermap.graphicLayer.prototype.onRemove
+     * @description 移除图层
+     */
+    onRemove: function () {
+        this._renderer._removePath(this);
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.addGraphics
-         * @description 追加点要素，不会覆盖之前的要素
-         * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
-         */
-        addGraphics: function (graphics) {
-            this.graphics = this.graphics || [];
-            let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-            this.graphics = this.graphics.concat(sGraphics);
-            this.update();
-        },
+    /**
+     * @function L.supermap.graphicLayer.prototype.setGraphics
+     * @description 设置绘制的点要素数据，会覆盖之前的所有要素
+     * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
+     */
+    setGraphics: function (graphics) {
+        this.graphics = this.graphics || [];
+        this.graphics.length = 0;
+        let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
+        this.graphics = [].concat(sGraphics);
+        this.update();
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.setStyle
-         * @description 设置图层要素整体样式(接口仅在wengl渲染时有用)
-         * @param {Object} styleOptions - 样式对象
-         * @param {Array.<number>} styleOptions.color - 点颜色
-         * @param {number} styleOptions.radius - 点半径
-         * @param {number} styleOptions.opacity - 不透明度
-         * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
-         * @param {number} styleOptions.radiusScale - 点放大倍数
-         * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
-         * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
-         * @param {number} styleOptions.strokeWidth - 边框大小
-         * @param {boolean} styleOptions.outline - 是否显示边框
-         */
-        setStyle: function (styleOptions) {
-            let _opt = this.options;
-            let styleOpt = {
-                color: _opt.color,
-                radius: _opt.radius,
-                opacity: _opt.opacity,
-                highlightColor: _opt.highlightColor,
-                radiusScale: _opt.radiusScale,
-                radiusMinPixels: _opt.radiusMinPixels,
-                radiusMaxPixels: _opt.radiusMaxPixels,
-                strokeWidth: _opt.strokeWidth,
-                outline: _opt.outline
-            };
+    /**
+     * @function L.supermap.graphicLayer.prototype.addGraphics
+     * @description 追加点要素，不会覆盖之前的要素
+     * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
+     */
+    addGraphics: function (graphics) {
+        this.graphics = this.graphics || [];
+        let sGraphics = !external_L_default.a.Util.isArray(graphics) ? [graphics] : [].concat(graphics);
+        this.graphics = this.graphics.concat(sGraphics);
+        this.update();
+    },
 
-            this.options = external_L_default.a.Util.extend(this.options, styleOpt, styleOptions);
-            this.update();
-        },
+    /**
+     * @function L.supermap.graphicLayer.prototype.setStyle
+     * @description 设置图层要素整体样式
+     * @param {Object} styleOptions - 样式对象
+     * @param {Array.<number>} styleOptions.color - 点颜色
+     * @param {number} styleOptions.radius - 点半径
+     * @param {number} styleOptions.opacity - 不透明度
+     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
+     * @param {number} styleOptions.radiusScale - 点放大倍数
+     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
+     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
+     * @param {number} styleOptions.strokeWidth - 边框大小
+     * @param {boolean} styleOptions.outline - 是否显示边框
+     */
+    setStyle: function (styleOptions) {
+        let _opt = this.options;
+        let styleOpt = {
+            color: _opt.color,
+            radius: _opt.radius,
+            opacity: _opt.opacity,
+            highlightColor: _opt.highlightColor,
+            radiusScale: _opt.radiusScale,
+            radiusMinPixels: _opt.radiusMinPixels,
+            radiusMaxPixels: _opt.radiusMaxPixels,
+            strokeWidth: _opt.strokeWidth,
+            outline: _opt.outline
+        };
+        this.options = external_L_default.a.Util.extend(this.options, styleOpt, styleOptions);
+        this.defaultStyle = this._getDefaultStyle(this.options);
+        this.update();
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.update
-         * @description 更新图层，数据或者样式改变后调用
-         */
-        update: function () {
-            this._layerRenderer.update(this.graphics);
-        },
+    /**
+     * @function L.supermap.graphicLayer.prototype.update
+     * @description 更新图层，数据或者样式改变后调用
+     */
+    update: function () {
+        this._layerRenderer.update(this.graphics);
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.clear
-         * @description 释放图层资源
-         */
-        clear: function () {
-            this.removeGraphics();
-        },
+    /**
+     * @function L.supermap.graphicLayer.prototype.clear
+     * @description 释放图层资源
+     */
+    clear: function () {
+        this.removeGraphics();
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.removeGraphics
-         * @description 移除所有要素
-         */
-        removeGraphics: function () {
-            this.graphics.length = 0;
-            this.update();
-        },
+    /**
+     * @function L.supermap.graphicLayer.prototype.removeGraphics
+     * @description 移除所有要素
+     */
+    removeGraphics: function () {
+        this.graphics.length = 0;
+        this.update();
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.getRenderer
-         * @description 获取渲染器
-         * @return {Object} 内部渲染器
-         */
-        getRenderer: function () {
-            return this._renderer;
-        },
+    /**
+     * @function L.supermap.graphicLayer.prototype.getRenderer
+     * @description 获取渲染器
+     * @return {Object} 内部渲染器
+     */
+    getRenderer: function () {
+        return this._renderer;
+    },
 
-        /**
-         * @function L.supermap.graphicLayer.prototype.getState
-         * @description 获取当前地图及图层状态
-         * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
-         */
-        getState: function () {
-            let map = this._map;
-            let width = map.getSize().x;
-            let height = map.getSize().y;
+    /**
+     * @function L.supermap.graphicLayer.prototype.getState
+     * @description 获取当前地图及图层状态
+     * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+     */
+    getState: function () {
+        let map = this._map;
+        let width = map.getSize().x;
+        let height = map.getSize().y;
 
-            let center = map.getCenter();
-            let longitude = center.lng;
-            let latitude = center.lat;
-            let zoom = map.getZoom();
-            let maxZoom = map.getMaxZoom();
+        let center = map.getCenter();
+        let longitude = center.lng;
+        let latitude = center.lat;
+        let zoom = map.getZoom();
+        let maxZoom = map.getMaxZoom();
 
-            let mapViewport = {
-                longitude: longitude,
-                latitude: latitude,
-                zoom: zoom,
-                maxZoom: maxZoom,
-                pitch: 0,
-                bearing: 0
-            };
-            let state = {};
-            for (let key in mapViewport) {
-                state[key] = mapViewport[key];
-            }
-            state.width = width;
-            state.height = height;
-            let options = this.options;
-            state.color = options.color;
-            state.radius = options.radius;
-            state.opacity = options.opacity;
-            state.highlightColor = options.highlightColor;
-            state.radiusScale = options.radiusScale;
-            state.radiusMinPixels = options.radiusMinPixels;
-            state.radiusMaxPixels = options.radiusMaxPixels;
-            state.strokeWidth = options.strokeWidth;
-            state.outline = options.outline;
-            return state;
-        },
+        let mapViewport = {
+            longitude: longitude,
+            latitude: latitude,
+            zoom: zoom,
+            maxZoom: maxZoom,
+            pitch: 0,
+            bearing: 0
+        };
+        let state = {};
+        for (let key in mapViewport) {
+            state[key] = mapViewport[key];
+        }
+        state.width = width;
+        state.height = height;
+        let options = this.options;
+        state.color = options.color;
+        state.radius = options.radius;
+        state.opacity = options.opacity;
+        state.highlightColor = options.highlightColor;
+        state.radiusScale = options.radiusScale;
+        state.radiusMinPixels = options.radiusMinPixels;
+        state.radiusMaxPixels = options.radiusMaxPixels;
+        state.strokeWidth = options.strokeWidth;
+        state.outline = options.outline;
+        return state;
+    },
 
-        _resize: function () {
-            let size = this._map.getSize();
+    _resize: function () {
+        let size = this._map.getSize();
+        this._container.width = size.x;
+        this._container.height = size.y;
+        this._container.style.width = size.x + "px";
+        this._container.style.height = size.y + "px";
+
+        let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
+        external_L_default.a.DomUtil.setPosition(this._container, mapOffset);
+        this._update();
+    },
+    _moveEnd: function () {
+        //拖动和缩放结束后webgl绘制时会有跳动现象(暂时找不到原因)，故在此执行清除操作
+        this._layerRenderer._clearBuffer();
+        let size = this._map.getSize();
+
+        if (this._container._width !== size.x) {
             this._container.width = size.x;
+        }
+        if (this._container._height !== size.y) {
             this._container.height = size.y;
-            this._container.style.width = size.x + "px";
-            this._container.style.height = size.y + "px";
+        }
+        this._draw();
+    },
 
-            let mapOffset = this._map.containerPointToLayerPoint([0, 0]);
-            external_L_default.a.DomUtil.setPosition(this._container, mapOffset);
-            this._update();
-        },
-        _moveEnd: function () {
-            //拖动和缩放结束后webgl绘制时会有跳动现象(暂时找不到原因)，故在此执行清除操作
-            this._layerRenderer._clearBuffer();
-            let size = this._map.getSize();
+    _draw: function () {
+        let mapPane = this._map.getPanes().mapPane;
+        let point = mapPane._leaflet_pos;
 
-            if (this._container._width !== size.x) {
-                this._container.width = size.x;
-            }
-            if (this._container._height !== size.y) {
-                this._container.height = size.y;
-            }
-            this._draw();
-        },
+        this._container.style[CSS_TRANSFORM] = 'translate(' +
+            -Math.round(point.x) + 'px,' +
+            -Math.round(point.y) + 'px)';
 
-        _draw: function () {
-            let mapPane = this._map.getPanes().mapPane;
-            let point = mapPane._leaflet_pos;
+        this._update();
+    },
 
-            this._container.style[CSS_TRANSFORM] = 'translate(' +
-                -Math.round(point.x) + 'px,' +
-                -Math.round(point.y) + 'px)';
-
-            this._update();
-        },
-
-        //使用canvas渲染或webgl渲染
-        _createRenderer: function () {
-            let map = this._map;
-            let width = map.getSize().x;
-            let height = map.getSize().y;
-            let _renderer;
-            if (this.options.render === Renderer[0]) {
-                _renderer = new GraphicCanvasRenderer(this, {
-                    width: width,
-                    height: height,
-                    renderer: map.getRenderer(this)
-                });
-            } else {
-                let optDefault = external_L_default.a.Util.setOptions({}, defaultProps);
-                let opt = external_L_default.a.Util.setOptions({options: optDefault}, this.options);
-                opt = external_L_default.a.Util.setOptions(this, opt);
-                opt.container = map.getPane("overlayPane");
-                opt.width = width;
-                opt.height = height;
-
-                _renderer = new GraphicWebGLRenderer(this, opt);
-            }
-            this._layerRenderer = _renderer;
-            return this._layerRenderer.getRenderer();
-        },
-
-        /**
-         * @private
-         * @override
-         */
-        _update: function () {
-            if (this._map) {
-                this._updatePath();
-            }
-        },
-
-        /**
-         * @private
-         * @override
-         */
-        _updatePath: function () {
-            let graphics = this._getGraphicsInBounds();
-            this._renderer.drawGraphics(graphics);
-        },
-
-        /**
-         * @private
-         * @override
-         */
-        _project: function () {
-            let me = this;
-            me._getGraphicsInBounds().map(function (graphic) {
-                let point = me._map.latLngToLayerPoint(graphic.getLatLng());
-                let w = me._clickTolerance();
-                let p = [graphic._anchor + w, graphic._anchor + w];
-                graphic._pxBounds = new external_L_default.a.Bounds(point.subtract(p), point.add(p));
-                return graphic;
+    //使用canvas渲染或webgl渲染
+    _createRenderer: function () {
+        let map = this._map;
+        let width = map.getSize().x;
+        let height = map.getSize().y;
+        let _renderer;
+        if (this.options.render === Renderer[0]) {
+            _renderer = new GraphicCanvasRenderer(this, {
+                width: width,
+                height: height,
+                renderer: map.getRenderer(this)
             });
-            me._pxBounds = external_L_default.a.bounds(external_L_default.a.point(0, 0), external_L_default.a.point(this._container.width, this._container.height));
-        },
+        } else {
+            let optDefault = external_L_default.a.Util.setOptions({}, defaultProps);
+            let opt = external_L_default.a.Util.setOptions({
+                options: optDefault
+            }, this.options);
+            opt = external_L_default.a.Util.setOptions(this, opt);
+            opt.container = map.getPane("overlayPane");
+            opt.width = width;
+            opt.height = height;
 
-        _getGraphicsInBounds: function () {
-            let me = this;
-            let graphicsInBounds = [];
-            let viewBounds = me._map.getBounds();
-            this.graphics.map(function (graphic) {
-                if (viewBounds.contains(graphic.getLatLng())) {
-                    graphicsInBounds.push(graphic);
-                }
-                return graphic;
-            });
-            return graphicsInBounds;
-        },
+            _renderer = new GraphicWebGLRenderer(this, opt);
+        }
+        _renderer.defaultStyle = this.defaultStyle;
+        this._layerRenderer = _renderer;
+        return this._layerRenderer.getRenderer();
+    },
+
+    /**
+     * @private
+     * @override
+     */
+    _update: function () {
+        if (this._map) {
+            this._updatePath();
+        }
+    },
+
+    /**
+     * @private
+     * @override
+     */
+    _updatePath: function () {
+        let graphics = this._getGraphicsInBounds();
+        this._renderer.drawGraphics(graphics, this.defaultStyle);
+    },
+
+    /**
+     * @private
+     * @override
+     */
+    _project: function () {
+        let me = this;
+        me._getGraphicsInBounds().map(function (graphic) {
+            let point = me._map.latLngToLayerPoint(graphic.getLatLng());
+            let w = me._clickTolerance();
+            let p = [graphic._anchor + w, graphic._anchor + w];
+            graphic._pxBounds = new external_L_default.a.Bounds(point.subtract(p), point.add(p));
+            return graphic;
+        });
+        me._pxBounds = external_L_default.a.bounds(external_L_default.a.point(0, 0), external_L_default.a.point(this._container.width, this._container.height));
+    },
+    _getDefaultStyle: function (options) {
+        const target = {};
+        if (options.color) {
+            target.fill = true;
+            const color = this.toRGBA(options.color);
+            target.color = color;
+            target.fillColor = color;
+        }
+        if (options.opacity) {
+            target.opacity = options.opacity;
+            target.fillOpacity = options.opacity;
+        }
+        if (options.radius) {
+            target.radius = options.radius;
+        }
+        if (options.strokeWidth) {
+            target.weight = options.strokeWidth;
+        }
+        if (options.outline) {
+            target.stroke = options.outline;
+        }
+        return new CircleStyle(target).getStyle();
+
+    },
+    toRGBA(colorArray) {
+        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3]||255)/255})`;
+    },
+    _getGraphicsInBounds: function () {
+        let me = this;
+        let graphicsInBounds = [];
+        let viewBounds = me._map.getBounds();
+        this.graphics.map(function (graphic) {
+            if (viewBounds.contains(graphic.getLatLng())) {
+                graphicsInBounds.push(graphic);
+            }
+            return graphic;
+        });
+        return graphicsInBounds;
+    },
 
 
-        _handleClick: function (evt) {
-            this._layerRenderer._handleClick(evt);
-        },
-        /**
-         * @private
-         * @override
-         */
-        beforeAdd: external_L_default.a.Util.falseFn,
+    _handleClick: function (evt) {
+        this._layerRenderer._handleClick(evt);
+    },
+    /**
+     * @private
+     * @override
+     */
+    beforeAdd: external_L_default.a.Util.falseFn,
 
-        /**
-         * @private
-         * @override
-         */
-        _containsPoint: external_L_default.a.Util.falseFn
+    /**
+     * @private
+     * @override
+     */
+    _containsPoint: external_L_default.a.Util.falseFn
 
-    }
-);
+});
 
 let graphicLayer = function (graphics, options) {
     return new GraphicLayer(graphics, options);

@@ -154,14 +154,14 @@
         var graphicStyle = {
             color: [0, 255, 128, 255],
             highlightColor: [255, 0, 0, 255],
-            radius: 20
+            radius: 0.5
         };
         map.once('postrender', function () {
             var content = document.getElementById('popup-content');
             graphicLayer = new ol.layer.Image({
                 source: new ol.source.Graphic({
+                    render: "webgl",
                     graphics: graphics,
-                    renderer: "webgl",
                     color: graphicStyle.color,
                     highlightColor: graphicStyle.highlightColor,
                     radius: graphicStyle.radius,
@@ -195,7 +195,7 @@
         map.addControl(control);
 
         gui.addColor(options, 'color').onChange(finished);
-        gui.add(options, 'radius', 0, 100).onChange(finished);
+        gui.add(options, 'radius', 0, 2).onChange(finished);
 
         function finished() {
             graphicLayer.getSource().setStyle(options);

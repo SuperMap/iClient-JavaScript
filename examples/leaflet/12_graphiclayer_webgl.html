@@ -90,7 +90,7 @@
         var graphicStyle = {
             color: [0, 255, 128, 255],
             highlightColor: [255, 0, 0, 255],
-            radius: 20
+            radius: 0.5
         };
 
         //绘制图层
@@ -120,7 +120,7 @@
         map.addControl(control);
 
         gui.addColor(options, 'color').onChange(finished);
-        gui.add(options, 'radius', 0, 100).onChange(finished);
+        gui.add(options, 'radius', 0, 2).onChange(finished);
 
         function finished() {
             graphicLayer.setStyle(options);

@@ -129,7 +129,7 @@
   - `ol.supermap.Theme` 及其子类
     - `addFeatures` 方法支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJOSN` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
 
-    - `toFeature` 方法,由 `toiClientFeature` 方法代替
+    - 废弃 `toFeature` 方法,由 `toiClientFeature` 方法代替
 
     - 新增 `options.id` 参数
 
@@ -143,7 +143,7 @@
 
     - `options` 新增 `webgl` 渲染相关参数，如：`color` , `highlightColor`, `opacity`,`radius`,`radiusScale`,`radiusMinPixels`,`radiusMaxPixels`,`strokeWidth`,`outline`，`onClick`,`onHover`
 
-    - 废弃 `onClick` 参数, `options` 新增 `isHighLight` 参数,增加 `graphichighlighted` 事件，支持高亮响应
+    - `options` 新增 `isHighLight` 参数 , 控制在 `onClick` 时是否高亮
 
     - 增加 `setGraphics` 接口，支持设置点要素
     
@@ -207,8 +207,6 @@
     - 新增 `moveTo`接口，支持调整专题图层显示顺序
 
     - 新增 `setVisibility`接口，支持设置图层的显示和隐藏
-
-    - 废弃 `toiClientFeature` 接口，由 `toFeature` 接口代替
 
   - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
