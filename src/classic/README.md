@@ -13,9 +13,16 @@
 ```
 
 ## 开发
+在 HTML 文件中引入 uperMap iClient 8C(2017) 库
 
 ```
-import '../lib/iclient8c/SuperMap-8.1.1';
+<script src="http://iclient.supermap.io/libs/iclient8c/libs/SuperMap.Include.js"></script>
+
+```
+
+在 JS 文件中加入如下代码
+
+```
 import {MapVLayer} from '@supermap/iclient-classic';
 import {utilCityCenter, DataSet} from 'mapv';
 

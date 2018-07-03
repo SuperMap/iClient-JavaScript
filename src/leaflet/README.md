@@ -14,6 +14,16 @@
 
 ## 开发
 
+在 HTML 文件中引入 CSS  文件
+
+```
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+
+<link rel="stylesheet" href="http://iclient.supermap.io/dist/openlayers/iclient9-leaflet.min.css"/>
+```
+
+在 JS 文件中加入如下代码
+
 ```
 import L from 'leaflet';
 import {tiledMapLayer} from '@supermap/iclient-leaflet';

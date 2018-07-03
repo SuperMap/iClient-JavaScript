@@ -35,11 +35,11 @@
             "<div id='geocodeParam' role='tabpanel' class='tab-pane deplistContent active'>" +
             "<div class='input-group'>" +
             "<span class='input-group-addon'>" + resources.text_address + "</span>" +
-            "<input id='address' type='text' class='form-control' placeholder='公司'/>" +
+            "<input id='address' type='text' class='form-control' placeholder='超图软件'/>" +
             "</div><p>" +
             "<div class='input-group'>" +
             "<span class='input-group-addon'>" + resources.text_filterField + "　</span>" +
-            "<input id='filters' type='text' class='form-control' placeholder='北京'/>" +
+            "<input id='filters' type='text' class='form-control' placeholder='北京市,朝阳区'/>" +
             "</div><p>" +
             "<div class='input-group'>" +
             "<span class='input-group-addon'>" + resources.text_minIndex + "</span>" +
@@ -121,14 +121,12 @@
         var re = new RegExp(regu);
         return re.test(str);
     }
-
-    var filters = $('#filters').val() || $('#filters').attr('placeholder');
     $("#codeBtn").click(function () {
         var geoCodeParam = new SuperMap.GeoCodingParameter({
             address: $('#address').val() || $('#address').attr('placeholder'),
             fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
             toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
-            filters: isNull(filters) ? '' : filters,
+            filters: $('#filters').val() || $('#filters').attr('placeholder'),
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });

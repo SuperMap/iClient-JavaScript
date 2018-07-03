@@ -14,6 +14,15 @@
 
 ## 开发
 
+在 HTML 文件中引入 CSS  文件
+
+```
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
+
+```
+
+在 JS 文件中加入如下代码
+
 ```
 import mapboxgl from 'mapbox-gl';
 import {Logo, QueryByBoundsParameters, QueryService} from '@supermap/iclient-mapboxgl';

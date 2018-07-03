@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-common",
   "description": "",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "keywords": [
     "SuperMap"
   ],
@@ -14,9 +14,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "elasticsearch": "13.0.1",
-    "fetch-ie8": "^1.5.0",
+    "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.0.6",
-    "promise-polyfill": "^6.0.2",
-    "lodash.topairs": "^4.3.0"
+    "promise-polyfill": "6.0.2",
+    "lodash.topairs": "4.3.0"
   }
 }

@@ -168,5 +168,5 @@
     load();
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
-    window.version = "9.0.1";
+    window.version = "9.1.0";
 })();

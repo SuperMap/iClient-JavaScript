@@ -14,6 +14,16 @@
 
 ## 开发
 
+在 HTML 文件中引入 CSS  文件
+
+```
+<link href='https://openlayers.org/en/v4.6.5/css/ol.css' rel='stylesheet' />
+
+<link href='http://iclient.supermap.io/dist/openlayers/iclient9-openlayers.min.css' rel='stylesheet' />
+
+```
+在 JS 文件中加入如下代码
+
 ```
 import ol from 'openlayers';
 import {Logo, TileSuperMapRest} from '@supermap/iclient-openlayers';
