@@ -1,8 +1,8 @@
 var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
 
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-    "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-    " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+    "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+    "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
 var mapStyles = {
     basic: {
@@ -13,7 +13,7 @@ var mapStyles = {
                     "attribution": attribution,
                     "type": "vector",
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
-                },
+                }
             },
             "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
@@ -31,7 +31,7 @@ var mapStyles = {
                     "source": "vector-tiles",
                     "source-layer": "单值专题图#2",
                     "paint": {
-                        "fill-color": "#EFE9E1",
+                        "fill-color": "#EFE9E1"
                     }
                 }, {
                     "id": "单值专题图#1",
@@ -63,7 +63,7 @@ var mapStyles = {
                                 ]
                             ]
                         }
-                    },
+                    }
                 }, {
                     "id": "绿地R@北京",
                     "type": "fill",
@@ -84,7 +84,7 @@ var mapStyles = {
                                 ]
                             ]
                         }
-                    },
+                    }
                 }, {
                     "id": "	双线河R@北京",
                     "type": "fill",
@@ -122,7 +122,7 @@ var mapStyles = {
                                 ]
                             ]
                         },
-                        "line-color": "hsl(0, 0%, 100%)",
+                        "line-color": "hsl(0, 0%, 100%)"
                     }
                 }, {
                     "id": "	三级道路L@北京",
@@ -143,7 +143,7 @@ var mapStyles = {
                                 ]
                             ]
                         },
-                        "line-color": "hsl(0, 0%, 100%)",
+                        "line-color": "hsl(0, 0%, 100%)"
                     }
                 }, {
                     "id": "	二级道路L@北京",
@@ -152,7 +152,7 @@ var mapStyles = {
                     "source-layer": "二级道路L@北京",
                     "paint": {
                         "line-width": 4,
-                        "line-color": "hsl(230, 24%, 87%)",
+                        "line-color": "hsl(230, 24%, 87%)"
                     }
                 }, {
                     "id": "	二级道路L@北京1",
@@ -173,7 +173,7 @@ var mapStyles = {
                                 ]
                             ]
                         },
-                        "line-color": "hsl(0, 0%, 100%)",
+                        "line-color": "hsl(0, 0%, 100%)"
                     }
                 }, {
                     "id": "一级道路L@北京1",
@@ -207,7 +207,7 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
+                        }
                     }
                 }, {
                     "id": "一级道路L@北京",
@@ -241,7 +241,7 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
+                        }
                     }
                 }, {
                     "id": "	省道L@北京",
@@ -262,7 +262,7 @@ var mapStyles = {
                                 ]
                             ]
                         },
-                        "line-color": "hsl(26, 87%, 62%)",
+                        "line-color": "hsl(26, 87%, 62%)"
                     }
                 }, {
                     "id": "	省道L@北京1",
@@ -304,7 +304,7 @@ var mapStyles = {
                                 ]
                             ]
                         },
-                        "line-color": "hsl(26, 87%, 62%)",
+                        "line-color": "hsl(26, 87%, 62%)"
                     }
                 },
 
@@ -422,8 +422,8 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
-                    },
+                        }
+                    }
                 }, {
                     "id": "	省道Name",
                     "type": "symbol",
@@ -469,8 +469,8 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
-                    },
+                        }
+                    }
                 },
 
                 {
@@ -987,7 +987,7 @@ var mapStyles = {
                 }
             ]
 
-        },
+        }
     },
     dark: {
         style: {
@@ -997,7 +997,7 @@ var mapStyles = {
                     "attribution": attribution,
                     "type": "vector",
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
-                },
+                }
             },
             "sprite": "http://iclient.supermap.io/web/styles/dark/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
@@ -1016,7 +1016,7 @@ var mapStyles = {
                     "source": "vector-tiles",
                     "source-layer": "单值专题图#2",
                     "paint": {
-                        "fill-color": "hsl(55, 1%, 20%)",
+                        "fill-color": "hsl(55, 1%, 20%)"
                     }
                 },
                 {
@@ -1037,8 +1037,8 @@ var mapStyles = {
                     "source-layer": "立交桥绿地R@北京",
                     "paint": {
                         "fill-color": "hsl(132, 2%, 20%)",
-                        "fill-opacity": 0.5,
-                    },
+                        "fill-opacity": 0.5
+                    }
                 },
                 {
                     "id": "绿地R@北京",
@@ -1047,8 +1047,8 @@ var mapStyles = {
                     "source-layer": "绿地R@北京",
                     "paint": {
                         "fill-color": "hsl(132, 2%, 20%)",
-                        "fill-opacity": 0.5,
-                    },
+                        "fill-opacity": 0.5
+                    }
                 },
                 {
                     "id": "	双线河R@北京",
@@ -1057,7 +1057,7 @@ var mapStyles = {
                     "source-layer": "双线河R@北京",
                     "paint": {
                         "fill-color": "hsl(185, 2%, 10%)"
-                    },
+                    }
                 },
                 {
                     "id": "湖泊、水库R@北京",
@@ -1066,7 +1066,7 @@ var mapStyles = {
                     "source-layer": "湖泊、水库R@北京",
                     "paint": {
                         "fill-color": "hsl(185, 2%, 10%)"
-                    },
+                    }
                 },
 
                 {
@@ -1076,7 +1076,7 @@ var mapStyles = {
                     "source-layer": "四级道路L@北京",
                     "paint": {
                         "line-width": 1,
-                        "line-color": "hsl(0, 0%, 27%)",
+                        "line-color": "hsl(0, 0%, 27%)"
                     }
                 },
                 {
@@ -1086,7 +1086,7 @@ var mapStyles = {
                     "source-layer": "三级道路L@北京",
                     "paint": {
                         "line-width": 1,
-                        "line-color": "hsl(0, 0%,27%)",
+                        "line-color": "hsl(0, 0%,27%)"
                     }
                 },
                 {
@@ -1096,7 +1096,7 @@ var mapStyles = {
                     "source-layer": "二级道路L@北京",
                     "paint": {
                         "line-width": 2,
-                        "line-color": "hsl(0, 0%, 27%)",
+                        "line-color": "hsl(0, 0%, 27%)"
                     }
                 },
                 {
@@ -1119,7 +1119,7 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
+                        }
                     }
                 },
                 {
@@ -1142,7 +1142,7 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
+                        }
                     }
                 },
                 {
@@ -1152,8 +1152,8 @@ var mapStyles = {
                     "source-layer": "省道L@北京",
                     "paint": {
                         "line-width": 6,
-                        "line-color": "hsl(0, 0%, 17%)",
-                    },
+                        "line-color": "hsl(0, 0%, 17%)"
+                    }
                 },
                 {
                     "id": "	省道L@北京1",
@@ -1163,7 +1163,7 @@ var mapStyles = {
                     "paint": {
                         "line-width": 4,
                         "line-color": "hsl(0, 0%, 27%)"
-                    },
+                    }
                 },
                 {
                     "id": "	高速公路L@北京",
@@ -1232,7 +1232,7 @@ var mapStyles = {
                             ]
                         },
                         "text-halo-blur": 0
-                    },
+                    }
                 },
 //地标
                 {
@@ -1264,7 +1264,7 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
+                        }
                     }
 
                 },
@@ -1313,8 +1313,8 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
-                    },
+                        }
+                    }
                 },
                 {
                     "id": "	省道Name",
@@ -1361,8 +1361,8 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
-                    },
+                        }
+                    }
                 },
 
                 {
@@ -1888,7 +1888,7 @@ var mapStyles = {
 
                 }
             ]
-        },
+        }
     },
     fiordcolor: {
         style: {
@@ -1898,7 +1898,7 @@ var mapStyles = {
                     "attribution": attribution,
                     "type": "vector",
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
-                },
+                }
             },
             "sprite": "http://iclient.supermap.io/web/styles/osm/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
@@ -2990,7 +2990,7 @@ var mapStyles = {
                     "attribution": attribution,
                     "type": "vector",
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
-                },
+                }
             },
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
@@ -3029,7 +3029,7 @@ var mapStyles = {
                     "source": "vector-tiles",
                     "source-layer": "双线河R@北京",
                     "paint": {
-                        "fill-color": "hsl(205, 56%, 73%)",
+                        "fill-color": "hsl(205, 56%, 73%)"
                     }
                 },
                 {
@@ -3038,7 +3038,7 @@ var mapStyles = {
                     "source": "vector-tiles",
                     "source-layer": "湖泊、水库R@北京",
                     "paint": {
-                        "fill-color": "hsl(205, 56%, 73%)",
+                        "fill-color": "hsl(205, 56%, 73%)"
                     }
                 },
 
@@ -3991,7 +3991,7 @@ var mapStyles = {
                     "attribution": attribution,
                     "type": "vector",
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
-                },
+                }
             },
             "sprite": "http://iclient.supermap.io/web/styles/osm/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
@@ -4691,7 +4691,7 @@ var mapStyles = {
                                     1
                                 ]
                             ]
-                        },
+                        }
                     }
                 },
 
@@ -5242,7 +5242,7 @@ var mapStyles = {
                     "attribution": attribution,
                     "type": "vector",
                     "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
-                },
+                }
             },
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [

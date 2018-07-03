@@ -25,14 +25,15 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
     var data;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 "+resources.title_3baidu+" ECharts Echarts-gl</a>";
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+        "<a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts Echarts-gl</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var uploadedDataURL = "../data/ShanghaiBuildingPrice.json";
 
     var myChart = echarts.init(document.getElementById('map'));
 
-    $.getJSON(uploadedDataURL, function(linedata) {
+    $.getJSON(uploadedDataURL, function (linedata) {
 
         myChart.setOption({
 
@@ -48,10 +49,10 @@
                 },
                 max: linedata[1]
             },
-            toolBox:{
-                feature:{
-                    dataZoom:{
-                        show:true,
+            toolBox: {
+                feature: {
+                    dataZoom: {
+                        show: true,
                     }
                 }
             },
@@ -108,7 +109,7 @@
 
             series: [{
                 type: 'bar3D',
-                roam:true,
+                roam: true,
                 shading: 'realistic',
                 coordinateSystem: 'mapbox',
                 barSize: 0.2,

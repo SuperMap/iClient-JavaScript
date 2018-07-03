@@ -105,8 +105,9 @@
     var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
 
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ",
+
 
         processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         token = '0ra2250-rPu6ZnqHPKqcqDjGkDGDv3bg5HHy1SNNXf79OlN0ArG07bq3cGFz0v-nfBm2RAnYJ3LGBsuiptH43g..';
@@ -181,7 +182,7 @@
             if (serviceResult.error) {
                 widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                widgets.alert.showAlert(resources.msg_createFailed+"<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
