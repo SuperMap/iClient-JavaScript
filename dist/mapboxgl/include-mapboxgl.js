@@ -73,7 +73,7 @@
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             if (!inArray(excludes, 'iclient9-mapboxgl')) {
                 if (supportES6()) {
-                    inputScript("../../dist/mapboxgl/iclient9-mapboxgl-es6.js");
+                    inputScript("../../dist/mapboxgl/iclient9-mapboxgl-es6.min.js");
                 } else {
                     inputScript("../../dist/mapboxgl/iclient9-mapboxgl.min.js");
                 }

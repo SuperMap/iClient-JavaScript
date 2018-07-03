@@ -21399,36 +21399,38 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
     }, {
         key: 'toiClientFeature',
         value: function toiClientFeature(features) {
-            if (_iclientCommon.CommonUtil.isArray(features)) {
-                var featuresTemp = [];
-                for (var i = 0; i < features.length; i++) {
+            if (!_iclientCommon.CommonUtil.isArray(features)) {
+                features = [features];
+            }
+
+            var featuresTemp = [];
+            for (var i = 0; i < features.length; i++) {
+
+                if (features[i] instanceof _ThemeFeature.ThemeFeature) {
                     //mapboxgl.supermap.ThemeFeature 类型
-                    if (features[i] instanceof _ThemeFeature.ThemeFeature) {
-                        featuresTemp.push(features[i].toFeature());
-                        continue;
-                    }
+                    featuresTemp.push(features[i].toFeature());
+                    continue;
+                } else if (features[i] instanceof _openlayers2.default.Feature) {
                     //ol.Feature 数据类型
-                    if (features[i] instanceof _openlayers2.default.Feature) {
-                        //_toFeature 统一处理 ol.Feature 所有 geometry 类型
-                        featuresTemp.push(this._toFeature(features[i]));
-                        continue;
-                    }
+                    //_toFeature 统一处理 ol.Feature 所有 geometry 类型
+                    featuresTemp.push(this._toFeature(features[i]));
+                    continue;
+                } else if (features[i] instanceof _iclientCommon.GeometryVector) {
                     // 若是 GeometryVector 直接返回
-                    if (features[i] instanceof _iclientCommon.GeometryVector) {
-                        featuresTemp.push(features[i]);
-                        continue;
-                    }
+                    featuresTemp.push(features[i]);
+                    continue;
+                } else if (features[i].geometry && features[i].geometry.parts) {
                     //iServer服务器返回数据格式
                     featuresTemp.push(_iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+                } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                    //GeoJOSN 规范数据类型
+                    var format = new _iclientCommon.GeoJSON();
+                    featuresTemp = featuresTemp.concat(format.read(features[i]));
+                } else {
+                    throw new Error('features[' + i + ']\'s type is not be supported.');
                 }
-                return featuresTemp;
             }
-            //GeoJOSN 规范数据类型
-            if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-                var format = new _iclientCommon.GeoJSON();
-                return format.read(features, "FeatureCollection");
-            }
-            throw new Error('features\'s type is not be supported.');
+            return featuresTemp;
         }
 
         /**
@@ -62694,36 +62696,32 @@ var HeatMap = exports.HeatMap = function (_ol$source$ImageCanva) {
     }, {
         key: 'toiClientFeature',
         value: function toiClientFeature(features) {
-            if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-                var format = new _iclientCommon.GeoJSON();
-                return format.read(features, "FeatureCollection");
+            if (!_Util.Util.isArray(features)) {
+                features = [features];
             }
             var featuresTemp = [],
-                geometry,
-                attributes;
-            if (_Util.Util.isArray(features)) {
-                for (var i = 0, len = features.length; i < len; i++) {
-                    if (features[i] instanceof _openlayers2.default.Feature) {
-                        //热点图支支持传入点对象要素
-                        if (features[i].getGeometry() instanceof _openlayers2.default.geom.Point) {
-                            geometry = new _iclientCommon.GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
-                            //固定属性字段为 "Properties"
-                            attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                            featuresTemp.push(new _iclientCommon.GeometryVector(geometry, attributes));
-                        }
+                geometry = void 0,
+                attributes = void 0;
+            for (var i = 0, len = features.length; i < len; i++) {
+                if (features[i] instanceof _openlayers2.default.Feature) {
+                    //热点图支支持传入点对象要素
+                    if (features[i].getGeometry() instanceof _openlayers2.default.geom.Point) {
+                        geometry = new _iclientCommon.GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
+                        //固定属性字段为 "Properties"
+                        attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
+                        featuresTemp.push(new _iclientCommon.GeometryVector(geometry, attributes));
                     }
+                } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                    var format = new _iclientCommon.GeoJSON();
+                    featuresTemp = featuresTemp.concat(format.read(features[i]));
+                } else if (features[i].geometry && features[i].geometry.parts) {
+                    //iServer服务器返回数据格式
+                    featuresTemp.push(_iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+                } else {
+                    throw new Error('Features[' + i + ']\'s type does not match, please check.');
                 }
-                return featuresTemp;
             }
-            if (features instanceof _openlayers2.default.Feature) {
-                if (features.getGeometry() instanceof _openlayers2.default.geom.Point) {
-                    geometry = new _iclientCommon.GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
-                    attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                    featuresTemp.push(new _iclientCommon.GeometryVector(geometry, attributes));
-                    return featuresTemp;
-                }
-            }
-            throw new Error("Features's type does not match, please check.");
+            return featuresTemp;
         }
     }]);
 
@@ -69355,7 +69353,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* 359 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.4.4","_id":"proj4@2.4.4","_inBundle":false,"_integrity":"sha1-wD2CXjgPaFCkp69dINNl9rcsQEI=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.4","name":"proj4","escapedName":"proj4","rawSpec":"2.4.4","saveSpec":null,"fetchSpec":"2.4.4"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.4.4.tgz","_shasum":"c03d825e380f6850a4a7af5d20d365f6b72c4042","_spec":"proj4@2.4.4","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.2.0"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"^1.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.4"};
+module.exports = {"_from":"proj4@2.4.4","_id":"proj4@2.4.4","_inBundle":false,"_integrity":"sha1-wD2CXjgPaFCkp69dINNl9rcsQEI=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.4","name":"proj4","escapedName":"proj4","rawSpec":"2.4.4","saveSpec":null,"fetchSpec":"2.4.4"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.4.4.tgz","_shasum":"c03d825e380f6850a4a7af5d20d365f6b72c4042","_spec":"proj4@2.4.4","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.2.0"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"^1.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.4"};
 
 /***/ }),
 /* 360 */

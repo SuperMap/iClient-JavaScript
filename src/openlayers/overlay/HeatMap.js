@@ -3,6 +3,7 @@ import {Util} from '../core/Util';
 import {
     GeoJSON as GeoJSONFormat,
     GeometryVector,
+    ServerFeature,
     CommonUtil,
     LonLat,
     GeometryPoint,
@@ -411,34 +412,30 @@ export class HeatMap extends ol.source.ImageCanvas {
      * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSONFormat();
-            return format.read(features, "FeatureCollection");
+        if (!Util.isArray(features)) {
+            features = [features];
         }
-        var featuresTemp = [], geometry, attributes;
-        if (Util.isArray(features)) {
-            for (var i = 0, len = features.length; i < len; i++) {
-                if (features[i] instanceof ol.Feature) {
-                    //热点图支支持传入点对象要素
-                    if (features[i].getGeometry() instanceof ol.geom.Point) {
-                        geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
-                        //固定属性字段为 "Properties"
-                        attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                        featuresTemp.push(new GeometryVector(geometry, attributes));
-                    }
+        let featuresTemp = [], geometry, attributes;
+        for (let i = 0, len = features.length; i < len; i++) {
+            if (features[i] instanceof ol.Feature) {
+                //热点图支支持传入点对象要素
+                if (features[i].getGeometry() instanceof ol.geom.Point) {
+                    geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
+                    //固定属性字段为 "Properties"
+                    attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
+                    featuresTemp.push(new GeometryVector(geometry, attributes));
                 }
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                let format = new GeoJSONFormat();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else if (features[i].geometry && features[i].geometry.parts) {
+                //iServer服务器返回数据格式
+                featuresTemp.push(ServerFeature.fromJson(features[i]).toFeature());
+            } else {
+                throw new Error(`Features[${i}]'s type does not match, please check.`);
             }
-            return featuresTemp;
         }
-        if (features instanceof ol.Feature) {
-            if (features.getGeometry() instanceof ol.geom.Point) {
-                geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
-                attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                featuresTemp.push(new GeometryVector(geometry, attributes));
-                return featuresTemp;
-            }
-        }
-        throw new Error("Features's type does not match, please check.");
+        return featuresTemp;
     }
 
 }

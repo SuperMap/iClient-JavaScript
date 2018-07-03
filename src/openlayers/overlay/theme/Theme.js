@@ -499,36 +499,39 @@ export class Theme extends ol.source.ImageCanvas {
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {
-        if (CommonUtil.isArray(features)) {
-            var featuresTemp = [];
-            for (let i = 0; i < features.length; i++) {
+        if (!CommonUtil.isArray(features)) {
+            features = [features];
+        }
+
+        let featuresTemp = [];
+        for (let i = 0; i < features.length; i++) {
+
+            if (features[i] instanceof ThemeFeature) {
                 //mapboxgl.supermap.ThemeFeature 类型
-                if (features[i] instanceof ThemeFeature) {
-                    featuresTemp.push(features[i].toFeature());
-                    continue;
-                }
+                featuresTemp.push(features[i].toFeature());
+                continue;
+            } else if (features[i] instanceof ol.Feature) {
                 //ol.Feature 数据类型
-                if (features[i] instanceof ol.Feature) {
-                    //_toFeature 统一处理 ol.Feature 所有 geometry 类型
-                    featuresTemp.push(this._toFeature(features[i]));
-                    continue;
-                }
+                //_toFeature 统一处理 ol.Feature 所有 geometry 类型
+                featuresTemp.push(this._toFeature(features[i]));
+                continue;
+            } else if (features[i] instanceof GeometryVector) {
                 // 若是 GeometryVector 直接返回
-                if (features[i] instanceof GeometryVector) {
-                    featuresTemp.push(features[i]);
-                    continue;
-                }
+                featuresTemp.push(features[i]);
+                continue;
+            } else if (features[i].geometry && features[i].geometry.parts) {
                 //iServer服务器返回数据格式
                 featuresTemp.push(ServerFeature.fromJson(features[i]).toFeature());
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                //GeoJOSN 规范数据类型
+                const format = new GeoJSONFormat();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else {
+                throw new Error(`features[${i}]'s type is not be supported.`);
             }
-            return featuresTemp;
+
         }
-        //GeoJOSN 规范数据类型
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSONFormat();
-            return format.read(features, "FeatureCollection");
-        }
-        throw new Error(`features's type is not be supported.`);
+        return featuresTemp;
     }
 
     /**

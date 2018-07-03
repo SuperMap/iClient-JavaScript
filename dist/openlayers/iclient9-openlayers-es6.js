@@ -70721,36 +70721,39 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {
-        if (Util_Util.isArray(features)) {
-            var featuresTemp = [];
-            for (let i = 0; i < features.length; i++) {
+        if (!Util_Util.isArray(features)) {
+            features = [features];
+        }
+
+        let featuresTemp = [];
+        for (let i = 0; i < features.length; i++) {
+
+            if (features[i] instanceof ThemeFeature_ThemeFeature) {
                 //mapboxgl.supermap.ThemeFeature 类型
-                if (features[i] instanceof ThemeFeature_ThemeFeature) {
-                    featuresTemp.push(features[i].toFeature());
-                    continue;
-                }
+                featuresTemp.push(features[i].toFeature());
+                continue;
+            } else if (features[i] instanceof external_ol_default.a.Feature) {
                 //ol.Feature 数据类型
-                if (features[i] instanceof external_ol_default.a.Feature) {
-                    //_toFeature 统一处理 ol.Feature 所有 geometry 类型
-                    featuresTemp.push(this._toFeature(features[i]));
-                    continue;
-                }
+                //_toFeature 统一处理 ol.Feature 所有 geometry 类型
+                featuresTemp.push(this._toFeature(features[i]));
+                continue;
+            } else if (features[i] instanceof Vector_Vector) {
                 // 若是 GeometryVector 直接返回
-                if (features[i] instanceof Vector_Vector) {
-                    featuresTemp.push(features[i]);
-                    continue;
-                }
+                featuresTemp.push(features[i]);
+                continue;
+            } else if (features[i].geometry && features[i].geometry.parts) {
                 //iServer服务器返回数据格式
                 featuresTemp.push(ServerFeature_ServerFeature.fromJson(features[i]).toFeature());
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                //GeoJOSN 规范数据类型
+                const format = new GeoJSON_GeoJSON();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else {
+                throw new Error(`features[${i}]'s type is not be supported.`);
             }
-            return featuresTemp;
+
         }
-        //GeoJOSN 规范数据类型
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSON_GeoJSON();
-            return format.read(features, "FeatureCollection");
-        }
-        throw new Error(`features's type is not be supported.`);
+        return featuresTemp;
     }
 
     /**
@@ -77336,34 +77339,30 @@ class HeatMap_HeatMap extends external_ol_default.a.source.ImageCanvas {
      * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(features) {
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSON_GeoJSON();
-            return format.read(features, "FeatureCollection");
+        if (!core_Util_Util.isArray(features)) {
+            features = [features];
         }
-        var featuresTemp = [], geometry, attributes;
-        if (core_Util_Util.isArray(features)) {
-            for (var i = 0, len = features.length; i < len; i++) {
-                if (features[i] instanceof external_ol_default.a.Feature) {
-                    //热点图支支持传入点对象要素
-                    if (features[i].getGeometry() instanceof external_ol_default.a.geom.Point) {
-                        geometry = new Point_Point(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
-                        //固定属性字段为 "Properties"
-                        attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                        featuresTemp.push(new Vector_Vector(geometry, attributes));
-                    }
+        let featuresTemp = [], geometry, attributes;
+        for (let i = 0, len = features.length; i < len; i++) {
+            if (features[i] instanceof external_ol_default.a.Feature) {
+                //热点图支支持传入点对象要素
+                if (features[i].getGeometry() instanceof external_ol_default.a.geom.Point) {
+                    geometry = new Point_Point(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
+                    //固定属性字段为 "Properties"
+                    attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
+                    featuresTemp.push(new Vector_Vector(geometry, attributes));
                 }
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                let format = new GeoJSON_GeoJSON();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else if (features[i].geometry && features[i].geometry.parts) {
+                //iServer服务器返回数据格式
+                featuresTemp.push(ServerFeature_ServerFeature.fromJson(features[i]).toFeature());
+            } else {
+                throw new Error(`Features[${i}]'s type does not match, please check.`);
             }
-            return featuresTemp;
         }
-        if (features instanceof external_ol_default.a.Feature) {
-            if (features.getGeometry() instanceof external_ol_default.a.geom.Point) {
-                geometry = new Point_Point(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
-                attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                featuresTemp.push(new Vector_Vector(geometry, attributes));
-                return featuresTemp;
-            }
-        }
-        throw new Error("Features's type does not match, please check.");
+        return featuresTemp;
     }
 
 }

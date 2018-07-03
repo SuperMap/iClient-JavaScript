@@ -21256,32 +21256,30 @@ var Theme = function () {
     }, {
         key: 'toiClientFeature',
         value: function toiClientFeature(features) {
-            if (_iclientCommon.CommonUtil.isArray(features)) {
-                var featuresTemp = [];
-                for (var i = 0; i < features.length; i++) {
-                    //mapboxgl.supermap.ThemeFeature 类型
-                    if (features[i] instanceof _ThemeFeature.ThemeFeature) {
-                        featuresTemp.push(features[i].toFeature());
-                        continue;
-                    }
+            if (!_iclientCommon.CommonUtil.isArray(features)) {
+                features = [features];
+            }
+
+            var featuresTemp = [];
+            for (var i = 0; i < features.length; i++) {
+                //mapboxgl.supermap.ThemeFeature 类型
+                if (features[i] instanceof _ThemeFeature.ThemeFeature) {
+                    featuresTemp.push(features[i].toFeature());
+                } else if (features[i] instanceof _iclientCommon.GeometryVector) {
                     // 若是 GeometryVector 直接返回
-                    if (features[i] instanceof _iclientCommon.GeometryVector) {
-                        featuresTemp.push(features[i]);
-                        continue;
-                    }
+                    featuresTemp.push(features[i]);
+                } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                    //GeoJOSN 规范数据类型
+                    var format = new _iclientCommon.GeoJSON();
+                    featuresTemp = featuresTemp.concat(format.read(features[i]));
+                } else if (features[i].geometry && features[i].geometry.parts) {
                     //iServer服务器返回数据格式
                     featuresTemp.push(_iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+                } else {
+                    throw new Error('features\'s type is not be supported.');
                 }
-                return featuresTemp;
             }
-
-            //GeoJOSN 规范数据类型
-            if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-                var format = new _iclientCommon.GeoJSON();
-                return format.read(features, "FeatureCollection");
-            }
-
-            throw new Error('features\'s type is not be supported.');
+            return featuresTemp;
         }
 
         /**
@@ -57276,36 +57274,36 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
 
         var _options = options ? options : {};
         /**
-         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.name 
+         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.name
          * @description 图层名字
          */
         _this.name = name;
 
         /**
-         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.id  
+         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.id
          * @description 热力图图层id
          */
         _this.id = _options.id ? _options.id : _iclientCommon.CommonUtil.createUniqueID("HeatMapLayer_");
 
         /**
-         * @member {mapboxgl.Map} mapboxgl.supermap.HeatMapLayer.prototype.map 
+         * @member {mapboxgl.Map} mapboxgl.supermap.HeatMapLayer.prototype.map
          * @description 热力图图层map
          */
         _this.map = _options.map ? _options.map : null;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.loadWhileAnimating=true] 
+         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.loadWhileAnimating=true]
          * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
          */
         _this.loadWhileAnimating = _options.loadWhileAnimating === undefined ? true : _options.loadWhileAnimating;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.visibility=true] 
+         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.visibility=true]
          * @description 图层显示状态属性
          */
         _this.visibility = true;
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.opacity 
+         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.opacity
          * @description 图层透明度，取值范围[0,1]
          */
         _this.opacity = _options.opacity ? _options.opacity : 1;
@@ -57331,7 +57329,7 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
         _this.radius = _options.radius ? _options.radius : 50;
 
         /**
-         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.featureWeight 
+         * @member {string} mapboxgl.supermap.HeatMapLayer.prototype.featureWeight
          * @description 对应 feature 属性中的热点权重字段名称，权重值类型为float
          * @example
          * //feature.attributes中表示权重的字段为height,则在HeatMapLayer的featureWeight参数赋值为"height"
@@ -57343,19 +57341,19 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
         _this.featureWeight = _options.featureWeight ? _options.featureWeight : null;
 
         /**
-         * @member {Array.<SuperMap.Feature.Vector>} mapboxgl.supermap.HeatMapLayer.prototype.features 
+         * @member {Array.<SuperMap.Feature.Vector>} mapboxgl.supermap.HeatMapLayer.prototype.features
          * @description 热点信息数组，记录存储图层上添加的所有热点信息。
          */
         _this.features = [];
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxWeight 
+         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxWeight
          * @description 设置权重最大值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最大值绘制热点图。
          */
         _this.maxWeight = null;
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.minWeight 
+         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.minWeight
          * @description 设置权重最小值。如果不设置此属性，将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
          */
         _this.minWeight = null;
@@ -57379,32 +57377,32 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
         _this.EVENT_TYPES = ["featuresadded", "featuresremoved", "featuresdrawcompleted"];
 
         /**
-         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.supported=false] 
+         * @member {boolean} [mapboxgl.supermap.HeatMapLayer.prototype.supported=false]
          * @description 当前浏览器是否支持canvas绘制，
          *              决定了热点图是否可用，内部判断使用。
          */
         _this.supported = false;
 
         /**
-         * @member {Object} mapboxgl.supermap.HeatMapLayer.prototype.rootCanvas 
+         * @member {Object} mapboxgl.supermap.HeatMapLayer.prototype.rootCanvas
          * @description 热点图主绘制面板。
          */
         _this.rootCanvas = null;
 
         /**
-         * @member {Object} mapboxgl.supermap.HeatMapLayer.prototype.canvasContext 
+         * @member {Object} mapboxgl.supermap.HeatMapLayer.prototype.canvasContext
          * @description 热点图主绘制对象。
          */
         _this.canvasContext = null;
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxWidth 
+         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxWidth
          * @description 当前绘制面板宽度。和当前 map 窗口宽度一致。
          */
         _this.maxWidth = null;
 
         /**
-         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxHeight 
+         * @member {number} mapboxgl.supermap.HeatMapLayer.prototype.maxHeight
          * @description 当前绘制面板宽度。和当前 map 窗口高度一致。
          */
         _this.maxHeight = null;
@@ -57772,17 +57770,32 @@ var HeatMapLayer = exports.HeatMapLayer = function (_mapboxgl$Evented) {
         /**
          * @function mapboxgl.supermap.HeatMapLayer.prototype.toiClientFeature
          * @description 转为 iClient 要素
-         * @param {Object} feature - 待添加的要素数组，支持 GeoJOSN 规范数据类型
+         * @param {Object} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型
          */
 
     }, {
         key: 'toiClientFeature',
-        value: function toiClientFeature(feature) {
-            if (["FeatureCollection", "Feature", "Geometry"].indexOf(feature.type) != -1) {
-                var format = new _iclientCommon.GeoJSON();
-                return format.read(feature, "FeatureCollection");
+        value: function toiClientFeature(features) {
+            if (!_iclientCommon.CommonUtil.isArray(features)) {
+                features = [features];
             }
-            throw new Error("Features's type does not match, please check.");
+            var featuresTemp = [];
+            for (var i = 0; i < features.length; i++) {
+                if (features[i] instanceof _iclientCommon.GeometryVector) {
+                    // 若是 GeometryVector 直接返回
+                    featuresTemp.push(features[i]);
+                } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                    //GeoJOSN 规范数据类型
+                    var format = new _iclientCommon.GeoJSON();
+                    featuresTemp = featuresTemp.concat(format.read(features[i]));
+                } else if (features[i].geometry && features[i].geometry.parts) {
+                    //iServer服务器返回数据格式
+                    featuresTemp.push(_iclientCommon.ServerFeature.fromJson(features[i]).toFeature());
+                } else {
+                    throw new Error('Features[' + i + ']\'s type does not match, please check.');
+                }
+            }
+            return featuresTemp;
         }
 
         /**

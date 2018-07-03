@@ -71654,34 +71654,35 @@ var ThemeLayer = external_L_default.a.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
      * @param {L.supermap.themeFeature|Object} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
-     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     * @return {Array.<SuperMap.Feature.Vector>} 转换后的iClient要素
      */
     toiClientFeature: function (features) {
-        if (Util.isArray(features)) {
-            var featuresTemp = [];
-            for (let i = 0; i < features.length; i++) {
-                //L.supermap.themeFeature 数据类型
-                if (features[i] instanceof ThemeFeature) {
-                    featuresTemp.push(features[i].toFeature());
-                    continue;
-                }
-                // 若是 GeometryVector 直接返回
-                if (features[i] instanceof Vector_Vector) {
-                    featuresTemp.push(features[i]);
-                    continue;
-                }
-                //iServer服务器返回数据格式
-                featuresTemp.push(ServerFeature_ServerFeature.fromJson(features[i]).toFeature());
-            }
-            return featuresTemp;
-        }
-        //GeoJOSN 规范数据类型
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSON_GeoJSON();
-            return format.read(features, "FeatureCollection");
+        //若 features 非数组形式 feature 则先做以下处理：
+        if (!Util.isArray(features)) {
+            features = [features];
         }
 
-        throw new Error(`features's type is not be supported.`);
+        let featuresTemp = [];
+        for (let i = 0; i < features.length; i++) {
+            //L.supermap.themeFeature 数据类型
+            if (features[i] instanceof ThemeFeature) {
+                featuresTemp.push(features[i].toFeature());
+            } else if (features[i] instanceof Vector_Vector) {
+                // 若是 GeometryVector 类型直接返回
+                featuresTemp.push(features[i]);
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                //GeoJOSN 规范数据类型
+                const format = new GeoJSON_GeoJSON();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else if (features[i].geometry && features[i].geometry.parts) {
+                //iServer服务器返回数据格式 todo 暂未找到更好的参数判断，暂用 geometry.parts 试用
+                featuresTemp.push(ServerFeature_ServerFeature.fromJson(features[i]).toFeature());
+            } else {
+                throw new Error(`features[${i}]'s type is not be supported.`);
+            }
+
+        }
+        return featuresTemp;
     },
 
     /**
@@ -80723,23 +80724,26 @@ var HeatMapLayer = external_L_default.a.Layer.extend({
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature: function (features) {
-        //支持传入geojson类型
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSON_GeoJSON();
-            return format.read(features, "FeatureCollection");
+        if (!external_L_default.a.Util.isArray(features)) {
+            features = [features];
         }
-        //支持传入ThemeFeature类型,ThemeFeature.geometry instanceof L.LatLng | ThemeFeature.geometry instanceof L.Point
-        if (external_L_default.a.Util.isArray(features)) {
-            var featuresTemp = [];
-            for (var i = 0, len = features.length; i < len; i++) {
-                //支持ThemeFeature类型的feature
-                if (features[i] instanceof HeatMapFeature) {
-                    featuresTemp.push(features[i].toFeature());
-                }
+        let featuresTemp = [];
+        for (let i = 0, len = features.length; i < len; i++) {
+            //支持ThemeFeature类型的feature
+            //支持传入ThemeFeature类型,ThemeFeature.geometry instanceof L.LatLng | ThemeFeature.geometry instanceof L.Point
+            if (features[i] instanceof HeatMapFeature) {
+                featuresTemp.push(features[i].toFeature());
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                const format = new GeoJSON_GeoJSON();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else if (features[i].geometry && features[i].geometry.parts) {
+                //iServer服务器返回数据格式 todo 暂未找到更好的参数判断，暂用 geometry.parts 试用
+                featuresTemp.push(ServerFeature_ServerFeature.fromJson(features[i]).toFeature());
+            } else {
+                throw new Error("Features's type does not match, please check.");
             }
-            return featuresTemp;
         }
-        throw new Error("Features's type does not match, please check.");
+        return featuresTemp;
     },
 
     _zoomAnim: function (e) {

@@ -2,6 +2,7 @@ import L from "leaflet";
 import {
     CommonUtil,
     GeometryPoint,
+    ServerFeature,
     GeometryVector as Vector,
     GeoJSON as GeoJSONFormat,
     LonLat,
@@ -493,23 +494,26 @@ export var HeatMapLayer = L.Layer.extend({
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature: function (features) {
-        //支持传入geojson类型
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(features.type) != -1) {
-            var format = new GeoJSONFormat();
-            return format.read(features, "FeatureCollection");
+        if (!L.Util.isArray(features)) {
+            features = [features];
         }
-        //支持传入ThemeFeature类型,ThemeFeature.geometry instanceof L.LatLng | ThemeFeature.geometry instanceof L.Point
-        if (L.Util.isArray(features)) {
-            var featuresTemp = [];
-            for (var i = 0, len = features.length; i < len; i++) {
-                //支持ThemeFeature类型的feature
-                if (features[i] instanceof HeatMapFeature) {
-                    featuresTemp.push(features[i].toFeature());
-                }
+        let featuresTemp = [];
+        for (let i = 0, len = features.length; i < len; i++) {
+            //支持ThemeFeature类型的feature
+            //支持传入ThemeFeature类型,ThemeFeature.geometry instanceof L.LatLng | ThemeFeature.geometry instanceof L.Point
+            if (features[i] instanceof HeatMapFeature) {
+                featuresTemp.push(features[i].toFeature());
+            } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
+                const format = new GeoJSONFormat();
+                featuresTemp = featuresTemp.concat(format.read(features[i]));
+            } else if (features[i].geometry && features[i].geometry.parts) {
+                //iServer服务器返回数据格式 todo 暂未找到更好的参数判断，暂用 geometry.parts 试用
+                featuresTemp.push(ServerFeature.fromJson(features[i]).toFeature());
+            } else {
+                throw new Error("Features's type does not match, please check.");
             }
-            return featuresTemp;
         }
-        throw new Error("Features's type does not match, please check.");
+        return featuresTemp;
     },
 
     _zoomAnim: function (e) {
