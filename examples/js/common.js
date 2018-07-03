@@ -31,6 +31,9 @@
             return;
         }
         var version = getVersion();
+        if (window.preRelease) {
+            version = window.preRelease;
+        }
         var versionText = version ? "" + version : "&nbsp;";
         $('#version').html(versionText);
     }
@@ -93,10 +96,10 @@
             }
 
         }
-        if ((window.location.origin + window.location.pathname+hash) === href+hash) {
+        if ((window.location.origin + window.location.pathname + hash) === href + hash) {
             return;
         }
-        window.location = href+hash;
+        window.location = href + hash;
     }
 
     function getCommonScriptPath() {
