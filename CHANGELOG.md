@@ -37,7 +37,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
@@ -120,7 +120,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
@@ -191,7 +191,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
@@ -230,7 +230,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
