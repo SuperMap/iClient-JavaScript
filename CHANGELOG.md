@@ -48,6 +48,10 @@
 
 - `L.Proj.CRS` 增加 `options.dpi` 参数，支持自定义dpi
 
+- iServer - 数据
+
+  - `SuperMap.GetFeaturesParametersBase` 增加 `aggregations` 参数，增加 `SuperMap.AggQueryBuilderParameter` `SuperMap.AggregationParameter` `SuperMap.FilterAggParameter` `SuperMap.GeoBoundingBoxQueryBuilderParameter` `SuperMap.GeoHashGridAggParameter`类,支持聚合查询
+
 - iServer - 空间分析
 
   - `L.supermap.spatialAnalystService` 增加 `geometrybatchAnalysis` 接口，支持 Geometry 批量空间分析
@@ -62,7 +66,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.search`的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
@@ -135,6 +139,10 @@
 
 - `SuperMap.Format.GeoJSON` 支持 iServer 数据类型 "RECTANGLE"
 
+- iServer - 数据
+
+  - `SuperMap.GetFeaturesParametersBase` 增加 `aggregations` 参数，增加 `SuperMap.AggQueryBuilderParameter` `SuperMap.AggregationParameter` `SuperMap.FilterAggParameter` `SuperMap.GeoBoundingBoxQueryBuilderParameter` `SuperMap.GeoHashGridAggParameter`类,支持聚合查询
+
 - iServer - 空间分析
 
     - `ol.supermap.spatialAnalystService` 增加 `geometrybatchAnalysis` 接口，支持 Geometry 批量空间分析
@@ -145,7 +153,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.search` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
@@ -206,6 +214,10 @@
 
 - `SuperMap.Format.GeoJSON` 支持 iServer 数据类型 "RECTANGLE"
 
+- iServer - 数据
+
+  - `SuperMap.GetFeaturesParametersBase` 增加 `aggregations` 参数，增加 `SuperMap.AggQueryBuilderParameter` `SuperMap.AggregationParameter` `SuperMap.FilterAggParameter` `SuperMap.GeoBoundingBoxQueryBuilderParameter` `SuperMap.GeoHashGridAggParameter`类,支持聚合查询
+
 - iServer - 空间分析
 
   - `mapboxgl.supermap.spatialAnalystService` 增加 `geometrybatchAnalysis` 接口，支持 Geometry 批量空间分析
@@ -216,7 +228,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.search` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
@@ -255,7 +267,7 @@
 
 - ElasticSearch
 
-  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` 的 `callback` 参数
+  - 废弃 `SuperMap.ElasticSearch` 的 `options.change` 参数,直接使用 `SuperMap.ElasticSearch.msearch` `SuperMap.ElasticSearch.search` 的 `callback` 参数
 
   - `SuperMap.ElasticSearch` 的 `update` 方法新增 `callback` 参数
 
