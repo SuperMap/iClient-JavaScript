@@ -1,4 +1,29 @@
-# *Next release*
+# 9.1.0 (2018-7-7) #
+
+## 新特性
+
+### 渲染性能再升级
+
+- 高效率点图层GraphicLayer支持数据量由之前的30万提升至100万，相较9.0版本有了3倍以上的性能提升，100万点数据可在1秒内完成渲染；同时，新增支持任意带经纬度的点数据格式，例如GeoJSON，TopoJSON，二维表等多种格式，同时可以实时改变点的样式，并支持交互操作如根据属性筛选和过滤和鼠标事件。
+
+- 实时数据图层DataFlowLayer增了MapV引擎，大幅提高了绘制Marker的性能，对于矢量点的渲染数据量由之前的1万提示至10万，对于栅格图片的渲染数据量由之前的3000提升至1万。
+
+### 对接最新ECharts，渲染千万级数据
+
+- ECharts在今年1月发布了最新的版本4.0，新版本最大的亮点是支持了千万级数据的可视化渲染，通过对数据进行分块后加载，不需要漫长地等待所有数据加载完再进行绘制，以增量渲染的方式对数据进行可视化，从而提升性能。我们对EChartsLayer也同时进行了升级，已让Leaflet、OpenLayers、MapboxGL地图库都支持了ECharts 4.0的增量渲染能力。
+
+### MVT矢量瓦片细节优化
+
+- OpenLayers地图库的三方插件对于MVT矢量瓦片的特性支持的不够完美，9.1(2018) alpha版本里我们做了很多细节优化并增加了新特性，例如：支持面填充、支持文字标签避让、优化中文沿线标注、支持自定义字体、解决多面丢失、优化了渲染性能等，从而让OpenLayers拥有了可以媲美MapboxGL对MVT矢量瓦片的渲染效果，同时还支持除3857以外的其它任意标准坐标系。
+
+### 更多优秀的可视化特效
+
+- 9.0版本为我们带来了很多炫酷的可视化效果，9.1(2018) alpha版本在这方面继续加强，新增集成了echarts / echartsgl / deck.gl可视化库的更多特效和范例。
+
+### API文档优化
+
+- 9.1(2018) alpha版本还对API文档进行了大幅优化，极大的提升了文档的可读性，现在您可以快速导航，轻松了解接口说明和使用范例，欢迎的您的随时访问。
+
 
 ## API changes
 
@@ -290,6 +315,7 @@
 
 - 修复 `SuperMap.Layer.MapVLayer` 加载大量数据图层过于卡顿问题
 
+
 ## Examples
 
 - 所有示例国际化，支持中英文
@@ -388,7 +414,6 @@
   
   - 新增 “迁徙图” 以及 “面” 示例
 
-
 ### for MapboxGL
 
 - iServer - 空间分析
@@ -423,6 +448,7 @@
   
   - 修复 “最佳路径分析” 示例路径线截断的问题
 
+
 ## Web Site &amp;&amp; Docs
 
 - 站点页面底部添加联系方式
@@ -431,7 +457,9 @@
 
 - 优化 API 内容
 
+
 ## Code Quality
+
 
 ## Project
 - 新增ISSUE模板
@@ -441,9 +469,12 @@
   - 提出css，方便单独引用
   - 增加dist文件夹
 
+
 ## Pull Request
 - [https://github.com/boundlessgeo/ol-mapbox-style/pull/83](https://github.com/boundlessgeo/ol-mapbox-style/pull/83)
 - [https://github.com/boundlessgeo/ol-mapbox-style/pull/76](https://github.com/boundlessgeo/ol-mapbox-style/pull/76)
+
+
 
 # 9.0.1 (2017-12-27) #
 
