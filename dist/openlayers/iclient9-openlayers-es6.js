@@ -63801,7 +63801,7 @@ var MapExtend = function () {
 
     external_ol_default.a.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options) {
 
-        //如果满足高性能图层选取要求优先返回高性能图层选中结果
+        //如果满足高效率图层选取要求优先返回高效率图层选中结果
         const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {
             return true;
         };
@@ -68404,12 +68404,11 @@ external_ol_default.a.supermap.WebMap = WebMap_WebMap;
 class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
 
     constructor(url, options) {
-        super(url, options);
         options = options || {};
         if (options.projection) {
-            this.options.prjCoordSys = options.projection;
+            options.prjCoordSys = options.projection;
         }
-        ServiceBase_ServiceBase.call(this, url, options);
+        super(url, options);
         this.dataFlow = new DataFlowService_DataFlowService(url, options);
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,

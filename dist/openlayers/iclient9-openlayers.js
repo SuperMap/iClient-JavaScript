@@ -30371,13 +30371,13 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
     function DataFlowService(url, options) {
         _classCallCheck(this, DataFlowService);
 
-        var _this = _possibleConstructorReturn(this, (DataFlowService.__proto__ || Object.getPrototypeOf(DataFlowService)).call(this, url, options));
-
         options = options || {};
         if (options.projection) {
-            _this.options.prjCoordSys = options.projection;
+            options.prjCoordSys = options.projection;
         }
-        _ServiceBase2.ServiceBase.call(_this, url, options);
+
+        var _this = _possibleConstructorReturn(this, (DataFlowService.__proto__ || Object.getPrototypeOf(DataFlowService)).call(this, url, options));
+
         _this.dataFlow = new _iclientCommon.DataFlowService(url, options);
         _this.dataFlow.events.on({
             "broadcastSocketConnected": _this._defaultEvent,
@@ -33859,7 +33859,7 @@ var MapExtend = exports.MapExtend = function () {
 
     _openlayers2.default.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options) {
 
-        //如果满足高性能图层选取要求优先返回高性能图层选中结果
+        //如果满足高效率图层选取要求优先返回高效率图层选中结果
         var layerFilter = opt_options && opt_options.layerFilter ? opt_options.layerFilter : function () {
             return true;
         };

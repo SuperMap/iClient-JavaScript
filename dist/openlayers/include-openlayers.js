@@ -67,10 +67,12 @@
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
-            if (supportES6()) {
-                inputScript("../../dist/openlayers/iclient9-openlayers-es6.min.js");
-            } else {
-                inputScript("../../dist/openlayers/iclient9-openlayers.min.js");
+            if (!inArray(excludes, 'iclient9-openlayers')) {
+                if (supportES6()) {
+                    inputScript("../../dist/openlayers/iclient9-openlayers-es6.js");
+                } else {
+                    inputScript("../../dist/openlayers/iclient9-openlayers.js");
+                }
             }
         }
         if (!inArray(excludes, 'iclient9-openlayers-css')) {
