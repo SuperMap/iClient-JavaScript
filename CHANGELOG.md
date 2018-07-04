@@ -6,7 +6,7 @@
 
 - 高效率点图层GraphicLayer支持数据量由之前的30万提升至100万，相较9D版本有了3倍以上的性能提升，100万点数据可在1秒内完成渲染；同时，新增支持任意带经纬度的点数据格式，例如GeoJSON，TopoJSON，二维表等多种格式，同时可以实时改变点的样式，并支持交互操作如根据属性筛选和过滤和鼠标事件。
 
-![Overview](http://iclient.supermap.io/web/img/newfeatures/910/1.png)
+![Overview](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-1.png)
 
 - 实时数据图层DataFlowLayer增了MapV引擎，大幅提高了绘制Marker的性能，对于矢量点的渲染数据量由之前的1万提升至10万，对于栅格图片的渲染数据量由之前的3000提升至1万。
 
