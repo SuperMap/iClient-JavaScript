@@ -1,5 +1,5 @@
-var olapi = "https://openlayers.org/en/latest/apidoc/";
-var lfapi = "http://leafletjs.com/reference-1.2.0.html";
+var olapi = "https://openlayers.org/en/v4.6.5/apidoc/";
+var lfapi = "http://leafletjs.com/reference-1.3.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var typeLinks = {
     //openlayers
