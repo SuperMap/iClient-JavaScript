@@ -36,10 +36,13 @@
         var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
         try {
             (new Function(code))();
-            return true;
         } catch (err) {
             return false;
         }
+        if (!Array.from) {
+            return false;
+        }
+        return true;
     }
 
     //加载类库资源文件
@@ -59,7 +62,7 @@
         if (inArray(includes, 'ol-mapbox-style')) {
             inputScript("http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js");
         }
-        
+
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
@@ -80,7 +83,7 @@
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript("http://iclient.supermap.io/libs/openlayers/ol3-echarts/1.3.4/ol3Echarts.min.js");
-        }    
+        }
         if (inArray(includes, 'osmbuildings')) {
             inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");
         }
@@ -94,7 +97,7 @@
             inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.css");
             inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol-layerswitcher/2.0.0/ol-layerswitcher.js");
         }
-       
+
     }
 
     load();

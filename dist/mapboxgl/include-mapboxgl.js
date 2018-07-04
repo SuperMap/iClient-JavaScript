@@ -1,6 +1,7 @@
 ﻿(function () {
     var r = new RegExp("(^|(.*?\\/))(include-mapboxgl\.js)(\\?|$)"),
-        s = document.getElementsByTagName('script'), targetScript;
+        s = document.getElementsByTagName('script'),
+        targetScript;
     for (var i = 0; i < s.length; i++) {
         var src = s[i].getAttribute('src');
         if (src) {
@@ -35,10 +36,13 @@
         var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
         try {
             (new Function(code))();
-            return true;
         } catch (err) {
             return false;
         }
+        if (!Array.from) {
+            return false;
+        }
+        return true;
     }
 
     //加载类库资源文件
@@ -67,7 +71,7 @@
         if (inArray(includes, 'three')) {
             inputScript("https://cdn.bootcss.com/three.js/92/three.min.js");
         }
-        if(inArray(includes,'deck')){
+        if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
@@ -79,21 +83,21 @@
                 }
             }
         }
-        if(inArray(includes,'LoaderSupport')){
+        if (inArray(includes, 'LoaderSupport')) {
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderCommons.js");
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderBuilder.js");
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/LoaderWorkerSupport.js");
         }
-        if(inArray(includes,'OBJLoader')){
+        if (inArray(includes, 'OBJLoader')) {
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/OBJLoader.js");
         }
-        if(inArray(includes,'OBJLoader2')){
+        if (inArray(includes, 'OBJLoader2')) {
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/OBJLoader2.js");
         }
-        if(inArray(includes,'MTLLoader')){
+        if (inArray(includes, 'MTLLoader')) {
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/MTLLoader.js");
         }
-        if(inArray(includes,'GLTFLoader')){
+        if (inArray(includes, 'GLTFLoader')) {
             inputScript("http://iclient.supermap.io/libs/three/plugins/loaders/GLTFLoader.js");
         }
         if (inArray(includes, 'proj4')) {

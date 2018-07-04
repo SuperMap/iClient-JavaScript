@@ -1,6 +1,7 @@
 (function () {
     var r = new RegExp("(^|(.*?\\/))(include-classic\.js)(\\?|$)"),
-        s = document.getElementsByTagName('script'), targetScript;
+        s = document.getElementsByTagName('script'),
+        targetScript;
     for (var i = 0; i < s.length; i++) {
         var src = s[i].getAttribute('src');
         if (src) {
@@ -35,10 +36,13 @@
         var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
         try {
             (new Function(code))();
-            return true;
         } catch (err) {
             return false;
         }
+        if (!Array.from) {
+            return false;
+        }
+        return true;
     }
 
     //加载类库资源文件
