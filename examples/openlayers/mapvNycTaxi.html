@@ -31,7 +31,8 @@
         })
     });
 
-    var url = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,

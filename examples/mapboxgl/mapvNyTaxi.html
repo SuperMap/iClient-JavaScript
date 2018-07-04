@@ -29,7 +29,8 @@
         "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span> " + resources.text_dataSources +
         " <a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2017 " + resources.title_3baidu + " MapV";
-    var tileURL = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light/zxyTileImage.png?z={z}&x={x}&y={y}";
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var layer,
         map = new mapboxgl.Map({
             container: 'map',
