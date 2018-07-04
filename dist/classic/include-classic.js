@@ -70,12 +70,10 @@
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/heatmap.css");
         }
         if (!inArray(excludes, 'iclient-classic')) {
-            if (!inArray(excludes, 'iclient-classic')) {
-                if (supportES6()) {
-                    inputScript("../../dist/classic/iclient-classic-es6.min.js");
-                } else {
-                    inputScript("../../dist/classic/iclient-classic.min.js");
-                }
+            if (supportES6()) {
+                inputScript("../../dist/classic/iclient-classic-es6.min.js");
+            } else {
+                inputScript("../../dist/classic/iclient-classic.min.js");
             }
         }
         if (inArray(includes, 'tianditu')) {
