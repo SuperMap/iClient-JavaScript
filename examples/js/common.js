@@ -27,9 +27,6 @@
 
     //设置头部版本号
     function setCurrentVersion() {
-        if (window.isLocal) {
-            return;
-        }
         var version = getVersion();
         if (!version && window.preRelease) {
             version = window.preRelease;
