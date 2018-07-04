@@ -136,6 +136,7 @@
         }
         if (inArray(includes, 'sticklr')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/jquery-sticklr.css");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/icon.css");
         }
         if (inArray(includes, 'responsive')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");

@@ -24,12 +24,11 @@ export class DataFlowService extends ServiceBase {
 
 
     constructor(url, options) {
-        super(url, options);
         options = options || {};
         if (options.projection) {
-            this.options.prjCoordSys = options.projection;
+            options.prjCoordSys = options.projection;
         }
-        ServiceBase.call(this, url, options);
+        super(url, options);
         this.dataFlow = new DataFlow(url, options);
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,

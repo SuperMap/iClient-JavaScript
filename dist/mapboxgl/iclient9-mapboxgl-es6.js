@@ -67345,12 +67345,11 @@ class services_DataFlowService_DataFlowService extends ServiceBase_ServiceBase {
 
 
     constructor(url, options) {
-        super(url, options);
         options = options || {};
         if (options.projection) {
-            this.options.prjCoordSys = options.projection;
+            options.prjCoordSys = options.projection;
         }
-        ServiceBase_ServiceBase.call(this, url, options);
+        super(url, options);
         this.dataFlow = new DataFlowService_DataFlowService(url, options);
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
