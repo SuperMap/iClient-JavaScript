@@ -99,11 +99,11 @@
             inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
         }
         if (inArray(includes, 'leaflet.draw')) {
-            inputCSS("http://cdn.bootcss.com/leaflet.draw/1.0.2/leaflet.draw.css");
+            inputCSS("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.draw/1.0.2/leaflet.draw.css");
             inputScript("http://cdn.bootcss.com/leaflet.draw/1.0.2/leaflet.draw.js");
         }
         if (inArray(includes, 'leaflet.pm')) {
-            inputCSS("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.pm/0.25.0/leaflet.pm.min.css");
+            inputCSS("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.pm/0.25.0/leaflet.pm.css");
             inputScript("http://iclient.supermap.io/web/libs/leaflet/plugins/leaflet.pm/0.25.0/leaflet.pm.min.js");
         }
         if (inArray(includes, 'leaflet.miniMap')) {
