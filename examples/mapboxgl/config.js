@@ -564,6 +564,7 @@ var exampleConfig = {
                 }, {
                     name: "纽约城市建筑变化图",
                     name_en: "New York Construction",
+                    localIgnore: true,
                     thumbnail: "mb_deckgl_nyBuilding.png",
                     fileName: "deckglLayer_nyBuilding"
                 }, {
