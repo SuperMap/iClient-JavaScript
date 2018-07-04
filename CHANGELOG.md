@@ -95,9 +95,9 @@
 
   - `SuperMap.ThemeStyle` 的参数 `strokeDashstyle` 支持类型 `dashot` 更改为 `dashdot`
 
-- 可视化 - 高性能点图层
+- 可视化 - 高效率点图层
 
-  - 高性能点图层 `L.supermap.GraphicLayer` 
+  - 高效率点图层 `L.supermap.GraphicLayer` 
 
     - 支持`webgl`渲染，`options` 新增 `render` 参数,可选值为 `canvas` , `webgl`，默认为 `canvas`
 
@@ -111,7 +111,7 @@
     
     - 增加 `removeGraphics` 接口，支持移除所有要素
 
-  - 高性能点图层要素类 `L.supermap.Graphic`
+  - 高效率点图层要素类 `L.supermap.Graphic`
 
     - 废弃 `setCanvas` 和 `getCanvas` 接口，改用 `setStyle` 和 `getStyle` 接口
 
@@ -180,9 +180,9 @@
 
   - `SuperMap.ThemeStyle` 的参数 `strokeDashstyle` 支持类型 `dashot` 更改为 `dashdot`
 
-- 可视化 - 高性能点图层
+- 可视化 - 高效率点图层
 
-  - 高性能点图层源 `ol.source.Graphic` 
+  - 高效率点图层源 `ol.source.Graphic` 
 
     - 支持`webgl`渲染，`options` 新增 `render` 参数,可选值为 `canvas` , `webgl`，默认为 `canvas`
 
@@ -198,7 +198,7 @@
     
     - 增加 `removeGraphics` 接口，支持移除所有要素
 
-  - 高性能点图层要素类 `ol.Graphic`
+  - 高效率点图层要素类 `ol.Graphic`
 
     - `options` 新增参数 `attributes` ,支持设置要素属性
 
@@ -259,9 +259,9 @@
 
   - `SuperMap.ThemeStyle` 参数 `strokeDashstyle` 类型 `dashot` 更改为 `dashdot`
 
-- 可视化 - 高性能点图层
+- 可视化 - 高效率点图层
 
-  - 新增高性能点图层 `mapboxgl.supermap.GraphicLayer`
+  - 新增高效率点图层 `mapboxgl.supermap.GraphicLayer`
 
 - 可视化 - threejs
 
@@ -299,7 +299,7 @@
 - 修复缓冲区分析SRID参数不可用问题
 - 修复 `L.supermap.mapVLayer` 加载大量数据图层过于卡顿问题
 - 优化 `L.supermap.echartsLayer` 图层性能
-- 修复 `L.supermap.graphicLayer` 高性能图层大数据量内存性能问题
+- 修复 `L.supermap.graphicLayer` 高效率图层大数据量内存性能问题
 - 修复 `L.supermap.mapVLayer`的 `cleardata` 方法失败的问题
 - 修复 `L.supermap.mapVLayer` 在浏览器缩放比例非100%时，要素偏移，点击事件获取不到要素的问题
 - 修复`L.supermap.themeFeature` 的 `geometry` 不支持传入`L.CircleMarker` `L.Circle`的问题
@@ -315,7 +315,7 @@
 - 修复 `ol.source.TileSuperMapRest` 的 `redirect` 参数默认为 `false` 但运行为 `true` 的问题
 - 修复缓冲区分析SRID参数不可用问题
 - 修复 `ol.source.Mapv` 加载大量数据图层过于卡顿问题
-- 修复 `ol.source.Graphic` 高性能图层大数据量内存性能问题
+- 修复 `ol.source.Graphic` 高效率图层大数据量内存性能问题
 - 修复 `ol.source.Mapv` 在浏览器缩放比例非100%时，要素偏移，点击事件获取不到要素的问题
 
 ### for MapboxGL
@@ -392,7 +392,7 @@
 
   - 新增  “车辆监控模拟” 示例
   
-  - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
+  - 新增 增量高效率图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
 
 - 可视化 - MapV
   
@@ -428,7 +428,7 @@
   
   - 新增 “2018年2月北京房价信息” 示例
   
-  - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
+  - 新增 增量高效率图层示例，包括 “北京道路网络图” 、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
   
   - 新增 “车辆监控模拟” 示例
 
@@ -450,7 +450,7 @@
 
 - 新增 可视化 - threejs  分类及示例
 
-- 新增 可视化 - 高性能点图层  分类及示例
+- 新增 可视化 - 高效率点图层  分类及示例
 
 - 可视化 - MapV
   
@@ -460,7 +460,7 @@
 
 - 可视化 - ECharts
   
-  - 新增 增量高性能图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
+  - 新增 增量高效率图层示例，包括 “北京道路网络图” 、“纽约出租车上车点分布图”、“全国铁路网络图” 、“全国水系图” 以及 “全国道路网络图”
   
   - 新增 “车辆监控模拟” 示例
 

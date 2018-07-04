@@ -705,7 +705,7 @@ window.examplesResources = {
         "text_layer": "图层",
         "text_createSuccess": "创建成功",
         "text_deleteSuccess": "删除成功",
-        "text_performanceLayer": "高性能标绘图层：",
+        "text_performanceLayer": "高效率标绘图层：",
         "text_performancePlottingLayer": "标绘图层：",
         "text_loadingData": "正在加载数据,请稍等......",
         "text_keyword": "关键字：",

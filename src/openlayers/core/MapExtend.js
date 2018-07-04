@@ -10,7 +10,7 @@ export var MapExtend = function () {
 
     ol.Map.prototype.forEachFeatureAtPixel = function (pixel, callback, opt_options) {
 
-        //如果满足高性能图层选取要求优先返回高性能图层选中结果
+        //如果满足高效率图层选取要求优先返回高效率图层选中结果
         const layerFilter = (opt_options && opt_options.layerFilter) ? opt_options.layerFilter : () => {
             return true;
         };
