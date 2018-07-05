@@ -65461,11 +65461,8 @@ var GraphicCanvasRenderer = exports.GraphicCanvasRenderer = _leaflet2["default"]
                 style = this.defaultStyle;
             }
             if (style.img) {
-                var anchor = style.anchor;
                 p1 = _leaflet2["default"].point(center.x - style.img.width / 2, center.y - style.img.height / 2);
                 p2 = _leaflet2["default"].point(center.x + style.img.width / 2, center.y + style.img.height / 2);
-                p1 = calculateOffset(p1, anchor);
-                p2 = calculateOffset(p2, anchor);
             } else {
                 p1 = _leaflet2["default"].point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = _leaflet2["default"].point(center.x + style.width / 2, center.y + style.height / 2);
@@ -65537,6 +65534,8 @@ _leaflet2["default"].Canvas.include({
             ac = _leaflet2["default"].point(style.anchor);
         point = [pt.x - ac.x, pt.y - ac.y];
 
+        //参数分别为：图片，图片裁剪下x,y位置，裁剪长宽，放置在画布的位置x,y, 占取画布长宽
+        //ctx.drawImage(style.img, 0, 0, width, height, point[0], point[1], width, height);
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
@@ -66542,6 +66541,10 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
     onRemove: function onRemove() {
         // 销毁echarts实例
         this._ec.dispose();
+        _leaflet2["default"].DomUtil.remove(this._echartsContainer);
+        this._map.off("zoomend", this._oldZoomEndHandler);
+        this._map.off(this.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
+        this._map.off('resize', this._resizeHandler);
     },
 
     _initEchartsContainer: function _initEchartsContainer() {
@@ -66556,12 +66559,16 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
         this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
         var me = this;
-        this._map.on('resize', function (e) {
+
+        function _resizeHandler(e) {
             var size = e.newSize;
             me._echartsContainer.style.width = size.x + 'px';
             me._echartsContainer.style.height = size.y + 'px';
             me._ec.resize();
-        });
+        }
+
+        this._map.on('resize', _resizeHandler);
+        this._resizeHandler = _resizeHandler;
     }
 
 });
@@ -66571,7 +66578,6 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
  * @private
  * @classdesc 地图坐标系统类
  * @param {L.map} leafletMap - 地图
- * @param {Object} api - 接口
  */
 function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;
@@ -72161,7 +72167,7 @@ module.exports = function (proj4) {
 /* 387 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 388 */

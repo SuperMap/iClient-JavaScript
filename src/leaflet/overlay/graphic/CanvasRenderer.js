@@ -44,11 +44,8 @@ export var GraphicCanvasRenderer = L.Class.extend({
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor;
                 p1 = L.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
                 p2 = L.point(center.x + style.img.width / 2, center.y + style.img.height / 2);
-                p1 = calculateOffset(p1, anchor);
-                p2 = calculateOffset(p2, anchor);
             } else {
                 p1 = L.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
@@ -119,6 +116,8 @@ L.Canvas.include({
             ac = L.point(style.anchor);
         point = [pt.x - ac.x, pt.y - ac.y];
 
+        //参数分别为：图片，图片裁剪下x,y位置，裁剪长宽，放置在画布的位置x,y, 占取画布长宽
+        //ctx.drawImage(style.img, 0, 0, width, height, point[0], point[1], width, height);
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 

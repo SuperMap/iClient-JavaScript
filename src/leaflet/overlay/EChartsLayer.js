@@ -13,7 +13,7 @@ import Attributions from '../core/Attributions'
  * @param {string} options.attribution - 版权信息。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  */
-export var EchartsLayer = L.Layer.extend({
+export const EchartsLayer = L.Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -38,10 +38,10 @@ export var EchartsLayer = L.Layer.extend({
      * @param {string} lazyUpdate - 后台自动更新
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate) {
-        var baseOption = echartsOptions.baseOption || echartsOptions;
+        const baseOption = echartsOptions.baseOption || echartsOptions;
         baseOption.LeafletMap = baseOption.LeafletMap || {
             roam: true
-        }
+        };
         baseOption.animation = baseOption.animation === true;
         this._echartsOptions = echartsOptions;
         this._ec && this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
@@ -67,7 +67,7 @@ export var EchartsLayer = L.Layer.extend({
         this._initEchartsContainer();
         this._ec = echarts.init(this._echartsContainer);
         echarts.leafletMap = map;
-        var me = this;
+        const me = this;
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
@@ -96,31 +96,31 @@ export var EchartsLayer = L.Layer.extend({
         echarts.extendComponentView({
             type: 'LeafletMap',
             render: function (LeafletMapModel, ecModel, api) {
-                var rendering = true;
-                var leafletMap = echarts.leafletMap;
-                var viewportRoot = api.getZr().painter.getViewportRoot();
+                let rendering = true;
+                const leafletMap = echarts.leafletMap;
+                const viewportRoot = api.getZr().painter.getViewportRoot();
 
-                var animated = leafletMap.options.zoomAnimation && L.Browser.any3d;
+                const animated = leafletMap.options.zoomAnimation && L.Browser.any3d;
                 viewportRoot.className = ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide') + ' echarts-layer';
 
-                var originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+                const originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
                 viewportRoot.style[originProp] = '50% 50%';
 
-                var coordSys = LeafletMapModel.coordinateSystem;
+                const coordSys = LeafletMapModel.coordinateSystem;
 
-                var ecLayers = api.getZr().painter.getLayers();
+                const ecLayers = api.getZr().painter.getLayers();
 
-                var moveHandler = function () {
+                const moveHandler = function () {
                     if (rendering) {
                         return;
                     }
-                    var offset = me._map.containerPointToLayerPoint([0, 0]);
-                    var mapOffset = [offset.x || 0, offset.y || 0];
+                    const offset = me._map.containerPointToLayerPoint([0, 0]);
+                    const mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
 
                     if (!me.options.loadWhileAnimating) {
-                        for (var item in ecLayers) {
+                        for (let item in ecLayers) {
                             if (!ecLayers.hasOwnProperty(item)) {
                                 continue;
                             }
@@ -176,12 +176,16 @@ export var EchartsLayer = L.Layer.extend({
     onRemove: function () {
         // 销毁echarts实例
         this._ec.dispose();
+        L.DomUtil.remove(this._echartsContainer);
+        this._map.off("zoomend", this._oldZoomEndHandler);
+        this._map.off(this.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
+        this._map.off('resize', this._resizeHandler);
     },
 
     _initEchartsContainer: function () {
-        var size = this._map.getSize();
+        const size = this._map.getSize();
 
-        var _div = document.createElement('div');
+        const _div = document.createElement('div');
         _div.style.position = 'absolute';
         _div.style.height = size.y + 'px';
         _div.style.width = size.x + 'px';
@@ -189,13 +193,17 @@ export var EchartsLayer = L.Layer.extend({
         this._echartsContainer = _div;
 
         this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
-        var me = this;
-        this._map.on('resize', function (e) {
+        const me = this;
+
+        function _resizeHandler(e) {
             let size = e.newSize;
             me._echartsContainer.style.width = size.x + 'px';
             me._echartsContainer.style.height = size.y + 'px';
             me._ec.resize()
-        })
+        }
+
+        this._map.on('resize', _resizeHandler);
+        this._resizeHandler = _resizeHandler
     }
 
 });
@@ -205,7 +213,6 @@ export var EchartsLayer = L.Layer.extend({
  * @private
  * @classdesc 地图坐标系统类
  * @param {L.map} leafletMap - 地图
- * @param {Object} api - 接口
  */
 export function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;
@@ -224,9 +231,9 @@ LeafletMapCoordSys.prototype.getBMap = function () {
 };
 
 LeafletMapCoordSys.prototype.prepareCustoms = function () {
-    var zrUtil = echarts.util;
+    const zrUtil = echarts.util;
 
-    var rect = this.getViewRect();
+    const rect = this.getViewRect();
     return {
         coordSys: {
             // The name exposed to user is always 'cartesian2d' but not 'grid'.
@@ -245,10 +252,10 @@ LeafletMapCoordSys.prototype.prepareCustoms = function () {
     function dataToCoordSize(dataSize, dataItem) {
         dataItem = dataItem || [0, 0];
         return zrUtil.map([0, 1], function (dimIdx) {
-            var val = dataItem[dimIdx];
-            var halfSize = dataSize[dimIdx] / 2;
-            var p1 = [];
-            var p2 = [];
+            const val = dataItem[dimIdx];
+            const halfSize = dataSize[dimIdx] / 2;
+            const p1 = [];
+            const p2 = [];
             p1[dimIdx] = val - halfSize;
             p2[dimIdx] = val + halfSize;
             p1[1 - dimIdx] = p2[1 - dimIdx] = dataItem[1 - dimIdx];
@@ -265,9 +272,9 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     //平面坐标系不能这么处理
     //data[1] = this.fixLat(data[1]);
 
-    var px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
+    const px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
 
-    var mapOffset = this._mapOffset;
+    const mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
 };
 
@@ -317,7 +324,7 @@ LeafletMapCoordSys.create = function (ecModel) {
         }
     })
 };
-export var echartsLayer = function (echartsOptions, options) {
+export const echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
 

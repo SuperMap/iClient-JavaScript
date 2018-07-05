@@ -70870,7 +70870,7 @@ var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/_
  * @param {string} options.attribution - 版权信息。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  */
-var EchartsLayer = external_L_default.a.Layer.extend({
+const EchartsLayer = external_L_default.a.Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -70895,10 +70895,10 @@ var EchartsLayer = external_L_default.a.Layer.extend({
      * @param {string} lazyUpdate - 后台自动更新
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate) {
-        var baseOption = echartsOptions.baseOption || echartsOptions;
+        const baseOption = echartsOptions.baseOption || echartsOptions;
         baseOption.LeafletMap = baseOption.LeafletMap || {
             roam: true
-        }
+        };
         baseOption.animation = baseOption.animation === true;
         this._echartsOptions = echartsOptions;
         this._ec && this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
@@ -70924,7 +70924,7 @@ var EchartsLayer = external_L_default.a.Layer.extend({
         this._initEchartsContainer();
         this._ec = external_function_try_return_echarts_catch_e_return_default.a.init(this._echartsContainer);
         external_function_try_return_echarts_catch_e_return_default.a.leafletMap = map;
-        var me = this;
+        const me = this;
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
@@ -70953,31 +70953,31 @@ var EchartsLayer = external_L_default.a.Layer.extend({
         external_function_try_return_echarts_catch_e_return_default.a.extendComponentView({
             type: 'LeafletMap',
             render: function (LeafletMapModel, ecModel, api) {
-                var rendering = true;
-                var leafletMap = external_function_try_return_echarts_catch_e_return_default.a.leafletMap;
-                var viewportRoot = api.getZr().painter.getViewportRoot();
+                let rendering = true;
+                const leafletMap = external_function_try_return_echarts_catch_e_return_default.a.leafletMap;
+                const viewportRoot = api.getZr().painter.getViewportRoot();
 
-                var animated = leafletMap.options.zoomAnimation && external_L_default.a.Browser.any3d;
+                const animated = leafletMap.options.zoomAnimation && external_L_default.a.Browser.any3d;
                 viewportRoot.className = ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide') + ' echarts-layer';
 
-                var originProp = external_L_default.a.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+                const originProp = external_L_default.a.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
                 viewportRoot.style[originProp] = '50% 50%';
 
-                var coordSys = LeafletMapModel.coordinateSystem;
+                const coordSys = LeafletMapModel.coordinateSystem;
 
-                var ecLayers = api.getZr().painter.getLayers();
+                const ecLayers = api.getZr().painter.getLayers();
 
-                var moveHandler = function () {
+                const moveHandler = function () {
                     if (rendering) {
                         return;
                     }
-                    var offset = me._map.containerPointToLayerPoint([0, 0]);
-                    var mapOffset = [offset.x || 0, offset.y || 0];
+                    const offset = me._map.containerPointToLayerPoint([0, 0]);
+                    const mapOffset = [offset.x || 0, offset.y || 0];
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
 
                     if (!me.options.loadWhileAnimating) {
-                        for (var item in ecLayers) {
+                        for (let item in ecLayers) {
                             if (!ecLayers.hasOwnProperty(item)) {
                                 continue;
                             }
@@ -71033,12 +71033,16 @@ var EchartsLayer = external_L_default.a.Layer.extend({
     onRemove: function () {
         // 销毁echarts实例
         this._ec.dispose();
+        external_L_default.a.DomUtil.remove(this._echartsContainer);
+        this._map.off("zoomend", this._oldZoomEndHandler);
+        this._map.off(this.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
+        this._map.off('resize', this._resizeHandler);
     },
 
     _initEchartsContainer: function () {
-        var size = this._map.getSize();
+        const size = this._map.getSize();
 
-        var _div = document.createElement('div');
+        const _div = document.createElement('div');
         _div.style.position = 'absolute';
         _div.style.height = size.y + 'px';
         _div.style.width = size.x + 'px';
@@ -71046,13 +71050,17 @@ var EchartsLayer = external_L_default.a.Layer.extend({
         this._echartsContainer = _div;
 
         this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
-        var me = this;
-        this._map.on('resize', function (e) {
+        const me = this;
+
+        function _resizeHandler(e) {
             let size = e.newSize;
             me._echartsContainer.style.width = size.x + 'px';
             me._echartsContainer.style.height = size.y + 'px';
             me._ec.resize()
-        })
+        }
+
+        this._map.on('resize', _resizeHandler);
+        this._resizeHandler = _resizeHandler
     }
 
 });
@@ -71062,7 +71070,6 @@ var EchartsLayer = external_L_default.a.Layer.extend({
  * @private
  * @classdesc 地图坐标系统类
  * @param {L.map} leafletMap - 地图
- * @param {Object} api - 接口
  */
 function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;
@@ -71081,9 +71088,9 @@ LeafletMapCoordSys.prototype.getBMap = function () {
 };
 
 LeafletMapCoordSys.prototype.prepareCustoms = function () {
-    var zrUtil = external_function_try_return_echarts_catch_e_return_default.a.util;
+    const zrUtil = external_function_try_return_echarts_catch_e_return_default.a.util;
 
-    var rect = this.getViewRect();
+    const rect = this.getViewRect();
     return {
         coordSys: {
             // The name exposed to user is always 'cartesian2d' but not 'grid'.
@@ -71102,10 +71109,10 @@ LeafletMapCoordSys.prototype.prepareCustoms = function () {
     function dataToCoordSize(dataSize, dataItem) {
         dataItem = dataItem || [0, 0];
         return zrUtil.map([0, 1], function (dimIdx) {
-            var val = dataItem[dimIdx];
-            var halfSize = dataSize[dimIdx] / 2;
-            var p1 = [];
-            var p2 = [];
+            const val = dataItem[dimIdx];
+            const halfSize = dataSize[dimIdx] / 2;
+            const p1 = [];
+            const p2 = [];
             p1[dimIdx] = val - halfSize;
             p2[dimIdx] = val + halfSize;
             p1[1 - dimIdx] = p2[1 - dimIdx] = dataItem[1 - dimIdx];
@@ -71122,9 +71129,9 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     //平面坐标系不能这么处理
     //data[1] = this.fixLat(data[1]);
 
-    var px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
+    const px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
 
-    var mapOffset = this._mapOffset;
+    const mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
 };
 
@@ -71174,7 +71181,7 @@ LeafletMapCoordSys.create = function (ecModel) {
         }
     })
 };
-var echartsLayer = function (echartsOptions, options) {
+const echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
 
@@ -71524,11 +71531,8 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
                 style = this.defaultStyle;
             }
             if (style.img) {
-                let anchor = style.anchor;
                 p1 = external_L_default.a.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
                 p2 = external_L_default.a.point(center.x + style.img.width / 2, center.y + style.img.height / 2);
-                p1 = calculateOffset(p1, anchor);
-                p2 = calculateOffset(p2, anchor);
             } else {
                 p1 = external_L_default.a.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = external_L_default.a.point(center.x + style.width / 2, center.y + style.height / 2);
@@ -71599,6 +71603,8 @@ external_L_default.a.Canvas.include({
             ac = external_L_default.a.point(style.anchor);
         point = [pt.x - ac.x, pt.y - ac.y];
 
+        //参数分别为：图片，图片裁剪下x,y位置，裁剪长宽，放置在画布的位置x,y, 占取画布长宽
+        //ctx.drawImage(style.img, 0, 0, width, height, point[0], point[1], width, height);
         ctx.drawImage(style.img, point[0], point[1], width, height);
     },
 
@@ -82253,7 +82259,7 @@ module.exports = function(proj4){
 /* 73 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 74 */
