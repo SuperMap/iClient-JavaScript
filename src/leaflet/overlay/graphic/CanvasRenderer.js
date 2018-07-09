@@ -62,11 +62,11 @@ export var GraphicCanvasRenderer = L.Class.extend({
 });
 
 
-function calculateOffset(point, anchor) {
+/* function calculateOffset(point, anchor) {
     let pt = L.point(point),
         ac = L.point(anchor);
     return [pt.x - ac.x, pt.y - ac.y];
-}
+} */
 
 L.Canvas.include({
 

@@ -326,61 +326,61 @@ export class Animator {
      */
     constructor(target, loop, getter, setter) {
         /**
-         * @member {Object} uperMap.LevelRenderer.Animation.Animator.prototype._tracks
+         * @member {Object} SuperMap.LevelRenderer.Animation.Animator.prototype._tracks
          * @description _tracks。
          */
         this._tracks = {};
 
         /**
-         * @member {Object} uperMap.LevelRenderer.Animation.Animator.prototype._target
+         * @member {Object} SuperMap.LevelRenderer.Animation.Animator.prototype._target
          * @description _target。
          */
         this._target = target;
         
         /**
-         * @member {boolean} uperMap.LevelRenderer.Animation.Animator.prototype._loop
+         * @member {boolean} SuperMap.LevelRenderer.Animation.Animator.prototype._loop
          * @description _loop。
          */
         this._loop = loop || false;
 
         /**
-         * @member {function} uperMap.LevelRenderer.Animation.Animator.prototype._getter
+         * @member {function} SuperMap.LevelRenderer.Animation.Animator.prototype._getter
          * @description _getter。
          */
         this._getter = getter || _defaultGetter;
 
         /**
-         * @member {function} uperMap.LevelRenderer.Animation.Animator.prototype._setter
+         * @member {function} SuperMap.LevelRenderer.Animation.Animator.prototype._setter
          * @description _setter。
          */
         this._setter = setter || _defaultSetter;
 
         /**
-         * @member {number} uperMap.LevelRenderer.Animation.Animator.prototype._clipCount
+         * @member {number} SuperMap.LevelRenderer.Animation.Animator.prototype._clipCount
          * @description _clipCount。
          */
         this._clipCount = 0;
 
         /**
-         * @member {number} uperMap.LevelRenderer.Animation.Animator.prototype._delay
+         * @member {number} SuperMap.LevelRenderer.Animation.Animator.prototype._delay
          * @description _delay。
          */
         this._delay = 0;
 
         /**
-         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._doneList
+         * @member {Array} SuperMap.LevelRenderer.Animation.Animator.prototype._doneList
          * @description _doneList。
          */
         this._doneList = [];
 
         /**
-         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._onframeList
+         * @member {Array} SuperMap.LevelRenderer.Animation.Animator.prototype._onframeList
          * @description _onframeList。
          */
         this._onframeList = [];
 
         /**
-         * @member {Array} uperMap.LevelRenderer.Animation.Animator.prototype._clipList
+         * @member {Array} SuperMap.LevelRenderer.Animation.Animator.prototype._clipList
          * @description _clipList。
          */
         this._clipList = [];

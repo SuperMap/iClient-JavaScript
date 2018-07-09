@@ -13,7 +13,7 @@
 ```
 
 ## 开发
-在 HTML 文件中引入 uperMap iClient 8C(2017) 库
+在 HTML 文件中引入 SuperMap iClient 8C(2017) 库
 
 ```
 <script src="http://iclient.supermap.io/libs/iclient8c/libs/SuperMap.Include.js"></script>
