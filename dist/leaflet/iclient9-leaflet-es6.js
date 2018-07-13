@@ -63113,7 +63113,7 @@ external_L_default.a.Proj.Projection = external_L_default.a.Class.extend({
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
- * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}
+ * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
  * @param {(Array.<number>|L.Point)} options.origin - 原点。
  * @param {Array.<number>} options.scales - 比例尺数组。
  * @param {Array.<number>} options.scaleDenominators - 比例尺分母数组。
@@ -64061,6 +64061,9 @@ class CommontypesConversion_CommontypesConversion {
      * @return {SuperMap.Bounds} SuperMap的bounds对象
      */
     static toSuperMapBounds(bounds) {
+        if (["FeatureCollection", "Feature", "Geometry"].indexOf(bounds.type) !== -1) {
+            bounds = external_L_default.a.geoJSON(bounds).getBounds();
+        }
         if (bounds instanceof external_L_default.a.LatLngBounds) {
             return new Bounds_Bounds(
                 bounds.getSouthWest().lng,
@@ -64085,6 +64088,7 @@ class CommontypesConversion_CommontypesConversion {
                 bounds[3]
             );
         }
+
         return new Bounds_Bounds();
     }
 
@@ -64231,7 +64235,150 @@ external_L_default.a.Util.scaleToResolution = scaleToResolution;
 external_L_default.a.Util.getMeterPerMapUnit = getMeterPerMapUnit;
 external_L_default.a.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
 external_L_default.a.Util.NormalizeScale = NormalizeScale;
+// CONCATENATED MODULE: ./src/leaflet/core/Transform.js
+
+
+
+/**
+ * @function L.Util.transform
+ * @description 将要素转换为指定坐标
+ * @param {(L.marker|L.circleMarker|L.polyline|L.polygon|L.rectangle|L.latLngBounds|L.bounds|Object)} feature - 待转要素包括 Leaflet Vector Layers
+ *              的 L.marker|L.circleMarker|L.polyline|L.polygon|L.rectangle|L.latLngBounds|L.bounds 类型和 GeoJOSN 规范数据类型
+ * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换目标坐标系，默认为 L.CRS.EPSG4326
+ * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系
+ * @return {Object} 返回GeoJOSN 规范数据类型
+ */
+var transform = function (feature, sourceCRS = external_L_default.a.CRS.EPSG4326, targetCRS) {
+    let selfFeatures = null;
+    let selfCallback = null;
+    //将数据统一为 geojson 格式处理：
+    if (["FeatureCollection", "Feature", "Geometry"].indexOf(feature.type) === -1) {
+        if (feature.toGeoJSON) {
+            feature = feature.toGeoJSON();
+        } else if (feature instanceof external_L_default.a.LatLngBounds) {
+            feature = external_L_default.a.rectangle(feature).toGeoJSON();
+        } else if (feature instanceof external_L_default.a.Bounds) {
+            feature = external_L_default.a.rectangle([[feature.getTopLeft().x, feature.getTopLeft().y],
+                [feature.getBottomRight().x, feature.getBottomRight().y]]).toGeoJSON();
+        } else {
+            throw new Error("This tool only supports data conversion in geojson format or Vector Layers of Leaflet.")
+        }
+    }
+
+    //geojson 几种数据类型及处理形式
+    const parseCoords = {
+        "point": function (array) {
+            return selfCallback(array);
+        },
+
+        "multipoint": function (array) {
+            return parseCoords["linestring"].apply(this, [array])
+        },
+
+        "linestring": function (array) {
+            let points = [];
+            let p = null;
+            for (let i = 0, len = array.length; i < len; ++i) {
+                try {
+                    p = parseCoords["point"].apply(this, [array[i]]);
+                } catch (err) {
+                    throw err;
+                }
+                points.push(p);
+            }
+            return points;
+        },
+
+        "multilinestring": function (array) {
+            return parseCoords["polygon"].apply(this, [array]);
+        },
+
+        "polygon": function (array) {
+            let rings = [];
+            let l;
+            for (let i = 0, len = array.length; i < len; ++i) {
+                try {
+                    l = parseCoords["linestring"].apply(this, [array[i]]);
+                } catch (err) {
+                    throw err;
+                }
+                rings.push(l);
+            }
+            return rings;
+        },
+        "multipolygon": function (array) {
+            let polys = [];
+            let p = null;
+            for (let i = 0, len = array.length; i < len; ++i) {
+                try {
+                    p = parseCoords["polygon"].apply(this, [array[i]]);
+                } catch (err) {
+                    throw err;
+                }
+                polys.push(p);
+            }
+            return polys;
+        }
+
+    };
+
+    //返回结果：
+    return featureTransform(feature, _transformCoordinates);
+
+    function featureTransform(feature, callback) {
+        selfFeatures = feature;
+        selfCallback = callback;
+        //分离处理：
+        if (feature.type === "Feature") {
+            selfFeatures = _prepareFeatuers(feature);
+        } else if (feature.type === "FeatureCollection") {
+            let featureResults = [];
+            for (let i = 0; i < feature.features.length; ++i) {
+                try {
+                    featureResults.push(_prepareFeatuers(feature.features[i]));
+                } catch (err) {
+                    featureResults = null;
+                }
+            }
+            selfFeatures.features = featureResults;
+        }
+
+        return selfFeatures;
+    }
+
+    function _prepareFeatuers(feature) {
+        const geometry = feature.geometry;
+        if (!(Util.isArray(geometry.coordinates))) {
+            throw "Geometry must have coordinates array: " + geometry;
+        }
+        if (!parseCoords[geometry.type.toLowerCase()]) {
+            throw "Unsupported geometry type: " + geometry.type;
+        }
+        try {
+            geometry.coordinates = parseCoords[geometry.type.toLowerCase()].apply(
+                this, [geometry.coordinates]
+            );
+        } catch (err) {
+            // deal with bad coordinates
+            throw err;
+        }
+        feature.geometry = geometry;
+        return feature;
+    }
+
+    function _transformCoordinates(coordinates) {
+        //判断code 是投影坐标还是地理坐标
+        var point = sourceCRS.unproject({x: coordinates[0], y: coordinates[1]});
+        const transform = targetCRS.project(point);
+        return [transform.x, transform.y];
+    }
+
+};
+
+external_L_default.a.Util.transform = transform;
 // CONCATENATED MODULE: ./src/leaflet/core/index.js
+
+
 
 
 
@@ -71547,13 +71694,6 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
     //跟GraphicWebGLRenderer保持一致
     _clearBuffer: emptyFunc
 });
-
-
-/* function calculateOffset(point, anchor) {
-    let pt = L.point(point),
-        ac = L.point(anchor);
-    return [pt.x - ac.x, pt.y - ac.y];
-} */
 
 external_L_default.a.Canvas.include({
 
@@ -82259,7 +82399,7 @@ module.exports = function(proj4){
 /* 73 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 74 */

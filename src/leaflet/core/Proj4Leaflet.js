@@ -93,7 +93,7 @@ L.Proj.Projection = L.Class.extend({
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
- * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}
+ * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
  * @param {(Array.<number>|L.Point)} options.origin - 原点。
  * @param {Array.<number>} options.scales - 比例尺数组。
  * @param {Array.<number>} options.scaleDenominators - 比例尺分母数组。

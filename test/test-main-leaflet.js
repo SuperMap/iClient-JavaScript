@@ -3,6 +3,7 @@ import './leaflet/control/ChangeTileVersionSpec.js';
 
 /*leaflet -- core*/
 import './leaflet/core/NonEarthCRSSpec.js';
+import './leaflet/core/TransformUtilSpec.js';
 
 /*leaflet -- mapping*/
 import './leaflet/mapping/ImageMapLayerSpec.js';

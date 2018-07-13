@@ -84,7 +84,12 @@ var exampleConfig = {
                     name_en: "geometry query",
                     thumbnail: "l_mapQueryByGeometry.png",
                     fileName: "01_mapQueryByGeometry"
-                }, {
+                },  {
+                    name: "几何查询(3857)",
+                    name_en: "geometry query(3857)",
+                    thumbnail: "l_mapQueryByGeometry3857.png",
+                    fileName: "01_mapQueryByGeometry3857"
+                },{
                     name: "SQL查询",
                     name_en: "SQL query",
                     thumbnail: "l_mapQueryBySQL.png",

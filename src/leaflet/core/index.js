@@ -25,6 +25,9 @@ import {
     GetResolutionFromScaleDpi,
     NormalizeScale
 } from './Util';
+import {
+    transform
+} from './Transform';
 
 export {CommontypesConversion} ;
 export {
@@ -50,6 +53,9 @@ export {
     scaleToResolution,
     GetResolutionFromScaleDpi,
     NormalizeScale
+} ;
+export {
+    transform
 } ;
 
 

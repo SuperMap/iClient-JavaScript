@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_mapQueryByGeometry"></title>
+    <script type="text/javascript" include="widgets" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, resultLayer,
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+    map = L.map('map', {
+        preferCanvas: true,
+        center: [39, 100],
+        maxZoom: 18,
+        zoom: 5
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+
+    query();
+
+    function query() {
+        var polygon = L.polygon([[38, 100], [36, 110], [35, 105], [38, 100]], {color: 'red'});
+        polygon.addTo(map);
+        //服务端数据投影坐标系为 3857，因此将查询数据转为与服务端对应坐标系：
+        var geometry = L.Util.transform(polygon, L.CRS.EPSG4326, L.CRS.EPSG3857);
+
+        var param = new SuperMap.QueryByGeometryParameters({
+            queryParams: {name: "China_Province_pl@China"},
+            geometry: geometry
+        });
+        widgets.loader.showLoader();
+        L.supermap
+            .queryService(url)
+            .queryByGeometry(param, function (serviceResult) {
+                //leaflet 绘制数据默认为 4326，服务器返回数据为 3857，因此在加载到地图前，先进行坐标转换：
+                var result = L.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
+                widgets.loader.removeLoader();
+                resultLayer = L.geoJSON(result).addTo(map);
+                polygon.remove();
+                polygon.addTo(map);
+            });
+    }
+</script>
+</body>
+</html>
