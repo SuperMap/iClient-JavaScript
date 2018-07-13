@@ -10511,7 +10511,7 @@ var CommontypesConversion = exports.CommontypesConversion = function () {
          * @return {SuperMap.Bounds} SuperMap的bounds对象
          */
         value: function toSuperMapBounds(bounds) {
-            if (["FeatureCollection", "Feature", "Geometry"].indexOf(bounds.type) !== -1) {
+            if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
                 bounds = _leaflet2["default"].geoJSON(bounds).getBounds();
             }
             if (bounds instanceof _leaflet2["default"].LatLngBounds) {
@@ -21477,7 +21477,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         };
         map.on("mousemove", me.mouseMoveHandler);
 
-        me.update();
+        me.update(map.getBounds());
     },
 
     /**
@@ -69475,7 +69475,6 @@ var transform = exports.transform = function transform(feature) {
         try {
             geometry.coordinates = parseCoords[geometry.type.toLowerCase()].apply(this, [geometry.coordinates]);
         } catch (err) {
-            // deal with bad coordinates
             throw err;
         }
         feature.geometry = geometry;

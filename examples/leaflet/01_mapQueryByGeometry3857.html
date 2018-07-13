@@ -25,7 +25,7 @@
     function query() {
         var polygon = L.polygon([[38, 100], [36, 110], [35, 105], [38, 100]], {color: 'red'});
         polygon.addTo(map);
-        //服务端数据投影坐标系为 3857，因此将查询数据转为与服务端对应坐标系：
+        //服务端数据坐标系为 3857，因此将查询数据转为与服务端对应坐标系：
         var geometry = L.Util.transform(polygon, L.CRS.EPSG4326, L.CRS.EPSG3857);
 
         var param = new SuperMap.QueryByGeometryParameters({
@@ -36,7 +36,7 @@
         L.supermap
             .queryService(url)
             .queryByGeometry(param, function (serviceResult) {
-                //leaflet 绘制数据默认为 4326，服务器返回数据为 3857，因此在加载到地图前，先进行坐标转换：
+                //leaflet 绘制数据默认为 4326，服务器返回数据为 3857，因此在加载到地图前，先进行坐标系转换：
                 var result = L.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
                 widgets.loader.removeLoader();
                 resultLayer = L.geoJSON(result).addTo(map);

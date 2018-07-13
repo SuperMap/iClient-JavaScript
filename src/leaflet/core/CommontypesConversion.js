@@ -14,7 +14,7 @@ export class CommontypesConversion {
      * @return {SuperMap.Bounds} SuperMap的bounds对象
      */
     static toSuperMapBounds(bounds) {
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(bounds.type) !== -1) {
+        if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
             bounds = L.geoJSON(bounds).getBounds();
         }
         if (bounds instanceof L.LatLngBounds) {

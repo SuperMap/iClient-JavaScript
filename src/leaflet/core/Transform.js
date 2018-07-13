@@ -121,7 +121,6 @@ export var transform = function (feature, sourceCRS = L.CRS.EPSG4326, targetCRS)
                 this, [geometry.coordinates]
             );
         } catch (err) {
-            // deal with bad coordinates
             throw err;
         }
         feature.geometry = geometry;

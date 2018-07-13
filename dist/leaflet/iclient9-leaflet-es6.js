@@ -64061,7 +64061,7 @@ class CommontypesConversion_CommontypesConversion {
      * @return {SuperMap.Bounds} SuperMap的bounds对象
      */
     static toSuperMapBounds(bounds) {
-        if (["FeatureCollection", "Feature", "Geometry"].indexOf(bounds.type) !== -1) {
+        if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
             bounds = external_L_default.a.geoJSON(bounds).getBounds();
         }
         if (bounds instanceof external_L_default.a.LatLngBounds) {
@@ -64359,7 +64359,6 @@ var transform = function (feature, sourceCRS = external_L_default.a.CRS.EPSG4326
                 this, [geometry.coordinates]
             );
         } catch (err) {
-            // deal with bad coordinates
             throw err;
         }
         feature.geometry = geometry;
@@ -66477,7 +66476,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
         };
         map.on("mousemove", me.mouseMoveHandler);
 
-        me.update();
+        me.update(map.getBounds());
     },
 
     /**

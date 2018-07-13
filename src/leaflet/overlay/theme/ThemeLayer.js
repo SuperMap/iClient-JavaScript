@@ -109,7 +109,7 @@ export var ThemeLayer = L.Layer.extend({
         };
         map.on("mousemove", me.mouseMoveHandler);
 
-        me.update();
+        me.update(map.getBounds());
     },
 
     /**
