@@ -11,7 +11,6 @@
 <script type="text/javascript">
     var map, layer, host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     url = host + "/iserver/services/map-world/rest/maps/World";
-    var bounds = new SuperMap.Bounds(-120, -60, 120, 60);
     map = new SuperMap.Map("map", {
         controls: [
             new SuperMap.Control.Navigation(),
@@ -22,7 +21,6 @@
         cacheEnabled: true
     }, {
         dpi: 95.99999999999939,
-        maxExtent: bounds,
         resolutions: [
             0.34615384615384615, 0.17307692307692307,
             0.08653846153846154, 0.04326923076923077,
@@ -34,8 +32,13 @@
             0.00002112755408653846, 0.00001056377704326923
         ]
     });
-    map.addLayer(layer);
-    map.setCenter(new SuperMap.LonLat(0, 0), 1.5);
+    //监听图层信息加载完成事件
+    layer.events.on({"layerInitialized": addLayer});
+    function addLayer() {
+        map.addLayer(layer);
+        map.setCenter(new SuperMap.LonLat(0, 0), 1.5);
+    }
+
 </script>
 </body>
 </html>
