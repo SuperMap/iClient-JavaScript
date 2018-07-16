@@ -250,7 +250,7 @@
                 },
                 controller: {
                     inRange: {
-                        color: ['#c23531']
+                        color: ['#dd4444']
                     },
                     outOfRange: {
                         color: ['#444']
@@ -280,7 +280,7 @@
                 },
                 controller: {
                     inRange: {
-                        color: ['#c23531']
+                        color: ['#dd4444']
                     },
                     outOfRange: {
                         color: ['#444']
@@ -347,6 +347,41 @@
                                     type: 'scatter',
                                     itemStyle: itemStyle,
                                     data: dataMap[city]
+                                }
+                            ],
+                            visualMap:[
+                                {
+                                    inRange: {
+                                        symbolSize: [10, 70]
+                                    },
+                                    outOfRange: {
+                                        symbolSize: [10, 70],
+                                        color: ['rgba(255,255,255,.2)']
+                                    },
+                                    controller: {
+                                        inRange: {
+                                            color: [ colorMap[city] ]
+                                        },
+                                        outOfRange: {
+                                            color: ['#444']
+                                        }
+                                    }
+                                },
+                                {
+                                    inRange: {
+                                        colorLightness: [1, 0.5]
+                                    },
+                                    outOfRange: {
+                                        color: ['rgba(255,255,255,.2)']
+                                    },
+                                    controller: {
+                                        inRange: {
+                                            color: [ colorMap[city] ]
+                                        },
+                                        outOfRange: {
+                                            color: ['#444']
+                                        }
+                                    }
                                 }
                             ]
                         });

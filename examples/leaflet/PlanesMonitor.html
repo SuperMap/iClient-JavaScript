@@ -66,13 +66,22 @@
 
     //暂停播放
     function pause() {
-        timeControl.pause();
+        if(!timeControl){
+            return;
+        }else{
+            timeControl.pause();
+        }
+
     }
 
     //停止播放
     function stop() {
-        timeControl.stop();
-        clearAll();
+        if(!timeControl){
+            return;
+        }else{
+            timeControl.stop();
+            clearAll();
+        }
     }
 
     //时间控制器回调参数，即每次刷新时执行的操作，此处为向服务器请求数据并绘制。实时刷新执行。
