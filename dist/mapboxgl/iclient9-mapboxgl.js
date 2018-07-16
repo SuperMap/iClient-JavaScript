@@ -56967,7 +56967,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
 
         /**
          * @function mapboxgl.supermap.DeckglLayer.prototype._createLayerByLayerTypeID
-         * @deprecated 判别当前创建图层类型
+         * @description 判别当前创建图层类型
          * @private
          */
 
@@ -56992,9 +56992,6 @@ var DeckglLayer = exports.DeckglLayer = function () {
             } else if (this.layerTypeID === "arc-layer") {
                 this.props.id = 'arc-layer';
                 this._createArcLineLayer();
-            } else if (this.layerTypeID === "screen-grid-layer") {
-                this.props.id = ' screen-grid-layer';
-                this._createScreenGridlayer();
             } else if (this.layerTypeID === "hexagon-layer") {
                 this.props.id = 'hexagon-layer';
                 this._createHexagonLayer();
@@ -57004,7 +57001,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         }
 
         /**
-         * @deprecated scatter-plot
+         * @description scatter-plot
          * @private
          */
 
@@ -57054,7 +57051,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         }
 
         /**
-         * @deprecated path-layer
+         * @description path-layer
          * @private
          */
 
@@ -57079,7 +57076,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         }
 
         /**
-         * @deprecated polygon-layer
+         * @description polygon-layer
          * @private
          */
 
@@ -57110,7 +57107,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         }
 
         /**
-         * @deprecated arc-layer
+         * @description arc-layer
          * @private
          */
 
@@ -57147,7 +57144,7 @@ var DeckglLayer = exports.DeckglLayer = function () {
         }
 
         /**
-         * @deprecated hexagon-layer
+         * @description hexagon-layer
          * @private
          */
 

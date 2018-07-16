@@ -66666,7 +66666,7 @@ class DeckglLayer_DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype._createLayerByLayerTypeID
-     * @deprecated 判别当前创建图层类型
+     * @description 判别当前创建图层类型
      * @private
      */
     _createLayerByLayerTypeID() {
@@ -66688,9 +66688,6 @@ class DeckglLayer_DeckglLayer {
         } else if (this.layerTypeID === "arc-layer") {
             this.props.id = 'arc-layer';
             this._createArcLineLayer();
-        } else if (this.layerTypeID === "screen-grid-layer") {
-            this.props.id = ' screen-grid-layer';
-            this._createScreenGridlayer();
         } else if (this.layerTypeID === "hexagon-layer") {
             this.props.id = 'hexagon-layer';
             this._createHexagonLayer();
@@ -66701,7 +66698,7 @@ class DeckglLayer_DeckglLayer {
     }
 
     /**
-     * @deprecated scatter-plot
+     * @description scatter-plot
      * @private
      */
     _createScatterPlotLayer() {
@@ -66749,7 +66746,7 @@ class DeckglLayer_DeckglLayer {
     }
 
     /**
-     * @deprecated path-layer
+     * @description path-layer
      * @private
      */
     _createPathLayer() {
@@ -66771,7 +66768,7 @@ class DeckglLayer_DeckglLayer {
     }
 
     /**
-     * @deprecated polygon-layer
+     * @description polygon-layer
      * @private
      */
     _createPolygonLayer() {
@@ -66799,7 +66796,7 @@ class DeckglLayer_DeckglLayer {
     }
 
     /**
-     * @deprecated arc-layer
+     * @description arc-layer
      * @private
      */
     _createArcLineLayer() {
@@ -66833,7 +66830,7 @@ class DeckglLayer_DeckglLayer {
     }
 
     /**
-     * @deprecated hexagon-layer
+     * @description hexagon-layer
      * @private
      */
     _createHexagonLayer() {
