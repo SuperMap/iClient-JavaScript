@@ -8,7 +8,7 @@
 
 ![GraphicLayer](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-1.png)
 
-- 实时数据图层DataFlowLayer增了MapV引擎，大幅提高了绘制Marker的性能，对于矢量点的渲染数据量由之前的1万提升至10万，对于栅格图片的渲染数据量由之前的3000提升至1万。[示例>>](http://iclient.supermap.io/examples/leaflet/editor.html#dataFlowService_mapv)
+- 数据流图层DataFlowLayer增了MapV引擎，大幅提高了绘制Marker的性能，对于矢量点的渲染数据量由之前的1万提升至10万，对于栅格图片的渲染数据量由之前的3000提升至1万。[示例>>](http://iclient.supermap.io/examples/leaflet/editor.html#dataFlowService_mapv)
 
 ![DataFlowLayer](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/910-2.png)
 
@@ -72,7 +72,7 @@
   
   - `SuperMap.GenerateSpatialDataParameters` 增加 `attributeFilter` 参数,支持在动态分段时设置过滤参数
 
-- iServer - 实时数据
+- iServer - 数据流
 
   - `L.supermap.dataFlowLayer` 增加 `mapv` 渲染方式，提高绘制marker的能力，`options` 新增 `render` 参数,可选值为 `normal`，`mapv`，默认为 `normal`
 
@@ -804,7 +804,7 @@
 - 新增turf示例
 - 新增图表专题图示例
 - 新增客户端标签专题图示例
-- 修复实时数据服务示例效率
+- 修复数据流服务示例效率
 - 新增热力图示例
 
 ### for OpenLayers

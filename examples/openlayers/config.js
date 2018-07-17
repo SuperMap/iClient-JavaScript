@@ -388,10 +388,10 @@ var exampleConfig = {
                 }]
             },
             "dataFlow": {
-                name: "实时数据",
+                name: "数据流",
                 name_en: "data flow service",
                 content: [{
-                    name: "实时数据",
+                    name: "数据流",
                     name_en: "data flow",
                     thumbnail: "dataflow.gif",
                     fileName: "dataFlowService"

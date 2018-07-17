@@ -412,16 +412,16 @@ var exampleConfig = {
                 }]
             },
             "dataFlow": {
-                name: "实时数据",
+                name: "数据流",
                 name_en: "data flow service",
                 content: [{
-                    name: "实时数据",
+                    name: "数据流",
                     name_en: "data flow",
                     thumbnail: "dataflow.gif",
                     fileName: "dataFlowService"
                 },
                     {
-                        name: "实时数据(1w图标)",
+                        name: "数据流(1w图标)",
                         name_en: "data flow(1w markers)",
                         thumbnail: "dataflow_mapv.gif",
                         fileName: "dataFlowService_mapv"

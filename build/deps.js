@@ -364,18 +364,18 @@ deps = {
                 }]
             },
             "DataFlow": {
-                "name": "实时数据服务",
+                "name": "数据流服务",
                 "src": [
                     "./src/leaflet/services/DataFlowService.js",
                     "./src/leaflet/overlay/DataFlowLayer.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.dataFlowService",
-                    "des": "实时数据服务",
+                    "des": "数据流服务",
                     "des_en": "iServer data flow service"
                 }, {
                     "name": "L.supermap.dataFlowLayer",
-                    "des": "实时数据图层",
+                    "des": "数据流图层",
                     "des_en": "iServer data flow layer"
 
                 }]
@@ -788,18 +788,18 @@ deps = {
                 }]
             },
             "DataFlow": {
-                "name": "实时数据服务",
+                "name": "数据流服务",
                 "src": [
                     "./src/openlayers/services/DataFlowService.js",
                     "./src/openlayers/overlay/DataFlow.js"
                 ],
                 "modules": [{
                     "name": "ol.supermap.DataFlowService",
-                    "des": "实时数据服务",
+                    "des": "数据流服务",
                     "des_en": "iServer data flow service"
                 }, {
                     "name": "ol.source.DataFlow",
-                    "des": "实时数据",
+                    "des": "数据流源",
                     "des_en": "iServer data flow layer"
                 }]
             }
@@ -1043,13 +1043,13 @@ deps = {
                 }]
             },
             "DataFlow": {
-                "name": "实时数据服务",
+                "name": "数据流服务",
                 "src": [
                     "./src/mapboxgl/services/DataFlowService.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.DataFlowService",
-                    "des": "实时数据服务",
+                    "des": "数据流服务",
                     "des_en": "iServer data flow service"
                 }]
             },

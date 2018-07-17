@@ -283,7 +283,7 @@ window.examplesResources = {
         "title_geolocateControl": "定位控件",
         "title_navigationControl": "导航控件",
         "title_swipeBetweenMaps": "卷帘控件",
-        "title_dataFlowService": "实时数据服务",
+        "title_dataFlowService": "数据流服务",
         "title_cellMap": "方形图",
         "title_ChangchunPublicTransportNetwork": "长春公交路径图",
         "title_effectScatter": "全国主要城市空气质量图",
