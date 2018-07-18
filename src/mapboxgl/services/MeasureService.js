@@ -6,12 +6,14 @@ import {Geometry, MeasureService as CommonMeasureService} from '@supermap/iclien
 /**
  * @class mapboxgl.supermap.MeasureService
  * @category  iServer Map Measure
- * @classdesc 测量服务
+ * @classdesc 测量服务。
  * @extends {mapboxgl.supermap.ServiceBase}
- * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map</br>
- * @param {Object} options - 交互服务时所需可选参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
- * @param {MeasureMode} options.measureMode - 量算模式，包括距离量算模式和面积量算模式。
+ * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。
+ * @param {Object} options - 交互服务时所需可选参数。 
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
+ * @param {SuperMap.MeasureMode} [options.measureMode=SuperMap.MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
  */
 export class MeasureService extends ServiceBase {
 
@@ -21,9 +23,9 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.MeasureService.prototype.measureDistance
-     * @description 测距
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类</br>
-     * @param {RequestCallback} callback 回调函数
+     * @description 距离测量。
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {RequestCallback} callback 回调函数。
      */
     measureDistance(params, callback) {
         this.measure(params, 'DISTANCE', callback);
@@ -31,9 +33,9 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.MeasureService.prototype.measureArea
-     * @description 测面积
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类</br>
-     * @param {RequestCallback} callback 回调函数
+     * @description 面积测量。
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {RequestCallback} callback 回调函数。
      */
     measureArea(params, callback) {
         this.measure(params, 'AREA', callback);
@@ -41,11 +43,11 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function mapboxgl.supermap.MeasureService.prototype.measure
-     * @description 测量
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
-     * @param {string} type - 类型
-     * @param {RequestCallback} callback - 回调函数
-     * @returns {mapboxgl.supermap.MeasureService} 测量服务
+     * @description 测量。
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {string} type - 测量类型。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {mapboxgl.supermap.MeasureService} 测量服务。
      */
     measure(params, type, callback) {
         var me = this;
