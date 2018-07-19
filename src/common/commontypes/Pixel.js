@@ -2,10 +2,10 @@
 
 /**
  * @class SuperMap.Pixel
- * @classdesc 此类用x,y坐标描绘屏幕坐标（像素点）。
- * @param {number} [x=0.0] - x坐标
- * @param {number} [y=0.0] - y坐标
- * @param {string} mode - 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+ * @classdesc 此类用 x,y 坐标描绘屏幕坐标（像素点）。
+ * @param {number} [x=0.0] - x 坐标。
+ * @param {number} [y=0.0] - y 坐标。
+ * @param {string} [mode='lefttop'] - 坐标模式。
  *
  * @example
  * //单独创建一个对象
@@ -21,27 +21,27 @@ export class Pixel {
     constructor(x, y, mode) {
         /**
          * @member {number} [SuperMap.Pixel.prototype.x=0.0]
-         * @description x坐标
+         * @description x 坐标
          */
         this.x = x ? parseFloat(x) : 0.0;
 
         /**
          * @member {number} [SuperMap.Pixel.prototype.y=0.0]
-         * @description y坐标
+         * @description y 坐标
          */
         this.y = y ? parseFloat(y) : 0.0;
 
         /**
-         * @member {SuperMap.Pixel.Mode} SuperMap.Pixel.prototype.mode
-         * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
+         * @member {SuperMap.Pixel.Mode} [SuperMap.Pixel.prototype.mode="lefttop"]
+         * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。 
          * 值有<br>
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
          * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
-         *
+         *  
          * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-         */
+         */ 
         this.mode = mode;
         this.CLASS_NAME = "SuperMap.Pixel";
         /**
@@ -66,7 +66,7 @@ export class Pixel {
 
     /**
      * @function SuperMap.Pixel.prototype.toString
-     * @description 返回此对象的字符串形式
+     * @description 返回此对象的字符串形式。
      * @example
      *
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -84,7 +84,7 @@ export class Pixel {
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
      * var pixcel2 = pixcel.clone();
-     * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
+     * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同 x、y 坐标的 pixel 对象。
      */
     clone() {
         return new Pixel(this.x, this.y, this.mode);
@@ -92,14 +92,14 @@ export class Pixel {
 
     /**
      * @function SuperMap.Pixel.prototype.equals
-     * @description 比较两 pixel 是否相等
+     * @description 比较两 pixel 是否相等。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
      * var pixcel2 = new SuperMap.Pixel(100,50);
      * var isEquals = pixcel.equals(pixcel2);
      *
      * @param {SuperMap.Pixel} px - 用于比较相等的 pixel 对象。
-     * @returns {boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+     * @returns {boolean} 如果传入的像素点和当前像素点相同返回 true，如果不同或传入参数为 NULL 则返回 false。
      */
     equals(px) {
         var equals = false;
@@ -118,7 +118,7 @@ export class Pixel {
      * var pixcel2 = new SuperMap.Pixel(110,30);
      * var distance = pixcel.distanceTo(pixcel2);
      *
-     * @param {SuperMap.Pixel} px - 用于计算的一个 pixel
+     * @param {SuperMap.Pixel} px - 用于计算的一个 pixel。
      * @returns {float} 作为参数传入的像素与当前像素点的距离。
      */
     distanceTo(px) {
@@ -130,16 +130,15 @@ export class Pixel {
 
     /**
      * @function SuperMap.Pixel.prototype.add
-     * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
+     * @description 在原来像素坐标基础上，x 值加上传入的 x 参数，y 值加上传入的 y 参数。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
      * //pixcel2是新的对象
      * var pixcel2 = pixcel.add(20,30);
      *
-     * @param {number} x - 传入的x值。
-     * @param {number} y - 传入的y值。
-     * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
-     *      入的x,y相加得到。
+     * @param {number} x - 传入的 x 值。
+     * @param {number} y - 传入的 y 值。
+     * @returns {SuperMap.Pixel} 返回一个新的 pixel 对象，该 pixel 是由当前的 pixel 与传入的 x，y 相加得到。
      */
     add(x, y) {
         if ((x == null) || (y == null)) {
@@ -158,8 +157,8 @@ export class Pixel {
      * var pixcel3 = pixcel.offset(pixcel2);
      *
      * @param {SuperMap.Pixel} px - 传入的 <SuperMap.Pixel> 对象。
-     * @returns {SuperMap.Pixel} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
-     *      值与传入的Pixel对象的x，y值相加得到。
+     * @returns {SuperMap.Pixel} 返回一个新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y
+     *      值与传入的 Pixel 对象的 x，y 值相加得到。
      */
     offset(px) {
         var newPx = this.clone();
@@ -173,7 +172,7 @@ export class Pixel {
      *
      * @function SuperMap.Pixel.prototype.destroy
      * @description 销毁此对象。
-     * 销毁后此对象的所有属性为null，而不是初始值。
+     * 销毁后此对象的所有属性为 null，而不是初始值。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
      * pixcel.destroy();

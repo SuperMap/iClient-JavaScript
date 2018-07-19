@@ -8,14 +8,14 @@ import '../REST';
 /**
  * @class SuperMap.UGCSubLayer
  * @category  iServer Map Layer
- * @classdesc 地图服务图层属性信息类类。影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
+ * @classdesc 地图服务图层属性信息类。影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
  * @extends {SuperMap.UGCMapLayer}
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.DatasetInfo} options.datasetInfo - 数据集信息。<br>
- * @param {string} options.displayFilter - 图层显示过滤条件。<br>
- * @param {SuperMap.JoinItem} options.joinItems - 连接信息类。<br>
- * @param {string} options.representationField - 存储制图表达信息的字段。<br>
- * @param {SuperMap.LayerType} options.ugcLayerType - 图层类型。
+ * @param {Object} options - 参数。 
+ * @param {SuperMap.DatasetInfo} options.datasetInfo - 数据集信息。 
+ * @param {string} [options.displayFilter] - 图层显示过滤条件。 
+ * @param {SuperMap.JoinItem} [options.joinItems] - 连接信息类。 
+ * @param {string} [options.representationField] - 存储制图表达信息的字段。 
+ * @param {SuperMap.LayerType} [options.ugcLayerType] - 图层类型。
  */
 export class UGCSubLayer extends UGCMapLayer {
 

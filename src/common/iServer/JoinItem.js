@@ -10,12 +10,12 @@ import {Util} from '../commontypes/Util';
  * 连接，实际上是依据相同的字段将一个外部表追加到指定的表；而关联是基于一个相同的字段定义了两个表格之间的联系，但不是实际的追加。
  * 用于连接两个表的字段的名称不一定相同，但类型必须一致。当两个表格之间建立了连接，通过对主表进行操作，可以对外部表进行查询，制作专题图以及分析等。
  * 当两个表格之间是一对一或多对一的关系时，可以使用 join 连接。当为多对一的关系时，允许指定多个字段之间的关联。
- * (注意：SuperMap.JoinItem 目前支持左连接和内连接，不支持全连接和右连接，UDB 引擎不支持内连接。并且用于建立连接的两个表必须在同一个数据源下。)
- * @param {Object} options - 参数。</br>
- * @param {string} options.foreignTableName - 外部表的名称。</br>
- * @param {string} options.joinFilter - 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。</br>
- * @param {SuperMap.JoinType} options.joinType - 两个表之间连接类型。</br>
- * @example 下面以SQL查询说明joinItem的使用方法：
+ *（注意：SuperMap.JoinItem 目前支持左连接和内连接，不支持全连接和右连接，UDB 引擎不支持内连接。并且用于建立连接的两个表必须在同一个数据源下。)
+ * @param {Object} options - 参数。 
+ * @param {string} options.foreignTableName - 外部表的名称。 
+ * @param {string} options.joinFilter - 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。 
+ * @param {SuperMap.JoinType} options.joinType - 两个表之间连接类型。 
+ * @example 下面以 SQL 查询说明 joinItem 的使用方法：
  *(start code)
  *   function queryBySQL() {
      *       // 设置与外部表的连接信息
@@ -48,7 +48,7 @@ export class JoinItem {
         /**
          * @member {string} SuperMap.JoinItem.prototype.foreignTableName
          * @description 外部表的名称。
-         * 如果外部表的名称是以“表名@数据源名”命名方式，则该属性只需赋值表名。
+         * 如果外部表的名称是以 “表名@数据源名” 命名方式，则该属性只需赋值表名。
          * 例如：外部表 Name@changchun，Name 为表名，changchun 为数据源名称，则该属性的赋值应为：Name。
          */
         this.foreignTableName = null;

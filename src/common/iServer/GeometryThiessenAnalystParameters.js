@@ -8,8 +8,8 @@ import {ServerGeometry} from './ServerGeometry';
  * @constructs SuperMap.GeometryThiessenAnalystParameters
  * @category iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 几何对象泰森多边形分析参数类。对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
- * @param {Object} options - 参数。</br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.points - 使用点数组进行分析时使用的几何对象。</br>
+ * @param {Object} options - 参数。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.points - 使用点数组进行分析时使用的几何对象。 
  * @extends {SuperMap.ThiessenAnalystParameters}
  */
 
@@ -48,8 +48,8 @@ export class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters
      * @function SuperMap.GeometryThiessenAnalystParameters.toObject
      * @param {SuperMap.GeometryThiessenAnalystParameters} geometryThiessenAnalystParameters - 几何对象泰森多边形分析参数类。
      * @param {SuperMap.GeometryThiessenAnalystParameters} tempObj - 几何对象泰森多边形分析参数对象。
-     * @description 将几何对象泰森多边形分析参数对象转换为JSON对象。
-     * @return {Object} JSON对象。
+     * @description 将几何对象泰森多边形分析参数对象转换为 JSON 对象。
+     * @return {Object} JSON 对象。
      */
     static toObject(geometryThiessenAnalystParameters, tempObj) {
         for (var name in geometryThiessenAnalystParameters) {

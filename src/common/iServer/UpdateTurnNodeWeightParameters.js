@@ -5,12 +5,12 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.UpdateTurnNodeWeightParameters
  * @category  iServer NetworkAnalyst TurnNodeWeight
  * @classdesc 转向耗费权重更新服务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.nodeId - 转向结点的id。<br>
- * @param {string} options.fromEdgeId - 起始边的id。<br>
- * @param {string} options.toEdgeId - 终止边的id。<br>
- * @param {string} options.weightField - 转向结点的耗费字段。<br>
- * @param {string} options.turnNodeWeight - 耗费权重
+ * @param {Object} options - 参数。 
+ * @param {string} options.nodeId - 转向结点的  ID。 
+ * @param {string} options.fromEdgeId - 起始边的  ID。 
+ * @param {string} options.toEdgeId - 终止边的  ID。 
+ * @param {string} options.weightField - 转向结点的耗费字段。 
+ * @param {string} options.turnNodeWeight - 耗费权重。
  */
 export class UpdateTurnNodeWeightParameters {
 
@@ -20,31 +20,31 @@ export class UpdateTurnNodeWeightParameters {
         }
         /**
          * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId
-         * @description 转向结点的id
+         * @description 转向结点的  ID。
          */
         this.nodeId = "";
 
         /**
          * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId
-         * @description 起始边的id
+         * @description 起始边的  ID。
          */
         this.fromEdgeId = "";
 
         /**
          * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId
-         * @description 终止边的id
+         * @description 终止边的  ID。
          */
         this.toEdgeId = "";
 
         /**
          * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField
-         * @description 转向结点的耗费字段
+         * @description 转向结点的耗费字段。
          */
         this.weightField = "";
 
         /**
          * @member {string} SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight
-         * @description 耗费权重
+         * @description 耗费权重。
          */
         this.turnNodeWeight = "";
         Util.extend(this, options);

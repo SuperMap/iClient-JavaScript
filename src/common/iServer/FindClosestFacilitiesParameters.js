@@ -7,13 +7,13 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @category iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析参数类。
  * @param {Object} options - 参数。</br>
- * @param {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number)} options.event - 事件点，一般为需要获得服务设施服务的事件位置，必设字段。</br>
- * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。</br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置，必设字段。</br>
- * @param {boolean} options.fromEvent - 是否从事件点到设施点进行查找。</br>
- * @param {boolean} [options.isAnalyzeById=false] - 事件点和设施点是否通过节点 ID 号来指定。</br>
+ * @param {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number)} options.event - 事件点，一般为需要获得服务设施服务的事件位置。 
+ * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置。 
+ * @param {boolean} [options.fromEvent=false] - 是否从事件点到设施点进行查找。 
+ * @param {boolean} [options.isAnalyzeById=false] - 事件点和设施点是否通过节点 ID 号来指定。 
  * @param {number} [options.maxWeight=0] - 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。</br>
- * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。
+ * @param {SuperMap.TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  */
 export class FindClosestFacilitiesParameters {
 
@@ -21,7 +21,7 @@ export class FindClosestFacilitiesParameters {
     constructor(options) {
         /**
          * @member {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number)} SuperMap.FindClosestFacilitiesParameters.prototype.event
-         * @description 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
+         * @description 事件点，一般为需要获得服务设施服务的事件位置。
          *              可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。
          */
         this.event = null;
@@ -33,8 +33,8 @@ export class FindClosestFacilitiesParameters {
         this.expectFacilityCount = 1;
 
         /**
-         * @member {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} SuperMap.FindClosestFacilitiesParameters.prototype.facilities
-         * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。
+         * @member {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} [SuperMap.FindClosestFacilitiesParameters.prototype.facilities=false]
+         * @description 设施点集合，一般为提供服务的服务设施位置。
          *              可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
          */
         this.facilities = null;
@@ -63,7 +63,7 @@ export class FindClosestFacilitiesParameters {
         this.maxWeight = 0;
 
         /**
-         * @member {SuperMap.TransportationAnalystParameter} SuperMap.FindClosestFacilitiesParameters.prototype.parameter
+         * @member {SuperMap.TransportationAnalystParameter} [SuperMap.FindClosestFacilitiesParameters.prototype.parameter]
          * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
          *              它为 SuperMap.TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，
          *              则返回结果空间信息等都为空。

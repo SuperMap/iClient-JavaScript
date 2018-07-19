@@ -4,10 +4,10 @@ import {OnlineServiceBase} from './OnlineServiceBase';
 
 /**
  * @class SuperMap.OnlineData
- * @classdesc Online myData服务
+ * @classdesc Online myData 服务
  * @category iPortal/Online
- * @param {string} serviceRootUrl - 服务根地址
- * @param {string} options - 服务相关参数
+ * @param {string} serviceRootUrl - 服务根地址。
+ * @param {Object} options - 服务相关参数。
  */
 export class OnlineData extends OnlineServiceBase {
 
@@ -67,8 +67,8 @@ export class OnlineData extends OnlineServiceBase {
 
     /**
      * @function SuperMap.OnlineData.prototype.load
-     * @description 通过url请求获取该服务完整信息
-     * @returns {Promise} 返回不包含请求结果的Promise对象,请求返回结果自动填充到该类属性中
+     * @description 通过 url 请求获取该服务完整信息。
+     * @returns {Promise} 返回不包含请求结果的 Promise 对象,请求返回结果自动填充到该类属性中。
      */
     load() {
         if (!this.serviceUrl) {
@@ -82,8 +82,8 @@ export class OnlineData extends OnlineServiceBase {
 
     /**
      * @function SuperMap.OnlineData.prototype.getPublishedServices
-     * @description 获取数据发布的所有服务
-     * @returns {Object} 数据发布的所有服务
+     * @description 获取数据发布的所有服务。
+     * @returns {Object} 数据发布的所有服务。
      */
     getPublishedServices() {
         return this.dataItemServices;
@@ -91,8 +91,8 @@ export class OnlineData extends OnlineServiceBase {
 
     /**
      * @function SuperMap.OnlineData.prototype.getAuthorizeSetting
-     * @description 获取数据的权限信息
-     * @returns {Object} 权限信息
+     * @description 获取数据的权限信息。
+     * @returns {Object} 权限信息。
      */
     getAuthorizeSetting() {
         return this.authorizeSetting;

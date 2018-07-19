@@ -4,16 +4,16 @@
  * @name Date
  * @memberOf SuperMap
  * @namespace
- * @description 包含parse、toISOString方法的实现，两个方法用来解析RFC 3339日期，遵循 ECMAScript 5规范。
+ * @description 包含 parse、toISOString 方法的实现，两个方法用来解析 RFC 3339 日期，遵循 ECMAScript 5 规范。
  */
 export var DateExt = SuperMap.Date = {
 
     /**
-     * @description 生成代表一个具体的日期字符串，该日期遵循ISO 8601标准(详情查看{@link http://tools.ietf.org/html/rfc3339})。
+     * @description 生成代表一个具体的日期字符串，该日期遵循 ISO 8601 标准（详情查看{@link http://tools.ietf.org/html/rfc3339}）。
      * @example
      *  var dateString = SuperMap.Date.toISOString(new Date());
      * @param {Date} date - 日期对象。
-     * @returns {string} 一个代表日期的字符串。(例如 "2010-08-07T16:58:23.123Z")。
+     * @returns {string} 一个代表日期的字符串。（例如 "2010-08-07T16:58:23.123Z"）。
      */
     toISOString: (function () {
         //标准的Date会存在toISOString方法，可以直接调用
@@ -56,8 +56,8 @@ export var DateExt = SuperMap.Date = {
      * @description 从一个字符串生成一个日期对象。
      * @example
      *  var date = SuperMap.Date.parse("2010-08-07");
-     * @param {string} str - 代表日期的字符串。(例如： "2010", "2010-08", "2010-08-07", "2010-08-07T16:58:23.123Z","2010-08-07T11:58:23.123-06").
-     * @returns {Date} 日期对象，如果字符串无法被解析，则返回一个无效的日期。(例如  isNaN(date.getTime())).
+     * @param {string} str - 代表日期的字符串。（例如： "2010", "2010-08", "2010-08-07", "2010-08-07T16:58:23.123Z","2010-08-07T11:58:23.123-06"）。
+     * @returns {Date} 日期对象，如果字符串无法被解析，则返回一个无效的日期。(例如 isNaN(date.getTime()))。
      */
     parse: function (str) {
         var date;

@@ -5,11 +5,11 @@ import {AggQueryBuilderParameter} from "./AggQueryBuilderParameter";
 
 /**
  * @class SuperMap.GeoBoundingBoxQueryBuilderParameter
- * @classdesc bounds查询参数设置类，该参数仅支持数据来源 Elasticsearch 服务的数据服务
+ * @classdesc bounds 查询参数设置类，该参数仅支持数据来源 Elasticsearch 服务的数据服务。
  * @category iServer Data FeatureResults
- * @param {Object} options - 参数。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 查询范围。<br>
- * @param {SuperMap.AggregationQueryBuilderType} [options.queryType=SuperMap.AggregationQueryBuilderType.GEO_BOUNDING_BOX] - 查询类型。<br>
+ * @param {Object} options - 参数。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 查询范围。 
+ * @param {SuperMap.AggregationQueryBuilderType} [options.queryType=SuperMap.AggregationQueryBuilderType.GEO_BOUNDING_BOX] - 查询类型。 
  */
 export class GeoBoundingBoxQueryBuilderParameter extends AggQueryBuilderParameter {
     constructor(options) {

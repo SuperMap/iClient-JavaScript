@@ -5,21 +5,21 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.FindLocationParameters
  * @category iServer NetworkAnalyst Location
  * @classdesc 选址分区分析参数类。
- * @param {Object} options - 参数。<br>
- * @param {number} options.expectedSupplyCenterCount - 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
- * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分配资源。<br>
- * @param {Array.<SuperMap.SupplyCenter>} options.supplyCenters - 资源供给中心集合，必设字段。<br>
- * @param {string} options.turnWeightField - 转向权值字段的名称。<br>
- * @param {string} options.weightName - 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
+ * @param {Object} options - 参数。 
+ * @param {number} [options.expectedSupplyCenterCount=1] - 期望用于最终设施选址的资源供给中心数量。 
+ * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分配资源。 
+ * @param {Array.<SuperMap.SupplyCenter>} options.supplyCenters - 资源供给中心集合。 
+ * @param {string} options.turnWeightField - 转向权值字段的名称。 
+ * @param {string} options.weightName - 阻力字段的名称，标识了进行网络分析时所使用的阻力字段。
  */
 export class FindLocationParameters {
 
 
     constructor(options) {
         /**
-         * @member {number} SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount
-         * @description 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
-         *              当输入值为0时，最终设施选址的资源供给中心数量默认为覆盖分析区域内的所需最少的供给中心数。
+         * @member {number} [SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount=1]
+         * @description 期望用于最终设施选址的资源供给中心数量。 
+         *              当输入值为 0 时，最终设施选址的资源供给中心数量默认为覆盖分析区域内的所需最少的供给中心数。
          */
         this.expectedSupplyCenterCount = null;
 
@@ -34,7 +34,7 @@ export class FindLocationParameters {
 
         /**
          * @member {Array.<SuperMap.SupplyCenter>} SuperMap.FindLocationParameters.prototype.supplyCenters
-         * @description 资源供给中心集合，必设字段。
+         * @description 资源供给中心集合。
          *              资源供给中心是提供资源和服务的设施，对应于网络结点，
          *              资源供给中心的相关信息包括资源量、最大阻力值、资源供给中心类型，资源供给中心在网络中所处结点的 ID 等，以便在进行选址分区分析时使用。
          */
@@ -48,7 +48,7 @@ export class FindLocationParameters {
 
         /**
          * @member {string} SuperMap.FindLocationParameters.prototype.weightName
-         * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
+         * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段。
          */
         this.weightName = null;
         Util.extend(this, options);

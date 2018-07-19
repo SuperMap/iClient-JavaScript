@@ -7,14 +7,14 @@ import '../REST';
  * @class SuperMap.UGCLayer
  * @category  iServer Map Layer
  * @classdesc UGC 图层类。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.Bounds} options.bounds - 图层范围。<br>
- * @param {string} options.caption - 图层的标题。<br>
- * @param {string} options.description - 图层的描述信息。<br>
- * @param {string} options.name - 图层的名称。<br>
- * @param {boolean} options.queryable - 图层中的对象是否可以查询。<br>
- * @param {boolean} options.subUGCLayers - 是否允许图层的符号大小随图缩放。<br>
- * @param {SuperMap.UGCLayerType} options.type - 图层类型。<br>
+ * @param {Object} options - 参数。 
+ * @param {SuperMap.Bounds} options.bounds - 图层范围。 
+ * @param {string} options.caption - 图层的标题。 
+ * @param {string} [options.description] - 图层的描述信息。 
+ * @param {string} options.name - 图层的名称。 
+ * @param {boolean} [options.queryable] - 图层中的对象是否可以查询 
+ * @param {boolean} [options.subUGCLayers] - 是否允许图层的符号大小随图缩放。 
+ * @param {SuperMap.UGCLayerType} options.type  - 图层类型 
  * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
  */
 export class UGCLayer {

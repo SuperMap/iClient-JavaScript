@@ -5,22 +5,22 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.AreaSolarRadiationParameters
  * @category iServer SpatialAnalyst SolarRadiationAnalyst
  * @classdesc 地区太阳辐射参数类。
- * @param {Object} options - 参数。</br>
- * @param {string} options.dataset - 要用来做地区太阳辐射数据源中数据集的名称（必设参数）。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。</br>
- * @param {string} options.targetDatasourceName - 指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
- * @param {string} options.totalGridName - 指定地区太阳辐射总辐射量数据集的名称（必设参数）。</br>
- * @param {string} options.diffuseDatasetGridName - 指定地区太阳辐射散射辐射量数据集的名称。</br>
- * @param {string} options.durationDatasetGridName - 指定地区太阳辐射太阳直射持续时间数据集的名称。</br>
- * @param {string} options.directDatasetGridName - 指定地区太阳辐射直射辐射量数据集的名称。</br>
- * @param {number} options.latitude - 待计算区域的纬度值。</br>
- * @param {string} [options.timeMode = "MULTIDAYS"] - 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日）。</br>
- * @param {number} options.dayStart - 起始日期（年内的第几天），必设参数。</br>
- * @param {number} options.dayEnd - 结束日期（年内的第几天），必设参数。</br>
- * @param {number} options.hourStart - 起始时间（一天中的第几个小时）。</br>
- * @param {number} options.hourEnd - 结束时间（一天中的第几个小时）。</br>
- * @param {number} options.transmittance - 太阳辐射穿过大气的透射率。</br>
- * @param {number} [options.hourInterval=0.5] - 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）。</br>
- * @param {number} [options.dayInterval=5] - 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）。</br>
+ * @param {Object} options - 参数。 
+ * @param {string} options.dataset - 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。 
+ * @param {string} options.targetDatasourceName - 指定的存储结果数据集的数据源名称, 例如："Jingjin"。 
+ * @param {string} options.totalGridName - 指定地区太阳辐射总辐射量数据集的名称。 
+ * @param {string} options.diffuseDatasetGridName - 指定地区太阳辐射散射辐射量数据集的名称。 
+ * @param {string} options.durationDatasetGridName - 指定地区太阳辐射太阳直射持续时间数据集的名称。 
+ * @param {string} options.directDatasetGridName - 指定地区太阳辐射直射辐射量数据集的名称。
+ * @param {number} options.latitude - 待计算区域的纬度值。 
+ * @param {string} [options.timeMode = "MULTIDAYS"] - 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日）。 
+ * @param {number} options.dayStart - 起始日期（年内的第几天）。 
+ * @param {number} options.dayEnd - 结束日期（年内的第几天）。 
+ * @param {number} [options.hourStart] - 起始时间（一天中的第几个小时）。 
+ * @param {number} [options.hourEnd] - 结束时间（一天中的第几个小时）。 
+ * @param {number} [options.transmittance] - 太阳辐射穿过大气的透射率。 
+ * @param {number} [options.hourInterval=0.5] - 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）。 
+ * @param {number} [options.dayInterval=5] - 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）。 
  * @param {boolean} [options.deleteExistResultDataset=false] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
  */
 export class AreaSolarRadiationParameters {
@@ -69,8 +69,8 @@ export class AreaSolarRadiationParameters {
         this.latitude = null;
 
         /**
-         *  @member {string} SuperMap.AreaSolarRadiationParameters.prototype.timeMode
-         *  @description 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日），默认值为"MULTIDAYS";
+         *  @member {string} [SuperMap.AreaSolarRadiationParameters.prototype.timeMode='MULTIDAYS']
+         *  @description 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日）。
          */
         this.timeMode = "MULTIDAYS";
 
@@ -87,38 +87,38 @@ export class AreaSolarRadiationParameters {
         this.dayEnd = null;
 
         /**
-         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.hourStart
+         * @member {number} [SuperMap.AreaSolarRadiationParameters.prototype.hourStart]
          * @description 起始时间（一天中的第几个小时）。
          */
         this.hourStart = null;
 
         /**
-         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.hourEnd
+         * @member {number} [SuperMap.AreaSolarRadiationParameters.prototype.hourEnd]
          * @description 结束时间（一天中的第几个小时）。
          */
         this.hourEnd = null;
 
         /**
-         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.transmittance
+         * @member {number} [SuperMap.AreaSolarRadiationParameters.prototype.transmittance]
          * @description 太阳辐射穿过大气的透射率。
          */
         this.transmittance = null;
 
         /**
-         *  @member {number} SuperMap.AreaSolarRadiationParameters.prototype.hourInterval
-         *  @description 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）
+         *  @member {number} [SuperMap.AreaSolarRadiationParameters.prototype.hourInterval=0.5]
+         *  @description 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 如果修改此参数，必须使用整数）
          */
         this.hourInterval = null;
 
         /**
-         * @member {number} SuperMap.AreaSolarRadiationParameters.prototype.dayInterval
-         * @description 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）
+         * @member {number} [SuperMap.AreaSolarRadiationParameters.prototype.dayInterval=5]
+         * @description 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 必须使用整数）
          */
         this.dayInterval = null;
 
         /**
-         * @member {boolean} SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset
-         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+         * @member {boolean} [SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset=false]
+         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。\
          */
         this.deleteExistResultDataset = false;
 

@@ -5,8 +5,8 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.FieldParameters
  * @category iServer Data Field
  * @classdesc 字段信息查询参数类。
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasource - 数据源名称。<br>
+ * @param {Object} options - 参数。 
+ * @param {string} options.datasource - 数据源名称。
  * @param {string} options.dataset - 数据集名称。
  */
 export class FieldParameters {

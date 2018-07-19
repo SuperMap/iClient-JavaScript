@@ -8,18 +8,18 @@ import {PixelFormat} from '../REST';
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 插值分析参数类。
  * @param {Object} options - 参数。</br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- * @param {number} options.searchRadius - 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
- * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
- * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
- * @param {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
- * @param {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。</br>
- * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。</br>
- * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。</br>
- * @param {SuperMap.PixelFormat} options.pixelFormat - 指定结果栅格数据集存储的像素格式。</br>
- * @param {string} options.dataset - 用于做插值分析的数据源中数据集的名称。</br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。</br>
- * @param {string} [options.InterpolationAnalystType="dataset"] - 插值分析类型（"dataset"或"geometry"）。</br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。 
+ * @param {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。 
+ * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。 
+ * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。 
+ * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。 
+ * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。 
+ * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。 
+ * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。 
+ * @param {SuperMap.PixelFormat} [options.pixelFormat='BIT16'] - 指定结果栅格数据集存储的像素格式。 
+ * @param {string} options.dataset - 用于做插值分析的数据源中数据集的名称。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。 
+ * @param {string} [options.InterpolationAnalystType="dataset"] - 插值分析类型（"dataset"或"geometry"）。 
  */
 export class InterpolationAnalystParameters {
 

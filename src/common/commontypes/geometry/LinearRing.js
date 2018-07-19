@@ -3,7 +3,7 @@ import {LineString} from './LineString';
 
 /**
  * @class  SuperMap.Geometry.LinearRing
- * @classdesc 几何对象线环类，是一个特殊的封闭的线串，在每次addPoint/removePoint之后会通过添加一个点（此点是复制的第一个点得到的）
+ * @classdesc 几何对象线环类，是一个特殊的封闭的线串，在每次 addPoint/removePoint 之后会通过添加一个点（此点是复制的第一个点得到的）
  * 作为最后的一个点来自动关闭线环。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.LineString}
@@ -23,7 +23,7 @@ export class LinearRing extends LineString {
         super(points);
         /**
          * @member {Array.<string>} [SuperMap.Geometry.LinearRing.prototype.componentTypes=["SuperMap.Geometry.Point"]]
-         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
@@ -101,7 +101,7 @@ export class LinearRing extends LineString {
     /**
      * @function SuperMap.Geometry.LinearRing.prototype.getVertices
      * @description 返回几何图形的所有点的列表。
-     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
+     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为 false ，则返回非端点的顶点
      * 如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象所有点的列表。
      */

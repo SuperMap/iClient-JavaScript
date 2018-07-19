@@ -7,7 +7,7 @@ import {Util} from '../Util';
  * @class SuperMap.Geometry.Collection
  * @classdesc 几何对象集合类，存储在本地的 components 属性中（可作为参数传递给构造函数）。<br>
  *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>
- *            getArea和getLength函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
+ *            getArea 和 getLength 函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
  * @param {Array.<SuperMap.Geometry>} components - 几何对象数组。
@@ -29,7 +29,7 @@ export class Collection extends Geometry {
         this.components = [];
 
         /**
-         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          * @member {Array.<string>} SuperMap.Geometry.Collection.prototype.componentTypes
          */
         this.componentTypes = null;
@@ -68,8 +68,8 @@ export class Collection extends Geometry {
 
     /**
      * @function SuperMap.Geometry.Collection.prototype.getComponentsString
-     * @description 获取components字符串
-     * @returns {string} components字符串
+     * @description 获取 components 字符串。
+     * @returns {string} components 字符串。
      */
     getComponentsString() {
         var strings = [];
@@ -119,10 +119,10 @@ export class Collection extends Geometry {
 
     /**
      * @function SuperMap.Geometry.Collection.prototype.addComponent
-     * @description 添加一个几何对象到集合中。如果设置了componentTypes类型，则添加的几何对象必须是componentTypes中的类型
-     * @param {SuperMap.Geometry} component - 待添加的几何对象
-     * @param {int} index - 几何对象插入的位置
-     * @returns {boolean} 是否添加成功
+     * @description 添加一个几何对象到集合中。如果设置了 componentTypes 类型，则添加的几何对象必须是 componentTypes 中的类型。
+     * @param {SuperMap.Geometry} component - 待添加的几何对象。
+     * @param {int} [index] - 几何对象插入的位置。
+     * @returns {boolean} 是否添加成功。
      */
     addComponent(component, index) {
         var added = false;
@@ -168,9 +168,9 @@ export class Collection extends Geometry {
 
     /**
      * @function SuperMap.Geometry.Collection.prototype.removeComponent
-     * @description 从集合中移除一个几何对象
-     * @param {SuperMap.Geometry} component - 要移除的几何对象
-     * @returns {boolean} 几何对象是否移除成功
+     * @description 从集合中移除一个几何对象。
+     * @param {SuperMap.Geometry} component - 要移除的几何对象。
+     * @returns {boolean} 几何对象是否移除成功。
      */
     removeComponent(component) {
         Util.removeItem(this.components, component);
@@ -223,7 +223,7 @@ export class Collection extends Geometry {
     /**
      * @function SuperMap.Geometry.Collection.prototype.getVertices
      * @description 返回几何对象的所有结点的列表。
-     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
+     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象的顶点列表。
      */
     getVertices(nodes) {

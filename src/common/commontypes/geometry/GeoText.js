@@ -12,9 +12,9 @@ import '../LonLat';
  * @classdesc 文本标签类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
- * @param {float} x - x坐标，必设参数。
- * @param {float} y - y坐标，必设参数。
- * @param {string} text - 标签中的文本内容，必设参数。
+ * @param {float} x - x 坐标。
+ * @param {float} y - y 坐标。
+ * @param {string} text - 标签中的文本内容。
  */
 export class GeoText extends Geometry {
 
@@ -98,10 +98,10 @@ export class GeoText extends Geometry {
     /**
      * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByLabel
      * @description 根据绘制好的标签获取文字标签的像素范围，参数的单位是像素；此方法相对于 getLabelPxBoundsByText 效率较低，但支持所有格式的文本。
-     * @param {Object} locationPixel - 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param {Object} locationPixel - 标签的位置点，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {string} labelWidth - 标签的宽度，如：“90px”。
      * @param {string} labelHeight - 标签的高度。
-     * @param {Object} style - 标签的style。
+     * @param {Object} style - 标签的 style。
      * @returns {SuperMap.Bounds} 标签的像素范围。
      */
     getLabelPxBoundsByLabel(locationPixel, labelWidth, labelHeight, style) {
@@ -170,9 +170,9 @@ export class GeoText extends Geometry {
 
     /**
      * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByText
-     * @description 根据文本内容获取文字标签的像素范围
-     * @param {Object} locationPixel - 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param {Object} style - 标签的样式
+     * @description 根据文本内容获取文字标签的像素范围。
+     * @param {Object} locationPixel - 标签的位置点，该对象含有属性 x（横坐标），属性 y（纵坐标）。
+     * @param {Object} style - 标签的样式。
      * @returns {SuperMap.Bounds} 标签的像素范围。
      */
     getLabelPxBoundsByText(locationPixel, style) {
@@ -237,9 +237,9 @@ export class GeoText extends Geometry {
 
     /**
      * @function SuperMap.Geometry.GeoText.prototype.getLabelPxSize
-     * @description 获取label的像素大小
+     * @description 获取 label 的像素大小。
      * @param {Object} style - 标签样式。
-     * @returns {Object} 标签大小对象，属性w表示标签的宽度，属性h表示标签的高度。
+     * @returns {Object} 标签大小对象，属性 w 表示标签的宽度，属性 h 表示标签的高度。
      */
     getLabelPxSize(style) {
         var text,//文本内容
@@ -289,9 +289,9 @@ export class GeoText extends Geometry {
 
     /**
      * @function SuperMap.Geometry.GeoText.prototype.getTextCount
-     * @description 获取text中的字符个数。
+     * @description 获取 text 中的字符个数。
      * @param {string} text - 字符串。
-     * @returns {Object} 字符个数统计结果，属性cnC表示中文字符个数，属性enC表示英文字符个数，属性textC表示字符总个数。
+     * @returns {Object} 字符个数统计结果，属性 cnC 表示中文字符个数，属性 enC 表示英文字符个数，属性 textC 表示字符总个数。
      */
     getTextCount(text) {
         var textCharCount = {};

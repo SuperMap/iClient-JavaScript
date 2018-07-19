@@ -6,9 +6,9 @@ import {FetchRequest} from '../util/FetchRequest';
 
 /**
  * @class SuperMap.iPortalServiceBase
- * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
+ * @classdesc iPortal 服务基类（有权限限制的类需要实现此类）。
  * @category iPortal/Online
- * @param {string} url - iPortal服务地址
+ * @param {string} url - iPortal 服务地址。
  */
 export class IPortalServiceBase {
 
@@ -20,12 +20,12 @@ export class IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
-     * @description 子类统一通过该方法发送请求
-     * @param {string} method - 请求类型
-     * @param {string} url - 服务地址
-     * @param {Object} param - 请求参数
-     * @param {Object} requestOptions - fetch请求配置项
-     * @returns {Promise} 返回包含请求结果的Promise对象
+     * @description 子类统一通过该方法发送请求。
+     * @param {string} [method='GET'] - 请求类型。
+     * @param {string} url - 服务地址。
+     * @param {Object} param - 请求参数。
+     * @param {Object} [requestOptions] - fetch 请求配置项。
+     * @returns {Promise} 返回包含请求结果的 Promise 对象。
      */
 
     request(method, url, param, requestOptions) {
@@ -38,9 +38,9 @@ export class IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
-     * @description 追加授权信息
-     * @param {string} url - 创建证书url地址
-     * @return {string} 携带token或key的新地址
+     * @description 追加授权信息。
+     * @param {string} url - 创建证书 URL 地址。
+     * @return {string} 携带 token 或 key 的新地址。
      */
 
     createCredentialUrl(url) {
@@ -64,8 +64,8 @@ export class IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalServiceBase.prototype.getCredential
-     * @description 获取token
-     * @return {string } 返回获取的token
+     * @description 获取 token。
+     * @return {string } 返回获取的 token。
      *
      */
 
@@ -83,7 +83,7 @@ export class IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalServiceBase.prototype.getKey
-     * @description 其子类需要重写该方法，修改其中获取key的字段，存储key可能是服务id字段，可能是url
+     * @description 其子类需要重写该方法，修改其中获取 key 的字段，存储 key 可能是服务 ID 字段，可能是 URL。
      */
     getKey() {
         //return SuperMap.SecurityManager.getKey(this.id);

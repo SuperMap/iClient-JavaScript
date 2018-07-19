@@ -8,23 +8,23 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @classdesc 样条插值（径向基函数插值法）分析参数类。
  * @extends {SuperMap.InterpolationAnalystParameters}
  * @param {Object} options - 参数。</br>
- * @param {number} [options.smooth=0.1] - 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为0到1。</br>
- * @param {number} [options.tension=40] - 张力系数，用于调整结果栅格数据表面的特性。</br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。</br>
- * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置参与差值运算的点数。</br>
- * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置参与运算点的查找范围。</br>
- * @param {number} [options.maxPointCountForInterpolation=200] - 【块查找】方式下，设置最多参与插值的点数。</br>
- * @param {number} [options.maxPointCountInNode=50] - 【块查找】方式下，设置单个块内最多参与运算点数。</br>
- * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
- * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
- * @param {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
- * @param {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。</br>
- * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。必设参数。</br>
- * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。必设参数。</br>
- * @param {string} options.pixelFormat - 指定结果栅格数据集存储的像素格式。</br>
- * @param {string} options.dataset - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。
+ * @param {number} [options.smooth=0.1] - 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为0到1。 
+ * @param {number} [options.tension=40] - 张力系数，用于调整结果栅格数据表面的特性。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。 
+ * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。  
+ * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置参与差值运算的点数。 
+ * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置参与运算点的查找范围。 
+ * @param {number} [options.maxPointCountForInterpolation=200] - 【块查找】方式下，设置最多参与插值的点数。 
+ * @param {number} [options.maxPointCountInNode=50] - 【块查找】方式下，设置单个块内最多参与运算点数。 
+ * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时。 
+ * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
+ * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。 
+ * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。 
+ * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。  
+ * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。 
+ * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。 
+ * @param {string} options.dataset - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时。
  * @example
  * var myInterpolationRBFAnalystParameters = new SuperMap.InterpolationRBFAnalystParameters({
  *     dataset:"SamplesP@Interpolation",

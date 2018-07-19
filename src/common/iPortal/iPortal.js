@@ -8,10 +8,10 @@ import {IPortalServiceBase} from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortal
- * @classdesc 对接SuperMap iPortal 基础服务
+ * @classdesc 对接 SuperMap iPortal 基础服务。
  * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
- * @param {string} iportalUrl - 地址
+ * @param {string} iportalUrl - 地址。
  *
  */
 export class IPortal extends IPortalServiceBase {
@@ -23,8 +23,8 @@ export class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.load
-     * @description 加载页面
-     * @returns {Promise} 返回包含iportal web资源信息的Promise对象
+     * @description 加载页面。
+     * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.iportalUrl + '/web');
@@ -32,9 +32,9 @@ export class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.queryServices
-     * @param queryParams -{SuperMap.iPortalServicesQueryParam} 查询参数
-     * @description 查询服务
-     * @returns {Promise} 返回包含所有服务的Promise对象
+     * @description 查询服务。
+     * @param {SuperMap.iPortalServicesQueryParam} queryParams - 查询参数。
+     * @returns {Promise} 返回包含所有服务的 Promise 对象。
      */
     queryServices(queryParams) {
         if (!(queryParams instanceof IPortalServicesQueryParam)) {
@@ -53,9 +53,9 @@ export class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.deleteServices
-     * @param {Array} ids - 服务的序号
-     * @description 删除服务
-     * @returns {Promise} 返回包含服务删除操作状态的Promise对象
+     * @param {Array} ids - 服务的序号。
+     * @description 删除服务。
+     * @returns {Promise} 返回包含服务删除操作状态的 Promise 对象。
      */
     deleteServices(ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
@@ -64,9 +64,9 @@ export class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.queryMaps
-     * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数
-     * @description 获取地图信息
-     * @returns {Promise} 返回包含所有地图服务信息的Promise对象
+     * @param {SuperMap.iPortalMapsQueryParam} queryParams - 查询参数。
+     * @description 获取地图信息。
+     * @returns {Promise} 返回包含所有地图服务信息的 Promise 对象。
      */
     queryMaps(queryParams) {
         if (!(queryParams instanceof IPortalMapsQueryParam)) {

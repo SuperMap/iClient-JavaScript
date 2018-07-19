@@ -3,9 +3,9 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.iPortalMapsQueryParam
- * @classdesc iPortal地图资源查询参数
+ * @classdesc iPortal 地图资源查询参数。
  * @category iPortal/Online
- * @param {Object} params - iPortal地图资源查询具体参数
+ * @param {Object} params - iPortal 地图资源查询具体参数。
  *
  */
 export class IPortalMapsQueryParam {

@@ -4,9 +4,9 @@ import {FetchRequest} from '../util/FetchRequest';
 
 /**
  * @class SuperMap.iManagerServiceBase
- * @classdesc iManager服务基类(有权限限制的类需要实现此类)。
+ * @classdesc iManager 服务基类（有权限限制的类需要实现此类）。
  * @category iManager
- * @param {string} url - iManager首页地址，如：http://localhost:8390/imanager。
+ * @param {string} url - iManager 首页地址，如：http://localhost:8390/imanager。
  */
 export class IManagerServiceBase {
 
@@ -21,12 +21,12 @@ export class IManagerServiceBase {
     /**
      * @function SuperMap.iManagerServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求。
-     * @param {string} url - 请求url。
-     * @param {string} method - 请求类型。
-     * @param {Object} requestOptions - 请求选项。
+     * @param {string} url - 请求 URL。
+     * @param {string} [method='GET'] - 请求类型。
+     * @param {Object} [requestOptions] - 请求选项。
      * @param {Object} param - 请求参数。
      * @description 发送请求。
-     * @returns {Promise} Promise对象。
+     * @returns {Promise} Promise 对象。
      */
     request(method, url, param, requestOptions) {
         requestOptions = requestOptions || {

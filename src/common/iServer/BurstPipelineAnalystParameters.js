@@ -5,10 +5,10 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.BurstPipelineAnalystParameters
  * @category iServer NetworkAnalyst BurstAnalyse
  * @classdesc 爆管分析参数类。
- * @param {Object} options - 参数。<br>
- * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点ID数组。<br>
- * @param {number} options.edgeID - 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。<br>
- * @param {number} options.nodeID - 指定的结点ID（注：edgeID 与 nodeID 不能同时使用）。<br>
+ * @param {Object} options - 参数。 
+ * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点ID数组。 
+ * @param {number} [options.edgeID] - 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。 
+ * @param {number} [options.nodeID] - 指定的结点ID（注：edgeID 与 nodeID 不能同时使用）。 
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。
  */
 export class BurstPipelineAnalystParameters {
@@ -18,18 +18,18 @@ export class BurstPipelineAnalystParameters {
         var me = this;
         /**
          * @member {Array.<number>} SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs
-         * @description 指定的设施点ID数组，可以为空。
+         * @description 指定的设施点ID数组。
          */
         this.sourceNodeIDs = null;
 
         /**
-         * @member {number} SuperMap.BurstPipelineAnalystParameters.prototype.edgeID
+         * @member {number} [SuperMap.BurstPipelineAnalystParameters.prototype.edgeID]
          * @description 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
          */
         this.edgeID = null;
 
         /**
-         * @member {number} SuperMap.BurstPipelineAnalystParameters.prototype.nodeID
+         * @member {number} [SuperMap.BurstPipelineAnalystParameters.prototype.nodeID]
          * @description 指定的结点ID（注：edgeID 与 nodeID 不能同时使用）。
          */
         this.nodeID = null;

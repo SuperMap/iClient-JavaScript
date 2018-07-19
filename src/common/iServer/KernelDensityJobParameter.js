@@ -7,15 +7,15 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.KernelDensityJobParameter
  * @category iServer ProcessingService DensityAnalyst
  * @classdesc 密度分析任务参数类。
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。<br>
- * @param {number} options.resolution - 分辨率。<br>
- * @param {number} options.method - 分析方法。<br>
- * @param {number} options.meshType - 分析类型。<br>
- * @param {string} options.fields - 权重索引。<br>
- * @param {number} options.radius - 分析的影响半径。
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置  <br>
+ * @param {Object} options - 参数。 
+ * @param {string} options.datasetName - 数据集名。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。 
+ * @param {number} [options.resolution=80] - 分辨率。 
+ * @param {number} [options.method=0] - 分析方法。 
+ * @param {number} [options.meshType=0] - 分析类型。 
+ * @param {string} options.fields - 权重索引。 
+ * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {SuperMap.OutputSetting} options.output - 输出参数设置。
  */
 export class KernelDensityJobParameter {
 
@@ -31,7 +31,7 @@ export class KernelDensityJobParameter {
 
         /**
          * @member {SuperMap.Bounds|L.Bounds|ol.extent} SuperMap.KernelDensityJobParameter.prototype.query
-         * @description 分析范围。<br>
+         * @description 分析范围。 
          */
         this.query = "";
 

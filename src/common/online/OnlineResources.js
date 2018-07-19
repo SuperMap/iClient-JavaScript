@@ -6,7 +6,7 @@ import {
  * @enum ServiceStatus
  * @memberOf SuperMap
  * @category iPortal/Online
- * @description 服务发布状态
+ * @description 服务发布状态。
  */
 var ServiceStatus = SuperMap.ServiceStatus = {
     /** 不涉及，不可发布。 */
@@ -31,7 +31,7 @@ export {
  * @enum DataItemType
  * @memberOf SuperMap
  * @category iPortal/Online
- * @description 数据项类型
+ * @description 数据项类型。
  */
 var DataItemType = SuperMap.DataItemType = {
     /** AUDIO */
@@ -90,7 +90,7 @@ export {DataItemType}
  * @enum DataItemOrderBy
  * @memberOf SuperMap
  * @category iPortal/Online
- * @description 数据排序字段
+ * @description 数据排序字段。
  */
 var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     /** FILENAME */
@@ -122,7 +122,7 @@ export {
  * @enum FilterField
  * @memberOf SuperMap
  * @category iPortal/Online
- * @description 关键字查询时的过滤字段
+ * @description 关键字查询时的过滤字段。
  */
 var FilterField = SuperMap.FilterField = {
     /** LINKPAGE */

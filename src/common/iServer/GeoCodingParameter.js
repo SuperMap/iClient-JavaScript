@@ -5,13 +5,13 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.GeoCodingParameter
  * @category  iServer AddressMatch
  * @classdesc 地理正向匹配参数类。
- * @param {Object} options - 参数。</br>
- * @param {string} options.address - 地点关键词。</br>
- * @param {number} options.fromIndex - 设置返回对象的起始索引值。</br>
- * @param {number} options.toIndex - 设置返回对象的结束索引值。</br>
- * @param {Array.<string>} options.filters - 过滤字段，限定查询区域。</br>
- * @param {string} options.prjCoordSys - 查询结果的坐标系。</br>
- * @param {number} options.maxReturn - 最大返回结果数。
+ * @param {Object} options - 参数。 
+ * @param {string} options.address - 地点关键词。 
+ * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。 
+ * @param {number} [options.toIndex] - 设置返回对象的结束索引值。 
+ * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。 
+ * @param {string} [options.prjCoordSys] - 查询结果的坐标系。 
+ * @param {number} [options.maxReturn] - 最大返回结果数。
  */
 export class GeoCodingParameter {
 
@@ -35,31 +35,31 @@ export class GeoCodingParameter {
         this.address = null;
 
         /**
-         * @member {number} SuperMap.GeoCodingParameter.prototype.fromIndex
+         * @member {number} [SuperMap.GeoCodingParameter.prototype.fromIndex]
          * @description 设置返回对象的起始索引值。
          */
         this.fromIndex = null;
 
         /**
-         * @member {number} SuperMap.GeoCodingParameter.prototype.toIndex
+         * @member {number} [SuperMap.GeoCodingParameter.prototype.toIndex]
          * @description 设置返回对象的结束索引值。
          */
         this.toIndex = null;
 
         /**
-         * @member {Array.<string>}SuperMap.GeoCodingParameter.prototype.filters
+         * @member {Array.<string>} [SuperMap.GeoCodingParameter.prototype.filters]
          * @description 过滤字段，限定查询区域。
          */
         this.filters = null;
 
         /**
-         * @member {string} SuperMap.GeoCodingParameter.prototype.prjCoordSys
+         * @member {string} [SuperMap.GeoCodingParameter.prototype.prjCoordSys]
          * @description  查询结果的坐标系。
          */
         this.prjCoordSys = null;
 
         /**
-         * @member {number} SuperMap.GeoCodingParameter.prototype.maxReturn
+         * @member {number} [SuperMap.GeoCodingParameter.prototype.maxReturn]
          * @description 最大返回结果数。
          */
         this.maxReturn = null;

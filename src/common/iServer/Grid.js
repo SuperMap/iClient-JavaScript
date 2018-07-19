@@ -9,22 +9,22 @@ import '../REST';
 /**
  * @class SuperMap.Grid
  * @category iServer Map Layer
- * @classdesc UGC 栅格图层类。
+ * @classdesc UGC 栅格图层类 
  * @extends {SuperMap.UGCSubLayer}
- * @param {Object} options - 参数。<br>
- * @param {Array.<Object>} options.colorDictionary - 颜色对照表对象。<br>
- * @param {number} options.brightness - Grid图层的亮度。<br>
- * @param {SuperMap.ColorGradientType} options.colorGradientType - 颜色渐变枚举。<br>
- * @param {SuperMap.ServerColor} options.colors - 颜色表对象。<br>
- * @param {number} options.contrast - Grid 图层的对比度。<br>
- * @param {SuperMap.GridType} options.gridType - 格网类型。<br>
- * @param {number} options.horizontalSpacing - 格网水平间隔大小。<br>
- * @param {boolean} options.sizeFixed - 格网是否固定大小，如果不固定大小，则格网随着地图缩放。<br>
- * @param {SuperMap.ServerStyle} options.solidStyle - 格网实线的样式。<br>
- * @param {SuperMap.ServerColor} options.specialColor - 栅格数据集无值数据的颜色。<br>
- * @param {number} options.specialValue - 图层的特殊值。<br>
- * @param {boolean} options.specialValueTransparent - 图层的特殊值（specialValue）所处区域是否透明。<br>
- * @param {number} options.verticalSpacing - 格网垂直间隔大小。
+ * @param {Object} options - 参数。 
+ * @param {Array.<Object>} [options.colorDictionary] - 颜色对照表对象。 
+ * @param {number} [options.brightness] - Grid 图层的亮度。 
+ * @param {SuperMap.ColorGradientType} [options.colorGradientType] - 颜色渐变枚举。 
+ * @param {SuperMap.ServerColor} [options.colors] - 颜色表对象。 
+ * @param {number} [options.contrast] - Grid 图层的对比度。 
+ * @param {SuperMap.GridType} [options.gridType] - 格网类型。 
+ * @param {number} [options.horizontalSpacing] - 格网水平间隔大小。 
+ * @param {boolean} [options.sizeFixed] - 格网是否固定大小，如果不固定大小，则格网随着地图缩放。 
+ * @param {SuperMap.ServerStyle} [options.solidStyle] - 格网实线的样式。 
+ * @param {SuperMap.ServerColor} [options.specialColor] - 栅格数据集无值数据的颜色。 
+ * @param {number} [options.specialValue] - 图层的特殊值。 
+ * @param {boolean} [options.specialValueTransparent] - 图层的特殊值（specialValue）所处区域是否透明。 
+ * @param {number} [options.verticalSpacing] - 格网垂直间隔大小。
  */
 export class Grid extends UGCSubLayer {
 
@@ -132,7 +132,7 @@ export class Grid extends UGCSubLayer {
 
     /**
      * @function SuperMap.Grid.prototype.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象。
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
@@ -171,8 +171,8 @@ export class Grid extends UGCSubLayer {
 
     /**
      * @function SuperMap.Grid.prototype.toServerJSONObject
-     * @description 转换成对应的JSON对象。
-     * @returns JSON对象。
+     * @description 转换成对应的 JSON 对象。
+     * @returns JSON 对象。
      */
     toServerJSONObject() {
         var jsonObject = super.toServerJSONObject();

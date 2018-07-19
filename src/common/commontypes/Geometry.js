@@ -28,14 +28,14 @@ export class Geometry {
 
         /**
          * @member {SuperMap.Bounds} SuperMap.Geometry.prototype.bounds
-         * @description 几何对象的范围
+         * @description 几何对象的范围。
          *
          */
         this.bounds = null;
 
         /**
          * @member {interger} SuperMap.Geometry.prototype.SRID
-         * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
+         * @description 投影坐标参数。通过该参数，服务器判断 Geometry 对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
          * @example
          *   var geometry= new SuperMap.Geometry();
          *   geometry. SRID=4326;
@@ -47,7 +47,7 @@ export class Geometry {
 
     /**
      * @function SuperMap.Geometry.prototype.destroy
-     * @description 解构Geometry类，释放资源。
+     * @description 解构 Geometry 类，释放资源。
      */
     destroy() {
         this.id = null;
@@ -68,8 +68,8 @@ export class Geometry {
 
     /**
      * @function SuperMap.Geometry.prototype.setBounds
-     * @description 设置此几何对象的bounds。
-     * @param {SuperMap.Bounds} bounds - 范围
+     * @description 设置此几何对象的 bounds。
+     * @param {SuperMap.Bounds} bounds - 范围。
      */
     setBounds(bounds) {
         if (bounds) {
@@ -80,8 +80,8 @@ export class Geometry {
 
     /**
      * @function SuperMap.Geometry.prototype.clearBounds
-     * @description 清除几何对象的bounds。
-     * 如果该对象有父类，也会清除父类几何对象的bounds。
+     * @description 清除几何对象的 bounds。
+     * 如果该对象有父类，也会清除父类几何对象的 bounds。
      */
     clearBounds() {
         this.bounds = null;
@@ -96,7 +96,7 @@ export class Geometry {
      * @description Extend the existing bounds to include the new bounds.
      * If geometry's bounds is not yet set, then set a new Bounds.
      *
-     * @param {SuperMap.Bounds} newBounds - 范围
+     * @param {SuperMap.Bounds} newBounds - 范围。
      */
     extendBounds(newBounds) {
         var bounds = this.getBounds();
@@ -123,7 +123,7 @@ export class Geometry {
 
     /**
      * @function SuperMap.Geometry.prototype.calculateBounds
-     * @description 重新计算几何图形的边界。（需要在子类中实现此方法）
+     * @description 重新计算几何图形的边界（需要在子类中实现此方法）。
      */
     calculateBounds() {
         //
@@ -133,8 +133,8 @@ export class Geometry {
 
     /**
      * @function SuperMap.Geometry.prototype.getVertices
-     * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
-     * @param {boolean} nodes - 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
+     * @description 返回几何图形的所有顶点的列表（需要在子类中实现此方法）。
+     * @param {boolean} [nodes] - 如果是 true，线则只返回线的末端点，如果 false，仅仅返回顶点，如果没有设置，则返回顶点。
      * @returns {Array} 几何图形的顶点列表。
      */
     getVertices(nodes) { // eslint-disable-line no-unused-vars
@@ -142,7 +142,7 @@ export class Geometry {
 
     /**
      * @function SuperMap.Geometry.prototype.getArea
-     * @description 计算几何对象的面积 ，此方法需要在子类中定义  。
+     * @description 计算几何对象的面积 ，此方法需要在子类中定义。
      * @returns {float} The area of the collection by summing its parts
      */
     getArea() {

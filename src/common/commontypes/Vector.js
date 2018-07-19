@@ -8,11 +8,11 @@ import {Util} from './Util';
  * @class SuperMap.Feature.Vector
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
- * 其中，默认的样式在 <SuperMap.Feature.Vector.style> 类中定义，如果没有特别的指定将使用默认的样式，
+ * 其中，默认的样式在 <SuperMap.Feature.Vector.style> 类中定义，如果没有特别的指定将使用默认的样式。
  * @extends {SuperMap.Feature}
  * @param {SuperMap.Geometry} geometry - 代表要素的几何形状。
- * @param {Object} attributes - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的可选对象。
- * @param {Object} style - 一个可选的样式对象。
+ * @param {Object} [attributes] - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的对象。
+ * @param {Object} [style] - 样式对象。
  * @example
  * var geometry = new SuperMap.Geometry.Point(-115,10);
  *  var style = {
@@ -68,7 +68,7 @@ export class Vector extends Feature {
 
         /**
          * @member {Object} SuperMap.Feature.Vector.prototype.style
-         * @description 要素的样式属性，地图查询返回的feature的style，8C变为null。
+         * @description 要素的样式属性，地图查询返回的 feature 的 style，8C 变为null。
          */
         this.style = style ? style : null;
 
@@ -90,84 +90,6 @@ export class Vector extends Feature {
             DELETE: 'Delete'
         };
 
-        /**
-         *
-         * @member SuperMap.Feature.Vector.style
-         * @description SuperMap.features有大量的样式属性，如果没有特别的指定将使用默认的样式，
-         * 大部分样式通过SVG标准定义属性。
-         *
-         * - fill properties资料介绍: {@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
-         * - stroke properties资料介绍: {@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
-         *
-         * #### Symbolizer properties:
-         * * fill - {Boolean} 不需要填充则设置为false。
-         * * fillColor - {string} 十六进制填充颜色，默认为"#ee9900"。
-         * * fillOpacity - {number} 填充不透明度。默认为0.4。
-         * * stroke - {Boolean} 不需要描边则设为false。
-         * * strokeColor - {string} 十六进制描边颜色。
-         * * strokeOpacity - {number} 描边的不透明度(0-1),默认为0.4。
-         * * strokeWidth - {number} 像素描边宽度，默认为1。
-         * * strokeLinecap - {string} strokeLinecap有三种类型butt，round，square，默认为"round"。
-         * * strokeDashstyle - {string} 有dot,dash,dashdot,longdash,longdashdot,solid几种样式，默认为"solid"。
-         * * graphic - {Boolean} 不需要则设置为false。
-         * * pointRadius - {number} 像素点半径，默认为6
-         * * pointerEvents - {string}  默认为"visiblePainted"。
-         * * cursor - {string} 默认为""。
-         * * allowRotate -{string} 是否允许图标随着运行方向旋转，默认为false。用于时空数据图层
-         * * externalGraphic - {string} 连接到用来渲染点的外部的图形。
-         * * graphicWidth - {number} 外部图表的像素宽度。
-         * * graphicHeight - {number} 外部图表的高宽度。
-         * * graphicOpacity - {number} 外部图表的不透明度(0-1)。
-         * * graphicXOffset - {number} 外部图表沿着x方向的偏移量。
-         * * graphicYOffset - {number} 外部图表沿着y方向的偏移量Pixel。
-         * * rotation - {number} 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
-         * * graphicZIndex - {number} 渲染时使用的索引值。The integer z-index value to use in rendering。
-         * * graphicName - {string} 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"，
-         * 默认为"circle"。
-         * * graphicTitle - {string} 外部图表的提示框。
-         * * backgroundGraphic - {string} 外部图表的背景。
-         * * backgroundGraphicZIndex - {number} 背景图渲染时使用的索引值。
-         * * backgroundXOffset - {number} 背景图在x轴的偏移量。
-         * * backgroundYOffset - {number} 背景图在x轴的偏移量。
-         * * backgroundHeight - {number} 背景图的高度。如果没有设置，将用graphicHeight。
-         * * backgroundWidth - {number} 背景图的宽度。如果没有设置，将用graphicWidth。
-         * * isUnicode - {Boolean} 这个属性要配合label属性来用，当为true时，label就可以使用unicode编码，
-         * 比如"a"的unicode十六进制编码为61，则label属性可以为"&#x61;",其中"&#"为前缀，标志这个为unicode编码，
-         * "x"是指16进制,这时页面显示的是"a"；当此值为false的时候，label的内容会被直接输出，
-         * 比如，label为"&#x61;"，这时页面显示的也是"&#x61;"。默认为false。
-         * * label - {string} 可选的标签文本。
-         * * labelAlign - {string} 标签对齐，是由两个字符组成的字符串，如："lt", "cm", "rb"，
-         * 其中第一个字符代表水平方向上的对齐，"l"=left, "c"=center, "r"=right；
-         * 第二个字符代表垂直方向上的对齐，"t"=top, "m"=middle, "b"=bottom。
-         * * labelXOffset - {number} 标签在x轴方向的偏移量。
-         * * labelYOffset - {number} 标签在y轴方向的偏移量。
-         * * labelSelect - {Boolean} 如果设为true，标签可以选用SelectFeature或者similar控件，默认为false。
-         * * fontColor - {string} 标签字体颜色。
-         * * fontOpacity - {number} 标签透明度 (0-1)。
-         * * fontFamily - {string} 标签的字体类型。
-         * * fontSize - {string} 标签的字体大小。
-         * * fontStyle - {string} 标签的字体样式。
-         * * fontWeight - {string} 标签的字体粗细。
-         * * display - {string} 如果display属性设置为“none”，符号将没有任何效果。
-         * @example
-         *  // label的用法如下：
-         *  function addGeoTest(){
-     *  var geometry = new SuperMap.Geometry.Point(105, 35);
-     *  var pointFeature = new SuperMap.Feature.Vector(geometry);
-     *  var styleTest = {
-     *        label:"supermap",
-     *        fontColor:"#0000ff",
-     *        fontOpacity:"0.5",
-     *        fontFamily:"隶书",
-     *        fontSize:"8em",
-     *        fontWeight:"bold",
-     *        fontStyle:"italic",
-     *        labelSelect:"true",
-     *     }
-     *           pointFeature.style = styleTest;
-     *          vectorLayer.addFeatures([pointFeature]);
-     * }
-         */
         Vector.style = {
             'default': {
                 fillColor: "#ee9900",
@@ -276,8 +198,8 @@ export class Vector extends Feature {
 
     /**
      * @function SuperMap.Feature.Vector.prototype.toState
-     * @description Sets the new state
-     * @param {string} state - 状态
+     * @description 设置新状态。
+     * @param {string} state - 状态。
      */
     toState(state) {
         if (state === SuperMap.State.UPDATE) {
@@ -315,7 +237,80 @@ export class Vector extends Feature {
         }
     }
 }
-
+/**
+ *
+ * @typedef {Object} SuperMap.Feature.Vector.style
+ * @description SuperMap.features 有大量的样式属性，如果没有特别的指定将使用默认的样式，
+ * 大部分样式通过 SVG 标准定义属性。
+ * - fill properties 资料介绍: {@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
+ * - stroke properties 资料介绍: {@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
+ * @property {Boolean} [fill] - 不需要填充则设置为 false。
+ * @property {string} [fillColor='#ee9900'] - 十六进制填充颜色。
+ * @property {number} [fillOpacity=0.4] - 填充不透明度。
+ * @property {Boolean} [stroke] - 不需要描边则设为 false。
+ * @property {string} [strokeColor='#ee9900'] - 十六进制描边颜色。
+ * @property {number} [strokeOpacity=0.4] - 描边的不透明度(0-1)。
+ * @property {number} [strokeWidth=1] - 像素描边宽度。
+ * @property {string} [strokeLinecap='round'] - strokeLinecap有三种类型butt，round，square。
+ * @property {string} [strokeDashstyle='solid'] - 有dot，dash，dashdot，longdash，longdashdot，solid 几种样式。
+ * @property {Boolean} [graphic] - 不需要则设置为 false。
+ * @property {number} [pointRadius=6] - 像素点半径。
+ * @property {string} [pointerEvents='visiblePainted'] - pointerEvents。
+ * @property {string} [cursor] - cursor。
+ * @property {Boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
+ * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
+ * @property {number} [graphicWidth] - 外部图表的像素宽度。
+ * @property {number} [graphicHeight] - 外部图表的高宽度。
+ * @property {number} [graphicOpacity] - 外部图表的不透明度(0-1)。
+ * @property {number} [graphicXOffset] - 外部图表沿着x方向的偏移量。
+ * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量 Pixel。
+ * @property {number} [rotation] - 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
+ * @property {number} [graphicZIndex] - 渲染时使用的索引值。
+ * @property {string} [graphicName='circle'] - 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"。
+ * @property {string} [graphicTitle] - 外部图表的提示框。
+ * @property {string} [backgroundGraphic] - 外部图表的背景。
+ * @property {number} [backgroundGraphicZIndex] - 背景图渲染时使用的索引值。
+ * @property {number} [backgroundXOffset] - 背景图在 x 轴的偏移量。
+ * @property {number} [backgroundYOffset] - 背景图在 y 轴的偏移量。
+ * @property {number} [backgroundHeight] - 背景图的高度。如果没有设置，将用 graphicHeight。
+ * @property {number} [backgroundWidth] - 背景图的宽度。如果没有设置，将用 graphicWidth。
+ * @property {Boolean} [isUnicode=false] - 这个属性要配合 label 属性来用，当为 true时，label 就可以使用 unicode 编码，
+ * 比如 "a" 的 unicode 十六进制编码为 61，则 label 属性可以为 "&#x61;",其中 "&#" 为前缀，标志这个为 unicode 编码，
+ * "x" 是指 16 进制,这时页面显示的是 "a"；当此值为 false 的时候，label 的内容会被直接输出，
+ * 比如，label 为 "&#x61;"，这时页面显示的也是 "&#x61;"。
+ * @property {string} [label] - 可选的标签文本。
+ * @property {string} [labelAlign='cm'] - 标签对齐，是由两个字符组成的字符串，如："lt", "cm", "rb"，
+ * 其中第一个字符代表水平方向上的对齐，"l"=left, "c"=center, "r"=right；
+ * 第二个字符代表垂直方向上的对齐，"t"=top, "m"=middle, "b"=bottom。
+ * @property {number} [labelXOffset] - 标签在 x 轴方向的偏移量。
+ * @property {number} [labelYOffset] - 标签在 y 轴方向的偏移量。
+ * @property {Boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
+ * @property {string} [fontColor='#000000'] - 标签字体颜色。
+ * @property {number} [fontOpacity] - 标签透明度 (0-1)。
+ * @property {string} [fontFamily] - 标签的字体类型。
+ * @property {string} [fontSize] - 标签的字体大小。
+ * @property {string} [fontStyle] - 标签的字体样式。
+ * @property {string} [fontWeight] - 标签的字体粗细。
+ * @property {string} [display] - 如果 display 属性设置为 “none”，符号将没有任何效果。
+ * @example
+ *  // label的用法如下：
+ *  function addGeoTest(){
+ *  var geometry = new SuperMap.Geometry.Point(105, 35);
+ *  var pointFeature = new SuperMap.Feature.Vector(geometry);
+ *  var styleTest = {
+ *        label:"supermap",
+ *        fontColor:"#0000ff",
+ *        fontOpacity:"0.5",
+ *        fontFamily:"隶书",
+ *        fontSize:"8em",
+ *        fontWeight:"bold",
+ *        fontStyle:"italic",
+ *        labelSelect:"true",
+ *     }
+ *           pointFeature.style = styleTest;
+ *          vectorLayer.addFeatures([pointFeature]);
+ * }
+     */
 SuperMap.Feature.Vector = Vector;
 
 

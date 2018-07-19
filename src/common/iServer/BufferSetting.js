@@ -7,11 +7,11 @@ import {BufferDistance} from './BufferDistance';
  * @class SuperMap.BufferSetting
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析通用设置类。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.BufferEndType} [options.endType=SuperMap.BufferEndType.FLAT] - 缓冲区端点枚举值。<br>
- * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。<br>
- * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。<br>
- * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。<br>
+ * @param {Object} options - 参数。 
+ * @param {SuperMap.BufferEndType} [options.endType=SuperMap.BufferEndType.FLAT] - 缓冲区端点枚举值。 
+ * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。 
+ * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。 
+ * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。 
  * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.BufferRadiusUnit.METER] - 缓冲半径单位。
  */
 export class BufferSetting {
@@ -27,16 +27,16 @@ export class BufferSetting {
         /**
          * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.leftDistance=100]
          * @description 左侧缓冲距离。
-         * 当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为DatasetBufferAnalyst时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
+         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
+         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
          */
         this.leftDistance = new BufferDistance();
 
         /**
-         * @member {SuperMap.BufferDistance} SuperMap.BufferSetting.prototype.rightDistance
+         * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.rightDistance=100]
          * @description 右侧缓冲距离。
-         * 当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为DatasetBufferAnalyst时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
+         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
+         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
          */
         this.rightDistance = new BufferDistance();
 

@@ -14,11 +14,11 @@ import {MultiPoint} from './MultiPoint';
  */
 export class Curve extends MultiPoint {
 
-    constructor(points) {
-        super(points);
+    constructor(components) {
+        super(components);
         /**
          * @member {Array.<string>} [SuperMap.Geometry.Curve.prototype.componentType=["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"]]
-         * @description components存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];

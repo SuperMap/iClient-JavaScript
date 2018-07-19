@@ -8,16 +8,16 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
  * @class SuperMap.GetFeaturesByBoundsParameters
  * @category iServer Data FeatureResults
  * @classdesc 数据集范围查询参数类，该类用于设置数据集范围查询的相关参数。
- * @param {Object} options - 参数。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 用于查询的范围对象。</br>
- * @param {string} options.attributeFilter - 范围查询属性过滤条件。</br>
- * @param {Array.<string>} options.fields - 设置查询结果返回字段。默认返回所有字段。</br>
- * @param {SuperMap.SpatialQueryMode} options.spatialQueryMode - 空间查询模式常量，必设参数。</br>
- * @param {SuperMap.FilterParameter} options.queryParameter - 查询过滤条件参数。</br>
- * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。</br>
- * @param {boolean} options.returnContent - 是否直接返回查询结果。</br>
- * @param {number} options.fromIndex - 查询结果的最小索引号。</br>
- * @param {number} options.toIndex - 查询结果的最大索引号。</br>
+ * @param {Object} options - 参数。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 用于查询的范围对象。 
+ * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。 
+ * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。 
+ * @param {SuperMap.SpatialQueryMode} [options.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式常量。 
+ * @param {SuperMap.FilterParameter} [options.queryParameter] - 查询过滤条件参数。 
+ * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。 
+ * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
  * @extends {SuperMap.GetFeaturesParametersBase}
  */
 
@@ -27,7 +27,7 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {string} SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode
-         * @description 数据集查询模式。范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种，当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
+         * @description 数据集查询模式。范围查询有 "BOUNDS"，"BOUNDS_ATTRIBUTEFILTER" 两种，当用户设置 attributeFilter 时会自动切换到 BOUNDS_ATTRIBUTEFILTER 访问服务。
          */
         this.getFeatureMode = GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS;
 
@@ -51,8 +51,8 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         this.attributeFilter = null;
 
         /**
-         * @member {SuperMap.SpatialQueryMode} SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode
-         * @description 空间查询模式常量，必设参数，默认为CONTAIN。
+         * @member {SuperMap.SpatialQueryMode} [SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN]
+         * @description 空间查询模式常量。
          */
         this.spatialQueryMode = SpatialQueryMode.CONTAIN;
         Util.extend(this, options);

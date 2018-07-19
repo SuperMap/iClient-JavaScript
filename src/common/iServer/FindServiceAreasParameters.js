@@ -8,12 +8,12 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @classdesc 服务区分析参数类。<br>
  *            服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *            例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.isAnalyzeById - 是否通过节点 ID 指定路径分析的结点。<br>
- * @param {boolean} options.isCenterMutuallyExclusive - 是否中心点互斥。<br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 服务站点数组，必设字段。<br>
- * @param {boolean} options.isFromCenter - 是否从中心点开始分析。<br>
- * @param {Array.<number>} options.weights - 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
+ * @param {Object} options - 参数。 
+ * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。 
+ * @param {boolean} [options.isCenterMutuallyExclusive=false] - 是否中心点互斥。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 服务站点数组。 
+ * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分析。 
+ * @param {Array.<number>} options.weights - 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致。 
  * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。
  */
 export class FindServiceAreasParameters {
@@ -38,14 +38,14 @@ export class FindServiceAreasParameters {
 
         /**
          * @member {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} SuperMap.FindServiceAreasParameters.prototype.centers
-         * @description 服务站点数组，必设字段。
+         * @description 服务站点数组。
          *              当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
          */
         this.centers = null;
 
         /**
-         * @member {boolean} SuperMap.FindServiceAreasParameters.prototype.isFromCenter
-         * @description 是否从中心点开始分析。默认为 false。<br>
+         * @member {boolean} [SuperMap.FindServiceAreasParameters.prototype.isFromCenter=false]
+         * @description 是否从中心点开始分析。<br>
          *              从中心点开始分析和不从中心点开始分析，体现了服务中心和需要该服务的需求地的关系模式。<br>
          *              从中心点开始分析，是一个服务中心向服务需求地提供服务；<br>
          *              而不从中心点开始分析，是一个服务需求地主动到服务中心获得服务。
@@ -55,7 +55,7 @@ export class FindServiceAreasParameters {
         /**
          * APIProperty: weights
          * @member {Array.<number>} SuperMap.FindServiceAreasParameters.prototype.weights
-         * @description 每个服务站点提供服务的阻力半径，即超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。
+         * @description 每个服务站点提供服务的阻力半径，即超过这个阻力半径的区域不予考虑，其单位与阻力字段一致。
          *              该字段为一个数组，数组长度跟服务中心个数一致，按照索引顺序与站点一一对应，每个元素表示了在对每个服务中心进行服务区分析时，所用的服务半径。
          */
         this.weights = null;

@@ -8,8 +8,8 @@ import {ServerGeometry} from './ServerGeometry';
  * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
- * @param {Object} options - 参数。</br>
- * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。必设字段。</br>
+ * @param {Object} options - 参数。 
+ * @param {Object} options.sourceGeometry - 要做缓冲区分析的几何对象。 
  *                                          点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
  *                                          线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
  *                                          面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
@@ -23,7 +23,7 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
         super(options);
         /**
          * @member {Object} SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
-         * @description 要做缓冲区分析的几何对象。必设字段。</br>
+         * @description 要做缓冲区分析的几何对象。 
          * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
          * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
          * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
@@ -59,8 +59,8 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
      * @function SuperMap.GeometryBufferAnalystParameters.toObject
      * @param {SuperMap.GeometryBufferAnalystParameters} geometryBufferAnalystParameters - 几何对象缓冲区分析参数类。
      * @param {SuperMap.GeometryBufferAnalystParameters} tempObj - 几何对象缓冲区分析参数对象。
-     * @description 将几何对象缓冲区分析参数对象转换为JSON对象。
-     * @returns {Object} JSON对象。
+     * @description 将几何对象缓冲区分析参数对象转换为 JSON 对象。
+     * @returns {Object} JSON 对象。
      */
     static toObject(geometryBufferAnalystParameters, tempObj) {
         for (var name in geometryBufferAnalystParameters) {

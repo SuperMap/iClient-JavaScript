@@ -8,16 +8,16 @@ import './OverlapDisplayedOptions';
  * @category  iServer Map Layer
  * @classdesc UGC 地图图层类。
  * @extends {SuperMap.UGCLayer}
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.completeLineSymbolDisplayed - 是否显示完整线型。<br>
- * @param {number} options.maxScale - 地图最大比例尺。<br>
- * @param {number} options.minScale - 地图最小比例尺。<br>
- * @param {number} options.minVisibleGeometrySize - 几何对象的最小可见大小，以像素为单位。<br>
- * @param {number} options.opaqueRate - 图层的不透明度。<br>
- * @param {boolean} options.symbolScalable - 是否允许图层的符号大小随图缩放。<br>
- * @param {number} options.symbolScale - 图层的符号缩放基准比例尺。<br>
- * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示，默认为False。<br>
- * @param {SuperMap.OverlapDisplayedOptions} options.overlapDisplayedOptions - 地图的压盖过滤显示选项，当overlapDisplayed 为 false 时有效。
+ * @param {Object} options - 参数。 
+ * @param {boolean} [options.completeLineSymbolDisplayed] - 是否显示完整线型。 
+ * @param {number} [options.maxScale] - 地图最大比例尺。 
+ * @param {number} [options.minScale] - 地图最小比例尺。 
+ * @param {number} [options.minVisibleGeometrySize] - 几何对象的最小可见大小，以像素为单位。 
+ * @param {number} [options.opaqueRate] - 图层的不透明度。 
+ * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。 
+ * @param {number} [options.symbolScale] - 图层的符号缩放基准比例尺。 
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。 
+ * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 地图的压盖过滤显示选项，当overlapDisplayed 为 false 时有效。
  */
 export class UGCMapLayer extends UGCLayer {
 

@@ -4,11 +4,11 @@ import {IPortalServiceBase} from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortalService
- * @classdesc iPortal服务
+ * @classdesc iPortal 服务
  * @category iPortal/Online
  * @extends SuperMap.iPortalServiceBase
- * @param {string} seviceUrl - 服务地址
- * @param {Object} params - 服务请求参数
+ * @param {string} seviceUrl - 服务地址。
+ * @param {Object} params - 服务请求参数。
  *
  */
 export class IPortalService extends IPortalServiceBase {
@@ -54,8 +54,8 @@ export class IPortalService extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalService.prototype.load
-     * @description 加载服务信息
-     * @returns {Promise} 返回Promise对象。如果成功，Promise没有返回值；如果失败，Promise返回值包含错误信息
+     * @description 加载服务信息。
+     * @returns {Promise} 返回 Promise 对象。如果成功，Promise 没有返回值；如果失败，Promise 返回值包含错误信息。
      */
 
     load() {
@@ -73,8 +73,8 @@ export class IPortalService extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalService.prototype.update
-     * @description 更新服务
-     * @returns {Promise} 返回包含更新操作状态的Promise对象
+     * @description 更新服务。
+     * @returns {Promise} 返回包含更新操作状态的 Promise 对象。
      */
     update() {
         var serviceUpdateParam = {

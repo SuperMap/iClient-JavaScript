@@ -22,7 +22,7 @@ export class Feature {
 
         /**
          * @member {string} SuperMap.Feature.prototype.id
-         * @description 要素id。
+         * @description 要素 ID。
          */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 

@@ -8,7 +8,7 @@ import './LineString';
  * @classdesc 几何对象多线类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.Collection}
- * @param {Array.<SuperMap.Geometry.LineString>} components - LineString数组。
+ * @param {Array.<SuperMap.Geometry.LineString>} components - LineString 数组。
  * @example
  * var multi = new SuperMap.Geometry.MultiLineString([
  *      new SuperMap.Geometry.LineString([

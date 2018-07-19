@@ -5,11 +5,11 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.ChartQueryFilterParameter
  * @category  iServer Map Chart
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.isQueryPoint - 是否查询点。<br>
- * @param {boolean} options.isQueryLine - 是否查询线。<br>
- * @param {boolean} options.isQueryRegion - 是否查询面。<br>
- * @param {string} options.attributeFilter - 属性字段过滤条件。<br>
+ * @param {Object} options - 参数。 
+ * @param {boolean} [options.isQueryPoint] - 是否查询点。 
+ * @param {boolean} [options.isQueryLine] - 是否查询线。 
+ * @param {boolean} [options.isQueryRegion] - 是否查询面。 
+ * @param {string} options.attributeFilter - 属性字段过滤条件。 
  * @param {number} options.chartFeatureInfoSpecCode - 查询的物标代号。
  */
 export class ChartQueryFilterParameter {
@@ -17,19 +17,19 @@ export class ChartQueryFilterParameter {
 
     constructor(options) {
         /**
-         * @member {boolean} SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint
+         * @member {boolean} [SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint]
          * @description 是否查询点。
          */
         this.isQueryPoint = null;
 
         /**
-         * @member {boolean} SuperMap.ChartQueryFilterParameter.prototype.isQueryLine
+         * @member {boolean} [SuperMap.ChartQueryFilterParameter.prototype.isQueryLine]
          * @description 是否查询线。
          */
         this.isQueryLine = null;
 
         /**
-         * @member {boolean} SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion
+         * @member {boolean} [SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion]
          * @description 是否查询面。
          */
         this.isQueryRegion = null;
@@ -66,7 +66,7 @@ export class ChartQueryFilterParameter {
 
     /**
      * @function SuperMap.ChartQueryFilterParameter.prototype.toJson
-     * @description 将属性信息转化成JSON格式字符串。
+     * @description 将属性信息转化成 JSON 格式字符串。
      */
     toJson() {
         var json = "";

@@ -46,30 +46,30 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  *
  * 克吕金法的优点是以空间统计学作为其坚实的理论基础，物理含义明确；不但能估计测定参数的空间变异分布，而且还可以估算参数的方差分布。克吕金法的缺点是计算步骤较烦琐，
  * 计算量大，且变异函数有时需要根据经验人为选定。
- * @param {Object} options - 参数。<br>
- * @param {string} options.type - 克吕金插值的类型。必设参数。<br>
- * @param {number} options.mean - 【简单克吕金】类型下，插值字段的平均值。<br>
- * @param {number} [options.angle=0] - 克吕金算法中旋转角度值。<br>
- * @param {number} [options.nugget=0] - 克吕金算法中块金效应值。<br>
- * @param {number} [options.range=0] - 克吕金算法中自相关阈值，单位与原数据集单位相同。<br>
- * @param {number} [options.sill=0] - 克吕金算法中基台值。<br>
- * @param {string} [options.variogramMode="SPHERICAL"] - 克吕金插值时的半变函数类型。<br>
- * @param {string} [options.exponent="exp1"] - 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。<br>
- * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找，必设参数。<br>
- * @param {number} options.expectedCount - 【固定点数查找】方式下，设置待查找的点数，默认值为12；【定长查找】方式下，设置查找的最小点数，默认值为12。<br>
- * @param {number} options.searchRadius - 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。<br>
- * @param {number} options.maxPointCountForInterpolation - 【块查找】方式下，设置最多参与插值的点数，默认值为200。<br>
- * @param {number} options.maxPointCountInNode - 【块查找】方式下，设置单个块内最多参与运算点数，默认值为50。<br>
- * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。<br>
- * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。<br>
- * @param {number} options.resolution - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。<br>
- * @param {SuperMap.FilterParameter} options.filterQueryParameter - 属性过滤条件。<br>
- * @param {string} options.outputDatasetName - 插值分析结果数据集的名称，必设参数。<br>
- * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。必设参数<br>
- * @param {string} options.pixelFormat - 指定结果栅格数据集存储的像素格式。<br>
- * @param {string} options.dataset - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。<br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。
+ * @param {Object} options - 参数。 
+ * @param {string} options.type - 克吕金插值的类型。 
+ * @param {number} [options.mean] - 【简单克吕金】类型下，插值字段的平均值。 
+ * @param {number} [options.angle=0] - 克吕金算法中旋转角度值。 
+ * @param {number} [options.nugget=0] - 克吕金算法中块金效应值。 
+ * @param {number} [options.range=0] - 克吕金算法中自相关阈值，单位与原数据集单位相同。 
+ * @param {number} [options.sill=0] - 克吕金算法中基台值。 
+ * @param {string} [options.variogramMode="SPHERICAL"] - 克吕金插值时的半变函数类型。 
+ * @param {string} [options.exponent="exp1"] - 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。 
+ * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。 
+ * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置待查找的点数；【定长查找】方式下，设置查找的最小点数。 
+ * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置参与运算点的查找范围。  
+ * @param {number} [options.maxPointCountForInterpolation=200] - 【块查找】方式下，设置最多参与插值的点数。 
+ * @param {number} [options.maxPointCountInNode=50] - 【块查找】方式下，设置单个块内最多参与运算点数。 
+ * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时。 
+ * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。 
+ * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。 
+ * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。 
+ * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。 
+ * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
+ * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。 
+ * @param {string} options.dataset - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时。
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时。
  * @extends {SuperMap.InterpolationAnalystParameters}
  * @example 例如：
  * var myInterpolationKrigingAnalystParameters = new SuperMap.InterpolationKrigingAnalystParameters({

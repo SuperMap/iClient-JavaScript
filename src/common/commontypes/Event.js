@@ -157,8 +157,8 @@ export var Event = SuperMap.Event = {
     },
 
     /**
-     * @param {Event} event - The event
-     * @param {string} tagName - html标签名
+     * @param {Event} event - The event。
+     * @param {string} tagName - html 标签名。
      * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
      */
     findElement: function (event, tagName) {
@@ -172,10 +172,10 @@ export var Event = SuperMap.Event = {
 
     /**
      * @description 监听事件，注册事件处理方法。
-     * @param {(HTMLElement|string)} elementParam - 待监听的DOM对象或者其id标识。
+     * @param {(HTMLElement|string)} elementParam - 待监听的 DOM 对象或者其 ID 标识。
      * @param {string} name - 监听事件的类别名称。
      * @param {function} observer - 注册的事件处理方法。
-     * @param {boolean} useCapture - 是否捕获。
+     * @param {boolean} [useCapture=false] - 是否捕获。
      */
     observe: function (elementParam, name, observer, useCapture) {
         var element = Util.getElement(elementParam);
@@ -229,7 +229,7 @@ export var Event = SuperMap.Event = {
      *   element's cached observers, calling stopObserving on each one,
      *   skipping those entries which can no longer be removed.
      *
-     * @param {(HTMLElement|string)} elementParam -
+     * @param {(HTMLElement|string)} elementParam - 
      */
     stopObservingElement: function (elementParam) {
         var element = Util.getElement(elementParam);
@@ -256,10 +256,10 @@ export var Event = SuperMap.Event = {
     /**
      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
      * 保持一致才能确保事件移除成功。
-     * @param {(HTMLElement|string)} elementParam - 被监听的DOM元素或者其id。
+     * @param {(HTMLElement|string)} elementParam - 被监听的 DOM 元素或者其 ID。
      * @param {string} name - 需要移除的被监听事件名称。
      * @param {function} observer - 需要移除的事件处理方法。
-     * @param {boolean} useCapture - 是否捕获。
+     * @param {boolean} [useCapture=false] - 是否捕获。
      * @returns {boolean} Whether or not the event observer was removed
      */
     stopObserving: function (elementParam, name, observer, useCapture) {

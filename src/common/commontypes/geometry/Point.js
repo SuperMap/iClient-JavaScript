@@ -8,10 +8,10 @@ import {Util} from '../Util';
  * @classdesc 点几何对象类。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry}
- * @param {float} x - x坐标
- * @param {float} y - y坐标
- * @param {string} type - 用来存储点的类型
- * @param {float} tag - 用来存储额外的属性，比如差值分析中的Z值。
+ * @param {float} x - x 坐标。
+ * @param {float} y - y 坐标。
+ * @param {string} [type = 'Point'] - 用来存储点的类型。
+ * @param {float} [tag] - 用来存储额外的属性，比如差值分析中的 Z 值。
  * @example
  * var point = new SuperMap.Geometry.Point(-111.04, 45.68);
  */
@@ -79,7 +79,7 @@ export class Point extends Geometry {
      * var point1={x:0,y:0};
      * var result= point.equals(point1);
      * @param {SuperMap.Geometry.Point} geom - 需要判断的点对象。
-     * @returns {boolean} 两个点对象是否相等（true为相等，false为不等）。
+     * @returns {boolean} 两个点对象是否相等（true 为相等，false 为不等）。
      */
     equals(geom) {
         var equals = false;
@@ -93,9 +93,9 @@ export class Point extends Geometry {
 
     /**
      * @function SuperMap.Geometry.Point.prototype.move
-     * @description 沿着x、y轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
-     * @param {float} x - x轴正方向上的偏移量。
-     * @param {float} y - y轴正方向上偏移量。
+     * @description 沿着 x、y 轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
+     * @param {float} x - x 轴正方向上的偏移量。
+     * @param {float} y - y 轴正方向上偏移量。
      */
     move(x, y) {
         this.x = this.x + x;
