@@ -6,6 +6,10 @@ import {DataFlowService} from "../services/DataFlowService";
  * @category  iServer DataFlow
  * @classdesc 实时数据图层源。
  * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.idField = 'id']
+ * @param {Array.{Object}} [opt_options.geometry] - 设置增添的几何要素对象数组。
+ * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
+ * @param {Object} [opt_options.excludeField] - 排除字段
  * @extends {ol.source.Vector}
  */
 export class DataFlow extends ol.source.Vector {
@@ -34,8 +38,8 @@ export class DataFlow extends ol.source.Vector {
 
     /**
      * @function ol.source.DataFlow.prototype.setPrjCoordSys
-     * @description 设置坐标参考系
-     * @param {Object} prjCoordSys - 参考系
+     * @description 设置坐标参考系。
+     * @param {Object} prjCoordSys - 参考系。
      */
     setPrjCoordSys(prjCoordSys) {
         this.dataService.setPrjCoordSys(prjCoordSys);
@@ -45,7 +49,7 @@ export class DataFlow extends ol.source.Vector {
 
     /**
      * @function ol.source.DataFlow.prototype.setExcludeField
-     * @description 设置唯一字段
+     * @description 设置唯一字段。
      * @param {Object} excludeField - 排除字段。
      */
     setExcludeField(excludeField) {
@@ -56,8 +60,8 @@ export class DataFlow extends ol.source.Vector {
 
     /**
      * @function ol.source.DataFlow.prototype.setGeometry
-     * @description 设置几何图形
-     * @param {Object} geometry - 要素图形
+     * @description 设置几何图形。
+     * @param {Object} geometry - 要素图形。
      */
     setGeometry(geometry) {
         this.dataService.setGeometry(geometry);

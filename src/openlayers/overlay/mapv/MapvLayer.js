@@ -9,18 +9,19 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @classdesc MapV图层类。
  * @private
  * @param {Object} map - 地图
- * @param {Object} dataSet - 数据集
- * @param {Object} options - 参数。<br>
- * @param {string} options.paneName - 窗口名。<br>
- * @param {string} options.context - 内容。<br>
- * @param {number} options.zIndex - 层级。<br>
- * @param {number} options.width - 画布宽。<br>
- * @param {number} options.height - 画布高。<br>
- * @param {string} options.mixBlendMode - 最小混合模式。
+ * @param {Mapv.DataSet} [dataSet] - 数据集
+ * @param {Object} options - 参数。
  * @param {number} mapWidth - 地图宽度
  * @param {number} mapHeight - 地图高度
  * @param {Object} source - 资源
- * @extends {BaiduMapLayer}
+ * @param {number} options.width - 画布宽。
+ * @param {number} options.height - 画布高。
+ * @param {string} [options.paneName='mapPane'] - 窗口名。
+ * @param {string} [options.context] - 内容。
+ * @param {number} [options.zIndex] - 层级。
+ * @param {string} [options.mixBlendMode] - 最小混合模式。
+ 
+ * @extends {Mapv.BaiduMapLayer}
  */
 export class MapvLayer extends BaiduMapLayer {
 
@@ -62,7 +63,7 @@ export class MapvLayer extends BaiduMapLayer {
     /**
      * @function MapvLayer.prototype.init
      * @param {Object} options - 参数
-     * @description 初始化参数
+     * @description 初始化参数。
      */
     init(options) {
         var self = this;
@@ -78,7 +79,7 @@ export class MapvLayer extends BaiduMapLayer {
     /**
      * @function MapvLayer.prototype.clickEvent
      * @param {Object} e - 事件参数
-     * @description 点击事件
+     * @description 点击事件。
      */
     clickEvent(e) {
         var pixel = e.pixel;
@@ -88,7 +89,7 @@ export class MapvLayer extends BaiduMapLayer {
     /**
      * @function MapvLayer.prototype.mousemoveEvent
      * @param {Object} e - 事件参数
-     * @description 鼠标移动事件
+     * @description 鼠标移动事件。
      */
     mousemoveEvent(e) {
         var pixel = e.pixel;
@@ -97,7 +98,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.dragEvent
-     * @description 鼠标拖动事件
+     * @description 鼠标拖动事件。
      */
     dragEvent() {
         this.clear(this.getContext());
@@ -105,14 +106,14 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.zoomEvent
-     * @description 缩放事件
+     * @description 缩放事件。
      */
     zoomEvent() {
         this.clear(this.getContext());
     }
     /**
      * @function MapvLayer.prototype.zoomEvent
-     * @description 缩放事件
+     * @description 缩放事件。
      */
     sizeEvent() {
         this.canvasLayer.resize();
@@ -121,7 +122,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.moveStartEvent
-     * @description 开始移动事件
+     * @description 开始移动事件。
      */
     moveStartEvent() {
         var animationOptions = this.options.animation;
@@ -132,7 +133,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.moveEndEvent
-     * @description 结束移动事件
+     * @description 结束移动事件。
      */
     moveEndEvent() {
         this.canvasLayer.draw();
@@ -140,7 +141,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.bindEvent
-     * @description 绑定事件
+     * @description 绑定事件。
      */
     bindEvent() {
         var me = this;
@@ -161,7 +162,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.unbindEvent
-     * @description 解除绑定事件
+     * @description 解除绑定事件。
      */
     unbindEvent() {
         var map = this.map;
@@ -177,9 +178,9 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.addData
-     * @description 添加数据
-     * @param {Object} data - 待添加的数据
-     * @param {Object} options - 待添加的数据信息
+     * @description 添加数据。
+     * @param {Object} data - 待添加的数据。
+     * @param {Object} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;
@@ -192,9 +193,9 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.update
-     * @description 更新图层
-     * @param {Object} opt - 待更新的数据<br>
-     * @param {Object} opt.data - mapv数据集<br>
+     * @description 更新图层。
+     * @param {Object} opt - 待更新的数据。
+     * @param {Object} opt.data - mapv数据集。
      */
     update(opt) {
         var update = opt || {};
@@ -214,7 +215,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.getData
-     * @description 获取数据
+     * @description 获取数据。
      */
     getData() {
         return this.dataSet;
@@ -222,8 +223,8 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.removeData
-     * @description 删除符合过滤条件的数据
-     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @description 删除符合过滤条件的数据。
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -240,7 +241,7 @@ export class MapvLayer extends BaiduMapLayer {
 
     /**
      * @function MapvLayer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.dataSet && this.dataSet.clear();

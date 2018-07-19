@@ -1,6 +1,7 @@
 var olapi = "https://openlayers.org/en/v4.6.5/apidoc/";
 var lfapi = "http://leafletjs.com/reference-1.3.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
+var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/"
 var typeLinks = {
     //openlayers
     "ol.Map": olapi + "ol.Map.html",
@@ -25,6 +26,8 @@ var typeLinks = {
     "ol.source.VectorTile": olapi + "ol.source.VectorTile",
     "ol.Pixel": olapi + "ol.html#.Pixel",
     "ol.source.State": olapi + "ol.source.html#.State",
+    "ol.layer.Layer": olapi + "ol.layer.Layer.html",
+   
 
     //leaflet
     "L.Marker": lfapi + '#marker',
@@ -48,6 +51,10 @@ var typeLinks = {
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
-    "mapboxgl.Map": mbglapi + '#map'
+    "mapboxgl.Map": mbglapi + '#map',
+    //mapv
+    "Mapv.DataSet": mapv + 'data/DataSet.md',
+    "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md'
+    
 }
 exports.typeLinks = typeLinks;

@@ -9,9 +9,9 @@ ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.supermap.ThemeFeature
- * @classdesc 专题图要素类
- * @param {Object} geometry - 要量算的几何对象，支持 ol.geom.Geometry 和 GeoText 标签数组类型 geometry = [x,y,text]
- * @param {Object} attributes - 属性
+ * @classdesc 专题图要素类。
+ * @param {Object} geometry - 要量算的几何对象，支持 ol.geom.Geometry 和 GeoText 标签数组类型 geometry = [x,y,text]。
+ * @param {Object} [attributes] - 属性。
  */
 export class ThemeFeature {
 
@@ -22,7 +22,7 @@ export class ThemeFeature {
 
     /**
      * @function ol.supermap.ThemeFeature.prototype.toFeature
-     * @description 转为矢量要素，
+     * @description 转为矢量要素。
      */
     toFeature() {
         var geometry = this.geometry;

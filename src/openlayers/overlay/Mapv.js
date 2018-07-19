@@ -10,7 +10,10 @@ import {
  * @class ol.source.Mapv
  * @category  Visualization MapV
  * @classdesc MapV图层源。
- * @param {Object} opt_options - 参数
+ * @param {Object} opt_options - 参数。
+ * @param {ol.Map} opt_options.map - 当前map对象。
+ * @param {Mapv.DataSet} opt_options.dataSet - Mapv的数据集。
+ * @param {Object} opt_options.mapvOptions - Mapv的配置对象。
  * @extends {ol.source.ImageCanvas}
  */
 export class Mapv extends ol.source.ImageCanvas {
@@ -75,9 +78,9 @@ export class Mapv extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Mapv.prototype.addData
-     * @description 追加数据
-     * @param {Object} data - 要追加的数据
-     * @param {Object} options - 要追加的值
+     * @description 追加数据。
+     * @param {Object} data - 要追加的数据。
+     * @param {Object} options - 要追加的值。
      */
     addData(data, options) {
         this.layer.addData(data, options);
@@ -85,7 +88,7 @@ export class Mapv extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Mapv.prototype.getData
-     * @description 获取数据
+     * @description 获取数据。
      * @returns {mapv.DataSet} mapv数据集
      */
     getData() {
@@ -97,8 +100,8 @@ export class Mapv extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Mapv.prototype.removeData
-     * @description 删除符合过滤条件的数据
-     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @description 删除符合过滤条件的数据。
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -113,7 +116,7 @@ export class Mapv extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Mapv.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.layer.clearData();
@@ -122,9 +125,9 @@ export class Mapv extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Mapv.prototype.update
-     * @description 更新数据
-     * @param {Object} options - 待更新的数据<br>
-     * @param {Object} options.data - mapv数据集<br>
+     * @description 更新数据。
+     * @param {Object} options - 待更新的数据。
+     * @param {Object} options.data - mapv数据集。
      */
     update(options) {
         this.layer.update(options);

@@ -34,17 +34,17 @@ const Renderer = ["canvas", "webgl"];
  * @class ol.source.Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层源。
- * @param {Object} options - 图形参数。<br>
- * @param {ol.Graphic} options.graphics - 高效率点图层点要素。<br>
- * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
- * @param {ol.map} options.map - openlayers 地图对象。<br>
- * @param {boolean} options.isHighLight - 事件响应是否支持要素高亮。默认为 true，即默认支持高亮。<br>
- * @param {ol.style} options.highLightStyle - 高亮风格，默认为 defaultHighLightStyle。<br>
+ * @param {Object} options - 图形参数。
+ * @param {ol.map} options.map - openlayers 地图对象。
+ * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
+ * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)。
+ * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。即默认支持高亮。
+ * @param {ol.style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
  * @param {number} [options.radius=10] - 要素半径，单位像素。
- * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
+ * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
  * @param {number} [options.strokeWidth=1] - 边框大小。
@@ -141,11 +141,11 @@ export class Graphic extends ol.source.ImageCanvas {
         /**
          * @private
          * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
-         * @description 获取在视图上的要素
-         * @param {string} coordinate -坐标
-         * @param {number} resolution -分辨率
-         * @param {RequestCallback} callback -回调函数
-         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标
+         * @description 获取在视图上的要素。
+         * @param {string} coordinate -坐标。
+         * @param {number} resolution -分辨率。
+         * @param {RequestCallback} callback -回调函数。
+         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
             let graphics = me.getGraphicsInExtent();
@@ -187,8 +187,8 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.setGraphics
-     * @description 设置绘制的点要素，会覆盖之前的所有要素
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组
+     * @description 设置绘制的点要素，会覆盖之前的所有要素。
+     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
         this.graphics_ = this.graphics_ || [];
@@ -200,8 +200,8 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.addGraphics
-     * @description 追加点要素，不会覆盖之前的要素
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组
+     * @description 追加点要素，不会覆盖之前的要素。
+     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
         this.graphics_ = this.graphics_ || [];
@@ -212,7 +212,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.clear
-     * @description 释放图层资源
+     * @description 释放图层资源。
      */
     clear() {
         this.removeGraphics();
@@ -220,7 +220,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 清除所有要素
+     * @description 清除所有要素。
      */
     removeGraphics() {
         this.graphics_.length = 0;
@@ -229,7 +229,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.update
-     * @description 更新图层
+     * @description 更新图层。
      */
     update() {
         this.renderer.update(this.graphics_, this._getDefaultStyle());
@@ -258,17 +258,17 @@ export class Graphic extends ol.source.ImageCanvas {
     }
     /**
      * @function ol.source.Graphic.prototype.setStyle
-     * @description 设置图层要素整体样式(接口仅在webgl渲染时有用)
-     * @param {Object} styleOptions - 样式对象
-     * @param {Array.<number>} styleOptions.color - 点颜色
-     * @param {number} styleOptions.radius - 点半径
-     * @param {number} styleOptions.opacity - 不透明度
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
-     * @param {number} styleOptions.radiusScale - 点放大倍数
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
-     * @param {number} styleOptions.strokeWidth - 边框大小
-     * @param {boolean} styleOptions.outline - 是否显示边框
+     * @description 设置图层要素整体样式(接口仅在webgl渲染时有用)。
+     * @param {Object} styleOptions - 样式对象。
+     * @param {Array.<number>} styleOptions.color - 点颜色。
+     * @param {number} styleOptions.radius - 点半径。
+     * @param {number} styleOptions.opacity - 不透明度。
+     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组。
+     * @param {number} styleOptions.radiusScale - 点放大倍数。
+     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)。
+     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)。
+     * @param {number} styleOptions.strokeWidth - 边框大小。
+     * @param {boolean} styleOptions.outline - 是否显示边框。
      */
     setStyle(styleOptions) {
         let self = this;
@@ -290,7 +290,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getLayerState
-     * @description 获取当前地图及图层状态
+     * @description 获取当前地图及图层状态。
      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
      */
     getLayerState() {
@@ -338,7 +338,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype._highLightClose
-     * @description 关闭高亮要素显示
+     * @description 关闭高亮要素显示。
      * @private
      */
     _highLightClose() {
@@ -352,11 +352,11 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype._highLight
-     * @description 高亮显示选中要素
-     * @param {Array.<number>} center - 中心点
-     * @param {ol.style.Style} image - 点样式
-     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素
-     * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标
+     * @description 高亮显示选中要素。
+     * @param {Array.<number>} center - 中心点。
+     * @param {ol.style.Style} image - 点样式。
+     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
+     * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
      * @private
      */
     _highLight(center, image, selectGraphic, evtPixel) {
@@ -411,8 +411,8 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicsInExtent
-     * @description 在指定范围中获取几何要素面积
-     * @param {Object} extent - 长度范围
+     * @description 在指定范围中获取几何要素面积。
+     * @param {Object} extent - 长度范围。
      */
     getGraphicsInExtent(extent) {
         var graphics = [];

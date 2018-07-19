@@ -4,9 +4,9 @@ import ol from 'openlayers';
  * @class ol.source.SuperMapCloud
  * @category  ThirdPartyMap
  * @classdesc 超图云地图图层源。
- * @param {Object} opt_options - 参数。<br>
- * @param {string} url - 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
- * @param {string} tileProxy - 代理地址址
+ * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
+ * @param {string} [opt_options.tileProxy] - 代理地址。
  * @extends {ol.source.XYZ}
  */
 export class SuperMapCloud extends ol.source.XYZ {

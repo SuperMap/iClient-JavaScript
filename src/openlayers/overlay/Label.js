@@ -14,22 +14,22 @@ import {GeoFeature} from './theme/GeoFeature';
  * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
  * @param {string} name - 名称
- * @param {Object} opt_options - 参数。<br>
- * @param {string} opt_options.id - 专题图层ID。</br>
- * @param {ol.Map} opt_options.map - 当前map对象。</br>
- * @param {number} opt_options.opacity - 图层透明的。</br>
- * @param {string|Object} opt_options.attributions - 版权信息。</br>
- * @param {string} opt_options.logo - Logo。</br>
- * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
- * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
- * @param {Array.<number>} opt_options.resolutions - 分辨率数组。</br>
- * @param {ol.source.State} opt_options.state - 资源状态。<br>
- * @param {string} opt_options.themeField - 指定创建专题图字段。<br>
- * @param {Object} opt_options.style - 专题图样式。<br>
- * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
- * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
- * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
- * @extends {ol.source.GeoFeature}
+ * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
+ * @param {ol.Map} opt_options.map - 当前map对象。
+ * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {string|Object} [opt_options.attributions] - 版权信息。
+ * @param {string} [opt_options.logo] - Logo。
+ * @param {ol.proj.Projection} opt_options.projection - 投影信息。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。
+ * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
+ * @param {string} [opt_options.themeField] - 指定创建专题图字段。
+ * @param {Object} [opt_options.style] - 专题图样式。
+ * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
+ * @param {boolean} [opt_options.isHoverAble = false] - 是否开启hover事件。
+ * @param {Object} [opt_options.highlightStyle] - 开启hover事件后，触发的样式风格。
+ * @extends {GeoFeature}
  */
 export class Label extends GeoFeature {
 
@@ -90,7 +90,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.createThematicFeature
-     * @description 创建专题要素
+     * @description 创建专题要素。
      * @param {SuperMap.Feature.Vector} feature - 矢量要素
      * @returns {SuperMap.Feature.Theme.Vector} 专题图矢量要素
      */
@@ -137,7 +137,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.getDrawnLabels
-     * @description 获取经（压盖）处理后将要绘制在图层上的标签要素
+     * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
      * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 所有标签要素的数组。
      * @returns {Array.<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
      */
@@ -292,7 +292,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style
+     * @description 根据用户数据（feature）设置专题要素的 Style。
      * @param {SuperMap.Feature.Vector} feat - 矢量要素对象
      * @returns {Array.<SuperMap.ThemeStyle>} 专题要素的 Style
      */
@@ -341,7 +341,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.setLabelsStyle
-     * @description 设置标签要素的Style
+     * @description 设置标签要素的Style。
      * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
      * @returns {Array.<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
      */
@@ -369,7 +369,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.setStyle
-     * @description 设置标签要素的Style
+     * @description 设置标签要素的Style。
      * @param {SuperMap.Feature.Vector} feat - 需要赋予 style 的要素。
      */
     setStyle(feat) {
@@ -418,7 +418,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.getLabelPxLocation
-     * @description 获取标签要素的像素坐标
+     * @description 获取标签要素的像素坐标。
      * @param {SuperMap.Feature.Vector} feature - 标签要素。
      * @returns {Object} 标签位置，例如：{"x":1,"y":1}
      */
@@ -443,7 +443,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.calculateLabelBounds
-     * @description 获得标签要素的最终范围
+     * @description 获得标签要素的最终范围。
      * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -694,7 +694,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.getRotatedLocation
-     * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
+     * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）。
      * @param {number} x - 旋转点横坐标。
      * @param {number} y - 旋转点纵坐标。
      * @param {number} rx - 旋转中心点横坐标。
@@ -814,7 +814,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.isQuadrilateralOverLap
-     * @description 判断两个四边形是否有压盖
+     * @description 判断两个四边形是否有压盖。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
      * @returns {boolean} 是否压盖，true表示压盖
@@ -859,7 +859,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function ol.source.Label.prototype.isPointInPoly
-     * @description 判断一个点是否在多边形里面。(射线法)
+     * @description 判断一个点是否在多边形里面。(射线法)。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
      * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      * @returns {boolean} 点是否在多边形内

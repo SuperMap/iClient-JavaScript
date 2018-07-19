@@ -6,14 +6,13 @@ import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
 /**
  * @class ol.supermap.MeasureService
  * @category  iServer Map Measure
- * @classdesc 测量服务
+ * @classdesc 测量服务。
  * @extends ol.supermap.ServiceBase
  * @param {string} url -  服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options -  交互服务时所需可选参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
- * @param {Object} options.eventListeners -  需要被注册的监听器对象。
  */
 export class MeasureService extends ServiceBase {
 
@@ -23,9 +22,9 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function ol.supermap.MeasureService.prototype.measureDistance
-     * @description 测距
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
-     * @param {RequestCallback} callback - 回调函数
+     * @description 测距。
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {RequestCallback} callback - 回调函数。
      */
     measureDistance(params, callback) {
         this.measure(params, 'DISTANCE', callback);
@@ -33,9 +32,9 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function ol.supermap.MeasureService.prototype.measureArea
-     * @description 测面积
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
-     * @param {RequestCallback} callback - 回调函数
+     * @description 测面积。
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {RequestCallback} callback - 回调函数。
      */
     measureArea(params, callback) {
         this.measure(params, 'AREA', callback);
@@ -43,11 +42,11 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function ol.supermap.MeasureService.prototype.measure
-     * @description 测量
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类
-     * @param {string} type - 类型
-     * @param {RequestCallback} callback - 回调函数
-     * @returns {ol.supermap.MeasureService} 测量服务
+     * @description 测量。
+     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
+     * @param {string} type - 类型。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {ol.supermap.MeasureService} 测量服务。
      */
     measure(params, type, callback) {
         var me = this;

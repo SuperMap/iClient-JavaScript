@@ -12,12 +12,12 @@ ol.supermap.control = ol.supermap.control || {};
  * @example
  *      var control = new ol.supermap.control.Logo();
  *      map.addControl(control);
- * @param {Object} options - logo控件配置项。</br>
- * @param {string} options.imageUrl - logo图片地址。</br>
- * @param {number} options.width - logo图片宽。</br>
- * @param {number} options.height - logo图片高。</br>
- * @param {string} options.link - 跳转链接。</br>
- * @param {string} options.alt - logo图片失效时显示文本。
+ * @param {Object} options - logo控件配置项。
+ * @param {string} [options.imageUrl] - logo图片地址。
+ * @param {number} [options.width] - logo图片宽。
+ * @param {number} [options.height] - logo图片高。
+ * @param {string} [options.link='http://iclient.supermap.io'] - 跳转链接。
+ * @param {string} [options.alt='SuperMap iClient'] - logo图片失效时显示文本。
  */
 export class Logo extends ol.control.Control {
 
@@ -34,7 +34,7 @@ export class Logo extends ol.control.Control {
 
         /**
          * @function ol.supermap.control.Logo.prototype.initLayerout
-         * @description 初始化图层信息
+         * @description 初始化图层信息。
          */
         function initLayerout() {
             var className = 'ol-control-logo ol-unselectable ol-control';
@@ -71,7 +71,7 @@ export class Logo extends ol.control.Control {
         /**
          * @function ol.supermap.control.Logo.prototype.setDivStyle
          * @div 获取div对象
-         * @description 设置对象style
+         * @description 设置对象style。
          */
         function setDivStyle(div) {
             var attributionsElem = document.getElementsByClassName('ol-attribution');

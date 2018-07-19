@@ -3,16 +3,16 @@ import ol from 'openlayers';
 /**
  * @class ol.style.CloverShape
  * @category  Visualization Graphic
- * @classdesc 三叶草要素风格
- * @extends {ol.style.Image}
- * @param {Object} options - 三叶草形要素风格参数。<br>
- * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。<br>
- * @param {number} [options.count=3] - 扇叶数量。<br>
- * @param {ol.style.Fill} options.fill - 填充样式<br>
- * @param {ol.style.Stroke} options.stroke - 边框样式<br>
- * @param {number} options.strokeOpacity - 透明度<br>
- * @param {number} options.fillOpacity - 填充透明度<br>
- * @param {number} options.radius - 半径<br>
+ * @classdesc 三叶草要素风格。
+ * @extends {ol.style.RegularShape}
+ * @param {Object} options - 三叶草形要素风格参数。
+ * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。
+ * @param {number} [options.count=3] - 扇叶数量。
+ * @param {ol.style.Fill} [options.fill] - 填充样式。
+ * @param {ol.style.Stroke} [options.stroke] - 边框样式。
+ * @param {number} [options.strokeOpacity] - 透明度。
+ * @param {number} [options.fillOpacity] - 填充透明度。
+ * @param {number} [options.radius] - 半径。
  */
 export class CloverShape extends ol.style.RegularShape {
 
@@ -70,7 +70,7 @@ export class CloverShape extends ol.style.RegularShape {
 
     /**
      * @function  ol.style.CloverShape.prototype.drawSector
-     * @description 绘制扇形
+     * @description 绘制扇形。
      * @param {CanvasRenderingContext2D} ctx - context对象
      * @param {number} x - 中心点 x
      * @param {number} y - 中心点 y
@@ -105,14 +105,14 @@ export class CloverShape extends ol.style.RegularShape {
     }
      /**
      * @function  ol.style.CloverShape.prototype.getCount
-     * @description 获取扇叶数量
+     * @description 获取扇叶数量。
      */
     getCount() {
         return this.count_;
     }
     /**
      * @function  ol.style.CloverShape.prototype.getSpaceAngle
-     * @description 获取扇叶间隔角度
+     * @description 获取扇叶间隔角度。
      */
     getSpaceAngle() {
         return this.spaceAngle;

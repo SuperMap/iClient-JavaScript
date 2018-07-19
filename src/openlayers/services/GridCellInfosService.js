@@ -3,9 +3,10 @@ import {ServiceBase} from './ServiceBase';
 import {GetGridCellInfosService} from '@supermap/iclient-common';
 
 /**
+/**
  * @class ol.supermap.GridCellInfosService
  * @category  iServer Data Grid
- * @classdesc 数据栅格查询服务
+ * @classdesc 数据栅格查询服务。
  * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.GridCellInfosService(url)
@@ -15,10 +16,9 @@ import {GetGridCellInfosService} from '@supermap/iclient-common';
  * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export class GridCellInfosService extends ServiceBase {
 
@@ -28,8 +28,8 @@ export class GridCellInfosService extends ServiceBase {
 
     /**
      * @function ol.supermap.GridCellInfosService.prototype.getGridCellInfos
-     * @param {SuperMap.GetGridCellInfosParameters} params - 查询所需参数类
-     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.GetGridCellInfosParameters} params - 查询所需参数类。
+     * @param {RequestCallback} callback - 回调函数。
      */
     getGridCellInfos(params, callback) {
         if (!params) {

@@ -6,17 +6,18 @@ import {
 /**
  * @class ol.style.HitCloverShape
  * @category  Visualization Graphic
- * @classdesc 三叶草要素高亮风格
- * @extends {ol.style.Image}
- * @param {Object} options - 三叶草形要素风格参数。<br>
- * @param {number} options.angle - 三叶草每个扇叶的圆心角,默认为30，单位弧度。<br>
- * @param {ol.style.Fill} options.fill - 填充样式<br>
- * @param {ol.style.Stroke} options.stroke - 边框样式<br>
- * @param {number} options.strokeOpacity - 透明度<br>
- * @param {number} options.fillOpacity - 填充透明度<br>
- * @param {number} options.radius - 半径<br>
- * @param {number} options.sAngle - 扇叶起始角度<br>
- * @param {number} options.eAngle - 扇叶终止角度
+ * @classdesc 三叶草要素高亮风格。
+ * @extends {ol.style.CloverShape}
+ * @param {Object} options - 三叶草形要素风格参数。
+ * @param {number} options.sAngle - 扇叶起始角度。
+ * @param {number} options.eAngle - 扇叶终止角度。
+ * @param {number} [options.angle = 30] - 三叶草每个扇叶的圆心角,默认为30，单位弧度。
+ * @param {ol.style.Fill} [options.fill] - 填充样式。
+ * @param {ol.style.Stroke} [options.stroke] - 边框样式。
+ * @param {number} [options.strokeOpacity] - 透明度。
+ * @param {number} [options.fillOpacity] - 填充透明度。
+ * @param {number} [options.radius] - 半径。
+ 
  */
 export class HitCloverShape extends CloverShape {
 
@@ -43,14 +44,14 @@ export class HitCloverShape extends CloverShape {
     }
     /**
      * @function ol.style.HitCloverShape.prototype.getSAngle
-     * @description 获取扇叶起始角度
+     * @description 获取扇叶起始角度。
      */
     getSAngle() {
         return this.sAngle;
     }
     /**
      * @function ol.style.HitCloverShape.prototype.getEAngle
-     * @description 获取扇叶终止角度
+     * @description 获取扇叶终止角度。
      */
     getEAngle() {
         return this.eAngle;

@@ -1,6 +1,6 @@
 /**
  * @constant ol.supermap.pointStyle
- * @description 点属性名的对应表
+ * @description 点属性名的对应表。
  * @private
  */
 export var pointStyle = {
@@ -21,7 +21,7 @@ export var pointStyle = {
 
 /**
  * @constant ol.supermap.lineStyle
- * @description 线属性名的对应表
+ * @description 线属性名的对应表。
  * @private
  */
 export var lineStyle = {
@@ -43,7 +43,7 @@ export var lineStyle = {
 
 /**
  * @constant ol.supermap.polygonStyle
- * @description 面属性名的对应表
+ * @description 面属性名的对应表。
  * @private
  */
 export var polygonStyle = {
@@ -73,13 +73,13 @@ export var polygonStyle = {
 
 /**
  * @constant ol.supermap.DeafultCanvasStyle
- * @description 默认画布属性名的对应表
+ * @description 默认画布属性名的对应表。
  * @private
  */
 export var DeafultCanvasStyle = {
     /**
      * @constant ol.supermap.DeafultCanvasStyle.prototype.TEXT
-     * @description 默认文本样式
+     * @description 默认文本样式。
      */
     "TEXT": {
         font: "10px sans-serif",

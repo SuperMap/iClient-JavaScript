@@ -1,6 +1,6 @@
 /**
  * @constant  ol.supermap.pointMap
- * @description 点图
+ * @description 点图。
  * @private
  */
 export var pointMap = {
@@ -17,7 +17,7 @@ export var pointMap = {
 
 /**
  * @constant ol.supermap.lineMap
- * @description 线图
+ * @description 线图。
  * @private
  */
 export var lineMap = {
@@ -36,7 +36,7 @@ export var lineMap = {
 
 /**
  * @constant ol.supermap.polygonMap
- * @description 面图
+ * @description 面图。
  * @private
  */
 export var polygonMap = {
@@ -61,7 +61,7 @@ export var polygonMap = {
 
 /**
  * @constant ol.supermap.StyleMap
- * @description 地图样式
+ * @description 地图样式。
  */
 export var StyleMap = {
     /**
@@ -101,7 +101,7 @@ export var StyleMap = {
     },
     /**
      * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
-     * @description 服务端传过来的style属性名与Canvas的style属性名的对应表
+     * @description 服务端传过来的style属性名与Canvas的style属性名的对应表。
      */
     ServerStyleMap: {
         fillBackOpaque: {
@@ -203,7 +203,7 @@ export var StyleMap = {
     },
     /**
      * @constant ol.supermap.StyleMap.prototype.CartoCompOpMap
-     * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+     * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表。
      */
     CartoCompOpMap: {
         "clear": "",

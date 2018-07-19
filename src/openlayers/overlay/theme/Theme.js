@@ -15,17 +15,17 @@ import {ThemeFeature} from './ThemeFeature';
 /**
  * @class ol.source.Theme
  * @classdesc 专题图基类。
- * @param {string} name - 专题图图层名称
- * @param {Object} opt_option - 参数。</br>
- * @param {string} opt_option.id - 专题图层ID。</br>
- * @param {ol.Map} opt_option.map - 当前openlayers的map对象。</br>
- * @param {number} opt_option.opacity - 图层透明度。</br>
- * @param {(string|Object)} opt_option.attributions - 版权信息。 </br>
- * @param {string} opt_option.logo - Logo。</br>
- * @param {ol.proj.Projection} opt_option.projection - 投影信息。</br>
- * @param {number} [opt_option.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
- * @param {Array} opt_option.resolutions - 分辨率数组。</br>
- * @param {ol.source.State} opt_option.state - 资源状态。
+ * @param {string} name - 专题图图层名称。
+ * @param {Object} opt_option - 参数。
+ * @param {string} [opt_option.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
+ * @param {ol.Map} opt_option.map - 当前openlayers的map对象。
+ * @param {number} [opt_option.opacity=1] - 图层透明度。
+ * @param {(string|Object)} [opt_option.attributions] - 版权信息。
+ * @param {string} [opt_option.logo] - Logo。
+ * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
+ * @param {number} [opt_option.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。
+ * @param {Array} [opt_option.resolutions] - 分辨率数组。
+ * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @extends {ol.source.ImageCanvas}
  */
 export class Theme extends ol.source.ImageCanvas {
@@ -137,8 +137,8 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
-     * @description 销毁某个要素
-     * @param {Object} features - 将被销毁的要素
+     * @description 销毁某个要素。
+     * @param {Object} features - 将被销毁的要素。
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -156,7 +156,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.setOpacity
      * @description 设置图层的不透明度，取值[0-1]之间。
-     * @param {number} opacity - 不透明度
+     * @param {number} opacity - 不透明度。
      */
     setOpacity(opacity) {
         if (opacity !== this.opacity) {
@@ -310,7 +310,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
-     * @param {Array} extent - 当前级别下计算出的地图范围
+     * @param {Array} extent - 当前级别下计算出的地图范围。
      */
     redrawThematicFeatures(extent) { //eslint-disable-line no-unused-vars
     }
@@ -335,7 +335,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.fire
-     * @description 添加专题要素事件监听
+     * @description 添加专题要素事件监听。
      * @param {string} type - 事件类型。
      * @param {string} event - 事件名称。
      */
@@ -402,7 +402,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.un
-     * @description 移除专题要素事件监听
+     * @description 移除专题要素事件监听。
      * @param {string} event - 事件名称。
      * @param {RequestCallback} callback - 事件回调函数。
      */
@@ -439,7 +439,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getLocalXY
-     * @description 获取坐标系统
+     * @description 获取坐标系统。
      * @param {Object} coordinate - 坐标位置。
      */
     getLocalXY(coordinate) {
@@ -469,7 +469,7 @@ export class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.rotate
      * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
-     * @param {number} rotation - 旋转角度
+     * @param {number} rotation - 旋转角度。
      * @param {number} center - 中心位置。
      */
     rotate(pixelP, rotation, center) {
@@ -481,9 +481,9 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.scale
      * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
-     * @param {Object} pixelP - 像素点
-     * @param {Object} center - 中心点
-     * @param {number} scaleRatio - 缩放倍数
+     * @param {Object} pixelP - 像素点。
+     * @param {Object} center - 中心点。
+     * @param {number} scaleRatio - 缩放倍数。
      * @return {Array.<number>} 返回数组形比例
      */
     scale(pixelP, center, scaleRatio) {
@@ -494,7 +494,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
-     * @description 转为 iClient 要素
+     * @description 转为 iClient 要素。
      * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
      * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */

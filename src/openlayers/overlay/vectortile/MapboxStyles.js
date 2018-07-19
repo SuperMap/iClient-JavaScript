@@ -10,21 +10,21 @@ import {
 
 /**
  * @class ol.supermap.MapboxStyles
- * @classdesc Mapbox 矢量瓦片风格
+ * @classdesc Mapbox 矢量瓦片风格。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  * <p style="color: #ce4844">Notice</p>
  * <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
  * `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2/dist/olms.js"></script>`
  * @category  Visualization VectorTile
- * @param {Object} options - 初始化参数。<br>
- * @param {(string|undefined)} options.url - iServer UGCV5(MVT) 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
- * @param {(Object|undefined)} options.style - Mapbox style 对象。与options.url互斥，优先级高于options.url。
- * @param {Array.<number>} options.resolutions - 地图分辨率数组，用于映射zoom值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
+ * @param {Object} options - 初始化参数。
+ * @param {(string|undefined)} [options.url] - iServer UGCV5(MVT) 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
+ * @param {(Object|undefined)} [options.style] - Mapbox style 对象。与options.url互斥，优先级高于options.url。
+ * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射zoom值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
- * @param {!(string|Array.<string>)} options.source - Mapbox Style 'source'的 key 值或者 'layer'的 id 数组。
+ * @param {(string|Array.<string>)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer'的 id 数组。
  * 当配置'source'的 key 值时，source为该值的layer会被加载；
  * 当配置为'layer'的 id 数组时，指定的layer会被加载，注意被指定的layer需要有相同的source。
- * @param {ol.Map} options.map - Openlayers 地图对象，仅用于填充Mapbox Style中的 background,如没有配置 background 可不设置该参数。
+ * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于填充Mapbox Style中的 background,如没有配置 background 可不设置该参数。
  * @example
  *  var mbStyle = new ol.supermap.MapboxStyles({
             url: url,

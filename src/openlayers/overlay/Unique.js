@@ -7,23 +7,22 @@ import {GeoFeature} from './theme/GeoFeature';
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
  * @param {String} name - 图层名称
- * @param {Object} opt_options - 参数。<br>
- * @param {string} opt_options.id - 专题图层ID。</br>
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。</br>
- * @param {ol.Map} opt_options.map - 当前map对象。</br>
- * @param {number} opt_options.opacity - 图层透明度。</br>
- * @param {(string|Object)} opt_options.attributions - 版权信息。</br>
- * @param {string} opt_options.logo - Logo。</br>
- * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
- * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。必须是1或更高。</br>
- * @param {Array} opt_options.resolutions - 分辨率数组。</br>
- * @param {ol.source.State} opt_options.state - 资源状态。<br>
- * @param {string} opt_options.themeField - 指定创建专题图字段。<br>
- * @param {Object} opt_options.style - 专题图样式。<br>
- * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
- * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
- * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
- * @extends {ol.source.GeoFeature}
+ * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
+ * @param {ol.Map} opt_options.map - 当前map对象。
+ * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {(string|Object)} [opt_options.attributions] - 版权信息。
+ * @param {string} [opt_options.logo] - Logo。
+ * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。必须是1或更高。
+ * @param {Array} [opt_options.resolutions] - 分辨率数组。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
+ * @param {string} [opt_options.themeField] - 指定创建专题图字段。
+ * @param {Object} [opt_options.style] - 专题图样式。
+ * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
+ * @param {boolean} [opt_options.isHoverAble=false] - 是否开启hover事件。
+ * @param {Object} [opt_options.highlightStyle] - 开启hover事件后，触发的样式风格。
+ * @extends {GeoFeature}
  */
 export class Unique extends GeoFeature {
 
@@ -51,7 +50,7 @@ export class Unique extends GeoFeature {
      * @private
      * @function ol.source.Unique.prototype.createThematicFeature
      * @description 创建专题要素。
-     * @param {Object} feature - 要素
+     * @param {Object} feature - 要素。
      */
     createThematicFeature(feature) {
         var style = this.getStyleByData(feature);
@@ -74,8 +73,8 @@ export class Unique extends GeoFeature {
     /**
      * @private
      * @function ol.source.Unique.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param {Object} fea - 用户要素数据
+     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @param {Object} fea - 用户要素数据。
      */
     getStyleByData(fea) {
         var style = {};

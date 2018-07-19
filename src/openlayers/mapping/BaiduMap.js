@@ -4,9 +4,10 @@ import ol from 'openlayers';
  * @class ol.source.BaiduMap
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
- * @param {Object} opt_options - 参数。<br>
- * @param {string} url - 服务地址。<br>
- * @param {string} tileProxy - 代理地址
+ * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
+ * @param {string} [opt_options.tileProxy] - 代理地址。
+ * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
  * @extends {ol.source.TileImage}
  */
 export class BaiduMap extends ol.source.TileImage {
@@ -69,7 +70,7 @@ export class BaiduMap extends ol.source.TileImage {
 
     /**
      * @function ol.source.BaiduMap.defaultTileGrid
-     * @description 获取默认瓦片格网
+     * @description 获取默认瓦片格网。
      * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象
      */
     static defaultTileGrid() {

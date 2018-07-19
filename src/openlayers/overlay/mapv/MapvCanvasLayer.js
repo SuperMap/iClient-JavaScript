@@ -2,13 +2,13 @@
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc Mapv渲染器。
  * @private
- * @param {Object} options - 参数。<br>
- * @param {string} options.paneName - 窗口名。<br>
- * @param {string} options.context - 内容。<br>
- * @param {number} options.zIndex - 层级。<br>
- * @param {number} options.width - 画布宽。<br>
- * @param {number} options.height - 画布高。<br>
- * @param {string} options.mixBlendMode - 最小混合模式。
+ * @param {Object} options - 参数。
+ * @param {number} options.width - 画布宽。
+ * @param {number} options.height - 画布高。
+ * @param {string} [options.paneName='mapPane'] - 窗口名。
+ * @param {string} [options.context='2d'] - 内容。
+ * @param {number} [options.zIndex=2] - 层级。
+ * @param {string} [options.mixBlendMode] - 最小混合模式。
  */
 export class MapvCanvasLayer {
 
@@ -44,7 +44,7 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.draw
-     * @description 生成地图
+     * @description 生成地图。
      */
     draw() {
         this.options.update && this.options.update.call(this);
@@ -52,9 +52,9 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.resize
-     * @param {number} mapWidth - 地图宽度
-     * @param {number} mapHeight - 地图高度
-     * @description 调整地图大小
+     * @param {number} mapWidth - 地图宽度。
+     * @param {number} mapHeight - 地图高度。
+     * @description 调整地图大小。
      */
     resize(mapWidth, mapHeight) {
         var global$2 = typeof window === 'undefined' ? {} : window;
@@ -70,8 +70,8 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
-     * @description 获取容器
-     * @returns {Element} 包含Mapv图层的dom对象
+     * @description 获取容器。
+     * @returns {Element} 包含Mapv图层的dom对象。
      */
     getContainer() {
         return this.canvas;
@@ -80,7 +80,7 @@ export class MapvCanvasLayer {
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
      * @param {number} zIndex - 层级参数
-     * @description 设置图层层级
+     * @description 设置图层层级。
      */
     setZIndex(zIndex) {
         this.canvas.style.zIndex = zIndex;
@@ -88,7 +88,7 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-     * @description 获取图层层级
+     * @description 获取图层层级。
      */
     getZIndex() {
         return this.zIndex;

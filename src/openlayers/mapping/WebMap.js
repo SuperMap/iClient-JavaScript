@@ -29,13 +29,13 @@ ol.supermap = ol.supermap || {};
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
  * @classdesc 对接iPortal/Online地图类。
- * @param {string}  id - iPortal|Online 地图ID
- * @param {Object} options - 参数。<br>
- * @param {string} options.target - 目标类型。<br>
- * @param {ol.map} options.map - 地图对象。<br>
- * @param {string} options.server - 服务地址。<br>
- * @param {string} options.credentialKey - 凭证密钥。<br>
- * @param {string} options.credentialValue - 凭证值。
+ * @param {string} id - iPortal|Online 地图ID
+ * @param {Object} options - 参数。
+ * @param {string} [options.target='map'] - 目标类型。
+ * @param {ol.map} [options.map] - 地图对象。
+ * @param {string} [options.server='http://www.supermapol.com'] - 服务地址。
+ * @param {string} [options.credentialKey='key'] - 凭证密钥。
+ * @param {string} [options.credentialValue] - 凭证值。
  * @extends {ol.Observable}
  */
 export class WebMap extends ol.Observable {
@@ -67,7 +67,7 @@ export class WebMap extends ol.Observable {
 
     /**
      * @function ol.supermap.WebMap.prototype.load
-     * @description 登陆窗口后添加地图图层
+     * @description 登陆窗口后添加地图图层。
      */
     load() {
         if (this.server.indexOf('http://') < 0 && this.server.indexOf('https://') < 0) {
@@ -93,8 +93,8 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createLayersByJson
-     * @description 通过json创建图层
-     * @param {JSON} layersJson - 图层的json信息
+     * @description 通过json创建图层。
+     * @param {JSON} layersJson - 图层的json信息。
      */
     createLayersByJson(layersJson) {
         if (!Util.isArray(layersJson)) {
@@ -151,8 +151,8 @@ export class WebMap extends ol.Observable {
 
     /**
      * @function ol.supermap.WebMap.prototype.addLayer
-     * @description 添加图层
-     * @param {ol.layer.Vector} layer - ol图层
+     * @description 添加图层。
+     * @param {ol.layer.Vector} layer - ol图层。
      */
     addLayer(layer) {
         return this.map.addLayer(layer);
@@ -182,11 +182,11 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
-     * @description 通过比例尺获取分辨率
-     * @param {Array.<number>} scales - 排序比例尺数组
-     * @param {number} dpi - 屏幕分辨率
-     * @param {string} units - 地图的单位
-     * @param {SuperMap.Datum} datum - 大地参照系类
+     * @description 通过比例尺获取分辨率。
+     * @param {Array.<number>} scales - 排序比例尺数组。
+     * @param {number} dpi - 屏幕分辨率。
+     * @param {string} units - 地图的单位。
+     * @param {SuperMap.Datum} datum - 大地参照系类。
      */
     getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
@@ -202,9 +202,9 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createLayer
-     * @description 创建图层
-     * @param {string} type - 图层类型
-     * @param {Object} layerInfo - 图层信息
+     * @description 创建图层。
+     * @param {string} type - 图层类型。
+     * @param {Object} layerInfo - 图层信息。
      */
     createLayer(type, layerInfo) {
         var prjCoordSys = layerInfo.prjCoordSys,
@@ -303,12 +303,12 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
-     * @description 获取WMTS图层的分辨率数组和标识矩阵
-     * @param {Object} wellKnownScaleSet - 图层的分辨率数据集
-     * @param {Object} units - 地图的单位元
-     * @param {Array.<number>} scales - 排序比例尺数组
-     * @param {Object} mapOrigin - 原始地图
-     * @param {Object} mapExtent - 地图的程度
+     * @description 获取WMTS图层的分辨率数组和标识矩阵。
+     * @param {Object} wellKnownScaleSet - 图层的分辨率数据集。
+     * @param {Object} units - 地图的单位元。
+     * @param {Array.<number>} scales - 排序比例尺数组。
+     * @param {Object} mapOrigin - 原始地图。
+     * @param {Object} mapExtent - 地图的程度。
      */
     getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, units, scales, mapOrigin, mapExtent) {
         var resolutions = ol.wellKnownScale.getResolutions(wellKnownScaleSet);
@@ -337,9 +337,9 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createTiandituLayer
-     * @description 创建天地图图层
-     * @param {Object} layerInfo - 图层信息
-     * @param {number} epsgCode - epsg编码
+     * @description 创建天地图图层。
+     * @param {Object} layerInfo - 图层信息。
+     * @param {number} epsgCode - epsg编码。
      * @returns {ol.layer.Tile} 获取天地图的图层
      */
     createTiandituLayer(layerInfo, epsgCode) {
@@ -358,8 +358,8 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createMarkersLayer
-     * @description 创建图标图层
-     * @param {Object} layerInfo - 图层信息
+     * @description 创建图标图层。
+     * @param {Object} layerInfo - 图层信息。
      * @returns {ol.layer.Vector} 返回Marker图层对象
      */
     createMarkersLayer(layerInfo) {
@@ -381,8 +381,8 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createVectorLayer
-     * @description 创建矢量要素图层
-     * @param {Object} layerInfo - 图层信息
+     * @description 创建矢量要素图层。
+     * @param {Object} layerInfo - 图层信息。
      * @returns {ol.layer.Vector} 返回矢量要素图层对象
      */
     createVectorLayer(layerInfo) {
@@ -439,8 +439,8 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createWmsLayer
-     * @description 创建Wms图层
-     * @param {Object} layerInfo - 图层信息
+     * @description 创建Wms图层。
+     * @param {Object} layerInfo - 图层信息。
      * @returns {ol.layer.Tile} 返回Wms图层对象
      */
     createWmsLayer(layerInfo) {
@@ -466,9 +466,9 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createThemeLayer
-     * @description 创建专题图图层
-     * @param {Object} layerInfo - 图层信息
-     * @returns {L.Layer} 返回专题图图层对象
+     * @description 创建专题图图层。
+     * @param {Object} layerInfo - 图层信息。
+     * @returns {ol.layer.Layer} 返回专题图图层对象
      */
     createThemeLayer(layerInfo) {
         var themeSettings = layerInfo.themeSettings && JSON.parse(layerInfo.themeSettings);

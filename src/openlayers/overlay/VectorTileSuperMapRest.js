@@ -22,6 +22,10 @@ ol.supermap = ol.supermap || {};
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
  * @param {Object} options - 参数。
+ * @param {string} options.url - 服务地址。
+ * @param {string} [options.crossOrigin = 'anonymous'] - 跨域模式。
+ * @param {(string|Object)} [options.attributions] - 版权信息。
+ * @param {Object} [options.format] - 瓦片的要素格式化。
  * @extends {ol.source.VectorTile}
  */
 export class VectorTileSuperMapRest extends ol.source.VectorTile {
@@ -157,9 +161,9 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
         /**
          * @private
          * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
-         * @description 加载瓦片
-         * @param {Object} tile -瓦片类
-         * @param {string} tileUrl - 瓦片地址
+         * @description 加载瓦片。
+         * @param {Object} tile -瓦片类。
+         * @param {string} tileUrl - 瓦片地址。
          */
         function tileLoadFunction(tile, tileUrl) {
             var regWidth = new RegExp("(^|\\?|&)" + 'width' + "=([^&]*)(\\s|&|$)");
@@ -215,9 +219,9 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
 
     /**
      * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
-     * @param {string} url - 地址
-     * @param {Object} mapJSONObj - 地图JSON
-     * @description 获取地图JSON信息
+     * @param {string} url - 地址。
+     * @param {Object} mapJSONObj - 地图JSON。
+     * @description 获取地图JSON信息。
      */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};

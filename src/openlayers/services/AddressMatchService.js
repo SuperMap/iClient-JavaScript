@@ -5,7 +5,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
 /**
  * @class ol.supermap.AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务
+ * @classdesc 地址匹配服务。
  * @example
  *      new ol.supermap.AddressMatchService(url,options)
  *      .code(function(result){
@@ -13,7 +13,7 @@ import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclien
  *      })
  * @param {string} url - 与客户端交互的服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @extends {ol.supermap.ServiceBase}

@@ -3,9 +3,9 @@ import ol from 'openlayers';
 /**
  * @class ol.Graphic
  * @category  Visualization Graphic
- * @classdesc 高效率点图层点要素类
+ * @classdesc 高效率点图层点要素类。
  * @param {ol.geom.Point} geometry - 几何对象
- * @param {Object} attributes - 要素属性
+ * @param {Object} [attributes] - 要素属性
  * @extends {ol.Object}
  */
 export class Graphic extends ol.Object {
@@ -21,7 +21,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.clone
-     * @description 克隆当前要素
+     * @description 克隆当前要素。
      * @returns {ol.Graphic} 克隆后的要素
      */
     clone() {
@@ -35,7 +35,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.getId
-     * @description 获取当前ID
+     * @description 获取当前ID。
      * @returns {string} id
      */
     getId() {
@@ -44,7 +44,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.setId
-     * @description 设置当前要素ID
+     * @description 设置当前要素ID。
      * @param {string} id - 要素ID
      */
 
@@ -54,7 +54,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.getGeometry
-     * @description 获取当前要素几何信息
+     * @description 获取当前要素几何信息。
      * @returns {ol.geom.Point} 要素几何信息
      */
     getGeometry() {
@@ -63,7 +63,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.setGeometry
-     * @description 设置当前要素几何信息
+     * @description 设置当前要素几何信息。
      * @param {ol.geom.Point} geometry - 要素几何信息
      */
     setGeometry(geometry) {
@@ -72,7 +72,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.setAttributes
-     * @description 设置要素属性
+     * @description 设置要素属性。
      * @param {Object} attributes - 属性对象
      */
     setAttributes(attributes) {
@@ -81,7 +81,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.getAttributes
-     * @description 获取要素属性
+     * @description 获取要素属性。
      * @returns {Object} 要素属性
      */
     getAttributes() {
@@ -90,7 +90,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.getStyle
-     * @description 获取样式
+     * @description 获取样式。
      * @returns {ol.style.Image} ol.style.Image子类样式对象
      */
     getStyle() {
@@ -99,7 +99,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.setStyle
-     * @description 设置样式
+     * @description 设置样式。
      * @param {ol.style.Image} style - 样式，ol.style.Image子类样式对象
      */
     setStyle(style) {
@@ -116,7 +116,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.getStyleFunction
-     * @description 获取样式函数
+     * @description 获取样式函数。
      * @returns {Function} 样式函数
      */
     getStyleFunction() {
@@ -125,7 +125,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.createStyleFunction
-     * @description  新建样式函数
+     * @description  新建样式函数。
      * @param {Object} obj - 对象参数
      */
     static createStyleFunction(obj) {
@@ -154,7 +154,7 @@ export class Graphic extends ol.Object {
 
     /**
      * @function ol.Graphic.prototype.destroy
-     * @description  清除参数值
+     * @description  清除参数值。
      */
     destroy() {
         this.id_ = null;

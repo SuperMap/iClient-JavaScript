@@ -5,22 +5,22 @@ import {Theme} from './Theme';
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理几何专题要素型专题图层基类。
- * @param {string} name - 图层名称
- * @param {Object} opt_options - 参数。<br>
- * @param {string} opt_options.id - 专题图层ID。</br>
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。</br>
- * @param {number} opt_options.opacity - 图层透明的。</br>
- * @param {(string|Object)} opt_options.attributions - 版权信息。</br>
- * @param {string} opt_options.logo - Logo。</br>
- * @param {ol.proj.Projection} opt_options.projection - 投影信息。</br>
- * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。</br>
- * @param {Array} opt_options.resolutions - 分辨率数组。</br>
- * @param {ol.source.State} - 资源状态。<br>
- * @param {Object} opt_options.style - 专题图样式。<br>
- * @param {Object} opt_options.styleGroups - 各专题类型样式组。<br>
- * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。<br>
- * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
- * @extends {ol.source.Theme}
+ * @param {string} name - 图层名称。
+ * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
+ * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。
+ * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {(string|Object)} [opt_options.attributions] - 版权信息。
+ * @param {string} [opt_options.logo] - Logo。
+ * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。
+ * @param {Array} [opt_options.resolutions] - 分辨率数组。
+ * @param {ol.source.State} [opt_option.state] - 资源状态。
+ * @param {Object} [opt_options.style] - 专题图样式。
+ * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
+ * @param {boolean} [opt_options.isHoverAble=false] - 是否开启hover事件。
+ * @param {Object} [opt_options.highlightStyle] - 开启hover事件后，触发的样式风格。
+ * @extends {Theme}
  */
 
 export class GeoFeature extends Theme {
@@ -60,8 +60,8 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
-     * @description 添加要素
-     * @param {Object} features - 要素对象
+     * @description 添加要素。
+     * @param {Object} features - 要素对象。
      */
     addFeatures(features) {
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -79,7 +79,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {Object} features - 要删除的要素对象
+     * @param {Object} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -98,7 +98,7 @@ export class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
-     * @param {Object} extent - 视图范围数据
+     * @param {Object} extent - 视图范围数据。
      */
     redrawThematicFeatures(extent) {
         //获取高亮专题要素对应的用户 id
@@ -173,8 +173,8 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.createThematicFeature
-     * @description 创建专题要素
-     * @param {Object} feature - 要素对象
+     * @description 创建专题要素。
+     * @param {Object} feature - 要素对象。
      */
     createThematicFeature(feature) {
         var style = CommonUtil.copyAttributesWithClip(this.style);
@@ -203,7 +203,7 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.clearCache
-     * @description 清除缓存
+     * @description 清除缓存。
      */
     clearCache() {
         this.cache = {};
@@ -232,8 +232,8 @@ export class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @param {number} cacheCount - 缓存总数
-     * @description 设置最大缓存条数
+     * @param {number} cacheCount - 缓存总数。
+     * @description 设置最大缓存条数。
      */
     setMaxCacheCount(cacheCount) {
         if (!isNaN(cacheCount)) {

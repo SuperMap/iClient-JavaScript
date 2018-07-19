@@ -26,7 +26,7 @@ import {ServiceBase} from './ServiceBase';
  *      })
  * @param {string} url - 分布式分析服务地址。
  * @param {object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
@@ -181,7 +181,7 @@ export class ProcessingService extends ServiceBase {
      * @description 新建一个点聚合分析。
      * @param {SuperMap.SummaryMeshJobParameter} params - 点聚合分析任务参数类。
      * @param {RequestCallback} callback - 请求结果的回调函数。
-     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
@@ -347,9 +347,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ol.supermap.ProcessingService.prototype.addSummaryRegionJob
      * @description 新建一个区域汇总分析。
-     * @param {SuperMap.SummaryRegionJobParameter} params - 区域汇总分析参数类
-     * @param {RequestCallback} callback - 请求结果的回调函数
-     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔
+     * @param {SuperMap.SummaryRegionJobParameter} params - 区域汇总分析参数类。
+     * @param {RequestCallback} callback - 请求结果的回调函数。
+     * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      * @param {SuperMap.DataFormat} [resultFormat=GeoJSON] - 返回的结果类型。
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
