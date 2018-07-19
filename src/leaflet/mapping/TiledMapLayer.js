@@ -13,27 +13,29 @@ import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.tiledMapLayer
- * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用TileImage资源出图.
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 TileImage 资源出图。
  * @category iServer Map
  * @extends {L.TileLayer}
  * @example
  *      L.supermap.tiledMapLayer(url).addTo(map);
- * @param {string} url - 影像图层地址
+ * @param {string} url - 影像图层地址。
  * @param {Object} options - 影像图层参数。
- * @param {number} options.layersID - 图层ID，如果有layersID，则是在使用专题图。
- * @param {boolean} options.redirect - 是否从定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
- * @param {boolean} [options.transparent = true] - 是否背景透明。
- * @param {boolean} [options.cacheEnabled = true] - 启用缓存。
- * @param {boolean} options.clipRegionEnabled - 是否启用地图裁剪。
- * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
- * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
- * @param {string} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项。
- * @param {string} options.tileversion - 切片版本名称，cacheEnabled 为 true 时有效。
- * @param {L.Proj.CRS} options.crs - 坐标系统类。
+ * @param {number} [options.layersID] - 图层 ID，如果有 layersID，则是在使用专题图。
+ * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
+ * @param {boolean} [options.transparent=true] - 是否背景透明。
+ * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
+ * @param {boolean} [options.clipRegionEnabled=false] - 是否启用地图裁剪。
+ * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
+ * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
+ * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
+ * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} options.attribution - 版权信息。
- * @param {string} options.tileProxy - 启用托管地址。
- * @param {string} [format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
+ * @param {string} [options.tileSize] - 瓦片大小。
  */
 export var TiledMapLayer = L.TileLayer.extend({
 
@@ -45,6 +47,8 @@ export var TiledMapLayer = L.TileLayer.extend({
         transparent: true,
         cacheEnabled: true,
         clipRegionEnabled: false,
+        //地图显示裁剪的区域
+        clipRegion: null,
         //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}
         prjCoordSys: null,
         //地图对象在同一范围内时，是否重叠显示
@@ -53,11 +57,11 @@ export var TiledMapLayer = L.TileLayer.extend({
         overlapDisplayedOptions: null,
         //切片版本名称，cacheEnabled 为 true 时有效。
         tileversion: null,
-
         crs: null,
         serverType: ServerType.ISERVER,
         format: 'png',
-
+        //启用托管地址。
+        tileProxy:null,
         attribution: Attributions.Common.attribution
     },
 
@@ -76,7 +80,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @private
      * @function L.supermap.tiledMapLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.map} map - 待添加的影像地图参数
+     * @param {L.map} map - 待添加的影像地图参数。
      */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
@@ -85,9 +89,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.getTileUrl
-     * @description 根据行列号获取瓦片地址
-     * @param {Object} coords - 行列号
-     * @return {string} 瓦片地址
+     * @description 根据行列号获取瓦片地址。
+     * @param {Object} coords - 行列号。
+     * @return {string} 瓦片地址。
      */
     getTileUrl: function (coords) {
         var scale = this.getScaleFromCoords(coords);
@@ -102,9 +106,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.getScale
-     * @description 根据缩放级别获取比例尺
-     * @param {number} zoom - 缩放级别
-     * @return {number} 比例尺
+     * @description 根据缩放级别获取比例尺。
+     * @param {number} zoom - 缩放级别。
+     * @return {number} 比例尺。
      */
     getScale: function (zoom) {
         var me = this;
@@ -115,9 +119,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
-     * @description 通过行列号获取比例尺
-     * @param {Object} coords - 行列号
-     * @return {number} 比例尺
+     * @description 通过行列号获取比例尺。
+     * @param {Object} coords - 行列号。
+     * @return {number} 比例尺。
      */
     getScaleFromCoords: function (coords) {
         var me = this,
@@ -134,8 +138,8 @@ export var TiledMapLayer = L.TileLayer.extend({
     /**
      * @private
      * @function L.supermap.tiledMapLayer.prototype.getDefaultScale
-     * @description 获取默认比例尺信息
-     * @param {Object} coords - 坐标对象参数
+     * @description 获取默认比例尺信息。
+     * @param {Object} coords - 坐标对象参数。
      */
     getDefaultScale: function (coords) {
         var me = this,
@@ -166,8 +170,8 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
-     * @description 设置瓦片集信息
-     * @param {Object} tileSets - 瓦片对象集
+     * @description 设置瓦片集信息。
+     * @param {Object} tileSets - 瓦片对象集。
      */
     setTileSetsInfo: function (tileSets) {
         this.tileSets = tileSets;
@@ -203,7 +207,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.changeTilesVersion
-     * @description 切换到某一版本的切片，并重绘。通过this.tempIndex保存需要切换的版本索引
+     * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引
      */
     changeTilesVersion: function () {
         var me = this;
@@ -232,8 +236,8 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.updateCurrentTileSetsIndex
-     * @description 手动设置当前切片集索引,目前主要提供给控件使用
-     * @param {number} index - 索引值
+     * @description 手动设置当前切片集索引，目前主要提供给控件使用。
+     * @param {number} index - 索引值。
      */
     updateCurrentTileSetsIndex: function (index) {
         this.tempIndex = index;
@@ -241,9 +245,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
-     * @description 更改URL请求参数中的切片版本号,并重绘
-     * @param version - {string} 切片版本号
-     * @return {boolean} 是否成功
+     * @description 更改URL请求参数中的切片版本号，并重绘。
+     * @param {string} version - 切片版本号。
+     * @return {boolean} 是否成功。
      */
     mergeTileVersionParam: function (version) {
         if (version) {

@@ -5,11 +5,11 @@ import {FetchRequest} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.VectorTileJSON
- * @classdesc iServer 矢量瓦片json表述出图
+ * @classdesc iServer 矢量瓦片 JSON 表述出图。
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {string} url - 矢量瓦片json表述服务地址
+ * @param {string} url - 矢量瓦片json表述服务地址。
  */
 export var VectorTileJSON = L.Class.extend({
 
@@ -19,8 +19,8 @@ export var VectorTileJSON = L.Class.extend({
 
     /**
      * @function L.supermap.VectorTileJSON.prototype.getTile
-     * @description 获取瓦片
-     * @return {Promise} 返回包含矢量瓦片信息(js对象)的Promise对象
+     * @description 获取瓦片。
+     * @return {Promise} 返回包含矢量瓦片信息的 Promise 对象。
      */
     getTile: function () {
         var me = this;

@@ -2,13 +2,13 @@ import L from "leaflet";
 
 /**
  * @class L.supermap.SVGRenderer
- * @classdesc 矢量图层缩放渲染器类
+ * @classdesc 矢量图层缩放渲染器类。
  * @category Visualization VectorTile
  * @private
  * @extends {L.SVG}
- * @param {Object} tileCoord - 切片坐标系
- * @param {number} tileSize - 切片大小
- * @param {Object} options - 渲染参数
+ * @param {Object} tileCoord - 切片坐标系。
+ * @param {number} tileSize - 切片大小。
+ * @param {Object} options - 渲染参数。
  */
 export var SVGRenderer = L.SVG.extend({
 
@@ -27,7 +27,7 @@ export var SVGRenderer = L.SVG.extend({
 
     /**
      * @function L.supermap.SVGRenderer.prototype.getCoord
-     * @description 获取坐标
+     * @description 获取坐标。
      */
     getCoord: function () {
         return this._tileCoord;
@@ -35,7 +35,7 @@ export var SVGRenderer = L.SVG.extend({
 
     /**
      * @function L.supermap.SVGRenderer.prototype.getContainer
-     * @description 获取容器
+     * @description 获取容器。
      */
     getContainer: function () {
         return this._container;
@@ -45,8 +45,8 @@ export var SVGRenderer = L.SVG.extend({
 
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
-     * @description 添加到地图
-     * @param {L.map} map - map对象
+     * @description 添加到地图。
+     * @param {L.map} map - map 对象。
      */
     addTo: function (map) {
         this._map = map;
@@ -61,8 +61,8 @@ export var SVGRenderer = L.SVG.extend({
 
     /**
      * @function L.supermap.SVGRenderer.prototype.removeFrom
-     * @description 从地图移除
-     * @param {L.map} map - map对象
+     * @description 从地图移除。
+     * @param {L.map} map - map 对象。
      */
     removeFrom: function (map) {
         var _map = map || this._map;

@@ -6,11 +6,11 @@ import {FetchRequest} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.VectorTilePBF
- * @classdesc 矢量瓦片PBF(MVT)表述出图
+ * @classdesc 矢量瓦片 PBF(MVT) 表述出图。
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {string} url - 矢量瓦片PBF(MVT)表述出图服务地址
+ * @param {string} url - 矢量瓦片PBF(MVT)表述出图服务地址。
  */
 export var VectorTilePBF = L.Class.extend({
 
@@ -20,8 +20,8 @@ export var VectorTilePBF = L.Class.extend({
 
     /**
      * @function L.supermap.VectorTilePBF.prototype.getTile
-     * @description 获取瓦片PBF(MVT)
-     * @return {Promise} 返回包含矢量瓦片信息(js对象)的Promise对象
+     * @description 获取瓦片 PBF(MVT)。
+     * @return {Promise} 返回包含矢量瓦片信息的 Promise 对象。
      */
     getTile: function () {
         var me = this;

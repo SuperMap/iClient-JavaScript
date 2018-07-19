@@ -5,11 +5,11 @@ import {LineString, Polygon, GeoText, GeometryPoint, GeometryVector as Vector} f
 /**
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
- *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
+ *            支持的 geometry 参数类型为 {@link L.Point},{@link L.LatLng},{@link L.Polyline},{@link L.Polygon}。
  * @category Visualization Theme
  * @extends {L.Class}
- * @param {(L.Path|L.Point|L.LatLng)} geometry - 要素图形
- * @param {Object} attributes - 要素属性
+ * @param {(L.Path|L.Point|L.LatLng)} geometry - 要素图形。
+ * @param {Object} attributes - 要素属性。
  */
 export var ThemeFeature = L.Class.extend({
 
@@ -20,8 +20,8 @@ export var ThemeFeature = L.Class.extend({
 
     /**
      * @function L.supermap.themeFeature.prototype.toFeature
-     * @description 转为内部矢量要素
-     * @return {SuperMap.Feature.Vector} 内部矢量要素
+     * @description 转为内部矢量要素。
+     * @return {SuperMap.Feature.Vector} 内部矢量要素。
      */
     toFeature: function () {
         var geometry = this.geometry;
@@ -55,8 +55,8 @@ export var ThemeFeature = L.Class.extend({
 
     /**
      * @function L.supermap.themeFeature.prototype.reverseLatLngs
-     * @description 坐标反转
-     * @param {L.latlng} latlngs - 坐标值
+     * @description 坐标反转。
+     * @param {L.latlng} latlngs - 坐标值。
      */
     reverseLatLngs: function (latlngs) {
         if (!L.Util.isArray(latlngs)) {

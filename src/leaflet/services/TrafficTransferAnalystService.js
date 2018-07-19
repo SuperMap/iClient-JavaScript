@@ -5,7 +5,7 @@ import {StopQueryService, TransferPathService, TransferSolutionService} from '@s
 
 /**
  * @class L.supermap.trafficTransferAnalystService
- * @classdesc 交通换乘分析服务类
+ * @classdesc 交通换乘分析服务类。
  * @category  iServer TrafficTransferAnalyst
  * @example
  * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
@@ -14,9 +14,9 @@ import {StopQueryService, TransferPathService, TransferSolutionService} from '@s
  * @extends {L.supermap.ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 export var TrafficTransferAnalystService = ServiceBase.extend({
 
@@ -26,9 +26,9 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
 
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.queryStop
-     * @description 站点查询服务
-     * @param {SuperMap.StopQueryParameters} params - 站点查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @description 站点查询服务。
+     * @param {SuperMap.StopQueryParameters} params - 站点查询参数类。
+     * @param {RequestCallback} callback 回调函数。
      */
     queryStop: function (params, callback) {
         var me = this;
@@ -46,9 +46,9 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     },
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferPath
-     * @description 交通换乘线路查询服务
-     * @param {SuperMap.TransferPathParameters} params - 交通换乘线路查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @description 交通换乘线路查询服务。
+     * @param {SuperMap.TransferPathParameters} params - 交通换乘线路查询参数类。
+     * @param {RequestCallback} callback 回调函数。
      */
     analysisTransferPath: function (params, callback) {
         var me = this;
@@ -66,9 +66,9 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     },
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferSolution
-     * @description 交通换乘方案查询服务
-     * @param {SuperMap.TransferSolutionParameters} params - 交通换乘方案查询参数类
-     * @param {RequestCallback} callback 回调函数
+     * @description 交通换乘方案查询服务。
+     * @param {SuperMap.TransferSolutionParameters} params - 交通换乘方案查询参数类。
+     * @param {RequestCallback} callback 回调函数。
      */
     analysisTransferSolution: function (params, callback) {
         var me = this;

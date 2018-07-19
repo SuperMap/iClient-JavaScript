@@ -5,17 +5,22 @@ import {CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.uniqueThemeLayer
- * @classdesc 客户端单值专题图
+ * @classdesc 客户端单值专题图。
  * @category Visualization Theme
  * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param {string} name - 专题图层名。
  * @param {Object} options - 可选参数。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
+ * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
@@ -23,6 +28,21 @@ import {CommonUtil} from '@supermap/iclient-common';
  */
 export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
+    
+    /** 
+     * @member {Object} L.supermap.uniqueThemeLayer.prototype.style
+     * @description 专题图样式。
+     */
+    
+     /** 
+     * @member {Object} L.supermap.uniqueThemeLayer.prototype.styleGroups
+     * @description 各专题类型样式组。
+     */
+
+    /** 
+     * @member {Object} L.supermap.uniqueThemeLayer.prototype.highlightStyle
+     * @description 开启 hover 事件后，触发的样式风格。
+     */
 
     initialize: function (name, options) {
         GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
@@ -45,9 +65,9 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @private
      * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param {SuperMap.Feature.Vector} feat - 用户要素数据
-     * @return {Array.<SuperMap.ThemeStyle>} 返回包含专题要素style的对象
+     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @param {SuperMap.Feature.Vector} feat - 用户要素数据。
+     * @return {Array.<SuperMap.ThemeStyle>} 返回包含专题要素style的对象。
      */
     getStyleByData: function (feat) {
         var me = this,

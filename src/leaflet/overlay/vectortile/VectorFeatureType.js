@@ -1,6 +1,6 @@
 /**
  * @constant L.supermap.VectorFeatureType
- * @description 矢量图层要素类型,和SuperMap.CartoStyleMap中的类型相对应
+ * @description 矢量图层要素类型，和 SuperMap.CartoStyleMap 中的类型相对应。
  * @category Visualization VectorTile
  * @private
  */

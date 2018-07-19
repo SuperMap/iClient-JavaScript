@@ -16,11 +16,11 @@ L.Proj._isProj4Obj = function (a) {
 /**
  * @class L.Proj.Projection
  * @private
- * @classdesc Proj投影定义类
+ * @classdesc Proj 投影定义类。
  * @category BaseTypes Projection
  * @extends {L.Class}
  * @param {string} code - proj srsCode
- * @param {string} def - 投影的proj4定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
+ * @param {string} def - 投影的 proj4 定义。{@link [详细]{http://iclient.supermap.io/web/introduction/leafletDevelop.html#projection}}
  * @param {L.bounds} bounds -  投影范围参数
  */
 L.Proj.Projection = L.Class.extend({
@@ -37,7 +37,7 @@ L.Proj.Projection = L.Class.extend({
 
     /**
      * @function L.Proj.Projection.prototype.project
-     * @description 通过地理坐标得到投影坐标
+     * @description 通过地理坐标得到投影坐标。
      * @param  {L.Latlng} latlng -  经纬度坐标。
      * @return {L.Point} 返回投影坐标点。
      */
@@ -48,7 +48,7 @@ L.Proj.Projection = L.Class.extend({
 
     /**
      * @function L.Proj.Projection.prototype.unproject
-     * @description 通过投影坐标得到地理坐标
+     * @description 通过投影坐标得到地理坐标。
      * @param {L.Point} point - 坐标点。
      * @param {number} unbounded -  坐标点高程值等。
      * @return {L.LatLng} 返回经纬度坐标
@@ -84,9 +84,9 @@ L.Proj.Projection = L.Class.extend({
 
 /**
  * @class L.Proj.CRS
- * @classdesc 基于Proj4坐标系统扩展类。
+ * @classdesc 基于 Proj4 坐标系统扩展类。
  * 为计算级别，`options.scales` `options.scaleDenominators` `options.resolutions` `options.bounds` 必须指定一个，先后顺序已按优先级排列。
- * 当指定`options.bounds` 时，第0级为一张256切片包含整个bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
+ * 当指定`options.bounds` 时，第 0 级为一张 256 切片包含整个 bounds，即`Math.max(bounds.getSize().x, bounds.getSize().y)/256` 。
  * 为保证切片行列号正确，`options.origin` `options.bounds` 必须指定一个。
  * 当指定`options.bounds` 时，切片原点为bounds的左上角。
  * @category BaseTypes Projection
@@ -94,11 +94,11 @@ L.Proj.Projection = L.Class.extend({
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
  * @param {string} options.def - 投影的proj4定义。[详细]{@link http://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
- * @param {(Array.<number>|L.Point)} options.origin - 原点。
- * @param {Array.<number>} options.scales - 比例尺数组。
- * @param {Array.<number>} options.scaleDenominators - 比例尺分母数组。
- * @param {Array.<number>} options.resolutions - 分辨率数组。
- * @param {(Array.<number>|L.Bounds)} options.bounds - 范围。
+ * @param {(Array.<number>|L.Point)} [options.origin] - 原点。
+ * @param {Array.<number>} [options.scales] - 比例尺数组。
+ * @param {Array.<number>} [options.scaleDenominators] - 比例尺分母数组。
+ * @param {Array.<number>} [options.resolutions] - 分辨率数组。
+ * @param {(Array.<number>|L.Bounds)} [options.bounds] - 范围。
  * @param {number} [options.dpi=96] - dpi。
  * @example
  *    var crs =L.Proj.CRS("EPSG:4326",{
@@ -191,9 +191,9 @@ export var CRS = L.Class.extend({
     },
     /**
      * @function L.Proj.CRS.prototype.scale
-     * @description 通过缩放级别获取比例尺值
-     * @param {number} zoom - 缩放级别
-     * @return 比例尺值
+     * @description 通过缩放级别获取比例尺值。
+     * @param {number} zoom - 缩放级别。
+     * @return 比例尺值。
      */
     scale: function (zoom) {
         var iZoom = Math.floor(zoom),
@@ -215,9 +215,9 @@ export var CRS = L.Class.extend({
 
     /**
      * @function L.Proj.CRS.prototype.zoom
-     * @description 根据比例尺返回缩放级别
-     * @param {number} scale - 比例尺
-     * @return {number} 缩放级别
+     * @description 根据比例尺返回缩放级别。
+     * @param {number} scale - 比例尺。
+     * @return {number} 缩放级别。
      */
     zoom: function (scale) {
         // Find closest number in this._scales, down

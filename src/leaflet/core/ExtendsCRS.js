@@ -2,7 +2,7 @@ import L from "leaflet";
 
 /**
  * @name L.CRS.BaiduCRS
- * @description 百度的坐标对象
+ * @description 百度的坐标对象。
  * @namespace
  * @category BaseTypes Projection
  */
@@ -26,7 +26,7 @@ for (let i = 1; i < 19; i++) {
 
 /**
  * @name L.CRS.TianDiTu_WGS84CRS
- * @description 天地图WGS84坐标对象
+ * @description 天地图 WGS84 坐标对象。
  * @namespace
  * @category BaseTypes Projection
  */
@@ -43,7 +43,7 @@ for (let i = 1; i < 19; i++) {
 
 /**
  * @name L.CRS.TianDiTu_MercatorCRS
- * @description 天地图墨卡托坐标对象
+ * @description 天地图墨卡托坐标对象。
  * @category BaseTypes Projection
  * @namespace
  */

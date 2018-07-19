@@ -4,18 +4,18 @@ import {PolyBase} from './SymbolizerPolyBase';
 
 /**
  * @class L.supermap.LineSymbolizer
- * @classdesc 线符号类
+ * @classdesc 线符号类。
  * @category Visualization VectorTile
  * @private
  * @extends {L.Polyline}
- * @param {L.feature} feature - 线要素
- * @param {number} pxPerExtent - 线长
+ * @param {L.feature} feature - 线要素。
+ * @param {number} pxPerExtent - 线长。
  */
 export var LineSymbolizer = L.Polyline.extend({
 
     /**
      * @member L.supermap.LineSymbolizer.prototype.includes
-     * @description 包含符号
+     * @description 包含符号。
      */
     includes: [Symbolizer.prototype, PolyBase],
 
@@ -26,9 +26,9 @@ export var LineSymbolizer = L.Polyline.extend({
 
     /**
      * @function L.supermap.LineSymbolizer.prototype.render
-     * @description 绘制线符号
-     * @param {Object} renderer - 渲染器
-     * @param {string} style - 符号样式
+     * @description 绘制线符号。
+     * @param {Object} renderer - 渲染器。
+     * @param {string} style - 符号样式。
      */
     render: function (renderer, style) {
         style.fill = false;
@@ -38,9 +38,9 @@ export var LineSymbolizer = L.Polyline.extend({
 
     /**
      * @function L.supermap.LineSymbolizer.prototype.updateStyle
-     * @description 更新替换符号样式
-     * @param {Object} renderer - 渲染器
-     * @param {string} style - 符号样式
+     * @description 更新替换符号样式。
+     * @param {Object} renderer - 渲染器。
+     * @param {string} style - 符号样式。
      */
     updateStyle: function (renderer, style) {
         style.fill = false;

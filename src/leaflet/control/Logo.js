@@ -6,21 +6,21 @@ import {
 
 /**
  * @class L.supermap.control.logo
- * @classdesc Logo控件。
+ * @classdesc Logo 控件。
  * @category  Control
- * @description map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
+ * @description map 初始化的配置项为 logoControl，如果为 true，则显示控件；否则不显示该控件。目前默认显示。
  * @extends {L.Control}
  * @example
  *  L.supermap.control.Logo({
  *      imageUrl: xxx,//非必填项
  *  }).addTo(map);
- * @param {Object} options - logo控件配置项
- * @param {string} options.position - 控件位置 继承自leaflet control
- * @param {string} options.imageUrl - logo图片地址
- * @param {string} options.width - logo图片宽
- * @param {string} options.height - logo图片高
- * @param {string} options.link - 跳转链接
- * @param {string} options.alt - logo图片失效时显示文本
+ * @param {Object} options - logo 控件配置项。
+ * @param {string} [options.position='bottomright'] - 控件位置继承自 leaflet control。
+ * @param {string} [options.imageUrl] - logo 图片地址。
+ * @param {string} [options.width] - logo 图片宽。
+ * @param {string} [options.height] - logo 图片高。
+ * @param {string} [options.link] - 跳转链接。
+ * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
  */
 export var Logo = L.Control.extend({
 
@@ -42,8 +42,8 @@ export var Logo = L.Control.extend({
      * @private
      * @function L.supermap.control.logo.prototype.onAdd
      * @override
-     * @description 添加一个logo
-     * @return {div} 返回创建logo的div
+     * @description 添加一个 logo。
+     * @return {div} 返回创建 logo 的 div。
      */
     onAdd: function () {
         var div = L.DomUtil.create('div', 'iclient-leaflet-logo');

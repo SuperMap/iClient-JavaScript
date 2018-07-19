@@ -13,18 +13,18 @@ import {
 
 /**
  * @class L.supermap.layerInfoService
- * @classdesc 图层信息类
+ * @classdesc 图层信息类。
  * @category  iServer Map Layer
  * @extends {L.supermap.ServiceBase}
  * @example
  * L.supermap.layerInfoService(url).getLayersInfo(function(result){
  *   //doSomething
  * })
- * @param {string} url - 与服务端交互的地图服务地址。请求地图服务URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}"；
+ * @param {string} url - 与服务端交互的地图服务地址。请求地图服务 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}"。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 export var LayerInfoService = ServiceBase.extend({
 
@@ -34,8 +34,8 @@ export var LayerInfoService = ServiceBase.extend({
 
     /**
      * @function L.supermap.layerInfoService.prototype.getLayerInfo
-     * @description 获取图层信息
-     * @param {RequestCallback} callback - 获取信息完成后的回调函数
+     * @description 获取图层信息。
+     * @param {RequestCallback} callback - 获取信息完成后的回调函数。
      */
     getLayersInfo: function (callback) {
         var me = this;
@@ -53,9 +53,9 @@ export var LayerInfoService = ServiceBase.extend({
 
     /**
      * @function L.supermap.layerInfoService.prototype.setLayerInfo
-     * @description 设置图层信息服务。可以实现临时图层中子图层的修改
-     * @param {SuperMap.SetLayerInfoParameters} params - 图层信息相关参数
-     * @param {RequestCallback} callback - 回调函数
+     * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
+     * @param {SuperMap.SetLayerInfoParameters} params - 图层信息相关参数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     setLayerInfo: function (params, callback) {
         if (!(params instanceof SetLayerInfoParameters)) {
@@ -87,9 +87,9 @@ export var LayerInfoService = ServiceBase.extend({
 
     /**
      * @function  L.supermap.layerInfoService.prototype.setLayersInfo
-     * @description 设置图层信息。可以实现创建新的临时图层和对现有临时图层的修改
+     * @description 设置图层信息。可以实现创建新的临时图层和对现有临时图层的修改。
      * @param {SuperMap.SetLayersInfoParameters} params - 图层信息设置参数,包括临时图层。
-     * @param {RequestCallback} callback - 回调函数
+     * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo: function (params, callback) {
         if (!(params instanceof SetLayersInfoParameters)) {
@@ -122,7 +122,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @function L.supermap.layerInfoService.prototype.setLayerStatus
      * @description 负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SuperMap.SetLayerStatusParameters} params - 图层信息显示控制参数。
-     * @param {RequestCallback} callback - 回调函数
+     * @param {RequestCallback} callback - 回调函数。
      */
     setLayerStatus: function (params, callback) {
         if (!(params instanceof SetLayerStatusParameters)) {

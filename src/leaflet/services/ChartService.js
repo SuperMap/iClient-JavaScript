@@ -16,7 +16,7 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
  *      })
  * @param {string} url - 与客户端交互的海图服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  */
@@ -28,10 +28,10 @@ export var ChartService = ServiceBase.extend({
 
     /**
      * @function L.supermap.chartService.prototype.queryChart
-     * @description 查询海图
+     * @description 查询海图。
      * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回的结果格式类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果格式类型。
      */
     queryChart: function (params, callback, resultFormat) {
         var me = this,
@@ -54,8 +54,8 @@ export var ChartService = ServiceBase.extend({
 
     /**
      * @function L.supermap.chartService.prototype.getChartFeatureInfo
-     * @description 获取海图物标信息
-     * @param {RequestCallback} callback 回调函数
+     * @description 获取海图物标信息。
+     * @param {RequestCallback} callback 回调函数。
      */
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.url.concat();

@@ -6,10 +6,10 @@ import '../../core/Base';
  * @classdesc 高效率点图层要素类。
  * @category Visualization Graphic
  * @extends {L.Class}
- * @param {Object} options - 图形参数
- * @param {L.LatLng} options.latLng - 经纬度
- * @param {(L.supermap.circleStyle|L.supermap.cloverStyle|L.supermap.imageStyle)} options.style - 点样式
- * @param {Object} options.attributes - 要素属性
+ * @param {Object} options - 图形参数。
+ * @param {L.LatLng} options.latLng - 经纬度。
+ * @param {(L.supermap.circleStyle|L.supermap.cloverStyle|L.supermap.imageStyle)} [options.style] - 点样式。
+ * @param {Object} [options.attributes] - 要素属性。
  */
 export var Graphic = L.Class.extend({
 
@@ -24,8 +24,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function L.supermap.graphic.prototype.setLatLng
-     * @description 设置经纬度
-     * @param {L.LatLng} latLng - 经纬度参数
+     * @description 设置经纬度。
+     * @param {L.LatLng} latLng - 经纬度参数。
      */
     setLatLng: function (latLng) {
         this._latLng = latLng;
@@ -34,8 +34,8 @@ export var Graphic = L.Class.extend({
     /**
      * @deprecated
      * @function L.supermap.graphic.prototype.setCanvas
-     * @description 设置画布,已弃用该设置，请使用setStyle接口
-     * @param {HTMLCanvasElement} canvas - 传入需要设置的画布
+     * @description 设置画布，已弃用该设置，请使用 setStyle 接口。
+     * @param {HTMLCanvasElement} canvas - 传入需要设置的画布。
      */
     setCanvas: function (canvas) {
         this._style = canvas;
@@ -43,8 +43,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function L.supermap.graphic.prototype.setAttributes
-     * @description 设置要素属性
-     * @param {Object} attributes - 属性对象
+     * @description 设置要素属性。
+     * @param {Object} attributes - 属性对象。
      */
     setAttributes: function (attributes) {
         this._attributes = attributes;
@@ -53,8 +53,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function L.supermap.graphic.prototype.getLatLng
-     * @description 获取经纬度
-     * @return {L.LatLng} 经纬度
+     * @description 获取经纬度。
+     * @return {L.LatLng} 经纬度。
      */
 
     getLatLng: function () {
@@ -64,8 +64,8 @@ export var Graphic = L.Class.extend({
     /**
      * @deprecated
      * @function L.supermap.graphic.prototype.getCanvas
-     * @description 获取画布，已弃用该设置，请使用getStyle接口
-     * @return {HTMLCanvasElement} 画布
+     * @description 获取画布，已弃用该设置，请使用 getStyle 接口
+     * @return {HTMLCanvasElement} 画布。
      */
     getCanvas: function () {
         return this._style;
@@ -73,8 +73,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function L.supermap.graphic.prototype.getAttributes
-     * @description 获取要素属性
-     * @return {Object} 要素属性
+     * @description 获取要素属性。
+     * @return {Object} 要素属性。
      */
     getAttributes: function () {
         return this._attributes;
@@ -82,8 +82,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function L.supermap.graphic.prototype.setStyle
-     * @description 设置样式
-     * @param {(L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle)} style - 样式
+     * @description 设置样式。
+     * @param {(L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle)} style - 样式。
      */
     setStyle: function (style) {
         this._style = style;
@@ -91,8 +91,8 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function L.supermap.graphic.prototype.getStyle
-     * @description 获取样式
-     * @return {(L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle)} 样式
+     * @description 获取样式。
+     * @return {(L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle)} 样式。
      */
     getStyle: function () {
         return this._style;

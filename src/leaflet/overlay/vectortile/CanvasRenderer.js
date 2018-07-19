@@ -3,7 +3,7 @@ import L from "leaflet";
 /**
  * @class L.supermap.CanvasRenderer
  * @private
- * @classdesc 画布渲染器
+ * @classdesc 画布渲染器。
  * @category Visualization VectorTile
  * @extends {L.Canvas}
  * @param {Object} tileCoord - 切片坐标系
@@ -31,7 +31,7 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.getCoord
-     * @description 获取坐标
+     * @description 获取坐标。
      */
     getCoord: function () {
         return this._tileCoord;
@@ -39,7 +39,7 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.getContainer
-     * @description 获取容器
+     * @description 获取容器。
      */
     getContainer: function () {
         return this._container;
@@ -47,7 +47,7 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.getOffset
-     * @description 停止渲染
+     * @description 停止渲染。
      */
     getOffset: function () {
         return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());
@@ -57,8 +57,8 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
-     * @description 添加到地图
-     * @param {L.map} map - map对象
+     * @description 添加到地图。
+     * @param {L.map} map - map 对象。
      */
     addTo: function (map) {
         this._map = map;
@@ -66,8 +66,8 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.removeFrom
-     * @description 从地图移除
-     * @param {L.map} map - map对象
+     * @description 从地图移除。
+     * @param {L.map} map - map 对象。
      */
     removeFrom: function (map) { // eslint-disable-line no-unused-vars
         delete this._map;

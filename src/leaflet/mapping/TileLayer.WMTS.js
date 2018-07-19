@@ -3,25 +3,22 @@ import "../core/Base";
 
 /**
  * @class L.supermap.wmtsLayer
- * @classdesc wmts图层类
+ * @classdesc wmts 图层类。
  * @category OGC
  * @extends {L.TileLayer}
- * @param {string} url - wmts图层地址
- * @param {Object} options - wmts图层可选参数。
- * @param {number} options.layersID - 图层ID，如果有layersID，则是在使用专题图。
- * @param {boolean} options.redirect - 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。
- * @param {boolean} options.transparent - 是否背景透明。
- * @param {boolean} options.cacheEnabled - 启用缓存。
- * @param {boolean} options.clipRegionEnabled - 是否启用地图裁剪。
- * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
- * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
- * @param {string} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项。
- * @param {string} options.tileversion - 切片版本名称，cacheEnabled 为 true 时有效。
- * @param {L.Proj.CRS} options.crs - 坐标系统类。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} options.attribution - 版权信息。
- * @param {string} options.tileProxy - 启用托管地址。
- * @param {string} options.requestEncoding - KVP或者REST的请求方式，默认是KVP。
+ * @param {string} url - wmts 图层地址。
+ * @param {Object} options - wmts 图层可选参数。
+ * @param {string} options.layer - 需要显示的图层。
+ * @param {string} [options.attribution] - 版权信息。
+ * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {Object} [options.style] - 图层样式。
+ * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
+ * @param {string} [options.tileSize='256'] - 瓦片大小。
+ * @param {string} [options.requestEncoding='KVP'] - KVP 或者 REST 的请求方式。
+ * @param {Object} [options.tilematrixSet] - 瓦片矩阵集。
+ * @param {string} [options.attribution] - 版权信息。
+ * @param {string} [options.version='1.0.0'] - 版本。 
+ * 
  */
 export var WMTSLayer = L.TileLayer.extend({
 
@@ -65,9 +62,9 @@ export var WMTSLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.wmtsLayer.prototype.getTileUrl
-     * @description 根据行列号获取切片地址
-     * @param {Object} coords - 行列号
-     * @return {string} 切片地址
+     * @description 根据行列号获取切片地址。
+     * @param {Object} coords - 行列号。
+     * @return {string} 切片地址。
      */
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();

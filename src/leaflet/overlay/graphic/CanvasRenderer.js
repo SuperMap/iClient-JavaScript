@@ -11,7 +11,7 @@ export var GraphicCanvasRenderer = L.Class.extend({
     /**
      * @private
      * @function  GraphicCanvasRenderer.prototype.getRenderer
-     * @description 返回渲染器给图层，提供图层后续的数据增删改
+     * @description 返回渲染器给图层，提供图层后续的数据增删改。
      * @return {L.Canvas}
      */
     getRenderer: function () {
@@ -21,7 +21,7 @@ export var GraphicCanvasRenderer = L.Class.extend({
     /**
      * @private
      * @function  GraphicCanvasRenderer.prototype.update
-     * @description  更新图层，数据或者样式改变后调用
+     * @description  更新图层，数据或者样式改变后调用。
      */
     update: function (graphics) {
         this.layer._update(graphics);

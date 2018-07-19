@@ -3,21 +3,21 @@ import '../../core/Base';
 
 /**
  * @class L.supermap.circleStyle
- * @classdesc 圆形要素风格
+ * @classdesc 圆形要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 圆形要素风格参数。
- * @param {boolean} options.stroke - 是否描边。
- * @param {string} options.color - 颜色。
- * @param {number} options.weight - 线宽。
- * @param {number} options.opacity - 透明度。
- * @param {string} options.lineCap - 线帽形状。
- * @param {string} options.lineJoin - 线条交汇边角形状。
- * @param {boolean} options.fill - 是否填充。
- * @param {string} options.fillColor - 填充色。
- * @param {number} options.fillOpacity - 填充透明度。
- * @param {string} options.fillRule - 填充形状。
- * @param {number} options.radius - 半径
+ * @param {boolean} [options.stroke=true] - 是否描边。
+ * @param {string} [options.color='#3388ff'] - 颜色。
+ * @param {number} [options.weight=1] - 线宽。
+ * @param {number} [options.opacity=1] - 透明度。
+ * @param {string} [options.lineCap='round'] - 线帽形状。
+ * @param {string} [options.lineJoin='round'] - 线条交汇边角形状。
+ * @param {boolean} [options.fill=false] - 是否填充。
+ * @param {string} [options.fillColor] - 填充色。
+ * @param {number} [options.fillOpacity=0.2] - 填充透明度。
+ * @param {string} [options.fillRule='evenodd'] - 填充形状。
+ * @param {number} [options.radius=3] - 半径
  */
 export var CircleStyle = L.Class.extend({
 
@@ -48,7 +48,7 @@ export var CircleStyle = L.Class.extend({
     /**
      * @deprecated
      * @function L.supermap.circleStyle.prototype.getCanvas
-     * @description 获取画布,已弃用该设置，请使用getStyle接口
+     * @description 获取画布，已弃用该设置，请使用 getStyle 接口。
      */
     getCanvas: function () {
         return this._canvas;
@@ -56,7 +56,7 @@ export var CircleStyle = L.Class.extend({
 
     /**
      * @function L.supermap.circleStyle.prototype.getStyle
-     * @description 获取画布
+     * @description 获取画布。
      */
     getStyle: function () {
         return this._canvas;

@@ -5,14 +5,14 @@ import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.mapVLayer
- * @classdesc MapV图层
+ * @classdesc MapV 图层。
  * @category Visualization MapV
  * @extends {L.Layer}
- * @param {mapv.DataSet} dataSet - MapV图层数据集
- * @param {Object} mapVOptions - MapV图层参数
+ * @param {mapv.DataSet} dataSet - MapV 图层数据集。
+ * @param {Object} mapVOptions - MapV 图层参数。
  * @param {Object} options - 参数。
- * @param {string} options.attributionPrefix - 版权信息前缀。
- * @param {string} options.attribution - 版权信息。
+ * @param {string} [options.attributionPrefix] - 版权信息前缀。
+ * @param {string} [options.attribution='© 2017 百度 MapV'] - 版权信息。
  */
 export var MapVLayer = L.Layer.extend({
 
@@ -38,8 +38,8 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @private
      * @function L.supermap.mapVLayer.prototype.onAdd
-     * @description 添加地图图层
-     * @param {L.map} map - 要添加的地图
+     * @description 添加地图图层。
+     * @param {L.map} map - 要添加的地图。
      */
     onAdd: function (map) {
         this._map = map;
@@ -65,7 +65,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @private
      * @function L.supermap.mapVLayer.prototype.onRemove
-     * @description 删除地图图层
+     * @description 删除地图图层。
      */
     onRemove: function () {
         L.DomUtil.remove(this.container);
@@ -74,9 +74,9 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.addData
-     * @description 追加数据
-     * @param {Object} data - 要追加的数据
-     * @param {Object} options - 要追加的值
+     * @description 追加数据。
+     * @param {Object} data - 要追加的数据。
+     * @param {Object} options - 要追加的值。
      */
     addData: function (data, options) {
         this.renderer.addData(data, options);
@@ -84,10 +84,10 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.update
-     * @description 更新图层
+     * @description 更新图层。
      * @param {Object} opt - 待更新的数据。
-     * @param {Object} data - mapv数据集。
-     * @param {Object} options - mapv绘制参数。
+     * @param {Object} data - mapv 数据集。
+     * @param {Object} options - mapv 绘制参数。
      */
     update: function (opt) {
         this.renderer.update(opt);
@@ -95,8 +95,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.getData
-     * @description 获取数据
-     * @return {mapv.DataSet} mapv数据集
+     * @description 获取数据。
+     * @return {mapv.DataSet} mapv 数据集。
      */
     getData: function () {
         if (this.renderer) {
@@ -107,8 +107,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.removeData
-     * @description 删除符合过滤条件的数据
-     * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @description 删除符合过滤条件的数据。
+     * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -123,7 +123,7 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData: function () {
         this.renderer.clearData();
@@ -131,7 +131,7 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.draw
-     * @description 绘制图层
+     * @description 绘制图层。
      */
     draw: function () {
         return this._reset();
@@ -139,8 +139,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.setZIndex
-     * @description 设置canvas层级
-     * @param {number} zIndex - canvas层级
+     * @description 设置 canvas 层级。
+     * @param {number} zIndex - canvas 层级。
      */
     setZIndex: function (zIndex) {
         this.canvas.style.zIndex = zIndex;
@@ -148,7 +148,7 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.render
-     * @description 渲染
+     * @description 渲染。
      */
     render: function () {
         this.renderer._canvasUpdate();
@@ -156,8 +156,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.getCanvas
-     * @description 获取canvas
-     * @return {HTMLElement} 返回mapV图层包含的canvas对象
+     * @description 获取 canvas。
+     * @return {HTMLElement} 返回 mapV 图层包含的 canvas 对象。
      */
     getCanvas: function () {
         return this.canvas;
@@ -165,8 +165,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.getContainer
-     * @description 获取容器
-     * @return {HTMLElement} 返回包含mapV图层的dom对象
+     * @description 获取容器。
+     * @return {HTMLElement} 返回包含 mapV 图层的 dom 对象。
      */
     getContainer: function () {
         return this.container;
@@ -174,8 +174,8 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.getTopLeft
-     * @description 获取左上角坐标
-     * @return {L.Bounds} 返回左上角坐标
+     * @description 获取左上角坐标。
+     * @return {L.Bounds} 返回左上角坐标。
      */
     getTopLeft: function () {
         var map = this._map;

@@ -11,13 +11,13 @@ import Attributions from '../core/Attributions'
  * @category ThirdPartyMap
  * @extends L.supermap.wmtsLayer
  * @param {Object} options - 切片图层参数。
- * @param {string} options.url - 地图地址。
+ * @param {string} [options.url='http://t{s}.tianditu.com/{layer}_{proj}/wmts?'] - 地图地址。
  * @param {string} [options.layerType='vec'] - 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)
- * @param {string} options.style - 图层风格。
- * @param {string} options.format - 格式。
- * @param {boolean} options.isLabel - 是否是标注图层。
- * @param {Array.<number>} options.subdomains - 子域名数组。
- * @param {string} options.attribution - 版权信息
+ * @param {string} [options.style='default'] - 图层风格。
+ * @param {string} [options.format='tiles'] - 格式。
+ * @param {boolean} [options.isLabel=false] - 是否是标注图层。
+ * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
+ * @param {string} [options.attribution='Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权信息
  */
 export var TiandituTileLayer = WMTSLayer.extend({
 

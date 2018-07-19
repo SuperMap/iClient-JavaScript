@@ -3,7 +3,7 @@ import '../../core/Base';
 
 /**
  * @constant L.supermap.DefaultStyle
- * @description 这个style对应的是默认设置
+ * @description 这个 style 对应的是默认设置。
  * @category BaseTypes Style
  * @private
  */
@@ -11,7 +11,7 @@ export var DefaultStyle = {
 
     /**
      * @constant L.supermap.DefaultStyle.prototype.TEXT
-     * @description 默认文本样式
+     * @description 默认文本样式。
      */
     "TEXT": {
         fontSize: "14px",
@@ -25,7 +25,7 @@ export var DefaultStyle = {
 
     /**
      * @constant L.supermap.DefaultStyle.prototype.POINT
-     * @description 默认点样式
+     * @description 默认点样式。
      */
     "POINT": {
         fillColor: "#ffcc00",
@@ -37,7 +37,7 @@ export var DefaultStyle = {
 
     /**
      * @constant L.supermap.DefaultStyle.prototype.LINE
-     * @description 默认线样式
+     * @description 默认线样式。
      */
     "LINE": {
         color: "rgba(0,0,0,0)",
@@ -52,7 +52,7 @@ export var DefaultStyle = {
 
     /**
      * @constant L.supermap.DefaultStyle.prototype.REGION
-     * @description 默认多边形样式
+     * @description 默认多边形样式。
      */
     "REGION": {
         color: "rgba(0,0,0,0)",

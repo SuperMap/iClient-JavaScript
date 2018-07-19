@@ -23,9 +23,9 @@ import {
  * @extends L.supermap.ServiceBase
  * @param {string} url -  地图查询服务访问地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @example
  * L.supermap.queryService(url).queryByBounds(param,function(result){
  *   //doSomething
@@ -38,10 +38,10 @@ export var QueryService = ServiceBase.extend({
     },
     /**
      * @function L.supermap.queryService.prototype.queryByBounds
-     * @description bounds查询地图服务
-     * @param {SuperMap.QueryByBoundsParameters} params - 通过Bounds查询的相关参数类
-     * @param {RequestCallback} callback - 回调函数
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
+     * @description bounds 查询地图服务。
+     * @param {SuperMap.QueryByBoundsParameters} params - 通过 Bounds 查询的相关参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByBounds: function (params, callback, resultFormat) {
         var me = this;
@@ -62,10 +62,10 @@ export var QueryService = ServiceBase.extend({
 
     /**
      * @function L.supermap.queryService.prototype.queryByDistance
-     * @description 地图距离查询服务
-     * @param {SuperMap.QueryByDistanceParameters} params - Distance查询相关参数类。
-     * @param {RequestCallback} callback 回调函数
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @description 地图距离查询服务。
+     * @param {SuperMap.QueryByDistanceParameters} params - Distance 查询相关参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByDistance: function (params, callback, resultFormat) {
         var me = this;
@@ -86,10 +86,10 @@ export var QueryService = ServiceBase.extend({
 
     /**
      * @function L.supermap.queryService.prototype.queryBySQL
-     * @description 地图SQL查询服务
-     * @param {SuperMap.QueryBySQLParameters} params - SQL查询相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
+     * @description 地图 SQL 查询服务。
+     * @param {SuperMap.QueryBySQLParameters} params - SQL 查询相关参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL: function (params, callback, resultFormat) {
         var me = this;
@@ -110,10 +110,10 @@ export var QueryService = ServiceBase.extend({
 
     /**
      * @function L.supermap.queryService.prototype.queryByGeometry
-     * @description 地图几何查询服务
-     * @param {SuperMap.QueryByGeometryParameters} params - Geometry查询相关参数类
-     * @param {RequestCallback} callback 回调函数
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型
+     * @description 地图几何查询服务。
+     * @param {SuperMap.QueryByGeometryParameters} params - Geometry 查询相关参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry: function (params, callback, resultFormat) {
         var me = this;

@@ -3,18 +3,18 @@ import L from "leaflet";
 
 /**
  * @class L.supermap.PointSymbolizer
- * @classdesc 点符号类
+ * @classdesc 点符号类。
  * @category Visualization VectorTile
  * @private
  * @extends {L.CircleMarker}
- * @param {L.feature} feature - 点要素
- * @param {number} pxPerExtent - 点符号大小
+ * @param {L.feature} feature - 点要素。
+ * @param {number} pxPerExtent - 点符号大小。
  */
 export var PointSymbolizer = L.CircleMarker.extend({
 
     /**
      * @member L.supermap.PointSymbolizer.prototype.includes
-     * @description 包含符号
+     * @description 包含符号。
      */
     includes: Symbolizer.prototype,
 
@@ -27,11 +27,21 @@ export var PointSymbolizer = L.CircleMarker.extend({
         this._makeFeatureParts(feature, pxPerExtent);
     },
 
+     /**
+     * @function L.supermap.PointSymbolizer.prototype.getLatLng
+     * @description 获取点坐标。
+     * @return {L.LatLng} 点坐标。
+     */
+    getLatLng: function(){
+        return this._renderer._map.layerPointToLatLng(this._point);
+    },
+
+
     /**
      * @function L.supermap.PointSymbolizer.prototype.render
-     * @description 绘制点符号
-     * @param {Object} renderer -  渲染器
-     * @param {string} style - 符号样式
+     * @description 绘制点符号。
+     * @param {Object} renderer -  渲染器。
+     * @param {string} style - 符号样式。
      */
     render: function (renderer, style) {
         Symbolizer.prototype.render.call(this, renderer, style);
@@ -53,7 +63,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
 
     /**
      * @function L.supermap.PointSymbolizer.prototype.makeInteractive
-     * @description 设置交互
+     * @description 设置交互。
      */
     makeInteractive: function () {
         this._updateBounds();
@@ -61,9 +71,9 @@ export var PointSymbolizer = L.CircleMarker.extend({
 
     /**
      * @function L.supermap.PointSymbolizer.prototype.updateStyle
-     * @description 更新替换符号样式
-     * @param {Object} renderer - 渲染器
-     * @param {string} style - 符号样式
+     * @description 更新替换符号样式。
+     * @param {Object} renderer - 渲染器。
+     * @param {string} style - 符号样式。
      */
     updateStyle: function (renderer, style) {
         this._radius = style.radius || this._radius;

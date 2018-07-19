@@ -5,14 +5,14 @@ import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient
 
 /**
  * @class  L.supermap.mapService
- * @classdesc 地图信息服务类
+ * @classdesc 地图信息服务类。
  * @category  iServer Map
  * @extends {L.supermap.ServiceBase}
- * @param {string} url - 地图服务地址
+ * @param {string} url - 地图服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @example
  * L.supermap.mapService(url)
  *  .getMapInfo(function(result){
@@ -36,8 +36,8 @@ export var MapService = ServiceBase.extend({
 
     /**
      * @function  L.supermap.mapService.prototype.getMapInfo
-     * @description 获取地图信息
-     * @param {RequestCallback} callback - 回调函数
+     * @description 获取地图信息。
+     * @param {RequestCallback} callback - 回调函数。
      */
     getMapInfo: function (callback) {
         var me = this;
@@ -56,8 +56,8 @@ export var MapService = ServiceBase.extend({
 
     /**
      * @function  L.supermap.mapService.prototype.getTilesets
-     * @description 获取切片列表信息
-     * @param {RequestCallback} callback - 回调函数
+     * @description 获取切片列表信息。
+     * @param {RequestCallback} callback - 回调函数。
      */
     getTilesets: function (callback) {
         var me = this;

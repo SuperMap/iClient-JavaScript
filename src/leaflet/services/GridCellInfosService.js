@@ -5,7 +5,7 @@ import {GetGridCellInfosService, GetGridCellInfosParameters} from '@supermap/icl
 
 /**
  * @class L.supermap.gridCellInfosService
- * @classdesc 数据栅格查询服务
+ * @classdesc 数据栅格查询服务。
  * @category  iServer Data Grid
  * @extends {L.supermap.ServiceBase}
  * @example
@@ -15,9 +15,9 @@ import {GetGridCellInfosService, GetGridCellInfosParameters} from '@supermap/icl
  *      })
  * @param {string} url - 数据栅格查询服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 export var GridCellInfosService = ServiceBase.extend({
 
@@ -27,8 +27,8 @@ export var GridCellInfosService = ServiceBase.extend({
 
     /**
      * @function L.supermap.gridCellInfosService.prototype.getGridCellInfos
-     * @param {SuperMap.GetGridCellInfosParameters} params - 数据服务栅格查询参数类
-     * @param {RequestCallback} callback - 回调函数
+     * @param {SuperMap.GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
+     * @param {RequestCallback} callback - 回调函数。
      */
     getGridCellInfos: function (params, callback) {
         if (!(params instanceof GetGridCellInfosParameters)) {

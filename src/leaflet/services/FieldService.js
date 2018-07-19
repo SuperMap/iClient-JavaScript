@@ -5,7 +5,7 @@ import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from
 
 /**
  * @class  L.supermap.fieldService
- * @classdesc 字段服务类
+ * @classdesc 字段服务类。
  * @category iServer Data Field
  * @extends {L.supermap.ServiceBase}
  * @example
@@ -14,23 +14,21 @@ import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from
  *   });
  * @param {string} url - 字段服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.proxy - 服务代理地址。
+ * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
- * @param {string} options.dataSourceName - 数据资源名称。
- * @param {string} options.dataSetName - 数据集名称。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 export var FieldService = ServiceBase.extend({
 
-    initialize: function (url) {
-        ServiceBase.prototype.initialize.call(this, url);
+    initialize: function (url,options) {
+        ServiceBase.prototype.initialize.call(this, url,options);
     },
 
     /**
      * @function L.supermap.fieldService.prototype.getFields
-     * @description 字段查询服务
-     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类
-     * @param {RequestCallback} callback - 回调函数
+     * @description 字段查询服务。
+     * @param {SuperMap.FieldParameters} params - 字段信息查询参数类。
+     * @param {RequestCallback} callback - 回调函数。
      */
     getFields: function (params, callback) {
         var me = this;
@@ -51,9 +49,9 @@ export var FieldService = ServiceBase.extend({
 
     /**
      * @function L.supermap.fieldService.prototype.getFieldStatisticsInfo
-     * @description 字段统计服务
+     * @description 字段统计服务。
      * @param {SuperMap.FieldStatisticsParameters} params - 字段统计信息查询参数类。
-     * @param {RequestCallback} callback - 回调函数
+     * @param {RequestCallback} callback - 回调函数。
      */
     getFieldStatisticsInfo: function (params, callback) {
         if (!(params instanceof FieldStatisticsParameters)) {

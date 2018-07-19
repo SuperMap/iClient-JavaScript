@@ -12,13 +12,29 @@ import {CommontypesConversion} from '../core/CommontypesConversion';
  * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
- * @param {string} name - 专题图表名称
+ * @param {string} name - 专题图表名称。
  * @param {string} chartsType - 图表类型。目前可用："Bar", "Bar3D", "Line","Point","Pie","Ring"。
  * @param {Object} options - 待设置的参数。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {string} options.chartsType - 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param {string} options.themeFields - 指定创建专题图字段。 
+ * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
+ * @param {Object} [options.cache] - 缓存。
+ * @param {Object} [options.charts] - 图表。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
+ * @param {Array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
+ * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
+ * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。 
+ * @param {number} options.chartsSetting.height - 专题要素（图表）高度。 
+ * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。 
+ * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。 
+ * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。 
+ * @param {Array.<number>} [options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。 
+ * @param {number} [options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  */
 export var GraphThemeLayer = ThemeLayer.extend({
+    
 
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
@@ -48,9 +64,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.GraphThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param {L.features} features - 待添加得要素
+     * @function L.supermap.GraphThemeLayer.prototype.addFeatures 
+     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象 或 L.supermap.themeFeature 类型。
+     * @param {L.features} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
@@ -75,7 +91,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素 此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
-     * @param {L.bounds} bounds - 重绘的范围
+     * @param {L.bounds} bounds - 重绘的范围。
      */
     redrawThematicFeatures: function (bounds) {
         var me = this;
@@ -121,8 +137,8 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.createThematicFeature
-     * @description 创建专题要素（图表）
-     * @param {L.features} feature - 待创建的要素
+     * @description 创建专题要素（图表）。
+     * @param {L.features} feature - 待创建的要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -170,7 +186,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param {number} featureID - 要素ID
+     * @param {number} featureID - 要素 ID。
      */
     getShapesByFeatureID: function (featureID) {
         var me = this, list = [];
@@ -238,10 +254,10 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.isPointInPoly
-     * @description 判断一个点是否在多边形里面。(射线法)
-     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @description 判断一个点是否在多边形里面（射线法）。
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。
-     *        例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+     *        例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     isPointInPoly: function (pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
@@ -307,7 +323,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.redraw
-     * @description 重绘该图层，成功则返回true，否则返回false。
+     * @description 重绘该图层，成功则返回 true，否则返回 false。
      */
     redraw: function () {
         var me = this;

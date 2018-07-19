@@ -2,7 +2,7 @@ import L from "leaflet";
 
 /**
  * @class L.supermap.PolyBase
- * @classdesc 多边形基类
+ * @classdesc 多边形基类。
  * @category Visualization VectorTile
  * @private
  */
@@ -27,7 +27,7 @@ export var PolyBase = {
 
     /**
          * @function L.supermap.PolyBase.prototype.makeInteractive
-         * @description 设置交互
+         * @description 设置交互。
          */
     makeInteractive: function () {
         this._pxBounds = this._getPixelBounds();

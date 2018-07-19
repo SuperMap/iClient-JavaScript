@@ -5,18 +5,18 @@ import {SVGRenderer} from './SVGRenderer';
 
 /**
  * @class L.supermap.TextSymbolizer
- * @classdesc 文本符号类
+ * @classdesc 文本符号类。
  * @category Visualization VectorTile
  * @private
  * @extends {L.Path}
- * @param {L.feature} feature - 要素
- * @param {number} pxPerExtent - 文本符号大小
+ * @param {L.feature} feature - 要素。
+ * @param {number} pxPerExtent - 文本符号大小。
  */
 export var TextSymbolizer = L.Path.extend({
 
     /**
      * @member L.supermap.TextSymbolizer.prototype.includes
-     * @description 包含符号
+     * @description 包含符号。
      */
     includes: Symbolizer.prototype,
 
@@ -46,9 +46,9 @@ export var TextSymbolizer = L.Path.extend({
 
     /**
      * @function L.supermap.TextSymbolizer.prototype.render
-     * @description 绘制点符号
-     * @param {Object} renderer - 渲染器
-     * @param {string} style - 符号样式
+     * @description 绘制点符号。
+     * @param {Object} renderer - 渲染器。
+     * @param {string} style - 符号样式。
      */
     render: function (renderer, style) {
         //原本类型就是text的情况
@@ -82,7 +82,7 @@ export var TextSymbolizer = L.Path.extend({
 
     /**
      * @function L.supermap.TextSymbolizer.prototype.makeInteractive
-     * @description 设置交互
+     * @description 设置交互。
      */
     makeInteractive: function () {
         this._updateBounds();
@@ -90,9 +90,9 @@ export var TextSymbolizer = L.Path.extend({
 
     /**
      * @function L.supermap.TextSymbolizer.prototype.updateStyle
-     * @description 更新替换符号样式
-     * @param {Object} renderer - 渲染器
-     * @param {string} style - 符号样式
+     * @description 更新替换符号样式。
+     * @param {Object} renderer - 渲染器。
+     * @param {string} style - 符号样式。
      */
     updateStyle: function (renderer, style) {
         this._updateBounds();

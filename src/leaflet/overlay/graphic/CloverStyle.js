@@ -3,24 +3,24 @@ import '../../core/Base';
 
 /**
  * @class L.supermap.cloverStyle
- * @classdesc 三叶草要素风格
+ * @classdesc 三叶草要素风格。
  * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 三叶草形要素风格参数。
- * @param {number} options.angle - 三叶草每个扇叶的圆心角,默认为30，单位弧度。
- * @param {number} options.spaceAngle - 扇叶间隔角度，通过计算获取。
+ * @param {number} [options.angle=60] - 三叶草每个扇叶的圆心角，单位弧度。
+ * @param {number} [options.spaceAngle=0] - 扇叶间隔角度，通过计算获取。
  * @param {number} [options.count=3] - 扇叶数量。
- * @param {boolean} options.stroke - 是否描边。
- * @param {string} options.color - 颜色。
- * @param {number} options.weight - 线宽。
- * @param {number} options.opacity - 透明度。
- * @param {string} options.lineCap - 线帽形状。
- * @param {string} options.lineJoin - 线条交汇边角形状。
- * @param {boolean} options.fill - 是否填充。
- * @param {string} options.fillColor - 填充色。
- * @param {number} options.fillOpacity - 填充透明度。
- * @param {string} options.fillRule - 填充形状。
- * @param {number} options.radius - 半径。
+ * @param {boolean} [options.stroke=true] - 是否描边。
+ * @param {string} [options.color='#3388ff'] - 颜色。
+ * @param {number} [options.weight=1] - 线宽。
+ * @param {number} [options.opacity=1] - 透明度。
+ * @param {string} [options.lineCap='round'] - 线帽形状。
+ * @param {string} [options.lineJoin='round'] - 线条交汇边角形状。
+ * @param {boolean} [options.fill=false] - 是否填充。
+ * @param {string} [options.fillColor='#66ccff'] - 填充色。
+ * @param {number} [options.fillOpacity=0.2] - 填充透明度。
+ * @param {string} [options.fillRule='evenodd'] - 填充形状。
+ * @param {number} [options.radius=10] - 半径。
  */
 export var CloverStyle = L.Class.extend({
 
@@ -58,7 +58,7 @@ export var CloverStyle = L.Class.extend({
 
     /**
      * @function L.supermap.cloverStyle.prototype.getStyle
-     * @description 获取画布
+     * @description 获取画布。
      */
     getStyle: function () {
         return this._canvas;
@@ -66,13 +66,13 @@ export var CloverStyle = L.Class.extend({
 
     /**
      * @function L.supermap.cloverStyle.prototype.drawSector
-     * @description 绘制扇形
-     * @param  {CanvasRenderingContext2D} ctx - context对象
-     * @param {number} x - 中心点 x
-     * @param {number} y - 中心点 y
-     * @param {number} r - 中心点 r
-     * @param {number} sAngle - 扇叶起始角度
-     * @param {number} eAngle - 扇叶终止角度
+     * @description 绘制扇形。
+     * @param  {CanvasRenderingContext2D} ctx - context 对象。
+     * @param {number} x - 中心点 x。
+     * @param {number} y - 中心点 y。
+     * @param {number} r - 中心点 r。
+     * @param {number} sAngle - 扇叶起始角度。
+     * @param {number} eAngle - 扇叶终止角度。
      */
     drawSector: function (ctx, x, y, r, sAngle, eAngle) {
         //角度转换

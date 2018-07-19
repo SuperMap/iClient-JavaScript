@@ -4,33 +4,34 @@ import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} fro
 import Attributions from '../core/Attributions'
 /**
  * @class L.supermap.imageMapLayer
- * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用Image资源出图
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。
  * @category iServer Map
  * @extends {L.Layer}
  * @example
  *      L.supermap.imageMapLayer(url).addTo(map);
  * @param {string} url - 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param {Object} options - 图层可选参数。
- * @param {number} options.layersID - 如果有layersID，则是在使用专题图。
- * @param {boolean} options.redirect - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
- * @param {boolean} options.transparent - 地图瓦片是否透明。
- * @param {boolean} options.cacheEnabled - 是否使用服务器缓存出图。
- * @param {boolean} options.clipRegionEnabled - 地图显示裁剪的区域是否有效。
- * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
- * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
- * @param {string} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项。
- * @param {number} options.opacity - 图层不透明度。
- * @param {string} options.alt - 无法显示图像时显示替代的文本。
- * @param {string}  options.pane - 图层所归属的map DOM的分组。默认为："tilePane" 
- * @param {boolean} options.interactive - 是否响应鼠标点击或悬停交互事件。
- * @param {boolean} options.crossOrigin - 是否设置跨域属性。
- * @param {boolean} options.errorOverlayUrl - 图层未能加载时代替显示的瓦片地址。
- * @param {number} options.zIndex - 设置图层的层级。
- * @param {string} options.className - 自定义dom元素的className。
+ * @param {number} [options.layersID] - 如果有 layersID，则是在使用专题图。
+ * @param {boolean} [options.redirect=false] - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
+ * @param {boolean} [options.transparent=true] - 地图瓦片是否透明。
+ * @param {boolean} [options.cacheEnabled=true] - 是否使用服务器缓存出图。
+ * @param {boolean} [options.clipRegionEnabled=false] - 地图显示裁剪的区域是否有效。
+ * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
+ * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
+ * @param {number} [options.opacity=1] - 图层不透明度。
+ * @param {string} [options.alt] - 无法显示图像时显示替代的文本。
+ * @param {string} [options.pane='tilePane'] - 图层所归属的 map DOM 的分组。
+ * @param {boolean} [options.interactive=false] - 是否响应鼠标点击或悬停交互事件。
+ * @param {boolean} [options.crossOrigin=false] - 是否设置跨域属性。
+ * @param {string} [options.errorOverlayUrl] - 图层未能加载时代替显示的瓦片地址。
+ * @param {number} [options.zIndex=1] - 设置图层的层级。
+ * @param {string} [options.className] - 自定义 dom 元素的 className。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} options.attribution - 版权信息。
- * @param {number} options.updateInterval - 平移时图层延迟刷新间隔时间。
- * @param {string} options.tileProxy - 启用托管地址。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
+ * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  */
 
@@ -42,11 +43,13 @@ export var ImageMapLayer = Layer.extend({
         //如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流
         redirect: false,
         //地图图片是否透明
-        transparent: null,
+        transparent: true,
         //是否启用服务器缓存
-        cacheEnabled: null,
+        cacheEnabled: true,
         //地图显示裁剪的区域是否有效
-        clipRegionEnabled: true,
+        clipRegionEnabled: false,
+        //地图显示裁剪的区域
+        clipRegion: null,
         //请求的地图的坐标参考系统。 如：prjCoordSys= {"epsgCode":3857}。
         prjCoordSys: null,
         //地图对象在同一范围内时，是否重叠显示
@@ -64,7 +67,7 @@ export var ImageMapLayer = Layer.extend({
         //是否设置跨域属性
         crossOrigin: false,
         //图层未能加载时代替显示的瓦片地址
-        errorOverlayUrl: false,
+        errorOverlayUrl: '',
         //设置图层的显示层级
         zIndex: 1,
         //自定义的html class name
@@ -75,6 +78,8 @@ export var ImageMapLayer = Layer.extend({
         attribution: Attributions.Common.attribution,
         //平移时图层延迟刷新间隔时间。
         updateInterval: 150,
+        //启用托管地址。
+        tileProxy:null,
         format: 'png'
 
     },
@@ -87,8 +92,8 @@ export var ImageMapLayer = Layer.extend({
     /**
      * @private
      * @function L.supermap.imageMapLayer.prototype.onAdd
-     * @description 添加到地图
-     * @param {L.map} map - 待添加到的地图对象
+     * @description 添加到地图。
+     * @param {L.map} map - 待添加到的地图对象。
      */
     onAdd: function (map) {
         this.update = Util.throttle(this.update, this.options.updateInterval, this);
@@ -106,8 +111,8 @@ export var ImageMapLayer = Layer.extend({
     /**
      * @private
      * @function L.supermap.imageMapLayer.prototype.onRemove
-     * @description 从地图上移除
-     * @param {L.map} map - 待移除的地图对象
+     * @description 从地图上移除。
+     * @param {L.map} map - 待移除的地图对象。
      */
     onRemove: function (map) { // eslint-disable-line no-unused-vars
         if (this._currentImage) {
@@ -130,7 +135,7 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @function L.supermap.imageMapLayer.prototype.bringToFront
-     * @description 将当前图层置底
+     * @description 将当前图层置底。
      */
     bringToBack: function () {
         this.options.position = 'back';
@@ -142,8 +147,8 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @function L.supermap.imageMapLayer.prototype.getOpacity
-     * @description 获取图层透明度
-     * @return {number} 图层的透明度
+     * @description 获取图层透明度。
+     * @return {number} 图层的透明度。
      */
     getOpacity: function () {
         return this.options.opacity;
@@ -151,7 +156,7 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @function L.supermap.imageMapLayer.prototype.setOpacity
-     * @description 设置透明度
+     * @description 设置透明度。
      */
     setOpacity: function (opacity) {
         this.options.opacity = opacity;
@@ -163,8 +168,8 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @function L.supermap.imageMapLayer.prototype.getImageUrl
-     * @description 获取image图层请求地址，子类可重写实现
-     * @return {string} 请求瓦片地址
+     * @description 获取 image 图层请求地址，子类可重写实现。
+     * @return {string} 请求瓦片地址。
      */
     getImageUrl: function (params) {
         var imageUrl = Util.getParamString(params) + this._initLayerUrl();
@@ -313,7 +318,7 @@ export var ImageMapLayer = Layer.extend({
 
     /**
      * @function L.supermap.imageMapLayer.prototype.update
-     * @description 更新图层
+     * @description 更新图层。
      */
     update: function () {
         if (!this._map) {

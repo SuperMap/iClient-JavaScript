@@ -11,14 +11,15 @@ import {VectorFeatureType} from './VectorFeatureType';
 
 /**
  * @class L.supermap.VectorGrid
- * @classdesc 矢量瓦片图层基类
+ * @classdesc 矢量瓦片图层基类。
  * @category Visualization VectorTile
  * @extends {L.GridLayer}
  * @param {Object} options - 矢量瓦片图层基类参数。
- * @param {Object} options.vectorTileLayerStyles - 矢量网片图层风格。
- * @param {string} options.renderer -  渲染器类型。
- * @param {L.supermap.VectorTileFormat} options.format - 矢量瓦片格式。
- * @param {boolean} options.interactive - 是否可交互 。
+ * @param {Object} [options.vectorTileLayerStyles] - 矢量网片图层风格。
+ * @param {string} [options.renderer='SVG'] -  渲染器类型。
+ * @param {L.supermap.VectorTileFormat} [options.format=VectorTileFormat.JSON] - 矢量瓦片格式。
+ * @param {boolean} [options.interactive=true] - 是否可交互。
+ * @param {number} [options.maxZoom=23] - 最大缩放级别。
  */
 export var VectorGrid = L.GridLayer.extend({
 
@@ -56,9 +57,9 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @private
      * @function L.supermap.VectorGrid.prototype.createTile
-     * @description 创建切片图层
-     * @param {Object} coords - 切片坐标参数对象
-     * @param {Function} done - todo
+     * @description 创建切片图层。
+     * @param {Object} coords - 切片坐标参数对象。
+     * @param {Function} done - todo。
      */
     createTile: function (coords, done) {
         var me = this;
@@ -87,8 +88,8 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function L.supermap.VectorGrid.prototype.getStyles
-     * @description 获取图层样式
-     * @return {Object} 所有图层的样式
+     * @description 获取图层样式。
+     * @return {Object} 所有图层的样式。
      */
     getStyles: function () {
         return this.vectorTileLayerStyles;
@@ -96,9 +97,9 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function L.supermap.VectorGrid.prototype.getStyle
-     * @description 获取指定图层样式
-     * @param {string} layerName - 图层名称
-     * @return {Object} 指定图层的样式
+     * @description 获取指定图层样式。
+     * @param {string} layerName - 图层名称。
+     * @return {Object} 指定图层的样式。
      */
     getStyle: function (layerName) {
         return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
@@ -106,10 +107,10 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function L.supermap.VectorGrid.prototype.setFeatureStyle
-     * @description 设置要素风格，需要id和layerName才能确定一个要素
-     * @param {number} id - 要素id
-     * @param {string} layerName - 图层名称
-     * @param {(Array|Function)} layerStyle - 图层样式
+     * @description 设置要素风格，需要 ID 和 layerName 才能确定一个要素。
+     * @param {number} id - 要素 ID。
+     * @param {string} layerName - 图层名称。
+     * @param {(Array|Function)} layerStyle - 图层样式。
      * @return {this} this
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
@@ -130,9 +131,9 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function L.supermap.VectorGrid.prototype.resetFeatureStyle
-     * @description 重绘要素风格，需要id和layerName才能确定一个要素
-     * @param {number} id - 要素id
-     * @param {string} layerName - 图层名称
+     * @description 重绘要素风格，需要 ID 和 layerName 才能确定一个要素。
+     * @param {number} id - 要素 ID。
+     * @param {string} layerName - 图层名称。
      * @return {this} this
      */
     resetFeatureStyle: function (id, layerName) {
@@ -153,8 +154,8 @@ export var VectorGrid = L.GridLayer.extend({
 
     /**
      * @function L.supermap.VectorGrid.prototype.getDataLayerNames
-     * @description 获取数据图层名字
-     * @return {Array} 返回数据图层名数组
+     * @description 获取数据图层名字。
+     * @return {Array} 返回数据图层名数组。
      */
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);

@@ -12,17 +12,36 @@ import {CommonUtil} from '@supermap/iclient-common';
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param {string} name - 图层名
  * @param {Object} options - 图层参数。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
+ * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
  * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
- *                                       禁止对专题要素使用数据（feature）的 style。
+ *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
- *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。                             
  */
 export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
+    
+    /** 
+     * @member {Object} L.supermap.rangeThemeLayer.prototype.style
+     * @description 专题图样式。
+     */
+    
+     /** 
+     * @member {Object} L.supermap.rangeThemeLayer.prototype.styleGroups
+     * @description 各专题类型样式组。
+     */
 
+    /** 
+     * @member {Object} L.supermap.rangeThemeLayer.prototype.highlightStyle
+     * @description 开启 hover 事件后，触发的样式风格。
+     */
 
     initialize: function (name, options) {
         GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
@@ -44,9 +63,9 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function L.supermap.rangeThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param {SuperMap.Feature.Vector} feat - 矢量要素对象
-     * @return {Array.<SuperMap.ThemeStyle>} 专题要素的 Style
+     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @param {SuperMap.Feature.Vector} feat - 矢量要素对象。
+     * @return {Array.<SuperMap.ThemeStyle>} 专题要素的 Style。
      */
     getStyleByData: function (feat) {
         var me = this,

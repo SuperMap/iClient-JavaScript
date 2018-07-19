@@ -59,18 +59,18 @@ import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.webmap
- * @classdesc 对接iPortal/Online地图类。
+ * @classdesc 对接 iPortal/Online 地图类。
  * @category iPortal/Online
  * @extends {L.LayerGroup}
- * @param {number} id - iPortal/Online地图id。
+ * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 可选参数。
- * @param {string} options.map - 地图容器id。
- * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online服务地址。
- * @param {boolean} options.featureLayerPopupEnable -  是否启动要素图层提示框。
- * @param {string} options.featureLayerPopup - 提示框提示信息。
- * @param {string} options.credentialValue - 证书值。
- * @param {string} options.credentialKey - 证书密钥。
- * @param {string} options.attribution - 版权信息。
+ * @param {string} [options.map='map'] - 地图容器id。
+ * @param {string} [options.server='http://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
+ * @param {string} [options.featureLayerPopup] - 提示框提示信息。
+ * @param {string} [options.credentialValue] - 证书值。
+ * @param {string} [options.credentialKey='key'] - 证书密钥。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
  */
 export var WebMap = L.LayerGroup.extend({
 
@@ -87,9 +87,9 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
-     * @description 默认图层弹出框
-     * @param {L.Layer} layer - 指定图层
-     * @return {string} 图层弹出框内容
+     * @description 默认图层弹出框。
+     * @param {L.Layer} layer - 指定图层。
+     * @return {string} 图层弹出框内容。
      */
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -109,7 +109,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.load
-     * @description 登陆后添加地图图层
+     * @description 登陆后添加地图图层。
      */
     load: function () {
         if (this.options.server.indexOf('http://') < 0 && this.options.server.indexOf('https://') < 0) {
@@ -135,10 +135,10 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.addLayerWrapper
-     * @description 添加图层容器
-     * @param {L.Layer} layer - 待添加的图层
-     * @param {boolean} isBaseLayer - 是否为底图层
-     * @param {Object} options - 创建地图的可选参数
+     * @description 添加图层容器。
+     * @param {L.Layer} layer - 待添加的图层。
+     * @param {boolean} [isBaseLayer] - 是否为底图层。
+     * @param {Object} options - 创建地图的可选参数。
      * @return {this} this
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
@@ -155,8 +155,8 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createLayersByJson
-     * @description 通过json创建图层
-     * @param {JSON} layersJson - 图层的json信息
+     * @description 通过 JSON 创建图层。
+     * @param {JSON} layersJson - 图层的 JSON 信息。
      */
     createLayersByJson: function (layersJson) {
         if (!L.Util.isArray(layersJson)) {
@@ -198,12 +198,12 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createCRS
-     * @description 创建坐标对象
-     * @param {number} epsgCode - epsg编码
-     * @param {string} type - 坐标类型
-     * @param {number} resolutions - 分辨率
-     * @param {L.Point} origin - 切片原点
-     * @param {L.Bounds} bounds - 地图范围
+     * @description 创建坐标对象。
+     * @param {number} epsgCode - epsg 编码。
+     * @param {string} type - 坐标类型。
+     * @param {number} resolutions - 分辨率。
+     * @param {L.Point} origin - 切片原点。
+     * @param {L.Bounds} bounds - 地图范围。
      */
     createCRS: function (epsgCode, type, resolutions, origin, bounds) {
         if (epsgCode < 0) {
@@ -235,8 +235,8 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createMap
-     * @description 创建地图
-     * @param {Object} options - 创建地图所需参数
+     * @description 创建地图。
+     * @param {Object} options - 创建地图所需参数。
      */
     createMap: function (options) {
         var crs = options.crs || L.CRS.EPSG3857;
@@ -263,12 +263,12 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.getResolutionsFromScales
-     * @description 通过比例尺获取分辨率
-     * @param {Array.<number>} scales - 排序比例尺数组
-     * @param {number} dpi - 屏幕分辨率
-     * @param {string} units - 地图的单位
-     * @param {SuperMap.Datum} datum - 大地参照系类
-     * @return {Array.<number>} 返回给定比例尺所对应的分辨率
+     * @description 通过比例尺获取分辨率。
+     * @param {Array.<number>} scales - 排序比例尺数组。
+     * @param {number} dpi - 屏幕分辨率。
+     * @param {string} units - 地图的单位。
+     * @param {SuperMap.Datum} datum - 大地参照系类。
+     * @return {Array.<number>} 返回给定比例尺所对应的分辨率。
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
@@ -281,9 +281,9 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createLayer
-     * @description 创建图层
-     * @param {string} type - 图层类型
-     * @param {Object} layerInfo - 图层信息
+     * @description 创建图层。
+     * @param {string} type - 图层类型。
+     * @param {Object} layerInfo - 图层信息。
      */
     createLayer: function (type, layerInfo) {
         var prjCoordSys = layerInfo.prjCoordSys,
@@ -378,9 +378,9 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createTiandituLayer
-     * @description 创建天地图图层
-     * @param {Object} layerInfo - 图层信息
-     * @return {L.supermap.tiandituTileLayer} 返回天地图图层对象
+     * @description 创建天地图图层。
+     * @param {Object} layerInfo - 图层信息。
+     * @return {L.supermap.tiandituTileLayer} 返回天地图图层对象。
      */
     createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
@@ -395,10 +395,10 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createMarkersLayer
-     * @description 创建图标图层
-     * @param {Object} layerInfo - 图层信息
-     * @param {Object} crs - 坐标对象
-     * @return {L.Layer} 返回marker图层
+     * @description 创建图标图层。
+     * @param {Object} layerInfo - 图层信息。
+     * @param {Object} crs - 坐标对象。
+     * @return {L.Layer} 返回 marker 图层。
      */
     createMarkersLayer: function (layerInfo, crs) {
         var that = this;
@@ -435,8 +435,8 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createWmsLayer
-     * @description 创建Wms图层
-     * @param {Object} layerInfo - 图层信息
+     * @description 创建 Wms 图层。
+     * @param {Object} layerInfo - 图层信息。
      */
     createWmsLayer: function (layerInfo) {
         var url = layerInfo.url,
@@ -457,10 +457,10 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createVectorLayer
-     * @description 创建矢量要素图层
-     * @param {Object} layerInfo - 图层信息
-     * @param {Object} crs - 坐标对象
-     * @return {L.Layer} 返回矢量要素图层对象
+     * @description 创建矢量要素图层。
+     * @param {Object} layerInfo - 图层信息。
+     * @param {Object} crs - 坐标对象。
+     * @return {L.Layer} 返回矢量要素图层对象。
      */
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,
@@ -545,9 +545,9 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.webmap.prototype.createThemeLayer
-     * @description 创建专题图图层
-     * @param {Object} layerInfo - 图层信息
-     * @return {L.Layer} 返回专题图图层对象
+     * @description 创建专题图图层。
+     * @param {Object} layerInfo - 图层信息。
+     * @return {L.Layer} 返回专题图图层对象。
      */
     createThemeLayer: function (layerInfo) {
         var themeSettings = layerInfo.themeSettings && JSON.parse(layerInfo.themeSettings);

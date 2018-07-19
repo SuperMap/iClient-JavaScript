@@ -5,12 +5,12 @@ import Attributions from '../core/Attributions'
 
 /**
  * @class L.supermap.echartsLayer
- * @classdesc 百度ECharts图层类。
+ * @classdesc 百度 ECharts 图层类。
  * @category  Visualization ECharts
  * @extends {L.Layer}
- * @param {Object} echartsOptions - 图表参数
+ * @param {Object} echartsOptions - 图表参数。
  * @param {Object} options - 可选图层参数。
- * @param {string} options.attribution - 版权信息。
+ * @param {string} [options.attribution='© 2017 百度 ECharts'] - 版权信息。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
  */
 export const EchartsLayer = L.Layer.extend({
@@ -32,10 +32,10 @@ export const EchartsLayer = L.Layer.extend({
     },
     /**
      * @function L.supermap.echartsLayer.prototype.setOption
-     * @description 设置图表地图参数
-     * @param {Object} echartsOptions - 图表参数
-     * @param {boolean} notMerge - 是否合并参数
-     * @param {string} lazyUpdate - 后台自动更新
+     * @description 设置图表地图参数。
+     * @param {Object} echartsOptions - 图表参数。
+     * @param {boolean} [notMerge] - 是否合并参数。
+     * @param {string} lazyUpdate - 后台自动更新。
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate) {
         const baseOption = echartsOptions.baseOption || echartsOptions;
@@ -59,8 +59,8 @@ export const EchartsLayer = L.Layer.extend({
     /**
      * @private
      * @function L.supermap.echartsLayer.prototype.onAdd
-     * @description 添加地图
-     * @param {L.map} map - 待添加的地图
+     * @description 添加地图。
+     * @param {L.map} map - 待添加的地图。
      */
     onAdd: function (map) {
         this._map = map;
@@ -211,8 +211,8 @@ export const EchartsLayer = L.Layer.extend({
 /**
  * @class L.supermap.LeafletMapCoordSys
  * @private
- * @classdesc 地图坐标系统类
- * @param {L.map} leafletMap - 地图
+ * @classdesc 地图坐标系统类。
+ * @param {L.map} leafletMap - 地图。
  */
 export function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;

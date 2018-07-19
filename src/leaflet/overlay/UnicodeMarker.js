@@ -3,20 +3,20 @@ import '../core/Base';
 
 /**
  * @class L.supermap.unicodeMarker
- * @classdesc Unicode字符图标。
+ * @classdesc Unicode 字符图标。
  * @category Visualization Marker
  * @extends {L.Path}
  * @param {L.LatLngBounds} latlng - 经纬度坐标。
  * @param {Object} options - 符号参数。
- * @param {string} options.label - 符号Unicode值。
- * @param {string} options.labelRotation - 符号旋转角度。
- * @param {string} options.globalAlpha - 符号的透明值。
- * @param {string} options.fontStyle - 符号的风格。
- * @param {string} options.fontWeight - 符号的粗细。
- * @param {string} options.fontSize - 符号的尺寸。
- * @param {string} options.fontFamily - 符号的字体。
- * @param {string} options.textAlign - 符号内容的对齐方式。
- * @param {string} options.textBaseline - 绘制符号时使用的基线。
+ * @param {string} options.label - 符号 Unicode 值。
+ * @param {string} [options.labelRotation='0'] - 符号旋转角度。
+ * @param {string} [options.globalAlpha='1'] - 符号的透明值。
+ * @param {string} [options.fontStyle='normal'] - 符号的风格。
+ * @param {string} [options.fontWeight='normal'] - 符号的粗细。
+ * @param {string} [options.fontSize='1em'] - 符号的尺寸。
+ * @param {string} [options.fontFamily='sans-serif'] - 符号的字体。
+ * @param {string} [options.textAlign='center'] - 符号内容的对齐方式。
+ * @param {string} [options.textBaseline='middle'] - 绘制符号时使用的基线。
  */
 export var UnicodeMarker = L.Path.extend({
     // @section

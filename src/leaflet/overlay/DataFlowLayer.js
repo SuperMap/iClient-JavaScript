@@ -12,18 +12,18 @@ import {
 
 /**
  * @class L.supermap.dataFlowLayer
- * @classdesc 实时数据图层源
+ * @classdesc 实时数据图层源。
  * @category  iServer DataFlow
  * @extends {L.LayerGroup}
- * @param {string} url - 实时数据图层服务地址
+ * @param {string} url - 实时数据图层服务地址。
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。</br>
-                                               'normal'表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制实时数据。'mapv'表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。</br>
- * @param {Object} [options.geometry] - GeoJSON几何对象。
+                                               'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制实时数据。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。 
+ * @param {Object} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
- * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。</br>
+ * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。 
                                            `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
@@ -49,7 +49,6 @@ export var DataFlowLayer = L.LayerGroup.extend({
         excludeField: null,
         idField: "id",
         render: 'normal'
-
     },
 
     initialize: function (url, options) {
@@ -62,8 +61,8 @@ export var DataFlowLayer = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.dataFlowLayer.prototype.onAdd
-     * @description 添加地图
-     * @param {L.map} map - 待添加的地图
+     * @description 添加地图。
+     * @param {L.map} map - 待添加的地图。
      */
     onAdd: function (map) { // eslint-disable-line no-unused-vars
         this.dataService = new DataFlowService(this.url, {
@@ -95,8 +94,8 @@ export var DataFlowLayer = L.LayerGroup.extend({
     /**
      * @private
      * @function L.supermap.dataFlowLayer.prototype.onRemove
-     * @description 删除指定地图
-     * @param {L.map} map - 待删除的地图
+     * @description 删除指定地图。
+     * @param {L.map} map - 待删除的地图。
      */
     onRemove: function (map) { // eslint-disable-line no-unused-vars
         L.LayerGroup.prototype.onRemove.call(this, map);
@@ -104,8 +103,8 @@ export var DataFlowLayer = L.LayerGroup.extend({
     },
     /**
      * @function L.supermap.dataFlowLayer.prototype.setExcludeField
-     * @description 设置唯一字段
-     * @param {string} excludeField - 唯一字段
+     * @description 设置唯一字段。
+     * @param {string} excludeField - 唯一字段。
      */
     setExcludeField: function (excludeField) {
         this.dataService.setExcludeField(excludeField);
@@ -115,8 +114,8 @@ export var DataFlowLayer = L.LayerGroup.extend({
 
     /**
      * @function L.supermap.dataFlowLayer.prototype.setGeometry
-     * @description 设置集合要素
-     * @param {Object} geometry - 待设置的GeoJSON几何要素对象
+     * @description 设置集合要素。
+     * @param {Object} geometry - 待设置的GeoJSON几何要素对象。
      */
     setGeometry: function (geometry) {
         this.dataService.setGeometry(geometry);

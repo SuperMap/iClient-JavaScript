@@ -3,7 +3,7 @@ import '../../core/Base';
 
 /**
  * @constant L.supermap.CartoStyleMap
- * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
+ * @description CartoCSS 中的 style 属性名与 leaflet 的 style 属性名的对应表。
  * @category BaseTypes Style
  * @private
  */
@@ -11,7 +11,7 @@ export var CartoStyleMap = {
 
     /*
      * @constant L.supermap.CartoStyleMap.prototype.TEXT
-     * @description 默认文本样式
+     * @description 默认文本样式。
      */
     "TEXT": {
         "text-size": "fontSize",
@@ -26,7 +26,7 @@ export var CartoStyleMap = {
 
     /*
      * @constant L.supermap.CartoStyleMap.prototype.POINT
-     * @description 默认点样式
+     * @description 默认点样式。
      */
     "POINT": {
         "point-file": "iconUrl",
@@ -38,7 +38,7 @@ export var CartoStyleMap = {
 
     /*
      * @constant L.supermap.CartoStyleMap.prototype.LINE
-     * @description 默认线样式
+     * @description 默认线样式。
      */
     "LINE": {
         "line-color": "color",
@@ -53,7 +53,7 @@ export var CartoStyleMap = {
 
     /*
      * @constant L.supermap.CartoStyleMap.prototype.REGION
-     * @description 默认多边形样式
+     * @description 默认多边形样式。
      */
     "REGION": {
         "line-color": "color",
@@ -71,14 +71,14 @@ export var CartoStyleMap = {
 
 /**
  * @constant L.supermap.ServerStyleMap
- * @description 服务端传过来的style属性名与leaflet的style属性名的对应表
+ * @description 服务端传过来的 style 属性名与 leaflet 的 style 属性名的对应表。
  * @private
  */
 export var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.lineWidth
-     * @description 线宽
+     * @description 线宽。
      */
     lineWidth: {
         leafletStyle: "weight",
@@ -89,7 +89,7 @@ export var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.fillForeColor
-     * @description 填充前景色
+     * @description 填充前景色。
      */
     fillForeColor: {
         leafletStyle: "fillColor",
@@ -99,7 +99,7 @@ export var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.foreColor
-     * @description 前景色
+     * @description 前景色。
      */
     foreColor: {
         leafletStyle: "color",
@@ -109,7 +109,7 @@ export var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.markerSize
-     * @description 图标大小
+     * @description 图标大小。
      */
     markerSize: {
         leafletStyle: "markerSize",
@@ -120,7 +120,7 @@ export var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.lineColor
-     * @description 线要素颜色
+     * @description 线要素颜色。
      */
     lineColor: {
         leafletStyle: "color",
@@ -131,7 +131,7 @@ export var ServerStyleMap = {
 
 /**
  * @constant L.supermap.CompOpMap
- * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+ * @description Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。
  * @private
  */
 export var CompOpMap = {

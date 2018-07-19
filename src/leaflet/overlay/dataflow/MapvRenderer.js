@@ -6,14 +6,14 @@ import {
 
 /**
  * @class MapvRenderer
- * @classdesc 实时数据图层MapV渲染器。
+ * @classdesc 实时数据图层 MapV 渲染器。
  * @category  iServer DataFlow
  * @extends {L.supermap.MapVLayer}
  * @param {string} url - 实时数据图层服务地址
  * @param {Object} options - 设置图层参数。
- * @param {Object} options.geometry - GeoJSON几何对象。
- * @param {Object} options.prjCoordSys - 投影坐标对象。
- * @param {string} options.excludeField - 排除字段。
+ * @param {Object} [options.geometry] - GeoJSON 几何对象。
+ * @param {Object} [options.prjCoordSys] - 投影坐标对象。
+ * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
  */
 export var MapvRenderer = MapVLayer.extend({

@@ -5,16 +5,16 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.dataFlowService
- * @classdesc 实时数据服务类
+ * @classdesc 实时数据服务类。
  * @category  iServer DataFlow
  * @extends {L.supermap.ServiceBase}
  * @param {string} url - 实时数据服务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {function} options.style - 设置数据加载样式。
- * @param {function} options.onEachFeature -  设置每个数据加载popup等。
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
- * @param {Object} options.excludeField - 排除字段。
+ * @param {function} [options.style] - 设置数据加载样式。
+ * @param {function} [options.onEachFeature] -  设置每个数据加载 popup 等。
+ * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
+ * @param {Object} [options.excludeField] - 排除字段。
  */
 export var DataFlowService = ServiceBase.extend({
 
@@ -47,7 +47,7 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.initBroadcast
-     * @description 初始化广播
+     * @description 初始化广播。
      */
     initBroadcast: function () {
         this.dataFlow.initBroadcast();
@@ -56,8 +56,8 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.broadcast
-     * @description 加载广播数据
-     * @param {JSONObject} obj - json格式的要素数据。
+     * @description 加载广播数据。
+     * @param {JSONObject} obj - JSON 格式的要素数据。
      */
     broadcast: function (obj) {
         this.dataFlow.broadcast(obj);
@@ -65,7 +65,7 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.initSubscribe
-     * @description 初始化订阅数据
+     * @description 初始化订阅数据。
      */
     initSubscribe: function () {
         this.dataFlow.initSubscribe();
@@ -75,8 +75,8 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.setExcludeField
-     * @description 设置排除字段
-     * @param {Object} excludeField - 排除字段
+     * @description 设置排除字段。
+     * @param {Object} excludeField - 排除字段。
      */
     setExcludeField: function (excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -86,8 +86,8 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
-     * @description 设置添加的GeoJSON几何要素数据
-     * @param {Array.<Object>} geometry - 设置增添的GeoJSON几何要素对象数组。
+     * @description 设置添加的 GeoJSON 几何要素数据。
+     * @param {Array.<Object>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -97,7 +97,7 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.unSubscribe
-     * @description 结束订阅数据
+     * @description 结束订阅数据。
      */
     unSubscribe: function () {
         this.dataFlow.unSubscribe();
@@ -105,7 +105,7 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.unBroadcast
-     * @description 结束加载广播
+     * @description 结束加载广播。
      */
     unBroadcast: function () {
         this.dataFlow.unBroadcast();

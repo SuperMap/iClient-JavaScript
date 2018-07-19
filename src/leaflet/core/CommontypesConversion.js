@@ -4,14 +4,14 @@ import {Bounds} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.CommontypesConversion
- * @classdesc Leaflet对象和SuperMap对象转换工具
+ * @classdesc Leaflet 对象和 SuperMap 对象转换工具。
  */
 export class CommontypesConversion {
     /**
      * @function L.supermap.CommontypesConversion.toSuperMapBounds
-     * @description 将Leaflet对象得bounds转成SuperMap 的bounds对象
-     * @param {(L.Bounds|L.LatLngBounds)} bounds - 图层显示范围
-     * @return {SuperMap.Bounds} SuperMap的bounds对象
+     * @description 将 Leaflet 对象的 bounds 转成 SuperMap 的 bounds对象。
+     * @param {(L.Bounds|L.LatLngBounds)} bounds - 图层显示范围。
+     * @return {SuperMap.Bounds} SuperMap 的 bounds 对象。
      */
     static toSuperMapBounds(bounds) {
         if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
@@ -47,9 +47,9 @@ export class CommontypesConversion {
 
     /**
      * @function L.supermap.Util.isArray
-     * @description 判断是否为数组格式
-     * @param {Object} obj - 待判断对象
-     * @return {boolean} 是否是数组
+     * @description 判断是否为数组格式。
+     * @param {Object} obj - 待判断对象。
+     * @return {boolean} 是否是数组。
      */
     static isArray(obj) {
         return Object.prototype.toString.call(obj) == '[object Array]';
@@ -57,9 +57,9 @@ export class CommontypesConversion {
 
     /**
      * @function L.supermap.CommontypesConversion.toProcessingParam
-     * @description 将Region节点数组转为Processing服务需要的分析参数
-     * @param {Array} points - Region各个节点数组
-     * @return processing服务裁剪、查询分析的分析参数
+     * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
+     * @param {Array} points - Region 各个节点数组。
+     * @return processing 服务裁剪、查询分析的分析参数。
      */
     static toProcessingParam(points) {
         var geometryParam = {};

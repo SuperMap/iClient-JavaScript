@@ -9,21 +9,11 @@ import Attributions from '../core/Attributions'
  * @extends {L.TileLayer}
  * @param {string} [url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {Object} options - 图层可选参数。
- * @param {number} options.layersID - 图层ID，如果有layersID，则是在使用专题图。
- * @param {boolean} options.redirect - 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。
- * @param {boolean} options.transparent - 是否背景透明。
- * @param {boolean} options.cacheEnabled - 启用缓存。
- * @param {boolean} options.clipRegionEnabled - 是否启用地图裁剪。
- * @param {Object} options.prjCoordSys - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
- * @param {boolean} options.overlapDisplayed - 地图对象在同一范围内时，是否重叠显示。
- * @param {string} options.overlapDisplayedOptions - 避免地图对象压盖显示的过滤选项。
- * @param {string} options.tileversion - 切片版本名称，cacheEnabled 为 true 时有效。
- * @param {L.Proj.CRS} options.crs - 坐标系统类。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} options.attribution - 版权信息。
- * @param {number} options.minZoom - 最小缩放级别。
- * @param {number} options.maxZoom - 最大缩放级别。
- * @param {string} options.mapName - 地图名称。
+ * @param {string} [options.type='web'] - type。
+ * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
+ * @param {number} [options.minZoom=3] - 最小缩放级别。
+ * @param {number} [options.maxZoom=18] - 最大缩放级别。
+ * @param {string} [options.mapName='quanguo'] - 地图名称。
  */
 export var CloudTileLayer = L.TileLayer.extend({
 
@@ -31,8 +21,8 @@ export var CloudTileLayer = L.TileLayer.extend({
 
     options: {
         /**
-         * @member {String} L.supermap.cloudTileLayer.prototype.options
-         * @description 地图名称，默认为 quanguo。
+         * @member {String} [L.supermap.cloudTileLayer.prototype.options='quanguo']
+         * @description 地图名称。
          */
         mapName: "quanguo",
         /**
@@ -43,7 +33,6 @@ export var CloudTileLayer = L.TileLayer.extend({
         minZoom: 3,
         maxZoom: 18,
         attribution: Attributions.Cloud.attribution
-
     },
 
     initialize: function (url, options) {
@@ -55,9 +44,9 @@ export var CloudTileLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.cloudTileLayer.prototype.getTileUrl
-     * @description 获取切片地址
-     * @param {Object} coords - 行列号
-     * @return {string} 切片地址
+     * @description 获取切片地址。
+     * @param {Object} coords - 行列号。
+     * @return {string} 切片地址。
      */
     getTileUrl: function (coords) {
         var layerUrl = this._url;

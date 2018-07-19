@@ -44,20 +44,20 @@ const CSS_TRANSFORM = (function () {
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
  * @extends {L.Path}
- * @param {Array.<L.supermap.graphic>} graphics - 要素对象
- * @param {Object} options - 图层参数
- * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)
+ * @param {Array.<L.supermap.graphic>} graphics - 要素对象。
+ * @param {Object} options - 图层参数。
+ * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
- * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
+ * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
  * @param {number} [options.radius=10] - 要素半径，单位像素。
- * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数
- * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
+ * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
+ * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值(像素)。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {function} [options.onClick] -  图层鼠标点击响应事件(webgl、canvas渲染时都有用)。
- * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)。
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
 export var GraphicLayer = L.Path.extend({
 
@@ -76,8 +76,8 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @private
      * @function L.supermap.graphicLayer.prototype.getEvents
-     * @description 获取事件
-     * @return {Object} 返回该图层支持的事件对象
+     * @description 获取事件。
+     * @return {Object} 返回该图层支持的事件对象。
      */
     getEvents: function () {
         return {
@@ -90,7 +90,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @private
      * @function L.supermap.graphicLayer.prototype.onAdd
-     * @description 添加图形
+     * @description 添加图形。
      */
     onAdd: function (map) {
         this._map = map;
@@ -105,7 +105,7 @@ export var GraphicLayer = L.Path.extend({
      * @private
      * @override
      * @function L.supermap.graphicLayer.prototype.onRemove
-     * @description 移除图层
+     * @description 移除图层。
      */
     onRemove: function () {
         this._renderer._removePath(this);
@@ -113,8 +113,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.setGraphics
-     * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-     * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
+     * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
+     * @param {Array.<L.supermap.graphic>} graphics - 点要素对象数组。
      */
     setGraphics: function (graphics) {
         this.graphics = this.graphics || [];
@@ -126,8 +126,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.addGraphics
-     * @description 追加点要素，不会覆盖之前的要素
-     * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组
+     * @description 追加点要素，不会覆盖之前的要素。
+     * @param {Array.<L.supermap.graphic>}  graphics - 点要素对象数组。
      */
     addGraphics: function (graphics) {
         this.graphics = this.graphics || [];
@@ -138,17 +138,17 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.setStyle
-     * @description 设置图层要素整体样式
-     * @param {Object} styleOptions - 样式对象
-     * @param {Array.<number>} styleOptions.color - 点颜色
-     * @param {number} styleOptions.radius - 点半径
-     * @param {number} styleOptions.opacity - 不透明度
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
-     * @param {number} styleOptions.radiusScale - 点放大倍数
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
-     * @param {number} styleOptions.strokeWidth - 边框大小
-     * @param {boolean} styleOptions.outline - 是否显示边框
+     * @description 设置图层要素整体样式。
+     * @param {Object} styleOptions - 样式对象。
+     * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
+     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.opacity=0.8] - 不透明度。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持rgba数组。
+     * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
+     * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
     setStyle: function (styleOptions) {
         let _opt = this.options;
@@ -170,7 +170,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.update
-     * @description 更新图层，数据或者样式改变后调用
+     * @description 更新图层，数据或者样式改变后调用。
      */
     update: function () {
         this._layerRenderer.update(this.graphics);
@@ -178,7 +178,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.clear
-     * @description 释放图层资源
+     * @description 释放图层资源。
      */
     clear: function () {
         this.removeGraphics();
@@ -186,7 +186,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.removeGraphics
-     * @description 移除所有要素
+     * @description 移除所有要素。
      */
     removeGraphics: function () {
         this.graphics.length = 0;
@@ -195,8 +195,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.getRenderer
-     * @description 获取渲染器
-     * @return {Object} 内部渲染器
+     * @description 获取渲染器。
+     * @return {Object} 内部渲染器。
      */
     getRenderer: function () {
         return this._renderer;
@@ -204,8 +204,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.getState
-     * @description 获取当前地图及图层状态
-     * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+     * @description 获取当前地图及图层状态。
+     * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
     getState: function () {
         let map = this._map;
