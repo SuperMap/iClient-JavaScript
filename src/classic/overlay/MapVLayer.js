@@ -6,10 +6,9 @@ import {MapVRenderer} from './mapv/MapVRenderer';
  * @category  Visualization MapV
  * @classdesc MapV图层。
  * @extends SuperMap.Layer
- * @param name - {string} 图层名
- * @param options  - {Object} 可选参数，有如下两个参数：<br>
- *        dataSet - {mapv.DataSet} mapv 的dataSet对象 <br>
- *        options - {Object} mapv 绘图风格配置信息
+ * @param name - {string} 图层名。
+ * @param {Object} options - 可选参数，有如下两个参数：
+ * @param {Mapv.DataSet} options.dataSet - mapv 的dataSet对象。
  */
 export class MapVLayer extends SuperMap.Layer {
 
@@ -28,33 +27,33 @@ export class MapVLayer extends SuperMap.Layer {
         super(name, options);
 
         /**
-         * @member SuperMap.Layer.MapVLayer.prototype.dataSet -{mapv.DataSet}
-         * @description mapv dataset 对象
+         * @member {mapv.DataSet} - SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @description mapv dataset 对象。
          */
         this.dataSet = null;
 
         /**
-         * @member SuperMap.Layer.MapVLayer.prototype.options -{Object}
-         * @description mapv 绘图风格配置信息
+         * @member {Object} - SuperMap.Layer.MapVLayer.prototype.options
+         * @description mapv 绘图风格配置信息。
          */
         this.options = null;
 
         /**
-         * @member SuperMap.Layer.MapVLayer.prototype.supported -{boolean}
-         * @description 当前浏览器是否支持canvas绘制，默认为false。决定了MapV图是否可用，内部判断使用。
+         * @member {boolean} - [SuperMap.Layer.MapVLayer.prototype.supported=false]
+         * @description 当前浏览器是否支持canvas绘制。决定了MapV图是否可用，内部判断使用。
          */
         this.supported = false;
 
         /**
-         * @member SuperMap.Layer.MapVLayer.prototype.canvas {Canvas}
-         * @description MapV图主绘制面板。
+         * @member {Canvas} SuperMap.Layer.MapVLayer.prototype.canvas
+         * @description MapV 图主绘制面板。
          */
         this.canvas = null;
 
         /**
          * @private
-         * @member SuperMap.Layer.MapVLayer.prototype.canvasContext -{CanvasContext}
-         * @description MapV图主绘制对象。
+         * @member {CanvasContext} - SuperMap.Layer.MapVLayer.prototype.canvasContext
+         * @description MapV 图主绘制对象。
          */
         this.canvasContext = null;
 
@@ -105,9 +104,9 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
-     * @description 追加数据
-     * @param dataSet - {mapv.DataSet} mapv数据集
-     * @param options - {Object} mapv绘图参数
+     * @description 追加数据。
+     * @param {mapv.DataSet} dataSet - mapv数据集。
+     * @param {Object} options - mapv绘图参数。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -116,9 +115,9 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
-     * @description 设置数据
-     * @param dataSet {mapv.DataSet} mapv数据集
-     * @param options {Object} mapv绘图参数
+     * @description 设置数据。
+     * @param {mapv.DataSet} dataSet - mapv数据集。
+     * @param {Object} options - mapv绘图参数。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -127,8 +126,8 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
-     * @description 获取数据
-     * @return {mapv.DataSet} mapv数据集
+     * @description 获取数据。
+     * @returns {mapv.DataSet} - mapv数据集。
      */
     getData() {
         if (this.renderer) {
@@ -139,8 +138,8 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.removeData
-     * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @description 删除符合过滤条件的数据。
+     * @param {function} [filter] -  过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -166,7 +165,7 @@ export class MapVLayer extends SuperMap.Layer {
      * @function SuperMap.Layer.MapVLayer.prototype.setMap
      * @description 图层已经添加到Map中。
      *              如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
-     * @param map - {SuperMap.Map} 需要绑定的map对象
+     * @param {SuperMap.Map} map - 需要绑定的map对象。
      */
     setMap(map) {
         super.setMap(map);
@@ -182,9 +181,9 @@ export class MapVLayer extends SuperMap.Layer {
      * @function SuperMap.Layer.MapVLayer.prototype.moveTo
      * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
      *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
-     * @param bounds - {SuperMap.Bounds} 图层范围
-     * @param zoomChanged - {boolean} 缩放级别是否改变
-     * @param dragging - {boolean} 是否拖动
+     * @param {SuperMap.Bounds} bounds - 图层范围。
+     * @param {boolean} [zoomChanged] - 缩放级别是否改变。
+     * @param {boolean} [dragging] - 是否拖动。
      */
     moveTo(bounds, zoomChanged, dragging) {
         super.moveTo(bounds, zoomChanged, dragging);
@@ -221,8 +220,8 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
-     * @description 将经纬度转成底图的投影坐标
-     * @param latLng - {SuperMap.Lonlat} 经纬度坐标
+     * @description 将经纬度转成底图的投影坐标。
+     * @param {SuperMap.Lonlat} [latLng] - 经纬度坐标。
      */
     transferToMapLatLng(latLng) {
         var source = "EPSG:4326", dest = "EPSG:4326";

@@ -5,11 +5,11 @@ import {baiduMapLayer, DataSet} from 'mapv';
  * @class MapVRenderer
  * @classdesc MapV渲染器。
  * @private
- * @extends mapv.MapVBaseLayer
- * @param map - {SuperMap.Map} 待渲染的地图
- * @param layer - {mapv.baiduMapLayer} 待渲染的图层
- * @param dataSet - {mapv.DataSet} 待渲染的数据集
- * @param options - {Object} 渲染的参数
+ * @extends {mapv.baiduMapLayer}
+ * @param {SuperMap.Map} map - 待渲染的地图。
+ * @param {SuperMap.Layer.MapVLayer} layer - 待渲染的图层。
+ * @param {Mapv.DataSet} dataSet - 待渲染的数据集。
+ * @param {Object} options - 渲染的参数。
  */
 var MapVBaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -34,8 +34,8 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.clickEvent
-     * @description 点击事件
-     * @param e - {Object} 触发对象
+     * @description 点击事件。
+     * @param {Object} e -  触发对象。
      */
     clickEvent(e) {
         var pixel = e.xy;
@@ -44,8 +44,8 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.mousemoveEvent
-     * @description 鼠标移动事件
-     * @param  e - {Object} 触发对象
+     * @description 鼠标移动事件。
+     * @param {Object} e - 触发对象。
      */
     mousemoveEvent(e) {
         var pixel = e.xy;
@@ -54,7 +54,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.bindEvent
-     * @description 绑定鼠标移动和鼠标点击事件
+     * @description 绑定鼠标移动和鼠标点击事件。
      */
     bindEvent() {
         var map = this.map;
@@ -71,7 +71,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.unbindEvent
-     * @description 解绑鼠标移动和鼠标滑动触发的事件
+     * @description 解绑鼠标移动和鼠标滑动触发的事件。
      */
     unbindEvent() {
         var map = this.map;
@@ -88,7 +88,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.getContext
-     * @description 获取信息
+     * @description 获取信息。
      */
     getContext() {
         return this.canvasLayer && this.canvasLayer.canvasContext;
@@ -97,8 +97,8 @@ export class MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 追加数据
-     * @param data - {oject} 待添加的数据
-     * @param options - {oject} 待添加的数据信息
+     * @param {oject} data - 待添加的数据。
+     * @param {oject} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;
@@ -111,9 +111,9 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.updateData
-     * @description 更新覆盖原数据
-     * @param data - {oject} 待更新的数据
-     * @param options - {oject} 待更新的数据信息
+     * @description 更新覆盖原数据。
+     * @param {oject} data - 待更新的数据。
+     * @param {oject} options - 待更新的数据信息。
      */
     setData(data, options) {
         var _data = data;
@@ -127,7 +127,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.getData
-     * @description 获取数据
+     * @description 获取数据。
      */
     getData() {
         return this.dataSet;
@@ -135,8 +135,8 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.removeData
-     * @description 删除符合过滤条件的数据
-     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @description 删除符合过滤条件的数据。
+     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -153,7 +153,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
@@ -162,8 +162,8 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.render
-     * @description 着色
-     * @param time - {number}
+     * @description 着色。
+     * @param {number} time
      */
     render(time) {
         this._canvasUpdate(time);
@@ -171,7 +171,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.transferToMercator
-     * @description 墨卡托坐标为经纬度
+     * @description 墨卡托坐标为经纬度。
      */
     transferToMercator() {
         if (this.options.coordType && ["bd09mc", "coordinates_mercator"].indexOf(this.options.coordType) > -1) {
@@ -292,7 +292,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.addAnimatorEvent
-     * @description 添加动画事件
+     * @description 添加动画事件。
      */
     addAnimatorEvent() {
         this.map.events.on({'movestart': this.animatorMovestartEvent.bind(this)});
@@ -301,8 +301,8 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.clear
-     * @description 清除环境
-     * @param context - {Object} 当前环境
+     * @description 清除环境。
+     * @param {Object} context - 当前环境。
      */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
@@ -310,7 +310,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.show
-     * @description 展示渲染效果
+     * @description 展示渲染效果。
      */
     show() {
         this.map.addLayer(this.canvasLayer);
@@ -318,7 +318,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.hide
-     * @description 隐藏渲染效果
+     * @description 隐藏渲染效果。
      */
     hide() {
         this.map.removeLayer(this.canvasLayer);
@@ -327,7 +327,7 @@ export class MapVRenderer extends MapVBaseLayer {
 
     /**
      * @function MapvRenderer.prototype.draw
-     * @description 渲染绘制
+     * @description 渲染绘制。
      */
     draw() {
         this.canvasLayer.redraw();
