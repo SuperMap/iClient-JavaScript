@@ -800,8 +800,7 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () {
-                });
+                }, function () {});
             } else {
                 var newFeautures = [],
                     features = layerInfo.features;
@@ -1106,41 +1105,31 @@ export var WebMap = L.LayerGroup.extend({
             "convertType": convertType,
             "points": epsgArray
         };
-        var url = this.url + "coordconvert.json";
+        var url = this.server + "/apps/viewer/coordconvert.json";
         postData = JSON.stringify(postData);
-        var options = {
-            url: url,
-            isInTheSameDomain: true,
-            data: postData,
-            method: "POST",
-            success: function (success) {
-                return function (res) {
-                    if (success) {
-                        var newCoors = JSON.parse(res.responseText);
-                        if (!point && point.length !== undefined) {
-                            newCoors = newCoors[0];
-                        }
-                        me.fire('coordconvertsuccess', {
-                            newCoors: newCoors
-                        });
-                        success.call(me, newCoors);
-                    }
-                }
-            }(success),
-            failure: function (err) {
-                if (!me.actived) {
-                    return;
-                }
-                me.fire('coordconvertfailed', {
-                    err: err
-                });
-            },
-            scope: this
-        };
+        var options = {};
         if (!Util.isInTheSameDomain(url) && this.proxy) {
             options.proxy = this.proxy;
         }
-        Util.committer(options);
+        Request.post(url, postData, options).then((response) => {
+            return response.json()
+        }).then((jsonObj) => {
+            var newCoors = jsonObj;
+            if (!point && point.length !== undefined) {
+                newCoors = newCoors[0];
+            }
+            this.fire('coordconvertsuccess', {
+                newCoors: newCoors
+            });
+            success.call(this, newCoors);
+        }).catch((err) => {
+            if (!this.actived) {
+                return;
+            }
+            this.fire('coordconvertfailed', {
+                err: err
+            });
+        })
     },
     getSQLFromFilter: function (filter) {
 

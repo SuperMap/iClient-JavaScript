@@ -12,16 +12,36 @@ import {
     GeometryVector,
     GetFeaturesBySQLParameters
 } from '@supermap/iclient-common';
-import {Util} from '../core/Util';
-import {StyleUtils} from '../core/StyleUtils';
-import {Graphic} from '../overlay/graphic/Graphic';
-import {ThemeFeature} from '../overlay/theme/ThemeFeature';
-import {FeatureService} from "../services/FeatureService";
-import {Tianditu as TiandituTileLayer} from '../mapping/Tianditu';
-import {Unique as UniqueThemeSource} from "../overlay/Unique";
-import {Range as RangeThemeSource} from "../overlay/Range";
-import {Label as LabelThemeSource} from "../overlay/Label";
-import {Logo} from '../control/Logo';
+import {
+    Util
+} from '../core/Util';
+import {
+    StyleUtils
+} from '../core/StyleUtils';
+import {
+    Graphic
+} from '../overlay/graphic/Graphic';
+import {
+    ThemeFeature
+} from '../overlay/theme/ThemeFeature';
+import {
+    FeatureService
+} from "../services/FeatureService";
+import {
+    Tianditu as TiandituTileLayer
+} from '../mapping/Tianditu';
+import {
+    Unique as UniqueThemeSource
+} from "../overlay/Unique";
+import {
+    Range as RangeThemeSource
+} from "../overlay/Range";
+import {
+    Label as LabelThemeSource
+} from "../overlay/Label";
+import {
+    Logo
+} from '../control/Logo';
 
 ol.supermap = ol.supermap || {};
 
@@ -121,7 +141,11 @@ export class WebMap extends ol.Observable {
         var viewOptions = this._getViewOptions(baseLayerJson);
         if (!this.map) {
             var view = new ol.View(viewOptions);
-            var controls = ol.control.defaults({attributionOptions: {collapsed: false}})
+            var controls = ol.control.defaults({
+                    attributionOptions: {
+                        collapsed: false
+                    }
+                })
                 .extend([new Logo()]);
             this.map = new ol.Map({
                 target: this.target,
@@ -141,7 +165,10 @@ export class WebMap extends ol.Observable {
                     }
                     me.createLayer(type, layerInfo);
                 }
-                me.dispatchEvent({type: WebMap.EventType.WEBMAPLOADEND, value: this});
+                me.dispatchEvent({
+                    type: WebMap.EventType.WEBMAPLOADEND,
+                    value: this
+                });
             });
             view.fit(viewOptions.extent);
 
@@ -217,7 +244,7 @@ export class WebMap extends ol.Observable {
         var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
         var layer;
         switch (type) {
-            case "SUPERMAP_REST" :
+            case "SUPERMAP_REST":
                 layer = new ol.layer.Tile({
                     source: new ol.source.TileSuperMapRest({
                         url: layerInfo.url,
@@ -428,7 +455,9 @@ export class WebMap extends ol.Observable {
                             name: dataset.name + "@" + datasourceName,
                             attributeFilter: "SMID >0"
                         },
-                        datasetNames: [datasourceName + ":" + dataset.name]
+                        datasetNames: [datasourceName + ":" + dataset.name],
+                        fromIndex: 0,
+                        toIndex: 100000
                     });
                     new FeatureService(url).getFeaturesBySQL(sqlParam).on("complete", fun);
                 }
@@ -505,7 +534,9 @@ export class WebMap extends ol.Observable {
     }
 
     createBaseThemeLayer(layerInfo, themeSettings) {
-        let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+        let style = layerInfo.style,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType,
             featureStyle = style.pointStyle;
         if (vectorType === "LINE") {
             featureStyle.fill = false;
@@ -539,7 +570,9 @@ export class WebMap extends ol.Observable {
             pointStyle.setText(new ol.style.Text({
                 text: label,
                 font: featureStyle.fontSize + " supermapol-icons",
-                fill: new ol.style.Fill({color: featureStyle.fontColor})
+                fill: new ol.style.Fill({
+                    color: featureStyle.fontColor
+                })
             }));
 
         }
@@ -561,8 +594,12 @@ export class WebMap extends ol.Observable {
 
     createUniqueLayer(layerInfo, themeSettings) {
         var title = layerInfo.title;
-        var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
-            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType;
+        var themeField = themeSettings.field,
+            styleGroups = [],
+            settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType;
 
         for (var i = 0; i < settings.length; i++) {
             var object = {};
@@ -603,8 +640,12 @@ export class WebMap extends ol.Observable {
 
     createRangeLayer(layerInfo, themeSettings) {
         var title = layerInfo.title;
-        var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
-            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+        var themeField = themeSettings.field,
+            styleGroups = [],
+            settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType,
             featureStyle = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             featureStyle.fill = false;
@@ -639,8 +680,10 @@ export class WebMap extends ol.Observable {
 
     createLabelLayer(layerInfo, themeSettings) {
         var title = layerInfo.title;
-        var labelField = themeSettings.labelField, settings = themeSettings.settings,
-            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity;
+        var labelField = themeSettings.labelField,
+            settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible,
+            opacity = layerInfo.opacity;
 
         //目前只是同一样式
         var style;
@@ -687,7 +730,8 @@ export class WebMap extends ol.Observable {
 
     createHeatLayer(layerInfo, themeSettings) {
         let colors = themeSettings.colors || ['blue', 'cyan', 'lime', 'yellow', 'red'];
-        let gradient = colors, featureWeight, blur, shadow;
+        let gradient = colors,
+            featureWeight, blur, shadow;
 
         let radius = parseFloat(themeSettings.settings[0].radius);
         //判断单位
@@ -733,19 +777,24 @@ export class WebMap extends ol.Observable {
             var isAddFile = this.getCartoCSS2Obj(cartoCSS).isAddFile;
         }
 
-        var url = layerInfo.url, subLayers, subLayer, layerName, credential = layerInfo.credential,
-            themeSettings = layerInfo.themeSettings, filter = themeSettings.filter;
+        var url = layerInfo.url,
+            subLayers, subLayer, layerName, credential = layerInfo.credential,
+            themeSettings = layerInfo.themeSettings,
+            filter = themeSettings.filter;
 
         if (isAddFile) {
             var position = JSON.parse(layerInfo.datasourceName);
             var sql = this.getSQLFromFilter(filter);
             if (url) {
                 this.getFeatureFromFileAdded(layerInfo, function (data) {
-                    var sFeaturesArr = [], features, result;
+                    var sFeaturesArr = [],
+                        features, result;
                     if (data.type === 'EXCEL' || data.type === 'CSV') {
                         features = me.parseFeatureFromEXCEL.apply(me, [data.content.rows, data.content.colTitles, false, position]);
                         for (var x = 0, len = features.length; x < len; x++) {
-                            result = jsonsql({attr: features[x].attributes}, sql);
+                            result = jsonsql({
+                                attr: features[x].attributes
+                            }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[x])
                             }
@@ -753,7 +802,9 @@ export class WebMap extends ol.Observable {
                     } else {
                         features = me.parseFeatureFromJson(data.content);
                         for (var i = 0, length = features.length; i < length; i++) {
-                            result = jsonsql({attr: features[i].attributes}, sql);
+                            result = jsonsql({
+                                attr: features[i].attributes
+                            }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[i]);
                             }
@@ -768,13 +819,16 @@ export class WebMap extends ol.Observable {
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function (err) {// eslint-disable-line no-unused-vars
+                }, function (err) { // eslint-disable-line no-unused-vars
                 });
             } else {
-                var newFeautures = [], features = layerInfo.features;
+                var newFeautures = [],
+                    features = layerInfo.features;
                 for (var i = 0, len = features.length; i < len; i++) {
                     var feature = features[i];
-                    var sqlResult = jsonsql({attr: feature.attributes}, sql);
+                    var sqlResult = jsonsql({
+                        attr: feature.attributes
+                    }, sql);
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
@@ -795,7 +849,8 @@ export class WebMap extends ol.Observable {
             }
             layerName = subLayer && subLayer.name;
             this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, DataFormat.ISERVER, (getFeaturesEventArgs) => {
-                var features, feature, result = getFeaturesEventArgs.result, addedFeatures = [];
+                var features, feature, result = getFeaturesEventArgs.result,
+                    addedFeatures = [];
                 if (result && result.features) {
                     features = result.features;
                     for (var fi = 0, felen = features.length; fi < felen; fi++) {
@@ -843,7 +898,8 @@ export class WebMap extends ol.Observable {
 
 
             if (layer instanceof ol.layer.Heatmap) {
-                var heatFeatures = [], featureWeight;
+                var heatFeatures = [],
+                    featureWeight;
                 if (themeSettings.settings && themeSettings.settings[0] && themeSettings.settings[0].featureWeight) {
                     featureWeight = themeSettings.settings[0].featureWeight;
                 }
@@ -886,7 +942,8 @@ export class WebMap extends ol.Observable {
         var themeField = themeSettings.labelField;
 
         var style = labelSource.style;
-        var labelFeatures = [], lngLat;
+        var labelFeatures = [],
+            lngLat;
         var styleInfo = layerInfo.styleString && JSON.parse(layerInfo.styleString);
         for (var i = 0; i < features.length; i++) {
             lngLat = this.getLabelLngLat(themeSettings.vectorType, features[i]);
@@ -953,13 +1010,16 @@ export class WebMap extends ol.Observable {
                 name: datasetName + "@" + datasourceName,
                 attributeFilter: filter
             },
-            datasetNames: [datasourceName + ":" + datasetName]
+            datasetNames: [datasourceName + ":" + datasetName],
+            fromIndex: 0,
+            toIndex: 100000
         });
         new FeatureService(url).getFeaturesBySQL(sqlParam, callback, format);
     }
 
     changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, success) {
-        var me = this, i, len;
+        var me = this,
+            i, len;
         var points = [];
         if (!oldEpsgCode || !newEpsgCode) {
             return;
@@ -974,9 +1034,11 @@ export class WebMap extends ol.Observable {
             oldEpsgCode = 'EPSG:' + oldEpsgCode, newEpsgCode = 'EPSG:' + newEpsgCode;
             me.coordsTransform(oldEpsgCode, newEpsgCode, points, function (layer, features) {
                 return function (newCoors) {
-                    var start = 0, len = newCoors.length;
+                    var start = 0,
+                        len = newCoors.length;
                     for (i = start; i < len; i++) {
-                        var point = points[i], coor = newCoors[i];
+                        var point = points[i],
+                            coor = newCoors[i];
                         point.x = coor.x;
                         point.y = coor.y;
                         point.calculateBounds();
@@ -998,22 +1060,30 @@ export class WebMap extends ol.Observable {
 
     coordsTransform(fromEpsg, toEpsg, point, success) {
         var newCoord;
-        var from = this.SERVER_TYPE_MAP[fromEpsg], to = this.SERVER_TYPE_MAP[toEpsg];
+        var from = this.SERVER_TYPE_MAP[fromEpsg],
+            to = this.SERVER_TYPE_MAP[toEpsg];
         if (fromEpsg === toEpsg || !from || !to) {
             if (point && point.length !== undefined) {
                 newCoord = [];
                 for (var i = 0, len = point.length; i < len; i++) {
-                    var coor = {x: point[i].x, y: point[i].y};
+                    var coor = {
+                        x: point[i].x,
+                        y: point[i].y
+                    };
                     newCoord.push(coor);
                 }
             } else {
-                newCoord = {x: point.x, y: point.y};
+                newCoord = {
+                    x: point.x,
+                    y: point.y
+                };
             }
             if (success) {
                 success.call(this, newCoord);
             }
         } else {
-            var mercator = this.SERVER_TYPE_MAP['EPSG:3857'], wgs84 = this.SERVER_TYPE_MAP['EPSG:4326'];
+            var mercator = this.SERVER_TYPE_MAP['EPSG:3857'],
+                wgs84 = this.SERVER_TYPE_MAP['EPSG:4326'];
             if ((from === mercator || from === wgs84) && (to === mercator || to === wgs84)) {
                 this.projTransform(fromEpsg, toEpsg, point, success);
             } else {
@@ -1032,14 +1102,23 @@ export class WebMap extends ol.Observable {
             newCoor = [];
             for (var i = 0, len = point.length; i < len; i++) {
                 var coor = proj4(fromEpsg, toEpsg, [point[i].x, point[i].y]);
-                newCoor.push({x: coor[0], y: coor[1]});
+                newCoor.push({
+                    x: coor[0],
+                    y: coor[1]
+                });
             }
         } else {
             newCoor = proj4(fromEpsg, toEpsg, [point.x, point.y]);
-            newCoor = {x: newCoor[0], y: newCoor[1]};
+            newCoor = {
+                x: newCoor[0],
+                y: newCoor[1]
+            };
         }
         if (success) {
-            me.dispatchEvent({type: 'coordconvertsuccess', coordinates: newCoor});
+            me.dispatchEvent({
+                type: 'coordconvertsuccess',
+                coordinates: newCoor
+            });
             success.call(me, newCoor);
         }
     }
@@ -1109,7 +1188,64 @@ export class WebMap extends ol.Observable {
             success && success(data);
         }).catch(err => failed && failed(err));
     }
-
+    postTransform(convertType, point, success) {
+        var me = this,
+            epsgArray = [];
+        if (!convertType) {
+            return success.call(me, null);
+        }
+        if (point && point.length !== undefined) {
+            for (var i = 0, len = point.length; i < len; i++) {
+                epsgArray.push({
+                    x: point[i].x,
+                    y: point[i].y
+                });
+            }
+        } else {
+            epsgArray = [{
+                x: point.x,
+                y: point.y
+            }];
+        }
+        if (epsgArray.length === 0) {
+            return success.call(me, null);
+        }
+        var postData = {
+            "convertType": convertType,
+            "points": epsgArray
+        };
+        var url = this.server + "/apps/viewer/coordconvert.json";
+        postData = JSON.stringify(postData);
+        var options = {};
+        if (!CommonUtil.isInTheSameDomain(url) && this.proxy) {
+            options.proxy = this.proxy;
+        }
+        FetchRequest.post(url, postData, options).then((response) => {
+            return response.json()
+        }).then((jsonObj) => {
+            var newCoors = jsonObj;
+            if (!point && point.length !== undefined) {
+                newCoors = newCoors[0];
+            }
+            this.dispatchEvent({
+                type: 'coordconvertsuccess',
+                value: {
+                    newCoors: newCoors
+                }
+            });
+            success.call(this, newCoors);
+        }).catch((err) => {
+            if (!this.actived) {
+                return;
+            }
+            this.dispatchEvent({
+                type: 'coordconvertfailed',
+                value: {
+                    err: err
+                }
+            });
+        })
+    }
     getSQLFromFilter(filter) {
 
         if (!filter) {
@@ -1126,7 +1262,12 @@ export class WebMap extends ol.Observable {
                 return;
             }
             if (this.selectedFeature) {
-                this.fire('featureUnSelected', {feature: this.selectedFeature});
+                this.dispatchEvent({
+                    type: 'featureUnSelected',
+                    value: {
+                        feature: this.selectedFeature
+                    }
+                });
                 this.selectedFeature = null;
             }
             let feature;
@@ -1135,7 +1276,10 @@ export class WebMap extends ol.Observable {
             }
             if (feature) {
                 this.selectedFeature = feature;
-                this.dispatchEvent({type: 'featureSelected', feature: feature});
+                this.dispatchEvent({
+                    type: 'featureSelected',
+                    feature: feature
+                });
             }
         });
         themeLayer.on('mousemove', evt => {
@@ -1148,7 +1292,10 @@ export class WebMap extends ol.Observable {
                     feature = themeLayer.getFeatureById(evt.target.refDataID);
                 }
                 if (feature) {
-                    this.dispatchEvent({type: 'featureMousemove', feature: feature});
+                    this.dispatchEvent({
+                        type: 'featureMousemove',
+                        feature: feature
+                    });
                 }
 
             }

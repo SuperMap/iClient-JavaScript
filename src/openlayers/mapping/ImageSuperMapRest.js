@@ -88,7 +88,7 @@ export class ImageSuperMapRest extends ol.source.TileImage {
         layerUrl += "&transparent=" + transparent;
 
         //是否使用缓存吗，默认为true
-        var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;;
+        var cacheEnabled = options.cacheEnabled !== undefined ? options.cacheEnabled : true;
         layerUrl += "&cacheEnabled=" + cacheEnabled;
 
         //如果有layersID，则是在使用专题图
