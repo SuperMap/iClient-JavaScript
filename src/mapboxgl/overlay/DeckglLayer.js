@@ -1,7 +1,11 @@
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {CommonUtil} from "@supermap/iclient-common";
-import {Util} from "../core/Util";
+import {
+    CommonUtil
+} from "@supermap/iclient-common";
+import {
+    Util
+} from "../core/Util";
 import './graphic';
 
 /**
@@ -289,7 +293,7 @@ export class DeckglLayer {
      * @description 移除所有要素。
      */
     removeData() {
-        this.graphics.length = 0;
+        this.data.length = 0;
 
         if (this.layer.props.data) {
             this.layer.props.data.length = 0;
@@ -307,8 +311,8 @@ export class DeckglLayer {
     _getState() {
         //获取地图信息构建state
         let map = this.map;
-        let width = map.getCanvas().width;
-        let height = map.getCanvas().height;
+        let width = parseInt(this.canvas.style.width);
+        let height = parseInt(this.canvas.style.height);
         let center = map.getCenter();
         let longitude = center.lng;
         let latitude = center.lat;

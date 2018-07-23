@@ -319,8 +319,8 @@ export class GraphicLayer {
      */
     getState() {
         let map = this.map;
-        let width = map.getCanvas().width;
-        let height = map.getCanvas().height;
+        let width = parseInt(this.canvas.style.width);
+        let height = parseInt(this.canvas.style.height);
         let center = map.getCenter();
         let longitude = center.lng;
         let latitude = center.lat;

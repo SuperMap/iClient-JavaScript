@@ -17512,7 +17512,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(url, null, {proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(me._processUrl(url), null, {proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             me.events.triggerEvent("processCompleted", {result: result});
@@ -17558,7 +17558,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(result.newResourceLocation, {_t: new Date().getTime()})
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {_t: new Date().getTime()})
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
@@ -68518,14 +68518,14 @@ external_ol_default.a.supermap.WebMap = WebMap_WebMap;
 /**
  * @class ol.supermap.DataFlowService
  * @category  iServer DataFlow
- * @classdesc 实时数据服务。
+ * @classdesc 数据流服务。
  * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 与客户端交互的实时数据服务地址。
+ * @param {string} url - 与客户端交互的数据流服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
@@ -68633,7 +68633,7 @@ external_ol_default.a.supermap.DataFlowService = services_DataFlowService_DataFl
 /**
  * @class ol.source.DataFlow
  * @category  iServer DataFlow
- * @classdesc 实时数据图层源。
+ * @classdesc 数据流图层源。
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.idField = 'id']
  * @param {Array.<Object>} [opt_options.geometry] - 设置增添的几何要素对象数组。

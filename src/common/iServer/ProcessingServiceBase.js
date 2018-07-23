@@ -50,7 +50,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(url, null, {proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(me._processUrl(url), null, {proxy: me.proxy}).then(function (response) {
             return response.json();
         }).then(function (result) {
             me.events.triggerEvent("processCompleted", {result: result});
@@ -96,7 +96,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(result.newResourceLocation, {_t: new Date().getTime()})
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {_t: new Date().getTime()})
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
