@@ -31,13 +31,13 @@ var displayNameNew = [
 var plotting;
 var group = ["基本", "军标大小", "线形", "填充", "注记", "子标号", "衬线", "箭头类型", "半径", "文字","解除锁定","对象间连线"];
 L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
-    editControl.on(L.supermap.plotting.event.featuresselected, function(event){
+    editControl.on(SuperMap.Plot.Event.featuresselected, function(event){
         showFeatureProperty(event);
     });
-    editControl.on(L.supermap.plotting.event.featuresmodified, function(event){
+    editControl.on(SuperMap.Plot.Event.featuresmodified, function(event){
         showFeatureProperty(event);
     });
-    editControl.on(L.supermap.plotting.event.featuresunselected, function(event){
+    editControl.on(SuperMap.Plot.Event.featuresunselected, function(event){
         hideFeatureProperty(event);
     });
 

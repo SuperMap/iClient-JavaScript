@@ -65,7 +65,7 @@ L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
 
         $.fn.zTree.init($("#tree"), setting, symbolTreeData);
     } else {
-        symbolLibManager.on(L.supermap.plotting.event.initializecompleted, function(result){
+        symbolLibManager.on(SuperMap.Plot.Event.initializecompleted, function(result){
             if(result.libIDs.length !== 0){
                 var symbolTreeData = analysisSymbolTree(symbolLibManager);
                 $.fn.zTree.init($("#tree"), setting, symbolTreeData);

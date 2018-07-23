@@ -148,30 +148,21 @@
             inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
-<<<<<<< .mine
-        if (inArray(includes, 'plottingPanel')) {
-
-
-
-
-
-
-=======
-if (inArray(includes, 'ionRangeSlider')) {
+        if (inArray(includes, 'ionRangeSlider')) {
             inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.css");
             inputCSS("https://cdn.bootcss.com/normalize/8.0.0/normalize.css");
             inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.skinHTML5.css");
             inputScript("https://cdn.bootcss.com/ion-rangeslider/2.2.0/js/ion.rangeSlider.min.js");
         }
-if (inArray(includes, 'plottingPanel')) {
->>>>>>> .theirs
+        if (inArray(includes, 'plottingPanel')) {
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/jquery.ztree.core.js");
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/css/zTreeStyle.css");
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js");
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css");
-        }    }
+        }
+    }
 
     function datGuiI18N() {
         document.writeln("<script>function registerEventListener(evt,fn){" +

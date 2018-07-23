@@ -65,7 +65,7 @@
     L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
     function loadSymbolLib(){
         var symbolLibManager = L.supermap.plotting.getControl(map, serverUrl).getSymbolLibManager();
-        symbolLibManager.on(L.supermap.plotting.event.initializecompleted,symbolLibInitializeCompleted);
+        symbolLibManager.on(SuperMap.Plot.Event.initializecompleted,symbolLibInitializeCompleted);
         symbolLibManager.initializeAsync();
     }
     function symbolLibInitializeCompleted(){

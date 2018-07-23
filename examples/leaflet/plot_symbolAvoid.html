@@ -40,7 +40,7 @@
     function loadSymbolLib() {
         symbolLibManager = plotting.getSymbolLibManager();
         symbolLibManager.libIDs = [421];
-        symbolLibManager.on( L.supermap.plotting.event.initializecompleted,initializeCompleted);
+        symbolLibManager.on( SuperMap.Plot.Event.initializecompleted,initializeCompleted);
         symbolLibManager.initializeAsync();
     }
     function initializeCompleted() {

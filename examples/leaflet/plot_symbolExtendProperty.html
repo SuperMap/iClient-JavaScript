@@ -74,10 +74,10 @@
         plottingLayer.createSymbol(421, 9, dotPoints,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL});
     }
 
-    map.on(L.supermap.plotting.event.featuresselected, function(event){
+    map.on(SuperMap.Plot.Event.featuresselected, function(event){
         showExtendProperty(event);
     });
-    map.on(L.supermap.plotting.event.featuresunselected, function(event){
+    map.on(SuperMap.Plot.Event.featuresunselected, function(event){
         showExtendProperty(event);
     });
 

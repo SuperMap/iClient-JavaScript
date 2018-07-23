@@ -50,7 +50,7 @@
     var plotting = L.supermap.plotting.getControl(map, serverUrl);
     function loadSymbolLib(){
         symbolLibManager = plotting.getSymbolLibManager();
-        symbolLibManager.on(L.supermap.plotting.event.initializecompleted,showSymbolLibInfo);
+        symbolLibManager.on(SuperMap.Plot.Event.initializecompleted,showSymbolLibInfo);
         symbolLibManager.initializeAsync();
     }
     function showSymbolLibInfo(result) {

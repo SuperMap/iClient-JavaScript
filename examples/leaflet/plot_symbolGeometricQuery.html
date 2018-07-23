@@ -42,7 +42,7 @@
     function loadSymbolLib() {
         var symbolLibManager = plotting.getSymbolLibManager();
         symbolLibManager.libIDs = [421];
-        symbolLibManager.on(L.supermap.plotting.event.initializecompleted,symbolLibInitializeCompleted);
+        symbolLibManager.on(SuperMap.Plot.Event.initializecompleted,symbolLibInitializeCompleted);
         symbolLibManager.initializeAsync();
     }
 
@@ -163,7 +163,7 @@
         clearStatus();
     }
 
-    drawControl.on(L.supermap.plotting.event.featureadded, function (event) {
+    drawControl.on(SuperMap.Plot.Event.featureadded, function (event) {
         var layer = event.feature;
         var latLngs = layer.getLatLngs();
         var symbolType = layer.symbolType;
