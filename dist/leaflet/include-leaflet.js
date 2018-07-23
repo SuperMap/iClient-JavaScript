@@ -87,7 +87,7 @@
             inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
         }
         if (!inArray(excludes, 'iclient9-plot-leaflet')) {
-            inputScript("../../dist/iclient9-plot-leaflet.min.js");
+            inputScript("../../dist/leaflet/iclient9-plot-leaflet.min.js");
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript("http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");
