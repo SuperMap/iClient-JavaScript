@@ -6,12 +6,12 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @private
  * @class MapvRenderer
- * @classdesc MapV图层渲染
- * @param {Object} map - 地图 </br>
- * @param {Object} layer - 图层</br>
- * @param {Object} dataSet - 数据集</br>
- * @param {Object} options - 交互时所需可选参数 
- * @extends {BaseLayer}
+ * @classdesc MapV图层渲染。
+ * @param {Object} map - 地图。
+ * @param {Object} layer - 图层。
+ * @param {MapV.DataSet} dataSet - 数据集。
+ * @param {Object} options - 交互时所需可选参数。
+ * @extends {MapV.BaseLayer}
  *
  */
 export class MapvRenderer extends BaseLayer {
@@ -47,8 +47,8 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.clickEvent
-     * @description  点击绑定事件
-     * @param {Object} e - 事件
+     * @description  点击绑定事件。
+     * @param {Object} e - 事件。
      */
     clickEvent(e) {
         var pixel = e.point;
@@ -57,8 +57,8 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.mousemoveEvent
-     * @description  鼠标移动事件
-     * @param {Object} e - 事件
+     * @description  鼠标移动事件。
+     * @param {Object} e - 事件。
      */
     mousemoveEvent(e) {
         var pixel = e.point;
@@ -67,7 +67,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.bindEvent
-     * @description 绑定事件
+     * @description 绑定事件。
      */
     bindEvent() {
         var map = this.map;
@@ -83,7 +83,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.unbindEvent
-     * @description 解绑事件
+     * @description 解绑事件。
      */
     unbindEvent() {
         var map = this.map;
@@ -100,7 +100,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.getContext
-     * @description 获取信息
+     * @description 获取信息。
      */
     getContext() {
         return this.canvasLayer.canvas.getContext(this.context);
@@ -108,9 +108,9 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.addData
-     * @description 添加数据
-     * @param {oject} data - 待添加的数据 </br>
-     * @param {oject} options - 待添加的数据信息
+     * @description 添加数据。
+     * @param {oject} data - 待添加的数据。
+     * @param {oject} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;
@@ -125,10 +125,10 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.update
-     * @description 更新图层
-     * @param {Object} opt - 待更新的数据<br>
-     * @param {Object} opt.data - mapv数据集<br>
-     * @param {Object} opt.options - mapv绘制参数 
+     * @description 更新图层。
+     * @param {Object} opt - 待更新的数据。
+     * @param {Object} opt.data - mapv 数据集。
+     * @param {Object} opt.options - mapv 绘制参数。
      */
     update(opt) {
         var update = opt || {};
@@ -146,7 +146,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.getData
-     * @description 获取数据
+     * @description 获取数据。
      */
     getData() {
         return this.dataSet;
@@ -154,8 +154,8 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.removeData
-     * @description 删除符合过滤条件的数据
-     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @description 删除符合过滤条件的数据。
+     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -174,7 +174,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapVRenderer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.dataSet && this.dataSet.clear();
@@ -185,9 +185,9 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapVRenderer.prototype.updateData
-     * @param {Object} dataSet - 数据集 </br>
-     * @param {Object} options - 数据项配置 </br>
-     * @description  更新数据
+     * @param {Object} dataSet - 数据集。
+     * @param {Object} options - 数据项配置。
+     * @description  更新数据。
      */
     updateData(dataSet, options) {
         if (dataSet && dataSet.get) {
@@ -294,7 +294,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.addAnimatorEvent
-     * @description 添加动画事件
+     * @description 添加动画事件。
      */
     addAnimatorEvent() {
 
@@ -302,7 +302,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.removeEvent
-     * @description 移除事件
+     * @description 移除事件。
      */
     removeEvent() {
         this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
@@ -310,7 +310,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.resizeEvent
-     * @description 调整事件
+     * @description 调整事件。
      */
     resizeEvent() {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
@@ -402,8 +402,8 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.clear
-     * @param {object} context - 当前环境
-     * @description 清除环境
+     * @param {object} context - 当前环境。
+     * @description 清除环境。
      */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, parseInt(this.map.getCanvas().style.width), parseInt(this.map.getCanvas().style.height));
@@ -411,7 +411,7 @@ export class MapvRenderer extends BaseLayer {
 
     /**
      * @function MapvRenderer.prototype.draw
-     * @description 渲染绘制
+     * @description 渲染绘制。
      */
     draw() {
         this._canvasUpdate();

@@ -5,13 +5,13 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 /**
  * @class mapboxgl.supermap.RangeTheme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维分段专题图
- * @param  {string} id - 专题图图层id</br>
- * @param  {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer</br>
- * @param  {Array} layerOptions.heightStops - 新增参数，数据高度分段数组</br>
- * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组</br>
- * @param  {number} layerOptions.base - 新增参数，数据分段线性增量</br>
- * @param  {number} layerOptions.legendRatio - 新增参数，图例数值扩大系数
+ * @classdesc 三维分段专题图。
+ * @param  {string} [id] - 专题图图层id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param  {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer。
+ * @param  {Array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
+ * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
+ * @param  {number} [layerOptions.base] - 新增参数，数据分段线性增量。
+ * @param  {number} [layerOptions.legendRatio=1] - 新增参数，图例数值扩大系数。
  * @example
  * new mapboxgl.supermap.RangeTheme3DLayer(layerId, map, {
  *      enableHighlight:true,
@@ -31,24 +31,24 @@ export class RangeTheme3DLayer extends Theme3DLayer {
         super(id, layerOptions);
         /**
          * @member  {Array} mapboxgl.supermap.RangeTheme3DLayer.prototype.heightStops 
-         * @description 数据高度分段数组
+         * @description 数据高度分段数组。
          */
         this.heightStops = null;
 
         /**
          * @member  {Array} mapboxgl.supermap.RangeTheme3DLayer.prototype.colorStops 
-         * @description 数据颜色分段数组
+         * @description 数据颜色分段数组。
          */
         this.colorStops = null;
         /**
          * @member  {number} mapboxgl.supermap.RangeTheme3DLayer.prototype.base 
-         * @description 数据分段线性增量
+         * @description 数据分段线性增量。
          */
         this.base = null;
 
         /**
-         * @member  {number} mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio 
-         * @description 图例数值扩大系数
+         * @member  {number} [mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio=1]
+         * @description 图例数值扩大系数。
          */
         this.legendRatio = 1;
 
@@ -57,8 +57,8 @@ export class RangeTheme3DLayer extends Theme3DLayer {
 
     /**
      * @function  mapboxgl.supermap.RangeTheme3DLayer.prototype.getLayerStyleOptions
-     * @description 获取图层样式
-     * @returns {Object} mapbox gl样式对象
+     * @description 获取图层样式。
+     * @returns {Object} mapboxgl样式对象。
      */
     getLayerStyleOptions() {
         var opacity = this.opacity == null ? 1 : this.opacity;
@@ -99,8 +99,8 @@ export class RangeTheme3DLayer extends Theme3DLayer {
 
     /**
      * @function mapboxgl.supermap.RangeTheme3DLayer.prototype.getHighlightStyleOptions
-     * @description 获取高亮样式
-     * @returns {Object} mapbox gl样式对象
+     * @description 获取高亮样式。
+     * @returns {Object} mapboxgl样式对象。
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

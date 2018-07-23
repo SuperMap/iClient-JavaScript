@@ -297,6 +297,10 @@
                 "name": "高效率点图层",
                 "name_en": "Graphic"
             },
+            "DeckGL": {
+                "name": "DeckGL",
+                "name_en": "DeckGL"
+            },
             "Theme": {
                 "name": "客户端专题图",
                 "name_en": "Theme"

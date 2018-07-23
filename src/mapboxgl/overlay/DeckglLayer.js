@@ -6,72 +6,67 @@ import './graphic';
 
 /**
  * @class mapboxgl.supermap.DeckglLayer
- * @category  Visualization Graphic
- * @classdesc Deckgl高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
+ * @category  Visualization DeckGL
+ * @classdesc Deckgl 高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
  *            正六边形图层（蜂巢图层）、网格图层，只需给定相依配置，因此，在创建图层之前，请仔细阅读参数配置。
- * @param {string} layerTypeID - 高效率图层类型ID，必选参数，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
+ * @param {string} layerTypeID - 高效率图层类型 ID，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
  *                 "polygon-layer" 高效率面图层、 "arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
  * @param {Object} options -  图层配置项，包括以下参数：
- * @param {Array.<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型，
- * @param {Object} options.callback - deckgl 图层回调函数配置项，
- * @param {Object} options.layerId - DeckglLayer 图层 Dom 元素ID，
+ * @param {Array.<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型。
+ * @param {Object} options.callback - deckgl 图层回调函数配置项。
+ * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
- *        @param {number} options.props.opacity - 公共配置项：图层透明度，可选参数，默认为 1；
- *        @param {boolean} options.props.pickable - 公共配置项：是否响应鼠标事件（鼠标点击，鼠标滑动），可选参数，默认为 false；
- *        @param {function} options.props.autoHighlight - 公共配置项：鼠标滑动高亮要素，可选参数，默认为 false；
- *        @param {function} options.props.highlightColor - 公共配置项：鼠标滑动高亮颜色，可选参数，默认为 [0, 0, 128, 128]；
- *        @param {function} options.props.onClick - 公共配置项：鼠标点击事件，可选参数，默认为空；
- *        @param {function} options.props.onHover - 公共配置项：鼠标滑动事件，可选参数，默认为空；
- *
- *        @param {number} options.props.radiusScale - "scatter-plot" 配置项：散点半径比例，可选参数，默认为 1；
- *        @param {boolean} options.props.outline - "scatter-plot" 配置项：是否边线显示，默认为 false；
- *        @param {number} options.props.strokeWidth  - "scatter-plot" 配置项：边线宽度，默认为 1;
- *        @param {number} options.props.radiusMinPixels - "scatter-plot" 配置项：半径最小像素值，默认为 0；
- *        @param {number} options.props.radiusMaxPixels  - "scatter-plot" 配置项：半径最大像素值，默认为 Number.MAX_SAFE_INTEGER；
- *        @param {boolean} options.props.fp64 - "scatter-plot" 配置项：否应以高精度64位模式呈现图层，默认为 false；
- *        @param {boolean} options.props.lightSettings - 公共配置项：光照，包含以下几个配置；
- *              @param {number} options.props.lightSettings.numberOfLights  - 光照配置项：光照值, 默认为 `1`. 最大值为 `5`.
- *              @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`.
- *              @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`.
- *              @param {number} options.props.lightSettings.coordinateSystem  - 光照配置项：指定灯位置的坐标系. 默认为 `COORDINATE_SYSTEM.LNGLAT`.
- *              @param {number} options.props.lightSettings.coordinateOrigin - 光照配置项：指定灯位置的坐标原点. 默认为 `[0, 0, 0]`.
- *              @param {number} options.props.lightSettings.modelMatrix - 光照配置项：光位置的变换矩阵。 默认`null`.
- *              @param {number} options.props.lightSettings.ambientRatio - 光照配置项：光照的环境比例. 默认为 `0.4`.
- *              @param {number} options.props.lightSettings.diffuseRatio - 光照配置项：光的漫反射率. 默认为 `0.6`.
- *              @param {number} options.props.lightSettings.specularRatio - 光照配置项：光的镜面反射率. 默认为 `0.8`.
- *
- *        @param {number} options.props.widthScale - "path-layer" 配置项：线宽比例，可选参数，默认为 1；
- *        @param {number} options.props.widthMinPixels - "path-layer" 配置项：线宽最小像素值，可选参数，默认为 0；
- *        @param {number} options.props.widthMaxPixels - "path-layer" 配置项：线宽最大像素值，可选参数，默认为 Number.MAX_SAFE_INTEGER；
- *        @param {boolean} options.props.rounded - "path-layer" 配置项：节点是否绘制为弧形，可选参数，默认为 false；
- *        @param {number} options.props.miterLimit - "path-layer" 配置项：节点相对于线宽的最大范围，可选参数，默认为 4，仅在 rounded 为 false 时有效；
- *        @param {boolean} options.props.fp64 - "path-layer" 配置项：否应以高精度64位模式呈现图层，默认为 false；
- *        @param {boolean} options.props.dashJustified - "path-layer" 配置项：是否虚线形式显示，可选参数，默认为 false，仅在 getDashArray() 回调函数被指定时有效；
- *
- *        @param {boolean} options.props.filled - "polygon-layer" 配置项：是否填充面，可选参数，默认为 true；
- *        @param {boolean} options.props.stroked - "polygon-layer" 配置项：是否绘制边线，可选参数，默认为 true；
- *        @param {boolean} options.props.extruded - "polygon-layer" 配置项：是否拉伸建筑，可选参数，默认为 false；
- *        @param {boolean} options.props.wireframe - "polygon-layer" 配置项：当面被拉伸为建筑时，是否描绘建筑物边线，可选参数，默认为 false；
- *        @param {boolean} options.props.elevationScale - "polygon-layer" 配置项：海拔比例，可选参数，默认为 1；
- *        @param {boolean} options.props.lineWidthScale - "polygon-layer" 配置项：线宽比例，可选参数，默认为 1；
- *        @param {boolean} options.props.lineWidthMinPixels - "polygon-layer" 配置项：线宽最小像素值，可选参数，默认为 0；
- *        @param {boolean} options.props.lineWidthMaxPixels - "polygon-layer" 配置项：线宽最大像素值，可选参数，默认为 Number.MAX_SAFE_INTEGER；
- *        @param {boolean} options.props.lineJointRounded - "polygon-layer" 配置项：节点是否绘制为弧形，可选参数，默认为 false；
- *        @param {boolean} options.props.lineMiterLimit - "polygon-layer" 配置项：节点相对于线宽的最大范围，可选参数，默认为 4，仅在 lineJointRounded 为 false 时有效；
- *        @param {boolean} options.props.lineDashJustified - "polygon-layer" 配置项：是否虚线形式显示，可选参数，默认为 false，仅在 getLineDashArray() 回调函数被指定时有效；
- *        @param {boolean} options.props.fp64 - "polygon-layer" 配置项：否应以高精度64位模式呈现图层，可选参数，默认为 false；
- *
- *        @param {boolean} options.props.fp64 - "arc-layer" 配置项：否应以高精度64位模式呈现图层，可选参数，默认为 false；
- *        @param {boolean} options.props.strokeWidth - "arc-layer" 配置项：线宽，可选参数，默认为 1；
- *
- *        @param {boolean} options.props.radius - "hexagon-layer" 配置项：六边形半径值，可选参数，默认为 1000；
- *        @param {boolean} options.props.extruded - "hexagon-layer" 配置项：是否拉伸要素，可选参数，默认为 false；
- *        @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；
- *        @param {boolean} options.props.upperPercentile - "hexagon-layer" 配置项：筛选箱并通过upperPercentile重新计算颜色。 颜色值大于upperPercentile的六边形将被隐藏，默认为 100；
- *        @param {boolean} options.props.elevationScale - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。可选参数，默认为 1；
- *        @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项： ；
- *        @param {boolean} options.props.colorDomain  - "hexagon-layer" 配置项：色阶，默认为 false；
- *        @param {boolean} options.props.colorRange   - "hexagon-layer" 配置项：色带，默认为 [[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]；
+ * @param {number} [options.props.opacity=1] - 公共配置项：图层透明度。
+ * @param {boolean} [options.props.pickable=false] - 公共配置项：是否响应鼠标事件（鼠标点击，鼠标滑动)。
+ * @param {function} [options.props.autoHighlight=false] - 公共配置项：鼠标滑动高亮要素。
+ * @param {function} [options.props.highlightColor=[0, 0, 128, 128]] - 公共配置项：鼠标滑动高亮颜色。
+ * @param {function} [options.props.onClick] - 公共配置项：鼠标点击事件。
+ * @param {function} [options.props.onHover] - 公共配置项：鼠标滑动事件。
+ * @param {number} [options.props.radiusScale=1] - "scatter-plot" 配置项：散点半径比例。
+ * @param {boolean} [options.props.outline=false] - "scatter-plot" 配置项：是否边线显示。
+ * @param {number} [options.props.strokeWidth=1]  - "scatter-plot" 配置项：边线宽度。
+ * @param {number} [options.props.radiusMinPixels=0] - "scatter-plot" 配置项：半径最小像素值。
+ * @param {number} [options.props.radiusMaxPixels=Number.MAX_SAFE_INTEGER]  - "scatter-plot" 配置项：半径最大像素值。
+ * @param {boolean} [options.props.fp64=false] - "scatter-plot" 配置项：否应以高精度64位模式呈现图层。
+ * @param {boolean} options.props.lightSettings - 公共配置项：光照，包含以下几个配置；
+ * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
+*  @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
+*  @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
+*  @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
+*  @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
+*  @param {number} [options.props.lightSettings.modelMatrix=null] - 光照配置项：光位置的变换矩阵。
+*  @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
+*  @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
+*  @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
+ * @param {number} [options.props.widthScale=1] - "path-layer" 配置项：线宽比例。
+ * @param {number} [options.props.widthMinPixels=0] - "path-layer" 配置项：线宽最小像素值。
+ * @param {number} [options.props.widthMaxPixels=Number.MAX_SAFE_INTEGER] - "path-layer" 配置项：线宽最大像素值。
+ * @param {boolean} [options.props.rounded=false] - "path-layer" 配置项：节点是否绘制为弧形。
+ * @param {number} [options.props.miterLimit=4] - "path-layer" 配置项：节点相对于线宽的最大范围,仅在 rounded 为 false 时有效；
+ * @param {boolean} [options.props.fp64=false] - "path-layer" 配置项：否应以高精度64位模式呈现图层。
+ * @param {boolean} [options.props.dashJustified=false] - "path-layer" 配置项：是否虚线形式显示，仅在 getDashArray() 回调函数被指定时有效。
+ * @param {boolean} [options.props.filled=true] - "polygon-layer" 配置项：是否填充面。
+ * @param {boolean} [options.props.stroked=true] - "polygon-layer" 配置项：是否绘制边线。
+ * @param {boolean} [options.props.extruded=false] - "polygon-layer" 配置项：是否拉伸建筑。
+ * @param {boolean} [options.props.wireframe=false] - "polygon-layer" 配置项：当面被拉伸为建筑时，是否描绘建筑物边线。
+ * @param {boolean} [options.props.elevationScale=1] - "polygon-layer" 配置项：海拔比例。
+ * @param {boolean} [options.props.lineWidthScale=1] - "polygon-layer" 配置项：线宽比例。
+ * @param {boolean} [options.props.lineWidthMinPixels=0] - "polygon-layer" 配置项：线宽最小像素值。
+ * @param {boolean} [options.props.lineWidthMaxPixels=Number.MAX_SAFE_INTEGER] - "polygon-layer" 配置项：线宽最大像素值。
+ * @param {boolean} [options.props.lineJointRounded=false] - "polygon-layer" 配置项：节点是否绘制为弧形。
+ * @param {boolean} [options.props.lineMiterLimit=4] - "polygon-layer" 配置项：节点相对于线宽的最大范围，仅在 lineJointRounded 为 false 时有效。
+ * @param {boolean} [options.props.lineDashJustified=false] - "polygon-layer" 配置项：是否虚线形式显示，仅在 getLineDashArray() 回调函数被指定时有效。
+ * @param {boolean} [options.props.fp64=false] - "polygon-layer" 配置项：否应以高精度64位模式呈现图层。
+ * @param {boolean} [options.props.fp64=false] - "arc-layer" 配置项：否应以高精度64位模式呈现图层。
+ * @param {boolean} [options.props.strokeWidth=1] - "arc-layer" 配置项：线宽。
+ * @param {boolean} [options.props.radius=1000] - "hexagon-layer" 配置项：六边形半径值。
+ * @param {boolean} [options.props.extruded=false] - "hexagon-layer" 配置项：是否拉伸要素。
+ * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；
+ * @param {boolean} [options.props.upperPercentile=100] - "hexagon-layer" 配置项：筛选箱并通过upperPercentile重新计算颜色。 颜色值大于upperPercentile的六边形将被隐藏。
+ * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
+ * @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项：
+ * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
+ * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
  */
 export class DeckglLayer {
 
@@ -79,12 +74,12 @@ export class DeckglLayer {
         // Util.extend(defaultProps, options);
         /**
          * @member mapboxgl.supermap.DeckglLayer.prototype.id - {string}
-         * @description 高效率点图层id
+         * @description 高效率点图层 id。
          */
         this.layerTypeID = layerTypeID;
         /**
          * @member mapboxgl.supermap.DeckglLayer.prototype.graphics - {Array.<mapboxgl.supermap.Graphic>}
-         * @description 点要素对象数组
+         * @description 点要素对象数组。
          */
         this.data = [].concat(options.data);
 
@@ -95,7 +90,7 @@ export class DeckglLayer {
 
         /**
          * @member {boolean} [mapboxgl.supermap.DeckglLayer.prototype.visibility=true]
-         * @description 图层显示状态属性
+         * @description 图层显示状态属性。
          */
         this.visibility = true;
 
@@ -103,7 +98,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.onAdd
-     * @param {mapboxgl.Map} map - mapboxgl地图对象。
+     * @param {mapboxgl.Map} map - mapbox GL 地图对象。
      * @return {mapboxgl.supermap.DeckglLayer}
      */
     onAdd(map) {
@@ -136,7 +131,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.remove
-     * @description 删除该图层
+     * @description 删除该图层。
      */
     remove() {
         this.map.off('render', this._moveEvent.bind(this));
@@ -147,7 +142,7 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.removeFromMap
      * @deprecated
-     * @description 删除该图层
+     * @description 删除该图层。
      */
     removeFromMap() {
         this.remove();
@@ -157,8 +152,8 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param {string} layerID - 待插入的图层ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID - 待插入的图层 ID。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -183,7 +178,7 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} visibility - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
      */
     setVisibility(visibility) {
         if (this.canvas && visibility !== this.visibility) {
@@ -197,16 +192,16 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.setStyle
      * @description 设置图层整体样式
-     * @param {Object} styleOptions - 样式对象
-     * @param {Array.<number>} styleOptions.color - 点颜色
-     * @param {number} styleOptions.radius - 点半径
-     * @param {number} styleOptions.opacity - 不透明度
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组
-     * @param {number} styleOptions.radiusScale - 点放大倍数
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)
-     * @param {number} styleOptions.strokeWidth - 边框大小
-     * @param {boolean} styleOptions.outline - 是否显示边框
+     * @param {Object} styleOptions - 样式对象。
+     * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
+     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.opacity=0.8] - 不透明度。。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持rgba数组。
+     * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.strokeWidth=12] - 边框大小。
+     * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
     setStyle(styleOptions) {
         Util.extend(this.props, styleOptions);
@@ -215,8 +210,8 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.setData
-     * @description 设置绘制的点要素数据，会覆盖之前的所有要素
-     * @param {Array.<Object>}  data - 点要素对象数组
+     * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
+     * @param {Array.<Object>}  data - 点要素对象数组。
      */
     setData(data) {
         this.data = this.data || [];
@@ -237,8 +232,8 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.addData
-     * @description 添加点要素，不会覆盖之前的要素
-     * @param {Array.<Object>}  data - 点要素对象数组
+     * @description 添加点要素，不会覆盖之前的要素。
+     * @param {Array.<Object>}  data - 点要素对象数组。
      */
     addData(data) {
         this.data = this.data || [];
@@ -255,7 +250,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.update
-     * @description 更新图层
+     * @description 更新图层。
      */
     update() {
         let changeFlags = {
@@ -281,7 +276,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.clear
-     * @description 释放图层资源
+     * @description 释放图层资源。
      */
     // todo 还有哪些资源应该被释放？
     clear() {
@@ -291,7 +286,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.removeData
-     * @description 移除所有要素
+     * @description 移除所有要素。
      */
     removeData() {
         this.graphics.length = 0;
@@ -351,7 +346,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype._createLayerByLayerTypeID
-     * @description 判别当前创建图层类型
+     * @description 判别当前创建图层类型。
      * @private
      */
     _createLayerByLayerTypeID() {

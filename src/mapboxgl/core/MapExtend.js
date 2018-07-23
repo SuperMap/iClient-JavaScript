@@ -3,7 +3,7 @@ import '../core/Base';
 
 /**
  * @function mapboxgl.supermap.MapExtend
- * @description  扩展了mapboxgl.Map对图层相关的操作
+ * @description  扩展了mapboxgl.Map对图层相关的操作。
  * @private
  */
 export var MapExtend = function () {
@@ -78,7 +78,7 @@ export var MapExtend = function () {
 
     /**
      * @function mapboxgl.supermap.MapExtend.prototype.removeFromMap
-     * @description  移除事件
+     * @description  移除事件。
      */
     function removeLayer(layer) {
         layer.removeFromMap();
@@ -87,7 +87,7 @@ export var MapExtend = function () {
     /**
      * @function mapboxgl.supermap.MapExtend.prototype.setVisibility
      * @description  设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} visibility - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
      */
     function setVisibility(layer, visibility) {
         layer.setVisibility(visibility);
@@ -96,8 +96,8 @@ export var MapExtend = function () {
     /**
      * @function mapboxgl.supermap.MapExtend.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param {string} layerID -待插入的图层ID。</br>
-     * @param {boolean} beforeLayerID - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID -待插入的图层ID。
+     * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
      */
     function moveLayer(layerID, beforeLayerID) {
         var layer = document.getElementById(layerID);

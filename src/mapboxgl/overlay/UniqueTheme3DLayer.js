@@ -5,11 +5,11 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 /**
  * @class mapboxgl.supermap.UniqueTheme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维单值专题图
- * @param {string} id - 专题图图层id</br>
- * @param {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer,</br>
- * @param {number} layerOptions.height - 新增参数，如果数据指定的heightField(默认为height)没有可以表示高度的字段，可以为所有数据统一设置一个高度</br>
- * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组
+ * @classdesc 三维单值专题图。
+ * @param {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer。
+ * @param {number} [layerOptions.height] - 新增参数，如果数据指定的heightField(默认为height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
+ * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  */
 export class UniqueTheme3DLayer extends Theme3DLayer {
 
@@ -18,7 +18,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
         super(id, layerOptions);
         /**
          * @member  mapboxgl.supermap.UniqueTheme3DLayer.prototype.colorStops -{Array}
-         * @description 数据颜色数组，如[["绿地","#CD7054"],["道路","#AD1283"]]
+         * @description 数据颜色数组，如[["绿地","#CD7054"],["道路","#AD1283"]]。
          */
         this.colorStops = null;
         this._extend(this, layerOptions);
@@ -26,8 +26,8 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
 
     /**
      * @function  mapboxgl.supermap.UniqueTheme3DLayer.prototype.getLayerStyleOptions
-     * @description 获取图层样式
-     * @returns {Object} mapbox gl样式对象
+     * @description 获取图层样式。
+     * @returns {Object} mapbox GL 样式对象。
      */
     getLayerStyleOptions() {
         var opacity = this.opacity == null ? 1 : this.opacity;
@@ -61,8 +61,8 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
 
     /**
      * @function mapboxgl.supermap.UniqueTheme3DLayer.prototype.getHighlightStyleOptions
-     * @description 获取高亮样式
-     * @returns {Object} mapbox gl样式对象
+     * @description 获取高亮样式。
+     * @returns {Object} mapboxgl样式对象。
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

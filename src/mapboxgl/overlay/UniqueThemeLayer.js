@@ -7,17 +7,17 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @class mapboxgl.supermap.UniqueThemeLayer
  * @category  Visualization Theme
  * @classdesc  单值专题图层。
- * @param {string} name - 图层名。</br>
- * @param {Object} opt_options - 参数。</br>
- * @param {string} opt_options.id - 专题图层ID。</br>
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。</br>
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。</br>
- * @param {number} opt_options.opacity - 图层透明度。</br>
- * @param {string} opt_options.themeField - 指定创建专题图字段。</br>
- * @param {Object} opt_options.style - 专题图样式。</br>
- * @param {Object} opt_options.styleGroups - 各专题类型样式组。</br>
- * @param {boolean} opt_options.isHoverAble - 是否开启hover事件。</br>
- * @param {Object} opt_options.highlightStyle - 开启hover事件后，触发的样式风格。
+ * @param {string} name - 图层名。
+ * @param {Object} opt_options - 参数。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
+ * @param {number} [opt_options.opacity=1] - 图层透明度。
+ * @param {string} opt_options.themeField - 指定创建专题图字段。
+ * @param {Object} opt_options.style - 专题图样式。
+ * @param {Object} opt_options.styleGroups - 各专题类型样式组。
+ * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
+ * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
  */
 export class Unique extends GeoFeature {
@@ -34,8 +34,8 @@ export class Unique extends GeoFeature {
     /**
      * @private
      * @function mapboxgl.supermap.UniqueThemeLayer.prototype.createThematicFeature
-     * @description 创建专题图要素
-     * @param {Object} feature - 要创建的专题图形要素
+     * @description 创建专题图要素。
+     * @param {Object} feature - 要创建的专题图形要素。
      */
     createThematicFeature(feature) {
         //赋 style
@@ -62,8 +62,8 @@ export class Unique extends GeoFeature {
     /**
      * @private
      * @function mapboxgl.supermap.UniqueThemeLayer.prototype.getStyleByData
-     * @description 通过数据获取style
-     * @param {Object} fea - 要素数据
+     * @description 通过数据获取style。
+     * @param {Object} fea - 要素数据。
      */
     getStyleByData(fea) {
         var style = {};
