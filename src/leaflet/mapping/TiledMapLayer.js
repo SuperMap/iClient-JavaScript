@@ -35,7 +35,7 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
- * @param {string} [options.tileSize] - 瓦片大小。
+ * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  */
 export var TiledMapLayer = L.TileLayer.extend({
 

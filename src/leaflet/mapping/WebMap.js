@@ -437,6 +437,8 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createWmsLayer
      * @description 创建 Wms 图层。
      * @param {Object} layerInfo - 图层信息。
+     * @returns {L.Layer} 返回 Wms 图层对象。
+
      */
     createWmsLayer: function (layerInfo) {
         var url = layerInfo.url,

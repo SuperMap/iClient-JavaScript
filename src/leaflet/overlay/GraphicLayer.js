@@ -46,7 +46,7 @@ const CSS_TRANSFORM = (function () {
  * @extends {L.Path}
  * @param {Array.<L.supermap.graphic>} graphics - 要素对象。
  * @param {Object} options - 图层参数。
- * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)。
+ * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"（webgl渲染目前只支持散点）。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
@@ -143,7 +143,7 @@ export var GraphicLayer = L.Path.extend({
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持rgba数组。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。

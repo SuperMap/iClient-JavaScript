@@ -17,7 +17,7 @@ import Attributions from '../core/Attributions'
  * @category Visualization HeatMap
  * @param {string} name - 图层名称。
  * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。（当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为 false）。
- * @param {Array.<string>} [colors=['blue', 'cyan', 'lime', 'yellow', 'red']] - 颜色线性渐变数组,颜色值必须为 canvas 所支持的。
+ * @param {Array.<string>} [colors=['blue', 'cyan', 'lime', 'yellow', 'red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {Object} options - 构造参数。
  * @param {L.Map} options.map - leaflet 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("heatMapLayer_") 创建专题图层 ID。
@@ -121,7 +121,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式。
+     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式。
      *
      * @example
      * var geojson = {

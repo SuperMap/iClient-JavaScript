@@ -9,7 +9,7 @@ import {FetchRequest} from '@supermap/iclient-common';
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {string} url - 矢量瓦片json表述服务地址。
+ * @param {string} url - 矢量瓦片 JSON 表述服务地址。
  */
 export var VectorTileJSON = L.Class.extend({
 

@@ -5,10 +5,10 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.dataFlowService
- * @classdesc 实时数据服务类。
+ * @classdesc 数据流服务类。
  * @category  iServer DataFlow
  * @extends {L.supermap.ServiceBase}
- * @param {string} url - 实时数据服务地址。
+ * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {function} [options.style] - 设置数据加载样式。

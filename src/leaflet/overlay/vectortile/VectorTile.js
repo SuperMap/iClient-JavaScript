@@ -16,7 +16,7 @@ import {VectorTileFormat} from '../VectorTileFormat';
  * @extends {L.Class}
  * @param {Object} options - 矢量瓦片类构造可选参数。
  * @param {string} [options.layer] - 图层名称。
- * @param {number} [options.tileSize=256] - 瓦片大小。
+ * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {string} [options.format] - 返回值类型。
  * @param {Object} [options.coords] -  坐标系统对象。
  * @param {Object} [options.renderer] - 渲染器对象。

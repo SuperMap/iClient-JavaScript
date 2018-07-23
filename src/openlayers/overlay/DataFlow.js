@@ -4,7 +4,7 @@ import {DataFlowService} from "../services/DataFlowService";
 /**
  * @class ol.source.DataFlow
  * @category  iServer DataFlow
- * @classdesc 实时数据图层源。
+ * @classdesc 数据流图层源。
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.idField = 'id']
  * @param {Array.<Object>} [opt_options.geometry] - 设置增添的几何要素对象数组。

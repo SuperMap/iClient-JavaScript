@@ -13,7 +13,7 @@ import "../core/Base";
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {Object} [options.style] - 图层样式。
  * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
- * @param {string} [options.tileSize='256'] - 瓦片大小。
+ * @param {(number|L.Point)} [options.tileSize='256'] - 瓦片大小。
  * @param {string} [options.requestEncoding='KVP'] - KVP 或者 REST 的请求方式。
  * @param {Object} [options.tilematrixSet] - 瓦片矩阵集。
  * @param {string} [options.attribution] - 版权信息。

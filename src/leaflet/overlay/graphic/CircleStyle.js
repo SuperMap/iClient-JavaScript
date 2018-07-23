@@ -17,7 +17,7 @@ import '../../core/Base';
  * @param {string} [options.fillColor] - 填充色。
  * @param {number} [options.fillOpacity=0.2] - 填充透明度。
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
- * @param {number} [options.radius=3] - 半径
+ * @param {number} [options.radius=3] - 半径。
  */
 export var CircleStyle = L.Class.extend({
 

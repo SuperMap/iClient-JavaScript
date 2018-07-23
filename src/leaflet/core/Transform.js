@@ -4,11 +4,11 @@ import {CommonUtil} from '@supermap/iclient-common';
 /**
  * @function L.Util.transform
  * @description 将要素转换为指定坐标。
- * @param {(L.marker|L.circleMarker|L.polyline|L.polygon|L.rectangle|L.latLngBounds|L.bounds|Object)} feature - 待转要素包括 Leaflet Vector Layers
- *              的 L.marker|L.circleMarker|L.polyline|L.polygon|L.rectangle|L.latLngBounds|L.bounds 类型和 GeoJOSN 规范数据类型
- * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换目标坐标系，默认为 L.CRS.EPSG4326
- * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系
- * @return {Object} 返回GeoJOSN 规范数据类型
+ * @param {(L.Marker|L.CircleMarker|L.Polyline|L.Polygon|L.Rectangle|L.LatLngBounds|L.Bounds|Object)} feature - 待转要素包括 Leaflet Vector Layers
+ *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds} 类型和 GeoJOSN 规范数据类型。
+ * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换源坐标系。
+ * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系。
+ * @return {Object} 返回 GeoJOSN 规范数据类型。
  */
 export var transform = function (feature, sourceCRS = L.CRS.EPSG4326, targetCRS) {
     let selfFeatures = null;

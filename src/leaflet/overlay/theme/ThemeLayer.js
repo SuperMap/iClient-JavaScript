@@ -234,7 +234,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
-     * @param {string} property - 要素得某个属性名。
+     * @param {string} property - 要的某个属性名。
      * @param {string} value - 对应属性名得值。
      */
     getFeatureBy: function (property, value) {

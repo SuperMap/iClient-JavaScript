@@ -679,7 +679,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.rotationBounds
      * @description 旋转 bounds。
      *
-     * @param {SuperMap.Bounds} bounds - 要旋转的bounds。
+     * @param {SuperMap.Bounds} bounds - 要旋转的 bounds。
      * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
      * @param {number}  angle - 旋转角度（顺时针）。
      *
@@ -717,7 +717,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {number} ry - 旋转中心点纵坐标。
      * @param {number} angle - 旋转角度。
      *
-     * @return {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @return {Object} 旋转后的坐标位置对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      */
     getRotatedLocation: function (x, y, rx, ry, angle) {
         var loc = {}, x0, y0;
@@ -882,7 +882,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面。(射线法)。
      *
-     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @return {boolean} 点是否在多边形内。
      */

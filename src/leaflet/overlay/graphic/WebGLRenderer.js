@@ -12,7 +12,7 @@ const emptyFunc = L.Util.falseFn;
  * @param {number} options.width - 地图宽度。
  * @param {number} options.height - 地图高度。
  * @param {HTMLElement} options.container - 放置渲染器的父元素。
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]]  - 颜色,目前只支持 rgba 数组。默认[0, 0, 0, 255]。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]]  - 颜色，目前只支持 rgba 数组。
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持 rgba 数组。

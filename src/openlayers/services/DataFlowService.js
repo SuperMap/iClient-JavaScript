@@ -5,14 +5,14 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 /**
  * @class ol.supermap.DataFlowService
  * @category  iServer DataFlow
- * @classdesc 实时数据服务。
+ * @classdesc 数据流服务。
  * @extends {ol.supermap.ServiceBase}
  * @example
  *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 与客户端交互的实时数据服务地址。
+ * @param {string} url - 与客户端交互的数据流服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。

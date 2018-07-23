@@ -14,7 +14,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @extends L.supermap.ThemeLayer
  * @category Visualization Graphic
  * @param {string} name - 专题图名。
- * @param {Object} options - 需要设置得参数对象。
+ * @param {Object} options - 需要设置的参数对象。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。

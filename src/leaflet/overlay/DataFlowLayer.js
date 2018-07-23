@@ -12,10 +12,10 @@ import {
 
 /**
  * @class L.supermap.dataFlowLayer
- * @classdesc 实时数据图层源。
+ * @classdesc 数据流图层源。
  * @category  iServer DataFlow
  * @extends {L.LayerGroup}
- * @param {string} url - 实时数据图层服务地址。
+ * @param {string} url - 数据流图层服务地址。
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。</br>
                                                'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制实时数据。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。 
@@ -71,16 +71,16 @@ export var DataFlowLayer = L.LayerGroup.extend({
             excludeField: this.options.excludeField
         }).initSubscribe();
         /**
-         * @description 初始化成功后触发。
          * @event L.supermap.dataFlowLayer#subscribesuccessed
+         * @description 初始化成功后触发。
          * @property {Object} e  - 事件对象。
          * 
          */
         this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesuccessed", e));
         this.dataService.on('messageSuccessed', (msg) => this._onMessageSuccessed(msg));
         /**
-         * @description 过滤参数设置成功后触发。
          * @event L.supermap.dataFlowLayer#setfilterparamsuccessed
+         * @description 过滤参数设置成功后触发。
          * @property {Object} e  - 事件对象。
          */
         this.dataService.on('setFilterParamSuccessed', (msg) => this.fire("setfilterparamsuccessed", msg));
@@ -115,7 +115,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
     /**
      * @function L.supermap.dataFlowLayer.prototype.setGeometry
      * @description 设置集合要素。
-     * @param {Object} geometry - 待设置的GeoJSON几何要素对象。
+     * @param {Object} geometry - 待设置的 GeoJSON 几何要素对象。
      */
     setGeometry: function (geometry) {
         this.dataService.setGeometry(geometry);

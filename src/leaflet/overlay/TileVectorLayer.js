@@ -33,7 +33,7 @@ import Attributions from '../core/Attributions'
  * @param {boolean} [option.returnAttributes=false] - 是否返回 attributes。
  * @param {string} [option.expands] - expands。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务器缓存出图。
- * @param {Object} [options.tileTemplate] - /瓦片模板，如果设置了此参数，则按此模板出图，URL 无效（对接第三方瓦片）。
+ * @param {Object} [options.tileTemplate] - 瓦片模板，如果设置了此参数，则按此模板出图，URL 无效（对接第三方瓦片）。
  * @param {string} [options.subdomains] - 子域名。
  * @param {num} [options.timeout=10000] - timeout。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
