@@ -10,10 +10,10 @@ import Attributions from '../core/Attributions'
  * @param {string} [url='http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {Object} options - 图层可选参数。
  * @param {string} [options.type='web'] - type。
- * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
  * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=18] - 最大缩放级别。
  * @param {string} [options.mapName='quanguo'] - 地图名称。
+ * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
  */
 export var CloudTileLayer = L.TileLayer.extend({
 
@@ -46,7 +46,7 @@ export var CloudTileLayer = L.TileLayer.extend({
      * @function L.supermap.cloudTileLayer.prototype.getTileUrl
      * @description 获取切片地址。
      * @param {Object} coords - 行列号。
-     * @return {string} 切片地址。
+     * @returns {string} 切片地址。
      */
     getTileUrl: function (coords) {
         var layerUrl = this._url;

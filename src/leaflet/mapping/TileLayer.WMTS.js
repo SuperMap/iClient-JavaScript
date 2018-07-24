@@ -9,16 +9,14 @@ import "../core/Base";
  * @param {string} url - wmts 图层地址。
  * @param {Object} options - wmts 图层可选参数。
  * @param {string} options.layer - 需要显示的图层。
- * @param {string} [options.attribution] - 版权信息。
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {Object} [options.style] - 图层样式。
  * @param {string} [options.format='image/png'] - wmts 图像格式（'image/png'用于具有透明度的图层）。
  * @param {(number|L.Point)} [options.tileSize='256'] - 瓦片大小。
  * @param {string} [options.requestEncoding='KVP'] - KVP 或者 REST 的请求方式。
  * @param {Object} [options.tilematrixSet] - 瓦片矩阵集。
+ * @param {string} [options.version='1.0.0'] - 版本。
  * @param {string} [options.attribution] - 版权信息。
- * @param {string} [options.version='1.0.0'] - 版本。 
- * 
  */
 export var WMTSLayer = L.TileLayer.extend({
 
@@ -64,7 +62,7 @@ export var WMTSLayer = L.TileLayer.extend({
      * @function L.supermap.wmtsLayer.prototype.getTileUrl
      * @description 根据行列号获取切片地址。
      * @param {Object} coords - 行列号。
-     * @return {string} 切片地址。
+     * @returns {string} 切片地址。
      */
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();

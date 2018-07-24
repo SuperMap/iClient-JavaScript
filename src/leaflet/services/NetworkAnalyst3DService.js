@@ -58,7 +58,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 源查找服务。
      * @param {SuperMap.FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
      * @param {RequestCallback} callback - 回调函数。
-     * @return {this} this
+     * @returns {this} this
      */
     sourcesFacilityAnalyst: function (params, callback) {
         var me = this;

@@ -557,7 +557,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param {string} id - 叠加分析的id。
+     * @param {string} id - 叠加分析的 ID。
      * @returns {Object} 叠加分析的状态
      */
     getoverlayGeoJobState: function (id) {
@@ -643,7 +643,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
-     * @param {string} id - 缓冲区分析的id。
+     * @param {string} id - 缓冲区分析的 ID。
      * @returns {Object} 缓冲区分析的状态
      */
     getBuffersJobState: function (id) {
@@ -816,7 +816,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function L.supermap.processingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
      * @param {string} id - 属性汇总分析的 ID。
-     * @return {Object} 属性汇总分析的状态。
+     * @returns {Object} 属性汇总分析的状态。
      */
     getSummaryAttributesJobState: function (id) {
         return this.summaryAttributesJobs[id];

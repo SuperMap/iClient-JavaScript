@@ -20,7 +20,7 @@ export var VectorTileJSON = L.Class.extend({
     /**
      * @function L.supermap.VectorTileJSON.prototype.getTile
      * @description 获取瓦片。
-     * @return {Promise} 返回包含矢量瓦片信息的 Promise 对象。
+     * @returns {Promise} 返回包含矢量瓦片信息的 Promise 对象。
      */
     getTile: function () {
         var me = this;

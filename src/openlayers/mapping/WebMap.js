@@ -48,8 +48,8 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.WebMap
  * @category  iPortal/Online
- * @classdesc 对接iPortal/Online地图类。
- * @param {string} id - iPortal|Online 地图ID
+ * @classdesc 对接 iPortal/Online 地图类。
+ * @param {string} id - iPortal|Online 地图 ID。
  * @param {Object} options - 参数。
  * @param {string} [options.target='map'] - 目标类型。
  * @param {ol.map} [options.map] - 地图对象。
@@ -113,8 +113,8 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createLayersByJson
-     * @description 通过json创建图层。
-     * @param {JSON} layersJson - 图层的json信息。
+     * @description 通过 JSON 创建图层。
+     * @param {JSON} layersJson - 图层的 JSON 信息。
      */
     createLayersByJson(layersJson) {
         if (!Util.isArray(layersJson)) {
@@ -179,7 +179,7 @@ export class WebMap extends ol.Observable {
     /**
      * @function ol.supermap.WebMap.prototype.addLayer
      * @description 添加图层。
-     * @param {ol.layer.Vector} layer - ol图层。
+     * @param {ol.layer.Vector} layer - ol 图层。
      */
     addLayer(layer) {
         return this.map.addLayer(layer);
@@ -330,7 +330,7 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
-     * @description 获取WMTS图层的分辨率数组和标识矩阵。
+     * @description 获取 WMTS 图层的分辨率数组和标识矩阵。
      * @param {Object} wellKnownScaleSet - 图层的分辨率数据集。
      * @param {Object} units - 地图的单位元。
      * @param {Array.<number>} scales - 排序比例尺数组。
@@ -366,7 +366,7 @@ export class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层。
      * @param {Object} layerInfo - 图层信息。
-     * @param {number} epsgCode - epsg编码。
+     * @param {number} epsgCode - EPSG code 编码。
      * @returns {ol.layer.Tile} 获取天地图的图层
      */
     createTiandituLayer(layerInfo, epsgCode) {
@@ -387,7 +387,7 @@ export class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createMarkersLayer
      * @description 创建图标图层。
      * @param {Object} layerInfo - 图层信息。
-     * @returns {ol.layer.Vector} 返回Marker图层对象
+     * @returns {ol.layer.Vector} 返回 Marker 图层对象
      */
     createMarkersLayer(layerInfo) {
         var markers = layerInfo.markers || [];
@@ -468,9 +468,9 @@ export class WebMap extends ol.Observable {
     /**
      * @private
      * @function ol.supermap.WebMap.prototype.createWmsLayer
-     * @description 创建Wms图层。
+     * @description 创建 Wms 图层。
      * @param {Object} layerInfo - 图层信息。
-     * @returns {ol.layer.Tile} 返回Wms图层对象
+     * @returns {ol.layer.Tile} 返回 Wms 图层对象
      */
     createWmsLayer(layerInfo) {
         var url = layerInfo.url,

@@ -4,8 +4,8 @@ import * as turf from '@turf/turf';
 /**
  * @class ol.source.Turf
  * @category  Visualization Turf
- * @classdesc Turf.js图层源。
- * @param {Object} opt_options - 参数
+ * @classdesc Turf.js 图层源。
+ * @param {Object} opt_options - 参数。
  * @extends {ol.source.Vector}
  */
 export class Turf extends ol.source.Vector {
@@ -223,11 +223,11 @@ export class Turf extends ol.source.Vector {
 
     /**
      * @function ol.source.turf.prototype.process
-     * @description 执行Turf.js提供的相关空间分析方法
-     * @param {string} type - Turf.js提供的空间分析方法名
-     * @param {Object} args - Turf.js提供的空间分析方法对应的参数对象
-     * @param {function} callback - 空间分析完成执行的回调函数，返回执行的结果
-     * @param {boolean} addFeaturesToMap - 是否添加到map
+     * @description 执行 Turf.js 提供的相关空间分析方法。
+     * @param {string} type - Turf.js 提供的空间分析方法名。
+     * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
+     * @param {function} callback - 空间分析完成执行的回调函数，返回执行的结果。
+     * @param {boolean} addFeaturesToMap - 是否添加到 Map。
      */
     process(type, args, callback, addFeaturesToMap) {
         var result;

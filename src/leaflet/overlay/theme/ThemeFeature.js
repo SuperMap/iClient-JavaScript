@@ -26,7 +26,7 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function L.supermap.themeFeature.prototype.toFeature
      * @description 转为内部矢量要素。
-     * @return {SuperMap.Feature.Vector} 内部矢量要素。
+     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
      */
     toFeature: function () {
         let geometry = this.geometry;

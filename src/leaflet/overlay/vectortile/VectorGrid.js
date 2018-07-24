@@ -89,7 +89,7 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.getStyles
      * @description 获取图层样式。
-     * @return {Object} 所有图层的样式。
+     * @returns {Object} 所有图层的样式。
      */
     getStyles: function () {
         return this.vectorTileLayerStyles;
@@ -99,7 +99,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @function L.supermap.VectorGrid.prototype.getStyle
      * @description 获取指定图层样式。
      * @param {string} layerName - 图层名称。
-     * @return {Object} 指定图层的样式。
+     * @returns {Object} 指定图层的样式。
      */
     getStyle: function (layerName) {
         return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
@@ -111,7 +111,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
      * @param {(Array|Function)} layerStyle - 图层样式。
-     * @return {this} this
+     * @returns {this} this
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -134,7 +134,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @description 重绘要素风格，需要 ID 和 layerName 才能确定一个要素。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
-     * @return {this} this
+     * @returns {this} this
      */
     resetFeatureStyle: function (id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -155,7 +155,7 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.getDataLayerNames
      * @description 获取数据图层名字。
-     * @return {Array} 返回数据图层名数组。
+     * @returns {Array} 返回数据图层名数组。
      */
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);

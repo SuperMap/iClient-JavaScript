@@ -29,11 +29,10 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.zIndex=1] - 设置图层的层级。
  * @param {string} [options.className] - 自定义 dom 元素的 className。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
- */
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
 
 export var ImageMapLayer = Layer.extend({
 
@@ -148,7 +147,7 @@ export var ImageMapLayer = Layer.extend({
     /**
      * @function L.supermap.imageMapLayer.prototype.getOpacity
      * @description 获取图层透明度。
-     * @return {number} 图层的透明度。
+     * @returns {number} 图层的透明度。
      */
     getOpacity: function () {
         return this.options.opacity;
@@ -169,7 +168,7 @@ export var ImageMapLayer = Layer.extend({
     /**
      * @function L.supermap.imageMapLayer.prototype.getImageUrl
      * @description 获取 image 图层请求地址，子类可重写实现。
-     * @return {string} 请求瓦片地址。
+     * @returns {string} 请求瓦片地址。
      */
     getImageUrl: function (params) {
         var imageUrl = Util.getParamString(params) + this._initLayerUrl();

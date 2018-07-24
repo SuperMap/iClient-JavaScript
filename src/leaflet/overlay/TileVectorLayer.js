@@ -25,13 +25,13 @@ import Attributions from '../core/Attributions'
  *      L.supermap.tiledVectorLayer(url).addTo(map);
  * @param {string} url - 图层数据服务地址。
  * @param {Object} options - 图层参数。
- * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型。
- * @param {boolean} [options.serverCartoCSSStyle=true] - 是否使用服务端 CartoCSS 样式。
  * @param {string} options.layerNames - 指定图层的名称列表，支持的类型为矢量图层。
  * @param {string} options.layersID - 获取进行切片的地图图层 ID。
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型。
+ * @param {boolean} [options.serverCartoCSSStyle=true] - 是否使用服务端 CartoCSS 样式。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
- * @param {boolean} [option.returnAttributes=false] - 是否返回 attributes。
- * @param {string} [option.expands] - expands。
+ * @param {boolean} [options.returnAttributes=false] - 是否返回 attributes。
+ * @param {string} [options.expands] - expands。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务器缓存出图。
  * @param {Object} [options.tileTemplate] - 瓦片模板，如果设置了此参数，则按此模板出图，URL 无效（对接第三方瓦片）。
  * @param {string} [options.subdomains] - 子域名。
@@ -305,7 +305,7 @@ export var TileVectorLayer = VectorGrid.extend({
      * @function L.supermap.tiledVectorLayer.prototype.getScale
      * @description 通过缩放级别获取比例尺。
      * @param {number} zoom - 缩放级别。
-     * @return {number} 比例尺。
+     * @returns {number} 比例尺。
      */
     getScale: function (zoom) {
         var me = this;
@@ -318,7 +318,7 @@ export var TileVectorLayer = VectorGrid.extend({
      * @function L.supermap.tiledVectorLayer.prototype.getScaleFromCoords
      * @description 通过行列号获取比例尺。
      * @param {Object} coords - 行列号。
-     * @return {number} 比例尺。
+     * @returns {number} 比例尺。
      */
     getScaleFromCoords: function (coords) {
         var me = this,
@@ -337,7 +337,7 @@ export var TileVectorLayer = VectorGrid.extend({
      * @function L.supermap.tiledVectorLayer.prototype.getDefaultScale
      * @description 根据行列号获取默认比例尺。
      * @param {Object} coords - 行列号。
-     * @return {number} 默认比例尺。
+     * @returns {number} 默认比例尺。
      */
     getDefaultScale: function (coords) {
         var me = this,

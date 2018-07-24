@@ -39,7 +39,7 @@ L.Proj.Projection = L.Class.extend({
      * @function L.Proj.Projection.prototype.project
      * @description 通过地理坐标得到投影坐标。
      * @param  {L.Latlng} latlng -  经纬度坐标。
-     * @return {L.Point} 返回投影坐标点。
+     * @returns {L.Point} 返回投影坐标点。
      */
     project: function (latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
@@ -51,7 +51,7 @@ L.Proj.Projection = L.Class.extend({
      * @description 通过投影坐标得到地理坐标。
      * @param {L.Point} point - 坐标点。
      * @param {number} unbounded -  坐标点高程值等。
-     * @return {L.LatLng} 返回经纬度坐标
+     * @returns {L.LatLng} 返回经纬度坐标
      */
     unproject: function (point, unbounded) {
         if (this.bounds) {
@@ -193,7 +193,7 @@ export var CRS = L.Class.extend({
      * @function L.Proj.CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值。
      * @param {number} zoom - 缩放级别。
-     * @return 比例尺值。
+     * @returns 比例尺值。
      */
     scale: function (zoom) {
         var iZoom = Math.floor(zoom),
@@ -217,7 +217,7 @@ export var CRS = L.Class.extend({
      * @function L.Proj.CRS.prototype.zoom
      * @description 根据比例尺返回缩放级别。
      * @param {number} scale - 比例尺。
-     * @return {number} 缩放级别。
+     * @returns {number} 缩放级别。
      */
     zoom: function (scale) {
         // Find closest number in this._scales, down

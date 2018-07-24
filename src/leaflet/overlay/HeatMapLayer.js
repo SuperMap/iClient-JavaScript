@@ -473,7 +473,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.getEvents
      * @description 获取图层事件。
-     * @return {Object} 返回图层支持的事件。
+     * @returns {Object} 返回图层支持的事件。
      * @private
      */
     getEvents: function () {
@@ -493,7 +493,7 @@ export var HeatMapLayer = L.Layer.extend({
      * @function L.supermap.heatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式。
-     * @return {SuperMap.Feature.Vector} 转换后的 iClient 要素。
+     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
         if (!L.Util.isArray(features)) {
@@ -579,7 +579,7 @@ export var HeatMapFeature = L.Class.extend({
     /**
      * @function L.supermap.themeFeature.prototype.toFeature
      * @description 转为内部矢量要素。
-     * @return {SuperMap.Feature.Vector} 内部矢量要素。
+     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
      */
     toFeature: function () {
         var geometry = this.geometry;

@@ -8,7 +8,7 @@ import {CommonUtil} from '@supermap/iclient-common';
  *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds} 类型和 GeoJOSN 规范数据类型。
  * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换源坐标系。
  * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系。
- * @return {Object} 返回 GeoJOSN 规范数据类型。
+ * @returns {Object} 返回 GeoJOSN 规范数据类型。
  */
 export var transform = function (feature, sourceCRS = L.CRS.EPSG4326, targetCRS) {
     let selfFeatures = null;

@@ -17,7 +17,7 @@ import {ServiceBase} from './ServiceBase';
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  *
  */
 export class ChartService extends ServiceBase {
@@ -30,7 +30,7 @@ export class ChartService extends ServiceBase {
      * @function ol.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param {SuperMap.ChartQueryParameters} params - 海图查询所需参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      * @param {SuperMap.DataFormat} resultFormat - 返回的结果格式类型。
      */
     queryChart(params, callback, resultFormat) {

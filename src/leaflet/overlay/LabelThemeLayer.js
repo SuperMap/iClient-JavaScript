@@ -16,13 +16,13 @@ import {GeometryVector, Bounds, GeoText, CommonUtil as Util} from '@supermap/icl
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {string} options.themeFields - 指定创建专题图字段。 
  * @param {number} [options.opacity=1] - 图层透明度。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
  * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
@@ -141,7 +141,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.getDrawnLabels
      * @description 获取经（压盖）处理后将要绘制在图层上的标签要素。
      * @param {Array.<SuperMap.Feature.Vector>}  labelFeatures - 所有标签要素的数组。
-     * @return {Array.<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
+     * @returns {Array.<SuperMap.Feature.Vector>}  最终要绘制的标签要素数组。
      */
     getDrawnLabels: function (labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
@@ -300,7 +300,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style。
      * @param {SuperMap.Feature.Vector} feat - 矢量要素对象。
-     * @return {Array.<SuperMap.ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<SuperMap.ThemeStyle>} 专题要素的 Style。
      */
     getStyleByData: function (feat) {
         var feature = feat;
@@ -349,7 +349,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.setLabelsStyle
      * @description 设置标签要素的 Style。
      * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @return {Array.<SuperMap.Feature.Vector>}  赋予 Style 后的标签要素数组。
+     * @returns {Array.<SuperMap.Feature.Vector>}  赋予 Style 后的标签要素数组。
      */
     setLabelsStyle: function (labelFeatures) {
         var fea, labelFeas = [];
@@ -427,7 +427,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标。
      * @param {SuperMap.Feature.Vector} feature - 标签要素。
-     * @return {L.point} 标签位置。
+     * @returns {L.point} 标签位置。
      */
     getLabelPxLocation: function (feature) {
         var geoText = feature.geometry;
@@ -457,7 +457,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
-     * @return {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     calculateLabelBounds: function (feature, loc) {
         var geoText = feature.geometry;
@@ -502,7 +502,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
-     * @return {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     calculateLabelBounds2: function (feature, loc) {
         var labB, left, bottom, top, right;
@@ -580,7 +580,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function L.supermap.LabelThemeLayer.prototype.getLabelInfo
      * @description 根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等。
-     * @return {Object} 绘制后的标签信息。
+     * @returns {Object} 绘制后的标签信息。
      */
     getLabelInfo: function (location, style) {
         var LABEL_ALIGN = {
@@ -683,7 +683,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
      * @param {number}  angle - 旋转角度（顺时针）。
      *
-     * @return {Array.<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array.<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     rotationBounds: function (bounds, rotationCenterPoi, angle) {
         var ltPoi = L.point(bounds.left, bounds.top);
@@ -717,7 +717,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {number} ry - 旋转中心点纵坐标。
      * @param {number} angle - 旋转角度。
      *
-     * @return {Object} 旋转后的坐标位置对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
+     * @returns {Object} 旋转后的坐标位置对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      */
     getRotatedLocation: function (x, y, rx, ry, angle) {
         var loc = {}, x0, y0;
@@ -741,7 +741,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {SuperMap.Bounds} bounds - 地图像素范围。
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      *
-     * @return {Object} 避让的信息。
+     * @returns {Object} 避让的信息。
      */
     getAvoidInfo: function (bounds, quadrilateral) {
         if (quadrilateral.length !== 5) {
@@ -838,7 +838,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @param {Array.<Object>}  quadrilateral2 - 第二个四边形节点数组。
      *
-     * @return {boolean} 是否压盖，true表示压盖。
+     * @returns {boolean} 是否压盖，true表示压盖。
      */
     isQuadrilateralOverLap: function (quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
@@ -884,7 +884,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      *
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
-     * @return {boolean} 点是否在多边形内。
+     * @returns {boolean} 点是否在多边形内。
      */
     isPointInPoly: function (pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {

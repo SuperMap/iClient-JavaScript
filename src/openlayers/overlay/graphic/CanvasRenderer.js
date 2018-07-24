@@ -23,7 +23,7 @@ function scale(pixelP, center, scaleRatio) {
 /**
  * @private
  * @class GraphicCanvasRenderer
- * @classdesc 高效率点图层 canvas渲染器。
+ * @classdesc 高效率点图层 canvas 渲染器。
  * @category Visualization Graphic
  * @extends {ol.Object}
  * @param {ol.source.Graphic} layer - 高效率点图层。
@@ -31,17 +31,17 @@ function scale(pixelP, center, scaleRatio) {
  * @param {number} options.width - 地图宽度。
  * @param {number} options.height - 地图高度。
  * @param {HTMLElement} options.container - 放置渲染器的父元素。
- * @param {Array.<number>} options.color - 颜色，目前只支持rgba数组。默认[0, 0, 0, 255],
+ * @param {Array.<number>} [options.colo=[0, 0, 0, 255]] - 颜色，目前只支持rgba数组。默认[0, 0, 0, 255],
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
- * @param {Array}  options.highlightColor - 高亮颜色，目前只支持rgba数组。
- * @param {number} options.radiusScale - 点放大倍数。
- * @param {number} options.radiusMinPixels - 半径最小值(像素)。
- * @param {number} options.radiusMaxPixels - 半径最大值(像素)。
- * @param {number} options.strokeWidth - 边框大小。
- * @param {boolean} options.outline - 是否显示边框。
- * @param {function} options.onClick - 点击事件。
- * @param {function} options.onHover - 悬停事件。
+ * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持rgba数组。
+ * @param {number} [options.radiusScale] - 点放大倍数。
+ * @param {number} [options.radiusMinPixels] - 半径最小值（像素）。
+ * @param {number} [options.radiusMaxPixels] - 半径最大值（像素）。
+ * @param {number} [options.strokeWidth] - 边框大小。
+ * @param {boolean} [options.outline] - 是否显示边框。
+ * @param {function} [options.onClick] - 点击事件。
+ * @param {function} [options.onHover] - 悬停事件。
  */
 export class GraphicCanvasRenderer extends ol.Object {
     constructor(layer, options) {
@@ -75,7 +75,7 @@ export class GraphicCanvasRenderer extends ol.Object {
      * @private
      * @function  GraphicCanvasRenderer.prototype.getCanvas
      * @description 返回画布。
-     * @returns {HTMLCanvasElement} canvas对象
+     * @returns {HTMLCanvasElement} canvas 对象。
      */
     getCanvas() {
         return this.canvas;

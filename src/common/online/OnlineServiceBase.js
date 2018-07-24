@@ -22,11 +22,11 @@ export class OnlineServiceBase {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求 online 服务
-     * @param {string} [method='get'] - 请求方式, 'get','put','post','delete'。
+     * @param {string} [method='GET'] - 请求方式, 'get','put','post','delete'。
      * @param {string} url - 服务地址。
      * @param {Object} param - URL 查询参数。
      * @param {Object} [requestOptions] - http 请求参数, 比如请求头，超时时间等。
-     * @return {Promise}  返回包含请求结果的 Promise 对象。
+     * @returns {Promise}  返回包含请求结果的 Promise 对象。
      */
     request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);

@@ -73,7 +73,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
      * @function SuperMap.FindTSPPathsService.prototype.getNodesJson
      * @description 将节点对象转化为JSON字符串。
      * @param {SuperMap.FindTSPPathsParameters} params - 旅行商分析服务参数类。
-     * @return {string} 转化后的JSON字符串。
+     * @returns {string} 转化后的JSON字符串。
      */
     getNodesJson(params) {
         var jsonParameters = "", nodesString, i, len, nodes;

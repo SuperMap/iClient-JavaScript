@@ -14,17 +14,17 @@ import {
 /**
  * @class ol.source.TileSuperMapRest
  * @category iServer Map
- * @classdesc SuperMap iServer TileImage图层源。
+ * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
  * @param {string} options.url - 服务地址。
  * @param {(ol.tilegrid.TileGrid|ol.tilegrid.TileGrid)} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
- * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型。
+ * @param {SuperMap.ServerType} [options.serverType=ServerType.ISERVER] - 服务类型 iServer|iPortal|online。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled = true] - 是否使用服务端的缓存。
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
- * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时templayers的ID。
- * @param {boolean} [options.clipRegionEnabled = false] - 是否只地图只显示该区域覆盖的部分。true表示地图只显示该区域覆盖的部分。
+ * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。如果此参数缺省则对全部图层进行切片。layersID 可以是临时图层创建时 templayers 的 ID。
+ * @param {boolean} [options.clipRegionEnabled = false] - 是否只地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
  * @param {(ol.geom.Geometry|ol.geom.Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {boolean} [options.overlapDisplayed = false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
  * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
@@ -290,7 +290,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
 
     /**
      * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
-     * @description 切换到某一版本的切片，并重绘。通过this.tempIndex保存需要切换的版本索引。
+     * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引。
      */
     changeTilesVersion() {
         var me = this;
@@ -329,7 +329,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
 
     /**
      * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
-     * @description 更改URL请求参数中的切片版本号,并重绘。
+     * @description 更改 URL 请求参数中的切片版本号，并重绘。
      * @param {Object} version - 版本信息。
      * @returns {boolean} 是否成功。
      */
@@ -347,7 +347,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
      * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
      * @description 从 MapJSON 中获取参数对象。
      * @param {string} url - 地址。
-     * @param {Object} mapJSONObj - 地图JSON对象。
+     * @param {Object} mapJSONObj - 地图 JSON 对象。
      */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};

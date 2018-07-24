@@ -4,7 +4,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class SuperMap.UpdateTurnNodeWeightParameters
  * @category  iServer NetworkAnalyst TurnNodeWeight
- * @classdesc 转向耗费权重更新服务参数类
+ * @classdesc 转向耗费权重更新服务参数类。
  * @param {Object} options - 参数。 
  * @param {string} options.nodeId - 转向结点的  ID。 
  * @param {string} options.fromEdgeId - 起始边的  ID。 

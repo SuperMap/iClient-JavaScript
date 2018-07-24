@@ -59,7 +59,7 @@ export class JSONFormat extends Format {
              * @function SuperMap.Format.JSON.serialize.object
              * @description 把对象转换为 JSON 字符串。
              * @param {Object} object - 可序列化的对象。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'object': function (object) {
                 // three special objects that we want to treat differently
@@ -104,7 +104,7 @@ export class JSONFormat extends Format {
              * @function SuperMap.Format.JSON.serialize.array
              * @description 把数组转换成 JSON 字符串。
              * @param {Array} array - 可序列化的数组。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'array': function (array) {
                 var json;
@@ -132,7 +132,7 @@ export class JSONFormat extends Format {
              * @function SuperMap.Format.JSON.serialize.string
              * @description 把字符串转换成 JSON 字符串。
              * @param {string} string - 可序列化的字符串。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'string': function (string) {
                 // If the string contains no control characters, no quote characters, and no
@@ -168,7 +168,7 @@ export class JSONFormat extends Format {
              * @function SuperMap.Format.JSON.serialize.number
              * @description 把数字转换成 JSON 字符串。
              * @param {number} number - 可序列化的数字。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'number': function (number) {
                 return isFinite(number) ? String(number) : "null";
@@ -178,7 +178,7 @@ export class JSONFormat extends Format {
              * @function SuperMap.Format.JSON.serialize.boolean
              * @description Transform a boolean into a JSON string.
              * @param {boolean} bool - The boolean to be serialized.
-             * @return {string} A JSON string representing the boolean.
+             * @returns {string} A JSON string representing the boolean.
              */
             'boolean': function (bool) {
                 return String(bool);
@@ -188,7 +188,7 @@ export class JSONFormat extends Format {
              * @function SuperMap.Format.JSON.serialize.object
              * @description 将日期对象转换成 JSON 字符串。
              * @param {Date} date - 可序列化的日期对象。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'date': function (date) {
                 function format(number) {
@@ -211,7 +211,7 @@ export class JSONFormat extends Format {
      * @description 将一个符合 JSON 结构的字符串进行解析。
      * @param {string} json - 符合 JSON 结构的字符串。
      * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
-     * @return {Object} 对象，数组，字符串或数字。
+     * @returns {Object} 对象，数组，字符串或数字。
      */
     read(json, filter) {
         var object;
@@ -235,7 +235,7 @@ export class JSONFormat extends Format {
      * @description 序列化一个对象到一个符合 JSON 格式的字符串。
      * @param {(object|string|Array|number|boolean)} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
      * @param {boolean} pretty 
-     * @return {string} 符合 JSON 格式的字符串。
+     * @returns {string} 符合 JSON 格式的字符串。
      *
      */
     write(value, pretty) {
@@ -257,7 +257,7 @@ export class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
-     * @return {string} 一个适当的缩进字符串。
+     * @returns {string} 一个适当的缩进字符串。
      */
     writeIndent() {
         var pieces = [];
@@ -272,7 +272,7 @@ export class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
-     * @return {string} 代表新的一行的字符串。
+     * @returns {string} 代表新的一行的字符串。
      */
     writeNewline() {
         return (this.pretty) ? this.newline : '';
@@ -281,7 +281,7 @@ export class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
-     * @return {string} A space.
+     * @returns {string} A space.
      */
     writeSpace() {
         return (this.pretty) ? this.space : '';

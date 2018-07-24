@@ -75,7 +75,7 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
      * @description 将对象转化为JSON字符串。
      * @param {boolean} isAnalyzeById - 是否通过id分析
      * @param {Array} params - 需要转换的数字
-     * @return {Object} 转化后的JSON字符串。
+     * @returns {Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",

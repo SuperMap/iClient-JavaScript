@@ -43,7 +43,7 @@ export var Logo = L.Control.extend({
      * @function L.supermap.control.logo.prototype.onAdd
      * @override
      * @description 添加一个 logo。
-     * @return {div} 返回创建 logo 的 div。
+     * @returns {div} 返回创建 logo 的 div。
      */
     onAdd: function () {
         var div = L.DomUtil.create('div', 'iclient-leaflet-logo');

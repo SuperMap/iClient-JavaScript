@@ -2,7 +2,7 @@ import ol from 'openlayers';
 
 /**
  * @function MapExtend
- * @description 扩展openlayers的一些原始方法
+ * @description 扩展 OpenLayers 的一些原始方法。
  * @private
  */
 export var MapExtend = function () {

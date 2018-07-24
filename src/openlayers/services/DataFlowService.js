@@ -16,9 +16,9 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
- * @param {Object} [options.excludeField] - 排除字段
+ * @param {Object} [options.excludeField] - 排除字段。
  */
 export class DataFlowService extends ServiceBase {
 
@@ -55,7 +55,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.broadcast
      * @description 加载广播数据。
-     * @param {JSON} obj - json格式的要素数据。
+     * @param {JSON} obj - JSON 格式的要素数据。
      */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);

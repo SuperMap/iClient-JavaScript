@@ -89,7 +89,7 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框。
      * @param {L.Layer} layer - 指定图层。
-     * @return {string} 图层弹出框内容。
+     * @returns {string} 图层弹出框内容。
      */
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -139,7 +139,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param {L.Layer} layer - 待添加的图层。
      * @param {boolean} [isBaseLayer] - 是否为底图层。
      * @param {Object} options - 创建地图的可选参数。
-     * @return {this} this
+     * @returns {this} this
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -268,7 +268,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param {number} dpi - 屏幕分辨率。
      * @param {string} units - 地图的单位。
      * @param {SuperMap.Datum} datum - 大地参照系类。
-     * @return {Array.<number>} 返回给定比例尺所对应的分辨率。
+     * @returns {Array.<number>} 返回给定比例尺所对应的分辨率。
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
@@ -380,7 +380,7 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createTiandituLayer
      * @description 创建天地图图层。
      * @param {Object} layerInfo - 图层信息。
-     * @return {L.supermap.tiandituTileLayer} 返回天地图图层对象。
+     * @returns {L.supermap.tiandituTileLayer} 返回天地图图层对象。
      */
     createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
@@ -398,7 +398,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建图标图层。
      * @param {Object} layerInfo - 图层信息。
      * @param {Object} crs - 坐标对象。
-     * @return {L.Layer} 返回 marker 图层。
+     * @returns {L.Layer} 返回 marker 图层。
      */
     createMarkersLayer: function (layerInfo, crs) {
         var that = this;
@@ -462,7 +462,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建矢量要素图层。
      * @param {Object} layerInfo - 图层信息。
      * @param {Object} crs - 坐标对象。
-     * @return {L.Layer} 返回矢量要素图层对象。
+     * @returns {L.Layer} 返回矢量要素图层对象。
      */
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,
@@ -549,7 +549,7 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createThemeLayer
      * @description 创建专题图图层。
      * @param {Object} layerInfo - 图层信息。
-     * @return {L.Layer} 返回专题图图层对象。
+     * @returns {L.Layer} 返回专题图图层对象。
      */
     createThemeLayer: function (layerInfo) {
         var themeSettings = layerInfo.themeSettings && JSON.parse(layerInfo.themeSettings);

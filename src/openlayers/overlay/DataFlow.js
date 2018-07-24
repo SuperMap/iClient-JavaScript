@@ -6,7 +6,7 @@ import {DataFlowService} from "../services/DataFlowService";
  * @category  iServer DataFlow
  * @classdesc 数据流图层源。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.idField = 'id']
+ * @param {string} [opt_options.idField = 'id'] - 要素属性中表示唯一标识的字段。
  * @param {Array.<Object>} [opt_options.geometry] - 设置增添的几何要素对象数组。
  * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {Object} [opt_options.excludeField] - 排除字段

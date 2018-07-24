@@ -7,7 +7,7 @@ ol.supermap.control = ol.supermap.control || {};
 /**
  * @class ol.supermap.control.ChangeTileVersion
  * @category  Control
- * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置。
+ * @classdesc 版本切换控件（目前仅支持 IE10 及以上）暂时不支持自定义位置。
  * @extends {ol.control.Control}
  * @param {options} options -参数。
  * @param {string} [options.title='switch tile version'] - 提示信息。
@@ -16,7 +16,7 @@ ol.supermap.control = ol.supermap.control || {};
  * @param {string} [options.lastText='-'] - 上一个版本的按钮布局。
  * @param {string} [options.nextText='+'] - 下一个版本的按钮布局。
  * @param {string} [options.ico='V'] - 控件显示的logo。
- * @param {string} [options.orientation='horizontal'] - 方向horizontal|vertical。
+ * @param {string} [options.orientation='horizontal'] - 方向 horizontal|vertical。
  * @param {boolean} [options.switch=true] - 是否显示上/下一个版本切换控件。
  * @example
  * var control = new ol.supermap.control.ChangeTileVersion({

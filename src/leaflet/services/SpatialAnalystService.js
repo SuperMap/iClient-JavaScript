@@ -114,7 +114,7 @@ export var SpatialAnalystService = ServiceBase.extend({
 
     /**
      * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
-     * @description 动态分段分析
+     * @description 动态分段分析。
      * @param {SuperMap.GenerateSpatialDataParameters} params - 动态分段操作参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。

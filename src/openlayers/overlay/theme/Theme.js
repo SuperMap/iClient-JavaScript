@@ -17,15 +17,15 @@ import {ThemeFeature} from './ThemeFeature';
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。
- * @param {string} [opt_option.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
- * @param {ol.Map} opt_option.map - 当前openlayers的map对象。
+ * @param {ol.Map} opt_option.map - 当前 openlayers 的 Map 对象。
+ * @param {string} [opt_option.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_option.opacity=1] - 图层透明度。
- * @param {(string|Object)} [opt_option.attributions] - 版权信息。
  * @param {string} [opt_option.logo] - Logo。
  * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
- * @param {number} [opt_option.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。
+ * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
  */
 export class Theme extends ol.source.ImageCanvas {
@@ -173,7 +173,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJOSN 规范数据类型，以及 {@link ol.feature}。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -184,12 +184,12 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.removeFeatures
-     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除feature的数组。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除 feature 的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
+     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
      *              如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
-     *              删除所有feature后再重新添加。这样效率会更高。
+     *              删除所有 feature 后再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
         if (!features || features.length === 0) {
@@ -243,7 +243,7 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @return {SuperMap.Feature.Vector} 用户加入图层的有效数据。
+     * @returns {SuperMap.Feature.Vector} 用户加入图层的有效数据。
      */
     getFeatures() {
         var len = this.features.length;
@@ -261,7 +261,7 @@ export class Theme extends ol.source.ImageCanvas {
      *              返回此 feature（并且只返回第一个）。
      * @param {string} property - feature 的某个属性名称。
      * @param {string} value - property 所对应的值。
-     * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
+     * @returns {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
     getFeatureBy(property, value) {
         var feature = null;
@@ -277,9 +277,9 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeatureById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} featureId - 矢量要素的属性 id。
-     * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
+     * @description 通过给定一个 ID，返回对应的矢量要素。
+     * @param {string} featureId - 矢量要素的属性 ID。
+     * @returns {SuperMap.Feature.Vector} 对应 ID 的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -289,8 +289,8 @@ export class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - 属性的 key。
-     * @param {string} attrValue - 矢量要素的属性 id。
-     * @return {Array.<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
+     * @param {string} attrValue - 矢量要素的属性 ID。
+     * @returns {Array.<SuperMap.Feature.Vector>} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -467,7 +467,7 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.rotate
-     * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+     * @description 获取某像素坐标点 pixelP 绕中心 center 逆时针旋转 rotation 弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
      * @param {number} rotation - 旋转角度。
      * @param {number} center - 中心位置。
@@ -480,11 +480,11 @@ export class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.scale
-     * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+     * @description 获取某像素坐标点 pixelP 相对于中心 center 进行缩放 scaleRatio 倍后的像素点坐标。
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
      * @param {number} scaleRatio - 缩放倍数。
-     * @return {Array.<number>} 返回数组形比例
+     * @returns {Array.<number>} 返回数组形比例
      */
     scale(pixelP, center, scaleRatio) {
         var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
@@ -495,8 +495,8 @@ export class Theme extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
-     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJOSN 规范数据类型，以及 {@link ol.feature}。
+     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -538,8 +538,8 @@ export class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 ol.supermap.ThemeFeature 类型、GeoJOSN 规范数据类型，以及ol.Feature
-     * @returns {SuperMap.Feature.Vector} 转换后的iClient要素
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJOSN 规范数据类型，以及 {@link ol.feature}。
+     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toFeature(features) {
         return this.toiClientFeature(features);

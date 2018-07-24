@@ -16,8 +16,8 @@ import {
  *      new ol.supermap.LayerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
- * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+ * @param {string} url - 与客户端交互的地图服务地址。请求地图服务，URL 应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
@@ -82,7 +82,7 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function ol.supermap.LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
-     * @param {SuperMap.SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
+     * @param {SuperMap.SetLayersInfoParameters} params - 设置图层信息参数类，包括临时图层。
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo(params, callback) {

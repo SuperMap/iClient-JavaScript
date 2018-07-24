@@ -40,7 +40,7 @@ export class IPortalServiceBase {
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息。
      * @param {string} url - 创建证书 URL 地址。
-     * @return {string} 携带 token 或 key 的新地址。
+     * @returns {string} 携带 token 或 key 的新地址。
      */
 
     createCredentialUrl(url) {
@@ -65,7 +65,7 @@ export class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.getCredential
      * @description 获取 token。
-     * @return {string } 返回获取的 token。
+     * @returns {string } 返回获取的 token。
      *
      */
 

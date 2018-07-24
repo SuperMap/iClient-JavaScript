@@ -11,6 +11,7 @@ var typeLinks = {
     "ol.geom.Polygon": olapi + "ol.geom.Polygon.html",
     "ol.geom.LineString": olapi + "ol.geom.LineString.html",
     "ol.geom.Point": olapi + "ol.geom.Point.html",
+    "ol.geom.Geometry":olapi + "ol.geom.Geometry.html",
     "ol.format.GeoJSON": olapi + "ol.format.GeoJSON.html",
     "ol.proj.Projection": olapi + "ol.proj.Projection",
     "ol.Observable": olapi + "ol.Observable",
@@ -27,6 +28,7 @@ var typeLinks = {
     "ol.Pixel": olapi + "ol.html#.Pixel",
     "ol.source.State": olapi + "ol.source.html#.State",
     "ol.layer.Layer": olapi + "ol.layer.Layer.html",
+    "ol.FeatureStyleFunction": olapi + "ol.html#.FeatureStyleFunction",
    
 
     //leaflet
@@ -48,6 +50,7 @@ var typeLinks = {
     "L.TileLayer": lfapi + '#tilelayer',
     "L.CircleMarker": lfapi + '#circlemarker',
     "L.Path-option": lfapi + '#path-option',
+    "L.Rectangle": lfapi + '#rectangle',
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',

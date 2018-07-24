@@ -3,7 +3,7 @@ import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AggregationParameter
- * @classdesc 聚合查询参数设置,该参数仅支持数据来源 Elasticsearch 服务的数据服务。
+ * @classdesc 聚合查询参数设置，该参数仅支持数据来源 Elasticsearch 服务的数据服务。
  * @category iServer Data FeatureResults
  * @param {Object} options - 初始化参数。
  * @param {string} options.aggName - 聚合名称。

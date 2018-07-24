@@ -12,8 +12,8 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.maxZoom=19] - 最大缩放级别。
  * @param {L.LatLngBounds} [options.bounds=L.latLngBounds([-85.0511287798, -180],[85.0511287798, 180])] - 显示范围。
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
- * @param {string} [options.attribution='Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
  * @param {string} [options.tileProxy] - 启用托管地址。
+ * @param {string} [options.attribution='Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
  */
 export var BaiduTileLayer = L.TileLayer.extend({
 
@@ -46,7 +46,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
      * @function L.supermap.baiduTileLayer.prototype.getTileUrl
      * @description 获取切片地址。
      * @param {Object} coords - 行列号。
-     * @return {string} 切片地址。
+     * @returns {string} 切片地址。
      */
     getTileUrl: function (coords) {
         var url = L.Util.template(this.url, {
