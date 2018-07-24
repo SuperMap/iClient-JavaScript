@@ -154,16 +154,24 @@
             inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.skinHTML5.css");
             inputScript("https://cdn.bootcss.com/ion-rangeslider/2.2.0/js/ion.rangeSlider.min.js");
         }
+        if (inArray(includes, 'plottingPanel')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/jquery.ztree.core.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/zTree/css/zTreeStyle.css");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/jquery.easyui.min.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js");
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css");
+        }
     }
 
     function datGuiI18N() {
         document.writeln("<script>function registerEventListener(evt,fn){" +
-            "if(window.attachEvent){window.attachEvent('on'+evt,fn);}" +
-            "else{window.addEventListener(evt,fn,false);}" +
-            "}</script>");
+        "if(window.attachEvent){window.attachEvent('on'+evt,fn);}" +
+        "else{window.addEventListener(evt,fn,false);}" +
+        "}</script>");
         document.writeln("<script>registerEventListener('load',function() { " +
-            "dat.GUI.TEXT_CLOSED=resources.text_close;dat.GUI.TEXT_OPEN=resources.text_open;" +
-            "})</script>")
+        "dat.GUI.TEXT_CLOSED=resources.text_close;dat.GUI.TEXT_OPEN=resources.text_open;" +
+        "})</script>")
     }
 
     load();

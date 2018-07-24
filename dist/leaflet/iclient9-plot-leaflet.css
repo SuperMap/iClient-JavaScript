@@ -1,0 +1,38 @@
+/*!
+ * 
+ *          iclient9-leaflet.(http://iclient.supermap.io)
+ *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
+ *          license: Apache-2.0
+ *          version: v9.1.0-alpha
+ *         
+ */
+
+.leaflet-supermap-plot-control-icon-path {
+    background-image: url(../images/plot/control.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.leaflet-supermap-plot-scale-icon-path {
+    background-image: url(../images/plot/scale.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.leaflet-supermap-plot-rotate-icon-path {
+    background-image: url(../images/plot/rotate.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.leaflet-supermap-plot-locked-icon-path {
+    background-image: url(../images/plot/locked.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.leaflet-supermap-plot-avoid-icon-path {
+    background-image: url(../images/plot/avoid.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}

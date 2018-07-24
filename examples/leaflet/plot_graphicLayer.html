@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_plotSymbolPerformance"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<div id="toolbar" class="panel panel-primary" style="  position: absolute;top: 10px;right: 10px;text-align: center;z-index: 2000;border-radius: 4px;">
+    <div class="panel-heading">
+        <h5 class="panel-title text-center" style=" font-size: 16px;color: #ffffff;">高性能图层</h5>
+    </div>
+    <div class="panel-body content">
+        <div class="input-group" style="margin-top:15px; margin-left: 10px; margin-bottom: 10px;">
+            <input type="button" class="btn btn-default" value="添加相同点标号" onclick="sameDotSymbol()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="添加不同点标号" onclick="differentDotSymbol()">&nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0, 0],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    L.supermap.plotting.editControl().addTo(map);
+    var graphicLayer = L.supermap.plotting.graphicLayer();
+    graphicLayer.addTo(map);
+    function sameDotSymbol(){
+        graphicLayer.removeAllGraphics();
+        var count = 10000;
+        var features = [];
+        var e = 30;
+        var params = new SuperMap.GetSymbolInfoParameters({
+            libID: 421,
+            code: 10100
+        });
+        L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, function(result){
+            for (var i = 0; i < count; ++i) {
+                var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+                var dotSymbol = L.supermap.plotting.PlottingObject.createSymbol(421, 10100, L.latLng(coordinates[0], coordinates[1]), {serverUrl:serverUrl,symbolData: result.result, textContent: "常住人口"}, null, null);
+                features.push(dotSymbol);
+            }
+            graphicLayer.addFeatures(features);
+        }, null);
+    }
+
+    function differentDotSymbol(){
+        graphicLayer.removeAllGraphics();
+        var count = 5000;
+        var features = [];
+        var e = 30;
+        var randomCode = [9, 80101, 80102, 80103, 80104, 80105, 80106, 80107, 80108, 80109];
+        var randomSymbolData = [];
+        var symbolDataIndex = 0;
+
+        function getSymbolInfoSuccess(result){
+            randomSymbolData.push(result.result);
+            symbolDataIndex++;
+            if(symbolDataIndex < randomCode.length){
+                var params = new SuperMap.GetSymbolInfoParameters({
+                    libID: 421,
+                    code: randomCode[symbolDataIndex]
+                });
+                L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
+            } else {
+                for(var i = 0; i < count; ++i){
+                    var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+                    var randomIndex = Math.floor(10 * Math.random());
+                    var dotSymbol = L.supermap.plotting.PlottingObject.createSymbol(421, randomCode[randomIndex], L.latLng(coordinates[0], coordinates[1]), {serverUrl:serverUrl,symbolData: randomSymbolData[randomIndex]}, null, null);
+                    features.push(dotSymbol);
+                }
+                graphicLayer.addFeatures(features);
+            }
+        }
+        var params = new SuperMap.GetSymbolInfoParameters({
+            libID: 421,
+            code: randomCode[symbolDataIndex]
+        });
+        L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
+    }
+</script>
+</body>
+</html>
+
+
+

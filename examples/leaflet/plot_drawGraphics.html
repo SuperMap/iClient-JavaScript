@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_drawGraphics"></title>
+    <script type="text/javascript" include="bootstrap-css,plottingPanel" src="../js/include-web.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            position: absolute;
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #plottingPanel {
+            float: left;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 15px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center' style=" font-size: 16px;color: #ffffff;">复杂对象</h5></div>
+    <div class='panel-body content' style="padding: 10px;">
+        <div class='input-group' >
+            <input type="button"  class="btn btn-default" value="航线1" onclick="createAirRoute()" />
+            <input type="button"  class="btn btn-default" value="航线2" onclick="createNavyRoute()" />
+            <input type="button"  class="btn btn-default" value="航线3" onclick="createMissileRoute()" />
+            <input type="button"  class="btn btn-default" value="扇形区域" onclick="drawArcRegion()" />
+            <input type="button"  class="btn btn-default" value="干扰波束" onclick="drawInterferenceBeam()" />
+            <input type="button"  class="btn btn-default" value="对象标注" onclick="createSymbolText()" />
+            <input type="button"  class="btn btn-default" value="对象标注1" onclick="createSymbolText1()" />
+            <input type="button"  class="btn btn-default" value="卫星" onclick="drawSatellite()" />
+        </div>
+        <div class='input-group'>
+            <input type="button"  class="btn btn-default" value="兵力部署1" onclick="drawHJBLdeploy()" />
+            <input type="button"  class="btn btn-default" value="兵力部署2" onclick="drawKJBLdeploy()" />
+            <input type="button"  class="btn btn-default" value="卫星可见时间窗口1" onclick="drawSatelliteTimeWindows1()" />
+            <input type="button"  class="btn btn-default" value="卫星可见时间窗口2" onclick="drawSatelliteTimeWindows2()" />
+            <input type="button"  class="btn btn-default" value="编辑" onclick="editControlPoints()" />
+            <input type="button"  class="btn btn-default" value="清空" onclick="clearMap()" />
+        </div>
+    </div>
+</div>
+<div id="plottingPanel">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div class="easyui-tabs" style="width: 100%;height: 100%">
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="StylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [35,104],
+        maxZoom: 18,
+        zoom: 3
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.spatialAnalystUrl=host+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+    L.supermap.plotting.getControl(map, serverUrl).getSymbolLibManager().initializeAsync();
+    //对象标注
+    function createSymbolText(){
+        plottingLayer.removeAllFeatures();
+        plottingLayer.createSymbol(421, 80102, new L.latLng(35.99,103.84), null, {}, null, function (evt){
+            var symbolTexts = [];
+            symbolTexts.push(new SuperMap.Plot.SymbolText("天气",0,null));
+            symbolTexts.push(new SuperMap.Plot.SymbolText("温度",2,null));
+            plottingLayer.createSymbolText(evt.feature.uuid, symbolTexts, "", {}, {},{text:"对象标注"});
+        });
+    }
+    //对象标注1
+    function createSymbolText1(){
+        plottingLayer.removeAllFeatures();
+        plottingLayer.createSymbol(421, 80500, new L.latLng(38.32,119.97), null, {}, null, function (evt){
+            plottingLayer.createSymbolText1(evt.feature.uuid, ["方向：78°", "速度：123海里/小时", "排水量：2000吨"], "uuid-SymbolText", {}, {}, {text:"对象标注1"});
+        });
+    }
+
+    function createAirRoute(){
+        plottingLayer.removeAllFeatures();
+        var arrRoutePts = [];
+        var routePoints = [];
+        routePoints.push(L.latLng(29.5,106.5));
+        routePoints.push(L.latLng(28.7,116));
+        routePoints.push(L.latLng(40, 116.5));
+        routePoints.push(L.latLng(38.5, 106.3));
+        routePoints.push(L.latLng(29.5,106.5));
+        arrRoutePts.push(routePoints);
+
+        //待机点
+        var routeNode1 = new SuperMap.Plot.RouteNode();
+        routeNode1.x = 106.5;
+        routeNode1.y = 29.5;
+        routeNode1.type = SuperMap.Plot.RouteNodeType.STANDBY;
+        routeNode1.name = "重庆";
+
+        //起飞点
+        var routeNode2 = new SuperMap.Plot.RouteNode();
+        routeNode2.x = 116;
+        routeNode2.y = 28.7;
+        routeNode2.type = SuperMap.Plot.RouteNodeType.TAKEOFF;
+        routeNode2.name = "南昌";
+
+        //展开点
+        var routeNode3 = new SuperMap.Plot.RouteNode();
+        routeNode3.x = 116.5;
+        routeNode3.y = 40;
+        routeNode3.type = SuperMap.Plot.RouteNodeType.EXPANDING;
+        routeNode3.name = "北京";
+
+        //可视化初始点
+        var routeNode4 = new SuperMap.Plot.RouteNode();
+        routeNode4.x = 106.3;
+        routeNode4.y = 38.5;
+        routeNode4.type = SuperMap.Plot.RouteNodeType.VISUALINITAL;
+        routeNode4.name = "银川";
+
+        //创建指向节点
+        var textContents = [];
+        textContents.push("方向");
+        textContents.push("速度");
+        textContents.push("高度");
+        textContents.push("时间");
+        var towardNode1 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode2.id,textContent:textContents, index:1});
+        routeNode1.towardNodes.push(towardNode1);
+
+        var towardNode2 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode3.id,textContent:textContents, index:2});
+        routeNode2.towardNodes.push(towardNode2);
+
+        var towardNode3 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode4.id,textContent:textContents, index:3});
+        routeNode3.towardNodes.push(towardNode3);
+
+        var towardNode4 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode1.id,textContent:textContents, index:4});
+        routeNode4.towardNodes.push(towardNode4);
+
+        var routeNodes = [];
+        routeNodes.push(routeNode1);
+        routeNodes.push(routeNode2);
+        routeNodes.push(routeNode3);
+        routeNodes.push(routeNode4);
+        plottingLayer.createAirRoute(arrRoutePts, routeNodes, "iKJRoute", null, null);
+    }
+
+    function createNavyRoute(){
+        plottingLayer.removeAllFeatures();
+        var routeNode1 = new SuperMap.Plot.RouteNode();
+        routeNode1.x = 87.6;
+        routeNode1.y = 43.8;
+        routeNode1.type = SuperMap.Plot.RouteNodeType.STANDBY;
+        routeNode1.name = "乌鲁木齐";
+
+        var routeNode2 = new SuperMap.Plot.RouteNode();
+        routeNode2.x = 91.2;
+        routeNode2.y = 29.7;
+        routeNode2.type = SuperMap.Plot.RouteNodeType.TAKEOFF;
+        routeNode2.name = "拉萨";
+
+        var routeNode3 = new SuperMap.Plot.RouteNode();
+        routeNode3.x = 101.8;
+        routeNode3.y = 36.6;
+        routeNode3.type = SuperMap.Plot.RouteNodeType.SUPPLY;
+        routeNode3.name = "西宁";
+
+        var routeNode4 = new SuperMap.Plot.RouteNode();
+        routeNode4.x = 103.8;
+        routeNode4.y = 36.1;
+        routeNode4.type = SuperMap.Plot.RouteNodeType.VISUALINITAL;
+        routeNode4.name = "兰州";
+
+        var routeNode5 = new SuperMap.Plot.RouteNode();
+        routeNode5.x = 106.2;
+        routeNode5.y = 38.5;
+        routeNode5.type = SuperMap.Plot.RouteNodeType.EXPANDING;
+        routeNode5.name = "银川";
+
+        var routeNode6 = new SuperMap.Plot.RouteNode();
+        routeNode6.x = 108.9;
+        routeNode6.y = 34.3;
+        routeNode6.type = SuperMap.Plot.RouteNodeType.COMMONROUTE;
+        routeNode6.name = "西安";
+
+        var routeNode7 = new SuperMap.Plot.RouteNode();
+        routeNode7.x = 113.6;
+        routeNode7.y = 34.7;
+        routeNode7.type = SuperMap.Plot.RouteNodeType.RENDEZVOUS;
+        routeNode7.name = "郑州";
+
+        var routeNode8 = new SuperMap.Plot.RouteNode();
+        routeNode8.x = 117;
+        routeNode8.y = 36.6;
+        routeNode8.type = SuperMap.Plot.RouteNodeType.TAKEOFF;
+        routeNode8.name = "济南";
+
+        var routeNode9 = new SuperMap.Plot.RouteNode();
+        routeNode9.x = 117.1;
+        routeNode9.y = 39.2;
+        routeNode9.type = SuperMap.Plot.RouteNodeType.VOLLEY;
+        routeNode9.name = "天津";
+
+        var routeNode10 = new SuperMap.Plot.RouteNode();
+        routeNode10.x = 123.4;
+        routeNode10.y = 41.8;
+        routeNode10.type = SuperMap.Plot.RouteNodeType.LANCH;
+        routeNode10.name = "沈阳";
+
+        var routeNode11 = new SuperMap.Plot.RouteNode();
+        routeNode11.x = 125.3;
+        routeNode11.y = 43.8;
+        routeNode11.type = SuperMap.Plot.RouteNodeType.AIMING;
+        routeNode11.name = "长春";
+
+        var routeNode12 = new SuperMap.Plot.RouteNode();
+        routeNode12.x = 111.7;
+        routeNode12.y = 40.8;
+        routeNode12.type = SuperMap.Plot.RouteNodeType.WEAPONLAUNCH;
+        routeNode12.name = "呼和浩特";
+
+
+        //创建指向节点
+        var arrRoutPts = [];
+        var pts = [];
+
+        //创建指向节点
+        var towardNode1 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode2.id,textContent:"速度：1.14公里/分钟  距离：2673.5公里",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode1.towardNodes.push(towardNode1);
+
+        var towardNode2 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode3.id,textContent:"速度：1.14公里/分钟",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode2.towardNodes.push(towardNode2);
+
+        var towardNode3 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode4.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode3.towardNodes.push(towardNode3);
+
+        var towardNode4 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode5.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode4.towardNodes.push(towardNode4);
+
+        var towardNode5 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode6.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode5.towardNodes.push(towardNode5);
+
+        var towardNode6 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode8.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode7.towardNodes.push(towardNode6);
+
+        var towardNode7 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode9.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode8.towardNodes.push(towardNode7);
+
+        var towardNode11 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode10.id,textContent:"速度：1.14公里/分钟",relLineText:SuperMap.Plot.RelLineText.ONRIGHTLINE});
+        routeNode9.towardNodes.push(towardNode11);
+
+        var towardNode12 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode11.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode10.towardNodes.push(towardNode12);
+
+        var towardNode13 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode12.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode5.towardNodes.push(towardNode13);
+
+        var towardNode14= new SuperMap.Plot.TowardNode({routeNodeId:routeNode7.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode12.towardNodes.push(towardNode14);
+
+        var towardNode15= new SuperMap.Plot.TowardNode({routeNodeId:routeNode7.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode6.towardNodes.push(towardNode15);
+
+        var routeNodes = [];
+        routeNodes.push(routeNode1);
+        routeNodes.push(routeNode2);
+        routeNodes.push(routeNode3);
+        routeNodes.push(routeNode4);
+        routeNodes.push(routeNode5);
+        routeNodes.push(routeNode6);
+        routeNodes.push(routeNode7);
+        routeNodes.push(routeNode8);
+        routeNodes.push(routeNode9);
+        routeNodes.push(routeNode10);
+        routeNodes.push(routeNode11);
+        routeNodes.push(routeNode12);
+        plottingLayer.createNavyRoute([], routeNodes, null, null, null);
+    };
+
+    function createMissileRoute(){
+        plottingLayer.removeAllFeatures();
+        var routeNode1 = new SuperMap.Plot.RouteNode();
+        routeNode1.x = 116.5;
+        routeNode1.y = 40;
+        routeNode1.type = SuperMap.Plot.RouteNodeType.STANDBY;
+        routeNode1.name = "北京";
+
+        var routeNode2 = new SuperMap.Plot.RouteNode();
+        routeNode2.x = 111.7;
+        routeNode2.y = 40.8;
+        routeNode2.type = SuperMap.Plot.RouteNodeType.TAKEOFF;
+        routeNode2.name = "呼和浩特";
+
+        var routeNode3 = new SuperMap.Plot.RouteNode();
+        routeNode3.x = 112.6;
+        routeNode3.y = 37.8;
+        routeNode3.type = SuperMap.Plot.RouteNodeType.EXPANDING;
+        routeNode3.name = "太原";
+
+        var routeNode4 = new SuperMap.Plot.RouteNode();
+        routeNode4.x = 118.8;
+        routeNode4.y = 32.1;
+        routeNode4.type = SuperMap.Plot.RouteNodeType.VISUALINITAL;
+        routeNode4.name = "南京";
+
+        var routeNode5 = new SuperMap.Plot.RouteNode();
+        routeNode5.x = 115.9;
+        routeNode5.y = 28.7;
+        routeNode5.type = SuperMap.Plot.RouteNodeType.RENDEZVOUS;
+        routeNode5.name = "南昌市";
+
+        var routeNode6 = new SuperMap.Plot.RouteNode();
+        routeNode6.x = 106.7;
+        routeNode6.y = 26.6;
+        routeNode6.type = SuperMap.Plot.RouteNodeType.VOLLEY;
+        routeNode6.name = "贵阳市";
+
+        var routeNode7 = new SuperMap.Plot.RouteNode();
+        routeNode7.x = 106.5;
+        routeNode7.y = 29.6;
+        routeNode7.type = SuperMap.Plot.RouteNodeType.SUPPLY;
+        routeNode7.name = "重庆市";
+
+        var routeNode8 = new SuperMap.Plot.RouteNode();
+        routeNode8.x = 104.1;
+        routeNode8.y = 30.5;
+        routeNode8.type = SuperMap.Plot.RouteNodeType.TURNING;
+        routeNode8.name = "成都市";
+
+        var routeNode9 = new SuperMap.Plot.RouteNode();
+        routeNode9.x = 102.8;
+        routeNode9.y = 24.9;
+        routeNode9.type = SuperMap.Plot.RouteNodeType.LANCH;
+        routeNode9.name = "昆明市";
+
+        var routeNode10 = new SuperMap.Plot.RouteNode();
+        routeNode10.x = 91.2;
+        routeNode10.y = 29.6;
+        routeNode10.type = SuperMap.Plot.RouteNodeType.LANCH;
+        routeNode10.name = "拉萨市";
+
+        var routeNode11 = new SuperMap.Plot.RouteNode();
+        routeNode11.x = 114.3;
+        routeNode11.y = 30.6;
+        routeNode11.type = SuperMap.Plot.RouteNodeType.AIMING;
+        routeNode11.name = "武汉市";
+
+        //创建指向节点
+        var towardNode1 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode2.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode1.towardNodes.push(towardNode1);
+
+        var towardNode2 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode3.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode2.towardNodes.push(towardNode2);
+
+        var towardNode3 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode4.id,textContent:"距离：1094.7/公里",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode3.towardNodes.push(towardNode3);
+
+        var towardNode4 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode6.id,textContent:"距离：1152.5/公里",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode5.towardNodes.push(towardNode4);
+
+        var towardNode5 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode7.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode6.towardNodes.push(towardNode5);
+
+        var towardNode6 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode8.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode7.towardNodes.push(towardNode6);
+
+        var towardNode7= new SuperMap.Plot.TowardNode({routeNodeId:routeNode9.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode8.towardNodes.push(towardNode7);
+
+        var towardNode8 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode10.id,textContent:"速度：1.14公里/分钟 距离：2223.1/公里",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode9.towardNodes.push(towardNode8);
+
+        var towardNode9 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode11.id,textContent:"速度：1.14公里/分钟 距离：2223.1/公里",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode3.towardNodes.push(towardNode9);
+
+        var towardNode10 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode5.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode11.towardNodes.push(towardNode10);
+
+        var towardNode11 = new SuperMap.Plot.TowardNode({routeNodeId:routeNode5.id,textContent:"",relLineText:SuperMap.Plot.RelLineText.ONLEFTLINE});
+        routeNode4.towardNodes.push(towardNode11);
+
+        var routeNodes = [];
+        routeNodes.push(routeNode1);
+        routeNodes.push(routeNode2);
+        routeNodes.push(routeNode3);
+        routeNodes.push(routeNode4);
+        routeNodes.push(routeNode5);
+        routeNodes.push(routeNode6);
+        routeNodes.push(routeNode7);
+        routeNodes.push(routeNode8);
+        routeNodes.push(routeNode9);
+        routeNodes.push(routeNode10);
+        routeNodes.push(routeNode11);
+        plottingLayer.createMissileRoute([], routeNodes, "iMissileRoute", null, null);
+    };
+    function drawInterferenceBeam() {
+        plottingLayer.removeAllFeatures();
+        plottingLayer.createSymbol(421, 80400, new L.latLng(34.23,108.98), null, {}, null, function (evt){
+            var locationPointWCs = new Array(new L.latLng(31.38,101.78), new L.latLng(41.90,106.17), new L.latLng(39.64,114.34), new L.latLng(31.55,117.69));
+            plottingLayer.createInterferenceBeam(evt.feature.uuid, locationPointWCs, "iInterferenceBeam", {}, null, {text: "干扰波束"});
+        });
+//        SuperMap.Plot.PlottingUtil.getDataFromServer(serverUrl, 421, 80400, null, {}, null, success, null);
+//        function success(result){
+//            var dotSymbol =
+//            var locationPointWCs = new Array(new L.latLng(31.38,101.78), new L.latLng(41.90,106.17), new L.latLng(39.64,114.34), new L.latLng(31.55,117.69));
+//            plottingLayer.createInterferenceBeam(dotSymbol.uuid, locationPointWCs, "iInterferenceBeam", {}, null, {text: "干扰波束"});
+//        }
+    }
+    function drawSatellite() {
+        plottingLayer.removeAllFeatures();
+        var orbitPointWCs = [];
+        for (var i = 30; i < 60; i++) {
+            var x = 75 + 40 * Math.cos(i * Math.PI / 180);
+            var y = 7.5 + 40 * Math.sin(i * Math.PI / 180);
+            orbitPointWCs.push(new SuperMap.Plot.OrbitPoint(x, y, 0, i, new Date().getTime() + i));
+        }
+        plottingLayer.createSatellite(421, 80400, orbitPointWCs, "卫星", "iSatellite", {}, {visible: true}, {text: "卫星自定义属性"});
+
+    }
+    function drawSatelliteTimeWindows1() {
+        plottingLayer.removeAllFeatures();
+        var orbitPointWCs = [];
+        for (var i = 30; i < 60; i++) {
+            var x = 75 + 40 * Math.cos(i * Math.PI / 180);
+            var y = 7.5 + 40 * Math.sin(i * Math.PI / 180);
+            orbitPointWCs.push(new SuperMap.Plot.OrbitPoint(x, y, 0, i, new Date().getTime() + i));
+        }
+        plottingLayer.createSatellite(421, 80400, orbitPointWCs, "卫星",  "iSatellite1", {}, {visible: true}, function(evt){
+            var associatedUuid = evt.feature.uuid;
+            var timeWindows = [new SuperMap.Plot.TimeWindowParameter(40, 50)];
+            plottingLayer.createSatelliteTimeWindows1(associatedUuid, timeWindows, "iSatelliteTimeWindows1", {}, null, {text: "用户自定义属性"});
+        }, {text: "卫星自定义属性"});
+    }
+
+    function drawSatelliteTimeWindows2() {
+        plottingLayer.removeAllFeatures();
+        var orbitPointWCs = [];
+        for (var i = 30; i < 60; i++) {
+            var x = 75 + 40 * Math.cos(i * Math.PI / 180);
+            var y = 7.5 + 40 * Math.sin(i * Math.PI / 180);
+            orbitPointWCs.push(new SuperMap.Plot.OrbitPoint(x, y, 0, i, i + 1000));
+        }
+        plottingLayer.createSatellite(421, 80400, orbitPointWCs, "卫星", "iSatellite2", {}, {visible: true}, function(evt){
+            var associatedUuid = evt.feature.uuid;
+            var timeWindows = [new SuperMap.Plot.TimeWindowParameter(1035, 1040), new SuperMap.Plot.TimeWindowParameter(1050, 1055)];
+            plottingLayer.createSatelliteTimeWindows2(associatedUuid, timeWindows, "iSatelliteTimeWindows2", {}, null, {text: "卫星时间窗口2"});
+        }, {text: "卫星自定义属性"});
+    }
+
+    function drawHJBLdeploy(){
+        plottingLayer.removeAllFeatures();
+        plottingLayer.createSymbol(421, 9, new L.latLng(31.25,121.46), null, {}, null, function (evt){
+            var subSymbol = new SuperMap.Plot.SubSymbol();
+            subSymbol.libID = 421;
+            subSymbol.code = 10100;
+            subSymbol.totalNum = 3;
+            subSymbol.textContent = "Text";
+
+            var subSymbol1 = new SuperMap.Plot.SubSymbol();
+            subSymbol1.libID = 421;
+            subSymbol1.code = 9;
+            subSymbol1.totalNum = 3;
+            subSymbol1.textContent = "刑警";
+
+            var subSymbol2 = new SuperMap.Plot.SubSymbol();
+            subSymbol2.libID = 421;
+            subSymbol2.code = 80701;
+            subSymbol2.totalNum = 3;
+            subSymbol2.textContent = "枪支";
+
+            var subObjects = [subSymbol,subSymbol1,subSymbol2];
+            var optionsNavy = {colNum: 3, space: 5, textContent: "BLState", serverUrl: serverUrl};
+            plottingLayer.createNavyDeployment(evt.feature.uuid, subObjects, "iNavyDeployment", {}, optionsNavy, null, {text:"海军兵力部署"});
+        });
+    }
+
+    function drawKJBLdeploy(){
+        plottingLayer.removeAllFeatures();
+        plottingLayer.removeAllFeatures();
+        plottingLayer.createSymbol(421, 80101, new L.latLng(39.77,116.41), null, {}, null, function (evt){
+            var subSymbol = new SuperMap.Plot.SubSymbol();
+            subSymbol.libID = 421;
+            subSymbol.code = 80103;
+            subSymbol.totalNum = 5;
+            subSymbol.textContent = "交警";
+
+            var subSymbol1 = new SuperMap.Plot.SubSymbol();
+            subSymbol1.libID = 421;
+            subSymbol1.code = 80105;
+            subSymbol1.totalNum = 5;
+            subSymbol1.textContent = "治安警";
+
+            var subSymbol2 = new SuperMap.Plot.SubSymbol();
+            subSymbol2.libID = 421;
+            subSymbol2.code = 80201;
+            subSymbol2.totalNum = 5;
+            subSymbol2.textContent = "指挥车";
+
+            var subObjects = [subSymbol, subSymbol1, subSymbol2];
+            var optionsAir = {colNum: 5, space: 5, isShowTooltip: true, serverUrl: serverUrl};
+
+            plottingLayer.createAirDeployment(evt.feature.uuid, subObjects, "AirDeployment", {}, optionsAir, null, {text: "机场兵力部署"});
+        });
+    }
+
+    function drawArcRegion(){
+        plottingLayer.removeAllFeatures();
+        var uuid ="iArcRegion";
+        var options = {radiusText: ["半径", "1000公里"], radiusPosAngle: 30, radiusLineType: SuperMap.Plot.RadiusLineType.ARROW};
+        plottingLayer.createArcRegion( L.latLng(30.56,104.06), 1000, 0, 100, "扇形区域", 50, uuid, {}, options, {text:"扇形区域"});
+    }
+
+    function editControlPoints() {
+        if(editControl._editMode === SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE){
+            editControl.setEditMode(SuperMap.Plot.EditMode.EDITCONTROLPOINT);
+        }else{
+            editControl.setEditMode(SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE);
+        }
+
+    }
+    function clearMap(){
+        plottingLayer.removeAllFeatures();
+    }
+</script>
+</body>
+</html>
