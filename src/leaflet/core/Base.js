@@ -12,4 +12,23 @@ import Attributions from './Attributions'
 L.supermap = L.supermap || {};
 L.supermap.control = L.supermap.control || {};
 
-L.Control.Attribution.include({options: {position: 'bottomright',prefix: Attributions.Prefix}});
+L.Control.Attribution.include({
+    options: {
+        position: 'bottomright',
+        prefix: Attributions.Prefix
+    }
+});
+
+wrapToGeoJSON([L.Polyline, L.Polygon, L.Marker, L.CircleMarker, L.Circle, L.LayerGroup]);
+
+function wrapToGeoJSON(objClassArray) {
+    for (const objClass of objClassArray) {
+        objClass.defaultFunction = objClass.prototype.toGeoJSON;
+        objClass.include({
+            toGeoJSON: function (precision) {
+                return objClass.defaultFunction.call(this, precision || 10);
+            }
+        })
+    }
+
+}
