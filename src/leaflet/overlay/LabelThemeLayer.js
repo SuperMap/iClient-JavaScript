@@ -1,7 +1,7 @@
 import L from "leaflet";
 import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
-import {GeometryVector, Bounds, GeoText, CommonUtil as Util, SummaryMeshJobParameter} from '@supermap/iclient-common';
+import {GeometryVector, Bounds, GeoText, CommonUtil as Util} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.labelThemeLayer
