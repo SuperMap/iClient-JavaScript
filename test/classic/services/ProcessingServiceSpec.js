@@ -31,7 +31,7 @@ describe('classic_ProcessingService', () => {
     it('getKernelDensityJobs_processCompleted', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/density") {
+            if (testUrl.indexOf(url + "/spatialanalyst/density")===0) {
                 var escapedJson = "[" + kernelDensityJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -84,7 +84,7 @@ describe('classic_ProcessingService', () => {
     it('getKernelDensityJob', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/density" + "/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/density" + "/" + id)===0) {
                 var escapedJson = kernelDensityJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -144,7 +144,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/density/" + id) {
+            if (newResourceLocationURL.indexOf( url + "/spatialanalyst/density/" + id)===0) {
                 var escapedJson = kernelDensityJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -220,7 +220,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryMeshJobs_processCompleted', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/aggregatepoints") {
+            if (testUrl.indexOf(url + "/spatialanalyst/aggregatepoints")===0) {
                 // 转义后的json字符串
                 var escapedJson = "[" + summaryMeshJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
@@ -270,7 +270,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryMeshJob', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/aggregatepoints/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/aggregatepoints/" + id)===0) {
                 var escapedJson = summaryMeshJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -326,7 +326,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/aggregatepoints/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/aggregatepoints/" + id)===0) {
                 var escapedJson = summaryMeshJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -395,7 +395,7 @@ describe('classic_ProcessingService', () => {
     it('getQueryJobs_processCompleted', (done) => {
         var id = id_singleObjectQueryJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/query") {
+            if (testUrl.indexOf(url + "/spatialanalyst/query")===0) {
                 var escapedJson = "[" + singleObjectQueryJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -445,7 +445,7 @@ describe('classic_ProcessingService', () => {
     it('getQueryJob', (done) => {
         var id = id_singleObjectQueryJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/query/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/query/" + id)===0) {
                 var escapedJson = singleObjectQueryJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -501,7 +501,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/query/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/query/" + id)===0) {
                 var escapedJson = singleObjectQueryJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -569,7 +569,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryRegionJobs_processCompleted', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/summaryregion") {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryregion")===0) {
                 var escapedJson = "[" + summaryRegionJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -628,7 +628,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryRegionJob', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/summaryregion/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryregion/" + id)===0) {
                 var escapedJson = summaryRegionJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -696,7 +696,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/summaryregion/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/summaryregion/" + id)===0) {
                 var escapedJson = summaryRegionJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -781,7 +781,7 @@ describe('classic_ProcessingService', () => {
     it('getVectorClipJobs_processCompleted', (done) => {
         var id = id_vectorClipJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/vectorclip") {
+            if (testUrl.indexOf(url + "/spatialanalyst/vectorclip")===0) {
                 var escapedJson = "[" + vectorClipJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -832,7 +832,7 @@ describe('classic_ProcessingService', () => {
     it('getVectorClipJob', (done) => {
         var id = id_vectorClipJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/vectorclip/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/vectorclip/" + id)===0) {
                 var escapedJson = vectorClipJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -889,7 +889,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/vectorclip/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/vectorclip/" + id)===0) {
                 var escapedJson = vectorClipJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -958,7 +958,7 @@ describe('classic_ProcessingService', () => {
     it('getOverlayGeoJobs_processCompleted', (done) => {
         var id = id_overlayGeoJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/overlay") {
+            if (testUrl.indexOf(url + "/spatialanalyst/overlay")===0) {
                 var escapedJson = "[" + overlayGeoJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1010,7 +1010,7 @@ describe('classic_ProcessingService', () => {
     it('getOverlayGeoJob', (done) => {
         var id = id_overlayGeoJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/overlay/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/overlay/" + id)===0) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1068,7 +1068,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/overlay/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/overlay/" + id)===0) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1138,7 +1138,7 @@ describe('classic_ProcessingService', () => {
     it('getBuffersJobs_processCompleted', (done) => {
         var id = id_buffersAnalystJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/buffers") {
+            if (testUrl.indexOf(url + "/spatialanalyst/buffers")===0) {
                 var escapedJson = "[" + buffersAnalystJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1190,7 +1190,7 @@ describe('classic_ProcessingService', () => {
     it('getBuffersJob', (done) => {
         var id = id_buffersAnalystJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/buffers/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/buffers/" + id)===0) {
                 var escapedJson = buffersAnalystJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1249,7 +1249,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/buffers/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/buffers/" + id)===0) {
                 var escapedJson = buffersAnalystJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1320,7 +1320,7 @@ describe('classic_ProcessingService', () => {
     it('getTopologyValidatorJobs_processCompleted', (done) => {
         var id = id_topologyValidatorJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/topologyvalidator") {
+            if (testUrl.indexOf(url + "/spatialanalyst/topologyvalidator")===0) {
                 var escapedJson = "[" + topologyValidatorJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1371,7 +1371,7 @@ describe('classic_ProcessingService', () => {
     it('getTopologyValidatorJob', (done) => {
         var id = id_topologyValidatorJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl === url + "/spatialanalyst/topologyvalidator/" + id) {
+            if (testUrl.indexOf(url + "/spatialanalyst/topologyvalidator/" + id)===0) {
                 var escapedJson = topologyValidatorJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1428,7 +1428,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL === url + "/spatialanalyst/topologyvalidator/" + id) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/topologyvalidator/" + id)===0) {
                 var escapedJson = topologyValidatorJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
