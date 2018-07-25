@@ -37,21 +37,21 @@ const Renderer = ["canvas", "webgl"];
  * @param {Object} options - 图形参数。
  * @param {ol.map} options.map - openlayers 地图对象。
  * @param {ol.Graphic} options.graphics - 高效率点图层点要素。
- * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"(webgl渲染目前只支持散点)。
- * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。即默认支持高亮。
+ * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
+ * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
  * @param {ol.style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
- * @param {Array.<number>} [options.highlightColor] - webgl渲染时要素高亮颜色。
+ * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
  * @param {number} [options.radius=10] - 要素半径，单位像素。
- * @param {number} [options.radiusScale=1] - webgl渲染时的要素放大倍数。
- * @param {number} [options.radiusMinPixels=0] - webgl渲染时的要素半径最小值(像素)。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl渲染时的要素半径最大值(像素)。
+ * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
+ * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {function} [options.onHover] -  图层鼠标悬停响应事件(只有webgl渲染时有用)。
+ * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
+ * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
  * @extends {ol.source.ImageCanvas}
- * 
  */
 export class Graphic extends ol.source.ImageCanvas {
 
@@ -258,17 +258,17 @@ export class Graphic extends ol.source.ImageCanvas {
     }
     /**
      * @function ol.source.Graphic.prototype.setStyle
-     * @description 设置图层要素整体样式(接口仅在webgl渲染时有用)。
+     * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
      * @param {Object} styleOptions - 样式对象。
-     * @param {Array.<number>} styleOptions.color - 点颜色。
-     * @param {number} styleOptions.radius - 点半径。
-     * @param {number} styleOptions.opacity - 不透明度。
-     * @param {Array}  styleOptions.highlightColor - 高亮颜色，目前只支持rgba数组。
-     * @param {number} styleOptions.radiusScale - 点放大倍数。
-     * @param {number} styleOptions.radiusMinPixels - 半径最小值(像素)。
-     * @param {number} styleOptions.radiusMaxPixels - 半径最大值(像素)。
-     * @param {number} styleOptions.strokeWidth - 边框大小。
-     * @param {boolean} styleOptions.outline - 是否显示边框。
+     * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
+     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.opacity=0.8] - 不透明度。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
+     * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
+     * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
     setStyle(styleOptions) {
         let self = this;
@@ -291,7 +291,7 @@ export class Graphic extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Graphic.prototype.getLayerState
      * @description 获取当前地图及图层状态。
-     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态
+     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
     getLayerState() {
         let map = this.map;

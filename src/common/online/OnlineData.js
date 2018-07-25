@@ -4,7 +4,7 @@ import {OnlineServiceBase} from './OnlineServiceBase';
 
 /**
  * @class SuperMap.OnlineData
- * @classdesc Online myData 服务
+ * @classdesc Online myData 服务。
  * @category iPortal/Online
  * @param {string} serviceRootUrl - 服务根地址。
  * @param {Object} options - 服务相关参数。

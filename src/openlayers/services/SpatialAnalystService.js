@@ -34,7 +34,7 @@ import {ServiceBase} from './ServiceBase';
  * @param {object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 export class SpatialAnalystService extends ServiceBase {
 
@@ -47,7 +47,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 地区太阳辐射。
      * @param {SuperMap.AreaSolarRadiationParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getAreaSolarRadiationResult(params, callback, resultFormat) {
         var me = this;
@@ -70,7 +70,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 缓冲区分析。
      * @param {SuperMap.DatasetBufferAnalystParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     bufferAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -93,7 +93,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 点密度分析。
      * @param {SuperMap.DensityKernelAnalystParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     densityAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -116,7 +116,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 动态分段分析。
      * @param {SuperMap.GenerateSpatialDataParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     generateSpatialData(params, callback, resultFormat) {
         var me = this;
@@ -139,7 +139,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 空间关系分析。
      * @param {SuperMap.GeoRelationAnalystParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     geoRelationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -162,7 +162,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 插值分析。
      * @param {SuperMap.InterpolationRBFAnalystParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     interpolationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -185,7 +185,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 栅格代数运算。
      * @param {SuperMap.MathExpressionAnalysisParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     mathExpressionAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -208,7 +208,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 叠加分析。
      * @param {SuperMap.DatasetOverlayAnalystParameters|SuperMap.GeometryOverlayAnalystParameters} params - 叠加分析参数类，支持批量几何要素叠加分析。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     overlayAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -231,7 +231,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 路由测量计算。
      * @param {SuperMap.RouteCalculateMeasureParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     routeCalculateMeasure(params, callback, resultFormat) {
         var me = this;
@@ -254,7 +254,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 路由定位。
      * @param {SuperMap.RouteLocatorParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     routeLocate(params, callback, resultFormat) {
         var me = this;
@@ -277,7 +277,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 表面分析。
      * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     surfaceAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -300,7 +300,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 地形曲率计算。
      * @param {SuperMap.TerrainCurvatureCalculationParameters} params - 地形曲率计算相关参数。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     terrainCurvatureCalculate(params, callback, resultFormat) {
         var me = this;
@@ -323,7 +323,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @description 泰森多边形分析。
      * @param {SuperMap.DatasetThiessenAnalystParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     thiessenAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -344,16 +344,16 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.geometrybatchAnalysis
      * @description 批量空间分析。
-     * @param {Array} params - 批量分析参数对象数组；包括：
-     * @param {Array.<Object>} params.analystName - 空间分析方法的名称。包括：
-     *                                     "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"。
-     * @param {Object} params.param - 空间分析类型对应的请求参数，包括：
-     *                                {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。
-     *                                {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。
-     *                                {SuperMap.InterpolationAnalystParameters} 插值分析参数类。
-     *                                {SuperMap.SurfaceAnalystParameters} 表面分析参数类。
+     * @param {Array} params - 批量分析参数对象数组。
+     * @param {Array.<Object>} params.analystName - 空间分析方法的名称。包括：</br>
+     *                                     "buffer"，"overlay"，"interpolationDensity"，"interpolationidw"，"interpolationRBF"，"interpolationKriging"，"isoregion"，"isoline"。
+     * @param {Object} params.param - 空间分析类型对应的请求参数，包括：</br>
+     *                                {SuperMap.GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>
+     *                                {SuperMap.GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
+     *                                {SuperMap.InterpolationAnalystParameters} 插值分析参数类。</br>
+     *                                {SuperMap.SurfaceAnalystParameters} 表面分析参数类。</br>
      * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} resultFormat - 返回结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     geometrybatchAnalysis(params, callback, resultFormat) {
         var me = this;

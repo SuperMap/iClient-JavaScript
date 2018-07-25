@@ -96,8 +96,8 @@ export class Tianditu extends ol.source.WMTS {
 
     /**
      * @function ol.source.Tianditu.default4326TileGrid
-     * @description 获取默认4326网格瓦片。
-     * @returns {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
+     * @description 获取默认 4326 网格瓦片。
+     * @returns {ol.tilegrid.WMTS} 返回默认 4326 网格瓦片对象。
      */
     static default4326TileGrid() {
         var tdt_WGS84_resolutions = [];
@@ -118,8 +118,8 @@ export class Tianditu extends ol.source.WMTS {
 
     /**
      * @function ol.source.Tianditu.default3857TileGrid
-     * @description 获取默认3857网格瓦片。
-     * @returns {ol.tilegrid.WMTS} 返回默认3857网格瓦片对象
+     * @description 获取默认 3857 网格瓦片。
+     * @returns {ol.tilegrid.WMTS} 返回默认 3857 网格瓦片对象。
      */
     static default3857TileGrid() {
         var tdt_Mercator_resolutions = [];

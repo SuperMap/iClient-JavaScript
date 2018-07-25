@@ -242,7 +242,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.getCacheCount
      * @description 获取当前缓存数量。
-     * @return {Number} 返回当前缓存数量。
+     * @returns {Number} 返回当前缓存数量。
      */
     getCacheCount: function () {
         return this.cacheFields.length;

@@ -171,7 +171,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本，第一次不进行加减，是无版本的状态。
-     * @return {this} this
+     * @returns {this} this
      */
     nextTilesVersion: function () {
         if (this.firstLoad) {

@@ -10,7 +10,7 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类。
- * @param {Object} geometry - 要量算的几何对象，支持 ol.geom.Geometry 和 GeoText 标签数组类型 geometry = [x,y,text]。
+ * @param {Object} geometry - 要量算的几何对象，支持 {@link ol.geom.Geometry} 和 GeoText 标签数组类型 geometry = [x,y,text]。
  * @param {Object} [attributes] - 属性。
  */
 export class ThemeFeature {

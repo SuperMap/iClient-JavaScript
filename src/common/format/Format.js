@@ -57,7 +57,7 @@ export class Format {
      * @function SuperMap.Format.prototype.write
      * @description 将对象写成字符串。
      * @param {Object} object - 可序列化的对象。
-     * @return {string} 对象被写成字符串。
+     * @returns {string} 对象被写成字符串。
      */
     write(object) { // eslint-disable-line no-unused-vars
         //用来写字符串

@@ -2428,7 +2428,50 @@ _leaflet2["default"].supermap = _leaflet2["default"].supermap || {}; /**
 
 _leaflet2["default"].supermap.control = _leaflet2["default"].supermap.control || {};
 
-_leaflet2["default"].Control.Attribution.include({ options: { position: 'bottomright', prefix: _Attributions2["default"].Prefix } });
+_leaflet2["default"].Control.Attribution.include({
+    options: {
+        position: 'bottomright',
+        prefix: _Attributions2["default"].Prefix
+    }
+});
+
+wrapToGeoJSON([_leaflet2["default"].Polyline, _leaflet2["default"].Polygon, _leaflet2["default"].Marker, _leaflet2["default"].CircleMarker, _leaflet2["default"].Circle, _leaflet2["default"].LayerGroup]);
+
+function wrapToGeoJSON(objClassArray) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        var _loop = function _loop() {
+            var objClass = _step.value;
+
+            objClass.defaultFunction = objClass.prototype.toGeoJSON;
+            objClass.include({
+                toGeoJSON: function toGeoJSON(precision) {
+                    return objClass.defaultFunction.call(this, precision || 10);
+                }
+            });
+        };
+
+        for (var _iterator = objClassArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            _loop();
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator["return"]) {
+                _iterator["return"]();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+}
 
 /***/ }),
 /* 5 */
@@ -21320,28 +21363,23 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
     toFeature: function toFeature() {
         var geometry = this.geometry;
         var points = [];
-        if (geometry instanceof _leaflet2["default"].Polygon) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new _iclientCommon.Polygon(points);
-        } else if (geometry instanceof _leaflet2["default"].Polyline) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new _iclientCommon.LineString(points);
-        } else if (geometry.length === 3) {
+        var geojsonObject = void 0;
+        if (geometry.toGeoJSON) {
+            geojsonObject = geometry.toGeoJSON();
+            geojsonObject.properties = this.attributes;
+            return new _iclientCommon.GeoJSON().read(geojsonObject)[0];
+        }
+        if (geometry.length === 3) {
             geometry = new _iclientCommon.GeoText(geometry[1], geometry[0], geometry[2]);
-        } else {
-            if (geometry instanceof _leaflet2["default"].LatLng) {
-                points = [geometry.lng, geometry.lat];
-            } else if (geometry instanceof _leaflet2["default"].Point) {
-                points = [geometry.x, geometry.y];
-            } else if (geometry instanceof _leaflet2["default"].CircleMarker) {
-                var latLng = geometry.getLatLng();
-                points = [latLng.lng, latLng.lat];
-            } else {
-                points = geometry;
-            }
-            if (points.length === 2) {
-                geometry = new _iclientCommon.GeometryPoint(points[0], points[1]);
-            }
+        } else if (geometry.length === 2) {
+            geometry = new _iclientCommon.GeometryPoint(points[0], points[1]);
+        } else if (geometry instanceof _leaflet2["default"].LatLng) {
+            geometry = new _iclientCommon.GeometryPoint(geometry.lng, geometry.lat);
+        } else if (geometry instanceof _leaflet2["default"].Point) {
+            geometry = new _iclientCommon.GeometryPoint(geometry.x, geometry.y);
+        } else if (geometry instanceof _leaflet2["default"].CircleMarker) {
+            var latLng = geometry.getLatLng();
+            geometry = new _iclientCommon.GeometryPoint(latLng.lng, latLng.lat);
         }
         return new _iclientCommon.GeometryVector(geometry, this.attributes);
     },
@@ -84583,7 +84621,7 @@ var TokenServiceParameter = exports.TokenServiceParameter = function () {
 
     /**
      * @member {string} SuperMap.TokenServiceParameter.prototype.ip
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     * @description clientType=IP 时，必选。
      */
 
     this.ip = null;

@@ -20,7 +20,7 @@ import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} 
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  */
 export var MeasureService = ServiceBase.extend({
 
@@ -52,7 +52,7 @@ export var MeasureService = ServiceBase.extend({
 
     /**
      * @function L.supermap.measureService.measure
-     * @param {SuperMap.MeasureMode} type - 量算模式。
+     * @param {SuperMap.MeasureMode} [type=SuperMap.MeasureMode.DISTANCE] - 量算模式。
      * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      */

@@ -6,7 +6,7 @@ import {OutputSetting} from './OutputSetting';
 /**
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
- * @classdesc 矢量裁剪分析任务参数类
+ * @classdesc 矢量裁剪分析任务参数类。
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.datasetOverlay - 裁剪对象数据集。 

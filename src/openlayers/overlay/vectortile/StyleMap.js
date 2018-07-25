@@ -66,7 +66,7 @@ export var polygonMap = {
 export var StyleMap = {
     /**
      * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
-     * @description CartoCSS中的style属性名与Canvas的style属性名的对应表
+     * @description CartoCSS 中的 style 属性名与 Canvas 的 style 属性名的对应表
      */
     CartoStyleMap: {
         "TEXT": {
@@ -101,7 +101,7 @@ export var StyleMap = {
     },
     /**
      * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
-     * @description 服务端传过来的style属性名与Canvas的style属性名的对应表。
+     * @description 服务端传过来的 style 属性名与 Canvas 的 style 属性名的对应表。
      */
     ServerStyleMap: {
         fillBackOpaque: {
@@ -203,7 +203,7 @@ export var StyleMap = {
     },
     /**
      * @constant ol.supermap.StyleMap.prototype.CartoCompOpMap
-     * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表。
+     * @description Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。
      */
     CartoCompOpMap: {
         "clear": "",

@@ -63,7 +63,7 @@ export var NonEarthCRS = L.Class.extend({
      * @function L.CRS.NonEarthCRS.prototype.scale
      * @description 通过缩放级别计算比例尺。
      * @param {number} zoom - 缩放级别。
-     * @return {number} 得到的比例尺。
+     * @returns {number} 得到的比例尺。
      */
     scale: function (zoom) {
         if (!this.resolutions || this.resolutions.length === 0) {
@@ -78,7 +78,7 @@ export var NonEarthCRS = L.Class.extend({
      * @function L.CRS.NonEarthCRS.prototype.zoom
      * @description 通过比例尺计算范围。
      * @param {number} scale - 比例尺。
-     * @return {number} 返回空间范围值。
+     * @returns {number} 返回空间范围值。
      */
     zoom: function (scale) {
         if (!this.resolutions || this.resolutions.length === 0) {
@@ -99,7 +99,7 @@ export var NonEarthCRS = L.Class.extend({
      * @description 通过两个坐标点计算之间的距离。
      * @param {L.latLng} latlng1 - 坐标点1。
      * @param {L.latLng} latlng2 - 坐标点2。
-     * @return {number} 返回距离长度。
+     * @returns {number} 返回距离长度。
      */
     distance: function (latlng1, latlng2) {
         var dx = latlng2.lng - latlng1.lng,

@@ -49,7 +49,7 @@ export class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters
      * @param {SuperMap.GeometryThiessenAnalystParameters} geometryThiessenAnalystParameters - 几何对象泰森多边形分析参数类。
      * @param {SuperMap.GeometryThiessenAnalystParameters} tempObj - 几何对象泰森多边形分析参数对象。
      * @description 将几何对象泰森多边形分析参数对象转换为 JSON 对象。
-     * @return {Object} JSON 对象。
+     * @returns {Object} JSON 对象。
      */
     static toObject(geometryThiessenAnalystParameters, tempObj) {
         for (var name in geometryThiessenAnalystParameters) {

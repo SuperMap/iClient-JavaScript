@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_editPlottingLayer"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+</head>
+<body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;width: 300px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>图层编辑</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group' style=" margin-bottom: 12px;">
+                <span class='input-group-addon'>标绘图层的可编辑：</span>
+                <select class='form-control' id='editable' onchange="editableChanges()">
+                    <option value='0'>false</option>
+                    <option value='1' selected>true</option>
+                </select>
+            </div>
+            <div class='input-group' style=" margin-bottom: 12px;">
+                <span class='input-group-addon'>标绘图层的可锁定：</span>
+                <select class='form-control' id='locked' onchange="lockedChanges()">
+                    <option value='0' selected>false</option>
+                    <option value='1'>true</option>
+                </select>
+            </div>
+            <div class='input-group' style=" margin-bottom: 12px;">
+                <span class='input-group-addon'>标绘图层的可选择：</span>
+                <select class='form-control' id='selected' onchange="selectedChanges()">
+                    <option value='0'>false</option>
+                    <option value='1' selected>true</option>
+                </select>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="绘制标号" style="margin-bottom: 10px" onclick="plotSymbol()"/>
+        <input type="button" class="btn btn-default" value="取消绘制" style="margin-bottom: 10px" onclick="plottingDrawCancel()"/>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map,drawControl,editFlag,lockedFlag,selectedFlag;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [0, 0],
+        zoom: 2,
+        maxZoom: 18
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    function editableChanges(){
+        if(document.getElementById("editable").selectedIndex === 0){
+            editFlag = false;
+        }else{
+            editFlag = true;
+        }
+        plottingLayer.setEditable(editFlag);
+    }
+
+    function lockedChanges(){
+       if(document.getElementById("locked").selectedIndex === 0){
+           lockedFlag = false;
+       }else{
+           lockedFlag = true;
+       }
+        plottingLayer.setLocked(lockedFlag);
+    }
+    function selectedChanges(){
+        if(document.getElementById("selected").selectedIndex === 0){
+            selectedFlag = false;
+        }else{
+            selectedFlag = true;
+        }
+        plottingLayer.setSelected(selectedFlag);
+    }
+    function plotSymbol(){
+            drawControl.handler.libID = 0;
+            drawControl.handler.code = 32;
+            drawControl.handler.serverUrl = serverUrl;
+            drawControl.handler.enable();
+
+    }
+    function plottingDrawCancel(){
+        drawControl.handler.disable();
+    }
+</script>
+</body>
+</html>

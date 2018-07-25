@@ -54,7 +54,7 @@ export var Graphic = L.Class.extend({
     /**
      * @function L.supermap.graphic.prototype.getLatLng
      * @description 获取经纬度。
-     * @return {L.LatLng} 经纬度。
+     * @returns {L.LatLng} 经纬度。
      */
 
     getLatLng: function () {
@@ -65,7 +65,7 @@ export var Graphic = L.Class.extend({
      * @deprecated
      * @function L.supermap.graphic.prototype.getCanvas
      * @description 获取画布，已弃用该设置，请使用 getStyle 接口
-     * @return {HTMLCanvasElement} 画布。
+     * @returns {HTMLCanvasElement} 画布。
      */
     getCanvas: function () {
         return this._style;
@@ -74,7 +74,7 @@ export var Graphic = L.Class.extend({
     /**
      * @function L.supermap.graphic.prototype.getAttributes
      * @description 获取要素属性。
-     * @return {Object} 要素属性。
+     * @returns {Object} 要素属性。
      */
     getAttributes: function () {
         return this._attributes;
@@ -92,7 +92,7 @@ export var Graphic = L.Class.extend({
     /**
      * @function L.supermap.graphic.prototype.getStyle
      * @description 获取样式。
-     * @return {(L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle)} 样式。
+     * @returns {(L.supermap.circleStyle|L.supermap.imageStyle|L.supermap.cloverStyle)} 样式。
      */
     getStyle: function () {
         return this._style;

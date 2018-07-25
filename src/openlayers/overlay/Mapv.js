@@ -9,11 +9,17 @@ import {
 /**
  * @class ol.source.Mapv
  * @category  Visualization MapV
- * @classdesc MapV图层源。
+ * @classdesc MapV 图层源。
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前map对象。
- * @param {Mapv.DataSet} opt_options.dataSet - Mapv的数据集。
- * @param {Object} opt_options.mapvOptions - Mapv的配置对象。
+ * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {Mapv.DataSet} opt_options.dataSet - MapV 的数据集。
+ * @param {Object} opt_options.mapvOptions - MapV 的配置对象。
+ * @param {string} [opt_option.logo] - Logo。
+ * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
+ * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
+ * @param {Array} [opt_option.resolutions] - 分辨率数组。
+ * @param {ol.source.State} [opt_option.state] - 资源状态。
+ * @param {(string|Object)} [opt_option.attributions='© 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {ol.source.ImageCanvas}
  */
 export class Mapv extends ol.source.ImageCanvas {
@@ -89,7 +95,7 @@ export class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} mapv数据集
+     * @returns {mapv.DataSet} MapV 数据集。
      */
     getData() {
         if (this.layer) {
@@ -101,7 +107,7 @@ export class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -127,7 +133,7 @@ export class Mapv extends ol.source.ImageCanvas {
      * @function ol.source.Mapv.prototype.update
      * @description 更新数据。
      * @param {Object} options - 待更新的数据。
-     * @param {Object} options.data - mapv数据集。
+     * @param {Object} options.data - mapv 数据集。
      */
     update(options) {
         this.layer.update(options);

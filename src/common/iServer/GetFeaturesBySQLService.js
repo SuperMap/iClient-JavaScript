@@ -46,7 +46,7 @@ export class GetFeaturesBySQLService extends GetFeaturesServiceBase {
      * @description 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      * @param {SuperMap.GetFeaturesBySQLParameters} params - 数据集SQL查询参数类。
-     * @return {string} 转化后的 JSON 字符串。
+     * @returns {string} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
         return GetFeaturesBySQLParameters.toJsonParameters(params);

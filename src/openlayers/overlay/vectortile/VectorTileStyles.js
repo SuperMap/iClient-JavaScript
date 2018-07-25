@@ -185,8 +185,8 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.setCartoShaders
-     * @description 设置Carto的阴影。
-     * @param {Array} cartoShaders - Carto阴影。
+     * @description 设置 Carto 的阴影。
+     * @param {Array} cartoShaders - Carto 阴影。
      */
     static setCartoShaders(cartoShaders) {
         this.cartoShaders = cartoShaders;
@@ -194,7 +194,7 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.getCartoShaders
-     * @description 获取客户端Carto的阴影。
+     * @description 获取客户端 Carto 的阴影。
      */
     static getCartoShaders() {
         return this.cartoShaders;
@@ -202,8 +202,8 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.setClientCartoShaders
-     * @description 设置客户端Carto的阴影。
-     * @param {Array} clientCartoShaders - 客户端Carto阴影。
+     * @description 设置客户端 Carto 的阴影。
+     * @param {Array} clientCartoShaders - 客户端 Carto 阴影。
      */
     static setClientCartoShaders(clientCartoShaders) {
         this.clientCartoShaders = clientCartoShaders;
@@ -211,7 +211,7 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.getClientCartoShaders
-     * @description 获取客户端Carto的阴影。
+     * @description 获取客户端 Carto 的阴影。
      */
     static getClientCartoShaders() {
         return this.clientCartoShaders;
@@ -219,8 +219,8 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function VectorTileStyles.setCartoCss
-     * @description 设置cartoCss的样式。
-     * @param {Object} cartoCss - cartoCss的样式。
+     * @description 设置 cartoCss 的样式。
+     * @param {Object} cartoCss - cartoCss 的样式。
      */
     static setCartoCss(cartoCss) {
         this.cartoCss = cartoCss;
@@ -228,7 +228,7 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.getCartoCss
-     * @description 获取cartoCss的样式。
+     * @description 获取 cartoCss 的样式。
      */
     static getCartoCss() {
         return this.cartoCss;
@@ -236,8 +236,8 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.setDonotNeedServerCartoCss
-     * @description 设置是否需要CartoCss服务。
-     * @param {Object} donotNeedServerCartoCss - 是否需要CartoCss服务。
+     * @description 设置是否需要 CartoCss 服务。
+     * @param {Object} donotNeedServerCartoCss - 是否需要 CartoCss 服务。
      */
     static setDonotNeedServerCartoCss(donotNeedServerCartoCss) {
         this.donotNeedServerCartoCss = donotNeedServerCartoCss;
@@ -245,7 +245,7 @@ export class VectorTileStyles extends ol.Observable {
 
     /**
      * @function ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss
-     * @description 获取是否需要CartoCss服务。
+     * @description 获取是否需要 CartoCss 服务。
      */
     static getDonotNeedServerCartoCss() {
         return this.donotNeedServerCartoCss;

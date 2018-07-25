@@ -1,6 +1,6 @@
 /**
  * @class ol.supermap.MapvCanvasLayer
- * @classdesc Mapv渲染器。
+ * @classdesc Mapv 渲染器。
  * @private
  * @param {Object} options - 参数。
  * @param {number} options.width - 画布宽。
@@ -71,7 +71,7 @@ export class MapvCanvasLayer {
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
      * @description 获取容器。
-     * @returns {Element} 包含Mapv图层的dom对象。
+     * @returns {Element} 包含 Mapv 图层的 DOM 对象。
      */
     getContainer() {
         return this.canvas;
@@ -79,7 +79,7 @@ export class MapvCanvasLayer {
 
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
-     * @param {number} zIndex - 层级参数
+     * @param {number} zIndex - 层级参数。
      * @description 设置图层层级。
      */
     setZIndex(zIndex) {

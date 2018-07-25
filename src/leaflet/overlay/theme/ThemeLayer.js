@@ -49,7 +49,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getEvents
      * @description 获取图层事件。
-     * @return {Object} 返回图层支持的事件。
+     * @returns {Object} 返回图层支持的事件。
      */
     getEvents: function () {
         var me = this;
@@ -219,7 +219,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
-     * @return {Array} 返回图层中的有效数据。
+     * @returns {Array} 返回图层中的有效数据。
      */
     getFeatures: function () {
         var me = this;
@@ -264,7 +264,7 @@ export var ThemeLayer = L.Layer.extend({
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param {string} attrName - key 值。
      * @param {string} attrValue - value 值。
-     * @return {Array} 返回所有匹配的要素数组。
+     * @returns {Array} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
         var me = this,
@@ -333,7 +333,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.redraw
      * @description 重绘该图层。
-     * @return {boolean} 返回是否重绘成功。
+     * @returns {boolean} 返回是否重绘成功。
      */
     redraw: function () {
         var me = this;
@@ -424,7 +424,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJOSN 规范数据类型。
-     * @return {Array.<SuperMap.Feature.Vector>} 转换后的 iClient 要素。
+     * @returns {Array.<SuperMap.Feature.Vector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
         //若 features 非数组形式 feature 则先做以下处理：
@@ -460,7 +460,7 @@ export var ThemeLayer = L.Layer.extend({
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
      * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJOSN 规范数据类型。
-     * @return {SuperMap.Feature.Vector} 转换后的 iClient 要素。
+     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {
         return this.toiClientFeature(features);

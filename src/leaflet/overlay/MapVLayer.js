@@ -96,7 +96,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getData
      * @description 获取数据。
-     * @return {mapv.DataSet} mapv 数据集。
+     * @returns {mapv.DataSet} mapv 数据集。
      */
     getData: function () {
         if (this.renderer) {
@@ -157,7 +157,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getCanvas
      * @description 获取 canvas。
-     * @return {HTMLElement} 返回 mapV 图层包含的 canvas 对象。
+     * @returns {HTMLElement} 返回 mapV 图层包含的 canvas 对象。
      */
     getCanvas: function () {
         return this.canvas;
@@ -166,7 +166,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getContainer
      * @description 获取容器。
-     * @return {HTMLElement} 返回包含 mapV 图层的 dom 对象。
+     * @returns {HTMLElement} 返回包含 mapV 图层的 dom 对象。
      */
     getContainer: function () {
         return this.container;
@@ -175,7 +175,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getTopLeft
      * @description 获取左上角坐标。
-     * @return {L.Bounds} 返回左上角坐标。
+     * @returns {L.Bounds} 返回左上角坐标。
      */
     getTopLeft: function () {
         var map = this._map;

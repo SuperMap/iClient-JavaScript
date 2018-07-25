@@ -6,29 +6,30 @@ import {Graph} from './Graph';
  * @class ol.source.RankSymbol
  * @category  Visualization Theme
  * @classdesc 等级符号专题图图层源。
- * @param {string} name - 专题图层名
- * @param {string} symbolType - 标志类型
+ * @param {string} name - 专题图层名。
+ * @param {string} symbolType - 标志类型。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
- * @param {ol.Map} opt_options.map - 当前map对象。
+ * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {string} opt_options.themeFields - 指定创建专题图字段。
+ * @param {Object} opt_options.symbolSetting - 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>）。
+ * @param {Array.<number>} opt_options.symbolSetting.codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
+ * @param {number} [opt_options.symbolSetting.maxR] - 圆形的最大半径。
+ * @param {number} [opt_options.symbolSetting.minR] - 圆形的最小半径。
+ * @param {String} [opt_options.symbolSetting.fillColor] - 圆形的填充色，如：fillColor: "#FFB980"。
+ * @param {Object} [opt_options.symbolSetting.circleStyle] - 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。
+ * @param {number} [opt_options.symbolSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @param {Object} [opt_options.symbolSetting.circleHoverStyle] - 圆形 hover 状态时的样式，circleHoverAble 为 true 时有效。
+ * @param {boolean} [opt_options.symbolSetting.circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * @param {boolean} [opt_options.symbolSetting.circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
- * @param {(string|Object)} [opt_options.attributions] - 版权信息。
  * @param {string} [opt_options.logo] - Logo。
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
- * @param {number} [opt_options.ratio=1.5] - 视图比，1表示画布是地图视口的大小，2表示地图视口的宽度和高度的两倍，依此类推。 必须是1或更高。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
  * @param {Array} [opt_options.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
- * @param {string} [opt_options.themeFields] - 指定创建专题图字段。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {string} [opt_options.chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
- * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下几个基础可设属性：
- * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度，必设参数。
- * @param {number} opt_options.chartsSetting.height - 专题要素（图表）高度，必设参数。
- * @param {Array.<number>} opt_options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- * @param {number} opt_options.chartsSetting.XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @param {number} opt_options.chartsSetting.YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- * @param {Array.<number>} opt_options.chartsSetting.dataViewBoxParameter - 数据视图框 dataViewBox 参数，它是指图表框 chartBox（由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
- * @param {number} opt_options.chartsSetting.decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
  * @extends {Graph}
  */
 export class RankSymbol extends Graph {

@@ -4,7 +4,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortalMap
- * @classdesc iPortal 地图服务类
+ * @classdesc iPortal 地图服务类。
  * @category iPortal/Online
  * @param {string} mapUrl - 地图地址。
  * @param {Object} [params] - 服务参数。

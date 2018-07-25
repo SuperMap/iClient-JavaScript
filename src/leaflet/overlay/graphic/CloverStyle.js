@@ -11,6 +11,7 @@ import '../../core/Base';
  * @param {number} [options.spaceAngle=0] - 扇叶间隔角度，通过计算获取。
  * @param {number} [options.count=3] - 扇叶数量。
  * @param {boolean} [options.stroke=true] - 是否描边。
+ * @param {number} [options.strokeWidth=1] - 边框宽度。
  * @param {string} [options.color='#3388ff'] - 颜色。
  * @param {number} [options.weight=1] - 线宽。
  * @param {number} [options.opacity=1] - 透明度。
@@ -38,7 +39,8 @@ export var CloverStyle = L.Class.extend({
         fillColor: '#66ccff',
         fillOpacity: 0.2,
         fillRule: 'evenodd',
-        opacity: 1
+        opacity: 1,
+        strokeWidth:1
     },
 
     
@@ -51,7 +53,7 @@ export var CloverStyle = L.Class.extend({
         this._ctx = this._canvas.getContext('2d');
 
 
-        var strokeWidth = this.options.stroke.width === undefined ? 1 : this.options.stroke.width;
+        var strokeWidth = this.options.strokeWidth === undefined ? 1 : this.options.strokeWidth;
         this.options.width = 2 * (this.options.radius + strokeWidth) + 1;
         this._initStyle();
     },

@@ -38,7 +38,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
      * @private
      * @function  GraphicWebGLRenderer.prototype.getRenderer
      * @description 返回渲染器本身给图层，提供图层后续的数据增删改。
-     * @return {GraphicWebGLRenderer}
+     * @returns {GraphicWebGLRenderer}
      */
     getRenderer: function () {
         return this;

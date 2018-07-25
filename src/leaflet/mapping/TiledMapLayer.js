@@ -32,10 +32,10 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  */
 export var TiledMapLayer = L.TileLayer.extend({
 
@@ -91,7 +91,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @function L.supermap.tiledMapLayer.prototype.getTileUrl
      * @description 根据行列号获取瓦片地址。
      * @param {Object} coords - 行列号。
-     * @return {string} 瓦片地址。
+     * @returns {string} 瓦片地址。
      */
     getTileUrl: function (coords) {
         var scale = this.getScaleFromCoords(coords);
@@ -108,7 +108,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @function L.supermap.tiledMapLayer.prototype.getScale
      * @description 根据缩放级别获取比例尺。
      * @param {number} zoom - 缩放级别。
-     * @return {number} 比例尺。
+     * @returns {number} 比例尺。
      */
     getScale: function (zoom) {
         var me = this;
@@ -121,7 +121,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
      * @description 通过行列号获取比例尺。
      * @param {Object} coords - 行列号。
-     * @return {number} 比例尺。
+     * @returns {number} 比例尺。
      */
     getScaleFromCoords: function (coords) {
         var me = this,
@@ -247,7 +247,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号，并重绘。
      * @param {string} version - 切片版本号。
-     * @return {boolean} 是否成功。
+     * @returns {boolean} 是否成功。
      */
     mergeTileVersionParam: function (version) {
         if (version) {

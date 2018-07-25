@@ -1,6 +1,11 @@
 import L from "leaflet";
 import "../../core/Base";
-import {LineString, Polygon, GeoText, GeometryPoint, GeometryVector as Vector} from '@supermap/iclient-common';
+import {
+    GeoJSON,
+    GeoText,
+    GeometryPoint,
+    GeometryVector as Vector
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.themeFeature
@@ -21,34 +26,28 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function L.supermap.themeFeature.prototype.toFeature
      * @description 转为内部矢量要素。
-     * @return {SuperMap.Feature.Vector} 内部矢量要素。
+     * @returns {SuperMap.Feature.Vector} 内部矢量要素。
      */
     toFeature: function () {
-        var geometry = this.geometry;
-        var points = [];
-        if (geometry instanceof L.Polygon) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new Polygon(points);
-        } else if (geometry instanceof L.Polyline) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new LineString(points);
-        } else if (geometry.length === 3) {
+        let geometry = this.geometry;
+        const points = [];
+        let geojsonObject
+        if (geometry.toGeoJSON) {
+            geojsonObject = geometry.toGeoJSON();
+            geojsonObject.properties = this.attributes;
+            return new GeoJSON().read(geojsonObject)[0];
+        }
+        if (geometry.length === 3) {
             geometry = new GeoText(geometry[1], geometry[0], geometry[2]);
-        } else {
-            if (geometry instanceof L.LatLng) {
-                points = [geometry.lng, geometry.lat];
-            } else if (geometry instanceof L.Point) {
-                points = [geometry.x, geometry.y];
-            } else if (geometry instanceof L.CircleMarker) {
-                var latLng = geometry.getLatLng();
-                points = [latLng.lng, latLng.lat];
-            } else {
-                points = geometry;
-            }
-            if (points.length === 2) {
-                geometry = new GeometryPoint(points[0], points[1]);
-            }
-
+        } else if (geometry.length === 2) {
+            geometry = new GeometryPoint(points[0], points[1]);
+        } else if (geometry instanceof L.LatLng) {
+            geometry = new GeometryPoint(geometry.lng, geometry.lat);
+        } else if (geometry instanceof L.Point) {
+            geometry = new GeometryPoint(geometry.x, geometry.y);
+        } else if (geometry instanceof L.CircleMarker) {
+            var latLng = geometry.getLatLng();
+            geometry = new GeometryPoint(latLng.lng, latLng.lat);
         }
         return new Vector(geometry, this.attributes);
     },

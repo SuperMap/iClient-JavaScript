@@ -95,7 +95,7 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
      * @function SuperMap.GenerateSpatialDataService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
      * @param {SuperMap.GenerateSpatialDataParameters} params - 动态分段操作参数类。
-     * @return {string}转化后的JSON字符串。
+     * @returns {string}转化后的JSON字符串。
      */
     getJsonParameters(params) {
         var jsonParameters = "",

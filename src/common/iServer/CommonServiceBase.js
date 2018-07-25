@@ -191,7 +191,7 @@ export class CommonServiceBase {
      * @function SuperMap.CommonServiceBase.prototype.getCredential
      * @description  获取凭据信息
      * @param {string} url - 服务地址。
-     * @return {SuperMap.Credential} 凭据信息对象。
+     * @returns {SuperMap.Credential} 凭据信息对象。
      */
     getCredential(url) {
         let keyUrl = url,

@@ -88,7 +88,7 @@ export var LayerInfoService = ServiceBase.extend({
     /**
      * @function  L.supermap.layerInfoService.prototype.setLayersInfo
      * @description 设置图层信息。可以实现创建新的临时图层和对现有临时图层的修改。
-     * @param {SuperMap.SetLayersInfoParameters} params - 图层信息设置参数,包括临时图层。
+     * @param {SuperMap.SetLayersInfoParameters} params - 图层信息设置参数，包括临时图层。
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo: function (params, callback) {

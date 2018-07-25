@@ -208,7 +208,7 @@ export class TimeControlBase {
      * @function SuperMap.TimeControlBase.prototype.setSpeed
      * @description 设置步长。
      * @param {number} [speed=1] - 步长，必须为非负数。
-     * @return {boolean} true 代表设置成功，false 设置失败（speed 小于 0 时失败）。
+     * @returns {boolean} true 代表设置成功，false 设置失败（speed 小于 0 时失败）。
      */
     setSpeed(speed) {
         var me = this;
@@ -223,7 +223,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getSpeed
      * @description 获取步长。
-     * @return {number} 返回当前的步长
+     * @returns {number} 返回当前的步长
      */
     getSpeed() {
         return this.speed;
@@ -234,7 +234,7 @@ export class TimeControlBase {
      * @function SuperMap.TimeControlBase.prototype.setFrequency
      * @description 设置刷新频率。
      * @param {number} [frequency=1000] - 刷新频率，单位为 ms。
-     * @return {boolean} true 代表设置成功，false 设置失败（frequency 小于 0 时失败）。
+     * @returns {boolean} true 代表设置成功，false 设置失败（frequency 小于 0 时失败）。
      */
     setFrequency(frequency) {
         var me = this;
@@ -249,7 +249,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getFrequency
      * @description 获取刷新频率。
-     * @return {number} 返回当前的刷新频率。
+     * @returns {number} 返回当前的刷新频率。
      */
     getFrequency() {
         return this.frequency;
@@ -260,7 +260,7 @@ export class TimeControlBase {
      * @function SuperMap.TimeControlBase.prototype.setStartTime
      * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始。
      * @param {number} startTime - 需要设置的起始时间。
-     * @return {boolean} true 代表设置成功，false 设置失败（startTime 大于结束时间时失败）。
+     * @returns {boolean} true 代表设置成功，false 设置失败（startTime 大于结束时间时失败）。
      */
     setStartTime(startTime) {
         var me = this;
@@ -282,7 +282,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getStartTime
      * @description 获取起始时间。
-     * @return {number} 返回当前的起始时间。
+     * @returns {number} 返回当前的起始时间。
      */
     getStartTime() {
         return this.startTime;
@@ -293,7 +293,7 @@ export class TimeControlBase {
      * @function SuperMap.TimeControlBase.prototype.setEndTime
      * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始。
      * @param {number} endTime - 需要设置的结束时间。
-     * @return {boolean} true 代表设置成功，false 设置失败（endTime 小于开始时间时失败）。
+     * @returns {boolean} true 代表设置成功，false 设置失败（endTime 小于开始时间时失败）。
      */
     setEndTime(endTime) {
         var me = this;
@@ -315,7 +315,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getEndTime
      * @description 获取结束时间。
-     * @return {number} 返回当前的结束时间。
+     * @returns {number} 返回当前的结束时间。
      */
     getEndTime() {
         return this.endTime;
@@ -326,7 +326,7 @@ export class TimeControlBase {
      * @function SuperMap.TimeControlBase.prototype.setCurrentTime
      * @description 设置当前时间。
      * @param {number} currentTime - 需要设置的当前时间。
-     * @return {boolean} true 代表设置成功，false 设置失败。
+     * @returns {boolean} true 代表设置成功，false 设置失败。
      */
     setCurrentTime(currentTime) {
         var me = this;
@@ -345,7 +345,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getCurrentTime
      * @description 获取当前时间。
-     * @return {number} 返回当前时间。
+     * @returns {number} 返回当前时间。
      */
     getCurrentTime() {
         return this.currentTime;
@@ -365,7 +365,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getRepeat
      * @description 获取是否重复循环，默认是 true。
-     * @return {boolean} 返回是否重复循环。
+     * @returns {boolean} 返回是否重复循环。
      */
     getRepeat() {
         return this.repeat;
@@ -385,7 +385,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getReverse
      * @description 获取是否反向，默认是false。
-     * @return {boolean} 返回是否反向。
+     * @returns {boolean} 返回是否反向。
      */
     getReverse() {
         return this.reverse;
@@ -395,7 +395,7 @@ export class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getRunning
      * @description 获取运行状态。
-     * @return {boolean} true 代表正在运行，false 发表没有运行。
+     * @returns {boolean} true 代表正在运行，false 发表没有运行。
      */
     getRunning() {
         return this.running;

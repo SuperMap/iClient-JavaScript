@@ -38348,7 +38348,7 @@ class TokenServiceParameter_TokenServiceParameter {
 
         /**
          * @member {string} SuperMap.TokenServiceParameter.prototype.ip
-         * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+         * @description clientType=IP 时，必选。
          */
 
         this.ip = null;
@@ -63449,7 +63449,26 @@ let Attributions = {
 external_L_default.a.supermap = external_L_default.a.supermap || {};
 external_L_default.a.supermap.control = external_L_default.a.supermap.control || {};
 
-external_L_default.a.Control.Attribution.include({options: {position: 'bottomright',prefix: core_Attributions.Prefix}});
+external_L_default.a.Control.Attribution.include({
+    options: {
+        position: 'bottomright',
+        prefix: core_Attributions.Prefix
+    }
+});
+
+wrapToGeoJSON([external_L_default.a.Polyline, external_L_default.a.Polygon, external_L_default.a.Marker, external_L_default.a.CircleMarker, external_L_default.a.Circle, external_L_default.a.LayerGroup]);
+
+function wrapToGeoJSON(objClassArray) {
+    for (const objClass of objClassArray) {
+        objClass.defaultFunction = objClass.prototype.toGeoJSON;
+        objClass.include({
+            toGeoJSON: function (precision) {
+                return objClass.defaultFunction.call(this, precision || 10);
+            }
+        })
+    }
+
+}
 // CONCATENATED MODULE: ./src/leaflet/services/ServiceBase.js
 
 
@@ -66318,31 +66337,25 @@ var ThemeFeature = external_L_default.a.Class.extend({
      * @return {SuperMap.Feature.Vector} 内部矢量要素。
      */
     toFeature: function () {
-        var geometry = this.geometry;
-        var points = [];
-        if (geometry instanceof external_L_default.a.Polygon) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new Polygon_Polygon(points);
-        } else if (geometry instanceof external_L_default.a.Polyline) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new LineString_LineString(points);
-        } else if (geometry.length === 3) {
+        let geometry = this.geometry;
+        const points = [];
+        let geojsonObject
+        if (geometry.toGeoJSON) {
+            geojsonObject = geometry.toGeoJSON();
+            geojsonObject.properties = this.attributes;
+            return new GeoJSON_GeoJSON().read(geojsonObject)[0];
+        }
+        if (geometry.length === 3) {
             geometry = new GeoText_GeoText(geometry[1], geometry[0], geometry[2]);
-        } else {
-            if (geometry instanceof external_L_default.a.LatLng) {
-                points = [geometry.lng, geometry.lat];
-            } else if (geometry instanceof external_L_default.a.Point) {
-                points = [geometry.x, geometry.y];
-            } else if (geometry instanceof external_L_default.a.CircleMarker) {
-                var latLng = geometry.getLatLng();
-                points = [latLng.lng, latLng.lat];
-            } else {
-                points = geometry;
-            }
-            if (points.length === 2) {
-                geometry = new Point_Point(points[0], points[1]);
-            }
-
+        } else if (geometry.length === 2) {
+            geometry = new Point_Point(points[0], points[1]);
+        } else if (geometry instanceof external_L_default.a.LatLng) {
+            geometry = new Point_Point(geometry.lng, geometry.lat);
+        } else if (geometry instanceof external_L_default.a.Point) {
+            geometry = new Point_Point(geometry.x, geometry.y);
+        } else if (geometry instanceof external_L_default.a.CircleMarker) {
+            var latLng = geometry.getLatLng();
+            geometry = new Point_Point(latLng.lng, latLng.lat);
         }
         return new Vector_Vector(geometry, this.attributes);
     },

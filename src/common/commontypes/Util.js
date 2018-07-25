@@ -18,7 +18,7 @@ export var Util = SuperMap.Util = SuperMap.Util || {};
  *     SuperMap.Util.extend(obj, size);
  * @param {Object} [destination] - 目标对象。
  * @param {Object} source - 源对象，其属性将被设置到目标对象上。
- * @return {Object} 目标对象。
+ * @returns {Object} 目标对象。
  */
 
 SuperMap.Util.extend = function (destination, source) {
@@ -97,7 +97,7 @@ SuperMap.Util.reset = function (obj) {
 
 /**
  * @description 获取 HTML 元素数组。
- * @return {Array.<HTMLElement>} HTML 元素数组。
+ * @returns {Array.<HTMLElement>} HTML 元素数组。
  */
 SuperMap.Util.getElement = function () {
     var elements = [];
@@ -118,7 +118,7 @@ SuperMap.Util.getElement = function () {
 /**
  * @description instance of 的跨浏览器实现。
  * @param {Object} o - 对象。
- * @return {boolean} 是否是页面元素。
+ * @returns {boolean} 是否是页面元素。
  */
 SuperMap.Util.isElement = function (o) {
     return !!(o && o.nodeType === 1);
@@ -127,7 +127,7 @@ SuperMap.Util.isElement = function (o) {
 /**
  * @description 判断一个对象是否是数组。
  * @param {Object} a - 对象。
- * @return {boolean} 是否是数组。
+ * @returns {boolean} 是否是数组。
  */
 SuperMap.Util.isArray = function (a) {
     return (Object.prototype.toString.call(a) === '[object Array]');
@@ -138,7 +138,7 @@ SuperMap.Util.isArray = function (a) {
  * @description 从数组中删除某一项。
  * @param {Array} array - 数组。
  * @param {Object} item - 数组中要删除的一项。
- * @return {Array} 执行删除操作后的数组。
+ * @returns {Array} 执行删除操作后的数组。
  */
 SuperMap.Util.removeItem = function (array, item) {
     for (var i = array.length - 1; i >= 0; i--) {
@@ -154,7 +154,7 @@ SuperMap.Util.removeItem = function (array, item) {
  * @description 获取某对象再数组中的索引值。
  * @param {Array} array - 数组。
  * @param {Object} obj - 对象。
- * @return {number} 某对象再数组中的索引值。
+ * @returns {number} 某对象再数组中的索引值。
  */
 SuperMap.Util.indexOf = function (array, obj) {
     if (array == null) {
@@ -228,7 +228,7 @@ SuperMap.Util.modifyDOMElement = function (element, id, px, sz, position,
  * @param {Object} from - 源对象。Any properties of this object that
  *     are undefined in the to object will be set on the to object.
  *
- * @return {Object} A reference to the to object.  Note that the to argument is modified
+ * @returns {Object} A reference to the to object.  Note that the to argument is modified
  *     in place and returned by this function.
  */
 SuperMap.Util.applyDefaults = function (to, from) {
@@ -265,7 +265,7 @@ SuperMap.Util.applyDefaults = function (to, from) {
 /**
  * @description 将参数对象转换为 HTTP 的 GET 请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
  * @param {Object} params - 参数对象。
- * @return {string} HTTP 的 GET 请求中的参数字符串。
+ * @returns {string} HTTP 的 GET 请求中的参数字符串。
  */
 SuperMap.Util.getParameterString = function (params) {
     var paramsArray = [];
@@ -300,7 +300,7 @@ SuperMap.Util.getParameterString = function (params) {
  * @description 给 URL 追加参数。
  * @param {string} url - 待追加参数的 URL 字符串。
  * @param {string} paramStr - 待追加的参数。
- * @return {string} 新的 URL。
+ * @returns {string} 新的 URL。
  */
 SuperMap.Util.urlAppend = function (url, paramStr) {
     var newUrl = url;
@@ -324,7 +324,7 @@ SuperMap.Util.DEFAULT_PRECISION = 14;
  * @description 将字符串以接近的精度转换为数字。
  * @param {string} number - 字符串。
  * @param {number} [precision=14] - 精度。
- * @return {number} 数字。
+ * @returns {number} 数字。
  */
 SuperMap.Util.toFloat = function (number, precision) {
     if (precision == null) {
@@ -340,7 +340,7 @@ SuperMap.Util.toFloat = function (number, precision) {
 /**
  * @description 角度转弧度。
  * @param {number} x - 角度。
- * @return {number} 弧度。
+ * @returns {number} 弧度。
  */
 SuperMap.Util.rad = function (x) {
     return x * Math.PI / 180;
@@ -349,7 +349,7 @@ SuperMap.Util.rad = function (x) {
 /**
  * @description 从URL字符串中解析出参数对象。
  * @param {string} url - URL。
- * @return {Object} 解析出的参数对象。
+ * @returns {Object} 解析出的参数对象。
  */
 SuperMap.Util.getParameters = function (url) {
     // if no url specified, take it from the location bar
@@ -410,7 +410,7 @@ SuperMap.Util.lastSeqID = 0;
 /**
  * @description 创建唯一 ID 值。
  * @param {string} [prefix] - 前缀。
- * @return {string} 唯一的 ID 值。
+ * @returns {string} 唯一的 ID 值。
  */
 SuperMap.Util.createUniqueID = function (prefix) {
     if (prefix == null) {
@@ -531,7 +531,7 @@ SuperMap.DOTS_PER_INCH = 96;
 
 /**
  * @param {number} scale - 比例尺。
- * @return {number} 返回正常的 scale 值。
+ * @returns {number} 返回正常的 scale 值。
  */
 SuperMap.Util.normalizeScale = function (scale) {
     var normScale = (scale > 1.0) ? (1.0 / scale) : scale;
@@ -542,7 +542,7 @@ SuperMap.Util.normalizeScale = function (scale) {
  * @description 比例尺转分辨率。
  * @param {number} scale - 比例尺。
  * @param {string} [units='degrees'] - 比例尺单位。
- * @return {number} 分辨率。
+ * @returns {number} 分辨率。
  */
 SuperMap.Util.getResolutionFromScale = function (scale, units) {
     var resolution;
@@ -561,7 +561,7 @@ SuperMap.Util.getResolutionFromScale = function (scale, units) {
  * @description 分辨率转比例尺。
  * @param {number} resolution - 分辨率。
  * @param {string} [units='degrees'] - 分辨率单位。
- * @return {number} 比例尺。
+ * @returns {number} 比例尺。
  */
 SuperMap.Util.getScaleFromResolution = function (resolution, units) {
 
@@ -628,7 +628,7 @@ SuperMap.Browser = (function () {
 
 /**
  * @description 获取浏览器相关信息。支持的浏览器包括：Opera，Internet Explorer，Safari，Firefox。
- * @return {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
+ * @returns {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
  */
 SuperMap.Util.getBrowser = function () {
     return SuperMap.Browser;
@@ -636,7 +636,7 @@ SuperMap.Util.getBrowser = function () {
 
 /**
  * @description 浏览器是否支持 Canvas。
- * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
+ * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
  */
 SuperMap.Util.isSupportCanvas = (function () {
     var checkRes = true, broz = SuperMap.Util.getBrowser();
@@ -661,7 +661,7 @@ SuperMap.Util.isSupportCanvas = (function () {
 
 /**
  * @description 判断；浏览器是否支持 Canvas。
- * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
+ * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
  */
 SuperMap.Util.supportCanvas = function () {
     return SuperMap.Util.isSupportCanvas;
@@ -679,7 +679,7 @@ SuperMap.INCHES_PER_UNIT["yard"] = SuperMap.INCHES_PER_UNIT.yd;
 /**
  * @description 判断一个 URL 请求是否在当前域中。
  * @param {string} url - URL 请求字符串。
- * @return {boolean} URL 请求是否在当前域中。
+ * @returns {boolean} URL 请求是否在当前域中。
  */
 SuperMap.Util.isInTheSameDomain = function (url) {
     if (!url) {
@@ -734,7 +734,7 @@ SuperMap.Util.isInTheSameDomain = function (url) {
  * @param {number} scale - 地图初始化时默认的显示比例尺。
  * @param {string} [coordUnit='degrees'] - 投影坐标系统的地图单位。
  * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
- * @return {number} 返回图层显示分辨率。
+ * @returns {number} 返回图层显示分辨率。
  */
 SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
     //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
@@ -766,7 +766,7 @@ SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, dat
 /**
  * @description 将对象转换成 JSON 字符串。
  * @param {Object} obj - 要转换成 JSON 的 Object 对象。
- * @return {string} 返回转换后的 JSON 对象。
+ * @returns {string} 返回转换后的 JSON 对象。
  */
 SuperMap.Util.toJSON = function (obj) {
     var objInn = obj;
@@ -841,7 +841,7 @@ SuperMap.Util.toJSON = function (obj) {
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。
  * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
- * @return {number} 返回当前比例尺下的屏幕分辨率。
+ * @returns {number} 返回当前比例尺下的屏幕分辨率。
  */
 SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
@@ -869,7 +869,7 @@ SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datum
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。
  * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
- * @return {number} 返回当前屏幕分辨率下的比例尺。
+ * @returns {number} 返回当前屏幕分辨率下的比例尺。
  */
 SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, datumAxis) {
     var scale = null,
@@ -892,7 +892,7 @@ SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, 
 /**
  * @description 转换查询结果。
  * @param {Object} result - 查询结果。
- * @return {Object} 转换后的查询结果。
+ * @returns {Object} 转换后的查询结果。
  */
 SuperMap.Util.transformResult = function (result) {
     if (result.responseText && typeof result.responseText === "string") {
@@ -957,7 +957,7 @@ SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
 /**
  * @description 克隆一份Object对象
  * @param {Object} obj - 需要克隆的对象。
- * @return {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
+ * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
  */
 SuperMap.Util.cloneObject = function (obj) {
     // Handle the 3 simple types, and null or undefined
@@ -998,7 +998,7 @@ SuperMap.Util.cloneObject = function (obj) {
  * @param {SuperMap.Geometry.Point} a2 - 第一条线段的结束节点。
  * @param {SuperMap.Geometry.Point} b1 - 第二条线段的起始节点。
  * @param {SuperMap.Geometry.Point} b2 - 第二条线段的结束节点。
- * @return {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
+ * @returns {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
  */
 SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
     var intersectValue = null;
@@ -1043,7 +1043,7 @@ SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
  * @param {SuperMap.Style} style - 文本样式。
  * @param {string} text - 文本内容。
  * @param {Object} element - DOM 元素。
- * @return {Object} 返回裁剪后的宽度，高度信息。
+ * @returns {Object} 返回裁剪后的宽度，高度信息。
  */
 SuperMap.Util.getTextBounds = function (style, text, element) {
     document.body.appendChild(element);

@@ -77,7 +77,7 @@
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            if (supportES6()) {
+            if (supportES6() && !inArray(includes, 'iclient9-plot-leaflet')) {
                 inputScript("../../dist/leaflet/iclient9-leaflet-es6.js");
             } else {
                 inputScript("../../dist/leaflet/iclient9-leaflet.js");
@@ -85,6 +85,10 @@
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
+        }
+        if (inArray(includes, 'iclient9-plot-leaflet')) {
+            inputCSS("../../dist/leaflet/iclient9-plot-leaflet.css");
+            inputScript("../../dist/leaflet/iclient9-plot-leaflet.min.js");
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript("http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");

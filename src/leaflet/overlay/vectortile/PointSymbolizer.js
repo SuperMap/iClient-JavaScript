@@ -30,7 +30,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
      /**
      * @function L.supermap.PointSymbolizer.prototype.getLatLng
      * @description 获取点坐标。
-     * @return {L.LatLng} 点坐标。
+     * @returns {L.LatLng} 点坐标。
      */
     getLatLng: function(){
         return this._renderer._map.layerPointToLatLng(this._point);

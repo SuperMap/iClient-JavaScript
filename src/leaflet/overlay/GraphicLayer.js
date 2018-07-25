@@ -77,7 +77,7 @@ export var GraphicLayer = L.Path.extend({
      * @private
      * @function L.supermap.graphicLayer.prototype.getEvents
      * @description 获取事件。
-     * @return {Object} 返回该图层支持的事件对象。
+     * @returns {Object} 返回该图层支持的事件对象。
      */
     getEvents: function () {
         return {
@@ -196,7 +196,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getRenderer
      * @description 获取渲染器。
-     * @return {Object} 内部渲染器。
+     * @returns {Object} 内部渲染器。
      */
     getRenderer: function () {
         return this._renderer;
@@ -205,7 +205,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function L.supermap.graphicLayer.prototype.getState
      * @description 获取当前地图及图层状态。
-     * @return {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
      */
     getState: function () {
         let map = this._map;

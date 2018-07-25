@@ -11,7 +11,7 @@ import {
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} options.sAngle - 扇叶起始角度。
  * @param {number} options.eAngle - 扇叶终止角度。
- * @param {number} [options.angle = 30] - 三叶草每个扇叶的圆心角,默认为30，单位弧度。
+ * @param {number} [options.angle = 30] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {ol.style.Fill} [options.fill] - 填充样式。
  * @param {ol.style.Stroke} [options.stroke] - 边框样式。
  * @param {number} [options.strokeOpacity] - 透明度。

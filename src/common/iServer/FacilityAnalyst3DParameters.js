@@ -9,8 +9,8 @@ import {Util} from '../commontypes/Util';
  * 超过 10 分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起
  * 作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @param {Object} options - 参数。 
- * @param {number} [options.edgeID] - 指定的弧段 ID。 
- * @param {number} [options.nodeID] - 指定的结点 ID。 
+ * @param {number} [options.edgeID] - 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。 
+ * @param {number} [options.nodeID] - 指定的结点 ID，edgeID 与 nodeID 必须指定一个。  
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。 
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  *                                                      指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
@@ -21,13 +21,13 @@ export class FacilityAnalyst3DParameters {
     constructor(options) {
         /**
          * @member {number} [SuperMap.FacilityAnalyst3DParameters.prototype.edgeID]
-         * @description 指定的弧段ID。
+         * @description 指定的弧段ID，edgeID 与 nodeID 必须指定一个。 
          */
         this.edgeID = null;
 
         /**
          * @member {number} [SuperMap.FacilityAnalyst3DParameters.prototype.nodeID]
-         * @description 指定的结点ID。
+         * @description 指定的结点ID，edgeID 与 nodeID 必须指定一个。 
          */
         this.nodeID = null;
 

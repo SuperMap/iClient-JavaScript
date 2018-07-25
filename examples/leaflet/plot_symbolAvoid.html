@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_symbolAvoid"></title>
+    <script type="text/javascript" include="bootstrap-css,jquery,widgets.alert" src="../js/include-web.js"></script>
+</head>
+<body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>避让区域</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="避让编辑" onclick="drawAvoidRegion()"/>
+        <input type="button" class="btn btn-default" value="退出避让编辑" onclick="doneAvoidEdit()"/>
+        <input type="button" class="btn btn-default" value="删除避让" onclick="deleteAvoidEdit()"/>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var map,symbolLibManager;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [34.91, 114.8225],
+        zoom: 5,
+        maxZoom: 18
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+    plottingLayer.addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+    drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    function loadSymbolLib() {
+        symbolLibManager = plotting.getSymbolLibManager();
+        symbolLibManager.libIDs = [421];
+        symbolLibManager.on( SuperMap.Plot.Event.initializecompleted,initializeCompleted);
+        symbolLibManager.initializeAsync();
+    }
+    function initializeCompleted() {
+        plotSymbol();
+    }
+    function plotSymbol(){
+        var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+        var libID = symbolLib.libID;
+
+        var latlngs = [];
+        latlngs.push(new L.latLng(35.7875,107.02625));
+        latlngs.push(new L.latLng(33.65,112.67375));
+        latlngs.push(new L.latLng(36.575,114.81125));
+        plottingLayer.createSymbol(0, 390, latlngs);
+
+        plottingLayer.createSymbol(libID, 9, [new L.latLng(35.2925,107.02625)]);
+        plottingLayer.createSymbol(libID, 80102, [new L.latLng(36.08,110.78375)]);
+        plottingLayer.createSymbol(libID, 80105, [new L.latLng(35.8775,114.87875)]);
+
+    }
+    function drawAvoidRegion(){
+        widgets.alert.clearAlert();
+        if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
+            widgets.alert.showAlert("避让编辑之前请先选择标号",false);
+        }else{
+            editControl.avoidEdit(true);
+        }
+    }
+    function doneAvoidEdit(){
+        widgets.alert.clearAlert();
+        editControl.avoidEdit(false);
+    }
+    function deleteAvoidEdit(){
+        widgets.alert.clearAlert();
+        if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
+            widgets.alert.showAlert("删除避让区域之前请先请先选择标号",false);
+        }else if(editControl._avoidEditing === true){
+            editControl.avoidEdit(false);
+            plottingLayer.features[0].removeAvoidRegions();
+            widgets.alert.showAlert("删除避让区域成功！",true);
+        }
+    }
+    function PlottingDrawCancel(){
+        drawControl.handler.disable();
+    }
+    window.onload = function(){
+        loadSymbolLib();
+    };
+</script>
+</body>
+</html>
