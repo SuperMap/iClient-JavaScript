@@ -4,25 +4,14 @@ import {MapVRenderer} from './mapv/MapVRenderer';
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV图层。
- * @extends SuperMap.Layer
- * @param name - {string} 图层名。
- * @param {Object} options - 可选参数，有如下两个参数：
- * @param {Mapv.DataSet} options.dataSet - mapv 的dataSet对象。
+ * @classdesc MapV 图层。
+ * @extends {SuperMap.Layer}
+ * @param {string} name - 图层名。
+ * @param {Object} options - 可选参数。
+ * @param {Mapv.DataSet} options.dataSet - mapv 的 dataSet 对象。
+ * @param {Object} options.options - mapv 绘图风格配置信息。
  */
 export class MapVLayer extends SuperMap.Layer {
-
-    /*
-     * @function SuperMap.Layer.MapVLayer.prototype.
-     * @description
-     * MapV支持webgl和普通canvas渲染.
-     * 但目前本图层webgl渲染不能正确显示，待解决
-     *
-     * @param name
-     * @param options 有两个参数<br>
-     *  * dataSet: mapv 的dataSet对象
-     *  * options: mapv 绘图风格配置信息
-     */
     constructor(name, options) {
         super(name, options);
 
@@ -40,7 +29,7 @@ export class MapVLayer extends SuperMap.Layer {
 
         /**
          * @member {boolean} - [SuperMap.Layer.MapVLayer.prototype.supported=false]
-         * @description 当前浏览器是否支持canvas绘制。决定了MapV图是否可用，内部判断使用。
+         * @description 当前浏览器是否支持 canvas 绘制。决定了 MapV 图是否可用，内部判断使用。
          */
         this.supported = false;
 
@@ -105,8 +94,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {mapv.DataSet} dataSet - mapv数据集。
-     * @param {Object} options - mapv绘图参数。
+     * @param {mapv.DataSet} dataSet - mapv 数据集。
+     * @param {Object} options - mapv 绘图参数。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -116,8 +105,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {mapv.DataSet} dataSet - mapv数据集。
-     * @param {Object} options - mapv绘图参数。
+     * @param {mapv.DataSet} dataSet - mapv 数据集。
+     * @param {Object} options - mapv 绘图参数。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -127,7 +116,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} - mapv数据集。
+     * @returns {mapv.DataSet} - mapv 数据集。
      */
     getData() {
         if (this.renderer) {
@@ -139,7 +128,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} [filter] -  过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -163,9 +152,9 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.setMap
-     * @description 图层已经添加到Map中。
-     *              如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
-     * @param {SuperMap.Map} map - 需要绑定的map对象。
+     * @description 图层已经添加到 Map 中。
+     *              如果当前浏览器支持 canvas，则开始渲染要素；如果不支持则移除图层。
+     * @param {SuperMap.Map} map - 需要绑定的 map 对象。
      */
     setMap(map) {
         super.setMap(map);
@@ -179,8 +168,8 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.moveTo
-     * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
-     *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
+     * @description 重置当前 MapV 图层的 div，再一次与 Map 控件保持一致。
+     *              修改当前显示范围，当平移或者缩放结束后开始重绘 MapV 图的渲染效果。
      * @param {SuperMap.Bounds} bounds - 图层范围。
      * @param {boolean} [zoomChanged] - 缩放级别是否改变。
      * @param {boolean} [dragging] - 是否拖动。
@@ -221,7 +210,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
-     * @param {SuperMap.Lonlat} [latLng] - 经纬度坐标。
+     * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
      */
     transferToMapLatLng(latLng) {
         var source = "EPSG:4326", dest = "EPSG:4326";

@@ -7,8 +7,8 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @category  Visualization Theme
  * @classdesc 三维单值专题图。
  * @param {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer。
- * @param {number} [layerOptions.height] - 新增参数，如果数据指定的heightField(默认为height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
+ * @param {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
+ * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height )没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  */
 export class UniqueTheme3DLayer extends Theme3DLayer {
@@ -62,7 +62,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     /**
      * @function mapboxgl.supermap.UniqueTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式。
-     * @returns {Object} mapboxgl样式对象。
+     * @returns {Object} mapboxgl 样式对象。
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

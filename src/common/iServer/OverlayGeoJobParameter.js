@@ -5,12 +5,14 @@ import {OutputSetting} from './OutputSetting';
 /**
  * @class SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
- * @classdesc 叠加分析任务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。<br>
- * @param {string} options.mode - 叠加分析模式。<br>
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
+ * @classdesc 叠加分析任务参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。
+ * @param {string} options.mode - 叠加分析模式。
+ * @param {string} options.srcFields - 输入数据需要保留的字段。
+ * @param {string} options.overlayFields - 叠加数据需要保留的字段。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 export class OverlayGeoJobParameter {
 
@@ -31,14 +33,14 @@ export class OverlayGeoJobParameter {
         this.datasetOverlay = "";
 
         /**
-         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.mode
-         * @description 叠加分析模式
+         * @member {string} [SuperMap.OverlayGeoJobParameter.prototype.mode]
+         * @description 叠加分析模式。
          */
         this.mode = "";
 
         /**
          * @member {string} SuperMap.OverlayGeoJobParameter.prototype.srcFields
-         * @description 输入数据需要保留的字段
+         * @description 输入数据需要保留的字段。
          */
         this.srcFields = "";
 
@@ -50,7 +52,7 @@ export class OverlayGeoJobParameter {
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -78,7 +80,7 @@ export class OverlayGeoJobParameter {
      * @function SuperMap.OverlayGeoJobParameter.toObject
      * @param {Object} OverlayGeoJobParameter - 点聚合分析任务参数。
      * @param {Object} tempObj - 目标对象。
-     * @description 生成点聚合分析任务对象
+     * @description 生成点聚合分析任务对象。
      */
     static toObject(OverlayGeoJobParameter, tempObj) {
         for (var name in OverlayGeoJobParameter) {

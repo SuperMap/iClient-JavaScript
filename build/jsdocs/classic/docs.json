@@ -16,15 +16,15 @@
     },
     "source": {
         "includePattern": ".+\\.js?$",
-        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",
         "include": [
-            "src/classic","src/common/thirdparty"
+            "src/classic","src/common/thirdparty","src/common/iServer/CommonServiceBase.js",
+            "src/common/iServer/GeoCodingParameter.js","src/common/iServer/GeoDecodingParameter.js"
         ],
         "exclude": [
             "src/classic/libs","src/classic/theme","src/classic/resource"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/linkdoc"],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

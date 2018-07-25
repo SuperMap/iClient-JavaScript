@@ -8,8 +8,8 @@ import {Theme} from './ThemeLayer';
  * @classdesc 地理几何专题要素型专题图层。
  * @param {string} name - 图层名。
  * @param {Object} opt_options - 参数。
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。
- * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {number} [opt_options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [opt_options.isHoverAble=false] - 图形是否在 hover 时高亮。
@@ -260,7 +260,7 @@ export class GeoFeature extends Theme {
 
     /**
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
-     * @param {number} [featureID=si.refDataID] - 要素ID。
+     * @param {number} [featureID=si.refDataID] - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */
     getShapesByFeatureID(featureID) {

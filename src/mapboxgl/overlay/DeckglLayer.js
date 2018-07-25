@@ -38,7 +38,7 @@ import './graphic';
 *  @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
 *  @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
 *  @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
-*  @param {number} [options.props.lightSettings.modelMatrix=null] - 光照配置项：光位置的变换矩阵。
+*  @param {number} [options.props.lightSettings.modelMatrix] - 光照配置项：光位置的变换矩阵。
 *  @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
 *  @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
 *  @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
@@ -182,7 +182,7 @@ export class DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
         if (this.canvas && visibility !== this.visibility) {
@@ -195,12 +195,12 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.setStyle
-     * @description 设置图层整体样式
+     * @description 设置图层整体样式。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
-     * @param {number} [styleOptions.opacity=0.8] - 不透明度。。
-     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持rgba数组。
+     * @param {number} [styleOptions.opacity=0.8] - 不透明度。
+     * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。

@@ -7,15 +7,15 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类。
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。<br>
- * @param {number} options.resolution - 分辨率。<br>
- * @param {SuperMap.StatisticAnalystMode} options.statisticModes - 分析模式。<br>
- * @param {number} options.meshType - 分析类型。<br>
- * @param {number} options.fields - 权重索引。<br>
- * @param {SuperMap.SummaryType} options.type - 聚合类型。
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {number} [options.resolution=100] - 分辨率。
+ * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
+ * @param {number} [options.meshType=0] - 分析类型。
+ * @param {number} options.fields - 权重索引。
+ * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 export class SummaryMeshJobParameter {
 
@@ -42,19 +42,19 @@ export class SummaryMeshJobParameter {
         this.query = "";
 
         /**
-         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.resolution
+         * @member {number} [SuperMap.SummaryMeshJobParameter.prototype.resolution=100]
          * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
          */
         this.resolution = 100;
 
         /**
-         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.meshType
+         * @member {number} [SuperMap.SummaryMeshJobParameter.prototype.meshType=0]
          * @description  网格面类型(聚合类型为网格面聚合时使用的参数)，取值：0或1。
          */
         this.meshType = 0;
 
         /**
-         * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryMeshJobParameter.prototype.statisticModes
+         * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
         this.statisticModes = StatisticAnalystMode.AVERAGE;
@@ -66,14 +66,14 @@ export class SummaryMeshJobParameter {
         this.fields = "";
 
         /**
-         * @member {SuperMap.SummaryType} SuperMap.SummaryMeshJobParameter.prototype.type
+         * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
         this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -106,7 +106,7 @@ export class SummaryMeshJobParameter {
      * @function SuperMap.SummaryMeshJobParameter.toObject
      * @param {Object} summaryMeshJobParameter - 点聚合分析任务参数。
      * @param {Object} tempObj - 目标对象。
-     * @description 生成点聚合分析任务对象
+     * @description 生成点聚合分析任务对象。
      */
     static toObject(summaryMeshJobParameter, tempObj) {
         for (var name in summaryMeshJobParameter) {

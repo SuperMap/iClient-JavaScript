@@ -16,17 +16,17 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @classdesc  标签专题图层。
  * @param {string} name - 图层名。
  * @param {Object} opt_options - 参数。
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。
+ * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map 对象。
  * @param {string} opt_options.themeField - 指定创建专题图字段。
  * @param {Object} opt_options.style - 专题图样式。
  * @param {Object} opt_options.styleGroups - 各专题类型样式组。
- * @param {Object} [opt_options.highlightStyle] - 开启hover事件后，触发的样式风格。
- * @param {string} [opt_options.id] - 专题图层ID。专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
+ * @param {string} [opt_options.id] - 专题图层 ID。专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {boolean} [opt_options.isHoverAble] - 是否开启hover事件。
+ * @param {boolean} [opt_options.isHoverAble] - 是否开启 hover 事件。
  * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
  */
 export class Label extends GeoFeature {
@@ -35,12 +35,12 @@ export class Label extends GeoFeature {
         super(name, opt_options);
         /**
          * @member {boolean} [mapboxgl.supermap.LabelThemeLayer.prototype.isOverLay=true] 
-         * @description 是否进行压盖处理，如果设为true，将隐藏被压盖的标签。
+         * @description 是否进行压盖处理，如果设为 true，将隐藏被压盖的标签。
          */
         this.isOverLay = true;
         /**
          * @member {boolean} [mapboxgl.supermap.LabelThemeLayer.prototype.isAvoid=true] 
-         * @description 是否进行地图边缘的避让处理，如果设为true，将把与地图边缘相交的标签移到地图范围内，在地图边缘处做避让处理。
+         * @description 是否进行地图边缘的避让处理，如果设为 true，将把与地图边缘相交的标签移到地图范围内，在地图边缘处做避让处理。
          */
         this.isAvoid = true;
 
@@ -48,7 +48,7 @@ export class Label extends GeoFeature {
          * @member {string} mapboxgl.supermap.LabelThemeLayer.prototype.themeField 
          * @description  用于指定专题要素样式的属性字段名称。</br>
          *               此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。</br>
-         *               使用标签分组显示还需要设置 styleGroups 属性。</br>
+         *               使用标签分组显示还需要设置 styleGroups 属性。
          */
         this.themeField = null;
 

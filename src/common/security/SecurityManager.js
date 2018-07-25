@@ -7,19 +7,19 @@ import {FetchRequest} from '../util/FetchRequest';
  * @memberOf SuperMap
  * @namespace
  * @category Security
- * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
+ * @description 安全管理中心，提供 iServer,iPortal,Online 统一权限认证管理。
  *  > 使用说明：
- *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
+ *  > 创建任何一个服务之前调用 {@link SuperMap.SecurityManager.registerToken}或
  *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
- *  > 发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
  */
 export class SecurityManager {
 
     /**
-     * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param {string} url -服务器域名+端口，如：http://localhost:8092
-     * @param {SuperMap.TokenServiceParameter} tokenParam - token申请参数
-     * @return {Promise} 返回包含token信息的Promise对象
+     * @description 从服务器获取一个token,在此之前要注册服务器信息。
+     * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
+     * @param {SuperMap.TokenServiceParameter} tokenParam - token 申请参数。
+     * @returns {Promise} 返回包含 token 信息的 Promise 对象。
      */
 
     static generateToken(url, tokenParam) {
@@ -33,8 +33,8 @@ export class SecurityManager {
     }
 
     /**
-     * @description 注册安全服务器相关信息
-     * @param {SuperMap.ServerInfo} serverInfos - 服务器信息
+     * @description 注册安全服务器相关信息。
+     * @param {SuperMap.ServerInfo} serverInfos - 服务器信息。
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
@@ -48,8 +48,8 @@ export class SecurityManager {
     }
 
     /**
-     * @description 服务请求都会自动带上这个token
-     * @param {string} url -服务器域名+端口：如http://localhost:8090
+     * @description 服务请求都会自动带上这个 token。
+     * @param {string} url -服务器域名+端口：如http://localhost:8090。
      * @param {string} token - token
      */
     static registerToken(url, token) {
@@ -62,8 +62,8 @@ export class SecurityManager {
     }
 
     /**
-     * @description 注册key,ids为数组(存在一个key对应多个服务)
-     * @param {Array} ids - 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
+     * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
      * @param {string} key - key
      */
     static registerKey(ids, key) {
@@ -80,9 +80,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description 获取服务器信息
-     * @param {string} url -服务器域名+端口，如：http://localhost:8092
-     * @returns {SuperMap.ServerInfo} 服务器信息
+     * @description 获取服务器信息。
+     * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
+     * @returns {SuperMap.ServerInfo} 服务器信息。
      */
     static getServerInfo(url) {
         this.servers = this.servers || {};
@@ -90,8 +90,8 @@ export class SecurityManager {
     }
 
     /**
-     * @description 根据Url获取token
-     * @param {string} url - 服务器域名+端口，如：http://localhost:8092
+     * @description 根据Url获取token。
+     * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @returns {string} token
      */
     static getToken(url) {
@@ -104,7 +104,7 @@ export class SecurityManager {
     }
 
     /**
-     * @description 根据Url获取key
+     * @description 根据 Url 获取 key。
      * @param {string} id - id
      * @returns {string} key
      */
@@ -115,12 +115,12 @@ export class SecurityManager {
     }
 
     /**
-     * @description iServer登录验证
-     * @param {string} url - iServer首页地址，如：http://localhost:8090/iserver
-     * @param {string} username - 用户名
-     * @param {string} password - 密码
-     * @param {boolean} rememberme - 是否记住
-     * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
+     * @description iServer 登录验证。
+     * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
+     * @param {string} [username] - 用户名。
+     * @param {string} [password] - 密码。
+     * @param {boolean} [rememberme=false] - 是否记住。
+     * @returns {Promise} 返回包含 iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
         var end = url.substr(url.length - 1, 1);
@@ -143,9 +143,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description iServer登出
-     * @param {string} url - iServer首页地址,如：http://localhost:8090/iserver
-     * @returns {Promise} 是否登出成功
+     * @description iServer登出。
+     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
+     * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
         var end = url.substr(url.length - 1, 1);
@@ -166,9 +166,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description Online登录验证
-     * @param {string} callbackLocation - 跳转位置
-     * @param {boolean} newTab -是否新窗口打开
+     * @description Online 登录验证。
+     * @param {string} callbackLocation - 跳转位置。
+     * @param {boolean} [newTab=true] - 是否新窗口打开。
      */
     static loginOnline(callbackLocation, newTab) {
         var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
@@ -176,11 +176,11 @@ export class SecurityManager {
     }
 
     /**
-     * @description iPortal登录验证
-     * @param {string} url - iportal首页地址
-     * @param {string} username - 用户名
-     * @param {string} password - 密码
-     * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
+     * @description iPortal登录验证。
+     * @param {string} url - iportal 首页地址。
+     * @param {string} [username] - 用户名。
+     * @param {string} [password] - 密码。
+     * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -203,9 +203,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description iPortal登出
-     * @param {string} url - iportal首页地址
-     * @returns {Promise} 如果登出成功，返回true;否则返回false
+     * @description iPortal 登出。
+     * @param {string} url - iportal 首页地址。
+     * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
         var end = url.substr(url.length - 1, 1);
@@ -227,14 +227,14 @@ export class SecurityManager {
     }
 
     /**
-     * @description iManager登录验证
-     * @param {string} url - iManager地址。地址参数为iManager首页地址，如： http://localhost:8390/imanager
-     * @param {Object} loginInfoParams - iManager 登录参数。
-     * @param {string} loginInfoParams.userName - 用户名
-     * @param {string} loginInfoParams.password - 密码
-     * @param {Object} options  
-     * @param {boolean} options.isNewTab - 不同域时是否在新窗口打开登录页面
-     * @return {Promise} 返回包含iManager登录请求结果的Promise对象
+     * @description iManager 登录验证。
+     * @param {string} url - iManager 地址。地址参数为 iManager 首页地址，如： http://localhost:8390/imanager。
+     * @param {Object} [loginInfoParams] - iManager 登录参数。
+     * @param {string} [loginInfoParams.userName] - 用户名。
+     * @param {string} [loginInfoParams.password] - 密码。
+     * @param {Object} options
+     * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
+     * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
         if (!Util.isInTheSameDomain(url)) {
@@ -266,7 +266,7 @@ export class SecurityManager {
     }
 
     /**
-     * @description 清空全部验证信息
+     * @description 清空全部验证信息。
      */
     static destroyAllCredentials() {
         this.keys = null;
@@ -275,7 +275,7 @@ export class SecurityManager {
     }
 
     /**
-     * @description 清空令牌信息
+     * @description 清空令牌信息。
      */
     static destroyToken(url) {
         if (!url) {
@@ -289,7 +289,7 @@ export class SecurityManager {
     }
 
     /**
-     * @description 清空服务授权码
+     * @description 清空服务授权码。
      */
     static destroyKey(id) {
         if (!id) {

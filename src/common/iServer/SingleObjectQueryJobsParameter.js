@@ -7,11 +7,11 @@ import {OutputSetting} from './OutputSetting';
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
  * @classdesc 单对象空间查询分析任务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {string} options.datasetQuery - 查询对象所在的数据集名称。<br>
- * @param {SuperMap.SpatialQueryMode} options.mode - 空间查询模式。<br>
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
+ * @param {SuperMap.SpatialQueryMode} [options.mode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 export class SingleObjectQueryJobsParameter {
 
@@ -38,14 +38,14 @@ export class SingleObjectQueryJobsParameter {
         this.geometryQuery = "";
 
         /**
-         * @member {SuperMap.SpatialQueryMode} SuperMap.SingleObjectQueryJobsParameter.prototype.mode
+         * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
         this.mode = SpatialQueryMode.CONTAIN;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SingleObjectQueryJobsParameter.prototype.output
-         * @description 输出参数设置类
+         * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -71,9 +71,9 @@ export class SingleObjectQueryJobsParameter {
 
     /**
      * @function SuperMap.SingleObjectQueryJobsParameter.toObject
-     * @param {Object} singleObjectQueryJobsParameter - 单对象空间查询分析任务参数
-     * @param {Object} tempObj - 目标对象
-     * @description 生成单对象空间查询分析任务对象
+     * @param {Object} singleObjectQueryJobsParameter - 单对象空间查询分析任务参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 生成单对象空间查询分析任务对象。
      */
     static toObject(singleObjectQueryJobsParameter, tempObj) {
         for (var name in singleObjectQueryJobsParameter) {

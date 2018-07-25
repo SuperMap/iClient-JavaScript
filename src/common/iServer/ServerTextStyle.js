@@ -6,27 +6,27 @@ import {ServerColor} from './ServerColor';
 /**
  * @class SuperMap.ServerTextStyle
  * @category  iServer Map Theme
- * @classdesc 服务端文本风格类
+ * @classdesc 服务端文本风格类。
  * @description 该类用于定义文本风格的相关属性。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.TextAlignment} options.align - 文本的对齐方式。<br>
- * @param {SuperMap.ServerColor} options.backColor - 文本的背景色。<br>
- * @param {SuperMap.ServerColor} options.foreColor - 文本的前景色。<br>
- * @param {boolean} options.backOpaque - 文本背景是否不透明。<br>
- * @param {boolean} options.sizeFixed - 文本大小是否固定。<br>
- * @param {number} options.fontHeight - 文本字体的高度。<br>
- * @param {number} options.fontWidth - 文本字体的宽度。<br>
- * @param {number} options.fontWeight - 文本字体的磅数。<br>
- * @param {string} options.fontName - 文本字体的名称。<br>
- * @param {boolean} options.bold - 文本是否为粗体字。<br>
- * @param {boolean} options.italic - 文本是否采用斜体。<br>
- * @param {number} options.italicAngle - 字体倾斜角度。<br>
- * @param {boolean} options.shadow - 文本是否有阴影。<br>
- * @param {boolean} options.strikeout - 文本字体是否加删除线。<br>
- * @param {boolean} options.outline - 是否以轮廓的方式来显示文本的背景。<br>
- * @param {number} options.opaqueRate - 注记文字的不透明度。<br>
- * @param {boolean} options.underline - 文本字体是否加下划线。<br>
- * @param {number} options.rotation -  文本旋转的角度。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.TextAlignment} [options.align] - 文本的对齐方式。
+ * @param {SuperMap.ServerColor} [options.backColor=（255, 255, 255）] - 文本的背景色。
+ * @param {SuperMap.ServerColor} [options.foreColor=（0,0,0）] - 文本的前景色。
+ * @param {boolean} [options.backOpaque=false] - 文本背景是否不透明。
+ * @param {boolean} [options.sizeFixed=true] - 文本大小是否固定。
+ * @param {number} [options.fontHeight=6] - 文本字体的高度。
+ * @param {number} [options.fontWidth=0] - 文本字体的宽度。
+ * @param {number} [options.fontWeight=400] - 文本字体的磅数。
+ * @param {string} [options.fontName='Times New Roman'] - 文本字体的名称。
+ * @param {boolean} [options.bold=false] - 文本是否为粗体字。
+ * @param {boolean} [options.italic=false] - 文本是否采用斜体。
+ * @param {number} [options.italicAngle=0] - 字体倾斜角度。
+ * @param {boolean} [options.shadow=false] - 文本是否有阴影。
+ * @param {boolean} [options.strikeout=false] - 文本字体是否加删除线。
+ * @param {boolean} [options.outline=false] - 是否以轮廓的方式来显示文本的背景。
+ * @param {number} [options.opaqueRate=0] - 注记文字的不透明度。
+ * @param {boolean} [options.underline=false] - 文本字体是否加下划线。
+ * @param {number} [options.rotation=0.0] -  文本旋转的角度。
  */
 export class ServerTextStyle {
 
@@ -39,26 +39,26 @@ export class ServerTextStyle {
         this.align = TextAlignment.BASELINECENTER;
 
         /**
-         * @member {SuperMap.ServerColor} SuperMap.ServerTextStyle.prototype.backColor
-         * @description 文本的背景色。默认为白色。
+         * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.backColor=(255, 255, 255)]
+         * @description 文本的背景色。
          */
         this.backColor = new ServerColor(255, 255, 255);
 
         /**
-         * @member {SuperMap.ServerColor} SuperMap.ServerTextStyle.prototype.foreColor
-         * @description 文本的前景色。默认为黑色。
+         * @member {SuperMap.ServerColor} [SuperMap.ServerTextStyle.prototype.foreColor=(0, 0, 0)]
+         * @description 文本的前景色。
          */
         this.foreColor = new ServerColor(0, 0, 0);
 
         /**
-         * @member {boolean} SuperMap.ServerTextStyle.prototype.backOpaque
+         * @member {boolean} [SuperMap.ServerTextStyle.prototype.backOpaque=false]
          * @description 文本背景是否不透明。true 表示文本背景不透明。
          */
         this.backOpaque = false;
 
         /**
          * @member {boolean} [SuperMap.ServerTextStyle.prototype.sizeFixed=true]
-         * @description 文本大小是否固定。设置为true，表示图片为固定像素大小，具体大小请参考 fontHeight。当设为 false 时，图片会随着地图缩放而缩放。
+         * @description 文本大小是否固定。设置为 true，表示图片为固定像素大小，具体大小请参考 fontHeight。当设为 false 时，图片会随着地图缩放而缩放。
          */
         this.sizeFixed = true;
 

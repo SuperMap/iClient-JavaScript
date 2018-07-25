@@ -16,14 +16,14 @@ import {
  * @category  Visualization HeatMap
  * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
- * @param {mapboxgl.Map} options.map - mapboxgl map对象。
- * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为float。
+ * @param {mapboxgl.Map} options.map - mapboxgl map 对象。
+ * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
- * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为true时，热点半径和图层地理坐标保持一致。
+ * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {mapboxgl.Evented}
  */
 export class HeatMapLayer extends mapboxgl.Evented {

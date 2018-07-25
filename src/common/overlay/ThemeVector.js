@@ -26,12 +26,12 @@ import {LonLat} from '../commontypes/LonLat';
  * @classdesc 矢量专题要素类。
  * @category Visualization Theme
  * @extends SuperMap.Feature.Theme
- * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
- * @param {SuperMap.Layer} layer - 此专题要素所在图层，必设参数。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，矢量专题要素的类型为矢量数据 feature。
+ * @param {SuperMap.Layer} layer - 此专题要素所在图层。
  * @param {Object} style - 样式。
  * @param {Object} options - 创建专题要素时的可选参数。
- * @param {number} nodesClipPixel - 节点抽稀像素距离，默认值 2, 单位：像素。
- * @param {boolean} isHoverAble - 图形是否可 hover，默认 true。
+ * @param {number} [nodesClipPixel=2] - 节点抽稀像素距离, 单位：像素。
+ * @param {boolean} [isHoverAble=true] - 图形是否可 hover。
  * @param {boolean} [isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
  * @param {boolean} [isClickAble=true] - 图形是否可点击。
  * @param {Object} highlightStyle - 高亮样式。
@@ -49,49 +49,49 @@ export class ThemeVector extends Theme {
         }
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.dataBounds - {SuperMap.Bounds}
+         * @member {SuperMap.Bounds} - SuperMap.Feature.Theme.Vector.prototype.dataBounds
          * @description 用户数据的（feature.geometry）地理范围。
          */
         this.dataBounds = data.geometry.getBounds();
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel - {number}
-         * @description 节点抽稀像素距离，默认值 2。
+         * @member {number} - [SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel=2]
+         * @description 节点抽稀像素距离。
          */
         this.nodesClipPixel = 2;
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble - {boolean}
-         * @description 图形是否可 hover，默认 true。
+         * @member {boolean} -  [SuperMap.Feature.Theme.Vector.prototype.isHoverAble=true]
+         * @description 图形是否可 hover。
          */
         this.isHoverAble = true;
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover - {boolean}
-         * @description 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。
+         * @member {boolean} - [SuperMap.Feature.Theme.Vector.prototype.isMultiHover=true]
+         * @description 是否使用多图形高亮，isHoverAble 为 true 时生效。
          */
         this.isMultiHover = true;
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble - {boolean}
-         * @description 图形是否可点击，默认 true。
+         * @member {boolean} - [SuperMap.Feature.Theme.Vector.prototype.isClickAble=true]
+         * @description 图形是否可点击。
          */
         this.isClickAble = true;
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.highlightStyle - {Object}
+         * @member {Object} - SuperMap.Feature.Theme.Vector.prototype.highlightStyle
          * @description 高亮样式。
          */
         this.highlightStyle = null;
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.shapeOptions - {Object}
+         * @member {Object} - SuperMap.Feature.Theme.Vector.prototype.shapeOptions
          * @description 添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做。
          */
         this.shapeOptions = {};
 
         /**
-         * @member SuperMap.Feature.Theme.Vector.prototype.style - {Object}
+         * @member {Object} - SuperMap.Feature.Theme.Vector.prototype.style
          * @description 可视化图形的 style。在子类中规定其对象结构和默认属性值。
          */
         this.style = style || {};

@@ -5,16 +5,16 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.TransferLine
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
- * @param {Object} options - 参数。</br>
- * @param {number} options.lineID - 乘车路线ID。</br>
- * @param {string} options.lineName - 乘车路线名称。</br>
- * @param {string} options.lineAliasName - 乘车路线别名。</br>
- * @param {number} options.startStopIndex - 上车站点在本公交路线中的索引。</br>
- * @param {string} options.startStopName - 上车站点名称。</br>
- * @param {string} options.startStopAliasName - 上车站点别名。</br>
- * @param {number} options.endStopIndex - 下车站点在本公交路线中的索引</br>
- * @param {string} options.endStopName - 下车站点名称。</br>
- * @param {string} options.endStopAliasName - 下车站点别名。</br>
+ * @param {Object} options - 参数。
+ * @param {number} options.lineID - 乘车路线ID。
+ * @param {string} options.lineName - 乘车路线名称。
+ * @param {string} options.lineAliasName - 乘车路线别名。
+ * @param {number} options.startStopIndex - 上车站点在本公交路线中的索引。
+ * @param {string} options.startStopName - 上车站点名称。
+ * @param {string} options.startStopAliasName - 上车站点别名。
+ * @param {number} options.endStopIndex - 下车站点在本公交路线中的索引。
+ * @param {string} options.endStopName - 下车站点名称。
+ * @param {string} options.endStopAliasName - 下车站点别名。
  */
 export class TransferLine {
 

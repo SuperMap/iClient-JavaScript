@@ -100,7 +100,7 @@ export class FindPathService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FindMTSPPathsService.prototype.toGeoJSONResult
-     * @description 将含有geometry的数据转换为geojson格式。
+     * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
      * @param {Object} result - 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {

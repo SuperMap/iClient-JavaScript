@@ -67,7 +67,7 @@ export class InterpolationAnalystParameters {
         this.resolution = null;
 
         /**
-         * @member {SuperMap.FilterParameter} [SuperMap.InterpolationAnalystParameters.prototype.filterQueryParameter=null]
+         * @member {SuperMap.FilterParameter} [SuperMap.InterpolationAnalystParameters.prototype.filterQueryParameter]
          * @description 过滤条件，对分析数据集中的点进行过滤，设置为null表示对数据集中的所有点进行分析。
          */
         this.filterQueryParameter = null;

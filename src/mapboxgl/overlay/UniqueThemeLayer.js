@@ -62,7 +62,7 @@ export class Unique extends GeoFeature {
     /**
      * @private
      * @function mapboxgl.supermap.UniqueThemeLayer.prototype.getStyleByData
-     * @description 通过数据获取style。
+     * @description 通过数据获取 style。
      * @param {Object} fea - 要素数据。
      */
     getStyleByData(fea) {

@@ -205,8 +205,8 @@ export class Animation extends Eventful {
      * @param {Object} target - 目标对象。
      * @param {Object} options - 动画参数选项。
      * @param {boolean} [options.loop=false] - 是否循环播放动画。
-     * @param {function} [options.getter=null] - 如果指定getter函数，会通过getter函数取属性值。
-     * @param {function} [options.setter=null] - 如果指定setter函数，会通过setter函数设置属性值。
+     * @param {function} [options.getter] - 如果指定getter函数，会通过getter函数取属性值。
+     * @param {function} [options.setter] - 如果指定setter函数，会通过setter函数设置属性值。
      * @returns {SuperMap.LevelRenderer.Animation.Animator} Animator。
      */
     animate(target, options) {
@@ -321,8 +321,8 @@ export class Animator {
      * @param {Object} target - 目标对象。
      * @param {Object} options - 动画参数选项。
      * @param {boolean} [loop=false] - 是否循环播放动画。
-     * @param {function} [getter=null] - 如果指定getter函数，会通过getter函数取属性值。
-     * @param {function} [setter=null] - 如果指定setter函数，会通过setter函数设置属性值。
+     * @param {function} [getterl] - 如果指定getter函数，会通过getter函数取属性值。
+     * @param {function} [setter] - 如果指定setter函数，会通过setter函数设置属性值。
      */
     constructor(target, loop, getter, setter) {
         /**

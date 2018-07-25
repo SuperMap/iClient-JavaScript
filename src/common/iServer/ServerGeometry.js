@@ -17,11 +17,11 @@ import {GeometryType} from '../REST';
  * @category  iServer  
  * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
  * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
- * @param {Object} options - 参数。<br>
- * @param {string} options.id - 服务端几何对象唯一标识符。<br>
- * @param {SuperMap.ServerStyle} options.style - 服务端几何对象的风格。<br>
- * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。<br>
- * @param {Array.<SuperMap.Geometry.Point>} options.points - 组成几何对象的节点的坐标对数组。<br>
+ * @param {Object} options - 参数。
+ * @param {string} options.id - 服务端几何对象唯一标识符。
+ * @param {SuperMap.ServerStyle} [options.style] - 服务端几何对象的风格。
+ * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。
+ * @param {Array.<SuperMap.Geometry.Point>} options.points - 组成几何对象的节点的坐标对数组。
  * @param {SuperMap.GeometryType} options.type - 几何对象的类型。
  */
 export class ServerGeometry {
@@ -35,7 +35,7 @@ export class ServerGeometry {
         this.id = 0;
         
         /**
-         * @member {SuperMap.ServerStyle} SuperMap.ServerGeometry.prototype.style
+         * @member {SuperMap.ServerStyle} [SuperMap.ServerGeometry.prototype.style]
          * @description 服务端几何对象的风格(ServerStyle)。
          */
         this.style = null;
@@ -129,7 +129,7 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.toGeoPoint
-     * @description 将服务端的点几何对象转换为客户端几何对象。包括Point、MultiPoint。
+     * @description 将服务端的点几何对象转换为客户端几何对象。包括 Point、MultiPoint。
      * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoPoint() {
@@ -154,7 +154,7 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.toGeoLine
-     * @description 将服务端的线几何对象转换为客户端几何对象。包括LinearRing、LineString、MultiLineString。
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
      * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoLine() {
@@ -193,7 +193,7 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.toGeoLineEPS
-     * @description 将服务端的线几何对象转换为客户端几何对象。包括LinearRing、LineString、MultiLineString。
+     * @description 将服务端的线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
      * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoLineEPS() {
@@ -237,7 +237,7 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.toGeoLine
-     * @description 将服务端的路由线几何对象转换为客户端几何对象。包括LinearRing、LineString、MultiLineString。
+     * @description 将服务端的路由线几何对象转换为客户端几何对象。包括 LinearRing、LineString、MultiLineString。
      * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoLinem() {
@@ -247,7 +247,7 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.toGeoRegion
-     * @description 将服务端的面几何对象转换为客户端几何对象。类型为Polygon。
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
      * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoRegion() {
@@ -359,7 +359,7 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.toGeoRegionEPS
-     * @description 将服务端的面几何对象转换为客户端几何对象。类型为Polygon。
+     * @description 将服务端的面几何对象转换为客户端几何对象。类型为 Polygon。
      * @returns {SuperMap.Geometry} 转换后的客户端几何对象。
      */
     toGeoRegionEPS() {
@@ -502,7 +502,7 @@ export class ServerGeometry {
     /**
      * @function SuperMap.ServerGeometry.prototype.fromGeometry
      * @description 将客户端Geometry转换成服务端ServerGeometry。
-     * @params {SuperMap.Geometry} geometry - 要转换的客户端Geometry对象。
+     * @params {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
      * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
      */
     static fromGeometry(geometry) {
@@ -585,7 +585,7 @@ export class ServerGeometry {
     /**
      * @function SuperMap.ServerGeometry.prototype.IsClockWise
      * @description 判断linearRing中的点的顺序。返回值大于0，逆时针；小于0，顺时针。
-     * @params {SuperMap.Geometry} geometry - 要转换的客户端Geometry对象。
+     * @params {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
      * @returns {number} 返回值大于0，逆时针；小于0，顺时针。
      */
     static IsClockWise(points) {

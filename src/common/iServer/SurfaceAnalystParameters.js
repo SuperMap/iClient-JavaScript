@@ -10,11 +10,11 @@ import {SurfaceAnalystParametersSetting} from './SurfaceAnalystParametersSetting
  * @classdesc 表面分析提取操作参数类。
  * @description 通过该类可以为进行表面分析提供参数信息，包括表面分析的方法提取等值线、提取等值面和中间结果的分辨率，
  * {@link SuperMap.DatasetSurfaceAnalystParameters} 和 {@link SuperMap.GeometrySurfaceAnalystParameters} 继承自该类。
- * @param {Object} options - 参数。</br>
- * @param {SuperMap.SurfaceAnalystParametersSetting} options.extractParameter - 获取或设置表面分析参数。</br>
- * @param {number} options.resolution - 指定中间结果（栅格数据集）的分辨率。</br>
- * @param {SuperMap.DataReturnOption} options.resultSetting - 结果返回设置类。</br>
- * @param {SuperMap.SurfaceAnalystMethod} options.surfaceAnalystMethod - 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
+ * @param {Object} options - 参数。
+ * @param {SuperMap.SurfaceAnalystParametersSetting} options.extractParameter - 获取或设置表面分析参数。
+ * @param {number} options.resolution - 指定中间结果（栅格数据集）的分辨率。
+ * @param {SuperMap.DataReturnOption} options.resultSetting - 结果返回设置类。
+ * @param {SuperMap.SurfaceAnalystMethod} [options.surfaceAnalystMethod=SuperMap.SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，提取等值线和提取等值面。
  */
 export class SurfaceAnalystParameters {
 
@@ -39,8 +39,8 @@ export class SurfaceAnalystParameters {
         this.resultSetting = new DataReturnOption();
 
         /**
-         * @member {SuperMap.SurfaceAnalystMethod} SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod
-         * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面，默认为等值线分析。
+         * @member {SuperMap.SurfaceAnalystMethod} [SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod=SuperMap.SurfaceAnalystMethod.ISOLINE]
+         * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面。
          */
         this.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE;
 

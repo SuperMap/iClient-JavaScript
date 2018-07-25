@@ -10,7 +10,7 @@ export class Util {
 
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
-     * @description 将 geoJSON 对象转为SuperMap几何图形。
+     * @description 将 geoJSON 对象转为 SuperMap 几何图形。
      * @param {Object} geoJSON - geoJSON 对象。
      */
     static toSuperMapGeometry(geoJSON) {
@@ -74,8 +74,8 @@ export class Util {
 
     /**
      * @function mapboxgl.supermap.Util.toProcessingParam
-     * @description 将Region节点数组转为Processing服务需要的分析参数。
-     * @param {Array} points - Region各个节点数组。
+     * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
+     * @param {Array} points - Region 各个节点数组。
      * @returns {Object} processing 服务裁剪、查询分析的分析参数。
      */
     static toProcessingParam(points) {

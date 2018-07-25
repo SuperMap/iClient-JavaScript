@@ -9,7 +9,7 @@ import {Util} from "../../core/Util";
  * @category  Visualization Graphic
  * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含{lng,lat}格式对象。
  * @param {Object} style - 图形参数。
- * @param {Array.<number>} [style.color] - 点颜色。目前只支持rgba数组。
+ * @param {Array.<number>} [style.color] - 点颜色。目前只支持 rgba 数组。
  * @param {Object} [style.radius] - 点半径。
  * @param {Object} [attributes] - 属性信息。
  * @example

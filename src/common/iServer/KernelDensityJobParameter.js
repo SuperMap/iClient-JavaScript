@@ -15,7 +15,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {number} [options.meshType=0] - 分析类型。 
  * @param {string} options.fields - 权重索引。 
  * @param {number} [options.radius=300] - 分析的影响半径。
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 export class KernelDensityJobParameter {
 

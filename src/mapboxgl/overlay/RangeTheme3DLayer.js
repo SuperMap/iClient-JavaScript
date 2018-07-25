@@ -6,8 +6,8 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @class mapboxgl.supermap.RangeTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维分段专题图。
- * @param  {string} [id] - 专题图图层id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param  {Object} layerOptions - 专题图图层配置项,参数继承自Theme3DLayer。
+ * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param  {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
  * @param  {Array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
  * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @param  {number} [layerOptions.base] - 新增参数，数据分段线性增量。
@@ -58,7 +58,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     /**
      * @function  mapboxgl.supermap.RangeTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
-     * @returns {Object} mapboxgl样式对象。
+     * @returns {Object} mapboxgl 样式对象。
      */
     getLayerStyleOptions() {
         var opacity = this.opacity == null ? 1 : this.opacity;
@@ -100,7 +100,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     /**
      * @function mapboxgl.supermap.RangeTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式。
-     * @returns {Object} mapboxgl样式对象。
+     * @returns {Object} mapboxgl 样式对象。
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

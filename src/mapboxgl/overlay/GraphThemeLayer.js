@@ -16,7 +16,7 @@ import {Theme} from './theme/ThemeLayer';
  * @param {string} name - 图层名。
  * @param {string} chartsType - 图表类别。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
@@ -121,7 +121,7 @@ export class Graph extends Theme {
 
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.createThematicFeature
-     * @description  向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象。
+     * @description  向专题图图层中添加数据, 支持的 feature 类型为:iServer 返回的 feature json 对象。
      * @param {Object} feature - 待填加得要素。
      *
      */
@@ -240,7 +240,7 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param {number} featureID - 要素ID。
+     * @param {number} featureID - 要素 ID。
      */
     getShapesByFeatureID(featureID) {
         var list = [];
@@ -303,7 +303,7 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。(射线法)
-     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性 x (横坐标)，属性 y (纵坐标)。
      * @param {Array.<Object>} poly - 多边形节点数组。
      */
     isPointInPoly(pt, poly) {

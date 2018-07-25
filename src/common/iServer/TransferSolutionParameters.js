@@ -6,17 +6,17 @@ import {TransferPreference, TransferTactic} from '../REST';
  * @class SuperMap.TransferSolutionParameters
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询参数类。
- * @param {Object} options - 参数。</br>
- * @param {number} [options.solutionCount=6] - 乘车方案的数量。</br>
- * @param {SuperMap.TransferTactic} options.transferTactic - 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
- * @param {SuperMap.TransferPreference} options.transferPreference - 乘车偏好枚举。</br>
- * @param {number} [options.walkingRatio=10] - 步行与公交的消耗权重比。</br>
- * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|number)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
- * @param {Array.<number>} [options.evadeLines=null] - 避让路线的ID。</br>
- * @param {Array.<number>} [options.evadeStops=null] - 避让站点的ID。</br>
- * @param {Array.<number>} [options.priorLines=null] - 优先路线的ID。</br>
- * @param {Array.<number>} [options.priorStops=null] - 优先站点的ID。</br>
- * @param {string} options.travelTime - 出行的时间。</br>
+ * @param {Object} options - 参数。
+ * @param {number} [options.solutionCount=6] - 乘车方案的数量。
+ * @param {SuperMap.TransferTactic} [options.transferTactic=SuperMap.TransferTactic.LESS_TIME] - 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
+ * @param {SuperMap.TransferPreference} options.transferPreference - 乘车偏好枚举。
+ * @param {number} [options.walkingRatio=10] - 步行与公交的消耗权重比。
+ * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|number)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
+ * @param {Array.<number>} [options.evadeLines] - 避让路线的 ID。
+ * @param {Array.<number>} [options.evadeStops] - 避让站点的 ID。
+ * @param {Array.<number>} [options.priorLines] - 优先路线的 ID。
+ * @param {Array.<number>} [options.priorStops] - 优先站点的 ID。
+ * @param {string} [options.travelTime] - 出行的时间。
  */
 export class TransferSolutionParameters {
 
@@ -60,32 +60,32 @@ export class TransferSolutionParameters {
         /**
          *  @member {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|string)>} SuperMap.TransferSolutionParameters.prototype.points
          *  @description 两种查询方式：
-         *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
-         *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
+         *           1. 按照公交站点的起止 ID 进行查询，则 points 参数的类型为 int[]，形如：[起点 ID、终点 ID]，公交站点的 ID 对应服务提供者配置中的站点 ID 字段；
+         *           2. 按照起止点的坐标进行查询，则 points 参数的类型为 Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
          */
         this.points = false;
 
         /**
-         * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.evadeLines
-         * @description 避让路线ID。
+         * @member {Array.<number>} [SuperMap.TransferSolutionParameters.prototype.evadeLinesnull]
+         * @description 避让路线 ID。
          * */
         this.evadeLines = null;
 
         /**
-         * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.evadeStops
-         * @description 避让站点ID。
+         * @member {Array.<number>} [SuperMap.TransferSolutionParameters.prototype.evadeStops=TransferLine]
+         * @description 避让站点 ID。
          * */
         this.evadeStops = null;
 
         /**
-         * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.priorLines
-         * @description 优先路线ID。
+         * @member {Array.<number>} [SuperMap.TransferSolutionParameters.prototype.priorLines]
+         * @description 优先路线 ID。
          * */
         this.priorLines = null;
 
         /**
-         * @member {Array.<number>} SuperMap.TransferSolutionParameters.prototype.priorStops
-         * @description 优先站点ID。
+         * @member {Array.<number>} [SuperMap.TransferSolutionParameters.prototype.priorStops]
+         * @description 优先站点 ID。
          * */
         this.priorStops = null;
 
@@ -113,7 +113,7 @@ export class TransferSolutionParameters {
      * @function SuperMap.TransferSolutionParameters.toJsonParameters
      * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
      * @param {SuperMap.TransferSolutionParameters} params - 交通换乘参数。
-     * @returns {string} 转化后的 json字符串。
+     * @returns {string} 转化后的 json 字符串。
      */
     static toJson(params) {
         if (params) {

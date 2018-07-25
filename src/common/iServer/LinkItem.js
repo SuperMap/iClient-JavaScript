@@ -14,14 +14,14 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  *              注意：
  *              1. 使用 {@link SuperMap.LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；
  *              2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。
- * @param {Object} options - 参数。</br>
- * @param {SuperMap.DatasourceConnectionInfo} options.datasourceConnectionInfo - 关联的外部数据源信息。</br>
- * @param {Array.<string>} options.foreignKeys - 主空间数据集的外键。</br>
- * @param {string} options.foreignTable - 关联的外部属性表的名称。</br>
- * @param {Array.<string>} options.linkFields - 欲保留的外部属性表的字段。</br>
- * @param {string} options.linkFilter - 与外部属性表的连接条件。</br>
- * @param {string} options.name - 此关联信息对象的名称。</br>
- * @param {Array.<string>} options.primaryKeys - 需要关联的外部属性表的主键。</br>
+ * @param {Object} options - 参数。
+ * @param {SuperMap.DatasourceConnectionInfo} options.datasourceConnectionInfo - 关联的外部数据源信息。
+ * @param {Array.<string>} options.foreignKeys - 主空间数据集的外键。
+ * @param {string} options.foreignTable - 关联的外部属性表的名称。
+ * @param {Array.<string>} options.linkFields - 欲保留的外部属性表的字段。
+ * @param {string} options.linkFilter - 与外部属性表的连接条件。
+ * @param {string} options.name - 此关联信息对象的名称。
+ * @param {Array.<string>} options.primaryKeys - 需要关联的外部属性表的主键。
  * @example 下面以SQL查询说明linkitem的使用方法：
  *  function queryBySQL() {
  *      // 设置关联的外部数据库信息,alias表示数据库别名
@@ -77,7 +77,7 @@ export class LinkItem {
 
         /**
          * @member {SuperMap.DatasourceConnectionInfo} SuperMap.LinkItem.prototype.datasourceConnectionInfo
-         * @description 关联的外部数据源信息 。
+         * @description 关联的外部数据源信息。
          */
         this.datasourceConnectionInfo = null;
 

@@ -3,9 +3,9 @@ import toPairs from 'lodash.topairs';
 
 /**
  * @class SuperMap.CartoCSS
- * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象。
+ * @classdesc CartoCSS 解析类，其主要功能为将 CartoCSS 字符串解析为 CartoCSS 的 shader 属性风格对象。
  * @category BaseTypes Style
- * @param cartoStr - {string} CartoCSS样式表字符串
+ * @param {string} cartoStr -  CartoCSS 样式表字符串
  * @example
  * var cartocss = "@provinceLineColor:#ddd;
  *                 #China_Provinces_L___China400{
@@ -29,19 +29,19 @@ export class CartoCSS {
 
         /**
          * @member SuperMap.CartoCSS.prototype.ruleSet
-         * @description CartoCSS规则对象
+         * @description CartoCSS 规则对象
          */
         this.ruleSet = null;
 
         /**
          * @member SuperMap.CartoCSS.prototype.cartoStr
-         * @description CartoCSS样式表字符串
+         * @description CartoCSS 样式表字符串
          */
         this.cartoStr = "";
 
         /**
          * @member SuperMap.CartoCSS.prototype.shaders
-         * @description Carto着色器集
+         * @description Carto 着色器集
          */
         this.shaders = null;
 
@@ -62,7 +62,7 @@ export class CartoCSS {
 
     /**
      * @function SuperMap.CartoCSS.prototype.getParser
-     * @description 获取CartoCSS解析器
+     * @description 获取 CartoCSS 解析器
      */
     getParser(env) {
         var input,       // LeSS input string

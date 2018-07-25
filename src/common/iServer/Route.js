@@ -10,12 +10,12 @@ import {Collection} from '../commontypes/geometry/Collection';
  * @category  iServer SpatialAnalyst
  * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
  * @param {Array.<SuperMap.Geometry>} points - 形成路由对象的线数组。
- * @param {Object} options - 参数。</br>
- * @param {number} options.id - 路由对象在数据库中的id。</br>
- * @param {number} options.length - 路由对象的长度。</br>
- * @param {number} options.maxM - 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
- * @param {number} options.minM - 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
- * @param {string} options.type - 数据类型，如："LINEM"</br>
+ * @param {Object} options - 参数。
+ * @param {number} options.id - 路由对象在数据库中的 id。
+ * @param {number} options.length - 路由对象的长度。
+ * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
+ * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
+ * @param {string} [options.type] - 数据类型，如："LINEM"。
  * @extends {SuperMap.Geometry.Collection}
  */
 export class Route extends Collection {
@@ -25,19 +25,19 @@ export class Route extends Collection {
 
         /**
          * @member {number} SuperMap.Route.prototype.id
-         * @description 路由对象在数据库中的id。
+         * @description 路由对象在数据库中的 id。
          */
         this.id = null;
 
         /**
          * @member {number} SuperMap.Route.prototype.center
-         * @description 路由对象的中心点
+         * @description 路由对象的中心点。
          */
         this.center = null;
 
         /**
          * @member {string} SuperMap.Route.prototype.style
-         * @description 路由对象的样式
+         * @description 路由对象的样式。
          */
         this.style = null;
 
@@ -108,8 +108,8 @@ export class Route extends Collection {
     /**
      *
      * @function SuperMap.Route.prototype.toJson
-     * @description 转换为json对象。
-     * @returns {Object} json对象
+     * @description 转换为 json 对象。
+     * @returns {Object} json 对象。
      */
     toJson() {
         var result = "{";
@@ -181,7 +181,7 @@ export class Route extends Collection {
     /**
      * @function SuperMap.Route.fromJson
      * @description 将 JSON 对象转换为 SuperMap.Route 对象。
-     * @param {Object} jsonObject - JSON 对象表示的路由对象。
+     * @param {Object} [jsonObject] - JSON 对象表示的路由对象。
      * @returns {SuperMap.Route} 转化后的 Route 对象。
      */
     static fromJson(jsonObject) {

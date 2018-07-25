@@ -6,12 +6,12 @@ import {OutputType} from "../REST";
 /**
  * @class SuperMap.OutputSetting
  * @category  iServer ProcessingService
- * @classdesc 分布式分析输出类型设置类
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.OutputType} options.type - 输出类型。<br>
- * @param {string} options.datasetName - 结果数据集名称。<br>
- * @param {SuperMap.DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。<br>
- * @param {string} options.outputPath - 分析结果输出路径 <br>
+ * @classdesc 分布式分析输出类型设置类。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.OutputType} [options.type=SuperMap.OutputType.UDB] - 输出类型。
+ * @param {string} options.datasetName - 结果数据集名称。
+ * @param {SuperMap.DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。
+ * @param {string} [options.outputPath] - 分析结果输出路径。
  */
 export class OutputSetting {
 
@@ -19,13 +19,13 @@ export class OutputSetting {
 
         /**
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
-         * @description 分布式分析的输出类型，必设字段。
+         * @description 分布式分析的输出类型。
          */
         this.type = OutputType.UDB;
 
         /**
          * @member {string} SuperMap.OutputSetting.prototype.datasetName
-         * @description 分布式分析的输出结果数据集名称，必设字段。
+         * @description 分布式分析的输出结果数据集名称。
          */
         this.datasetName = "analystResult";
 
@@ -36,7 +36,7 @@ export class OutputSetting {
         this.datasourceInfo = null;
 
         /**
-         * @member {string} SuperMap.OutputSetting.prototype.outputPath
+         * @member {string} [SuperMap.OutputSetting.prototype.outputPath]
          * @description 分布式分析的分析结果输出路径。
          */
         this.outputPath = "";

@@ -10,9 +10,9 @@ import {FeatureTheme} from '@supermap/iclient-common';
  * @param {string} name - 图层名。
  * @param {string} symbolType - 符号类型。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map对象。
+ * @param {mapboxgl.Map} opt_options.map - 当前mapboxgl map 对象。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {string} opt_options.themeFields - 指定创建专题图字段。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。

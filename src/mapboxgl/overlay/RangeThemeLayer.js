@@ -9,15 +9,15 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  * @classdesc 分段专题图层。
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
- * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {mapboxgl.Map} options.map - 当前mapbox GL map 对象。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {string} options.themeField - 指定创建专题图字段。
  * @param {Object} options.style - 专题图样式。
  * @param {Object} options.styleGroups - 各专题类型样式组。
- * @param {boolean} [options.isHoverAble=false] - 是否开启hover事件。
- * @param {Object} [options.highlightStyle] - 开启hover事件后，触发的样式风格。
+ * @param {boolean} [options.isHoverAble=false] - 是否开启 hover 事件。
+ * @param {Object} [options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
  */
 export class Range extends GeoFeature {
@@ -61,7 +61,7 @@ export class Range extends GeoFeature {
     /**
      * @private
      * @function mapboxgl.supermap.RangeThemeLayer.prototype.getStyleByData
-     * @description 通过数据获取style。
+     * @description 通过数据获取 style。
      * @param {Object} fea - 要素数据。
      */
     getStyleByData(fea) {

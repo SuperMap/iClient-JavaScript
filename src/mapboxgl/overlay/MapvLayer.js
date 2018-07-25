@@ -10,8 +10,8 @@ import {
 /**
  * @class mapboxgl.supermap.MapvLayer
  * @category  Visualization MapV
- * @classdesc Mapv图层。
- * @param {mapboxgl.Map} map - mapboxgl 地图对象，将在下个版本弃用，请用map.addLayer()方法添加图层。
+ * @classdesc Mapv 图层。
+ * @param {mapboxgl.Map} map - mapboxgl 地图对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - Mapv 参数。
  * @param {string} [mapVOptions.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("mapvLayer_") 创建专题图层 ID。
@@ -56,7 +56,7 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
         if (visibility !== this.visibility) {
@@ -72,8 +72,8 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param {string} layerID - 待插入的图层ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID - 待插入的图层 ID。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.canvas.id);
@@ -124,8 +124,8 @@ export class MapvLayer {
      * @function mapboxgl.supermap.MapvLayer.prototype.update
      * @description 更新图层。
      * @param {Object} opt - 待更新的数据。
-     * @param {Object} opt.data - mapv数据集。
-     * @param {Object} opt.options - mapv绘制参数。
+     * @param {Object} opt.data - mapv 数据集。
+     * @param {Object} opt.options - mapv 绘制参数。
      */
     update(opt) {
         this.renderer.update(opt);
@@ -134,7 +134,7 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} mapv数据集。
+     * @returns {mapv.DataSet} mapv 数据集。
      */
     getData() {
         if (this.renderer) {
@@ -146,7 +146,7 @@ export class MapvLayer {
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
+     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为 true,表示删除该元素；否则表示不删除。
      * @example
      * filter=function(data){
      *    if(data.id=="1"){
@@ -201,8 +201,8 @@ export class MapvLayer {
 
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.setZIndex
-     * @description 设置canvas层级。
-     * @param {number} zIndex - canvas层级。
+     * @description 设置 canvas 层级。
+     * @param {number} zIndex - canvas 层级。
      */
     setZIndex(z) {
         this.canvas.style.zIndex = z;

@@ -7,29 +7,29 @@ import {ServerColor} from './ServerColor';
  * @category  iServer Map Theme
  * @classdesc 服务端矢量要素风格类。
  * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.ServerColor} options.fillBackColor - 填充背景颜色。<br>
- * @param {boolean} options.fillBackOpaque - 背景是否不透明。<br>
- * @param {SuperMap.ServerColor} options.fillForeColor - 填充颜色。<br>
- * @param {SuperMap.FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。<br>
- * @param {number} options.fillGradientAngle - 渐变填充的旋转角度。<br>
- * @param {number} options.fillGradientOffsetRatioX - 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
- * @param {number} options.fillGradientOffsetRatioY - 填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
- * @param {number} options.fillOpaqueRate - 填充不透明度。<br>
- * @param {number} options.fillSymbolID - 填充符号的编码。<br>
- * @param {SuperMap.ServerColor} options.lineColor - 矢量要素的边线颜色。<br>
- * @param {number} options.lineSymbolID - 线状符号的编码。<br>
- * @param {number} options.lineWidth - 边线的宽度。<br>
- * @param {number} options.markerAngle - 点状符号的旋转角度。<br>
- * @param {number} options.markerSize - 点状符号的大小。<br>
- * @param {number} options.markerSymbolID - 点状符号的编码。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ServerColor} [options.fillBackColor=[255,255,255]] - 填充背景颜色。
+ * @param {boolean} [options.fillBackOpaque=false] - 背景是否不透明。
+ * @param {SuperMap.ServerColor} options.[fillForeColor=[255,0,0]] - 填充颜色。
+ * @param {SuperMap.FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。
+ * @param {number} [options.fillGradientAngle=0] - 渐变填充的旋转角度。
+ * @param {number} [options.fillGradientOffsetRatioX=0] - 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。
+ * @param {number} [options.fillGradientOffsetRatioY=0] - 填充中心点相对于填充区域范围中心点的垂直偏移百分比。
+ * @param {number} [options.fillOpaqueRate=100] - 填充不透明度。
+ * @param {number} [options.fillSymbolID=0] - 填充符号的编码。
+ * @param {SuperMap.ServerColor} [options.lineColor=[0,0,0]] - 矢量要素的边线颜色。
+ * @param {number} options.[lineSymbolID=0] - 线状符号的编码。
+ * @param {number} [options.lineWidth=1] - 边线的宽度。
+ * @param {number} [options.markerAngle=0] - 点状符号的旋转角度。
+ * @param {number} [options.markerSize=1] - 点状符号的大小。
+ * @param {number} [options.markerSymbolID=-1] - 点状符号的编码。
  */
 export class ServerStyle {
 
     constructor(options) {
         /**
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillBackColor
-         * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。默认为白色。
+         * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。
          */
         this.fillBackColor = new ServerColor(255, 255, 255);
 
@@ -41,7 +41,7 @@ export class ServerStyle {
 
         /**
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.fillForeColor
-         * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。默认为红色。
+         * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。
          */
         this.fillForeColor = new ServerColor(255, 0, 0);
 
@@ -87,7 +87,7 @@ export class ServerStyle {
 
         /**
          * @member {SuperMap.ServerColor} SuperMap.ServerStyle.prototype.lineColor
-         * @description 矢量要素的边线颜色。默认为黑色。如果等级符号是点符号，点符号的颜色由lineColor控制
+         * @description 矢量要素的边线颜色。如果等级符号是点符号，点符号的颜色由 lineColor 控制。
          */
         this.lineColor = new ServerColor(0, 0, 0);
 
@@ -166,7 +166,7 @@ export class ServerStyle {
     /**
      * @function SuperMap.ServerStyle.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @returns {Object} 对应的 JSON 格式对象
+     * @returns {Object} 对应的 JSON 格式对象.
      */
     toServerJSONObject() {
         var styleObj = {};

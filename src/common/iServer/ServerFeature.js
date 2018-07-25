@@ -7,9 +7,9 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.ServerFeature
  * @category  iServer  
  * @classdesc 服务端矢量要素类。该类描述了服务端返回的矢量要素的相关信息，包括字段和几何信息。
- * @param {Object} options - 参数。</br>
- * @param {Array.<string>} options.fieldNames - 矢量要素的属性字段名集合。
- * @param {Array.<string>} options.fieldValues - 矢量要素的属性字段值集合。
+ * @param {Object} options - 参数。
+ * @param {Array.<string>} [options.fieldNames] - 矢量要素的属性字段名集合。
+ * @param {Array.<string>} [options.fieldValues] - 矢量要素的属性字段值集合。
  * @param {SuperMap.ServerGeometry} geometry - 矢量要素的几何信息。
  */
 export class ServerFeature {
@@ -17,20 +17,20 @@ export class ServerFeature {
     constructor(options) {
 
         /**
-         * @member {Array.<string>} SuperMap.ServerFeature.prototype.fieldNames
-         * @description 矢量要素的属性字段名集合。<br>
+         * @member {Array.<string>} [SuperMap.ServerFeature.prototype.fieldNames]
+         * @description 矢量要素的属性字段名集合。
          */
         this.fieldNames = null;
 
         /**
-         * @member {Array.<string>} SuperMap.ServerFeature.prototype.fieldValues
-         * @description 矢量要素的属性字段值集合。<br>
+         * @member {Array.<string>} [SuperMap.ServerFeature.prototype.fieldValues]
+         * @description 矢量要素的属性字段值集合。
          */
         this.fieldValues = null;
 
         /**
          * @member {SuperMap.ServerGeometry} SuperMap.ServerFeature.prototype.geometry
-         * @description 矢量要素的几何信息。<br>
+         * @description 矢量要素的几何信息。
          */
         this.geometry = null;
         if (options) {

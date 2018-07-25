@@ -17,8 +17,8 @@ import {
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名。
  * @param {Object} options -可选参数。
- * @param {mapboxgl.Map} options.map - 当前mapboxgl map对象，将在下个版本弃用，请用map.addLayer()方法添加图层。
- * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {mapboxgl.Map} options.map - 当前 mapboxgl map 对象，将在下个版本弃用，请用 map.addLayer()方法添加图层。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {boolean} [options.visibility=true] - 图层是否可见。
  * @param {number} [options.opacity=1] - 图层透明度。
@@ -35,7 +35,7 @@ export class Theme {
 
         /**
          * @member {string} [mapboxgl.supermap.ThemeLayer.prototype.id]
-         * @description 专题图图层id。
+         * @description 专题图图层 id。
          */
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
@@ -52,13 +52,13 @@ export class Theme {
 
         /**
          * @member {boolean} [mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating=true]
-         * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
+         * @description 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为 false)。
          */
         this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
 
         /**
          * @member {mapboxgl.Map} mapboxgl.supermap.ThemeLayer.prototype.map
-         * @description map对象。
+         * @description map 对象。
          */
         this.map = options.map ? options.map : null;
 
@@ -152,7 +152,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
         if (visibility !== this.visibility) {
@@ -164,7 +164,7 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.display
-     * @description 临时隐藏或者显示图层。通过对CSS控制产生即时效果，重新渲染失效。一般用 setVisibility 方法来动态控制图层的显示和隐藏。
+     * @description 临时隐藏或者显示图层。通过对 CSS 控制产生即时效果，重新渲染失效。一般用 setVisibility 方法来动态控制图层的显示和隐藏。
      * @param {boolean} [display] - 是否显示图层。
      */
     display(display) {
@@ -202,12 +202,12 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.removeFeatures
-     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除feature的数组。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除 feature 的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
+     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
      *              如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
-     *              删除所有feature后再重新添加。这样效率会更高。
+     *              删除所有 feature 后再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
         if (!features || features.length === 0) {
@@ -276,7 +276,7 @@ export class Theme {
      * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
-     * @param {string} property - feature 的某个属性名称。</br>
+     * @param {string} property - feature 的某个属性名称。
      * @param {string} value - property 所对应的值。
      * @returns {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
@@ -294,8 +294,8 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatureById
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} featureId - 矢量要素的属性id。
-     * @returns {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
+     * @param {string} featureId - 矢量要素的属性 id。
+     * @returns {SuperMap.Feature.Vector} 对应 id 的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -398,7 +398,7 @@ export class Theme {
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素。
      * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
-     * @returns {SuperMap.Feature.Vector} 转换后的iClient要素。
+     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -433,7 +433,7 @@ export class Theme {
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link mapboxgl.supermap.ThemeLayer#toiClientFeature} 代替。
      * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
-     * @returns {SuperMap.Feature.Vector} 转换后的iClient要素。
+     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature(features) {
         return this.toiClientFeature(features);
@@ -552,8 +552,8 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param {string} layerID - 待插入的图层ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID - 待插入的图层 ID。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.div.id);

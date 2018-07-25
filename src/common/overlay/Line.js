@@ -47,22 +47,14 @@ import {Graph} from './Graph';
  * ]
  *
  * @extends SuperMap.Feature.Theme.Graph
- * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
- * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
- * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
- * @param {SuperMap.Feature.Theme.Line.setting} setting - 图表配置对象，必设参数。
- * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @param {SuperMap.Feature.Vector} data - 用户数据。
+ * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层。
+ * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
+ * @param {SuperMap.Feature.Theme.Line.setting} setting - 图表配置对象。
+ * @param {SuperMap.LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  */
 export class Line extends Graph {
-    /**
-     * @function SuperMap.Feature.Theme.Line.prototype.Constructor
-     * @param {SuperMap.Feature.Vector} data - 用户数据，必设参数。
-     * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层，必设参数。
-     * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称，必设参数。
-     * @param {Object} setting - 图表配置对象，必设参数。
-     * @param {SuperMap.LonLat} lonlat - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
-     */
+
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
         this.CLASS_NAME = "SuperMap.Feature.Theme.Line";
@@ -261,46 +253,46 @@ export class Line extends Graph {
 
 /**
  * @typedef {Object} SuperMap.Feature.Theme.Line.setting
- * @property {number} width - 专题要素（图表）宽度，必设参数。
- * @property {number} height - 专题要素（图表）高度，必设参数。
- * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- * @property {number} XOffset - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @property {number} YOffset - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- * @property {Array.<number>} dataViewBoxParameter - {Array.<number>} 数据视图框 dataViewBox 参数，
+ * @property {number} width - 专题要素（图表）宽度。
+ * @property {number} height - 专题要素（图表）高度。
+ * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
+ * @property {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
+ * @property {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @property {Array.<number>} [dataViewBoxParameter] - {Array.<number>} 数据视图框 dataViewBox 参数，
  *                      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- *                      当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。<br>
- * @property {number} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
- * @property {boolean} useBackground - 是否使用图表背景框。<br>
+ *                      当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。
+ * @property {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+ * @property {boolean} [useBackground] - 是否使用图表背景框。
  * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
- * @property {Array.<number>} backgroundRadius - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
- *                      则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。<br>
+ * @property {Array.<number>} [backgroundRadius=[0, 0, 0, 0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
+ *                      则 backgroundRadius 为 [r1、r2、r3、r4 ]。
  * @property {Array.<number>} xShapeBlank - 水平方向上的图形空白间隔参数。长度为 2 的数组，第一元素表示折线左端点与数据视图框左端的空白间距，
- *                       第二个元素表示折线右端点右端与数据视图框右端端的空白间距。<br>
- * @property {SuperMap.Feature.ShapeParameters.Line.style} axisStyle - 坐标轴样式。
- * @property {boolean} axisUseArrow - 坐标轴是否使用箭头，默认值：false，不使用箭头。<br>
- * @property {number} axisYTick - y 轴刻度数量，默认值：0 ，不使用刻度。<br>
- * @property {Array.<string>}  axisYLabels - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。<br>
- * @property {SuperMap.Feature.ShapeParameters.Label.style} axisYLabelsStyle - y 轴上的标签组样式。
- * @property {Array.<number>} axisYLabelsOffset - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
- *                       数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
- * @property {Array.<string>} axisXLabels - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+ *                       第二个元素表示折线右端点右端与数据视图框右端端的空白间距。
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} [axisStyle] - 坐标轴样式。
+ * @property {boolean} [axisUseArrow=false] - 坐标轴是否使用箭头。
+ * @property {number} [axisYTick=0] - y 轴刻度数量。
+ * @property {Array.<string>}  [axisYLabels] - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} [axisYLabelsStyle] - y 轴上的标签组样式。
+ * @property {Array.<number>} [axisYLabelsOffset=0] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正。
+ *                       数组第二项表示 y 轴标签组纵向上的偏移量，向下为正。
+ * @property {Array.<string>} [axisXLabels] - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
  *                       标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
- *                       否则沿数据视图框下面条边等距排布标签。<br>
- * @property {SuperMap.Feature.ShapeParameters.Label.style} axisXLabelsStyle - x 轴上的标签组样式。
- * @property {Array.<number>} axisXLabelsOffset - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
- *                       数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
- * @property {boolean} useXReferenceLine - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。<br>
- * @property {SuperMap.Feature.ShapeParameters.Line.style} xReferenceLineStyle - 水平参考线样式。
- * @property {SuperMap.Feature.ShapeParameters.Line.style} lineStyle - 折线图中折线 style。
- * @property {SuperMap.Feature.ShapeParameters.Point.style} pointStyle - 折线图中折线节点基础 style，此参数控制折线节点基础样式，优先级低于 pointStyleByFields 和 pointStyleByCodomain。
- * @property {SuperMap.Feature.ShapeParameters.Point.style} pointStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为折线节点赋 style，此参数按字段控制折线节点样式，
+ *                       否则沿数据视图框下面条边等距排布标签。
+ * @property {SuperMap.Feature.ShapeParameters.Label.style} [axisXLabelsStyle] - x 轴上的标签组样式。
+ * @property {Array.<number>} [axisXLabelsOffset=0] - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正;
+ *                       数组第二项表示 x 轴标签组纵向上的偏移量，向下为正;
+ * @property {boolean} [useXReferenceLine=true] - 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} ]xReferenceLineStyle] - 水平参考线样式。
+ * @property {SuperMap.Feature.ShapeParameters.Line.style} [lineStyle] - 折线图中折线 style。
+ * @property {SuperMap.Feature.ShapeParameters.Point.style} [pointStyle] - 折线图中折线节点基础 style，此参数控制折线节点基础样式，优先级低于 pointStyleByFields 和 pointStyleByCodomain。
+ * @property {SuperMap.Feature.ShapeParameters.Point.style} [pointStyleByFields] - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为折线节点赋 style，此参数按字段控制折线节点样式，
  *                       优先级低于 pointStyleByCodomain，高于 pointStyle。此数组中的元素是样式对象。
  *                       此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields|L.supermap.graphThemeLayer.themeFields|ol.source.Graph.themeFields|mapboxgl.supermap.GraphThemeLayer.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- *                       pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的折线节点使用 style1，字段 POP_1995 对应的折线节点使用 style2 ，字段 POP_1999 对应的折线节点使用 style3。<br>
- * @property {Array.<Object>} pointStyleByCodomain - 按折线节点代表的数据值所在值域范围控制折线节点样式，优先级高于 pointStyle 和 pointStyleByFields。<br>
- * @property {Object} pointHoverStyle - 折线节点 hover 状态时的样式，pointHoverAble 为 true 时有效。<br>
- * @property {boolean} pointHoverAble - 是否允许折线节点使用 hover 状态，默认允许。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。<br>
- * @property {boolean} pointClickAble - 是否允许折线节点被点击，默认允许。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。
+ *                       pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的折线节点使用 style1，字段 POP_1995 对应的折线节点使用 style2 ，字段 POP_1999 对应的折线节点使用 style3。
+ * @property {Array.<Object>} pointStyleByCodomain - 按折线节点代表的数据值所在值域范围控制折线节点样式，优先级高于 pointStyle 和 pointStyleByFields。
+ * @property {Object} [pointHoverStyle=true] - 折线节点 hover 状态时的样式，pointHoverAble 为 true 时有效。
+ * @property {boolean} [pointHoverAble=true] - 是否允许折线节点使用 hover 状态。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。
+ * @property {boolean} [pointClickAble=true] - 是否允许折线节点被点击。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽折线节点对专题图层事件的响应。
  
  */
 

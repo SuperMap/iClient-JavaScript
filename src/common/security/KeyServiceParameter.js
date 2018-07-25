@@ -8,8 +8,8 @@ import {ClientType} from '../REST';
  * @category Security
  * @param {Object} options - 参数。
  * @param {string} options.name - 申请服务名称。
- * @param {number} options.serviceIds - 服务ID。
- * @param {SuperMap.ClientType} options.clientType - 服务端类型。
+ * @param {number} options.serviceIds - 服务 ID。
+ * @param {SuperMap.ClientType} [options.clientType=SuperMap.ClientType.SERVER] - 服务端类型。
  * @param {number} options.limitation - 有效期
  */
 export class KeyServiceParameter {
@@ -25,8 +25,8 @@ export class KeyServiceParameter {
 
     /**
      * @function SuperMap.KeyServiceParameter.prototype.toJSON
-     * @description 转换成JSON对象
-     * @return {Object} 参数的JSON对象
+     * @description 转换成 JSON 对象
+     * @returns {Object} 参数的 JSON 对象
      */
     toJSON() {
         return {

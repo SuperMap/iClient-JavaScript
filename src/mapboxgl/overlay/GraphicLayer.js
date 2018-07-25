@@ -22,10 +22,10 @@ const defaultProps = {
  * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
  * @param {Object} options -  图层配置项。
  * @param {Array.<mapboxgl.supermap.Graphic>} options.graphics - 点要素对象数组 。
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持rgba数组。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
  * @param {number} [options.radius=10] - 半径。
  * @param {number} [options.opacity=0.8] - 不透明度。
- * @param {Array.<number>} [options.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持rgba数组。
+ * @param {Array.<number>} [options.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
  * @param {number} [options.radiusScale=1] - 点放大倍数。
  * @param {number} [options.radiusMinPixels=0] - 半径最小值(像素)。
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
@@ -38,7 +38,7 @@ export class GraphicLayer {
         let opt = Util.extend(this, defaultProps, options);
         /**
          * @member {string} mapboxgl.supermap.GraphicLayer.prototype.id
-         * @description 高效率点图层id。
+         * @description 高效率点图层 id。
          */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
         /**
@@ -56,7 +56,7 @@ export class GraphicLayer {
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.addTo
-     * @description 图层添加到地图，将在下个版本废弃，请使用onAdd()代替。
+     * @description 图层添加到地图，将在下个版本废弃，请使用 onAdd() 代替。
      * @param {mapboxgl.Map} map - mapbox GL 地图对象。
      * @returns this
      */
@@ -154,7 +154,7 @@ export class GraphicLayer {
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
      * @param {number} [styleOptions.radius=10] - 点半径。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持rgba数组。
+     * @param {Array}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
@@ -276,8 +276,8 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
-     * @param {string} layerID - 待插入的图层ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层id为layerID的图层之前(如果为false则将本图层插入到图层id为layerID的图层之后)。
+     * @param {string} layerID - 待插入的图层 ID。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -302,7 +302,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.setVisibility
      * @description 设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的resolution在最大最小resolution之间）。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
      */
     setVisibility(visibility) {
         if (this.canvas && visibility !== this.visibility) {

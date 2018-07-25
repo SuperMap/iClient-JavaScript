@@ -8,12 +8,12 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  * @classdesc 交通网络分析通用参数类。
  * @description 该类主要用来提供交通网络分析所需的通用参数。
  * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。
- * @param {Object} options - 参数。</br>
- * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。</br>
- * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。</br>
- * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} options.barrierPoints - 网络分析中 Point2D 类型的障碍点数组。</br>
- * @param {string} options.weightFieldName - 阻力字段的名称。</br>
- * @param {string} options.turnWeightField - 转向权重字段的名称。</br>
+ * @param {Object} options - 参数。
+ * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。
+ * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。
+ * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} options.barrierPoints - 网络分析中 Point2D 类型的障碍点数组。
+ * @param {string} options.weightFieldName - 阻力字段的名称。
+ * @param {string} options.turnWeightField - 转向权重字段的名称。
  * @param {SuperMap.TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容。
  */
 export class TransportationAnalystParameter {

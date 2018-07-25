@@ -4,9 +4,9 @@
  * @class SuperMap.ServerColor
  * @category iServer Map Theme
  * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
- * @param {Object} options - 参数。<br>
- * @param {number} [options.red=255] - 获取或设置红色值。<br>
- * @param {number} [options.green=0] - 获取或设置绿色值。<br>
+ * @param {Object} options - 参数。
+ * @param {number} [options.red=255] - 获取或设置红色值。
+ * @param {number} [options.green=0] - 获取或设置绿色值。
  * @param {number} [options.blue=0] - 获取或设置蓝色值。
  */
 export class ServerColor {
@@ -48,9 +48,9 @@ export class ServerColor {
 
     /**
      * @function SuperMap.ServerColor.formJson
-     * @description 将JSON对象转化为ServerColor对象。
-     * @param {Object} jsonObject - 要转换的JSON对象
-     * @returns {SuperMap.ServerColor} 转化后的ServerColor对象。
+     * @description 将 JSON 对象转化为 ServerColor 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
+     * @returns {SuperMap.ServerColor} 转化后的 ServerColor 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {
