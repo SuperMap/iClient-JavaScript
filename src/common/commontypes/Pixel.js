@@ -5,13 +5,13 @@
  * @classdesc 此类用 x,y 坐标描绘屏幕坐标（像素点）。
  * @param {number} [x=0.0] - x 坐标。
  * @param {number} [y=0.0] - y 坐标。
- * @param {string} [mode='lefttop'] - 坐标模式。
+ * @param {SuperMap.Pixel.Mode} [mode=SuperMap.Pixel.Mode.LeftTop] - 坐标模式。
  *
  * @example
  * //单独创建一个对象
  * var pixcel = new SuperMap.Pixel(100,50);
  *
- * //依据size创建
+ * //依据 size 创建
  *  var size = new SuperMap.Size(21,25);
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
@@ -21,45 +21,37 @@ export class Pixel {
     constructor(x, y, mode) {
         /**
          * @member {number} [SuperMap.Pixel.prototype.x=0.0]
-         * @description x 坐标
+         * @description x 坐标。
          */
         this.x = x ? parseFloat(x) : 0.0;
 
         /**
          * @member {number} [SuperMap.Pixel.prototype.y=0.0]
-         * @description y 坐标
+         * @description y 坐标。
          */
         this.y = y ? parseFloat(y) : 0.0;
 
         /**
-         * @member {SuperMap.Pixel.Mode} [SuperMap.Pixel.prototype.mode="lefttop"]
+         * @member {SuperMap.Pixel.Mode} [SuperMap.Pixel.prototype.mode=SuperMap.Pixel.Mode.LeftTop]
          * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。 
-         * 值有<br>
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
-         *  
-         * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
          */ 
         this.mode = mode;
         this.CLASS_NAME = "SuperMap.Pixel";
         /**
-         * @member SuperMap.Pixel.Mode
-         * @enum {string}
+         * @enum SuperMap.Pixel.Mode
          * @readonly
-         * @description 模式
-         *
-         * * SuperMap.Pixel.Mode.LeftTop 左上模式
-         * * SuperMap.Pixel.Mode.RightTop 右上模式
-         * * SuperMap.Pixel.Mode.RightBottom 右下模式
-         * * SuperMap.Pixel.Mode.LeftBottom 左下模式
+         * @description 模式。
+         * @type {string}
          */
 
-        Pixel.Mode = {
+        SuperMap.Pixel.Mode = {
+            /** 左上模式。*/
             LeftTop: "lefttop",
+            /** 右上模式。 */
             RightTop: "righttop",
+            /** 右下模式。 */
             RightBottom: "rightbottom",
+            /** 左下模式。 */
             LeftBottom: "leftbottom"
         };
     }
@@ -157,8 +149,7 @@ export class Pixel {
      * var pixcel3 = pixcel.offset(pixcel2);
      *
      * @param {SuperMap.Pixel} px - 传入的 <SuperMap.Pixel> 对象。
-     * @returns {SuperMap.Pixel} 返回一个新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y
-     *      值与传入的 Pixel 对象的 x，y 值相加得到。
+     * @returns {SuperMap.Pixel} 返回一个新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y 值与传入的 Pixel 对象的 x，y 值相加得到。
      */
     offset(px) {
         var newPx = this.clone();
@@ -171,8 +162,7 @@ export class Pixel {
     /**
      *
      * @function SuperMap.Pixel.prototype.destroy
-     * @description 销毁此对象。
-     * 销毁后此对象的所有属性为 null，而不是初始值。
+     * @description 销毁此对象。销毁后此对象的所有属性为 null，而不是初始值。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
      * pixcel.destroy();

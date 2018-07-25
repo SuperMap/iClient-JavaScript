@@ -234,7 +234,7 @@ export class JSONFormat extends Format {
      * @function SuperMap.Format.JSON.prototype.write
      * @description 序列化一个对象到一个符合 JSON 格式的字符串。
      * @param {(object|string|Array|number|boolean)} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
-     * @param {boolean} pretty 
+     * @param {boolean} [pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
      * @returns {string} 符合 JSON 格式的字符串。
      *
      */
@@ -281,7 +281,7 @@ export class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
-     * @returns {string} A space.
+     * @returns {string} 一个空格。
      */
     writeSpace() {
         return (this.pretty) ? this.space : '';

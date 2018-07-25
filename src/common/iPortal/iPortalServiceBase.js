@@ -65,7 +65,7 @@ export class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.getCredential
      * @description 获取 token。
-     * @returns {string } 返回获取的 token。
+     * @returns {string} 返回获取的 token。
      *
      */
 

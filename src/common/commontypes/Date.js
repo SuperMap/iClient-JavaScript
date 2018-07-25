@@ -21,7 +21,7 @@ export var DateExt = SuperMap.Date = {
             return function (date) {
                 return date.toISOString();
             };
-        } else {// //部分浏览器没有，就得自己组合，组合后的字符串规则不变
+        } else {// 部分浏览器没有，就得自己组合，组合后的字符串规则不变
             function pad(num, len) {
                 var str = num + "";
                 while (str.length < len) {

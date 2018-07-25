@@ -2,10 +2,10 @@
 
 /**
  * @class SuperMap.Credential
- * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。 
- * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。
- * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。
- * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。
+ * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。</br>
+ * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。</br>
+ * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。</br>
+ * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。</br>
  * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
  * @param {string} [name='token'] - 验证信息前缀，name=value 部分的 name 部分。
  * @example

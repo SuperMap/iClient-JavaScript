@@ -347,7 +347,7 @@ SuperMap.Util.rad = function (x) {
 };
 
 /**
- * @description 从URL字符串中解析出参数对象。
+ * @description 从 URL 字符串中解析出参数对象。
  * @param {string} url - URL。
  * @returns {Object} 解析出的参数对象。
  */
@@ -523,9 +523,9 @@ SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
 
 /**
  * @memberOf SuperMap
- * @description 分辨率与比例尺之间转换的常量，默认值96。
+ * @member [SuperMap.DOTS_PER_INCH=96]
+ * @description 分辨率与比例尺之间转换的常量。
  * @type {Object}
- * @default 96
  */
 SuperMap.DOTS_PER_INCH = 96;
 
@@ -733,7 +733,7 @@ SuperMap.Util.isInTheSameDomain = function (url) {
  * @param {SuperMap.Size} viewer - 地图初始化时默认的地图图片的尺寸。
  * @param {number} scale - 地图初始化时默认的显示比例尺。
  * @param {string} [coordUnit='degrees'] - 投影坐标系统的地图单位。
- * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
+ * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则系统默认为 WGS84 参考系的椭球体长半轴 6378137。
  * @returns {number} 返回图层显示分辨率。
  */
 SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
@@ -864,7 +864,7 @@ SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datum
 };
 
 /**
- * @description 根据resolution、dpi、coordUnit和datumAxis计算比例尺。
+ * @description 根据 resolution、dpi、coordUnit 和 datumAxis 计算比例尺。
  * @param {number} resolution - 用于计算比例尺的地图分辨率。
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。
@@ -955,7 +955,7 @@ SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
 };
 
 /**
- * @description 克隆一份Object对象
+ * @description 克隆一个 Object 对象
  * @param {Object} obj - 需要克隆的对象。
  * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
  */

@@ -19,7 +19,7 @@ export class MultiPoint extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [SuperMap.Geometry.MultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
-         * @description components 存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
@@ -28,9 +28,9 @@ export class MultiPoint extends Collection {
 
     /**
      * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
-     * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
+     * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent} 方法。
      * @param {SuperMap.Geometry.Point} point - 添加的点。
-     * @param {integer} index - 可选的下标。
+     * @param {integer} [index] - 下标。
      */
     addPoint(point, index) {
         this.addComponent(point, index);
@@ -39,7 +39,7 @@ export class MultiPoint extends Collection {
 
     /**
      * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-     * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
+     * @description 移除点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
      * @param {SuperMap.Geometry.Point} point - 移除的点对象。
      */
     removePoint(point) {

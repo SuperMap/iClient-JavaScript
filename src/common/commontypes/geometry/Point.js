@@ -34,7 +34,7 @@ export class Point extends Geometry {
 
         /**
          * @member {string} SuperMap.Geometry.Point.prototype.tag
-         * @description  用来存储额外的属性，比如差值分析中的Z值。
+         * @description  用来存储额外的属性，比如差值分析中的 Z 值。
          */
         this.tag = (tag || tag == 0) ? parseFloat(tag) : null;
 
@@ -113,7 +113,7 @@ export class Point extends Geometry {
 
     /**
      * @function SuperMap.Geometry.Point.prototype.destroy
-     * @description 释放点对象的资源
+     * @description 释放点对象的资源。
      */
     destroy() {
         this.x = null;
@@ -125,7 +125,7 @@ export class Point extends Geometry {
     /**
      * @function SuperMap.Geometry.Point.prototype.getVertices
      * @description 返回点对象的所有顶点的列表。
-     * @param {boolean} nodes - 对于点对象此参数不起作用，直接返回点。
+     * @param {boolean} [nodes] - 对于点对象此参数不起作用，直接返回点。
      * @returns {Array} 几何图形的顶点列表。
      */
     getVertices(nodes) { // eslint-disable-line no-unused-vars

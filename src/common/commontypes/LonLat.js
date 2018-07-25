@@ -109,10 +109,8 @@ export class LonLat {
     /**
      * @function SuperMap.LonLat.prototype.wrapDateLine
      * @description 通过传入的范围对象对坐标对象转换到该范围内。
-     * 如果经度小于给定范围最小精度，则在原经度基础上加上范围宽度，
-     * 直到精度在范围内为止，如果经度大于给定范围则在原经度基础上减去范围宽度。
-     * 换句话说就是将不在经度范围内的坐标转换到范围以内。
-     *  （只会转换 lon，不会转换 lat，主要用于转移到日界线以内）
+     * 如果经度小于给定范围最小精度，则在原经度基础上加上范围宽度，直到精度在范围内为止，如果经度大于给定范围则在原经度基础上减去范围宽度。
+     * 即指将不在经度范围内的坐标转换到范围以内（只会转换 lon，不会转换 lat，主要用于转移到日界线以内）。
      * @example
      * var lonLat1 = new SuperMap.LonLat(420,50);
      * var lonLat2 = lonLat1.wrapDateLine(
@@ -156,12 +154,12 @@ export class LonLat {
 
     /**
      * @function SuperMap.LonLat.fromString
-     * @description 通过字符串生成一个 <SuperMap.LonLat> 对象
+     * @description 通过字符串生成一个 {@link SuperMap.LonLat} 对象。
      * @example
      * var str = "100,50";
      * var lonLat = SuperMap.LonLat.fromString(str);
      * @param {string} str - 字符串的格式：Lon+","+Lat。如："100,50"。
-     * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象。
+     * @returns {SuperMap.LonLat} 返回一个 {@link SuperMap.LonLat} 对象。
      */
     static fromString(str) {
         var pair = str.split(",");

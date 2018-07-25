@@ -40,10 +40,9 @@ export class GeoText extends Geometry {
 
         /**
          * @member {Object} SuperMap.Geometry.GeoText.prototype.bsInfo
-         * @description 标签范围的基础信息，包含下面2个属性。
-         *  * w: bounds 的宽；
-         *  * h: bounds 的高度；
-
+         * @description 标签范围的基础信息。
+         * @property {number} w - bounds 的宽。
+         * @property {number} h - bounds 的高度。
          */
         this.bsInfo = {
             "h": null,

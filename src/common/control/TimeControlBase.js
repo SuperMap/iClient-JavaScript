@@ -8,8 +8,8 @@ import {Events} from '../commontypes/Events';
  * @param {Object} options - 该类开放的可选属性。
  * @param {number} [options.speed=1] - 速度。不能小于 0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。
  * @param {number} [options.frequency=1000] - 刷新频率（单位 ms），服务器刷新的时间间隔。
- * @param {number} [options.startTime=0] - 的起始时间，必须为数字，且小于等于 endTime。如果不设置，初始化时为 0，建议设置。
- * @param {number} [options.endTime] - 的结束时间，必须为数字，且大于等于 startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
+ * @param {number} [options.startTime=0] - 起始时间，必须为数字，且小于等于 endTime。如果不设置，初始化时为 0，建议设置。
+ * @param {number} [options.endTime] - 结束时间，必须为数字，且大于等于 startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
  * @param {boolean} [options.repeat=true] - 是否重复循环。
  * @param {boolean} [options.reverse=false] - 是否反向。
  */

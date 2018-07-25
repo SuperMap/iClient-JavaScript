@@ -306,7 +306,7 @@ export class Bounds {
      * @description 在当前 bounds 上扩展 bounds，支持 point，lanlat 和 bounds。扩展后的 bounds 的范围是两者的结合。
      * @example
      * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
-     * //bounds改变
+     * //bounds 改变
      * bounds.extend(new SuperMap.LonLat(50,60));
      * @param {(SuperMap.Geometry.Point|SuperMap.LonLat|SuperMap.Bounds)} object - 可以是 point、lonlat 和 bounds。
      */
@@ -420,7 +420,7 @@ export class Bounds {
      * @param {float} x - 传入的 x 坐标值。
      * @param {float} y - 传入的 y 坐标值。
      * @param {boolean} [inclusive=true] - 是否包含边界。
-     * @returns {boolean} 传入的 x,y 坐标在当前范围内。
+     * @returns {boolean} 传入的 x，y 坐标是否在当前范围内。
      */
     contains(x, y, inclusive) {
         //set default
@@ -558,7 +558,7 @@ export class Bounds {
 
     /**
      * @function SuperMap.Bounds.prototype.determineQuadrant
-     * @description 判断传入坐标在 bounds 范围内的象限。以 bounds 中心点为坐标原点。
+     * @description 判断传入坐标是否在 bounds 范围内的象限。以 bounds 中心点为坐标原点。
      * @example
      * var bounds = new SuperMap.Bounds(-180,-90,100,80);
      * //str = "tr";
@@ -671,7 +671,7 @@ export class Bounds {
      * @description 通过字符串参数创建新的 bounds 的构造函数。
      * @example
      * var bounds = SuperMap.Bounds.fromString("-180,-90,100,80");
-     * @param {string} str - 边界字符串，用逗号隔开 (e.g. <i>"5,42,10,45"</i>)。
+     * @param {string} str - 边界字符串，用逗号隔开（e.g. <i>"5,42,10,45"</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否反转轴顺序。
      * 如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
      * @returns {SuperMap.Bounds} 返回给定的字符串创建的新的边界对象。
@@ -686,7 +686,7 @@ export class Bounds {
      * @description 通过边界框数组创建 Bounds。
      * @example
      * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
-     * @param {Array.<float>} bbox - 边界值数组。(e.g. <i>[5,42,10,45]</i>)。
+     * @param {Array.<float>} bbox - 边界值数组。（e.g. <i>[5,42,10,45]</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
      * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
      */

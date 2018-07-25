@@ -26,7 +26,7 @@ export class MultiPolygon extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [SuperMap.Geometry.MultiPolygon.prototype.componentTypes=["SuperMap.Geometry.Polygon"]]
-         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Polygon"];

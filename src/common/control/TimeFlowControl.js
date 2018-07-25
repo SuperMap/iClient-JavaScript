@@ -26,7 +26,7 @@ export class TimeFlowControl extends TimeControlBase {
         var me = this;
         /**
          * @member SuperMap.TimeFlowControl.prototype.callback -{function}
-         * @description 每次刷新执行的回调函数
+         * @description 每次刷新执行的回调函数。
          */
         me.callback = callback;
 
@@ -164,7 +164,7 @@ export class TimeFlowControl extends TimeControlBase {
                 me.currentTime = me.startTime;
                 me.oldTime = me.currentTime;
                 me.start();
-            } else {////否则时间递增
+            } else {//否则时间递增
                 me.oldTime = me.currentTime;
                 me.currentTime += me.speed;
             }
@@ -184,7 +184,7 @@ export class TimeFlowControl extends TimeControlBase {
 
                 me.oldTime = me.endTime;
                 me.currentTime = me.oldTime;
-            } else {////否则时间递减
+            } else {//否则时间递减
                 me.currentTime = me.oldTime;
                 me.oldTime -= me.speed;
             }

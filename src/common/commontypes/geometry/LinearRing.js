@@ -7,7 +7,7 @@ import {LineString} from './LineString';
  * 作为最后的一个点来自动关闭线环。
  * @category BaseTypes Geometry
  * @extends {SuperMap.Geometry.LineString}
- * @param {Array.<SuperMap.Geometry.Point>} points 组成线性环的点。
+ * @param {Array.<SuperMap.Geometry.Point>} points - 组成线性环的点。
  * @example
  * var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
  *      new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
@@ -36,7 +36,7 @@ export class LinearRing extends LineString {
      * 重复的点是不能被添加的。这将影响未关闭环的关闭。
      * 这个方法可以通过将非空索引（组件数组的下标）作为第二个参数重写。
      * @param {SuperMap.Geometry.Point} point - 点对象。
-     * @param {integer} index - 插入组件数组的下标。
+     * @param {integer} [index] - 插入组件数组的下标。
      * @returns {boolean} 点对象是否添加成功。
      */
     addComponent(point, index) {
@@ -101,8 +101,7 @@ export class LinearRing extends LineString {
     /**
      * @function SuperMap.Geometry.LinearRing.prototype.getVertices
      * @description 返回几何图形的所有点的列表。
-     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为 false ，则返回非端点的顶点
-     * 如果没有设置此参数，则返回所有顶点。
+     * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false ，则返回非端点的顶点，如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象所有点的列表。
      */
     getVertices(nodes) {

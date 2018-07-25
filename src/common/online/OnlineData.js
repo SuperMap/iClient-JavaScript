@@ -67,7 +67,7 @@ export class OnlineData extends OnlineServiceBase {
 
     /**
      * @function SuperMap.OnlineData.prototype.load
-     * @description 通过 url 请求获取该服务完整信息。
+     * @description 通过 URL 请求获取该服务完整信息。
      * @returns {Promise} 返回不包含请求结果的 Promise 对象,请求返回结果自动填充到该类属性中。
      */
     load() {

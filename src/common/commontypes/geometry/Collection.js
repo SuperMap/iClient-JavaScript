@@ -29,8 +29,8 @@ export class Collection extends Geometry {
         this.components = [];
 
         /**
-         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          * @member {Array.<string>} SuperMap.Geometry.Collection.prototype.componentTypes
+         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
          */
         this.componentTypes = null;
         if (components != null) {
@@ -223,7 +223,7 @@ export class Collection extends Geometry {
     /**
      * @function SuperMap.Geometry.Collection.prototype.getVertices
      * @description 返回几何对象的所有结点的列表。
-     * @param {boolean} nodes - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
+     * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象的顶点列表。
      */
     getVertices(nodes) {

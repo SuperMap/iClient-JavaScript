@@ -8,7 +8,7 @@ import {Util} from './Util';
  * @class SuperMap.Events
  * @classdesc 事件类。
  * @param {Object} object - 当前事件对象被添加到的 JS 对象。
- * @param {HTMLElement} element - 响应浏览器事件的 dom 元素。
+ * @param {HTMLElement} element - 响应浏览器事件的 DOM 元素。
  * @param {Array.<string>} eventTypes - 自定义应用事件的数组。
  * @param {boolean} [fallThrough=false] - 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
  * @param {Object} options - 事件对象选项。
@@ -54,7 +54,7 @@ export class Events {
 
         /**
          * @member {HTMLElement} SuperMap.Events.prototype.element
-         * @description 接受浏览器事件的DOM节点。
+         * @description 接受浏览器事件的 DOM 节点。
          */
         this.element = null;
 
@@ -71,16 +71,16 @@ export class Events {
         this.eventHandler = null;
 
         /**
-         * @member {boolean} SuperMap.Events.prototype.fallThrough
-         * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+         * @member {boolean} [SuperMap.Events.prototype.fallThrough=false]
+         * @description 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
          */
         this.fallThrough = fallThrough;
 
         /**
          * @member {boolean} [SuperMap.Events.prototype.includeXY=false]
          * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。
-         *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为false的原因在于，当创建一个
-         *              事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+         *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个
+         *              事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
          *              设为 false 不抵消，如果设为 true，用 this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
          * @example
          *  function named(evt) {
@@ -93,7 +93,7 @@ export class Events {
          * @member {Object} SuperMap.Events.prototype.extensions
          * @description 事件扩展。Keys 代表事件类型，values 代表事件对象。
          * @example
-         * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
+         * 以扩展 "foostart" 和 "fooend" 事件为例。展示替换 css 属性为 foo 的元素的 click 事件。
          *
          *   SuperMap.Events.foostart = SuperMap.Class({
      *       initialize: function(target) {
@@ -195,8 +195,8 @@ export class Events {
 
     /**
      * @function SuperMap.Events.prototype.attachToElement
-     * @description 给dom元素绑定浏览器事件。
-     * @param {HTMLDOMElement} element - 绑定浏览器事件的dom元素。
+     * @description 给 DOM 元素绑定浏览器事件。
+     * @param {HTMLDOMElement} element - 绑定浏览器事件的 DOM 元素。
      */
     attachToElement(element) {
         if (this.element) {
@@ -233,10 +233,10 @@ export class Events {
      * @function SuperMap.Events.prototype.on
      * @description 在一个相同的范围内注册监听器的方法，此方法调用 register 函数。
      * @example
-     * // 注册一个"loadstart"监听事件
+     * // 注册一个 "loadstart" 监听事件
      * events.on({"loadstart": loadStartListener});
      *
-     * // 同样注册一个"loadstart"监听事件
+     * // 同样注册一个 "loadstart" 监听事件
      * events.register("loadstart", undefined, loadStartListener);
      *
      * // 同时为对象注册多个监听事件
@@ -246,7 +246,7 @@ export class Events {
      *     scope: object
      * });
      *
-     * // 同时为对象注册多个监听事件，多次调用register方法
+     * // 同时为对象注册多个监听事件，多次调用 register 方法
      * events.register("loadstart", object, loadStartListener);
      * events.register("loadend", object, loadEndListener);
      *
@@ -315,10 +315,10 @@ export class Events {
      * @function SuperMap.Events.prototype.un
      * @description 在一个相同的范围内取消注册监听器的方法，此方法调用 unregister 函数。
      * @example
-     * // 移除"loadstart" 事件监听
+     * // 移除 "loadstart" 事件监听
      * events.un({"loadstart": loadStartListener});
      *
-     * // 使用unregister方法移除"loadstart" 事件监听
+     * // 使用 "unregister" 方法移除 "loadstart" 事件监听
      * events.unregister("loadstart", undefined, loadStartListener);
      *
      * // 取消对象多个事件监听
@@ -381,7 +381,7 @@ export class Events {
      * @description 触发一个特定的注册事件。
      * @param {string} type - 触发事件类型。
      * @param {Event} evt - 事件对象。
-     * @returns {boolean} 返回监听对象，如果返回是false，则停止监听。
+     * @returns {boolean} 返回监听对象，如果返回是 false，则停止监听。
      */
     triggerEvent(type, evt) {
         var listeners = this.listeners[type];

@@ -8,7 +8,7 @@ import {Util} from './Util';
  * @class SuperMap.Feature.Vector
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
- * 其中，默认的样式在 <SuperMap.Feature.Vector.style> 类中定义，如果没有特别的指定将使用默认的样式。
+ * 其中，默认的样式在 {@link SuperMap.Feature.Vector.style} 类中定义，如果没有特别的指定将使用默认的样式。
  * @extends {SuperMap.Feature}
  * @param {SuperMap.Geometry} geometry - 代表要素的几何形状。
  * @param {Object} [attributes] - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的对象。
@@ -74,7 +74,7 @@ export class Vector extends Feature {
 
         /**
          * @member {string} SuperMap.Feature.Vector.prototype.url 
-         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 <SuperMap.HTTP> 。
+         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 {@link SuperMap.HTTP} 。
          */
         this.url = null;
 
@@ -242,8 +242,8 @@ export class Vector extends Feature {
  * @typedef {Object} SuperMap.Feature.Vector.style
  * @description SuperMap.features 有大量的样式属性，如果没有特别的指定将使用默认的样式，
  * 大部分样式通过 SVG 标准定义属性。
- * - fill properties 资料介绍: {@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
- * - stroke properties 资料介绍: {@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
+ * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
+ * - stroke properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
  * @property {Boolean} [fill] - 不需要填充则设置为 false。
  * @property {string} [fillColor='#ee9900'] - 十六进制填充颜色。
  * @property {number} [fillOpacity=0.4] - 填充不透明度。
@@ -251,8 +251,8 @@ export class Vector extends Feature {
  * @property {string} [strokeColor='#ee9900'] - 十六进制描边颜色。
  * @property {number} [strokeOpacity=0.4] - 描边的不透明度(0-1)。
  * @property {number} [strokeWidth=1] - 像素描边宽度。
- * @property {string} [strokeLinecap='round'] - strokeLinecap有三种类型butt，round，square。
- * @property {string} [strokeDashstyle='solid'] - 有dot，dash，dashdot，longdash，longdashdot，solid 几种样式。
+ * @property {string} [strokeLinecap='round'] - strokeLinecap 有三种类型 butt，round，square。
+ * @property {string} [strokeDashstyle='solid'] - 有 dot，dash，dashdot，longdash，longdashdot，solid 几种样式。
  * @property {Boolean} [graphic] - 不需要则设置为 false。
  * @property {number} [pointRadius=6] - 像素点半径。
  * @property {string} [pointerEvents='visiblePainted'] - pointerEvents。

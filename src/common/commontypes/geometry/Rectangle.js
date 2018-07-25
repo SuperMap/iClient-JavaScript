@@ -12,7 +12,7 @@ import {Bounds} from '../Bounds';
  * @param {float} height -  矩形的高度。
  * @extends {SuperMap.Geometry}
  * @example
- *  //x为矩形左下角点的横坐标；y为矩形左下角点的纵坐标；w为矩形的宽度；h为矩形的高度
+ *  //x 为矩形左下角点的横坐标；y 为矩形左下角点的纵坐标；w 为矩形的宽度；h 为矩形的高度
  *  var x = 1;
  *  var y = 2;
  *  var w = 10;
@@ -54,7 +54,7 @@ export class Rectangle extends Geometry {
 
     /**
      * @function SuperMap.Geometry.Rectangle.prototype.calculateBounds
-     * @description 计算出此矩形对象的bounds。
+     * @description 计算出此矩形对象的 bounds。
      */
     calculateBounds() {
         this.bounds = new Bounds(this.x, this.y,

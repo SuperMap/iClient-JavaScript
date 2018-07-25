@@ -4,6 +4,7 @@
  */
 
 /**
+ * @function SuperMap.inherit
  * @description 除了 C 和 P 两个必要参数外，可以传递任意数量的对象，这些对象都将继承C。
  * @memberOf SuperMap
  * @param {Object} C - 继承的类。
@@ -26,6 +27,7 @@ SuperMap.inherit = function (C, P) {
 
 
 /**
+ * @function SuperMap.mixin 
  * @description 实现多重继承。
  * @memberOf SuperMap
  * @param {Class|Object} ...mixins - 继承的类。
@@ -78,6 +80,7 @@ SuperMap.mixin = function (...mixins) {
 export var StringExt = SuperMap.String = {
 
     /**
+     * @function SuperMap.String.startsWith
      * @description 判断目标字符串是否以指定的子字符串开头。
      * @param {string} str - 目标字符串。
      * @param {string} sub - 查找的子字符串。
@@ -88,6 +91,7 @@ export var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.contains
      * @description 判断目标字符串是否包含指定的子字符串。
      * @param {string} str - 目标字符串。
      * @param {string} sub - 查找的子字符串。
@@ -98,6 +102,7 @@ export var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.trim
      * @description 删除一个字符串的开头和结尾处的所有空白字符。
      * @param {string} str - （可能）存在空白字符填塞的字符串。
      * @returns {string} 删除开头和结尾处空白字符后的字符串。
@@ -107,8 +112,9 @@ export var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.camelize
      * @description 骆驼式("-")连字符的字符串处理。
-     * 例如: "chicken-head" becomes "chickenHead",
+     * 例如："chicken-head" becomes "chickenHead",
      *       "-chicken-head" becomes "ChickenHead"。
      * @param {string} str - 要处理的字符串，原始内容不应被修改。
      * @returns {string}
@@ -124,9 +130,10 @@ export var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.format
      * @description 提供带 ${token} 标记的字符串, 返回 context 对象属性中指定标记的属性值。
      * @example
-     * 示例:
+     * 示例：
      * (code)
      * 1、template = "${value,getValue}";
      *         context = {value: {getValue:function(){return Math.max.apply(null,argument);}}};
@@ -204,18 +211,21 @@ export var StringExt = SuperMap.String = {
     },
 
     /**
-     * @description 寻找带 token 的字符串。
+     * @member {RegExp} [SuperMap.String.tokenRegEx]
+     * @description 寻找带 token 的字符串，默认为 tokenRegEx=/\$\{([\w.]+?)\}/g。
      * @example
      * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
      */
     tokenRegEx: /\$\{([\w.]+?)\}/g,
 
     /**
-     * @description Used to test strings as numbers.
+     * @member {RegExp} [SuperMap.String.numberRegEx]
+     * @description 判断一个字符串是否只包含一个数值，默认为 numberRegEx=/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/。
      */
     numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
 
     /**
+     * @function SuperMap.String.isNumeric
      * @description 判断一个字符串是否只包含一个数值。
      * @example
      * (code)
@@ -231,6 +241,7 @@ export var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.numericIf
      * @description 把一个看似数值型的字符串转化为一个数值。
      * @returns {(number|string)} 如果能转换为数值则返回数值，否则返回字符串本身。
      */
@@ -249,20 +260,21 @@ export var StringExt = SuperMap.String = {
 export var NumberExt = SuperMap.Number = {
 
     /**
-     *  @description 格式化数字时默认的小数点分隔符。
-     *  @constant
-     *  @default "."
+     * @member {string} [SuperMap.Number.decimalSeparator='.']
+     * @description 格式化数字时默认的小数点分隔符。
+     * @constant
      */
     decimalSeparator: ".",
 
     /**
-     *  @description 格式化数字时默认的千位分隔符。
-     *  @constant
-     *  @default ","
+     * @member {string} [SuperMap.Number.thousandsSeparator=',']
+     * @description 格式化数字时默认的千位分隔符。
+     * @constant
      */
     thousandsSeparator: ",",
 
     /**
+     * @function SuperMap.Number.limitSigDigs
      * @description 限制浮点数的有效数字位数。
      * @param {number} num - 浮点数。
      * @param {integer} sig - 有效位数。
@@ -277,6 +289,7 @@ export var NumberExt = SuperMap.Number = {
     },
 
     /**
+     * @function SuperMap.Number.format
      * @description 数字格式化输出。
      * @param {number} num - 数字。
      * @param {integer} [dec=0]  - 数字的小数部分四舍五入到指定的位数。设置为 null 值时小数部分不变。
@@ -344,6 +357,7 @@ if (!Number.prototype.limitSigDigs) {
  */
 export var FunctionExt = SuperMap.Function = {
     /**
+     * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
      * @param {function} func - 输入函数。
      * @param {Object} object - 对象绑定到输入函数（作为输入函数的 this 对象）。
@@ -363,6 +377,7 @@ export var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.bindAsEventListener
      * @description 绑定函数到对象，在调用该函数时配置并使用事件对象作为第一个参数。
      * @param {function} func - 用于监听事件的函数。
      * @param {Object} object - this 对象的引用。
@@ -375,6 +390,7 @@ export var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.False
      * @description 该函数仅仅返回 false。该函数主要是避免在 IE8 以下浏览中 DOM 事件句柄的匿名函数问题。
      * @example
      * document.onclick = SuperMap.Function.False;
@@ -385,6 +401,7 @@ export var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.True
      * @description 该函数仅仅返回 true。该函数主要是避免在 IE8 以下浏览中 DOM 事件句柄的匿名函数问题。
      * @example
      * document.onclick = SuperMap.Function.True;
@@ -395,6 +412,7 @@ export var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.Void
      * @description 可重用函数，仅仅返回 "undefined"。
      * @returns {undefined}
      */
@@ -412,12 +430,12 @@ export var FunctionExt = SuperMap.Function = {
 export var ArrayExt = SuperMap.Array = {
 
     /**
-     * @description 过滤数组，提供了 ECMA-262 标准中 Array.prototype.filter 函数的扩展。
-     * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
+     * @function SuperMap.Array.filter
+     * @description 过滤数组，提供了 ECMA-262 标准中 Array.prototype.filter 函数的扩展。详见：{@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
      * @param {Array} array - 要过滤的数组。
-     * @param {function} callback - 数组中的每一个元素调用该函数。
-     *     如果函数的返回值为 true，该元素将包含在返回的数组中。该函数有三个参数: 数组中的元素，元素的索引，数组自身。
-     *     如果设置了可选参数 caller，在调用 callback 时，使用可选参数 caller 设置为 callback 的参数。
+     * @param {function} callback - 数组中的每一个元素调用该函数。</br>
+     *     如果函数的返回值为 true，该元素将包含在返回的数组中。该函数有三个参数: 数组中的元素，元素的索引，数组自身。</br>
+     *     如果设置了可选参数 caller，在调用 callback 时，使用可选参数 caller 设置为 callback 的参数。</br>
      * @param {Object} [caller] - 在调用 callback 时，使用参数 caller 设置为 callback 的参数。
      * @returns {Array} callback 函数返回 true 时的元素将作为返回数组中的元素。
      */

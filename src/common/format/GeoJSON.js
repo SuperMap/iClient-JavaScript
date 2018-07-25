@@ -25,7 +25,7 @@ export class GeoJSON extends JSONFormat {
     constructor(options) {
         super(options);
         /**
-         * @member {boolean} SuperMap.Format.GeoJSON.prototype.ignoreExtraDims
+         * @member {boolean} [SuperMap.Format.GeoJSON.prototype.ignoreExtraDims=false]
          * @description 忽略维度超过 2 的几何要素。
          */
         this.ignoreExtraDims = false;
@@ -38,7 +38,7 @@ export class GeoJSON extends JSONFormat {
         this.parseCoords = {
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.point
-             * @description 将一组坐标成一个 <SuperMap.Geometry> 对象。
+             * @description 将一组坐标转成一个 {@link SuperMap.Geometry} 对象。
              * @param {Object} array - GeoJSON 片段中的一组坐标。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
@@ -52,7 +52,7 @@ export class GeoJSON extends JSONFormat {
 
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
-             * @description 将坐标组数组转化成为一个 <SuperMap.Geometry> 对象。
+             * @description 将坐标组数组转化成为一个 {@link SuperMap.Geometry} 对象。
              * @param {Object} array - GeoJSON 片段中的坐标组数组。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
@@ -72,7 +72,7 @@ export class GeoJSON extends JSONFormat {
 
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.linestring
-             * @description 将坐标组数组转化成为一个 <SuperMap.Geometry> 对象。
+             * @description 将坐标组数组转化成为一个 {@link SuperMap.Geometry} 对象。
              * @param {Object} array - GeoJSON 片段中的坐标组数组。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
@@ -92,7 +92,7 @@ export class GeoJSON extends JSONFormat {
 
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
-             * @description 将坐标组数组转化成为一个 <SuperMap.Geometry> 对象。
+             * @description 将坐标组数组转化成为一个 {@link SuperMap.Geometry} 对象。
              * @param {Object} array - GeoJSON 片段中的坐标组数组。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
@@ -112,7 +112,7 @@ export class GeoJSON extends JSONFormat {
 
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.polygon
-             * @description 将坐标组数组转化成为一个 <SuperMap.Geometry> 对象。
+             * @description 将坐标组数组转化成为一个 {@link SuperMap.Geometry} 对象。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
             "polygon": function (array) {
@@ -132,7 +132,7 @@ export class GeoJSON extends JSONFormat {
 
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
-             * @description 将坐标组数组转化成为一个 <SuperMap.Geometry> 对象。
+             * @description 将坐标组数组转化成为一个 {@link SuperMap.Geometry} 对象。
              * @param {Object} array - GeoJSON 片段中的坐标组数组。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
@@ -152,7 +152,7 @@ export class GeoJSON extends JSONFormat {
 
             /**
              * @function SuperMap.Format.GeoJSON.parseCoords.box
-             * @description 将坐标组数组转化成为一个 <SuperMap.Geometry> 对象。
+             * @description 将坐标组数组转化成为一个 {@link SuperMap.Geometry} 对象。
              * @param {Object} array - GeoJSON 片段中的坐标组数组。
              * @returns {SuperMap.Geometry} 一个几何对象。
              */
@@ -292,7 +292,7 @@ export class GeoJSON extends JSONFormat {
             /**
              * @function SuperMap.Format.GeoJSON.extract.multilinestring
              * @description 从一个多线对象中返回一个线数组。
-             * @param {SuperMap.Geometry.MultiLinestring} multilinestring - 多线对象
+             * @param {SuperMap.Geometry.MultiLinestring} multilinestring - 多线对象。
              *
              * @returns {Array} 一个表示多线的线数组。
              */
@@ -359,9 +359,9 @@ export class GeoJSON extends JSONFormat {
      * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
      * @returns {Object}  返回值依赖于 type 参数的值。
-     *     如果 type 等于 "FeatureCollection"，返回值将会是 <SuperMap.Feature.Vector> 数组。
-     *     如果 type 为 "Geometry",输入的 json 对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。
-     *     如果 type 为 "Feature"，输入的 json 对象也必须表示的一个要素，这样返回值才会是 <SuperMap.Feature.Vector> 。
+     *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link SuperMap.Feature.Vector}> 数组。
+     *     -如果 type 为 "Geometry",输入的 json 对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。
+     *     -如果 type 为 "Feature"，输入的 json 对象也必须表示的一个要素，这样返回值才会是 {@link SuperMap.Feature.Vector}> 。
      */
     
      read(json, type, filter) {
@@ -471,7 +471,7 @@ export class GeoJSON extends JSONFormat {
 
     /**
      * @function SuperMap.Format.GeoJSON.prototype.parseFeature
-     * @description 将一个 GeoJSON 中的 feature 转化成 <SuperMap.Feature.Vector> 对象。
+     * @description 将一个 GeoJSON 中的 feature 转化成 {@link SuperMap.Feature.Vector}> 对象。
      * @param {Object} obj - 从 GeoJSON 对象中创建一个对象。
      * @returns {SuperMap.Feature.Vector} 一个要素。
      */
@@ -498,7 +498,7 @@ export class GeoJSON extends JSONFormat {
 
     /**
      * @function SuperMap.Format.GeoJSON.prototype.parseGeometry
-     * @description 将一个 GeoJSON 中的几何要素转化成 <SuperMap.Geometry> 对象。
+     * @description 将一个 GeoJSON 中的几何要素转化成 {@link SuperMap.Geometry} 对象。
      * @param {Object} obj - 从 GeoJSON 对象中创建一个对象。
      * @returns {SuperMap.Geometry} 一个几何要素。
      */
@@ -541,7 +541,7 @@ export class GeoJSON extends JSONFormat {
     /**
      * @function SuperMap.Format.GeoJSON.write
      * @description 序列化一个要素对象，几何对象，要素对象数组为一个 GeoJSON 字符串。
-     * @param {Object} obj - 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
+     * @param {Object} obj - 一个 {@link SuperMap.Feature.Vector}> 对象，一个 {@link SuperMap.Geometry} 对象或者一个要素对象数组。
      * @param {boolean} [pretty=false] - 是否使用换行和缩进来控制输出。
      * @returns {string} 一个 GeoJSON 字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
      */
@@ -581,7 +581,7 @@ export class GeoJSON extends JSONFormat {
      * @function SuperMap.Format.GeoJSON.createCRSObject
      * @description 从一个要素对象中创建一个坐标参考系对象。
      * @param {SuperMap.Feature.Vector} object - 要素对象。
-     * @returns {Object} 一个可作为 GeoJSON 对象的 crs 属性使用的对象。
+     * @returns {Object} 一个可作为 GeoJSON 对象的 CRS 属性使用的对象。
      */
     createCRSObject(object) {
         var proj = object.layer.projection.toString();
