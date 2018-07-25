@@ -912,27 +912,6 @@ var exampleConfig = {
             }
         }
     },
-    "plot": {
-        name: "标绘",
-        name_en: "plot",
-        content: {
-            "draw": {
-                name: "点线面绘制",
-                name_en: "draw",
-                content: [{
-                    name: "绘制与修改",
-                    name_en: "draw and modify",
-                    thumbnail: "l_drawAndModify.png",
-                    fileName: "drawAndModify"
-                }, {
-                    name: "捕捉与修改",
-                    name_en: "snap and modify",
-                    thumbnail: "l_snapAndModify.png",
-                    fileName: "snapAndModify"
-                }]
-            }
-        }
-    },
     "dynamicPlot": {
         name: "动态标绘",
         name_en: "dynamicPlot",
@@ -1088,6 +1067,21 @@ var exampleConfig = {
         name: "控件",
         name_en: "control",
         content: {
+            "draw": {
+                name: "点线面绘制",
+                name_en: "draw",
+                content: [{
+                    name: "绘制与修改",
+                    name_en: "draw and modify",
+                    thumbnail: "l_drawAndModify.png",
+                    fileName: "drawAndModify"
+                }, {
+                    name: "捕捉与修改",
+                    name_en: "snap and modify",
+                    thumbnail: "l_snapAndModify.png",
+                    fileName: "snapAndModify"
+                }]
+            },
             "changeTileVersion": {
                 name: "缓存切换",
                 name_en: "tile version switch",

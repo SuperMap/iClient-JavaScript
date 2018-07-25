@@ -7,8 +7,8 @@ var template = require('jsdoc/template'),
     handle = require('jsdoc/util/error').handle,
     helper = require('jsdoc/util/templateHelper'),
     logger = require('jsdoc/util/logger'),
-    typeLinks= require('./typeLinkExt').typeLinks,
-   
+    typeLinks = require('./typeLinkExt').typeLinks,
+
     _ = require('underscore'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
@@ -19,13 +19,18 @@ var template = require('jsdoc/template'),
     view,
     language,
     outdir = env.opts.destination;
-    var util = require('util');
+var util = require('util');
+
 function find(spec) {
     return helper.find(data, spec);
 }
 
 function tutoriallink(tutorial) {
-    return helper.toTutorial(tutorial, null, { tag: 'em', classname: 'disabled', prefix: 'Tutorial: ' });
+    return helper.toTutorial(tutorial, null, {
+        tag: 'em',
+        classname: 'disabled',
+        prefix: 'Tutorial: '
+    });
 }
 
 function getAncestorLinks(doclet) {
@@ -33,7 +38,9 @@ function getAncestorLinks(doclet) {
 }
 
 function hashToLink(doclet, hash) {
-    if (!/^(#.+)/.test(hash)) { return hash; }
+    if (!/^(#.+)/.test(hash)) {
+        return hash;
+    }
 
     var url = helper.createLink(doclet);
 
@@ -111,6 +118,7 @@ function getPathFromDoclet(doclet) {
 
     return filepath;
 }
+
 function generateNav(navObject) {
 
     // var docData = {
@@ -131,6 +139,7 @@ function generateNav(navObject) {
 
     fs.writeFileSync(outpath, html, 'utf8');
 }
+
 function generate(title, docs, filename, resolveLinks) {
     resolveLinks = resolveLinks === false ? false : true;
 
@@ -138,7 +147,9 @@ function generate(title, docs, filename, resolveLinks) {
         filename: filename,
         title: title,
         docs: docs,
-        packageInfo: (find({ kind: 'package' }) || [])[0]
+        packageInfo: (find({
+            kind: 'package'
+        }) || [])[0]
     };
 
     var outpath = path.join(outdir, filename),
@@ -150,6 +161,7 @@ function generate(title, docs, filename, resolveLinks) {
 
     fs.writeFileSync(outpath, html, 'utf8');
 }
+
 function getCustomTagValue(item, title) {
     var tags = item.tags;
     if (!tags || !tags.length) {
@@ -162,6 +174,7 @@ function getCustomTagValue(item, title) {
     }
     return null;
 }
+
 function generateSourceFiles(sourceFiles) {
     Object.keys(sourceFiles).forEach(function (file) {
         var source;
@@ -174,8 +187,7 @@ function generateSourceFiles(sourceFiles) {
                 kind: 'source',
                 code: helper.htmlsafe(fs.readFileSync(sourceFiles[file].resolved, 'utf8'))
             };
-        }
-        catch (e) {
+        } catch (e) {
             handle(e);
         }
 
@@ -237,37 +249,29 @@ function sortNav(members) {
     });
     return merged;
 }
+
 function buildCategories(members, templatePath) {
     var categories = {};
-    if (language === 'en') {
-        var exists = fs.existsSync(path.resolve(templatePath, "categories.json"));
-        if (exists) {
-            categories = JSON.parse(fs.readFileSync(path.resolve(templatePath, "categories.json")));
-        } else {
-            logger.error('Please generate a Chinese JSdoc first')
+    _.each(members, function (v) {
+
+        var category = getCustomTagValue(v, 'category');
+        if (!category) {
+            category = "BaseTypes";
         }
-    } else {
-        _.each(members, function (v) {
-            
-            var category = getCustomTagValue(v, 'category');
-            if (!category) {
-                category = "BaseTypes";
+        var arr = category.split(" ");
+        var aa = categories;
+        for (let index = 0; index < arr.length; index++) {
+            const element = arr[index];
+            if (!aa[element]) {
+                aa[element] = {};
+                aa[element].default = [];
             }
-            var arr = category.split(" ");
-            var aa = categories;
-            for (let index = 0; index < arr.length; index++) {
-                const element = arr[index];
-                if (!aa[element]) {
-                    aa[element] = {};
-                    aa[element].default = [];
-                }
-                aa = aa[element];
-            }
-            aa.default.push(v.longname);
-        });
-        var outpath = path.resolve(templatePath, "categories.json");
-        fs.writeFileSync(outpath, JSON.stringify(categories), 'utf8');
-    }
+            aa = aa[element];
+        }
+        aa.default.push(v.longname);
+    });
+    var outpath = path.resolve(templatePath, "categories.json");
+    fs.writeFileSync(outpath, JSON.stringify(categories), 'utf8');
     return categories;
 }
 
@@ -366,7 +370,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     var globalUrl = helper.getUniqueFilename('global');
     helper.registerLink('global', globalUrl);
-    view.typeLinks=typeLinks;
+    view.typeLinks = typeLinks;
     // set up templating
     view.layout = 'layout.tmpl';
 
@@ -417,7 +421,9 @@ exports.publish = function (taffyData, opts, tutorials) {
         }
     });
     // update outdir if necessary, then create outdir
-    var packageInfo = (find({ kind: 'package' }) || [])[0];
+    var packageInfo = (find({
+        kind: 'package'
+    }) || [])[0];
     if (packageInfo && packageInfo.name) {
         outdir = path.join(outdir, packageInfo.name, packageInfo.version);
     }
@@ -439,8 +445,8 @@ exports.publish = function (taffyData, opts, tutorials) {
     var staticFileScanner;
     if (conf['default'].staticFiles) {
         staticFilePaths = conf['default'].staticFiles.paths || [];
-        staticFileFilter = new (require('jsdoc/src/filter')).Filter(conf['default'].staticFiles);
-        staticFileScanner = new (require('jsdoc/src/scanner')).Scanner();
+        staticFileFilter = new(require('jsdoc/src/filter')).Filter(conf['default'].staticFiles);
+        staticFileScanner = new(require('jsdoc/src/scanner')).Scanner();
 
         staticFilePaths.forEach(function (filePath) {
             var extraStaticFiles = staticFileScanner.scan([filePath], 10, staticFileFilter);
@@ -478,8 +484,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
         if (url.indexOf('#') > -1) {
             doclet.id = helper.longnameToUrl[doclet.longname].split(/#/).pop();
-        }
-        else {
+        } else {
             doclet.id = doclet.name;
         }
 
@@ -491,7 +496,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     // do this after the urls have all been generated
     data().each(function (doclet) {
-      
+
         doclet.ancestors = getAncestorLinks(doclet);
         if (doclet.kind === 'member') {
             addSignatureTypes(doclet);
@@ -501,7 +506,7 @@ exports.publish = function (taffyData, opts, tutorials) {
             addSignatureTypes(doclet);
             var attribs = helper.getAttribs(doclet);
             var attribsString = buildAttribsString(attribs);
-        
+
             doclet.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
             doclet.kind = 'member';
         }
@@ -529,7 +534,12 @@ exports.publish = function (taffyData, opts, tutorials) {
     view.navOrder = JSON.parse(fs.readFileSync(path.resolve(templatePath, "./config.json")));
     view.language = language;
     generateNav(view.nav);
-    attachModuleSymbols(find({ kind: ['class', 'function'], longname: { left: 'module:' } }),
+    attachModuleSymbols(find({
+            kind: ['class', 'function'],
+            longname: {
+                left: 'module:'
+            }
+        }),
         members.modules);
 
     // only output pretty-printed source files if requested; do this before generating any other
@@ -538,13 +548,22 @@ exports.publish = function (taffyData, opts, tutorials) {
         generateSourceFiles(sourceFiles);
     }
 
-    if (members.globals.length) { generate('Global', [{ kind: 'globalobj' }], globalUrl); }
+    if (members.globals.length) {
+        generate('Global', [{
+            kind: 'globalobj'
+        }], globalUrl);
+    }
 
     // index page displays information from package.json and lists files
-    var files = find({ kind: 'file' });
+    var files = find({
+        kind: 'file'
+    });
 
-    generate('Index',
-        [{ kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page' }].concat(files),
+    generate('Index', [{
+            kind: 'mainpage',
+            readme: opts.readme,
+            longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'
+        }].concat(files),
         indexUrl);
 
     // set up the lists that we'll use to generate pages
@@ -556,27 +575,37 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     for (var longname in helper.longnameToUrl) {
         if (hasOwnProp.call(helper.longnameToUrl, longname)) {
-            var myClasses = helper.find(classes, { longname: longname });
+            var myClasses = helper.find(classes, {
+                longname: longname
+            });
             if (myClasses.length) {
                 generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
             }
 
-            var myModules = helper.find(modules, { longname: longname });
+            var myModules = helper.find(modules, {
+                longname: longname
+            });
             if (myModules.length) {
                 generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
             }
 
-            var myNamespaces = helper.find(namespaces, { longname: longname });
+            var myNamespaces = helper.find(namespaces, {
+                longname: longname
+            });
             if (myNamespaces.length) {
                 generate('Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
             }
 
-            var myMixins = helper.find(mixins, { longname: longname });
+            var myMixins = helper.find(mixins, {
+                longname: longname
+            });
             if (myMixins.length) {
                 generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
             }
 
-            var myExternals = helper.find(externals, { longname: longname });
+            var myExternals = helper.find(externals, {
+                longname: longname
+            });
             if (myExternals.length) {
                 generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
             }
@@ -609,13 +638,14 @@ exports.publish = function (taffyData, opts, tutorials) {
         });
     }
     saveChildren(tutorials);
+
     function buildAttribsString(attribs) {
         var attribsString = '';
-    
+
         if (attribs && attribs.length) {
-            attribsString = htmlsafe( util.format('(%s) ', attribs.join(', ')) );
+            attribsString = htmlsafe(util.format('(%s) ', attribs.join(', ')));
         }
-    
+
         return attribsString;
     }
 };

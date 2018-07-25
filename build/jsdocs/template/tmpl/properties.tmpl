@@ -46,11 +46,10 @@
 		<?js } ?>
 		
 		<th>Type</th>
-		
-		<?js if (props.hasAttributes) {?>
-		<th>Argument</th>
+
+		<?js if (props.hasDefault) {?>
+		<th>Default</th>
 		<?js } ?>
-		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -87,20 +86,18 @@
             <?js } ?>
             </td>
             
-            <?js if (props.hasAttributes) {?>
-                <td class="attributes">
-                <?js if (prop.optional) { ?>
-                    &lt;optional><br>
-                <?js } ?>
-                    
-                <?js if (prop.nullable) { ?>
-                    &lt;nullable><br>
+            <?js if (props.hasDefault) {?>
+                <td class="default">
+                <?js if (typeof prop.defaultvalue !== 'undefined') {?>
+                    <?js= (typeof prop.defaultvalue === 'string') ?self.linkto( prop.defaultvalue, self.htmlsafe( prop.defaultvalue)): self.htmlsafe( prop.defaultvalue) ?>
                 <?js } ?>
                 </td>
             <?js } ?>
             
             
-            <td class="description last"><?js= prop.description ?><?js if (prop.subprops) { ?>
+            <td class="description last"> <?js if (prop.optional) { ?>
+                    <span class="optional">可选</span>
+                <?js } ?><?js= prop.description ?><?js if (prop.subprops) { ?>
                 <h6>Properties</h6><?js= self.partial('properties.tmpl', prop.subprops) ?>
             <?js } ?></td>
         </tr>
