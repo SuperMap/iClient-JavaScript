@@ -22,7 +22,7 @@
             "src/common","src/mapboxgl"
         ]
     },
-    "plugins": ["plugins/markdown","../plugins/linkdoc"],
+    "plugins": ["plugins/markdown"],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

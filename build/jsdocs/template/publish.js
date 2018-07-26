@@ -12,6 +12,7 @@ var template = require('jsdoc/template'),
     _ = require('underscore'),
     htmlsafe = helper.htmlsafe,
     linkto = helper.linkto,
+    registerLink = helper.registerLink,
     resolveAuthorLinks = helper.resolveAuthorLinks,
     scopeToPunc = helper.scopeToPunc,
     hasOwnProp = Object.prototype.hasOwnProperty,
@@ -20,7 +21,6 @@ var template = require('jsdoc/template'),
     language,
     outdir = env.opts.destination;
 var util = require('util');
-
 function find(spec) {
     return helper.find(data, spec);
 }
@@ -511,20 +511,14 @@ exports.publish = function (taffyData, opts, tutorials) {
             doclet.kind = 'member';
         }
     });
-
+    for (const typeLink in view.typeLinks) {
+        registerLink(typeLink, view.typeLinks[typeLink]);
+    }
     var members = helper.getMembers(data);
     members.tutorials = tutorials.children;
-    var extendLinkto = function (longname, linkText, cssClass, fragmentId) {
-        if (longname && view.typeLinks && view.typeLinks[longname]) {
-            linkText = longname;
-            longname = view.typeLinks[longname];
-        }
-        return linkto(longname, linkText, cssClass, fragmentId);
-
-    }
     // add template helpers
     view.find = find;
-    view.linkto = extendLinkto;
+    view.linkto = linkto;
     view.resolveAuthorLinks = resolveAuthorLinks;
     view.tutoriallink = tutoriallink;
     view.htmlsafe = htmlsafe;

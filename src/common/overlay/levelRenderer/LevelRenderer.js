@@ -3,7 +3,6 @@ import {Util} from '../../commontypes/Util';
 import {Render} from './Render';
 
 /**
- * @private
  * @class  SuperMap.LevelRenderer
  * @category Visualization Theme
  * @classdesc LevelRenderer 渲染器

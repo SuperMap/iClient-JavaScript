@@ -1,5 +1,13 @@
 ﻿import ol from 'openlayers';
-
+/**
+ * @namespace ol
+ */
+/**
+ * @namespace ol.supermap
+ */
+/**
+ * @namespace ol.source
+ */
 ol.supermap = ol.supermap || {};
 
 /**

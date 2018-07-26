@@ -12,14 +12,10 @@
 <section>
     
 <header>
-    <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
-        <span class="ancestors"><?js= doc.ancestors.join('') ?></span>
-    <?js } ?>
-    <?js= doc.name ?>
+    <h2><?js if (doc.ancestors && doc.ancestors.length) { ?><span class="ancestors"><?js= doc.ancestors.join('') ?><?js } ?></span><?js= doc.name ?>
     <?js if (doc.variation) { ?>
         <sup class="variation"><?js= doc.variation ?></sup>
     <?js } ?>
-    <span class="static">static</span>
     </h2>
     <?js if (doc.classdesc) { ?>
         <div class="class-description"><?js= doc.classdesc ?></div>

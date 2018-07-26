@@ -24,7 +24,7 @@
             "src/classic/libs","src/classic/theme","src/classic/resource"
         ]
     },
-    "plugins": ["plugins/markdown","../plugins/linkdoc"],
+    "plugins": ["plugins/markdown"],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

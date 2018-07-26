@@ -24,7 +24,7 @@
         ]
         
     },
-    "plugins": ["plugins/markdown","../plugins/factoryFunction","../plugins/linkdoc"],
+    "plugins": ["plugins/markdown","../plugins/factoryFunction"],
     "templates": {
         "cleverLinks": true,
         "monospaceLinks": true,
