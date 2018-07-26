@@ -7,7 +7,7 @@ import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务类。
  * @param {string} url -点聚合分析任务地址。
- * @param {Object} options - 参数。<br>
+ * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
  * @param {Object} options.eventListeners - 听器对象。<br>
  * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>

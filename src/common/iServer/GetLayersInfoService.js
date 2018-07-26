@@ -11,14 +11,14 @@ import {Vector} from './Vector';
  * @category iServer Map Layer
  * @classdesc 获取图层信息服务类构造函数。
  * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
- *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
- *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
- *        如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
+ * @param {string} url - 与客户端交互的地图服务地址。请求地图服务,URL 应为：
+ *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+ *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。
+ *        如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：
  *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
- * @param {Object} options - 参数。<br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
  */

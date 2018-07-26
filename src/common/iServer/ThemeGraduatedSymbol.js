@@ -10,23 +10,23 @@ import {GraduatedMode} from '../REST';
  * @class SuperMap.ThemeGraduatedSymbol
  * @category  iServer Map Theme
  * @classdesc 等级符号专题图。
- * @extends SuperMap.Theme
- * @param {Object} options - 参数。<br>
- * @param {number} options.baseValue - 等级符号专题图的基准值，单位同专题变量的单位。<br>
- * @param {string} options.expression - 等级符号专题图的字段或字段表达式。<br>
- * @param {SuperMap.ThemeFlow} options.flow - 等级符号专题图符号流动显示与牵引线设置类。<br>
- * @param {SuperMap.GraduatedMode} options.graduatedMode - 等级符号专题图分级模式。<br>
- * @param {SuperMap.ThemeOffset} options.offset - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- * @param {SuperMap.ThemeGraduatedSymbolStyle} options.style - 用于设置等级符号图正负和零值显示风格。<br>
- * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
+ * @extends {SuperMap.Theme}
+ * @param {Object} options - 参数。
+ * @param {number} [options.baseValue=0] - 等级符号专题图的基准值，单位同专题变量的单位。
+ * @param {string} options.expression - 等级符号专题图的字段或字段表达式。
+ * @param {SuperMap.ThemeFlow} [options.flow] - 等级符号专题图符号流动显示与牵引线设置类。
+ * @param {SuperMap.GraduatedMode} [options.graduatedMode=SuperMap.GraduatedMode.CONSTANT] - 等级符号专题图分级模式。
+ * @param {SuperMap.ThemeOffset} [options.offset] - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+ * @param {SuperMap.ThemeGraduatedSymbolStyle} options.style - 用于设置等级符号图正负和零值显示风格。
+ * @param {SuperMap.ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  */
 export class ThemeGraduatedSymbol extends Theme {
 
     constructor(options) {
         super("GRADUATEDSYMBOL", options);
         /**
-         * @member {number} SuperMap.ThemeGraduatedSymbol.prototype.baseValue
-         * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
+         * @member {number} [SuperMap.ThemeGraduatedSymbol.prototype.baseValue=0]
+         * @description 等级符号专题图的基准值，单位同专题变量的单位。
          *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于<br>
          *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，<br>
          *              其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为0，建议通过多次尝试设置该值才能达到较好的显示效果。
@@ -35,7 +35,7 @@ export class ThemeGraduatedSymbol extends Theme {
 
         /**
          * @member {string} SuperMap.ThemeGraduatedSymbol.prototype.expression
-         * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
+         * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。
          */
         this.expression = null;
 
@@ -47,19 +47,18 @@ export class ThemeGraduatedSymbol extends Theme {
         this.flow = new ThemeFlow();
 
         /**
-         * @member {SuperMap.GraduatedMode} SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode
-         * @description 等级符号专题图分级模式。<br>
-         *              分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，<br>
-         *              这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。<br>
-         *              有三种分级模式：常数、对数和平方根，对于有值为负数的字段，在用对数或平方根方式分级时，默认对负数取正。<br>
-         *              不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；<br>
-         *              平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。<br>
-         *              默认值为 SuperMap.GraduatedMode.CONSTANT。
+         * @member {SuperMap.GraduatedMode} [SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode=SuperMap.GraduatedMode.CONSTANT]
+         * @description 等级符号专题图分级模式。
+         *              分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，
+         *              这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。
+         *              有三种分级模式：常数、对数和平方根，对于有值为负数的字段，在用对数或平方根方式分级时，默认对负数取正。
+         *              不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；
+         *              平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。
          */
-        this.graduatedMode = GraduatedMode.CONSTANT;
+        this.graduatedMode = SuperMap.GraduatedMode.CONSTAN;
 
         /**
-         * @member {SuperMap.ThemeOffset} SuperMap.ThemeGraduatedSymbol.prototype.offset
+         * @member {SuperMap.ThemeOffset} [SuperMap.ThemeGraduatedSymbol.prototype.offset]
          * @description 用于设置等级符号图相对于要素内点的偏移量。
          */
         this.offset =  new ThemeOffset();
@@ -103,7 +102,7 @@ export class ThemeGraduatedSymbol extends Theme {
 
     /**
      * @function SuperMap.ThemeGraduatedSymbol.prototype.toJSON
-     * @description 将themeLabel对象转化为json字符串。
+     * @description 将 themeLabel 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
@@ -146,8 +145,8 @@ export class ThemeGraduatedSymbol extends Theme {
     /**
      * @function SuperMap.ThemeGraduatedSymbol.fromObj
      * @description 从传入对象获取等级符号专题图。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象。
      */
     static fromObj(obj) {
         if (!obj) {

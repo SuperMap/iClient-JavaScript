@@ -10,11 +10,11 @@ import {SecurityManager} from '../security/SecurityManager';
  * @classdesc 分布式分析服务基类
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 分布式分析服务地址。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {Object} options.eventListeners - 听器对象。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
- * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {Object} options - 参数。
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {Object} options.eventListeners - 听器对象。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  */
 export class ProcessingServiceBase extends CommonServiceBase {

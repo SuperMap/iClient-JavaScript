@@ -19,10 +19,10 @@ import {MeasureMode} from '../REST';
  *      }
  * });
  * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param {Object} options - 参数。<br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
- * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。<br>
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER","GEOJSON"。
  * @param {MeasureMode} options.measureMode - 量算模式，包括距离量算模式和面积量算模式。
  */
 export class MeasureService extends CommonServiceBase {

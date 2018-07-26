@@ -58,12 +58,12 @@ export var setBackground = function (map, color) {
 /**
  * @class mapboxgl.supermap.map.setPaintProperty
  * @description 设置图层风格。
- * @param {mapboxgl.Map} map - 当前mapboxgl map对象。
- * @param {Object} [layerIds] - 图层Id。
+ * @param {mapboxgl.Map} map - 当前 Mapbox GL map 对象。
+ * @param {string} [layerIds] - 图层 Id。
  * @param {String} [type] - 图层类型。
- * @param {Object} [paint] -图层的样式。
+ * @param {Object} [paint] - 图层的样式。
  * @param {Object} [source=vector-tiles] - 源。
- * @param {Object} [sourceLayers]- 源图层，默认与id对应。
+ * @param {Object} [sourceLayers]- 源图层，默认与 id 对应。
  */
 export var setPaintProperty = function (map, layerIds, type, paint, source, sourceLayers) {
     if (layerIds && map) {

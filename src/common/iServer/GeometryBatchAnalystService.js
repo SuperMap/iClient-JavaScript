@@ -15,7 +15,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  *              其中，originResult 为服务端返回的用 JSON 对象表示的量算结果数据，result 为服务端返回的量算结果数据。
  * @extends {SuperMap.SpatialAnalystBase}
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
- * @param {Object} options - 参数。</br>
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @example
  * var myOverlayAnalystService = new SuperMap.REST.GeometryBatchAnalystService(url, {

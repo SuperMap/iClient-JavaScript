@@ -6,7 +6,7 @@ import {BufferSetting} from './BufferSetting';
  * @class SuperMap.BufferAnalystParameters
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析参数基类。
- * @param {Object} options - 参数。</br>
+ * @param {Object} options - 参数。
  * @param {SuperMap.BufferSetting} options.bufferSetting - 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
  */
 export class BufferAnalystParameters {

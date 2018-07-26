@@ -27,13 +27,13 @@ export class Theme3DLayer {
     constructor(id, layerOptions) {
         /**
          * @member {string} mapboxgl.supermap.Theme3DLayer.prototype.id 
-         * @description mapbox GL 图层 id。
+         * @description Mapbox GL 图层 id。
          */
         this.id = id;
 
         /**
          * @member {Object} mapboxgl.supermap.Theme3DLayer.prototype.map 
-         * @description mapbox GL 地图对象。
+         * @description Mapbox GL 地图对象。
          */
         this.map = null;
         /**
@@ -187,7 +187,7 @@ export class Theme3DLayer {
     /**
      * @function mapboxgl.supermap.Theme3DLayer.prototype.addTo
      * @description 添加图层到地图上。
-     * @param {Object} map - mapbox GL 地图对象。
+     * @param {Object} map - Mapbox GL 地图对象。
      * @returns {this} this 对象。
      */
     addTo(map) {
@@ -254,7 +254,7 @@ export class Theme3DLayer {
     /**
      * @function  mapboxgl.supermap.Theme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
-     * @returns {Object} mapbox GL 样式对象。
+     * @returns {Object} Mapbox GL 样式对象。
      */
     getLayerStyleOptions() {
         //子类重写实现
@@ -263,7 +263,7 @@ export class Theme3DLayer {
     /**
      * @function mapboxgl.supermap.Theme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式,子类重写实现。
-     * @returns {Object} mapbox GL 样式对象。
+     * @returns {Object} Mapbox GL 样式对象。
      */
     getHighlightStyleOptions() {
         //子类重写实现

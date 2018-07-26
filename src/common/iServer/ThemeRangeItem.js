@@ -8,18 +8,18 @@ import {ServerStyle} from './ServerStyle';
  * @classdesc 范围分段专题图子项类。
  * @description 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
- * @param {Object} options - 参数。<br>
- * @param {string} options.caption - 分段专题图子项的标题。<br>
- * @param {number} options.end - 分段专题图子项的终止值。<br>
- * @param {number} options.start - 分段专题图子项的起始值。<br>
- * @param {SuperMap.ServerStyle} options.style - 分段专题图子项的风格。<br>
- * @param {boolean} options.visible - 分段专题图子项是否可见。
+ * @param {Object} options - 参数。
+ * @param {string} [options.caption] - 分段专题图子项的标题。
+ * @param {number} [options.end=0] - 分段专题图子项的终止值。
+ * @param {number} [options.start=0] - 分段专题图子项的起始值。
+ * @param {SuperMap.ServerStyle} options.style - 分段专题图子项的风格。
+ * @param {boolean} [options.visible=true] - 分段专题图子项是否可见。
  */
 export class ThemeRangeItem {
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.ThemeRangeItem.prototype.caption
+         * @member {string} [SuperMap.ThemeRangeItem.prototype.caption]
          * @description 分段专题图子项的标题。
          */
         this.caption = null;
@@ -98,7 +98,7 @@ export class ThemeRangeItem {
      * @function SuperMap.ThemeRangeItem.fromObj
      * @description 从传入对象获取范围分段专题图子项类。
      * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeRangeItem} ThemeRangeItem对象
+     * @returns {SuperMap.ThemeRangeItem} ThemeRangeItem 对象
      */
     static fromObj(obj) {
         if (!obj) {

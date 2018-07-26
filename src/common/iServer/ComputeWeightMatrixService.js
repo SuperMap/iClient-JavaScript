@@ -6,7 +6,7 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
 /**
  * @class SuperMap.ComputeWeightMatrixService
  * @category  iServer NetworkAnalyst WeightMatrix
- * @classdesc 耗费矩阵分析服务类。<br>
+ * @classdesc 耗费矩阵分析服务类。
  *            耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  *            用来存储指定的任意两点间的资源消耗。
  *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
@@ -18,10 +18,10 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
  *		   "processFailed": computeWeightMatrixnError
  *	   }
  * });
- * @param {string} url - 耗费矩阵分析服务地址。请求服务的URL应为：<br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ * @param {string} url - 耗费矩阵分析服务地址。请求服务的URL应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如："http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param {Object} options - 参数。<br>
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {

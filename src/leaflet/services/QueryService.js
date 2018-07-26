@@ -20,7 +20,7 @@ import {
  * @class  L.supermap.queryService
  * @classdesc 地图查询服务类。
  * @category  iServer Map QueryResults
- * @extends L.supermap.ServiceBase
+ * @extends {L.supermap.ServiceBase}
  * @param {string} url -  地图查询服务访问地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

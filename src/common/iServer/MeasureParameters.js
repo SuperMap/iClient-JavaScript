@@ -6,10 +6,10 @@ import {Unit} from '../REST';
  * @class SuperMap.MeasureParameters
  * @category iServer Map Measure
  * @classdesc 量算参数类。
- * @param {Object} geometry - 要量算的几何对象。<br>
- *                            点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
- *                            线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
- *                            面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
+ * @param {Object} geometry - 要量算的几何对象。
+ *                            点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。
+ *                            线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。
+ *                            面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
  * @param {Object} options - 参数。
  * @param {SuperMap.Unit} [options.unit=SuperMap.Unit.METER] - 量算单位。
  * @param {string} [options.prjCoordSys] - 用来指定该量算操作所使用的投影。
@@ -26,8 +26,8 @@ export class MeasureParameters {
         /**
          * @member {Object} SuperMap.MeasureParameters.prototype.geometry
          * @description 要量算的几何对象。
-         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
-         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。
          * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
          */
         this.geometry = geometry;

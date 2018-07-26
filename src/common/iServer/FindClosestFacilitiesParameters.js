@@ -6,7 +6,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class SuperMap.FindClosestFacilitiesParameters
  * @category iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析参数类。
- * @param {Object} options - 参数。</br>
+ * @param {Object} options - 参数。
  * @param {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number)} options.event - 事件点，一般为需要获得服务设施服务的事件位置。 
  * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。 
  * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置。 

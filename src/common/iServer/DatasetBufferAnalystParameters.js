@@ -11,10 +11,10 @@ import {FilterParameter} from './FilterParameter';
  * @param {Object} options - 参数。 
  * @param {string} options.dataset - 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。 
  * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。 
- * @param {SuperMap.DataReturnOption} [options.resultSetting] - 结果返回设置类。</br>
+ * @param {SuperMap.DataReturnOption} [options.resultSetting] - 结果返回设置类。
  * @param {boolean} [options.isAttributeRetained=true] - 是否保留进行缓冲区分析的对象的字段属性。当 isUnion 字段为 false 时该字段有效。 
  * @param {boolean} [options.isUnion=false] - 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。 
- * @param {SuperMap.BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。</br>
+ * @param {SuperMap.BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
  *
  * @extends {SuperMap.BufferAnalystParameters}
  */

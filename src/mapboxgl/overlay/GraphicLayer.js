@@ -57,7 +57,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.addTo
      * @description 图层添加到地图，将在下个版本废弃，请使用 onAdd() 代替。
-     * @param {mapboxgl.Map} map - mapbox GL 地图对象。
+     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
      * @returns this
      */
     addTo(map) {
@@ -67,7 +67,7 @@ export class GraphicLayer {
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.onAdd
      * @description 图层添加到地图。
-     * @param {mapboxgl.Map} map - mapbox GL 地图对象。
+     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
      * @return {mapboxgl.supermap.GraphicLayer}
      */
     onAdd(map) {

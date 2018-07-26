@@ -90,7 +90,7 @@ export class SecurityManager {
     }
 
     /**
-     * @description 根据Url获取token。
+     * @description 根据 Url 获取token。
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @returns {string} token
      */
@@ -117,8 +117,8 @@ export class SecurityManager {
     /**
      * @description iServer 登录验证。
      * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
-     * @param {string} [username] - 用户名。
-     * @param {string} [password] - 密码。
+     * @param {string} username - 用户名。
+     * @param {string} password - 密码。
      * @param {boolean} [rememberme=false] - 是否记住。
      * @returns {Promise} 返回包含 iServer 登录请求结果的 Promise 对象。
      */
@@ -178,8 +178,8 @@ export class SecurityManager {
     /**
      * @description iPortal登录验证。
      * @param {string} url - iportal 首页地址。
-     * @param {string} [username] - 用户名。
-     * @param {string} [password] - 密码。
+     * @param {string} username - 用户名。
+     * @param {string} password - 密码。
      * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
@@ -230,8 +230,8 @@ export class SecurityManager {
      * @description iManager 登录验证。
      * @param {string} url - iManager 地址。地址参数为 iManager 首页地址，如： http://localhost:8390/imanager。
      * @param {Object} [loginInfoParams] - iManager 登录参数。
-     * @param {string} [loginInfoParams.userName] - 用户名。
-     * @param {string} [loginInfoParams.password] - 密码。
+     * @param {string} loginInfoParams.userName - 用户名。
+     * @param {string} loginInfoParams.password - 密码。
      * @param {Object} options
      * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
      * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。

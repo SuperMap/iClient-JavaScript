@@ -102,7 +102,7 @@ export class DeckglLayer {
 
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.onAdd
-     * @param {mapboxgl.Map} map - mapbox GL 地图对象。
+     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
      * @return {mapboxgl.supermap.DeckglLayer}
      */
     onAdd(map) {

@@ -4,9 +4,17 @@ import {ClientType} from '../REST';
 
 /**
  * @class SuperMap.TokenServiceParameter
- * @classdesc token申请参数
+ * @classdesc token 申请参数。
  * @category Security
- * @param {Object} options - token申请参数。
+ * @param {Object} options - token 申请参数。
+ * @param {string} options.username - 用户名。
+ * @param {string} options.password - 密码。
+ * @param {SuperMap.ClientType} [options.clientType='SuperMap.ClientType.NONE'] - token 申请的客户端标识类型。
+ * @param {string} [options.ip] - clientType=IP 时，必选。
+ * @param {string} [options.referer] -clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
+ * @param {number} [options.expiration=60] - 申请令牌的有效期,从发布令牌的时间开始计算,单位为分钟。
+ *
+ *
  */
 export class TokenServiceParameter {
     constructor(options) {
@@ -23,20 +31,20 @@ export class TokenServiceParameter {
         this.password = null;
 
         /**
-         * @member {string} SuperMap.TokenServiceParameter.prototype.clientType
-         * @description token申请的客户端标识类型。
+         * @member {SuperMap.ClientType} SuperMap.TokenServiceParameter.prototype.clientType
+         * @description token 申请的客户端标识类型。
          */
         this.clientType = ClientType.NONE;
 
         /**
-         * @member {string} SuperMap.TokenServiceParameter.prototype.ip
-         * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+         * @member {string} [SuperMap.TokenServiceParameter.prototype.ip]
+         * @description clientType=IP 时，必选。
          */
 
         this.ip = null;
         /**
-         * @member {string} SuperMap.TokenServiceParameter.prototype.referer
-         * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+         * @member {string} [SuperMap.TokenServiceParameter.prototype.referer]
+         * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
          */
         this.referer = null;
 
@@ -53,8 +61,8 @@ export class TokenServiceParameter {
 
     /**
      * @function SuperMap.TokenServiceParameter.prototype.toJSON
-     * @description 将所有信息转成JSON字符串
-     * @return {string} 参数的JSON字符串
+     * @description 将所有信息转成 JSON 字符串
+     * @return {string} 参数的 JSON 字符串
      */
     toJSON() {
         return {

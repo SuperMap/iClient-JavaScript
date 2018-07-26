@@ -8,23 +8,23 @@ import {ServerStyle} from './ServerStyle';
  * @classdesc 单值专题图子项类。
  * @description 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
  *              省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
- * @param {Object} options - 参数。<br>
- * @param {string} options.caption - 单值专题图子项的标题。<br>
- * @param {SuperMap.ServerStyle} options.style - 单值专题图子项的风格。<br>
- * @param {string} options.unique - 单值专题图子项的单值。<br>
- * @param {boolean} options.visible - 单值专题图子项是否可见。
+ * @param {Object} options - 参数。
+ * @param {string} [options.caption] - 单值专题图子项的标题。
+ * @param {SuperMap.ServerStyle} [options.style] - 单值专题图子项的风格。
+ * @param {string} options.unique - 单值专题图子项的单值。
+ * @param {boolean} [options.visible=true] - 单值专题图子项是否可见。
  */
 export class ThemeUniqueItem {
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.ThemeUniqueItem.prototype.caption
+         * @member {string} [SuperMap.ThemeUniqueItem.prototype.caption]
          * @description 单值专题图子项的标题。
          */
         this.caption = null;
 
         /**
-         * @member {SuperMap.ServerStyle} SuperMap.ThemeUniqueItem.prototype.style
+         * @member {SuperMap.ServerStyle} [SuperMap.ThemeUniqueItem.prototype.style]
          * @description 单值专题图子项的显示风格。
          */
         this.style = new ServerStyle();
@@ -67,7 +67,7 @@ export class ThemeUniqueItem {
     /**
      * @function SuperMap.ThemeUniqueItem.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @returns {Object} 对应的 JSON 格式对象
+     * @returns {Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -83,8 +83,8 @@ export class ThemeUniqueItem {
     /**
      * @function SuperMap.ThemeUniqueItem.fromObj
      * @description 从传入对象获取单值专题图子项类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeUniqueItem} ThemeUniqueItem对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeUniqueItem} ThemeUniqueItem 对象。
      */
     static fromObj(obj) {
         var res = new ThemeUniqueItem();

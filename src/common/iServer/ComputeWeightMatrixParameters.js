@@ -23,8 +23,8 @@ export class ComputeWeightMatrixParameters {
 
         /**
          * @member {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} SuperMap.ComputeWeightMatrixParameters.prototype.nodes
-         * @description 要计算耗费矩阵的点数组。<br>
-         *              当 {@link SuperMap.ComputeWeightMatrixParameters.isAnalyzeById} = false 时，nodes 应为点的坐标数组；<br>
+         * @description 要计算耗费矩阵的点数组。
+         *              当 {@link SuperMap.ComputeWeightMatrixParameters.isAnalyzeById} = false 时，nodes 应为点的坐标数组；
          *              当 {@link SuperMap.ComputeWeightMatrixParameters.isAnalyzeById} = true 时，nodes 应为点的 ID 数组。
          */
         this.nodes = null;

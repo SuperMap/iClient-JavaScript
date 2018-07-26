@@ -8,7 +8,7 @@ import {TimeControlBase} from './TimeControlBase';
  * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
  * 如设置起始时间为 1000，结束时间是 2000，步长设置为 1，
  * 那么表示按照每次1年（可以通过 setSpeed 进行修改）的变化从公元 1000 年开始到公元 2000 年为止，默认每 1 秒会 1 次（通过 setFrequency 修改）
- * @extends SuperMap.TimeControlBase
+ * @extends {SuperMap.TimeControlBase}
  * @param {function} callback - 每次刷新回调函数。具体的效果需要用户在此回调函数里面实现。
  * @param {Object} options - 该类开放的可选属性。
  * @param {number} [options.speed=1] - 步长（单位 ms）。不能小于 0，（每次刷新的数据之间的间隔为 1ms）。

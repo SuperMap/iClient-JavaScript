@@ -6,23 +6,23 @@ import {ServerTextStyle} from './ServerTextStyle';
  * @class SuperMap.ThemeLabelItem
  * @category  iServer Map Theme
  * @classdesc 分段标签专题图的子项。
- * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression <br>
- *              字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，<br>
- *              每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，<br>
- *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，<br>
+ * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression
+ *              字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，
+ *              每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，
+ *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，
  *              SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
- * @param {Object} options - 参数。<br>
- * @param {string} options.caption - 专题图子项的名称。<br>
- * @param {number} options.end - 标签专题图子项的终止值。<br>
- * @param {number} options.start - 标签专题图子项的分段起始值。<br>
- * @param {boolean} options.visible - 标签专题图子项是否可见。<br>
- * @param {SuperMap.ServerTextStyle} options.style - 标签专题图子项文本的显示风格。
+ * @param {Object} options - 参数。
+ * @param {string} [options.caption] - 专题图子项的名称。
+ * @param {number} [options.end=0] - 标签专题图子项的终止值。
+ * @param {number} [options.start=0] - 标签专题图子项的分段起始值。
+ * @param {boolean} [options.visible=true] - 标签专题图子项是否可见。
+ * @param {SuperMap.ServerTextStyle} [options.style] - 标签专题图子项文本的显示风格。
  */
 export class ThemeLabelItem {
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.ThemeLabelItem.prototype.caption
+         * @member {string} [SuperMap.ThemeLabelItem.prototype.caption]
          * @description 标签专题子项的标题。
          */
         this.caption = null;
@@ -49,7 +49,7 @@ export class ThemeLabelItem {
 
         /**
          * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelItem.prototype.style
-         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
+         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
          *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
          */
         this.style = new ServerTextStyle();
@@ -81,8 +81,8 @@ export class ThemeLabelItem {
     /**
      * @function SuperMap.ThemeLabelItem.fromObj
      * @description 从传入对象获取分段标签专题图的子项类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeLabelItem} ThemeLabelItem对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeLabelItem} ThemeLabelItem 对象。
      */
     static fromObj(obj) {
         if (!obj) {

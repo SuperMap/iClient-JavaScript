@@ -7,11 +7,11 @@ import {ServerGeometry} from './ServerGeometry';
  * @category iServer SpatialAnalyst Interpolation
  * @classdesc 用于裁剪的参数。
  * @description 优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
- * @param {Object} options - 参数。<br>
- * @param {string} options.clipDatasetName - 裁剪的数据集名。<br>
- * @param {string} options.clipDatasourceName - 裁剪的数据集所在数据源的名字。<br>
+ * @param {Object} options - 参数。
+ * @param {string} options.clipDatasetName - 裁剪的数据集名。
+ * @param {string} options.clipDatasourceName - 裁剪的数据集所在数据源的名字。
  * @param {(SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON)} options.clipRegion - 用户指定的裁剪区域。</br>
- * @param {boolean} [options.isClipInRegion=false] - 是否对裁剪区内的数据集进行裁剪。<br>
+ * @param {boolean} [options.isClipInRegion=false] - 是否对裁剪区内的数据集进行裁剪。
  * @param {boolean} [options.isExactClip=true] - 是否使用精确裁剪。
  */
 export class ClipParameter {
@@ -32,7 +32,7 @@ export class ClipParameter {
 
         /**
          * @member {(SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON)} SuperMap.ClipParameter.prototype.clipRegion
-         * @description 用户指定的裁剪区域，优先使用。<br>
+         * @description 用户指定的裁剪区域，优先使用。
          */
         this.clipRegion = null;
 
@@ -72,7 +72,7 @@ export class ClipParameter {
 
     /**
      * @function SuperMap.ClipParameter.prototype.toJSON
-     * @description 将 ClipParameter 对象转化为json字符串。
+     * @description 将 ClipParameter 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

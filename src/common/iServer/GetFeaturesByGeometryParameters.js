@@ -39,7 +39,7 @@ export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
          * @member {Object} SuperMap.GetFeaturesByGeometryParameters.prototype.geometry
          * @description 用于查询的几何对象。 
          * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。 
-         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。
          * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
          */
         this.geometry = null;

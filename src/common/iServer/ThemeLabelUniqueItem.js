@@ -6,22 +6,22 @@ import {ServerTextStyle} from './ServerTextStyle';
  * @class SuperMap.ThemeLabelUniqueItem
  * @category  iServer Map Theme
  * @classdesc 单值标签专题图的子项
- * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression <br>
- *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，<br>
- *              每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
- * @param {Object} options - 参数。<br>
- * @param {string} options.caption - 专题图子项的名称。<br>
- * @param {string} options.unique - 单值专题图子项的值，可以为数字、字符串等。<br>
- * @param {number }options.offsetX - 标签在X方向偏移量。<br>
- * @param {number}options.offsetY - 标签在Y方向偏移量。<br>
- * @param {boolean} options.visible - 标签专题图子项是否可见。<br>
- * @param {SuperMap.ServerTextStyle} options.style - 标签专题图子项文本的显示风格。
+ * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression
+ *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
+ *              每一个子项都具有其名称、风格、指定的单值、X 方向偏移量和Y方向偏移量。
+ * @param {Object} options - 参数。
+ * @param {string} [options.caption] - 专题图子项的名称。
+ * @param {string} options.unique - 单值专题图子项的值，可以为数字、字符串等。
+ * @param {number} [options.offsetX=0] - 标签在 X 方向偏移量。
+ * @param {number} [options.offsetY=0] - 标签在 Y 方向偏移量。
+ * @param {boolean} [options.visible=true] - 标签专题图子项是否可见。
+ * @param {SuperMap.ServerTextStyle} [options.style] - 标签专题图子项文本的显示风格。
  */
 export class ThemeLabelUniqueItem {
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.ThemeLabelUniqueItem.prototype.caption
+         * @member {string} [SuperMap.ThemeLabelUniqueItem.prototype.caption]
          * @description 标签专题子项的标题。
          */
         this.caption = null;
@@ -33,13 +33,13 @@ export class ThemeLabelUniqueItem {
         this.unique = null;
 
         /**
-         * @member {number} SuperMap.ThemeLabelUniqueItem.prototype.offsetX
+         * @member {number} [SuperMap.ThemeLabelUniqueItem.prototype.offsetX=0]
          * @description 标签在X方向偏移量。
          */
         this.offsetX = 0;
 
         /**
-         * @member {number} SuperMap.ThemeLabelUniqueItem.prototype.offsetY
+         * @member {number} [SuperMap.ThemeLabelUniqueItem.prototype.offsetY=0]
          * @description 标签在Y方向偏移量。
          */
         this.offsetY = 0;
@@ -83,8 +83,8 @@ export class ThemeLabelUniqueItem {
     /**
      * @function SuperMap.ThemeLabelUniqueItem.fromObj
      * @description 从传入对象获取单值标签专题图的子项类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeLabelUniqueItem} ThemeLabelUniqueItem对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeLabelUniqueItem} ThemeLabelUniqueItem 对象。
      */
     static fromObj(obj) {
         if (!obj) {

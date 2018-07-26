@@ -38,7 +38,7 @@ export class ThemeMemoryData {
 
     /**
      * @function SuperMap.ThemeMemoryData.prototype.toJSON
-     * @description 将 SuperMap.ThemeMemoryData 对象转化为json字符串。
+     * @description 将 SuperMap.ThemeMemoryData 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

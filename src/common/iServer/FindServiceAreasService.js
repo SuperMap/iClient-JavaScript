@@ -7,10 +7,10 @@ import {GeoJSON} from '../format/GeoJSON';
 /**
  * @class SuperMap.FindServiceAreasService
  * @category iServer NetworkAnalyst ServiceArea
- * @classdesc 服务区分析服务类。<br>
- *            服务区分析是以指定服务站点为中心，<br>
- *            在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
- *            该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。<br>
+ * @classdesc 服务区分析服务类。
+ *            服务区分析是以指定服务站点为中心，
+ *            在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
+ *            该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。
  *            服务区分析结果通过该类支持的事件的监听函数参数获取
  * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
@@ -20,10 +20,10 @@ import {GeoJSON} from '../format/GeoJSON';
  *              "processFailed": findServiceAreasError
  *          }
  * });
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param {Object} options - 互服务时所需可选参数。如：<br>
+ * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象
  */
 export class FindServiceAreasService extends NetworkAnalystServiceBase {

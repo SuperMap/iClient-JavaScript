@@ -41,10 +41,10 @@ export class TransferSolutionParameters {
 
         /**
          *  @member {number} [SuperMap.TransferSolutionParameters.prototype.walkingRatio=10]
-         *  @description 步行与公交的消耗权重比。此值越大，则步行因素对于方案选择的影响越大。例如：</br>
-         *  例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：</br>
-         *  方案1：坐车10公里，走路1公里；</br>
-         *  方案2：坐车15公里，走路0.5公里；</br>
+         *  @description 步行与公交的消耗权重比。此值越大，则步行因素对于方案选择的影响越大。例如：
+         *  例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：
+         *  方案1：坐车10公里，走路1公里；
+         *  方案2：坐车15公里，走路0.5公里；
          *        1. 假设权重比为15：
          *           •方案1的总消耗为：10 + 1*15 = 25
          *           •方案2的总消耗为：15 + 0.5*15 = 22.5
@@ -111,9 +111,9 @@ export class TransferSolutionParameters {
 
     /**
      * @function SuperMap.TransferSolutionParameters.toJsonParameters
-     * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
+     * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 JSON 字符串。
      * @param {SuperMap.TransferSolutionParameters} params - 交通换乘参数。
-     * @returns {string} 转化后的 json 字符串。
+     * @returns {string} 转化后的 JSON 字符串。
      */
     static toJson(params) {
         if (params) {

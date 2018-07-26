@@ -7,10 +7,10 @@ import {FacilityAnalystStreamParameters} from './FacilityAnalystStreamParameters
  * @category iServer NetworkAnalyst UpstreamCriticalFacilities
  * @classdesc 上游/下游 关键设施查找资源服务类；即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  * @extends SuperMap.NetworkAnalystServiceBase
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
- * @param {Object} options - 参数。<br>
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {

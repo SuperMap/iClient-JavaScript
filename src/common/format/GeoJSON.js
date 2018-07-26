@@ -360,8 +360,8 @@ export class GeoJSON extends JSONFormat {
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
      * @returns {Object}  返回值依赖于 type 参数的值。
      *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link SuperMap.Feature.Vector}> 数组。
-     *     -如果 type 为 "Geometry",输入的 json 对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。
-     *     -如果 type 为 "Feature"，输入的 json 对象也必须表示的一个要素，这样返回值才会是 {@link SuperMap.Feature.Vector}> 。
+     *     -如果 type 为 "Geometry",输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link SuperMap.Feature.Geometry}。
+     *     -如果 type 为 "Feature"，输入的 JSON 对象也必须表示的一个要素，这样返回值才会是 {@link SuperMap.Feature.Vector}> 。
      */
     
      read(json, type, filter) {

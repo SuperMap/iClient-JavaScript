@@ -5,9 +5,9 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.ThemeGraphSize
  * @category  iServer Map Theme
  * @classdesc 统计专题图符号尺寸类。
- * @param {Object} options - 参数。<br>
- * @param {number} options.maxGraphSize - 统计图中显示的最大图表尺寸基准值。<br>
- * @param {number} options.minGraphSize - 统计图中显示的最小图表尺寸基准值。
+ * @param {Object} options - 参数。
+ * @param {number} [options.maxGraphSize=0] - 统计图中显示的最大图表尺寸基准值。
+ * @param {number} [options.minGraphSize=0] - 统计图中显示的最小图表尺寸基准值。
  */
 export class ThemeGraphSize {
 
@@ -44,8 +44,8 @@ export class ThemeGraphSize {
     /**
      * @function SuperMap.ThemeGraphSize.fromObj
      * @description 从传入对象获统计专题图符号尺寸类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGraphSize}  ThemeGraphSize对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeGraphSize}  ThemeGraphSize对象。
      */
     static fromObj(obj) {
         var res = new ThemeGraphSize();

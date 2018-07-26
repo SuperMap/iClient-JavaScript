@@ -10,7 +10,7 @@ import {ServerGeometry} from './ServerGeometry';
  * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
  * @param {Object} options - 参数。 
  * @param {Object} options.operateGeometry - 叠加分析的操作几何对象。 
- *                                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。
  *                                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|GeoJSON。</br>
  *                                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|GeoJSON。</br>
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。 

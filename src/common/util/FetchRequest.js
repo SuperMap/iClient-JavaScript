@@ -11,16 +11,16 @@ import {
 const fetch = window.fetch;
 /**
  * @function SuperMap.setCORS
- * @description 设置是否支持跨域
- * @param {boolean} cors - 是否支持跨域
+ * @description 设置是否支持跨域。
+ * @param {boolean} cors - 是否支持跨域。
  */
 export var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
  * @function SuperMap.isCORS
- * @description 是否支持跨域
- * @returns {boolean} 是否支持跨域
+ * @description 是否支持跨域。
+ * @returns {boolean} 是否支持跨域。
  */
 export var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
@@ -31,15 +31,15 @@ export var isCORS = SuperMap.isCORS = function () {
 /**
  * @function SuperMap.setRequestTimeout
  * @description 设置请求超时时间。
- * @param {number} timeout - 请求超时时间
+ * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
 export var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
  * @function SuperMap.getRequestTimeout
- * @description 获取请求超时时间，默认45s。
- * @returns {number} 请求超时时间
+ * @description 获取请求超时时间。
+ * @returns {number} 请求超时时间。
  */
 export var getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;

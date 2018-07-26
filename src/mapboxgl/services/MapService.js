@@ -7,7 +7,7 @@ import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient
  * @class mapboxgl.supermap.MapService
  * @category  iServer Map
  * @classdesc 地图信息服务类。
- * @extends mapboxgl.supermap.ServiceBase
+ * @extends {mapboxgl.supermap.ServiceBase}
  * @param {string} url - 地图服务地址。
  * @param {Object} options - 地图服务信息相关参数。 
  * @param {string} [options.proxy] - 服务代理地址。

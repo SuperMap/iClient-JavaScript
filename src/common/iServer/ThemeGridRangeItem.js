@@ -6,20 +6,20 @@ import {ServerColor} from './ServerColor';
  * @class SuperMap.ThemeGridRangeItem
  * @category  iServer Map Theme
  * @classdesc 栅格分段专题图子项类。
- * @description 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
- *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
- * @param {Object} options - 参数。<br>
- * @param {string} options.caption - 栅格分段专题图子项的标题。<br>
- * @param {SuperMap.ServerColor} options.color - 栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
- * @param {number} options.end - 栅格分段专题图子项的终止值。<br>
- * @param {number} options.start - 栅格分段专题图子项的起始值。<br>
- * @param {boolean} options.visible - 栅格分段专题图子项是否可见。
+ * @description 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
+ *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
+ * @param {Object} options - 参数。
+ * @param {string} [options.caption] - 栅格分段专题图子项的标题。
+ * @param {SuperMap.ServerColor} options.color - 栅格分段专题图中每一个分段专题图子项的对应的颜色。
+ * @param {number} [options.end=0] - 栅格分段专题图子项的终止值。
+ * @param {number} [options.start=0] - 栅格分段专题图子项的起始值。
+ * @param {boolean} [options.visible=true] - 栅格分段专题图子项是否可见。
  */
 export class ThemeGridRangeItem {
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.ThemeGridRangeItem.prototype.caption
+         * @member {string} [SuperMap.ThemeGridRangeItem.prototype.caption]
          * @description 栅格分段专题图子项的标题。
          */
         this.caption = null;
@@ -91,8 +91,8 @@ export class ThemeGridRangeItem {
     /**
      * @function SuperMap.ThemeGridRangeItem.fromObj
      * @description 从传入对象获取栅格分段专题图子项类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem 对象。
      */
     static fromObj(obj) {
         if (!obj) {

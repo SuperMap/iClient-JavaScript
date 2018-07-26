@@ -13,7 +13,7 @@ import {
  * @class mapboxgl.supermap.NetworkAnalyst3DService
  * @category  iServer FacilityAnalyst3D
  * @classdesc 3D 网络分析服务类。
- * @extends mapboxgl.supermap.ServiceBase
+ * @extends {mapboxgl.supermap.ServiceBase}
  * @example
  * new mapboxgl.supermap.NetworkAnalyst3DService(url)
  *  .sinksFacilityAnalyst(params,function(result){

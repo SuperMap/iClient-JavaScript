@@ -334,7 +334,7 @@ export class Bar3D extends Graph {
      *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
      *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-     *              本函数中图形配置对象 setting 可设属性:</br>
+     *              本函数中图形配置对象 setting 可设属性:
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
      *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
@@ -396,7 +396,7 @@ export class Bar3D extends Graph {
  * @property {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
  * @property {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
  * @property {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 25, 20, 20]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。
- * @property {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * @property {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @property {boolean} [useBackground=true] - 是否使用图表背景框。
  * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} [backgroundStyle] - 背景样式。
  * @property {Array.<number>} [backgroundRadius=[0, 0, 0, 0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]。
@@ -408,7 +408,7 @@ export class Bar3D extends Graph {
  * @property {number} [axisYTick=0] - y 轴刻度数量。
  * @property {Array.<string>}  [axisYLabels] - y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
  * @property {SuperMap.Feature.ShapeParameters.Label.style} [axisYLabelsStyle] - y 轴上的标签组样式。
- * @property {Array.<number>} [axisYLabelsOffset=0] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正。</br>
+ * @property {Array.<number>} [axisYLabelsOffset=0] - y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；数组第二项表示 y 轴标签组纵向上的偏移量，向下为正。
  * @property {Array.<string>}  [axisXLabels] - x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，否则沿数据视图框下面条边等距排布标签。
  * @property {SuperMap.Feature.ShapeParameters.Label.style} axisXLabelsStyle - x 轴上的标签组样式。
  * @property {Array.<number>} axisXLabelsOffset - x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：-10；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：10。
@@ -417,10 +417,10 @@ export class Bar3D extends Graph {
  * @property {number} [axis3DParameter=20] - 3D 坐标轴参数，此属性值在大于等于 15 时有效。
  * @property {SuperMap.Feature.ShapeParameters.Polygon.style} barFaceStyle - 3d 柱状图柱条正面基础 style，此参数控制柱条正面基础样式，优先级低于 barFaceStyleByFields 和 barFaceStyleByCodomain。
  * @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} [barFaceStyleByFields] - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为柱条正面赋 style，此参数按字段控制柱条正面样式，优先级低于 barFaceStyleByCodomain，高于 barFaceStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barFaceStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条正面使用 style1，字段 POP_1995 对应的柱条正面使用 style2 ，字段 POP_1999 对应的柱条正面使用 style3。
- * @property {Array.<Object>} [barFaceStyleByCodomain] - 按柱条正面代表的数据值所在值域范围控制柱条正面样式，优先级高于 barFaceStyle 和 barFaceStyleByFields。</br>
+ * @property {Array.<Object>} [barFaceStyleByCodomain] - 按柱条正面代表的数据值所在值域范围控制柱条正面样式，优先级高于 barFaceStyle 和 barFaceStyleByFields。
  * @property {SuperMap.Feature.ShapeParameters.Polygon.style} [barSideStyle=barFaceStyle] - 3d 柱状图柱条侧面基础 style，此参数控制柱条侧面基础样式，优先级低于 barSideStyleByFields 和 barSideStyleByCodomain。
  * @property {Array.<SuperMap.Feature.ShapeParameters.Polygon.style>} [barSideStyleByFields] - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为柱条侧面赋style，此数按字段控制柱条侧面样式，优先级低于 barSideStyleByCodomain，高于 barSideStyle。此数组中的元素是样式对象。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],barSideStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条侧面使用 style1，字段 POP_1995对应的柱条侧面使用style2，字段POP_1999对应的柱条侧面使用style3。默认值：barFaceStyleByFields。
- * @property {Array.<Object>} [barSideStyleByCodomain=barFaceStyleByCodomain] - 按柱条侧面代表的数据值所在值域范围控制柱条侧面样式，优先级高于 barSideStyle 和 barSideStyleByFields。</br>
+ * @property {Array.<Object>} [barSideStyleByCodomain=barFaceStyleByCodomain] - 按柱条侧面代表的数据值所在值域范围控制柱条侧面样式，优先级高于 barSideStyle 和 barSideStyleByFields。
  * @property {Object} [barFaceHoverStyle] - 3d 柱条正面 hover 状态时的样式，barHoverAble 为 true 时有效。
  * @property {Object} [barSideHoverStyle=barFaceHoverStyle] - 3d 柱条侧面 hover 状态时的样式，barHoverAble 为 true 时有效。
  * @property {Object}  [barTopHoverStyle=barFaceHoverStyle] - 3d 柱条顶面 hover 状态时的样式，barHoverAble 为 true 时有效。

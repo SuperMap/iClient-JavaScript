@@ -7,7 +7,7 @@ import {Graph} from './Graph';
  * @class SuperMap.Feature.Theme.Ring
  * @classdesc 环状图。
  * @category Visualization Theme
- * @description 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
+ * @description 基于路由对象计算指定点 M 值操作的参数类。通过该类提供参数信息。
  
  * @param {SuperMap.Feature.Vector} data - 用户数据。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层。

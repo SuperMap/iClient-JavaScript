@@ -45,9 +45,9 @@ export class TransferPathParameters {
 
     /**
      * @function SuperMap.TransferPathParameters.toJson
-     * @description 将 {@link SuperMap.TransferPathParameters} 对象参数转换为 json 字符串。
+     * @description 将 {@link SuperMap.TransferPathParameters} 对象参数转换为 JSON 字符串。
      * @param {SuperMap.TransferPathParameters} params - 交通换乘参数。
-     * @returns {string} 转化后的 json 字符串。
+     * @returns {string} 转化后的 JSON 字符串。
      */
     static toJson(params) {
         if (params) {

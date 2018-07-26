@@ -1,7 +1,8 @@
 var olapi = "https://openlayers.org/en/v4.6.5/apidoc/";
 var lfapi = "http://leafletjs.com/reference-1.3.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
-var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/"
+var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
+var classicapi="http://iclient.supermap.io/libs/iclient8c/apidoc/files/SuperMap"
 var typeLinks = {
     //openlayers
     "ol.Map": olapi + "ol.Map.html",
@@ -57,7 +58,11 @@ var typeLinks = {
     "mapboxgl.Map": mbglapi + '#map',
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
-    "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md'
+    "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md',
+
+    //classic
+    "SuperMap.Layer":classicapi + '/Layer-js.html',
+
     
 }
 exports.typeLinks = typeLinks;

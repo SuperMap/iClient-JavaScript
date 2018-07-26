@@ -14,9 +14,9 @@ export class Handler extends Eventful {
     /**
      * @function SuperMap.LevelRenderer.Handler.constructor
      * @description 构造函数。
-     * @param {HTMLElement} root - 绘图区域</br>
-     * @param {SuperMap.LevelRenderer.Storage} storage - Storage 实例</br>
-     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例</br>
+     * @param {HTMLElement} root - 绘图区域。
+     * @param {SuperMap.LevelRenderer.Storage} storage - Storage 实例。
+     * @param {SuperMap.LevelRenderer.Painter} painter - Painter 实例。
      */
     constructor(root, storage, painter) {
         super(root, storage, painter);

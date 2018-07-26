@@ -6,12 +6,12 @@ import {Util} from '../commontypes/Util';
  * @class SuperMap.ThemeGraduatedSymbolStyle
  * @category  iServer Map Theme
  * @classdesc 等级符号专题图正负零值显示风格类
- * @param {Object} options - 参数。<br>
- * @param {boolean} [options.negativeDisplayed=false] - 是否显示负值。<br>
- * @param {SuperMap.ServerStyle} options.negativeStyle - 负值的等级符号风格。<br>
- * @param {SuperMap.ServerStyle} options.positiveStyle - 正值的等级符号风格。<br>
- * @param {boolean} [options.zeroDisplayed=false] - 是否显示0值。<br>
- * @param {SuperMap.ServerStyle} options.zeroStyle - 0值的等级符号风格。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.negativeDisplayed=false] - 是否显示负值。
+ * @param {SuperMap.ServerStyle} [options.negativeStyle] - 负值的等级符号风格。
+ * @param {SuperMap.ServerStyle} [options.positiveStyle] - 正值的等级符号风格。
+ * @param {boolean} [options.zeroDisplayed=false] - 是否显示0值。
+ * @param {SuperMap.ServerStyle} [options.zeroStyle] - 0值的等级符号风格。
  */
 export class ThemeGraduatedSymbolStyle {
 
@@ -23,13 +23,13 @@ export class ThemeGraduatedSymbolStyle {
         this.negativeDisplayed = false;
 
         /**
-         * @member {SuperMap.ServerStyle} SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle
+         * @member {SuperMap.ServerStyle} [SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle]
          * @description 负值的等级符号风格。
          */
         this.negativeStyle = new ServerStyle();
 
         /**
-         * @member {SuperMap.ServerStyle} SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle
+         * @member {SuperMap.ServerStyle} [SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle]
          * @description 正值的等级符号风格。
          */
         this.positiveStyle = new ServerStyle();
@@ -69,8 +69,8 @@ export class ThemeGraduatedSymbolStyle {
     /**
      * @function SuperMap.ThemeGraduatedSymbolStyle.fromObj
      * @description 从传入对象获取等级符号专题图正负零值显示风格类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象。
      */
     static fromObj(obj) {
         if (!obj) {

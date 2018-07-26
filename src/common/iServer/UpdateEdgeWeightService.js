@@ -16,9 +16,8 @@ import {UpdateEdgeWeightParameters} from './UpdateEdgeWeightParameters';
  *		   }
  * });
  * (end)
- * @param {string} url - 服务的访问地址。如：<br>
- *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
- * @param {Object} options - 参数。<br>
+ * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {

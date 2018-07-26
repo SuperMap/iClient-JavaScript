@@ -459,7 +459,7 @@ export class Bounds {
      * @param {Object} options - 参数。
      * @param {boolean} [options.inclusive=true] - 边缘重合也看成相交。如果是false，
      *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
-     *                               这种情况被认为没有相交。<br>
+     *                               这种情况被认为没有相交。
      * @param {SuperMap.Bounds} [options.worldBounds] - 提供了 worldBounds 参数, 如果他们相交时
      *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
      * @returns {boolean} 传入的 bounds 对象与当前 bounds 相交。

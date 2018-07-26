@@ -6,7 +6,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @class SuperMap.InterpolationIDWAnalystParameters
  * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 反距离加权插值（IDW）分析参数类。
- * @param {Object} options - 参数。</br>
+ * @param {Object} options - 参数。
  * @param {number} [options.power=2] - 距离权重计算的幂次。 
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
  * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。 

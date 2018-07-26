@@ -19,11 +19,11 @@ import {
  * @category  iServer Map Theme
  * @classdesc 栅格单值专题图类。
  * @description 栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。<br>
- *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。<br>
+ *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。
  * @extends {SuperMap.Theme}
- * @param {Object} options - 参数。<br>
- * @param {Array.<SuperMap.ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。<br>
- * @param {SuperMap.ServerColor} options.defaultcolor - 栅格单值专题图的默认颜色。
+ * @param {Object} options - 参数。
+ * @param {Array.<SuperMap.ThemeGridUniqueItem>} options.items - 栅格单值专题图子项数组。
+ * @param {SuperMap.ServerColor} [options.defaultcolor] - 栅格单值专题图的默认颜色。
  */
 export class ThemeGridUnique extends Theme {
 
@@ -101,7 +101,7 @@ export class ThemeGridUnique extends Theme {
      * @function SuperMap.ThemeGridUnique.fromObj
      * @description 从传入对象获取栅格单值专题图类。
      * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGridUnique} ThemeGridUnique对象
+     * @returns {SuperMap.ThemeGridUnique} ThemeGridUnique 对象
      */
     static fromObj(obj) {
         var res = new ThemeGridUnique();

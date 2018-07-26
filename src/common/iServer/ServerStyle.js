@@ -66,7 +66,7 @@ export class ServerStyle {
 
         /**
          * @member {number} SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY
-         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
+         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：
          *              设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
          */
         this.fillGradientOffsetRatioY = 0;

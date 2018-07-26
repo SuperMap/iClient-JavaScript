@@ -27,7 +27,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     /**
      * @function  mapboxgl.supermap.UniqueTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
-     * @returns {Object} mapbox GL 样式对象。
+     * @returns {Object} Mapbox GL 样式对象。
      */
     getLayerStyleOptions() {
         var opacity = this.opacity == null ? 1 : this.opacity;

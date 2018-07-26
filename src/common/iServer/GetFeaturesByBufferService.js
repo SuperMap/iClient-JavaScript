@@ -9,9 +9,9 @@ import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
  * @param {string} url - 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
- * @param {Object} options - 参数。<br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} options.format -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @extends {SuperMap.GetFeaturesServiceBase}
  * @example

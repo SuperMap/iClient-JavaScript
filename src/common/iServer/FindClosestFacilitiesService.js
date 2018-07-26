@@ -7,12 +7,12 @@ import {FindClosestFacilitiesParameters} from './FindClosestFacilitiesParameters
 /**
  * @class SuperMap.FindClosestFacilitiesService
  * @category  iServer NetworkAnalyst ClosestFacility
- * @classdesc 最近设施分析服务类。<br>
+ * @classdesc 最近设施分析服务类。
  *            最近设施分析是指在网络上给定一个事件点和一组设施点，
  *            查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *            该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
  *            最近设施分析结果通过该类支持的事件的监听函数参数获取
- * @extends SuperMap.NetworkAnalystServiceBase
+ * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
  * var myfindClosestFacilitiesService = new SuperMap.FindClosestFacilitiesService(url, {
  *     eventListeners: {
@@ -20,10 +20,10 @@ import {FindClosestFacilitiesParameters} from './FindClosestFacilitiesParameters
  *		   "processFailed": findClosestFacilitiesError
  *		   }
  * });
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param {Object} options - 参数。<br>
+ * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
@@ -31,8 +31,8 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
     /*
      * @function SuperMap.FindClosestFacilitiesService.prototype.constructor
      * @description 最近设施分析服务类构造函数。
-     * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
-     *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
+     *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
      *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
      * @param {Object} options - 选参数。<br>
      * @param {Object} options.eventListeners - 需要被注册的监听器对象。

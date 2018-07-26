@@ -7,26 +7,26 @@ import {ServerTextStyle} from './ServerTextStyle';
  * @class SuperMap.ThemeGraphAxes
  * @category  iServer Map Theme
  * @classdesc 统计专题图坐标轴样式类。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.ServerColor} options.axesColor - 坐标轴颜色。<br>
- * @param {boolean} options.axesDisplayed - 是否显示坐标轴。<br>
- * @param {boolean} options.axesGridDisplayed - 是否在统计图坐标轴上显示网格。<br>
- * @param {boolean} options.axesTextDisplayed - 是否显示坐标轴的文本标注。<br>
- * @param {SuperMap.ServerTextStyle} options.axesTextStyle - 统计符号的最大最小尺寸。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ServerColor} [options.axesColor=(0, 0, 0)] - 坐标轴颜色。
+ * @param {boolean} [options.axesDisplayed=false] - 是否显示坐标轴。
+ * @param {boolean} [options.axesGridDisplayed=false] - 是否在统计图坐标轴上显示网格。
+ * @param {boolean} [options.axesTextDisplayed=false] - 是否显示坐标轴的文本标注。
+ * @param {SuperMap.ServerTextStyle} [options.axesTextStyle] - 统计符号的最大最小尺寸。
  */
 export class ThemeGraphAxes {
 
     constructor(options) {
 
         /**
-         * @member {SuperMap.ServerColor} SuperMap.ThemeGraphAxes.prototype.axesColor
-         * @description 坐标轴颜色，默认为黑色。当 axesDisplayed = true 时有效。
+         * @member {SuperMap.ServerColor} [SuperMap.ThemeGraphAxes.prototype.axesColor=(0, 0, 0)]
+         * @description 坐标轴颜色。当 axesDisplayed = true 时有效。
          */
         this.axesColor =  new ServerColor(0, 0, 0);
 
         /**
          * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesDisplayed=false]
-         * @description 是否显示坐标轴。<br>
+         * @description 是否显示坐标轴。
          *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
          */
         this.axesDisplayed = false;
@@ -78,8 +78,8 @@ export class ThemeGraphAxes {
     /**
      * @function SuperMap.ThemeGraphAxes.fromObj
      * @description 从传入对象获取统计专题图坐标轴样式类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象。
      */
     static fromObj(obj) {
         if (!obj) {

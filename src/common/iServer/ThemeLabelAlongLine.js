@@ -6,13 +6,13 @@ import {AlongLineDirection} from '../REST';
  * @class SuperMap.ThemeLabelAlongLine
  * @category  iServer Map Theme
  * @classdesc 标签沿线标注样式类。
- * @param {Object} options - 参数。<br>
- * @param {boolean} options.isAlongLine - 是否沿线显示文本。<br>
- * @param {SuperMap.AlongLineDirection} options.alongLineDirection - 标签沿线标注方向。<br>
- * @param {boolean} options.angleFixed - 当沿线显示文本时，是否将文本角度固定。<br>
- * @param {boolean} options.repeatedLabelAvoided - 沿线循环标注时是否避免标签重复标注。<br>
- * @param {boolean} options.repeatIntervalFixed - 循环标注间隔是否固定。<br>
- * @param {number} options.labelRepeatInterval - 沿线且循环标注时循环标注的间隔。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.isAlongLine=true] - 是否沿线显示文本。
+ * @param {SuperMap.AlongLineDirection} [options.alongLineDirection=SuperMap.AlongLineDirection.LB_TO_RT] - 标签沿线标注方向。
+ * @param {boolean} [options.angleFixed=false] - 当沿线显示文本时，是否将文本角度固定。
+ * @param {boolean} [options.repeatedLabelAvoided=false] - 沿线循环标注时是否避免标签重复标注。
+ * @param {boolean} [options.repeatIntervalFixed=false] - 循环标注间隔是否固定。
+ * @param {number} [options.labelRepeatInterval=0] - 沿线且循环标注时循环标注的间隔。
  */
 export class ThemeLabelAlongLine {
 
@@ -83,8 +83,8 @@ export class ThemeLabelAlongLine {
     /**
      * @function SuperMap.ThemeLabelAlongLine.fromObj
      * @description 从传入对象获取标签沿线标注样式类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeLabelAlongLine} ThemeLabelAlongLine对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeLabelAlongLine} ThemeLabelAlongLine 对象。
      */
     static fromObj(obj) {
         if (!obj) {

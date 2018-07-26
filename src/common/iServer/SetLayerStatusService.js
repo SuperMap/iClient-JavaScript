@@ -6,16 +6,16 @@ import {SetLayerStatusParameters} from './SetLayerStatusParameters';
 /**
  * @class SuperMap.SetLayerStatusService
  * @category  iServer Map TempLayersSet
- * @classdesc  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。<br>
- *             用户获取服务端返回的各子图层显示状态有两种方式：<br>
- *             一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>
+ * @classdesc  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
+ *             用户获取服务端返回的各子图层显示状态有两种方式：
+ *             一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
  *             一种是使用 AsyncResponder 类实现异步处理。
  * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 地图服务访问地址。请求地图服务，URL 应为：<br>
+ * @param {string} url - 地图服务访问地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
- * @param {Object} options - 参数。<br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export class SetLayerStatusService extends CommonServiceBase {

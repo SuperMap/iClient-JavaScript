@@ -8,7 +8,7 @@ import './ThemeMemoryData';
  * @classdesc 专题图基类。
  * @param {string} type - 专题图类型。
  * @param {Object} options - 参数。
- * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
+ * @param {SuperMap.ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  */
 export class Theme {
 

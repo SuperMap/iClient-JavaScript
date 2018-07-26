@@ -10,7 +10,7 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @class SuperMap.iPortal
  * @classdesc 对接 SuperMap iPortal 基础服务。
  * @category iPortal/Online
- * @extends SuperMap.iPortalServiceBase
+ * @extends {SuperMap.iPortalServiceBase}
  * @param {string} iportalUrl - 地址。
  *
  */

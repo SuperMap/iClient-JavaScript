@@ -9,10 +9,10 @@ import {SecurityManager} from '../security/SecurityManager';
  * @classdesc 实时数据服务类
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 实时数据服务地址
- * @param {Object} options - 参数。<br>
- * @function {function} options.style - 设置数据加载样式。<br>
- * @function {function} options.onEachFeature - 设置每个数据加载popup等。<br>
- * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。<br>
+ * @param {Object} options - 参数。
+ * @function {function} options.style - 设置数据加载样式。
+ * @function {function} options.onEachFeature - 设置每个数据加载popup等。
+ * @param {Array.<Object>} options.geometry - 设置增添的几何要素对象数组。
  * @param {Object} options.excludeField - -排除字段。
  */
 export class DataFlowService extends CommonServiceBase {
@@ -86,7 +86,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param {JSON} geoJSONFeature - json格式的要素数据
+     * @param {Object} geoJSONFeature - JSON 格式的要素数据
      */
     broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket||!this.broadcastWebSocket.isOpen) {

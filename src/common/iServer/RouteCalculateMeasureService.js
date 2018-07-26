@@ -6,12 +6,12 @@ import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters
 /**
  * @class SuperMap.RouteCalculateMeasureService
  * @category  iServer SpatialAnalyst RouteCalculateMeasure
- * @classdesc 基于路由对象计算指定点M值操作的服务类。
- *            该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
- *            指定点的M值。通过该类支持的事件的监听函数参数获取。
+ * @classdesc 基于路由对象计算指定点 M 值操作的服务类。
+ *            该类负责将客户设置的计算指定点的 M 值参数传递给服务端，并接收服务端返回的
+ *            指定点的 M 值。通过该类支持的事件的监听函数参数获取。
  * @extends {SuperMap.SpatialAnalystBase}
- * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @example 实例化该类如下例所示：
  * (start code)
@@ -80,8 +80,8 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
 
     /**
      * @function SuperMap.RouteCalculateMeasureService.prototype.processAsync
-     * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
-     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点M值操作的参数类。
+     * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
+     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
      */
     processAsync(params) {
         if (!(params instanceof RouteCalculateMeasureParameters)) {
@@ -103,8 +103,8 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
     /**
      * @function SuperMap.RouteCalculateMeasureService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
-     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点M值操作的参数类。
-     * @returns {Object} 转化后的JSON字符串。
+     * @param {SuperMap.RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
+     * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
         var jsonParameters, jsonStr = "geometry/calculatemeasure", me = this, end;

@@ -7,11 +7,11 @@ import {GeoJSON} from '../format/GeoJSON';
 /**
  * @class SuperMap.FindMTSPPathsService
  * @category  iServer NetworkAnalyst MTSPPath
- * @classdesc 多旅行商分析服务类<br>
- *            多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。<br>
- *            查找经济有效的配送路径，并给出相应的行走路线。<br>
- *            物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。<br>
- *            该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。<br>
+ * @classdesc 多旅行商分析服务类
+ *            多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。
+ *            查找经济有效的配送路径，并给出相应的行走路线。
+ *            物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
+ *            该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  *            多旅行商分析结果通过该类支持的事件的监听函数参数获取
  * @extends {SuperMap.NetworkAnalystServiceBase}
  * @example
@@ -21,10 +21,10 @@ import {GeoJSON} from '../format/GeoJSON';
  *		   "processFailed": findMTSPPathsError
  *		   }
  * });
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param {Object} options - 互服务时所需可选参数。如：<br>
+ * @param {Object} options - 互服务时所需可选参数。如：
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  */
 export class FindMTSPPathsService extends NetworkAnalystServiceBase {

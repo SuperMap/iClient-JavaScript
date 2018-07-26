@@ -6,7 +6,7 @@ import {GeoJSON} from '../format/GeoJSON';
 /**
  * @class SuperMap.FindTSPPathsService
  * @category  iServer NetworkAnalyst TSPPath
- * @classdesc 旅行商分析服务类<br>
+ * @classdesc 旅行商分析服务类
  *            旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  *            旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
  *            该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
@@ -24,7 +24,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param {Object} options - 参数。<br>
+ * @param {Object} options - 参数。
  *        {Object} eventListeners - 需要被注册的监听器对象。
  */
 export class FindTSPPathsService extends NetworkAnalystServiceBase {

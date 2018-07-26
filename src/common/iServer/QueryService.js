@@ -11,9 +11,9 @@ import {DataFormat} from '../REST';
  * @classdesc 查询服务基类。
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
- * @param {Object} options - 参数。<br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
+ * @param {Object} options - 参数。
+ * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
  * @param {SuperMap.DataFormat} options.format - 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER"，"GEOJSON"。
  * @example
  * var myService = new SuperMap.QueryService(url, {
@@ -29,7 +29,7 @@ export class QueryService extends CommonServiceBase {
      * @function SuperMap.QueryService.prototype.constructor
      * @description 查询服务基类构造函数。
      * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * @param {Object} options -参数。<br>
+     * @param {Object} options -参数。
      * @param {Object} options.eventListeners - 需要被注册的监听器对象。
      */
     constructor(url, options) {

@@ -50,7 +50,7 @@ export class PointWithMeasure extends Point {
 
     /**
      * @function SuperMap.PointWithMeasure.prototype.toJson
-     * @description 转换为 json 对象。
+     * @description 转换为 JSON 对象。
      * */
      toJson() {
         var result = "{";

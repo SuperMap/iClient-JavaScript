@@ -13,7 +13,7 @@ import {Util} from '../commontypes/Util';
  * @param {string} options.durationDatasetGridName - 指定地区太阳辐射太阳直射持续时间数据集的名称。 
  * @param {string} options.directDatasetGridName - 指定地区太阳辐射直射辐射量数据集的名称。
  * @param {number} options.latitude - 待计算区域的纬度值。 
- * @param {string} [options.timeMode = "MULTIDAYS"] - 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日）。 
+ * @param {string} [options.timeMode = 'MULTIDAYS'] - 时间模式。可选值"WITHINDAY"（单日）或"MULTIDAYS"（多日）。
  * @param {number} options.dayStart - 起始日期（年内的第几天）。 
  * @param {number} options.dayEnd - 结束日期（年内的第几天）。 
  * @param {number} [options.hourStart] - 起始时间（一天中的第几个小时）。 

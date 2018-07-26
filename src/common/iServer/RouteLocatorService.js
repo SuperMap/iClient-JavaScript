@@ -75,7 +75,7 @@ export class RouteLocatorService extends SpatialAnalystBase {
 
     /**
      * @function SuperMap.RouteLocatorService.prototype.processAsync
-     * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
+     * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
      * @param {SuperMap.RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
      */
     processAsync(params) {

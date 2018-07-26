@@ -15,23 +15,23 @@ import {LabelOverLengthMode} from '../REST';
  * @category  iServer Map Theme
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.ThemeLabelAlongLine} options.alongLine - 标签沿线标注方向样式类。<br>
- * @param {SuperMap.ThemeLabelBackground} options.background - 标签专题图中标签的背景风格类。<br>
- * @param {SuperMap.ThemeFlow} options.flow - 标签专题图标签流动显示与牵引线设置类。<br>
- * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。<br>
- * @param {string} options.labelExpression - 标注字段表达式。<br>
- * @param {SuperMap.LabelOverLengthMode} options.labelOverLengthMode - 标签专题图中超长标签的处理模式枚举类。<br>
- * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。<br>
- * @param {number} options.maxLabelLength - 标签在每一行显示的最大长度。<br>
- * @param {number} options.numericPrecision - 通过该字段设置其显示的精度。<br>
- * @param {SuperMap.ThemeOffset} options.offset - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- * @param {boolean} options.overlapAvoided - 是否允许以文本避让方式显示文本。<br>
- * @param {string} options.rangeExpression - 制作分段标签专题的分段字段或字段表达式。<br>
- * @param {boolean} options.smallGeometryLabeled - 是否显示长度大于被标注对象本身长度的标签。<br>
- * @param {SuperMap.ThemeLabelText} options.text - 标签中文本风格。<br>
- * @param {number} options.textSpace - 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
- * @param {SuperMap.ThemeMemoryData} options.memoryData - 专题图内存数据。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
+ * @param {SuperMap.ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
+ * @param {SuperMap.ThemeFlow} [options.flow] - 标签专题图标签流动显示与牵引线设置类。
+ * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。
+ * @param {string} options.labelExpression - 标注字段表达式。
+ * @param {SuperMap.LabelOverLengthMode} [options.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
+ * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
+ * @param {number} [options.maxLabelLength=256] - 标签在每一行显示的最大长度。
+ * @param {number} [options.numericPrecision=0] - 通过该字段设置其显示的精度。
+ * @param {SuperMap.ThemeOffset} [options.offset] - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+ * @param {boolean} [options.overlapAvoided=true] - 是否允许以文本避让方式显示文本。
+ * @param {string} [options.rangeExpression] - 制作分段标签专题的分段字段或字段表达式。
+ * @param {boolean} [options.smallGeometryLabeled=false] - 是否显示长度大于被标注对象本身长度的标签。
+ * @param {SuperMap.ThemeLabelText} options.text - 标签中文本风格。
+ * @param {number} [options.textSpace=0] - 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。
+ * @param {SuperMap.ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  */
 export class ThemeLabel extends Theme {
 
@@ -39,40 +39,40 @@ export class ThemeLabel extends Theme {
     constructor(options) {
         super("LABEL", options);
         /**
-         * @member {SuperMap.ThemeLabelAlongLine} SuperMap.ThemeLabel.prototype.alongLine
-         * @description 标签沿线标注方向样式类。<br>
+         * @member {SuperMap.ThemeLabelAlongLine} [SuperMap.ThemeLabel.prototype.alongLine]
+         * @description 标签沿线标注方向样式类。
          *              在该类中可以设置标签是否沿线标注以及沿线标注的多种方式。沿线标注属性只适用于线数据集专题图。
          */
         this.alongLine = new ThemeLabelAlongLine();
 
         /**
-         * @member {SuperMap.ThemeLabelBackground} SuperMap.ThemeLabel.prototype.background 
+         * @member {SuperMap.ThemeLabelBackground} [SuperMap.ThemeLabel.prototype.background] 
          * @description 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
          */
         this.background = new ThemeLabelBackground();
 
         /**
-         * @member {SuperMap.ThemeFlow} SuperMap.ThemeLabel.prototype.flow
+         * @member {SuperMap.ThemeFlow} [SuperMap.ThemeLabel.prototype.flow]
          * @description 标签专题图标签流动显示与牵引线设置类。通过该字段可以设置标签是否流动显示和牵引线风格。
          */
         this.flow = new ThemeFlow();
 
         /**
-         * @member {Array.<SuperMap.ThemeUniqueItem>} SuperMap.ThemeLabel.prototype.items
-         * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression <br>
+         * @member {Array.<SuperMap.ThemeUniqueItem>} [SuperMap.ThemeLabel.prototype.items]
+         * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression
          *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
          */
         this.items = null;
 
         /**
          * @member {Array.<SuperMap.ThemeLabelUniqueItem>} SuperMap.ThemeLabel.prototype.uniqueItems
-         * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression单值标签专题图子项集合
+         * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression单值标签专题图子项集合。
          */
         this.uniqueItems = null;
 
         /**
          * @member {string} SuperMap.ThemeLabel.prototype.labelExpression
-         * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
+         * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。
          */
         this.labelExpression = null;
 
@@ -97,14 +97,14 @@ export class ThemeLabel extends Theme {
         this.maxLabelLength = 256;
 
         /**
-         * @member {number} SuperMap.ThemeLabel.prototype.numericPrecision
+         * @member {number} [SuperMap.ThemeLabel.prototype.numericPrecision=0]
          * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
          *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
          */
         this.numericPrecision = 0;
 
         /**
-         * @member {SuperMap.ThemeOffset} SuperMap.ThemeLabel.prototype.offset
+         * @member {SuperMap.ThemeOffset} [SuperMap.ThemeLabel.prototype.offset]
          * @description 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
          */
         this.offset = new ThemeOffset();
@@ -127,7 +127,7 @@ export class ThemeLabel extends Theme {
         /**
          * @member {string} SuperMap.ThemeLabel.prototype.uniqueExpression
          * @description 用于制作单值专题图的字段或字段表达式。
-         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段，必须与labelExpression一起使用。
+         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必须与labelExpression一起使用。
          */
         this.uniqueExpression = null;
 
@@ -146,8 +146,8 @@ export class ThemeLabel extends Theme {
         this.text = new ThemeLabelText();
 
         /**
-         * @member {number} SuperMap.ThemeLabel.prototype.textSpace
-         * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高
+         * @member {number} [SuperMap.ThemeLabel.prototype.textSpace=0]
+         * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。
          */
         this.textSpace = 0;
 
@@ -207,7 +207,7 @@ export class ThemeLabel extends Theme {
 
     /**
      * @function SuperMap.ThemeLabel.prototype.toJSON
-     * @description 将themeLabel对象转化为json字符串。
+     * @description 将themeLabel对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
@@ -217,7 +217,7 @@ export class ThemeLabel extends Theme {
     /**
      * @function SuperMap.ThemeLabel.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @returns {Object} 对应的 JSON 格式对象
+     * @returns {Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -273,8 +273,8 @@ export class ThemeLabel extends Theme {
     /**
      * @function SuperMap.ThemeLabel.fromObj
      * @description 从传入对象获取标签专题图类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeLabel} ThemeLabel对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeLabel} ThemeLabe l对象。
      */
     static fromObj(obj) {
         if (!obj) {

@@ -16,7 +16,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @param {Object} options - 参数。 
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。 
  * @param {boolean} [options.hasLeastEdgeCount=false] - 是否按照弧段数最少的进行最佳路径分析。 
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 最佳路径分析经过的结点或设施点数组。该字段至少包含两个点。<br>
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 最佳路径分析经过的结点或设施点数组。该字段至少包含两个点。
  * @param {SuperMap.TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  */
 export class FindPathParameters {

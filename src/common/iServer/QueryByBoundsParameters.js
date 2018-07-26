@@ -7,18 +7,18 @@ import {QueryParameters} from './QueryParameters';
  * @category  iServer Map QueryResults
  * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
  * @extends {SuperMap.QueryParameters}
- * @param {Object} options - 参数。<br>
- * @param {string} options.customParams - 自定义参数，供扩展使用。<br>
- * @param {Object} options.prjCoordSys -自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- * @param {number} options.expectCount - 期望返回结果记录个数。<br>
- * @param {SuperMap.GeometryType} options.networkType - 网络数据集对应的查询类型。<br>
- * @param {SuperMap.QueryOption} options.queryOption - 查询结果类型枚举类。<br>
- * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。<br>
- * @param {number} options.startRecord - 查询起始记录号。<br>
- * @param {number} options.holdTime - 资源在服务端保存的时间。<br>
- * @param {boolean} options.returnCustomResult - 仅供三维使用。<br>
- * @param {boolean} options.returnContent - 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 指定的查询范围。<br>
+ * @param {Object} options - 参数。
+ * @param {string} options.customParams - 自定义参数，供扩展使用。
+ * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
+ * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
+ * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
+ * @param {SuperMap.QueryOption} options.queryOption - 查询结果类型枚举类。
+ * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
+ * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
+ * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 指定的查询范围。
  */
 export class QueryByBoundsParameters extends QueryParameters {
 
@@ -29,15 +29,15 @@ export class QueryByBoundsParameters extends QueryParameters {
         super(options);
         /**
          * @member {boolean} [SuperMap.QueryByBoundsParameters.prototype.returnContent=true]
-         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
-         *              如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
+         *              如果为 true，则直接返回新创建资源，即查询结果的表述。
          *              为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = true;
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.QueryByBoundsParameters.prototype.bounds
-         * @description 指定的查询范围。<br>
+         * @description 指定的查询范围。
          */
         this.bounds = null;
 

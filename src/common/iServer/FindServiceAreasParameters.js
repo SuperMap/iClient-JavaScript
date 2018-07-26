@@ -5,9 +5,9 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 /**
  * @class SuperMap.FindServiceAreasParameters
  * @category iServer NetworkAnalyst ServiceArea
- * @classdesc 服务区分析参数类。<br>
- *            服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
- *            例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>
+ * @classdesc 服务区分析参数类。
+ *            服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
+ *            例如：计算某快餐店能够在30分钟内送达快餐的区域。
  * @param {Object} options - 参数。 
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。 
  * @param {boolean} [options.isCenterMutuallyExclusive=false] - 是否中心点互斥。 
@@ -22,16 +22,16 @@ export class FindServiceAreasParameters {
     constructor(options) {
         /**
          * @member {boolean} [SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById=false]
-         * @description 是否通过节点 ID 指定路径分析的结点。<br>
-         *              指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
-         *              当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindServiceAreasParameters.centers = [ID1,ID2,...]；<br>
+         * @description 是否通过节点 ID 指定路径分析的结点。
+         *              指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。
+         *              当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindServiceAreasParameters.centers = [ID1,ID2,...]；
          *              反之表示通过结点坐标指定途经点，即 SuperMap.FindServiceAreasParameters.centers = [{x1,y1},{x2,y2},...]。
          */
         this.isAnalyzeById = false;
 
         /**
          * @member {boolean} [SuperMap.FindServiceAreasParameters.prototype.isCenterMutuallyExclusive=false]
-         * @description 是否中心点互斥，即按照中心点的距离进行判断是否要进行互斥处理。<br>
+         * @description 是否中心点互斥，即按照中心点的距离进行判断是否要进行互斥处理。
          *              若分析出的服务区有重叠的部分，则通过设置该参数进行互斥处理。
          */
         this.isCenterMutuallyExclusive = false;
@@ -45,9 +45,9 @@ export class FindServiceAreasParameters {
 
         /**
          * @member {boolean} [SuperMap.FindServiceAreasParameters.prototype.isFromCenter=false]
-         * @description 是否从中心点开始分析。<br>
-         *              从中心点开始分析和不从中心点开始分析，体现了服务中心和需要该服务的需求地的关系模式。<br>
-         *              从中心点开始分析，是一个服务中心向服务需求地提供服务；<br>
+         * @description 是否从中心点开始分析。
+         *              从中心点开始分析和不从中心点开始分析，体现了服务中心和需要该服务的需求地的关系模式。
+         *              从中心点开始分析，是一个服务中心向服务需求地提供服务；
          *              而不从中心点开始分析，是一个服务需求地主动到服务中心获得服务。
          */
         this.isFromCenter = false;
