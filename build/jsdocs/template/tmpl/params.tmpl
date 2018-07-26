@@ -83,7 +83,7 @@
             <td class="description last">
                 <?js if (params.hasAttributes) {?>
                     <?js if (param.optional) { ?>
-                        <span class="optional">可选</span>
+                        <span class="optional"> <?js if (self.language==='en') { ?><?js= 'optional' ?><?js }else{ ?><?js= '可选' ?><?js } ?></span>
                     <?js } ?>
                     <?js if (param.nullable) { ?>
                         <span class="nullable">nullable</span>

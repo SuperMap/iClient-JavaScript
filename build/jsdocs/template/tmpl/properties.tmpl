@@ -96,7 +96,7 @@
             
             
             <td class="description last"> <?js if (prop.optional) { ?>
-                    <span class="optional">可选</span>
+                    <span class="optional"><?js if (self.language==='en') { ?><?js= 'optional' ?><?js }else{ ?><?js= '可选' ?><?js } ?></span>
                 <?js } ?><?js= prop.description ?><?js if (prop.subprops) { ?>
                 <h6>Properties</h6><?js= self.partial('properties.tmpl', prop.subprops) ?>
             <?js } ?></td>
