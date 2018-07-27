@@ -28,7 +28,7 @@ window.examplesResources = {
             "_name": "3D-WebGL"
         },
         "product": {
-            "_name": "Product",
+            "_name": "Products",
             "introduce": "Introduction",
             "update": "iClient 8C Upgrade",
             "download": "Download",
@@ -56,7 +56,7 @@ window.examplesResources = {
             "visualization": "Visualization"
         },
         "examples": {
-            "_name": "Example",
+            "_name": "Examples",
             "iServer": "iServer",
             "iPortal": "iPortal",
             "Online": "Online",

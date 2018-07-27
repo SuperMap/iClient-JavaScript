@@ -21,6 +21,7 @@ var template = require('jsdoc/template'),
     language,
     outdir = env.opts.destination;
 var util = require('util');
+
 function find(spec) {
     return helper.find(data, spec);
 }
@@ -252,24 +253,33 @@ function sortNav(members) {
 
 function buildCategories(members, templatePath) {
     var categories = {};
-    _.each(members, function (v) {
+    if (language === 'en') {
+        var exists = fs.existsSync(path.resolve(templatePath, "categories.json"));
+        if (exists) {
+            categories = JSON.parse(fs.readFileSync(path.resolve(templatePath, "categories.json")));
+        } else {
+            logger.error('Please generate a Chinese JSdoc first')
+        }
+    } else {
+        _.each(members, function (v) {
 
-        var category = getCustomTagValue(v, 'category');
-        if (!category) {
-            category = "BaseTypes";
-        }
-        var arr = category.split(" ");
-        var aa = categories;
-        for (let index = 0; index < arr.length; index++) {
-            const element = arr[index];
-            if (!aa[element]) {
-                aa[element] = {};
-                aa[element].default = [];
+            var category = getCustomTagValue(v, 'category');
+            if (!category) {
+                category = "BaseTypes";
             }
-            aa = aa[element];
-        }
-        aa.default.push(v.longname);
-    });
+            var arr = category.split(" ");
+            var aa = categories;
+            for (let index = 0; index < arr.length; index++) {
+                const element = arr[index];
+                if (!aa[element]) {
+                    aa[element] = {};
+                    aa[element].default = [];
+                }
+                aa = aa[element];
+            }
+            aa.default.push(v.longname);
+        });
+    }
     var outpath = path.resolve(templatePath, "categories.json");
     fs.writeFileSync(outpath, JSON.stringify(categories), 'utf8');
     return categories;

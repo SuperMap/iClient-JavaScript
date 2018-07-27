@@ -6,7 +6,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 /**
  * @class mapboxgl.supermap.DataFlowService
  * @category  iServer DataFlow
- * @classdesc 实时数据服务。
+ * @classdesc 数据流服务。
  * @extends {mapboxgl.supermap.ServiceBase}
  * @example
  * new mapboxgl.supermap.DataFlowService(url)

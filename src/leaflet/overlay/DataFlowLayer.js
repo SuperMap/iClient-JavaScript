@@ -18,7 +18,7 @@ import {
  * @param {string} url - 数据流图层服务地址。
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。
-                                               'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制实时数据。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。 
+                                               'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。 
  * @param {Object} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。

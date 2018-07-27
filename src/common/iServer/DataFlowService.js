@@ -6,9 +6,9 @@ import {SecurityManager} from '../security/SecurityManager';
 /**
  * @class SuperMap.DataFlowService
  * @category iServer DataFlow
- * @classdesc 实时数据服务类
+ * @classdesc 数据流服务类
  * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 实时数据服务地址
+ * @param {string} url - 数据流服务地址
  * @param {Object} options - 参数。
  * @function {function} options.style - 设置数据加载样式。
  * @function {function} options.onEachFeature - 设置每个数据加载popup等。
