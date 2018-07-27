@@ -36,7 +36,7 @@ export class GeoHashGridAggParameter extends AggregationParameter {
     }
 
     /**
-     * @function    SuperMap.GeoHashGridAggParameter.toJsonParameters
+     * @function SuperMap.GeoHashGridAggParameter.toJsonParameters
      * @description 将对象转为 JSON 格式。
      * @param param 转换对象。
      * @returns {string|object}

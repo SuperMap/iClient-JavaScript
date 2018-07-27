@@ -6,17 +6,17 @@ import {OutputSetting} from './OutputSetting';
 /**
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
- * @classdesc 区域汇总分析任务参数类
+ * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
- * @param {boolean} [options.standardSummaryFields=false] 以标准属字段统计。
- * @param {string} options.standardFields - 以标准属字段统计的字段名称。
- * @param {SuperMap.StatisticAnalystMode} options.standardStatisticModes - 以标准属字段统计的统计模式。
- * @param {boolean} [options.weightedSummaryFields=false] - 以权重字段统计。
- * @param {string} options.weightedFields - 以权重字段统计的字段名称。
- * @param {SuperMap.StatisticAnalystMode} options.weightedStatisticModes - 以权重字段统计的统计模式。
+ * @param {string} [options.standardFields] - 标准属性字段名称。
+ * @param {string} [options.weightedFields] - 权重字段名称。
+ * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
+ * @param {SuperMap.StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。 
+ * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属字段统计。
+ * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
  * @param {number} [options.resolution=100] - 网格大小。
  * @param {number} [options.meshType=0] - 网格面汇总类型。
  * @param {SuperMap.AnalystSizeUnit} [options.meshSizeUnit=SuperMap.AnalystSizeUnit.METER] - 网格大小单位。
@@ -56,37 +56,37 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields=false]
-         * @description 以标准属字段统计。
+         * @description 是否以标准属字段统计。
          */
         this.standardSummaryFields = false;
 
         /**
          * @member {string} SuperMap.SummaryRegionJobParameter.prototype.standardFields
-         * @description 以标准属字段统计的字段名称。
+         * @description 标准属性字段名称。仅支持系统字段以外的整形、长整形、浮点型的字段的名称。standardSummaryFields 为 true 时必填。 
          */
         this.standardFields = "";
 
         /**
          * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes
-         * @description 以标准属字段统计的统计模式。
+         * @description 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
          */
         this.standardStatisticModes = "";
 
         /**
          * @member {boolean} [SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields=false]
-         * @description 以权重字段统计。
+         * @description 是否以权重字段统计。
          */
         this.weightedSummaryFields = false;
 
         /**
          * @member {string} SuperMap.SummaryRegionJobParameter.prototype.weightedFields
-         * @description 以权重字段统计的字段名称。
+         * @description 权重字段名称。仅支持系统字段以外的整形、长整形、浮点型的字段的名称。weightedSummaryFields 为 true 时必填。 
          */
         this.weightedFields = "";
 
         /**
          * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes
-         * @description 以权重字段统计的统计模式。
+         * @description 以权重字段统计的统计模式。权重字段的统计模式。weightedSummaryFields 为 true 时必填。 
          */
         this.weightedStatisticModes = "";
 

@@ -7,13 +7,13 @@ import {GeometryType, QueryOption} from '../REST';
  * @class SuperMap.QueryParameters
  * @category  iServer Map QueryResults
  * @classdesc 查询参数基类。距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
- * @param options - {Object} 参数。
- * @param {string} options.customParams - 自定义参数，供扩展使用。
+ * @param {Object} options - 参数。
+ * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
+ * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
  * @param {number} [options.expectCount=10000] - 期望返回结果记录个数。
  * @param {SuperMap.GeometryType} [options.networkType=SuperMap.GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {SuperMap.QueryOption} [options.queryOption=SuperMap.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
- * @param {Array.<SuperMap.FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间,单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
@@ -26,13 +26,13 @@ export class QueryParameters {
             return;
         }
         /**
-         * @member {string} SuperMap.QueryParameters.prototype.customParams
+         * @member {string} [SuperMap.QueryParameters.prototype.customParams]
          * @description 自定义参数，供扩展使用。
          */
         this.customParams = null;
 
         /**
-         * @member {Object} SuperMap.QueryParameters.prototype.prjCoordSys
+         * @member {Object} [SuperMap.QueryParameters.prototype.prjCoordSys]
          * @description 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}
          */
         this.prjCoordSys = null;

@@ -24,11 +24,11 @@ export class TransferPathParameters {
 
         /**
          *  @member {Array.<(string|SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} SuperMap.TransferPathParameters.prototype.points
-         *  @description 两种查询方式：
-         *           1. 按照公交站点的起止ID进行查询，则 points 参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的 ID 对应服务提供者配置中的站点 ID 字段；
+         *  @description 两种查询方式：<br>
+         *           1. 按照公交站点的起止ID进行查询，则 points 参数的类型为 int[]，形如：[起点ID、终点ID]，公交站点的 ID 对应服务提供者配置中的站点 ID 字段；
          *           2. 按照起止点的坐标进行查询，则 points 参数的类型为 Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
          */
-        this.points = false;
+        this.points = null;
 
         Util.extend(this, options);
 

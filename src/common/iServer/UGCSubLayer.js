@@ -59,7 +59,7 @@ export class UGCSubLayer extends UGCMapLayer {
 
     /**
      * @function SuperMap.UGCSubLayer.prototype.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象
+     * @description 将服务端 JSON 对象转换成当前客户端对象
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {

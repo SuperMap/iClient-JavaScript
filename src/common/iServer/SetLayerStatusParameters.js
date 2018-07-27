@@ -18,8 +18,7 @@ export class SetLayerStatusParameters {
     constructor(options) {
         /**
          * @member {Array.<SuperMap.LayerStatus>} SuperMap.SetLayerStatusParameters.prototype.layerStatusList
-         * @description 获取或设置图层可见状态（SuperMap.LayerStatus）集合，
-         *              集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
+         * @description 获取或设置图层可见状态（{@link SuperMap.LayerStatus}）集合，集合中的每个 {@link SuperMap.LayerStatus} 对象代表一个子图层的可视状态。
          */
         this.layerStatusList = [];
 
@@ -57,7 +56,7 @@ export class SetLayerStatusParameters {
     /**
      * @function SuperMap.SetLayerStatusParameters.prototype.toJSON
      * @description 生成 JSON。
-     * @returns {Object} 对应的 JSON 对象
+     * @returns {Object} 对应的 JSON 对象。
      */
     toJSON() {
         var json = '{';

@@ -11,7 +11,7 @@ import {Bounds} from '../commontypes/Bounds';
  * 数据集是 GIS 数据组织的最小单位。其中矢量数据集是由同种类型空间要素组成的集合，
  * 所以也可以称为要素集。根据要素的空间特征的不同，矢量数据集又分为点数据集，
  * 线数据集，面数据集等，各矢量数据集是空间特征和性质相同的数据组织起来的集合。
- * 目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
+ * 目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD 数据集）、
  * 网络数据集，栅格数据集（grid dataset）和影像数据集（image dataset）。
  * @param {Object} options - 参数。 
  * @param {SuperMap.Bounds} [options.bounds] - 数据集范围，该字段只读。 
@@ -22,8 +22,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @param {string} options.name - 数据集名称，该字段必须且只读。 
  * @param {SuperMap.Projection} [options.prjCoordSys] - 数据集的投影信息。 
  * @param {string} [options.tableName] - 表名，该字段只读。 
- * @param {string} options.type - 数据集类型。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
- *                                网络数据集，栅格数据集（grid dataset）和影像数据集（image dataset）。
+ * @param {string} options.type - 数据集类型。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD 数据集）、网络数据集，栅格数据集（grid dataset）和影像数据集（image dataset）。
  */
 export class DatasetInfo {
 
@@ -81,8 +80,7 @@ export class DatasetInfo {
 
         /**
          * @member {string} SuperMap.DatasetInfo.prototype.type
-         * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
-         *              网络数据集，栅格数据集（grid dataset）和影像数据集（image dataset）。
+         * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD 数据集）、网络数据集，栅格数据集（grid dataset）和影像数据集（image dataset）。
          */
         this.type = null;
 

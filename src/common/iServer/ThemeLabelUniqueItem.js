@@ -5,13 +5,13 @@ import {ServerTextStyle} from './ServerTextStyle';
 /**
  * @class SuperMap.ThemeLabelUniqueItem
  * @category  iServer Map Theme
- * @classdesc 单值标签专题图的子项
+ * @classdesc 单值标签专题图的子项。
  * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression
  *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
- *              每一个子项都具有其名称、风格、指定的单值、X 方向偏移量和Y方向偏移量。
+ *              每一个子项都具有其名称、风格、指定的单值、X 方向偏移量和 Y 方向偏移量。
  * @param {Object} options - 参数。
- * @param {string} [options.caption] - 专题图子项的名称。
  * @param {string} options.unique - 单值专题图子项的值，可以为数字、字符串等。
+ * @param {string} [options.caption] - 专题图子项的名称。
  * @param {number} [options.offsetX=0] - 标签在 X 方向偏移量。
  * @param {number} [options.offsetY=0] - 标签在 Y 方向偏移量。
  * @param {boolean} [options.visible=true] - 标签专题图子项是否可见。
@@ -34,13 +34,13 @@ export class ThemeLabelUniqueItem {
 
         /**
          * @member {number} [SuperMap.ThemeLabelUniqueItem.prototype.offsetX=0]
-         * @description 标签在X方向偏移量。
+         * @description 标签在 X 方向偏移量。
          */
         this.offsetX = 0;
 
         /**
          * @member {number} [SuperMap.ThemeLabelUniqueItem.prototype.offsetY=0]
-         * @description 标签在Y方向偏移量。
+         * @description 标签在 Y 方向偏移量。
          */
         this.offsetY = 0;
 
@@ -52,7 +52,7 @@ export class ThemeLabelUniqueItem {
 
         /**
          * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelUniqueItem.prototype.style
-         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
+         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
          *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
          */
         this.style = new ServerTextStyle();

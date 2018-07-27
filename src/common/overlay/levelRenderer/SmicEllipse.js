@@ -6,8 +6,7 @@ import {Shape} from './Shape';
  * @category Visualization Theme
  * @classdesc 椭圆。
  * @extends SuperMap.LevelRenderer.Shape
- *
- * @example 
+ * @example  
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
  *       style: {
  *           x: 100,

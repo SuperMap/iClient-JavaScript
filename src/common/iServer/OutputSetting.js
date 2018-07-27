@@ -8,9 +8,9 @@ import {OutputType} from "../REST";
  * @category  iServer ProcessingService
  * @classdesc 分布式分析输出类型设置类。
  * @param {Object} options - 参数。
- * @param {SuperMap.OutputType} [options.type=SuperMap.OutputType.UDB] - 输出类型。
- * @param {string} options.datasetName - 结果数据集名称。
  * @param {SuperMap.DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。
+ * @param {string} [options.datasetName='analystResult'] - 结果数据集名称。
+ * @param {SuperMap.OutputType} [options.type=SuperMap.OutputType.UDB] - 输出类型。
  * @param {string} [options.outputPath] - 分析结果输出路径。
  */
 export class OutputSetting {
@@ -24,7 +24,7 @@ export class OutputSetting {
         this.type = OutputType.UDB;
 
         /**
-         * @member {string} SuperMap.OutputSetting.prototype.datasetName
+         * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
          * @description 分布式分析的输出结果数据集名称。
          */
         this.datasetName = "analystResult";

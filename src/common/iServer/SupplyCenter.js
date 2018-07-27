@@ -16,7 +16,7 @@ export class SupplyCenter {
     constructor(options) {
         /**
          * @member {number} SuperMap.SupplyCenter.prototype.maxWeight
-         * @description 资源供给中心的最大耗费值，必设参数。中心点最大阻值设置越小，表示中心点所提供的资源可影响范围越大。
+         * @description 资源供给中心的最大耗费值。中心点最大阻值设置越小，表示中心点所提供的资源可影响范围越大。
          *              最大阻力值是用来限制需求点到中心点的花费。
          *              如果需求点（弧段或结点）到此中心的花费大于最大阻力值，则该需求点不属于该资源供给中心提供资源的范围。
          */
@@ -30,7 +30,7 @@ export class SupplyCenter {
 
         /**
          * @member {number} SuperMap.SupplyCenter.prototype.resourceValue
-         * @description 资源供给中心能提供的最大服务量或商品数量，必设参数。例如资源中心为学校，资源中心资源量表示该学校能够接纳多少学生。
+         * @description 资源供给中心能提供的最大服务量或商品数量。例如资源中心为学校，资源中心资源量表示该学校能够接纳多少学生。
          */
         this.resourceValue = null;
 
@@ -62,7 +62,7 @@ export class SupplyCenter {
 
     /**
      * @function SuperMap.SupplyCenter.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象。
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      * @returns {SuperMap.SupplyCenter} SupplyCenter 对象。
      */

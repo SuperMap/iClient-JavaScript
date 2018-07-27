@@ -2,7 +2,7 @@
  * @class  SuperMap.LevelRenderer.Tool.Event
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-事件辅助类
- *
+ * @private 
  */
 export class Event {
 

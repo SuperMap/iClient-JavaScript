@@ -9,7 +9,7 @@ import '../REST';
 /**
  * @class SuperMap.Grid
  * @category iServer Map Layer
- * @classdesc UGC 栅格图层类 
+ * @classdesc UGC 栅格图层类。
  * @extends {SuperMap.UGCSubLayer}
  * @param {Object} options - 参数。 
  * @param {Array.<Object>} [options.colorDictionary] - 颜色对照表对象。 

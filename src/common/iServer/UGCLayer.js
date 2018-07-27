@@ -9,12 +9,12 @@ import '../REST';
  * @classdesc UGC 图层类。
  * @param {Object} options - 参数。 
  * @param {SuperMap.Bounds} options.bounds - 图层范围。 
- * @param {string} options.caption - 图层的标题。 
- * @param {string} [options.description] - 图层的描述信息。 
  * @param {string} options.name - 图层的名称。 
- * @param {boolean} [options.queryable] - 图层中的对象是否可以查询 
- * @param {boolean} [options.subUGCLayers] - 是否允许图层的符号大小随图缩放。 
  * @param {SuperMap.UGCLayerType} options.type  - 图层类型 
+ * @param {string} [options.caption] - 图层的标题。 
+ * @param {string} [options.description] - 图层的描述信息。 
+ * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
+ * @param {boolean} [options.subUGCLayers] - 是否允许图层的符号大小随图缩放。 
  * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
  */
 export class UGCLayer {
@@ -28,8 +28,8 @@ export class UGCLayer {
         this.bounds = null;
 
         /**
-         * @member {string} SuperMap.UGCLayer.prototype.caption
-         * @description 图层的标题。
+         * @member {string} [SuperMap.UGCLayer.prototype.caption]
+         * @description 图层的标题。默认情况下图层的标题与图层的名称一致。在图例、图层控制列表中显示的图层名称就是该图层的标题值。
          */
         this.caption = null;
 
@@ -41,7 +41,7 @@ export class UGCLayer {
 
         /**
          * @member {string} SuperMap.UGCLayer.prototype.name
-         * @description 图层的名称。
+         * @description 图层的名称。图层的名称在图层所在的地图中唯一标识此图层。该属性区分大小写。
          */
         this.name = null;
 
@@ -65,7 +65,7 @@ export class UGCLayer {
 
         /**
          * @member {boolean} SuperMap.UGCLayer.prototype.visible
-         * @description 图层是否可视。
+         * @description 地图对象在同一范围内时，是否重叠显示。
          */
         this.visible = null;
 
@@ -85,7 +85,7 @@ export class UGCLayer {
 
     /**
      * @function SuperMap.UGCLayer.prototype.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {

@@ -7,11 +7,11 @@ import {ServerStyle} from './ServerStyle';
  * @category  iServer Map Theme
  * @classdesc 单值专题图子项类。
  * @description 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
- *              省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+ *              省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有 5 种不同值，则该行政区划图有 5 个专题图子项。
  * @param {Object} options - 参数。
+ * @param {string} options.unique - 单值专题图子项的单值。
  * @param {string} [options.caption] - 单值专题图子项的标题。
  * @param {SuperMap.ServerStyle} [options.style] - 单值专题图子项的风格。
- * @param {string} options.unique - 单值专题图子项的单值。
  * @param {boolean} [options.visible=true] - 单值专题图子项是否可见。
  */
 export class ThemeUniqueItem {

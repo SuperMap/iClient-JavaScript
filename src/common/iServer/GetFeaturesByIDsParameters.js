@@ -7,8 +7,8 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
  * @class SuperMap.GetFeaturesByIDsParameters
  * @category  iServer Data FeatureResults
  * @classdesc ID查询参数类。
- * @param options - {Object} 参数。  
- * @param {Array.<number>} options.IDs - 所要查询指定的元素ID信息。  
+ * @param {Object} options - 参数。  
+ * @param {Array.<number>} options.IDs - 所要查询指定的元素 ID 信息。  
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。  
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。  
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  

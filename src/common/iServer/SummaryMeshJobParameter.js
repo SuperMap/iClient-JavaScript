@@ -10,10 +10,10 @@ import {OutputSetting} from './OutputSetting';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
  * @param {number} [options.meshType=0] - 分析类型。
- * @param {number} options.fields - 权重索引。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
@@ -31,25 +31,25 @@ export class SummaryMeshJobParameter {
 
         /**
          * @member {string} SuperMap.SummaryMeshJobParameter.prototype.regionDataset
-         * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
+         * @description 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
          */
         this.regionDataset = "";
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.SummaryMeshJobParameter.prototype.query
-         * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
+         * @description 分析范围（聚合类型为网格面聚合时使用的参数）。
          */
         this.query = "";
 
         /**
          * @member {number} [SuperMap.SummaryMeshJobParameter.prototype.resolution=100]
-         * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
+         * @description 分辨率（聚合类型为网格面聚合时使用的参数）。
          */
         this.resolution = 100;
 
         /**
          * @member {number} [SuperMap.SummaryMeshJobParameter.prototype.meshType=0]
-         * @description  网格面类型(聚合类型为网格面聚合时使用的参数)，取值：0或1。
+         * @description  网格面类型（聚合类型为网格面聚合时使用的参数），取值：0 或 1。
          */
         this.meshType = 0;
 

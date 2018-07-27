@@ -11,10 +11,10 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。
  * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。
- * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} options.barrierPoints - 网络分析中 Point2D 类型的障碍点数组。
- * @param {string} options.weightFieldName - 阻力字段的名称。
  * @param {string} options.turnWeightField - 转向权重字段的名称。
  * @param {SuperMap.TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容。
+ * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point)>} [options.barrierPoints] - 网络分析中 Point2D 类型的障碍点数组。
+ * @param {string} [options.weightFieldName] - 阻力字段的名称。
  */
 export class TransportationAnalystParameter {
 
@@ -43,7 +43,7 @@ export class TransportationAnalystParameter {
         this.barrierPoints = null;
 
         /**
-         * @member {string} SuperMap.TransportationAnalystParameter.prototype.weightFieldName
+         * @member {string} [SuperMap.TransportationAnalystParameter.prototype.weightFieldName]
          * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。
          * 该字段默值为服务器发布的所有耗费字段的第一个字段。
          */

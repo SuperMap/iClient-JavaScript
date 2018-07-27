@@ -13,8 +13,9 @@ import './DataReturnOption';
  * @param {Object} options - 参数。 
  * @param {string} options.routeTable - 路由数据集。 
  * @param {string} options.routeIDField - 路由数据集的标识字段。 
- * @param {string} [options.attributeFilter] - 属性过滤条件。 
  * @param {string} options.eventTable - 用于生成空间数据的事件表名。 
+ * @param {SuperMap.DataReturnOption} options.dataReturnOption - 设置数据返回选项。
+ * @param {string} [options.attributeFilter] - 属性过滤条件。 
  * @param {string} options.eventRouteIDField - 用于生成空间数据的事件表的路由标识字段。 
  * @param {string} [options.measureField] - 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义。
  * @param {string} [options.measureStartField] - 用于生成空间数据的事件表的起始刻度字段，只有当事件为线事件的时候该属性才有意义。 
@@ -22,7 +23,6 @@ import './DataReturnOption';
  * @param {string} [options.measureOffsetField] - 刻度偏移量字段。 
  * @param {string} [options.errorInfoField] - 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。 
  * @param {Array.<string>} [options.retainedFields] - 欲保留到结果空间数据中的字段集合（系统字段除外）。 
- * @param {SuperMap.DataReturnOption} options.dataReturnOption - 设置数据返回的最大记录。
  */
 export class GenerateSpatialDataParameters {
 

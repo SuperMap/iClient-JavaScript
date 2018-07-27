@@ -8,17 +8,17 @@ import {ServerColor} from './ServerColor';
  * @classdesc 服务端矢量要素风格类。
  * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  * @param {Object} options - 参数。
+ * @param {SuperMap.FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。
  * @param {SuperMap.ServerColor} [options.fillBackColor=[255,255,255]] - 填充背景颜色。
  * @param {boolean} [options.fillBackOpaque=false] - 背景是否不透明。
- * @param {SuperMap.ServerColor} options.[fillForeColor=[255,0,0]] - 填充颜色。
- * @param {SuperMap.FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。
+ * @param {SuperMap.ServerColor} [options.fillForeColor=[255,0,0]] - 填充颜色。
  * @param {number} [options.fillGradientAngle=0] - 渐变填充的旋转角度。
  * @param {number} [options.fillGradientOffsetRatioX=0] - 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。
  * @param {number} [options.fillGradientOffsetRatioY=0] - 填充中心点相对于填充区域范围中心点的垂直偏移百分比。
  * @param {number} [options.fillOpaqueRate=100] - 填充不透明度。
  * @param {number} [options.fillSymbolID=0] - 填充符号的编码。
- * @param {SuperMap.ServerColor} [options.lineColor=[0,0,0]] - 矢量要素的边线颜色。
- * @param {number} options.[lineSymbolID=0] - 线状符号的编码。
+ * @param {SuperMap.ServerColor} [options.lineColor] - 矢量要素的边线颜色。默认 lineColor = new ServerColor(0, 0, 0)。
+ * @param {number} [options.lineSymbolID=0] - 线状符号的编码。
  * @param {number} [options.lineWidth=1] - 边线的宽度。
  * @param {number} [options.markerAngle=0] - 点状符号的旋转角度。
  * @param {number} [options.markerSize=1] - 点状符号的大小。
@@ -53,7 +53,7 @@ export class ServerStyle {
 
         /**
          * @member {number} SuperMap.ServerStyle.prototype.fillGradientAngle -
-         * @description 渐变填充的旋转角度。单位为度，精确到0.1度，逆时针方向为正方向。
+         * @description 渐变填充的旋转角度。单位为度，精确到 0.1 度，逆时针方向为正方向。
          */
         this.fillGradientAngle = 0;
 
@@ -66,15 +66,15 @@ export class ServerStyle {
 
         /**
          * @member {number} SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY
-         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：
+         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
          *              设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
          */
         this.fillGradientOffsetRatioY = 0;
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.fillOpaqueRate=100]
-         * @description 填充不透明度。合法值为0 - 100的数值。其中为0表示完全透明；
-         *              100表示完全不透明。赋值小于0时按照0处理，大于100时按照100处理。
+         * @description 填充不透明度。合法值为 0 - 100 的数值。其中为 0 表示完全透明；
+         *              100 表示完全不透明。赋值小于 0 时按照 0 处理，大于 100 时按照 100 处理。
          */
         this.fillOpaqueRate = 100;
 
@@ -100,19 +100,19 @@ export class ServerStyle {
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.lineWidth=1.0]
-         * @description 边线的宽度。单位为毫米，精度到0.1。
+         * @description 边线的宽度。单位为毫米，精度到 0.1。
          */
         this.lineWidth = 1;
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.markerAngle=0]
-         * @description 点状符号的旋转角度。以度为单位，精确到0.1度，逆时针方向为正方向。
+         * @description 点状符号的旋转角度。以度为单位，精确到 0.1 度，逆时针方向为正方向。
          */
         this.markerAngle = 0;
 
         /**
          * @member {number} [SuperMap.ServerStyle.prototype.markerSize=1.0]
-         * @description 点状符号的大小。单位为毫米，精度为0.1。当该属性设置为0时，采用符号默认大小1.0显示。
+         * @description 点状符号的大小。单位为毫米，精度为 0.1。当该属性设置为0时，采用符号默认大小 1.0 显示。
          *              当该属性设置为非法值时，交由服务器默认处理。
          */
         this.markerSize = 1;

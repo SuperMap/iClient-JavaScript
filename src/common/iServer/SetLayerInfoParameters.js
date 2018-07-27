@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer Map TempLayersSet
  * @classdesc 设置图层信息参数类.
  * @param {Object} options - 参数。
- * @param {string} options.resourceID - 临时图层的资源ID。
+ * @param {string} options.resourceID - 临时图层的资源 ID。
  * @param {string} options.tempLayerName - 临时图层下的子图层名。
  * @param {string} options.layerInfo - 要更新的图层信息。
  */
@@ -22,13 +22,13 @@ export class SetLayerInfoParameters {
 
         /**
          * @member {string} SuperMap.SetLayerInfoParameters.prototype.tempLayerName
-         * @description 临时图层下子图层(或者其子图层)名,如：Countries@World.3@@World
+         * @description 临时图层下子图层（或者其子图层）名，如：Countries@World.3@@World。
          */
         this.tempLayerName = null;
 
         /**
          * @member {Object} SuperMap.SetLayerInfoParameters.prototype.layerInfo
-         * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中 subLayers.layers[i] 图层信息属性进行修改。
+         * @description 要更新的图层信息（包含修改和未修改的所有字段）。该参数可以通过图层信息服务获取，然后对返回值中 subLayers.layers[i] 图层信息属性进行修改。
          */
         this.layerInfo = null;
 

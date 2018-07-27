@@ -7,7 +7,6 @@ import {SUtil} from './SUtil';
  * @category Visualization Theme
  * @classdesc 正多边形。
  * @extends SuperMap.LevelRenderer.Shape
- *
  */
 export class SmicIsogon extends Shape {
 

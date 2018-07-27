@@ -54,7 +54,7 @@ export class ThemeLabelAlongLine {
         /**
          * @member {number} [SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval=0]
          * @description 沿线且循环标注时循环标注的间隔。长度的单位与地图的地理单位一致。只有设定 RepeatedLabelAvoided 为 true
-         *              的时候，labelRepeatInterval 属性才有效。默认为0地图单位。
+         *              的时候，labelRepeatInterval 属性才有效。
          */
         this.labelRepeatInterval = 0;
 

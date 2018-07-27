@@ -12,7 +12,7 @@ import {Collection} from '../commontypes/geometry/Collection';
  * @param {Array.<SuperMap.Geometry>} points - 形成路由对象的线数组。
  * @param {Object} options - 参数。
  * @param {number} options.id - 路由对象在数据库中的 id。
- * @param {number} options.length - 路由对象的长度。
+ * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
  * @param {string} [options.type] - 数据类型，如："LINEM"。
@@ -25,7 +25,7 @@ export class Route extends Collection {
 
         /**
          * @member {number} SuperMap.Route.prototype.id
-         * @description 路由对象在数据库中的 id。
+         * @description 路由对象在数据库中的 ID。
          */
         this.id = null;
 
@@ -94,7 +94,7 @@ export class Route extends Collection {
 
         /**
          * @member {Array.<string>} [SuperMap.Route.prototype.componentTypes=SuperMap.Geometry.LineString]
-         * @description components存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
+         * @description components 存储的的几何对象所支持的几何类型数组。
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 

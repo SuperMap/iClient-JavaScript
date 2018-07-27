@@ -4,7 +4,7 @@ import {Util} from './Util';
  * @class  SuperMap.LevelRenderer.Tool.Color
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-颜色辅助类
- *
+ * @private 
  */
 export class Color {
 

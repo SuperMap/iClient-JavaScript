@@ -9,9 +9,9 @@ import {OutputSetting} from './OutputSetting';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。
- * @param {string} options.mode - 叠加分析模式。
  * @param {string} options.srcFields - 输入数据需要保留的字段。
- * @param {string} options.overlayFields - 叠加数据需要保留的字段。
+ * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
+ * @param {string} [options.mode] - 叠加分析模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 export class OverlayGeoJobParameter {
@@ -46,7 +46,7 @@ export class OverlayGeoJobParameter {
 
         /**
          * @member {string} SuperMap.OverlayGeoJobParameter.prototype.overlayFields
-         * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
+         * @description 叠加数据需要保留的字段，对分析模式为 clip、update、erase 时，此参数无效。
          */
         this.overlayFields = "";
 

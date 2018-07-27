@@ -6,7 +6,6 @@ import {Shape} from './Shape';
  * @category Visualization Theme
  * @classdesc 圆形
  * @extends SuperMap.LevelRenderer.Shape
- *
  * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
  *         style: {

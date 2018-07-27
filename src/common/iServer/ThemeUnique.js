@@ -35,14 +35,14 @@ export class ThemeUnique extends Theme {
          * @member {Array.<SuperMap.ThemeUniqueItem>} SuperMap.ThemeUnique.prototype.items
          * @description 单值专题图子项类数组。
          *              单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
-         *              Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+         *              Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有 5 个专题图子项。
          */
         this.items = null;
 
         /**
          * @member {string} SuperMap.ThemeUnique.prototype.uniqueExpression
          * @description 用于制作单值专题图的字段或字段表达式。
-         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
+         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。
          */
         this.uniqueExpression = null;
 

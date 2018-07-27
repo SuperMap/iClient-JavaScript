@@ -5,6 +5,7 @@ export class Config {
  * @enum EVENT
  * @description 事件
  * @type {Object}
+ * @private 
  */
 Config.EVENT = {
     //窗口大小变化
@@ -66,6 +67,7 @@ Config.EVENT = {
  * @enum catchBrushException
  * @description 是否异常捕获
  * @type {boolean}
+ * @private 
  */
 Config.catchBrushException = false;
 
@@ -76,5 +78,6 @@ Config.catchBrushException = false;
  * 1 : 异常抛出，调试用
  * 2 : 控制台输出，调试用
  * @type {boolean}
+ * @private 
  */
 Config.debugMode = 0;

@@ -6,11 +6,11 @@ import {Util} from '../commontypes/Util';
  * @category iServer NetworkAnalyst UpstreamCriticalFacilities
  * @classdesc 上游/下游关键设施查找资源参数类。
  * @param {Object} options - 参数。 
- * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点ID数组。 
- * @param {number} [options.edgeID] - 指定的弧段ID，edgeID 与 nodeID 必须指定一个。  
- * @param {number} [options.nodeID] - 指定的结点ID，edgeID 与 nodeID 必须指定一个。  
- * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。
+ * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。 
  * @param {number} options.queryType - 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。
+ * @param {number} [options.edgeID] - 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。  
+ * @param {number} [options.nodeID] - 指定的结点 ID，edgeID 与 nodeID 必须指定一个。  
+ * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。
  */
 export class FacilityAnalystStreamParameters {
 
@@ -18,19 +18,19 @@ export class FacilityAnalystStreamParameters {
     constructor(options) {
         /**
          * @member {Array.<number>} [SuperMap.FacilityAnalystStreamParameters.prototype.sourceNodeIDs]
-         * @description 指定的设施点ID数组。
+         * @description 指定的设施点 ID 数组。
          */
         this.sourceNodeIDs = null;
 
         /**
          * @member {number} [SuperMap.FacilityAnalystStreamParameters.prototype.edgeID]
-         * @description 指定的弧段ID，edgeID 与 nodeID 必须指定一个。 
+         * @description 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。 
          */
         this.edgeID = null;
 
         /**
          * @member {number} [SuperMap.FacilityAnalystStreamParameters.prototype.nodeID]
-         * @description 指定的结点ID，edgeID 与 nodeID 必须指定一个。 
+         * @description 指定的结点 ID，edgeID 与 nodeID 必须指定一个。 
          */
         this.nodeID = null;
 

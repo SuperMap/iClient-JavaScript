@@ -8,12 +8,11 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  * @category iServer
  * @classdesc 关联信息类。
  * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
- *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。使用LinkItem时，
+ *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持 SQL Server 和 Oracle 类型。使用 LinkItem 时，
  *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。{@link SuperMap.LinkItem}
- *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link SuperMap.LinkItem}；另外，用于建立关联关系的两个表可以不在同一个数据源下。
- *              注意：
- *              1. 使用 {@link SuperMap.LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；
- *              2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。
+ *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link SuperMap.LinkItem}；另外，用于建立关联关系的两个表可以不在同一个数据源下。注意：<br>
+ * 1. 使用 {@link SuperMap.LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br>
+ * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为 BaseMap_R 数据集的 SmID，就要写成 BaseMap_R.SMID。
  * @param {Object} options - 参数。
  * @param {SuperMap.DatasourceConnectionInfo} options.datasourceConnectionInfo - 关联的外部数据源信息。
  * @param {Array.<string>} options.foreignKeys - 主空间数据集的外键。
@@ -22,7 +21,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  * @param {string} options.linkFilter - 与外部属性表的连接条件。
  * @param {string} options.name - 此关联信息对象的名称。
  * @param {Array.<string>} options.primaryKeys - 需要关联的外部属性表的主键。
- * @example 下面以SQL查询说明linkitem的使用方法：
+ * @example 下面以 SQL 查询说明 linkitem 的使用方法：
  *  function queryBySQL() {
  *      // 设置关联的外部数据库信息,alias表示数据库别名
  *      var dc = new SuperMap.DatasourceConnectionInfo({

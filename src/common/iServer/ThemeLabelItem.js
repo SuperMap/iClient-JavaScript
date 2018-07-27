@@ -49,7 +49,7 @@ export class ThemeLabelItem {
 
         /**
          * @member {SuperMap.ServerTextStyle} SuperMap.ThemeLabelItem.prototype.style
-         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
+         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
          *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
          */
         this.style = new ServerTextStyle();

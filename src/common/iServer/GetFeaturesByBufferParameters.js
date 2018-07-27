@@ -10,13 +10,10 @@ import {ServerGeometry} from './ServerGeometry';
  * @classdesc 数据服务中数据集缓冲区查询参数类。
  * @param {Object} options - 参数。 
  * @param {number} options.bufferDistance - buffer 距离，单位与所查询图层对应的数据集单位相同。  
- * @param {string} [options.attributeFilter] - 属性查询条件。   
- * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。  
- * @param {Object} options.geometry - 空间查询条件。  
- *                                    点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。  
- *                                    线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。  
- *                                    面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。  
+ * @param {Object} options.geometry - 空间查询条件。</br>
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。  
+ * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。  
+ * @param {string} [options.attributeFilter] - 属性查询条件。   
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。  
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。  
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。  
@@ -29,7 +26,7 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {number} SuperMap.GetFeaturesByBufferParameters.prototype.bufferDistance
-         * @description buffer距离,单位与所查询图层对应的数据集单位相同。
+         * @description buffer 距离,单位与所查询图层对应的数据集单位相同。
          */
         this.bufferDistance = null;
 
@@ -41,10 +38,10 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {Object} SuperMap.GetFeaturesByBufferParameters.prototype.geometry
-         * @description 空间查询条件。 
-         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。 
-         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。
-         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         * @description 空间查询条件。 <br>
+         * 点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
+         * 线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>  
+         * 面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。  
          */
         this.geometry = null;
 

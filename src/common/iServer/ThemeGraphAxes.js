@@ -26,7 +26,7 @@ export class ThemeGraphAxes {
 
         /**
          * @member {boolean} [SuperMap.ThemeGraphAxes.prototype.axesDisplayed=false]
-         * @description 是否显示坐标轴。
+         * @description 是否显示坐标轴。<br>
          *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
          */
         this.axesDisplayed = false;
@@ -79,7 +79,7 @@ export class ThemeGraphAxes {
      * @function SuperMap.ThemeGraphAxes.fromObj
      * @description 从传入对象获取统计专题图坐标轴样式类。
      * @param {Object} obj - 传入对象。
-     * @returns {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象。
+     * @returns {SuperMap.ThemeGraphAxes} ThemeGraphAxes 对象。
      */
     static fromObj(obj) {
         if (!obj) {

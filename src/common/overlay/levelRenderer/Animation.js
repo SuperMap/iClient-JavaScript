@@ -9,6 +9,7 @@ import {Util as CommonUtil} from "../../commontypes/Util";
  * @classdesc 动画主类, 调度和管理所有动画控制器
  * @category Visualization Theme
  * @extends {SuperMap.LevelRenderer.Eventful}
+ * @private 
  */
 export class Animation extends Eventful {
 

@@ -13,12 +13,12 @@ import {UGCLayer} from './UGCLayer';
  * @param {boolean} [options.allowPointWithTextDisplay=true] - 标签和相应普通图层上的点是否一起过滤显示,如果过滤显示，
  *                                                             只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。
  * @param {boolean} [options.allowTextOverlap=false] - 文本压盖时是否显示压盖的文本对象。
- * @param {boolean} [options.allowTextAndPointOverlap=true] - 文本和点压盖时是否显示压盖的文本或点对象(此属性不处理文本之间的压盖和点之间的压盖)。
+ * @param {boolean} [options.allowTextAndPointOverlap=true] - 文本和点压盖时是否显示压盖的文本或点对象（此属性不处理文本之间的压盖和点之间的压盖）。
  * @param {boolean} [options.allowThemeGraduatedSymbolOverlap=false] - 等级符号元素压盖时是否显示压盖的等级符号元素。
  * @param {boolean} [options.allowThemeGraphOverlap=false] - 统计专题图元素压盖时是否显示压盖的统计专题图元素。
- * @param {number} [options.horizontalOverlappedSpaceSize=0] - 两个对象之间的横向压盖间距，单位为0.1毫米，跟 verticalOverlappedSpaceSize 结合使用，
+ * @param {number} [options.horizontalOverlappedSpaceSize=0] - 两个对象之间的横向压盖间距，单位为 0.1 毫米，跟 verticalOverlappedSpaceSize 结合使用，
  *                                                             当两个对象的横向间距小于该值，且纵向间距小于 verticalOverlappedSpaceSize 时认为压盖。
- * @param {number} [options.verticalOverlappedSpaceSize=0] - 两个对象之间的纵向压盖间距，单位为0.1毫米，跟 horizontalOverlappedSpaceSize 结合使用，
+ * @param {number} [options.verticalOverlappedSpaceSize=0] - 两个对象之间的纵向压盖间距，单位为 0.1 毫米，跟 horizontalOverlappedSpaceSize 结合使用，
  *                                                           当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。
  */
 export class OverlapDisplayedOptions {
@@ -46,7 +46,7 @@ export class OverlapDisplayedOptions {
 
         /**
          * @member {boolean} [SuperMap.OverlapDisplayedOptions.prototype.allowTextAndPointOverlap=true]
-         * @description  文本和点压盖时是否显示压盖的文本或点对象(此属性不处理文本之间的压盖和点之间的压盖)。
+         * @description  文本和点压盖时是否显示压盖的文本或点对象（此属性不处理文本之间的压盖和点之间的压盖）。
          */
         this.allowTextAndPointOverlap = true;
 

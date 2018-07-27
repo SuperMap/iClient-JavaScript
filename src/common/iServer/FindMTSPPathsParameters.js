@@ -8,9 +8,9 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @classdesc 多旅行商分析参数类
  * @param {Object} options - 参数。 
  * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 配送中心集合。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合。 
  * @param {boolean} [options.hasLeastTotalCost=false] - 配送模式是否为总花费最小方案。 
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 号来指定配送中心点和配送目的点，即通过坐标点指定。 
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.nodes - 配送目标集合。 
  * @param {SuperMap.TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  */
 export class FindMTSPPathsParameters {

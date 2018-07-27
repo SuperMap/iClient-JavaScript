@@ -16,13 +16,13 @@ import {LabelOverLengthMode} from '../REST';
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
  * @param {Object} options - 参数。
+ * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。
+ * @param {string} options.labelExpression - 标注字段表达式。
+ * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {SuperMap.ThemeLabelAlongLine} [options.alongLine] - 标签沿线标注方向样式类。
  * @param {SuperMap.ThemeLabelBackground} [options.background] - 标签专题图中标签的背景风格类。
  * @param {SuperMap.ThemeFlow} [options.flow] - 标签专题图标签流动显示与牵引线设置类。
- * @param {Array.<SuperMap.ThemeUniqueItem>} options.items - 分段标签专题图的子项数组。
- * @param {string} options.labelExpression - 标注字段表达式。
  * @param {SuperMap.LabelOverLengthMode} [options.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
- * @param {Array.<SuperMap.LabelMatrixCell>} options.matrixCells - 矩阵标签元素数组。
  * @param {number} [options.maxLabelLength=256] - 标签在每一行显示的最大长度。
  * @param {number} [options.numericPrecision=0] - 通过该字段设置其显示的精度。
  * @param {SuperMap.ThemeOffset} [options.offset] - 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
@@ -78,7 +78,7 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {SuperMap.LabelOverLengthMode} [SuperMap.ThemeLabel.prototype.labelOverLengthMode=SuperMap.LabelOverLengthMode.NONE] - 标签专题图中超长标签的处理模式枚举类。
-         * 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。
+         * @description 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。
          */
         this.labelOverLengthMode = LabelOverLengthMode.NONE;
 
@@ -274,7 +274,7 @@ export class ThemeLabel extends Theme {
      * @function SuperMap.ThemeLabel.fromObj
      * @description 从传入对象获取标签专题图类。
      * @param {Object} obj - 传入对象。
-     * @returns {SuperMap.ThemeLabel} ThemeLabe l对象。
+     * @returns {SuperMap.ThemeLabel} ThemeLabel 对象。
      */
     static fromObj(obj) {
         if (!obj) {

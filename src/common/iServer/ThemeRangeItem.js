@@ -29,15 +29,15 @@ export class ThemeRangeItem {
          * @description 分段专题图子项的终止值，即该段专题值范围的最大值。<br>
          *              如果该子项是分段中最后一个子项，则该终止值应大于分段字段（ThemeRange 类的 rangeExpression 属性）的最大值，若该终止值小于分段字段最大值，
          *              则剩余部分由内部随机定义其颜色；如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常；
-         *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
+         *              如果设置了范围分段模式和分段数，则会自动计算每段的范围 [start, end)，故无需设置 [start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
          */
         this.end = 0;
 
         /**
          * @member {number} [SuperMap.ThemeRangeItem.prototype.start=0]
          * @description 分段专题图子项的起始值，即该段专题值范围的最小值。<br>
-         *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
-         *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
+         *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
+         *              如果设置了范围分段模式和分段数，则会自动计算每段的范围 [start, end)，故无需设置 [start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
          */
         this.start = 0;
 
@@ -81,7 +81,7 @@ export class ThemeRangeItem {
     /**
      * @function SuperMap.ThemeRangeItem.prototypetoServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
-     * @returns {Object} 对应的 JSON 格式对象
+     * @returns {Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -97,8 +97,8 @@ export class ThemeRangeItem {
     /**
      * @function SuperMap.ThemeRangeItem.fromObj
      * @description 从传入对象获取范围分段专题图子项类。
-     * @param {Object} obj - 传入对象
-     * @returns {SuperMap.ThemeRangeItem} ThemeRangeItem 对象
+     * @param {Object} obj - 传入对象。
+     * @returns {SuperMap.ThemeRangeItem} ThemeRangeItem 对象。
      */
     static fromObj(obj) {
         if (!obj) {

@@ -8,7 +8,6 @@ import {SUtil} from './SUtil';
  * @category Visualization Theme
  * @classdesc 多边形。
  * @extends SuperMap.LevelRenderer.Shape
- *
  * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
  *         style: {

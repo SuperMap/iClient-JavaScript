@@ -6,13 +6,13 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class SuperMap.FindClosestFacilitiesParameters
  * @category iServer NetworkAnalyst ClosestFacility
  * @classdesc 最近设施分析参数类。
- * @param {Object} options - 参数。
+ * @param {Object} options - 参数。 
  * @param {(SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number)} options.event - 事件点，一般为需要获得服务设施服务的事件位置。 
- * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。 
  * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置。 
+ * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。 
  * @param {boolean} [options.fromEvent=false] - 是否从事件点到设施点进行查找。 
  * @param {boolean} [options.isAnalyzeById=false] - 事件点和设施点是否通过节点 ID 号来指定。 
- * @param {number} [options.maxWeight=0] - 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。</br>
+ * @param {number} [options.maxWeight=0] - 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。 
  * @param {SuperMap.TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  */
 export class FindClosestFacilitiesParameters {
@@ -57,7 +57,7 @@ export class FindClosestFacilitiesParameters {
         /**
          * @member {number} [SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight=0]
          * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
-         *              例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
+         *              例如事件发生点是一起交通事故，要求查找在 10 分钟内能到达的最近医院，超过 10 分钟能到达的都不予考虑。
          *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
          */
         this.maxWeight = 0;

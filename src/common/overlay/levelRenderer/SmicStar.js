@@ -7,7 +7,6 @@ import {SUtil} from './SUtil';
  * @category Visualization Theme
  * @classdesc n 角星（n>3）。
  * @extends SuperMap.LevelRenderer.Shape
- *
  * @example 
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicStar({
  *         style: {

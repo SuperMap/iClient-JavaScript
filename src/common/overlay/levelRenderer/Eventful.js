@@ -3,7 +3,7 @@
  * @category Visualization Theme
  * @classdesc 事件分发器超类，所有支持事件处理的类均是此类的子类。
  * 此类不可实例化。
- *
+ * @private 
  */
 export class Eventful {
 

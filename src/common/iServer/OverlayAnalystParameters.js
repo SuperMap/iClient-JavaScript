@@ -13,7 +13,7 @@ export class OverlayAnalystParameters {
 
     constructor(options) {
         /**
-         * @member {SuperMap.OverlayOperationType} SuperMap.OverlayAnalystParameters.prototype.operation
+         * @member {SuperMap.OverlayOperationType} [SuperMap.OverlayAnalystParameters.prototype.operation=SuperMap.OverlayOperationType.UNION]
          * @description 指定叠加分析操作类型。
          */
         this.operation = OverlayOperationType.UNION;

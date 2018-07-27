@@ -4,7 +4,7 @@ import {Util} from '../commontypes/Util';
 /**
  * @class SuperMap.SetLayersInfoParameters
  * @category  iServer Map TempLayersSet
- * @classdesc 设置图层信息参数类
+ * @classdesc 设置图层信息参数类。
  * @param {Object} options - 参数。
  * @param {boolean} [options.isTempLayers=false] - 是否是临时图层。
  * @param {string} options.resourceID - 临时图层资源 ID。
@@ -27,7 +27,7 @@ export class SetLayersInfoParameters {
 
         /**
          * @member {Object} SuperMap.SetLayersInfoParameters.prototype.layersInfo
-         * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中 subLayers.layers[i] 图层信息属性进行修改。
+         * @description 要更新的图层信息（包含修改和未修改的所有字段）。该参数可以通过图层信息服务获取，然后对返回值中 subLayers.layers[i] 图层信息属性进行修改。
          */
         this.layersInfo = null;
 

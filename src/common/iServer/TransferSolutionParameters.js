@@ -7,11 +7,11 @@ import {TransferPreference, TransferTactic} from '../REST';
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询参数类。
  * @param {Object} options - 参数。
+ * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|number)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
  * @param {number} [options.solutionCount=6] - 乘车方案的数量。
  * @param {SuperMap.TransferTactic} [options.transferTactic=SuperMap.TransferTactic.LESS_TIME] - 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。
- * @param {SuperMap.TransferPreference} options.transferPreference - 乘车偏好枚举。
+ * @param {SuperMap.TransferPreference} [options.transferPreference=SuperMap.TransferPreference.NONE] - 乘车偏好枚举。
  * @param {number} [options.walkingRatio=10] - 步行与公交的消耗权重比。
- * @param {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|number)>} options.points - 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
  * @param {Array.<number>} [options.evadeLines] - 避让路线的 ID。
  * @param {Array.<number>} [options.evadeStops] - 避让站点的 ID。
  * @param {Array.<number>} [options.priorLines] - 优先路线的 ID。
@@ -28,7 +28,7 @@ export class TransferSolutionParameters {
          */
         this.solutionCount = 6;
         /**
-         * @member {SuperMap.TransferPreference} [SuperMap.TransferSolutionParameters.prototype.transferPreference=TransferPreference|SuperMap.TransferPreference.NONE]
+         * @member {SuperMap.TransferPreference} [SuperMap.TransferSolutionParameters.prototype.transferPreference=SuperMap.TransferPreference.NONE]
          *  @description 乘车偏好枚举。
          */
         this.transferPreference = TransferPreference.NONE;
@@ -41,25 +41,25 @@ export class TransferSolutionParameters {
 
         /**
          *  @member {number} [SuperMap.TransferSolutionParameters.prototype.walkingRatio=10]
-         *  @description 步行与公交的消耗权重比。此值越大，则步行因素对于方案选择的影响越大。例如：
-         *  例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：
-         *  方案1：坐车10公里，走路1公里；
-         *  方案2：坐车15公里，走路0.5公里；
-         *        1. 假设权重比为15：
-         *           •方案1的总消耗为：10 + 1*15 = 25
-         *           •方案2的总消耗为：15 + 0.5*15 = 22.5
-         *           此时方案2消耗更低。
-         *        2. 假设权重比为2：
-         *           •方案1的总消耗为：10+1*2 = 12
-         *           •方案2的总消耗为：15+0.5*2 = 17
-         *           此时方案1消耗更低。
+         *  @description 步行与公交的消耗权重比。此值越大，则步行因素对于方案选择的影响越大。例如：</br>
+         *  例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：</br>
+         *  方案1：坐车 10 公里，走路 1 公里；</br>
+         *  方案2：坐车 15 公里，走路 0.5 公里；</br>
+         *  1. 假设权重比为 15：</br>
+         *     •方案 1 的总消耗为：10 + 1*15 = 25</br>
+         *     •方案 2 的总消耗为：15 + 0.5*15 = 22.5</br>
+         *  此时方案 2 消耗更低。</br>
+         *  2. 假设权重比为2：</br>
+         *     •方案 1 的总消耗为：10+1*2 = 12</br>
+         *     •方案 2 的总消耗为：15+0.5*2 = 17</br>
+         *  此时方案 1 消耗更低。</br>
          */
 
         this.walkingRatio = null;
 
         /**
          *  @member {Array.<(SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point|string)>} SuperMap.TransferSolutionParameters.prototype.points
-         *  @description 两种查询方式：
+         *  @description 两种查询方式：</br>
          *           1. 按照公交站点的起止 ID 进行查询，则 points 参数的类型为 int[]，形如：[起点 ID、终点 ID]，公交站点的 ID 对应服务提供者配置中的站点 ID 字段；
          *           2. 按照起止点的坐标进行查询，则 points 参数的类型为 Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
          */
@@ -111,7 +111,7 @@ export class TransferSolutionParameters {
 
     /**
      * @function SuperMap.TransferSolutionParameters.toJsonParameters
-     * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 JSON 字符串。
+     * @description 将 {@link SuperMap.TransferSolutionParameters} 对象参数转换为 JSON 字符串。
      * @param {SuperMap.TransferSolutionParameters} params - 交通换乘参数。
      * @returns {string} 转化后的 JSON 字符串。
      */

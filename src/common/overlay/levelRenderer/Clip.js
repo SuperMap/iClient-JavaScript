@@ -4,7 +4,7 @@ import {Easing as AEasing} from './Easing';
  * @class  SuperMap.LevelRenderer.Animation.Clip
  * @category Visualization Theme
  * @classdec 动画片段
- *
+ * @private 
  */
 export class Clip {
     

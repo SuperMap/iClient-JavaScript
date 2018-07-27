@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
  * @category iServer NetworkAnalyst BurstAnalyse
  * @classdesc 爆管分析参数类。
  * @param {Object} options - 参数。 
- * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点ID数组。 
+ * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。 
  * @param {number} [options.edgeID] - 指定的弧段ID，edgeID 与 nodeID 必须指定一个。 
  * @param {number} [options.nodeID] - 指定的结点ID，edgeID 与 nodeID 必须指定一个。 
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。
@@ -18,19 +18,19 @@ export class BurstPipelineAnalystParameters {
         var me = this;
         /**
          * @member {Array.<number>} SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs
-         * @description 指定的设施点ID数组。
+         * @description 指定的设施点 ID 数组。
          */
         this.sourceNodeIDs = null;
 
         /**
          * @member {number} [SuperMap.BurstPipelineAnalystParameters.prototype.edgeID]
-         * @description 指定的弧段ID，edgeID 与 nodeID 必须指定一个。 
+         * @description 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。 
          */
         this.edgeID = null;
 
         /**
          * @member {number} [SuperMap.BurstPipelineAnalystParameters.prototype.nodeID]
-         * @description 指定的结点ID，edgeID 与 nodeID 必须指定一个。 
+         * @description 指定的结点 ID，edgeID 与 nodeID 必须指定一个。 
          */
         this.nodeID = null;
 

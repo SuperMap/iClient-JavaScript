@@ -2,7 +2,7 @@
  * @class  SuperMap.LevelRenderer.Tool.Env
  * @category Visualization Theme
  * @classdesc 环境识别
- *
+ * @private 
  */
 export class Env {
     constructor() {

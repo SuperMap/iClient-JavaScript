@@ -66,7 +66,7 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
      * @function SuperMap.SurfaceAnalystService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
      * @param {SuperMap.SurfaceAnalystParameters} params - 表面分析提取操作参数类。
-     * @return {Object} 转化后的JSON字符串。
+     * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {
         var jsonParameters = "";

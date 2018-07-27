@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 换乘路线信息类。
  * @param {Object} options - 参数。
- * @param {number} options.lineID - 乘车路线ID。
+ * @param {number} options.lineID - 乘车路线 ID。
  * @param {string} options.lineName - 乘车路线名称。
  * @param {string} options.lineAliasName - 乘车路线别名。
  * @param {number} options.startStopIndex - 上车站点在本公交路线中的索引。
@@ -22,7 +22,7 @@ export class TransferLine {
         options = options || {};
         /**
          * @member {number} SuperMap.TransferLine.prototype.lineID
-         * @description 乘车路线ID。
+         * @description 乘车路线 ID。
          */
         this.lineID = null;
 
@@ -90,9 +90,9 @@ export class TransferLine {
 
     /**
      * @function SuperMap.TransferLine.fromJson
-     * @description 将返回结果转化为 SuperMap.TransferLine 对象。
+     * @description 将返回结果转化为 {@link SuperMap.TransferLine} 对象。
      * @param {Object} jsonObject - 新的返回结果。
-     * @returns {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。
+     * @returns {SuperMap.TransferLine} 转化后的 {@link SuperMap.TransferLine} 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

@@ -9,12 +9,12 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  *            服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
  *            例如：计算某快餐店能够在30分钟内送达快餐的区域。
  * @param {Object} options - 参数。 
+ * @param {Array.<number>} options.weights - 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 服务站点数组。 
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。 
  * @param {boolean} [options.isCenterMutuallyExclusive=false] - 是否中心点互斥。 
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point|number>} options.centers - 服务站点数组。 
  * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分析。 
- * @param {Array.<number>} options.weights - 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致。 
- * @param {SuperMap.TransportationAnalystParameter} options.parameter - 交通网络分析通用参数。
+ * @param {SuperMap.TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  */
 export class FindServiceAreasParameters {
 

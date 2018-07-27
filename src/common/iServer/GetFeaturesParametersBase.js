@@ -55,7 +55,7 @@ export class GetFeaturesParametersBase {
 
         /**
          * @member {Object} SuperMap.GetFeaturesParametersBase.prototype.aggregations
-         * @description 聚合查询参数，该参数仅支持数据来源 Elasticsearch 服务的数据服务
+         * @description 聚合查询参数，该参数仅支持数据来源 Elasticsearch 服务的数据服务。
          */
         this.aggregations = null;
 

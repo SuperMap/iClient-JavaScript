@@ -12,8 +12,8 @@ import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
  * @category iServer Data
  * @param {Object} options - 参数。 
  * @param {string} options.alias - 数据源别名。 
- * @param {boolean} [options.connect] - 数据源是否自动连接数据。 
  * @param {string} options.dataBase - 数据源连接的数据库名。 
+ * @param {boolean} [options.connect] - 数据源是否自动连接数据。 
  * @param {string} [options.driver] - 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。 
  * @param {SuperMap.EngineType} [options.engineType] - 数据源连接的引擎类型。 
  * @param {boolean} [options.exclusive] - 是否以独占方式打开数据源。 

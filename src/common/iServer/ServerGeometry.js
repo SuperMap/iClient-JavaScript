@@ -15,14 +15,13 @@ import {GeometryType} from '../REST';
  * @private
  * @class SuperMap.ServerGeometry
  * @category  iServer  
- * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
- * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
+ * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
  * @param {Object} options - 参数。
  * @param {string} options.id - 服务端几何对象唯一标识符。
- * @param {SuperMap.ServerStyle} [options.style] - 服务端几何对象的风格。
  * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。
  * @param {Array.<SuperMap.Geometry.Point>} options.points - 组成几何对象的节点的坐标对数组。
  * @param {SuperMap.GeometryType} options.type - 几何对象的类型。
+ * @param {SuperMap.ServerStyle} [options.style] - 服务端几何对象的风格。
  */
 export class ServerGeometry {
 
@@ -36,33 +35,33 @@ export class ServerGeometry {
         
         /**
          * @member {SuperMap.ServerStyle} [SuperMap.ServerGeometry.prototype.style]
-         * @description 服务端几何对象的风格(ServerStyle)。
+         * @description 服务端几何对象的风格（ServerStyle）。
          */
         this.style = null;
 
         /**
          * @member {Array.<number>} SuperMap.ServerGeometry.prototype.parts
-         * @description 服务端几何对象中各个子对象所包含的节点个数。
+         * @description 服务端几何对象中各个子对象所包含的节点个数。<br>
          * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
          * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
          * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
-         * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。
+         * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。<br>
          * 2.通常情况，一个简单几何对象的子对象就是它本身，
          * 因此对于简单对象来说的该字段为长度为1的整型数组，
          * 该字段的值就是这个简单对象节点的个数。
          * 如果一个几何对象是由几个简单对象组合而成的，
-         * 例如，一个岛状几何对象由3个简单的多边形组成而成，
-         * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，
+         * 例如，一个岛状几何对象由 3 个简单的多边形组成而成，
+         * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为 3 的整型数组，
          * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
          */
         this.parts = null;
 
         /**
          * @member {Array.<SuperMap.Geometry.Point>} SuperMap.ServerGeometry.prototype.points
-         * @description 组成几何对象的节点的坐标对数组。
+         * @description 组成几何对象的节点的坐标对数组。<br>
          * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
          * 该字段存放了组成几何对象的点坐标的数组。
-         * 对于简单的面对象，他的起点和终点的坐标点相同。
+         * 对于简单的面对象，他的起点和终点的坐标点相同。<br>
          * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，
          * 从而确定 Points 字段中坐标对的分配归属问题。
          */
@@ -70,13 +69,13 @@ export class ServerGeometry {
 
         /**
          * @member {SuperMap.GeometryType} SuperMap.ServerGeometry.prototype.type
-         * @description 几何对象的类型(GeometryType)。
+         * @description 几何对象的类型（GeometryType）。
          */
         this.type = null;
 
         /**
          * @member {Object} SuperMap.ServerGeometry.prototype.prjCoordSys
-         * @description 投影坐标参数,现仅在缓冲区分析中有效。
+         * @description 投影坐标参数，现仅在缓冲区分析中有效。
          */
         this.prjCoordSys = null;
         if (options) {
@@ -477,7 +476,7 @@ export class ServerGeometry {
     /**
      * @function SuperMap.ServerGeometry.prototype.fromJson
      * @description 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
-     * @params {Object} jsonObject - 要转换的 JSON 对象。
+     * @param {Object} jsonObject - 要转换的 JSON 对象。
      * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
      */
     static fromJson(jsonObject) {
@@ -501,8 +500,8 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.fromGeometry
-     * @description 将客户端Geometry转换成服务端ServerGeometry。
-     * @params {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
+     * @description 将客户端 Geometry 转换成服务端 ServerGeometry。
+     * @param {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
      * @returns {SuperMap.ServerGeometry} 转换后的 ServerGeometry 对象。
      */
     static fromGeometry(geometry) {
@@ -584,9 +583,9 @@ export class ServerGeometry {
 
     /**
      * @function SuperMap.ServerGeometry.prototype.IsClockWise
-     * @description 判断linearRing中的点的顺序。返回值大于0，逆时针；小于0，顺时针。
-     * @params {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
-     * @returns {number} 返回值大于0，逆时针；小于0，顺时针。
+     * @description 判断 linearRing 中的点的顺序。返回值大于 0，逆时针；小于 0，顺时针。
+     * @param {SuperMap.Geometry} geometry - 要转换的客户端 Geometry 对象。
+     * @returns {number} 返回值大于 0，逆时针；小于 0，顺时针。
      */
     static IsClockWise(points) {
         var length = points.length;

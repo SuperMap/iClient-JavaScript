@@ -7,20 +7,20 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @category  iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 反距离加权插值（IDW）分析参数类。
  * @param {Object} options - 参数。
- * @param {number} [options.power=2] - 距离权重计算的幂次。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。 
  * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。 
- * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。</br>
- * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
- * @param {string} options.zValueFieldName - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时。 
- * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。</br>
- * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
- * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。</br>
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。 
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。 
- * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。</br>
- * @param {string} options.dataset - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} options.inputPoints - 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ * @param {string} [options.zValueFieldName] - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，此为必选参数。
+ * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。
+ * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置查找半径，即参与运算点的查找范围，与点数据集单位相同。 
+ * @param {number} [options.power=2] - 距离权重计算的幂次。 
+ * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。 
+ * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。 
+ * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。 
+ * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。 
+ * @param {string} [options.dataset] - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。 
+ * @param {Array.<SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。 
  * @extends {SuperMap.InterpolationAnalystParameters}
  * @example 例如：
  * var myInterpolationIDWAnalystParameters = new SuperMap.InterpolationIDWAnalystParameters({
@@ -54,7 +54,7 @@ export class InterpolationIDWAnalystParameters extends InterpolationAnalystParam
 
         /**
          * @member {SuperMap.SearchMode} SuperMap.InterpolationIDWAnalystParameters.prototype.searchMode
-         * @description 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。必设参数。
+         * @description 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。 
          * 具体如下：
          * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
          * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。

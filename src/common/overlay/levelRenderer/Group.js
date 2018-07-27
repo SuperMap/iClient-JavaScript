@@ -8,7 +8,7 @@ import {Transformable} from './Transformable';
  * @category Visualization Theme
  * @classdesc Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
  * @extends {SuperMap.LevelRenderer.Transformable}
- *
+ * @private 
  * (code)
  *     var g = new SuperMap.LevelRenderer.Group();
  *     var Circle = new SuperMap.LevelRenderer.Shape.Circle();

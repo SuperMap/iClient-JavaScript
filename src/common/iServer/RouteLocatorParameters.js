@@ -11,10 +11,8 @@ import './Route';
  * 如果用户两种参数均设置，优先选择 Dataset 方式。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Route|L.Polyline|ol.geom.LineString)} options.sourceRoute - 路由对象。
- * @param {string} [options.type] -  类型：点 or 线。可选值为:
- *                                   LINE:根据起始 M 值及终止 M 值定位线对象。
- *                                   POINT:根据 M 值定位点对象。
  * @param {float} options.measure - 定位点的 M 值。只当路由对象定位点时有意义。
+ * @param {string} [options.type] -  类型：点 or 线。
  * @param {float} [options.offset=0] - 定位点偏移量。只当路由对象定位点时有意义。
  * @param {boolean} [options.isIgnoreGap=false] - 是否忽略子对象之间的距离。即不忽略子对象之间的距离。
  * @param {float} [options.startMeasure] - 定位线的起始 M 值。只当路由对象定位线时有意义。

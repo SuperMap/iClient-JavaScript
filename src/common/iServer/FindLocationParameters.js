@@ -6,11 +6,11 @@ import {Util} from '../commontypes/Util';
  * @category iServer NetworkAnalyst Location
  * @classdesc 选址分区分析参数类。
  * @param {Object} options - 参数。 
- * @param {number} [options.expectedSupplyCenterCount=1] - 期望用于最终设施选址的资源供给中心数量。 
- * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分配资源。 
- * @param {Array.<SuperMap.SupplyCenter>} options.supplyCenters - 资源供给中心集合。 
  * @param {string} options.turnWeightField - 转向权值字段的名称。 
  * @param {string} options.weightName - 阻力字段的名称，标识了进行网络分析时所使用的阻力字段。
+ * @param {Array.<SuperMap.SupplyCenter>} options.supplyCenters - 资源供给中心集合。 
+ * @param {number} [options.expectedSupplyCenterCount=1] - 期望用于最终设施选址的资源供给中心数量。 
+ * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分配资源。 
  */
 export class FindLocationParameters {
 

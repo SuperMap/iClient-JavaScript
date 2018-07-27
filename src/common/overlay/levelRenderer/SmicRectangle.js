@@ -6,7 +6,6 @@ import {Shape} from './Shape';
  * @category Visualization Theme
  * @classdesc 矩形。
  * @extends SuperMap.LevelRenderer.Shape
- *
  * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
  *         style: {

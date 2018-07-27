@@ -4,7 +4,7 @@ import {Vector} from './Vector';
  * @class  SuperMap.LevelRenderer.Tool.Curve
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-曲线
- *
+ * @private 
  */
 export class Curve {
     

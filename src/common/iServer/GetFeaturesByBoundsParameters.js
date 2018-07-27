@@ -10,11 +10,11 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
  * @classdesc 数据集范围查询参数类，该类用于设置数据集范围查询的相关参数。
  * @param {Object} options - 参数。 
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.bounds - 用于查询的范围对象。 
+ * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。 
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。 
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。 
  * @param {SuperMap.SpatialQueryMode} [options.spatialQueryMode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式常量。 
  * @param {SuperMap.FilterParameter} [options.queryParameter] - 查询过滤条件参数。 
- * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。 
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。 
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。 
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。 
@@ -83,9 +83,9 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
 
     /**
      * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
-     * @description 将SuperMap.GetFeaturesByBoundsParameters对象参数转换为JSON字符串。
+     * @description 将 {@link SuperMap.GetFeaturesByBoundsParameters} 对象参数转换为 JSON 字符串。
      * @param {SuperMap.GetFeaturesByBoundsParameters} params - 范围查询参数。
-     * @returns {string} 转化后的JSON字符串。
+     * @returns {string} 转化后的 JSON 字符串。
      *
      */
     static toJsonParameters(params) {

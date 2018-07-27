@@ -6,7 +6,7 @@ import './FilterParameter';
 /**
  * @class SuperMap.GetFeaturesBySQLParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据服务中数据集SQL查询参数类。
+ * @classdesc 数据服务中数据集 SQL 查询参数类。
  * @param {Object} options - 参数。 
  * @param {SuperMap.FilterParameter} options.queryParameter - 查询过滤条件参数。 
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。 
@@ -21,13 +21,13 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
     constructor(options) {
         super(options);
         /**
-         * @function {string} SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode
+         * @member {string} SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode
          * @description 数据集查询模式。
          */
         this.getFeatureMode = "SQL";
 
         /**
-         * @function {SuperMap.FilterParameter} SuperMap.GetFeaturesBySQLParameters.prototype.queryParameter
+         * @member {SuperMap.FilterParameter} SuperMap.GetFeaturesBySQLParameters.prototype.queryParameter
          * @description 查询过滤条件参数类。
          */
         this.queryParameter = null;
@@ -55,7 +55,7 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
      * @function SuperMap.GetFeaturesBySQLParameters.prototype.toJsonParameters
      * @description 将 SuperMap.GetFeaturesBySQLParameters 对象转换为 JSON 字符串。
      * @param {SuperMap.GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数对象。
-     * @returns {string} 转化后的 JSON字符串。
+     * @returns {string} 转化后的 JSON 字符串。
      */
     static toJsonParameters(params) {
         var paramsBySql = {

@@ -11,10 +11,10 @@ import {ServerGeometry} from './ServerGeometry';
  * @classdesc 数据集叠加分析参数类。
  * @param {Object} options - 参数。 
  * @param {string} options.operateDataset - 叠加分析中操作数据集的名称。 
+* @param {string} options.sourceDataset - 叠加分析中源数据集的名称。 
  * @param {Array.<string>} [options.operateDatasetFields] - 叠加分析中操作数据集保留在结果数据集中的字段名列表。 
  * @param {SuperMap.FilterParameter} [options.operateDatasetFilter] - 设置操作数据集中空间对象过滤条件。 
- * @param {Array.<SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以operateDataset 为准。 
- * @param {string} options.sourceDataset - 叠加分析中源数据集的名称。 
+ * @param {Array.<SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。 
  * @param {Array.<string>} [options.sourceDatasetFields] - 叠加分析中源数据集保留在结果数据集中的字段名列表。 
  * @param {SuperMap.FilterParameter} [options.sourceDatasetFilter] - 设置源数据集中空间对象过滤条件。 
  * @param {number} [options.tolerance=0] - 容限。 
@@ -47,15 +47,14 @@ export class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {Array.<SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon>} [SuperMap.DatasetOverlayAnalystParameters.prototype.operateRegions]
-         * @description 操作面对象集合，表示与这些面对象进行叠加分析。 
-         * 与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
+         * @description 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
          */
         this.operateRegions = [];
 
 
         /**
          * @member {string} SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDataset
-         * @description 叠加分析中源数据集的名称。必设字段。
+         * @description 叠加分析中源数据集的名称。
          */
         this.sourceDataset = null;
 

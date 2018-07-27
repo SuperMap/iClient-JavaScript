@@ -38,7 +38,7 @@ export class ThemeDotDensity extends Theme {
 
         /**
          * @member {number} SuperMap.ThemeDotDensity.prototype.value
-         * @description 专题图中每一个点所代表的数值。
+         * @description 专题图中每一个点所代表的数值。<br>
          *              点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，
          *              点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，
          *              点值相应就应该设置的小一些。点值过大或过小都是不合适的。

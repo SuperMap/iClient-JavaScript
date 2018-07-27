@@ -12,7 +12,6 @@ import {UGCSubLayer} from './UGCSubLayer';
 /**
  * @class SuperMap.ServerTheme
  * @category  iServer Map Theme
- * @description UGC 专题图图层类类构造函数。
  * @classdesc UGC 专题图图层类。
  * @extends {SuperMap.UGCSubLayer}
  * @param {SuperMap.Theme} theme - 专题图对象。
@@ -53,7 +52,7 @@ export class ServerTheme extends UGCSubLayer {
 
     /**
      * @function SuperMap.ServerTheme.prototype.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象
+     * @description 将服务端 JSON 对象转换成当前客户端对象
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {

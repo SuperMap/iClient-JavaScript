@@ -8,7 +8,6 @@ import {SUtil} from './SUtil';
  * @category Visualization Theme
  * @classdesc 折线(ic)。
  * @extends SuperMap.LevelRenderer.Shape
- *
  * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
  *         style: {

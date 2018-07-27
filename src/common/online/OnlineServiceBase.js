@@ -22,7 +22,7 @@ export class OnlineServiceBase {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求 online 服务
-     * @param {string} [method='GET'] - 请求方式, 'get','put','post','delete'。
+     * @param {string} [method='GET'] - 请求方式, 'GET', 'PUT', 'POST', 'DELETE'。
      * @param {string} url - 服务地址。
      * @param {Object} param - URL 查询参数。
      * @param {Object} [requestOptions] - http 请求参数, 比如请求头，超时时间等。

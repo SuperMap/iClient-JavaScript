@@ -2,6 +2,7 @@
  * @class  SuperMap.LevelRenderer.Animation.easing
  * @category Visualization Theme
  * @classdesc 缓动
+ * @private 
  */
 // 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
 // http://sole.github.io/tween.js/examples/03_graphs.html

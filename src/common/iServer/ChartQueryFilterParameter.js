@@ -6,11 +6,11 @@ import {Util} from '../commontypes/Util';
  * @category  iServer Map Chart
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
  * @param {Object} options - 参数。 
+ * @param {string} options.attributeFilter - 属性字段过滤条件。 
+ * @param {number} options.chartFeatureInfoSpecCode - 查询的物标代号。
  * @param {boolean} [options.isQueryPoint] - 是否查询点。 
  * @param {boolean} [options.isQueryLine] - 是否查询线。 
  * @param {boolean} [options.isQueryRegion] - 是否查询面。 
- * @param {string} options.attributeFilter - 属性字段过滤条件。 
- * @param {number} options.chartFeatureInfoSpecCode - 查询的物标代号。
  */
 export class ChartQueryFilterParameter {
 

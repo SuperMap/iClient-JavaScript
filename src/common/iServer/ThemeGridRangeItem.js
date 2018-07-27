@@ -9,8 +9,8 @@ import {ServerColor} from './ServerColor';
  * @description 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
  *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
  * @param {Object} options - 参数。
- * @param {string} [options.caption] - 栅格分段专题图子项的标题。
  * @param {SuperMap.ServerColor} options.color - 栅格分段专题图中每一个分段专题图子项的对应的颜色。
+ * @param {string} [options.caption] - 栅格分段专题图子项的标题。
  * @param {number} [options.end=0] - 栅格分段专题图子项的终止值。
  * @param {number} [options.start=0] - 栅格分段专题图子项的起始值。
  * @param {boolean} [options.visible=true] - 栅格分段专题图子项是否可见。

@@ -11,10 +11,10 @@ import {Geometry} from '../commontypes/Geometry';
  * @classdesc 数据集表面分析参数类。该类对数据集表面分析所用到的参数进行设置。
  * @param {Object} options - 参数。 
  * @param {string} options.dataset - 要用来做数据集表面分析的数据源中数据集的名称。 
- * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 获取或设置查询过滤条件参数。 
  * @param {string} options.zValueFieldName - 获取或设置用于提取操作的字段名称。 
- * @param {SuperMap.SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。获取或设置表面分析参数。 
  * @param {integer} options.resolution - 获取或设置指定中间结果（栅格数据集）的分辨率。 
+ * @param {SuperMap.SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。获取或设置表面分析参数。 
+ * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 获取或设置查询过滤条件参数。 
  * @param {SuperMap.DataReturnOption} [options.resultSetting] - 结果返回设置类。 
  * @param {SuperMap.SurfaceAnalystMethod} [options.surfaceAnalystMethod=SuperMap.SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，提取等值线和提取等值面。 
  * @extends {SuperMap.SurfaceAnalystParameters}
@@ -26,8 +26,7 @@ export class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
         super(options);
         /**
          * @member {string} SuperMap.DatasetSurfaceAnalystParameters.prototype.dataset
-         * @description 要用来做数据集表面分析的数据源中数据集的名称。
-         * 该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：Country@World。必设字段。
+         * @description 要用来做数据集表面分析的数据源中数据集的名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：Country@World。
          */
         this.dataset = null;
 
@@ -39,8 +38,7 @@ export class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
 
         /**
          * @member {string} SuperMap.DatasetSurfaceAnalystParameters.prototype.zValueFieldName
-         * @description 获取或设置用于提取操作的字段名称。
-         * 提取等值线时，将使用该字段中的值，对点记录集中的点数据进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
+         * @description 获取或设置用于提取操作的字段名称。提取等值线时，将使用该字段中的值，对点记录集中的点数据进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
          */
         this.zValueFieldName = null;
 

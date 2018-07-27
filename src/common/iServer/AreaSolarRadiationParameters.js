@@ -19,8 +19,8 @@ import {Util} from '../commontypes/Util';
  * @param {number} [options.hourStart] - 起始时间（一天中的第几个小时）。 
  * @param {number} [options.hourEnd] - 结束时间（一天中的第几个小时）。 
  * @param {number} [options.transmittance] - 太阳辐射穿过大气的透射率。 
- * @param {number} [options.hourInterval=0.5] - 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）。 
- * @param {number} [options.dayInterval=5] - 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）。 
+ * @param {number} [options.hourInterval=0.5] - 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确，如果修改此参数，必须使用整数）。 
+ * @param {number} [options.dayInterval=5] - 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确，必须使用整数）。 
  * @param {boolean} [options.deleteExistResultDataset=false] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
  */
 export class AreaSolarRadiationParameters {
@@ -28,19 +28,19 @@ export class AreaSolarRadiationParameters {
     constructor(options) {
         /**
          *  @member {string} SuperMap.AreaSolarRadiationParameters.prototype.dataset
-         *  @description 要用来做地区太阳辐射数据源中数据集的名称（必设参数）。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。注：地区太阳辐射数据必须为栅格数据集。
+         *  @description 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如“数据集名称@数据源别名”形式来表示，例如：JingjinTerrain@Jingjin。注：地区太阳辐射数据必须为栅格数据集。
          */
         this.dataset = null;
 
         /**
          * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.targetDatasourceName
-         * @description 指定的存储结果数据集的数据源名称（必设参数），例如："Jingjin"。
+         * @description 指定的存储结果数据集的数据源名称，例如："Jingjin"。
          */
         this.targetDatasourceName = null;
 
         /**
          * @member {string} SuperMap.AreaSolarRadiationParameters.prototype.totalGridName
-         * @description 指定地区太阳辐射总辐射量数据集的名称（必设参数）。
+         * @description 指定地区太阳辐射总辐射量数据集的名称。
          */
         this.totalGridName = null;
 
@@ -76,13 +76,13 @@ export class AreaSolarRadiationParameters {
 
         /**
          *  @member {number} SuperMap.AreaSolarRadiationParameters.prototype.dayStart
-         *  @description 起始日期（年内的第几天），必设参数。
+         *  @description 起始日期（年内的第几天）。
          */
         this.dayStart = null;
 
         /**
          *  @member {number} SuperMap.AreaSolarRadiationParameters.prototype.dayEnd
-         * @description 结束日期（年内的第几天），必设参数。
+         * @description 结束日期（年内的第几天）。
          */
         this.dayEnd = null;
 
@@ -118,7 +118,7 @@ export class AreaSolarRadiationParameters {
 
         /**
          * @member {boolean} [SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset=false]
-         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。\
+         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
          */
         this.deleteExistResultDataset = false;
 

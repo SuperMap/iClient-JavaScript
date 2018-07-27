@@ -9,9 +9,9 @@ import {ServerColor} from './ServerColor';
  * @classdesc 服务端文本风格类。
  * @description 该类用于定义文本风格的相关属性。
  * @param {Object} options - 参数。
- * @param {SuperMap.TextAlignment} [options.align] - 文本的对齐方式。
- * @param {SuperMap.ServerColor} [options.backColor=（255, 255, 255）] - 文本的背景色。
- * @param {SuperMap.ServerColor} [options.foreColor=（0,0,0）] - 文本的前景色。
+ * @param {SuperMap.TextAlignment} [options.align=SuperMap.TextAlignment.BASELINECENTER] - 文本的对齐方式。
+ * @param {SuperMap.ServerColor} [options.backColor] - 文本的背景色。默认 backColor = new ServerColor(255, 255, 255)。
+ * @param {SuperMap.ServerColor} [options.foreColor] - 文本的前景色。默认 foreColor = new ServerColor(0, 0, 0)。
  * @param {boolean} [options.backOpaque=false] - 文本背景是否不透明。
  * @param {boolean} [options.sizeFixed=true] - 文本大小是否固定。
  * @param {number} [options.fontHeight=6] - 文本字体的高度。

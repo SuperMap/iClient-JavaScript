@@ -25,7 +25,7 @@ export class ThemeGridRange extends Theme {
         super("GRIDRANGE", options);
         /**
          * @member {Array.<SuperMap.ThemeGridRangeItem>} SuperMap.ThemeGridRange.prototype.items
-         * @description 栅格分段专题图子项数组。
+         * @description 栅格分段专题图子项数组。<br>
          *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
          *              本类用来设置每个栅格范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
          */
@@ -33,7 +33,7 @@ export class ThemeGridRange extends Theme {
 
         /**
          * @member {SuperMap.RangeMode} [SuperMap.ThemeGridRange.prototype.rangeMode=SuperMap.RangeMode.EQUALINTERVAL]
-         * @description 分段专题图的分段模式。
+         * @description 分段专题图的分段模式。<br>
          *              在栅格分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段。
          *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
          *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
@@ -42,7 +42,7 @@ export class ThemeGridRange extends Theme {
 
         /**
          * @member {number} [SuperMap.ThemeGridRange.prototype.rangeParameter=0]
-         * @description 分段参数。
+         * @description 分段参数。<br>
          *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
          *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。
          */
@@ -50,7 +50,7 @@ export class ThemeGridRange extends Theme {
 
         /**
          * @member {SuperMap.ColorGradientType} [SuperMap.ThemeGridRange.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
-         * @description 渐变颜色枚举类
+         * @description 渐变颜色枚举类。
          *
          */
         this.colorGradientType = ColorGradientType.YELLOW_RED;

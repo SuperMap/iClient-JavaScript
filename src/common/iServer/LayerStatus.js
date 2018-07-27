@@ -34,7 +34,7 @@ export class LayerStatus {
 
         /**
          * @member {Object} [SuperMap.LayerStatus.prototype.fieldValuesDisplayFilter]
-         * @property {Array.<number>} values - 就是要过滤的值。
+         * @property {Array.<number>} values - 要过滤的值。
          * @property {string} fieldName - 要过滤的字段名称只支持数字类型的字段。
          * @property {string} fieldValuesDisplayMode - 目前有两个 DISPLAY/DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素。
          */

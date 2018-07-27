@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @classdesc 站点查询参数类。
  * @param {Object} options - 参数。
  * @param {string} options.keyWord - 站点名称关键字。
- * @param {boolean} [options.returnPosition=false]- 是否返回站点坐标信息。
+ * @param {boolean} [options.returnPosition=false] - 是否返回站点坐标信息。
  */
 export class StopQueryParameters {
 

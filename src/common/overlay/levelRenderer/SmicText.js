@@ -6,7 +6,6 @@ import {SUtil} from './SUtil';
  * @class  SuperMap.LevelRenderer.Shape.SmicText
  * @category Visualization Theme
  * @extends {SuperMap.LevelRenderer.Shape}
- *
  * @example
  *   var shape = new SuperMap.LevelRenderer.Shape.SmicText({
  *         style: {

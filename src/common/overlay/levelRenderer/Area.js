@@ -5,7 +5,7 @@ import {Curve} from './Curve';
  * @class  SuperMap.LevelRenderer.Tool.Area
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-图形范围判断
- *
+ * @private 
  */
 export class Area {
     
