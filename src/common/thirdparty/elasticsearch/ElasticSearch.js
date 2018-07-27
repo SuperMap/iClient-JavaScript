@@ -9,10 +9,10 @@ import {Util} from "../../commontypes/Util";
  * @category ElasticSearch
  * @param {string} url - ElasticSearch服务地址。
  * @param {Object} options - 参数。
- * @param {function} options.change - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
- * @param {boolean} options.openGeoFence - 是否开启地理围栏验证，默认为不开启。
- * @param {function} options.outOfGeoFence - 数据超出地理围栏后执行的函数。
- * @param {Object} options.geoFence - 地理围栏。
+ * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
+ * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
+ * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
+ * @param {Object} [options.geoFence] - 地理围栏。
  */
 
 export class ElasticSearch {
@@ -33,23 +33,23 @@ export class ElasticSearch {
         });
         /**
          *  @deprecated
-         *  @member {function} SuperMap.ElasticSearch.prototype.change
+         *  @member {function} [SuperMap.ElasticSearch.prototype.change]
          *  @description 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
          */
         this.change = null;
         /**
-         *  @member {boolean} SuperMap.ElasticSearch.prototype.openGeoFence
+         *  @member {boolean} [SuperMap.ElasticSearch.prototype.openGeoFence=false]
          *  @description 是否开启地理围栏验证，默认为不开启。
          */
         this.openGeoFence = false;
         /**
-         *  @member {function} SuperMap.ElasticSearch.prototype.outOfGeoFence
+         *  @member {function} [SuperMap.ElasticSearch.prototype.outOfGeoFence]
          *  @description 数据超出地理围栏后执行的函数
          */
         this.outOfGeoFence = null;
 
         /**
-         * @member {Object} SuperMap.ElasticSearch.prototype.geoFence
+         * @member {Object} [SuperMap.ElasticSearch.prototype.geoFence]
          * @description 地理围栏
          * @example {
      *    radius: 1000,//单位是m
