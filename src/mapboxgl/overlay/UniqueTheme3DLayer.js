@@ -62,7 +62,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     /**
      * @function mapboxgl.supermap.UniqueTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式。
-     * @returns {Object} mapboxgl 样式对象。
+     * @returns {Object} Mapbox GL 样式对象。
      */
     getHighlightStyleOptions() {
         var color = (this.highlight && this.highlight.color != null) ? this.highlight.color : '#ADA91E';

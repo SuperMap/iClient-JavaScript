@@ -122,7 +122,7 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.createThematicFeature
      * @description  向专题图图层中添加数据, 支持的 feature 类型为:iServer 返回的 feature json 对象。
-     * @param {Object} feature - 待填加得要素。
+     * @param {Object} feature - 待添加的要素。
      *
      */
     createThematicFeature(feature) {

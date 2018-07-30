@@ -17,7 +17,7 @@ import {FeatureTheme} from '@supermap/iclient-common';
  * @param {string} opt_options.themeFields - 指定创建专题图字段。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {string} [opt_options.chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
- * @param {Object} [opt_options.symbolSetting] - 各类型图表的 symbolSetting 对象可设属性请参考具体图表模型类的注释中对 symbolSetting 对象可设属性的描述。symbolSetting 对象通常都具有以下 5 个基础可设属性:</br>
+ * @param {Object} [opt_options.symbolSetting] - 各类型图表的 symbolSetting 对象可设属性请参考具体图表模型类的注释中对 symbolSetting 对象可设属性的描述。symbolSetting 对象通常都具有以下 5 个基础可设属性:
  * @param {number} [opt_options.symbolSetting.width] - 专题要素（图表）宽度。
  * @param {number} [opt_options.symbolSetting.height] - 专题要素（图表）高度。
  * @param {Array.<number>} opt_options.symbolSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。

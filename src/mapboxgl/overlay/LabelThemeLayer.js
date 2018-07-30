@@ -57,8 +57,8 @@ export class Label extends GeoFeature {
          * @description 分组样式。使用此属性需要设置 themeField 属性。</br>
          *              1.没有同时设置 themeField 和 styleGroups，则所有专题要素都使用本图层的 style 进行渲染；</br>
          *              2.同时设置 themeField 和 styleGroups，则按照 themeField 指定的字段名称获取用户数据（feature）attributes 中对应的属性值；</br>
-         *                  a.如果属性值等于 styleGroups 数组里某个元素定义的 value 值，则此专题要素取 styleGroups 数组中该元素定义的 style 进行渲染。</br>
-         *                  b.如果属性值不等于 styleGroups 数组里任何元素定义的 value 值，则此专题要素按照本图层的 style 进行渲染。</br>
+         *               &nbsp;&nbsp;a.如果属性值等于 styleGroups 数组里某个元素定义的 value 值，则此专题要素取 styleGroups 数组中该元素定义的 style 进行渲染。</br>
+         *               &nbsp;&nbsp;b.如果属性值不等于 styleGroups 数组里任何元素定义的 value 值，则此专题要素按照本图层的 style 进行渲染。</br>
          *              此数组每个元素对象必须有两个属性：value : 与字段 themeField 相对应的属性值；style：专题要素 style。
          */
         this.styleGroups = null;
