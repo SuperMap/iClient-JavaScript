@@ -1,10 +1,7 @@
-﻿$(document).ready(function () {
-
-    initI18N();
-    bindEvents();
+﻿
 
     //目前只支持中英文
-    function initI18N() {
+    window.initI18N= function (callback){
         var path = getCommonScriptPath();
         Localization.initializeI18N(path, function () {
             if (window.isSite) {
@@ -13,7 +10,9 @@
             $('html').attr("lang", utils.getLanguage());
             Localization.localize();
             onLoadCallBack(); //设置标题栏当前语言
+            callback && callback();
         });
+        bindEvents();
     }
 
     function onLoadCallBack() {
@@ -114,5 +113,3 @@
         }
         return relativePath;
     }
-
-});

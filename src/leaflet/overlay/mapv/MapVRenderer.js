@@ -239,9 +239,9 @@ export class MapVRenderer extends BaseLayer {
 
         //获取屏幕左上角的地理坐标坐标
         //左上角屏幕坐标为0,0
-        var lopLeft = this.canvasLayer.getTopLeft();
+        var topLeft = this.canvasLayer.getTopLeft();
 
-        var lopLeftPX = map.latLngToAccurateContainerPoint(lopLeft);
+        var topLeftPX = map.latLngToAccurateContainerPoint(topLeft);
         // var lopLeft = map.containerPointToLatLng([0, 0]);
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
@@ -250,13 +250,13 @@ export class MapVRenderer extends BaseLayer {
                     offset = map.latLngToAccurateContainerPoint(L.latLng(coordinate[1], coordinate[0]));
                 } else {
                     offset = {
-                        'x': (coordinate[0] - lopLeft.lng) / resolutionX,
-                        'y': (lopLeft.lat - coordinate[1]) / resolutionY
+                        'x': (coordinate[0] - topLeft.lng) / resolutionX,
+                        'y': (topLeft.lat - coordinate[1]) / resolutionY
                     };
                 }
                 var pixel = {
-                    x: offset.x - lopLeftPX.x,
-                    y: offset.y - lopLeftPX.x
+                    x: offset.x - topLeftPX.x,
+                    y: offset.y - topLeftPX.x
                 };
                 return [pixel.x, pixel.y];
             }
@@ -277,8 +277,8 @@ export class MapVRenderer extends BaseLayer {
 
         var worldPoint = map.latLngToContainerPoint(L.latLng(0, 0));
         var pixel = {
-            x: worldPoint.x - centerPx.x,
-            y: worldPoint.y - centerPx.y
+            x: worldPoint.x - topLeftPX.x,
+            y: worldPoint.y - topLeftPX.y
         };
         this.drawContext(context, data, self.options, pixel);
 
