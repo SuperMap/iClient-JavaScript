@@ -26,15 +26,15 @@ import {LonLat} from '../commontypes/LonLat';
  * @classdesc 矢量专题要素类。
  * @category Visualization Theme
  * @extends SuperMap.Feature.Theme
- * @param {SuperMap.Feature.Vector} data - 用户数据，矢量专题要素的类型为矢量数据 feature。
+ * @param {SuperMap.Feature.Vector} data - 用户数据，的类型为矢量数据 feature。
  * @param {SuperMap.Layer} layer - 此专题要素所在图层。
  * @param {Object} style - 样式。
  * @param {Object} options - 创建专题要素时的可选参数。
- * @param {number} [nodesClipPixel=2] - 节点抽稀像素距离, 单位：像素。
- * @param {boolean} [isHoverAble=true] - 图形是否可 hover。
- * @param {boolean} [isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
- * @param {boolean} [isClickAble=true] - 图形是否可点击。
- * @param {Object} highlightStyle - 高亮样式。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离, 单位：像素。
+ * @param {boolean} [options.isHoverAble=true] - 图形是否可 hover。
+ * @param {boolean} [options.isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
+ * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
+ * @param {Object} [options.highlightStyle] - 高亮样式。
  */
 export class ThemeVector extends Theme {
 
@@ -79,7 +79,7 @@ export class ThemeVector extends Theme {
         this.isClickAble = true;
 
         /**
-         * @member {Object} - SuperMap.Feature.Theme.Vector.prototype.highlightStyle
+         * @member {Object} - [SuperMap.Feature.Theme.Vector.prototype.highlightStyle]
          * @description 高亮样式。
          */
         this.highlightStyle = null;

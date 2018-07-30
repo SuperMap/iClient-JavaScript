@@ -25,7 +25,7 @@ export class RankSymbol extends Graph {
         /**
          * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
          * @description 符号配置对象，该对象控制着图表的可视化显示。
-         * 下面是此配置对象的 5 个基础可设属性：
+         * 下面是此配置对象的 5 个基础可设属性：<br>
          * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
          * @param {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
          * @param {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
