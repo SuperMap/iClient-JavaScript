@@ -21,6 +21,13 @@
     color: #FFFFFF;
 }
 
+.pre-release {
+    font-size: 18px;
+    color: #FFFFFF;
+    vertical-align: super;
+    margin-left: 5px;
+}
+
 #suffix-title {
     font-size: 16px;
     color: #FFFFFF;
@@ -394,6 +401,10 @@ ul.icl-nav-menu-sub:nth-child(1) {
         font-size: 20px;
     }
 
+    .pre-release {
+        font-size: 14px;
+    }
+
     .navbar-brand {
         padding-right: 10px !important;
     }
@@ -456,6 +467,10 @@ ul.icl-nav-menu-sub:nth-child(1) {
         font-size: 14px;
     }
 
+    .pre-release {
+        font-size: 8px;
+    }
+
     /*尺寸小于510时,利用按钮展开的头部选项的样式*/
     .navbar-custom-menu .navbar-nav > li > a {
         padding: 12px;
@@ -499,6 +514,9 @@ ul.icl-nav-menu-sub:nth-child(1) {
         font-size: 11px;
     }
 
+    .pre-release {
+        font-size: 5px;
+    }
     .navbar-toggle {
         padding-left: 10px;
         padding-right: 10px;

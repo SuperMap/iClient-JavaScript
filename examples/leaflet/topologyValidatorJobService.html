@@ -118,7 +118,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        layer = L.supermap.imageMapLayer(mapUrl, {noWrap: true, transparent: true});
+                        layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
                         layer.addTo(map);
                         widgets.loader.removeLoader();
                     });
