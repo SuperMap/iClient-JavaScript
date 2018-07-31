@@ -98,5 +98,56 @@ DefaultStyleConfiguration = {
     'fontWeight': "bold",
 
     /*字体样式*/
-    'fontStyle': ""
+    'fontStyle': "",
+
+    /*衬线类型*/
+    'surroundType': 0,
+
+    /*衬线颜色*/
+    'surroundLineColor': "#ffff00",
+
+    /*衬线线宽*/
+    'surroundLineWidth': 4,
+
+    /*衬线透明度*/
+    'surroundLineColorOpacity': 1,
+
+    /*填充背景色*/
+    'fillBackColor': "#ff0000",
+
+    /*填充背景透明度*/
+    'fillBackOpacity': 1,
+
+    /*渐变填充样式*/
+    'fillGradientMode': "NONE",
+
+    /*渐变填充角度偏移*/
+    'fillAngle': 0,
+
+    /*渐变填充竖直偏移*/
+    'fillCenterOffsetX': 0,
+
+    /*渐变填充竖直偏移*/
+    'fillCenterOffsetY': 0,
+
+    /*线色渐变填充*/
+    'lineColorFill':false,
+
+    /* 线色渐变前景色*/
+    'lineForeColor':"#ff0000",
+
+    /*
+    * APIProperty:lineColorOpacity
+    * 线色渐变透明度
+    */
+    'lineColorOpacity':1.0,
+
+    /*线色渐变填充模式*/
+    'lineColorGradientMode':"NONE",
+
+    /*线色渐变填充背景透明度*/
+    'lineColorBackOpacity':0.31,
+
+    /*线色渐变填充背景色*/
+    'lineColorBackColor':"#ff0000"
 };

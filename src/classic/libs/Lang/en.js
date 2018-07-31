@@ -186,6 +186,11 @@ SuperMap.Lang.en = {
 	'nodeChain':"nodeChain",
 	'lineMarking':"line marking",
 	'symbolTextBox':"symbolText box",
+	'picture':"picture",
+	'editableContentBox':"editableContentBox",
+	'wire': "wire",
+    'symbolAlgo_311':'attack direction',
+	'symbolAlgo_317':'pincer attack',
 
 	//generation Symbol
 	'parallelFlatArrow':"parallel flat arrow",

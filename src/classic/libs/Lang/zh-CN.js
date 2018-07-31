@@ -252,6 +252,9 @@ SuperMap.Lang["zh-CN"] = {
     'nodeChain':"节点链",
     'lineMarking':"线型标注",
     'symbolTextBox':"标注框",
+    'picture': "图片",
+    'editableContentBox':'可编辑注记框',
+    'wire': '铁丝网',
 
     'parallelFlatArrow':"平行平耳箭头",
     'multipleArrow':"多箭头",
@@ -269,6 +272,8 @@ SuperMap.Lang["zh-CN"] = {
     'besselPointedEarsTailArrowNoGraph':"贝塞尔尖耳燕尾箭头(不随图)",
     'ordinaryLineArrowNoGraph':"普通折线箭头(不随图)",
     'combianationArrow':"组合箭头",
+    'symbolAlgo_311':'进攻方向',
+    'symbolAlgo_317':'钳击',
 
     //new obj
     'airDeployment':"空军兵力部署",
