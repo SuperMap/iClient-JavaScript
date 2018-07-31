@@ -163,6 +163,14 @@
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
             </ul>
         </li>
+        <li>
+            <a class="glyphicon glyphicon-arrow-left notArrow" title="撤销"
+               onclick="undo()"></a>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-arrow-right notArrow" title="重做"
+               onclick="redo()"></a>
+        </li>
     </div>
 </div>
 <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
@@ -208,7 +216,7 @@
         plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
 
         //空间分析服务地址：目前使用的是服务器默认空间分析地址，可更换成实际使用的空间分析服务地址
-        plottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        //plottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
 
         plottingLayer.style = {
             fillColor: "#66cccc",
@@ -314,7 +322,7 @@
             pointRadius: 6
         };
 
-        newPlottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        //newPlottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
 
         var drawGraphicObject = new SuperMap.Control.DrawFeature(newPlottingLayer, SuperMap.Handler.GraphicObject);
         drawGraphicObjects.push(drawGraphicObject);
@@ -504,6 +512,13 @@
         }
     }
 
+    function undo(){
+        plotting.getTransManager().undo();
+    }
+
+    function redo(){
+        plotting.getTransManager().redo();
+    }
 
     document.onmouseup = function (evt) {
         var evt = evt || window.event;

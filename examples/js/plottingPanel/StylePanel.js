@@ -236,7 +236,7 @@ function collectionPropertyGridRows(features) {
     var lineStyleObj  = new Object();
     lineStyleObj.name = displayLineStyleName[3];
     if(selectfeature.style.dashArray === ""){
-        lineStyleObj.value = "solid";
+        lineStyleObj.value = "实线";
     }else lineStyleObj.value = lineStyleToString(selectfeature.style.lineSymbolID);
     lineStyleObj.group = group[2];
     lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": lineStyleRows }};
@@ -999,6 +999,9 @@ function addExtendProperty(rows,geometry) {
 //判断类型是否为新增对象
 function checkType(selectfeature){
     if(selectfeature.symbolType === SuperMap.Plot.SymbolType.GROUPOBJECT ||
+        selectfeature.symbolType === SuperMap.Plot.SymbolType.AIRROUTE ||
+        selectfeature.symbolType === SuperMap.Plot.SymbolType.NAVYROUTE ||
+        selectfeature.symbolType === SuperMap.Plot.SymbolType.MISSILEROUTE ||
         selectfeature.symbolType === SuperMap.Plot.SymbolType.ROUTENODE ||
         selectfeature.symbolType === SuperMap.Plot.SymbolType.NAVYDEPLOYMENT ||
         selectfeature.symbolType === SuperMap.Plot.SymbolType.AIRDEPLOYMENT ||
@@ -1411,12 +1414,11 @@ function getFillGradientModeRows() {
 function getLineStyleRows() {
     var rows = [];
     rows.push({"value": "0", "text": "实线"});//实线(solid)
-    rows.push({"value": "1", "text": "长虚线"});//由点构成的直线(dot)
-    rows.push({"value": "2", "text": "由点构成的直线"});//虚线(dash)
-    rows.push({"value": "3", "text": "由线划线段组成的直线"});//长虚线(longdash)
-    rows.push({"value": "4", "text": "由重复的线划点图案构成的直线"});//由线划线段组成的直线(dashdot)
-    //rows.push({"value": "5", "text": "无边线"});//由线划线段组成的直线(longdashdot)
-    //rows.push({"value": "20,10,5,5,5,10", "text": "doubledotdash"});//由重复的划线点图案构成的直线
+    rows.push({"value": "1", "text": "长虚线"});//长虚线(longdash) //虚线(dash)
+    rows.push({"value": "2", "text": "由点构成的直线"});//由点构成的直线(dot)
+    rows.push({"value": "3", "text": "由线划线段组成的直线"});//由线划线段组成的直线(dashdot)(longdashdot)
+    rows.push({"value": "4", "text": "由重复的线划点图案构成的直线"});//由重复的划线点图案构成的直线
+    //rows.push({"value": "5", "text": "无边线"});
     return rows;
 }
 
@@ -1433,8 +1435,6 @@ function lineStyleToString(lineStyle) {
         return "实线";
     else if(lineStyle)
         return "实线";
-    // else if(lineStyle == "20,10,5,5,5,10")
-    //     return "doubledotdash";
 }
 
 function getLineRelationTypeRows() {

@@ -79,7 +79,7 @@
             widgets.alert.showAlert("删除避让区域之前请先请先选择标号",false);
         }else if(editControl._avoidEditing === true){
             editControl.avoidEdit(false);
-            plottingLayer.features[0].removeAvoidRegions();
+            editControl.getSelectedFeatures()[0].removeAvoidRegions();
             widgets.alert.showAlert("删除避让区域成功！",true);
         }
     }

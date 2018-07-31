@@ -19,12 +19,11 @@
             <div class='input-group' style="margin-bottom: 15px;">
                 <span class='input-group-addon'>线型：</span>
                 <select class='form-control' id='lineStyle' onchange="lineStyleChanges()">
-                    <option value='0,0'>solid</option>
-                    <option value='1,5'>dot</option>
-                    <option value='5,10'>dash</option>
-                    <option value='5,5,1,5'>dashdot</option>
-                    <option value='10,5'>longdash</option>
-                    <option value='15,10,5,10'>longdashdot</option>
+                    <option value='0'>实线</option>
+                    <option value='1'>长虚线</option>
+                    <option value='2'>由点构成的直线</option>
+                    <option value='3'>由线划线段组成的直线</option>
+                    <option value='4'>由重复的线划点图案构成的直线</option>
                 </select>
             </div>
             <div class='input-group' style="margin-bottom: 15px;">
@@ -87,7 +86,7 @@
     }
     function initHtml() {
         document.getElementById("lineWidth").value = plotting.getDefaultStyle().lineWidth;
-        document.getElementById("lineStyle").value = '0,0';
+        document.getElementById("lineStyle").value = '0';
         document.getElementById("lineColor").value = plotting.getDefaultStyle().lineColor;
         document.getElementById("symbolWidth").value = plotting.getDefaultStyle().dotSymbolSize;
         document.getElementById("symbolHeight").value = plotting.getDefaultStyle().dotSymbolSize;

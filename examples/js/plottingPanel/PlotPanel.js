@@ -203,7 +203,7 @@ function addRouteTreeNodes(treeData){
         var drawCellNode = {
             id: cellId++,
             pId: 0,
-            icon:"../img/BasicCell/RouteIcon/" + symbolCode[i] + ".png",
+            icon:"../img/plottingPanel/BasicCell/RouteIcon/" + symbolCode[i] + ".png",
             symbolCode: symbolCode[i],
             libID: 0,
             symbolName: symbolName[i]

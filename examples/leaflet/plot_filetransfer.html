@@ -9,24 +9,24 @@
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 15px;right: 10px;width: 320px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading'>
         <h5 class='panel-title text-center' style=" font-size: 16px;color: #ffffff;">态势图上传下载</h5></div>
-    <div class='panel-body content' style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+    <div class='panel-body content' style="height:160px;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
         <div class='input-group' style="margin-top: 15px;margin-left: 10px  margin-bottom: 10px;">
             <input type="file" style='width:200px;float: left;' id="smlFile" name="smlFile"> </input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button"  value="上传" onclick="uploadSmlFile()"/>
+            <input type="button" class="btn btn-default" value="上传" onclick="uploadSmlFile()"/>
         </div>&nbsp;&nbsp;
         <div class='input-group' style="margin-left: 10px;  margin-bottom: 10px;">
             文件URL:
             <input  type="text" readonly style='width:140px;' id="downloadUrl" name="downloadUrl" value=""> </input>&nbsp;
-            <input type="button"  value="下载" onclick="downloadSmlFileOnServer()"/>
+            <input type="button"  class="btn btn-default"value="下载" onclick="downloadSmlFileOnServer()"/>
         </div>
         <div class='input-group' style="margin-left: 10px;margin-bottom: 15px  margin-bottom: 10px;">
             文件名称:
             <input  type="text" readonly style='width:140px;' id="smlFileName" name="smlFileName" value=""> </input>&nbsp;
-            <input type="button"  value="删除" onclick="deleteSmlFileOnServer()" />
+            <input type="button"  class="btn btn-default" value="删除" onclick="deleteSmlFileOnServer()" />
         </div>
     </div>
 </div>
-<div id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 216px;width: 320px;background: #FFF;z-index: 9999;display: block;">
+<div id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 230px;width: 320px;background: #FFF;z-index: 9999;display: block;">
     <div class="winTitle" style=" background: #1E90FF;">
         <span class="title_left">态势图文件列表</span>
     </div>
