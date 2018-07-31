@@ -21,7 +21,7 @@
             "src/common/iServer/GeoCodingParameter.js","src/common/iServer/GeoDecodingParameter.js"
         ],
         "exclude": [
-            "src/classic/libs","src/classic/theme","src/classic/resource"
+            "src/classic/libs","src/classic/theme","src/classic/resource","src/common/overlay/levelRenderer"
         ]
     },
     "plugins": ["plugins/markdown"],

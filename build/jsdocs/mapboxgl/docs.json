@@ -17,15 +17,18 @@
     },
     "source": {
         "includePattern": ".+\\.js?$",
-        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base.js?$",
+        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
         "include": [
             "src/common","src/mapboxgl"
+        ],
+        "exclude": [
+            "src/common/overlay/levelRenderer"
         ]
     },
     "plugins": ["plugins/markdown"],
     "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false,
+        "cleverLinks": true,
+        "monospaceLinks": true,
         "default": {
             "outputSourceFiles": false
         }
