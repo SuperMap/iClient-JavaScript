@@ -100,7 +100,7 @@
 
 .navbar-menu:hover .menu-sub-warp,
 .navbar-menu.active .menu-sub-warp {
-    max-height: 600px;
+    max-height: 640px;
     transform-origin: 50% 0;
     -webkit-transform-origin: 50% 0;
     -moz-transform-origin: 50% 0;
