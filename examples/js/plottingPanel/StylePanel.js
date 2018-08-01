@@ -43,7 +43,7 @@ L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
 
     function afterModifySelectFeature(rowIndex, rowData, changes){
         var updated = $('#pg').propertygrid('getChanges', "updated");
-        new Promise((resolve,reject)=> {
+        new Promise(function(resolve,reject) {
             if(updated.length !== 0) {
                 updateSelectFeature(updated[0], selectFeatures, serverUrl);
             }
@@ -54,7 +54,7 @@ L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
                 }
             $('#pg').propertygrid('loadData', collectionPropertyGridRows(selectFeatures));
             return;
-        }).then((selectFeatures) => {
+        }).then(function(selectFeatures) {
                 for(var i = 0; i < selectFeatures.length; i++){
                     if(selectFeatures[i].graphic){
                         selectFeatures[i].graphic.updateImage();

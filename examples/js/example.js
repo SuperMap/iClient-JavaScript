@@ -1,10 +1,12 @@
 $(document).ready(function () {
+    window.initI18N(function(){
     initPage();
     bindEvents();
     //懒加载
     var timeout = setTimeout(function () {
         $("img.chart-thumb").lazyload();
     }, 1000);
+});
 });
 
 

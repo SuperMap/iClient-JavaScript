@@ -1,7 +1,9 @@
 $(document).ready(function () {
+    window.initI18N(function(){
     initPage();
     bindEvents();
     sidebarScrollFix();
+});
 });
 
 var aceEditor;
@@ -11,7 +13,6 @@ function initPage() {
     initSideBar();
     initEditor();
     screenResize();
-    Localization.localize();
 }
 
 function initSideBar() {
@@ -102,7 +103,7 @@ function run() {
 function loadPreview(content) {
     var iFrame = createIFrame(),
         iframeDocument = iFrame.contentWindow.document;
-
+    iFrame.contentWindow.resources=window.resources?window.resources.resources:{};
     iframeDocument.open();
     iframeDocument.write(content);
     iframeDocument.close();
