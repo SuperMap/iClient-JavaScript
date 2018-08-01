@@ -69928,7 +69928,7 @@ class SpatialAnalystService_SpatialAnalystService extends ServiceBase_ServiceBas
     }
 
     /**
-     * @function ol.supermap.SpatialAnalystService.prototype.geometrybatchAnalysis
+     * @function mapboxgl.supermap.SpatialAnalystService.prototype.geometrybatchAnalysis
      * @description 批量空间分析。
      * @param {Array} params - 批量分析参数对象数组，包括：
      * @param {string} params.analystName - 空间分析方法的名称。包括：</br>

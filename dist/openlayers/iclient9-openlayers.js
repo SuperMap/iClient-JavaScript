@@ -21355,7 +21355,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
             for (var i = 0; i < features.length; i++) {
 
                 if (features[i] instanceof _ThemeFeature.ThemeFeature) {
-                    //mapboxgl.supermap.ThemeFeature 类型
+                    //ol.supermap.ThemeFeature 类型
                     featuresTemp.push(features[i].toFeature());
                     continue;
                 } else if (features[i] instanceof _openlayers2.default.Feature) {

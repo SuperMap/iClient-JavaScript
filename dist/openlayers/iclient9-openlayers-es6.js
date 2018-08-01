@@ -65702,7 +65702,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
         for (let i = 0; i < features.length; i++) {
 
             if (features[i] instanceof ThemeFeature_ThemeFeature) {
-                //mapboxgl.supermap.ThemeFeature 类型
+                //ol.supermap.ThemeFeature 类型
                 featuresTemp.push(features[i].toFeature());
                 continue;
             } else if (features[i] instanceof external_ol_default.a.Feature) {
