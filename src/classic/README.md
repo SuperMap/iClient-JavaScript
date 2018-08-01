@@ -1,6 +1,6 @@
 # @supermap/iclient-classic
 
-@supermap/iclient-classic 是一套基于SuperMap iClient 8C(2017) for JavaScript的GIS客户端应用程序开发工具，通过它用户可以在SuperMap iClient 8C(2017) for JavaScript的基础上使用最新的SuperMap服务功能。
+@supermap/iclient-classic 是一套基于 SuperMap iClient 8C(2017) for JavaScript 的 GIS 客户端应用程序开发工具，通过它用户可以在 SuperMap iClient 8C(2017) for JavaScript 的基础上使用最新的 SuperMap 服务功能。
 
 ## 简介
 * 官网：[http://iclient.supermap.io](http://iclient.supermap.io)
