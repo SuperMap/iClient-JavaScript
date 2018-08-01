@@ -564,6 +564,7 @@ L.supermap.heatMapLayer = heatMapLayer;
 
 /**
  * @class L.supermap.heatMapFeature
+ * @category Visualization HeatMap
  * @classdesc 客户端专题图要素类。
  *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
  * @extends {L.Class}

@@ -1,6 +1,7 @@
 ﻿import {SuperMap} from '../SuperMap';
 /**
  *@namespace SuperMap
+ *@category BaseTypes Namespace
  */
 
 /**
@@ -73,8 +74,9 @@ SuperMap.mixin = function (...mixins) {
 
 /**
  * @name String
- * @memberOf SuperMap
  * @namespace
+ * @memberOf SuperMap
+ * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
 export var StringExt = SuperMap.String = {
@@ -255,6 +257,7 @@ export var StringExt = SuperMap.String = {
  * @name Number
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
 export var NumberExt = SuperMap.Number = {
@@ -353,6 +356,7 @@ if (!Number.prototype.limitSigDigs) {
  * @name Function
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
 export var FunctionExt = SuperMap.Function = {
@@ -425,6 +429,7 @@ export var FunctionExt = SuperMap.Function = {
  * @name Array
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
 export var ArrayExt = SuperMap.Array = {

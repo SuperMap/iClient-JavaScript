@@ -5,6 +5,7 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Geometry
+ * @category BaseTypes Geometry
  * @classdesc 几何对象类，描述地理对象的几何图形。
  */
 export class Geometry {

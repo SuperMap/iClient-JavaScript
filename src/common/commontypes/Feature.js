@@ -3,6 +3,7 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Feature
+ * @category BaseTypes Geometry
  * @classdesc 要素类组合了地理和属性，Feature 类同时具有 marker 和 lonlat 属性。
  * @param {SuperMap.Layer} layer - 图层。
  * @param {SuperMap.LonLat} lonlat - 经纬度。

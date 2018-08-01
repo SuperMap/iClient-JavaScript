@@ -2,6 +2,7 @@
 
 /**
  * @class  SuperMap.Size
+ * @category BaseTypes Style
  * @classdesc 此类描绘一对高宽值的实例。
  * @param {number} [w=0.0] - 宽度。
  * @param {number} [h=0.0] - 高度。

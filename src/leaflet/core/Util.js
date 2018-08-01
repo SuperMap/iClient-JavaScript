@@ -1,6 +1,9 @@
 import L from "leaflet";
 import {GeoJSON as GeoJSONFormat, Unit} from '@supermap/iclient-common';
-
+/**
+ * @namespace L.Util
+ * @category BaseTypes Util
+ */
 export var supermap_callbacks = {};
 L.Util.supermap_callbacks = supermap_callbacks;
 export var toGeoJSON = function (feature) {

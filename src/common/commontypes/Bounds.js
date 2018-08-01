@@ -6,6 +6,7 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Bounds
+ * @category BaseTypes Geometry
  * @classdesc 表示边界类实例。使用 bounds 之前需要设置 left，bottom，right，top 四个属性，这些属性的初始值为 null。
  * @param {number} [left] - 左边界，注意考虑宽度，理论上小于 right 值。
  * @param {number} [bottom] - 下边界。考虑高度，理论上小于 top 值。

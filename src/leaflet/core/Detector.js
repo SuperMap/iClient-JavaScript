@@ -1,6 +1,4 @@
-/**
- * 检测类，用于检测浏览器是否支持相关特性
- */
+
 export class Detector {
     static supportWebGL() {
         return getContext('webgl');

@@ -1,12 +1,15 @@
 ﻿import ol from 'openlayers';
 /**
  * @namespace ol
+ * @category BaseTypes Namespace
  */
 /**
  * @namespace ol.supermap
+ * @category BaseTypes Namespace
  */
 /**
  * @namespace ol.source
+ * @category BaseTypes Namespace
  */
 ol.supermap = ol.supermap || {};
 

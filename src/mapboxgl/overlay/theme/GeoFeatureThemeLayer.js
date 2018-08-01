@@ -5,6 +5,7 @@ import {Theme} from './ThemeLayer';
 
 /**
  * @class mapboxgl.supermap.GeoFeatureThemeLayer
+ * @category Visualization Theme
  * @classdesc 地理几何专题要素型专题图层。
  * @param {string} name - 图层名。
  * @param {Object} opt_options - 参数。

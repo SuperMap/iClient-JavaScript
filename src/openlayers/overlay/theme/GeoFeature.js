@@ -4,6 +4,7 @@ import {Theme} from './Theme';
 
 /**
  * @class ol.source.GeoFeature
+ * @category Visualization Theme
  * @classdesc 地理几何专题要素型专题图层基类。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。

@@ -4,6 +4,7 @@ import {Bounds, GeometryPoint, GeoJSON as GeoJSONFormat} from '@supermap/iclient
 
 /**
  * @class mapboxgl.supermap.Util
+ * @category BaseTypes Util
  * @classdesc 工具类。
  */
 export class Util {

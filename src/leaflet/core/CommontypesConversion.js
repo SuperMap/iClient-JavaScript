@@ -4,6 +4,8 @@ import {Bounds} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.CommontypesConversion
+ * @category BaseTypes Util
+ * @namespace
  * @classdesc Leaflet 对象和 SuperMap 对象转换工具。
  */
 export class CommontypesConversion {

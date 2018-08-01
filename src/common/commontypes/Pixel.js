@@ -2,6 +2,7 @@
 
 /**
  * @class SuperMap.Pixel
+ * @category BaseTypes Geometry
  * @classdesc 此类用 x,y 坐标描绘屏幕坐标（像素点）。
  * @param {number} [x=0.0] - x 坐标。
  * @param {number} [y=0.0] - y 坐标。

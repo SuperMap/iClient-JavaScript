@@ -338,11 +338,18 @@
         "name": "互联网地图",
         "name_en": "ThirdPartyMap"
     },
-
     "BaseTypes": {
         "name": "基础类",
         "name_en": "BaseTypes",
         "content": {
+            "Namespace": {
+                "name": "命名空间",
+                "name_en": "Namespace"
+            },
+            "Util": {
+                "name": "工具",
+                "name_en": "Util"
+            },
             "Geometry": {
                 "name": "几何要素",
                 "name_en": "Geometry"

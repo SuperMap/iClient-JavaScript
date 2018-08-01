@@ -1,8 +1,10 @@
 /**
  * @namespace L
+ * @category BaseTypes Namespace
  */
 /**
  * @namespace L.supermap
+ * @category BaseTypes Namespace
  */
 /**
  * SuperMap Leaflet基类

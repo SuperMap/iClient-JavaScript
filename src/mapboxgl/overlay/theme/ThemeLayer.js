@@ -14,6 +14,7 @@ import {
 
 /**
  * @class mapboxgl.supermap.ThemeLayer
+ * @category Visualization Theme
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名。
  * @param {Object} options -可选参数。

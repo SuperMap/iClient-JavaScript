@@ -4,9 +4,11 @@
  */
 /**
  * @namespace mapboxgl
+ * @category BaseTypes Namespace
  */
 /**
  * @namespace mapboxgl.supermap
+ * @category BaseTypes Namespace
  */
 import mapboxgl from 'mapbox-gl';
 import './MapExtend';

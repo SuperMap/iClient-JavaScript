@@ -4,6 +4,7 @@
  * @name Date
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 包含 parse、toISOString 方法的实现，两个方法用来解析 RFC 3339 日期，遵循 ECMAScript 5 规范。
  */
 export var DateExt = SuperMap.Date = {

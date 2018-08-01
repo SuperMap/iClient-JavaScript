@@ -12,7 +12,17 @@
             onLoadCallBack(); //设置标题栏当前语言
             callback && callback();
         });
-        bindEvents();
+        $('.icl-header').on('click', '.lang-option', function () {
+            var value = $(this).data('lang');
+            utils.setLanguage(value);
+            $('#lang').html($(this).html());
+            i18next.changeLanguage(value);
+            if (window.isSite) {
+                localize();
+                return;
+            }
+            window.location.reload();
+        });
     }
 
     function onLoadCallBack() {
@@ -57,21 +67,6 @@
                     item.href = match[1] + match[3];
                 }
             }
-        });
-    }
-
-
-    function bindEvents() {
-        $('.icl-header').on('click', '.lang-option', function () {
-            var value = $(this).data('lang');
-            utils.setLanguage(value);
-            $('#lang').html($(this).html());
-            i18next.changeLanguage(value);
-            if (window.isSite) {
-                localize();
-                return;
-            }
-            window.location.reload();
         });
     }
 

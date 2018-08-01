@@ -72,9 +72,6 @@ function buildLi(obj){
      <li class="item" data-name="<?js= obj.longname ?>">
             <span class="title">
                 <?js= self.linkto(obj.longname, obj.longname) ?>
-                <?js if (obj.type === 'namespace') { ?>
-                <span class="static">s</span>
-                <?js } ?>
             </span>
             <ul class="members itemMembers">
             <?js

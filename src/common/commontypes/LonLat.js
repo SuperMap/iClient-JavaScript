@@ -2,6 +2,7 @@
 
 /**
  * @class SuperMap.LonLat
+ * @category BaseTypes Geometry
  * @classdesc  这个类用来表示经度和纬度对。
  * @param {number} [lon=0.0] - 地图单位上的 X 轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的 x 坐标。
  * @param {number} [lat=0.0] - 地图单位上的 Y 轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的 y 坐标。

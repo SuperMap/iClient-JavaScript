@@ -14,6 +14,7 @@ import {ThemeFeature} from './ThemeFeature';
 
 /**
  * @class ol.source.Theme
+ * @category Visualization Theme
  * @classdesc 专题图基类。
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。

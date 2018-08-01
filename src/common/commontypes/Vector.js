@@ -6,6 +6,7 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Feature.Vector
+ * @category BaseTypes Geometry
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
  * 其中，默认的样式在 {@link SuperMap.Feature.Vector.style} 类中定义，如果没有特别的指定将使用默认的样式。

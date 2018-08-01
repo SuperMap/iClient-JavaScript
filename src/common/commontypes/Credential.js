@@ -2,6 +2,7 @@
 
 /**
  * @class SuperMap.Credential
+ * @category Security
  * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。</br>
  * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。</br>
  * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。</br>

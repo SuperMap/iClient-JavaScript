@@ -5,6 +5,7 @@ ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.supermap.Util
+ * @category BaseTypes Util
  * @classdesc 工具类。
  */
 export class Util {

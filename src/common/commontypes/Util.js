@@ -6,6 +6,7 @@ export var Util = SuperMap.Util = SuperMap.Util || {};
  * @name Util
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description common 工具类。
  */
 
