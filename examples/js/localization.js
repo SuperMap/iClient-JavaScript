@@ -45,38 +45,40 @@ var Localization = {
                 lng: lang,
                 whitelist: ["zh-CN", "en-US"],
                 fallbackLng: ["zh-CN", "en-US"]
-            });
-            if (window.isSite) {
-                var webResourceURL = '../../web/locales/'+lang+'/resources.js';
-                $.get(webResourceURL, function () {
-                    for (var name in window.webResources) {
-                        var subWeb = window.webResources[name];
-                        var subExamples = window.examplesResources[name];
-                        //重名以webResource为准
-                        if (typeof window.webResources[name] == 'object') {
-
-                            if (!subExamples) {
-                                subExamples = {};
+            },function(){
+                if (window.isSite) {
+                    var webResourceURL = '../../web/locales/'+lang+'/resources.js';
+                    $.get(webResourceURL, function () {
+                        for (var name in window.webResources) {
+                            var subWeb = window.webResources[name];
+                            var subExamples = window.examplesResources[name];
+                            //重名以webResource为准
+                            if (typeof window.webResources[name] == 'object') {
+    
+                                if (!subExamples) {
+                                    subExamples = {};
+                                }
+                                for (var name1 in subWeb) {
+                                    subExamples[name1] = subWeb[name1];
+                                }
+                            } else {
+                                subExamples[name1] = subWeb[name];
                             }
-                            for (var name1 in subWeb) {
-                                subExamples[name1] = subWeb[name1];
-                            }
-                        } else {
-                            subExamples[name1] = subWeb[name];
+    
                         }
-
-                    }
+                        window.resources = window.examplesResources;
+                        i18next.addResourceBundle(lang, 'translation', window.resources);
+                        callback && callback();
+    
+                    })
+    
+                } else {
                     window.resources = window.examplesResources;
                     i18next.addResourceBundle(lang, 'translation', window.resources);
                     callback && callback();
-
-                })
-
-            } else {
-                window.resources = window.examplesResources;
-                i18next.addResourceBundle(lang, 'translation', window.resources);
-                callback && callback();
-            }
+                }
+            });
+            
 
         });
 
