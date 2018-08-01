@@ -235,7 +235,7 @@ export class MapVRenderer extends BaseLayer {
 
         var resolutionX = dw / mapCanvas.x,
             resolutionY = dh / mapCanvas.y;
-        var centerPx = map.latLngToLayerPoint(map.getCenter());
+        //var centerPx = map.latLngToLayerPoint(map.getCenter());
 
         //获取屏幕左上角的地理坐标坐标
         //左上角屏幕坐标为0,0

@@ -145,7 +145,7 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
                 var origin = me.tileGrid.getOrigin(z);
                 var resolution = me.tileGrid.getResolution(z);
                 var dpi = 96;
-                var unit = projection.getUnits();
+                var unit = projection.getUnits() || 'degrees';
                 if (unit === 'degrees') {
                     unit = Unit.DEGREE;
                 }

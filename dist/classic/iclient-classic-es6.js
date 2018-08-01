@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0-alpha
+ *          version: v9.1.0-beta
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -492,64 +492,57 @@ var SuperMap = window.SuperMap = window.SuperMap || {};
 
 /**
  * @class SuperMap.Pixel
+ * @category BaseTypes Geometry
  * @classdesc 此类用 x,y 坐标描绘屏幕坐标（像素点）。
  * @param {number} [x=0.0] - x 坐标。
  * @param {number} [y=0.0] - y 坐标。
- * @param {string} [mode='lefttop'] - 坐标模式。
+ * @param {SuperMap.Pixel.Mode} [mode=SuperMap.Pixel.Mode.LeftTop] - 坐标模式。
  *
  * @example
  * //单独创建一个对象
  * var pixcel = new SuperMap.Pixel(100,50);
  *
- * //依据size创建
+ * //依据 size 创建
  *  var size = new SuperMap.Size(21,25);
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
-class Pixel {
+class Pixel_Pixel {
 
 
     constructor(x, y, mode) {
         /**
          * @member {number} [SuperMap.Pixel.prototype.x=0.0]
-         * @description x 坐标
+         * @description x 坐标。
          */
         this.x = x ? parseFloat(x) : 0.0;
 
         /**
          * @member {number} [SuperMap.Pixel.prototype.y=0.0]
-         * @description y 坐标
+         * @description y 坐标。
          */
         this.y = y ? parseFloat(y) : 0.0;
 
         /**
-         * @member {SuperMap.Pixel.Mode} [SuperMap.Pixel.prototype.mode="lefttop"]
+         * @member {SuperMap.Pixel.Mode} [SuperMap.Pixel.prototype.mode=SuperMap.Pixel.Mode.LeftTop]
          * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。 
-         * 值有<br>
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
-         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
-         *  
-         * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
          */ 
         this.mode = mode;
         this.CLASS_NAME = "SuperMap.Pixel";
         /**
-         * @member SuperMap.Pixel.Mode
-         * @enum {string}
+         * @enum SuperMap.Pixel.Mode
          * @readonly
-         * @description 模式
-         *
-         * * SuperMap.Pixel.Mode.LeftTop 左上模式
-         * * SuperMap.Pixel.Mode.RightTop 右上模式
-         * * SuperMap.Pixel.Mode.RightBottom 右下模式
-         * * SuperMap.Pixel.Mode.LeftBottom 左下模式
+         * @description 模式。
+         * @type {string}
          */
 
-        Pixel.Mode = {
+        SuperMap.Pixel.Mode = {
+            /** 左上模式。*/
             LeftTop: "lefttop",
+            /** 右上模式。 */
             RightTop: "righttop",
+            /** 右下模式。 */
             RightBottom: "rightbottom",
+            /** 左下模式。 */
             LeftBottom: "leftbottom"
         };
     }
@@ -577,7 +570,7 @@ class Pixel {
      * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同 x、y 坐标的 pixel 对象。
      */
     clone() {
-        return new Pixel(this.x, this.y, this.mode);
+        return new Pixel_Pixel(this.x, this.y, this.mode);
     }
 
     /**
@@ -634,7 +627,7 @@ class Pixel {
         if ((x == null) || (y == null)) {
             throw new TypeError('Pixel.add cannot receive null values');
         }
-        return new Pixel(this.x + x, this.y + y);
+        return new Pixel_Pixel(this.x + x, this.y + y);
     }
 
     /**
@@ -647,8 +640,7 @@ class Pixel {
      * var pixcel3 = pixcel.offset(pixcel2);
      *
      * @param {SuperMap.Pixel} px - 传入的 <SuperMap.Pixel> 对象。
-     * @returns {SuperMap.Pixel} 返回一个新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y
-     *      值与传入的 Pixel 对象的 x，y 值相加得到。
+     * @returns {SuperMap.Pixel} 返回一个新的 pixel，该 pixel 是由当前的 pixel 对象的 x，y 值与传入的 Pixel 对象的 x，y 值相加得到。
      */
     offset(px) {
         var newPx = this.clone();
@@ -661,8 +653,7 @@ class Pixel {
     /**
      *
      * @function SuperMap.Pixel.prototype.destroy
-     * @description 销毁此对象。
-     * 销毁后此对象的所有属性为 null，而不是初始值。
+     * @description 销毁此对象。销毁后此对象的所有属性为 null，而不是初始值。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
      * pixcel.destroy();
@@ -674,16 +665,18 @@ class Pixel {
     }
 }
 
-SuperMap.Pixel = Pixel;
+SuperMap.Pixel = Pixel_Pixel;
 
 
 // CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
 
 /**
  *@namespace SuperMap
+ *@category BaseTypes Namespace
  */
 
 /**
+ * @function SuperMap.inherit
  * @description 除了 C 和 P 两个必要参数外，可以传递任意数量的对象，这些对象都将继承C。
  * @memberOf SuperMap
  * @param {Object} C - 继承的类。
@@ -706,6 +699,7 @@ SuperMap.inherit = function (C, P) {
 
 
 /**
+ * @function SuperMap.mixin 
  * @description 实现多重继承。
  * @memberOf SuperMap
  * @param {Class|Object} ...mixins - 继承的类。
@@ -751,13 +745,15 @@ SuperMap.mixin = function (...mixins) {
 
 /**
  * @name String
- * @memberOf SuperMap
  * @namespace
+ * @memberOf SuperMap
+ * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
 var StringExt = SuperMap.String = {
 
     /**
+     * @function SuperMap.String.startsWith
      * @description 判断目标字符串是否以指定的子字符串开头。
      * @param {string} str - 目标字符串。
      * @param {string} sub - 查找的子字符串。
@@ -768,6 +764,7 @@ var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.contains
      * @description 判断目标字符串是否包含指定的子字符串。
      * @param {string} str - 目标字符串。
      * @param {string} sub - 查找的子字符串。
@@ -778,6 +775,7 @@ var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.trim
      * @description 删除一个字符串的开头和结尾处的所有空白字符。
      * @param {string} str - （可能）存在空白字符填塞的字符串。
      * @returns {string} 删除开头和结尾处空白字符后的字符串。
@@ -787,8 +785,9 @@ var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.camelize
      * @description 骆驼式("-")连字符的字符串处理。
-     * 例如: "chicken-head" becomes "chickenHead",
+     * 例如："chicken-head" becomes "chickenHead",
      *       "-chicken-head" becomes "ChickenHead"。
      * @param {string} str - 要处理的字符串，原始内容不应被修改。
      * @returns {string}
@@ -804,9 +803,10 @@ var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.format
      * @description 提供带 ${token} 标记的字符串, 返回 context 对象属性中指定标记的属性值。
      * @example
-     * 示例:
+     * 示例：
      * (code)
      * 1、template = "${value,getValue}";
      *         context = {value: {getValue:function(){return Math.max.apply(null,argument);}}};
@@ -884,18 +884,21 @@ var StringExt = SuperMap.String = {
     },
 
     /**
-     * @description 寻找带 token 的字符串。
+     * @member {RegExp} [SuperMap.String.tokenRegEx]
+     * @description 寻找带 token 的字符串，默认为 tokenRegEx=/\$\{([\w.]+?)\}/g。
      * @example
      * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
      */
     tokenRegEx: /\$\{([\w.]+?)\}/g,
 
     /**
-     * @description Used to test strings as numbers.
+     * @member {RegExp} [SuperMap.String.numberRegEx]
+     * @description 判断一个字符串是否只包含一个数值，默认为 numberRegEx=/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/。
      */
     numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
 
     /**
+     * @function SuperMap.String.isNumeric
      * @description 判断一个字符串是否只包含一个数值。
      * @example
      * (code)
@@ -911,6 +914,7 @@ var StringExt = SuperMap.String = {
     },
 
     /**
+     * @function SuperMap.String.numericIf
      * @description 把一个看似数值型的字符串转化为一个数值。
      * @returns {(number|string)} 如果能转换为数值则返回数值，否则返回字符串本身。
      */
@@ -924,25 +928,27 @@ var StringExt = SuperMap.String = {
  * @name Number
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
 var NumberExt = SuperMap.Number = {
 
     /**
-     *  @description 格式化数字时默认的小数点分隔符。
-     *  @constant
-     *  @default "."
+     * @member {string} [SuperMap.Number.decimalSeparator='.']
+     * @description 格式化数字时默认的小数点分隔符。
+     * @constant
      */
     decimalSeparator: ".",
 
     /**
-     *  @description 格式化数字时默认的千位分隔符。
-     *  @constant
-     *  @default ","
+     * @member {string} [SuperMap.Number.thousandsSeparator=',']
+     * @description 格式化数字时默认的千位分隔符。
+     * @constant
      */
     thousandsSeparator: ",",
 
     /**
+     * @function SuperMap.Number.limitSigDigs
      * @description 限制浮点数的有效数字位数。
      * @param {number} num - 浮点数。
      * @param {integer} sig - 有效位数。
@@ -957,6 +963,7 @@ var NumberExt = SuperMap.Number = {
     },
 
     /**
+     * @function SuperMap.Number.format
      * @description 数字格式化输出。
      * @param {number} num - 数字。
      * @param {integer} [dec=0]  - 数字的小数部分四舍五入到指定的位数。设置为 null 值时小数部分不变。
@@ -1020,10 +1027,12 @@ if (!Number.prototype.limitSigDigs) {
  * @name Function
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
 var FunctionExt = SuperMap.Function = {
     /**
+     * @function SuperMap.Function.bind
      * @description 绑定函数到对象。方便创建 this 的作用域。
      * @param {function} func - 输入函数。
      * @param {Object} object - 对象绑定到输入函数（作为输入函数的 this 对象）。
@@ -1043,6 +1052,7 @@ var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.bindAsEventListener
      * @description 绑定函数到对象，在调用该函数时配置并使用事件对象作为第一个参数。
      * @param {function} func - 用于监听事件的函数。
      * @param {Object} object - this 对象的引用。
@@ -1055,6 +1065,7 @@ var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.False
      * @description 该函数仅仅返回 false。该函数主要是避免在 IE8 以下浏览中 DOM 事件句柄的匿名函数问题。
      * @example
      * document.onclick = SuperMap.Function.False;
@@ -1065,6 +1076,7 @@ var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.True
      * @description 该函数仅仅返回 true。该函数主要是避免在 IE8 以下浏览中 DOM 事件句柄的匿名函数问题。
      * @example
      * document.onclick = SuperMap.Function.True;
@@ -1075,6 +1087,7 @@ var FunctionExt = SuperMap.Function = {
     },
 
     /**
+     * @function SuperMap.Function.Void
      * @description 可重用函数，仅仅返回 "undefined"。
      * @returns {undefined}
      */
@@ -1087,17 +1100,18 @@ var FunctionExt = SuperMap.Function = {
  * @name Array
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
 var ArrayExt = SuperMap.Array = {
 
     /**
-     * @description 过滤数组，提供了 ECMA-262 标准中 Array.prototype.filter 函数的扩展。
-     * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
+     * @function SuperMap.Array.filter
+     * @description 过滤数组，提供了 ECMA-262 标准中 Array.prototype.filter 函数的扩展。详见：{@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
      * @param {Array} array - 要过滤的数组。
-     * @param {function} callback - 数组中的每一个元素调用该函数。
-     *     如果函数的返回值为 true，该元素将包含在返回的数组中。该函数有三个参数: 数组中的元素，元素的索引，数组自身。
-     *     如果设置了可选参数 caller，在调用 callback 时，使用可选参数 caller 设置为 callback 的参数。
+     * @param {function} callback - 数组中的每一个元素调用该函数。</br>
+     *     如果函数的返回值为 true，该元素将包含在返回的数组中。该函数有三个参数: 数组中的元素，元素的索引，数组自身。</br>
+     *     如果设置了可选参数 caller，在调用 callback 时，使用可选参数 caller 设置为 callback 的参数。</br>
      * @param {Object} [caller] - 在调用 callback 时，使用参数 caller 设置为 callback 的参数。
      * @returns {Array} callback 函数返回 true 时的元素将作为返回数组中的元素。
      */
@@ -1133,6 +1147,7 @@ var Util = SuperMap.Util = SuperMap.Util || {};
  * @name Util
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description common 工具类。
  */
 
@@ -1145,7 +1160,7 @@ var Util = SuperMap.Util = SuperMap.Util || {};
  *     SuperMap.Util.extend(obj, size);
  * @param {Object} [destination] - 目标对象。
  * @param {Object} source - 源对象，其属性将被设置到目标对象上。
- * @return {Object} 目标对象。
+ * @returns {Object} 目标对象。
  */
 
 SuperMap.Util.extend = function (destination, source) {
@@ -1224,7 +1239,7 @@ SuperMap.Util.reset = function (obj) {
 
 /**
  * @description 获取 HTML 元素数组。
- * @return {Array.<HTMLElement>} HTML 元素数组。
+ * @returns {Array.<HTMLElement>} HTML 元素数组。
  */
 SuperMap.Util.getElement = function () {
     var elements = [];
@@ -1245,7 +1260,7 @@ SuperMap.Util.getElement = function () {
 /**
  * @description instance of 的跨浏览器实现。
  * @param {Object} o - 对象。
- * @return {boolean} 是否是页面元素。
+ * @returns {boolean} 是否是页面元素。
  */
 SuperMap.Util.isElement = function (o) {
     return !!(o && o.nodeType === 1);
@@ -1254,7 +1269,7 @@ SuperMap.Util.isElement = function (o) {
 /**
  * @description 判断一个对象是否是数组。
  * @param {Object} a - 对象。
- * @return {boolean} 是否是数组。
+ * @returns {boolean} 是否是数组。
  */
 SuperMap.Util.isArray = function (a) {
     return (Object.prototype.toString.call(a) === '[object Array]');
@@ -1265,7 +1280,7 @@ SuperMap.Util.isArray = function (a) {
  * @description 从数组中删除某一项。
  * @param {Array} array - 数组。
  * @param {Object} item - 数组中要删除的一项。
- * @return {Array} 执行删除操作后的数组。
+ * @returns {Array} 执行删除操作后的数组。
  */
 SuperMap.Util.removeItem = function (array, item) {
     for (var i = array.length - 1; i >= 0; i--) {
@@ -1281,7 +1296,7 @@ SuperMap.Util.removeItem = function (array, item) {
  * @description 获取某对象再数组中的索引值。
  * @param {Array} array - 数组。
  * @param {Object} obj - 对象。
- * @return {number} 某对象再数组中的索引值。
+ * @returns {number} 某对象再数组中的索引值。
  */
 SuperMap.Util.indexOf = function (array, obj) {
     if (array == null) {
@@ -1355,7 +1370,7 @@ SuperMap.Util.modifyDOMElement = function (element, id, px, sz, position,
  * @param {Object} from - 源对象。Any properties of this object that
  *     are undefined in the to object will be set on the to object.
  *
- * @return {Object} A reference to the to object.  Note that the to argument is modified
+ * @returns {Object} A reference to the to object.  Note that the to argument is modified
  *     in place and returned by this function.
  */
 SuperMap.Util.applyDefaults = function (to, from) {
@@ -1392,7 +1407,7 @@ SuperMap.Util.applyDefaults = function (to, from) {
 /**
  * @description 将参数对象转换为 HTTP 的 GET 请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
  * @param {Object} params - 参数对象。
- * @return {string} HTTP 的 GET 请求中的参数字符串。
+ * @returns {string} HTTP 的 GET 请求中的参数字符串。
  */
 SuperMap.Util.getParameterString = function (params) {
     var paramsArray = [];
@@ -1427,7 +1442,7 @@ SuperMap.Util.getParameterString = function (params) {
  * @description 给 URL 追加参数。
  * @param {string} url - 待追加参数的 URL 字符串。
  * @param {string} paramStr - 待追加的参数。
- * @return {string} 新的 URL。
+ * @returns {string} 新的 URL。
  */
 SuperMap.Util.urlAppend = function (url, paramStr) {
     var newUrl = url;
@@ -1451,7 +1466,7 @@ SuperMap.Util.DEFAULT_PRECISION = 14;
  * @description 将字符串以接近的精度转换为数字。
  * @param {string} number - 字符串。
  * @param {number} [precision=14] - 精度。
- * @return {number} 数字。
+ * @returns {number} 数字。
  */
 SuperMap.Util.toFloat = function (number, precision) {
     if (precision == null) {
@@ -1467,16 +1482,16 @@ SuperMap.Util.toFloat = function (number, precision) {
 /**
  * @description 角度转弧度。
  * @param {number} x - 角度。
- * @return {number} 弧度。
+ * @returns {number} 弧度。
  */
 SuperMap.Util.rad = function (x) {
     return x * Math.PI / 180;
 };
 
 /**
- * @description 从URL字符串中解析出参数对象。
+ * @description 从 URL 字符串中解析出参数对象。
  * @param {string} url - URL。
- * @return {Object} 解析出的参数对象。
+ * @returns {Object} 解析出的参数对象。
  */
 SuperMap.Util.getParameters = function (url) {
     // if no url specified, take it from the location bar
@@ -1537,7 +1552,7 @@ SuperMap.Util.lastSeqID = 0;
 /**
  * @description 创建唯一 ID 值。
  * @param {string} [prefix] - 前缀。
- * @return {string} 唯一的 ID 值。
+ * @returns {string} 唯一的 ID 值。
  */
 SuperMap.Util.createUniqueID = function (prefix) {
     if (prefix == null) {
@@ -1650,15 +1665,15 @@ SuperMap.Util.extend(SuperMap.INCHES_PER_UNIT, {
 
 /**
  * @memberOf SuperMap
- * @description 分辨率与比例尺之间转换的常量，默认值96。
+ * @member [SuperMap.DOTS_PER_INCH=96]
+ * @description 分辨率与比例尺之间转换的常量。
  * @type {Object}
- * @default 96
  */
 SuperMap.DOTS_PER_INCH = 96;
 
 /**
  * @param {number} scale - 比例尺。
- * @return {number} 返回正常的 scale 值。
+ * @returns {number} 返回正常的 scale 值。
  */
 SuperMap.Util.normalizeScale = function (scale) {
     var normScale = (scale > 1.0) ? (1.0 / scale) : scale;
@@ -1669,7 +1684,7 @@ SuperMap.Util.normalizeScale = function (scale) {
  * @description 比例尺转分辨率。
  * @param {number} scale - 比例尺。
  * @param {string} [units='degrees'] - 比例尺单位。
- * @return {number} 分辨率。
+ * @returns {number} 分辨率。
  */
 SuperMap.Util.getResolutionFromScale = function (scale, units) {
     var resolution;
@@ -1688,7 +1703,7 @@ SuperMap.Util.getResolutionFromScale = function (scale, units) {
  * @description 分辨率转比例尺。
  * @param {number} resolution - 分辨率。
  * @param {string} [units='degrees'] - 分辨率单位。
- * @return {number} 比例尺。
+ * @returns {number} 比例尺。
  */
 SuperMap.Util.getScaleFromResolution = function (resolution, units) {
 
@@ -1755,7 +1770,7 @@ SuperMap.Browser = (function () {
 
 /**
  * @description 获取浏览器相关信息。支持的浏览器包括：Opera，Internet Explorer，Safari，Firefox。
- * @return {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
+ * @returns {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
  */
 SuperMap.Util.getBrowser = function () {
     return SuperMap.Browser;
@@ -1763,7 +1778,7 @@ SuperMap.Util.getBrowser = function () {
 
 /**
  * @description 浏览器是否支持 Canvas。
- * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
+ * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas。
  */
 SuperMap.Util.isSupportCanvas = (function () {
     var checkRes = true, broz = SuperMap.Util.getBrowser();
@@ -1788,7 +1803,7 @@ SuperMap.Util.isSupportCanvas = (function () {
 
 /**
  * @description 判断；浏览器是否支持 Canvas。
- * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
+ * @returns {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
  */
 SuperMap.Util.supportCanvas = function () {
     return SuperMap.Util.isSupportCanvas;
@@ -1806,7 +1821,7 @@ SuperMap.INCHES_PER_UNIT["yard"] = SuperMap.INCHES_PER_UNIT.yd;
 /**
  * @description 判断一个 URL 请求是否在当前域中。
  * @param {string} url - URL 请求字符串。
- * @return {boolean} URL 请求是否在当前域中。
+ * @returns {boolean} URL 请求是否在当前域中。
  */
 SuperMap.Util.isInTheSameDomain = function (url) {
     if (!url) {
@@ -1860,8 +1875,8 @@ SuperMap.Util.isInTheSameDomain = function (url) {
  * @param {SuperMap.Size} viewer - 地图初始化时默认的地图图片的尺寸。
  * @param {number} scale - 地图初始化时默认的显示比例尺。
  * @param {string} [coordUnit='degrees'] - 投影坐标系统的地图单位。
- * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
- * @return {number} 返回图层显示分辨率。
+ * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则系统默认为 WGS84 参考系的椭球体长半轴 6378137。
+ * @returns {number} 返回图层显示分辨率。
  */
 SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
     //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
@@ -1893,7 +1908,7 @@ SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, dat
 /**
  * @description 将对象转换成 JSON 字符串。
  * @param {Object} obj - 要转换成 JSON 的 Object 对象。
- * @return {string} 返回转换后的 JSON 对象。
+ * @returns {string} 返回转换后的 JSON 对象。
  */
 SuperMap.Util.toJSON = function (obj) {
     var objInn = obj;
@@ -1968,7 +1983,7 @@ SuperMap.Util.toJSON = function (obj) {
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。
  * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
- * @return {number} 返回当前比例尺下的屏幕分辨率。
+ * @returns {number} 返回当前比例尺下的屏幕分辨率。
  */
 SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
@@ -1991,12 +2006,12 @@ SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datum
 };
 
 /**
- * @description 根据resolution、dpi、coordUnit和datumAxis计算比例尺。
+ * @description 根据 resolution、dpi、coordUnit 和 datumAxis 计算比例尺。
  * @param {number} resolution - 用于计算比例尺的地图分辨率。
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。
  * @param {number} [datumAxis=6378137] - 地理坐标系统椭球体长半轴。用户自定义地图的 Options 时，若未指定该参数的值，则 DPI 默认按照 WGS84 参考系的椭球体长半轴 6378137 来计算。
- * @return {number} 返回当前屏幕分辨率下的比例尺。
+ * @returns {number} 返回当前屏幕分辨率下的比例尺。
  */
 SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, datumAxis) {
     var scale = null,
@@ -2019,7 +2034,7 @@ SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, 
 /**
  * @description 转换查询结果。
  * @param {Object} result - 查询结果。
- * @return {Object} 转换后的查询结果。
+ * @returns {Object} 转换后的查询结果。
  */
 SuperMap.Util.transformResult = function (result) {
     if (result.responseText && typeof result.responseText === "string") {
@@ -2082,9 +2097,9 @@ SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
 };
 
 /**
- * @description 克隆一份Object对象
+ * @description 克隆一个 Object 对象
  * @param {Object} obj - 需要克隆的对象。
- * @return {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
+ * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
  */
 SuperMap.Util.cloneObject = function (obj) {
     // Handle the 3 simple types, and null or undefined
@@ -2125,7 +2140,7 @@ SuperMap.Util.cloneObject = function (obj) {
  * @param {SuperMap.Geometry.Point} a2 - 第一条线段的结束节点。
  * @param {SuperMap.Geometry.Point} b1 - 第二条线段的起始节点。
  * @param {SuperMap.Geometry.Point} b2 - 第二条线段的结束节点。
- * @return {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
+ * @returns {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
  */
 SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
     var intersectValue = null;
@@ -2170,7 +2185,7 @@ SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
  * @param {SuperMap.Style} style - 文本样式。
  * @param {string} text - 文本内容。
  * @param {Object} element - DOM 元素。
- * @return {Object} 返回裁剪后的宽度，高度信息。
+ * @returns {Object} 返回裁剪后的宽度，高度信息。
  */
 SuperMap.Util.getTextBounds = function (style, text, element) {
     document.body.appendChild(element);
@@ -2549,7 +2564,7 @@ SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
  * @class SuperMap.Events
  * @classdesc 事件类。
  * @param {Object} object - 当前事件对象被添加到的 JS 对象。
- * @param {HTMLElement} element - 响应浏览器事件的 dom 元素。
+ * @param {HTMLElement} element - 响应浏览器事件的 DOM 元素。
  * @param {Array.<string>} eventTypes - 自定义应用事件的数组。
  * @param {boolean} [fallThrough=false] - 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
  * @param {Object} options - 事件对象选项。
@@ -2595,7 +2610,7 @@ class Events_Events {
 
         /**
          * @member {HTMLElement} SuperMap.Events.prototype.element
-         * @description 接受浏览器事件的DOM节点。
+         * @description 接受浏览器事件的 DOM 节点。
          */
         this.element = null;
 
@@ -2612,16 +2627,16 @@ class Events_Events {
         this.eventHandler = null;
 
         /**
-         * @member {boolean} SuperMap.Events.prototype.fallThrough
-         * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+         * @member {boolean} [SuperMap.Events.prototype.fallThrough=false]
+         * @description 是否允许事件处理之后向上传递（冒泡），为 false 的时候阻止事件冒泡。
          */
         this.fallThrough = fallThrough;
 
         /**
          * @member {boolean} [SuperMap.Events.prototype.includeXY=false]
          * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。
-         *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为false的原因在于，当创建一个
-         *              事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+         *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个
+         *              事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
          *              设为 false 不抵消，如果设为 true，用 this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
          * @example
          *  function named(evt) {
@@ -2634,7 +2649,7 @@ class Events_Events {
          * @member {Object} SuperMap.Events.prototype.extensions
          * @description 事件扩展。Keys 代表事件类型，values 代表事件对象。
          * @example
-         * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
+         * 以扩展 "foostart" 和 "fooend" 事件为例。展示替换 css 属性为 foo 的元素的 click 事件。
          *
          *   SuperMap.Events.foostart = SuperMap.Class({
      *       initialize: function(target) {
@@ -2736,8 +2751,8 @@ class Events_Events {
 
     /**
      * @function SuperMap.Events.prototype.attachToElement
-     * @description 给dom元素绑定浏览器事件。
-     * @param {HTMLDOMElement} element - 绑定浏览器事件的dom元素。
+     * @description 给 DOM 元素绑定浏览器事件。
+     * @param {HTMLDOMElement} element - 绑定浏览器事件的 DOM 元素。
      */
     attachToElement(element) {
         if (this.element) {
@@ -2774,10 +2789,10 @@ class Events_Events {
      * @function SuperMap.Events.prototype.on
      * @description 在一个相同的范围内注册监听器的方法，此方法调用 register 函数。
      * @example
-     * // 注册一个"loadstart"监听事件
+     * // 注册一个 "loadstart" 监听事件
      * events.on({"loadstart": loadStartListener});
      *
-     * // 同样注册一个"loadstart"监听事件
+     * // 同样注册一个 "loadstart" 监听事件
      * events.register("loadstart", undefined, loadStartListener);
      *
      * // 同时为对象注册多个监听事件
@@ -2787,7 +2802,7 @@ class Events_Events {
      *     scope: object
      * });
      *
-     * // 同时为对象注册多个监听事件，多次调用register方法
+     * // 同时为对象注册多个监听事件，多次调用 register 方法
      * events.register("loadstart", object, loadStartListener);
      * events.register("loadend", object, loadEndListener);
      *
@@ -2856,10 +2871,10 @@ class Events_Events {
      * @function SuperMap.Events.prototype.un
      * @description 在一个相同的范围内取消注册监听器的方法，此方法调用 unregister 函数。
      * @example
-     * // 移除"loadstart" 事件监听
+     * // 移除 "loadstart" 事件监听
      * events.un({"loadstart": loadStartListener});
      *
-     * // 使用unregister方法移除"loadstart" 事件监听
+     * // 使用 "unregister" 方法移除 "loadstart" 事件监听
      * events.unregister("loadstart", undefined, loadStartListener);
      *
      * // 取消对象多个事件监听
@@ -2922,7 +2937,7 @@ class Events_Events {
      * @description 触发一个特定的注册事件。
      * @param {string} type - 触发事件类型。
      * @param {Event} evt - 事件对象。
-     * @returns {boolean} 返回监听对象，如果返回是false，则停止监听。
+     * @returns {boolean} 返回监听对象，如果返回是 false，则停止监听。
      */
     triggerEvent(type, evt) {
         var listeners = this.listeners[type];
@@ -3044,7 +3059,7 @@ class Events_Events {
             this.element.offsets = Util.pagePosition(this.element);
         }
 
-        return new Pixel(
+        return new Pixel_Pixel(
             (evt.clientX + this.element.scrolls[0]) - this.element.offsets[0]
             - this.element.lefttop[0],
             (evt.clientY + this.element.scrolls[1]) - this.element.offsets[1]
@@ -3081,10 +3096,10 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @category ElasticSearch
  * @param {string} url - ElasticSearch服务地址。
  * @param {Object} options - 参数。
- * @param {function} options.change - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
- * @param {boolean} options.openGeoFence - 是否开启地理围栏验证，默认为不开启。
- * @param {function} options.outOfGeoFence - 数据超出地理围栏后执行的函数。
- * @param {Object} options.geoFence - 地理围栏。
+ * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
+ * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
+ * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
+ * @param {Object} [options.geoFence] - 地理围栏。
  */
 
 class ElasticSearch_ElasticSearch {
@@ -3105,23 +3120,23 @@ class ElasticSearch_ElasticSearch {
         });
         /**
          *  @deprecated
-         *  @member {function} SuperMap.ElasticSearch.prototype.change
+         *  @member {function} [SuperMap.ElasticSearch.prototype.change]
          *  @description 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
          */
         this.change = null;
         /**
-         *  @member {boolean} SuperMap.ElasticSearch.prototype.openGeoFence
+         *  @member {boolean} [SuperMap.ElasticSearch.prototype.openGeoFence=false]
          *  @description 是否开启地理围栏验证，默认为不开启。
          */
         this.openGeoFence = false;
         /**
-         *  @member {function} SuperMap.ElasticSearch.prototype.outOfGeoFence
+         *  @member {function} [SuperMap.ElasticSearch.prototype.outOfGeoFence]
          *  @description 数据超出地理围栏后执行的函数
          */
         this.outOfGeoFence = null;
 
         /**
-         * @member {Object} SuperMap.ElasticSearch.prototype.geoFence
+         * @member {Object} [SuperMap.ElasticSearch.prototype.geoFence]
          * @description 地理围栏
          * @example {
      *    radius: 1000,//单位是m
@@ -3718,16 +3733,16 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 const FetchRequest_fetch = window.fetch;
 /**
  * @function SuperMap.setCORS
- * @description 设置是否支持跨域
- * @param {boolean} cors - 是否支持跨域
+ * @description 设置是否支持跨域。
+ * @param {boolean} cors - 是否支持跨域。
  */
 var setCORS = SuperMap.setCORS = function (cors) {
     SuperMap.CORS = cors;
 }
 /**
  * @function SuperMap.isCORS
- * @description 是否支持跨域
- * @returns {boolean} 是否支持跨域
+ * @description 是否支持跨域。
+ * @returns {boolean} 是否支持跨域。
  */
 var isCORS = SuperMap.isCORS = function () {
     if (SuperMap.CORS != undefined) {
@@ -3738,15 +3753,15 @@ var isCORS = SuperMap.isCORS = function () {
 /**
  * @function SuperMap.setRequestTimeout
  * @description 设置请求超时时间。
- * @param {number} timeout - 请求超时时间
+ * @param {number} [timeout=45] - 请求超时时间，单位秒。
  */
 var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
     return SuperMap.RequestTimeout = timeout;
 }
 /**
  * @function SuperMap.getRequestTimeout
- * @description 获取请求超时时间，默认45s。
- * @returns {number} 请求超时时间
+ * @description 获取请求超时时间。
+ * @returns {number} 请求超时时间。
  */
 var getRequestTimeout = SuperMap.getRequestTimeout = function () {
     return SuperMap.RequestTimeout || 45000;
@@ -4136,19 +4151,19 @@ SuperMap.Util.RequestJSONPPromise = {
  * @memberOf SuperMap
  * @namespace
  * @category Security
- * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
+ * @description 安全管理中心，提供 iServer,iPortal,Online 统一权限认证管理。
  *  > 使用说明：
- *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
+ *  > 创建任何一个服务之前调用 {@link SuperMap.SecurityManager.registerToken}或
  *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
- *  > 发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
  */
 class SecurityManager_SecurityManager {
 
     /**
-     * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param {string} url -服务器域名+端口，如：http://localhost:8092
-     * @param {SuperMap.TokenServiceParameter} tokenParam - token申请参数
-     * @return {Promise} 返回包含token信息的Promise对象
+     * @description 从服务器获取一个token,在此之前要注册服务器信息。
+     * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
+     * @param {SuperMap.TokenServiceParameter} tokenParam - token 申请参数。
+     * @returns {Promise} 返回包含 token 信息的 Promise 对象。
      */
 
     static generateToken(url, tokenParam) {
@@ -4162,8 +4177,8 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 注册安全服务器相关信息
-     * @param {SuperMap.ServerInfo} serverInfos - 服务器信息
+     * @description 注册安全服务器相关信息。
+     * @param {SuperMap.ServerInfo} serverInfos - 服务器信息。
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
@@ -4177,8 +4192,8 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 服务请求都会自动带上这个token
-     * @param {string} url -服务器域名+端口：如http://localhost:8090
+     * @description 服务请求都会自动带上这个 token。
+     * @param {string} url -服务器域名+端口：如http://localhost:8090。
      * @param {string} token - token
      */
     static registerToken(url, token) {
@@ -4191,8 +4206,8 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 注册key,ids为数组(存在一个key对应多个服务)
-     * @param {Array} ids - 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
+     * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
      * @param {string} key - key
      */
     static registerKey(ids, key) {
@@ -4209,9 +4224,9 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 获取服务器信息
-     * @param {string} url -服务器域名+端口，如：http://localhost:8092
-     * @returns {SuperMap.ServerInfo} 服务器信息
+     * @description 获取服务器信息。
+     * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
+     * @returns {SuperMap.ServerInfo} 服务器信息。
      */
     static getServerInfo(url) {
         this.servers = this.servers || {};
@@ -4219,8 +4234,8 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 根据Url获取token
-     * @param {string} url - 服务器域名+端口，如：http://localhost:8092
+     * @description 根据 Url 获取token。
+     * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
      * @returns {string} token
      */
     static getToken(url) {
@@ -4233,7 +4248,7 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 根据Url获取key
+     * @description 根据 Url 获取 key。
      * @param {string} id - id
      * @returns {string} key
      */
@@ -4244,12 +4259,12 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description iServer登录验证
-     * @param {string} url - iServer首页地址，如：http://localhost:8090/iserver
-     * @param {string} username - 用户名
-     * @param {string} password - 密码
-     * @param {boolean} rememberme - 是否记住
-     * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
+     * @description iServer 登录验证。
+     * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
+     * @param {string} username - 用户名。
+     * @param {string} password - 密码。
+     * @param {boolean} [rememberme=false] - 是否记住。
+     * @returns {Promise} 返回包含 iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
         var end = url.substr(url.length - 1, 1);
@@ -4272,9 +4287,9 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description iServer登出
-     * @param {string} url - iServer首页地址,如：http://localhost:8090/iserver
-     * @returns {Promise} 是否登出成功
+     * @description iServer登出。
+     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
+     * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
         var end = url.substr(url.length - 1, 1);
@@ -4295,9 +4310,9 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description Online登录验证
-     * @param {string} callbackLocation - 跳转位置
-     * @param {boolean} newTab -是否新窗口打开
+     * @description Online 登录验证。
+     * @param {string} callbackLocation - 跳转位置。
+     * @param {boolean} [newTab=true] - 是否新窗口打开。
      */
     static loginOnline(callbackLocation, newTab) {
         var loginUrl = SecurityManager_SecurityManager.SSO + "/login?service=" + callbackLocation;
@@ -4305,11 +4320,11 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description iPortal登录验证
-     * @param {string} url - iportal首页地址
-     * @param {string} username - 用户名
-     * @param {string} password - 密码
-     * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
+     * @description iPortal登录验证。
+     * @param {string} url - iportal 首页地址。
+     * @param {string} username - 用户名。
+     * @param {string} password - 密码。
+     * @returns {Promise} 返回包含 iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -4332,9 +4347,9 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description iPortal登出
-     * @param {string} url - iportal首页地址
-     * @returns {Promise} 如果登出成功，返回true;否则返回false
+     * @description iPortal 登出。
+     * @param {string} url - iportal 首页地址。
+     * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
         var end = url.substr(url.length - 1, 1);
@@ -4356,14 +4371,14 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description iManager登录验证
-     * @param {string} url - iManager地址。地址参数为iManager首页地址，如： http://localhost:8390/imanager
-     * @param {Object} loginInfoParams - iManager 登录参数。
-     * @param {string} loginInfoParams.userName - 用户名
-     * @param {string} loginInfoParams.password - 密码
-     * @param {Object} options  
-     * @param {boolean} options.isNewTab - 不同域时是否在新窗口打开登录页面
-     * @return {Promise} 返回包含iManager登录请求结果的Promise对象
+     * @description iManager 登录验证。
+     * @param {string} url - iManager 地址。地址参数为 iManager 首页地址，如： http://localhost:8390/imanager。
+     * @param {Object} [loginInfoParams] - iManager 登录参数。
+     * @param {string} loginInfoParams.userName - 用户名。
+     * @param {string} loginInfoParams.password - 密码。
+     * @param {Object} options
+     * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
+     * @returns {Promise} 返回包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams, options) {
         if (!Util.isInTheSameDomain(url)) {
@@ -4395,7 +4410,7 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 清空全部验证信息
+     * @description 清空全部验证信息。
      */
     static destroyAllCredentials() {
         this.keys = null;
@@ -4404,7 +4419,7 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 清空令牌信息
+     * @description 清空令牌信息。
      */
     static destroyToken(url) {
         if (!url) {
@@ -4418,7 +4433,7 @@ class SecurityManager_SecurityManager {
     }
 
     /**
-     * @description 清空服务授权码
+     * @description 清空服务授权码。
      */
     static destroyKey(id) {
         if (!id) {
@@ -5648,8 +5663,8 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
  * @category iServer Data
  * @param {Object} options - 参数。 
  * @param {string} options.alias - 数据源别名。 
- * @param {boolean} [options.connect] - 数据源是否自动连接数据。 
  * @param {string} options.dataBase - 数据源连接的数据库名。 
+ * @param {boolean} [options.connect] - 数据源是否自动连接数据。 
  * @param {string} [options.driver] - 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。 
  * @param {SuperMap.EngineType} [options.engineType] - 数据源连接的引擎类型。 
  * @param {boolean} [options.exclusive] - 是否以独占方式打开数据源。 
@@ -5781,12 +5796,12 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectio
 /**
  * @class SuperMap.OutputSetting
  * @category  iServer ProcessingService
- * @classdesc 分布式分析输出类型设置类
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.OutputType} options.type - 输出类型。<br>
- * @param {string} options.datasetName - 结果数据集名称。<br>
- * @param {SuperMap.DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。<br>
- * @param {string} options.outputPath - 分析结果输出路径 <br>
+ * @classdesc 分布式分析输出类型设置类。
+ * @param {Object} options - 参数。
+ * @param {SuperMap.DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。
+ * @param {string} [options.datasetName='analystResult'] - 结果数据集名称。
+ * @param {SuperMap.OutputType} [options.type=SuperMap.OutputType.UDB] - 输出类型。
+ * @param {string} [options.outputPath] - 分析结果输出路径。
  */
 class OutputSetting_OutputSetting {
 
@@ -5794,13 +5809,13 @@ class OutputSetting_OutputSetting {
 
         /**
          * @member {SuperMap.OutputType} SuperMap.OutputSetting.prototype.type
-         * @description 分布式分析的输出类型，必设字段。
+         * @description 分布式分析的输出类型。
          */
         this.type = OutputType.UDB;
 
         /**
-         * @member {string} SuperMap.OutputSetting.prototype.datasetName
-         * @description 分布式分析的输出结果数据集名称，必设字段。
+         * @member {string} [SuperMap.OutputSetting.prototype.datasetName='analystResult']
+         * @description 分布式分析的输出结果数据集名称。
          */
         this.datasetName = "analystResult";
 
@@ -5811,7 +5826,7 @@ class OutputSetting_OutputSetting {
         this.datasourceInfo = null;
 
         /**
-         * @member {string} SuperMap.OutputSetting.prototype.outputPath
+         * @member {string} [SuperMap.OutputSetting.prototype.outputPath]
          * @description 分布式分析的分析结果输出路径。
          */
         this.outputPath = "";
@@ -5850,13 +5865,13 @@ SuperMap.OutputSetting = OutputSetting_OutputSetting;
  * @classdesc 密度分析任务参数类。
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
+ * @param {string} options.fields - 权重索引。 
  * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
- * @param {string} options.fields - 权重索引。 
  * @param {number} [options.radius=300] - 分析的影响半径。
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 class KernelDensityJobParameter_KernelDensityJobParameter {
 
@@ -5877,19 +5892,19 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         this.query = "";
 
         /**
-         * @member {number} SuperMap.KernelDensityJobParameter.prototype.resolution
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.resolution=80]
          * @description 网格大小。
          */
         this.resolution = 80;
 
         /**
-         * @member {number} SuperMap.KernelDensityJobParameter.prototype.method
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.method=0]
          * @description 分析方法。
          */
         this.method = 0;
 
         /**
-         * @member {number} SuperMap.KernelDensityJobParameter.prototype.meshType
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.meshType=0]
          * @description 分析类型。
          */
         this.meshType = 0;
@@ -5901,25 +5916,25 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         this.fields = "";
 
         /**
-         * @member {number} SuperMap.KernelDensityJobParameter.prototype.radius
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.radius=300]
          * @description 分析的影响半径。
          */
         this.radius = 300;
 
         /**
-         * @member {SuperMap.AnalystSizeUnit} SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit
+         * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
         this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member {SuperMap.AnalystSizeUnit} SuperMap.KernelDensityJobParameter.prototype.radiusUnit
+         * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 搜索半径单位。
          */
         this.radiusUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member {SuperMap.AnalystAreaUnit} SuperMap.KernelDensityJobParameter.prototype.areaUnit
+         * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
          * @description 面积单位。
          */
         this.areaUnit = AnalystAreaUnit.SQUAREMILE;
@@ -5960,8 +5975,8 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
      * @function SuperMap.KernelDensityJobParameter.toObject
      * @param {SuperMap.KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
      * @param {SuperMap.KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
-     * @description 将密度分析任务参数对象转换为JSON对象。
-     * @returns JSON对象。
+     * @description 将密度分析任务参数对象转换为 JSON 对象。
+     * @returns JSON 对象。
      */
     static toObject(kernelDensityJobParameter, tempObj) {
         for (var name in kernelDensityJobParameter) {
@@ -5995,12 +6010,12 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
- * @classdesc 单对象空间查询分析任务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {string} options.datasetQuery - 查询对象所在的数据集名称。<br>
- * @param {SuperMap.SpatialQueryMode} options.mode - 空间查询模式。<br>
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
+ * @classdesc 单对象空间查询分析任务参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
+ * @param {SuperMap.SpatialQueryMode} [options.mode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
@@ -6027,14 +6042,14 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
         this.geometryQuery = "";
 
         /**
-         * @member {SuperMap.SpatialQueryMode} SuperMap.SingleObjectQueryJobsParameter.prototype.mode
+         * @member {SuperMap.SpatialQueryMode} [SuperMap.SingleObjectQueryJobsParameter.prototype.mode=SuperMap.SpatialQueryMode.CONTAIN]
          * @description 空间查询模式 。
          */
         this.mode = SpatialQueryMode.CONTAIN;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SingleObjectQueryJobsParameter.prototype.output
-         * @description 输出参数设置类
+         * @member {SuperMap.OutputSetting} [SuperMap.SingleObjectQueryJobsParameter.prototype.output]
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -6060,9 +6075,9 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
     /**
      * @function SuperMap.SingleObjectQueryJobsParameter.toObject
-     * @param {Object} singleObjectQueryJobsParameter - 单对象空间查询分析任务参数
-     * @param {Object} tempObj - 目标对象
-     * @description 生成单对象空间查询分析任务对象
+     * @param {Object} singleObjectQueryJobsParameter - 单对象空间查询分析任务参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 生成单对象空间查询分析任务对象。
      */
     static toObject(singleObjectQueryJobsParameter, tempObj) {
         for (var name in singleObjectQueryJobsParameter) {
@@ -6094,12 +6109,12 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
  * @class SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
  * @classdesc 属性汇总分析任务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {string} options.groupField - 分组字段。<br>
- * @param {string} options.attributeField - 属性字段。<br>
- * @param {string} options.statisticModes - 统计模式。<br>
- * @param {SuperMap.OutputSetting} options.output -输出参数设置。<br>
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.groupField - 分组字段。
+ * @param {string} options.attributeField - 属性字段。
+ * @param {string} options.statisticModes - 统计模式。
+ * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
  */
 class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
 
@@ -6109,27 +6124,27 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
         }
         /**
          * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.datasetName
-         * @description 汇总数据集名称
+         * @description 汇总数据集名称。
          */
         this.datasetName = "";
         /**
          * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.groupField
-         * @description 分组字段
+         * @description 分组字段。
          */
         this.groupField = "";
         /**
          * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.attributeField
-         * @description 属性字段
+         * @description 属性字段。
          */
         this.attributeField = "";
         /**
          * @member {string} SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes
-         * @description 属性汇总统计模式
+         * @description 属性汇总统计模式。
          */
         this.statisticModes = "";
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryAttributesJobsParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -6154,9 +6169,9 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
 
     /**
      * @function SuperMap.SummaryAttributesJobsParameter.toObject
-     * @param {Object} SummaryAttributesJobsParameter - 属性汇总任务参数
-     * @param {Object} tempObj - 目标对象
-     * @description 生成属性汇总分析任务对象
+     * @param {Object} SummaryAttributesJobsParameter - 属性汇总任务参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 生成属性汇总分析任务对象。
      */
     static toObject(SummaryAttributesJobsParameter, tempObj) {
         for (var name in SummaryAttributesJobsParameter) {
@@ -6187,15 +6202,15 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
  * @class SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类。
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。<br>
- * @param {number} options.resolution - 分辨率。<br>
- * @param {SuperMap.StatisticAnalystMode} options.statisticModes - 分析模式。<br>
- * @param {number} options.meshType - 分析类型。<br>
- * @param {number} options.fields - 权重索引。<br>
- * @param {SuperMap.SummaryType} options.type - 聚合类型。
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {number} options.fields - 权重索引。
+ * @param {number} [options.resolution=100] - 分辨率。
+ * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
+ * @param {number} [options.meshType=0] - 分析类型。
+ * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
@@ -6211,30 +6226,30 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
         /**
          * @member {string} SuperMap.SummaryMeshJobParameter.prototype.regionDataset
-         * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
+         * @description 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
          */
         this.regionDataset = "";
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.SummaryMeshJobParameter.prototype.query
-         * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
+         * @description 分析范围（聚合类型为网格面聚合时使用的参数）。
          */
         this.query = "";
 
         /**
-         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.resolution
-         * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
+         * @member {number} [SuperMap.SummaryMeshJobParameter.prototype.resolution=100]
+         * @description 分辨率（聚合类型为网格面聚合时使用的参数）。
          */
         this.resolution = 100;
 
         /**
-         * @member {number} SuperMap.SummaryMeshJobParameter.prototype.meshType
-         * @description  网格面类型(聚合类型为网格面聚合时使用的参数)，取值：0或1。
+         * @member {number} [SuperMap.SummaryMeshJobParameter.prototype.meshType=0]
+         * @description  网格面类型（聚合类型为网格面聚合时使用的参数），取值：0 或 1。
          */
         this.meshType = 0;
 
         /**
-         * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryMeshJobParameter.prototype.statisticModes
+         * @member {SuperMap.StatisticAnalystMode} [SuperMap.SummaryMeshJobParameter.prototype.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE]
          * @description 统计模式。
          */
         this.statisticModes = StatisticAnalystMode.AVERAGE;
@@ -6246,14 +6261,14 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
         this.fields = "";
 
         /**
-         * @member {SuperMap.SummaryType} SuperMap.SummaryMeshJobParameter.prototype.type
+         * @member {SuperMap.SummaryType} [SuperMap.SummaryMeshJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 聚合类型。
          */
         this.type = SummaryType.SUMMARYMESH;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -6286,7 +6301,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
      * @function SuperMap.SummaryMeshJobParameter.toObject
      * @param {Object} summaryMeshJobParameter - 点聚合分析任务参数。
      * @param {Object} tempObj - 目标对象。
-     * @description 生成点聚合分析任务对象
+     * @description 生成点聚合分析任务对象。
      */
     static toObject(summaryMeshJobParameter, tempObj) {
         for (var name in summaryMeshJobParameter) {
@@ -6339,22 +6354,22 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
 /**
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
- * @classdesc 区域汇总分析任务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {boolean} options.sumShape - 是否统计长度或面积。<br>
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query -分析范围。<br>
- * @param {boolean} options.standardSummaryFields 以标准属字段统计。<br>
- * @param {string} options.standardFields - 以标准属字段统计的字段名称。<br>
- * @param {SuperMap.StatisticAnalystMode} options.standardStatisticModes - 以标准属字段统计的统计模式。<br>
- * @param {boolean} options.weightedSummaryFields - 以权重字段统计。<br>
- * @param {string} options.weightedFields - 以权重字段统计的字段名称。<br>
- * @param {SuperMap.StatisticAnalystMode} options.weightedStatisticModes - 以权重字段统计的统计模式。<br>
- * @param {number} options.resolution - 网格大小。<br>
- * @param {number} options.meshType - 网格面汇总类型。 <br>
- * @param {SuperMap.AnalystSizeUnit} options.meshSizeUnit - 网格大小单位。<br>
- * @param {SuperMap.SummaryType} options.type - 汇总类型。<br>
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
+ * @classdesc 区域汇总分析任务参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {string} [options.standardFields] - 标准属性字段名称。
+ * @param {string} [options.weightedFields] - 权重字段名称。
+ * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
+ * @param {SuperMap.StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。 
+ * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属字段统计。
+ * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
+ * @param {number} [options.resolution=100] - 网格大小。
+ * @param {number} [options.meshType=0] - 网格面汇总类型。
+ * @param {SuperMap.AnalystSizeUnit} [options.meshSizeUnit=SuperMap.AnalystSizeUnit.METER] - 网格大小单位。
+ * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 汇总类型。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 class SummaryRegionJobParameter_SummaryRegionJobParameter {
 
@@ -6376,7 +6391,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
         this.regionDataset = "";
 
         /**
-         * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.sumShape
+         * @member {boolean} [SuperMap.SummaryRegionJobParameter.prototype.sumShape=true]
          * @description 是否统计长度或面积。
          */
         this.sumShape = true;
@@ -6388,61 +6403,61 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
         this.query = "";
 
         /**
-         * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields
-         * @description 以标准属字段统计。
+         * @member {boolean} [SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields=false]
+         * @description 是否以标准属字段统计。
          */
         this.standardSummaryFields = false;
 
         /**
          * @member {string} SuperMap.SummaryRegionJobParameter.prototype.standardFields
-         * @description 以标准属字段统计的字段名称。
+         * @description 标准属性字段名称。仅支持系统字段以外的整形、长整形、浮点型的字段的名称。standardSummaryFields 为 true 时必填。 
          */
         this.standardFields = "";
 
         /**
          * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes
-         * @description 以标准属字段统计的统计模式。
+         * @description 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
          */
         this.standardStatisticModes = "";
 
         /**
-         * @member {boolean} SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields
-         * @description 以权重字段统计。
+         * @member {boolean} [SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields=false]
+         * @description 是否以权重字段统计。
          */
         this.weightedSummaryFields = false;
 
         /**
          * @member {string} SuperMap.SummaryRegionJobParameter.prototype.weightedFields
-         * @description 以权重字段统计的字段名称。
+         * @description 权重字段名称。仅支持系统字段以外的整形、长整形、浮点型的字段的名称。weightedSummaryFields 为 true 时必填。 
          */
         this.weightedFields = "";
 
         /**
          * @member {SuperMap.StatisticAnalystMode} SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes
-         * @description 以权重字段统计的统计模式。
+         * @description 以权重字段统计的统计模式。权重字段的统计模式。weightedSummaryFields 为 true 时必填。 
          */
         this.weightedStatisticModes = "";
 
         /**
-         * @member {number} SuperMap.SummaryRegionJobParameter.prototype.meshType
+         * @member {number} [SuperMap.SummaryRegionJobParameter.prototype.meshType=0]
          * @description 网格面汇总类型。
          */
         this.meshType = 0;
 
         /**
-         * @member {number} SuperMap.SummaryRegionJobParameter.prototype.resolution
+         * @member {number} [SuperMap.SummaryRegionJobParameter.prototype.resolution=100]
          * @description 网格大小。
          */
         this.resolution = 100;
 
         /**
-         * @member {SuperMap.AnalystSizeUnit} SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit
+         * @member {SuperMap.AnalystSizeUnit} [SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
          * @description 网格大小单位。
          */
         this.meshSizeUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member {SuperMap.SummaryType} SuperMap.SummaryRegionJobParameter.prototype.type
+         * @member {SuperMap.SummaryType} [SuperMap.SummaryRegionJobParameter.prototype.type=SuperMap.SummaryType.SUMMARYMESH]
          * @description 汇总类型。
          */
         this.type = SummaryType.SUMMARYMESH;
@@ -6487,7 +6502,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
      * @function SuperMap.SummaryRegionJobParameter.toObject
      * @param {Object} summaryRegionJobParameter - 矢量裁剪分析任务参数。
      * @param {Object} tempObj - 目标对象。
-     * @description 生成区域汇总分析服务对象
+     * @description 生成区域汇总分析服务对象。
      */
     static toObject(summaryRegionJobParameter, tempObj) {
         for (var name in summaryRegionJobParameter) {
@@ -6532,12 +6547,14 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
 /**
  * @class SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
- * @classdesc 叠加分析任务参数类
- * @param {Object} options - 参数。<br>
- * @param {string} options.datasetName - 数据集名。<br>
- * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。<br>
- * @param {string} options.mode - 叠加分析模式。<br>
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
+ * @classdesc 叠加分析任务参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。
+ * @param {string} options.srcFields - 输入数据需要保留的字段。
+ * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
+ * @param {string} [options.mode] - 叠加分析模式。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 class OverlayGeoJobParameter_OverlayGeoJobParameter {
 
@@ -6558,26 +6575,26 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         this.datasetOverlay = "";
 
         /**
-         * @member {string} SuperMap.OverlayGeoJobParameter.prototype.mode
-         * @description 叠加分析模式
+         * @member {string} [SuperMap.OverlayGeoJobParameter.prototype.mode]
+         * @description 叠加分析模式。
          */
         this.mode = "";
 
         /**
          * @member {string} SuperMap.OverlayGeoJobParameter.prototype.srcFields
-         * @description 输入数据需要保留的字段
+         * @description 输入数据需要保留的字段。
          */
         this.srcFields = "";
 
         /**
          * @member {string} SuperMap.OverlayGeoJobParameter.prototype.overlayFields
-         * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
+         * @description 叠加数据需要保留的字段，对分析模式为 clip、update、erase 时，此参数无效。
          */
         this.overlayFields = "";
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -6605,7 +6622,7 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
      * @function SuperMap.OverlayGeoJobParameter.toObject
      * @param {Object} OverlayGeoJobParameter - 点聚合分析任务参数。
      * @param {Object} tempObj - 目标对象。
-     * @description 生成点聚合分析任务对象
+     * @description 生成点聚合分析任务对象。
      */
     static toObject(OverlayGeoJobParameter, tempObj) {
         for (var name in OverlayGeoJobParameter) {
@@ -6755,13 +6772,13 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
- * @classdesc 拓扑检查分析任务参数类
- * @param {Object} options - 必填参数。<br>
- * @param {string} options.datasetName -数据集名。<br>
- * @param {string} options.datasetTopology -检查对象所在的数据集名称。<br>
- * @param {SuperMap.TopologyValidatorRule} options.rule - 拓扑检查规则。<br>
- * @param {string} options.tolerance - 容限。<br>
- * @param {SuperMap.OutputSetting} options.output - 输出参数设置。<br>
+ * @classdesc 拓扑检查分析任务参数类。
+ * @param {Object} options - 必填参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetTopology -检查对象所在的数据集名称。
+ * @param {SuperMap.TopologyValidatorRule} [options.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
+ * @param {string} [options.tolerance] - 容限。
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
  */
 class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
 
@@ -6782,20 +6799,20 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
         this.datasetTopology = "";
 
         /**
-         * @member {string} SuperMap.TopologyValidatorJobsParameter.prototype.tolerance
+         * @member {string} [SuperMap.TopologyValidatorJobsParameter.prototype.tolerance]
          * @description 容限，指定的拓扑错误检查时使用的容限。
          */
         this.tolerance = "";
 
         /**
-         * @member {SuperMap.TopologyValidatorRule} SuperMap.TopologyValidatorJobsParameter.prototype.rule
-         * @description 拓扑检查模式 。
+         * @member {SuperMap.TopologyValidatorRule} [SuperMap.TopologyValidatorJobsParameter.prototype.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP]
+         * @description 拓扑检查模式。
          */
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
          * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -6821,9 +6838,9 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
 
     /**
      * @function SuperMap.TopologyValidatorJobsParameter.toObject
-     * @param {Object} TopologyValidatorJobsParameter -拓扑检查分析任务参数
-     * @param {Object} tempObj - 目标对象
-     * @description 生成拓扑检查分析任务对象
+     * @param {Object} TopologyValidatorJobsParameter -拓扑检查分析任务参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 生成拓扑检查分析任务对象。
      */
     static toObject(TopologyValidatorJobsParameter, tempObj) {
         for (var name in TopologyValidatorJobsParameter) {
@@ -7173,7 +7190,7 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
+     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -7377,25 +7394,14 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV图层。
- * @extends SuperMap.Layer
- * @param name - {string} 图层名。
- * @param {Object} options - 可选参数，有如下两个参数：
- * @param {Mapv.DataSet} options.dataSet - mapv 的dataSet对象。
+ * @classdesc MapV 图层。
+ * @extends {SuperMap.Layer}
+ * @param {string} name - 图层名。
+ * @param {Object} options - 可选参数。
+ * @param {Mapv.DataSet} options.dataSet - mapv 的 dataSet 对象。
+ * @param {Object} options.options - mapv 绘图风格配置信息。
  */
 class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
-
-    /*
-     * @function SuperMap.Layer.MapVLayer.prototype.
-     * @description
-     * MapV支持webgl和普通canvas渲染.
-     * 但目前本图层webgl渲染不能正确显示，待解决
-     *
-     * @param name
-     * @param options 有两个参数<br>
-     *  * dataSet: mapv 的dataSet对象
-     *  * options: mapv 绘图风格配置信息
-     */
     constructor(name, options) {
         super(name, options);
 
@@ -7413,7 +7419,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
 
         /**
          * @member {boolean} - [SuperMap.Layer.MapVLayer.prototype.supported=false]
-         * @description 当前浏览器是否支持canvas绘制。决定了MapV图是否可用，内部判断使用。
+         * @description 当前浏览器是否支持 canvas 绘制。决定了 MapV 图是否可用，内部判断使用。
          */
         this.supported = false;
 
@@ -7478,8 +7484,8 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {mapv.DataSet} dataSet - mapv数据集。
-     * @param {Object} options - mapv绘图参数。
+     * @param {mapv.DataSet} dataSet - mapv 数据集。
+     * @param {Object} options - mapv 绘图参数。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -7489,8 +7495,8 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {mapv.DataSet} dataSet - mapv数据集。
-     * @param {Object} options - mapv绘图参数。
+     * @param {mapv.DataSet} dataSet - mapv 数据集。
+     * @param {Object} options - mapv 绘图参数。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -7500,7 +7506,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} - mapv数据集。
+     * @returns {mapv.DataSet} - mapv 数据集。
      */
     getData() {
         if (this.renderer) {
@@ -7512,7 +7518,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} [filter] -  过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -7536,9 +7542,9 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.setMap
-     * @description 图层已经添加到Map中。
-     *              如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
-     * @param {SuperMap.Map} map - 需要绑定的map对象。
+     * @description 图层已经添加到 Map 中。
+     *              如果当前浏览器支持 canvas，则开始渲染要素；如果不支持则移除图层。
+     * @param {SuperMap.Map} map - 需要绑定的 map 对象。
      */
     setMap(map) {
         super.setMap(map);
@@ -7552,8 +7558,8 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.moveTo
-     * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
-     *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
+     * @description 重置当前 MapV 图层的 div，再一次与 Map 控件保持一致。
+     *              修改当前显示范围，当平移或者缩放结束后开始重绘 MapV 图的渲染效果。
      * @param {SuperMap.Bounds} bounds - 图层范围。
      * @param {boolean} [zoomChanged] - 缩放级别是否改变。
      * @param {boolean} [dragging] - 是否拖动。
@@ -7594,7 +7600,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
-     * @param {SuperMap.Lonlat} [latLng] - 经纬度坐标。
+     * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
      */
     transferToMapLatLng(latLng) {
         var source = "EPSG:4326", dest = "EPSG:4326";
@@ -7619,10 +7625,11 @@ SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
 
 /**
  * @class SuperMap.Credential
- * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。 
- * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。
- * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。
- * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。
+ * @category Security
+ * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。</br>
+ * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。</br>
+ * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。</br>
+ * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。</br>
  * @param {string} value - 访问受安全限制的服务时用于通过安全认证的验证信息。
  * @param {string} [name='token'] - 验证信息前缀，name=value 部分的 name 部分。
  * @example
@@ -7716,8 +7723,8 @@ SuperMap.Credential = Credential;
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现 read 和 write 方法。
  * @category BaseTypes Format
  * @param {Object} options - 可选参数。
- * @param {boolean} [options.keepData=false] - 如果设置为 true， data 属性会指向被解析的对象（例如 json 或 xml 数据对象）。
- * @param {Object} [options.data] - 当 <keepData> 属性设置为 true，这是传递给 <read> 操作的要被解析的字符串。
+ * @param {boolean} [options.keepData=false] - 如果设置为 true， data 属性会指向被解析的对象（例如 JSON 或 xml 数据对象）。
+ * @param {Object} [options.data] - 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
  */
 class Format_Format {
 
@@ -7725,7 +7732,7 @@ class Format_Format {
     constructor(options) {
         /**
          * @member {Object} SuperMap.Format.prototype.data 
-         * @description 当 <keepData> 属性设置为 true，这是传递给 <read> 操作的要被解析的字符串。
+         * @description 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
          */
         this.data = null;
 
@@ -7767,7 +7774,7 @@ class Format_Format {
      * @function SuperMap.Format.prototype.write
      * @description 将对象写成字符串。
      * @param {Object} object - 可序列化的对象。
-     * @return {string} 对象被写成字符串。
+     * @returns {string} 对象被写成字符串。
      */
     write(object) { // eslint-disable-line no-unused-vars
         //用来写字符串
@@ -7784,7 +7791,7 @@ SuperMap.Format = Format_Format;
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写 JSON 的解析类。使用 {@link SuperMap.Format.JSON} 构造函数创建新实例。
  * @category BaseTypes Format
- * @extends SuperMap.Format
+ * @extends {SuperMap.Format}
  */
 class JSON_JSONFormat extends Format_Format {
 
@@ -7838,7 +7845,7 @@ class JSON_JSONFormat extends Format_Format {
              * @function SuperMap.Format.JSON.serialize.object
              * @description 把对象转换为 JSON 字符串。
              * @param {Object} object - 可序列化的对象。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'object': function (object) {
                 // three special objects that we want to treat differently
@@ -7883,7 +7890,7 @@ class JSON_JSONFormat extends Format_Format {
              * @function SuperMap.Format.JSON.serialize.array
              * @description 把数组转换成 JSON 字符串。
              * @param {Array} array - 可序列化的数组。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'array': function (array) {
                 var json;
@@ -7911,7 +7918,7 @@ class JSON_JSONFormat extends Format_Format {
              * @function SuperMap.Format.JSON.serialize.string
              * @description 把字符串转换成 JSON 字符串。
              * @param {string} string - 可序列化的字符串。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'string': function (string) {
                 // If the string contains no control characters, no quote characters, and no
@@ -7947,7 +7954,7 @@ class JSON_JSONFormat extends Format_Format {
              * @function SuperMap.Format.JSON.serialize.number
              * @description 把数字转换成 JSON 字符串。
              * @param {number} number - 可序列化的数字。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'number': function (number) {
                 return isFinite(number) ? String(number) : "null";
@@ -7957,7 +7964,7 @@ class JSON_JSONFormat extends Format_Format {
              * @function SuperMap.Format.JSON.serialize.boolean
              * @description Transform a boolean into a JSON string.
              * @param {boolean} bool - The boolean to be serialized.
-             * @return {string} A JSON string representing the boolean.
+             * @returns {string} A JSON string representing the boolean.
              */
             'boolean': function (bool) {
                 return String(bool);
@@ -7967,7 +7974,7 @@ class JSON_JSONFormat extends Format_Format {
              * @function SuperMap.Format.JSON.serialize.object
              * @description 将日期对象转换成 JSON 字符串。
              * @param {Date} date - 可序列化的日期对象。
-             * @return {string} JSON 字符串。
+             * @returns {string} JSON 字符串。
              */
             'date': function (date) {
                 function format(number) {
@@ -7990,7 +7997,7 @@ class JSON_JSONFormat extends Format_Format {
      * @description 将一个符合 JSON 结构的字符串进行解析。
      * @param {string} json - 符合 JSON 结构的字符串。
      * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
-     * @return {Object} 对象，数组，字符串或数字。
+     * @returns {Object} 对象，数组，字符串或数字。
      */
     read(json, filter) {
         var object;
@@ -8013,8 +8020,8 @@ class JSON_JSONFormat extends Format_Format {
      * @function SuperMap.Format.JSON.prototype.write
      * @description 序列化一个对象到一个符合 JSON 格式的字符串。
      * @param {(object|string|Array|number|boolean)} value - 需要被序列化的对象，数组，字符串，数字，布尔值。
-     * @param {boolean} pretty 
-     * @return {string} 符合 JSON 格式的字符串。
+     * @param {boolean} [pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
+     * @returns {string} 符合 JSON 格式的字符串。
      *
      */
     write(value, pretty) {
@@ -8036,7 +8043,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
-     * @return {string} 一个适当的缩进字符串。
+     * @returns {string} 一个适当的缩进字符串。
      */
     writeIndent() {
         var pieces = [];
@@ -8051,7 +8058,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
-     * @return {string} 代表新的一行的字符串。
+     * @returns {string} 代表新的一行的字符串。
      */
     writeNewline() {
         return (this.pretty) ? this.newline : '';
@@ -8060,7 +8067,7 @@ class JSON_JSONFormat extends Format_Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
-     * @return {string} A space.
+     * @returns {string} 一个空格。
      */
     writeSpace() {
         return (this.pretty) ? this.space : '';
@@ -8090,7 +8097,6 @@ SuperMap.Format.JSON = JSON_JSONFormat;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  */
 class CommonServiceBase_CommonServiceBase {
 
@@ -8245,7 +8251,7 @@ class CommonServiceBase_CommonServiceBase {
      * @function SuperMap.CommonServiceBase.prototype.getCredential
      * @description  获取凭据信息
      * @param {string} url - 服务地址。
-     * @return {SuperMap.Credential} 凭据信息对象。
+     * @returns {SuperMap.Credential} 凭据信息对象。
      */
     getCredential(url) {
         let keyUrl = url,
@@ -8551,7 +8557,7 @@ SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @extends {SuperMap.REST.CommonServiceBase}
+ * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  */
@@ -8566,7 +8572,7 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
      * @function SuperMap.REST.AddressMatchService.prototype.code
      * @description 正向匹配。
      * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
-     * @param {function} callback - 回调函数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     code(params, callback) {
         var me = this;
@@ -8586,8 +8592,8 @@ class services_AddressMatchService_AddressMatchService extends CommonServiceBase
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.decode
      * @description 反向匹配。
-     * @param {SuperMap.GeoDeCodingParameter} params - 反向匹配参数。
-     * @param {function} callback - 回调函数。
+     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
+     * @param {RequestCallback} callback - 回调函数。
      */
     decode(params, callback) {
         var me = this;
@@ -8619,13 +8625,13 @@ SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_Addres
  * @classdesc 分布式分析服务基类
  * @extends {SuperMap.CommonServiceBase}
  * @param {string} url - 分布式分析服务地址。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {Object} options.eventListeners - 听器对象。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
- * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {Object} options - 参数。
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- */
+ * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
+ * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
+*/
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
     constructor(url, options) {
@@ -8872,7 +8878,7 @@ SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjec
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务类。
  * @param {string} url -点聚合分析任务地址。
- * @param {Object} options - 参数。<br>
+ * @param {Object} options - 参数。
  * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
  * @param {Object} options.eventListeners - 听器对象。<br>
  * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
@@ -8991,7 +8997,7 @@ SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsSe
 /**
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
- * @classdesc 矢量裁剪分析任务参数类
+ * @classdesc 矢量裁剪分析任务参数类。
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.datasetOverlay - 裁剪对象数据集。 
@@ -9148,11 +9154,11 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
  * @category iServer ProcessingService OverlayAnalyst
  * @classdesc 叠加分析任务类。
  * @param {string} url - 叠加分析任务地址。
- * @param {Object} options - 参数。<br>
- * @param {SuperMap.Events} options.events - 处理所有事件的对象。<br>
- * @param {Object} options.eventListeners - 听器对象。<br>
- * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。<br>
- * @param {number} options.index - 服务访问地址在数组中的位置。<br>
+ * @param {Object} options - 参数。
+ * @param {SuperMap.Events} options.events - 处理所有事件的对象。
+ * @param {Object} options.eventListeners - 听器对象。
+ * @param {SuperMap.ServerType} options.serverType - 服务器类型，iServer|iPortal|Online。
+ * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  */
 class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_ProcessingServiceBase {
@@ -9418,7 +9424,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getKernelDensityJobs(callback, resultFormat) {
         var me = this,
@@ -9440,9 +9446,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getKernelDensityJob(id, callback, resultFormat) {
         var me = this,
@@ -9467,7 +9473,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.KernelDensityJobParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -9490,7 +9496,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param {string} id - 密度分析的id。
+     * @param {string} id - 密度分析的 id。
      * @returns {Object} - 密度分析的状态。
      */
     getKernelDensityJobState(id) {
@@ -9501,7 +9507,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getSummaryMeshJobs(callback, resultFormat) {
         var me = this,
@@ -9523,9 +9529,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
      * @description 获取某一个点聚合分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getSummaryMeshJob(id, callback, resultFormat) {
         var me = this,
@@ -9550,7 +9556,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.SummaryMeshJobParameter} params - 点聚合分析任务参数类。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
 */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -9573,7 +9579,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
-     * @param {string} id - 点聚合分析的id。
+     * @param {string} id - 点聚合分析的 id。
      * @returns {Object} 点聚合分析的状态。
      */
     getSummaryMeshJobState(id) {
@@ -9584,7 +9590,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getQueryJobs(callback, resultFormat) {
         var me = this,
@@ -9606,9 +9612,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
      * @description 获取某一个单对象查询分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getQueryJob(id, callback, resultFormat) {
         var me = this,
@@ -9633,7 +9639,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addQueryJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -9658,7 +9664,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
-     * @param {string} id - 单对象查询分析的id。
+     * @param {string} id - 单对象查询分析的 id。
      * @returns {Object} 单对象查询分析的状态
      */
     getQueryJobState(id) {
@@ -9669,7 +9675,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getSummaryRegionJobs(callback, resultFormat) {
         var me = this,
@@ -9691,9 +9697,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某一个区域汇总分析。
-     * @param {string} id - 区域汇总分析的id。
+     * @param {string} id - 区域汇总分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getSummaryRegionJob(id, callback, resultFormat) {
         var me = this,
@@ -9718,7 +9724,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.SummaryRegionJobParameter} params -创建一个区域汇总分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -9741,7 +9747,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param {string} id - 区域汇总分析的id。
+     * @param {string} id - 区域汇总分析的 id。
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState(id) {
@@ -9752,7 +9758,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getVectorClipJobs(callback, resultFormat) {
         var me = this,
@@ -9774,9 +9780,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
      * @description 获取某一个矢量裁剪分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getVectorClipJob(id, callback, resultFormat) {
         var me = this,
@@ -9801,7 +9807,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -9827,7 +9833,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param {string} id - 矢量裁剪分析的id。
+     * @param {string} id - 矢量裁剪分析的 id。
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
@@ -9838,7 +9844,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getOverlayGeoJobs(callback, resultFormat) {
         var me = this,
@@ -9860,9 +9866,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
      * @description 获取某一个叠加分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getOverlayGeoJob(id, callback, resultFormat) {
         var me = this,
@@ -9887,7 +9893,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.OverlayGeoJobParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addOverlayGeoJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -9912,7 +9918,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param {string} id - 叠加分析的id。
+     * @param {string} id - 叠加分析的 id。
      * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
@@ -9923,7 +9929,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getBuffersJobs(callback, resultFormat) {
         var me = this,
@@ -9945,9 +9951,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
      * @description 获取某一个缓冲区分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getBuffersJob(id, callback, resultFormat) {
         var me = this,
@@ -9972,7 +9978,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addBuffersJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -9997,7 +10003,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
-     * @param {string} id - 缓冲区分析的id。
+     * @param {string} id - 缓冲区分析的 id。
      * @returns {Object} 缓冲区分析的状态。
      */
     getBuffersJobState(id) {
@@ -10008,7 +10014,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getTopologyValidatorJobs(callback, resultFormat) {
         var me = this,
@@ -10030,9 +10036,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取某一个拓扑检查分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getTopologyValidatorJob(id, callback, resultFormat) {
         var me = this,
@@ -10057,7 +10063,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.TopologyValidatorJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -10082,7 +10088,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
-     * @param {string} id - 拓扑检查分析的id。
+     * @param {string} id - 拓扑检查分析的 id。
      * @returns {Object} 拓扑检查分析的状态。
      */
     getTopologyValidatorJobState(id) {
@@ -10093,7 +10099,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getSummaryAttributesJobs(callback, resultFormat) {
         var me = this,
@@ -10115,9 +10121,9 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取某一个属性汇总分析。
-     * @param {string} id - 空间分析的id。
+     * @param {string} id - 空间分析的 id。
      * @param {function} callback - 请求结果的回调函数。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     getSummaryAttributesJob(id, callback, resultFormat) {
         var me = this,
@@ -10142,7 +10148,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
      * @param {SuperMap.SummaryAttributesJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {function} callback - 请求结果的回调函数。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {SuperMap.DataFormat} [SuperMap.DataFormat.resultFormat=GeoJSON] - 返回的结果类型。
+     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的结果类型。
      */
     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -10167,7 +10173,7 @@ class ProcessingService_ProcessingService extends CommonServiceBase_CommonServic
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
-     * @param {string} id - 属性汇总分析的id。
+     * @param {string} id - 属性汇总分析的 id。
      * @returns {Object} 属性汇总分析的状态。
      */
     getSummaryAttributesJobState(id) {

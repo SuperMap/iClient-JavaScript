@@ -3,7 +3,7 @@
  *          iclient9-leaflet.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0-alpha
+ *          version: v9.1.0-beta
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -127,6 +127,7 @@ var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {
  * @name Util
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description common 工具类。
  */
 
@@ -2422,9 +2423,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 _leaflet2["default"].supermap = _leaflet2["default"].supermap || {}; /**
                                                                 * @namespace L
+                                                                * @category BaseTypes Namespace
                                                                 */
 /**
  * @namespace L.supermap
+ * @category BaseTypes Namespace
  */
 /**
  * SuperMap Leaflet基类
@@ -9416,6 +9419,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Geometry
+ * @category BaseTypes Geometry
  * @classdesc 几何对象类，描述地理对象的几何图形。
  */
 var Geometry = exports.Geometry = function () {
@@ -9634,6 +9638,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Bounds
+ * @category BaseTypes Geometry
  * @classdesc 表示边界类实例。使用 bounds 之前需要设置 left，bottom，right，top 四个属性，这些属性的初始值为 null。
  * @param {number} [left] - 左边界，注意考虑宽度，理论上小于 right 值。
  * @param {number} [bottom] - 下边界。考虑高度，理论上小于 top 值。
@@ -10421,6 +10426,10 @@ var _iclientCommon = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+/**
+ * @namespace L.Util
+ * @category BaseTypes Util
+ */
 var supermap_callbacks = exports.supermap_callbacks = {};
 _leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
 var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
@@ -10553,6 +10562,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class L.supermap.CommontypesConversion
+ * @category BaseTypes Util
+ * @namespace
  * @classdesc Leaflet 对象和 SuperMap 对象转换工具。
  */
 var CommontypesConversion = exports.CommontypesConversion = function () {
@@ -13616,6 +13627,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.LonLat
+ * @category BaseTypes Geometry
  * @classdesc  这个类用来表示经度和纬度对。
  * @param {number} [lon=0.0] - 地图单位上的 X 轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的 x 坐标。
  * @param {number} [lat=0.0] - 地图单位上的 Y 轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的 y 坐标。
@@ -14976,6 +14988,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  *@namespace SuperMap
+ *@category BaseTypes Namespace
  */
 
 /**
@@ -15047,8 +15060,9 @@ _SuperMap.SuperMap.mixin = function () {
 
 /**
  * @name String
- * @memberOf SuperMap
  * @namespace
+ * @memberOf SuperMap
+ * @category BaseTypes Util
  * @description 字符串操作的一系列常用扩展函数。
  */
 var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
@@ -15227,6 +15241,7 @@ var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
  * @name Number
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 数值操作的一系列常用扩展函数。
  */
 var NumberExt = exports.NumberExt = _SuperMap.SuperMap.Number = {
@@ -15323,6 +15338,7 @@ if (!Number.prototype.limitSigDigs) {
  * @name Function
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 函数操作的一系列常用扩展函数。
  */
 var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
@@ -15392,6 +15408,7 @@ var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
  * @name Array
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 数组操作的一系列常用扩展函数。
  */
 var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
@@ -19627,6 +19644,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Feature.Vector
+ * @category BaseTypes Geometry
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
  * 其中，默认的样式在 {@link SuperMap.Feature.Vector.style} 类中定义，如果没有特别的指定将使用默认的样式。
@@ -20519,6 +20537,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Pixel
+ * @category BaseTypes Geometry
  * @classdesc 此类用 x,y 坐标描绘屏幕坐标（像素点）。
  * @param {number} [x=0.0] - x 坐标。
  * @param {number} [y=0.0] - y 坐标。
@@ -28487,6 +28506,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Credential
+ * @category Security
  * @classdesc SuperMap 的安全证书类，其中包括 token 等安全验证信息。</br>
  * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens" 下申请 value。</br>
  * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.." 的 value。</br>
@@ -31239,7 +31259,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
 
             var resolutionX = dw / mapCanvas.x,
                 resolutionY = dh / mapCanvas.y;
-            var centerPx = map.latLngToLayerPoint(map.getCenter());
+            //var centerPx = map.latLngToLayerPoint(map.getCenter());
 
             //获取屏幕左上角的地理坐标坐标
             //左上角屏幕坐标为0,0
@@ -58692,6 +58712,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Feature
+ * @category BaseTypes Geometry
  * @classdesc 要素类组合了地理和属性，Feature 类同时具有 marker 和 lonlat 属性。
  * @param {SuperMap.Layer} layer - 图层。
  * @param {SuperMap.LonLat} lonlat - 经纬度。
@@ -59220,6 +59241,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class  SuperMap.Size
+ * @category BaseTypes Style
  * @classdesc 此类描绘一对高宽值的实例。
  * @param {number} [w=0.0] - 宽度。
  * @param {number} [h=0.0] - 高度。
@@ -63080,6 +63102,7 @@ _leaflet2["default"].supermap.heatMapLayer = heatMapLayer;
 
 /**
  * @class L.supermap.heatMapFeature
+ * @category Visualization HeatMap
  * @classdesc 客户端专题图要素类。
  *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
  * @extends {L.Class}
@@ -66011,9 +66034,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * 检测类，用于检测浏览器是否支持相关特性
- */
 var Detector = exports.Detector = function () {
     function Detector() {
         _classCallCheck(this, Detector);
@@ -97782,6 +97802,7 @@ var _SuperMap = __webpack_require__(0);
  * @name Date
  * @memberOf SuperMap
  * @namespace
+ * @category BaseTypes Util
  * @description 包含 parse、toISOString 方法的实现，两个方法用来解析 RFC 3339 日期，遵循 ECMAScript 5 规范。
  */
 var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
