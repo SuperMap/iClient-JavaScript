@@ -1,3 +1,45 @@
+# 9.1.0 beta (2018-8-2) #
+
+## API changes
+
+### for Leaflet
+
+- 新增 `L.Util.transform` 方法，支持要素的投影转换
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.processingService` 获取任务信息是没有携带 token 的问题
+
+- 修复 `L.supermap.themeFeature` 传入 `L.polyline`  `L.polygon` 失败的问题
+
+### for OpenLayers
+
+- 修复 `ol.supermap.processingService` 获取任务信息是没有携带 token 的问题
+
+- 修复 `ol.supermap.WebMap` 只会加载20个数据的问题
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.processingService` 获取任务信息是没有携带 token 的问题
+
+- 修复 `mapboxgl.supermap.DeckglLayer` 在浏览器缩放比例非100%时，要素偏移的问题
+
+## Examples
+
+### for Leaflet
+
+- 新增 动态标绘 分类及示例
+
+- 将 标绘 - 点线面绘制 示例移动至 控件 - 点线面绘制
+
+- iServer - 地图
+
+  - 新增 “几何查询(3857)” 示例
+
+
+
 # 9.1.0 alpha (2018-7-7) #
 
 ## 新特性
