@@ -7,12 +7,12 @@
 <body  style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>图层操作</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_operatePlottingLayer"></h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="创建图层" onclick="createPlottingLayer()"/>
-        <input type="button" class="btn btn-default" value="删除图层" onclick="removePlottingLayer()"/>
-        <input type="button" class="btn btn-default" value="绘制标号" onclick="plotSymbol()"/>
-        <input type="button" class="btn btn-default" value="取消绘制" onclick="plottingDrawCancel()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createLayer" onclick="createPlottingLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteLayer" onclick="removePlottingLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawMarker" onclick="plotSymbol()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelMarker" onclick="plottingDrawCancel()"/>
     </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>

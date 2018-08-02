@@ -7,19 +7,19 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 10px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center' style=" color: #ffffff;font-size: 16px;">航线</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_drawRoute" style=" color: #ffffff;font-size: 16px;"></h5></div>
     <div class='panel-body content' style="padding: 10px;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
         <div class='input-group' style=" margin: 10px auto;">
             <select class="search-query form-control" style="width: 120px;margin-bottom: 0;" id="SLT"
                     onclick="setRouteNodeType()"></select>
-            <input type="button" class="btn btn-default" value="绘制航线" onclick="plotSymbol()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="取消标绘" onclick="plottingDrawCancel()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="编辑状态" onclick="editState()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawRoute" onclick="plotSymbol()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelPlotting" onclick="plottingDrawCancel()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_edit" onclick="editState()"/>&nbsp;&nbsp;
         </div>
         <div class='input-group' style=" margin: 10px auto;">
-            <input type="button" class="btn btn-default" value="删除节点" onclick="deleteRouteNode()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="航线高亮" onclick="highlightFlag()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="航线闪烁" onclick="blinkRoute()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteNode" onclick="deleteRouteNode()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_routeHighlight" onclick="highlightFlag()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_routeFlicker" onclick="blinkRoute()"/>&nbsp;&nbsp;
         </div>
     </div>
 </div>

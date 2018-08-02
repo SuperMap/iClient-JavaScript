@@ -36,14 +36,14 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 15px;right: 20px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center' style="  font-size: 16px;color: #ffffff;">保存和加载</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_saveload" style="  font-size: 16px;color: #ffffff;"></h5></div>
     <div class='panel-body content' style="overflow:hidden;">
         <div class='panel'>
             <div class='input-group' style="margin-top:15px;margin-left: 5px; margin-bottom: 10px;text-align: center">
                 <select class="search-query form-control" id="SLT" style="width: 150px"></select>
-                <input type="button" class="btn btn-default" value="加载" onclick="loadSimulationMap()"/>
-                <input type="button" class="btn btn-default " value="保存" onclick="save()"/>
-                <input type="button" class="btn btn-default" value="另存为：" onclick="saveAsSmlFile()"/>
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_load" onclick="loadSimulationMap()"/>
+                <input type="button" class="btn btn-default " data-i18n="[value]resources.btn_save" onclick="save()"/>
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_saveAs" onclick="saveAsSmlFile()"/>
                 <input type="text" id="txt" class='form-control' style="width: 120px;float: right;margin-right: 5px;"/>
             </div>
         </div>

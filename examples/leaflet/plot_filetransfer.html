@@ -7,27 +7,27 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="toolbar" class="panel panel-primary" style=" position: absolute;top: 15px;right: 10px;width: 320px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center' style=" font-size: 16px;color: #ffffff;">态势图上传下载</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_filetransfer" style=" font-size: 16px;color: #ffffff;"></h5></div>
     <div class='panel-body content' style="height:160px;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
         <div class='input-group' style="margin-top: 15px;margin-left: 10px  margin-bottom: 10px;">
-            <input type="file" style='width:200px;float: left;' id="smlFile" name="smlFile"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="上传" onclick="uploadSmlFile()"/>
+            <input type="file" style='width:200px;float: left;' id="smlFile" name="smlFile"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_upload" onclick="uploadSmlFile()"/>
         </div>&nbsp;&nbsp;
         <div class='input-group' style="margin-left: 10px;  margin-bottom: 10px;">
-            文件URL:
-            <input  type="text" readonly style='width:140px;' id="downloadUrl" name="downloadUrl" value=""/>&nbsp;
-            <input type="button"  class="btn btn-default"value="下载" onclick="downloadSmlFileOnServer()"/>
+            <span  data-i18n="resources.text_fileUrl"></span>
+            <input  type="text" readonly style='width:155px;' id="downloadUrl" name="downloadUrl" value=""/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button"  class="btn btn-default"data-i18n="[value]resources.btn_download" onclick="downloadSmlFileOnServer()"/>
         </div>
         <div class='input-group' style="margin-left: 10px;margin-bottom: 15px  margin-bottom: 10px;">
-            文件名称:
-            <input  type="text" readonly style='width:140px;' id="smlFileName" name="smlFileName" value=""/>&nbsp;
-            <input type="button"  class="btn btn-default" value="删除" onclick="deleteSmlFileOnServer()" />
+            <span  data-i18n="resources.text_fileName"></span>
+            <input  type="text" readonly style='width:155px;' id="smlFileName" name="smlFileName" value=""/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button"  class="btn btn-default" data-i18n="[value]resources.text_input_value_delete" onclick="deleteSmlFileOnServer()" />
         </div>
     </div>
 </div>
 <div id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 230px;width: 320px;background: #FFF;z-index: 9999;display: block;">
     <div class="winTitle" style=" background: #1E90FF;">
-        <span class="title_left">态势图文件列表</span>
+        <span class="title_left" data-i18n="resources.text_fileList">态势图文件列表</span>
     </div>
     <div id="filetree" class="winContent" style="  padding: 5px;overflow-y: auto;height: 400px;"></div>
 </div>

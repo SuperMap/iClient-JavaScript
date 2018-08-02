@@ -63,26 +63,26 @@
     <div class='panel-body content' style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
         <div class='input-group' style="margin-top: 15px;margin-left: 10px">
             <input type="file" style='width:200px;float: left;' id="smlFile"
-                   name="smlFile"/>
+                   name="smlFile"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_upload"
                    onclick="uploadSmlFile()"/>
         </div>
         <div class='input-group' style="margin-left: 10px;">
-            <span class='input-group-addon' data-i18n="resources.text_failUrl"></span>
-            <input class='form-control' type="text" style='width:100px;' id="downloadUrl" name="downloadUrl"
+            <span class='input-group-addon' data-i18n="resources.text_fileUrl"></span>
+            <input class='form-control' type="text" style='width:200px;' id="downloadUrl" name="downloadUrl"
                    value=""/>
             <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_download"
                    onclick="downloadSmlFileOnServer()"/>
         </div>
         <div class='input-group' style="margin-left: 10px;margin-bottom: 15px">
-            <span class='input-group-addon' data-i18n="resources.text_failName"></span>
-            <input class='form-control' type="text" style='width:100px;' id="smlFileName" name="smlFileName"
+            <span class='input-group-addon' data-i18n="resources.text_fileName"></span>
+            <input class='form-control' type="text" style='width:200px;' id="smlFileName" name="smlFileName"
                    value=""/>
             <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_delete" onclick="deleteSmlFileOnServer()"/>
         </div>
     </div>
 </div>
-<div id="filetree" data-i18n="[title]resources.text_failList"></div>
+<div id="filetree" data-i18n="[title]resources.text_fileList"></div>
 <div id="map"></div>
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" include="fileupLoad,PlottingPanel"

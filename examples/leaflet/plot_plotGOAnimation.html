@@ -37,27 +37,18 @@
 <div id="toolbar" class="panel panel-primary"
      style="   position: absolute;top: 15px;right: 20px;text-align: center;z-index: 2000;border-radius: 4px;">
     <div class="panel-heading">
-        <h5 class="panel-title text-center" style=" font-size: 16px;color: #ffffff;">态势推演</h5>
+        <h5 class="panel-title text-center"  data-i18n="resources.title_plotGOAnimation" style=" font-size: 16px;color: #ffffff;"></h5>
     </div>
     <div class="panel-body content">
         <div class="input-group" style="margin-top:15px; margin-left: 10px; margin-bottom: 10px;">
-            <select class="search-query from-control" id="STL"
-                    style="width: 120px;height: 30px; margin-bottom: 0; border-bottom-right-radius: 4px; border-top-right-radius: 4px;">
-                <option value="属性动画">属性动画</option>
-                <option value="闪烁动画">闪烁动画</option>
-                <option value="生长动画">生长动画</option>
-                <option value="旋转动画">旋转动画</option>
-                <option value="比例动画">比例动画</option>
-                <option value="显隐动画">显隐动画</option>
-                <option value="路径动画">路径动画</option>
-            </select>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="创建动画" onclick="createAnimation()">&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="播放" onclick="play()">&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="暂停" onclick="pause()">&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="停止" onclick="stop()">&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="复位" onclick="reset()">&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="删除动画" onclick="deleteSelectedFeaturesAnimation()">&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="删除全部动画" onclick="deleteAllAnimation()">&nbsp;&nbsp;
+            <select class="search-query form-control" id="SLT" data-i18n="[style]resources.style_plotAnimation"></select>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createAnimation" onclick="createAnimation()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="play()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pause" onclick="pause()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_stop" onclick="stop()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_reset" onclick="reset()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteAnimation" onclick="deleteSelectedFeaturesAnimation()">&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteAllAnimation" onclick="deleteAllAnimation()">&nbsp;&nbsp;
         </div>
     </div>
 </div>
@@ -108,6 +99,8 @@
     var url = host + "/iserver/services/map-world/rest/maps/World";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
+    var item = [resources.text_attrAnimation, resources.text_flickerAnimation, resources.text_growthAnimation, resources.text_revolveAnimation, resources.text_proportionAnimation, resources.text_SHAnimation, resources.text_pathAnimation],
+            select, animationtype;
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -127,8 +120,34 @@
     L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
     var plotting = L.supermap.plotting.getControl(map, serverUrl);
     var goAnimationManager = plotting.getGOAnimationManager();
-
     window.setInterval("execute()", 100);
+
+    //保存态势图
+    function saveSimulationMap() {
+        cancelDraw();
+        plotting.getSitDataManager().saveAsSmlFile("situationMap");
+    }
+    function loadSimulationMap() {
+        plotting.getSitDataManager().openSmlFileOnServer("situationMap", function (evt) {
+            drawControl.setDrawingLayer(evt.sitDataLayers[0]);
+        });
+    }
+    //取消标绘
+    function cancelDraw() {
+        drawControl.handler.disable();
+    }
+    //删除选中标号
+    function deleteSymbol() {
+        editControl.deleteSelectedFeatures();
+    }
+    //清空绘制
+    function clearLayer() {
+        cancelDraw();
+
+        for (var i = 0; i < map.getPlottingLayers().length; i++) {
+            map.getPlottingLayers()[i].removeAllFeatures();
+        }
+    }
 
     //播放动画
     function play() {
@@ -173,6 +192,35 @@
             goAnimationManager.goAnimations[i].reset();
         }
     }
+
+    function execute() {
+        goAnimationManager.execute();
+    }
+    function deleteSelectedFeaturesAnimation() {
+        if (null === goAnimationManager.goAnimations) {
+            return;
+        }
+
+        if (0 === editControl.getSelectedFeatures().length) {
+            return;
+        }
+        var selectFeature = editControl.getSelectedFeatures()[0];
+        var animations = goAnimationManager.findGOAnimationsByFeature(selectFeature);
+
+        for (var i = 0; i < animations.length; i++) {
+            goAnimationManager.removeGOAnimation(animations[i]);
+        }
+
+    }
+
+    function deleteAllAnimation() {
+        if (null === goAnimationManager.goAnimations) {
+            return;
+        }
+        goAnimationManager.reset();
+        goAnimationManager.removeAllGOAnimation();
+    }
+
     //创建动画
     function createAnimation() {
         if (0 === editControl.getSelectedFeatures().length) {
@@ -306,29 +354,44 @@
             }
         }
     }
-    function selectAnimationType() {
-        var select = document.getElementById("STL");
-        var type = select.options[select.selectedIndex].value;
+    select = document.getElementById("SLT");
+    for (var i = 0, len = item.length; i < len; i++) {
+        var options = document.createElement("option");
+        options.setAttribute("value", item[i]);
+        options.innerHTML = item[i];
+        select.appendChild(options);
+    }
 
-        if (type === "属性动画") {
+    function selectAnimationType() {
+
+        var select = document.getElementById("SLT");
+        var type;
+        for (var i = 0; i < select.children.length; i++) {
+            if (select.children[i].selected) {
+                type = select.children[i].value;
+
+            }
+        }
+        //item=["属性动画","闪烁动画","生长动画","旋转动画","比例动画","显隐动画","路径动画"]
+        if (type === item[0]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_ATTRIBUTE;
         }
-        else if (type === "闪烁动画") {
+        else if (type === item[1]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_BLINK;
         }
-        else if (type === "生长动画") {
+        else if (type === item[2]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_GROW;
         }
-        else if (type === "旋转动画") {
+        else if (type === item[3]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_ROTATE;
         }
-        else if (type === "比例动画") {
+        else if (type === item[4]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_SCALE;
         }
-        else if (type === "显隐动画") {
+        else if (type === item[5]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_SHOW;
         }
-        else if (type === "路径动画") {
+        else if (type === item[6]) {
             animationtype = SuperMap.Plot.GOAnimationType.ANIMATION_WAY;
         }
         var obj = new Object();
@@ -337,60 +400,6 @@
         return obj;
     }
 
-
-    function execute() {
-        goAnimationManager.execute();
-    }
-    function deleteSelectedFeaturesAnimation() {
-        if (null === goAnimationManager.goAnimations) {
-            return;
-        }
-
-        if (0 === editControl.getSelectedFeatures().length) {
-            return;
-        }
-        var selectFeature = editControl.getSelectedFeatures()[0];
-        var animations = goAnimationManager.findGOAnimationsByFeature(selectFeature);
-
-        for (var i = 0; i < animations.length; i++) {
-            goAnimationManager.removeGOAnimation(animations[i]);
-        }
-
-    }
-
-    function deleteAllAnimation() {
-        if (null === goAnimationManager.goAnimations) {
-            return;
-        }
-        goAnimationManager.reset();
-        goAnimationManager.removeAllGOAnimation();
-    }
-    //保存态势图
-    function saveSimulationMap() {
-        cancelDraw();
-        plotting.getSitDataManager().saveAsSmlFile("situationMap");
-    }
-    function loadSimulationMap() {
-        plotting.getSitDataManager().openSmlFileOnServer("situationMap", function (evt) {
-            drawControl.setDrawingLayer(evt.sitDataLayers[0]);
-        });
-    }
-    //取消标绘
-    function cancelDraw() {
-        drawControl.handler.disable();
-    }
-    //删除选中标号
-    function deleteSymbol() {
-        editControl.deleteSelectedFeatures();
-    }
-    //清空绘制
-    function clearLayer() {
-        cancelDraw();
-
-        for (var i = 0; i < map.getPlottingLayers().length; i++) {
-            map.getPlottingLayers()[i].removeAllFeatures();
-        }
-    }
 </script>
 </body>
 </html>

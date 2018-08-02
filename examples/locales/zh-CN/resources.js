@@ -695,9 +695,9 @@ window.examplesResources = {
         "text_editLayer": "标绘图层的可编辑：",
         "text_lockLayer": "标绘图层的可锁定：",
         "text_selectLayer": "标绘图层的可选择：",
-        "text_failUrl": "态势图文件URL：",
-        "text_failName": "文件名称：",
-        "text_failList": "态势图文件列表",
+        "text_fileUrl": "文件URL：",
+        "text_fileName": "文件名称：",
+        "text_fileList": "态势图文件列表",
         "text_symbolLibInfo": "标号库信息:",
         "text_symbolLibName": "标号库名称",
         "text_SymbolLibID": "标号库ID",
@@ -1240,6 +1240,8 @@ window.examplesResources = {
         "btn_grid": "格网图",
         "btn_startup": "启动",
         "btn_create": "创建",
+        "btn_undo": "撤销",
+        "btn_redo": "重做",
 
 
         "msg_addPath": "请生成路径，用于缓冲区分析",

@@ -750,9 +750,9 @@ window.examplesResources = {
         "text_editLayer": "Edit plotting layer?",
         "text_lockLayer": "Lock plotting layer?",
         "text_selectLayer": "Select plotting layer?",
-        "text_failUrl": "Fail url: ",
-        "text_failName": "Fail name: ",
-        "text_failList": "Fail list",
+        "text_fileUrl": "Fail url: ",
+        "text_fileName": "Fail name: ",
+        "text_fileList": "Fail list",
         "text_symbolLibInfo": "Symbol lib information: ",
         "text_symbolLibName": "Symbol lib's name",
         "text_SymbolLibID": "Symbol lib's ID",
@@ -1293,6 +1293,8 @@ window.examplesResources = {
         "btn_grid": "Grid map",
         "btn_startup": "Startup",
         "btn_create": "Create",
+        "btn_undo": "Undo",
+        "btn_redo": "Redo",
 
 
         "msg_addPath": "Please add the path for buffer analysis.",
