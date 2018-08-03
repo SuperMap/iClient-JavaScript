@@ -8,7 +8,6 @@
             position: absolute;
             left: 250px;
             right: 0px;
-            width: 100%;
             height: 100%;
             border: 1px solid #3473b7;
         }
@@ -121,6 +120,13 @@
     var plotting = L.supermap.plotting.getControl(map, serverUrl);
     var goAnimationManager = plotting.getGOAnimationManager();
     window.setInterval("execute()", 100);
+    select = document.getElementById("SLT");
+    for (var i = 0, len = item.length; i < len; i++) {
+        var options = document.createElement("option");
+        options.setAttribute("value", item[i]);
+        options.innerHTML = item[i];
+        select.appendChild(options);
+    }
 
     //保存态势图
     function saveSimulationMap() {
@@ -353,13 +359,6 @@
                 break;
             }
         }
-    }
-    select = document.getElementById("SLT");
-    for (var i = 0, len = item.length; i < len; i++) {
-        var options = document.createElement("option");
-        options.setAttribute("value", item[i]);
-        options.innerHTML = item[i];
-        select.appendChild(options);
     }
 
     function selectAnimationType() {
