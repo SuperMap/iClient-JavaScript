@@ -19,6 +19,7 @@ import Attributions from './Attributions';
 
 L.supermap = L.supermap || {};
 L.supermap.control = L.supermap.control || {};
+L.supermap.widgets = L.supermap.widgets || {};
 
 L.Control.Attribution.include({
     options: {

@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -89,7 +74,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 93);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -124,17 +109,17 @@ module.exports = function(){try{return echarts}catch(e){return {}}}();
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj4 = __webpack_require__(88);
+var proj4 = __webpack_require__(89);
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(20);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(74);
-proj4.toPoint = __webpack_require__(30);
-proj4.defs = __webpack_require__(34);
-proj4.transform = __webpack_require__(31);
-proj4.mgrs = __webpack_require__(29);
-proj4.version = __webpack_require__(73).version;
-__webpack_require__(72)(proj4);
+proj4.Point = __webpack_require__(75);
+proj4.toPoint = __webpack_require__(31);
+proj4.defs = __webpack_require__(35);
+proj4.transform = __webpack_require__(32);
+proj4.mgrs = __webpack_require__(30);
+proj4.version = __webpack_require__(74).version;
+__webpack_require__(73)(proj4);
 module.exports = proj4;
 
 /***/ }),
@@ -254,7 +239,7 @@ module.exports = function(eccent, phi, sinphi) {
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(45)
+var utils = __webpack_require__(46)
 
 var AND = '&&'
   , OR = '||'
@@ -617,10 +602,10 @@ module.exports = function(destination, source) {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parseCode = __webpack_require__(87);
+var parseCode = __webpack_require__(88);
 var extend = __webpack_require__(19);
-var projections = __webpack_require__(83);
-var deriveConstants = __webpack_require__(80);
+var projections = __webpack_require__(84);
+var deriveConstants = __webpack_require__(81);
 
 function Projection(srsCode,callback) {
   if (!(this instanceof Projection)) {
@@ -692,6 +677,12 @@ module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -799,13 +790,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(42);
+var Point = __webpack_require__(43);
 
 module.exports = VectorTileFeature;
 
@@ -1039,13 +1030,13 @@ function signedArea(ring) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileFeature = __webpack_require__(25);
+var VectorTileFeature = __webpack_require__(26);
 
 module.exports = VectorTileLayer;
 
@@ -1107,7 +1098,7 @@ VectorTileLayer.prototype.feature = function(i) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = function(phi, sphi, cphi, en) {
@@ -1117,7 +1108,7 @@ module.exports = function(phi, sphi, cphi, en) {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(11);
@@ -1258,7 +1249,7 @@ exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 
@@ -2006,7 +1997,7 @@ function getMinNorthing(zoneLetter) {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = function (array){
@@ -2024,17 +2015,17 @@ module.exports = function (array){
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(76);
-var adjust_axis = __webpack_require__(75);
+var datum_transform = __webpack_require__(77);
+var adjust_axis = __webpack_require__(76);
 var proj = __webpack_require__(20);
-var toPoint = __webpack_require__(30);
+var toPoint = __webpack_require__(31);
 module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
@@ -2101,7 +2092,7 @@ module.exports = function transform(source, dest, point) {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
@@ -2330,12 +2321,12 @@ module.exports = function(wkt, self) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(85);
-var units = __webpack_require__(84);
+var PrimeMeridian = __webpack_require__(86);
+var units = __webpack_require__(85);
 
 module.exports = function(defData) {
   var self = {};
@@ -2468,12 +2459,12 @@ module.exports = function(defData) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(86);
-var parseProj = __webpack_require__(33);
-var wkt = __webpack_require__(32);
+var globals = __webpack_require__(87);
+var parseProj = __webpack_require__(34);
+var wkt = __webpack_require__(33);
 
 function defs(name) {
   /*global console*/
@@ -2529,16 +2520,16 @@ module.exports = defs;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports.VectorTile = __webpack_require__(43);
-module.exports.VectorTileFeature = __webpack_require__(25);
-module.exports.VectorTileLayer = __webpack_require__(26);
+module.exports.VectorTile = __webpack_require__(44);
+module.exports.VectorTileFeature = __webpack_require__(26);
+module.exports.VectorTileLayer = __webpack_require__(27);
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2546,7 +2537,7 @@ module.exports.VectorTileLayer = __webpack_require__(26);
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(44);
+var ieee754 = __webpack_require__(45);
 
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -3163,7 +3154,7 @@ function writeUtf8(buf, str, pos) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -3879,13 +3870,13 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(21)))
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -4122,29 +4113,33 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(92).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(93).setImmediate))
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(101);
+var supermapol_icons = __webpack_require__(104);
+
+// EXTERNAL MODULE: ./src/common/widget/css/openFile.css
+var openFile = __webpack_require__(97);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 
+
 // EXTERNAL MODULE: ./src/leaflet/css/ChangeTileVersion.css
-var ChangeTileVersion = __webpack_require__(94);
+var ChangeTileVersion = __webpack_require__(95);
 
 // CONCATENATED MODULE: ./src/leaflet/css/index.js
 
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13381,7 +13376,7 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(39);
+var promise = __webpack_require__(40);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
@@ -13389,10 +13384,10 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
 window.Promise = promise_default.a;
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(89);
+var fetch = __webpack_require__(90);
 
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(24);
+var fetch_jsonp = __webpack_require__(25);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
@@ -38378,7 +38373,7 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(38);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(39);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
@@ -39019,7 +39014,7 @@ SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
 
 
 // EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(37);
+var lodash_topairs = __webpack_require__(38);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
 // CONCATENATED MODULE: ./src/common/style/CartoCSS.js
@@ -62820,7 +62815,169 @@ class SmicStar_SmicStar extends Shape_Shape {
 
 
 
+// CONCATENATED MODULE: ./src/common/widget/CommonTypes.js
+/**
+ * 该文件用于存储一些公用常量
+ *
+ */
+const FileTypes = {
+    EXCEL: "EXCEL",
+    CSV: "CSV",
+    ISERVER: "ISERVER",
+    GEOJSON: "GEOJSON",
+    JSON: 'JSON'
+};
+const FileConfig = {
+    fileMaxSize: 10 * 1024 * 1024
+};
+// CONCATENATED MODULE: ./src/common/widget/openFile/fileModel.js
+
+
+/**
+ * @description 文件数据微件数据模型，用于存储一些数据或状态，todo 结构待完善
+ */
+class fileModel_FileModel {
+    constructor(options) {
+        this.FileTypes = FileTypes;
+        this.FileConfig = FileConfig;
+        this.map = options && options.map ? options.map : null;
+        this.loadFileObject = [];
+    }
+
+    set(key, value) {
+        this[key] = value;
+    }
+
+    get(key) {
+        return this[key];
+    }
+
+}
+// CONCATENATED MODULE: ./src/common/widget/util/util.js
+
+
+let widgetsUtil = {
+    /**
+     * 获取上传文件类型
+     *
+     * @param fileName
+     */
+    getFileType(fileName) {
+        let regCSV = /^.*\.(?:csv)$/i;
+        let regExcel = /^.*\.(?:xls|xlsx)$/i; //文件名可以带空格
+        let regGeojson = /^.*\.(?:geojson|json)$/i;
+        if (regExcel.test(fileName)) { //校验不通过
+            return FileTypes.EXCEL;
+        } else if (regCSV.test(fileName)) {
+            return FileTypes.CSV;
+        } else if (regGeojson.test(fileName)) {
+            return FileTypes.GEOJSON;
+        }
+        return null;
+    }
+};
+// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(24);
+var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
+
+// CONCATENATED MODULE: ./src/common/widget/util/FileReaderUtil.js
+
+
+
+let FileReaderUtil = {
+
+    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
+    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
+    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
+    /**
+     * 读取文件
+     * @param fileType
+     * @param file
+     * @param success
+     * @param failed
+     * @param context
+     */
+    readFile(fileType, file, success, failed, context) {
+        if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
+            this.readTextFile(file, success, failed, context)
+        } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
+            this.readXLSXFile(file, success, failed, context)
+        }
+
+    },
+
+    /**
+     * 读取文本文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param context
+     */
+    readTextFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            success && success.call(context, evt.target.result);
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
+    },
+
+    /**
+     * 读取excel或csv文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param context
+     */
+    readXLSXFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            let xLSXData = new Uint8Array(evt.target.result);
+            let workbook = external_function_try_return_XLSX_catch_e_return_default.a.read(xLSXData, {type: "array"});
+            try {
+                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
+                    //暂时只读取第一个sheets的内容
+                    let sheetName = workbook.SheetNames[0];
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default.a.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    success && success.call(context, xLSXCSVString);
+                }
+            } catch (error) {
+                failed && failed.call(context, error);
+            }
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rABF && reader.readAsArrayBuffer(file.file);
+    }
+
+};
+// CONCATENATED MODULE: ./src/common/widget/util/index.js
+
+
+
+
+
+// CONCATENATED MODULE: ./src/common/widget/index.js
+//数据
+
+
+
+
+//组件
+
+
+
+
+//工具类
+
+
+
 // CONCATENATED MODULE: ./src/common/index.js
+
+
 
 
 
@@ -63418,6 +63575,7 @@ let Attributions = {
 
 external_L_default.a.supermap = external_L_default.a.supermap || {};
 external_L_default.a.supermap.control = external_L_default.a.supermap.control || {};
+external_L_default.a.supermap.widgets = external_L_default.a.supermap.widgets || {};
 
 external_L_default.a.Control.Attribution.include({
     options: {
@@ -73929,11 +74087,11 @@ var RegionSymbolizer = external_L_default.a.Polygon.extend({
     }
 });
 // EXTERNAL MODULE: ./node_modules/pbf/index.js
-var node_modules_pbf = __webpack_require__(36);
+var node_modules_pbf = __webpack_require__(37);
 var pbf_default = /*#__PURE__*/__webpack_require__.n(node_modules_pbf);
 
 // EXTERNAL MODULE: ./node_modules/@mapbox/vector-tile/index.js
-var vector_tile = __webpack_require__(35);
+var vector_tile = __webpack_require__(36);
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/vectortile/VectorTilePBF.js
 
@@ -78916,7 +79074,151 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 
 
 
+// CONCATENATED MODULE: ./src/leaflet/widgets/openFile/openFileViewModel.js
+
+
+
+
+/**
+ * @class L.supermap.widgets.OpenFileViewModel
+ * @classdesc 打开本地文件微件
+ */
+class openFileViewModel_OpenFileViewModel {
+    constructor(map) {
+        if (map) {
+            this.fileModel = new fileModel_FileModel({map: map});
+        } else {
+            return new Error(`Cannot find map, fileModel.map cannot be null.`);
+        }
+    }
+
+    selectFileOnchange(e) {
+        let inputDom = e.target;
+        let file = inputDom.files[0];
+        //文件大小限制
+        if (file.size > this.fileModel.FileConfig.fileMaxSize) {
+            //todo 这里都用wegit？
+            alert("文件最大支持10M数据");
+            return false;
+        }
+
+        let filePath = inputDom.value;
+        let fileName = file.name;
+        let fileType = widgetsUtil.getFileType(fileName);
+        //文件格式不支持
+        if (!fileType) {
+            alert("文件最大支持10M数据");
+            return false;
+        }
+        //文件类型限制
+        if (fileName !== "") {
+            //给control 一份数据
+            //todo MVVM模式 应该是数据变化触发数据变化的事件
+            this.fileModel.set(
+                "loadFileObject", {
+                    file: file,
+                    filePath: filePath,
+                    fileName: fileName,
+                    fileType: fileType
+                });
+            //响应选中文件添加到地图
+            this.loadData();
+        }
+    }
+
+    /**
+     * 加载数据
+     */
+    loadData() {
+        //todo 需要测试另外两个
+        const me = this;
+        FileReaderUtil.readFile(this.fileModel.loadFileObject.fileType, {
+            file: this.fileModel.loadFileObject.file,
+            path: this.fileModel.loadFileObject.filePath
+        }, (data) => {
+            const result = JSON.parse(data);
+            const layer = external_L_default.a.geoJSON(result).addTo(me.fileModel.map);
+            me.fileModel.map.flyToBounds(layer.getBounds());
+        }, (error) => {
+            throw new Error("Incorrect data format: " + error);
+        }, this);
+    }
+
+}
+
+external_L_default.a.supermap.widgets.OpenFileViewModel = openFileViewModel_OpenFileViewModel;
+
+external_L_default.a.supermap.widgets.util = widgetsUtil;
+// CONCATENATED MODULE: ./src/leaflet/widgets/openFile/openFileView.js
+
+
+
+
+/**
+ * @classdesc OpenFileViewModel
+ */
+var OpenFileView = external_L_default.a.Control.extend({
+    options: {
+        //绑定的底图图层
+        layer: null,
+        //控件位置 继承自leaflet control
+        position: 'topright'
+    },
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.onAdd
+     * @description 添加控件
+     */
+    onAdd: function (map) {
+        this.map = map;
+        if (this.options.orientation !== 'vertical') {
+            this.options.orientation = 'horizontal';
+        }
+        return this._initOpenFileView();
+    },
+
+    _initOpenFileView: function () {
+        //初始化 ViewModel:
+        this.viewModel = new openFileViewModel_OpenFileViewModel(this.map);
+        //初始化 view
+
+        const uploadContent = external_L_default.a.DomUtil.create('div', 'addData_upload');
+
+        this.fileSelect = external_L_default.a.DomUtil.create('div', 'file-select', uploadContent);
+        this.label = external_L_default.a.DomUtil.create('label', 'file-selectSpan', this.fileSelect);
+        this.label.htmlFor = "input_file";
+
+        external_L_default.a.DomUtil.create('div', 'upload-icon', this.label);
+        const fileSpan = external_L_default.a.DomUtil.create('span', 'upload-span', this.label);
+        fileSpan.appendChild(document.createTextNode("选择文件"));
+
+        this.fileInput = external_L_default.a.DomUtil.create('input', 'add_data_input', this.fileSelect);
+        this.fileInput.id = "input_file";
+        this.fileInput.type = "file";
+        this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+
+        //todo 解释一下bind
+        this.fileInput.onchange = this.viewModel.selectFileOnchange.bind(this.viewModel);
+
+        return uploadContent;
+    }
+
+});
+var openFileView = function (options) {
+    return new OpenFileView(options);
+};
+
+external_L_default.a.supermap.widgets.openFile = openFileView;
+// CONCATENATED MODULE: ./src/leaflet/widgets/index.js
+
+
+
+
+
+
 // CONCATENATED MODULE: ./src/leaflet/index.js
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileView", function() { return OpenFileView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileView", function() { return openFileView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileViewModel", function() { return openFileViewModel_OpenFileViewModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
@@ -79285,8 +79587,11 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 
 
 
+
+
+
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79605,13 +79910,13 @@ Point.convert = function (a) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileLayer = __webpack_require__(26);
+var VectorTileLayer = __webpack_require__(27);
 
 module.exports = VectorTile;
 
@@ -79629,7 +79934,7 @@ function readTile(tag, layers, pbf) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -79719,7 +80024,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 function getObjectType(obj) {
@@ -79751,7 +80056,7 @@ module.exports = {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -79954,7 +80259,7 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80079,7 +80384,7 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(11);
@@ -80195,7 +80500,7 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80278,10 +80583,10 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pj_mlfn = __webpack_require__(27);
+var pj_mlfn = __webpack_require__(28);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function(arg, es, en) {
@@ -80303,7 +80608,7 @@ module.exports = function(arg, es, en) {
 };
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 var C00 = 1;
@@ -80332,15 +80637,15 @@ module.exports = function(es) {
 };
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
 var adjust_lat = __webpack_require__(6);
-var pj_enfn = __webpack_require__(51);
+var pj_enfn = __webpack_require__(52);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(27);
-var pj_inv_mlfn = __webpack_require__(50);
+var pj_mlfn = __webpack_require__(28);
+var pj_inv_mlfn = __webpack_require__(51);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var asinz = __webpack_require__(4);
@@ -80443,7 +80748,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80494,7 +80799,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -80718,7 +81023,7 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(11);
@@ -80851,7 +81156,7 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -80898,7 +81203,7 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -80935,13 +81240,13 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
 var qsfnz = __webpack_require__(16);
 var msfnz = __webpack_require__(5);
-var iqsfnz = __webpack_require__(57);
+var iqsfnz = __webpack_require__(58);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -81004,7 +81309,7 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -81109,7 +81414,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -81236,7 +81541,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -81530,7 +81835,7 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mlfn = __webpack_require__(7);
@@ -81638,7 +81943,7 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(1);
@@ -81742,7 +82047,7 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -81883,7 +82188,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var tsfnz = __webpack_require__(14);
@@ -82056,7 +82361,7 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 /*
@@ -82142,7 +82447,7 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -82314,7 +82619,7 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -82322,11 +82627,11 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(68);
+var srat = __webpack_require__(69);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -82373,10 +82678,10 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(69);
+var gauss = __webpack_require__(70);
 var adjust_lon = __webpack_require__(1);
 exports.init = function() {
   gauss.init.apply(this);
@@ -82436,11 +82741,11 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(28);
+var tmerc = __webpack_require__(29);
 exports.dependsOn = 'tmerc';
 exports.init = function() {
   if (!this.zone) {
@@ -82460,13 +82765,14 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(28),
+  __webpack_require__(29),
+  __webpack_require__(72),
   __webpack_require__(71),
-  __webpack_require__(70),
+  __webpack_require__(68),
   __webpack_require__(67),
   __webpack_require__(66),
   __webpack_require__(65),
@@ -82476,16 +82782,15 @@ var projs = [
   __webpack_require__(61),
   __webpack_require__(60),
   __webpack_require__(59),
-  __webpack_require__(58),
+  __webpack_require__(57),
   __webpack_require__(56),
   __webpack_require__(55),
   __webpack_require__(54),
   __webpack_require__(53),
-  __webpack_require__(52),
+  __webpack_require__(50),
   __webpack_require__(49),
   __webpack_require__(48),
-  __webpack_require__(47),
-  __webpack_require__(46)
+  __webpack_require__(47)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -82494,16 +82799,16 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mgrs = __webpack_require__(29);
+var mgrs = __webpack_require__(30);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -82540,7 +82845,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -82597,7 +82902,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -82702,7 +83007,7 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -83111,7 +83416,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -83331,7 +83636,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -83416,13 +83721,13 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Datum = __webpack_require__(79);
-var Ellipsoid = __webpack_require__(78);
+var Datum = __webpack_require__(80);
+var Ellipsoid = __webpack_require__(79);
 var extend = __webpack_require__(19);
-var datum = __webpack_require__(77);
+var datum = __webpack_require__(78);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -83478,7 +83783,7 @@ module.exports = function(json) {
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -83494,7 +83799,7 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var msfnz = __webpack_require__(5);
@@ -83597,12 +83902,12 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(82),
-  __webpack_require__(81)
+  __webpack_require__(83),
+  __webpack_require__(82)
 ];
 var names = {};
 var projStore = [];
@@ -83637,7 +83942,7 @@ exports.start = function() {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -83645,7 +83950,7 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -83663,7 +83968,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -83680,12 +83985,12 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defs = __webpack_require__(34);
-var wkt = __webpack_require__(32);
-var projStr = __webpack_require__(33);
+var defs = __webpack_require__(35);
+var wkt = __webpack_require__(33);
+var projStr = __webpack_require__(34);
 function testObj(code){
   return typeof code === 'string';
 }
@@ -83721,11 +84026,11 @@ function parse(code){
 module.exports = parse;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var proj = __webpack_require__(20);
-var transform = __webpack_require__(31);
+var transform = __webpack_require__(32);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -83790,7 +84095,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -84214,7 +84519,7 @@ module.exports = proj4;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -84404,7 +84709,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -84594,10 +84899,10 @@ process.umask = function() { return 0; };
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(21), __webpack_require__(90)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(21), __webpack_require__(91)))
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -84653,7 +84958,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(91);
+__webpack_require__(92);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -84667,27 +84972,34 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(21)))
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(41);
-module.exports = __webpack_require__(40);
+__webpack_require__(42);
+module.exports = __webpack_require__(41);
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 95 */,
 /* 96 */,
-/* 97 */,
+/* 97 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 98 */,
 /* 99 */,
 /* 100 */,
-/* 101 */
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

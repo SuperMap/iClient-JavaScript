@@ -76,6 +76,9 @@
         if (inArray(includes, 'deck')) {
             inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
         }
+        if (inArray(includes, 'xlsx')) {
+            inputScript("https://cdn.bootcss.com/xlsx/0.12.13/xlsx.min.js");
+        }
         if (!inArray(excludes, 'iclient9-leaflet')) {
             if (supportES6() && !inArray(includes, 'iclient9-plot-leaflet')) {
                 inputScript("../../dist/leaflet/iclient9-leaflet-es6.js");

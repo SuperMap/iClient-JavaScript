@@ -148,6 +148,14 @@
             inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
+        if (inArray(includes, 'react')) {
+            inputScript("https://cdn.bootcss.com/react/16.4.0/umd/react.development.js");
+            inputScript("https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js");
+            inputScript("https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js");
+        }
+        if (inArray(includes, 'vue')) {
+            inputScript("https://cdn.bootcss.com/vue/2.2.2/vue.js");
+        }
         if (inArray(includes, 'ionRangeSlider')) {
             inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.css");
             inputCSS("https://cdn.bootcss.com/normalize/8.0.0/normalize.css");
@@ -166,12 +174,12 @@
 
     function datGuiI18N() {
         document.writeln("<script>function registerEventListener(evt,fn){" +
-        "if(window.attachEvent){window.attachEvent('on'+evt,fn);}" +
-        "else{window.addEventListener(evt,fn,false);}" +
-        "}</script>");
+            "if(window.attachEvent){window.attachEvent('on'+evt,fn);}" +
+            "else{window.addEventListener(evt,fn,false);}" +
+            "}</script>");
         document.writeln("<script>registerEventListener('load',function() { " +
-        "dat.GUI.TEXT_CLOSED=resources.text_close;dat.GUI.TEXT_OPEN=resources.text_open;" +
-        "})</script>")
+            "dat.GUI.TEXT_CLOSED=resources.text_close;dat.GUI.TEXT_OPEN=resources.text_open;" +
+            "})</script>")
     }
 
     load();

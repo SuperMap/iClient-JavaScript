@@ -23,7 +23,8 @@ module.exports = {
         '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
         'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
         'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
-        'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()'
+        'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
+        'xlsx': "function(){try{return XLSX}catch(e){return {}}}()"
     }),
 
     module: {

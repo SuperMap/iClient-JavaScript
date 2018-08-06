@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>widgets_vue</title>
+    <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="iclient9-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+<!--    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.2.0/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.2.0/leaflet-src.js"></script>
+    <link rel="stylesheet" href="../../dist/leaflet/iclient9-leaflet.css">
+    <script src="https://cdn.bootcss.com/xlsx/0.12.13/xlsx.min.js"></script>
+    <script type="text/javascript" src="../../dist/leaflet/iclient9-leaflet.js"></script>-->
+
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%">
+</div>
+<div id="loading">....</div>
+<script>
+    var map = L.map('map', {
+        center: [40.73231, -73.90086],
+        zoom: 11,
+    });
+    var url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light';
+
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var addDataWidget = new L.supermap.widgets.OpenFileViewModel(map);
+
+    initEditView();
+
+    function initEditView() {
+        var infoView = L.control({position: 'topright'});
+        infoView.onAdd = function () {
+            var me = this;
+            me._div = L.DomUtil.create('div');
+            me._div.id = "addDataContainer";
+            me._div.innerHTML = `<add_data v-bind:addDataWidget="addDataWidget"></add_data>`;
+            handleMapEvent(me._div, me._map);
+            return me._div;
+        };
+        infoView.addTo(map);
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+
+    var add_data = {
+        props: ["addDataWidget"],
+        data: function () {
+            return {
+                fileType: null,
+                fileName: null,
+                disabledBtn: true,
+                isSelectedFile: false,
+                isexcel: false,
+                iscsv: false,
+                isjson: false,
+            }
+        },
+        template:
+            `<div class="file-select">
+                <label class="file-selectSpan" for="input_file">
+                <div class="upload-icon"/>
+                <span class="upload-span">选择文件</span>
+                </label>
+                <input class="add_data_input" id="input_file" type="file"
+                       accept=".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                       v-on:change="fileSelectfn(this,$event)"/>
+            </div>`,
+        methods: {
+            fileSelectfn(self, e) {
+                self.addDataWidget.selectFileOnchange(e)
+            }
+        }
+    };
+
+    // 创建根实例
+    new Vue({
+        el: '#addDataContainer',
+        data: {
+            addDataWidget: addDataWidget
+        },
+        components: {
+            'add_data': add_data
+        }
+    });
+
+</script>
+</body>
+</html>

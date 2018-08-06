@@ -526,7 +526,6 @@ export class DeckglLayer {
             return feature.geometry.coordinates;
         };
 
-        //todo 待检验这两个回调是否该
         if (this.callback.getColorValue) {
             this.props.getColorValue = this.callback.getColorValue;
         }

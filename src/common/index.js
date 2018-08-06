@@ -422,7 +422,9 @@ import {
     SUtil
 
 } from './overlay';
+import {FileTypes, FileConfig, FileModel, widgetsUtil, FileReaderUtil} from './widget';
 
+export {FileTypes, FileConfig, FileModel, widgetsUtil, FileReaderUtil}
 export {SuperMap};
 export {
     DataFormat,

@@ -322,6 +322,17 @@ import {
     TrafficTransferAnalystService, trafficTransferAnalystService
 } from './services';
 
+import {
+    OpenFileView,
+    openFileView,
+    OpenFileViewModel
+} from './widgets';
+
+export {
+    OpenFileView,
+    openFileView,
+    OpenFileViewModel
+}
 
 export {
     SuperMap,
