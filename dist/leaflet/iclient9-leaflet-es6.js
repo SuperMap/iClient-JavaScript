@@ -4125,7 +4125,7 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
 var supermapol_icons = __webpack_require__(104);
 
-// EXTERNAL MODULE: ./src/common/widget/css/openFile.css
+// EXTERNAL MODULE: ./src/common/widgets/css/openFile.css
 var openFile = __webpack_require__(97);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
@@ -62815,7 +62815,7 @@ class SmicStar_SmicStar extends Shape_Shape {
 
 
 
-// CONCATENATED MODULE: ./src/common/widget/CommonTypes.js
+// CONCATENATED MODULE: ./src/common/widgets/CommonTypes.js
 /**
  * 该文件用于存储一些公用常量
  *
@@ -62830,7 +62830,7 @@ const FileTypes = {
 const FileConfig = {
     fileMaxSize: 10 * 1024 * 1024
 };
-// CONCATENATED MODULE: ./src/common/widget/openFile/fileModel.js
+// CONCATENATED MODULE: ./src/common/widgets/openFile/fileModel.js
 
 
 /**
@@ -62853,7 +62853,7 @@ class fileModel_FileModel {
     }
 
 }
-// CONCATENATED MODULE: ./src/common/widget/util/util.js
+// CONCATENATED MODULE: ./src/common/widgets/util/util.js
 
 
 let widgetsUtil = {
@@ -62880,7 +62880,7 @@ let widgetsUtil = {
 var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(24);
 var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
 
-// CONCATENATED MODULE: ./src/common/widget/util/FileReaderUtil.js
+// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
 
 
 
@@ -62954,13 +62954,13 @@ let FileReaderUtil = {
     }
 
 };
-// CONCATENATED MODULE: ./src/common/widget/util/index.js
+// CONCATENATED MODULE: ./src/common/widgets/util/index.js
 
 
 
 
 
-// CONCATENATED MODULE: ./src/common/widget/index.js
+// CONCATENATED MODULE: ./src/common/widgets/index.js
 //数据
 
 

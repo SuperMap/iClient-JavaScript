@@ -2512,13 +2512,13 @@ var _style = __webpack_require__(435);
 
 var _overlay = __webpack_require__(431);
 
-var _widget = __webpack_require__(415);
+var _widgets = __webpack_require__(415);
 
-exports.FileTypes = _widget.FileTypes;
-exports.FileConfig = _widget.FileConfig;
-exports.FileModel = _widget.FileModel;
-exports.widgetsUtil = _widget.widgetsUtil;
-exports.FileReaderUtil = _widget.FileReaderUtil;
+exports.FileTypes = _widgets.FileTypes;
+exports.FileConfig = _widgets.FileConfig;
+exports.FileModel = _widgets.FileModel;
+exports.widgetsUtil = _widgets.widgetsUtil;
+exports.FileReaderUtil = _widgets.FileReaderUtil;
 exports.SuperMap = _SuperMap.SuperMap;
 exports.DataFormat = _REST.DataFormat;
 exports.ServerType = _REST.ServerType;

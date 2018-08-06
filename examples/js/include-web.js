@@ -149,12 +149,12 @@
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
         if (inArray(includes, 'react')) {
-            inputScript("https://cdn.bootcss.com/react/16.4.0/umd/react.development.js");
-            inputScript("https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js");
+            inputScript("http://iclient.supermap.io/web/libs/react/16.4.2/react.production.min.js");
+            inputScript("http://iclient.supermap.io/web/libs/react/16.4.2/react-dom.production.min.js");
             inputScript("https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js");
         }
         if (inArray(includes, 'vue')) {
-            inputScript("https://cdn.bootcss.com/vue/2.2.2/vue.js");
+            inputScript("http://iclient.supermap.io/web/libs/vue/2.5.17/vue.min.js");
         }
         if (inArray(includes, 'ionRangeSlider')) {
             inputCSS("https://cdn.bootcss.com/ion-rangeslider/2.2.0/css/ion.rangeSlider.css");

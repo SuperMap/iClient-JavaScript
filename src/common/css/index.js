@@ -1,2 +1,2 @@
 import './supermapol-icons.css';
-import '../widget/css/openFile.css';
+import '../widgets/css/openFile.css';
