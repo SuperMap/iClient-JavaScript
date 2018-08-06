@@ -1,5 +1,5 @@
 import XLSX from 'xlsx'
-import {FileTypes} from '../CommonTypes.js';
+import {FileTypes} from '../CommonTypes';
 
 export let FileReaderUtil = {
 

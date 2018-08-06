@@ -74582,16 +74582,13 @@ var _fileModel = __webpack_require__(414);
 
 var _util = __webpack_require__(413);
 
+//组件
 exports.FileTypes = _CommonTypes.FileTypes;
 exports.FileConfig = _CommonTypes.FileConfig;
-
-//组件
+//工具类
 //数据
 
 exports.FileModel = _fileModel.FileModel;
-
-//工具类
-
 exports.widgetsUtil = _util.widgetsUtil;
 exports.FileReaderUtil = _util.FileReaderUtil;
 
