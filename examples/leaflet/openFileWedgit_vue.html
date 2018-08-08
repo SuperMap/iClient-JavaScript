@@ -19,8 +19,8 @@
 <div id="loading">....</div>
 <script>
     var map = L.map('map', {
-        center: [40.73231, -73.90086],
-        zoom: 11,
+        center: [38, 110],
+        zoom: 5,
     });
     var url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light';
 
@@ -83,7 +83,7 @@
             </div>`,
         methods: {
             fileSelectfn(self, e) {
-                self.addDataWidget.selectFileOnchange(e)
+                self.addDataWidget.selectFileLoadToMap(e)
             }
         }
     };

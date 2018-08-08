@@ -62859,7 +62859,6 @@ class fileModel_FileModel {
 let widgetsUtil = {
     /**
      * 获取上传文件类型
-     *
      * @param fileName
      */
     getFileType(fileName) {
@@ -62874,7 +62873,52 @@ let widgetsUtil = {
             return FileTypes.GEOJSON;
         }
         return null;
+    },
+
+    /**
+     * 判断是否地理X坐标
+     *
+     * @param data
+     */
+    isXField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "x" || lowerdata === "smx" ||
+            lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
+            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
+    },
+
+    /**
+     * 判断是否地理Y坐标
+     *
+     * @param data
+     */
+    isYField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "y" || lowerdata === "smy" ||
+            lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
+            lowerdata === "latitude" || lowerdata === "lat");
+    },
+    /**
+     * 字符串转为dataEditor 支持的csv格式数据
+     * @param string
+     * @param withoutTitle
+     */
+    string2Csv(string, withoutTitle) {
+        // let rows = string.split('\r\n');
+        let rows = string.split('\n');
+        let result = {};
+        if (!withoutTitle) {
+            result["colTitles"] = rows[0].split(',');
+        } else {
+            result["colTitles"] = [];
+        }
+        result['rows'] = [];
+        for (let i = (withoutTitle) ? 0 : 1; i < rows.length; i++) {
+            rows[i] && result['rows'].push(rows[i].split(','));
+        }
+        return result;
     }
+
 };
 // EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(24);
@@ -79088,13 +79132,19 @@ class openFileViewModel_OpenFileViewModel {
         }
     }
 
-    selectFileOnchange(e) {
+    /**
+     * @function L.supermap.widgets.OpenFileViewModel.prototype.selectFileOnchange
+     * @description 选中文件并加载到底图
+     * @param e
+     * @return {boolean}
+     */
+    selectFileLoadToMap(e) {
         let inputDom = e.target;
         let file = inputDom.files[0];
         //文件大小限制
         if (file.size > this.fileModel.FileConfig.fileMaxSize) {
             //todo 这里都用wegit？
-            alert("文件最大支持10M数据");
+            alert("File supports up to 10M.");
             return false;
         }
 
@@ -79103,7 +79153,7 @@ class openFileViewModel_OpenFileViewModel {
         let fileType = widgetsUtil.getFileType(fileName);
         //文件格式不支持
         if (!fileType) {
-            alert("文件最大支持10M数据");
+            alert("Unsupported data type.");
             return false;
         }
         //文件类型限制
@@ -79118,28 +79168,123 @@ class openFileViewModel_OpenFileViewModel {
                     fileType: fileType
                 });
             //响应选中文件添加到地图
-            this.loadData();
+            this._loadData();
         }
     }
 
     /**
-     * 加载数据
+     * @function L.supermap.widgets.OpenFileViewModel.prototype._loadData
+     * @description 加载数据
+     * @private
      */
-    loadData() {
+    _loadData() {
         //todo 需要测试另外两个
         const me = this;
-        FileReaderUtil.readFile(this.fileModel.loadFileObject.fileType, {
+        const type = this.fileModel.loadFileObject.fileType;
+        FileReaderUtil.readFile(type, {
             file: this.fileModel.loadFileObject.file,
             path: this.fileModel.loadFileObject.filePath
         }, (data) => {
-            const result = JSON.parse(data);
-            const layer = external_L_default.a.geoJSON(result).addTo(me.fileModel.map);
-            me.fileModel.map.flyToBounds(layer.getBounds());
+            //将数据统一转换为 geoJson 格式加载到底图
+            me._newLayerToMap(me._processDatas(type, data));
         }, (error) => {
             throw new Error("Incorrect data format: " + error);
         }, this);
     }
 
+    /**
+     * @function L.supermap.widgets.OpenFileViewModel.prototype._newLayerToMap
+     * @description 将数据创建为图层并加载到底图
+     * @param geojson
+     * @private
+     */
+    _newLayerToMap(geojson) {
+        const layer = external_L_default.a.geoJSON(geojson);
+        this.fileModel.map.flyToBounds(layer.getBounds());
+        layer.addTo(this.fileModel.map);
+    }
+
+    /**
+     * @function L.supermap.widgets.OpenFileViewModel.prototype._processDatas
+     * @description 将读取回来得数据统一处理为 geoJson 格式
+     * @param type
+     * @param data
+     * @return {*}
+     * @private
+     */
+    _processDatas(type, data) {
+        //数据处理
+        if (type === "EXCEL" || type === "CSV") {
+            return this._processExcelData(data);
+        } else if (type === 'JSON' || type === 'GEOJSON') {
+            let geojson = null;
+            let result = data;
+
+            //geojson、json未知，通过类容来判断
+            if ((typeof result) === "string") {
+                result = JSON.parse(result);
+            }
+            if (result.type === 'ISERVER') {
+                geojson = result.data.recordsets[0].features;
+            } else if (result.type === 'FeatureCollection') {
+                //geojson
+                geojson = result;
+            } else {
+                //不支持数据
+                throw new Error("Unsupported data type.");
+                // return false;
+            }
+            return geojson;
+        } else {
+            throw new Error("Unsupported data type.");
+        }
+    }
+
+    /**
+     * @function L.supermap.widgets.OpenFileViewModel.prototype._processExcelData
+     * @description 表格形式数据处理
+     * @param data
+     * @private
+     */
+    _processExcelData(data) {
+        //处理为对象格式转化
+        let dataContent = widgetsUtil.string2Csv(data);
+        let fieldCaptions = dataContent.colTitles;
+
+        //位置属性处理
+        let xfieldIndex = -1,
+            yfieldIndex = -1;
+        for (let i = 0, len = fieldCaptions.length; i < len; i++) {
+            if (widgetsUtil.isXField(fieldCaptions[i])) {
+                xfieldIndex = i;
+            }
+            if (widgetsUtil.isYField(fieldCaptions[i])) {
+                yfieldIndex = i;
+            }
+        }
+        // feature 构建后期支持坐标系 4326/3857
+        let features = [];
+        for (let i = 0, len = dataContent.rows.length; i < len; i++) {
+            let row = dataContent.rows[i];
+            //if (featureFrom === "LonLat") {
+            let x = Number(row[xfieldIndex]),
+                y = Number(row[yfieldIndex]);
+
+            let point = external_L_default.a.point(x, y);
+
+            //属性信息
+            let attributes = {};
+            for (let index in dataContent.colTitles) {
+                let key = dataContent.colTitles[index];
+                attributes[key] = dataContent.rows[i][index];
+            }
+
+            let feature = external_L_default.a.supermap.themeFeature(point, attributes);
+            features.push(feature.toFeature());
+        }
+        let format = new GeoJSON_GeoJSON();
+        return JSON.parse(format.write(features));
+    }
 }
 
 external_L_default.a.supermap.widgets.OpenFileViewModel = openFileViewModel_OpenFileViewModel;
@@ -79192,8 +79337,7 @@ var OpenFileView = external_L_default.a.Control.extend({
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
-        //todo 解释一下bind
-        this.fileInput.onchange = this.viewModel.selectFileOnchange.bind(this.viewModel);
+        this.fileInput.onchange = this.viewModel.selectFileLoadToMap.bind(this.viewModel);
 
         return uploadContent;
     }

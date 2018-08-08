@@ -3,7 +3,8 @@ import '../../core/Base';
 import {OpenFileViewModel} from "./openFileViewModel";
 
 /**
- * @classdesc OpenFileViewModel
+ * @class L.supermap.widgets.openFile
+ * @classdesc openFile 微件 todo 确认api 所属模块
  */
 export var OpenFileView = L.Control.extend({
     options: {
@@ -13,8 +14,8 @@ export var OpenFileView = L.Control.extend({
         position: 'topright'
     },
     /**
-     * @function L.supermap.control.changeTileVersion.prototype.onAdd
-     * @description 添加控件
+     * @function L.supermap.widgets.openFile.prototype.onAdd
+     * @description 向底图添加微件
      */
     onAdd: function (map) {
         this.map = map;
@@ -44,8 +45,7 @@ export var OpenFileView = L.Control.extend({
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
-        //todo 解释一下bind
-        this.fileInput.onchange = this.viewModel.selectFileOnchange.bind(this.viewModel);
+        this.fileInput.onchange = this.viewModel.selectFileLoadToMap.bind(this.viewModel);
 
         return uploadContent;
     }

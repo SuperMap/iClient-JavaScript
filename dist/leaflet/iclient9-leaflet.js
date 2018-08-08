@@ -29105,15 +29105,23 @@ var OpenFileViewModel = exports.OpenFileViewModel = function () {
         }
     }
 
+    /**
+     * @function L.supermap.widgets.OpenFileViewModel.prototype.selectFileOnchange
+     * @description 选中文件并加载到底图
+     * @param e
+     * @return {boolean}
+     */
+
+
     _createClass(OpenFileViewModel, [{
-        key: 'selectFileOnchange',
-        value: function selectFileOnchange(e) {
+        key: 'selectFileLoadToMap',
+        value: function selectFileLoadToMap(e) {
             var inputDom = e.target;
             var file = inputDom.files[0];
             //文件大小限制
             if (file.size > this.fileModel.FileConfig.fileMaxSize) {
                 //todo 这里都用wegit？
-                alert("文件最大支持10M数据");
+                alert("File supports up to 10M.");
                 return false;
             }
 
@@ -29122,7 +29130,7 @@ var OpenFileViewModel = exports.OpenFileViewModel = function () {
             var fileType = _iclientCommon.widgetsUtil.getFileType(fileName);
             //文件格式不支持
             if (!fileType) {
-                alert("文件最大支持10M数据");
+                alert("Unsupported data type.");
                 return false;
             }
             //文件类型限制
@@ -29136,29 +29144,134 @@ var OpenFileViewModel = exports.OpenFileViewModel = function () {
                     fileType: fileType
                 });
                 //响应选中文件添加到地图
-                this.loadData();
+                this._loadData();
             }
         }
 
         /**
-         * 加载数据
+         * @function L.supermap.widgets.OpenFileViewModel.prototype._loadData
+         * @description 加载数据
+         * @private
          */
 
     }, {
-        key: 'loadData',
-        value: function loadData() {
+        key: '_loadData',
+        value: function _loadData() {
             //todo 需要测试另外两个
             var me = this;
-            _iclientCommon.FileReaderUtil.readFile(this.fileModel.loadFileObject.fileType, {
+            var type = this.fileModel.loadFileObject.fileType;
+            _iclientCommon.FileReaderUtil.readFile(type, {
                 file: this.fileModel.loadFileObject.file,
                 path: this.fileModel.loadFileObject.filePath
             }, function (data) {
-                var result = JSON.parse(data);
-                var layer = _leaflet2["default"].geoJSON(result).addTo(me.fileModel.map);
-                me.fileModel.map.flyToBounds(layer.getBounds());
+                //将数据统一转换为 geoJson 格式加载到底图
+                me._newLayerToMap(me._processDatas(type, data));
             }, function (error) {
                 throw new Error("Incorrect data format: " + error);
             }, this);
+        }
+
+        /**
+         * @function L.supermap.widgets.OpenFileViewModel.prototype._newLayerToMap
+         * @description 将数据创建为图层并加载到底图
+         * @param geojson
+         * @private
+         */
+
+    }, {
+        key: '_newLayerToMap',
+        value: function _newLayerToMap(geojson) {
+            var layer = _leaflet2["default"].geoJSON(geojson);
+            this.fileModel.map.flyToBounds(layer.getBounds());
+            layer.addTo(this.fileModel.map);
+        }
+
+        /**
+         * @function L.supermap.widgets.OpenFileViewModel.prototype._processDatas
+         * @description 将读取回来得数据统一处理为 geoJson 格式
+         * @param type
+         * @param data
+         * @return {*}
+         * @private
+         */
+
+    }, {
+        key: '_processDatas',
+        value: function _processDatas(type, data) {
+            //数据处理
+            if (type === "EXCEL" || type === "CSV") {
+                return this._processExcelData(data);
+            } else if (type === 'JSON' || type === 'GEOJSON') {
+                var geojson = null;
+                var result = data;
+
+                //geojson、json未知，通过类容来判断
+                if (typeof result === "string") {
+                    result = JSON.parse(result);
+                }
+                if (result.type === 'ISERVER') {
+                    geojson = result.data.recordsets[0].features;
+                } else if (result.type === 'FeatureCollection') {
+                    //geojson
+                    geojson = result;
+                } else {
+                    //不支持数据
+                    throw new Error("Unsupported data type.");
+                    // return false;
+                }
+                return geojson;
+            } else {
+                throw new Error("Unsupported data type.");
+            }
+        }
+
+        /**
+         * @function L.supermap.widgets.OpenFileViewModel.prototype._processExcelData
+         * @description 表格形式数据处理
+         * @param data
+         * @private
+         */
+
+    }, {
+        key: '_processExcelData',
+        value: function _processExcelData(data) {
+            //处理为对象格式转化
+            var dataContent = _iclientCommon.widgetsUtil.string2Csv(data);
+            var fieldCaptions = dataContent.colTitles;
+
+            //位置属性处理
+            var xfieldIndex = -1,
+                yfieldIndex = -1;
+            for (var i = 0, len = fieldCaptions.length; i < len; i++) {
+                if (_iclientCommon.widgetsUtil.isXField(fieldCaptions[i])) {
+                    xfieldIndex = i;
+                }
+                if (_iclientCommon.widgetsUtil.isYField(fieldCaptions[i])) {
+                    yfieldIndex = i;
+                }
+            }
+            // feature 构建后期支持坐标系 4326/3857
+            var features = [];
+            for (var _i = 0, _len = dataContent.rows.length; _i < _len; _i++) {
+                var row = dataContent.rows[_i];
+                //if (featureFrom === "LonLat") {
+                var x = Number(row[xfieldIndex]),
+                    y = Number(row[yfieldIndex]);
+
+                var point = _leaflet2["default"].point(x, y);
+
+                //属性信息
+                var attributes = {};
+                for (var index in dataContent.colTitles) {
+                    var key = dataContent.colTitles[index];
+                    attributes[key] = dataContent.rows[_i][index];
+                }
+
+                var feature = _leaflet2["default"].supermap.themeFeature(point, attributes);
+                features.push(feature.toFeature());
+            }
+            var format = new _iclientCommon.GeoJSON();
+            return JSON.parse(format.write(features));
         }
     }]);
 
@@ -59554,8 +59667,7 @@ var OpenFileView = exports.OpenFileView = _leaflet2["default"].Control.extend({
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel";
 
-        //todo 解释一下bind
-        this.fileInput.onchange = this.viewModel.selectFileOnchange.bind(this.viewModel);
+        this.fileInput.onchange = this.viewModel.selectFileLoadToMap.bind(this.viewModel);
 
         return uploadContent;
     }
@@ -74480,7 +74592,6 @@ var _CommonTypes = __webpack_require__(67);
 var widgetsUtil = exports.widgetsUtil = {
     /**
      * 获取上传文件类型
-     *
      * @param fileName
      */
     getFileType: function getFileType(fileName) {
@@ -74496,6 +74607,49 @@ var widgetsUtil = exports.widgetsUtil = {
             return _CommonTypes.FileTypes.GEOJSON;
         }
         return null;
+    },
+
+
+    /**
+     * 判断是否地理X坐标
+     *
+     * @param data
+     */
+    isXField: function isXField(data) {
+        var lowerdata = data.toLowerCase();
+        return lowerdata === "x" || lowerdata === "smx" || lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" || lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng";
+    },
+
+
+    /**
+     * 判断是否地理Y坐标
+     *
+     * @param data
+     */
+    isYField: function isYField(data) {
+        var lowerdata = data.toLowerCase();
+        return lowerdata === "y" || lowerdata === "smy" || lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" || lowerdata === "latitude" || lowerdata === "lat";
+    },
+
+    /**
+     * 字符串转为dataEditor 支持的csv格式数据
+     * @param string
+     * @param withoutTitle
+     */
+    string2Csv: function string2Csv(string, withoutTitle) {
+        // let rows = string.split('\r\n');
+        var rows = string.split('\n');
+        var result = {};
+        if (!withoutTitle) {
+            result["colTitles"] = rows[0].split(',');
+        } else {
+            result["colTitles"] = [];
+        }
+        result['rows'] = [];
+        for (var i = withoutTitle ? 0 : 1; i < rows.length; i++) {
+            rows[i] && result['rows'].push(rows[i].split(','));
+        }
+        return result;
     }
 };
 
