@@ -165,8 +165,10 @@ export var FeatureService = ServiceBase.extend({
 
         url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
         var editFeatureService = new EditFeaturesService(url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            serverType: me.options.serverType,
             eventListeners: {
-
                 processCompleted: callback,
                 processFailed: callback
             }
