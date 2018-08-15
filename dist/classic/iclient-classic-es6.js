@@ -487,6 +487,8 @@ __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
 var SuperMap = window.SuperMap = window.SuperMap || {};
+SuperMap.Widgets = window.SuperMap.Widgets || {};
+
 // CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 
 

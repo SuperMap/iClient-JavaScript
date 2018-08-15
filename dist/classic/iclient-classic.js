@@ -103,6 +103,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var SuperMap = exports.SuperMap = window.SuperMap = window.SuperMap || {};
+SuperMap.Widgets = window.SuperMap.Widgets || {};
 
 /***/ }),
 /* 1 */

@@ -76,7 +76,7 @@ export var OpenFileViewModel = L.Evented.extend({
         }, (data) => {
             //将数据统一转换为 geoJson 格式加载到底图
             me._newLayerToMap(me._processDatas(type, data));
-        }, (error) => {
+        }, () => {
             me.fire("openfilefail", {messageType: "failure", message: "打开文件失败！"});
             // throw new Error("Incorrect data format: " + error);
         }, this);

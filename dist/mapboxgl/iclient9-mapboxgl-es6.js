@@ -24965,6 +24965,8 @@ __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
 var SuperMap = window.SuperMap = window.SuperMap || {};
+SuperMap.Widgets = window.SuperMap.Widgets || {};
+
 // CONCATENATED MODULE: ./src/common/REST.js
 
 
@@ -83648,13 +83650,14 @@ const FileTypes = {
 const FileConfig = {
     fileMaxSize: 10 * 1024 * 1024
 };
-// CONCATENATED MODULE: ./src/common/widgets/openFile/fileModel.js
+// CONCATENATED MODULE: ./src/common/widgets/openFile/FileModel.js
 
 
 /**
- * @description 文件数据微件数据模型，用于存储一些数据或状态，todo 结构待完善
+ * @class SuperMap.FileModel
+ * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
  */
-class fileModel_FileModel {
+class FileModel_FileModel {
     constructor(options) {
         this.FileTypes = FileTypes;
         this.FileConfig = FileConfig;
@@ -83662,16 +83665,110 @@ class fileModel_FileModel {
         this.loadFileObject = [];
     }
 
+    /**
+     * @function SuperMap.FileModel.prototype.set
+     * @description 设置属性值
+     * @param {string} key - 属性名称
+     * @param {string|Object} value - 属性值
+     */
     set(key, value) {
         this[key] = value;
     }
 
+    /**
+     * @function SuperMap.FileModel.prototype.get
+     * @description 获取数据值
+     * @param {string} key - 属性名称
+     * @return {string|Object} value - 返回属性值
+     */
     get(key) {
         return this[key];
     }
 
 }
-// CONCATENATED MODULE: ./src/common/widgets/util/util.js
+// CONCATENATED MODULE: ./src/common/widgets/messageBox/MessageBox.js
+
+
+/**
+ * @class SuperMap.Widgets.MessageBox
+ * @classdesc MessageBox 微件，信息框提示
+ * @category  Control Widgets
+ */
+class MessageBox {
+
+    constructor() {
+        this._initView();
+    }
+
+    _initView() {
+        //原生js形式
+        const messageBoxContainer = document.createElement("div");
+        messageBoxContainer.hidden = true;
+        messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+
+        //图标
+        const iconContainer = document.createElement("div");
+        iconContainer.setAttribute("class", "icon");
+        this.icon = document.createElement("span");
+        this.icon.setAttribute("class", "supermapol-icons-message-warning");
+        iconContainer.appendChild(this.icon);
+        messageBoxContainer.appendChild(iconContainer);
+
+        //内容：
+        const messageBox = document.createElement("div");
+        messageBox.setAttribute("class", "messageBox");
+        messageBox.innerHTML = "";
+        messageBoxContainer.appendChild(messageBox);
+        this.messageBox = messageBox;
+
+        //关闭按钮
+        const cancelContainer = document.createElement("div");
+        cancelContainer.setAttribute("class", "cancelContainer");
+        const cancelBtn = document.createElement("button");
+        cancelBtn.setAttribute("class", "cancelBtn");
+        cancelBtn.innerHTML = "x";
+        cancelBtn.onclick = this.closeView.bind(this);
+        cancelContainer.appendChild(cancelBtn);
+        messageBoxContainer.appendChild(cancelContainer);
+
+        this.messageBoxContainer = messageBoxContainer;
+        document.body.appendChild(this.messageBoxContainer);
+    }
+
+    /**
+     * @function SuperMap.Widgets.MessageBox.prototype.closeView
+     * @description 关闭提示框
+     */
+    closeView() {
+        this.messageBoxContainer.hidden = true;
+    }
+
+    /**
+     * @function SuperMap.Widgets.MessageBox.prototype.showView
+     * @description 显示提示框
+     * @param {string} message - 提示框显示内容
+     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success", 默认为"warring"
+     */
+    showView(message, type = 'warring') {
+        //设置提示框的样式：
+        if (type === "success") {
+            this.icon.setAttribute("class", "supermapol-icons-message-success");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-green");
+
+        } else if (type === "failure") {
+            this.icon.setAttribute("class", "supermapol-icons-message-failure");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-red");
+        } else if (type === "warring") {
+            this.icon.setAttribute("class", "supermapol-icons-message-warning");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+        }
+        this.messageBox.innerHTML = message;
+        this.messageBoxContainer.hidden = false;
+    }
+}
+
+SuperMap.Widgets.MessageBox = MessageBox;
+// CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 
 
 let widgetsUtil = {
@@ -83827,7 +83924,11 @@ let FileReaderUtil = {
 
 //组件
 
+//提示框微件
+
 //工具类
+
+
 
 
 
