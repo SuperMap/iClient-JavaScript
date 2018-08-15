@@ -84,12 +84,12 @@ var exampleConfig = {
                     name_en: "geometry query",
                     thumbnail: "l_mapQueryByGeometry.png",
                     fileName: "01_mapQueryByGeometry"
-                },  {
+                }, {
                     name: "几何查询(3857)",
                     name_en: "geometry query(3857)",
                     thumbnail: "l_mapQueryByGeometry3857.png",
                     fileName: "01_mapQueryByGeometry3857"
-                },{
+                }, {
                     name: "SQL查询",
                     name_en: "SQL query",
                     thumbnail: "l_mapQueryBySQL.png",
@@ -129,11 +129,11 @@ var exampleConfig = {
                     name_en: "data gridcell query",
                     thumbnail: "l_getGridCellInfos.png",
                     fileName: "02_getGridCellInfos"
-                // }, {
-                //     name: "聚合查询",
-                //     name_en: "data aggregation query",
-                //     thumbnail: "getFeatureByAggregation.gif",
-                //     fileName: "getFeatureByAggregation"
+                    // }, {
+                    //     name: "聚合查询",
+                    //     name_en: "data aggregation query",
+                    //     thumbnail: "getFeatureByAggregation.gif",
+                    //     fileName: "getFeatureByAggregation"
                 }, {
                     name: "字段信息",
                     name_en: "field service",
@@ -1131,7 +1131,32 @@ var exampleConfig = {
                     thumbnail: "l_controler_overviewMap.png",
                     fileName: "controler_overviewMap"
                 }]
-            }
+            },
+            "widgets": {
+                name: "微件",
+                name_en: "widgets",
+                content: [{
+                    name: "打开文件",
+                    name_en: "open file widget",
+                    thumbnail: "openFileWidget.png",
+                    fileName: "openFileWidget"
+                }]
+            },
+            "widgetsAdvanced": {
+                name: "微件(扩展)",
+                name_en: "widgets(Advanced)",
+                content: [{
+                    name: "打开文件(react)",
+                    name_en: "open file widget(react)",
+                    thumbnail: "openFileWidget_react.png",
+                    fileName: "openFileWidget_react"
+                }, {
+                    name: "打开文件(vue)",
+                    name_en: "open file widget(vue)",
+                    thumbnail: "openFileWidget_vue.png",
+                    fileName: "openFileWidget_vue"
+                }]
+            },
         }
     },
     "OGC": {

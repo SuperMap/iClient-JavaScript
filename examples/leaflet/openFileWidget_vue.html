@@ -2,16 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>widgets_vue</title>
+    <title data-i18n="resources.title_openFile_vue"></title>
     <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
-<!--    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.js"></script>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.2.0/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.2.0/leaflet-src.js"></script>
-    <link rel="stylesheet" href="../../dist/leaflet/iclient9-leaflet.css">
-    <script src="https://cdn.bootcss.com/xlsx/0.12.13/xlsx.min.js"></script>
-    <script type="text/javascript" src="../../dist/leaflet/iclient9-leaflet.js"></script>-->
-
+    <script type="text/javascript" include="iclient9-leaflet-css,xlsx"
+            src="../../dist/leaflet/include-leaflet.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%">
@@ -24,8 +18,12 @@
     });
     var url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light';
 
-    L.supermap.tiledMapLayer(url).addTo(map);
-    var addDataWidget = new L.supermap.widgets.OpenFileViewModel(map);
+    var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
+    map.layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'});
+    map.addControl(map.layersControl);
+
+    var openFileViewModel = new L.supermap.widgets.OpenFileViewModel(map);
+    var messageBox = new SuperMap.Widgets.MessageBox();
 
     initEditView();
 
@@ -33,9 +31,9 @@
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
             var me = this;
-            me._div = L.DomUtil.create('div');
-            me._div.id = "addDataContainer";
-            me._div.innerHTML = `<add_data v-bind:addDataWidget="addDataWidget"></add_data>`;
+            me._div = L.DomUtil.create('div', "openFileContainer");
+            me._div.id = "openFileContainer";
+            me._div.innerHTML = `<add_data v-bind:openFileViewModel="openFileViewModel" v-bind:messageBox="messageBox"></add_data>`;
             handleMapEvent(me._div, me._map);
             return me._div;
         };
@@ -59,40 +57,45 @@
     }
 
     var add_data = {
-        props: ["addDataWidget"],
+        props: ["openFileViewModel", "messageBox"],
         data: function () {
             return {
-                fileType: null,
-                fileName: null,
-                disabledBtn: true,
-                isSelectedFile: false,
-                isexcel: false,
-                iscsv: false,
-                isjson: false,
+                text: resources.text_openFile
             }
         },
         template:
             `<div class="file-select">
                 <label class="file-selectSpan" for="input_file">
-                <div class="upload-icon"/>
-                <span class="upload-span">选择文件</span>
+                <div class="openFile-icon"/>
+                <span class="openFile-span">{{text}}</span>
                 </label>
-                <input class="add_data_input" id="input_file" type="file"
+                <input class="openFile_input" id="input_file" type="file"
                        accept=".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                        v-on:change="fileSelectfn(this,$event)"/>
             </div>`,
         methods: {
             fileSelectfn(self, e) {
-                self.addDataWidget.selectFileLoadToMap(e)
-            }
+                //绑定事件监听
+                self.openFileViewModel.on("filesizeexceed", _messageListener.bind(self));
+                self.openFileViewModel.on("errorfileformat", _messageListener.bind(self));
+                self.openFileViewModel.on("openfilefail", _messageListener.bind(self));
+                self.openFileViewModel.on("readdatafail", _messageListener.bind(self));
+
+                function _messageListener(e) {
+                    this.messageBox.showView(e.message, e.messageType);
+                }
+
+                self.openFileViewModel.selectFileLoadToMap(e);
+            },
         }
     };
 
     // 创建根实例
     new Vue({
-        el: '#addDataContainer',
+        el: '#openFileContainer',
         data: {
-            addDataWidget: addDataWidget
+            openFileViewModel: openFileViewModel,
+            messageBox: messageBox
         },
         components: {
             'add_data': add_data

@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -4138,12 +4123,16 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(104);
+var supermapol_icons = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/openFile.css
-var openFile = __webpack_require__(97);
+var openFile = __webpack_require__(98);
+
+// EXTERNAL MODULE: ./src/common/widgets/css/messageBox.css
+var messageBox = __webpack_require__(96);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
+
 
 
 // EXTERNAL MODULE: ./src/leaflet/css/ChangeTileVersion.css
@@ -4162,6 +4151,8 @@ __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/common/SuperMap.js
 var SuperMap = window.SuperMap = window.SuperMap || {};
+SuperMap.Widgets = window.SuperMap.Widgets || {};
+
 // CONCATENATED MODULE: ./src/common/REST.js
 
 
@@ -62845,13 +62836,14 @@ const FileTypes = {
 const FileConfig = {
     fileMaxSize: 10 * 1024 * 1024
 };
-// CONCATENATED MODULE: ./src/common/widgets/openFile/fileModel.js
+// CONCATENATED MODULE: ./src/common/widgets/openFile/FileModel.js
 
 
 /**
- * @description 文件数据微件数据模型，用于存储一些数据或状态，todo 结构待完善
+ * @class SuperMap.FileModel
+ * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
  */
-class fileModel_FileModel {
+class FileModel_FileModel {
     constructor(options) {
         this.FileTypes = FileTypes;
         this.FileConfig = FileConfig;
@@ -62859,16 +62851,110 @@ class fileModel_FileModel {
         this.loadFileObject = [];
     }
 
+    /**
+     * @function SuperMap.FileModel.prototype.set
+     * @description 设置属性值
+     * @param {string} key - 属性名称
+     * @param {string|Object} value - 属性值
+     */
     set(key, value) {
         this[key] = value;
     }
 
+    /**
+     * @function SuperMap.FileModel.prototype.get
+     * @description 获取数据值
+     * @param {string} key - 属性名称
+     * @return {string|Object} value - 返回属性值
+     */
     get(key) {
         return this[key];
     }
 
 }
-// CONCATENATED MODULE: ./src/common/widgets/util/util.js
+// CONCATENATED MODULE: ./src/common/widgets/messageBox/MessageBox.js
+
+
+/**
+ * @class SuperMap.Widgets.MessageBox
+ * @classdesc MessageBox 微件，信息框提示
+ * @category  Control Widgets
+ */
+class MessageBox {
+
+    constructor() {
+        this._initView();
+    }
+
+    _initView() {
+        //原生js形式
+        const messageBoxContainer = document.createElement("div");
+        messageBoxContainer.hidden = true;
+        messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+
+        //图标
+        const iconContainer = document.createElement("div");
+        iconContainer.setAttribute("class", "icon");
+        this.icon = document.createElement("span");
+        this.icon.setAttribute("class", "supermapol-icons-message-warning");
+        iconContainer.appendChild(this.icon);
+        messageBoxContainer.appendChild(iconContainer);
+
+        //内容：
+        const messageBox = document.createElement("div");
+        messageBox.setAttribute("class", "messageBox");
+        messageBox.innerHTML = "";
+        messageBoxContainer.appendChild(messageBox);
+        this.messageBox = messageBox;
+
+        //关闭按钮
+        const cancelContainer = document.createElement("div");
+        cancelContainer.setAttribute("class", "cancelContainer");
+        const cancelBtn = document.createElement("button");
+        cancelBtn.setAttribute("class", "cancelBtn");
+        cancelBtn.innerHTML = "x";
+        cancelBtn.onclick = this.closeView.bind(this);
+        cancelContainer.appendChild(cancelBtn);
+        messageBoxContainer.appendChild(cancelContainer);
+
+        this.messageBoxContainer = messageBoxContainer;
+        document.body.appendChild(this.messageBoxContainer);
+    }
+
+    /**
+     * @function SuperMap.Widgets.MessageBox.prototype.closeView
+     * @description 关闭提示框
+     */
+    closeView() {
+        this.messageBoxContainer.hidden = true;
+    }
+
+    /**
+     * @function SuperMap.Widgets.MessageBox.prototype.showView
+     * @description 显示提示框
+     * @param {string} message - 提示框显示内容
+     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success", 默认为"warring"
+     */
+    showView(message, type = 'warring') {
+        //设置提示框的样式：
+        if (type === "success") {
+            this.icon.setAttribute("class", "supermapol-icons-message-success");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-green");
+
+        } else if (type === "failure") {
+            this.icon.setAttribute("class", "supermapol-icons-message-failure");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-red");
+        } else if (type === "warring") {
+            this.icon.setAttribute("class", "supermapol-icons-message-warning");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+        }
+        this.messageBox.innerHTML = message;
+        this.messageBoxContainer.hidden = false;
+    }
+}
+
+SuperMap.Widgets.MessageBox = MessageBox;
+// CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 
 
 let widgetsUtil = {
@@ -63024,7 +63110,11 @@ let FileReaderUtil = {
 
 //组件
 
+//提示框微件
+
 //工具类
+
+
 
 
 
@@ -79131,37 +79221,37 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 
 
 
-// CONCATENATED MODULE: ./src/leaflet/widgets/openFile/openFileViewModel.js
+// CONCATENATED MODULE: ./src/leaflet/widgets/openFile/OpenFileViewModel.js
 
 
 
 
 /**
  * @class L.supermap.widgets.OpenFileViewModel
- * @classdesc 打开本地文件微件
+ * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
+ * @category Control Widgets
  */
-class openFileViewModel_OpenFileViewModel {
-    constructor(map) {
+var OpenFileViewModel = external_L_default.a.Evented.extend({
+    initialize(map) {
         if (map) {
-            this.fileModel = new fileModel_FileModel({map: map});
+            this.fileModel = new FileModel_FileModel({map: map});
         } else {
             return new Error(`Cannot find map, fileModel.map cannot be null.`);
         }
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype.selectFileOnchange
      * @description 选中文件并加载到底图
-     * @param e
-     * @return {boolean}
+     * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象
      */
-    selectFileLoadToMap(e) {
-        let inputDom = e.target;
+    selectFileLoadToMap(fileEventObject) {
+        let inputDom = fileEventObject.target;
         let file = inputDom.files[0];
         //文件大小限制
         if (file.size > this.fileModel.FileConfig.fileMaxSize) {
-            //todo 这里都用wegit？
-            alert("File supports up to 10M.");
+            // document.alert("File supports up to 10M.");
+            this.fire("filesizeexceed", {messageType: "warring", message: "文件大小不得超过 10M。"});
             return false;
         }
 
@@ -79170,7 +79260,8 @@ class openFileViewModel_OpenFileViewModel {
         let fileType = widgetsUtil.getFileType(fileName);
         //文件格式不支持
         if (!fileType) {
-            alert("Unsupported data type.");
+            // document.alert("Unsupported data type.");
+            this.fire("errorfileformat", {messageType: "failure", message: "不支持该文件格式！"});
             return false;
         }
         //文件类型限制
@@ -79185,16 +79276,16 @@ class openFileViewModel_OpenFileViewModel {
                     fileType: fileType
                 });
             //响应选中文件添加到地图
-            this._loadData();
+            this._readData();
         }
-    }
+    },
 
     /**
-     * @function L.supermap.widgets.OpenFileViewModel.prototype._loadData
-     * @description 加载数据
+     * @function L.supermap.widgets.OpenFileViewModel.prototype._readData
+     * @description 数据文件中的数据
      * @private
      */
-    _loadData() {
+    _readData() {
         //todo 需要测试另外两个
         const me = this;
         const type = this.fileModel.loadFileObject.fileType;
@@ -79205,9 +79296,10 @@ class openFileViewModel_OpenFileViewModel {
             //将数据统一转换为 geoJson 格式加载到底图
             me._newLayerToMap(me._processDatas(type, data));
         }, (error) => {
-            throw new Error("Incorrect data format: " + error);
+            me.fire("openfilefail", {messageType: "failure", message: "打开文件失败！"});
+            // throw new Error("Incorrect data format: " + error);
         }, this);
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype._newLayerToMap
@@ -79218,15 +79310,20 @@ class openFileViewModel_OpenFileViewModel {
     _newLayerToMap(geojson) {
         const layer = external_L_default.a.geoJSON(geojson);
         this.fileModel.map.flyToBounds(layer.getBounds());
+        //若有图层控件，则加入图层控件中
+        if (this.fileModel.map.layersControl) {
+            const layerName = this.fileModel.loadFileObject.fileName.split('.')[0];
+            this.fileModel.map.layersControl.addOverlay(layer, layerName);
+        }
         layer.addTo(this.fileModel.map);
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype._processDatas
      * @description 将读取回来得数据统一处理为 geoJson 格式
-     * @param type
-     * @param data
-     * @return {*}
+     * @param {string} type - 文件类型
+     * @param {Object} data - 读取返回的数据对象
+     * @return {Object} geojson - 返回标准 GeoJson 规范格式数据
      * @private
      */
     _processDatas(type, data) {
@@ -79248,19 +79345,22 @@ class openFileViewModel_OpenFileViewModel {
                 geojson = result;
             } else {
                 //不支持数据
-                throw new Error("Unsupported data type.");
+                this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的 'GEOJSON' 格式数据！"});
+                // throw new Error("Unsupported data type.");
                 // return false;
             }
             return geojson;
         } else {
-            throw new Error("Unsupported data type.");
+            this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的'EXCEL','CSV','GEOJSON'格式数据！"});
+            // throw new Error("Unsupported data type.");
         }
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype._processExcelData
-     * @description 表格形式数据处理
-     * @param data
+     * @description 表格文件数据处理
+     * @param {Object} data - 读取的表格文件数据
+     * @return {Object} - 返回标准 GeoJson 规范格式数据
      * @private
      */
     _processExcelData(data) {
@@ -79302,19 +79402,25 @@ class openFileViewModel_OpenFileViewModel {
         let format = new GeoJSON_GeoJSON();
         return JSON.parse(format.write(features));
     }
-}
+});
 
-external_L_default.a.supermap.widgets.OpenFileViewModel = openFileViewModel_OpenFileViewModel;
+var openFileViewModel = function (options) {
+    return new OpenFileViewModel(options);
+};
+
+external_L_default.a.supermap.widgets.OpenFileViewModel = openFileViewModel;
 
 external_L_default.a.supermap.widgets.util = widgetsUtil;
-// CONCATENATED MODULE: ./src/leaflet/widgets/openFile/openFileView.js
+// CONCATENATED MODULE: ./src/leaflet/widgets/openFile/OpenFileView.js
+
 
 
 
 
 /**
  * @class L.supermap.widgets.openFile
- * @classdesc openFile 微件 todo 确认api 所属模块
+ * @classdesc openFile 微件，用于打开本地数据文件并加载到底图
+ * @category  Control Widgets
  */
 var OpenFileView = external_L_default.a.Control.extend({
     options: {
@@ -79335,29 +79441,54 @@ var OpenFileView = external_L_default.a.Control.extend({
         return this._initOpenFileView();
     },
 
+    /**
+     * @function L.supermap.widgets.openFile.prototype._initOpenFileView
+     * @description 创建打开本地文件数据微件
+     * @return {div}
+     * @private
+     */
     _initOpenFileView: function () {
         //初始化 ViewModel:
-        this.viewModel = new openFileViewModel_OpenFileViewModel(this.map);
+        this.viewModel = new OpenFileViewModel(this.map, this);
         //初始化 view
 
-        const uploadContent = external_L_default.a.DomUtil.create('div', 'addData_upload');
+        const uploadContent = external_L_default.a.DomUtil.create('div', 'openFileContainer');
+        uploadContent.id = 'openFile';
 
-        this.fileSelect = external_L_default.a.DomUtil.create('div', 'file-select', uploadContent);
+        this.fileSelect = external_L_default.a.DomUtil.create('div', '', uploadContent);
         this.label = external_L_default.a.DomUtil.create('label', 'file-selectSpan', this.fileSelect);
         this.label.htmlFor = "input_file";
 
-        external_L_default.a.DomUtil.create('div', 'upload-icon', this.label);
-        const fileSpan = external_L_default.a.DomUtil.create('span', 'upload-span', this.label);
+        external_L_default.a.DomUtil.create('div', 'openFile-icon', this.label);
+        const fileSpan = external_L_default.a.DomUtil.create('span', 'openFile-span', this.label);
         fileSpan.appendChild(document.createTextNode("选择文件"));
 
-        this.fileInput = external_L_default.a.DomUtil.create('input', 'add_data_input', this.fileSelect);
+        this.fileInput = external_L_default.a.DomUtil.create('input', 'openFile_input', this.fileSelect);
         this.fileInput.id = "input_file";
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
         this.fileInput.onchange = this.viewModel.selectFileLoadToMap.bind(this.viewModel);
 
+        //增加提示框：
+        this.messageBox = new MessageBox();
+
+        this.viewModel.on("filesizeexceed", this._showMessageListener.bind(this));
+        this.viewModel.on("errorfileformat", this._showMessageListener.bind(this));
+        this.viewModel.on("openfilefail", this._showMessageListener.bind(this));
+        this.viewModel.on("readdatafail", this._showMessageListener.bind(this));
+
         return uploadContent;
+    },
+
+    /**
+     * @function L.supermap.widgets.openFile.prototype._showMessageListener
+     * @description 监听 OpenFileViewModel 事件，显示提示框
+     * @param {Object} e - 事件对象
+     * @private
+     */
+    _showMessageListener(e) {
+        this.messageBox.showView(e.message, e.messageType);
     }
 
 });
@@ -79376,7 +79507,8 @@ external_L_default.a.supermap.widgets.openFile = openFileView;
 // CONCATENATED MODULE: ./src/leaflet/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileView", function() { return OpenFileView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileView", function() { return openFileView; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileViewModel", function() { return openFileViewModel_OpenFileViewModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileViewModel", function() { return OpenFileViewModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileViewModel", function() { return openFileViewModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
@@ -82960,7 +83092,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */
@@ -85144,20 +85276,26 @@ module.exports = __webpack_require__(41);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 96 */,
-/* 97 */
+/* 96 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 98 */,
+/* 97 */,
+/* 98 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 99 */,
 /* 100 */,
 /* 101 */,
 /* 102 */,
 /* 103 */,
-/* 104 */
+/* 104 */,
+/* 105 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

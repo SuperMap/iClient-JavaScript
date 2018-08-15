@@ -474,6 +474,9 @@ window.examplesResources = {
         "title_mb_deckglLayer_sfcontour": "San Francisco Elevation Contour",
         "title_mb_deckglLayer_sftrees": "San Francisco Street Tree Map",
         "title_mb_deckglLayer_ukcommute": "Commute Patterns in the UK",
+        "title_openFile": "OpenFile",
+        "title_openFile_react": "OpenFile(react)",
+        "title_openFile_vue": "OpenFile(vue)",
 
 
         "text_code": "Forward Match",
@@ -1122,7 +1125,7 @@ window.examplesResources = {
         "text_lineOpacity": "opacity:",
         "text_lineWidth_1": "width:",
         "text_tipsPopup_subtext": "Click on the line to edit this linelayer style",
-        "text_alert_subtext":"Click on the LineLayer to Edit LineLayer Style",
+        "text_alert_subtext": "Click on the LineLayer to Edit LineLayer Style",
         "text_paly": "play",
         "text_pause": "pause",
         "text_mb_deckglLayer_nyc_census": "This dataset contains the 2010 Census tract population data of NYC",
@@ -1130,6 +1133,7 @@ window.examplesResources = {
         "text_mb_deckglLayer_scatterPlot": "Location, maginitude and magtype of 2.5+ magnitude earthquakes in california",
         "text_mb_deckglLayer_sftrees": "A 3d hexbin density map showing every single streets in San Francisco",
         "text_mb_deckglLayer_ukcommute": "A origin destination map using 3d arcs to show commute patterns of England and Wales residence",
+        'text_openFile': "Open file",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

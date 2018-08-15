@@ -325,13 +325,15 @@ import {
 import {
     OpenFileView,
     openFileView,
-    OpenFileViewModel
+    OpenFileViewModel,
+    openFileViewModel
 } from './widgets';
 
 export {
     OpenFileView,
     openFileView,
-    OpenFileViewModel
+    OpenFileViewModel,
+    openFileViewModel
 }
 
 export {

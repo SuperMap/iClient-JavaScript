@@ -1,4 +1,4 @@
-import {widgetsUtil} from './util';
+import {widgetsUtil} from './Util';
 import {FileReaderUtil} from './FileReaderUtil';
 
 export {widgetsUtil};

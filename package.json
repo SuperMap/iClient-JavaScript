@@ -51,7 +51,7 @@
     "type": "git",
     "url": "https://github.com/SuperMap/iClient-JavaScript.git"
   },
-  "author": "SuperMap",
+  "author": "SuperMap_FE",
   "license": "Apache-2.0",
   "devDependencies": {
     "babel-core": "^6.26.0",

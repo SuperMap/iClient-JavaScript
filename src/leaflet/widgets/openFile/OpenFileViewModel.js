@@ -9,30 +9,30 @@ import {
 
 /**
  * @class L.supermap.widgets.OpenFileViewModel
- * @classdesc 打开本地文件微件
+ * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
+ * @category Control Widgets
  */
-export class OpenFileViewModel {
-    constructor(map) {
+export var OpenFileViewModel = L.Evented.extend({
+    initialize(map) {
         if (map) {
             this.fileModel = new FileModel({map: map});
         } else {
             return new Error(`Cannot find map, fileModel.map cannot be null.`);
         }
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype.selectFileOnchange
      * @description 选中文件并加载到底图
-     * @param e
-     * @return {boolean}
+     * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象
      */
-    selectFileLoadToMap(e) {
-        let inputDom = e.target;
+    selectFileLoadToMap(fileEventObject) {
+        let inputDom = fileEventObject.target;
         let file = inputDom.files[0];
         //文件大小限制
         if (file.size > this.fileModel.FileConfig.fileMaxSize) {
-            //todo 这里都用wegit？
-            alert("File supports up to 10M.");
+            // document.alert("File supports up to 10M.");
+            this.fire("filesizeexceed", {messageType: "warring", message: "文件大小不得超过 10M。"});
             return false;
         }
 
@@ -41,7 +41,8 @@ export class OpenFileViewModel {
         let fileType = widgetsUtil.getFileType(fileName);
         //文件格式不支持
         if (!fileType) {
-            alert("Unsupported data type.");
+            // document.alert("Unsupported data type.");
+            this.fire("errorfileformat", {messageType: "failure", message: "不支持该文件格式！"});
             return false;
         }
         //文件类型限制
@@ -56,16 +57,16 @@ export class OpenFileViewModel {
                     fileType: fileType
                 });
             //响应选中文件添加到地图
-            this._loadData();
+            this._readData();
         }
-    }
+    },
 
     /**
-     * @function L.supermap.widgets.OpenFileViewModel.prototype._loadData
-     * @description 加载数据
+     * @function L.supermap.widgets.OpenFileViewModel.prototype._readData
+     * @description 数据文件中的数据
      * @private
      */
-    _loadData() {
+    _readData() {
         //todo 需要测试另外两个
         const me = this;
         const type = this.fileModel.loadFileObject.fileType;
@@ -76,9 +77,10 @@ export class OpenFileViewModel {
             //将数据统一转换为 geoJson 格式加载到底图
             me._newLayerToMap(me._processDatas(type, data));
         }, (error) => {
-            throw new Error("Incorrect data format: " + error);
+            me.fire("openfilefail", {messageType: "failure", message: "打开文件失败！"});
+            // throw new Error("Incorrect data format: " + error);
         }, this);
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype._newLayerToMap
@@ -89,15 +91,20 @@ export class OpenFileViewModel {
     _newLayerToMap(geojson) {
         const layer = L.geoJSON(geojson);
         this.fileModel.map.flyToBounds(layer.getBounds());
+        //若有图层控件，则加入图层控件中
+        if (this.fileModel.map.layersControl) {
+            const layerName = this.fileModel.loadFileObject.fileName.split('.')[0];
+            this.fileModel.map.layersControl.addOverlay(layer, layerName);
+        }
         layer.addTo(this.fileModel.map);
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype._processDatas
      * @description 将读取回来得数据统一处理为 geoJson 格式
-     * @param type
-     * @param data
-     * @return {*}
+     * @param {string} type - 文件类型
+     * @param {Object} data - 读取返回的数据对象
+     * @return {Object} geojson - 返回标准 GeoJson 规范格式数据
      * @private
      */
     _processDatas(type, data) {
@@ -119,19 +126,22 @@ export class OpenFileViewModel {
                 geojson = result;
             } else {
                 //不支持数据
-                throw new Error("Unsupported data type.");
+                this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的 'GEOJSON' 格式数据！"});
+                // throw new Error("Unsupported data type.");
                 // return false;
             }
             return geojson;
         } else {
-            throw new Error("Unsupported data type.");
+            this.fire("readdatafail", {messageType: "failure", message: "数据格式错误！非标准的'EXCEL','CSV','GEOJSON'格式数据！"});
+            // throw new Error("Unsupported data type.");
         }
-    }
+    },
 
     /**
      * @function L.supermap.widgets.OpenFileViewModel.prototype._processExcelData
-     * @description 表格形式数据处理
-     * @param data
+     * @description 表格文件数据处理
+     * @param {Object} data - 读取的表格文件数据
+     * @return {Object} - 返回标准 GeoJson 规范格式数据
      * @private
      */
     _processExcelData(data) {
@@ -173,8 +183,12 @@ export class OpenFileViewModel {
         let format = new GeoJSONFormat();
         return JSON.parse(format.write(features));
     }
-}
+});
 
-L.supermap.widgets.OpenFileViewModel = OpenFileViewModel;
+export var openFileViewModel = function (options) {
+    return new OpenFileViewModel(options);
+};
+
+L.supermap.widgets.OpenFileViewModel = openFileViewModel;
 
 L.supermap.widgets.util = widgetsUtil;

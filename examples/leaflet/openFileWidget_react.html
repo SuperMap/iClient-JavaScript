@@ -2,18 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>widgets_react</title>
+    <title data-i18n="resources.title_openFile_react"></title>
     <script type="text/javascript" include="react" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient9-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
- <!--   <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
-    <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
-    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.2.0/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.2.0/leaflet-src.js"></script>
-    <link rel="stylesheet" href="../../dist/leaflet/iclient9-leaflet.css">
-    <script src="https://cdn.bootcss.com/xlsx/0.12.13/xlsx.min.js"></script>
-    <script type="text/javascript" src="../../dist/leaflet/iclient9-leaflet.js"></script>-->
-
+    <script type="text/javascript" include="iclient9-leaflet-css,xlsx"
+            src="../../dist/leaflet/include-leaflet.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -25,14 +17,16 @@
     });
     var url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light';
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
+    map.layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'});
+    map.addControl(map.layersControl);
     initEditView();
 
     function initEditView() {
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
             var me = this;
-            me._div = L.DomUtil.create('div');
+            me._div = L.DomUtil.create('div', "openFileContainer");
             me._div.id = "addDataContainer";
 
             handleMapEvent(me._div, me._map);
@@ -61,32 +55,37 @@
         constructor(props) {
             super(props);
             //微件功能组件
-            this.addDataWidget = props.addDataWidget;
-            this.state = {
-                upData: false,
-                disabledBtn: true,
-                fileType: null,
-                fileName: null
-            };
-            this.fileSelectfn = this.addDataWidget.selectFileLoadToMap.bind(this.addDataWidget);
+            this.openFileViewModel = props.openFileViewModel;
+            this.messageBox = props.messageBox;
+            this.fileSelectfn = this.openFileViewModel.selectFileLoadToMap.bind(this.openFileViewModel);
+            //监听vm 事件：
+            this.openFileViewModel.on("filesizeexceed", this._messageListener.bind(this));
+            this.openFileViewModel.on("errorfileformat", this._messageListener.bind(this));
+            this.openFileViewModel.on("openfilefail", this._messageListener.bind(this));
+            this.openFileViewModel.on("readdatafail", this._messageListener.bind(this));
+        }
+
+        _messageListener(e) {
+            this.messageBox.showView(e.message, e.messageType);
         }
 
         render() {
             return <div className="file-select">
                 <label className="file-selectSpan" htmlFor="input_file">
-                    <div className="upload-icon"/>
-                    <span className="upload-span">选择文件 </span>
+                    <div className="openFile-icon"/>
+                    <span className="openFile-span">{this.props.text}</span>
                 </label>
-                <input className="add_data_input" id="input_file" type="file"
+                <input className="openFile_input" id="input_file" type="file"
                        accept=".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                        onChange={this.fileSelectfn}/>
             </div>
         }
     }
 
-    var addDataWidget = new L.supermap.widgets.OpenFileViewModel(map);
+    var openFileViewModel = new L.supermap.widgets.OpenFileViewModel(map);
+    var messageBox = new SuperMap.Widgets.MessageBox();
     ReactDOM.render(
-            <AddData addDataWidget={addDataWidget}/>,
+            <AddData openFileViewModel={openFileViewModel} messageBox={messageBox} text={resources.text_openFile}/>,
         document.getElementById('addDataContainer')
     );
 

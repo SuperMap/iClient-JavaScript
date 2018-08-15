@@ -1,5 +1,5 @@
-import {OpenFileView, openFileView} from './openFile/openFileView';
-import {OpenFileViewModel} from './openFile/openFileViewModel';
+import {OpenFileView, openFileView} from './openFile/OpenFileView';
+import {OpenFileViewModel, openFileViewModel} from './openFile/OpenFileViewModel';
 
 export {OpenFileView, openFileView};
-export {OpenFileViewModel};
+export {OpenFileViewModel, openFileViewModel};

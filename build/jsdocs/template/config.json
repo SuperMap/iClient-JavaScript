@@ -173,7 +173,7 @@
                         "name": "转向结点权值",
                         "name_en": "TurnNodeWeight"
                     }
-                    
+
                 }
             },
             "FacilityAnalyst3D": {
@@ -325,7 +325,13 @@
     },
     "Control": {
         "name": "控件",
-        "name_en": "Control"
+        "name_en": "Control",
+        "content": {
+            "Widgets": {
+                "name": "微件",
+                "name_en": "Widgets"
+            }
+        }
     },
     "Security": {
         "name": "安全",
