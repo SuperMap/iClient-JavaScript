@@ -421,8 +421,8 @@ var exampleConfig = {
                     fileName: "dataFlowService"
                 },
                     {
-                        name: "数据流(1w图标)",
-                        name_en: "data flow(1w markers)",
+                        name: "数据流(10k 图标)",
+                        name_en: "data flow(10k markers)",
                         thumbnail: "dataflow_mapv.gif",
                         fileName: "dataFlowService_mapv"
                     }]
@@ -1146,17 +1146,17 @@ var exampleConfig = {
                 name: "微件(扩展)",
                 name_en: "widgets(Advanced)",
                 content: [{
-                    name: "打开文件(react)",
-                    name_en: "open file widget(react)",
+                    name: "打开文件(React)",
+                    name_en: "open file widget(React)",
                     thumbnail: "openFileWidget_react.png",
                     fileName: "openFileWidget_react"
                 }, {
-                    name: "打开文件(vue)",
-                    name_en: "open file widget(vue)",
+                    name: "打开文件(Vue)",
+                    name_en: "open file widget(Vue)",
                     thumbnail: "openFileWidget_vue.png",
                     fileName: "openFileWidget_vue"
                 }]
-            },
+            }
         }
     },
     "OGC": {
