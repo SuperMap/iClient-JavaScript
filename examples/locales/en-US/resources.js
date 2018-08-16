@@ -475,8 +475,8 @@ window.examplesResources = {
         "title_mb_deckglLayer_sftrees": "San Francisco Street Tree Map",
         "title_mb_deckglLayer_ukcommute": "Commute Patterns in the UK",
         "title_openFile": "OpenFile",
-        "title_openFile_react": "OpenFile(react)",
-        "title_openFile_vue": "OpenFile(vue)",
+        "title_openFile_react": "OpenFile(React)",
+        "title_openFile_vue": "OpenFile(Vue)",
 
 
         "text_code": "Forward Match",
@@ -1133,7 +1133,7 @@ window.examplesResources = {
         "text_mb_deckglLayer_scatterPlot": "Location, maginitude and magtype of 2.5+ magnitude earthquakes in california",
         "text_mb_deckglLayer_sftrees": "A 3d hexbin density map showing every single streets in San Francisco",
         "text_mb_deckglLayer_ukcommute": "A origin destination map using 3d arcs to show commute patterns of England and Wales residence",
-        'text_openFile': "Open file",
+        'text_openFile': "Select file",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

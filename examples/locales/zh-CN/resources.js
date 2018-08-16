@@ -420,8 +420,8 @@ window.examplesResources = {
         "title_mb_deckglLayer_sftrees": "旧金山街道树分布密度图",
         "title_mb_deckglLayer_ukcommute": "英国通勤图",
         "title_openFile": "打开文件",
-        "title_openFile_react": "打开文件(react)",
-        "title_openFile_vue": "打开文件(vue)",
+        "title_openFile_react": "打开文件(React)",
+        "title_openFile_vue": "打开文件(Vue)",
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
@@ -1077,7 +1077,7 @@ window.examplesResources = {
         "text_mb_deckglLayer_scatterPlot": "加利福尼亚州2.5级地震的地点，规模和磁性类型",
         "text_mb_deckglLayer_sftrees": "三维六进制密度地图显示旧金山的每条街道",
         "text_mb_deckglLayer_ukcommute": "使用3d弧线的原始目的地地图显示英格兰和威尔士居民的通勤模式",
-        'text_openFile':"打开文件",
+        'text_openFile':"选择文件",
 
 
         "btn_overlayAnalyst": "叠加分析",
