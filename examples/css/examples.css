@@ -85,7 +85,7 @@ h3.category-title {
     margin-bottom: 20px;
     padding-top: 45px;
     background-color: #f9f9f9;
-    border-top: 1px solid #3c8dbc;
+    border-top: 1px solid #C70022;
 }
 
 .box-title {
@@ -108,7 +108,7 @@ h3.category-title {
 }
 
 .nav > li > a:hover, .nav > li > a:active, .nav > li > a:focus {
-    background: #3c8dbc;
+    background: #C70022;
 }
 
 .category {

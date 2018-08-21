@@ -14,7 +14,7 @@
 }
 
 .skin-blue .main-sidebar {
-    background-color: #3c8dbc;
+    background-color: #424242;
 }
 
 .skin-blue .sidebar-menu > li.treeview:hover > a {
@@ -62,7 +62,7 @@ a.sidebar-toggle {
     height: 36px;
     line-height: 36px;
     text-align: center;
-    background-color: #2e658a;
+    background-color: #282828;
     color: white !important;
     display: block;
 }
@@ -79,13 +79,13 @@ a.sidebar-toggle {
 /*侧边栏滚动设置 end*/
 
 .skin-blue .treeview-menu li > a {
-    border-left: 3px solid #3c8dbc;
+    border-left: 3px solid #424242;
 }
-
+  
 .skin-blue .treeview-menu li > a:hover,
 .skin-blue .treeview-menu li.active > a {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-left-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-left-color: rgba(161, 161, 161, 0.3);
 }
 
 .skin-blue .treeview-menu > li > a {
@@ -96,11 +96,11 @@ a.sidebar-toggle {
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
     margin: 0;
-    background: #3c8dbc;
+    background: #424242;
 }
 
 .sidebar-menu li.active > .treeview-menu {
-    background: #3c8dbc;
+    background: #424242;
 }
 
 .sidebar-title-bar .fa-angle-left,
@@ -131,8 +131,8 @@ a.sidebar-toggle {
 
 .skin-blue .sidebar-menu > li:hover > a,
 .skin-blue .sidebar-menu > li.active > a {
-    color: #3c8dbc;
-    background: #3375A1;
+    color: #424242;
+    background: #313131;
 }
 
 .skin-blue .treeview-menu > li.active > a,

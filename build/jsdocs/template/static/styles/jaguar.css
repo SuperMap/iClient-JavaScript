@@ -14,6 +14,13 @@ ol {
 li {
     list-style-type: none;
 }
+a {
+    font-weight: 500;
+    color: #D44F00;
+}
+a:hover, a:active, a:focus{
+    color: #df9d00;
+}
 
 #wrap {
     position: relative;
@@ -27,7 +34,7 @@ li {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #8bbfde;
+    background-color: #282828;
     border-radius: 4px;
 }
 
@@ -41,7 +48,7 @@ li {
     width: 250px;
     height: 100%;
     padding-top: 0px;
-    background-color: #3c8dbc;
+    background-color: #424242;
 
 }
 
@@ -77,11 +84,11 @@ li {
 }
 
 .main-sidebar li.item a {
-    color: #cde3ef;
+    color: #fff;
 }
 
 .main-sidebar li.item a:hover {
-    color: #fff;
+    color: #282828 ;
 }
 
 .main-sidebar li.item .title {
@@ -105,7 +112,7 @@ li {
 }
 
 .main-sidebar li.item .title a:hover {
-    color: #fff;
+    color: #A1A1A1 ;
 }
 
 .main-sidebar li.item .title .static {
@@ -453,13 +460,13 @@ a.sidebar-toggle {
     height: 36px;
     line-height: 36px;
     text-align: center;
-    background-color: #2e658a;
+    background-color: #282828;
     color: white !important;
     display: block;
 }
 
 a.sidebar-toggle {
-    background-color: #2e658a;
+    background-color: #282828;
     position: absolute;
     top: 50%;
     width: 26px;
