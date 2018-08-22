@@ -1,4 +1,5 @@
 require('../../../src/mapboxgl/services/SpatialAnalystService');
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 var mapboxgl = require('mapbox-gl');
 var request = require('request');
 
@@ -37,6 +38,14 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
             bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
         });
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/interpolation/density.json?returnContent=true");
+            var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':0,'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':3000,'filterQueryParameter':null,'outputDatasetName':\"Interpolation_density_mapboxglTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null}";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(interpolationDensityEscapedJson));
+        }); 
         service.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
         });
@@ -56,7 +65,7 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 done();
             }
         }, 25000);
-    });
+    }); 
 
     var resultDataset_IDW_dataset = "Interpolation_IDW_dataset_mapboxglTest";
     //插值分析 反距离加权插值分析
@@ -79,6 +88,17 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
             bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
         });
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
+
+
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/interpolation/idw.json?returnContent=true");
+            var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':0,'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':7923.84989108,'filterQueryParameter':null,'outputDatasetName':\"Interpolation_IDW_dataset_mapboxglTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null,'searchMode':\"KDTREE_FIXED_COUNT\",'expectedCount':12,'power':2}";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(interpolationIDWsEcapedJson));
+        }); 
+
         service.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
         });
@@ -98,14 +118,5 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 done();
             }
         }, 25000);
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
-        var testResult_density = GlobeParameter.dataspatialAnalystURL + resultDataset_density;
-        var testResult_IDW_dataset = GlobeParameter.dataspatialAnalystURL + resultDataset_IDW_dataset;
-        request.delete(testResult_density);
-        request.delete(testResult_IDW_dataset);
-        done();
     });
 });

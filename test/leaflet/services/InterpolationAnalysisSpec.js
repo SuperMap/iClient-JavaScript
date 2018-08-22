@@ -2,6 +2,7 @@ import {spatialAnalystService} from '../../../src/leaflet/services/SpatialAnalys
 import {InterpolationKrigingAnalystParameters} from '../../../src/common/iServer/InterpolationKrigingAnalystParameters';
 import {PixelFormat} from '../../../src/common/REST';
 import request from 'request';
+import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -53,6 +54,14 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
             bounds: L.bounds([-2640403.63, 1873792.1], [3247669.39, 5921501.4])
         });
         var interpolationAnalystService = spatialAnalystService(spatialAnalystURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP@Interpolation/interpolation/kriging.json?returnContent=true");
+            var expectParams = "{'bounds':{'left':-2640403.63,'bottom':1873792.1,'right':3247669.39,'top':5921501.4,'centerLonLat':null},'searchRadius':\"0\",'zValueFieldName':\"AVG_TMP\",'zValueScale':1,'resolution':null,'filterQueryParameter':{'attributeFilter':\"\"},'outputDatasetName':\"Interpolation_UnvsKriging_lfTest\",'outputDatasourceName':\"Interpolation\",'pixelFormat':\"DOUBLE\",'dataset':\"SamplesP@Interpolation\",'inputPoints':null,'InterpolationAnalystType':\"dataset\",'clipParam':null,'type':\"UniversalKriging\",'angle':0,'nugget':0,'range':0,'sill':0,'variogramMode':\"SPHERICAL\",'searchMode':\"KDTREE_FIXED_COUNT\",'mean':null,'exponent':\"EXP1\",'expectedCount':12,'maxPointCountForInterpolation':200,'maxPointCountInNode':50}";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(interpolationUnvsKrigingEscapedJson));
+        }); 
         interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, (result) => {
             serviceResult = result;
             try {
@@ -62,7 +71,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.dataset).toContain(resultDataset);
                 expect(serviceResult.result.dataset).toContain("@Interpolation");
-                expect(serviceResult.result.succeed).toBe(true);
+                expect(serviceResult.result.succeed).toBe(true); 
                 interpolationAnalystService.destroy();
             } catch (exception) {
                 console.log("'leaflet_interpolationAnalystService_Kriging_Universal'案例失败" + exception.name + ":" + exception.message);
@@ -70,12 +79,5 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', () => {
                 expect(false).toBeTruthy();
             }
         });
-    });
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', (done) => {
-        var testResult = GlobeParameter.dataspatialAnalystURL + resultDataset;
-        request.delete(testResult);
-        done();
     });
 });
