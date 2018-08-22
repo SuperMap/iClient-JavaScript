@@ -1,5 +1,7 @@
 import ol from 'openlayers';
-import {DataFlowService} from "../services/DataFlowService";
+import {
+    DataFlowService
+} from "../services/DataFlowService";
 
 /**
  * @class ol.source.DataFlow
@@ -25,13 +27,19 @@ export class DataFlow extends ol.source.Vector {
         }).initSubscribe();
         var me = this;
         me.dataService.on('subscribeSocketConnected', function (e) {
-            me.dispatchEvent({type: "subscribeSuccessed", value: e})
+            me.dispatchEvent({
+                type: "subscribeSuccessed",
+                value: e
+            })
         });
         me.dataService.on('messageSuccessed', function (msg) {
             me._onMessageSuccessed(msg);
         });
         me.dataService.on('setFilterParamSuccessed', function (msg) {
-            me.dispatchEvent({type: "setFilterParamSuccessed", value: msg})
+            me.dispatchEvent({
+                type: "setFilterParamSuccessed",
+                value: msg
+            })
         });
         this.featureCache = {};
     }
@@ -71,14 +79,27 @@ export class DataFlow extends ol.source.Vector {
 
     _onMessageSuccessed(msg) {
         //this.clear();
-        var geoID = msg.value.featureResult.properties[this.idField];
+
         var feature = (new ol.format.GeoJSON()).readFeature(msg.value.featureResult);
+
+        var geoID = feature.get(this.idField);
         if (geoID !== undefined && this.featureCache[geoID]) {
-            this.removeFeature(this.featureCache[geoID]);
+            this.featureCache[geoID].setGeometry(feature.getGeometry());
+            this.featureCache[geoID].setProperties(feature.getProperties());
+            this.changed();
+        } else {
+            this.addFeature(feature);
+            this.featureCache[geoID] = feature;
         }
-        this.addFeature(feature);
-        this.featureCache[geoID] = feature;
-        this.dispatchEvent({type: "dataUpdated", value: {source: this, data: msg.value.featureResult}})
+        this.dispatchEvent({
+            type: "dataupdated",
+            value: {
+                source: this,
+                data: feature
+            }
+        })
+
+
     }
 }
 ol.source.DataFlow = DataFlow;

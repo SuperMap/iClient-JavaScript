@@ -136,7 +136,7 @@ export var CRS = L.Class.extend({
         L.Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
-
+        this.options.dpi=this.options.dpi||96;
         if (this.options.bounds) {
             this.options.bounds = L.bounds(this.options.bounds);
         }
