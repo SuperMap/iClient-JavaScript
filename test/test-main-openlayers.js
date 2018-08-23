@@ -1,18 +1,18 @@
 /*openlayers -- control*/
-//import './openlayers/control/ChangeTileVersionSpec.js';
+import './openlayers/control/ChangeTileVersionSpec.js';
 
 /*openlayers -- core*/
-/* import './openlayers/core/StyleUtilsSpec.js';
+import './openlayers/core/StyleUtilsSpec.js';
 import './openlayers/core/UtilSpec.js';
- */
+
 /*openlayers -- mapping*/
-/* import './openlayers/mapping/ImageSuperMapRestSpec.js';
-import './openlayers/mapping/WebMapSpec.js'; */
+import './openlayers/mapping/ImageSuperMapRestSpec.js';
+import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
 /*deck相关测试未通过，待解决后打开注释*/
 // import './openlayers/overlay/GraphicSpec.js';
-/* import './openlayers/overlay/GraphSpec.js';
+import './openlayers/overlay/GraphSpec.js';
 import './openlayers/overlay/HeatMapSpec.js';
 import './openlayers/overlay/LabelSpec';
 import './openlayers/overlay/MapvSpec.js';
@@ -23,10 +23,10 @@ import './openlayers/overlay/VectorTileSuperMapRestSpec.js';
 import './openlayers/overlay/theme/GeoFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeFeatureSpec.js';
 import './openlayers/overlay/theme/ThemeSpec.js';
-import './openlayers/overlay/vectortile/VectorTileStylesSpec.js'; */
+import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 
 /**openlayers --services**/
-/* import './openlayers/services/BufferAnalysisSpec.js';
+import './openlayers/services/BufferAnalysisSpec.js';
 import './openlayers/services/DensityAnalysisSpec.js';
 import './openlayers/services/EditFeaturesSpec.js';
 import './openlayers/services/FieldServiceSpec.js';
@@ -52,5 +52,5 @@ import './openlayers/services/SurfaceAnalysisSpec.js';
 import './openlayers/services/TerrainCurvatureCalculateSpec.js';
 import './openlayers/services/ThemeServiceSpec.js';
 import './openlayers/services/ThiessenAnalysisSpec.js';
-import './openlayers/services/TrafficTransferAnalystServiceSpec.js'; */
+import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
 

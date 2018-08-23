@@ -1,23 +1,23 @@
 /*leaflet -- control*/
-/* import './leaflet/control/ChangeTileVersionSpec.js';
+import './leaflet/control/ChangeTileVersionSpec.js';
 
 /*leaflet -- core*/
-/*import './leaflet/core/NonEarthCRSSpec.js';
-import './leaflet/core/TransformUtilSpec.js';*/
+import './leaflet/core/NonEarthCRSSpec.js';
+import './leaflet/core/TransformUtilSpec.js';
 
 /*leaflet -- mapping*/
-/*import './leaflet/mapping/ImageMapLayerSpec.js';
+import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
-import './leaflet/mapping/WebMapSpec.js';*/
+import './leaflet/mapping/WebMapSpec.js';
 
 /*leaflet -- overlay*/
-/*import './leaflet/overlay/DataFlowlayerSpec.js';
-import './leaflet/overlay/EchartsLayerSpec.js';*/
+import './leaflet/overlay/DataFlowlayerSpec.js';
+import './leaflet/overlay/EchartsLayerSpec.js';
 /*deck相关测试未通过，待解决后打开注释*/
 //import './leaflet/overlay/GraphicLayerSpec.js';
 //import './leaflet/overlay/graphic/CloverStyleSpec';
-/*import './leaflet/overlay/GraphThemeLayerSpec.js';
+import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';
 import './leaflet/overlay/LabelThemeLayerSpec.js';
 import './leaflet/overlay/mapVLayerSpec.js';
@@ -26,10 +26,10 @@ import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
 import './leaflet/overlay/TileVectorLayerSpec.js';
 import './leaflet/overlay/UniqueThemeLayerSpec.js';
 import './leaflet/overlay/vectortile/PointSymbolizerSpec.js';
-import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';*/
+import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';
 
 /**leaflet -- services**/
-/*import './leaflet/services/AddressMatchServiceSpec.js';
+import './leaflet/services/AddressMatchServiceSpec.js';
 import './leaflet/services/BufferAnalysisSpec.js';
 import './leaflet/services/DensityAnalysisSpec.js';
 import './leaflet/services/EditFeaturesLineSpec.js';
@@ -63,8 +63,4 @@ import './leaflet/services/SurfaceAnalysisSpec.js';
 import './leaflet/services/TerrainCurvatureCalculateSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
-import './leaflet/services/TrafficTransferAnalystServiceSpec.js'; */
-//import './leaflet/services/OverlayAnalysisSpec.js';
-// import './leaflet/services/InterpolationAnalysisSpec.js';
-// import './leaflet/services/GridCellInfosServiceSpec.js';
-//import './leaflet/services/BufferAnalysisSpec.js';
+import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
