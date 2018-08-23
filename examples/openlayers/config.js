@@ -485,6 +485,7 @@ var exampleConfig = {
             "heat": {
                 name: "热力图",
                 name_en: "heat map",
+                version: "9.1.0",
                 content: [{
                     name: "随机点",
                     name_en: "random points",
@@ -525,6 +526,7 @@ var exampleConfig = {
             "graphiclayer": {
                 name: "高效率点图层",
                 name_en: "high efficiency point layer",
+                version: "9.1.0",
                 content: [{
                     name: "纽约出租车18万点-canvas渲染",
                     name_en: "canvas rendering",
@@ -753,6 +755,7 @@ var exampleConfig = {
             "vectorTileLayer": {
                 name: "矢量瓦片",
                 name_en: "vector tile layer",
+                version: "9.1.0",
                 content: [
                     {
                         name: "默认风格",

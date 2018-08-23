@@ -414,6 +414,7 @@ var exampleConfig = {
             "dataFlow": {
                 name: "数据流",
                 name_en: "data flow service",
+                version: "9.1.0",
                 content: [{
                     name: "数据流",
                     name_en: "data flow",
@@ -548,6 +549,7 @@ var exampleConfig = {
             "heat": {
                 name: "热力图",
                 name_en: "heat map",
+                version: "9.1.0",
                 content: [{
                     name: "随机点",
                     name_en: "random points",
@@ -915,6 +917,7 @@ var exampleConfig = {
     "dynamicPlot": {
         name: "动态标绘",
         name_en: "dynamicPlot",
+        version: "9.1.0",
         content: {
             "plot": {
                 name: "标绘",
@@ -1135,6 +1138,7 @@ var exampleConfig = {
             "widgets": {
                 name: "微件",
                 name_en: "widgets",
+                version: "9.1.0",
                 content: [{
                     name: "打开文件",
                     name_en: "open file widget",
@@ -1145,6 +1149,7 @@ var exampleConfig = {
             "widgetsAdvanced": {
                 name: "微件(扩展)",
                 name_en: "widgets(Advanced)",
+                version: "9.1.0",
                 content: [{
                     name: "打开文件(React)",
                     name_en: "open file widget(React)",
