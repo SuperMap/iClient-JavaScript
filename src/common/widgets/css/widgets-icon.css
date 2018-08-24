@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'supermapol-icons';
-  src:  url('fonts/widgets-icon.eot?fqa4sk');
-  src:  url('fonts/widgets-icon.eot?fqa4sk#iefix') format('embedded-opentype'),
-    url('fonts/widgets-icon.ttf?fqa4sk') format('truetype'),
-    url('fonts/widgets-icon.woff?fqa4sk') format('woff'),
-    url('fonts/widgets-icon.svg?fqa4sk#widgets-icon') format('svg');
+  src:  url('fonts/widgets-icons.eot?fqa4sk');
+  src:  url('fonts/widgets-icons.eot?fqa4sk#iefix') format('embedded-opentype'),
+    url('fonts/widgets-icons.ttf?fqa4sk') format('truetype'),
+    url('fonts/widgets-icons.woff?fqa4sk') format('woff'),
+    url('fonts/widgets-icons.svg?fqa4sk#widgets-icon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -32,8 +32,29 @@
 .supermapol-icons-search:before {
   content: "\e630";
 }
-.supermapol-icons-solid-triangle:before {
+.supermapol-icons-solid-up-triangle:before {
   content: "\e63a";
+}
+.supermapol-icons-solid-down-triangle:before {
+  content: "\e63b";
+}
+.supermapol-icons-first:before {
+  content: "\e6a4";
+}
+.supermapol-icons-next:before {
+  content: "\e6a5";
+}
+.supermapol-icons-last:before {
+  content: "\e6a6";
+}
+.supermapol-icons-prev:before {
+  content: "\e6a7";
+}
+.supermapol-icons-poi-load:before {
+  content: "\e6a8";
+}
+.supermapol-icons-poi-save:before {
+  content: "\e6a9";
 }
 .supermapol-icons-upload:before {
   content: "\e6ac";
@@ -41,15 +62,12 @@
 .supermapol-icons-close:before {
   content: "\e6ae";
 }
-.supermapol-icons-icon:before {
+.supermapol-icons-message-success:before {
   content: "\e991";
 }
-.supermapol-icons-icon1:before {
-  content: "\e992";
-}
-.supermapol-icons-icon2:before {
+.supermapol-icons-message-failure:before {
   content: "\e993";
 }
-.supermapol-icons-icon3:before {
+.supermapol-icons-message-warning:before {
   content: "\e994";
 }
