@@ -1,5 +1,6 @@
 import {gridCellInfosService} from '../../../src/leaflet/services/GridCellInfosService';
 import {GetGridCellInfosParameters} from '../../../src/common/iServer/GetGridCellInfosParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 describe('leaflet_GridCellInfosService', () => {
@@ -17,12 +18,26 @@ describe('leaflet_GridCellInfosService', () => {
         expect(gridCellInfoService.url).toEqual(url);
     });
 
+    
+
     it('getGridCellInfos', () => {
         var params = new GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: 4,
             Y: 20
+        });
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(options).not.toBeNull();
+            if (testUrl.indexOf("WorldEarth.json") > 0) {
+                return Promise.resolve(new Response(getDatasetInfoEcapedJson));
+            } else {
+                if (testUrl.indexOf("imageValue.json") > 0) {
+                    return Promise.resolve(new Response(getGridCellInfosEcapedJson));
+                }
+            };
+            return null;
         });
         gridCellInfosService(url).getGridCellInfos(params, (serviceResult) => {
             expect(serviceResult).not.toBeNull();
@@ -39,6 +54,7 @@ describe('leaflet_GridCellInfosService', () => {
             expect(serviceResult.object.dataSourceName).toBe("World");
             expect(serviceResult.object.datasetName).toBe("WorldEarth");
             expect(serviceResult.object.datasetType).toBe("IMAGE");
+            expect(FetchRequest.commit.calls.count()).toEqual(2);
             params.destroy();
         });
     });

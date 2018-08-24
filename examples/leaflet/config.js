@@ -414,6 +414,7 @@ var exampleConfig = {
             "dataFlow": {
                 name: "数据流",
                 name_en: "data flow service",
+                version: "9.1.0",
                 content: [{
                     name: "数据流",
                     name_en: "data flow",
@@ -548,6 +549,7 @@ var exampleConfig = {
             "heat": {
                 name: "热力图",
                 name_en: "heat map",
+                version: "9.1.0",
                 content: [{
                     name: "随机点",
                     name_en: "random points",
@@ -915,6 +917,7 @@ var exampleConfig = {
     "dynamicPlot": {
         name: "动态标绘",
         name_en: "dynamicPlot",
+        version: "9.1.0",
         content: {
             "plot": {
                 name: "标绘",
@@ -1131,30 +1134,42 @@ var exampleConfig = {
                     thumbnail: "l_controler_overviewMap.png",
                     fileName: "controler_overviewMap"
                 }]
-            },
-            "widgets": {
-                name: "微件",
-                name_en: "widgets",
+            }
+        }
+    },
+    "widgets": {
+        name: "微件",
+        name_en: "widgets",
+        version: "9.1.0",
+        content: {
+            "widgetsSuperMap": {
+                name: "基础",
+                name_en: "Basic",
                 content: [{
                     name: "打开文件",
                     name_en: "open file widget",
                     thumbnail: "openFileWidget.png",
-                    fileName: "openFileWidget"
+                    fileName: "widgets_openFileWidget"
+                }, {
+                    name: "数据流服务",
+                    name_en: "data flow service",
+                    thumbnail: "widgets_dataFlow.png",
+                    fileName: "widgets_dataFlow"
                 }]
             },
             "widgetsAdvanced": {
-                name: "微件(扩展)",
-                name_en: "widgets(Advanced)",
+                name: "扩展",
+                name_en: "Advanced",
                 content: [{
                     name: "打开文件(React)",
                     name_en: "open file widget(React)",
                     thumbnail: "openFileWidget_react.png",
-                    fileName: "openFileWidget_react"
+                    fileName: "widgets_openFileWidget_react"
                 }, {
                     name: "打开文件(Vue)",
                     name_en: "open file widget(Vue)",
                     thumbnail: "openFileWidget_vue.png",
-                    fileName: "openFileWidget_vue"
+                    fileName: "widgets_openFileWidget_vue"
                 }]
             }
         }
@@ -1245,6 +1260,7 @@ var sideBarIconConfig = {
     "plot": "fa-edit",
     "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
+    "widgets": "fa-window-restore",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",
@@ -1265,6 +1281,7 @@ var exampleIconConfig = {
     "plot": "fa-edit",
     "dynamicPlot": "fa-pencil",
     "control": "fa-sliders",
+    "widgets": "fa-window-restore",
     "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",

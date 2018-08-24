@@ -326,14 +326,22 @@ import {
     OpenFileView,
     openFileView,
     OpenFileViewModel,
-    openFileViewModel
+    openFileViewModel,
+  /*  POISearchView,
+    poiSearchView,*/
+    DataFlowView,
+    dataFlowView
 } from './widgets';
 
 export {
     OpenFileView,
     openFileView,
     OpenFileViewModel,
-    openFileViewModel
+    openFileViewModel,
+    /*POISearchView,
+    poiSearchView,*/
+    DataFlowView,
+    dataFlowView
 }
 
 export {

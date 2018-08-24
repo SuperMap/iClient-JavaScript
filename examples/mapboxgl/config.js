@@ -295,6 +295,7 @@ var exampleConfig = {
             "heat": {
                 name: "热力图",
                 name_en: "heat map",
+                version: "9.1.0",
                 content: [{
                     name: "随机点 (Classic)",
                     name_en: "random points (Classic)",
@@ -541,6 +542,7 @@ var exampleConfig = {
             "DeckGL": {
                 name: "DeckGL",
                 name_en: "DeckGL",
+                version: "9.1.0",
                 content: [{
                     name: "路径图（线）",
                     name_en: "path",
@@ -678,6 +680,7 @@ var exampleConfig = {
             "threejs": {
                 name: "threejs",
                 name_en: "threejs",
+                version: "9.1.0",
                 content: [
                     {
                         name: "建筑模型",

@@ -1,0 +1,3 @@
+var interpolationUnvsKrigingEscapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_UnvsKriging_lfTest_7@Interpolation\"}";
+var interpolationDensityEscapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_density_mapboxglTest_6@Interpolation\"}";
+var interpolationIDWsEcapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_IDW_dataset_mapboxglTest_13@Interpolation\"}";

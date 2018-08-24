@@ -36,7 +36,7 @@ export class Logo {
     /**
      * @function mapboxgl.supermap.LogoControl.prototype.onAdd
      * @description 添加一个 logo。
-     * @returns {div} 返回创建的 logo 元素。
+     * @returns {HTMLElement} 返回创建的 logo 元素。
      */
     onAdd(map) {
         this._map = map;

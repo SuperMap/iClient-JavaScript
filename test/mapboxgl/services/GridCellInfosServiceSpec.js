@@ -1,5 +1,6 @@
-import {GridCellInfosService} from '../../../src/mapboxgl/services/GridCellInfosService';
-import {GetGridCellInfosParameters} from '../../../src/common/iServer/GetGridCellInfosParameters';
+import { GridCellInfosService } from '../../../src/mapboxgl/services/GridCellInfosService';
+import { GetGridCellInfosParameters } from '../../../src/common/iServer/GetGridCellInfosParameters';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 
@@ -24,6 +25,19 @@ describe('mapboxgl_GridCellInfosService', () => {
             Y: 20
         });
         var service = new GridCellInfosService(url);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(options).not.toBeNull();
+            if (testUrl.indexOf("WorldEarth.json") > 0) {
+                return Promise.resolve(new Response(getDatasetInfoEcapedJson));
+            } else {
+                if (testUrl.indexOf("imageValue.json") > 0) {
+                    return Promise.resolve(new Response(getGridCellInfosEcapedJson));
+                }
+            };
+            return null;
+        });
+
         service.getGridCellInfos(getGridCellInfosParam, (result) => {
             serviceResult = result
         });
@@ -42,6 +56,7 @@ describe('mapboxgl_GridCellInfosService', () => {
                 expect(serviceResult.result.column).toEqual(1046);
                 expect(serviceResult.result.row).toEqual(398);
                 expect(serviceResult.result.value).toEqual(12295026);
+                expect(FetchRequest.commit.calls.count()).toEqual(2);
                 done();
             } catch (e) {
                 console.log("'getGridCellInfos'案例失败" + e.name + ":" + e.message);

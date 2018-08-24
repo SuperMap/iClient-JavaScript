@@ -45,7 +45,7 @@ export var OpenFileView = L.Control.extend({
         this.label = L.DomUtil.create('label', 'file-selectSpan', this.fileSelect);
         this.label.htmlFor = "input_file";
 
-        L.DomUtil.create('div', 'openFile-icon', this.label);
+        L.DomUtil.create('div', 'supermapol-icons-upload', this.label);
         const fileSpan = L.DomUtil.create('span', 'openFile-span', this.label);
         fileSpan.appendChild(document.createTextNode("选择文件"));
 

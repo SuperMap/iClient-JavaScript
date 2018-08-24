@@ -35,7 +35,11 @@ import {
                                                         radius: 6,
                                                         weight: 0
                                                     };
-                                            }`
+                                            }` 
+ * @param {function|number} [options.deg] - 定义图标的旋转角度。`options.render` 为 `mapv` 时有效。</br>
+                                                `function (feature,latlng) {
+                                                        return feature.properties['rotate'];
+                                                }`
  * @fires L.supermap.dataFlowLayer#subscribesuccessed
  * @fires L.supermap.dataFlowLayer#setfilterparamsuccessed
  * @fires L.supermap.dataFlowLayer#dataupdated

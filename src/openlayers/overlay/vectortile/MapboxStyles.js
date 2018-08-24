@@ -166,32 +166,40 @@ export class MapboxStyles extends ol.Observable {
                     response.json()).then(spritesJson => {
                     this._spriteData = spritesJson;
                     this._spriteImageUrl = this._toSpriteUrl(mbStyle.sprite, this.path, sizeFactor + '.png');
-                    this._initStyleFunction(mbStyle, this._spriteData, this._spriteImageUrl);
+                    let spriteImage = null;
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload =  () =>{
+                        spriteImage = img;
+                        this._initStyleFunction(mbStyle, this._spriteData, spriteImage);
+                    };
+                    img.src = this._spriteImageUrl;
+                    
                 })
         } else {
             this._initStyleFunction(mbStyle, null, null);
         }
     }
-    _initStyleFunction(mbStyle, spriteData, spriteImageUrl) {
-        this._createStyleFunction(mbStyle, spriteData, spriteImageUrl);
+    _initStyleFunction(mbStyle, spriteData, spriteImage) {
+        this._createStyleFunction(mbStyle, spriteData, spriteImage);
         /**
          * @event ol.supermap.MapboxStyles#styleloaded
          * @description 样式加载成功后触发。
          */
         this.dispatchEvent('styleloaded');
     }
-    _createStyleFunction(mbStyle, spriteData, spriteImageUrl) {
+    _createStyleFunction(mbStyle, spriteData, spriteImage) {
         if (this.map) {
             window.olms.applyBackground(this.map, mbStyle);
         }
-        this.featureStyleFuntion = this._getStyleFunction(mbStyle, spriteData, spriteImageUrl)
+        this.featureStyleFuntion = this._getStyleFunction(mbStyle, spriteData, spriteImage)
     }
-    _getStyleFunction(mbStyle, spriteData, spriteImageUrl) {
+    _getStyleFunction(mbStyle, spriteData, spriteImage) {
         var fun = window.olms.stylefunction({
             setStyle: function () {},
             set: function () {},
             changed: function () {}
-        }, mbStyle, this.source, this.resolutions, spriteData, spriteImageUrl);
+        }, mbStyle, this.source, this.resolutions, spriteData, "",spriteImage);
         return (feature, resolution) => {
             const style = fun(feature, resolution);
             if (this.selectedObject && this.selectedObject.selectedId === feature.getId() && this.selectedObject.sourceLayer === feature.get('layer')) {

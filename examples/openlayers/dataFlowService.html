@@ -121,8 +121,8 @@
                     source = new ol.source.DataFlow({
                         ws: urlDataFlow
                     });
-                    source.on('addfeature', function (e) {
-                        var feature = e.feature;
+                    source.on('dataupdated', function (e) {
+                        var feature = e.value.data;
                         content.innerHTML = feature.get('time');
                         overlay.setPosition(feature.getGeometry().getCoordinates());
                     });

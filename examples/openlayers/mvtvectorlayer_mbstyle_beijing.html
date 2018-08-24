@@ -195,7 +195,7 @@
         if (styles[styleID]) {
             options.style = styles[styleID];
             targetStyle = new ol.supermap.MapboxStyles(options);
-            targetStyle.on('styleLoaded', function () {
+            targetStyle.on('styleloaded', function () {
                 styleLoaded(styleID, this);
             });
         } else {

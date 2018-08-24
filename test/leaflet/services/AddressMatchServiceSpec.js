@@ -1,6 +1,8 @@
 import {addressMatchService} from '../../../src/leaflet/services/AddressMatchService';
 import {GeoCodingParameter} from '../../../src/common/iServer/GeoCodingParameter';
 import {GeoDecodingParameter} from '../../../src/common/iServer/GeoDecodingParameter';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
 var options = {
@@ -29,7 +31,15 @@ describe('leaflet_AddressMatchService', () => {
             maxReturn: -1
         });
         var geoCodingService = addressMatchService(addressMatchURL, options);
-        geoCodingService.code(geoCodingParams, (result) => {
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+             expect(testUrl).toBe(addressMatchURL + "/geocoding");
+             expect(params).not.toBeNull();
+             expect(options).not.toBeNull();
+             return Promise.resolve(new Response(codeSuccessEscapedJson));
+         }); 
+        
+         geoCodingService.code(geoCodingParams, (result) => {
             serviceResult = result
         });
         setTimeout(() => {
@@ -69,6 +79,14 @@ describe('leaflet_AddressMatchService', () => {
             geoDecodingRadius: 500
         });
         var GeoDecodingService = addressMatchService(addressMatchURL, options);
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+            expect(params).not.toBeNull();
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(decodeSuccessEscapedJson));
+        });
+
         GeoDecodingService.decode(GeoDecodingParams, (result) => {
             serviceResult = result
         });
@@ -107,6 +125,13 @@ describe('leaflet_AddressMatchService', () => {
             maxReturn: -1
         });
         var geoCodingService = addressMatchService(addressMatchURL, options);
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL + "/geocoding");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(codeFailEscapedJson));
+        }); 
+
         geoCodingService.code(geoCodingParams, (result) => {
             serviceResult = result
         });
@@ -141,6 +166,13 @@ describe('leaflet_AddressMatchService', () => {
             geoDecodingRadius: 500
         });
         var geoDecodingService = addressMatchService(addressMatchURL, options);
+
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(decodeFailEscapedJson));
+        });
+
         geoDecodingService.decode(GeoDecodingParams, (result) => {
             serviceResult = result
         });

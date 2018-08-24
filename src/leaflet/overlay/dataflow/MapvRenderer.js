@@ -71,7 +71,10 @@ export var MapvRenderer = MapVLayer.extend({
                 if (this.options.deg) {
                     item.deg = this.options.deg
                     if (typeof item.deg === 'function') {
-                        item.deg = item.deg(msg.featureResult, L.latLng(geometry.coordinates[1], geometry.coordinates[0]));
+                        if(this.idCache[geoID]&&this.data[this.idCache[geoID]]){
+                            item.deg = item.deg(msg.featureResult, L.latLng(geometry.coordinates[1], geometry.coordinates[0]),this.data[this.idCache[geoID]]);
+                        }
+                       
                     }
                 }
             }

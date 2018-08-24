@@ -27,13 +27,13 @@
     cursor: pointer;
 }
 
-.file-selectSpan .openFile-icon {
+.file-selectSpan .supermapol-icons-upload {
     position: absolute;
     top: 8px;
     left: 10px;
     height: 14px;
     width: 18px;
-    background: url("../../../../dist/images/widgets/upload_icon.png") no-repeat;
+    color: #1591EA;
     margin: auto auto;
     padding-right: 5px;
 }

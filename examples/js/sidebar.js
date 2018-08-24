@@ -81,13 +81,12 @@ function createSideBarMenuItem(id, config, containAll) {
         return;
     }
     var title = utils.getLocalPairs(config, "name");
-
     var li = $("<li id='iclient_" + id + "' class='treeview ' title='" + title + "'></li>");
     if (config.content) {
-        createSideBarMenuTitle(id, title, true).appendTo(li);
+        createSideBarMenuTitle(id, title, true,config.version).appendTo(li);
         createSideBarSecondMenu(config.content, id).appendTo(li);
     } else {
-        createSideBarMenuTitle(id, title, false).appendTo(li);
+        createSideBarMenuTitle(id, title, false,config.version).appendTo(li);
     }
     return li;
 }
@@ -98,15 +97,15 @@ function createSideBarSecondMenu(config, name) {
     for (var key in config) {
         var configItem = config[key];
         var title = utils.getLocalPairs(configItem, "name") || "【empty title】";
-
         var li = $("<li class='menuTitle ' id='" + key + "' title='" + title + "'></li>");
         li.appendTo(ul);
+        var version = configItem.version;
 
         if (containExample && configItem.content) {
-            createSideBarMenuSecondTitle(name + '-' + key, title, true).appendTo(li);
+            createSideBarMenuSecondTitle(name + '-' + key, title, true,version).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
         } else {
-            createSideBarMenuSecondTitle(name + '-' + key, title, false).appendTo(li);
+            createSideBarMenuSecondTitle(name + '-' + key, title, false,version).appendTo(li);
         }
     }
     return ul;
@@ -134,7 +133,7 @@ function createSideBarThirdMenu(examples) {
 }
 
 
-function createSideBarMenuTitle(id, title, collapse) {
+function createSideBarMenuTitle(id, title, collapse,version) {
     id = id || "";
     var icon = "", iconName = sideBarIconConfig[id];
     if (iconName) {
@@ -143,7 +142,11 @@ function createSideBarMenuTitle(id, title, collapse) {
 
     var div = $("<a href='#" + id + "'>" + icon + "</a>");
     var titleBar = $("<span class='sidebar-title-bar'></span>");
-    var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + "</span>");
+    var newIcon="";
+    if(window.version === version){
+        newIcon="<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+    }
+    var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + newIcon +"</span>");
     titleBar.append(firstMenuTitle);
     if (collapse) {
         titleBar.append(createCollapsedIcon());
@@ -153,16 +156,19 @@ function createSideBarMenuTitle(id, title, collapse) {
 }
 
 
-function createSideBarMenuSecondTitle(id, title, collapse) {
+function createSideBarMenuSecondTitle(id, title, collapse , version) {
     id = id || "";
     var icon = "", iconName = sideBarIconConfig[id];
     if (iconName) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
-
+    var newIcon="";
+    if(window.version === version){
+        newIcon="<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#C70022'></circle>/svg>";
+    }
     var div = $(
         "<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon +
-        "<span class='secondMenuTitle'>" + title + "</span>" +
+        "<span class='secondMenuTitle'>" + title + "</span>" + newIcon +
         "</a>");
 
     if (collapse) {

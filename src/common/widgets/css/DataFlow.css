@@ -1,0 +1,111 @@
+.widget-content-container {
+    /*min-width: 314px;*/
+    padding: 10px 18px;
+    color: #595959;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.init-center {
+    text-align: center;
+}
+
+.dataflow-container div {
+    float: left;
+    min-width: 300px;
+}
+
+/*输入框*/
+.widget-input-default {
+    position: relative;
+    border: #D9D9D9 solid 0.2px;
+    background-color: #ffffff;
+}
+
+.widget-input-default:hover {
+    border: #108FE9 solid 0.2px;
+}
+
+.widget-content-container input[type='text'] {
+    margin: 2px;
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #919191;
+    height: 18px;
+    min-width: 292px;
+    line-height: 18px;
+    padding-left: 8px;
+    padding-right: 25px;
+    border: none !important;
+    outline: none !important;
+}
+
+/*微件输入框清除按钮*/
+.supermapol-icons-close:before {
+    content: "\e6ae";
+}
+
+.widget-content-container input[type='text'] ~ span.supermapol-icons-close {
+    position: absolute;
+    right: 5px;
+    cursor: pointer;
+    color: #E9E9E9;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    top: 9px;
+    text-align: center;
+    z-index: 10;
+}
+
+/*微件按钮默认样式*/
+.widget-button-default {
+    position: relative;
+    margin: 0 5px;
+    padding: 0 10px;
+    height: 36px;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: .75px;
+    line-height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #108EE9;
+    outline: none;
+    border: none;
+}
+
+.widget-button-default:hover {
+    background-color: #38ADF5;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+/*复选框 todo 统一采用空间分析复选框样式*/
+.widget-checkbox-container {
+    margin: 10px auto;
+}
+
+.widget-checkbox-default {
+    position: absolute;
+    margin-top: 1px;
+    height: 14px;
+    width: 14px;
+}
+
+.widget-checkbox-default:hover {
+    cursor: pointer;
+}
+
+.label {
+    margin-left: 20px;
+    line-height: 16px;
+    font-size: 12px;
+    color: #919191;
+}
+
+.label-selected {
+    color: #595959 !important;
+}

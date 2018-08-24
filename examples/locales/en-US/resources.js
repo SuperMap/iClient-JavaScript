@@ -477,6 +477,7 @@ window.examplesResources = {
         "title_openFile": "OpenFile",
         "title_openFile_react": "OpenFile(React)",
         "title_openFile_vue": "OpenFile(Vue)",
+        "title_dataFlow": "Data Flow",
 
 
         "text_code": "Forward Match",
