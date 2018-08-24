@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'supermapol-icons';
+  src:  url('fonts/widgets-icon.eot?fqa4sk');
+  src:  url('fonts/widgets-icon.eot?fqa4sk#iefix') format('embedded-opentype'),
+    url('fonts/widgets-icon.ttf?fqa4sk') format('truetype'),
+    url('fonts/widgets-icon.woff?fqa4sk') format('woff'),
+    url('fonts/widgets-icon.svg?fqa4sk#widgets-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.supermapol-icons {
+  font-family:"supermapol-icons" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.supermapol-icons-line-layer:before {
+  content: "\e62a";
+}
+.supermapol-icons-marker-layer:before {
+  content: "\e62c";
+}
+.supermapol-icons-point-layer:before {
+  content: "\e62d";
+}
+.supermapol-icons-polygon-layer:before {
+  content: "\e62e";
+}
+.supermapol-icons-search:before {
+  content: "\e630";
+}
+.supermapol-icons-solid-triangle:before {
+  content: "\e63a";
+}
+.supermapol-icons-upload:before {
+  content: "\e6ac";
+}
+.supermapol-icons-close:before {
+  content: "\e6ae";
+}
+.supermapol-icons-icon:before {
+  content: "\e991";
+}
+.supermapol-icons-icon1:before {
+  content: "\e992";
+}
+.supermapol-icons-icon2:before {
+  content: "\e993";
+}
+.supermapol-icons-icon3:before {
+  content: "\e994";
+}

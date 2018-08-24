@@ -422,6 +422,7 @@ window.examplesResources = {
         "title_openFile": "打开文件",
         "title_openFile_react": "打开文件(React)",
         "title_openFile_vue": "打开文件(Vue)",
+        "title_dataFlow": "数据流服务",
 
         "text_code": "正向匹配",
         "text_decode": "反向匹配",
