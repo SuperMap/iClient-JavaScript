@@ -99301,7 +99301,7 @@ var DataFlowView = exports.DataFlowView = _leaflet2["default"].Control.extend({
         var dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "widget-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.value = "请输入数据流地址";
+        dataFlowInput.value = "请输入数据流服务地址";
         //---输入框值改变,打开清除按钮
         dataFlowInput.oninput = this.inputOnchange.bind(this);
         this.dataFlowInput = dataFlowInput;
