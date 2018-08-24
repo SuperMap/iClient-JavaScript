@@ -76,8 +76,8 @@ export class GraphicCanvasRenderer extends ol.Object {
 
     _resize() {
         let size = this.map.getSize();
-        let width = size[0] * this.pixelRatio;
-        let height = size[1] * this.pixelRatio;
+        let width = size[0];
+        let height = size[1];
         let xRatio = width / this.width;
         let yRatio = height / this.height;
         this.width = width;
@@ -85,8 +85,8 @@ export class GraphicCanvasRenderer extends ol.Object {
         this.mapWidth = this.mapWidth * xRatio;
         this.mapHeight = this.mapHeight * yRatio;
 
-        this.canvas.width = this.mapWidth * this.pixelRatio;
-        this.canvas.height = this.mapHeight * this.pixelRatio;
+        this.canvas.width = this.mapWidth;
+        this.canvas.height = this.mapHeight;
         this.canvas.style.width = this.width + "px";
         this.canvas.style.height = this.height + "px";
     }
