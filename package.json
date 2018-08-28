@@ -9,6 +9,7 @@
     "exampletest": "examples-test"
   },
   "scripts": {
+    "dev": "node ./build/server.js",
     "lint": "eslint src",
     "release": "npm run release-leaflet && npm run release-openlayers && npm run release-mapboxgl  && npm run release-classic",
     "release-leaflet": "npm run release-leaflet-es5 && npm run release-leaflet-es6",
@@ -73,6 +74,7 @@
     "eslint": "^4.6.1",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-import": "^2.8.0",
+    "express": "^4.16.3",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "get-pixels": "^3.3.0",
@@ -89,9 +91,11 @@
     "karma-jasmine": "^1.1.0",
     "karma-teamcity-reporter": "^1.0.0",
     "nightwatch": "^0.9.5",
+    "open": "0.0.5",
     "pngjs": "^3.3.0",
     "request": "^2.83.0",
     "selenium-server": "^2.53.1",
+    "serve-index": "^1.9.1",
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "uglify-es": "^3.3.9",
@@ -99,6 +103,7 @@
     "watchify": "^3.9.0",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.12",
+    "webpack-dev-middleware": "^3.2.0",
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {

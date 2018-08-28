@@ -73,6 +73,7 @@ window.examplesResources = {
             "analysis": "Analysis",
             "clientSpatialAnalyst": "Client Spatial Analysis",
             "control": "Control",
+            "widgets": "Widgets",
             "OGC": "OGC",
             "mapping": "Third Party Map",
             "others": "Others",
