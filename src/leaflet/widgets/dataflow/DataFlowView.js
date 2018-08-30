@@ -7,13 +7,56 @@ import {DataFlowViewModel} from './DataFlowViewModel';
  * @class L.supermap.widgets.DataFlowView
  * @classdesc dataFlow 微件，用于打开本地数据文件并加载到底图
  * @category  Control Widgets
+ * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
+ * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
+ `function(geoJsonPoint, latlng) {
+                                                return L.marker(latlng);
+                                            }`
+ * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ `function (feature) {
+                                                    return {
+                                                        fillColor: "red",
+                                                        fillOpacity: 1,
+                                                        radius: 6,
+                                                        weight: 0
+                                                    };
+                                            }`
+ * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  */
 export var DataFlowView = L.Control.extend({
     options: {
         //绑定的底图图层
         layer: null,
         //控件位置 继承自leaflet control
-        position: 'topright'
+        position: 'topright',
+        orientation: 'horizontal',
+        pointToLayer: null,
+        style: null,
+        onEachFeature: null
+    },
+
+    initialize(options) {
+        L.Util.setOptions(this, options);
+        this.event = new L.Evented();
+        //是否初始化数据服务样式：
+        let styleOptions = null;
+        if (this.options.pointToLayer || this.options.style || this.options.onEachFeature) {
+            styleOptions = {};
+            if (this.options.pointToLayer) {
+                styleOptions.pointToLayer = this.options.pointToLayer;
+            }
+            if (this.options.style) {
+                styleOptions.style = this.options.style;
+
+            }
+            if (this.options.onEachFeature) {
+                styleOptions.onEachFeature = this.options.onEachFeature;
+
+            }
+        }
+
+        this.styleOptions = styleOptions;
+
     },
     /**
      * @function L.supermap.widgets.DataFlowView.prototype.onAdd
@@ -21,10 +64,7 @@ export var DataFlowView = L.Control.extend({
      */
     onAdd(map) {
         this.map = map;
-        if (this.options.orientation !== 'vertical') {
-            this.options.orientation = 'horizontal';
-        }
-        this.viewModel = new DataFlowViewModel(map);
+        this.viewModel = new DataFlowViewModel(map, this.styleOptions);
         return this._initView();
     },
 
@@ -35,12 +75,11 @@ export var DataFlowView = L.Control.extend({
      * @private
      */
     _initView() {
-        const widgetContainer = (new WidgetContainer("数据流服务")).getElement();
+        const widgetContainerObj = new WidgetContainer("数据流服务", {"top": "32px", "right": "96px"});
+        const widgetContainer = widgetContainerObj.getElement();
 
-        const widgetContent = document.createElement("div");
-        widgetContent.setAttribute("class", "widget-content-container");
-        widgetContainer.appendChild(widgetContent);
-
+        const widgetContent = widgetContainerObj.getContentElement();
+        widgetContent.style.padding = "10px 18px";
         const dataFlowContainer1 = document.createElement("div");
         dataFlowContainer1.setAttribute("class", "dataflow-container");
         //输入框
@@ -49,7 +88,7 @@ export var DataFlowView = L.Control.extend({
         const dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "widget-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.value = "请输入数据流服务地址";
+        dataFlowInput.placeholder = "请输入数据流服务地址:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
         //---输入框值改变,打开清除按钮
         dataFlowInput.oninput = this.inputOnchange.bind(this);
         this.dataFlowInput = dataFlowInput;
@@ -117,12 +156,30 @@ export var DataFlowView = L.Control.extend({
         //增加提示框：
         this.messageBox = new MessageBox();
         this.viewModel.on("dataFlowServiceSubscribed", this._showMessageBox.bind(this));
+
+        /**
+         * @event L.supermap.widgets.DataFlowView#dataupdated
+         * @description 数据流服务成功返回数据后触发
+         * @property {Object} result  - 事件返回的数据对象。
+         */
+        this.viewModel.on("dataupdated", (result) => self.event.fire("dataupdated", result));
+
         return widgetContainer;
     },
+
     _showMessageBox(e) {
         if (e.type === "dataFlowServiceSubscribed") {
             this.messageBox.showView("已订阅该数据流服务。");
         }
+    },
+
+    /**
+     * @function L.supermap.widgets.DataFlowView.prototype.on
+     * @param {string} eventType - 监听的事件类型
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
     },
 
     /**
@@ -175,6 +232,7 @@ export var DataFlowView = L.Control.extend({
     inputOnchange() {
         this.inputClearBtn.hidden = false;
     }
+
 });
 
 export var dataFlowView = function (options) {

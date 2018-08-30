@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -89,7 +74,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -138,6 +123,12 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return XLSX}catch(e){return {}}}();
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -245,253 +236,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
-
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var setTimeoutFunc = setTimeout;
-
-  function noop() {}
-  
-  // Polyfill for Function.prototype.bind
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-
-  function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    this._state = 0;
-    this._handled = false;
-    this._value = undefined;
-    this._deferreds = [];
-
-    doResolve(fn, this);
-  }
-
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-      return;
-    }
-    self._handled = true;
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-        return;
-      }
-      var ret;
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-      resolve(deferred.promise, ret);
-    });
-  }
-
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function() {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
-    }
-
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-    self._deferreds = null;
-  }
-
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-  function doResolve(fn, self) {
-    var done = false;
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    var prom = new (this.constructor)(noop);
-
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-
-  Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
-    return new Promise(function (resolve, reject) {
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-
-      function res(i, val) {
-        try {
-          if (val && (typeof val === 'object' || typeof val === 'function')) {
-            var then = val.then;
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-          args[i] = val;
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  };
-
-  Promise.resolve = function (value) {
-    if (value && typeof value === 'object' && value.constructor === Promise) {
-      return value;
-    }
-
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-
-  Promise.race = function (values) {
-    return new Promise(function (resolve, reject) {
-      for (var i = 0, len = values.length; i < len; i++) {
-        values[i].then(resolve, reject);
-      }
-    });
-  };
-
-  // Use polyfill for setImmediate for performance gains
-  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
-    function (fn) {
-      setTimeoutFunc(fn, 0);
-    };
-
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-
-  /**
-   * Set the immediate function to execute callbacks
-   * @param fn {function} Function to execute
-   * @deprecated
-   */
-  Promise._setImmediateFn = function _setImmediateFn(fn) {
-    Promise._immediateFn = fn;
-  };
-
-  /**
-   * Change the function to execute on unhandled rejection
-   * @param {function} fn Function to execute on unhandled rejection
-   * @deprecated
-   */
-  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
-    Promise._unhandledRejectionFn = fn;
-  };
-  
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Promise;
-  } else if (!root.Promise) {
-    root.Promise = Promise;
-  }
-
-})(this);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8).setImmediate))
-
-/***/ }),
 /* 6 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -1207,893 +952,264 @@ module.exports = toPairs;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
+/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
 
-// DOM APIs, for completeness
+  // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var setTimeoutFunc = setTimeout;
 
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
+  function noop() {}
+  
+  // Polyfill for Function.prototype.bind
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
   }
-};
 
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
+  function Promise(fn) {
+    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    this._state = 0;
+    this._handled = false;
+    this._value = undefined;
+    this._deferreds = [];
 
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
+    doResolve(fn, this);
   }
-};
 
-// setimmediate attaches itself to the global object
-__webpack_require__(9);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
+    }
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+      return;
+    }
+    self._handled = true;
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+        return;
+      }
+      var ret;
+      try {
+        ret = cb(self._value);
+      } catch (e) {
+        reject(deferred.promise, e);
+        return;
+      }
+      resolve(deferred.promise, ret);
+    });
+  }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function() {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+    self._deferreds = null;
+  }
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+  function doResolve(fn, self) {
+    var done = false;
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    var prom = new (this.constructor)(noop);
+
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+
+  Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
+    return new Promise(function (resolve, reject) {
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        try {
+          if (val && (typeof val === 'object' || typeof val === 'function')) {
+            var then = val.then;
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+          args[i] = val;
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+
+  Promise.resolve = function (value) {
+    if (value && typeof value === 'object' && value.constructor === Promise) {
+      return value;
+    }
+
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (values) {
+    return new Promise(function (resolve, reject) {
+      for (var i = 0, len = values.length; i < len; i++) {
+        values[i].then(resolve, reject);
+      }
+    });
+  };
+
+  // Use polyfill for setImmediate for performance gains
+  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
+    function (fn) {
+      setTimeoutFunc(fn, 0);
+    };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+
+  /**
+   * Set the immediate function to execute callbacks
+   * @param fn {function} Function to execute
+   * @deprecated
+   */
+  Promise._setImmediateFn = function _setImmediateFn(fn) {
+    Promise._immediateFn = fn;
+  };
+
+  /**
+   * Change the function to execute on unhandled rejection
+   * @param {function} fn Function to execute on unhandled rejection
+   * @deprecated
+   */
+  Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
+    Promise._unhandledRejectionFn = fn;
+  };
+  
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Promise;
+  } else if (!root.Promise) {
+    root.Promise = Promise;
+  }
+
+})(this);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13).setImmediate))
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(10)))
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-(function(self) {
-  'use strict';
-
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var list = this.map[name]
-    if (!list) {
-      list = []
-      this.map[name] = list
-    }
-    list.push(value)
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    var values = this.map[normalizeName(name)]
-    return values ? values[0] : null
-  }
-
-  Headers.prototype.getAll = function(name) {
-    return this.map[normalizeName(name)] || []
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)]
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-      this.map[name].forEach(function(value) {
-        callback.call(thisArg, value, name, this)
-      }, this)
-    }, this)
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
-  }
-
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
-    var args = [blob]
-
-    if(_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
-    }
-
-    reader.readAsText.apply(reader, args)
-    return fileReaderReady(reader)
-  }
-
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob();
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-
-    this._initBody = function(body, options) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-        this._options = options
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
-        } else {
-          return Promise.resolve(this._bodyText)
-        }
-      }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = input
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body, options)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this)
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
-    })
-    return head
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this._initBody(bodyInit, options)
-    this.type = 'default'
-    this.status = options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-    this.url = options.url || ''
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
-      var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
-        return;
-      }
-
-      var __onLoadHandled = false;
-
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return
-        }
-        var status = (xhr.status === 1223) ? 204 : xhr.status
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-          reject(new TypeError('Network request failed'))
-          return
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        }
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        resolve(new Response(body, options))
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function() {
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
-      try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
-      } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-
-  // Support CommonJS
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/SuperMap.js
+// CONCATENATED MODULE: ./src/common/SuperMap.js
 var SuperMap = window.SuperMap = window.SuperMap || {};
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/REST.js
-﻿
+SuperMap.Widgets = window.SuperMap.Widgets || {};
+
+// CONCATENATED MODULE: ./src/common/REST.js
+
 
 /**
  * @enum DataFormat
@@ -3251,8 +2367,8 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
     GEO_BOUNDING_BOX: "geo_bounding_box"
 }
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Size.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Size.js
+
 
 /**
  * @class  SuperMap.Size
@@ -3345,8 +2461,8 @@ class Size {
 }
 
 SuperMap.Size = Size;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Pixel.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
+
 
 /**
  * @class SuperMap.Pixel
@@ -3526,8 +2642,8 @@ class Pixel_Pixel {
 SuperMap.Pixel = Pixel_Pixel;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/BaseTypes.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
+
 /**
  *@namespace SuperMap
  *@category BaseTypes Namespace
@@ -3996,8 +3112,8 @@ var ArrayExt = SuperMap.Array = {
 
 };
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Util.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Util.js
+
 
 
 var Util_Util = SuperMap.Util = SuperMap.Util || {};
@@ -5072,8 +4188,8 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
     };
 };
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/LonLat.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/LonLat.js
+
 
 /**
  * @class SuperMap.LonLat
@@ -5259,8 +4375,8 @@ class LonLat_LonLat {
 }
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Bounds.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Bounds.js
+
 
 
 
@@ -5993,8 +5109,8 @@ class Bounds_Bounds {
 
 SuperMap.Bounds = Bounds_Bounds;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Geometry.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
+
 // import {WKT} from '../format/WKT';
 // import {Vector} from './Vector';
 
@@ -6168,8 +5284,8 @@ class Geometry_Geometry {
 
 SuperMap.Geometry = Geometry_Geometry;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/Collection.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/Collection.js
+
 
 
 
@@ -6410,8 +5526,8 @@ class Collection_Collection extends Geometry_Geometry {
 }
 
 SuperMap.Geometry.Collection = Collection_Collection;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/MultiPoint.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPoint.js
+
 
 
 /**
@@ -6463,8 +5579,8 @@ class MultiPoint_MultiPoint extends Collection_Collection {
 }
 
 SuperMap.Geometry.MultiPoint = MultiPoint_MultiPoint;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/Curve.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/Curve.js
+
 
 
 /**
@@ -6495,8 +5611,8 @@ class Curve_Curve extends MultiPoint_MultiPoint {
 }
 
 SuperMap.Geometry.Curve = Curve_Curve;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/Point.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/Point.js
+
 
 
 
@@ -6635,8 +5751,8 @@ class Point_Point extends Geometry_Geometry {
 
 SuperMap.Geometry.Point = Point_Point;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/LineString.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/LineString.js
+
 
 
 
@@ -6958,7 +6074,7 @@ class LineString_LineString extends Curve_Curve {
 SuperMap.Geometry.LineString = LineString_LineString;
 
  
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/GeoText.js
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/GeoText.js
 
 
 
@@ -7280,8 +6396,8 @@ class GeoText_GeoText extends Geometry_Geometry {
 }
 
 SuperMap.Geometry.GeoText = GeoText_GeoText;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/LinearRing.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/LinearRing.js
+
 
 
 /**
@@ -7395,8 +6511,8 @@ class LinearRing_LinearRing extends LineString_LineString {
 }
 
 SuperMap.Geometry.LinearRing = LinearRing_LinearRing;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/MultiLineString.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiLineString.js
+
 
 
 
@@ -7433,8 +6549,8 @@ class MultiLineString_MultiLineString extends Collection_Collection {
 }
 
 SuperMap.Geometry.MultiLineString = MultiLineString_MultiLineString;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/MultiPolygon.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPolygon.js
+
 
 
 /**
@@ -7473,8 +6589,8 @@ class MultiPolygon_MultiPolygon extends Collection_Collection {
 }
 
 SuperMap.Geometry.MultiPolygon = MultiPolygon_MultiPolygon;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/Polygon.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/Polygon.js
+
 
 
 
@@ -7529,8 +6645,8 @@ class Polygon_Polygon extends Collection_Collection {
 }
 
 SuperMap.Geometry.Polygon = Polygon_Polygon;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/Rectangle.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/Rectangle.js
+
 
 
 
@@ -7609,7 +6725,7 @@ class Rectangle_Rectangle extends Geometry_Geometry {
 }
 
 SuperMap.Geometry.Rectangle = Rectangle_Rectangle;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/geometry/index.js
+// CONCATENATED MODULE: ./src/common/commontypes/geometry/index.js
 
 
 
@@ -7633,8 +6749,8 @@ SuperMap.Geometry.Rectangle = Rectangle_Rectangle;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Credential.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
+
 
 /**
  * @class SuperMap.Credential
@@ -7727,8 +6843,8 @@ class Credential {
 Credential.CREDENTIAL = null;
 SuperMap.Credential = Credential;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Date.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Date.js
+
 
 /**
  * @name Date
@@ -7822,8 +6938,8 @@ var DateExt = SuperMap.Date = {
     }
 };
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Event.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Event.js
+
 
 
 /**
@@ -8161,8 +7277,8 @@ SuperMap.Event = Event;
 SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Events.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Events.js
+
 
 
 
@@ -8688,8 +7804,8 @@ SuperMap.Events.prototype.BROWSER_EVENTS = [
     "MSGestureStart", "MSGestureChange", "MSGestureEnd",
     "contextmenu"
 ];
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Feature.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Feature.js
+
 
 
 /**
@@ -8745,8 +7861,8 @@ class Feature_Feature {
 }
 
 SuperMap.Feature = Feature_Feature;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/Vector.js
-﻿
+// CONCATENATED MODULE: ./src/common/commontypes/Vector.js
+
 
 
 
@@ -9064,7 +8180,7 @@ SuperMap.Feature.Vector = Vector_Vector;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/commontypes/index.js
+// CONCATENATED MODULE: ./src/common/commontypes/index.js
 
 
 
@@ -9094,7 +8210,7 @@ SuperMap.Feature.Vector = Vector_Vector;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/format/Format.js
+// CONCATENATED MODULE: ./src/common/format/Format.js
 
 
 
@@ -9163,8 +8279,8 @@ class Format_Format {
 
 SuperMap.Format = Format_Format;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/format/JSON.js
-﻿
+// CONCATENATED MODULE: ./src/common/format/JSON.js
+
 
 
 /**
@@ -9456,7 +8572,7 @@ class JSON_JSONFormat extends Format_Format {
 }
 
 SuperMap.Format.JSON = JSON_JSONFormat;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/format/GeoJSON.js
+// CONCATENATED MODULE: ./src/common/format/GeoJSON.js
 
 
 
@@ -10312,7 +9428,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
 }
 
 SuperMap.Format.GeoJSON = GeoJSON_GeoJSON;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/format/WKT.js
+// CONCATENATED MODULE: ./src/common/format/WKT.js
 
 
 
@@ -10663,7 +9779,7 @@ class WKT_WKT extends Format_Format {
 }
 
 SuperMap.Format.WKT = WKT_WKT;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/format/index.js
+// CONCATENATED MODULE: ./src/common/format/index.js
 
 
 
@@ -10673,9 +9789,9 @@ SuperMap.Format.WKT = WKT_WKT;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/control/img/Logo.js
+// CONCATENATED MODULE: ./src/common/control/img/Logo.js
 var LogoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII=";
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/control/TimeControlBase.js
+// CONCATENATED MODULE: ./src/common/control/TimeControlBase.js
 
 
 
@@ -11106,7 +10222,7 @@ class TimeControlBase_TimeControlBase {
 SuperMap.TimeControlBase = TimeControlBase_TimeControlBase;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/control/TimeFlowControl.js
+// CONCATENATED MODULE: ./src/common/control/TimeFlowControl.js
 
 
 
@@ -11311,7 +10427,7 @@ class TimeFlowControl_TimeFlowControl extends TimeControlBase_TimeControlBase {
 SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/control/index.js
+// CONCATENATED MODULE: ./src/common/control/index.js
 
 
 
@@ -11320,22 +10436,22 @@ SuperMap.TimeFlowControl = TimeFlowControl_TimeFlowControl;
 
 
 
-// EXTERNAL MODULE: ./src/mapboxgl/node_modules/promise-polyfill/promise.js
-var promise = __webpack_require__(5);
+// EXTERNAL MODULE: ./node_modules/promise-polyfill/promise.js
+var promise = __webpack_require__(8);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/util/PromisePolyfill.js
+// CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
 
 
 window.Promise = promise_default.a;
-// EXTERNAL MODULE: ./src/mapboxgl/node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(11);
+// EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
+var fetch = __webpack_require__(10);
 
-// EXTERNAL MODULE: ./src/mapboxgl/node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(4);
+// EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
+var fetch_jsonp = __webpack_require__(5);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/util/FetchRequest.js
+// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
 
 
 
@@ -11753,7 +10869,7 @@ SuperMap.Util.RequestJSONPPromise = {
         return me.issue(config);
     }
 };
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/security/SecurityManager.js
+// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
 
 
 
@@ -12101,7 +11217,7 @@ SecurityManager_SecurityManager.ONLINE = "http://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager_SecurityManager;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iManager/iManagerServiceBase.js
+// CONCATENATED MODULE: ./src/common/iManager/iManagerServiceBase.js
 
 
 
@@ -12161,7 +11277,7 @@ class iManagerServiceBase_IManagerServiceBase {
 
 SuperMap.iManagerServiceBase = iManagerServiceBase_IManagerServiceBase;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iManager/iManagerCreateNodeParam.js
+// CONCATENATED MODULE: ./src/common/iManager/iManagerCreateNodeParam.js
 
 
 
@@ -12192,7 +11308,7 @@ class iManagerCreateNodeParam_IManagerCreateNodeParam {
 SuperMap.iManagerCreateNodeParam = iManagerCreateNodeParam_IManagerCreateNodeParam;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iManager/iManager.js
+// CONCATENATED MODULE: ./src/common/iManager/iManager.js
 
 
 
@@ -12281,7 +11397,7 @@ class iManager_IManager extends iManagerServiceBase_IManagerServiceBase {
 SuperMap.iManager = iManager_IManager;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iManager/index.js
+// CONCATENATED MODULE: ./src/common/iManager/index.js
 
 
 
@@ -12290,7 +11406,7 @@ SuperMap.iManager = iManager_IManager;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/iPortalServicesQueryParam.js
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalServicesQueryParam.js
 
 
 
@@ -12329,7 +11445,7 @@ class iPortalServicesQueryParam_IPortalServicesQueryParam {
 SuperMap.iPortalServicesQueryParam = iPortalServicesQueryParam_IPortalServicesQueryParam;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/iPortalMapsQueryParam.js
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalMapsQueryParam.js
 
 
 
@@ -12368,7 +11484,7 @@ class iPortalMapsQueryParam_IPortalMapsQueryParam {
 SuperMap.iPortalMapsQueryParam = iPortalMapsQueryParam_IPortalMapsQueryParam;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/iPortalServiceBase.js
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
 
 
 
@@ -12466,7 +11582,7 @@ class iPortalServiceBase_IPortalServiceBase {
 
 SuperMap.iPortalServiceBase = iPortalServiceBase_IPortalServiceBase;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/iPortalService.js
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalService.js
 
 
 
@@ -12563,7 +11679,7 @@ class iPortalService_IPortalService extends iPortalServiceBase_IPortalServiceBas
 SuperMap.iPortalService = iPortalService_IPortalService;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/iPortalMap.js
+// CONCATENATED MODULE: ./src/common/iPortal/iPortalMap.js
 
 
 
@@ -12663,7 +11779,7 @@ class iPortalMap_IPortalMap extends iPortalServiceBase_IPortalServiceBase {
 SuperMap.iPortalMap = iPortalMap_IPortalMap;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/iPortal.js
+// CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
 
 
 
@@ -12759,7 +11875,7 @@ class iPortal_IPortal extends iPortalServiceBase_IPortalServiceBase {
 SuperMap.iPortal = iPortal_IPortal;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iPortal/index.js
+// CONCATENATED MODULE: ./src/common/iPortal/index.js
 
 
 
@@ -12773,8 +11889,8 @@ SuperMap.iPortal = iPortal_IPortal;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/CommonServiceBase.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
+
 
 
 
@@ -13150,7 +12266,7 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
  * @param {Object} serviceResult.type 事件类型。
  * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
  */
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeoCodingParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
 
 
 
@@ -13235,7 +12351,7 @@ class GeoCodingParameter_GeoCodingParameter {
 }
 
 SuperMap.GeoCodingParameter = GeoCodingParameter_GeoCodingParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeoDecodingParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
 
 
 
@@ -13333,7 +12449,7 @@ class GeoDecodingParameter_GeoDecodingParameter {
 }
 
 SuperMap.GeoDecodingParameter = GeoDecodingParameter_GeoDecodingParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/AddressMatchService.js
+// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
 
 
 
@@ -13428,7 +12544,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase_CommonSe
 }
 
 SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/AggQueryBuilderParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/AggQueryBuilderParameter.js
 
 
 
@@ -13465,7 +12581,7 @@ class AggQueryBuilderParameter_AggQueryBuilderParameter {
 }
 
 SuperMap.AggQueryBuilderParameter = AggQueryBuilderParameter_AggQueryBuilderParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/AggregationParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/AggregationParameter.js
 
 
 
@@ -13519,7 +12635,7 @@ class AggregationParameter_AggregationParameter {
 }
 
 SuperMap.AggregationParameter = AggregationParameter_AggregationParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/AreaSolarRadiationParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationParameters.js
 
 
 
@@ -13689,8 +12805,8 @@ class AreaSolarRadiationParameters_AreaSolarRadiationParameters {
 }
 
 SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters_AreaSolarRadiationParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SpatialAnalystBase.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SpatialAnalystBase.js
+
 
 
 
@@ -13789,7 +12905,7 @@ class SpatialAnalystBase_SpatialAnalystBase extends CommonServiceBase_CommonServ
 
 SuperMap.SpatialAnalystBase = SpatialAnalystBase_SpatialAnalystBase;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/AreaSolarRadiationService.js
+// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationService.js
 
 
 
@@ -13868,8 +12984,8 @@ class AreaSolarRadiationService_AreaSolarRadiationService extends SpatialAnalyst
 SuperMap.AreaSolarRadiationService = AreaSolarRadiationService_AreaSolarRadiationService;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BufferDistance.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/BufferDistance.js
+
 
 
 /**
@@ -13914,8 +13030,8 @@ class BufferDistance_BufferDistance {
 }
 
 SuperMap.BufferDistance = BufferDistance_BufferDistance;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BufferSetting.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/BufferSetting.js
+
 
 
 
@@ -14000,8 +13116,8 @@ class BufferSetting_BufferSetting {
 }
 
 SuperMap.BufferSetting = BufferSetting_BufferSetting;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BufferAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystParameters.js
+
 
 
 
@@ -14043,8 +13159,8 @@ class BufferAnalystParameters_BufferAnalystParameters {
 }
 
 SuperMap.BufferAnalystParameters = BufferAnalystParameters_BufferAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DataReturnOption.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DataReturnOption.js
+
 
 
 
@@ -14110,8 +13226,8 @@ class DataReturnOption_DataReturnOption {
 }
 
 SuperMap.DataReturnOption = DataReturnOption_DataReturnOption;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/JoinItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/JoinItem.js
+
 
 
 /**
@@ -14214,8 +13330,8 @@ class JoinItem_JoinItem {
 }
 
 SuperMap.JoinItem = JoinItem_JoinItem;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DatasourceConnectionInfo.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
+
 
  // eslint-disable-line no-unused-vars
 
@@ -14353,8 +13469,8 @@ class DatasourceConnectionInfo_DatasourceConnectionInfo {
 }
 
 SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectionInfo;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LinkItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/LinkItem.js
+
 
 
 
@@ -14501,8 +13617,8 @@ class LinkItem_LinkItem {
 }
 
 SuperMap.LinkItem = LinkItem_LinkItem;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FilterParameter.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FilterParameter.js
+
 
 
 
@@ -14638,8 +13754,8 @@ class FilterParameter_FilterParameter {
 }
 
 SuperMap.FilterParameter = FilterParameter_FilterParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DatasetBufferAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DatasetBufferAnalystParameters.js
+
 
 
 
@@ -14746,8 +13862,8 @@ class DatasetBufferAnalystParameters_DatasetBufferAnalystParameters extends Buff
 
 
 SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters_DatasetBufferAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ServerColor.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ServerColor.js
+
 
 /**
  * @class SuperMap.ServerColor
@@ -14831,8 +13947,8 @@ class ServerColor {
 SuperMap.ServerColor = ServerColor;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ServerStyle.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
+
 
 
 
@@ -15043,8 +14159,8 @@ class ServerStyle_ServerStyle {
 
 SuperMap.ServerStyle = ServerStyle_ServerStyle;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/PointWithMeasure.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/PointWithMeasure.js
+
 
 
 
@@ -15142,8 +14258,8 @@ class PointWithMeasure_PointWithMeasure extends Point_Point {
 
 SuperMap.PointWithMeasure = PointWithMeasure_PointWithMeasure;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/Route.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/Route.js
+
 
 
 
@@ -15372,8 +14488,8 @@ class Route_Route extends Collection_Collection {
 }
 
 SuperMap.Route = Route_Route;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ServerGeometry.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ServerGeometry.js
+
 
 
 
@@ -15998,8 +15114,8 @@ class ServerGeometry_ServerGeometry {
 }
 
 SuperMap.ServerGeometry = ServerGeometry_ServerGeometry;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeometryBufferAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeometryBufferAnalystParameters.js
+
 
 
 
@@ -16080,8 +15196,8 @@ class GeometryBufferAnalystParameters_GeometryBufferAnalystParameters extends Bu
 }
 
 SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters_GeometryBufferAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BufferAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystService.js
+
 
 
 
@@ -16174,7 +15290,7 @@ class BufferAnalystService_BufferAnalystService extends SpatialAnalystBase_Spati
 }
 
 SuperMap.BufferAnalystService = BufferAnalystService_BufferAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/OutputSetting.js
+// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
 
 
 
@@ -16240,7 +15356,7 @@ class OutputSetting_OutputSetting {
 }
 
 SuperMap.OutputSetting = OutputSetting_OutputSetting;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BuffersAnalystJobsParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 
 
 
@@ -16359,7 +15475,7 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
 }
 
 SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalystJobsParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ProcessingServiceBase.js
+// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
 
 
 
@@ -16498,7 +15614,7 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
 
 SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BuffersAnalystJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 
 
 
@@ -16554,7 +15670,7 @@ class BuffersAnalystJobsService_BuffersAnalystJobsService extends ProcessingServ
 }
 
 SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BurstPipelineAnalystParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystParameters.js
 
 
 
@@ -16620,8 +15736,8 @@ class BurstPipelineAnalystParameters_BurstPipelineAnalystParameters {
 }
 
 SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters_BurstPipelineAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/NetworkAnalystServiceBase.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/NetworkAnalystServiceBase.js
+
 
 
 
@@ -16687,7 +15803,7 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
 }
 
 SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase_NetworkAnalystServiceBase;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/BurstPipelineAnalystService.js
+// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystService.js
 
 
 
@@ -16762,7 +15878,7 @@ class BurstPipelineAnalystService_BurstPipelineAnalystService extends NetworkAna
 }
 
 SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService_BurstPipelineAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ChartFeatureInfoSpecsService.js
+// CONCATENATED MODULE: ./src/common/iServer/ChartFeatureInfoSpecsService.js
 
 
 
@@ -16827,7 +15943,7 @@ class ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService extends CommonSe
 }
 
 SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService_ChartFeatureInfoSpecsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ChartQueryFilterParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/ChartQueryFilterParameter.js
 
 
 
@@ -16915,7 +16031,7 @@ class ChartQueryFilterParameter_ChartQueryFilterParameter {
 }
 
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter_ChartQueryFilterParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ChartQueryParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/ChartQueryParameters.js
 
 
 
@@ -17048,8 +16164,8 @@ class ChartQueryParameters_ChartQueryParameters {
 }
 
 SuperMap.ChartQueryParameters = ChartQueryParameters_ChartQueryParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryParameters.js
+
 
 
 
@@ -17164,7 +16280,7 @@ class QueryParameters_QueryParameters {
 }
 
 SuperMap.QueryParameters = QueryParameters_QueryParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ChartQueryService.js
+// CONCATENATED MODULE: ./src/common/iServer/ChartQueryService.js
 
 
 
@@ -17333,8 +16449,8 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
 }
 
 SuperMap.ChartQueryService = ChartQueryService_ChartQueryService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ClipParameter.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ClipParameter.js
+
 
 
 
@@ -17448,8 +16564,8 @@ class ClipParameter_ClipParameter {
 }
 
 SuperMap.ClipParameter = ClipParameter_ClipParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ColorDictionary.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ColorDictionary.js
+
 
 
 
@@ -17514,8 +16630,8 @@ class ColorDictionary_ColorDictionary {
 SuperMap.ColorDictionary = ColorDictionary_ColorDictionary;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransportationAnalystResultSetting.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystResultSetting.js
+
 
 
 /**
@@ -17613,8 +16729,8 @@ class TransportationAnalystResultSetting_TransportationAnalystResultSetting {
 }
 
 SuperMap.TransportationAnalystResultSetting = TransportationAnalystResultSetting_TransportationAnalystResultSetting;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransportationAnalystParameter.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystParameter.js
+
 
 
 
@@ -17707,8 +16823,8 @@ class TransportationAnalystParameter_TransportationAnalystParameter {
 }
 
 SuperMap.TransportationAnalystParameter = TransportationAnalystParameter_TransportationAnalystParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ComputeWeightMatrixParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixParameters.js
+
 
 
 
@@ -17766,8 +16882,8 @@ class ComputeWeightMatrixParameters_ComputeWeightMatrixParameters {
 }
 
 SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters_ComputeWeightMatrixParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ComputeWeightMatrixService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixService.js
+
 
 
 
@@ -17867,7 +16983,7 @@ class ComputeWeightMatrixService_ComputeWeightMatrixService extends NetworkAnaly
 }
 
 SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService_ComputeWeightMatrixService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DataFlowService.js
+// CONCATENATED MODULE: ./src/common/iServer/DataFlowService.js
 
 
 
@@ -18107,8 +17223,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
 }
 
 SuperMap.DataFlowService = DataFlowService_DataFlowService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DatasetInfo.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DatasetInfo.js
+
 
 
 
@@ -18229,8 +17345,8 @@ class DatasetInfo_DatasetInfo {
 }
 
 SuperMap.DatasetInfo = DatasetInfo_DatasetInfo;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/OverlayAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystParameters.js
+
 
 
 
@@ -18269,8 +17385,8 @@ class OverlayAnalystParameters_OverlayAnalystParameters {
 }
 
 SuperMap.OverlayAnalystParameters = OverlayAnalystParameters_OverlayAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DatasetOverlayAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DatasetOverlayAnalystParameters.js
+
 
 
 
@@ -18426,8 +17542,8 @@ class DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters extends Ov
 }
 
 SuperMap.DatasetOverlayAnalystParameters = DatasetOverlayAnalystParameters_DatasetOverlayAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SurfaceAnalystParametersSetting.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParametersSetting.js
+
 
 
 
@@ -18554,8 +17670,8 @@ class SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting {
 }
 
 SuperMap.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting_SurfaceAnalystParametersSetting;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SurfaceAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParameters.js
+
 
 
 
@@ -18629,8 +17745,8 @@ class SurfaceAnalystParameters_SurfaceAnalystParameters {
 }
 
 SuperMap.SurfaceAnalystParameters = SurfaceAnalystParameters_SurfaceAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DatasetSurfaceAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DatasetSurfaceAnalystParameters.js
+
 
 
 
@@ -18726,8 +17842,8 @@ class DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters extends Su
 }
 
 SuperMap.DatasetSurfaceAnalystParameters = DatasetSurfaceAnalystParameters_DatasetSurfaceAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThiessenAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystParameters.js
+
 
 
 /**
@@ -18801,8 +17917,8 @@ class ThiessenAnalystParameters_ThiessenAnalystParameters {
 }
 
 SuperMap.ThiessenAnalystParameters = ThiessenAnalystParameters_ThiessenAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DatasetThiessenAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/DatasetThiessenAnalystParameters.js
+
 
 
 
@@ -18879,7 +17995,7 @@ class DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters extends 
 
 SuperMap.DatasetThiessenAnalystParameters = DatasetThiessenAnalystParameters_DatasetThiessenAnalystParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DensityKernelAnalystParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/DensityKernelAnalystParameters.js
 
 
 
@@ -18994,7 +18110,7 @@ class DensityKernelAnalystParameters_DensityKernelAnalystParameters {
 
 SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters_DensityKernelAnalystParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/DensityAnalystService.js
+// CONCATENATED MODULE: ./src/common/iServer/DensityAnalystService.js
 
 
 
@@ -19080,8 +18196,8 @@ class DensityAnalystService_DensityAnalystService extends SpatialAnalystBase_Spa
 }
 
 SuperMap.DensityAnalystService = DensityAnalystService_DensityAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/EditFeaturesParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesParameters.js
+
 
 
 
@@ -19199,8 +18315,8 @@ class EditFeaturesParameters_EditFeaturesParameters {
 }
 
 SuperMap.EditFeaturesParameters = EditFeaturesParameters_EditFeaturesParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/EditFeaturesService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesService.js
+
 
 
 
@@ -19318,8 +18434,8 @@ class EditFeaturesService_EditFeaturesService extends CommonServiceBase_CommonSe
 }
 
 SuperMap.EditFeaturesService = EditFeaturesService_EditFeaturesService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalyst3DParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalyst3DParameters.js
+
 
 
 /**
@@ -19383,8 +18499,8 @@ class FacilityAnalyst3DParameters_FacilityAnalyst3DParameters {
 }
 
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters_FacilityAnalyst3DParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystSinks3DParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DParameters.js
+
 
 
 /**
@@ -19422,8 +18538,8 @@ class FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters extends 
 }
 
 SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters_FacilityAnalystSinks3DParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystSinks3DService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DService.js
+
 
 
 
@@ -19496,8 +18612,8 @@ class FacilityAnalystSinks3DService_FacilityAnalystSinks3DService extends Common
 }
 
 SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService_FacilityAnalystSinks3DService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystSources3DParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DParameters.js
+
 
 
 /**
@@ -19535,8 +18651,8 @@ class FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters exte
 }
 
 SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters_FacilityAnalystSources3DParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystSources3DService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DService.js
+
 
 
 
@@ -19603,7 +18719,7 @@ class FacilityAnalystSources3DService_FacilityAnalystSources3DService extends Co
 }
 
 SuperMap.FacilityAnalystSources3DService = FacilityAnalystSources3DService_FacilityAnalystSources3DService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystStreamParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamParameters.js
 
 
 
@@ -19673,7 +18789,7 @@ class FacilityAnalystStreamParameters_FacilityAnalystStreamParameters {
 }
 
 SuperMap.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters_FacilityAnalystStreamParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystStreamService.js
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamService.js
 
 
 
@@ -19758,8 +18874,8 @@ class FacilityAnalystStreamService_FacilityAnalystStreamService extends NetworkA
 }
 
 SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService_FacilityAnalystStreamService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystTracedown3DParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DParameters.js
+
 
 
 /**
@@ -19794,8 +18910,8 @@ class FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters 
 }
 
 SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters_FacilityAnalystTracedown3DParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystTracedown3DService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DService.js
+
 
 
 
@@ -19856,8 +18972,8 @@ class FacilityAnalystTracedown3DService_FacilityAnalystTracedown3DService extend
 }
 
 SuperMap.FacilityAnalystTracedown3DService = FacilityAnalystTracedown3DService_FacilityAnalystTracedown3DService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystTraceup3DParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DParameters.js
+
 
 
 /**
@@ -19891,8 +19007,8 @@ class FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters exte
 }
 
 SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters_FacilityAnalystTraceup3DParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystTraceup3DService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DService.js
+
 
 
 
@@ -19961,8 +19077,8 @@ class FacilityAnalystTraceup3DService_FacilityAnalystTraceup3DService extends Co
 }
 
 SuperMap.FacilityAnalystTraceup3DService = FacilityAnalystTraceup3DService_FacilityAnalystTraceup3DService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystUpstream3DParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DParameters.js
+
 
 
 
@@ -20003,8 +19119,8 @@ class FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters ex
 }
 
 SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters_FacilityAnalystUpstream3DParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FacilityAnalystUpstream3DService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DService.js
+
 
 
 
@@ -20065,7 +19181,7 @@ class FacilityAnalystUpstream3DService_FacilityAnalystUpstream3DService extends 
 
 SuperMap.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService_FacilityAnalystUpstream3DService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FilterAggParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/FilterAggParameter.js
 
 
 
@@ -20108,7 +19224,7 @@ class FilterAggParameter_FilterAggParameter extends AggregationParameter_Aggrega
 }
 
 SuperMap.FilterAggParameter = FilterAggParameter_FilterAggParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FieldParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/FieldParameters.js
 
 
 
@@ -20157,7 +19273,7 @@ class FieldParameters_FieldParameters {
 
 SuperMap.FieldParameters = FieldParameters_FieldParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FieldStatisticsParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticsParameters.js
 
 
 
@@ -20211,8 +19327,8 @@ class FieldStatisticsParameters_FieldStatisticsParameters extends FieldParameter
 
 SuperMap.FieldStatisticsParameters = FieldStatisticsParameters_FieldStatisticsParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FieldStatisticService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticService.js
+
 
 
 
@@ -20317,8 +19433,8 @@ class FieldStatisticService_FieldStatisticService extends CommonServiceBase_Comm
 }
 
 SuperMap.FieldStatisticService = FieldStatisticService_FieldStatisticService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindClosestFacilitiesParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesParameters.js
+
 
 
 
@@ -20415,8 +19531,8 @@ class FindClosestFacilitiesParameters_FindClosestFacilitiesParameters {
 }
 
 SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters_FindClosestFacilitiesParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindClosestFacilitiesService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesService.js
+
 
 
 
@@ -20561,8 +19677,8 @@ class FindClosestFacilitiesService_FindClosestFacilitiesService extends NetworkA
 }
 
 SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService_FindClosestFacilitiesService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindLocationParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindLocationParameters.js
+
 
 
 /**
@@ -20641,8 +19757,8 @@ class FindLocationParameters_FindLocationParameters {
 }
 
 SuperMap.FindLocationParameters = FindLocationParameters_FindLocationParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindLocationService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindLocationService.js
+
 
 
 
@@ -20760,8 +19876,8 @@ class FindLocationService_FindLocationService extends NetworkAnalystServiceBase_
 }
 
 SuperMap.FindLocationService = FindLocationService_FindLocationService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindMTSPPathsParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsParameters.js
+
 
 
 
@@ -20842,8 +19958,8 @@ class FindMTSPPathsParameters_FindMTSPPathsParameters {
 }
 
 SuperMap.FindMTSPPathsParameters = FindMTSPPathsParameters_FindMTSPPathsParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindMTSPPathsService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsService.js
+
 
 
 
@@ -20978,8 +20094,8 @@ class FindMTSPPathsService_FindMTSPPathsService extends NetworkAnalystServiceBas
 }
 
 SuperMap.FindMTSPPathsService = FindMTSPPathsService_FindMTSPPathsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindPathParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindPathParameters.js
+
 
 
 
@@ -21058,8 +20174,8 @@ class FindPathParameters_FindPathParameters {
 }
 
 SuperMap.FindPathParameters = FindPathParameters_FindPathParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindPathService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindPathService.js
+
 
 
 
@@ -21190,8 +20306,8 @@ class FindPathService_FindPathService extends NetworkAnalystServiceBase_NetworkA
 }
 
 SuperMap.FindPathService = FindPathService_FindPathService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindServiceAreasParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasParameters.js
+
 
 
 
@@ -21284,8 +20400,8 @@ class FindServiceAreasParameters_FindServiceAreasParameters {
 }
 
 SuperMap.FindServiceAreasParameters = FindServiceAreasParameters_FindServiceAreasParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindServiceAreasService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasService.js
+
 
 
 
@@ -21419,8 +20535,8 @@ class FindServiceAreasService_FindServiceAreasService extends NetworkAnalystServ
 }
 
 SuperMap.FindServiceAreasService = FindServiceAreasService_FindServiceAreasService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindTSPPathsParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsParameters.js
+
 
 
 
@@ -21493,7 +20609,7 @@ class FindTSPPathsParameters_FindTSPPathsParameters {
 }
 
 SuperMap.FindTSPPathsParameters = FindTSPPathsParameters_FindTSPPathsParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/FindTSPPathsService.js
+// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsService.js
 
 
 
@@ -21626,8 +20742,8 @@ class FindTSPPathsService_FindTSPPathsService extends NetworkAnalystServiceBase_
 }
 
 SuperMap.FindTSPPathsService = FindTSPPathsService_FindTSPPathsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GenerateSpatialDataParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataParameters.js
+
 
 
 
@@ -21761,8 +20877,8 @@ class GenerateSpatialDataParameters_GenerateSpatialDataParameters {
 }
 
 SuperMap.GenerateSpatialDataParameters = GenerateSpatialDataParameters_GenerateSpatialDataParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GenerateSpatialDataService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataService.js
+
 
 
 
@@ -21879,7 +20995,7 @@ class GenerateSpatialDataService_GenerateSpatialDataService extends SpatialAnaly
 }
 
 SuperMap.GenerateSpatialDataService = GenerateSpatialDataService_GenerateSpatialDataService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeoBoundingBoxQueryBuilderParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/GeoBoundingBoxQueryBuilderParameter.js
 
 
 
@@ -21919,7 +21035,7 @@ class GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter ex
 }
 
 SuperMap.GeoBoundingBoxQueryBuilderParameter = GeoBoundingBoxQueryBuilderParameter_GeoBoundingBoxQueryBuilderParameter
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeoHashGridAggParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/GeoHashGridAggParameter.js
 
 
 
@@ -21980,8 +21096,8 @@ class GeoHashGridAggParameter_GeoHashGridAggParameter extends AggregationParamet
 SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter_GeoHashGridAggParameter;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeometryOverlayAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeometryOverlayAnalystParameters.js
+
 
 
 
@@ -22089,8 +21205,8 @@ class GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters extends 
 }
 
 SuperMap.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters_GeometryOverlayAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeometrySurfaceAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeometrySurfaceAnalystParameters.js
+
 
 
 
@@ -22151,8 +21267,8 @@ class GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters extends 
 
 SuperMap.GeometrySurfaceAnalystParameters = GeometrySurfaceAnalystParameters_GeometrySurfaceAnalystParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeometryThiessenAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeometryThiessenAnalystParameters.js
+
 
 
 
@@ -22219,8 +21335,8 @@ class GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters extend
 }
 
 SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters_GeometryThiessenAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeoRelationAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystParameters.js
+
 
 
 
@@ -22331,8 +21447,8 @@ class GeoRelationAnalystParameters_GeoRelationAnalystParameters {
 }
 
 SuperMap.GeoRelationAnalystParameters = GeoRelationAnalystParameters_GeoRelationAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeoRelationAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystService.js
+
 
 
 
@@ -22427,8 +21543,8 @@ class GeoRelationAnalystService_GeoRelationAnalystService extends SpatialAnalyst
 }
 
 SuperMap.GeoRelationAnalystService = GeoRelationAnalystService_GeoRelationAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesParametersBase.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesParametersBase.js
+
 
 
 /**
@@ -22513,7 +21629,7 @@ class GetFeaturesParametersBase_GetFeaturesParametersBase {
 }
 
 SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase_GetFeaturesParametersBase;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsParameters.js
 
 
 
@@ -22645,8 +21761,8 @@ GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters.getFeatureMode = {
 };
 
 SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters_GetFeaturesByBoundsParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesServiceBase.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesServiceBase.js
+
 
 
 
@@ -22804,7 +21920,7 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
 }
 
 SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase_GetFeaturesServiceBase;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByBoundsService.js
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsService.js
 
 
 
@@ -22862,8 +21978,8 @@ class GetFeaturesByBoundsService_GetFeaturesByBoundsService extends GetFeaturesS
 }
 
 SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService_GetFeaturesByBoundsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByBufferParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferParameters.js
+
 
 
 
@@ -22978,8 +22094,8 @@ class GetFeaturesByBufferParameters_GetFeaturesByBufferParameters extends GetFea
 }
 
 SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters_GetFeaturesByBufferParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByBufferService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferService.js
+
 
 
 
@@ -23038,8 +22154,8 @@ class GetFeaturesByBufferService_GetFeaturesByBufferService extends GetFeaturesS
 }
 
 SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService_GetFeaturesByBufferService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryParameters.js
+
 
 
 
@@ -23165,8 +22281,8 @@ class GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters extends Ge
 }
 
 SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters_GetFeaturesByGeometryParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByGeometryService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryService.js
+
 
 
 
@@ -23222,8 +22338,8 @@ class GetFeaturesByGeometryService_GetFeaturesByGeometryService extends GetFeatu
 }
 
 SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService_GetFeaturesByGeometryService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByIDsParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsParameters.js
+
 
 
 
@@ -23312,8 +22428,8 @@ class GetFeaturesByIDsParameters_GetFeaturesByIDsParameters extends GetFeaturesP
 }
 
 SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters_GetFeaturesByIDsParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesByIDsService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsService.js
+
 
 
 
@@ -23370,8 +22486,8 @@ class GetFeaturesByIDsService_GetFeaturesByIDsService extends GetFeaturesService
 }
 
 SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService_GetFeaturesByIDsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesBySQLParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLParameters.js
+
 
 
 
@@ -23448,8 +22564,8 @@ class GetFeaturesBySQLParameters_GetFeaturesBySQLParameters extends GetFeaturesP
 }
 
 SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters_GetFeaturesBySQLParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFeaturesBySQLService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLService.js
+
 
 
 
@@ -23507,8 +22623,8 @@ class GetFeaturesBySQLService_GetFeaturesBySQLService extends GetFeaturesService
 }
 
 SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService_GetFeaturesBySQLService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetFieldsService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetFieldsService.js
+
 
 
 
@@ -23591,7 +22707,7 @@ class GetFieldsService_GetFieldsService extends CommonServiceBase_CommonServiceB
 }
 
 SuperMap.GetFieldsService = GetFieldsService_GetFieldsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetGridCellInfosParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosParameters.js
 
 
 
@@ -23655,7 +22771,7 @@ class GetGridCellInfosParameters_GetGridCellInfosParameters {
 
 SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters_GetGridCellInfosParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetGridCellInfosService.js
+// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosService.js
 
 
 
@@ -23815,8 +22931,8 @@ class GetGridCellInfosService_GetGridCellInfosService extends CommonServiceBase_
 }
 
 SuperMap.GetGridCellInfosService = GetGridCellInfosService_GetGridCellInfosService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeMemoryData.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeMemoryData.js
+
 
 /**
  * @class SuperMap.ThemeMemoryData
@@ -23879,8 +22995,8 @@ class ThemeMemoryData {
 }
 
 SuperMap.ThemeMemoryData = ThemeMemoryData;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/Theme.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/Theme.js
+
 
 
 
@@ -23945,8 +23061,8 @@ class Theme_Theme {
 }
 
 SuperMap.Theme = Theme_Theme;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ServerTextStyle.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ServerTextStyle.js
+
 
 
 
@@ -24148,8 +23264,8 @@ class ServerTextStyle_ServerTextStyle {
 
 SuperMap.ServerTextStyle = ServerTextStyle_ServerTextStyle;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeLabelItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelItem.js
+
 
 
 
@@ -24248,8 +23364,8 @@ class ThemeLabelItem_ThemeLabelItem {
 
 SuperMap.ThemeLabelItem = ThemeLabelItem_ThemeLabelItem;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeUniqueItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeUniqueItem.js
+
 
 
 
@@ -24350,8 +23466,8 @@ class ThemeUniqueItem_ThemeUniqueItem {
 SuperMap.ThemeUniqueItem = ThemeUniqueItem_ThemeUniqueItem;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeFlow.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeFlow.js
+
 
 
 
@@ -24432,8 +23548,8 @@ class ThemeFlow_ThemeFlow {
 
 SuperMap.ThemeFlow = ThemeFlow_ThemeFlow;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeOffset.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeOffset.js
+
 
 
 /**
@@ -24505,8 +23621,8 @@ class ThemeOffset_ThemeOffset {
 
 SuperMap.ThemeOffset = ThemeOffset_ThemeOffset;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LabelMixedTextStyle.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/LabelMixedTextStyle.js
+
 
 
 
@@ -24626,8 +23742,8 @@ class LabelMixedTextStyle_LabelMixedTextStyle {
 SuperMap.LabelMixedTextStyle = LabelMixedTextStyle_LabelMixedTextStyle;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeLabelText.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelText.js
+
 
 
 
@@ -24738,8 +23854,8 @@ class ThemeLabelText_ThemeLabelText {
 
 SuperMap.ThemeLabelText = ThemeLabelText_ThemeLabelText;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeLabelAlongLine.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelAlongLine.js
+
 
 
 
@@ -24840,8 +23956,8 @@ class ThemeLabelAlongLine_ThemeLabelAlongLine {
 
 SuperMap.ThemeLabelAlongLine = ThemeLabelAlongLine_ThemeLabelAlongLine;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeLabelBackground.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelBackground.js
+
 
 
 
@@ -24912,8 +24028,8 @@ class ThemeLabelBackground_ThemeLabelBackground {
 
 SuperMap.ThemeLabelBackground = ThemeLabelBackground_ThemeLabelBackground;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeLabel.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeLabel.js
+
 
 
 
@@ -25234,8 +24350,8 @@ class ThemeLabel_ThemeLabel extends Theme_Theme {
 
 SuperMap.ThemeLabel = ThemeLabel_ThemeLabel;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeUnique.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeUnique.js
+
 
 
 
@@ -25373,8 +24489,8 @@ class ThemeUnique_ThemeUnique extends Theme_Theme {
 
 SuperMap.ThemeUnique = ThemeUnique_ThemeUnique;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraphAxes.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphAxes.js
+
 
 
 
@@ -25472,8 +24588,8 @@ class ThemeGraphAxes_ThemeGraphAxes {
 
 SuperMap.ThemeGraphAxes = ThemeGraphAxes_ThemeGraphAxes;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraphSize.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphSize.js
+
 
 
 /**
@@ -25532,8 +24648,8 @@ class ThemeGraphSize_ThemeGraphSize {
 
 SuperMap.ThemeGraphSize = ThemeGraphSize_ThemeGraphSize;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraphText.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphText.js
+
 
 
 
@@ -25609,8 +24725,8 @@ class ThemeGraphText_ThemeGraphText {
 
 SuperMap.ThemeGraphText = ThemeGraphText_ThemeGraphText;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraphItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphItem.js
+
 
 
 
@@ -25695,8 +24811,8 @@ class ThemeGraphItem_ThemeGraphItem {
 
 SuperMap.ThemeGraphItem = ThemeGraphItem_ThemeGraphItem;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraph.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraph.js
+
 
 
 
@@ -26052,8 +25168,8 @@ class ThemeGraph_ThemeGraph extends Theme_Theme {
 }
 
 SuperMap.ThemeGraph = ThemeGraph_ThemeGraph;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeDotDensity.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeDotDensity.js
+
 
 
 
@@ -26160,8 +25276,8 @@ class ThemeDotDensity_ThemeDotDensity extends Theme_Theme {
 SuperMap.ThemeDotDensity = ThemeDotDensity_ThemeDotDensity;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraduatedSymbolStyle.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbolStyle.js
+
 
 
 
@@ -26253,8 +25369,8 @@ class ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle {
 SuperMap.ThemeGraduatedSymbolStyle = ThemeGraduatedSymbolStyle_ThemeGraduatedSymbolStyle;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGraduatedSymbol.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbol.js
+
 
 
 
@@ -26420,8 +25536,8 @@ class ThemeGraduatedSymbol_ThemeGraduatedSymbol extends Theme_Theme {
 
 SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol_ThemeGraduatedSymbol;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeRangeItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeRangeItem.js
+
 
 
 
@@ -26536,8 +25652,8 @@ class ThemeRangeItem_ThemeRangeItem {
 
 SuperMap.ThemeRangeItem = ThemeRangeItem_ThemeRangeItem;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeRange.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeRange.js
+
 
 
 
@@ -26668,8 +25784,8 @@ class ThemeRange_ThemeRange extends Theme_Theme {
 
 SuperMap.ThemeRange = ThemeRange_ThemeRange;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UGCLayer.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/UGCLayer.js
+
 
 
 
@@ -26788,8 +25904,8 @@ class UGCLayer_UGCLayer {
 }
 
 SuperMap.UGCLayer = UGCLayer_UGCLayer;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/OverlapDisplayedOptions.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/OverlapDisplayedOptions.js
+
 
 
 
@@ -26925,8 +26041,8 @@ class OverlapDisplayedOptions_OverlapDisplayedOptions {
 }
 
 SuperMap.OverlapDisplayedOptions = OverlapDisplayedOptions_OverlapDisplayedOptions;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UGCMapLayer.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/UGCMapLayer.js
+
 
 
 
@@ -27041,8 +26157,8 @@ class UGCMapLayer_UGCMapLayer extends UGCLayer_UGCLayer {
 
 SuperMap.UGCMapLayer = UGCMapLayer_UGCMapLayer;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UGCSubLayer.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/UGCSubLayer.js
+
 
 
 
@@ -27159,8 +26275,8 @@ class UGCSubLayer_UGCSubLayer extends UGCMapLayer_UGCMapLayer {
 
 SuperMap.UGCSubLayer = UGCSubLayer_UGCSubLayer;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ServerTheme.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ServerTheme.js
+
 
 
 
@@ -27274,8 +26390,8 @@ class ServerTheme_ServerTheme extends UGCSubLayer_UGCSubLayer {
 
 SuperMap.ServerTheme = ServerTheme_ServerTheme;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/Grid.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/Grid.js
+
 
 
 
@@ -27471,8 +26587,8 @@ class Grid_Grid extends UGCSubLayer_UGCSubLayer {
 
 SuperMap.Grid = Grid_Grid;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/Image.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/Image.js
+
 
 
 
@@ -27579,8 +26695,8 @@ class Image_UGCImage extends UGCSubLayer_UGCSubLayer {
 
 SuperMap.Image = Image_UGCImage;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/Vector.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/Vector.js
+
 
 
 
@@ -27648,8 +26764,8 @@ class iServer_Vector_Vector extends UGCSubLayer_UGCSubLayer {
 
 SuperMap.Vector = iServer_Vector_Vector;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GetLayersInfoService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GetLayersInfoService.js
+
 
 
 
@@ -27786,8 +26902,8 @@ class GetLayersInfoService_GetLayersInfoService extends CommonServiceBase_Common
 }
 
 SuperMap.GetLayersInfoService = GetLayersInfoService_GetLayersInfoService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/InterpolationAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystParameters.js
+
 
 
 
@@ -27958,8 +27074,8 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
 
 SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters_InterpolationAnalystParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/InterpolationRBFAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/InterpolationRBFAnalystParameters.js
+
 
 
 
@@ -28089,8 +27205,8 @@ class InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters extend
 
 SuperMap.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters_InterpolationRBFAnalystParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/InterpolationDensityAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/InterpolationDensityAnalystParameters.js
+
 
 
 
@@ -28145,8 +27261,8 @@ class InterpolationDensityAnalystParameters_InterpolationDensityAnalystParameter
 }
 
 SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters_InterpolationDensityAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/InterpolationIDWAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/InterpolationIDWAnalystParameters.js
+
 
 
 
@@ -28235,8 +27351,8 @@ class InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters extend
 
 SuperMap.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters_InterpolationIDWAnalystParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/InterpolationKrigingAnalystParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/InterpolationKrigingAnalystParameters.js
+
 
 
 
@@ -28452,8 +27568,8 @@ class InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameter
 }
 
 SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystParameters_InterpolationKrigingAnalystParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/InterpolationAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystService.js
+
 
 
 
@@ -28568,7 +27684,7 @@ class InterpolationAnalystService_InterpolationAnalystService extends SpatialAna
 }
 
 SuperMap.InterpolationAnalystService = InterpolationAnalystService_InterpolationAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/KernelDensityJobParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
 
 
 
@@ -28716,7 +27832,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
 }
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/KernelDensityJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 
 
 
@@ -28775,8 +27891,8 @@ class KernelDensityJobsService_KernelDensityJobsService extends ProcessingServic
 }
 
 SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LabelMatrixCell.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/LabelMatrixCell.js
+
 
 /**
  * @class SuperMap.LabelMatrixCell
@@ -28793,8 +27909,8 @@ class LabelMatrixCell {
 }
 
 SuperMap.LabelMatrixCell = LabelMatrixCell;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LabelImageCell.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
+
 
 
 
@@ -28878,8 +27994,8 @@ class LabelImageCell_LabelImageCell extends LabelMatrixCell {
 }
 
 SuperMap.LabelImageCell = LabelImageCell_LabelImageCell;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LabelSymbolCell.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/LabelSymbolCell.js
+
 
 
 
@@ -28945,8 +28061,8 @@ class LabelSymbolCell_LabelSymbolCell extends LabelMatrixCell {
 }
 
 SuperMap.LabelSymbolCell = LabelSymbolCell_LabelSymbolCell;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LabelThemeCell.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/LabelThemeCell.js
+
 
 
 
@@ -29004,7 +28120,7 @@ class LabelThemeCell_LabelThemeCell extends LabelMatrixCell {
 }
 
 SuperMap.LabelThemeCell = LabelThemeCell_LabelThemeCell;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/LayerStatus.js
+// CONCATENATED MODULE: ./src/common/iServer/LayerStatus.js
 
 
 
@@ -29105,8 +28221,8 @@ class LayerStatus_LayerStatus {
 }
 
 SuperMap.LayerStatus = LayerStatus_LayerStatus;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/MapService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/MapService.js
+
 
 
 
@@ -29213,7 +28329,7 @@ class MapService_MapService extends CommonServiceBase_CommonServiceBase {
 
 SuperMap.MapService = MapService_MapService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/MathExpressionAnalysisParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisParameters.js
 
 
 
@@ -29350,7 +28466,7 @@ class MathExpressionAnalysisParameters_MathExpressionAnalysisParameters {
 }
 
 SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters_MathExpressionAnalysisParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/MathExpressionAnalysisService.js
+// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisService.js
 
 
 
@@ -29424,7 +28540,7 @@ class MathExpressionAnalysisService_MathExpressionAnalysisService extends Spatia
 }
 
 SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService_MathExpressionAnalysisService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/MeasureParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/MeasureParameters.js
 
 
 
@@ -29494,8 +28610,8 @@ class MeasureParameters_MeasureParameters {
 }
 
 SuperMap.MeasureParameters = MeasureParameters_MeasureParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/MeasureService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/MeasureService.js
+
 
 
 
@@ -29609,8 +28725,8 @@ class MeasureService_MeasureService extends CommonServiceBase_CommonServiceBase 
 }
 
 SuperMap.MeasureService = MeasureService_MeasureService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/OverlayAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystService.js
+
 
 
 
@@ -29704,7 +28820,7 @@ class OverlayAnalystService_OverlayAnalystService extends SpatialAnalystBase_Spa
 }
 
 SuperMap.OverlayAnalystService = OverlayAnalystService_OverlayAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/OverlayGeoJobParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
 
 
 
@@ -29809,7 +28925,7 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
 }
 
 SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/OverlayGeoJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
 
 
 
@@ -29870,8 +28986,8 @@ class OverlayGeoJobsService_OverlayGeoJobsService extends ProcessingServiceBase_
 
 }
 SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryByBoundsParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsParameters.js
+
 
 
 
@@ -29935,8 +29051,8 @@ class QueryByBoundsParameters_QueryByBoundsParameters extends QueryParameters_Qu
 }
 
 SuperMap.QueryByBoundsParameters = QueryByBoundsParameters_QueryByBoundsParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryService.js
+
 
 
 
@@ -30094,8 +29210,8 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
 }
 
 SuperMap.QueryService = QueryService_QueryService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryByBoundsService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsService.js
+
 
 
 
@@ -30164,8 +29280,8 @@ class QueryByBoundsService_QueryByBoundsService extends QueryService_QueryServic
 
 SuperMap.QueryByBoundsService = QueryByBoundsService_QueryByBoundsService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryByDistanceParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceParameters.js
+
 
 
 
@@ -30260,8 +29376,8 @@ class QueryByDistanceParameters_QueryByDistanceParameters extends QueryParameter
 }
 
 SuperMap.QueryByDistanceParameters = QueryByDistanceParameters_QueryByDistanceParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryByDistanceService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceService.js
+
 
 
 
@@ -30327,8 +29443,8 @@ class QueryByDistanceService_QueryByDistanceService extends QueryService_QuerySe
 }
 
 SuperMap.QueryByDistanceService = QueryByDistanceService_QueryByDistanceService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryByGeometryParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryParameters.js
+
 
 
 
@@ -30406,8 +29522,8 @@ class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameter
 }
 
 SuperMap.QueryByGeometryParameters = QueryByGeometryParameters_QueryByGeometryParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryByGeometryService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryService.js
+
 
 
 
@@ -30482,8 +29598,8 @@ class QueryByGeometryService_QueryByGeometryService extends QueryService_QuerySe
 
 SuperMap.QueryByGeometryService = QueryByGeometryService_QueryByGeometryService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryBySQLParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLParameters.js
+
 
 
 
@@ -30535,8 +29651,8 @@ class QueryBySQLParameters_QueryBySQLParameters extends QueryParameters_QueryPar
 
 }
 SuperMap.QueryBySQLParameters = QueryBySQLParameters_QueryBySQLParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/QueryBySQLService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLService.js
+
 
 
 
@@ -30614,7 +29730,7 @@ class QueryBySQLService_QueryBySQLService extends QueryService_QueryService {
 
 SuperMap.QueryBySQLService = QueryBySQLService_QueryBySQLService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/RouteCalculateMeasureParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureParameters.js
 
 
 
@@ -30682,7 +29798,7 @@ class RouteCalculateMeasureParameters_RouteCalculateMeasureParameters {
 }
 
 SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters_RouteCalculateMeasureParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/RouteCalculateMeasureService.js
+// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureService.js
 
 
 
@@ -30804,7 +29920,7 @@ class RouteCalculateMeasureService_RouteCalculateMeasureService extends SpatialA
 
 SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService_RouteCalculateMeasureService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/RouteLocatorParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorParameters.js
 
 
 
@@ -30934,7 +30050,7 @@ class RouteLocatorParameters_RouteLocatorParameters {
 }
 
 SuperMap.RouteLocatorParameters = RouteLocatorParameters_RouteLocatorParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/RouteLocatorService.js
+// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorService.js
 
 
 
@@ -31056,8 +30172,8 @@ class RouteLocatorService_RouteLocatorService extends SpatialAnalystBase_Spatial
 
 SuperMap.RouteLocatorService = RouteLocatorService_RouteLocatorService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ServerFeature.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ServerFeature.js
+
 
 
 
@@ -31166,7 +30282,7 @@ class ServerFeature_ServerFeature {
 
 
 SuperMap.ServerFeature = ServerFeature_ServerFeature;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SetLayerInfoParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoParameters.js
 
 
 
@@ -31221,7 +30337,7 @@ class SetLayerInfoParameters_SetLayerInfoParameters {
 
 SuperMap.SetLayerInfoParameters = SetLayerInfoParameters_SetLayerInfoParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SetLayerInfoService.js
+// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoService.js
 
 
 
@@ -31284,7 +30400,7 @@ class SetLayerInfoService_SetLayerInfoService extends CommonServiceBase_CommonSe
 
 SuperMap.SetLayerInfoService = SetLayerInfoService_SetLayerInfoService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SetLayersInfoParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoParameters.js
 
 
 
@@ -31341,8 +30457,8 @@ class SetLayersInfoParameters_SetLayersInfoParameters {
 
 SuperMap.SetLayersInfoParameters = SetLayersInfoParameters_SetLayersInfoParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SetLayersInfoService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoService.js
+
 
 
 
@@ -31468,8 +30584,8 @@ class SetLayersInfoService_SetLayersInfoService extends CommonServiceBase_Common
 
 SuperMap.SetLayersInfoService = SetLayersInfoService_SetLayersInfoService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SetLayerStatusParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusParameters.js
+
 
 
 
@@ -31547,8 +30663,8 @@ class SetLayerStatusParameters_SetLayerStatusParameters {
 }
 
 SuperMap.SetLayerStatusParameters = SetLayerStatusParameters_SetLayerStatusParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SetLayerStatusService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusService.js
+
 
 
 
@@ -31695,7 +30811,7 @@ class SetLayerStatusService_SetLayerStatusService extends CommonServiceBase_Comm
 
 SuperMap.SetLayerStatusService = SetLayerStatusService_SetLayerStatusService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SingleObjectQueryJobsParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
 
 
 
@@ -31794,7 +30910,7 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
 SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SingleObjectQueryJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
 
 
 
@@ -31852,8 +30968,8 @@ class SingleObjectQueryJobsService_SingleObjectQueryJobsService extends Processi
 }
 
 SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjectQueryJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/StopQueryParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/StopQueryParameters.js
+
 
 
 /**
@@ -31896,8 +31012,8 @@ class StopQueryParameters_StopQueryParameters {
 }
 
 SuperMap.StopQueryParameters = StopQueryParameters_StopQueryParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/StopQueryService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/StopQueryService.js
+
 
 
 
@@ -31970,7 +31086,7 @@ class StopQueryService_StopQueryService extends CommonServiceBase_CommonServiceB
 }
 
 SuperMap.StopQueryService = StopQueryService_StopQueryService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SummaryAttributesJobsParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
 
 
 
@@ -32062,7 +31178,7 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
 
 }
 SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_SummaryAttributesJobsParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SummaryAttributesJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
 
 
 
@@ -32120,7 +31236,7 @@ class SummaryAttributesJobsService_SummaryAttributesJobsService extends Processi
 }
 
 SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttributesJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SummaryMeshJobParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
 
 
 
@@ -32273,7 +31389,7 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
 SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SummaryMeshJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
 
 
 
@@ -32335,7 +31451,7 @@ class SummaryMeshJobsService_SummaryMeshJobsService extends ProcessingServiceBas
 }
 
 SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SummaryRegionJobParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
 
 
 
@@ -32529,7 +31645,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
 
 SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SummaryRegionJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
 
 
 
@@ -32587,8 +31703,8 @@ class SummaryRegionJobsService_SummaryRegionJobsService extends ProcessingServic
 }
 
 SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SupplyCenter.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SupplyCenter.js
+
 
 
 /**
@@ -32673,8 +31789,8 @@ class SupplyCenter_SupplyCenter {
 SuperMap.SupplyCenter = SupplyCenter_SupplyCenter;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/SurfaceAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystService.js
+
 
 
 
@@ -32769,7 +31885,7 @@ class SurfaceAnalystService_SurfaceAnalystService extends SpatialAnalystBase_Spa
 }
 
 SuperMap.SurfaceAnalystService = SurfaceAnalystService_SurfaceAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TerrainCurvatureCalculationParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationParameters.js
 
 
 
@@ -32870,7 +31986,7 @@ class TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameter
 
 SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters_TerrainCurvatureCalculationParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TerrainCurvatureCalculationService.js
+// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationService.js
 
 
 
@@ -32942,8 +32058,8 @@ class TerrainCurvatureCalculationService_TerrainCurvatureCalculationService exte
 
 SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService_TerrainCurvatureCalculationService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGridRangeItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRangeItem.js
+
 
 
 
@@ -33053,8 +32169,8 @@ class ThemeGridRangeItem_ThemeGridRangeItem {
 
 SuperMap.ThemeGridRangeItem = ThemeGridRangeItem_ThemeGridRangeItem;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGridRange.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRange.js
+
 
 
 
@@ -33172,8 +32288,8 @@ class ThemeGridRange_ThemeGridRange extends Theme_Theme {
 SuperMap.ThemeGridRange = ThemeGridRange_ThemeGridRange;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGridUniqueItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUniqueItem.js
+
 
 
 
@@ -33272,8 +32388,8 @@ class ThemeGridUniqueItem_ThemeGridUniqueItem {
 
 SuperMap.ThemeGridUniqueItem = ThemeGridUniqueItem_ThemeGridUniqueItem;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeGridUnique.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUnique.js
+
 
 
 
@@ -33384,8 +32500,8 @@ class ThemeGridUnique_ThemeGridUnique extends Theme_Theme {
 }
 
 SuperMap.ThemeGridUnique = ThemeGridUnique_ThemeGridUnique;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeLabelUniqueItem.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelUniqueItem.js
+
 
 
 
@@ -33486,8 +32602,8 @@ class ThemeLabelUniqueItem_ThemeLabelUniqueItem {
 
 SuperMap.ThemeLabelUniqueItem = ThemeLabelUniqueItem_ThemeLabelUniqueItem;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeParameters.js
+
 
 
 
@@ -33598,8 +32714,8 @@ class ThemeParameters_ThemeParameters {
 }
 
 SuperMap.ThemeParameters = ThemeParameters_ThemeParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThemeService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThemeService.js
+
 
 
 
@@ -33732,8 +32848,8 @@ class ThemeService_ThemeService extends CommonServiceBase_CommonServiceBase {
 }
 
 SuperMap.ThemeService = ThemeService_ThemeService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/ThiessenAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystService.js
+
 
 
 
@@ -33826,8 +32942,8 @@ class ThiessenAnalystService_ThiessenAnalystService extends SpatialAnalystBase_S
 }
 
 SuperMap.ThiessenAnalystService = ThiessenAnalystService_ThiessenAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/GeometryBatchAnalystService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/GeometryBatchAnalystService.js
+
 
 
 
@@ -33963,7 +33079,7 @@ class GeometryBatchAnalystService_GeometryBatchAnalystService extends SpatialAna
 }
 
 SuperMap.GeometryBatchAnalystService = GeometryBatchAnalystService_GeometryBatchAnalystService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TilesetsService.js
+// CONCATENATED MODULE: ./src/common/iServer/TilesetsService.js
 
 
 
@@ -34017,7 +33133,7 @@ class TilesetsService_TilesetsService extends CommonServiceBase_CommonServiceBas
 }
 
 SuperMap.TilesetsService = TilesetsService_TilesetsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TopologyValidatorJobsParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 
 
 
@@ -34115,7 +33231,7 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
 }
 
 SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_TopologyValidatorJobsParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TopologyValidatorJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
 
 
 
@@ -34173,8 +33289,8 @@ class TopologyValidatorJobsService_TopologyValidatorJobsService extends Processi
 }
 
 SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyValidatorJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransferLine.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransferLine.js
+
 
 
 /**
@@ -34290,8 +33406,8 @@ class TransferLine_TransferLine {
 }
 
 SuperMap.TransferLine = TransferLine_TransferLine;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransferPathParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransferPathParameters.js
+
 
 
 
@@ -34351,8 +33467,8 @@ class TransferPathParameters_TransferPathParameters {
 }
 
 SuperMap.TransferPathParameters = TransferPathParameters_TransferPathParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransferPathService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransferPathService.js
+
 
 
 
@@ -34424,8 +33540,8 @@ class TransferPathService_TransferPathService extends CommonServiceBase_CommonSe
 
 SuperMap.TransferPathService = TransferPathService_TransferPathService;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransferSolutionParameters.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionParameters.js
+
 
 
 
@@ -34552,8 +33668,8 @@ class TransferSolutionParameters_TransferSolutionParameters {
 
 SuperMap.TransferSolutionParameters = TransferSolutionParameters_TransferSolutionParameters;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/TransferSolutionService.js
-﻿
+// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionService.js
+
 
 
 
@@ -34647,7 +33763,7 @@ class TransferSolutionService_TransferSolutionService extends CommonServiceBase_
 SuperMap.TransferSolutionService = TransferSolutionService_TransferSolutionService;
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UpdateEdgeWeightParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightParameters.js
 
 
 
@@ -34719,7 +33835,7 @@ class UpdateEdgeWeightParameters_UpdateEdgeWeightParameters {
 }
 
 SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters_UpdateEdgeWeightParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UpdateEdgeWeightService.js
+// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightService.js
 
 
 
@@ -34829,7 +33945,7 @@ class UpdateEdgeWeightService_UpdateEdgeWeightService extends NetworkAnalystServ
 }
 
 SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService_UpdateEdgeWeightService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UpdateTurnNodeWeightParameters.js
+// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightParameters.js
 
 
 
@@ -34898,7 +34014,7 @@ class UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters {
 }
 
 SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters_UpdateTurnNodeWeightParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/UpdateTurnNodeWeightService.js
+// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightService.js
 
 
 
@@ -35007,7 +34123,7 @@ class UpdateTurnNodeWeightService_UpdateTurnNodeWeightService extends NetworkAna
 }
 
 SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService_UpdateTurnNodeWeightService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/VectorClipJobsParameter.js
+// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
 
 
 
@@ -35105,7 +34221,7 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
 
 SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/VectorClipJobsService.js
+// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
 
 
 
@@ -35163,7 +34279,7 @@ class VectorClipJobsService_VectorClipJobsService extends ProcessingServiceBase_
 }
 
 SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/iServer/index.js
+// CONCATENATED MODULE: ./src/common/iServer/index.js
 
 
 
@@ -35604,7 +34720,7 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/online/OnlineResources.js
+// CONCATENATED MODULE: ./src/common/online/OnlineResources.js
 
 
 /**
@@ -35738,7 +34854,7 @@ var FilterField = SuperMap.FilterField = {
     USERNAME: "USERNAME"
 };
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/online/OnlineServiceBase.js
+// CONCATENATED MODULE: ./src/common/online/OnlineServiceBase.js
 
 
 // import {SecurityManager} from '../security/SecurityManager';
@@ -35810,7 +34926,7 @@ class OnlineServiceBase_OnlineServiceBase {
 
 SuperMap.OnlineServiceBase = OnlineServiceBase_OnlineServiceBase;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/online/OnlineData.js
+// CONCATENATED MODULE: ./src/common/online/OnlineData.js
 
 
 
@@ -35916,7 +35032,7 @@ class OnlineData_OnlineData extends OnlineServiceBase_OnlineServiceBase {
 
 SuperMap.OnlineData = OnlineData_OnlineData;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/online/Online.js
+// CONCATENATED MODULE: ./src/common/online/Online.js
 
 
 
@@ -35994,7 +35110,7 @@ class Online_Online {
 }
 
 SuperMap.Online = Online_Online;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/online/OnlineQueryDatasParameter.js
+// CONCATENATED MODULE: ./src/common/online/OnlineQueryDatasParameter.js
 
 
 
@@ -36095,7 +35211,7 @@ class OnlineQueryDatasParameter_OnlineQueryDatasParameter {
 }
 
 SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter_OnlineQueryDatasParameter;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/online/index.js
+// CONCATENATED MODULE: ./src/common/online/index.js
 
 
 
@@ -36108,7 +35224,7 @@ SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter_OnlineQueryDatasP
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/security/KeyServiceParameter.js
+// CONCATENATED MODULE: ./src/common/security/KeyServiceParameter.js
 
 
 
@@ -36152,7 +35268,7 @@ class KeyServiceParameter_KeyServiceParameter {
 
 SuperMap.KeyServiceParameter = KeyServiceParameter_KeyServiceParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/security/ServerInfo.js
+// CONCATENATED MODULE: ./src/common/security/ServerInfo.js
 
 
 
@@ -36225,7 +35341,7 @@ class ServerInfo_ServerInfo {
 
 SuperMap.ServerInfo = ServerInfo_ServerInfo;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/security/TokenServiceParameter.js
+// CONCATENATED MODULE: ./src/common/security/TokenServiceParameter.js
 
 
 
@@ -36307,7 +35423,7 @@ class TokenServiceParameter_TokenServiceParameter {
 
 SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/security/index.js
+// CONCATENATED MODULE: ./src/common/security/index.js
 
 
 
@@ -36318,10 +35434,10 @@ SuperMap.TokenServiceParameter = TokenServiceParameter_TokenServiceParameter;
 
 
 // EXTERNAL MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(6);
+var external_function_try_return_elasticsearch_catch_e_return_ = __webpack_require__(7);
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_);
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/thirdparty/elasticsearch/ElasticSearch.js
+// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 
 
 
@@ -36945,24 +36061,24 @@ class ElasticSearch_ElasticSearch {
 
 SuperMap.ElasticSearch = ElasticSearch_ElasticSearch;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/thirdparty/elasticsearch/index.js
+// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/index.js
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/thirdparty/index.js
+// CONCATENATED MODULE: ./src/common/thirdparty/index.js
 
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/util/index.js
+// CONCATENATED MODULE: ./src/common/util/index.js
 
 
 
-// EXTERNAL MODULE: ./src/mapboxgl/node_modules/lodash.topairs/index.js
-var lodash_topairs = __webpack_require__(7);
+// EXTERNAL MODULE: ./node_modules/lodash.topairs/index.js
+var lodash_topairs = __webpack_require__(6);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/style/CartoCSS.js
+// CONCATENATED MODULE: ./src/common/style/CartoCSS.js
 
 
 
@@ -41630,7 +40746,7 @@ SuperMap.CartoCSS.Tree.Zoom.ranges = {
     23: 100
 };
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/style/ThemeStyle.js
+// CONCATENATED MODULE: ./src/common/style/ThemeStyle.js
 
 
 
@@ -41823,14 +40939,14 @@ class ThemeStyle_ThemeStyle {
 
 SuperMap.ThemeStyle = ThemeStyle_ThemeStyle;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/style/index.js
+// CONCATENATED MODULE: ./src/common/style/index.js
 
 
 
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/ShapeParameters.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeParameters.js
 
 /**
  * @class  SuperMap.Feature.ShapeParameters
@@ -41933,7 +41049,7 @@ class ShapeParameters {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters = ShapeParameters;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Point.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
 
 
 
@@ -42012,7 +41128,7 @@ class feature_Point_Point extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Point = feature_Point_Point;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Line.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Line.js
 
 
 
@@ -42078,7 +41194,7 @@ class Line_Line extends ShapeParameters {
 */
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Line = Line_Line;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Polygon.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Polygon.js
 
 
 
@@ -42155,7 +41271,7 @@ class feature_Polygon_Polygon extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Polygon = feature_Polygon_Polygon;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Rectangle.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Rectangle.js
 
 
 
@@ -42243,7 +41359,7 @@ class feature_Rectangle_Rectangle extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Rectangle = feature_Rectangle_Rectangle;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Sector.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Sector.js
 
 
 
@@ -42351,7 +41467,7 @@ class Sector_Sector extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Sector = Sector_Sector;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Label.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Label.js
 
 
 
@@ -42438,7 +41554,7 @@ class Label_Label extends ShapeParameters {
 
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Label = Label_Label;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Image.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Image.js
 
 
 
@@ -42545,7 +41661,7 @@ class Image_Image extends ShapeParameters {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Image = Image_Image;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Circle.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Circle.js
 
 
 
@@ -42607,7 +41723,7 @@ class Circle_Circle extends ShapeParameters {
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Circle = Circle_Circle;
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Eventful.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Eventful.js
 /**
  * @class  SuperMap.LevelRenderer.Eventful
  * @category Visualization Theme
@@ -42851,7 +41967,7 @@ class Eventful {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Util.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Util.js
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Util
@@ -43141,7 +42257,7 @@ class levelRenderer_Util_Util {
         clazz.constructor = clazz;
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Vector.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Vector.js
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Vector
@@ -43502,7 +42618,7 @@ class levelRenderer_Vector_Vector {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Curve.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Curve.js
 
 
 /**
@@ -44046,7 +43162,7 @@ class levelRenderer_Curve_Curve {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Area.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Area.js
 
 
 
@@ -45126,7 +44242,7 @@ class Area_Area {
         return height;
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Color.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Color.js
 
 
 /**
@@ -46232,7 +45348,7 @@ class Color_Color {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/ComputeBoundingBox.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/ComputeBoundingBox.js
 
 
 
@@ -46435,7 +45551,7 @@ class ComputeBoundingBox_ComputeBoundingBox {
         }
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Env.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Env.js
 /**
  * @class  SuperMap.LevelRenderer.Tool.Env
  * @category Visualization Theme
@@ -46560,7 +45676,7 @@ class Env {
         return true;
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Event.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Event.js
 /**
  * @class  SuperMap.LevelRenderer.Tool.Event
  * @category Visualization Theme
@@ -46634,7 +45750,7 @@ class Event_Event {
             || typeof e.detail != 'undefined' && -e.detail;
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Http.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Http.js
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Http
@@ -46688,7 +45804,7 @@ class Http {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Config.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Config.js
 class Config {
 
 }
@@ -46772,7 +45888,7 @@ Config.catchBrushException = false;
  * @private 
  */
 Config.debugMode = 0;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Log.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Log.js
 
 
 /**
@@ -46818,7 +45934,7 @@ class Log_Log {
         return true;
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Math.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Math.js
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Math
@@ -46889,7 +46005,7 @@ class Math_Math {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Matrix.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Matrix.js
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Matrix
@@ -47099,7 +46215,7 @@ class Matrix {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SUtil.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SUtil.js
 
 
 
@@ -47335,7 +46451,7 @@ SUtil.Util_matrix = new Matrix();
 SUtil.Util = new levelRenderer_Util_Util();
 SUtil.Util_vector = new levelRenderer_Vector_Vector();
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Transformable.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
 
 
 /**
@@ -47603,7 +46719,7 @@ class Transformable_Transformable {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Shape.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Shape.js
 
 
 
@@ -48518,7 +47634,7 @@ class Shape_Shape extends SuperMap.mixin(Eventful, Transformable_Transformable) 
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicPoint.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPoint.js
 
 
 /**
@@ -48658,7 +47774,7 @@ class SmicPoint_SmicPoint extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicText.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicText.js
 
 
 
@@ -49173,7 +48289,7 @@ class SmicText_SmicText extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicCircle.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicCircle.js
 
 
 /**
@@ -49322,7 +48438,7 @@ class SmicCircle_SmicCircle extends Shape_Shape {
         return style.__rect;
     }
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicPolygon.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPolygon.js
 
 
 
@@ -49820,7 +48936,7 @@ class SmicPolygon_SmicPolygon extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicBrokenLine.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicBrokenLine.js
 
 
 
@@ -50110,7 +49226,7 @@ class SmicBrokenLine_SmicBrokenLine extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicImage.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicImage.js
 
 
 /**
@@ -50358,7 +49474,7 @@ class SmicImage_SmicImage extends Shape_Shape {
 }
 SmicImage_SmicImage._needsRefresh = [];
 SmicImage_SmicImage._refreshTimeout = null;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicRectangle.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRectangle.js
 
 
 /**
@@ -50595,7 +49711,7 @@ class SmicRectangle_SmicRectangle extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicSector.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicSector.js
 
 
 
@@ -50802,7 +49918,7 @@ class SmicSector_SmicSector extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/ShapeFactory.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeFactory.js
 
 
 
@@ -51642,7 +50758,7 @@ class ShapeFactory_ShapeFactory {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeFactory = ShapeFactory_ShapeFactory;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/Theme.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/Theme.js
 
 
 
@@ -51757,7 +50873,7 @@ class feature_Theme_Theme {
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.Theme = feature_Theme_Theme;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Graph.js
+// CONCATENATED MODULE: ./src/common/overlay/Graph.js
 
 
 
@@ -52277,7 +51393,7 @@ feature_Theme_Theme.getDataValues = function (data, fields, decimalNumber) {
 };
 
 SuperMap.Feature.Theme.Graph = Graph_Graph;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Bar.js
+// CONCATENATED MODULE: ./src/common/overlay/Bar.js
 
 
 
@@ -52636,7 +51752,7 @@ class Bar_Bar extends Graph_Graph {
 */
 
 SuperMap.Feature.Theme.Bar = Bar_Bar;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Bar3D.js
+// CONCATENATED MODULE: ./src/common/overlay/Bar3D.js
 
 
 
@@ -53071,7 +52187,7 @@ class Bar3D_Bar3D extends Graph_Graph {
  */
 
 SuperMap.Feature.Theme.Bar3D = Bar3D_Bar3D;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/RankSymbol.js
+// CONCATENATED MODULE: ./src/common/overlay/RankSymbol.js
 
 
 
@@ -53218,7 +52334,7 @@ class RankSymbol_RankSymbol extends Graph_Graph {
 }
 
 SuperMap.Feature.Theme.RankSymbol = RankSymbol_RankSymbol;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Circle.js
+// CONCATENATED MODULE: ./src/common/overlay/Circle.js
 
 
 
@@ -53375,7 +52491,7 @@ class overlay_Circle_Circle extends RankSymbol_RankSymbol {
  */
 
 SuperMap.Feature.Theme.Circle = overlay_Circle_Circle;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Line.js
+// CONCATENATED MODULE: ./src/common/overlay/Line.js
 
 
 
@@ -53675,7 +52791,7 @@ class overlay_Line_Line extends Graph_Graph {
  */
 
 SuperMap.Feature.Theme.Line = overlay_Line_Line;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Pie.js
+// CONCATENATED MODULE: ./src/common/overlay/Pie.js
 
 
 
@@ -53884,7 +53000,7 @@ class Pie_Pie extends Graph_Graph {
  */
 
 SuperMap.Feature.Theme.Pie = Pie_Pie;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Point.js
+// CONCATENATED MODULE: ./src/common/overlay/Point.js
 
 
 
@@ -54154,7 +53270,7 @@ class overlay_Point_Point extends Graph_Graph {
  * @property {Object} [pointClickAble=true] - 是否允许图形点被点击。同时设置 pointHoverAble 和 pointClickAble 为 false，可以直接屏蔽图形点对专题图层事件的响应。
  */
 SuperMap.Feature.Theme.Point = overlay_Point_Point;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/Ring.js
+// CONCATENATED MODULE: ./src/common/overlay/Ring.js
 
 
 
@@ -54369,7 +53485,7 @@ class Ring_Ring extends Graph_Graph {
  */
 
 SuperMap.Feature.Theme.Ring = Ring_Ring;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/ThemeVector.js
+// CONCATENATED MODULE: ./src/common/overlay/ThemeVector.js
 
 
 
@@ -55035,7 +54151,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
 }
 
 SuperMap.Feature.Theme.ThemeVector = ThemeVector_ThemeVector;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/feature/index.js
+// CONCATENATED MODULE: ./src/common/overlay/feature/index.js
 
 
 
@@ -55069,7 +54185,7 @@ SuperMap.Feature.Theme.ThemeVector = ThemeVector_ThemeVector;
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Group.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Group.js
 
 
 
@@ -55332,7 +54448,7 @@ class Group_Group extends SuperMap.mixin(Eventful, Transformable_Transformable) 
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Storage.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Storage.js
 
 
 
@@ -55813,7 +54929,7 @@ class Storage_Storage {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Painter.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Painter.js
 
 
 
@@ -56958,7 +56074,7 @@ class Painter_PaintLayer extends Transformable_Transformable {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Handler.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Handler.js
 
 
 
@@ -58084,7 +57200,7 @@ class Handler_Handler extends Eventful {
     // SMIC-方法扩展 - end
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Easing.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Easing.js
 /**
  * @class  SuperMap.LevelRenderer.Animation.easing
  * @category Visualization Theme
@@ -58535,7 +57651,7 @@ class Easing {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Clip.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Clip.js
 
 
 /**
@@ -58652,7 +57768,7 @@ class Clip_Clip {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Animation.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Animation.js
 
 
 
@@ -59337,7 +58453,7 @@ class Animation_Animator {
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/Render.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Render.js
 /**
  * @private
  * @class SuperMap.LevelRenderer.Render
@@ -59897,7 +59013,7 @@ class Render_Render {
 
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/LevelRenderer.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/LevelRenderer.js
 
 
 
@@ -60018,7 +59134,7 @@ class LevelRenderer_LevelRenderer {
 }
 
 SuperMap.LevelRenderer = LevelRenderer_LevelRenderer;
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicEllipse.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicEllipse.js
 
 
 /**
@@ -60173,7 +59289,7 @@ class SmicEllipse_SmicEllipse extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicIsogon.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicIsogon.js
 
 
 
@@ -60333,7 +59449,7 @@ class SmicIsogon_SmicIsogon extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicRing.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRing.js
 
 
 /**
@@ -60470,7 +59586,7 @@ class SmicRing_SmicRing extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/SmicStar.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicStar.js
 
 
 
@@ -60655,7 +59771,7 @@ class SmicStar_SmicStar extends Shape_Shape {
     }
 
 }
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/levelRenderer/index.js
+// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/index.js
 
 
 
@@ -60733,7 +59849,7 @@ class SmicStar_SmicStar extends Shape_Shape {
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/overlay/index.js
+// CONCATENATED MODULE: ./src/common/overlay/index.js
 
 
 
@@ -60760,7 +59876,603 @@ class SmicStar_SmicStar extends Shape_Shape {
 
 
 
-// CONCATENATED MODULE: ./src/mapboxgl/node_modules/@supermap/iclient-common/index.js
+// CONCATENATED MODULE: ./src/common/widgets/CommonTypes.js
+/**
+ * 该文件用于存储一些公用常量
+ *
+ */
+const FileTypes = {
+    EXCEL: "EXCEL",
+    CSV: "CSV",
+    ISERVER: "ISERVER",
+    GEOJSON: "GEOJSON",
+    JSON: 'JSON'
+};
+const FileConfig = {
+    fileMaxSize: 10 * 1024 * 1024
+};
+// CONCATENATED MODULE: ./src/common/widgets/openfile/FileModel.js
+
+
+/**
+ * @class SuperMap.FileModel
+ * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
+ */
+class FileModel_FileModel {
+    constructor(options) {
+        this.FileTypes = FileTypes;
+        this.FileConfig = FileConfig;
+        this.map = options && options.map ? options.map : null;
+        this.loadFileObject = [];
+    }
+
+    /**
+     * @function SuperMap.FileModel.prototype.set
+     * @description 设置属性值
+     * @param {string} key - 属性名称
+     * @param {string|Object} value - 属性值
+     */
+    set(key, value) {
+        this[key] = value;
+    }
+
+    /**
+     * @function SuperMap.FileModel.prototype.get
+     * @description 获取数据值
+     * @param {string} key - 属性名称
+     * @return {string|Object} value - 返回属性值
+     */
+    get(key) {
+        return this[key];
+    }
+
+}
+// CONCATENATED MODULE: ./src/common/widgets/messagebox/MessageBox.js
+
+
+/**
+ * @class SuperMap.Widgets.MessageBox
+ * @classdesc MessageBox 微件，信息框提示
+ * @category  Control Widgets
+ */
+class MessageBox {
+
+    constructor() {
+        this._initView();
+    }
+
+    _initView() {
+        //原生js形式
+        const messageBoxContainer = document.createElement("div");
+        messageBoxContainer.hidden = true;
+        messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+
+        //图标
+        const iconContainer = document.createElement("div");
+        iconContainer.setAttribute("class", "icon");
+        this.icon = document.createElement("span");
+        this.icon.setAttribute("class", "supermapol-icons-message-warning");
+        iconContainer.appendChild(this.icon);
+        messageBoxContainer.appendChild(iconContainer);
+
+        //内容：
+        const messageBox = document.createElement("div");
+        messageBox.setAttribute("class", "messageBox");
+        messageBox.innerHTML = "";
+        messageBoxContainer.appendChild(messageBox);
+        this.messageBox = messageBox;
+
+        //关闭按钮
+        const cancelContainer = document.createElement("div");
+        cancelContainer.setAttribute("class", "cancelContainer");
+        const cancelBtn = document.createElement("button");
+        cancelBtn.setAttribute("class", "cancelBtn");
+        cancelBtn.innerHTML = "x";
+        cancelBtn.onclick = this.closeView.bind(this);
+        cancelContainer.appendChild(cancelBtn);
+        messageBoxContainer.appendChild(cancelContainer);
+
+        this.messageBoxContainer = messageBoxContainer;
+        document.body.appendChild(this.messageBoxContainer);
+    }
+
+    /**
+     * @function SuperMap.Widgets.MessageBox.prototype.closeView
+     * @description 关闭提示框
+     */
+    closeView() {
+        this.messageBoxContainer.hidden = true;
+    }
+
+    /**
+     * @function SuperMap.Widgets.MessageBox.prototype.showView
+     * @description 显示提示框
+     * @param {string} message - 提示框显示内容
+     * @param {string}[type="warring"] 提示框类型，如 "warring", "failure", "success", 默认为"warring"
+     */
+    showView(message, type = 'warring') {
+        //设置提示框的样式：
+        if (type === "success") {
+            this.icon.setAttribute("class", "supermapol-icons-message-success");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-green");
+
+        } else if (type === "failure") {
+            this.icon.setAttribute("class", "supermapol-icons-message-failure");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-red");
+        } else if (type === "warring") {
+            this.icon.setAttribute("class", "supermapol-icons-message-warning");
+            this.messageBoxContainer.setAttribute("class", "messageBoxContainer border-bottom-orange");
+        }
+        this.messageBox.innerHTML = message;
+        this.messageBoxContainer.hidden = false;
+    }
+}
+
+SuperMap.Widgets.MessageBox = MessageBox;
+// CONCATENATED MODULE: ./src/common/widgets/templates/WidgetContainer.js
+/**
+ * @class WidgetContainer
+ * @class 微件统一外框
+ * @param {string} title - 标题，必传参数
+ * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ */
+class WidgetContainer {
+    constructor(title, position = null) {
+        this._initContainer(title, position);
+    }
+
+    _initContainer(title, position) {
+        const container = document.createElement("div");
+        container.setAttribute("class", "widget-container");
+        this.container = container;
+        if (position) {
+            this.setContainerPosition(position);
+        }
+        //title
+        const titleContainer = document.createElement("div");
+        titleContainer.setAttribute("class", "widget-title");
+        const titleContent = document.createElement("div");
+        titleContent.innerHTML = title;
+        titleContainer.appendChild(titleContent);
+        container.appendChild(titleContainer);
+        //container
+        const widgetContent = document.createElement("div");
+        widgetContent.setAttribute("class", "widget-content-container");
+        container.appendChild(widgetContent);
+        this.content = widgetContent;
+
+        return container;
+    }
+
+    /**
+     * @function WidgetContainer.prototype.getElement
+     * @description 改变容器绝对位置
+     */
+    setContainerPosition(position) {
+        for (let name in position) {
+            this.container.style[name] = position[name];
+        }
+    }
+
+    /**
+     * @function WidgetContainer.prototype.getElement
+     * @description 获取当前模板 Dom 元素
+     */
+    getElement() {
+        return this.container;
+    }
+
+    /**
+     * @function WidgetContainer.prototype.getContentElement
+     * @description 获取内容元素容器
+     */
+    getContentElement() {
+        return this.content;
+    }
+
+    /**
+     * @function WidgetContainer.prototype.appendContent
+     * @description 填充内容元素
+     */
+    appendContent(element) {
+        this.content.appendChild(element);
+    }
+}
+// CONCATENATED MODULE: ./src/common/widgets/templates/WidgetSelect.js
+
+
+/**
+ * @class SuperMap.Widgets.WidgetSelect
+ * @classDec 微件统一 select 下拉框。
+ * @param {Array} optionsArr - 需要创建的 option 数据数组。
+ */
+class WidgetSelect {
+    constructor(optionsArr) {
+        this._initView(optionsArr);
+    }
+    _initView(optionsArr) {
+        let select = document.createElement('select');
+        select.className = "widget-select-options";
+        select.id = 'widgetSelect';
+        for (let i = 0; i < optionsArr.length; i++) {
+            let ele = document.createElement('option');
+            ele.innerHTML = optionsArr[i];
+            ele.value = optionsArr[i];
+            // 默认选中第 0 个元素
+            if (i === 0) {
+                ele.selected = true;
+            }
+            select.appendChild(ele);
+        }
+        this.select = select;
+       
+    }
+
+    /**
+     * @function WidgetSelect.prototype.getElement
+     * @description 获取当前模板 Dom 元素。
+     */
+    getElement() {
+        return this.select;
+    }
+}
+SuperMap.Widgets.WidgetSelect = WidgetSelect;
+// CONCATENATED MODULE: ./src/common/widgets/templates/WidgetDropDownBox.js
+
+
+/**
+ * @class SuperMap.Widgets.WidgetDropDownBox
+ * @classDec 微件统一 dropDownBox 下拉框。
+ * @param {Array} optionsArr - 需要创建的 option 数据数组。
+ */
+class WidgetDropDownBox {
+    constructor(optionsArr) {
+        this._initView(optionsArr);
+    }
+    _initView(optionsArr) {
+        let dropDownContainer = document.createElement('div');
+        dropDownContainer.className = 'drop-down-container';
+        let dropDownBox = document.createElement('div');
+        dropDownBox.setAttribute('tabindex', '1');
+        dropDownBox.className = "drop-down-box";
+        dropDownBox.id = 'dropDownBox';
+
+        let dropDownTopContainer = document.createElement('div');
+        dropDownTopContainer.id = 'dropDownTopContainer';
+
+        let dropDownTop = document.createElement('div');
+        dropDownTop.className = 'drop-down-item';
+        dropDownTop.id = 'dropDownTop';
+
+        let dropDownImg = document.createElement('div');
+        dropDownImg.className = 'drop-down-img';
+        let activeIcon = document.createElement('div');
+        activeIcon.className = optionsArr[0].icon.className;
+        activeIcon.style.background = optionsArr[0].icon.background;
+        dropDownImg.appendChild(activeIcon);
+        dropDownTop.appendChild(dropDownImg);
+
+        let dropDownTitle = document.createElement('div');
+        dropDownTitle.title = optionsArr[0].title;
+        dropDownTitle.innerHTML = optionsArr[0].title;
+        dropDownTitle.className = 'drop-down-title';
+        dropDownTop.appendChild(dropDownTitle);
+
+        let dropDownRemark = document.createElement('div');
+        dropDownRemark.title = optionsArr[0].remark;
+        dropDownRemark.innerHTML = optionsArr[0].remark;
+        dropDownRemark.className = 'drop-down-remark';
+        dropDownTop.appendChild(dropDownRemark);
+        dropDownTopContainer.appendChild(dropDownTop);
+        dropDownBox.appendChild(dropDownTopContainer);
+
+        let triangleBtnContainer = document.createElement('div');
+        triangleBtnContainer.className = 'triangle-btn';
+        let triangleBtn = document.createElement('div');
+        triangleBtn.className = 'triangle-down-img';
+        triangleBtn.id = 'triangleBtn';
+        triangleBtnContainer.appendChild(triangleBtn);
+        dropDownBox.appendChild(triangleBtnContainer);
+        dropDownContainer.appendChild(dropDownBox);
+
+        let creatDropDownBoxParam = {
+            "parentEle": dropDownBox,
+            "dropDownContent": ['drop-down-content chart-content', 'dropDownContent'],
+            "dropDownItems": 'scrollarea drop-down-items',
+            "scrollareaContent": 'scrollarea-content',
+            "optionsArr": optionsArr,
+            "triangleBtn": triangleBtn,
+            "dropDownTopContainer": dropDownTopContainer
+        }
+        this._creatDropDownBox(creatDropDownBoxParam);
+
+        this.dropDownContainer = dropDownContainer;
+
+    }
+    _creatDropDownBox(creatDropDownBoxParam) {
+        let dropDownBox = creatDropDownBoxParam.parentEle;
+        let dropDownTopContainer = creatDropDownBoxParam.dropDownTopContainer;
+        let dropDownContent = document.createElement('div');
+        dropDownContent.className = creatDropDownBoxParam.dropDownContent[0];
+        dropDownContent.id = creatDropDownBoxParam.dropDownContent[1];
+        dropDownBox.appendChild(dropDownContent);
+
+        let dropDownItems = document.createElement('div');
+        dropDownItems.className = creatDropDownBoxParam.dropDownItems;
+        dropDownContent.appendChild(dropDownItems);
+
+        let scrollareaContent = document.createElement('div');
+        scrollareaContent.className = creatDropDownBoxParam.scrollareaContent;
+        dropDownItems.appendChild(scrollareaContent);
+
+        this._creatDropDownOptions(creatDropDownBoxParam.optionsArr, scrollareaContent);
+
+        // 下拉框显示 & 隐藏事件
+        let triangleBtn = creatDropDownBoxParam.triangleBtn;
+        this._dropDownClickEvent(dropDownBox, dropDownContent.id, triangleBtn.id);
+
+        this._eleOnblur(dropDownBox, creatDropDownBoxParam.dropDownContent[1], triangleBtn.id)
+
+        // 下拉框 options 点击事件
+        let scrollareaOptions = scrollareaContent.children;
+        for (let i = 0; i < scrollareaOptions.length; i++) {
+            scrollareaOptions[i].onclick = function () {
+                dropDownTopContainer.innerHTML = scrollareaOptions[i].outerHTML;
+                dropDownTopContainer.children[0].id = 'dropDownTop';
+                //evt.stopPropagation();
+            }
+        }
+    }
+
+    _creatDropDownOptions(dataArr, parentElement) {
+        for (let i = 0; i < dataArr.length; i++) {
+            let ele = document.createElement('div');
+            ele.className = 'drop-down-item';
+            ele.setAttribute('data-value', dataArr[i]['data-value']);
+            parentElement.appendChild(ele);
+
+            let imgContainer = document.createElement('div');
+            imgContainer.className = 'drop-down-img';
+            ele.appendChild(imgContainer);
+
+            let img = document.createElement('div');
+            img.className = dataArr[i].icon.className;
+            img.style.background = dataArr[i].icon.background;
+            imgContainer.appendChild(img);
+
+            let title = document.createElement('div');
+            title.className = 'drop-down-title';
+            title.title = dataArr[i].title;
+            title.innerHTML = dataArr[i].title;
+            ele.appendChild(title);
+
+            let remark = document.createElement('div');
+            remark.className = 'drop-down-remark';
+            remark.title = dataArr[i].remark;
+            remark.innerHTML = dataArr[i].remark;
+            ele.appendChild(remark);
+
+        }
+    }
+
+    _dropDownClickEvent(eventElement, contentElementId, triangleBtnId) {
+        eventElement.onclick = function (e) {
+            let contentElement = document.getElementById(contentElementId);
+            let triangleBtn = document.getElementById(triangleBtnId);
+            if (contentElement.style.display === "block") {
+                contentElement.style.display = "none";
+                triangleBtn.className = "triangle-down-img";
+            } else {
+                contentElement.style.display = "block";
+                triangleBtn.className = "triangle-up-img";
+            }
+            e.preventDefault();
+            e.stopPropagation()
+        }
+        eventElement.onmousedown = function (evt) {
+            //console.log('drop-down-box onmousedown '+evt.target.className);
+            if (evt.target !== this) {
+                this.focus();
+                evt.preventDefault();
+                evt.stopPropagation()
+            }
+        }
+    }
+
+    _eleOnblur(eventElement, contentElementId, triangleBtnId) {
+        eventElement.onblur = function () {
+            let contentElement = document.getElementById(contentElementId);
+            let triangleBtn = document.getElementById(triangleBtnId);
+            contentElement.style.display = "none";
+            triangleBtn.className = "triangle-down-img";
+        }
+    }
+    /**
+     * @function WidgetSelect.prototype.getElement
+     * @description 获取当前模板 Dom 元素。
+     */
+    getElement() {
+        return this.dropDownContainer;
+    }
+}
+SuperMap.Widgets.WidgetDropDownBox = WidgetDropDownBox;
+
+// CONCATENATED MODULE: ./src/common/widgets/util/Util.js
+
+
+let widgetsUtil = {
+    /**
+     * 获取上传文件类型
+     * @param fileName
+     */
+    getFileType(fileName) {
+        let regCSV = /^.*\.(?:csv)$/i;
+        let regExcel = /^.*\.(?:xls|xlsx)$/i; //文件名可以带空格
+        let regGeojson = /^.*\.(?:geojson|json)$/i;
+        if (regExcel.test(fileName)) { //校验不通过
+            return FileTypes.EXCEL;
+        } else if (regCSV.test(fileName)) {
+            return FileTypes.CSV;
+        } else if (regGeojson.test(fileName)) {
+            return FileTypes.GEOJSON;
+        }
+        return null;
+    },
+
+    /**
+     * 判断是否地理X坐标
+     *
+     * @param data
+     */
+    isXField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "x" || lowerdata === "smx" ||
+            lowerdata === "jd" || lowerdata === "经度" || lowerdata === "东经" || lowerdata === "longitude" ||
+            lowerdata === "lot" || lowerdata === "lon" || lowerdata === "lng");
+    },
+
+    /**
+     * 判断是否地理Y坐标
+     *
+     * @param data
+     */
+    isYField(data) {
+        var lowerdata = data.toLowerCase();
+        return (lowerdata === "y" || lowerdata === "smy" ||
+            lowerdata === "wd" || lowerdata === "纬度" || lowerdata === "北纬" ||
+            lowerdata === "latitude" || lowerdata === "lat");
+    },
+    /**
+     * 字符串转为dataEditor 支持的csv格式数据
+     * @param string
+     * @param withoutTitle
+     */
+    string2Csv(string, withoutTitle) {
+        // let rows = string.split('\r\n');
+        let rows = string.split('\n');
+        let result = {};
+        if (!withoutTitle) {
+            result["colTitles"] = rows[0].split(',');
+        } else {
+            result["colTitles"] = [];
+        }
+        result['rows'] = [];
+        for (let i = (withoutTitle) ? 0 : 1; i < rows.length; i++) {
+            rows[i] && result['rows'].push(rows[i].split(','));
+        }
+        return result;
+    }
+
+};
+// EXTERNAL MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
+var external_function_try_return_XLSX_catch_e_return_ = __webpack_require__(4);
+var external_function_try_return_XLSX_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_XLSX_catch_e_return_);
+
+// CONCATENATED MODULE: ./src/common/widgets/util/FileReaderUtil.js
+
+
+
+let FileReaderUtil = {
+
+    rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
+    rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
+    rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
+    /**
+     * 读取文件
+     * @param fileType
+     * @param file
+     * @param success
+     * @param failed
+     * @param context
+     */
+    readFile(fileType, file, success, failed, context) {
+        if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
+            this.readTextFile(file, success, failed, context)
+        } else if (FileTypes.EXCEL === fileType || FileTypes.CSV === fileType) {
+            this.readXLSXFile(file, success, failed, context)
+        }
+
+    },
+
+    /**
+     * 读取文本文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param context
+     */
+    readTextFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            success && success.call(context, evt.target.result);
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rAT ? reader.readAsText(file.file, 'utf-8') : reader.readAsBinaryString(file.file);
+    },
+
+    /**
+     * 读取excel或csv文件
+     * @param file
+     * @param success
+     * @param failed
+     * @param context
+     */
+    readXLSXFile(file, success, failed, context) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+            let xLSXData = new Uint8Array(evt.target.result);
+            let workbook = external_function_try_return_XLSX_catch_e_return_default.a.read(xLSXData, {type: "array"});
+            try {
+                if (workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
+                    //暂时只读取第一个sheets的内容
+                    let sheetName = workbook.SheetNames[0];
+                    let xLSXCSVString = external_function_try_return_XLSX_catch_e_return_default.a.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+                    success && success.call(context, xLSXCSVString);
+                }
+            } catch (error) {
+                failed && failed.call(context, error);
+            }
+        };
+        reader.onerror = function (error) {
+            failed && failed.call(context, error)
+        };
+        this.rABF && reader.readAsArrayBuffer(file.file);
+    }
+
+};
+// CONCATENATED MODULE: ./src/common/widgets/util/index.js
+
+
+
+
+
+// CONCATENATED MODULE: ./src/common/widgets/index.js
+//数据
+
+//组件
+
+//提示框微件
+
+//公用模板：
+
+
+
+//工具类
+
+
+
+
+
+
+
+
+
+
+// CONCATENATED MODULE: ./src/common/index.js
+
+
 
 
 
@@ -71415,6 +71127,883 @@ external_mapboxgl_default.a.supermap.TrafficTransferAnalystService = TrafficTran
 
 
 
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+(function(self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader()
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
+    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var args = [blob]
+
+    if(_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
+    }
+
+    reader.readAsText.apply(reader, args)
+    return fileReaderReady(reader)
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob();
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+
+    this._initBody = function(body, options) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+        this._options = options
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body, options)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this._initBody(bodyInit, options)
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return
+        }
+        var status = (xhr.status === 1223) ? 204 : xhr.status
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+          reject(new TypeError('Network request failed'))
+          return
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        resolve(new Response(body, options))
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function() {
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+
+  // Support CommonJS
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(11)))
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(12);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ })
 /******/ ]);

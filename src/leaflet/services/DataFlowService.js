@@ -11,8 +11,8 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
- * @param {function} [options.style] - 设置数据加载样式。
- * @param {function} [options.onEachFeature] -  设置每个数据加载 popup 等。
+ * @param {Function} [options.style] - 设置数据加载样式。
+ * @param {Function} [options.onEachFeature] -  设置每个数据加载 popup 等。
  * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
  * @param {Object} [options.excludeField] - 排除字段。
  */

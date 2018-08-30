@@ -1,15 +1,54 @@
 import L from "leaflet";
 import '../../core/Base';
 import {DataFlowLayer} from "../../overlay/DataFlowLayer";
+import {CommontypesConversion} from '../../core/CommontypesConversion';
 
 /**
  * @class L.supermap.widgets.dataFlowViewModel
  * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
  * @category Control Widgets
  * @param {L.map} map - 当前微件所在的底图
+ * @param {Object} dataFlowLayerOptions - 数据流服务返回数据数据展示样式，默认为 null，采用 ViewModel 默认样式
+ * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
+ `function(geoJsonPoint, latlng) {
+                                                return L.marker(latlng);
+                                            }`
+ * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ `function (feature) {
+                                                    return {
+                                                        fillColor: "red",
+                                                        fillOpacity: 1,
+                                                        radius: 6,
+                                                        weight: 0
+                                                    };
+                                            }`
+ * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
  */
 export var DataFlowViewModel = L.Evented.extend({
-    initialize(map) {
+    options: {
+        _defaultLayerOptions: {
+            style: null,
+            pointToLayer: function (geoJsonPoint, latlng) {
+                return L.circleMarker(latlng, {
+                    color: "red",
+                    weight: 1.5,
+                    fillColor: "red",
+                    fillOpacity: 0.4,
+                    radius: 6
+                });
+            },
+            onEachFeature: function (feature, layer) {
+                let content = "属性信息如下：<br>";
+                for (let key in feature.properties) {
+                    content += key + ": " + feature.properties[key] + "<br>"
+                }
+                layer.bindPopup(content);
+
+            }
+        }
+    },
+
+    initialize(map, dataFlowLayerOptions = null) {
         if (map) {
             /**
              * @member {L.map} - [L.supermap.widgets.dataFlowViewModel.prototype.map]
@@ -19,6 +58,8 @@ export var DataFlowViewModel = L.Evented.extend({
         } else {
             return new Error(`Cannot find map, fileModel.map cannot be null.`);
         }
+        //合并用户的 dataFlowLayerOptions
+        L.Util.extend(this.options._defaultLayerOptions, dataFlowLayerOptions);
 
         /**
          * @member {boolean} - [L.supermap.widgets.dataFlowViewModel.prototype.popupsStatus=true]
@@ -48,11 +89,13 @@ export var DataFlowViewModel = L.Evented.extend({
          * @description 当前 dataFlowLayer 图层对象
          */
         this.dataFlowLayer = null;
+
     },
 
     /**
      * @function L.supermap.widgets.dataFlowViewModel.prototype.subscribe
      * @description 订阅数据流
+     * @param {string} urlDataFlow - 数据流服务地址
      */
     subscribe(urlDataFlow) {
         //若当前数据流服务没变，则不进行重新订阅 todo 或者没点击暂停
@@ -70,41 +113,31 @@ export var DataFlowViewModel = L.Evented.extend({
             this.dataFlowLayer.remove();
             this.dataFlowLayer = null;
         }
-        const self = this;
-        self.tempFeatures = [];
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
-        const dataFlowLayer = new DataFlowLayer(urlDataFlow, {
-            pointToLayer: function (geoJsonPoint, latlng) {
-                return L.circleMarker(latlng, {
-                    color: "red",
-                    weight: 1.5,
-                    fillColor: "red",
-                    fillOpacity: 0.4,
-                    radius: 6
-                });
-            },
-            onEachFeature: function (feature, layer) {
-                const content = feature.properties.time;
-                layer.bindPopup(content);
-                self.tempFeatures.push(layer)
-            }
-        });
-        dataFlowLayer.on('dataupdated', function (result) {
-            self.currentFeatures = self.tempFeatures;
-            const bounds = result.layer.getBounds();
-            if (bounds.getNorthEast().lng === bounds.getSouthWest().lng && bounds.getNorthEast().lat === bounds.getSouthWest().lat) {
-                self.map.setView(bounds.getCenter())
-            } else {
-                self.map.flyToBounds(result.layer.getBounds());
-            }
-            if (self.popupsStatus) {
-                self.openPopups();
-            }
-            self.tempFeatures = [];
-        });
+        const dataFlowLayer = new DataFlowLayer(urlDataFlow, this.options._defaultLayerOptions);
+        dataFlowLayer.on('dataupdated', this._defaultDataUpdatedCallBack.bind(this));
         dataFlowLayer.addTo(this.map);
 
         this.dataFlowLayer = dataFlowLayer;
+    },
+
+    _defaultDataUpdatedCallBack(result) {
+        //派发出订阅返回的数据：
+        this.fire("dataupdated", {result: result});
+        //若数据超出当前视图范围，则移动到数据所在视图范围：
+        let layerBounds = result.layer.getBounds(),
+            mapBounds = CommontypesConversion.toSuperMapBounds(this.map.getBounds()),
+            layerBoundsSuperMap = CommontypesConversion.toSuperMapBounds(layerBounds);
+        if (!mapBounds.intersectsBounds(layerBoundsSuperMap)) {
+            if (layerBoundsSuperMap.left === layerBoundsSuperMap.right && layerBoundsSuperMap.top === layerBoundsSuperMap.bottom) {
+                this.map.setView(layerBounds.getCenter())
+            } else {
+                this.map.flyToBounds(layerBounds);
+            }
+        }
+        if (this.popupsStatus) {
+            this.openPopups();
+        }
     },
 
     /**
@@ -122,10 +155,12 @@ export var DataFlowViewModel = L.Evented.extend({
      */
     openPopups() {
         this.popupsStatus = true;
-        if (this.currentFeatures.length > 0) {
-            for (let i = 0; i < this.currentFeatures.length; i++) {
-                this.currentFeatures[i].openPopup();
+        const layers = this.dataFlowLayer.getLayers();
+        for (let i = 0; i < layers.length; i++) {
+            for (let j = 0; j < layers[i].getLayers().length; j++) {
+                layers[i].getLayers()[j].openPopup();
             }
+
         }
     },
     /**
@@ -134,9 +169,10 @@ export var DataFlowViewModel = L.Evented.extend({
      */
     closePopups() {
         this.popupsStatus = false;
-        if (this.currentFeatures.length > 0) {
-            for (let i = 0; i < this.currentFeatures.length; i++) {
-                this.currentFeatures[i].closePopup();
+        const layers = this.dataFlowLayer.getLayers();
+        for (let i = 0; i < layers.length; i++) {
+            for (let j = 0; j < layers[i].getLayers().length; j++) {
+                layers[i].getLayers()[j].closePopup();
             }
         }
     }

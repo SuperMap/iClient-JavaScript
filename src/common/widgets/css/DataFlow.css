@@ -1,13 +1,9 @@
-.widget-content-container {
-    /*min-width: 314px;*/
-    padding: 10px 18px;
-    color: #595959;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
 .init-center {
     text-align: center;
+}
+
+.dataflow-container {
+    line-height: 36px;
 }
 
 .dataflow-container div {
@@ -26,7 +22,7 @@
     border: #108FE9 solid 0.2px;
 }
 
-.widget-content-container input[type='text'] {
+.widget-input-default input[type='text'] {
     margin: 2px;
     font-family: MicrosoftYaHei;
     font-size: 12px;
@@ -45,7 +41,7 @@
     content: "\e6ae";
 }
 
-.widget-content-container input[type='text'] ~ span.supermapol-icons-close {
+.widget-input-default input[type='text'] ~ span.supermapol-icons-close {
     position: absolute;
     right: 5px;
     cursor: pointer;

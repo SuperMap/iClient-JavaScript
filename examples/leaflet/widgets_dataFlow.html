@@ -20,7 +20,18 @@
 
     L.supermap.tiledMapLayer(url).addTo(map);
 
-    L.supermap.widgets.dataFlow().addTo(map);
+    var control = L.supermap.widgets.dataFlow({
+        pointToLayer: function (geoJsonPoint, latlng) {
+            return L.circleMarker(latlng, {
+                color: "blue",
+                weight: 1.5,
+                fillColor: "blue",
+                fillOpacity: 0.4,
+                radius: 6
+            });
+        },
+    }).addTo(map);
+    control.on("dataupdated", (e) => console.log(e));
 </script>
 </body>
 </html>

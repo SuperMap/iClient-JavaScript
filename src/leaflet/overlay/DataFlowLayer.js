@@ -18,26 +18,26 @@ import {
  * @param {string} url - 数据流图层服务地址。
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。
-                                               'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。 
+ 'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。
  * @param {Object} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
- * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。 
-                                           `function(geoJsonPoint, latlng) {
+ * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
+ `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
- * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
-                                            `function (feature) {
+ * @param {Function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ `function (feature) {
                                                     return {
                                                         fillColor: "red",
                                                         fillOpacity: 1,
                                                         radius: 6,
                                                         weight: 0
                                                     };
-                                            }` 
+                                            }`
  * @param {function|number} [options.deg] - 定义图标的旋转角度。`options.render` 为 `mapv` 时有效。</br>
-                                                `function (feature,latlng) {
+ `function (feature,latlng) {
                                                         return feature.properties['rotate'];
                                                 }`
  * @fires L.supermap.dataFlowLayer#subscribesuccessed
@@ -78,7 +78,6 @@ export var DataFlowLayer = L.LayerGroup.extend({
          * @event L.supermap.dataFlowLayer#subscribesuccessed
          * @description 初始化成功后触发。
          * @property {Object} e  - 事件对象。
-         * 
          */
         this.dataService.on('subscribeSocketConnected', (e) => this.fire("subscribesuccessed", e));
         this.dataService.on('messageSuccessed', (msg) => this._onMessageSuccessed(msg));

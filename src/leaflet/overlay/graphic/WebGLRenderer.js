@@ -21,8 +21,8 @@ const emptyFunc = L.Util.falseFn;
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {function} [options.onClick] - 点击事件。
- * @param {function} [options.onHover] - 悬停事件。
+ * @param {Function} [options.onClick] - 点击事件。
+ * @param {Function} [options.onHover] - 悬停事件。
 
  */
 export var GraphicWebGLRenderer = L.Class.extend({

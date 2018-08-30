@@ -1,9 +1,9 @@
 //数据
 import {FileTypes, FileConfig} from './CommonTypes';
 //组件
-import {FileModel} from './openFile/FileModel';
+import {FileModel} from './openfile/FileModel';
 //提示框微件
-import {MessageBox} from './messageBox/MessageBox';
+import {MessageBox} from './messagebox/MessageBox';
 //公用模板：
 import {WidgetContainer} from './templates/WidgetContainer';
 import {WidgetSelect} from './templates/WidgetSelect';

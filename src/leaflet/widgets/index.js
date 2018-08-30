@@ -1,6 +1,6 @@
-import {OpenFileView, openFileView} from './openFile/OpenFileView';
-import {OpenFileViewModel, openFileViewModel} from './openFile/OpenFileViewModel';
-// import {POISearchView, poiSearchView} from './poiSearch/POISearchView';
+import {OpenFileView, openFileView} from './openfile/OpenFileView';
+import {OpenFileViewModel, openFileViewModel} from './openfile/OpenFileViewModel';
+// import {POISearchView, poiSearchView} from './poisearch/POISearchView';
 import {DataFlowView, dataFlowView} from './dataflow/DataFlowView';
 
 export {OpenFileView, openFileView};

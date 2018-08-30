@@ -56,8 +56,8 @@ const CSS_TRANSFORM = (function () {
  * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
- * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
+ * @param {Function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
+ * @param {Function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  */
 export var GraphicLayer = L.Path.extend({
 

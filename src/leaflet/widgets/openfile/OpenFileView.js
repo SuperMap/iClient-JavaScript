@@ -5,7 +5,7 @@ import {MessageBox} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.openFile
- * @classdesc openFile 微件，用于打开本地数据文件并加载到底图
+ * @classdesc openfile 微件，用于打开本地数据文件并加载到底图
  * @category  Control Widgets
  */
 export var OpenFileView = L.Control.extend({
@@ -16,7 +16,7 @@ export var OpenFileView = L.Control.extend({
         position: 'topright'
     },
     /**
-     * @function L.supermap.widgets.openFile.prototype.onAdd
+     * @function L.supermap.widgets.openfile.prototype.onAdd
      * @description 向底图添加微件
      */
     onAdd: function (map) {
@@ -28,7 +28,7 @@ export var OpenFileView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.openFile.prototype._initOpenFileView
+     * @function L.supermap.widgets.openfile.prototype._initOpenFileView
      * @description 创建打开本地文件数据微件
      * @return {div}
      * @private
@@ -68,7 +68,7 @@ export var OpenFileView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.openFile.prototype._showMessageListener
+     * @function L.supermap.widgets.openfile.prototype._showMessageListener
      * @description 监听 OpenFileViewModel 事件，显示提示框
      * @param {Object} e - 事件对象
      * @private
