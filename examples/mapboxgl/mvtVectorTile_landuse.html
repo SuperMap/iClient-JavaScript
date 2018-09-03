@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title data-i18n="resources.title_mvtVectorLayer_mapboxStyle_landuse"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
+
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: host +
+                '/iserver/services/map-mvt-landuse2/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
+            center: [108.913171372641, 23.8262192695701], // starting position
+            zoom: 13,
+            minZoom: 11,
+            maxZoom: 15,
+            attributionControl: false
+        });
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    </script>
+
+</body>
+
+</html>

@@ -154,19 +154,19 @@ export const EchartsLayer = L.Layer.extend({
                     me._enableEchartsContainer();
                 }
 
-                if (this._oldMoveHandler) {
-                    leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
+                if (me._oldMoveHandler) {
+                    leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', me._oldMoveHandler);
 
                 }
-                if (this._oldZoomEndHandler) {
-                    leafletMap.off('zoomend', this._oldZoomEndHandler);
+                if (me._oldZoomEndHandler) {
+                    leafletMap.off('zoomend', me._oldZoomEndHandler);
 
                 }
 
                 leafletMap.on(me.options.loadWhileAnimating ? 'move' : 'moveend', moveHandler);
                 leafletMap.on('zoomend', zoomEndHandler);
-                this._oldMoveHandler = moveHandler;
-                this._oldZoomEndHandler = zoomEndHandler;
+                me._oldMoveHandler = moveHandler;
+                me._oldZoomEndHandler = zoomEndHandler;
                 rendering = false;
             }
         });
@@ -175,11 +175,24 @@ export const EchartsLayer = L.Layer.extend({
 
     onRemove: function () {
         // 销毁echarts实例
+        this._ec.clear();
         this._ec.dispose();
+        delete this._ec;
         L.DomUtil.remove(this._echartsContainer);
-        this._map.off("zoomend", this._oldZoomEndHandler);
-        this._map.off(this.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
-        this._map.off('resize', this._resizeHandler);
+        
+        if (this._oldZoomEndHandler) {
+            this._map.off("zoomend", this._oldZoomEndHandler);
+            this._oldZoomEndHandler = null;
+        }
+        if (this._oldMoveHandler) {
+            this._map.off(this.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
+            this._oldMoveHandler = null;
+        }
+        if (this._resizeHandler) {
+            this._map.off('resize', this._resizeHandler);
+            this._resizeHandler = null;
+        }
+        delete this._map;
     },
 
     _initEchartsContainer: function () {
