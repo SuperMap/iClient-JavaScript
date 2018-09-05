@@ -44,6 +44,8 @@ export class Tianditu extends ol.source.WMTS {
         options.url = options.url.replace("{layer}", options.layerType).replace("{proj}", options.matrixSet);
         var tileGrid = options.tileGrid || ol.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857');
 
+        var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
+
         var superOptions = {
             version: options.version || '1.0.0',
             format: options.format || 'tiles',
@@ -54,7 +56,7 @@ export class Tianditu extends ol.source.WMTS {
             style: options.style || 'default',
             attributions: attributions,
             cacheSize: options.cacheSize,
-            crossOrigin: options.crossOrigin,
+            crossOrigin: crossOrigin,
             opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: ol.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
