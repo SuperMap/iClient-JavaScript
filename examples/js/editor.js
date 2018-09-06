@@ -1,3 +1,4 @@
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
 $(document).ready(function () {
     window.initI18N(function(){
     initPage();

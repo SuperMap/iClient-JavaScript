@@ -1,3 +1,4 @@
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
     var plotPanel = document.getElementById(div);
 

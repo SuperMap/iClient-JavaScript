@@ -1,4 +1,5 @@
-﻿var xiamenWind2 = [
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+var xiamenWind2 = [
     [
         [98.37296620776067, -8.372966207759667],
         [97.5938673341685, -8.2978723404255],

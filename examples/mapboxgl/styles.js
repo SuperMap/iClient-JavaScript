@@ -1,3 +1,4 @@
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
 var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
 
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +

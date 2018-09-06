@@ -1,3 +1,4 @@
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
 //左侧层级是否包含示例
 var containExample = false;
 var sideBarIconConfig = sideBarIconConfig || {};

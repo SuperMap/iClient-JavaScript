@@ -1,4 +1,5 @@
-﻿
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+
 
     //目前只支持中英文
     window.initI18N= function (callback){

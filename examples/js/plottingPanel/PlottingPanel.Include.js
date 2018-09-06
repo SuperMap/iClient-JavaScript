@@ -1,4 +1,5 @@
-﻿(function () {
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+(function () {
     var r = new RegExp("(^|(.*?\\/))(PlottingPanel.Include\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
     for (var i = 0; i < s.length; i++) {

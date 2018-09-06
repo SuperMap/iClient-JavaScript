@@ -1,4 +1,5 @@
-﻿var utils = {
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+var utils = {
     //设置语言。参数："zh_CN"，"en-US"
     setLanguage: null,
     //获取当前语言。默认从cookie读取，没有则读取浏览器默认语言

@@ -1,3 +1,4 @@
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * 3D-WebGL 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */

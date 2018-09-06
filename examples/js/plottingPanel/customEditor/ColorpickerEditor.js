@@ -1,4 +1,5 @@
-﻿$.extend($.fn.datagrid.defaults.editors, {
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.*/
+$.extend($.fn.datagrid.defaults.editors, {
     colorpicker: {
         init: function (container, options) {
              var input = $('<input>').appendTo(container);
