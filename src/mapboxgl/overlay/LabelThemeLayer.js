@@ -1,4 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {
@@ -9,7 +11,9 @@ import {
     ShapeFactory,
     ThemeVector as Vector
 } from '@supermap/iclient-common';
-import {GeoFeature} from './theme/GeoFeatureThemeLayer';
+import {
+    GeoFeature
+} from './theme/GeoFeatureThemeLayer';
 
 /**
  * @class mapboxgl.supermap.LabelThemeLayer
@@ -99,6 +103,8 @@ export class Label extends GeoFeature {
         };
         //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
         this.getPxBoundsMode = 0;
+
+        this.labelFeatures = [];
     }
 
 
@@ -110,18 +116,33 @@ export class Label extends GeoFeature {
      * @param {mapboxgl.LngLatBounds} bounds - 重绘范围。
      */
     redrawThematicFeatures(bounds) {
-        if (!this.labelFeatures || this.labelFeatures.length == 0) {
+        if (this.features.length > 0 && this.labelFeatures.length == 0) {
             var feats = this.setLabelsStyle(this.features);
-            this.labelFeatures = [];
             for (var i = 0, len = feats.length; i < len; i++) {
                 this.labelFeatures.push(feats[i]);
             }
-
         }
         this.features = this.getDrawnLabels(this.labelFeatures);
         super.redrawThematicFeatures.call(this, bounds);
     }
+    /**
+     * @function mapboxgl.supermap.LabelThemeLayer.prototype.removeFeatures
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param {Object} features - 要删除的要素对象。
+     */
+    removeFeatures(features) { // eslint-disable-line no-unused-vars
+        this.labelFeatures = [];
+        super.removeFeatures.call(this, arguments);
+    }
 
+    /**
+     * @function mapboxgl.supermap.LabelThemeLayer.prototype.removeAllFeatures
+     * @description 清除当前图层所有的矢量要素。
+     */
+    removeAllFeatures() {
+        this.labelFeatures = [];
+        super.removeAllFeatures.call(this, arguments);
+    }
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.createThematicFeature
@@ -159,11 +180,11 @@ export class Label extends GeoFeature {
      */
     getDrawnLabels(labelFeatures) {
         var feas = [], //最终要绘制的标签要素集
-            fea,    //最终要绘制的标签要素
+            fea, //最终要绘制的标签要素
             fi, //临时标签要素，用户的第i个标签
             labelsB = [], //不产生压盖的标签要素范围集
             styTmp, //用于临时存储要素style的变量
-            feaSty,  //标签要素最终的style
+            feaSty, //标签要素最终的style
             // styleTemp用于屏蔽文本style中带有偏移性质style属性，偏移已经在计算bounds的过程中参与了运算，
             // 所以在最终按照bounds来绘制标签时，需屏蔽style中带有偏移性质属性，否则文本的偏移量将扩大一倍。
             styleTemp = {
@@ -191,7 +212,7 @@ export class Label extends GeoFeature {
             var loc = this.getLabelPxLocation(fi);
 
             //过滤掉地图范围外的标签 （偏移后）
-            if ((loc.x >= 0 && loc.x <= mapSize.x ) && (loc.y >= 0 && loc.y <= mapSize.y)) {
+            if ((loc.x >= 0 && loc.x <= mapSize.x) && (loc.y >= 0 && loc.y <= mapSize.y)) {
                 //根据当前地图缩放级别过滤标签
                 if (fi.style.minZoomLevel > -1) {
                     if (zoom <= fi.style.minZoomLevel) {
@@ -219,11 +240,11 @@ export class Label extends GeoFeature {
                 }
 
                 //避让处理 -start
-                var mapViewBounds = new Bounds(0, mapSize.y, mapSize.x, 0),        //地图像素范围
+                var mapViewBounds = new Bounds(0, mapSize.y, mapSize.x, 0), //地图像素范围
                     quadlen = boundsQuad.length;
 
                 if (this.isAvoid) {
-                    var avoidInfo = this.getAvoidInfo(mapViewBounds, boundsQuad);       //避让信息
+                    var avoidInfo = this.getAvoidInfo(mapViewBounds, boundsQuad); //避让信息
 
                     if (avoidInfo) {
                         //横向（x方向）上的避让
@@ -498,12 +519,26 @@ export class Label extends GeoFeature {
         //旋转Bounds
         var boundsQuad = [];
         if ((feature.style.labelRotation % 180) == 0) {
-            boundsQuad = [
-                {"x": labB.left, "y": labB.top},
-                {"x": labB.right, "y": labB.top},
-                {"x": labB.right, "y": labB.bottom},
-                {"x": labB.left, "y": labB.bottom},
-                {"x": labB.left, "y": labB.top}
+            boundsQuad = [{
+                    "x": labB.left,
+                    "y": labB.top
+                },
+                {
+                    "x": labB.right,
+                    "y": labB.top
+                },
+                {
+                    "x": labB.right,
+                    "y": labB.bottom
+                },
+                {
+                    "x": labB.left,
+                    "y": labB.bottom
+                },
+                {
+                    "x": labB.left,
+                    "y": labB.top
+                }
             ];
         } else {
             boundsQuad = this.rotationBounds(labB, loc, feature.style.labelRotation);
@@ -580,12 +615,26 @@ export class Label extends GeoFeature {
         //旋转Bounds
         var boundsQuad = [];
         if ((style.labelRotation % 180) == 0) {
-            boundsQuad = [
-                {"x": labB.left, "y": labB.top},
-                {"x": labB.right, "y": labB.top},
-                {"x": labB.right, "y": labB.bottom},
-                {"x": labB.left, "y": labB.bottom},
-                {"x": labB.left, "y": labB.top}
+            boundsQuad = [{
+                    "x": labB.left,
+                    "y": labB.top
+                },
+                {
+                    "x": labB.right,
+                    "y": labB.top
+                },
+                {
+                    "x": labB.right,
+                    "y": labB.bottom
+                },
+                {
+                    "x": labB.left,
+                    "y": labB.bottom
+                },
+                {
+                    "x": labB.left,
+                    "y": labB.top
+                }
             ];
         } else {
             boundsQuad = this.rotationBounds(labB, loc, style.labelRotation);
@@ -641,7 +690,8 @@ export class Label extends GeoFeature {
             "normal",
             style.fontWeight ? style.fontWeight : "normal",
             style.fontSize ? style.fontSize : "1em",
-            style.fontFamily ? style.fontFamily : "sans-serif"].join(" ");
+            style.fontFamily ? style.fontFamily : "sans-serif"
+        ].join(" ");
         var labelRows = style.label.split('\n');
         var numRows = labelRows.length;
         var vfactor, lineHeight, labelWidthTmp;
@@ -681,15 +731,15 @@ export class Label extends GeoFeature {
                 }
             }
         }
-        var labelInfo = {};//标签信息
+        var labelInfo = {}; //标签信息
         if (labelWidth) {
-            labelInfo.w = labelWidth;//标签的宽
+            labelInfo.w = labelWidth; //标签的宽
         } else {
             return null;
         }
 
-        labelInfo.h = style.fontSize;//一行标签的高
-        labelInfo.rows = labelRows.length;//标签的行数
+        labelInfo.h = style.fontSize; //一行标签的高
+        labelInfo.rows = labelRows.length; //标签的行数
 
         return labelInfo;
     }
@@ -720,9 +770,15 @@ export class Label extends GeoFeature {
         var quad = [];
 
         for (var i = 0; i < ver.length; i++) {
-            quad.push({"x": ver[i].x, "y": ver[i].y});
+            quad.push({
+                "x": ver[i].x,
+                "y": ver[i].y
+            });
         }
-        quad.push({"x": ver[0].x, "y": ver[0].y});
+        quad.push({
+            "x": ver[0].x,
+            "y": ver[0].y
+        });
         return quad;
     }
 
@@ -739,11 +795,12 @@ export class Label extends GeoFeature {
      * @returns {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
      */
     getRotatedLocation(x, y, rx, ry, angle) {
-        var loc = {}, x0, y0;
+        var loc = {},
+            x0, y0;
 
         y = -y;
         ry = -ry;
-        angle = -angle;//顺时针旋转
+        angle = -angle; //顺时针旋转
         x0 = (x - rx) * Math.cos((angle / 180) * Math.PI) - (y - ry) * Math.sin((angle / 180) * Math.PI) + rx;
         y0 = (x - rx) * Math.sin((angle / 180) * Math.PI) + (y - ry) * Math.cos((angle / 180) * Math.PI) + ry;
 
@@ -765,20 +822,39 @@ export class Label extends GeoFeature {
     getAvoidInfo(bounds, quadrilateral) {
         if (quadrilateral.length !== 5) {
             return null;
-        }//不是四边形
+        } //不是四边形
 
         //将bound序列化为点数组形式
-        var bounddQuad = [
-            {"x": bounds.left, "y": bounds.top},
-            {"x": bounds.right, "y": bounds.top},
-            {"x": bounds.right, "y": bounds.bottom},
-            {"x": bounds.left, "y": bounds.bottom},
-            {"x": bounds.left, "y": bounds.top}
+        var bounddQuad = [{
+                "x": bounds.left,
+                "y": bounds.top
+            },
+            {
+                "x": bounds.right,
+                "y": bounds.top
+            },
+            {
+                "x": bounds.right,
+                "y": bounds.bottom
+            },
+            {
+                "x": bounds.left,
+                "y": bounds.bottom
+            },
+            {
+                "x": bounds.left,
+                "y": bounds.top
+            }
         ];
 
-        var isIntersection = false, bqLen = bounddQuad.length, quadLen = quadrilateral.length;
+        var isIntersection = false,
+            bqLen = bounddQuad.length,
+            quadLen = quadrilateral.length;
 
-        var offsetX = 0, offsetY = 0, aspectH = "", aspectW = "";
+        var offsetX = 0,
+            offsetY = 0,
+            aspectH = "",
+            aspectW = "";
         for (var i = 0; i < bqLen - 1; i++) {
             for (var j = 0; j < quadLen - 1; j++) {
                 var isLineIn = Util.lineIntersection(bounddQuad[i], bounddQuad[i + 1], quadrilateral[j], quadrilateral[j + 1]);
@@ -863,7 +939,7 @@ export class Label extends GeoFeature {
             quad2Len = quadrilateral2.length;
         if (quadLen !== 5 || quad2Len !== 5) {
             return null;
-        }//不是四边形
+        } //不是四边形
 
         var OverLap = false;
         //如果两四边形互不包含对方的节点，则两个四边形不相交
@@ -906,9 +982,9 @@ export class Label extends GeoFeature {
      */
     isPointInPoly(pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
-            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
-            && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
-            && (isIn = !isIn);
+            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y)) &&
+            (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x) &&
+            (isIn = !isIn);
         }
         return isIn;
     }

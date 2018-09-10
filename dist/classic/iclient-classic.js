@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -87,6 +102,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = exports.SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap.Widgets = window.SuperMap.Widgets || {};
 
@@ -102,7 +120,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Util = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                               * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                               * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -1179,7 +1200,9 @@ var DataFormat = _SuperMap.SuperMap.DataFormat = {
     GEOJSON: "GEOJSON",
     /** ISERVER */
     ISERVER: "ISERVER"
-};
+}; /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+    * This program are made available under the terms of the Apache License, Version 2.0
+    * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 exports.DataFormat = DataFormat;
 
 /**
@@ -2390,7 +2413,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OutputSetting = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -2499,7 +2525,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.ProcessingServiceBase
@@ -2681,7 +2710,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CommonServiceBase = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -3110,7 +3142,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FetchRequest = exports.getRequestTimeout = exports.setRequestTimeout = exports.isCORS = exports.setCORS = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                               * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                               * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 __webpack_require__(51);
 
@@ -3543,7 +3578,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SecurityManager = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -3961,7 +3999,10 @@ exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt =
 
 var _SuperMap = __webpack_require__(0);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                           * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                           * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  *@namespace SuperMap
@@ -4447,7 +4488,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class MapVRenderer
@@ -4857,7 +4901,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GeoDecodingParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -4977,7 +5024,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GeoCodingParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -5083,7 +5133,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TopologyValidatorJobsParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -5211,7 +5264,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BuffersAnalystJobsParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -5358,7 +5414,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OverlayGeoJobParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -5491,7 +5550,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SummaryRegionJobParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -5713,7 +5775,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SummaryMeshJobParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -5892,7 +5957,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SummaryAttributesJobsParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -6013,7 +6081,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SingleObjectQueryJobsParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -6140,7 +6211,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.KernelDensityJobParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -6350,7 +6424,10 @@ exports.Events = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -6911,7 +6988,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.SummaryAttributesJobsService
@@ -7013,7 +7093,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.TopologyValidatorJobsService
@@ -7115,7 +7198,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
@@ -7217,7 +7303,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.OverlayGeoJobsService
@@ -7309,7 +7398,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VectorClipJobsParameter = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -7449,7 +7541,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.VectorClipJobsService
@@ -7551,7 +7646,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.SummaryRegionJobsService
@@ -7653,7 +7751,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.SummaryMeshJobsService
@@ -7759,7 +7860,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
@@ -7861,7 +7965,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.KernelDensityJobsService
@@ -7980,7 +8087,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.REST.ProcessingService
@@ -8962,7 +9072,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.AddressMatchService
@@ -9087,11 +9200,14 @@ _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Format = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -9108,71 +9224,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {Object} [options.data] - 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
  */
 var Format = exports.Format = function () {
-    function Format(options) {
-        _classCallCheck(this, Format);
-
-        /**
-         * @member {Object} SuperMap.Format.prototype.data 
-         * @description 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
-         */
-        this.data = null;
-
-        /**
-         * APIProperty: keepData
-         * @member {Object} [SuperMap.Format.prototype.keepData=false]
-         * @description 保持最近读到的数据的引用（通过 <data> 属性）。
-         */
-        this.keepData = false;
-
-        _Util.Util.extend(this, options);
-        /**
-         * @member {Object} SuperMap.Format.prototype.options
-         * @description 可选参数。
-         */
-        this.options = options;
-
-        this.CLASS_NAME = "SuperMap.Format";
-    }
+  function Format(options) {
+    _classCallCheck(this, Format);
 
     /**
-     * @function SuperMap.Format.prototype.destroy
-     * @description 销毁该格式类，释放相关资源。
+     * @member {Object} SuperMap.Format.prototype.data 
+     * @description 当 keepData 属性设置为 true，这是传递给 read 操作的要被解析的字符串。
+     */
+    this.data = null;
+
+    /**
+     * APIProperty: keepData
+     * @member {Object} [SuperMap.Format.prototype.keepData=false]
+     * @description 保持最近读到的数据的引用（通过 <data> 属性）。
+     */
+    this.keepData = false;
+
+    _Util.Util.extend(this, options);
+    /**
+     * @member {Object} SuperMap.Format.prototype.options
+     * @description 可选参数。
+     */
+    this.options = options;
+
+    this.CLASS_NAME = "SuperMap.Format";
+  }
+
+  /**
+   * @function SuperMap.Format.prototype.destroy
+   * @description 销毁该格式类，释放相关资源。
+   */
+
+
+  _createClass(Format, [{
+    key: 'destroy',
+    value: function destroy() {}
+    //用来销毁该格式类，释放相关资源
+
+
+    /**
+     * @function SuperMap.Format.prototype.read
+     * @description 来从字符串中读取数据。
+     * @param {string} data - 读取的数据。
      */
 
-
-    _createClass(Format, [{
-        key: 'destroy',
-        value: function destroy() {}
-        //用来销毁该格式类，释放相关资源
-
-
-        /**
-         * @function SuperMap.Format.prototype.read
-         * @description 来从字符串中读取数据。
-         * @param {string} data - 读取的数据。
-         */
-
-    }, {
-        key: 'read',
-        value: function read(data) {} // eslint-disable-line no-unused-vars
-        //用来从字符串中读取数据
+  }, {
+    key: 'read',
+    value: function read(data) {} // eslint-disable-line no-unused-vars
+    //用来从字符串中读取数据
 
 
-        /**
-         * @function SuperMap.Format.prototype.write
-         * @description 将对象写成字符串。
-         * @param {Object} object - 可序列化的对象。
-         * @returns {string} 对象被写成字符串。
-         */
+    /**
+     * @function SuperMap.Format.prototype.write
+     * @description 将对象写成字符串。
+     * @param {Object} object - 可序列化的对象。
+     * @returns {string} 对象被写成字符串。
+     */
 
-    }, {
-        key: 'write',
-        value: function write(object) {// eslint-disable-line no-unused-vars
-            //用来写字符串
-        }
-    }]);
+  }, {
+    key: 'write',
+    value: function write(object) {// eslint-disable-line no-unused-vars
+      //用来写字符串
+    }
+  }]);
 
-    return Format;
+  return Format;
 }();
 
 _SuperMap.SuperMap.Format = Format;
@@ -9201,7 +9317,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.Format.JSON
@@ -9511,11 +9630,14 @@ _SuperMap.SuperMap.Format.JSON = JSONFormat;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Credential = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -9535,74 +9657,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * pixcel.destroy();
  */
 var Credential = exports.Credential = function () {
-    function Credential(value, name) {
-        _classCallCheck(this, Credential);
+  function Credential(value, name) {
+    _classCallCheck(this, Credential);
 
-        /**
-         * @member {string} SuperMap.Bounds.prototype.value
-         * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
-         */
-        this.value = value ? value : "";
+    /**
+     * @member {string} SuperMap.Bounds.prototype.value
+     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+     */
+    this.value = value ? value : "";
 
-        /**
-         * @member {string} [SuperMap.Bounds.prototype.name='token']
-         * @description 验证信息前缀，name=value 部分的 name 部分。
-         */
-        this.name = name ? name : "token";
-        this.CLASS_NAME = "SuperMap.Credential";
+    /**
+     * @member {string} [SuperMap.Bounds.prototype.name='token']
+     * @description 验证信息前缀，name=value 部分的 name 部分。
+     */
+    this.name = name ? name : "token";
+    this.CLASS_NAME = "SuperMap.Credential";
+  }
+
+  /**
+   * @function SuperMap.Credential.prototype.getUrlParameters
+   * @example
+   * var credential = new SuperMap.Credential("valueString","token");
+   * //这里 str = "token=valueString";
+   * var str = credential.getUrlParameters();
+   * @returns {string} 返回安全信息组成的 url 片段。
+   */
+
+
+  _createClass(Credential, [{
+    key: "getUrlParameters",
+    value: function getUrlParameters() {
+      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+      return this.name + "=" + this.value;
     }
 
     /**
-     * @function SuperMap.Credential.prototype.getUrlParameters
+     * @function SuperMap.Bounds.prototype.getValue
+     * @description 获取 value。
      * @example
-     * var credential = new SuperMap.Credential("valueString","token");
-     * //这里 str = "token=valueString";
-     * var str = credential.getUrlParameters();
-     * @returns {string} 返回安全信息组成的 url 片段。
+     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+     * var str = credential.getValue();
+     * @returns {string} 返回 value 字符串，在 iServer 服务下该 value 值即为 token 值。
      */
 
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this.value;
+    }
 
-    _createClass(Credential, [{
-        key: "getUrlParameters",
-        value: function getUrlParameters() {
-            //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-            return this.name + "=" + this.value;
-        }
+    /**
+     *
+     * @function SuperMap.Credential.prototype.destroy
+     * @description 销毁此对象。销毁后此对象的所有属性为 null，而不是初始值。
+     * @example
+     * var credential = new SuperMap.Credential("valueString","token");
+     * credential.destroy();
+     */
 
-        /**
-         * @function SuperMap.Bounds.prototype.getValue
-         * @description 获取 value。
-         * @example
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-         * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-         * var str = credential.getValue();
-         * @returns {string} 返回 value 字符串，在 iServer 服务下该 value 值即为 token 值。
-         */
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.value = null;
+      this.name = null;
+    }
+  }]);
 
-    }, {
-        key: "getValue",
-        value: function getValue() {
-            return this.value;
-        }
-
-        /**
-         *
-         * @function SuperMap.Credential.prototype.destroy
-         * @description 销毁此对象。销毁后此对象的所有属性为 null，而不是初始值。
-         * @example
-         * var credential = new SuperMap.Credential("valueString","token");
-         * credential.destroy();
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.value = null;
-            this.name = null;
-        }
-    }]);
-
-    return Credential;
+  return Credential;
 }();
 
 /**
@@ -9646,7 +9768,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.REST.AddressMatchService
@@ -9802,7 +9927,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 /**
  * @class SuperMap.Layer.MapVLayer
@@ -10101,7 +10229,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DatasourceConnectionInfo = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -11506,7 +11637,9 @@ var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.Promise = _promisePolyfill2.default;
+window.Promise = _promisePolyfill2.default; /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                             * This program are made available under the terms of the Apache License, Version 2.0
+                                             * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 /***/ }),
 /* 52 */
@@ -11536,6 +11669,9 @@ var _Util = __webpack_require__(1);
  * @namespace
  * @description 事件处理函数.
  */
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
@@ -11866,7 +12002,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Pixel = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 
@@ -12082,7 +12221,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ElasticSearch = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This program are made available under the terms of the Apache License, Version 2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 var _SuperMap = __webpack_require__(0);
 

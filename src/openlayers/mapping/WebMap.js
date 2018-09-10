@@ -1,4 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import ol from 'openlayers';
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
@@ -1334,6 +1336,9 @@ export class WebMap extends ol.Observable {
             origin = [bounds.leftBottom.x, bounds.rightTop.y],
             extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
         var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
+        if (!center) {
+            center = [(bounds.rightTop.x + bounds.leftBottom.x) / 2, (bounds.rightTop.y + bounds.leftBottom.y) / 2];
+        }
         var viewOptions = {
             center: [center.x, center.y],
             zoom: level,

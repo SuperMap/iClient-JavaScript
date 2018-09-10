@@ -1,4 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 
 const emptyFunc = L.Util.falseFn;
@@ -26,6 +28,24 @@ const emptyFunc = L.Util.falseFn;
  * @param {Function} [options.onHover] - 悬停事件。
 
  */
+const CSS_TRANSFORM = (function () {
+    let div = document.createElement('div');
+    let props = [
+        'transform',
+        'WebkitTransform',
+        'MozTransform',
+        'OTransform',
+        'msTransform'
+    ];
+
+    for (let i = 0; i < props.length; i++) {
+        let prop = props[i];
+        if (div.style[prop] !== undefined) {
+            return prop;
+        }
+    }
+    return props[0];
+})();
 export var GraphicWebGLRenderer = L.Class.extend({
     initialize: function (layer, options) {
         this.layer = layer;
@@ -76,6 +96,21 @@ export var GraphicWebGLRenderer = L.Class.extend({
      * @description 绘制点要素。
      */
     drawGraphics: function (graphics) {
+        this._clearBuffer();
+        let size = this.layer._map.getSize();
+        if (this._container.width !== size.x) {
+            this._container.width = size.x;
+        }
+        if (this._container.height !== size.y) {
+            this._container.height = size.y;
+        }
+        let mapPane = this.layer._map.getPanes().mapPane;
+        let point = mapPane._leaflet_pos;
+
+        this._container.style[CSS_TRANSFORM] = 'translate(' +
+            -Math.round(point.x) + 'px,' +
+            -Math.round(point.y) + 'px)';
+
         this._data = graphics || [];
         if (!this._renderLayer) {
             this._createInnerRender();
@@ -231,8 +266,10 @@ export var GraphicWebGLRenderer = L.Class.extend({
     },
 
     _clearBuffer: function () {
-        let lm = this.deckGL.layerManager;
-        lm && lm.context.gl.clear(lm.context.gl.COLOR_BUFFER_BIT);
+        if (this.deckGL) {
+            let lm = this.deckGL.layerManager;
+            lm && lm.context.gl.clear(lm.context.gl.COLOR_BUFFER_BIT);
+        }
         return this;
     },
 

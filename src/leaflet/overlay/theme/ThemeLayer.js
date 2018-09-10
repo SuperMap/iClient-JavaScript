@@ -1,4 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import {
     CommonUtil,
@@ -9,7 +11,9 @@ import {
     GeoText,
     LevelRenderer
 } from '@supermap/iclient-common';
-import {ThemeFeature} from './ThemeFeature';
+import {
+    ThemeFeature
+} from './ThemeFeature';
 import Attributions from '../../core/Attributions'
 
 /**
@@ -201,7 +205,10 @@ export var ThemeLayer = L.Layer.extend({
         }
 
         var succeed = featuresFailRemoved.length == 0;
-        me.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
+        me.fire("featuresremoved", {
+            features: featuresFailRemoved,
+            succeed: succeed
+        });
     },
 
     /**
@@ -214,7 +221,10 @@ export var ThemeLayer = L.Layer.extend({
             me.renderer.clear();
         }
         me.features = [];
-        me.fire("featuresremoved", {features: [], succeed: true});
+        me.fire("featuresremoved", {
+            features: [],
+            succeed: true
+        });
     },
 
     /**
@@ -325,10 +335,11 @@ export var ThemeLayer = L.Layer.extend({
         if (opacity === me.options.opacity) {
             return;
         }
-        if (opacity) {
+        if (!isNaN(opacity)) {
             me.options.opacity = opacity;
+            me._updateOpacity();
         }
-        me._updateOpacity();
+
     },
 
     /**
@@ -498,7 +509,10 @@ export var ThemeLayer = L.Layer.extend({
         var me = this;
         CommonUtil.modifyDOMElement(me.container, null, null, null, null, null, null, me.options.opacity);
         if (me._map !== null) {
-            me._map.fire("changelayer", {layer: me, property: "opacity"});
+            me._map.fire("changelayer", {
+                layer: me,
+                property: "opacity"
+            });
         }
     },
 

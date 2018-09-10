@@ -1,4 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+  * This program are made available under the terms of the Apache License, Version 2.0
+  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
 import {
@@ -22,24 +24,6 @@ const defaultProps = {
     strokeWidth: 1,
     outline: false
 };
-const CSS_TRANSFORM = (function () {
-    let div = document.createElement('div');
-    let props = [
-        'transform',
-        'WebkitTransform',
-        'MozTransform',
-        'OTransform',
-        'msTransform'
-    ];
-
-    for (let i = 0; i < props.length; i++) {
-        let prop = props[i];
-        if (div.style[prop] !== undefined) {
-            return prop;
-        }
-    }
-    return props[0];
-})();
 /**
  * @class L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
@@ -258,30 +242,8 @@ export var GraphicLayer = L.Path.extend({
         this._update();
     },
     _moveEnd: function () {
-        //拖动和缩放结束后webgl绘制时会有跳动现象(暂时找不到原因)，故在此执行清除操作
-        this._layerRenderer._clearBuffer();
-        let size = this._map.getSize();
-
-        if (this._container._width !== size.x) {
-            this._container.width = size.x;
-        }
-        if (this._container._height !== size.y) {
-            this._container.height = size.y;
-        }
-        this._draw();
-    },
-
-    _draw: function () {
-        let mapPane = this._map.getPanes().mapPane;
-        let point = mapPane._leaflet_pos;
-
-        this._container.style[CSS_TRANSFORM] = 'translate(' +
-            -Math.round(point.x) + 'px,' +
-            -Math.round(point.y) + 'px)';
-
         this._update();
     },
-
     //使用canvas渲染或webgl渲染
     _createRenderer: function () {
         let map = this._map;
