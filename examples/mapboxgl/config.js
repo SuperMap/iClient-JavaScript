@@ -369,6 +369,13 @@ var exampleConfig = {
                         localIgnore: true,
                         thumbnail: "mvt_UGCV5.png",
                         fileName: "mvtVectorTile_precache"
+                    },
+                    {
+                        name: "土地利用",
+                        name_en: "Land Use",
+                        localIgnore: true,
+                        thumbnail: "mvtVectorTile_landuse.png",
+                        fileName: "mvtVectorTile_landuse"
                     }
                 ]
             },

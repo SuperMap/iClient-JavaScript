@@ -143,12 +143,12 @@ a {
     color: #7d7d7d;
 }
 
-.contact-link, .join-link {
-    padding-left: 20px;
-}
-
-.join-link {
+.contact-link{
+    text-align: center;
     margin-top: 10px;
 }
-
+.join-link {
+    text-align: center;
+    margin-top: 10px;
+}
 /*footer end */

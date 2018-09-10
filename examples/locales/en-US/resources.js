@@ -118,6 +118,7 @@ window.examplesResources = {
         "tel": "Tel: ",
         "sns": " WebGIS Chinese Technical QQ Group: ",
         "sns_tips": " (click to join)",
+        "sns_full": " (full)",
         "contact": "Contact us: ",
         "join": "Join us: SuperMap Web Client Team",
         "join_tips1": "(Please send email to: ",
