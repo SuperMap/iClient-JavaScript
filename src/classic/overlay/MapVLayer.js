@@ -1,6 +1,12 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {MapVRenderer} from './mapv/MapVRenderer';
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+import {
+    SuperMap
+} from '../SuperMap';
+import {
+    MapVRenderer
+} from './mapv/MapVRenderer';
 
 /**
  * @class SuperMap.Layer.MapVLayer
@@ -214,7 +220,8 @@ export class MapVLayer extends SuperMap.Layer {
      * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
      */
     transferToMapLatLng(latLng) {
-        var source = "EPSG:4326", dest = "EPSG:4326";
+        var source = "EPSG:4326",
+            dest = "EPSG:4326";
         var unit = this.map.getUnits() || "degree";
         if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
             dest = "EPSG:3857";

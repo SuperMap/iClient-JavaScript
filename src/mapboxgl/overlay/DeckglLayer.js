@@ -1,4 +1,6 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {
@@ -35,14 +37,14 @@ import './graphic';
  * @param {boolean} [options.props.fp64=false] - "scatter-plot" 配置项：否应以高精度64位模式呈现图层。
  * @param {boolean} options.props.lightSettings - 公共配置项：光照，包含以下几个配置；
  * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
-*  @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
-*  @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
-*  @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
-*  @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
-*  @param {number} [options.props.lightSettings.modelMatrix] - 光照配置项：光位置的变换矩阵。
-*  @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
-*  @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
-*  @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
+ *  @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
+ *  @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
+ *  @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
+ *  @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
+ *  @param {number} [options.props.lightSettings.modelMatrix] - 光照配置项：光位置的变换矩阵。
+ *  @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
+ *  @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
+ *  @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
  * @param {number} [options.props.widthScale=1] - "path-layer" 配置项：线宽比例。
  * @param {number} [options.props.widthMinPixels=0] - "path-layer" 配置项：线宽最小像素值。
  * @param {number} [options.props.widthMaxPixels=Number.MAX_SAFE_INTEGER] - "path-layer" 配置项：线宽最大像素值。

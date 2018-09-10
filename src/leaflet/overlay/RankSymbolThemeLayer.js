@@ -1,8 +1,14 @@
-/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.* This program are made available under the terms of the Apache License, Version 2.0* which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import {FeatureTheme} from '@supermap/iclient-common';
-import {GraphThemeLayer} from './GraphThemeLayer';
+import {
+    FeatureTheme
+} from '@supermap/iclient-common';
+import {
+    GraphThemeLayer
+} from './GraphThemeLayer';
 
 /**
  * @class L.supermap.rankSymbolThemeLayer
@@ -23,7 +29,7 @@ import {GraphThemeLayer} from './GraphThemeLayer';
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。 
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
-*/
+ */
 export var RankSymbolThemeLayer = GraphThemeLayer.extend({
 
     /** 
@@ -39,8 +45,8 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
      * @property {boolean} [circleHoverAble=true] - 是否允许圆形使用 hover 状态。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。 
      * @property {boolean} [circleClickAble=true] - 是否允许圆形被点击。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
      */
-    
-    initialize: function (name, symbolType, options) {// eslint-disable-line no-unused-vars
+
+    initialize: function (name, symbolType, options) { // eslint-disable-line no-unused-vars
         GraphThemeLayer.prototype.initialize.apply(this, arguments);
         this.symbolType = symbolType;
         this.symbolSetting = {};
