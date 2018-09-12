@@ -1,3 +1,48 @@
+# next release
+
+## API changes
+
+### for Leaflet
+
+ - 可视化 - 矢量瓦片
+
+  - `L.supermap.tiledVectorLayer` 新增 `options.processCharacters` 参数,支持本地设置服务端的CartoCSS样式时替换特殊字符
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.featureService` 更新要素时没有携带凭据的问题
+- 优化 `L.supermap.echartsLayer` 内存占用问题
+- 修复 `L.supermap.labelThemeLayer` 移除所有要素后，放大缩小还是会显示要素的问题
+- 修复 `L.supermap.graphicLayer` 从地图移除后再添加后，移动时要素偏移的问题，优化绘制性能
+- 修复 `L.supermap.webmap` 在地图没有设置中心点的时候无法出图的问题
+- 修复 Internet Explorer 11 浏览器上报错问题 
+
+
+### for OpenLayers
+
+- 修复 `ol.source.Graphic` 在浏览器窗口大小发生变化，要素偏移的问题
+- 修复 `ol.source.DataFlow` 更新要素位置时可能出现的闪烁问题
+- 修复 `ol.source.Label` 移除所有要素后，放大缩小还是会显示要素的问题
+- 修复 `ol.supermap.WebMap` 在地图没有设置中心点的时候无法出图的问题
+- 优化 `ol.source.Graphic` 三叶草样式仅有单个叶片时的选中逻辑
+- 修复 Internet Explorer 11 浏览器上报错问题 
+
+### for MapboxGL
+- 修复 `mapboxgl.supermap.LabelThemeLayer` 移除所有要素后，放大缩小还是会显示要素的问题
+
+
+## Examples
+
+### for MapboxGL
+
+- 可视化 - 矢量瓦片
+
+  - 新增“土地利用”示例
+
+
+
 # 9.1.0 beta (2018-8-2) #
 
 ## API changes
@@ -5,9 +50,6 @@
 ### for Leaflet
 
 - 新增 `L.Util.transform` 方法，支持要素的投影转换
-- `L.supermap.tiledVectorLayer` 
-
-   -  `options` 新增 `processCharacters` 参数,支持本地设置服务端的CartoCSS样式时替换特殊字符
 
 ## Fixed
 
