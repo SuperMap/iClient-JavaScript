@@ -34,13 +34,14 @@ L.Control.Attribution.include({
 wrapToGeoJSON([L.Polyline, L.Polygon, L.Marker, L.CircleMarker, L.Circle, L.LayerGroup]);
 
 function wrapToGeoJSON(objClassArray) {
-    for (const objClass of objClassArray) {
+    objClassArray.map((objClass) => {
         objClass.defaultFunction = objClass.prototype.toGeoJSON;
         objClass.include({
             toGeoJSON: function (precision) {
                 return objClass.defaultFunction.call(this, precision || 10);
             }
         })
-    }
+        return objClass;
+    })
 
 }

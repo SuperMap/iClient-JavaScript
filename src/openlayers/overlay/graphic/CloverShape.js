@@ -42,7 +42,8 @@ export class CloverShape extends ol.style.RegularShape {
             angle: options.angle || 60,
             stroke: options.stroke,
             fill: options.fill,
-            radius: options.radius || 10
+            radius: options.radius || 10,
+            rotation: options.rotation || 0
         });
         this.count_ = options.count || 3;
         this.strokeOpacity = options.strokeOpacity || 1;

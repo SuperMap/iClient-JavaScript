@@ -1,6 +1,6 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
-  * This program are made available under the terms of the Apache License, Version 2.0
-  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 
 const emptyFunc = L.Util.falseFn;
@@ -68,7 +68,10 @@ L.Canvas.include({
 
     drawGraphics: function (graphics, defaultStyle) {
         var me = this;
-        me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
+        if (!me._drawing) {
+            return;
+        }
+        //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
         graphics.forEach(function (graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {

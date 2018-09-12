@@ -27501,7 +27501,6 @@ SuperMap.GetLayersInfoService = GetLayersInfoService_GetLayersInfoService;
 
 
 
-
 /**
  * @class SuperMap.InterpolationAnalystParameters
  * @category iServer SpatialAnalyst InterpolationAnalyst
@@ -27517,7 +27516,7 @@ SuperMap.GetLayersInfoService = GetLayersInfoService_GetLayersInfoService;
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。 
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。 
  * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。 
- * @param {SuperMap.PixelFormat} [options.pixelFormat='BIT16'] - 指定结果栅格数据集存储的像素格式。 
+ * @param {SuperMap.PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。 
  * @param {string} [options.InterpolationAnalystType="dataset"] - 插值分析类型（"dataset" 或 "geometry"）。 
  */
 class InterpolationAnalystParameters_InterpolationAnalystParameters {
@@ -27584,10 +27583,10 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
         this.outputDatasourceName = null;
 
         /**
-         * @member {SuperMap.PixelFormat} [SuperMap.InterpolationAnalystParameters.prototype.pixelFormat=SuperMap.PixelFormat.BIT16]
+         * @member {SuperMap.PixelFormat} [SuperMap.InterpolationAnalystParameters.prototype.pixelFormat]
          * @description 指定结果栅格数据集存储的像素格式。支持存储的像素格式有 BIT16、BIT32、DOUBLE、SINGLE、UBIT1、UBIT4、UBIT8、UBIT24、UBIT32。
          */
-        this.pixelFormat = PixelFormat.BIT16;
+        this.pixelFormat = null;
 
         /**
          * @member {string} [SuperMap.InterpolationAnalystParameters.prototype.dataset]
@@ -27667,7 +27666,6 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
 }
 
 SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters_InterpolationAnalystParameters;
-
 // CONCATENATED MODULE: ./src/common/iServer/InterpolationRBFAnalystParameters.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0

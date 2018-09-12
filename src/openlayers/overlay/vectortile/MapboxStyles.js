@@ -118,11 +118,13 @@ export class MapboxStyles extends ol.Observable {
             return this.layersBySourceLayer[sourceLayer];
         }
         const layers = [];
-        for (const layer of this._mbStyle.layers) {
+        for (let index = 0; index < this._mbStyle.layers.length; index++) {
+            const layer = this._mbStyle.layers[index];
             if (layer['source-layer'] !== sourceLayer) {
                 continue;
             }
             layers.push(layer);
+
         }
         this.layersBySourceLayer[sourceLayer] = layers;
         return layers;
@@ -172,12 +174,12 @@ export class MapboxStyles extends ol.Observable {
                     let spriteImage = null;
                     const img = new Image();
                     img.crossOrigin = 'anonymous';
-                    img.onload =  () =>{
+                    img.onload = () => {
                         spriteImage = img;
                         this._initStyleFunction(mbStyle, this._spriteData, spriteImage);
                     };
                     img.src = this._spriteImageUrl;
-                    
+
                 })
         } else {
             this._initStyleFunction(mbStyle, null, null);
@@ -202,7 +204,7 @@ export class MapboxStyles extends ol.Observable {
             setStyle: function () {},
             set: function () {},
             changed: function () {}
-        }, mbStyle, this.source, this.resolutions, spriteData, "",spriteImage);
+        }, mbStyle, this.source, this.resolutions, spriteData, "", spriteImage);
         return (feature, resolution) => {
             const style = fun(feature, resolution);
             if (this.selectedObject && this.selectedObject.selectedId === feature.getId() && this.selectedObject.sourceLayer === feature.get('layer')) {
@@ -211,7 +213,8 @@ export class MapboxStyles extends ol.Observable {
                 if (!Array.isArray(selectStyles)) {
                     selectStyles = [selectStyles];
                 }
-                for (const selectStyle of selectStyles) {
+                for (let index = 0; index < selectStyles.length; index++) {
+                    const selectStyle = selectStyles[index];
                     if (feature.getGeometry().getType() === 'Point' && style[0].getText() && selectStyle.getText()) {
                         selectStyle.setFill(null);
                         selectStyle.setStroke(null);

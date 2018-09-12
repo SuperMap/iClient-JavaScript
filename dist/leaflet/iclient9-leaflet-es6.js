@@ -30480,7 +30480,6 @@ SuperMap.GetLayersInfoService = GetLayersInfoService_GetLayersInfoService;
 
 
 
-
 /**
  * @class SuperMap.InterpolationAnalystParameters
  * @category iServer SpatialAnalyst InterpolationAnalyst
@@ -30496,7 +30495,7 @@ SuperMap.GetLayersInfoService = GetLayersInfoService_GetLayersInfoService;
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。 
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。 
  * @param {SuperMap.FilterParameter} [options.filterQueryParameter] - 属性过滤条件。 
- * @param {SuperMap.PixelFormat} [options.pixelFormat='BIT16'] - 指定结果栅格数据集存储的像素格式。 
+ * @param {SuperMap.PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。 
  * @param {string} [options.InterpolationAnalystType="dataset"] - 插值分析类型（"dataset" 或 "geometry"）。 
  */
 class InterpolationAnalystParameters_InterpolationAnalystParameters {
@@ -30563,10 +30562,10 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
         this.outputDatasourceName = null;
 
         /**
-         * @member {SuperMap.PixelFormat} [SuperMap.InterpolationAnalystParameters.prototype.pixelFormat=SuperMap.PixelFormat.BIT16]
+         * @member {SuperMap.PixelFormat} [SuperMap.InterpolationAnalystParameters.prototype.pixelFormat]
          * @description 指定结果栅格数据集存储的像素格式。支持存储的像素格式有 BIT16、BIT32、DOUBLE、SINGLE、UBIT1、UBIT4、UBIT8、UBIT24、UBIT32。
          */
-        this.pixelFormat = PixelFormat.BIT16;
+        this.pixelFormat = null;
 
         /**
          * @member {string} [SuperMap.InterpolationAnalystParameters.prototype.dataset]
@@ -30646,7 +30645,6 @@ class InterpolationAnalystParameters_InterpolationAnalystParameters {
 }
 
 SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters_InterpolationAnalystParameters;
-
 // CONCATENATED MODULE: ./src/common/iServer/InterpolationRBFAnalystParameters.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65174,14 +65172,15 @@ external_L_default.a.Control.Attribution.include({
 wrapToGeoJSON([external_L_default.a.Polyline, external_L_default.a.Polygon, external_L_default.a.Marker, external_L_default.a.CircleMarker, external_L_default.a.Circle, external_L_default.a.LayerGroup]);
 
 function wrapToGeoJSON(objClassArray) {
-    for (const objClass of objClassArray) {
+    objClassArray.map((objClass) => {
         objClass.defaultFunction = objClass.prototype.toGeoJSON;
         objClass.include({
             toGeoJSON: function (precision) {
                 return objClass.defaultFunction.call(this, precision || 10);
             }
         })
-    }
+        return objClass;
+    })
 
 }
 // CONCATENATED MODULE: ./src/leaflet/services/ServiceBase.js
@@ -72967,7 +72966,7 @@ var DataFlowLayer = external_L_default.a.LayerGroup.extend({
         return this;
     },
     _onMessageSuccessed: function (msg) {
-        for (const layer of this.getLayers()) {
+        this.getLayers().map((layer) => {
             layer.onMessageSuccessed(msg);
             /**
              * @description 图层数据更新成功后触发。
@@ -72979,7 +72978,8 @@ var DataFlowLayer = external_L_default.a.LayerGroup.extend({
                 layer: layer,
                 data: msg.featureResult
             });
-        }
+            return layer;
+        })
     }
 
 });
@@ -73652,8 +73652,8 @@ var imageStyle = function (options) {
 external_L_default.a.supermap.imageStyle = imageStyle;
 // CONCATENATED MODULE: ./src/leaflet/overlay/graphic/CanvasRenderer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
-  * This program are made available under the terms of the Apache License, Version 2.0
-  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 const emptyFunc = external_L_default.a.Util.falseFn;
@@ -73721,7 +73721,10 @@ external_L_default.a.Canvas.include({
 
     drawGraphics: function (graphics, defaultStyle) {
         var me = this;
-        me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
+        if (!me._drawing) {
+            return;
+        }
+        //this._ctx.clearRect(0, 0, this._ctx.canvas.width, me._ctx.canvas.height);
         graphics.forEach(function (graphic) {
             var style = graphic.getStyle();
             if (!style && defaultStyle) {
@@ -74116,8 +74119,8 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
 
 // CONCATENATED MODULE: ./src/leaflet/overlay/GraphicLayer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
-  * This program are made available under the terms of the Apache License, Version 2.0
-  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -74353,7 +74356,9 @@ var GraphicLayer = external_L_default.a.Path.extend({
         this._update();
     },
     _moveEnd: function () {
-        this._update();
+        if (this._layerRenderer instanceof GraphicWebGLRenderer) {
+            this._update();
+        }
     },
     //使用canvas渲染或webgl渲染
     _createRenderer: function () {

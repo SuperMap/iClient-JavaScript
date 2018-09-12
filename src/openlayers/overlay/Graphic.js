@@ -88,7 +88,7 @@ export class Graphic extends ol.source.ImageCanvas {
                 let coordinate = e.coordinate;
                 let resolution = e.frameState.viewState.resolution;
                 let pixel = e.pixel;
-                me._forEachFeatureAtCoordinate(coordinate, resolution, options.onClick, pixel);
+                me._forEachFeatureAtCoordinate(coordinate, resolution, options.onClick, pixel, e);
             });
         }
 
@@ -150,7 +150,7 @@ export class Graphic extends ol.source.ImageCanvas {
          * @param {RequestCallback} callback -回调函数。
          * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
          */
-        function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel) {
+        function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
             let graphics = me.getGraphicsInExtent();
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
@@ -165,17 +165,53 @@ export class Graphic extends ol.source.ImageCanvas {
                 let image = new ol.style.Style({
                     image: style
                 }).getImage();
-                let extent = [];
-                extent[0] = center[0] - image.getAnchor()[0] * resolution;
-                extent[2] = center[0] + image.getAnchor()[0] * resolution;
-                extent[1] = center[1] - image.getAnchor()[1] * resolution;
-                extent[3] = center[1] + image.getAnchor()[1] * resolution;
-                if (ol.extent.containsCoordinate(extent, coordinate)) {
+
+                let contain = false;
+                //icl-1047  当只有一个叶片的时候，判断是否选中的逻辑处理的更准确一点
+                if (image instanceof CloverShape && image.getCount() === 1) {
+                    const ratation = image.getRotation()* 180 / Math.PI;
+                    const angle = Number.parseFloat(image.getAngle());
+                    const r = image.getRadius() * resolution;
+                    //if(image.getAngle() )
+                    let geo = null;
+                    if (angle > 355) {
+                        geo = new ol.geom.Circle(center, r);
+                    } else {
+                        const coors = [];
+                        coors.push(center);
+                        const perAngle = angle / 8;
+                        for (let index = 0; index < 8; index++) {
+                            const radian=(ratation + index * perAngle)/180 * Math.PI;
+                            coors.push([center[0] + r * Math.cos(radian),
+                                center[1] - r * Math.sin(radian)
+                            ]);
+                        }
+                        coors.push(center);
+                        geo = new ol.geom.Polygon([
+                            coors
+                        ]);
+
+                    }
+                    if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
+                        contain = true;
+                    }
+                } else {
+                    let extent = [];
+                    extent[0] = center[0] - image.getAnchor()[0] * resolution;
+                    extent[2] = center[0] + image.getAnchor()[0] * resolution;
+                    extent[1] = center[1] - image.getAnchor()[1] * resolution;
+                    extent[3] = center[1] + image.getAnchor()[1] * resolution;
+                    if (ol.extent.containsCoordinate(extent, coordinate)) {
+                        contain = true;
+                    }
+                }
+
+                if (contain === true) {
                     if (me.isHighLight) {
                         me._highLight(center, image, graphics[i], evtPixel);
                     }
                     if (callback) {
-                        callback(graphics[i]);
+                        callback(graphics[i], e);
                     }
                     return;
                 }
@@ -389,7 +425,8 @@ export class Graphic extends ol.source.ImageCanvas {
                 radius: image.getRadius(),
                 angle: image.getAngle(),
                 eAngle: sAngle + image.getAngle(),
-                sAngle: sAngle
+                sAngle: sAngle,
+                rotation: image.getRotation()
             };
             if (this.highLightStyle && this.highLightStyle instanceof HitCloverShape) {
                 opts.stroke = this.highLightStyle.getStroke();

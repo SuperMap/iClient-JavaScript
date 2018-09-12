@@ -129,7 +129,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
         return this;
     },
     _onMessageSuccessed: function (msg) {
-        for (const layer of this.getLayers()) {
+        this.getLayers().map((layer) => {
             layer.onMessageSuccessed(msg);
             /**
              * @description 图层数据更新成功后触发。
@@ -141,7 +141,8 @@ export var DataFlowLayer = L.LayerGroup.extend({
                 layer: layer,
                 data: msg.featureResult
             });
-        }
+            return layer;
+        })
     }
 
 });
