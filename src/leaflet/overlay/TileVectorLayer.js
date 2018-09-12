@@ -32,6 +32,7 @@ import Attributions from '../core/Attributions'
  * @param {string} options.layersID - 获取进行切片的地图图层 ID。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型。
  * @param {boolean} [options.serverCartoCSSStyle=true] - 是否使用服务端 CartoCSS 样式。
+ * @param {boolean} [options.processCharacters=false] - 设置客户端CartoCSS样式时是否进行特定字符转换。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
  * @param {boolean} [options.returnAttributes=false] - 是否返回 attributes。
  * @param {string} [options.expands] - expands。
@@ -54,6 +55,8 @@ export var TileVectorLayer = VectorGrid.extend({
         layersID: null,
         //是否服务端CartoCSS样式，默认使用
         serverCartoCSSStyle: true,
+        //设置客户端CartoCSS样式时是否进行特定字符转换
+        processCharacters: false,
 
         returnAttributes: false,
 
@@ -237,7 +240,11 @@ export var TileVectorLayer = VectorGrid.extend({
      * @description 客户端设置 cartoCSS 样式。
      */
     setClientCartoCSS: function (cartoCSSStr) {
-        this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, false);
+        let processCharacters = false;
+        if (this.options.processCharacters) {
+            processCharacters = this.options.processCharacters;
+        }
+        this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, processCharacters);
     },
 
     /**

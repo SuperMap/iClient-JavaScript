@@ -5,6 +5,9 @@
 ### for Leaflet
 
 - 新增 `L.Util.transform` 方法，支持要素的投影转换
+- `L.supermap.tiledVectorLayer` 
+
+   -  `options` 新增 `processCharacters` 参数,支持本地设置服务端的CartoCSS样式时替换特殊字符
 
 ## Fixed
 
