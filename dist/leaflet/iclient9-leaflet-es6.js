@@ -76708,6 +76708,7 @@ var VectorGrid = external_L_default.a.GridLayer.extend({
  * @param {string} options.layerNames - 指定图层的名称列表，支持的类型为矢量图层。
  * @param {string} options.layersID - 获取进行切片的地图图层 ID。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型。
+ * @param {string}  [options.cartoCSS] - 客户端CartoCSS样式字符串。
  * @param {boolean} [options.serverCartoCSSStyle=true] - 是否使用服务端 CartoCSS 样式。
  * @param {boolean} [options.processCharacters=false] - 设置客户端CartoCSS样式时是否进行特定字符转换。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
@@ -76725,6 +76726,7 @@ var TileVectorLayer = VectorGrid.extend({
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
         serverType: null,
         crs: null,
+        //客户端cartocss样式
         cartoCSS: null,
         // 指定图层的名称列表。支持的类型为矢量图层
         layerNames: null,
