@@ -1,7 +1,11 @@
 .widget-select-options {
-    width: 202px !important;
+    width: 202px;
     /* margin-top: 0px !important; */
-    height: 32px !important;
-    margin-top: -3px !important;
+    height: 32px;
+    margin-top: -3px;
     margin-bottom: 16px;
+    cursor: pointer;
+}
+.widget-select-options:hover{
+    border: #108fe9 solid 1px;
 }

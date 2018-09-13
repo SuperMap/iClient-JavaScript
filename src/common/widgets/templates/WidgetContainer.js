@@ -1,8 +1,11 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+import {SuperMap} from '../../SuperMap';
+
 /**
- * @class WidgetContainer
+ * @class SuperMap.Widgets.WidgetContainer
  * @class 微件统一外框
  * @param {string} title - 标题，必传参数
  * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
@@ -36,7 +39,7 @@ export class WidgetContainer {
     }
 
     /**
-     * @function WidgetContainer.prototype.getElement
+     * @function SuperMap.Widgets.WidgetContainer.prototype.getElement
      * @description 改变容器绝对位置
      */
     setContainerPosition(position) {
@@ -46,7 +49,7 @@ export class WidgetContainer {
     }
 
     /**
-     * @function WidgetContainer.prototype.getElement
+     * @function SuperMap.Widgets.WidgetContainer.prototype.getElement
      * @description 获取当前模板 Dom 元素
      */
     getElement() {
@@ -54,7 +57,7 @@ export class WidgetContainer {
     }
 
     /**
-     * @function WidgetContainer.prototype.getContentElement
+     * @function SuperMap.Widgets.WidgetContainer.prototype.getContentElement
      * @description 获取内容元素容器
      */
     getContentElement() {
@@ -62,10 +65,12 @@ export class WidgetContainer {
     }
 
     /**
-     * @function WidgetContainer.prototype.appendContent
+     * @function SuperMap.Widgets.WidgetContainer.prototype.appendContent
      * @description 填充内容元素
      */
     appendContent(element) {
         this.content.appendChild(element);
     }
 }
+
+SuperMap.Widgets.WidgetContainer = WidgetContainer;

@@ -23,7 +23,8 @@
 
     L.supermap.tiledMapLayer(url).addTo(map);
 
-    var control = L.supermap.widgets.dataFlow({
+    L.supermap.widgets.dataFlow({
+        //pointToLayer 设置点样式：
         pointToLayer: function (geoJsonPoint, latlng) {
             return L.circleMarker(latlng, {
                 color: "blue",
@@ -34,7 +35,6 @@
             });
         },
     }).addTo(map);
-    control.on("dataupdated", (e) => console.log(e));
 </script>
 </body>
 </html>

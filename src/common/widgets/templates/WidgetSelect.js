@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../../SuperMap';
+import {SuperMap} from '../../SuperMap';
 
 /**
  * @class SuperMap.Widgets.WidgetSelect
@@ -12,10 +12,10 @@ export class WidgetSelect {
     constructor(optionsArr) {
         this._initView(optionsArr);
     }
+
     _initView(optionsArr) {
         let select = document.createElement('select');
         select.className = "widget-select-options";
-        select.id = 'widgetSelect';
         for (let i = 0; i < optionsArr.length; i++) {
             let ele = document.createElement('option');
             ele.innerHTML = optionsArr[i];
@@ -27,7 +27,7 @@ export class WidgetSelect {
             select.appendChild(ele);
         }
         this.select = select;
-       
+
     }
 
     /**
@@ -38,4 +38,5 @@ export class WidgetSelect {
         return this.select;
     }
 }
+
 SuperMap.Widgets.WidgetSelect = WidgetSelect;

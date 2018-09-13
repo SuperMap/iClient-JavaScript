@@ -1,18 +1,31 @@
-.checkbox-default-img{
+.checkbox-default-img {
     background: url("../image/iweb_checkbox_default_icon.png") no-repeat;
 }
-.checkbox-selected-img{
+
+.checkbox-selected-img {
     background: url("../image/iweb_checkbox_selected_icon.png") no-repeat;
 }
-.analyst-buffer-img{
+
+.analyst-buffer-img {
     background: url("../image/analyst_buffer_icon.png") no-repeat;
 }
-.analyst-isoline-img{
+
+.analyst-isoline-img {
     background: url("../image/analyst_isoline_icon.png") no-repeat;
 }
-.triangle-down-img{
+
+.triangle-down-img {
     background: url("../image/triangle-down-icon.png") no-repeat;
 }
-.triangle-up-img{
+
+.triangle-up-img {
     background: url("../image/triangle-up-icon.png") no-repeat;
+}
+
+.single-default-img {
+    background: url("../image/radiobox-disabled.png") no-repeat;
+}
+
+.single-checked-img {
+    background: url("../image/radiobox-checked.png") no-repeat;
 }

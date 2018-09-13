@@ -11,6 +11,8 @@ import {MessageBox} from './messagebox/MessageBox';
 import {WidgetContainer} from './templates/WidgetContainer';
 import {WidgetSelect} from './templates/WidgetSelect';
 import {WidgetDropDownBox} from './templates/WidgetDropDownBox';
+import {AttributesPopContainer} from './templates/AttributesPopContainer';
+import {PopContainer} from './templates/PopContainer';
 //工具类
 import {widgetsUtil, FileReaderUtil} from './util';
 
@@ -21,4 +23,6 @@ export {MessageBox};
 export {WidgetContainer};
 export {WidgetSelect};
 export {WidgetDropDownBox};
+export {AttributesPopContainer};
+export {PopContainer};
 export {widgetsUtil, FileReaderUtil};

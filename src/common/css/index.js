@@ -10,6 +10,13 @@ import '../widgets/css/Icon.css';
 import '../widgets/css/OpenFile.css';
 import '../widgets/css/MessageBox.css';
 import '../widgets/css/DataFlow.css';
+import '../widgets/css/POISearch.css';
+
 import '../widgets/css/WidgetContainer.css';
 import '../widgets/css/WidgetDropDownBox.css';
 import '../widgets/css/WidgetSelect.css';
+import '../widgets/css/CityTabsPage.css';
+import '../widgets/css/NavTabsPage.css';
+import '../widgets/css/PaginationContainer.css';
+import '../widgets/css/PopContainer.css';
+

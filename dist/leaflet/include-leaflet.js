@@ -50,7 +50,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
             inputCSS("https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css");
-            inputScript("https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js");
+            inputScript("https://cdn.bootcss.com/leaflet/1.3.1/leaflet-src.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
@@ -87,7 +87,7 @@
             }
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
-            inputCSS("../../dist/leaflet/iclient9-leaflet.min.css");
+            inputCSS("../../dist/leaflet/iclient9-leaflet.css");
         }
         if (inArray(includes, 'iclient9-plot-leaflet')) {
             inputCSS("http://iclient.supermap.io/web/libs/plotting/leaflet/iclient9-plot-leaflet.css");

@@ -22,8 +22,7 @@
     var url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light';
 
     var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
-    map.layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'});
-    map.addControl(map.layersControl);
+    var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
 
     var openFileViewModel = new L.supermap.widgets.OpenFileViewModel(map);
     var messageBox = new SuperMap.Widgets.MessageBox();
@@ -83,12 +82,17 @@
                 self.openFileViewModel.on("errorfileformat", _messageListener.bind(self));
                 self.openFileViewModel.on("openfilefail", _messageListener.bind(self));
                 self.openFileViewModel.on("readdatafail", _messageListener.bind(self));
+                self.openFileViewModel.on("openfilesuccess", function (e) {
+                    var layer = L.geoJSON(e.result).addTo(map);
+                    map.flyToBounds(layer.getBounds());
+                    layersControl.addOverlay(layer, e.layerName);
+                });
 
                 function _messageListener(e) {
                     this.messageBox.showView(e.message, e.messageType);
                 }
 
-                self.openFileViewModel.selectFileLoadToMap(e);
+                self.openFileViewModel.readFile(e);
             },
         }
     };

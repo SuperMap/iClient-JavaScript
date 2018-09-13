@@ -24,6 +24,7 @@ export var OpenFileView = L.Control.extend({
      */
     onAdd: function (map) {
         this.map = map;
+        this.event = new L.Evented();
         if (this.options.orientation !== 'vertical') {
             this.options.orientation = 'horizontal';
         }
@@ -57,7 +58,9 @@ export var OpenFileView = L.Control.extend({
         this.fileInput.type = "file";
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
-        this.fileInput.onchange = this.viewModel.selectFileLoadToMap.bind(this.viewModel);
+        this.fileInput.onchange = (fileEventObject) => {
+            this.viewModel.readFile(fileEventObject);
+        };
 
         //增加提示框：
         this.messageBox = new MessageBox();
@@ -66,8 +69,15 @@ export var OpenFileView = L.Control.extend({
         this.viewModel.on("errorfileformat", this._showMessageListener.bind(this));
         this.viewModel.on("openfilefail", this._showMessageListener.bind(this));
         this.viewModel.on("readdatafail", this._showMessageListener.bind(this));
+        this.viewModel.on("openfilesuccess", (e) => {
+            this.event.fire("openfilesuccess", e);
+        });
 
         return uploadContent;
+    },
+
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
     },
 
     /**
