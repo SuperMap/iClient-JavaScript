@@ -12,6 +12,7 @@ import './mapboxgl/overlay/RangeTheme3DLayerSpec.js';
 import './mapboxgl/overlay/ThreeLayerSpec.js';
 import './mapboxgl/overlay/UniqueThemeLayerSpec.js';
 import './mapboxgl/overlay/UniqueTheme3DLayerSpec.js';
+import './mapboxgl/overlay/DeckglLayerSpec.js';
 
 /*mapboxgl -- services*/
 import './mapboxgl/services/AddressMatchServiceSpec.js';
