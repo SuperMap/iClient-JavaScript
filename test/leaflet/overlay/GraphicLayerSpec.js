@@ -1,3 +1,4 @@
+import '../../libs/deck.gl/5.1.3/deck.gl';
 import {graphicLayer} from '../../../src/leaflet/overlay/GraphicLayer';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {circleStyle} from '../../../src/leaflet/overlay/graphic/CircleStyle';

@@ -1,4 +1,5 @@
 import ol from 'openlayers';
+import '../../libs/deck.gl/5.1.3/deck.gl';
 import {CloverShape} from '../../../src/openlayers/overlay/graphic/CloverShape';
 import {HitCloverShape} from '../../../src/openlayers/overlay/graphic/HitCloverShape';
 import {Graphic} from '../../../src/openlayers/overlay/Graphic';
@@ -33,7 +34,7 @@ describe('openlayers_GraphicLayer', () => {
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         window.document.body.removeChild(testDiv);
-    });
+     });
 
     it('constructor_canvas', (done) => {
         spyOn(FetchRequest, 'commit').and.callFake(() => {
@@ -92,7 +93,7 @@ describe('openlayers_GraphicLayer', () => {
             map.addLayer(graphicLayer);
         });
         setTimeout(() => {
-            expect(1).not.toBeNull();
+            // expect(1).not.toBeNull();
             var a = new Graphic({
                 graphics: graphics,
                 map: map
@@ -159,7 +160,7 @@ describe('openlayers_GraphicLayer', () => {
             map.addLayer(graphicLayer);
         });
         setTimeout(() => {
-            expect(1).not.toBeNull();
+            // expect(1).not.toBeNull();
             map.removeLayer(graphicLayer);
             done();
         }, 1000)
@@ -221,7 +222,7 @@ describe('openlayers_GraphicLayer', () => {
                     graphics: graphics,
                     map: map,
                     onclick: (result) => {
-                        console.log(result);
+                         console.log(result);
                     },
                     highLightStyle: hitCloverShape
                 })
@@ -230,15 +231,16 @@ describe('openlayers_GraphicLayer', () => {
         });
 
         setTimeout(() => {
-            expect(1).not.toBeNull();
-            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], 1, (result) => {
+            var resolution=1;
+            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2],resolution, (result) => {
                 console.log(result);
+                expect(result).not.toBeNull();
             });
-            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
-                console.log(result);
+            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], resolution, (result) => {
+                expect(result).not.toBeNull();
             });
-            graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], 1, (result) => {
-                console.log(result);
+            graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], resolution, (result) => {
+                expect(result).not.toBeNull();
             });
 
             let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
@@ -249,6 +251,6 @@ describe('openlayers_GraphicLayer', () => {
                 });
             map.removeLayer(graphicLayer);
             done();
-        }, 1000)
-    });
+        }, 4000)
+     });
 });

@@ -136,16 +136,35 @@ describe('mapboxgl_DeckglLayer', () => {
     });
 
     it('onAdd_scatter-plot', (done) => {
+        var p1 = new Point(20.05408801141, 38.837029131724);
+        var p2 = new Point(18.80757663534, 38.606951847395);
+        var p3 = new Point(17.43207212138, 38.530259419285);
         deckglLayer = new DeckglLayer("scatter-plot", {
-            data: null,
+            data: {p1,p2,p3},
             props: {
-                strokeWidth: 12 //线宽
+                radiusScale: 300,
+                radiusMaxPixels: 500,
+                opacity: 0.3,
+                autoHighlight: true,
+                highlightColor: [255, 255, 0, 255],
             },
             callback: {
-                getSourcePosition: d => d.from.coordinates,
-                getTargetPosition: d => d.to.coordinates,
-                getSourceColor: d => [Math.sqrt(d.inbound), 140, 0],
-                getTargetColor: d => [Math.sqrt(d.outbound), 140, 0],
+                getPosition: function (feature) {
+                    if (!feature || !feature.Longitude || !feature.Latitude) {
+                        return [0, 0, 0];
+                    }
+                    return [Number(feature.Longitude), Number(feature.Latitude), 0];
+                },
+                getColor: function (feature) {
+                    if (feature.Magnitude >= 2.5 && feature.Magnitude <= 3.31) {
+                        return [118, 42, 131];
+                    } 
+                    return [0, 0, 0, 0]
+                },
+                getRadius: function (feature) {
+               
+                    return Math.pow(Number(feature.Magnitude), 2.5);
+                }
             }
         });
         deckglLayer.onAdd(map);

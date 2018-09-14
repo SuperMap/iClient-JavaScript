@@ -16,10 +16,11 @@ import {
     CommonUtil
 } from '@supermap/iclient-common';
 import {
-    GraphicCanvasRenderer,
     GraphicWebGLRenderer
-} from './graphic/';
-
+} from './graphic/WebGLRenderer';
+import {
+    GraphicCanvasRenderer,
+} from './graphic/CanvasRenderer';
 const defaultProps = {
     color: [0, 0, 0, 255],
     opacity: 0.8,
@@ -169,7 +170,7 @@ export class Graphic extends ol.source.ImageCanvas {
                 let contain = false;
                 //icl-1047  当只有一个叶片的时候，判断是否选中的逻辑处理的更准确一点
                 if (image instanceof CloverShape && image.getCount() === 1) {
-                    const ratation = image.getRotation()* 180 / Math.PI;
+                    const ratation = image.getRotation() * 180 / Math.PI;
                     const angle = Number.parseFloat(image.getAngle());
                     const r = image.getRadius() * resolution;
                     //if(image.getAngle() )
@@ -181,9 +182,9 @@ export class Graphic extends ol.source.ImageCanvas {
                         coors.push(center);
                         const perAngle = angle / 8;
                         for (let index = 0; index < 8; index++) {
-                            const radian=(ratation + index * perAngle)/180 * Math.PI;
+                            const radian = (ratation + index * perAngle) / 180 * Math.PI;
                             coors.push([center[0] + r * Math.cos(radian),
-                                center[1] - r * Math.sin(radian)
+                            center[1] - r * Math.sin(radian)
                             ]);
                         }
                         coors.push(center);
@@ -293,7 +294,7 @@ export class Graphic extends ol.source.ImageCanvas {
 
     }
     toRGBA(colorArray) {
-        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3]||255)/255})`;
+        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     }
     /**
      * @function ol.source.Graphic.prototype.setStyle
