@@ -101,9 +101,7 @@ export class CommonServiceBase {
 
         options = options || {};
 
-        if (options) {
-            Util.extend(this, options);
-        }
+        Util.extend(this, options);
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 

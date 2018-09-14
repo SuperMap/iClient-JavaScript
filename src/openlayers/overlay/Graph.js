@@ -2,8 +2,15 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import ol from 'openlayers';
-import {CommonUtil, Bounds, LonLat, FeatureTheme} from '@supermap/iclient-common';
-import {Theme} from './theme/Theme';
+import {
+    CommonUtil,
+    Bounds,
+    LonLat,
+    FeatureTheme
+} from '@supermap/iclient-common';
+import {
+    Theme
+} from './theme/Theme';
 
 /**
  * @class ol.source.Graph
@@ -79,7 +86,12 @@ export class Graph extends Theme {
      * @param {Object} features - 待填加得要素。
      */
     addFeatures(features) {
-        var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
+        var ret = this.dispatchEvent({
+            type: 'beforefeaturesadded',
+            value: {
+                features: features
+            }
+        });
         if (ret === false) {
             return;
         }
@@ -171,13 +183,13 @@ export class Graph extends Theme {
         // 图表权重值处理
         if (this.overlayWeightField) {
             charts.sort(function (cs, ce) {
-                if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
+                if (typeof (cs["__overlayWeight"]) == "undefined" && typeof (ce["__overlayWeight"]) == "undefined") {
                     return 0;
-                } else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
+                } else if (typeof (cs["__overlayWeight"]) != "undefined" && typeof (ce["__overlayWeight"]) == "undefined") {
                     return -1;
-                } else if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
+                } else if (typeof (cs["__overlayWeight"]) == "undefined" && typeof (ce["__overlayWeight"]) != "undefined") {
                     return 1;
-                } else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
+                } else if (typeof (cs["__overlayWeight"]) != "undefined" && typeof (ce["__overlayWeight"]) != "undefined") {
                     if (parseFloat(cs["__overlayWeight"]) < parseFloat(ce["__overlayWeight"])) {
                         return 1;
                     } else {
@@ -205,50 +217,60 @@ export class Graph extends Theme {
             var chartsBounds = [];
             var extent = this.map.getView().calculateExtent();
             var mapBounds = new Bounds(extent[0], extent[1], extent[2], extent[3]);
-            if (mapBounds) {
-                // 获取地图像素 bounds
-                var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
-                var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
-                var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
-                // 压盖处理 & 添加图形
-                for (var i = 0, len = charts.length; i < len; i++) {
-                    var chart = charts[i];
-                    // 图形参考位置  (reSetLocation 会更新 chartBounds)
-                    var shapeROP = chart.resetLocation();
-                    // 图表框
-                    var cbs = chart.chartBounds;
-                    var cBounds = [{"x": cbs.left, "y": cbs.top}, {"x": cbs.left, "y": cbs.bottom}, {
-                        "x": cbs.right,
-                        "y": cbs.bottom
-                    }, {"x": cbs.right, "y": cbs.top}, {"x": cbs.left, "y": cbs.top}];
-                    // 地图范围外不绘制
-                    if (mBounds) {
-                        if (!this.isChartInMap(mBounds, cBounds)) {
-                            continue;
-                        }
-                    }
-                    // 是否压盖
-                    var isOL = false;
-                    if (i !== 0) {
-                        for (let j = 0; j < chartsBounds.length; j++) {
-                            //压盖判断
-                            if (this.isQuadrilateralOverLap(cBounds, chartsBounds[j])) {
-                                isOL = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (isOL) {
+            // 获取地图像素 bounds
+            var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
+            var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
+            var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
+            // 压盖处理 & 添加图形
+            for (var i = 0, len = charts.length; i < len; i++) {
+                var chart = charts[i];
+                // 图形参考位置  (reSetLocation 会更新 chartBounds)
+                var shapeROP = chart.resetLocation();
+                // 图表框
+                var cbs = chart.chartBounds;
+                var cBounds = [{
+                    "x": cbs.left,
+                    "y": cbs.top
+                }, {
+                    "x": cbs.left,
+                    "y": cbs.bottom
+                }, {
+                    "x": cbs.right,
+                    "y": cbs.bottom
+                }, {
+                    "x": cbs.right,
+                    "y": cbs.top
+                }, {
+                    "x": cbs.left,
+                    "y": cbs.top
+                }];
+                // 地图范围外不绘制
+                if (mBounds) {
+                    if (!this.isChartInMap(mBounds, cBounds)) {
                         continue;
-                    } else {
-                        chartsBounds.push(cBounds);
                     }
-                    // 添加图形
-                    var shapes = chart.shapes;
-                    for (let j = 0, slen = shapes.length; j < slen; j++) {
-                        shapes[j].refOriginalPosition = shapeROP;
-                        this.renderer.addShape(shapes[j]);
+                }
+                // 是否压盖
+                var isOL = false;
+                if (i !== 0) {
+                    for (let j = 0; j < chartsBounds.length; j++) {
+                        //压盖判断
+                        if (this.isQuadrilateralOverLap(cBounds, chartsBounds[j])) {
+                            isOL = true;
+                            break;
+                        }
                     }
+                }
+                if (isOL) {
+                    continue;
+                } else {
+                    chartsBounds.push(cBounds);
+                }
+                // 添加图形
+                var shapes = chart.shapes;
+                for (let j = 0, slen = shapes.length; j < slen; j++) {
+                    shapes[j].refOriginalPosition = shapeROP;
+                    this.renderer.addShape(shapes[j]);
                 }
             }
         }
@@ -287,7 +309,7 @@ export class Graph extends Theme {
             quad2Len = quadrilateral2.length;
         if (quadLen !== 5 || quad2Len !== 5) {
             return null;
-        }//不是四边形
+        } //不是四边形
 
         var OverLap = false;
         //如果两四边形互不包含对方的节点，则两个四边形不相交
@@ -327,9 +349,9 @@ export class Graph extends Theme {
      */
     isPointInPoly(pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
-            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
-            && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
-            && (isIn = !isIn);
+            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y)) &&
+            (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x) &&
+            (isIn = !isIn);
         }
         return isIn;
     }

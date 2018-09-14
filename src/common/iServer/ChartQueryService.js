@@ -68,11 +68,9 @@ export class ChartQueryService extends CommonServiceBase {
          */
         this.format = DataFormat.GEOJSON;
 
-        if (options) {
-            Util.extend(this, options);
-        }
+        Util.extend(this, options);
         var me = this, end;
-        if (options && options.format) {
+        if (options.format) {
             me.format = options.format.toUpperCase();
         }
 

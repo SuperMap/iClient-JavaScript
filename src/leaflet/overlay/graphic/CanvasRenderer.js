@@ -26,8 +26,9 @@ export var GraphicCanvasRenderer = L.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function (graphics) {
-        this.layer._update(graphics);
+    update: function () {
+        this.getRenderer()._clear();
+        this.getRenderer()._draw();
     },
 
     _handleClick: function (evt) {

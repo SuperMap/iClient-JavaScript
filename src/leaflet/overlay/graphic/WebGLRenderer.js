@@ -174,7 +174,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
                 if (!point) {
                     return [0, 0, 0];
                 }
-                let lngLat = point && point.getLatLng();
+                let lngLat = point.getLatLng();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
             },
             getColor: function (point) {

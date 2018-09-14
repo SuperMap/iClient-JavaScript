@@ -85,13 +85,13 @@ export var TileVectorLayer = VectorGrid.extend({
         L.stamp(this);
         var me = this;
 
-        if (!url || url === "" || url.indexOf("http") < 0) {
+        if (!url || url.indexOf("http") < 0) {
             url = "";
             return this;
         }
 
         me.url = url;
-        if (url && url.indexOf("/") === (url.length - 1)) {
+        if (url.indexOf("/") === (url.length - 1)) {
             url = url.substr(0, url.length - 1);
             me.url = url;
         }
@@ -284,17 +284,15 @@ export var TileVectorLayer = VectorGrid.extend({
 
         // SuperMap.CartoCSSToLeaflet内部做了客户端配置的cartoCSS和服务端cartoCSS的拼接处理
         // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
-        if (!style) {
-            var scale = this.getScaleFromCoords(coords);
-            var shaders = this.cartoCSSToLeaflet.pickShader(layerName) || [];
-            style = [];
-            for (var itemKey in shaders) {
-                var shader = shaders[itemKey];
-                for (var j = 0; j < shader.length; j++) {
-                    var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
-                    if (serverStyle) {
-                        style.push(serverStyle);
-                    }
+        var scale = this.getScaleFromCoords(coords);
+        var shaders = this.cartoCSSToLeaflet.pickShader(layerName) || [];
+        style = [];
+        for (var itemKey in shaders) {
+            var shader = shaders[itemKey];
+            for (var j = 0; j < shader.length; j++) {
+                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+                if (serverStyle) {
+                    style.push(serverStyle);
                 }
             }
         }
@@ -302,7 +300,7 @@ export var TileVectorLayer = VectorGrid.extend({
         feature = this._mergeFeatureTextField(feature, style);
 
         //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
-        if (feature.type === "TEXT" || (!style || style.length < 1)) {
+        if (feature.type === "TEXT") {
             style = this.cartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
             if (feature.type === "TEXT") {
                 style.textName = "[" + feature.properties.textField + "]";

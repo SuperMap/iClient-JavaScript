@@ -173,7 +173,7 @@ export class QueryService extends ServiceBase {
                 params.geometry = new GeometryPoint(params.geometry.x, params.geometry.y);
             }
 
-            if (params && !(params.geometry instanceof Geometry)) {
+            if (!(params.geometry instanceof Geometry)) {
 
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
             }

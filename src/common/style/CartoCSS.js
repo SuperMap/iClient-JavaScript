@@ -187,9 +187,9 @@ export class CartoCSS {
                 line: 0,
                 column: -1
             };
-            if (defautls) {
-                for (var prop in defautls) {
-                    if (err[prop] === 0) {err[prop] = defautls[prop];}
+            for (var prop in defautls) {
+                if (err[prop] === 0) {
+                    err[prop] = defautls[prop];
                 }
             }
 
@@ -3939,7 +3939,9 @@ SuperMap.CartoCSS.Tree.Operation = class Operation {
 
         if (a instanceof SuperMap.CartoCSS.Tree.Dimension && b instanceof SuperMap.CartoCSS.Tree.Color) {
             if (this.op === '*' || this.op === '+') {
-                temp = b, b = a, a = temp;
+                temp = b; 
+                b = a; 
+                a = temp;
             } else {
                 env.error({
                     name: "OperationError",

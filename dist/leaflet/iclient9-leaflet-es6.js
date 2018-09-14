@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -9059,7 +9074,7 @@ class LineString_LineString extends Curve_Curve {
     static createLineEPS(points) {
         var list = [],
             len = points.length;
-        if (points == null || len < 2) {
+        if (len < 2) {
             return points;
         }
         for (var i = 0; i < len;) {
@@ -15129,9 +15144,7 @@ class CommonServiceBase_CommonServiceBase {
 
         options = options || {};
 
-        if (options) {
-            Util.extend(this, options);
-        }
+        Util.extend(this, options);
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
@@ -19612,11 +19625,9 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
          */
         this.format = DataFormat.GEOJSON;
 
-        if (options) {
-            Util.extend(this, options);
-        }
+        Util.extend(this, options);
         var me = this, end;
-        if (options && options.format) {
+        if (options.format) {
             me.format = options.format.toUpperCase();
         }
 
@@ -20322,9 +20333,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         if (end !== '/') {
             me.url += "/";
         }
-        if (options) {
-            Util.extend(me, options);
-        }
+        Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -20470,7 +20479,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
 
 
     _onMessage(e) {
-        if (e.data && e.data.indexOf("filterParam") > 0) {
+        if (e.data && e.data.indexOf("filterParam") >= 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
             e.eventType = 'setFilterParamSuccessed';
@@ -25272,11 +25281,9 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
          */
         this.format = DataFormat.GEOJSON;
 
-        if (options) {
-            Util.extend(this, options);
-        }
+        Util.extend(this, options);
         var me = this, end;
-        if (options && options.format) {
+        if (options.format) {
             me.format = options.format.toUpperCase();
         }
 
@@ -32731,7 +32738,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
      */
     constructor(url, options) {
         super(url, options);
-        
+
         /**
          * @member {boolean} SuperMap.QueryService.prototype.returnContent
          * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
@@ -32744,12 +32751,15 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
          */
         this.format = DataFormat.GEOJSON;
 
+        this.returnFeatureWithFieldCaption = false;
+
         if (options) {
             Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.QueryService";
-        var me = this, end;
+        var me = this,
+            end;
         if (!me.url) {
             return;
         }
@@ -32792,6 +32802,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
             returnCustomResult = null,
             jsonParameters = null;
         me.returnContent = params.returnContent;
+
         jsonParameters = me.getJsonParameters(params);
         if (me.returnContent) {
             me.url += "returnContent=" + me.returnContent;
@@ -32802,6 +32813,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
                 me.url += "returnCustomResult=" + returnCustomResult;
             }
         }
+        me.returnFeatureWithFieldCaption = params.returnFeatureWithFieldCaption;
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -32819,16 +32831,26 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
     serviceProcessCompleted(result) {
         var me = this;
         result = Util.transformResult(result);
-        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
-            var geoJSONFormat = new GeoJSON_GeoJSON();
+        var geoJSONFormat = new GeoJSON_GeoJSON();
+        if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    if (me.returnFeatureWithFieldCaption === true) {
+                        recordsets[i].features.map((feature) => {
+                            feature.fieldNames = recordsets[i].fieldCaptions;
+                            return feature;
+                        })
+                    }
+                    if (me.format === DataFormat.GEOJSON) {
+                        recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    }
                 }
             }
-
         }
-        me.events.triggerEvent("processCompleted", {result: result});
+
+        me.events.triggerEvent("processCompleted", {
+            result: result
+        });
     }
 
     /**
@@ -40121,9 +40143,9 @@ class CartoCSS_CartoCSS {
                 line: 0,
                 column: -1
             };
-            if (defautls) {
-                for (var prop in defautls) {
-                    if (err[prop] === 0) {err[prop] = defautls[prop];}
+            for (var prop in defautls) {
+                if (err[prop] === 0) {
+                    err[prop] = defautls[prop];
                 }
             }
 
@@ -43873,7 +43895,9 @@ SuperMap.CartoCSS.Tree.Operation = class Operation {
 
         if (a instanceof SuperMap.CartoCSS.Tree.Dimension && b instanceof SuperMap.CartoCSS.Tree.Color) {
             if (this.op === '*' || this.op === '+') {
-                temp = b, b = a, a = temp;
+                temp = b; 
+                b = a; 
+                a = temp;
             } else {
                 env.error({
                     name: "OperationError",
@@ -49478,6 +49502,7 @@ class Env {
         // Zepto.js may be freely distributed under the MIT license.
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Env";
         var me = this;
+
         function detect(ua) {
             var os = me.os = {};
             var browser = me.browser = {};
@@ -49512,52 +49537,64 @@ class Env {
             }
 
             if (android) {
-                os.android = true, os.version = android[2];
+                os.android = true;
+                os.version = android[2];
             }
             if (iphone && !ipod) {
-                os.ios = os.iphone = true, os.version = iphone[2].replace(/_/g, '.');
+                os.ios = os.iphone = true;
+                os.version = iphone[2].replace(/_/g, '.');
             }
             if (ipad) {
-                os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.');
+                os.ios = os.ipad = true;
+                os.version = ipad[2].replace(/_/g, '.');
             }
             if (ipod) {
-                os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
+                os.ios = os.ipod = true;
+                os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
             }
             if (webos) {
-                os.webos = true, os.version = webos[2];
+                os.webos = true;
+                os.version = webos[2];
             }
             if (touchpad) {
                 os.touchpad = true;
             }
             if (blackberry) {
-                os.blackberry = true, os.version = blackberry[2];
+                os.blackberry = true;
+                os.version = blackberry[2];
             }
             if (bb10) {
                 os.bb10 = true, os.version = bb10[2];
             }
             if (rimtabletos) {
-                os.rimtabletos = true, os.version = rimtabletos[2];
+                os.rimtabletos = true;
+                os.version = rimtabletos[2];
             }
             if (playbook) {
                 browser.playbook = true;
             }
             if (kindle) {
-                os.kindle = true, os.version = kindle[1];
+                os.kindle = true;
+                os.version = kindle[1];
             }
             if (silk) {
-                browser.silk = true, browser.version = silk[1];
+                browser.silk = true;
+                browser.version = silk[1];
             }
             if (!silk && os.android && ua.match(/Kindle Fire/)) {
                 browser.silk = true;
             }
             if (chrome) {
-                browser.chrome = true, browser.version = chrome[1];
+                browser.chrome = true;
+                browser.version = chrome[1];
             }
             if (firefox) {
-                browser.firefox = true, browser.version = firefox[1];
+                browser.firefox = true;
+                browser.version = firefox[1];
             }
             if (ie) {
-                browser.ie = true, browser.version = ie[1];
+                browser.ie = true;
+                browser.version = ie[1];
             }
             if (safari && (ua.match(/Safari/) || !!os.ios)) {
                 browser.safari = true;
@@ -49566,7 +49603,8 @@ class Env {
                 browser.webview = true;
             }
             if (ie) {
-                browser.ie = true, browser.version = ie[1];
+                browser.ie = true;
+                browser.version = ie[1];
             }
 
             os.tablet = !!(ipad || playbook || (android && !ua.match(/Mobile/)) ||
@@ -52134,7 +52172,7 @@ class SmicText_SmicText extends Shape_Shape {
             var textFont = style.textFont;
             var textFontStr = textFont.toLowerCase()
             if (textFontStr.indexOf("italic") > -1) {
-                if (widthBeforeChangeByMaxWidth && isWidthChangeByMaxWidth === true) {
+                if (isWidthChangeByMaxWidth === true) {
                     width += (lineHeight / 3) * (width / widthBeforeChangeByMaxWidth);
                 } else {
                     width += lineHeight / 3;
@@ -52166,7 +52204,7 @@ class SmicText_SmicText extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        if ((!redo || redo === false) && style.__textBackground) {
+        if ((!redo) && style.__textBackground) {
             return style.__textBackground;
         }
 
@@ -61520,7 +61558,7 @@ class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -61546,7 +61584,7 @@ class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -61572,7 +61610,7 @@ class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -69296,7 +69334,7 @@ var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
         }
 
         //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
-        if (isSfInAttributes && isValidStyleGroup) {
+        if (isSfInAttributes) {
             for (var i = 0, len = groups.length; i < len; i++) {
                 if ((attribute).toString() === ( groups[i].value).toString()) {
                     var sty1 = groups[i].style;
@@ -69414,7 +69452,7 @@ var RangeThemeLayer = GeoFeatureThemeLayer.extend({
         }
 
         //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
-        if (isSfInAttributes && isValidStyleGroup) {
+        if (isSfInAttributes) {
             for (var i = 0, len = groups.length; i < len; i++) {
 				var isContianed = i === len-1 ? ((attribute >= groups[i].start) && (attribute <= groups[i].end)) : ((attribute >= groups[i].start) && (attribute < groups[i].end));
                 if (isContianed) {
@@ -71072,13 +71110,13 @@ var WebMap = external_L_default.a.LayerGroup.extend({
             isBaseLayer = layerInfo.isBaseLayer,
             opacity = layerInfo.opacity;
         var mapBounds = external_L_default.a.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
-        var layerBounds = layerInfo.bounds ? external_L_default.a.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
+        var layerBounds = layerInfo.bounds ? external_L_default.a.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : mapBounds;
         if (!center) {
             center = layerBounds.getCenter();
         }
-        var origin = layerBounds ? external_L_default.a.point(layerBounds.min.x, layerBounds.max.y) : external_L_default.a.point(mapBounds.min.x, mapBounds.max.y);
+        var origin = external_L_default.a.point(layerBounds.min.x, layerBounds.max.y);
         var resolutions = !scales ? null : this.getResolutionsFromScales(scales, 96, layerInfo.units);
-        var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds || mapBounds);
+        var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds);
         var mapOptions = {
             bounds: mapBounds,
             center: external_L_default.a.point(center.x, center.y),
@@ -71758,7 +71796,8 @@ var WebMap = external_L_default.a.LayerGroup.extend({
                 var vertices = geometry.getVertices();
                 points = points.concat(vertices);
             }
-            oldEpsgCode = 'EPSG:' + oldEpsgCode, newEpsgCode = 'EPSG:' + newEpsgCode;
+            oldEpsgCode = 'EPSG:' + oldEpsgCode;
+            newEpsgCode = 'EPSG:' + newEpsgCode;
             me.coordsTransform(oldEpsgCode, newEpsgCode, points, function (layer, features) {
                 return function (newCoors) {
                     var start = 0,
@@ -73884,8 +73923,9 @@ var GraphicCanvasRenderer = external_L_default.a.Class.extend({
      * @function  GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
-    update: function (graphics) {
-        this.layer._update(graphics);
+    update: function () {
+        this.getRenderer()._clear();
+        this.getRenderer()._draw();
     },
 
     _handleClick: function (evt) {
@@ -74170,7 +74210,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
                 if (!point) {
                     return [0, 0, 0];
                 }
-                let lngLat = point && point.getLatLng();
+                let lngLat = point.getLatLng();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
             },
             getColor: function (point) {
@@ -76982,13 +77022,13 @@ var TileVectorLayer = VectorGrid.extend({
         external_L_default.a.stamp(this);
         var me = this;
 
-        if (!url || url === "" || url.indexOf("http") < 0) {
+        if (!url || url.indexOf("http") < 0) {
             url = "";
             return this;
         }
 
         me.url = url;
-        if (url && url.indexOf("/") === (url.length - 1)) {
+        if (url.indexOf("/") === (url.length - 1)) {
             url = url.substr(0, url.length - 1);
             me.url = url;
         }
@@ -77181,17 +77221,15 @@ var TileVectorLayer = VectorGrid.extend({
 
         // SuperMap.CartoCSSToLeaflet内部做了客户端配置的cartoCSS和服务端cartoCSS的拼接处理
         // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
-        if (!style) {
-            var scale = this.getScaleFromCoords(coords);
-            var shaders = this.cartoCSSToLeaflet.pickShader(layerName) || [];
-            style = [];
-            for (var itemKey in shaders) {
-                var shader = shaders[itemKey];
-                for (var j = 0; j < shader.length; j++) {
-                    var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
-                    if (serverStyle) {
-                        style.push(serverStyle);
-                    }
+        var scale = this.getScaleFromCoords(coords);
+        var shaders = this.cartoCSSToLeaflet.pickShader(layerName) || [];
+        style = [];
+        for (var itemKey in shaders) {
+            var shader = shaders[itemKey];
+            for (var j = 0; j < shader.length; j++) {
+                var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+                if (serverStyle) {
+                    style.push(serverStyle);
                 }
             }
         }
@@ -77199,7 +77237,7 @@ var TileVectorLayer = VectorGrid.extend({
         feature = this._mergeFeatureTextField(feature, style);
 
         //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
-        if (feature.type === "TEXT" || (!style || style.length < 1)) {
+        if (feature.type === "TEXT") {
             style = this.cartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
             if (feature.type === "TEXT") {
                 style.textName = "[" + feature.properties.textField + "]";
@@ -80395,6 +80433,7 @@ external_L_default.a.supermap.processingService = processingService;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.returnFeatureWithFieldCaption=false] - 请求是否携带 cookie。
  * @example
  * L.supermap.queryService(url).queryByBounds(param,function(result){
  *   //doSomething
@@ -80423,6 +80462,7 @@ var services_QueryService_QueryService = ServiceBase.extend({
                 processCompleted: callback,
                 processFailed: callback
             },
+            returnFeatureWithFieldCaption: me.options.returnFeatureWithFieldCaption,
             format: me._processFormat(resultFormat)
         });
 
@@ -85472,7 +85512,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

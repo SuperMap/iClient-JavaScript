@@ -298,13 +298,13 @@ export var WebMap = L.LayerGroup.extend({
             isBaseLayer = layerInfo.isBaseLayer,
             opacity = layerInfo.opacity;
         var mapBounds = L.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
-        var layerBounds = layerInfo.bounds ? L.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
+        var layerBounds = layerInfo.bounds ? L.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : mapBounds;
         if (!center) {
             center = layerBounds.getCenter();
         }
-        var origin = layerBounds ? L.point(layerBounds.min.x, layerBounds.max.y) : L.point(mapBounds.min.x, mapBounds.max.y);
+        var origin = L.point(layerBounds.min.x, layerBounds.max.y);
         var resolutions = !scales ? null : this.getResolutionsFromScales(scales, 96, layerInfo.units);
-        var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds || mapBounds);
+        var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds);
         var mapOptions = {
             bounds: mapBounds,
             center: L.point(center.x, center.y),
@@ -984,7 +984,8 @@ export var WebMap = L.LayerGroup.extend({
                 var vertices = geometry.getVertices();
                 points = points.concat(vertices);
             }
-            oldEpsgCode = 'EPSG:' + oldEpsgCode, newEpsgCode = 'EPSG:' + newEpsgCode;
+            oldEpsgCode = 'EPSG:' + oldEpsgCode;
+            newEpsgCode = 'EPSG:' + newEpsgCode;
             me.coordsTransform(oldEpsgCode, newEpsgCode, points, function (layer, features) {
                 return function (newCoors) {
                     var start = 0,

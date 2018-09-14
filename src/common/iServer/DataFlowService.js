@@ -54,9 +54,7 @@ export class DataFlowService extends CommonServiceBase {
         if (end !== '/') {
             me.url += "/";
         }
-        if (options) {
-            Util.extend(me, options);
-        }
+        Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -202,7 +200,7 @@ export class DataFlowService extends CommonServiceBase {
 
 
     _onMessage(e) {
-        if (e.data && e.data.indexOf("filterParam") > 0) {
+        if (e.data && e.data.indexOf("filterParam") >= 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
             e.eventType = 'setFilterParamSuccessed';

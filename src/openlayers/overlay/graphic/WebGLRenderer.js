@@ -229,7 +229,7 @@ export class GraphicWebGLRenderer extends ol.Object {
                 if (!point) {
                     return [0, 0, 0];
                 }
-                let geometry = point && point.getGeometry();
+                let geometry = point.getGeometry();
                 let coordinates = geometry && geometry.getCoordinates();
                 coordinates = me._project(coordinates);
                 return coordinates && [coordinates[0], coordinates[1], 0];

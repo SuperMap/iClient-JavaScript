@@ -302,7 +302,7 @@ export class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -328,7 +328,7 @@ export class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -354,7 +354,7 @@ export class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {

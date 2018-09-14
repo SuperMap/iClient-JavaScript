@@ -97,7 +97,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
         }
 
         //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
-        if (isSfInAttributes && isValidStyleGroup) {
+        if (isSfInAttributes) {
             for (var i = 0, len = groups.length; i < len; i++) {
                 if ((attribute).toString() === ( groups[i].value).toString()) {
                     var sty1 = groups[i].style;

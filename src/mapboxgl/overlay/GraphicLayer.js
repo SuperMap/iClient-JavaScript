@@ -113,7 +113,7 @@ export class GraphicLayer {
                 if (!point) {
                     return [0, 0, 0];
                 }
-                let lngLat = point && point.getLngLat();
+                let lngLat = point.getLngLat();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
             },
             getColor: function (point) {

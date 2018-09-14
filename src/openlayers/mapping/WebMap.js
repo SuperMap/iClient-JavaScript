@@ -1034,7 +1034,8 @@ export class WebMap extends ol.Observable {
                 var vertices = geometry.getVertices();
                 points = points.concat(vertices);
             }
-            oldEpsgCode = 'EPSG:' + oldEpsgCode, newEpsgCode = 'EPSG:' + newEpsgCode;
+            oldEpsgCode = 'EPSG:' + oldEpsgCode;
+            newEpsgCode = 'EPSG:' + newEpsgCode;
             me.coordsTransform(oldEpsgCode, newEpsgCode, points, function (layer, features) {
                 return function (newCoors) {
                     var start = 0,

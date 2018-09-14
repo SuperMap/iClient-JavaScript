@@ -265,7 +265,7 @@ export class LineString extends Curve {
     static createLineEPS(points) {
         var list = [],
             len = points.length;
-        if (points == null || len < 2) {
+        if (len < 2) {
             return points;
         }
         for (var i = 0; i < len;) {

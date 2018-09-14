@@ -268,7 +268,7 @@ export class StyleUtils {
                     } else {
                         if (prop === "globalCompositeOperation") {
                             value = StyleMap.CartoCompOpMap[value];
-                            if (!value || value === "") {
+                            if (!value) {
                                 continue;
                             }
                         } else if (fromServer && prop === 'pointFile') {
@@ -572,7 +572,7 @@ export class StyleUtils {
 
      */
     static getDefaultStyle(type) {
-        var style = style || {};
+        var style = {};
         var canvasStyle = DeafultCanvasStyle[type];
         for (var prop in canvasStyle) {
             var val = canvasStyle[prop];
