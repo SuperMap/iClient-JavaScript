@@ -324,11 +324,7 @@ export class Area {
                     }
 
                     // 捕获判断
-                    if (isOnBase === true && isOnHole === false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                   return isOnBase === true && isOnHole === false;
                 } else {
                     return this.isInsidePolygon(area.pointList, icX, icY);
                 }

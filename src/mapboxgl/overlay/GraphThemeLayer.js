@@ -198,7 +198,7 @@ export class Graph extends Theme {
             // 获取地图像素 bounds
             var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
             var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
-            var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
+            //var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
             // 压盖处理 & 添加图形
             for (let i = 0, len = charts.length; i < len; i++) {
                 var chart = charts[i];

@@ -76,7 +76,8 @@ export class Env {
                 os.version = blackberry[2];
             }
             if (bb10) {
-                os.bb10 = true, os.version = bb10[2];
+                os.bb10 = true;
+                os.version = bb10[2];
             }
             if (rimtabletos) {
                 os.rimtabletos = true;

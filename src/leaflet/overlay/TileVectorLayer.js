@@ -300,7 +300,7 @@ export var TileVectorLayer = VectorGrid.extend({
         feature = this._mergeFeatureTextField(feature, style);
 
         //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
-        if (feature.type === "TEXT") {
+        if (feature.type === "TEXT" ||  style.length === 0) {
             style = this.cartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
             if (feature.type === "TEXT") {
                 style.textName = "[" + feature.properties.textField + "]";

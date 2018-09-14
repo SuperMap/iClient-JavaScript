@@ -256,16 +256,18 @@ export class CartoCSSToLeaflet {
             var value = _shader.getValue(attributes, zoom, true);
             if ((value !== null) && prop) {
                 if (prop === "fontSize") {
-                    value = fromServer ? value *= 0.8 : value;
-                    fontSize = value + "px";
-                    style.fontSize = fontSize;
+                 if (fromServer) {
+                     value *= 0.8
+                 }
+                 fontSize = value + "px";
+                 style.fontSize = fontSize;
                 } else if (prop === "fontName") {
                     fontName = value;
                     style.fontName = fontName;
                 } else {
                     if (prop === "globalCompositeOperation") {
                         value = CompOpMap[value];
-                        if (!value || value === "") {
+                        if (!value) {
                             continue;
                         }
                     } else if (fromServer && prop === 'iconUrl') {
@@ -417,7 +419,7 @@ export class CartoCSSToLeaflet {
         }
 
         //处理标签文本的情况
-        if (layerInfo && layerInfo.textField) {
+        if (layerInfo.textField) {
             style.textAlign = "LEFT";
         }
         return style;
