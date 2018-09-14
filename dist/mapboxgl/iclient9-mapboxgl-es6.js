@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -6058,7 +6073,7 @@ class LineString_LineString extends Curve_Curve {
     static createLineEPS(points) {
         var list = [],
             len = points.length;
-        if (points == null || len < 2) {
+        if (len < 2) {
             return points;
         }
         for (var i = 0; i < len;) {
@@ -12128,9 +12143,7 @@ class CommonServiceBase_CommonServiceBase {
 
         options = options || {};
 
-        if (options) {
-            Util_Util.extend(this, options);
-        }
+        Util_Util.extend(this, options);
 
         me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
 
@@ -16444,6 +16457,7 @@ SuperMap.ChartQueryParameters = ChartQueryParameters_ChartQueryParameters;
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间,单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryParameters_QueryParameters {
 
@@ -16509,7 +16523,11 @@ class QueryParameters_QueryParameters {
          * @description 仅供三维使用。
          */
         this.returnCustomResult = false;
-
+        /**
+         * @member {boolean} [SuperMap.QueryParameters.prototype.returnFeatureWithFieldCaption=false]
+         * @description 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
+         */
+        this.returnFeatureWithFieldCaption = false;
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryParameters";
@@ -16611,11 +16629,9 @@ class ChartQueryService_ChartQueryService extends CommonServiceBase_CommonServic
          */
         this.format = DataFormat.GEOJSON;
 
-        if (options) {
-            Util_Util.extend(this, options);
-        }
+        Util_Util.extend(this, options);
         var me = this, end;
-        if (options && options.format) {
+        if (options.format) {
             me.format = options.format.toUpperCase();
         }
 
@@ -17321,9 +17337,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
         if (end !== '/') {
             me.url += "/";
         }
-        if (options) {
-            Util_Util.extend(me, options);
-        }
+        Util_Util.extend(me, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
     }
@@ -17469,7 +17483,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
 
 
     _onMessage(e) {
-        if (e.data && e.data.indexOf("filterParam") > 0) {
+        if (e.data && e.data.indexOf("filterParam") >= 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
             e.eventType = 'setFilterParamSuccessed';
@@ -22271,11 +22285,9 @@ class GetFeaturesServiceBase_GetFeaturesServiceBase extends CommonServiceBase_Co
          */
         this.format = DataFormat.GEOJSON;
 
-        if (options) {
-            Util_Util.extend(this, options);
-        }
+        Util_Util.extend(this, options);
         var me = this, end;
-        if (options && options.format) {
+        if (options.format) {
             me.format = options.format.toUpperCase();
         }
 
@@ -29647,6 +29659,7 @@ SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryByBoundsParameters_QueryByBoundsParameters extends QueryParameters_QueryParameters {
 
@@ -29730,7 +29743,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
      */
     constructor(url, options) {
         super(url, options);
-        
+
         /**
          * @member {boolean} SuperMap.QueryService.prototype.returnContent
          * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
@@ -29743,12 +29756,15 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
          */
         this.format = DataFormat.GEOJSON;
 
+        this.returnFeatureWithFieldCaption = false;
+
         if (options) {
             Util_Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.QueryService";
-        var me = this, end;
+        var me = this,
+            end;
         if (!me.url) {
             return;
         }
@@ -29791,6 +29807,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
             returnCustomResult = null,
             jsonParameters = null;
         me.returnContent = params.returnContent;
+
         jsonParameters = me.getJsonParameters(params);
         if (me.returnContent) {
             me.url += "returnContent=" + me.returnContent;
@@ -29801,6 +29818,7 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
                 me.url += "returnCustomResult=" + returnCustomResult;
             }
         }
+        me.returnFeatureWithFieldCaption = params.returnFeatureWithFieldCaption;
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -29818,16 +29836,26 @@ class QueryService_QueryService extends CommonServiceBase_CommonServiceBase {
     serviceProcessCompleted(result) {
         var me = this;
         result = Util_Util.transformResult(result);
-        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
-            var geoJSONFormat = new GeoJSON_GeoJSON();
+        var geoJSONFormat = new GeoJSON_GeoJSON();
+        if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    if (me.returnFeatureWithFieldCaption === true) {
+                        recordsets[i].features.map((feature) => {
+                            feature.fieldNames = recordsets[i].fieldCaptions;
+                            return feature;
+                        })
+                    }
+                    if (me.format === DataFormat.GEOJSON) {
+                        recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    }
                 }
             }
-
         }
-        me.events.triggerEvent("processCompleted", {result: result});
+
+        me.events.triggerEvent("processCompleted", {
+            result: result
+        });
     }
 
     /**
@@ -29953,6 +29981,7 @@ SuperMap.QueryByBoundsService = QueryByBoundsService_QueryByBoundsService;
  * @param {number} [options.distance=0] - 查询距离。
  * @param {boolean} [options.isNearest=false] - 是否为最近距离查询。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryByDistanceParameters_QueryByDistanceParameters extends QueryParameters_QueryParameters {
 
@@ -30121,6 +30150,7 @@ SuperMap.QueryByDistanceService = QueryByDistanceService_QueryByDistanceService;
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  * @param {SuperMap.SpatialQueryMode} [spatialQueryMode=SuperMap.SpatialQueryMode.INTERSECT] - 空间查询模式。
  */
 class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameters_QueryParameters {
@@ -30280,6 +30310,7 @@ SuperMap.QueryByGeometryService = QueryByGeometryService_QueryByGeometryService;
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryBySQLParameters_QueryBySQLParameters extends QueryParameters_QueryParameters {
 
@@ -37120,9 +37151,9 @@ class CartoCSS_CartoCSS {
                 line: 0,
                 column: -1
             };
-            if (defautls) {
-                for (var prop in defautls) {
-                    if (err[prop] === 0) {err[prop] = defautls[prop];}
+            for (var prop in defautls) {
+                if (err[prop] === 0) {
+                    err[prop] = defautls[prop];
                 }
             }
 
@@ -40872,7 +40903,9 @@ SuperMap.CartoCSS.Tree.Operation = class Operation {
 
         if (a instanceof SuperMap.CartoCSS.Tree.Dimension && b instanceof SuperMap.CartoCSS.Tree.Color) {
             if (this.op === '*' || this.op === '+') {
-                temp = b, b = a, a = temp;
+                temp = b; 
+                b = a; 
+                a = temp;
             } else {
                 env.error({
                     name: "OperationError",
@@ -44389,11 +44422,7 @@ class Area_Area {
                     }
 
                     // 捕获判断
-                    if (isOnBase === true && isOnHole === false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                   return isOnBase === true && isOnHole === false;
                 } else {
                     return this.isInsidePolygon(area.pointList, icX, icY);
                 }
@@ -46477,6 +46506,7 @@ class Env {
         // Zepto.js may be freely distributed under the MIT license.
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Env";
         var me = this;
+
         function detect(ua) {
             var os = me.os = {};
             var browser = me.browser = {};
@@ -46511,52 +46541,65 @@ class Env {
             }
 
             if (android) {
-                os.android = true, os.version = android[2];
+                os.android = true;
+                os.version = android[2];
             }
             if (iphone && !ipod) {
-                os.ios = os.iphone = true, os.version = iphone[2].replace(/_/g, '.');
+                os.ios = os.iphone = true;
+                os.version = iphone[2].replace(/_/g, '.');
             }
             if (ipad) {
-                os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.');
+                os.ios = os.ipad = true;
+                os.version = ipad[2].replace(/_/g, '.');
             }
             if (ipod) {
-                os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
+                os.ios = os.ipod = true;
+                os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
             }
             if (webos) {
-                os.webos = true, os.version = webos[2];
+                os.webos = true;
+                os.version = webos[2];
             }
             if (touchpad) {
                 os.touchpad = true;
             }
             if (blackberry) {
-                os.blackberry = true, os.version = blackberry[2];
+                os.blackberry = true;
+                os.version = blackberry[2];
             }
             if (bb10) {
-                os.bb10 = true, os.version = bb10[2];
+                os.bb10 = true;
+                os.version = bb10[2];
             }
             if (rimtabletos) {
-                os.rimtabletos = true, os.version = rimtabletos[2];
+                os.rimtabletos = true;
+                os.version = rimtabletos[2];
             }
             if (playbook) {
                 browser.playbook = true;
             }
             if (kindle) {
-                os.kindle = true, os.version = kindle[1];
+                os.kindle = true;
+                os.version = kindle[1];
             }
             if (silk) {
-                browser.silk = true, browser.version = silk[1];
+                browser.silk = true;
+                browser.version = silk[1];
             }
             if (!silk && os.android && ua.match(/Kindle Fire/)) {
                 browser.silk = true;
             }
             if (chrome) {
-                browser.chrome = true, browser.version = chrome[1];
+                browser.chrome = true;
+                browser.version = chrome[1];
             }
             if (firefox) {
-                browser.firefox = true, browser.version = firefox[1];
+                browser.firefox = true;
+                browser.version = firefox[1];
             }
             if (ie) {
-                browser.ie = true, browser.version = ie[1];
+                browser.ie = true;
+                browser.version = ie[1];
             }
             if (safari && (ua.match(/Safari/) || !!os.ios)) {
                 browser.safari = true;
@@ -46565,7 +46608,8 @@ class Env {
                 browser.webview = true;
             }
             if (ie) {
-                browser.ie = true, browser.version = ie[1];
+                browser.ie = true;
+                browser.version = ie[1];
             }
 
             os.tablet = !!(ipad || playbook || (android && !ua.match(/Mobile/)) ||
@@ -49133,7 +49177,7 @@ class SmicText_SmicText extends Shape_Shape {
             var textFont = style.textFont;
             var textFontStr = textFont.toLowerCase()
             if (textFontStr.indexOf("italic") > -1) {
-                if (widthBeforeChangeByMaxWidth && isWidthChangeByMaxWidth === true) {
+                if (isWidthChangeByMaxWidth === true) {
                     width += (lineHeight / 3) * (width / widthBeforeChangeByMaxWidth);
                 } else {
                     width += lineHeight / 3;
@@ -49165,7 +49209,7 @@ class SmicText_SmicText extends Shape_Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        if ((!redo || redo === false) && style.__textBackground) {
+        if ((!redo) && style.__textBackground) {
             return style.__textBackground;
         }
 
@@ -58519,7 +58563,7 @@ class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -58545,7 +58589,7 @@ class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -58571,7 +58615,7 @@ class Easing {
         if (k === 1) {
             return 1;
         }
-        if (!a || a < 1) {
+        if (a < 1) {
             a = 1;
             s = p / 4;
         } else {
@@ -62883,7 +62927,9 @@ class GraphThemeLayer_Graph extends ThemeLayer_Theme {
      * @param {Array.<mapboxgl.supermap.ThemeFeature>} features - 待添加的要素。
      */
     addFeatures(features) {
-        var ret = external_mapboxgl_default.a.Evented.prototype.fire('beforefeaturesadded', {features: features});
+        var ret = external_mapboxgl_default.a.Evented.prototype.fire('beforefeaturesadded', {
+            features: features
+        });
         if (ret === false) {
             return;
         }
@@ -62973,13 +63019,13 @@ class GraphThemeLayer_Graph extends ThemeLayer_Theme {
         // 图表权重值处理des
         if (this.overlayWeightField) {
             charts.sort(function (cs, ce) {
-                if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
+                if (typeof (cs["__overlayWeight"]) == "undefined" && typeof (ce["__overlayWeight"]) == "undefined") {
                     return 0;
-                } else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
+                } else if (typeof (cs["__overlayWeight"]) != "undefined" && typeof (ce["__overlayWeight"]) == "undefined") {
                     return -1;
-                } else if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
+                } else if (typeof (cs["__overlayWeight"]) == "undefined" && typeof (ce["__overlayWeight"]) != "undefined") {
                     return 1;
-                } else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
+                } else if (typeof (cs["__overlayWeight"]) != "undefined" && typeof (ce["__overlayWeight"]) != "undefined") {
                     if (parseFloat(cs["__overlayWeight"]) < parseFloat(ce["__overlayWeight"])) {
                         return 1;
                     } else {
@@ -63005,50 +63051,60 @@ class GraphThemeLayer_Graph extends ThemeLayer_Theme {
         } else {
             // 压盖判断所需 chartsBounds 集合
             var chartsBounds = [];
-            var extent = this.map.getBounds();
-            var mapBounds = new Bounds_Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
-            if (mapBounds) {
-                // 获取地图像素 bounds
-                var mapPxLT = this.getLocalXY(new LonLat_LonLat(mapBounds.left, mapBounds.top));
-                var mapPxRB = this.getLocalXY(new LonLat_LonLat(mapBounds.right, mapBounds.bottom));
-                var mBounds = new Bounds_Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
-                // 压盖处理 & 添加图形
-                for (let i = 0, len = charts.length; i < len; i++) {
-                    var chart = charts[i];
-                    // 图形参考位置  (reSetLocation 会更新 chartBounds)
-                    var shapeROP = chart.resetLocation();
-                    // 图表框
-                    var cbs = chart.chartBounds;
-                    var cBounds = [{"x": cbs.left, "y": cbs.top}, {"x": cbs.left, "y": cbs.bottom}, {
-                        "x": cbs.right,
-                        "y": cbs.bottom
-                    }, {"x": cbs.right, "y": cbs.top}, {"x": cbs.left, "y": cbs.top}];
-                    // 地图范围外不绘制
-                    if (mBounds) {
-                        // if (!this.isChartInMap(mBounds, cBounds)) continue;
-                    }
-                    // 是否压盖
-                    var isOL = false;
-                    if (i !== 0) {
-                        for (let j = 0; j < chartsBounds.length; j++) {
-                            //压盖判断
-                            if (this.isQuadrilateralOverLap(cBounds, chartsBounds[j])) {
-                                isOL = true;
-                                break;
-                            }
+            //var extent = this.map.getBounds();
+            //var mapBounds = new Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+            // 获取地图像素 bounds
+            //var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
+            //var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
+            //var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
+            // 压盖处理 & 添加图形
+            for (let i = 0, len = charts.length; i < len; i++) {
+                var chart = charts[i];
+                // 图形参考位置  (reSetLocation 会更新 chartBounds)
+                var shapeROP = chart.resetLocation();
+                // 图表框
+                var cbs = chart.chartBounds;
+                var cBounds = [{
+                    "x": cbs.left,
+                    "y": cbs.top
+                }, {
+                    "x": cbs.left,
+                    "y": cbs.bottom
+                }, {
+                    "x": cbs.right,
+                    "y": cbs.bottom
+                }, {
+                    "x": cbs.right,
+                    "y": cbs.top
+                }, {
+                    "x": cbs.left,
+                    "y": cbs.top
+                }];
+                // // 地图范围外不绘制
+                // if (mBounds) {
+                //     // if (!this.isChartInMap(mBounds, cBounds)) continue;
+                // }
+                // 是否压盖
+                var isOL = false;
+                if (i !== 0) {
+                    for (let j = 0; j < chartsBounds.length; j++) {
+                        //压盖判断
+                        if (this.isQuadrilateralOverLap(cBounds, chartsBounds[j])) {
+                            isOL = true;
+                            break;
                         }
                     }
-                    if (isOL) {
-                        continue;
-                    } else {
-                        chartsBounds.push(cBounds);
-                    }
-                    // 添加图形
-                    var shapes = chart.shapes;
-                    for (let j = 0, slen = shapes.length; j < slen; j++) {
-                        shapes[j].refOriginalPosition = shapeROP;
-                        this.renderer.addShape(shapes[j]);
-                    }
+                }
+                if (isOL) {
+                    continue;
+                } else {
+                    chartsBounds.push(cBounds);
+                }
+                // 添加图形
+                var shapes = chart.shapes;
+                for (let j = 0, slen = shapes.length; j < slen; j++) {
+                    shapes[j].refOriginalPosition = shapeROP;
+                    this.renderer.addShape(shapes[j]);
                 }
             }
         }
@@ -63087,7 +63143,7 @@ class GraphThemeLayer_Graph extends ThemeLayer_Theme {
             quad2Len = quadrilateral2.length;
         if (quadLen !== 5 || quad2Len !== 5) {
             return null;
-        }//不是四边形
+        } //不是四边形
 
         var OverLap = false;
         //如果两四边形互不包含对方的节点，则两个四边形不相交
@@ -63127,9 +63183,9 @@ class GraphThemeLayer_Graph extends ThemeLayer_Theme {
      */
     isPointInPoly(pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
-            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
-            && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
-            && (isIn = !isIn);
+            ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y)) &&
+            (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x) &&
+            (isIn = !isIn);
         }
         return isIn;
     }
@@ -66422,7 +66478,7 @@ class GraphicLayer_GraphicLayer {
                 if (!point) {
                     return [0, 0, 0];
                 }
-                let lngLat = point && point.getLngLat();
+                let lngLat = point.getLngLat();
                 return lngLat && [lngLat.lng, lngLat.lat, 0];
             },
             getColor: function (point) {
@@ -68717,7 +68773,7 @@ class DeckglLayer_DeckglLayer {
             if (!point) {
                 return [0, 0, 0];
             }
-            let lngLat = point && point.getLngLat();
+            let lngLat = point.getLngLat();
             return lngLat && [lngLat.lng, lngLat.lat, 0];
         };
         if (this.callback.getColor) {
@@ -71665,7 +71721,7 @@ class services_QueryService_QueryService extends ServiceBase_ServiceBase {
                 params.geometry = new Point_Point(params.geometry.x, params.geometry.y);
             }
 
-            if (params && !(params.geometry instanceof Geometry_Geometry)) {
+            if (!(params.geometry instanceof Geometry_Geometry)) {
 
                 params.geometry = core_Util_Util.toSuperMapGeometry(params.geometry);
             }

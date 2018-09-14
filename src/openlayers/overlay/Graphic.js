@@ -19,8 +19,9 @@ import {
     GraphicWebGLRenderer
 } from './graphic/WebGLRenderer';
 import {
-    GraphicCanvasRenderer,
+    GraphicCanvasRenderer
 } from './graphic/CanvasRenderer';
+
 const defaultProps = {
     color: [0, 0, 0, 255],
     opacity: 0.8,

@@ -5,8 +5,6 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {
     CommonUtil,
-    Bounds,
-    LonLat,
     FeatureTheme
 } from "@supermap/iclient-common";
 
@@ -193,11 +191,11 @@ export class Graph extends Theme {
         } else {
             // 压盖判断所需 chartsBounds 集合
             var chartsBounds = [];
-            var extent = this.map.getBounds();
-            var mapBounds = new Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+            //var extent = this.map.getBounds();
+            //var mapBounds = new Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
             // 获取地图像素 bounds
-            var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
-            var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
+            //var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
+            //var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
             //var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
             // 压盖处理 & 添加图形
             for (let i = 0, len = charts.length; i < len; i++) {

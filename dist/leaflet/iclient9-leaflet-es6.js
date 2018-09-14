@@ -19458,6 +19458,7 @@ SuperMap.ChartQueryParameters = ChartQueryParameters_ChartQueryParameters;
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间,单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryParameters_QueryParameters {
 
@@ -19523,7 +19524,11 @@ class QueryParameters_QueryParameters {
          * @description 仅供三维使用。
          */
         this.returnCustomResult = false;
-
+        /**
+         * @member {boolean} [SuperMap.QueryParameters.prototype.returnFeatureWithFieldCaption=false]
+         * @description 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
+         */
+        this.returnFeatureWithFieldCaption = false;
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.QueryParameters";
@@ -32655,6 +32660,7 @@ SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryByBoundsParameters_QueryByBoundsParameters extends QueryParameters_QueryParameters {
 
@@ -32976,6 +32982,7 @@ SuperMap.QueryByBoundsService = QueryByBoundsService_QueryByBoundsService;
  * @param {number} [options.distance=0] - 查询距离。
  * @param {boolean} [options.isNearest=false] - 是否为最近距离查询。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryByDistanceParameters_QueryByDistanceParameters extends QueryParameters_QueryParameters {
 
@@ -33144,6 +33151,7 @@ SuperMap.QueryByDistanceService = QueryByDistanceService_QueryByDistanceService;
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  * @param {SuperMap.SpatialQueryMode} [spatialQueryMode=SuperMap.SpatialQueryMode.INTERSECT] - 空间查询模式。
  */
 class QueryByGeometryParameters_QueryByGeometryParameters extends QueryParameters_QueryParameters {
@@ -33303,6 +33311,7 @@ SuperMap.QueryByGeometryService = QueryByGeometryService_QueryByGeometryService;
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
  */
 class QueryBySQLParameters_QueryBySQLParameters extends QueryParameters_QueryParameters {
 
@@ -47414,11 +47423,7 @@ class Area_Area {
                     }
 
                     // 捕获判断
-                    if (isOnBase === true && isOnHole === false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                   return isOnBase === true && isOnHole === false;
                 } else {
                     return this.isInsidePolygon(area.pointList, icX, icY);
                 }
@@ -49564,7 +49569,8 @@ class Env {
                 os.version = blackberry[2];
             }
             if (bb10) {
-                os.bb10 = true, os.version = bb10[2];
+                os.bb10 = true;
+                os.version = bb10[2];
             }
             if (rimtabletos) {
                 os.rimtabletos = true;
@@ -68047,16 +68053,18 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
             var value = _shader.getValue(attributes, zoom, true);
             if ((value !== null) && prop) {
                 if (prop === "fontSize") {
-                    value = fromServer ? value *= 0.8 : value;
-                    fontSize = value + "px";
-                    style.fontSize = fontSize;
+                 if (fromServer) {
+                     value *= 0.8
+                 }
+                 fontSize = value + "px";
+                 style.fontSize = fontSize;
                 } else if (prop === "fontName") {
                     fontName = value;
                     style.fontName = fontName;
                 } else {
                     if (prop === "globalCompositeOperation") {
                         value = CompOpMap[value];
-                        if (!value || value === "") {
+                        if (!value) {
                             continue;
                         }
                     } else if (fromServer && prop === 'iconUrl') {
@@ -68208,7 +68216,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
         }
 
         //处理标签文本的情况
-        if (layerInfo && layerInfo.textField) {
+        if (layerInfo.textField) {
             style.textAlign = "LEFT";
         }
         return style;
@@ -77237,7 +77245,7 @@ var TileVectorLayer = VectorGrid.extend({
         feature = this._mergeFeatureTextField(feature, style);
 
         //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
-        if (feature.type === "TEXT") {
+        if (feature.type === "TEXT" ||  style.length === 0) {
             style = this.cartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
             if (feature.type === "TEXT") {
                 style.textName = "[" + feature.properties.textField + "]";
