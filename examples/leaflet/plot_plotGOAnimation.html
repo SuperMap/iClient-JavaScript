@@ -98,7 +98,7 @@
         src="../js/plottingPanel/PlottingPanel.Include.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
     var item = [resources.text_attrAnimation, resources.text_flickerAnimation, resources.text_growthAnimation, resources.text_revolveAnimation, resources.text_proportionAnimation, resources.text_SHAnimation, resources.text_pathAnimation],
@@ -123,12 +123,27 @@
     var plotting = L.supermap.plotting.getControl(map, serverUrl);
     var goAnimationManager = plotting.getGOAnimationManager();
     window.setInterval("execute()", 100);
-    select = document.getElementById("SLT");
-    for (var i = 0, len = item.length; i < len; i++) {
-        var options = document.createElement("option");
-        options.setAttribute("value", item[i]);
-        options.innerHTML = item[i];
-        select.appendChild(options);
+    initHtml();
+    loadSmlAndAnimation();
+
+    function initHtml(){
+        select = document.getElementById("SLT");
+        for (var i = 0, len = item.length; i < len; i++) {
+            var options = document.createElement("option");
+            options.setAttribute("value", item[i]);
+            options.innerHTML = item[i];
+            select.appendChild(options);
+        }
+    }
+
+    function loadSmlAndAnimation(){
+        $.getJSON("../data/ZaoYiHuiZhan_Sml.json",function(sitData){
+            plotting.getSitDataManager().addSmlData(sitData, true);
+
+            $.getJSON("../data/ZaoYiHuiZhan_Animation.json",function(animationJsonData){
+                goAnimationManager.fromJSONData(animationJsonData);
+            });
+        });
     }
 
     //保存态势图

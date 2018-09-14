@@ -19,7 +19,7 @@
         </div>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_overlay" onclick="add()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addToLater" onclick="addtolayer()"/>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_open" onclick="openFileToServer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_open" onclick="openSmlData()"/>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayers()"/>
     </div>
 </div>
@@ -72,16 +72,36 @@
     }
 
     //打开并上传到服务器
-    function openFileToServer() {
+//    function openFileToServer() {
+//        widgets.alert.clearAlert();
+//        sitDataManager.openSmlFile('file', function(evt){
+//            if(evt.success){
+//                widgets.alert.showAlert("打开态势图成功！",true);
+//            } else {
+//                widgets.alert.showAlert("打开态势图失败！",true);
+//            }
+//        });
+//    }
+
+   //打开本地态势图文件不上传服务器
+    function openSmlData() {
         widgets.alert.clearAlert();
-        sitDataManager.openSmlFile('file', function(evt){
-            if(evt.success){
-                widgets.alert.showAlert("打开态势图成功！",true);
-            } else {
-                widgets.alert.showAlert("打开态势图失败！",true);
+        var files = document.getElementById("file").files;
+        if (files.length === 0) {
+            widgets.alert.showAlert("请选择态势图文件！",true);
+            return;
+        }else{
+            var reader = new FileReader();
+            reader.readAsText(files[0]);
+            reader.onload = function (e) {
+                var sitData = JSON.parse(e.target.result);
+                sitDataManager.openSmlData(sitData);
             }
-        });
+        }
+
     }
+
+
 
     function clearLayers() {
         widgets.alert.clearAlert();

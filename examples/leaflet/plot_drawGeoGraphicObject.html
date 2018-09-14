@@ -24,15 +24,15 @@
 <script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: [0,0],
+        center: [35,104],
         maxZoom: 18,
-        zoom: 2
+        zoom: 3
     });
     L.supermap.tiledMapLayer(url).addTo(map);
     var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
@@ -46,33 +46,33 @@
     }
     function draw_dot(){
         clearLayers();
-        var latlngs = [new L.latLng(20,0)];
+        var latlngs = [new L.latLng(34,105)];
         plottingLayer.createSymbol(421, 10100,latlngs,{symbolType:SuperMap.Plot.SymbolType.DOTSYMBOL,dScale:3});
     }
 
     function draw_line() {
         clearLayers();
         var latlngs = [];
-        latlngs.push(new L.latLng(0, 0));
-        latlngs.push(new L.latLng(20,0));
-        latlngs.push(new L.latLng(10,20));
-        latlngs.push(new L.latLng(30,10));
+        latlngs.push(new L.latLng(33,96));
+        latlngs.push(new L.latLng(39,102));
+        latlngs.push(new L.latLng(29,106));
+        latlngs.push(new L.latLng(39,109));
         plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, latlngs);
     }
 
     function draw_polygon() {
         clearLayers();
         var latlngs = [];
-        latlngs.push(new L.latLng(0,20));
-        latlngs.push(new L.latLng(20,10));
-        latlngs.push(new L.latLng(40,30));
-        latlngs.push(new L.latLng(10,60));
+        latlngs.push(new L.latLng(27,101));
+        latlngs.push(new L.latLng(34,97));
+        latlngs.push(new L.latLng(41,104));
+        latlngs.push(new L.latLng(31,115));
         plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, latlngs);
     }
 
     function draw_text() {
         clearLayers();
-        var latlngs = [new L.latLng(20,0)];
+        var latlngs = [new L.latLng(34,105)];
         plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.TEXTSYMBOL,latlngs,null,{fontSize:30});
     }
 

@@ -18,11 +18,11 @@
     </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" include="bootstrap-css,jquery,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" include="bootstrap,widgets.alert,jquery" src="../js/include-web.js"></script>
 <script type="text/javascript" include="iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map,symbolLibManager;
     map = L.map('map', {
@@ -67,7 +67,7 @@
     function drawAvoidRegion(){
         widgets.alert.clearAlert();
         if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
-            widgets.alert.showAlert("避让编辑之前请先选择标号",false);
+            widgets.alert.showAlert("避让编辑之前请先选择标号！",true);
         }else{
             editControl.avoidEdit(true);
         }
@@ -79,7 +79,7 @@
     function deleteAvoidEdit(){
         widgets.alert.clearAlert();
         if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
-            widgets.alert.showAlert("删除避让区域之前请先请先选择标号",false);
+            widgets.alert.showAlert("删除避让区域之前请先请先选择标号！",true);
         }else if(editControl._avoidEditing === true){
             editControl.avoidEdit(false);
             editControl.getSelectedFeatures()[0].removeAvoidRegions();

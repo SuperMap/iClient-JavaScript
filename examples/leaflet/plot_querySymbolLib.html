@@ -40,15 +40,15 @@
 <script type="text/javascript" include="iclient9-leaflet-css,iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var url = host + "/iserver/services/map-world/rest/maps/World";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: [0, 0],
-        zoom: 2,
-        maxZoom: 18
+        center: [35,104],
+        maxZoom: 18,
+        zoom: 3
     });
     L.supermap.tiledMapLayer(url).addTo(map);
     var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);

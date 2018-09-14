@@ -25,15 +25,15 @@
 <script type="text/javascript" include="iclient9-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var url = host+"/iserver/services/map-world/rest/maps/World";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host+"/iserver/services/plot-jingyong/rest/plot/";
     var map;
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: [0,0],
+        center: [35,104],
         maxZoom: 18,
-        zoom: 2
+        zoom: 3
     });
     L.supermap.tiledMapLayer(url).addTo(map);
     var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
@@ -46,18 +46,19 @@
     function plotSymbol() {
         //标绘多边形
         var polygonPoints = [];
-        polygonPoints.push(new L.latLng(0,-20));
-        polygonPoints.push(new L.latLng(20,-10));
-        polygonPoints.push(new L.latLng(40,-30));
-        polygonPoints.push(new L.latLng(10,-60));
+        polygonPoints.push(new L.latLng(41,89));
+        polygonPoints.push(new L.latLng(33,85));
+        polygonPoints.push(new L.latLng(29,93));
+        polygonPoints.push(new L.latLng(34,101));
+        polygonPoints.push(new L.latLng(41,99));
         plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, polygonPoints);
 
         //标绘折线
         var linePoints = [];
-        linePoints.push(new L.latLng(0, 0));
-        linePoints.push(new L.latLng(20,0));
-        linePoints.push(new L.latLng(10,20));
-        linePoints.push(new L.latLng(30,10));
+        linePoints.push(new L.latLng(29, 107));
+        linePoints.push(new L.latLng(36,110));
+        linePoints.push(new L.latLng(28,113));
+        linePoints.push(new L.latLng(37,118));
         plottingLayer.createSymbol(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, linePoints);
     }
 
