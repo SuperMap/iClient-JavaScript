@@ -495,11 +495,13 @@ var exampleConfig = {
                 }, {
                     name: "随机点(Classic)",
                     name_en: "random points (Classic)",
+                    version: "9.1.0",
                     thumbnail: "ol_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }, {
                     name: "2005-2016地震次数(Classic)",
                     name_en: "earthquake occurrences(2005-2016)(classic)",
+                    version: "9.1.0",
                     thumbnail: "ol_earthquakeHeatMapLayer.png",
                     fileName: 'earthquakeHeatMapLayer'
                 }]
@@ -541,6 +543,7 @@ var exampleConfig = {
                 }, {
                     name: "纽约145万出租车-webgl",
                     name_en: "picture drawing of 1.45 million NY taxis",
+                    version: "9.1.0",
                     thumbnail: "graphiclayer_webgl2.png",
                     fileName: "07_graphiclayer_webgl2"
                 }, {
@@ -551,6 +554,7 @@ var exampleConfig = {
                 }, {
                     name: "随机点-三叶草",
                     name_en: "random points(clover)",
+                    version: "9.1.0",
                     thumbnail: "graphiclayer_clover.png",
                     fileName: "07_graphiclayer_clover"
                 }]
@@ -586,42 +590,49 @@ var exampleConfig = {
                     {
                         name: "全国空气质量图",
                         name_en: "ECharts",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsEffectScatter.png",
                         fileName: "echartsEffectScatter"
                     },
                     {
                         name: "迁徙图",
                         name_en: "Mock migration",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsGeoLines.gif",
                         fileName: "echartsGeoLines"
                     },
                     {
                         name: "热力图",
                         name_en: "heat map",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsHeatmap.png",
                         fileName: "echartsHeatmap"
                     },
                     {
                         name: "线路图",
                         name_en: "line",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsLinesBus.png",
                         fileName: "echartsLinesBus"
                     },
                     {
                         name: "线特效",
                         name_en: "line effect",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsLinesEffect.gif",
                         fileName: "echartsLinesEffect"
                     },
                     {
                         name: "世界飞机航线图",
                         name_en: "Airplane route map",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsLinesAirline.png",
                         fileName: "echartsLinesAirline"
                     },
                     {
                         name: "微博签到图",
                         name_en: "scatter of Weibo user",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsScatterWeibo.png",
                         fileName: "echartsScatterWeibo"
                     },
@@ -629,48 +640,56 @@ var exampleConfig = {
                     {
                         name: "格网图",
                         name_en: "cell map",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsCellMap.png",
                         fileName: "echartsCellMap"
                     },
                     {
                         name: "2005到2016年地震概况统计",
                         name_en: "Earthquake occurrences(2005-2016)",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
 
                     }, {
                         name: "北京房价信息",
                         name_en: "Beijing house prices(2018.2)",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "ol_echartsLianjia.png",
                         fileName: "echartsLianjia"
                     }, {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "ol_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "ol_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "ol_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "ol_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }, {
                         name: "车辆监控模拟",
                         name_en: "Car Animation",
+                        version: "9.1.0",
                         thumbnail: "ol_echartsAnimatorCar.png",
                         fileName: "echartsAnimatorCar"
                     }
@@ -737,6 +756,7 @@ var exampleConfig = {
                 }, {
                     name: "2018年2月北京房价信息",
                     name_en: "Beijing house prices(2018.2)",
+                    version: "9.1.0",
                     localIgnore: true,
                     thumbnail: "mapvLianjia.png",
                     fileName: "mapvLianjia"
@@ -809,6 +829,7 @@ var exampleConfig = {
                     {
                         name: "OSM风格(MVT WGS84)",
                         name_en: "OSM Style(MVT WGS84)",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "mvtvectorlayer_mbstyle_4326.png",
                         fileName: "mvtvectorlayer_mbstyle_4326"
@@ -816,6 +837,7 @@ var exampleConfig = {
                     {
                         name: "风格动态切换",
                         name_en: "Style Switch",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "mvtvectorlayer_mbstyle_beijing.png",
                         fileName: "mvtvectorlayer_mbstyle_beijing"
@@ -823,6 +845,7 @@ var exampleConfig = {
                     {
                         name: "线样式编辑",
                         name_en: "Line Style Edit",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "mvtvectorlayer_mbstyle_linestyle.png",
                         fileName: "mvtvectorlayer_mbstyle_linestyle"
@@ -830,6 +853,7 @@ var exampleConfig = {
                     {
                         name: "土地利用",
                         name_en: "Land Use",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "mvtvectorlayer_mbstyle_landuse.png",
                         fileName: "mvtvectorlayer_mbstyle_landuse"

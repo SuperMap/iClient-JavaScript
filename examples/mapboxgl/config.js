@@ -300,6 +300,7 @@ var exampleConfig = {
                 content: [{
                     name: "随机点 (Classic)",
                     name_en: "random points (Classic)",
+                    version: "9.1.0",
                     thumbnail: "mb_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }]
@@ -374,6 +375,7 @@ var exampleConfig = {
                         name: "土地利用",
                         name_en: "Land Use",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mvtVectorTile_landuse.png",
                         fileName: "mvtVectorTile_landuse"
                     }
@@ -386,6 +388,7 @@ var exampleConfig = {
                     {
                         name: "纽约出租车145万上车点",
                         name_en: "points of 1.45 million NYC taxis",
+                        version: "9.1.0",
                         thumbnail: "mb_graphicLayer.png",
                         fileName: "graphicLayer"
                     }
@@ -471,35 +474,41 @@ var exampleConfig = {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "纽约出租车上车点分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mb_echartScatterMillionsNewYorkTaxi.png",
                         fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mb_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }, {
                         name: "车辆监控模拟",
                         name_en: "Car Animation",
+                        version: "9.1.0",
                         thumbnail: "mb_echartsAnimatorCar.png",
                         fileName: "echartsAnimatorCar"
                     }
@@ -554,57 +563,67 @@ var exampleConfig = {
                 content: [{
                     name: "路径图（线）",
                     name_en: "path",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_pathLayer.png",
                     fileName: "deckglLayer_pathLayer"
                 }, {
                     name: "曲线",
                     name_en: "arcLine",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_arcLayer.png",
                     fileName: "deckglLayer_arcLayer"
                 }, {
                     name: "多边形(建筑物)",
                     name_en: "polygon",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_polygonLayer.png",
                     fileName: "deckglLayer_polygonLayer"
                 }, {
                     name: "蜂巢图",
                     name_en: "honeycomb",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_hexagonLayer.png",
                     fileName: "deckglLayer_hexagonLayer"
                 }, {
                     name: "纽约城市建筑变化图",
                     name_en: "New York Construction",
                     localIgnore: true,
+                    version: "9.1.0",
                     thumbnail: "mb_deckgl_nyBuilding.png",
                     fileName: "deckglLayer_nyBuilding"
                 }, {
                     name: "加州地震分布图",
                     name_en: "California Earthquakes",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_scatterPlot.png",
                     fileName: "deckglLayer_scatterPlot"
                 }, {
                     name: "纽约城市人口分布图",
                     name_en: "New york city population",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_nyc_census.png",
                     fileName: "deckglLayer_nyc_census"
                 }, {
                     name: "旧金山等高线图",
                     name_en: "San Francisco Elevation Contour",
                     localIgnore: true,
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_sfcontour.png",
                     fileName: "deckglLayer_sfcontour"
                 }, {
                     name: "旧金山街道树分布密度图",
                     name_en: "San Francisco Street Tree Map",
+                    version: "9.1.0",
                     thumbnail: "mb_deckglLayer_sftrees.png",
                     fileName: "deckglLayer_sftrees"
                 }, {
                     name: "英国通勤图",
                     name_en: "Commute Patterns in the UK",
+                    version: "9.1.0",
                     localIgnore: true,
                     thumbnail: "mb_deckglLayer_ukcommute.png",
                     fileName: "deckglLayer_ukcommute"
-                },]
+                }]
             },
             "MapV": {
                 name: "MapV",
@@ -613,12 +632,14 @@ var exampleConfig = {
                     {
                         name: "蜂巢图",
                         name_en: "honeycomb",
+                        version: "9.1.0",
                         thumbnail: "mb_mapVLayer_honeycomb.png",
                         fileName: "mapvLayerHoneycomb"
                     },
                     {
                         name: "纽约出租车上车点",
                         name_en: "NY taxi car point",
+                        version: "9.1.0",
                         thumbnail: "mb_mapVLayer_point.png",
                         fileName: "mapvNyTaxi"
                     },
@@ -680,6 +701,7 @@ var exampleConfig = {
                         name: "2018年2月北京房价",
                         name_en: "Beijing house prices(2018.2)",
                         localIgnore: true,
+                        version: "9.1.0",
                         thumbnail: "mb_mapvLianjia.png",
                         fileName: "mapvLinanJiaData"
                     }
@@ -693,21 +715,25 @@ var exampleConfig = {
                     {
                         name: "建筑模型",
                         name_en: "buildings",
+                        version: "9.1.0",
                         thumbnail: "mb_threejs_buildings.png",
                         fileName: "threejsLayer_buildings"
                     }, {
                         name: "设施点(mtl+obj格式)",
                         name_en: "facility(mtl+obj)",
+                        version: "9.1.0",
                         thumbnail: "mb_threejs_facility.png",
                         fileName: "threejsLayer_facility"
                     }, {
                         name: "飞机模型(gltf格式)",
                         name_en: "airplane(gltf)",
+                        version: "9.1.0",
                         thumbnail: "mb_threejs_airplane.png",
                         fileName: "threejsLayer_airplane"
                     }, {
                         name: "飞鸟模型",
                         name_en: "bird",
+                        version: "9.1.0",
                         thumbnail: "mb_threejs_bird.png",
                         fileName: "threejsLayer_bird"
                     }

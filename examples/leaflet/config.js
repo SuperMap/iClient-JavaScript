@@ -88,6 +88,7 @@ var exampleConfig = {
                 }, {
                     name: "几何查询(3857)",
                     name_en: "geometry query(3857)",
+                    version: "9.1.0",
                     thumbnail: "l_mapQueryByGeometry3857.png",
                     fileName: "01_mapQueryByGeometry3857"
                 }, {
@@ -415,7 +416,6 @@ var exampleConfig = {
             "dataFlow": {
                 name: "数据流",
                 name_en: "data flow service",
-                version: "9.1.0",
                 content: [{
                     name: "数据流",
                     name_en: "data flow",
@@ -425,6 +425,7 @@ var exampleConfig = {
                     {
                         name: "数据流(10k 图标)",
                         name_en: "data flow(10k markers)",
+                        version: "9.1.0",
                         thumbnail: "dataflow_mapv.gif",
                         fileName: "dataFlowService_mapv"
                     }]
@@ -550,7 +551,6 @@ var exampleConfig = {
             "heat": {
                 name: "热力图",
                 name_en: "heat map",
-                version: "9.1.0",
                 content: [{
                     name: "随机点",
                     name_en: "random points",
@@ -564,11 +564,13 @@ var exampleConfig = {
                 }, {
                     name: "随机点(Classic)",
                     name_en: "random points (Classic)",
+                    version: "9.1.0",
                     thumbnail: "l_heatMapLayer.png",
                     fileName: "heatMapLayer"
                 }, {
                     name: "2000年到2015年地震热力图(Classic)",
                     name_en: "Earthquake heat map (2000-2015)",
+                    version: "9.1.0",
                     thumbnail: "l_earthquakeHeatMap.png",
                     fileName: "earthquakeHeatMap"
                 }]
@@ -615,6 +617,7 @@ var exampleConfig = {
                     }, {
                         name: "纽约145万出租车-webgl",
                         name_en: "picture drawing of 1.45 million NY taxis",
+                        version: "9.1.0",
                         thumbnail: "l_graphicLayer_webgl.png",
                         fileName: "12_graphiclayer_webgl"
                     }
@@ -691,47 +694,55 @@ var exampleConfig = {
                     }, {
                         name: "2008到2017年地震概况统计",
                         name_en: "2008 to 2017 years of earthquake statistics",
+                        version: "9.1.0",
                         thumbnail: "l_echartsEarthquake.png",
                         fileName: "echartsEarthquake"
                     }, {
                         name: "2018年2月北京房价",
                         name_en: "Beijing house prices of Lianjia(2018.2)",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "l_echartsLianjiaGridLayer.png",
                         fileName: "echartsGridMapLayer"
                     }, {
                         name: "北京道路网络图（130万点数据绘制）",
                         name_en: "Use lines to draw 1.3 millions Beijing streets",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "l_echartsLinesMillionsBeijingRoads.png",
                         fileName: "echarts_linesDrawMillionsBeijingRoadsNetwork"
                     }, {
                         name: "纽约出租车上车点分布图（140万点数据绘制）",
                         name_en: "Use scatter to draw 1.4 millions New York Taxi Points",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "l_echartScatterMillionsNewYorkTaxi.png",
                         fileName: "echarts_scatterDrawMillionsNewYorkTaxiPoints"
                     }, {
                         name: "全国铁路网络图（400万点数据绘制）",
                         name_en: "Use lines to draw 4 millions Chinese railways",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "l_echartsLinesMillionsRailway.png",
                         fileName: "echarts_linesDrawMillionsRailwaysNetwork"
                     }, {
                         name: "全国水系图（1400万点数据绘制）",
                         name_en: "Use lines to draw 14 millions Chinese water system",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "l_echartsLinesMillionsWaterSystem.png",
                         fileName: "echarts_linesDrawMillionsWaterSystem"
                     }, {
                         name: "全国道路网络图（2500万点数据绘制）",
                         name_en: "Use lines to draw 25 millions Chinese roads",
+                        version: "9.1.0",
                         localIgnore: true,
                         thumbnail: "l_echartsLinesMillionsRoads.png",
                         fileName: "echarts_linesDrawMillionsRoadsNetwork_50WFeatures"
                     }, {
                         name: "车辆监控模拟",
                         name_en: "Car Animation",
+                        version: "9.1.0",
                         thumbnail: "l_echartsAnimatorCar.png",
                         fileName: "echartsAnimatorCar"
                     }
@@ -799,6 +810,7 @@ var exampleConfig = {
                 }, {
                     name: "2018年2月北京房价",
                     name_en: "Beijing house prices(2018.2)",
+                    version: "9.1.0",
                     localIgnore: true,
                     thumbnail: "l_mapvLianjia.png",
                     fileName: "mapvLianjiaData"
@@ -918,7 +930,6 @@ var exampleConfig = {
     "dynamicPlot": {
         name: "动态标绘",
         name_en: "dynamicPlot",
-        version: "9.1.0",
         content: {
             "plot": {
                 name: "标绘",
@@ -926,46 +937,55 @@ var exampleConfig = {
                 content: [{
                     name: "动态标绘",
                     name_en: "dynamic plot",
+                    version: "9.1.0",
                     thumbnail: "plot_dynamicPlot.png",
                     fileName: "plot_dynamicPlot"
                 }, {
                     name: "鼠标标绘",
                     name_en: "plot symbol",
+                    version: "9.1.0",
                     thumbnail: "plot_plotSymbol.png",
                     fileName: "plot_plotSymbol"
                 }, {
                     name: "编程标绘",
                     name_en: "draw",
+                    version: "9.1.0",
                     thumbnail: "plot_drawGeoGraphicObject.png",
                     fileName: "plot_drawGeoGraphicObject"
                 }, {
                     name: "属性修改",
                     name_en: "modify symbol style",
+                    version: "9.1.0",
                     thumbnail: "plot_modifySymbolStyle.png",
                     fileName: "plot_modifySymbolStyle"
                 }, {
                     name: "缺省属性",
                     name_en: "default symbol style",
+                    version: "9.1.0",
                     thumbnail: "plot_defaultStyle.png",
                     fileName: "plot_defaultStyle"
                 }, {
                     name: "自定义属性",
                     name_en: "extend symbol properties",
+                    version: "9.1.0",
                     thumbnail: "plot_symbolExtendProperty.png",
                     fileName: "plot_symbolExtendProperty"
                 }, {
                     name: "图层操作",
                     name_en: "layer operations",
+                    version: "9.1.0",
                     thumbnail: "plot_operatePlottingLayer.png",
                     fileName: "plot_operatePlottingLayer"
                 }, {
                     name: "图层编辑",
                     name_en: "layer editing",
+                    version: "9.1.0",
                     thumbnail: "plot_editPlottingLayer.png",
                     fileName: "plot_editPlottingLayer"
                 }, {
                     name: "标号库加载",
                     name_en: "load symbol library",
+                    version: "9.1.0",
                     thumbnail: "plot_loadSymbolLib.png",
                     fileName: "plot_loadSymbolLib"
                 }, {
@@ -976,6 +996,7 @@ var exampleConfig = {
                 }, {
                     name: "编辑器",
                     name_en: "symbol editor",
+                    version: "9.1.0",
                     thumbnail: "plot_symbolEditor.png",
                     fileName: "plot_symbolEditor"
                 }]
@@ -986,16 +1007,19 @@ var exampleConfig = {
                 content: [{
                     name: "保存和加载",
                     name_en: "save and load",
+                    version: "9.1.0",
                     thumbnail: "plot_saveload.png",
                     fileName: "plot_saveload"
                 }, {
                     name: "态势图叠加",
                     name_en: "add plot symbol file",
+                    version: "9.1.0",
                     thumbnail: "plot_addfile.png",
                     fileName: "plot_addfile"
                 }, {
                     name: "态势图上传下载",
                     name_en: "plot symbol file upload and download",
+                    version: "9.1.0",
                     thumbnail: "plot_filetransfer.png",
                     fileName: "plot_filetransfer"
                 }]
@@ -1006,31 +1030,37 @@ var exampleConfig = {
                 content: [{
                     name: "几何查询",
                     name_en: "symbol geometry query",
+                    version: "9.1.0",
                     thumbnail: "plot_symbolGeometricQuery.png",
                     fileName: "plot_symbolGeometricQuery"
                 }, {
                     name: "态势推演",
                     name_en: "situation deduction",
+                    version: "9.1.0",
                     thumbnail: "plot_plotGOAnimation.gif",
                     fileName: "plot_plotGOAnimation"
                 }, {
                     name: "复杂对象",
                     name_en: "draw graphics",
+                    version: "9.1.0",
                     thumbnail: "plot_drawGraphics.png",
                     fileName: "plot_drawGraphics"
                 }, {
                     name: "航线",
                     name_en: "draw route",
+                    version: "9.1.0",
                     thumbnail: "plot_drawRoute.png",
                     fileName: "plot_drawRoute"
                 }, {
                     name: "高性能图层",
                     name_en: "graphic layer",
+                    version: "9.1.0",
                     thumbnail: "plot_graphicLayer.png",
                     fileName: "plot_graphicLayer"
                 }, {
                     name: "避让区域",
                     name_en: "symbol avoid",
+                    version: "9.1.0",
                     thumbnail: "plot_symbolAvoid.png",
                     fileName: "plot_symbolAvoid"
                 }]
@@ -1141,7 +1171,6 @@ var exampleConfig = {
     "widgets": {
         name: "微件",
         name_en: "widgets",
-        version: "9.1.0",
         content: {
             "widgetsSuperMap": {
                 name: "基础",
@@ -1149,11 +1178,13 @@ var exampleConfig = {
                 content: [{
                     name: "打开文件",
                     name_en: "open file widget",
+                    version: "9.1.0",
                     thumbnail: "openFileWidget.png",
                     fileName: "widgets_openFileWidget"
                 }, {
                     name: "数据流服务",
                     name_en: "data flow service",
+                    version: "9.1.0",
                     thumbnail: "widgets_dataFlow.png",
                     fileName: "widgets_dataFlow"
                 }]
@@ -1164,11 +1195,13 @@ var exampleConfig = {
                 content: [{
                     name: "打开文件(React)",
                     name_en: "open file widget(React)",
+                    version: "9.1.0",
                     thumbnail: "openFileWidget_react.png",
                     fileName: "widgets_openFileWidget_react"
                 }, {
                     name: "打开文件(Vue)",
                     name_en: "open file widget(Vue)",
+                    version: "9.1.0",
                     thumbnail: "openFileWidget_vue.png",
                     fileName: "widgets_openFileWidget_vue"
                 }]
