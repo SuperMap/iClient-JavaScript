@@ -18,7 +18,7 @@ export class Graphic extends ol.Object {
         if (geometry instanceof ol.geom.Geometry) {
             this.geometry_ = geometry;
         }
-        this.attributes_ = attributes;
+        this.attributes = attributes;
         this.setStyle();
     }
 
@@ -29,9 +29,9 @@ export class Graphic extends ol.Object {
      */
     clone() {
         var clone = new Graphic();
-        clone.setId(this.id_);
+        clone.setId(this.id);
         clone.setGeometry(this.geometry_);
-        clone.setAttributes(this.attributes_);
+        clone.setAttributes(this.attributes);
         clone.setStyle(this.style_);
         return clone;
     }
@@ -42,7 +42,7 @@ export class Graphic extends ol.Object {
      * @returns {string} id
      */
     getId() {
-        return this.id_;
+        return this.id;
     }
 
     /**
@@ -52,7 +52,7 @@ export class Graphic extends ol.Object {
      */
 
     setId(id) {
-        this.id_ = id;
+        this.id = id;
     }
 
     /**
@@ -79,7 +79,7 @@ export class Graphic extends ol.Object {
      * @param {Object} attributes - 属性对象。
      */
     setAttributes(attributes) {
-        this.attributes_ = attributes;
+        this.attributes = attributes;
     }
 
     /**
@@ -88,7 +88,7 @@ export class Graphic extends ol.Object {
      * @returns {Object} 要素属性。
      */
     getAttributes() {
-        return this.attributes_;
+        return this.attributes;
     }
 
     /**
@@ -160,9 +160,9 @@ export class Graphic extends ol.Object {
      * @description  清除参数值。
      */
     destroy() {
-        this.id_ = null;
+        this.id = null;
         this.geometry_ = null;
-        this.attributes_ = null;
+        this.attributes = null;
         this.style_ = null;
     }
 }

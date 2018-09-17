@@ -70,7 +70,7 @@ export class Graphic extends ol.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
-        this.graphics_ = [].concat(options.graphics);
+        this.graphics = [].concat(options.graphics);
         this.map = options.map;
         CommonUtil.extend(this, options);
         this.render = options.render || Renderer[0];
@@ -232,10 +232,10 @@ export class Graphic extends ol.source.ImageCanvas {
      * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
-        this.graphics_ = this.graphics_ || [];
-        this.graphics_.length = 0;
+        this.graphics = this.graphics || [];
+        this.graphics.length = 0;
         let sGraphics = !Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-        this.graphics_ = [].concat(sGraphics);
+        this.graphics = [].concat(sGraphics);
         this.update();
     }
 
@@ -245,9 +245,102 @@ export class Graphic extends ol.source.ImageCanvas {
      * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
-        this.graphics_ = this.graphics_ || [];
+        this.graphics = this.graphics || [];
         let sGraphics = !Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-        this.graphics_ = this.graphics_.concat(sGraphics);
+        this.graphics = this.graphics.concat(sGraphics);
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicBy
+     * @description 在Vector的要素数组gra[hics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
+     * @param {String} property - graphic的某个属性名称。
+     * @param {String} value - property所对应的值。
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicBy(property, value) {
+        let graphic = null;
+        for (let index in this.graphics) {
+            if (this.graphics[index][property] === value) {
+                graphic = this.graphics[index];
+                break;
+            }
+        }
+        return graphic;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicById
+     * @description 通过给定一个id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性id
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicById(graphicId) {
+        return this.getGraphicBy("id", graphicId);
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic的某个属性名称。
+     * @param {String} attrValue - property所对应的值。
+     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     */
+    getGraphicsByAttribute(attrName, attrValue) {
+        var graphic,
+            foundgraphics = [];
+        for (let index in this.graphics) {
+            graphic = this.graphics[index];
+            if (graphic && graphic.attributes) {
+                if (graphic.attributes[attrName] === attrValue) {
+                    foundgraphics.push(graphic);
+                }
+            }
+        }
+        return foundgraphics;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.removeGraphics
+     * @description 删除要素数组
+     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     */
+    removeGraphics(graphics) {
+        if (!graphics || graphics.length === 0) {
+            return;
+        }
+        if (graphics === this.graphics) {
+            return this.removeAllGraphics();
+        }
+        if (!(CommonUtil.isArray(graphics))) {
+            graphics = [graphics];
+        }
+
+        for (let i = graphics.length - 1; i >= 0; i--) {
+            var graphic = graphics[i];
+
+            //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
+            //并将其放入未删除的数组中。
+            var findex = CommonUtil.indexOf(this.graphics, graphic);
+
+            if (findex === -1) {
+                continue;
+            }
+            this.graphics.splice(findex, 1);
+            //这里移除了graphic之后将它的layer也移除掉，避免内存泄露
+            graphic = null;
+        }
+
+        //删除完成后重新设置 setGraphics，以更新
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.removeAllGraphics
+     * @description 清除所有要素。
+     */
+    removeAllGraphics() {
+        this.graphics.length = 0;
         this.update();
     }
 
@@ -256,16 +349,7 @@ export class Graphic extends ol.source.ImageCanvas {
      * @description 释放图层资源。
      */
     clear() {
-        this.removeGraphics();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 清除所有要素。
-     */
-    removeGraphics() {
-        this.graphics_.length = 0;
-        this.update();
+        this.removeAllGraphics();
     }
 
     /**
@@ -273,8 +357,9 @@ export class Graphic extends ol.source.ImageCanvas {
      * @description 更新图层。
      */
     update() {
-        this.renderer.update(this.graphics_, this._getDefaultStyle());
+        this.renderer.update(this.graphics, this._getDefaultStyle());
     }
+
     _getDefaultStyle() {
         const target = {};
         if (this.color) {
@@ -294,9 +379,11 @@ export class Graphic extends ol.source.ImageCanvas {
         return new ol.style.Circle(target);
 
     }
+
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     }
+
     /**
      * @function ol.source.Graphic.prototype.setStyle
      * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
@@ -459,13 +546,13 @@ export class Graphic extends ol.source.ImageCanvas {
     getGraphicsInExtent(extent) {
         var graphics = [];
         if (!extent) {
-            this.graphics_.map(function (graphic) {
+            this.graphics.map(function (graphic) {
                 graphics.push(graphic);
                 return graphic;
             });
             return graphics;
         }
-        this.graphics_.map(function (graphic) {
+        this.graphics.map(function (graphic) {
             if (ol.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
                 graphics.push(graphic);
             }

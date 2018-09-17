@@ -7,6 +7,9 @@ import {
     Detector
 } from "../core/Detector";
 import {
+    CommonUtil
+} from '@supermap/iclient-common';
+import {
     GraphicCanvasRenderer,
     GraphicWebGLRenderer,
     CircleStyle
@@ -122,6 +125,99 @@ export var GraphicLayer = L.Path.extend({
     },
 
     /**
+     * @function L.supermap.graphicLayer.prototype.getGraphicBy
+     * @description 在Vector的要素数组graphics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
+     * @param {String} property - graphic的某个属性名称。
+     * @param {String} value - property所对应的值。
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicBy(property, value) {
+        let graphic = null;
+        for (let index in this.graphics) {
+            if (this.graphics[index][property] === value) {
+                graphic = this.graphics[index];
+                break;
+            }
+        }
+        return graphic;
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.getGraphicById
+     * @description 通过给定一个id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性id
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicById(graphicId) {
+        return this.getGraphicBy("id", graphicId);
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.getGraphicsByAttribute
+     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic的某个属性名称。
+     * @param {String} attrValue - property所对应的值。
+     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     */
+    getGraphicsByAttribute(attrName, attrValue) {
+        var graphic,
+            foundgraphics = [];
+        for (let index in this.graphics) {
+            graphic = this.graphics[index];
+            if (graphic && graphic.attributes) {
+                if (graphic.attributes[attrName] === attrValue) {
+                    foundgraphics.push(graphic);
+                }
+            }
+        }
+        return foundgraphics;
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.removeGraphics
+     * @description 删除要素数组
+     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     */
+    removeGraphics(graphics) {
+        if (!graphics || graphics.length === 0) {
+            return;
+        }
+        if (graphics === this.graphics) {
+            return this.removeAllGraphics();
+        }
+        if (!(CommonUtil.isArray(graphics))) {
+            graphics = [graphics];
+        }
+
+        for (let i = graphics.length - 1; i >= 0; i--) {
+            var graphic = graphics[i];
+
+            //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
+            //并将其放入未删除的数组中。
+            var findex = CommonUtil.indexOf(this.graphics, graphic);
+
+            if (findex === -1) {
+                continue;
+            }
+            this.graphics.splice(findex, 1);
+            //这里移除了graphic之后将它的layer也移除掉，避免内存泄露
+            graphic = null;
+        }
+
+        //删除完成后重新设置 setGraphics，以更新
+        this.update();
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.removeAllGraphics
+     * @description 移除所有要素。
+     */
+    removeAllGraphics: function () {
+        this.graphics.length = 0;
+        this.update();
+    },
+
+    /**
      * @function L.supermap.graphicLayer.prototype.setStyle
      * @description 设置图层要素整体样式。
      * @param {Object} styleOptions - 样式对象。
@@ -166,16 +262,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 释放图层资源。
      */
     clear: function () {
-        this.removeGraphics();
-    },
-
-    /**
-     * @function L.supermap.graphicLayer.prototype.removeGraphics
-     * @description 移除所有要素。
-     */
-    removeGraphics: function () {
-        this.graphics.length = 0;
-        this.update();
+        this.removeAllGraphics();
     },
 
     /**

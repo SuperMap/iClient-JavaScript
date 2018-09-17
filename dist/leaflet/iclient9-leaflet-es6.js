@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -68239,6 +68224,7 @@ external_L_default.a.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet_CartoCSSToLe
  * @extends {L.Class}
  * @param {Object} options - 图形参数。
  * @param {L.LatLng} options.latLng - 经纬度。
+ * @param {number} options.id - 要素id。
  * @param {(L.supermap.circleStyle|L.supermap.cloverStyle|L.supermap.imageStyle)} [options.style] - 点样式。
  * @param {Object} [options.attributes] - 要素属性。
  */
@@ -68250,7 +68236,27 @@ var Graphic = external_L_default.a.Class.extend({
         var latLng = options.latLng || options._latLng;
         this._latLng = external_L_default.a.latLng(latLng.lat, latLng.lng);
         this._style = options.style || options._canvas;
-        this._attributes = options.attributes;
+        this.attributes = options.attributes;
+        this.id = options.id ? options.id : null;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.getId
+     * @description 获取当前 ID。
+     * @returns {string} id
+     */
+    getId() {
+        return this.id;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.setId
+     * @description 设置当前要素 ID。
+     * @param {string} id - 要素 ID。
+     */
+
+    setId(id) {
+        this.id = id;
     },
 
     /**
@@ -68278,7 +68284,7 @@ var Graphic = external_L_default.a.Class.extend({
      * @param {Object} attributes - 属性对象。
      */
     setAttributes: function (attributes) {
-        this._attributes = attributes;
+        this.attributes = attributes;
     },
 
 
@@ -68308,7 +68314,7 @@ var Graphic = external_L_default.a.Class.extend({
      * @returns {Object} 要素属性。
      */
     getAttributes: function () {
-        return this._attributes;
+        return this.attributes;
     },
 
     /**
@@ -74379,6 +74385,7 @@ var GraphicWebGLRenderer = external_L_default.a.Class.extend({
 
 
 
+
 const Renderer = ["canvas", "webgl"];
 
 const defaultProps = {
@@ -74489,6 +74496,99 @@ var GraphicLayer = external_L_default.a.Path.extend({
     },
 
     /**
+     * @function L.supermap.graphicLayer.prototype.getGraphicBy
+     * @description 在Vector的要素数组graphics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
+     * @param {String} property - graphic的某个属性名称。
+     * @param {String} value - property所对应的值。
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicBy(property, value) {
+        let graphic = null;
+        for (let index in this.graphics) {
+            if (this.graphics[index][property] === value) {
+                graphic = this.graphics[index];
+                break;
+            }
+        }
+        return graphic;
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.getGraphicById
+     * @description 通过给定一个id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性id
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicById(graphicId) {
+        return this.getGraphicBy("id", graphicId);
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.getGraphicsByAttribute
+     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic的某个属性名称。
+     * @param {String} attrValue - property所对应的值。
+     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     */
+    getGraphicsByAttribute(attrName, attrValue) {
+        var graphic,
+            foundgraphics = [];
+        for (let index in this.graphics) {
+            graphic = this.graphics[index];
+            if (graphic && graphic.attributes) {
+                if (graphic.attributes[attrName] === attrValue) {
+                    foundgraphics.push(graphic);
+                }
+            }
+        }
+        return foundgraphics;
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.removeGraphics
+     * @description 删除要素数组
+     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     */
+    removeGraphics(graphics) {
+        if (!graphics || graphics.length === 0) {
+            return;
+        }
+        if (graphics === this.graphics) {
+            return this.removeAllGraphics();
+        }
+        if (!(Util.isArray(graphics))) {
+            graphics = [graphics];
+        }
+
+        for (let i = graphics.length - 1; i >= 0; i--) {
+            var graphic = graphics[i];
+
+            //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
+            //并将其放入未删除的数组中。
+            var findex = Util.indexOf(this.graphics, graphic);
+
+            if (findex === -1) {
+                continue;
+            }
+            this.graphics.splice(findex, 1);
+            //这里移除了graphic之后将它的layer也移除掉，避免内存泄露
+            graphic = null;
+        }
+
+        //删除完成后重新设置 setGraphics，以更新
+        this.update();
+    },
+
+    /**
+     * @function L.supermap.graphicLayer.prototype.removeAllGraphics
+     * @description 移除所有要素。
+     */
+    removeAllGraphics: function () {
+        this.graphics.length = 0;
+        this.update();
+    },
+
+    /**
      * @function L.supermap.graphicLayer.prototype.setStyle
      * @description 设置图层要素整体样式。
      * @param {Object} styleOptions - 样式对象。
@@ -74533,16 +74633,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 释放图层资源。
      */
     clear: function () {
-        this.removeGraphics();
-    },
-
-    /**
-     * @function L.supermap.graphicLayer.prototype.removeGraphics
-     * @description 移除所有要素。
-     */
-    removeGraphics: function () {
-        this.graphics.length = 0;
-        this.update();
+        this.removeAllGraphics();
     },
 
     /**
@@ -85520,7 +85611,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

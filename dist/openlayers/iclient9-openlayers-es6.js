@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -66811,7 +66796,7 @@ class Graphic_Graphic extends external_ol_default.a.Object {
         if (geometry instanceof external_ol_default.a.geom.Geometry) {
             this.geometry_ = geometry;
         }
-        this.attributes_ = attributes;
+        this.attributes = attributes;
         this.setStyle();
     }
 
@@ -66822,9 +66807,9 @@ class Graphic_Graphic extends external_ol_default.a.Object {
      */
     clone() {
         var clone = new Graphic_Graphic();
-        clone.setId(this.id_);
+        clone.setId(this.id);
         clone.setGeometry(this.geometry_);
-        clone.setAttributes(this.attributes_);
+        clone.setAttributes(this.attributes);
         clone.setStyle(this.style_);
         return clone;
     }
@@ -66835,7 +66820,7 @@ class Graphic_Graphic extends external_ol_default.a.Object {
      * @returns {string} id
      */
     getId() {
-        return this.id_;
+        return this.id;
     }
 
     /**
@@ -66845,7 +66830,7 @@ class Graphic_Graphic extends external_ol_default.a.Object {
      */
 
     setId(id) {
-        this.id_ = id;
+        this.id = id;
     }
 
     /**
@@ -66872,7 +66857,7 @@ class Graphic_Graphic extends external_ol_default.a.Object {
      * @param {Object} attributes - 属性对象。
      */
     setAttributes(attributes) {
-        this.attributes_ = attributes;
+        this.attributes = attributes;
     }
 
     /**
@@ -66881,7 +66866,7 @@ class Graphic_Graphic extends external_ol_default.a.Object {
      * @returns {Object} 要素属性。
      */
     getAttributes() {
-        return this.attributes_;
+        return this.attributes;
     }
 
     /**
@@ -66953,9 +66938,9 @@ class Graphic_Graphic extends external_ol_default.a.Object {
      * @description  清除参数值。
      */
     destroy() {
-        this.id_ = null;
+        this.id = null;
         this.geometry_ = null;
-        this.attributes_ = null;
+        this.attributes = null;
         this.style_ = null;
     }
 }
@@ -72076,7 +72061,7 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
-        this.graphics_ = [].concat(options.graphics);
+        this.graphics = [].concat(options.graphics);
         this.map = options.map;
         Util_Util.extend(this, options);
         this.render = options.render || Renderer[0];
@@ -72238,10 +72223,10 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
      * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
-        this.graphics_ = this.graphics_ || [];
-        this.graphics_.length = 0;
+        this.graphics = this.graphics || [];
+        this.graphics.length = 0;
         let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-        this.graphics_ = [].concat(sGraphics);
+        this.graphics = [].concat(sGraphics);
         this.update();
     }
 
@@ -72251,9 +72236,102 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
      * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
-        this.graphics_ = this.graphics_ || [];
+        this.graphics = this.graphics || [];
         let sGraphics = !core_Util_Util.isArray(graphics) ? [graphics] : [].concat(graphics);
-        this.graphics_ = this.graphics_.concat(sGraphics);
+        this.graphics = this.graphics.concat(sGraphics);
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicBy
+     * @description 在Vector的要素数组gra[hics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
+     * @param {String} property - graphic的某个属性名称。
+     * @param {String} value - property所对应的值。
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicBy(property, value) {
+        let graphic = null;
+        for (let index in this.graphics) {
+            if (this.graphics[index][property] === value) {
+                graphic = this.graphics[index];
+                break;
+            }
+        }
+        return graphic;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicById
+     * @description 通过给定一个id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性id
+     * @return {ol.Graphic} 一个匹配的graphic。
+     */
+    getGraphicById(graphicId) {
+        return this.getGraphicBy("id", graphicId);
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic的某个属性名称。
+     * @param {String} attrValue - property所对应的值。
+     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     */
+    getGraphicsByAttribute(attrName, attrValue) {
+        var graphic,
+            foundgraphics = [];
+        for (let index in this.graphics) {
+            graphic = this.graphics[index];
+            if (graphic && graphic.attributes) {
+                if (graphic.attributes[attrName] === attrValue) {
+                    foundgraphics.push(graphic);
+                }
+            }
+        }
+        return foundgraphics;
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.removeGraphics
+     * @description 删除要素数组
+     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     */
+    removeGraphics(graphics) {
+        if (!graphics || graphics.length === 0) {
+            return;
+        }
+        if (graphics === this.graphics) {
+            return this.removeAllGraphics();
+        }
+        if (!(Util_Util.isArray(graphics))) {
+            graphics = [graphics];
+        }
+
+        for (let i = graphics.length - 1; i >= 0; i--) {
+            var graphic = graphics[i];
+
+            //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
+            //并将其放入未删除的数组中。
+            var findex = Util_Util.indexOf(this.graphics, graphic);
+
+            if (findex === -1) {
+                continue;
+            }
+            this.graphics.splice(findex, 1);
+            //这里移除了graphic之后将它的layer也移除掉，避免内存泄露
+            graphic = null;
+        }
+
+        //删除完成后重新设置 setGraphics，以更新
+        this.update();
+    }
+
+    /**
+     * @function ol.source.Graphic.prototype.removeAllGraphics
+     * @description 清除所有要素。
+     */
+    removeAllGraphics() {
+        this.graphics.length = 0;
         this.update();
     }
 
@@ -72262,16 +72340,7 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
      * @description 释放图层资源。
      */
     clear() {
-        this.removeGraphics();
-    }
-
-    /**
-     * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 清除所有要素。
-     */
-    removeGraphics() {
-        this.graphics_.length = 0;
-        this.update();
+        this.removeAllGraphics();
     }
 
     /**
@@ -72279,8 +72348,9 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
      * @description 更新图层。
      */
     update() {
-        this.renderer.update(this.graphics_, this._getDefaultStyle());
+        this.renderer.update(this.graphics, this._getDefaultStyle());
     }
+
     _getDefaultStyle() {
         const target = {};
         if (this.color) {
@@ -72300,9 +72370,11 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
         return new external_ol_default.a.style.Circle(target);
 
     }
+
     toRGBA(colorArray) {
         return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     }
+
     /**
      * @function ol.source.Graphic.prototype.setStyle
      * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
@@ -72465,13 +72537,13 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
     getGraphicsInExtent(extent) {
         var graphics = [];
         if (!extent) {
-            this.graphics_.map(function (graphic) {
+            this.graphics.map(function (graphic) {
                 graphics.push(graphic);
                 return graphic;
             });
             return graphics;
         }
-        this.graphics_.map(function (graphic) {
+        this.graphics.map(function (graphic) {
             if (external_ol_default.a.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
                 graphics.push(graphic);
             }
@@ -81146,7 +81218,7 @@ module.exports = function(proj4){
 /* 65 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 66 */

@@ -11,7 +11,7 @@ import {baiduMapLayer, DataSet} from 'mapv';
  * @extends {mapv.baiduMapLayer}
  * @param {SuperMap.Map} map - 待渲染的地图。
  * @param {SuperMap.Layer.MapVLayer} layer - 待渲染的图层。
- * @param {Mapv.DataSet} dataSet - 待渲染的数据集。
+ * @param {Mapv.DataSet} dataSet - 待渲染的数据集，数据所属坐标系要求与 map 保持一致。
  * @param {Object} options - 渲染的参数。
  */
 var MapVBaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
@@ -29,7 +29,6 @@ export class MapVRenderer extends MapVBaseLayer {
         self.init(options);
         self.argCheck(options);
         this.canvasLayer = layer;
-        self.transferToMercator();
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this.bindEvent();
@@ -175,6 +174,7 @@ export class MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.transferToMercator
      * @description 墨卡托坐标为经纬度。
+     * @deprecated
      */
     transferToMercator() {
         if (this.options.coordType && ["bd09mc", "coordinates_mercator"].indexOf(this.options.coordType) > -1) {
@@ -232,7 +232,8 @@ export class MapVRenderer extends MapVBaseLayer {
         var dataGetOptions = {
             fromColumn: 'coordinates',
             transferCoordinate: function (coordinate) {
-                var coord = layer.transferToMapLatLng({lon: coordinate[0], lat: coordinate[1]});
+                // var coord = layer.transferToMapLatLng({lon: coordinate[0], lat: coordinate[1]});
+                var coord = {lon: coordinate[0], lat: coordinate[1]};
                 var worldPoint = map.getViewPortPxFromLonLat(coord);
                 return [worldPoint.x, worldPoint.y];
             }

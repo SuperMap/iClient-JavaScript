@@ -71,9 +71,9 @@
         }
         if (!inArray(excludes, 'iclient-classic')) {
             if (supportES6()) {
-                inputScript("../../dist/classic/iclient-classic-es6.min.js");
+                inputScript("../../dist/classic/iclient-classic-es6.js");
             } else {
-                inputScript("../../dist/classic/iclient-classic.min.js");
+                inputScript("../../dist/classic/iclient-classic-es6.js");
             }
         }
         if (inArray(includes, 'tianditu')) {

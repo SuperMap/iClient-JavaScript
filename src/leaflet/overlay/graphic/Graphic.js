@@ -11,6 +11,7 @@ import '../../core/Base';
  * @extends {L.Class}
  * @param {Object} options - 图形参数。
  * @param {L.LatLng} options.latLng - 经纬度。
+ * @param {number} options.id - 要素id。
  * @param {(L.supermap.circleStyle|L.supermap.cloverStyle|L.supermap.imageStyle)} [options.style] - 点样式。
  * @param {Object} [options.attributes] - 要素属性。
  */
@@ -22,7 +23,27 @@ export var Graphic = L.Class.extend({
         var latLng = options.latLng || options._latLng;
         this._latLng = L.latLng(latLng.lat, latLng.lng);
         this._style = options.style || options._canvas;
-        this._attributes = options.attributes;
+        this.attributes = options.attributes;
+        this.id = options.id ? options.id : null;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.getId
+     * @description 获取当前 ID。
+     * @returns {string} id
+     */
+    getId() {
+        return this.id;
+    },
+
+    /**
+     * @function L.supermap.graphic.prototype.setId
+     * @description 设置当前要素 ID。
+     * @param {string} id - 要素 ID。
+     */
+
+    setId(id) {
+        this.id = id;
     },
 
     /**
@@ -50,7 +71,7 @@ export var Graphic = L.Class.extend({
      * @param {Object} attributes - 属性对象。
      */
     setAttributes: function (attributes) {
-        this._attributes = attributes;
+        this.attributes = attributes;
     },
 
 
@@ -80,7 +101,7 @@ export var Graphic = L.Class.extend({
      * @returns {Object} 要素属性。
      */
     getAttributes: function () {
-        return this._attributes;
+        return this.attributes;
     },
 
     /**

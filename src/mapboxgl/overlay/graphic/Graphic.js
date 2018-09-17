@@ -33,6 +33,24 @@ export class Graphic {
         this.style = Util.extend({}, style);
         this.attributes = attributes;
     }
+    /**
+     * @function mapboxgl.supermap.Graphic.prototype.getId
+     * @description 获取当前 ID。
+     * @returns {string} id
+     */
+    getId() {
+        return this.id;
+    }
+
+    /**
+     * @function mapboxgl.supermap.Graphic.prototype.setId
+     * @description 设置当前要素 ID。
+     * @param {string} id - 要素 ID。
+     */
+
+    setId(id) {
+        this.id = id;
+    }
 
     /**
      * @function mapboxgl.supermap.Graphic.prototype.getLngLat
