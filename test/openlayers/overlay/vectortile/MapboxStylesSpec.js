@@ -11,7 +11,7 @@ ol.geom.flat = oldebug.geom.flat;
 
 describe('openlayers_MapboxStyles', () => {
     var url = GlobeParameter.californiaURL
-    var testDiv, map, mapboxStyles, originalTimeout;
+    var testDiv, map, mapboxStyles, originalTimeout, stylesOptions;
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -32,10 +32,21 @@ describe('openlayers_MapboxStyles', () => {
                 projection: 'EPSG:4326',
             })
         });
+        stylesOptions = {
+            url: url,
+            map: map,
+            source: 'California'
+        };
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            expect(testUrl).toBe(url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true");
-            return Promise.resolve(new Response(vectorstylesEscapedJson));
-        }); 
+            if (testUrl.indexOf("vectorstyles.json") > 0) {
+                expect(testUrl).toBe(url + "/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true");
+                return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
+            } else if (testUrl.indexOf("sprite.json") > 0) {
+                return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));
+            };
+            return null;
+
+        });
 
     });
     beforeEach(() => {
@@ -43,6 +54,7 @@ describe('openlayers_MapboxStyles', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
+
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
@@ -50,58 +62,34 @@ describe('openlayers_MapboxStyles', () => {
     });
 
     it('getStyleFunction', (done) => {
-        var stylesOptions = {
-            url: url,
-            map: map,
-            source: 'California'
-        };
         var style;
         mapboxStyles = new MapboxStyles(stylesOptions);
         setTimeout(() => {
             style = mapboxStyles.getStyleFunction();
-       }, 8000);
-        setTimeout(() => {
             expect(style).not.toBeNull();
-            mapboxStyles = null;
             done();
-        }, 1000);
+        }, 2000);
     });
 
     it('getStyleFunction,setSelectedId', (done) => {
-        var stylesOptions = {
-            url: url,
-            map: map,
-            source: 'California'
-        };
         var style;
         mapboxStyles = new MapboxStyles(stylesOptions);
         setTimeout(() => {
             mapboxStyles.setSelectedId(1, 1);
             style = mapboxStyles.getStyleFunction();
-        }, 8000);
-        setTimeout(() => {
             expect(style).not.toBeNull();
-            mapboxStyles = null;
             done();
-        }, 1000);
+        }, 2000);
+
     });
 
     it('getStylesBySourceLayer', (done) => {
-        var stylesOptions = {
-            url: url,
-            map: map,
-            source: 'California'
-        };
         var layer;
         mapboxStyles = new MapboxStyles(stylesOptions);
         setTimeout(() => {
-           layer= mapboxStyles.getStylesBySourceLayer("Military_R@California");
-        }, 8000);
-        setTimeout(() => {
+            layer = mapboxStyles.getStylesBySourceLayer("Military_R@California");
             expect(layer).not.toBeNull();
-            mapboxStyles = null;
             done();
-        }, 1000);
-        
+        }, 2000);
     });
 })
