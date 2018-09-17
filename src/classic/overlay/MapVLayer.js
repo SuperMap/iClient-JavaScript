@@ -218,6 +218,7 @@ export class MapVLayer extends SuperMap.Layer {
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
      * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
+     * @deprecated
      */
     transferToMapLatLng(latLng) {
         var source = "EPSG:4326",
