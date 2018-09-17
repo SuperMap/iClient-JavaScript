@@ -29,5 +29,6 @@
     China4326URL: "http://localhost:8090/iserver/services/map-china400/rest/maps/China_4326",
     addressMatchURL_code: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address/geocoding",
     addressMatchURL_decode: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address/geodecoding",
-    ChinaProvincesURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces"
+    ChinaProvincesURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces",
+    californiaURL: "http://localhost:8090/iserver/services/map-mvt-California/rest/maps/California"
 }
