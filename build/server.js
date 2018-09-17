@@ -14,7 +14,7 @@ if (['leaflet', 'openlayers'].includes(product)) {
 }
 config.mode = 'development';
 config.entry = entry;
-config.output.filename = `iclient9-${product}-es6.js`
+config.output.filename = product === 'classic' ? `iclient-classic-es6.js` : `iclient9-${product}-es6.js`
 config.devtool = 'cheap-module-eval-source-map';
 
 
@@ -37,6 +37,7 @@ const server = app.listen(9999, () => {
 app.use(express.static('web'));
 app.use("/examples/template/header.html", express.static('web/template/header.html'));
 app.use("/examples", express.static('examples'), serveIndex('examples'));
+app.use("/examples-bug", express.static('examples-bug'), serveIndex('examples-bug'));
 app.use("/dist", express.static('dist'), serveIndex('dist'));
 app.use("/build", express.static('build'), serveIndex('build'));
 app.use("/docs", express.static('docs'), serveIndex('docs'));

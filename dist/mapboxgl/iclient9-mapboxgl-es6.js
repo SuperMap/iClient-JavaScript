@@ -52509,7 +52509,7 @@ class Bar_Bar extends Graph_Graph {
         // 图表配置对象
         var sets = this.setting;
 
-        if (typeof (sets.barLinearGradient) !== "undefined") {
+        if (!sets.barLinearGradient) {
             sets.barLinearGradient = deafaultColors;
         }
 
@@ -64592,6 +64592,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         this.map.on('moveend', this.moveEndEvent.bind(this));
         this.map.on('remove', this.removeEvent.bind(this));
         this.bindEvent();
+        this._expectShow = true;
     }
 
     /**
@@ -64883,7 +64884,9 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         var canvas = this.getContext().canvas;
         canvas.style.transform = '';
         this._canvasUpdate();
-        this._show();
+        if (this._expectShow === true) {
+            this._show();
+        }
     }
 
     moveStartEvent() {
@@ -64895,15 +64898,16 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
         if (this.animation) {
             this.stopAniamation = true;
         }
-    }
-
-    moveEvent() {
         if (this.rotating || this.zooming) {
             return;
         }
+        this._expectShow = this.canvasLayer.canvas.style.display !== 'none';
         if (this.map.getPitch() !== 0) {
             this._hide();
         }
+    }
+
+    moveEvent() {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
@@ -64921,18 +64925,17 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
 
     zoomEndEvent() {
         this.zooming = false;
-        this._show();
     }
 
 
     rotateStartEvent() {
         this.rotating = true;
-    }
-
-    rotateEvent() {
         if (this.map.getPitch() !== 0) {
             this._hide();
         }
+    }
+
+    rotateEvent() {
         this.canvasLayer.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
         var tPitch = this.map.getPitch() - this.startPitch;
         var tBearing = -this.map.getBearing() + this.startBearing;
@@ -64942,13 +64945,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
 
     rotateEndEvent() {
         this.rotating = false;
-        this._show();
     }
-
-    dragEndEvent() {
-        this._hide();
-    }
-
     /**
      * @function MapvRenderer.prototype.clear
      * @param {object} context - 当前环境。
@@ -64973,6 +64970,7 @@ class MapvRenderer_MapvRenderer extends BaseLayer {
     _show() {
         this.canvasLayer.canvas.style.display = 'block';
     }
+
 
 
 }

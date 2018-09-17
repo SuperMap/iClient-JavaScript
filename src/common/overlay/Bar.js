@@ -97,7 +97,7 @@ export class Bar extends Graph {
         // 图表配置对象
         var sets = this.setting;
 
-        if (typeof (sets.barLinearGradient) !== "undefined") {
+        if (!sets.barLinearGradient) {
             sets.barLinearGradient = deafaultColors;
         }
 
