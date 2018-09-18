@@ -66636,16 +66636,21 @@ class GraphicLayer_GraphicLayer {
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.removeGraphics
-     * @description 删除要素数组
-     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     * @description 删除要素数组，默认将删除所有要素
+     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
      */
-    removeGraphics(graphics) {
-        if (!graphics || graphics.length === 0) {
+    removeGraphics(graphics = null) {
+        //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
+        if (!graphics || graphics.length === 0 || graphics === this.graphics) {
+            this.graphics.length = 0;
+
+            if (this.layer.props.data) {
+                this.layer.props.data.length = 0;
+            }
+            this.update();
             return;
         }
-        if (graphics === this.graphics) {
-            return this.removeAllGraphics();
-        }
+
         if (!(Util_Util.isArray(graphics))) {
             graphics = [graphics];
         }
@@ -66671,20 +66676,6 @@ class GraphicLayer_GraphicLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphicLayer.prototype.removeAllGraphics
-     * @description 移除所有要素。
-     */
-    removeAllGraphics() {
-        this.graphics.length = 0;
-
-        if (this.layer.props.data) {
-            this.layer.props.data.length = 0;
-        }
-        this.update();
-    }
-
-
-    /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.update
      * @description 更新图层。
      */
@@ -66704,7 +66695,7 @@ class GraphicLayer_GraphicLayer {
      * @description 释放图层资源。
      */
     clear() {
-        this.removeAllGraphics();
+        this.removeGraphics();
         this.deckGL.finalize();
     }
 

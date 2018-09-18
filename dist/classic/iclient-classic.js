@@ -10155,13 +10155,12 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     }, {
         key: 'transferToMapLatLng',
         value: function transferToMapLatLng(latLng) {
-            var unit = this.map.getUnits() || "degree";
-            if (["m", "meter"].indexOf(unit.toLowerCase()) === -1) {
-                return latLng;
-            }
-
             var source = "EPSG:4326",
+                dest = "EPSG:4326";
+            var unit = this.map.getUnits() || "degree";
+            if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
                 dest = "EPSG:3857";
+            }
             return new _SuperMap.SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
         }
     }]);

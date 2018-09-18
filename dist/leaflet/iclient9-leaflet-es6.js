@@ -74546,15 +74546,15 @@ var GraphicLayer = external_L_default.a.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.removeGraphics
-     * @description 删除要素数组
-     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     * @description 删除要素数组，默认将删除所有要素
+     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
      */
-    removeGraphics(graphics) {
-        if (!graphics || graphics.length === 0) {
+    removeGraphics(graphics = null) {
+        //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
+        if (!graphics || graphics.length === 0 || graphics === this.graphics) {
+            this.graphics.length = 0;
+            this.update();
             return;
-        }
-        if (graphics === this.graphics) {
-            return this.removeAllGraphics();
         }
         if (!(Util.isArray(graphics))) {
             graphics = [graphics];
@@ -74576,15 +74576,6 @@ var GraphicLayer = external_L_default.a.Path.extend({
         }
 
         //删除完成后重新设置 setGraphics，以更新
-        this.update();
-    },
-
-    /**
-     * @function L.supermap.graphicLayer.prototype.removeAllGraphics
-     * @description 移除所有要素。
-     */
-    removeAllGraphics: function () {
-        this.graphics.length = 0;
         this.update();
     },
 
@@ -74633,7 +74624,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
      * @description 释放图层资源。
      */
     clear: function () {
-        this.removeAllGraphics();
+        this.removeGraphics();
     },
 
     /**
@@ -74792,7 +74783,7 @@ var GraphicLayer = external_L_default.a.Path.extend({
 
     },
     toRGBA(colorArray) {
-        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3]||255)/255})`;
+        return `rgba(${colorArray[0]},${colorArray[1]},${colorArray[2]},${(colorArray[3] || 255) / 255})`;
     },
     _getGraphicsInBounds: function () {
         let me = this;

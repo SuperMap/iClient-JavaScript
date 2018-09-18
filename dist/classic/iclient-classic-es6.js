@@ -7667,13 +7667,12 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
      * @deprecated
      */
     transferToMapLatLng(latLng) {
-        const unit = this.map.getUnits() || "degree";
-        if (["m", "meter"].indexOf(unit.toLowerCase()) === -1) {
-            return latLng;
-        }
-
-        let source = "EPSG:4326",
+        var source = "EPSG:4326",
+            dest = "EPSG:4326";
+        var unit = this.map.getUnits() || "degree";
+        if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
             dest = "EPSG:3857";
+        }
         return new SuperMap_SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 

@@ -72176,7 +72176,7 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
                         for (let index = 0; index < 8; index++) {
                             const radian = (ratation + index * perAngle) / 180 * Math.PI;
                             coors.push([center[0] + r * Math.cos(radian),
-                            center[1] - r * Math.sin(radian)
+                                center[1] - r * Math.sin(radian)
                             ]);
                         }
                         coors.push(center);
@@ -72294,15 +72294,16 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.Graphic.prototype.removeGraphics
      * @description 删除要素数组
-     * @param {Array.<ol.Graphic>} graphics - 删除的 graphics 数组
+     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
      */
-    removeGraphics(graphics) {
-        if (!graphics || graphics.length === 0) {
+    removeGraphics(graphics = null) {
+        //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
+        if (!graphics || graphics.length === 0 || graphics === this.graphics) {
+            this.graphics.length = 0;
+            this.update();
             return;
         }
-        if (graphics === this.graphics) {
-            return this.removeAllGraphics();
-        }
+
         if (!(Util_Util.isArray(graphics))) {
             graphics = [graphics];
         }
@@ -72327,20 +72328,11 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.removeAllGraphics
-     * @description 清除所有要素。
-     */
-    removeAllGraphics() {
-        this.graphics.length = 0;
-        this.update();
-    }
-
-    /**
      * @function ol.source.Graphic.prototype.clear
      * @description 释放图层资源。
      */
     clear() {
-        this.removeAllGraphics();
+        this.removeGraphics();
     }
 
     /**

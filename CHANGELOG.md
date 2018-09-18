@@ -4,41 +4,50 @@
 
 ### for Leaflet
 
- - 可视化 - 矢量瓦片
-    - `L.supermap.tiledVectorLayer` 新增 `options.processCharacters` 参数,支持本地设置服务端的CartoCSS样式时替换特殊字符
+- 可视化 - 矢量瓦片
+  - `L.supermap.tiledVectorLayer` 新增 `options.processCharacters` 参数,支持本地设置服务端的CartoCSS样式时替换特殊字符
  
- - `SuperMap.QueryParameters` 及其子类新增 `options.returnFeatureWithFieldCaption` 参数,支持指定返回的查询结果要素字段标识为字段别名
+- `SuperMap.QueryParameters` 及其子类新增 `options.returnFeatureWithFieldCaption` 参数,支持指定返回的查询结果要素字段标识为字段别名
 
- - 可视化 - 高性能图层
-    - `L.supermap.graphic` 新增 `options.id` 参数，以及 `getId` 和 `setId` 接口，支持设置与修改 `graphic` 要素`id`
-    - `L.supermap.graphicLayer` 新增 `getGraphicBy` 支持 通过要素属性值获取指定要素
-    - `L.supermap.graphicLayer` 新增 `getGraphicById` 支持 通过要素 `id` 获取指定要素
-    - `L.supermap.graphicLayer` 新增 `getGraphicsByAttribute` 支持 通过要素 `attribute`属性对象值获取指定要素数组
-    - `L.supermap.graphicLayer` 废弃 `removeGraphics` 改用 `removeAllGraphics` 支持删除所有要素
-    - `L.supermap.graphicLayer` 新增 `removeGraphics` 支持删除单个或多个要素
+- 可视化 - 高效率点图层
+  - `L.supermap.graphic` 
+    - 新增 `options.id` 参数，以及 `getId` 和 `setId` 接口，支持设置与修改 `graphic` 要素`id`
+ 
+  - `L.supermap.graphicLayer` 
+    - 新增 `getGraphicBy` 接口支持通过要素属性值获取指定要素
+    - 新增 `getGraphicById` 接口支持通过要素 `id` 获取指定要素
+    - 新增 `getGraphicsByAttribute` 接口支持通过要素 `attribute`属性对象值获取指定要素数组
+    - `removeGraphics` 接口新增删除单个或多个要素的功能
+  - `L.supermap.ThemeLayer` 及其子类 
+    - `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置该参数为true , `addFeatures` 方法可添加底图坐标要素
 
 ### for OpenLayers
 
 - `SuperMap.QueryParameters` 及其子类新增 `options.returnFeatureWithFieldCaption` 参数,支持指定返回的查询结果要素字段标识为字段别名
 
-- 可视化 - 高性能图层
-    - `ol.Graphic` 新增 `options.id` 参数，以及 `getId` 和 `setId` 接口，支持设置与修改 `graphic` 要素`id`
-    - `ol.source.Graphic` 新增 `getGraphicBy` 支持 通过要素属性值获取指定要素
-    - `ol.source.Graphic` 新增 `getGraphicById` 支持 通过要素 `id` 获取指定要素
-    - `ol.source.Graphic` 新增 `getGraphicsByAttribute` 支持 通过要素 `attribute`属性对象值获取指定要素数组
-    - `ol.source.Graphic` 废弃 `removeGraphics` 改用 `removeAllGraphics` 支持删除所有要素
-    - `ol.source.Graphic` 新增 `removeGraphics` 支持删除单个或多个要素
+- 可视化 - 高效率点图层
+  - `ol.Graphic`
+    - 新增 `options.id` 参数，以及 `getId` 和 `setId` 接口，支持设置与修改 `graphic` 要素`id`
+  
+  - `ol.source.Graphic`
+    - 新增 `getGraphicBy` 接口支持通过要素属性值获取指定要素
+    - 新增 `getGraphicById` 接口支持通过要素 `id` 获取指定要素
+    - 新增 `getGraphicsByAttribute` 接口支持通过要素 `attribute`属性对象值获取指定要素数组
+    - `removeGraphics` 接口新增删除单个或多个要素的功能
+    
 ### for MapboxGL
 
 - `SuperMap.QueryParameters` 及其子类新增 `options.returnFeatureWithFieldCaption` 参数,支持指定返回的查询结果要素字段标识为字段别名
 
-- 可视化 - 高性能图层
-    - `mapboxgl.supermap.Graphic` 新增 `options.id` 参数，以及 `getId` 和 `setId` 接口，支持设置与修改 `graphic` 要素`id`
-    - `mapboxgl.supermap.GraphThemeLayer` 新增 `getGraphicBy` 支持 通过要素属性值获取指定要素
-    - `mapboxgl.supermap.GraphThemeLayer` 新增 `getGraphicById` 支持 通过要素 `id` 获取指定要素
-    - `mapboxgl.supermap.GraphThemeLayer` 新增 `getGraphicsByAttribute` 支持 通过要素 `attribute`属性对象值获取指定要素数组
-    - `mapboxgl.supermap.GraphThemeLayer` 废弃 `removeGraphics` 改用 `removeAllGraphics` 支持删除所有要素
-    - `mapboxgl.supermap.GraphThemeLayer` 新增 `removeGraphics` 支持删除单个或多个要素
+- 可视化 - 高效率点图层
+  - `mapboxgl.supermap.Graphic` 
+    - 新增 `options.id` 参数，以及 `getId` 和 `setId` 接口，支持设置与修改 `graphic` 要素`id`
+  
+  - `mapboxgl.supermap.GraphThemeLayer` 
+    - 新增 `getGraphicBy` 接口支持通过要素属性值获取指定要素
+    - 新增 `getGraphicById` 接口支持通过要素 `id` 获取指定要素
+    - 新增 `getGraphicsByAttribute` 接口支持通过要素 `attribute`属性对象值获取指定要素数组
+    - `removeGraphics` 接口新增删除单个或多个要素的功能
 
 ### for Classic
 - `SuperMap.Layer.MapVLayer` 支持北京54 等其他坐标系（注：数据坐标系要求与地图保持一致）
