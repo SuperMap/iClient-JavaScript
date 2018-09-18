@@ -621,6 +621,8 @@ export class WebMap extends ol.Observable {
         unique.style = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             unique.style.fill = false;
+        } else {
+            unique.style.fill = true;
         }
         unique.style.stroke = true;
         unique.themeField = themeField;
