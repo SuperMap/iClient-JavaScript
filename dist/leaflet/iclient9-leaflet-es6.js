@@ -4123,7 +4123,7 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(127);
+var supermapol_icons = __webpack_require__(126);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
 var widgets_icon = __webpack_require__(120);
@@ -4132,34 +4132,34 @@ var widgets_icon = __webpack_require__(120);
 var Icon = __webpack_require__(115);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(106);
+var OpenFile = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(105);
+var MessageBox = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(104);
+var DataFlow = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(103);
+var POISearch = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(102);
+var WidgetContainer = __webpack_require__(100);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(101);
+var WidgetDropDownBox = __webpack_require__(99);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(100);
+var WidgetSelect = __webpack_require__(98);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(99);
+var CityTabsPage = __webpack_require__(129);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(98);
+var NavTabsPage = __webpack_require__(97);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(97);
+var PaginationContainer = __webpack_require__(127);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
 var PopContainer = __webpack_require__(96);
@@ -64501,6 +64501,675 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer {
 }
 
 SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopContainer;
+// CONCATENATED MODULE: ./src/common/widgets/templates/IndexTabsPageContainer.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+class IndexTabsPageContainer {
+    constructor() {
+        this._initView();
+    }
+
+    _initView() {
+        const container = document.createElement("div");
+        container.setAttribute("class", "widgets-tabpage");
+
+        const header = document.createElement("ul");
+        this.header = header;
+
+        const content = document.createElement("div");
+        content.setAttribute("class", "widgets-tabpage-content");
+        this.content = content;
+
+        container.appendChild(header);
+        container.appendChild(content);
+        this.container = container;
+
+    }
+
+    showView() {
+        this.container.hidden = false;
+    }
+
+    closeView() {
+        this.container.hidden = true;
+    }
+
+    getElement() {
+        return this.container;
+    }
+
+
+    setTabs(tabs) {
+        this.removeAllTabs();
+        this.appendTabs(tabs);
+    }
+
+    appendTabs(tabs) {
+        for (let i = 0; i < tabs.length; i++) {
+            let title = document.createElement("span");
+            title.index = i;
+            title.appendChild(document.createTextNode(tabs[i].title));
+            //绑定标签切换对应页面：
+            title.onclick = this._changeTabsPage.bind(this);
+            let content = tabs[i].content;
+            content.index = i;
+            content.hidden = true;
+
+            this.header.appendChild(title);
+            this.content.appendChild(content);
+        }
+        //todo 确认是否两个子元素的 index 相互对应
+        //默认显示第一个标签对象
+        this.header.firstChild.setAttribute("class", "on");
+        this.content.firstChild.hidden = false;
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeTab
+     * @description 删除某个标签页面
+     * @param {number} index - 标签索引号
+     */
+    removeTab(index) {
+        this.header.removeChild(this.header.children[index]);
+        this.content.removeChild(this.content.children[index]);
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeAllTabs
+     * @description 删除所有标签F
+     */
+    removeAllTabs() {
+        for (let i = this.header.children.length; i > 0; i--) {
+            this.header.removeChild(this.header.children[i]);
+            this.content.removeChild(this.content.children[i]);
+        }
+    }
+
+    _changeTabsPage(e) {
+        const index = e.target.index;
+        for (let i = 0; i < this.header.children.length; i++) {
+            this.header.children[i].setAttribute("class", "");
+            this.content.children[i].hidden = true;
+            if (i === index) {
+                this.header.children[i].setAttribute("class", "on");
+                this.content.children[i].hidden = false;
+            }
+        }
+    }
+
+}
+// EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
+var css_CityTabsPage = __webpack_require__(129);
+
+// CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.Widgets.CityTabsPage
+ * @classdesc 城市地址匹配组件模板
+ * @param {Object|Array.<string>} config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
+ *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ */
+class CityTabsPage_CityTabsPage extends IndexTabsPageContainer {
+    constructor(config) {
+        super();
+        //去掉默认的边框阴影样式：
+        this.container.classList.add("noneBoxShadow");
+        this.config = config;
+        //header，若 config为城市名称数组，则直接加载内容
+        if (Util.isArray(this.config)) {
+            this.header.hidden = true;
+            this._createCityItem("城市", this.config);
+            this.content.style.border = "none";
+        } else {
+            this._createTabs();
+            this.header.onclick = (e) => {
+                //关闭所有元素 是否有更简化的写法？
+                for (let i = 0; i < this.header.children.length; i++) {
+                    this.header.children[i].setAttribute("class", "");
+                }
+                //打开点击内容元素
+                e.target.setAttribute("class", "on");
+                this._createCityContent(e.target.innerHTML);
+            };
+        }
+
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createTabs
+     * @description 创建 Tabs
+     * @private
+     */
+    _createTabs() {
+        //header
+        if (Util.isArray(this.config)) {
+            for (let i = 0; i < this.config.length; i++) {
+                let innerHTML = "";
+                for (const key in this.config[i]) {
+                    innerHTML += key;
+                }
+                let li = document.createElement("li");
+                li.innerHTML = innerHTML;
+                this.header.appendChild(li);
+            }
+        } else {
+            for (const key in this.config) {
+                let li = document.createElement("li");
+                li.innerHTML = key;
+                this.header.appendChild(li);
+            }
+        }
+        this.header.firstChild.setAttribute("class", "on");
+        this._createCityContent(this.header.firstChild.innerHTML);
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+     * @description 创建列表容器
+     * @private
+     */
+    _createCityContent(keyName) {
+        //清除元素：
+        for (let i = this.content.children.length; i > 0; i--) {
+            this.content.removeChild(this.content.children[i - 1]);
+        }
+        //创建对应元素
+        const cities = this.config[keyName];
+        for (let key in cities) {
+            this._createCityItem(key, cities[key]);
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+     * @description 创建列表容器
+     * @private
+     */
+    _createCityItem(key, cities) {
+        const city = document.createElement("div");
+
+        const cityClass = document.createElement("div");
+        cityClass.setAttribute("class", "py-key");
+        cityClass.innerHTML = key;
+        city.appendChild(cityClass);
+
+        const cityContent = document.createElement("div");
+        cityContent.setAttribute("class", "city-content");
+
+        for (let i = 0; i < cities.length; i++) {
+            let span = document.createElement("span");
+            span.innerHTML = cities[i];
+            cityContent.appendChild(span);
+        }
+        //HOT 元素长度单独微调：
+        if (key === "HOT") {
+            cityContent.style.width = "428px";
+        }
+        city.appendChild(cityContent);
+        this.content.appendChild(city);
+    }
+
+}
+
+SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
+// CONCATENATED MODULE: ./src/common/widgets/templates/NavTabsPage.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/**
+ * @class NavTabsPage
+ * @class 标签页面组件
+ * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面，默认值为 []
+ * todo 思考拆分的控件应该以哪种方式使用
+ */
+class NavTabsPage {
+    constructor(tabs = [], id = null) {
+        this.navTabsPage = null;
+        this.navTabsTitle = null;
+        this.navTabsContent = null;
+
+        this.rootContainer = document.createElement("div");
+        if (id) {
+            this.rootContainer.id = id;
+        }
+        this._initContainer(tabs);
+
+    }
+
+    _initContainer(tabs) {
+        const navTabsPage = document.createElement("div");
+        navTabsPage.setAttribute("class", "nav-tabs-page");
+
+        //关闭按钮
+        const closeBtn = document.createElement("span");
+        closeBtn.setAttribute("class", "supermapol-icons-close");
+        closeBtn.onclick = this.closeView.bind(this);
+        navTabsPage.appendChild(closeBtn);
+
+        //标签
+        const navTabsTitle = document.createElement("div");
+        this.navTabsTitle = navTabsTitle;
+        navTabsTitle.setAttribute("class", "nav-tabs-title");
+        navTabsPage.appendChild(navTabsTitle);
+
+        //内容
+        const navTabsContent = document.createElement("div");
+        this.navTabsContent = navTabsContent;
+        navTabsContent.setAttribute("class", "nav-tabs-content");
+        navTabsPage.appendChild(navTabsContent);
+
+        //若 tabs 初始传入值，则
+        if (tabs.length > 0) {
+            this.appendTabs(tabs);
+        }
+
+        this.navTabsPage = navTabsPage;
+    }
+
+    getElement() {
+        return this.navTabsPage;
+    }
+
+    /**
+     * @function NavTabsPage.prototype.setTabs
+     * @description 设置标签
+     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     */
+    setTabs(tabs) {
+        this.removeAllTabs();
+        this.appendTabs(tabs);
+    }
+
+    /**
+     * @function NavTabsPage.prototype.appendTabs
+     * @description 添加标签页面
+     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     */
+    appendTabs(tabs) {
+        for (let i = 0; i < tabs.length; i++) {
+            let title = document.createElement("span");
+            title.index = i;
+            title.appendChild(document.createTextNode(tabs[i].title));
+            //绑定标签切换对应页面：
+            title.onclick = this._changeTabsPage.bind(this);
+            let content = tabs[i].content;
+            content.index = i;
+            content.hidden = true;
+
+            this.navTabsTitle.appendChild(title);
+            this.navTabsContent.appendChild(content);
+        }
+        //todo 确认是否两个子元素的 index 相互对应
+        //默认显示第一个标签对象
+        this.navTabsTitle.firstChild.setAttribute("class", "tabs-select");
+        this.navTabsContent.firstChild.hidden = false;
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeTab
+     * @description 删除某个标签页面
+     * @param {number} index - 标签索引号
+     */
+    removeTab(index) {
+        this.navTabsTitle.removeChild(this.navTabsTitle.children[index]);
+        this.navTabsContent.removeChild(this.navTabsContent.children[index]);
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeAllTabs
+     * @description 删除所有标签F
+     */
+    removeAllTabs() {
+        for (let i = this.navTabsTitle.children.length; i > 0; i--) {
+            this.navTabsTitle.removeChild(this.navTabsTitle.children[i]);
+            this.navTabsContent.removeChild(this.navTabsContent.children[i]);
+        }
+    }
+
+    /**
+     * @function NavTabsPage.prototype.closeView
+     * @description 关闭当前窗口
+     */
+    closeView() {
+        this.navTabsPage.hidden = true;
+    }
+
+    showView() {
+        this.navTabsPage.hidden = false;
+    }
+
+    _changeTabsPage(e) {
+        const index = e.target.index;
+        for (let i = 0; i < this.navTabsTitle.children.length; i++) {
+            this.navTabsTitle.children[i].setAttribute("class", "");
+            this.navTabsContent.children[i].hidden = true;
+            if (i === index) {
+                this.navTabsTitle.children[i].setAttribute("class", "tabs-select");
+                this.navTabsContent.children[i].hidden = false;
+            }
+        }
+    }
+
+}
+// EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
+var PaginationContainer = __webpack_require__(127);
+
+// CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.Widgets.PaginationContainer
+ * @classdesc 分页组件模板
+ */
+class PaginationContainer_PaginationContainer {
+    constructor(contents = null, pageCounts = 0) {
+        this.currentPage = 0;
+        this.pageNumberLis = [];
+        this.currentPageNumberLis = [];
+        this.linkageEvent = null;
+        this._initView(contents, pageCounts);
+    }
+
+    /**
+     * @description 设置页面联动函数
+     * @param linkageEvent
+     */
+    setLinkageEvent(linkageEvent) {
+        this.linkageEvent = linkageEvent;
+    }
+
+    getElement() {
+        return this.container;
+    }
+
+    showView() {
+        this.container.hidden = false;
+    }
+
+    closeView() {
+        this.container.hidden = true;
+    }
+
+    _initView(contents, pageCounts) {
+        const container = document.createElement("div");
+        container.setAttribute("class", "widgets-pagination");
+
+        //content
+        const content = document.createElement("div");
+        content.setAttribute("class", "widgets-pagination-content");
+        container.appendChild(content);
+        this.content = content;
+
+        //link
+        const link = document.createElement("ul");
+        link.setAttribute("class", "widgets-pagination-link");
+        link.onclick = this._changePageEvent.bind(this);
+        container.appendChild(link);
+        this._createLink(link);
+        this.link = link;
+        //填充内容：
+        if (contents) {
+            this.setContent(contents);
+        }
+        if (pageCounts !== 0) {
+            this.setPageLink(pageCounts);
+        }
+        this.container = container;
+
+    }
+
+    /**---------以下是页面相关操作 **/
+    /**
+     * @description 设置页面内容
+     * @param element
+     */
+    setContent(element) {
+        this.clearContent();
+        this.appendContent(element);
+    }
+
+    /**
+     * @description 添加内容
+     * @param element
+     */
+    appendContent(element) {
+        this.content.appendChild(element);
+    }
+
+    /**
+     * @description 清空内容元素
+     */
+    clearContent() {
+        for (let i = this.content.children.length - 1; i >= 0; i--) {
+            this.content.removeChild(this.content.children[i]);
+        }
+    }
+
+    /** -----以下是页码相关的操作：**/
+    /**
+     * @description 设置页码
+     * @param {Number} pageNumber
+     */
+    setPageLink(pageNumber) {
+        //清空当前页码
+        this.pageNumberLis = [];
+        this.currentPageNumberLis = [];
+        this.clearPageLink();
+
+        //创建页码
+        this._createPageLi(pageNumber);
+        //添加页码到页码列表
+        this.appendPageLink();
+    }
+
+    /**
+     * @description 创建页码
+     * @param pageNumber
+     * @private
+     */
+    _createPageLi(pageNumber) {
+        for (let i = 0; i < pageNumber; i++) {
+            const pageLi = document.createElement("li");
+            pageLi.innerHTML = i + 1;
+            /*const liContent = document.createElement("span");
+            liContent.innerHTML = i + 1;*/
+            // pageLi.appendChild(liContent);
+            this.pageNumberLis.push(pageLi);
+        }
+        this.pageNumberLis[0].setAttribute("class", "active");
+        this.currentPage = 1;
+        if (pageNumber < 5) {
+            this.currentPageNumberLis = this.pageNumberLis;
+        } else {
+            for (let i = 0; i < 5; i++) {
+                this.currentPageNumberLis.push(this.pageNumberLis[i]);
+            }
+        }
+    }
+
+    /**
+     * @description 添加页码到页码列表
+     * @private
+     */
+    appendPageLink() {
+        //todo 如何插入中间
+        for (let i = 0; i < this.currentPageNumberLis.length; i++) {
+            this.link.insertBefore(this.currentPageNumberLis[i], this.link.childNodes[this.link.children.length - 2]);
+        }
+
+        for (let i = 0; i < this.currentPageNumberLis.length; i++) {
+            //清空 active 状态
+            this.currentPageNumberLis[i].setAttribute("class", "");
+            //给当前选中的 li 赋值  active 状态
+            if (Number(this.currentPageNumberLis[i].innerHTML) === this.currentPage) {
+                this.currentPageNumberLis[i].setAttribute("class", "active");
+            }
+        }
+
+        //根据 currentPage 改变按钮状态
+        this._changeDisableState();
+
+        if (this.linkageEvent) {
+            this.linkageEvent(this.currentPage);
+        }
+
+    }
+
+    /**
+     * @description 清除页码列表
+     */
+    clearPageLink() {
+        for (let i = this.link.children.length - 3; i > 1; i--) {
+            this.link.removeChild(this.link.children[i]);
+        }
+    }
+
+    /**
+     * @description 创建页码按钮
+     * @param ul
+     * @private
+     */
+    _createLink(ul) {
+        for (let i = 0; i < 4; i++) {
+            const li = document.createElement("li");
+            li.setAttribute("class", "disable");
+            const liContent = document.createElement("span");
+            li.appendChild(liContent);
+            if (i === 0) {
+                liContent.id = "first";
+                liContent.setAttribute("class", "supermapol-icons-first");
+            } else if (i === 1) {
+                liContent.id = "prev";
+                liContent.setAttribute("class", "supermapol-icons-prev");
+            } else if (i === 2) {
+                liContent.id = "next";
+                liContent.setAttribute("class", "supermapol-icons-next");
+            } else if (i === 3) {
+                liContent.id = "last";
+                liContent.setAttribute("class", "supermapol-icons-last");
+            }
+
+            ul.appendChild(li);
+        }
+
+    }
+
+    /**
+     * @description 点击页码事件
+     * @param e
+     * @private
+     */
+    _changePageEvent(e) {
+        //todo
+        const trigger = e.target;
+        console.log(trigger);
+        //若列表禁用，点击无效
+        if (trigger.parentElement.classList[0] === "disable") {
+            return;
+        }
+        let targetLi;
+        if (trigger.id) {
+            targetLi = trigger.id;
+        } else if (Number(trigger.innerHTML)) {
+            targetLi = Number(trigger.innerHTML);
+        } else {
+            return;
+        }
+
+        //页码预处理：
+        this._prePageNum(targetLi);
+
+
+        //根据 currentPageNumberLis 创建页码列表
+        this.clearPageLink();
+        this.appendPageLink();
+    }
+
+    /**
+     * @description 根据 currentPage 改变按钮状态
+     * @private
+     */
+    _changeDisableState() {
+        this.link.children[0].setAttribute("class", "");
+        this.link.children[1].setAttribute("class", "");
+        this.link.children[this.link.children.length - 1].setAttribute("class", "");
+        this.link.children[this.link.children.length - 2].setAttribute("class", "");
+
+        if (this.currentPage === 1) {
+            this.link.children[0].setAttribute("class", "disable");
+            this.link.children[1].setAttribute("class", "disable");
+        }
+        if (this.currentPage === this.pageNumberLis.length) {
+            this.link.children[this.link.children.length - 1].setAttribute("class", "disable");
+            this.link.children[this.link.children.length - 2].setAttribute("class", "disable");
+        }
+
+    }
+
+    /**
+     * @description 根据点击页码列表事件准备需展现的页码列表
+     * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值
+     * @private
+     */
+    _prePageNum(targetLi) {
+        const currentPageNumberLis = [];
+        if (targetLi === "first") {
+            this.currentPage = 1;
+        } else if (targetLi === "last") {
+            this.currentPage = this.pageNumberLis.length;
+        } else if (targetLi === "prev") {
+            this.currentPage = this.currentPage - 1;
+
+        } else if (targetLi === "next") {
+            this.currentPage = this.currentPage + 1;
+        } else {
+            this.currentPage = targetLi;
+        }
+
+        if (this.pageNumberLis.length <= 5) {
+            for (let i = 0; i < this.pageNumberLis.length; i++) {
+                currentPageNumberLis.push(this.pageNumberLis[i]);
+            }
+        } else {
+            //当前点击前三，都取前五
+            if (this.currentPage <= 3) {
+                for (let i = 0; i < 5; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            } else if (this.currentPage >= this.pageNumberLis.length - 3) {
+                //点击后三，都取后5
+                for (let i = this.pageNumberLis.length - 5; i < this.pageNumberLis.length; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            } else {
+                //其他，取中间：
+                for (let i = this.currentPage - 3; i <= this.currentPage + 1; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            }
+
+        }
+        if (currentPageNumberLis.length > 0) {
+            this.currentPageNumberLis = currentPageNumberLis;
+        }
+    }
+
+}
+
+SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
 // CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64763,7 +65432,17 @@ let FileReaderUtil = {
 
 
 
+
+
+
+
+
 //工具类
+
+
+
+
+
 
 
 
@@ -71471,6 +72150,8 @@ var WebMap = external_L_default.a.LayerGroup.extend({
         unique.style = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             unique.style.fill = false;
+        }else{
+            unique.style.fill = true;
         }
         unique.style.stroke = true;
         unique.themeField = themeField;
@@ -81522,6 +82203,7 @@ var OpenFileView = external_L_default.a.Control.extend({
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
         this.fileInput.onchange = (fileEventObject) => {
+            this.messageBox.closeView();
             this.viewModel.readFile(fileEventObject);
         };
 
@@ -81559,6 +82241,1116 @@ var openFileView = function (options) {
 };
 
 external_L_default.a.supermap.widgets.openFile = openFileView;
+// CONCATENATED MODULE: ./src/leaflet/widgets/poisearch/CityConfig.js
+const CityConfig_config = {
+    HOT: {
+        HOT: ["北京市", "上海市", "广州市", "深圳市", "南京市", "杭州市", "天津市", "重庆市", "成都市", "青岛市", "苏州市", "无锡市", "常州市", "温州市", "武汉市", "长沙市", "南昌市", "三亚市", "合肥市", "石家庄市"]
+    },
+    AB: {
+        A: ["阿拉善盟", "鞍山市", "安庆市", "安阳市", "阿坝藏族羌族自治州", "安顺市", "阿里地区", "安康市", "阿克苏地区", "阿勒泰地区", "阿拉尔市"],
+        B: ["北京市", "保定市", "包头市", "巴彦淖尔市", "本溪市", "白山市", "白城市", "蚌埠市", "亳州市", "滨州市", "北海市", "百色市", "白沙黎族自治县", "保亭黎族苗族自治县", "巴中市", "毕节地区", "保山市", "宝鸡市", "白银市", "博尔塔拉蒙古自治州", "巴音郭楞蒙古自治州", "北区"]
+    },
+    CD: {
+        C: ["重庆市", "成都市", "常州市", "长沙市", "承德市", "沧州市", "长治市", "赤峰市", "朝阳市", "长春市", "滁州市", "巢湖市", "池州市", "常德市", "郴州市", "潮州市", "崇左市", "澄迈县", "昌江黎族自治县", "楚雄彝族自治州", "昌都地区", "昌吉回族自治州"],
+        D: ["大同市", "大连市", "丹东市", "大庆市", "大兴安岭地区", "东营市", "德州市", "东莞市", "儋州市", "东方市", "定安县", "德阳市", "达州市", "大理白族自治州", "德宏傣族景颇族自治州", "迪庆藏族自治州", "定西市", "东区", "大埔区", "大堂区"]
+    },
+    EFG: {
+        E: ["鄂尔多斯市", "鄂州市", "恩施土家族苗族自治州"],
+        F: ["抚顺市", "阜新市", "阜阳市", "福州市", "抚州市", "佛山市", "防城港市"],
+        G: ["广州市", "赣州市", "桂林市", "贵港市", "广元市", "广安市", "贵阳市", "固原市", "高雄市", "高雄县", "甘南藏族自治州", "甘孜藏族自治州"]
+    },
+    H: {
+        H: ["杭州市", "合肥市", "邯郸市", "衡水市", "呼和浩特市", "呼伦贝尔市", "葫芦岛市", "哈尔滨市", "鹤岗市", "黑河市", "淮安市", "湖州市", "淮南市", "淮北市", "黄山市", "菏泽市", "鹤壁市", "黄石市", "黄冈市", "衡阳市", "怀化市", "惠州市", "河源市", "贺州市", "河池市", "海口市", "红河哈尼族彝族自治州", "汉中市", "海东地区", "海北藏族自治州", "黄南藏族自治州", "海南藏族自治州", "果洛藏族自治州", "海西蒙古族藏族自治州", "哈密地区", "和田地区", "花莲县", "黄大仙区", "花地玛堂区"]
+    },
+    J: {
+        J: ["晋城市", "晋中市", "锦州市", "吉林市", "鸡西市", "佳木斯市", "嘉兴市", "金华市", "景德镇市", "九江市", "吉安市", "济南市", "济宁市", "焦作市", "济源市", "荆门市", "荆州市", "江门市", "湛江市", "揭阳市", "嘉峪关市", "金昌市", "酒泉市", "基隆市", "嘉义市", "嘉义县", "九龙城区", "嘉模堂区"]
+    },
+    KL: {
+        K: ["开封市", "昆明市", "克拉玛依市", "克孜勒苏柯尔克孜自治州", "喀什地区"],
+        L: ["廊坊市", "临汾市", "吕梁市", "辽阳市", "辽源市", "连云港市", "丽水市", "六安市", "龙岩市", "莱芜市", "临沂市", "聊城市", "洛阳市", "漯河市", "娄底市", "柳州市", "来宾市", "临高县", "乐东黎族自治县", "陵水黎族自治县", "泸州市", "乐山市", "凉山彝族自治州", "六盘水市", "丽江市", "临沧市", "拉萨市", "林芝地区", "兰州市", "陇南市", "临夏回族自治州"]
+    },
+    MNP: {
+        M: ["牡丹江市", "马鞍山市", "茂名市", "梅州市", "绵阳市", "眉山市", "苗栗县"],
+        N: ["南京市", "南昌市", "南通市", "宁波市", "南平市", "宁德市", "南阳市", "南宁市", "南沙群岛", "内江市", "南充市", "怒江傈傈族自治州", "那曲地区", "南投县"],
+        P: ["盘锦市", "莆田市", "萍乡市", "平顶山市", "濮阳市", "攀枝花市", "平凉市", "屏东县", "澎湖县"]
+    },
+    QR: {
+        Q: ["青岛市", "秦皇岛市", "齐齐哈尔市", "黔西南布依族苗族自治州", "七台河市", "衢州市", "泉州市", "潜江市", "清远市", "钦州市", "琼海市", "曲靖市", "庆阳市", "荃湾区", "黔东南苗族侗族自治州", "黔南布依族苗族自治州", "琼中黎族苗族自治县"],
+        R: ["日照市", "日喀则地区"]
+    },
+    S: {
+        S: ["上海市", "深圳市", "苏州市", "石家庄市", "三亚市", "朔州市", "沈阳市", "四平市", "松原市", "双鸭山市", "绥化市", "宿迁市", "绍兴市", "宿州市", "三明市", "上饶市", "三门峡市", "商丘市", "十堰市", "随州市", "邵阳市", "韶关市", "汕头市", "汕尾市", "三亚市", "遂宁市", "思茅市", "山南地区", "商洛市", "石嘴山市", "石河子市", "深水埗区", "沙田区", "神农架林区", "圣安多尼堂区", "圣方济各堂区"]
+    },
+    T: {
+        T: ["天津市", "唐山市", "太原市", "通辽市", "铁岭市", "通化市", "泰州市", "台州市", "铜陵市", "泰安市", "天门市", "屯昌县", "铜仁地区", "铜川市", "天水市", "吐鲁番地区", "塔城地区", "图木舒克市", "台北市", "台中市", "台南市", "台北县", "桃园县", "台中县", "台南县", "台东县", "屯门区"]
+    },
+    W: {
+        W: ["无锡市", "温州市", "武汉市", "乌海市", "乌兰察布市", "芜湖市", "潍坊市", "威海市", "梧州市", "五指山市", "文昌市", "万宁市", "文山壮族苗族自治州", "渭南市", "武威市", "吴忠市", "乌鲁木齐市", "五家渠市", "湾仔区", "望德堂区"]
+    },
+    X: {
+        X: ["邢台市", "忻州市", "兴安盟", "徐州市", "宣城市", "厦门市", "新余市", "新乡市", "许昌市", "信阳市", "襄樊市", "孝感市", "咸宁市", "仙桃市", "湘潭市", "西安市", "咸阳市", "西宁市", "新竹市", "新竹县", "西贡区", "锡林郭勒盟", "西沙群岛", "湘西土家族苗族自治州", "西双版纳傣族自治州"]
+    },
+    Y: {
+        Y: ["阳泉市", "运城市", "营口市", "延边朝鲜族自治州", "伊春市", "盐城市", "扬州市", "鹰潭市", "宜春市", "烟台市", "宜昌市", "岳阳市", "益阳市", "永州市", "阳江市", "云浮市", "玉林市", "宜宾市", "雅安市", "玉溪市", "延安市", "榆林市", "玉树藏族自治州", "银川市", "伊犁哈萨克自治州", "宜兰县", "云林县", "油尖旺区", "元朗区"]
+    },
+    Z: {
+        Z: ["郑州市", "张家口市", "镇江市", "舟山市", "漳州市", "淄博市", "枣庄市", "周口市", "驻马店市", "株洲市", "张家界市", "珠海市", "肇庆市", "中山市", "自贡市", "资阳市", "遵义市", "昭通市", "张掖市", "中卫市", "彰化县", "中西区", "中沙群岛的岛礁及其海域"]
+    }
+};
+// CONCATENATED MODULE: ./src/leaflet/widgets/commonmodels/GeoJsonLayersModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class L.supermap.widgets.GeoJsonLayersDataModel
+ * @description 多图层数据模型
+ * @category
+ * @param {Array.<Object>} layers - 包含"layerName"属性的图层对象数组
+ */
+var GeoJsonLayersDataModel = external_L_default.a.Evented.extend({
+    initialize(layers) {
+        if (layers && layers.length > 0) {
+            this.addLayers(layers);
+        }
+        this.currentLayerDataModel = null;
+        this.layers = {};
+    },
+    addLayers(layers) {
+        for (let i = 0; i < layers.length; i++) {
+            let layerName = "";
+            if (layers[i].layerName) {
+                layerName = layers[i].layerName;
+            } else {
+                layerName = Util.createUniqueID("vectorLayer_");
+            }
+
+            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i]);
+            //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
+            this[layerName] = geoJsonLayerDataModel;
+            this.fire("newlayeradded", {newLayer: {layerName: layerName, layer: geoJsonLayerDataModel}});
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
+     * @description 设置当前选中的图层
+     * @param {string} layerName - 选中的图层名
+     */
+    setCurrentLayerDataModel(layerName) {
+        if (this[layerName]) {
+            this.currentLayerDataModel = this[layerName];
+        }
+    }
+
+});
+
+external_L_default.a.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
+
+
+/*
+ * @class L.supermap.widgets.GeoJsonLayerDataModel
+ * @classdesc 图层数据模型，用于图层要素数据及属性管理等
+ * 注：leaflet没有 feature 的概念
+ */
+class GeoJsonLayerDataModel {
+
+    constructor(layer) {
+        //图层对象
+        this.layer = layer;
+        //要素图层数组
+        this.features = layer.getLayers();
+        //图层属性字段
+        this.attributeNames = [];
+        //这里一个图层默认共用一套属性字段
+        if (this.features[0].feature.properties) {
+            for (let field in this.features[0].feature.properties) {
+                this.attributeNames.push(field);
+            }
+        }
+        //指定图层操作属性字段
+        this.operatingAttributeNames = [];
+        //图层属性对象
+        this.attributes = {};
+    }
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.setOperatingAttributeNames
+     * @description 指定操作字段
+     * @param {Array.<string>} operatingAttr - 查询属性字段数组，该数组为 this.attributeNames 的子集
+     */
+    setOperatingAttributeNames(operatingAttr) {
+        this.operatingAttributeNames = operatingAttr;
+    }
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.getAttributeNames
+     * @description 获取图层属性字段
+     * @return {Array.<string>} - 返回图层属性字段
+     */
+    getAllAttributeNames() {
+        return this.attributeNames;
+    }
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.getAllFeatures
+     * @description 获取图层所有要素
+     * @return {Array.<Object>} - 返回图层要素
+     */
+    getAllFeatures() {
+        return this.features;
+    }
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.getAttributeValueByAttributeName
+     * @description 通过属性字段名获取属性值
+     * @param {string} attributeName - 图层要素属性字段名
+     * @return {Object} - 图层要素属性值对象
+     */
+    getAttributeValueByAttributeName(attributeName) {
+        //如果图层属性对象中已存在该属性，则直接返回
+        if (this.attributes[attributeName]) {
+            return this.attributes[attributeName];
+        }
+
+        //若图层属性对象还未存储该属性，则遍历每个feature 读取其属性值，并存储到图层属性对象中
+        this.attributes.attributeName = [];
+        for (let i = 0; i < this.features.length; i++) {
+            this.attributes[attributeName].push(this.features[i].feature.properties[attributeName]);
+        }
+
+        return this.attributes[attributeName];
+    }
+
+    //getAttributeValueByAttributeName(feature,attributeName)
+    //getAllFeatures()
+    //todo getFeatureByID()
+    //getFeaturesByKeywords(keyword,searchAttributeNames)
+    //getAllAttributeValues(attributeName)    ??
+    //getAllAttributeNames()
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.getFeaturesByKeyWord
+     * @description 通过关键字查找要素对象
+     * @param {string} keyWord - 查询关键字
+     * @return {Array.<Object>} - 返回要素对象数组
+     */
+    getFeaturesByKeyWord(keyWord) {
+        let features = [], keyReg = new RegExp(keyWord.toLowerCase());
+        const self = this;
+        this.features.forEach(function (feature) {
+            if (!feature.feature.properties) {
+                return null;
+            }
+            let fAttr = feature.feature.properties;
+            let operatingAttributeNames;
+            //若设置了过滤字段，则按过滤字段查询
+            if (self.operatingAttributeNames.length > 0) {
+                operatingAttributeNames = self.operatingAttributeNames;
+            } else {
+                //若未设置了过滤字段，则按图层字段查询
+                operatingAttributeNames = self.attributeNames;
+            }
+            //遍历要素，查询符合条件的要素
+            for (let i = 0, len = operatingAttributeNames.length; i < len; i++) {
+                if (fAttr[operatingAttributeNames[i]] && keyReg.test(fAttr[operatingAttributeNames[i]].toString().toLowerCase())) {
+                    let filterAttributeName = operatingAttributeNames[i];
+                    let filterAttributeValue = fAttr[operatingAttributeNames[i]];
+                    //将查询出的属性字段及属性值赋给 feature 并返回
+                    feature.filterAttribute = {
+                        filterAttributeName: filterAttributeName,
+                        filterAttributeValue: filterAttributeValue
+                    };
+                    features.push(feature);
+                    break;
+                }
+            }
+        });
+        return features;
+    }
+
+}
+
+// CONCATENATED MODULE: ./src/leaflet/widgets/poisearch/POISearchViewModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.poiSearchViewModel
+ * @classdesc 搜索定位微件 viewModel 用于处理定位微件的一些业务逻辑代码
+ * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
+ */
+var POISearchViewModel = external_L_default.a.Evented.extend({
+    options: {
+        cityGeoCodingConfig: {
+            addressUrl: "http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China",
+            key: "fvV2osxwuZWlY0wJb8FEb2i5"
+        }
+    },
+
+    initialize(map, options) {
+        if (map) {
+            /**
+             * @member {L.map} - [L.supermap.widgets.dataFlowViewModel.prototype.map]
+             * @description 当前微件所在的底图
+             */
+            this.map = map;
+        } else {
+            return new Error(`Cannot find map, fileModel.map cannot be null.`);
+        }
+
+        if (options) {
+            external_L_default.a.setOptions(this, options);
+        }
+        //初始化Model
+        this.dataModel = new GeoJsonLayersDataModel();
+        //初始话地址匹配服务
+
+        this.geoCodeService = new services_AddressMatchService_AddressMatchService(this.options.cityGeoCodingConfig.addressUrl);
+        this.geoCodeParam = new GeoCodingParameter_GeoCodingParameter({
+            address: null,
+            city: "北京市",
+            maxResult: 70,
+            prjCoordSys: JSON.stringify({epsgCode: 4326}),
+            key: this.options.cityGeoCodingConfig.key
+        });
+        //查询缓存
+        this.searchCache = {};
+
+        //监听 dataModel 数据变化：//看如何优化
+        this.dataModel.on("newlayeradded", (e) => {
+            let newLayer = e.newLayer;
+            this.fire("newlayeradded", {newLayer: newLayer});
+        });
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearchViewModel.prototype.search
+     * @description 查询
+     * @param {string} keyWord - 查询的关键字
+     * @param {string||null} searchLayerName - 执行的查询类型，默认为null,支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配
+     */
+    search(keyWord, searchLayerName = null) {
+        if (!searchLayerName) {
+            this.cityGeocodeService(keyWord);
+        } else {
+            this.searchFromLayer(keyWord, searchLayerName);
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearchViewModel.prototype.searchFromLayer
+     * @description 图层属性查询
+     * @param {string} searchLayerName - 查询的图层名
+     * @param {string} keyWord - 图层属性搜索关键字
+     */
+    searchFromLayer(keyWord, searchLayerName) {
+        if (this.dataModel[searchLayerName]) {
+            let resultFeatures = this.dataModel[searchLayerName].getFeaturesByKeyWord(keyWord);
+            if (resultFeatures && resultFeatures.length > 0) {
+                this.fire("searchlayersucceed", {result: resultFeatures});
+            } else {
+                this.fire("searchfield", {searchType: "searchLayersField"});
+            }
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearchViewModel.prototype.addSearchLayers
+     * @description 添加新的可查询图层
+     * @param {Array.<L.GeoJSON>} layers - 新添加的图层对象
+     */
+    addSearchLayers(layers) {
+        this.dataModel.addLayers(layers)
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearchViewModel.prototype.panToLayer
+     * @description 缩放到指定图层
+     * @param {string} layerName - 指定缩放的图层名
+     */
+    panToLayer(layerName) {
+        if (this.dataModel[layerName]) {
+            this.map.flyToBounds(this.dataModel[layerName].layer.getBounds());
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearchViewModel.prototype.panToCity
+     * @description 缩放到指定城市
+     * @param {string} city - 指定缩放的城市名
+     */
+    panToCity(city) {
+        this.geoCodeParam.address = city;
+        this.geoCodeParam.city = city;
+        const self = this;
+        this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
+            if (geocodingResult.result.length > 0) {
+                //缩放至城市
+                const center = external_L_default.a.latLng(geocodingResult.result[0].location.y, geocodingResult.result[0].location.x);
+                self.map.setView(center, 8);
+            } else {
+                self.fire("searchfield", {searchType: "cityGeocodeField"});
+            }
+
+        });
+
+    },
+    /**
+     * @function L.supermap.widgets.poiSearchViewModel.prototype.cityGeocodeService
+     * @description 城市地址匹配
+     * @param {string} keyWords - 城市地址匹配关键字
+     */
+    cityGeocodeService(keyWords) {
+        //todo 是否保留缓存？请求过的数据保留一份缓存？
+        if (this.searchCache[keyWords]) {
+            this.fire("geocodesucceed", {result: this.searchCache[keyWords]});
+        } else {
+            this.geoCodeParam.address = keyWords;
+            const self = this;
+            this.geoCodeService.code(this.geoCodeParam, (geocodingResult) => {
+                if (geocodingResult.result) {
+                    if (geocodingResult.result.error || geocodingResult.result.length === 0) {
+                        self.fire("searchfield", {searchType: "searchGeocodeField"});
+                        return;
+                    }
+                    const geoJsonResult = self._dataToGeoJson(geocodingResult.result);
+                    self.fire("geocodesucceed", {result: geoJsonResult});
+                }
+
+            });
+        }
+    },
+
+    /**
+     * @description 将地址匹配返回的数据转为geoJson 格式数据
+     * @param data
+     * @private
+     */
+    _dataToGeoJson(data) {
+        let features = [];
+        for (let i = 0; i < data.length; i++) {
+            let feature = {
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: [data[i].location.x, data[i].location.y]
+                },
+                properties: {
+                    name: data[i].name,
+                    address: data[i].formatedAddress
+                }
+            };
+            features.push(feature);
+        }
+
+        return features;
+    }
+
+});
+
+var poiSearchViewModel = function (options) {
+    return new POISearchViewModel(options);
+};
+
+external_L_default.a.supermap.widgets.poiSearchViewModel = poiSearchViewModel;
+
+// CONCATENATED MODULE: ./src/leaflet/widgets/poisearch/POISearchView.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.poiSearch
+ * @classdesc 地址匹配或图层要素查询微件
+ * @category  Control Widgets
+ * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
+ * @param {string} [options.addressUrl] - 配置地址匹配服务。
+ * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
+ *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
+ * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
+ */
+var POISearchView = external_L_default.a.Control.extend({
+    options: {
+        //控件位置 继承自leaflet control
+        position: 'topright',
+        orientation: 'horizontal',
+        cityConfig: CityConfig_config,
+        cityGeoCodingConfig: null,
+        isGeoCoding: true
+    },
+
+    initialize(options) {
+        external_L_default.a.setOptions(this, options);
+
+        this.event = new external_L_default.a.Evented();
+
+        //当前选中查询的图层名：
+        this.currentSearchLayerName = "";
+        this.isSearchLayer = false;
+    },
+    /*------以下是一些接口-----*/
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype.onAdd
+     * @description 向底图添加微件
+     */
+    onAdd: function (map) {
+        this.map = map;
+        //初始化微件业务逻辑执行对象 viewModel
+        this.viewModel = new POISearchViewModel(map, this.options.cityGeoCodingConfig);
+
+        return this._initOpenFileView();
+    },
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype.addSearchLayer
+     * @description 添加可查询的图层到 viewModel
+     * @param {Array.<L.GeoJSON>|L.GeoJSON} layers - 可查询的图层
+     */
+    addSearchLayer(layers) {
+        //将可查询图层数据传入vm处理
+        this.viewModel.addSearchLayers(layers);
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype.on
+     * @param {string} eventType - 监听的事件类型
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
+    },
+
+    /*----------以下是创建 dom 元素的方法---------*/
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._initOpenFileView
+     * @description 创建打开本地文件数据微件
+     * @return {div}
+     * @private
+     */
+    _initOpenFileView() {
+        // self 便于 this 对象的使用
+        const self = this;
+        const div = document.createElement("div");
+        div.setAttribute("class", "poi");
+
+        //外框
+        const poiContainer = document.createElement("div");
+        poiContainer.setAttribute("class", "widgets-poi");
+        //主体
+        //---------下拉框：
+        const poiSettings = document.createElement("div");
+        poiSettings.setAttribute("class", "widgets-poi-settings");
+        //下拉框
+        const poiSearchName = document.createElement("div");
+        //由View 维护，进行交互操作
+        poiSearchName.setAttribute("class", "widgets-poi-settings-name");
+        //poiSettings.innerHTML 通过下拉框选项改变
+
+        poiSettings.appendChild(poiSearchName);
+
+        //下拉标记
+        const triangleIcon = document.createElement("span");
+        triangleIcon.setAttribute("class", "supermapol-icons-solid-down-triangle");
+        poiSettings.appendChild(triangleIcon);
+
+        //城市地址匹配页面, 以及图层查询页面
+        //城市地址匹配页面：
+        let citySelect = null;
+        if (this.options.isGeoCoding) {
+            const cityTabsPageObj = new CityTabsPage_CityTabsPage(this.options.cityConfig);
+            citySelect = cityTabsPageObj.getElement();
+            //点选城市名，修改显示，并执行定位城市查询【城市列表列表点击事件】
+            cityTabsPageObj.content.onclick = (e) => {
+                if (e.target.nodeName === "SPAN" && e.target.innerText) {
+                    this.viewModel.panToCity(e.target.innerHTML);
+                    this.messageBox.closeView();
+                    poiSearchName.removeChild(poiSearchName.firstChild);
+                    poiSearchName.insertBefore(document.createTextNode(e.target.innerHTML), poiSearchName.firstChild);
+                    this.isSearchLayer = false;
+                }
+            };
+            //支持城市地址匹配，则初始化显示配置的第一个城市名：
+            poiSearchName.appendChild(document.createTextNode(cityTabsPageObj.content.getElementsByTagName("span")[0].innerText));
+        }
+
+        //图层查询页面：写法是为了为了代码可读性
+        const layersSelect = function () {
+            const layersSelect = document.createElement("div");
+            layersSelect.setAttribute("class", "layers-select");
+
+            const layersContent = document.createElement("div");
+            layersContent.setAttribute("class", "poi-layers-content");
+            layersSelect.appendChild(layersContent);
+
+            //header todo 两个选项的功能暂没用到，先关闭，后续用到再打开
+            const layersHeader = document.createElement("div");
+            layersHeader.setAttribute("class", "poi-layers-header");
+            //加载搜索条件
+            const loadBtn = document.createElement("div");
+            loadBtn.setAttribute("class", "load-btn");
+            layersHeader.appendChild(loadBtn);
+            const loadIcon = document.createElement("span");
+            loadIcon.setAttribute("class", "supermapol-icons-poi-load");
+            loadBtn.appendChild(loadIcon);
+            const loadBtnText = document.createElement("span");
+            loadBtnText.appendChild(document.createTextNode("加载搜索条件"));
+            loadBtn.appendChild(loadBtnText);
+            //保存搜索条件
+            const saveBtn = document.createElement("div");
+            saveBtn.setAttribute("class", "save-btn");
+            layersHeader.appendChild(saveBtn);
+            const icon = document.createElement("span");
+            icon.setAttribute("class", "supermapol-icons-poi-save");
+            saveBtn.appendChild(icon);
+            const saveBtnText = document.createElement("span");
+            saveBtnText.appendChild(document.createTextNode("保存搜索条件"));
+            saveBtn.appendChild(saveBtnText);
+
+            //body
+            const layerSelectOptions = document.createElement("div");
+            layerSelectOptions.setAttribute("class", "poi-layers-body");
+            //选中查询图层监听
+            //选择查询图层【图层列表点击事件】
+            layerSelectOptions.onclick = (e) => {
+                //先进行清除操作
+                self._clearSearchResult();
+
+                let selectLayerOption = null;
+                if (e.target.classList[0] === "widgets-singlesSelect") {
+                    selectLayerOption = e.target;
+                } else if (e.target.classList[0] === "single-default-img" || e.target.classList[0] === "single-label") {
+                    selectLayerOption = e.target.parentNode;
+                } else {
+                    return;
+                }
+
+                if (document.getElementsByClassName("single-checked-img").length > 0) {
+                    document.getElementsByClassName("single-checked-img")[0].setAttribute("class", "single-default-img");
+                }
+
+                selectLayerOption.firstChild.setAttribute("class", "single-checked-img");
+                self.currentSearchLayerName = selectLayerOption.lastChild.innerText;
+                self.isSearchLayer = true;
+                poiSearchName.removeChild(poiSearchName.firstChild);
+                poiSearchName.insertBefore(document.createTextNode(self.currentSearchLayerName), poiSearchName.firstChild);
+
+                self.viewModel.panToLayer(self.currentSearchLayerName);
+                self.messageBox.closeView();
+            };
+
+            layersContent.appendChild(layerSelectOptions);
+
+            //读取当前图层数据，并展现
+            //只有调用添加查询图层接口才能添加图层选项
+
+            return layersSelect;
+        }();
+
+        //配置开启 城市匹配功能则添加
+        let navTabsPageOptions = [];
+        if (citySelect) {
+            navTabsPageOptions.push({
+                title: "搜索城市",
+                content: citySelect
+            })
+        }
+        navTabsPageOptions.push({
+            title: "搜索图层",
+            content: layersSelect
+        });
+        const navTabsPageObject = new NavTabsPage(navTabsPageOptions);
+        const navTabsPage = navTabsPageObject.getElement();
+        navTabsPageObject.closeView();
+        poiContainer.appendChild(navTabsPage);
+
+        poiSettings.onclick = () => {
+            if (navTabsPage.hidden) {
+                navTabsPageObject.showView();
+            } else {
+                navTabsPageObject.closeView();
+            }
+        };
+        poiContainer.appendChild(poiSettings);
+        //初始时，下拉框若没赋值显示信息，则再次赋值：
+        if (!poiSearchName.innerText) {
+            poiSearchName.appendChild(document.createTextNode("选择查询图层"));
+        }
+        //---------下拉框 END
+
+        //---------搜索输入框：
+        const poiInputContainer = document.createElement("div");
+        poiInputContainer.setAttribute("class", "widgets-poi-input");
+        const poiInput = document.createElement("input");
+        poiInput.type = "text";
+        poiInput.placeholder = "搜索城市地点或图层要素";
+
+        poiInputContainer.appendChild(poiInput);
+        //由View 维护，进行交互操作
+        this.poiInput = poiInput;
+        //清除输入内容按钮：
+        const poiInputClose = document.createElement("span");
+        poiInputClose.setAttribute("class", "supermapol-icons-close");
+        poiInputClose.hidden = true;
+
+        this.poiInputClose = poiInputClose;
+        poiInputContainer.appendChild(poiInputClose);
+
+        poiContainer.appendChild(poiInputContainer);
+        //---------搜索输入框 END
+
+        //--------搜索按钮：
+        const searchBtn = document.createElement("div");
+        searchBtn.setAttribute("class", "widgets-poi-icon supermapol-icons-search");
+        //查询要素或匹配要素【搜索按钮点击事件】
+        searchBtn.onclick = () => {
+            //若是遮挡结果显示，则关闭
+            resultDomObj.closeView();
+            this._clearSearchResult();
+            this.messageBox.closeView();
+            navTabsPageObject.closeView();
+            const keyWord = this.poiInput.value;
+            if (keyWord === "") {
+                this.messageBox.showView("搜索关键字不能为空，请输入搜索条件。");
+                return;
+            }
+            if (this.isSearchLayer) {
+                this.viewModel.search(keyWord, this.currentSearchLayerName);
+            } else {
+                this.viewModel.search(keyWord);
+            }
+        };
+
+        //【输入框输入内容回车事件】
+        poiInput.onkeypress = (e) => {
+            //.which属性判断按下的是哪个键，回车键的键位序号为13
+            if (e.which == 13) {
+                //手动触发 searchBtn 得点击事件，执行查询操作
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("click", false, true);
+                searchBtn.dispatchEvent(evt);
+            }
+        };
+
+        poiContainer.appendChild(searchBtn);
+        //--------搜索按钮 END
+
+        //查询结果页面
+        const resultDomObj = new PaginationContainer_PaginationContainer();
+        this._resultDomObj = resultDomObj;
+        const resultContainer = function createResultPage() {
+            const resultContainer = resultDomObj.getElement();
+            resultContainer.style.position = "absolute";
+            resultContainer.style.top = "44px";
+            resultContainer.style.right = "0";
+            //先关闭结果界面，当有数据时再打开
+            resultDomObj.closeView();
+
+            //【结果列表点击事件】，以支持联动map上对应要素：
+            resultDomObj.content.onclick = (e) => {
+                let selectFeatureOption = null;
+                if (e.target.parentNode.className === "poi-result-info") {
+                    selectFeatureOption = e.target.parentNode.parentNode;
+                } else if (e.target.parentNode.className === "poi-result-items") {
+                    selectFeatureOption = e.target.parentNode;
+                } else if (e.target.className === "poi-result-items") {
+                    selectFeatureOption = e.target;
+                } else {
+                    return;
+                }
+                //修改
+                if (document.getElementsByClassName("poi-result-selected").length > 0) {
+                    document.getElementsByClassName("poi-result-selected")[0].classList.remove("poi-result-selected");
+                }
+
+                selectFeatureOption.firstChild.classList.add("poi-result-selected");
+
+                let filter = selectFeatureOption.children[1].firstChild.innerText;
+                //联动地图上要素响应
+                self._linkageFeature(filter);
+            };
+
+            return resultContainer;
+        }();
+        poiContainer.appendChild(resultContainer);
+
+        //清除输入框内容【输入框删除按钮点击事件】
+        poiInputClose.onclick = (e) => {
+            this._clearSearchResult();
+            poiInput.value = "";
+            e.target.hidden = true;
+            resultDomObj.closeView();
+        };
+
+        //【输入框输入内容事件】
+        poiInput.oninput = () => {
+            poiInputClose.hidden = false;
+        };
+
+        //关闭在控件上触发地图的事件响应：
+        poiContainer.addEventListener('mouseover', function () {
+            self.map.dragging.disable();
+            self.map.scrollWheelZoom.disable();
+            self.map.doubleClickZoom.disable();
+        });
+        poiContainer.addEventListener('mouseout', function () {
+            self.map.dragging.enable();
+            self.map.scrollWheelZoom.enable();
+            self.map.doubleClickZoom.enable();
+        });
+
+        //添加提示框
+        this.messageBox = new MessageBox();
+        //绑定 VM 的监听
+        this._addViewModelListener();
+        div.appendChild(poiContainer);
+
+        return div;
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._createSearchLayerItem
+     * @description 创建查询图层选项：
+     * @private
+     */
+    _createSearchLayerItem(layer) {
+        const layerOption = document.createElement("div");
+        layerOption.setAttribute("class", "poi-search-layer");
+
+        // 创建圆形单选框
+        const singleSelect = document.createElement("div");
+        singleSelect.setAttribute("class", "widgets-singlesSelect");
+        const singleIcon = document.createElement("div");
+        singleIcon.setAttribute("class", "single-default-img");
+        singleSelect.appendChild(singleIcon);
+        const singleLabel = document.createElement("span");
+        singleLabel.setAttribute("class", "single-label");
+        singleLabel.innerHTML = layer.layerName;
+        singleSelect.appendChild(singleLabel);
+
+        layerOption.appendChild(singleSelect);
+
+        //attributes-select todo 暂不支持该功能
+        const attributesSelect = (new WidgetSelect(layer.layer.attributeNames)).getElement();
+        //选择查询的字段  todo 限制图层查找属性功能待属性选择框优化后完善
+        attributesSelect.onchange = (e) => {
+            this.searchAttributes = e.target.value;
+        };
+        // layerOption.appendChild(attributesSelect);
+
+        document.getElementsByClassName("poi-layers-body")[0].appendChild(layerOption);
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._createResultItem
+     * @description 创建查询结果列表
+     * @private
+     */
+    _createResultItem(featureType, properties) {
+        const item = document.createElement("div");
+        item.setAttribute("class", "poi-result-items");
+
+        let icon = document.createElement("div");
+        if (featureType === "Point" || featureType === "MultiPoint") {
+            icon.setAttribute("class", "supermapol-icons-marker-layer poi-result-icon");
+        } else if (featureType === "LineString" || featureType === "MultiLineString ") {
+            icon.setAttribute("class", "supermapol-icons-line-layer poi-result-icon");
+        } else if (featureType === "Polygon" || featureType === "MultiPolygon") {
+            icon.setAttribute("class", "supermapol-icons-polygon-layer poi-result-icon");
+        } else {
+            icon.setAttribute("class", "supermapol-icons-point-layer poi-result-icon");
+        }
+        item.appendChild(icon);
+
+        const info = document.createElement("div");
+        info.setAttribute("class", "poi-result-info");
+        const info1 = document.createElement("div");
+        info.appendChild(info1);
+
+        const info2 = document.createElement("div");
+        //分地址匹配和图层搜索的两种数据展现形式：
+        if (properties.name) {
+            info1.innerHTML = properties.name;
+            info2.innerHTML = properties.address;
+            info.appendChild(info2);
+        } else {
+            info1.innerHTML = properties.filterAttributeName + ": " + properties.filterAttributeValue;
+        }
+
+        item.appendChild(info);
+
+        //暂时删除复选框UI
+        const check = document.createElement("div");
+        check.setAttribute("class", "widget-checkbox checkbox-default-img");
+        // item.appendChild(check);
+        return item;
+    },
+
+    /*----------对 VM 的一些事件监听 ----------*/
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._addViewModelListener
+     * @description 绑定对 VM 的事件监听
+     * @private
+     */
+    _addViewModelListener() {
+        //----可查询图层变化监听
+        this.viewModel.on("searchlayerschanged", (layers) => {
+            for (let i = 0; i < layers.length; i++) {
+                this._createSearchLayerItem(layers[i]);
+            }
+        });
+
+        //----可查询图层变化监听
+        this.viewModel.on("newlayeradded", (e) => {
+            this._createSearchLayerItem(e.newLayer);
+        });
+
+        //----图层查询结果监听
+        this.viewModel.on("searchlayersucceed", (e) => {
+            const data = e.result;
+            this._clearSearchResult();
+            this.searchResultLayer = external_L_default.a.featureGroup(data, {
+                pointToLayer: null
+            }).bindPopup(function (layer) {
+                return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
+            }).addTo(this.map);
+
+            this._flyToBounds(this.searchResultLayer.getBounds());
+            //查询结果列表：
+            this._prepareResultData(data);
+            this.event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
+        });
+
+        //----地址匹配服务监听
+        this.viewModel.on("geocodesucceed", (e) => {
+            const data = e.result;
+            //先清空当前有的地址匹配图层
+            this._clearSearchResult();
+
+            this.searchResultLayer = external_L_default.a.geoJSON(data)
+                .bindPopup(function (layer) {
+                    return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement();
+                }).addTo(this.map);
+
+            //若这个图层只有一个点的话，则直接 flyTo 到点：
+            this._flyToBounds(this.searchResultLayer.getBounds());
+            //查询结果列表：
+            this._prepareResultData(data);
+            this.event.fire("searchsucceed", {result: data});
+        });
+
+        //----地址匹配或图层查询失败监听
+        this.viewModel.on("searchfield", (e) => {
+            let message = "";
+            if (e.searchType === "searchGeocodeField") {
+                message = "未匹配到地址匹配服务数据！";
+            } else if (e.searchType === "cityGeocodeField") {
+                message = "未配置当前城市的地址匹配服务。";
+            } else {
+                message = "未查找到相关矢量要素！";
+            }
+            this.messageBox.showView(message)
+        });
+    },
+
+    /*-------以下是一些辅助性功能函数 -------*/
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._prepareResultData
+     * @description 准备需要填入结果展示页面里的数据
+     * @param {Array.<Feature>} data - 图层查询或地址匹配返回的要素数据数组
+     * @private
+     */
+    _prepareResultData(data) {
+        this.currentResult = data;
+        //向下取舍，这只页码
+        let pageCounts = Math.ceil(data.length / 8);
+        this._resultDomObj.setPageLink(pageCounts);
+        //初始结果页面内容：
+        this._createResultListByPageNum(1, data);
+        this._resultDomObj.showView();
+
+        //给页面模板设置联动事件
+        this._resultDomObj.setLinkageEvent(_linkageEvent);
+        const self = this;
+
+        function _linkageEvent(page) {
+            self._createResultListByPageNum(page, self.currentResult);
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._createResultListByPageNum
+     * @description 根据页面值填充内容
+     * @param {number} page - 页数
+     * @param {Array.<Feature>} data - 图层查询或地址匹配返回的要素数据数组
+     * @private
+     */
+    _createResultListByPageNum(page, data) {
+        let start = 0, end = 8;
+        if (page === 1 && data.length < 8) {
+            //data数据不满8个时：
+            end = data.length;
+        } else if (page * 8 > data.length) {
+            //最后一页且数据不满8个时
+            start = 8 * (page - 1);
+            end = data.length
+        } else {
+            //中间页面的情况
+            start = 8 * (page - 1);
+            end = page * 8 - 1
+        }
+        const content = document.createElement("div");
+        for (let i = start; i < end; i++) {
+            let properties, featureType = "Point";
+            if (data[i].filterAttribute) {
+                featureType = data[i].feature.geometry.type;
+                properties = data[i].filterAttribute;
+            } else {
+                properties = data[i].properties;
+            }
+            content.appendChild(this._createResultItem(featureType, properties))
+        }
+        this._resultDomObj.setContent(content);
+        this._resultDomObj.showView();
+
+        //查询完成默认选中第一个结果：
+        content.firstChild.getElementsByClassName("poi-result-icon")[0].classList.add("poi-result-selected");
+        const filter = content.firstChild.getElementsByClassName("poi-result-info")[0].firstChild.innerText;
+        this._linkageFeature(filter);
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._flyToBounds
+     * @param {L.Bounds} bounds - 当前图层范围
+     * @description 移动到图层
+     * @private
+     */
+    _flyToBounds(bounds) {
+        const sw = bounds.getSouthWest();
+        const ne = bounds.getNorthEast();
+        if (sw.lat === ne.lat && sw.lng === ne.lng) {
+            this.map.flyTo(sw);
+        } else {
+            this.map.flyToBounds(bounds);
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._linkageFeature
+     * @description 点击结果列表联动地图上要素响应
+     * @private
+     */
+    _linkageFeature(filter) {
+        let filterValue = "";
+        if (this.isSearchLayer) {
+            filterValue = filter.split(":")[1].trim();
+        } else {
+            filterValue = filter;
+        }
+
+        this.searchResultLayer.eachLayer((layer) => {
+            this._resetLayerStyleToDefault(layer);
+
+            if (layer.filterAttribute && layer.filterAttribute.filterAttributeValue === filterValue ||
+                layer.feature.properties && layer.feature.properties.name === filterValue) {
+                this._setSelectedLayerStyle(layer);
+                layer.bindPopup(function () {
+                    return (new AttributesPopContainer_AttributesPopContainer(layer.feature.properties)).getElement()
+                }, {closeOnClick: false}).openPopup().addTo(this.map);
+                /*let center;
+                if (layer.getLatLng) {
+                    center = layer.getLatLng();
+                } else if (layer.getCenter) {
+                    center = layer.getCenter();
+                }
+                 this.map.setView(center);*/
+            }
+        });
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._clearSearchResult
+     * @description 清空当前查询的结果等
+     */
+    _clearSearchResult() {
+        if (this.searchResultLayer) {
+            this.map.closePopup();
+            //若当前是查询图层的结果，则不删除图层，只修改样式
+            if (this.isSearchLayer) {
+                const self = this;
+                this.searchResultLayer.eachLayer(function (layer) {
+                    self._resetLayerStyleToDefault(layer);
+                    layer.addTo(self.map)
+                });
+            } else {
+                this.map.removeLayer(this.searchResultLayer);
+            }
+            this.searchResultLayer = null;
+            this.currentResult = null;
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._resetLayerStyleToDefault
+     * @description 恢复图层默认样式
+     * @param {L.layer} layer - 需要恢复样式的图层
+     * @private
+     */
+    _resetLayerStyleToDefault(layer) {
+        if (layer.setIcon) {
+            layer.setIcon(external_L_default.a.divIcon({className: 'default-marker-icon', iconAnchor: [12.5, 0]}));
+        } else {
+            layer.setStyle({
+                fillColor: 'blue',
+                weight: 1,
+                opacity: 1,
+                color: 'blue',
+                fillOpacity: 0.6
+            });
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.poiSearch.prototype._setSelectedLayerStyle
+     * @description 设置图层选中样式
+     * @param {L.layer} layer - 需要设置选中样式的图层
+     * @private
+     */
+    _setSelectedLayerStyle(layer) {
+        if (layer.setIcon) {
+            layer.setIcon(external_L_default.a.divIcon({className: 'select-marker-icon', iconAnchor: [15, 0]}));
+        } else {
+            layer.setStyle({
+                fillColor: 'red',
+                weight: 1,
+                opacity: 1,
+                color: 'red',
+                fillOpacity: 0.2
+            });
+        }
+    }
+});
+
+var poiSearchView = function (options) {
+    return new POISearchView(options);
+};
+
+external_L_default.a.supermap.widgets.poiSearch = poiSearchView;
 // CONCATENATED MODULE: ./src/leaflet/widgets/dataflow/DataFlowViewModel.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -81710,8 +83502,13 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
      * @description 取消订阅的数据流
      */
     cancelSubscribe() {
-        this.dataFlowStatus = false;
-        this.dataFlowLayer.dataService.unSubscribe();
+        if (this.dataFlowLayer) {
+            this.dataFlowStatus = false;
+            this.dataFlowLayer.dataService.unSubscribe();
+            this.dataFlowLayer.remove();
+            this.dataFlowLayer = null;
+        }
+
     },
 
     /**
@@ -81842,7 +83639,8 @@ var DataFlowView = external_L_default.a.Control.extend({
         const dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "widget-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.placeholder = "请输入数据流服务地址:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
+        dataFlowInput.placeholder = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
+        dataFlowInput.title = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
         //---输入框值改变,打开清除按钮
         dataFlowInput.oninput = this.inputOnchange.bind(this);
         this.dataFlowInput = dataFlowInput;
@@ -82001,12 +83799,12 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-// import {POISearchView, poiSearchView} from './poisearch/POISearchView';
 
 
 
 
-// export {POISearchView, poiSearchView};
+
+
 
 
 // CONCATENATED MODULE: ./src/leaflet/index.js
@@ -82014,6 +83812,8 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileView", function() { return openFileView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OpenFileViewModel", function() { return OpenFileViewModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "openFileViewModel", function() { return openFileViewModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "POISearchView", function() { return POISearchView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "poiSearchView", function() { return poiSearchView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowView", function() { return DataFlowView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataFlowView", function() { return dataFlowView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
@@ -87840,18 +89640,8 @@ module.exports = __webpack_require__(41);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 105 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 105 */,
+/* 106 */,
 /* 107 */,
 /* 108 */,
 /* 109 */,
@@ -87881,8 +89671,20 @@ module.exports = __webpack_require__(41);
 /* 123 */,
 /* 124 */,
 /* 125 */,
-/* 126 */,
+/* 126 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 127 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 128 */,
+/* 129 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

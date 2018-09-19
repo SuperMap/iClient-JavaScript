@@ -148,8 +148,13 @@ export var DataFlowViewModel = L.Evented.extend({
      * @description 取消订阅的数据流
      */
     cancelSubscribe() {
-        this.dataFlowStatus = false;
-        this.dataFlowLayer.dataService.unSubscribe();
+        if (this.dataFlowLayer) {
+            this.dataFlowStatus = false;
+            this.dataFlowLayer.dataService.unSubscribe();
+            this.dataFlowLayer.remove();
+            this.dataFlowLayer = null;
+        }
+
     },
 
     /**

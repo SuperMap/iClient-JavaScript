@@ -33,7 +33,7 @@ export var GeoJsonLayersDataModel = L.Evented.extend({
             let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i]);
             //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
             this[layerName] = geoJsonLayerDataModel;
-            this.fire("addNewSearchLayer", {newLayer: {layerName: layerName, layer: geoJsonLayerDataModel}});
+            this.fire("newlayeradded", {newLayer: {layerName: layerName, layer: geoJsonLayerDataModel}});
         }
     },
 

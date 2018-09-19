@@ -29,3 +29,15 @@
 .single-checked-img {
     background: url("../image/radiobox-checked.png") no-repeat;
 }
+
+.default-marker-icon {
+    height: 41px !important;
+    width:25px!important;
+    background: url("../image/marker-icon.png") no-repeat;
+}
+
+.select-marker-icon {
+    height: 42px!important;
+    width: 30px!important;
+    background: url("../image/marker-gold.png") no-repeat;
+}

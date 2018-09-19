@@ -13,6 +13,11 @@ import {WidgetSelect} from './templates/WidgetSelect';
 import {WidgetDropDownBox} from './templates/WidgetDropDownBox';
 import {AttributesPopContainer} from './templates/AttributesPopContainer';
 import {PopContainer} from './templates/PopContainer';
+
+import {IndexTabsPageContainer} from './templates/IndexTabsPageContainer';
+import {CityTabsPage} from './templates/CityTabsPage';
+import {NavTabsPage} from './templates/NavTabsPage';
+import {PaginationContainer} from './templates/PaginationContainer';
 //工具类
 import {widgetsUtil, FileReaderUtil} from './util';
 
@@ -25,4 +30,9 @@ export {WidgetSelect};
 export {WidgetDropDownBox};
 export {AttributesPopContainer};
 export {PopContainer};
+
+export {IndexTabsPageContainer};
+export {CityTabsPage};
+export {NavTabsPage};
+export {PaginationContainer};
 export {widgetsUtil, FileReaderUtil};

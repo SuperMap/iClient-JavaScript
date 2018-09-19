@@ -5,7 +5,7 @@
     width: 385px;
 }
 
-.dataviz-poi {
+.widgets-poi {
     float: right;
     min-width: 312px;
     height: 36px;
@@ -17,16 +17,16 @@
     font-size: 12px;
 }
 
-.dataviz-poi > div {
+.widgets-poi > div {
     float: left;
 }
 
 /*下拉框*/
-.dataviz-poi-settings {
+.widgets-poi-settings {
     position: relative;
 }
 
-.dataviz-poi-settings .dataviz-poi-settings-name {
+.widgets-poi-settings .widgets-poi-settings-name {
     background-color: #F5F5F5;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
@@ -39,13 +39,13 @@
     cursor: pointer;
 }
 
-.dataviz-poi-settings-name > div:first-child {
+.widgets-poi-settings-name > div:first-child {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.dataviz-poi-settings .supermapol-icons-solid-down-triangle {
+.widgets-poi-settings .supermapol-icons-solid-down-triangle {
     position: absolute;
     right: 8px;
     top: 10px;
@@ -53,7 +53,7 @@
 }
 
 /*搜索框*/
-.dataviz-poi input[type='text'] {
+.widgets-poi input[type='text'] {
     font-family: MicrosoftYaHei;
     font-size: 12px;
     color: #919191;
@@ -66,7 +66,7 @@
     outline: none !important;
 }
 
-.dataviz-poi-input input[type='text'] ~ span.supermapol-icons-close {
+.widgets-poi-input input[type='text'] ~ span.supermapol-icons-close {
     position: absolute;
     right: 2px;
     cursor: pointer;
@@ -80,11 +80,11 @@
 }
 
 /*搜索*/
-.dataviz-poi-input {
+.widgets-poi-input {
     position: relative;
 }
 
-.dataviz-poi .supermapol-icons-search {
+.widgets-poi .supermapol-icons-search {
     font-size: 16px;
     cursor: pointer;
     height: 16px;
@@ -103,7 +103,7 @@
     padding-top: 2px;
     margin: 0 auto;
     width: 488px;
-    height: 364px;
+    max-height: 364px;
 }
 
 .poi-layers-header {
@@ -135,7 +135,8 @@
     position: relative;
     overflow: hidden;
     width: 490px;
-    height: 310px;
+    max-height: 310px;
+    padding-bottom: 8px;
 }
 
 .poi-search-layer {
@@ -260,6 +261,7 @@
     width: 14px;
     height: 14px;
 }
+
 
 /*!*查询数据单元*!
 .widgets-result-items {

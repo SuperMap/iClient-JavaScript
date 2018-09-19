@@ -3175,7 +3175,7 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(119);
+var supermapol_icons = __webpack_require__(118);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
 var widgets_icon = __webpack_require__(112);
@@ -3184,34 +3184,34 @@ var widgets_icon = __webpack_require__(112);
 var Icon = __webpack_require__(107);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(98);
+var OpenFile = __webpack_require__(96);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(97);
+var MessageBox = __webpack_require__(95);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(96);
+var DataFlow = __webpack_require__(94);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(95);
+var POISearch = __webpack_require__(93);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(94);
+var WidgetContainer = __webpack_require__(92);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(93);
+var WidgetDropDownBox = __webpack_require__(91);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(92);
+var WidgetSelect = __webpack_require__(90);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(91);
+var CityTabsPage = __webpack_require__(121);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(90);
+var NavTabsPage = __webpack_require__(89);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(89);
+var PaginationContainer = __webpack_require__(119);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
 var PopContainer = __webpack_require__(88);
@@ -63553,6 +63553,675 @@ class AttributesPopContainer_AttributesPopContainer extends PopContainer {
 }
 
 SuperMap.Widgets.AttributesPopContainer = AttributesPopContainer_AttributesPopContainer;
+// CONCATENATED MODULE: ./src/common/widgets/templates/IndexTabsPageContainer.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+class IndexTabsPageContainer {
+    constructor() {
+        this._initView();
+    }
+
+    _initView() {
+        const container = document.createElement("div");
+        container.setAttribute("class", "widgets-tabpage");
+
+        const header = document.createElement("ul");
+        this.header = header;
+
+        const content = document.createElement("div");
+        content.setAttribute("class", "widgets-tabpage-content");
+        this.content = content;
+
+        container.appendChild(header);
+        container.appendChild(content);
+        this.container = container;
+
+    }
+
+    showView() {
+        this.container.hidden = false;
+    }
+
+    closeView() {
+        this.container.hidden = true;
+    }
+
+    getElement() {
+        return this.container;
+    }
+
+
+    setTabs(tabs) {
+        this.removeAllTabs();
+        this.appendTabs(tabs);
+    }
+
+    appendTabs(tabs) {
+        for (let i = 0; i < tabs.length; i++) {
+            let title = document.createElement("span");
+            title.index = i;
+            title.appendChild(document.createTextNode(tabs[i].title));
+            //绑定标签切换对应页面：
+            title.onclick = this._changeTabsPage.bind(this);
+            let content = tabs[i].content;
+            content.index = i;
+            content.hidden = true;
+
+            this.header.appendChild(title);
+            this.content.appendChild(content);
+        }
+        //todo 确认是否两个子元素的 index 相互对应
+        //默认显示第一个标签对象
+        this.header.firstChild.setAttribute("class", "on");
+        this.content.firstChild.hidden = false;
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeTab
+     * @description 删除某个标签页面
+     * @param {number} index - 标签索引号
+     */
+    removeTab(index) {
+        this.header.removeChild(this.header.children[index]);
+        this.content.removeChild(this.content.children[index]);
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeAllTabs
+     * @description 删除所有标签F
+     */
+    removeAllTabs() {
+        for (let i = this.header.children.length; i > 0; i--) {
+            this.header.removeChild(this.header.children[i]);
+            this.content.removeChild(this.content.children[i]);
+        }
+    }
+
+    _changeTabsPage(e) {
+        const index = e.target.index;
+        for (let i = 0; i < this.header.children.length; i++) {
+            this.header.children[i].setAttribute("class", "");
+            this.content.children[i].hidden = true;
+            if (i === index) {
+                this.header.children[i].setAttribute("class", "on");
+                this.content.children[i].hidden = false;
+            }
+        }
+    }
+
+}
+// EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
+var css_CityTabsPage = __webpack_require__(121);
+
+// CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class SuperMap.Widgets.CityTabsPage
+ * @classdesc 城市地址匹配组件模板
+ * @param {Object|Array.<string>} config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
+ *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
+ */
+class CityTabsPage_CityTabsPage extends IndexTabsPageContainer {
+    constructor(config) {
+        super();
+        //去掉默认的边框阴影样式：
+        this.container.classList.add("noneBoxShadow");
+        this.config = config;
+        //header，若 config为城市名称数组，则直接加载内容
+        if (Util_Util.isArray(this.config)) {
+            this.header.hidden = true;
+            this._createCityItem("城市", this.config);
+            this.content.style.border = "none";
+        } else {
+            this._createTabs();
+            this.header.onclick = (e) => {
+                //关闭所有元素 是否有更简化的写法？
+                for (let i = 0; i < this.header.children.length; i++) {
+                    this.header.children[i].setAttribute("class", "");
+                }
+                //打开点击内容元素
+                e.target.setAttribute("class", "on");
+                this._createCityContent(e.target.innerHTML);
+            };
+        }
+
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createTabs
+     * @description 创建 Tabs
+     * @private
+     */
+    _createTabs() {
+        //header
+        if (Util_Util.isArray(this.config)) {
+            for (let i = 0; i < this.config.length; i++) {
+                let innerHTML = "";
+                for (const key in this.config[i]) {
+                    innerHTML += key;
+                }
+                let li = document.createElement("li");
+                li.innerHTML = innerHTML;
+                this.header.appendChild(li);
+            }
+        } else {
+            for (const key in this.config) {
+                let li = document.createElement("li");
+                li.innerHTML = key;
+                this.header.appendChild(li);
+            }
+        }
+        this.header.firstChild.setAttribute("class", "on");
+        this._createCityContent(this.header.firstChild.innerHTML);
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+     * @description 创建列表容器
+     * @private
+     */
+    _createCityContent(keyName) {
+        //清除元素：
+        for (let i = this.content.children.length; i > 0; i--) {
+            this.content.removeChild(this.content.children[i - 1]);
+        }
+        //创建对应元素
+        const cities = this.config[keyName];
+        for (let key in cities) {
+            this._createCityItem(key, cities[key]);
+        }
+    }
+
+    /**
+     * @function SuperMap.Widgets.CityTabsPage.prototype._createCityContent
+     * @description 创建列表容器
+     * @private
+     */
+    _createCityItem(key, cities) {
+        const city = document.createElement("div");
+
+        const cityClass = document.createElement("div");
+        cityClass.setAttribute("class", "py-key");
+        cityClass.innerHTML = key;
+        city.appendChild(cityClass);
+
+        const cityContent = document.createElement("div");
+        cityContent.setAttribute("class", "city-content");
+
+        for (let i = 0; i < cities.length; i++) {
+            let span = document.createElement("span");
+            span.innerHTML = cities[i];
+            cityContent.appendChild(span);
+        }
+        //HOT 元素长度单独微调：
+        if (key === "HOT") {
+            cityContent.style.width = "428px";
+        }
+        city.appendChild(cityContent);
+        this.content.appendChild(city);
+    }
+
+}
+
+SuperMap.Widgets.CityTabsPage = CityTabsPage_CityTabsPage;
+// CONCATENATED MODULE: ./src/common/widgets/templates/NavTabsPage.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/**
+ * @class NavTabsPage
+ * @class 标签页面组件
+ * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面，默认值为 []
+ * todo 思考拆分的控件应该以哪种方式使用
+ */
+class NavTabsPage {
+    constructor(tabs = [], id = null) {
+        this.navTabsPage = null;
+        this.navTabsTitle = null;
+        this.navTabsContent = null;
+
+        this.rootContainer = document.createElement("div");
+        if (id) {
+            this.rootContainer.id = id;
+        }
+        this._initContainer(tabs);
+
+    }
+
+    _initContainer(tabs) {
+        const navTabsPage = document.createElement("div");
+        navTabsPage.setAttribute("class", "nav-tabs-page");
+
+        //关闭按钮
+        const closeBtn = document.createElement("span");
+        closeBtn.setAttribute("class", "supermapol-icons-close");
+        closeBtn.onclick = this.closeView.bind(this);
+        navTabsPage.appendChild(closeBtn);
+
+        //标签
+        const navTabsTitle = document.createElement("div");
+        this.navTabsTitle = navTabsTitle;
+        navTabsTitle.setAttribute("class", "nav-tabs-title");
+        navTabsPage.appendChild(navTabsTitle);
+
+        //内容
+        const navTabsContent = document.createElement("div");
+        this.navTabsContent = navTabsContent;
+        navTabsContent.setAttribute("class", "nav-tabs-content");
+        navTabsPage.appendChild(navTabsContent);
+
+        //若 tabs 初始传入值，则
+        if (tabs.length > 0) {
+            this.appendTabs(tabs);
+        }
+
+        this.navTabsPage = navTabsPage;
+    }
+
+    getElement() {
+        return this.navTabsPage;
+    }
+
+    /**
+     * @function NavTabsPage.prototype.setTabs
+     * @description 设置标签
+     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     */
+    setTabs(tabs) {
+        this.removeAllTabs();
+        this.appendTabs(tabs);
+    }
+
+    /**
+     * @function NavTabsPage.prototype.appendTabs
+     * @description 添加标签页面
+     * @param {Array.<Object>} tabs - 标签对象数组 [{title: "",content: {}}]
+     */
+    appendTabs(tabs) {
+        for (let i = 0; i < tabs.length; i++) {
+            let title = document.createElement("span");
+            title.index = i;
+            title.appendChild(document.createTextNode(tabs[i].title));
+            //绑定标签切换对应页面：
+            title.onclick = this._changeTabsPage.bind(this);
+            let content = tabs[i].content;
+            content.index = i;
+            content.hidden = true;
+
+            this.navTabsTitle.appendChild(title);
+            this.navTabsContent.appendChild(content);
+        }
+        //todo 确认是否两个子元素的 index 相互对应
+        //默认显示第一个标签对象
+        this.navTabsTitle.firstChild.setAttribute("class", "tabs-select");
+        this.navTabsContent.firstChild.hidden = false;
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeTab
+     * @description 删除某个标签页面
+     * @param {number} index - 标签索引号
+     */
+    removeTab(index) {
+        this.navTabsTitle.removeChild(this.navTabsTitle.children[index]);
+        this.navTabsContent.removeChild(this.navTabsContent.children[index]);
+    }
+
+    /**
+     * @function NavTabsPage.prototype.removeAllTabs
+     * @description 删除所有标签F
+     */
+    removeAllTabs() {
+        for (let i = this.navTabsTitle.children.length; i > 0; i--) {
+            this.navTabsTitle.removeChild(this.navTabsTitle.children[i]);
+            this.navTabsContent.removeChild(this.navTabsContent.children[i]);
+        }
+    }
+
+    /**
+     * @function NavTabsPage.prototype.closeView
+     * @description 关闭当前窗口
+     */
+    closeView() {
+        this.navTabsPage.hidden = true;
+    }
+
+    showView() {
+        this.navTabsPage.hidden = false;
+    }
+
+    _changeTabsPage(e) {
+        const index = e.target.index;
+        for (let i = 0; i < this.navTabsTitle.children.length; i++) {
+            this.navTabsTitle.children[i].setAttribute("class", "");
+            this.navTabsContent.children[i].hidden = true;
+            if (i === index) {
+                this.navTabsTitle.children[i].setAttribute("class", "tabs-select");
+                this.navTabsContent.children[i].hidden = false;
+            }
+        }
+    }
+
+}
+// EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
+var PaginationContainer = __webpack_require__(119);
+
+// CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.Widgets.PaginationContainer
+ * @classdesc 分页组件模板
+ */
+class PaginationContainer_PaginationContainer {
+    constructor(contents = null, pageCounts = 0) {
+        this.currentPage = 0;
+        this.pageNumberLis = [];
+        this.currentPageNumberLis = [];
+        this.linkageEvent = null;
+        this._initView(contents, pageCounts);
+    }
+
+    /**
+     * @description 设置页面联动函数
+     * @param linkageEvent
+     */
+    setLinkageEvent(linkageEvent) {
+        this.linkageEvent = linkageEvent;
+    }
+
+    getElement() {
+        return this.container;
+    }
+
+    showView() {
+        this.container.hidden = false;
+    }
+
+    closeView() {
+        this.container.hidden = true;
+    }
+
+    _initView(contents, pageCounts) {
+        const container = document.createElement("div");
+        container.setAttribute("class", "widgets-pagination");
+
+        //content
+        const content = document.createElement("div");
+        content.setAttribute("class", "widgets-pagination-content");
+        container.appendChild(content);
+        this.content = content;
+
+        //link
+        const link = document.createElement("ul");
+        link.setAttribute("class", "widgets-pagination-link");
+        link.onclick = this._changePageEvent.bind(this);
+        container.appendChild(link);
+        this._createLink(link);
+        this.link = link;
+        //填充内容：
+        if (contents) {
+            this.setContent(contents);
+        }
+        if (pageCounts !== 0) {
+            this.setPageLink(pageCounts);
+        }
+        this.container = container;
+
+    }
+
+    /**---------以下是页面相关操作 **/
+    /**
+     * @description 设置页面内容
+     * @param element
+     */
+    setContent(element) {
+        this.clearContent();
+        this.appendContent(element);
+    }
+
+    /**
+     * @description 添加内容
+     * @param element
+     */
+    appendContent(element) {
+        this.content.appendChild(element);
+    }
+
+    /**
+     * @description 清空内容元素
+     */
+    clearContent() {
+        for (let i = this.content.children.length - 1; i >= 0; i--) {
+            this.content.removeChild(this.content.children[i]);
+        }
+    }
+
+    /** -----以下是页码相关的操作：**/
+    /**
+     * @description 设置页码
+     * @param {Number} pageNumber
+     */
+    setPageLink(pageNumber) {
+        //清空当前页码
+        this.pageNumberLis = [];
+        this.currentPageNumberLis = [];
+        this.clearPageLink();
+
+        //创建页码
+        this._createPageLi(pageNumber);
+        //添加页码到页码列表
+        this.appendPageLink();
+    }
+
+    /**
+     * @description 创建页码
+     * @param pageNumber
+     * @private
+     */
+    _createPageLi(pageNumber) {
+        for (let i = 0; i < pageNumber; i++) {
+            const pageLi = document.createElement("li");
+            pageLi.innerHTML = i + 1;
+            /*const liContent = document.createElement("span");
+            liContent.innerHTML = i + 1;*/
+            // pageLi.appendChild(liContent);
+            this.pageNumberLis.push(pageLi);
+        }
+        this.pageNumberLis[0].setAttribute("class", "active");
+        this.currentPage = 1;
+        if (pageNumber < 5) {
+            this.currentPageNumberLis = this.pageNumberLis;
+        } else {
+            for (let i = 0; i < 5; i++) {
+                this.currentPageNumberLis.push(this.pageNumberLis[i]);
+            }
+        }
+    }
+
+    /**
+     * @description 添加页码到页码列表
+     * @private
+     */
+    appendPageLink() {
+        //todo 如何插入中间
+        for (let i = 0; i < this.currentPageNumberLis.length; i++) {
+            this.link.insertBefore(this.currentPageNumberLis[i], this.link.childNodes[this.link.children.length - 2]);
+        }
+
+        for (let i = 0; i < this.currentPageNumberLis.length; i++) {
+            //清空 active 状态
+            this.currentPageNumberLis[i].setAttribute("class", "");
+            //给当前选中的 li 赋值  active 状态
+            if (Number(this.currentPageNumberLis[i].innerHTML) === this.currentPage) {
+                this.currentPageNumberLis[i].setAttribute("class", "active");
+            }
+        }
+
+        //根据 currentPage 改变按钮状态
+        this._changeDisableState();
+
+        if (this.linkageEvent) {
+            this.linkageEvent(this.currentPage);
+        }
+
+    }
+
+    /**
+     * @description 清除页码列表
+     */
+    clearPageLink() {
+        for (let i = this.link.children.length - 3; i > 1; i--) {
+            this.link.removeChild(this.link.children[i]);
+        }
+    }
+
+    /**
+     * @description 创建页码按钮
+     * @param ul
+     * @private
+     */
+    _createLink(ul) {
+        for (let i = 0; i < 4; i++) {
+            const li = document.createElement("li");
+            li.setAttribute("class", "disable");
+            const liContent = document.createElement("span");
+            li.appendChild(liContent);
+            if (i === 0) {
+                liContent.id = "first";
+                liContent.setAttribute("class", "supermapol-icons-first");
+            } else if (i === 1) {
+                liContent.id = "prev";
+                liContent.setAttribute("class", "supermapol-icons-prev");
+            } else if (i === 2) {
+                liContent.id = "next";
+                liContent.setAttribute("class", "supermapol-icons-next");
+            } else if (i === 3) {
+                liContent.id = "last";
+                liContent.setAttribute("class", "supermapol-icons-last");
+            }
+
+            ul.appendChild(li);
+        }
+
+    }
+
+    /**
+     * @description 点击页码事件
+     * @param e
+     * @private
+     */
+    _changePageEvent(e) {
+        //todo
+        const trigger = e.target;
+        console.log(trigger);
+        //若列表禁用，点击无效
+        if (trigger.parentElement.classList[0] === "disable") {
+            return;
+        }
+        let targetLi;
+        if (trigger.id) {
+            targetLi = trigger.id;
+        } else if (Number(trigger.innerHTML)) {
+            targetLi = Number(trigger.innerHTML);
+        } else {
+            return;
+        }
+
+        //页码预处理：
+        this._prePageNum(targetLi);
+
+
+        //根据 currentPageNumberLis 创建页码列表
+        this.clearPageLink();
+        this.appendPageLink();
+    }
+
+    /**
+     * @description 根据 currentPage 改变按钮状态
+     * @private
+     */
+    _changeDisableState() {
+        this.link.children[0].setAttribute("class", "");
+        this.link.children[1].setAttribute("class", "");
+        this.link.children[this.link.children.length - 1].setAttribute("class", "");
+        this.link.children[this.link.children.length - 2].setAttribute("class", "");
+
+        if (this.currentPage === 1) {
+            this.link.children[0].setAttribute("class", "disable");
+            this.link.children[1].setAttribute("class", "disable");
+        }
+        if (this.currentPage === this.pageNumberLis.length) {
+            this.link.children[this.link.children.length - 1].setAttribute("class", "disable");
+            this.link.children[this.link.children.length - 2].setAttribute("class", "disable");
+        }
+
+    }
+
+    /**
+     * @description 根据点击页码列表事件准备需展现的页码列表
+     * @param {string|number} targetLi - 被点击的列表对象 id 或 被点击的页码值
+     * @private
+     */
+    _prePageNum(targetLi) {
+        const currentPageNumberLis = [];
+        if (targetLi === "first") {
+            this.currentPage = 1;
+        } else if (targetLi === "last") {
+            this.currentPage = this.pageNumberLis.length;
+        } else if (targetLi === "prev") {
+            this.currentPage = this.currentPage - 1;
+
+        } else if (targetLi === "next") {
+            this.currentPage = this.currentPage + 1;
+        } else {
+            this.currentPage = targetLi;
+        }
+
+        if (this.pageNumberLis.length <= 5) {
+            for (let i = 0; i < this.pageNumberLis.length; i++) {
+                currentPageNumberLis.push(this.pageNumberLis[i]);
+            }
+        } else {
+            //当前点击前三，都取前五
+            if (this.currentPage <= 3) {
+                for (let i = 0; i < 5; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            } else if (this.currentPage >= this.pageNumberLis.length - 3) {
+                //点击后三，都取后5
+                for (let i = this.pageNumberLis.length - 5; i < this.pageNumberLis.length; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            } else {
+                //其他，取中间：
+                for (let i = this.currentPage - 3; i <= this.currentPage + 1; i++) {
+                    currentPageNumberLis.push(this.pageNumberLis[i]);
+                }
+            }
+
+        }
+        if (currentPageNumberLis.length > 0) {
+            this.currentPageNumberLis = currentPageNumberLis;
+        }
+    }
+
+}
+
+SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
 // CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -63815,7 +64484,17 @@ let FileReaderUtil = {
 
 
 
+
+
+
+
+
 //工具类
+
+
+
+
+
 
 
 
@@ -69845,6 +70524,8 @@ class WebMap_WebMap extends external_ol_default.a.Observable {
         unique.style = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             unique.style.fill = false;
+        } else {
+            unique.style.fill = true;
         }
         unique.style.stroke = true;
         unique.themeField = themeField;
@@ -72293,7 +72974,7 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 删除要素数组
+     * @description 删除要素数组，默认将删除所有要素
      * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
      */
     removeGraphics(graphics = null) {
@@ -83480,18 +84161,8 @@ module.exports = __webpack_require__(36);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 97 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 97 */,
+/* 98 */,
 /* 99 */,
 /* 100 */,
 /* 101 */,
@@ -83521,8 +84192,20 @@ module.exports = __webpack_require__(36);
 /* 115 */,
 /* 116 */,
 /* 117 */,
-/* 118 */,
+/* 118 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 119 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 120 */,
+/* 121 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

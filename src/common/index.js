@@ -435,6 +435,10 @@ import {
     WidgetSelect,
     AttributesPopContainer,
     PopContainer,
+    IndexTabsPageContainer,
+    CityTabsPage,
+    NavTabsPage,
+    PaginationContainer,
     widgetsUtil,
     FileReaderUtil
 } from './widgets';
@@ -449,6 +453,10 @@ export {
     WidgetSelect,
     AttributesPopContainer,
     PopContainer,
+    IndexTabsPageContainer,
+    CityTabsPage,
+    NavTabsPage,
+    PaginationContainer,
     widgetsUtil,
     FileReaderUtil
 }

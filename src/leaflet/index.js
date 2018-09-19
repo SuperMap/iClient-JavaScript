@@ -330,8 +330,8 @@ import {
     openFileView,
     OpenFileViewModel,
     openFileViewModel,
-  /*  POISearchView,
-    poiSearchView,*/
+    POISearchView,
+    poiSearchView,
     DataFlowView,
     dataFlowView
 } from './widgets';
@@ -341,8 +341,8 @@ export {
     openFileView,
     OpenFileViewModel,
     openFileViewModel,
-    /*POISearchView,
-    poiSearchView,*/
+    POISearchView,
+    poiSearchView,
     DataFlowView,
     dataFlowView
 }

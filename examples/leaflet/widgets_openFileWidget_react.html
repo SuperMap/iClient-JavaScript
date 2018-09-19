@@ -18,7 +18,8 @@
         center: [38, 110],
         zoom: 5,
     });
-    var url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light';
+    var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
+    var url = host + '/iserver/services/map-china400/rest/maps/China';
 
     var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);

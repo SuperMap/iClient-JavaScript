@@ -1187,6 +1187,12 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "widgets_dataFlow.png",
                     fileName: "widgets_dataFlow"
+                }, {
+                    name: "地址匹配与图层要素查询",
+                    name_en: "address match add features search",
+                    version: "9.1.0",
+                    thumbnail: "widgets_POISearch.png",
+                    fileName: "widgets_POISearch"
                 }]
             },
             "widgetsAdvanced": {

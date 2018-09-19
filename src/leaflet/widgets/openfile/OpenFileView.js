@@ -59,6 +59,7 @@ export var OpenFileView = L.Control.extend({
         this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
         this.fileInput.onchange = (fileEventObject) => {
+            this.messageBox.closeView();
             this.viewModel.readFile(fileEventObject);
         };
 

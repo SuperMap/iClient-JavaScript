@@ -91,7 +91,8 @@ export var DataFlowView = L.Control.extend({
         const dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "widget-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.placeholder = "请输入数据流服务地址:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
+        dataFlowInput.placeholder = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
+        dataFlowInput.title = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
         //---输入框值改变,打开清除按钮
         dataFlowInput.oninput = this.inputOnchange.bind(this);
         this.dataFlowInput = dataFlowInput;
