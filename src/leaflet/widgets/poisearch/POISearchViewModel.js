@@ -61,7 +61,7 @@ export var POISearchViewModel = L.Evented.extend({
      * @function L.supermap.widgets.poiSearchViewModel.prototype.search
      * @description 查询
      * @param {string} keyWord - 查询的关键字
-     * @param {string||null} searchLayerName - 执行的查询类型，默认为null,支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配
+     * @param {string} [searchLayerName=null] - 执行的查询类型，默认为null,支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配
      */
     search(keyWord, searchLayerName = null) {
         if (!searchLayerName) {
