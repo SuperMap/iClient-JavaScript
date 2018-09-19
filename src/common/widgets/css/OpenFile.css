@@ -1,12 +1,12 @@
 /*--数据列表容器--*/
 .openFileContainer {
-    margin-top: 20px !important;
-    margin-right: 4px !important;
+ /*   margin-top: 20px !important;
+    margin-right: 4px !important;*/
 }
 
 .file-selectSpan {
     position: relative;
-    margin: 20px auto;
+/*    margin: 20px auto;*/
     width: 100px;
     height: 32px;
     font-size: 14px;

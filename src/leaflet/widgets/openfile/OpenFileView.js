@@ -32,6 +32,16 @@ export var OpenFileView = L.Control.extend({
     },
 
     /**
+     * @function L.supermap.widgets.openfile.prototype.onAdd
+     * @description 改变微件样式
+     * @param {string} styleName - css样式名
+     * @param {string} value - css样式值
+     */
+    setViewStyle(styleName, value) {
+        this.rootContainer.style[styleName] = value;
+    },
+
+    /**
      * @function L.supermap.widgets.openfile.prototype._initOpenFileView
      * @description 创建打开本地文件数据微件
      * @return {div}
@@ -56,39 +66,38 @@ export var OpenFileView = L.Control.extend({
         this.fileInput = L.DomUtil.create('input', 'openFile_input', this.fileSelect);
         this.fileInput.id = "input_file";
         this.fileInput.type = "file";
-        this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+        this.fileInput.accept = ".json,.geojson,.csv,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
         this.fileInput.onchange = (fileEventObject) => {
             this.messageBox.closeView();
             this.viewModel.readFile(fileEventObject);
         };
-
         //增加提示框：
         this.messageBox = new MessageBox();
 
-        this.viewModel.on("filesizeexceed", this._showMessageListener.bind(this));
-        this.viewModel.on("errorfileformat", this._showMessageListener.bind(this));
-        this.viewModel.on("openfilefail", this._showMessageListener.bind(this));
-        this.viewModel.on("readdatafail", this._showMessageListener.bind(this));
+        //添加监听
+        this.viewModel.on("filesizeexceed", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
+        this.viewModel.on("errorfileformat", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
+        this.viewModel.on("openfilefail", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
+        this.viewModel.on("readdatafail", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
         this.viewModel.on("openfilesuccess", (e) => {
             this.event.fire("openfilesuccess", e);
         });
 
+        this.rootContainer = uploadContent;
         return uploadContent;
     },
 
     on(eventType, callback) {
         this.event.on(eventType, callback);
-    },
-
-    /**
-     * @function L.supermap.widgets.openfile.prototype._showMessageListener
-     * @description 监听 OpenFileViewModel 事件，显示提示框
-     * @param {Object} e - 事件对象
-     * @private
-     */
-    _showMessageListener(e) {
-        this.messageBox.showView(e.message, e.messageType);
     }
 
 });

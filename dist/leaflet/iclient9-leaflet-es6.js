@@ -82176,6 +82176,16 @@ var OpenFileView = external_L_default.a.Control.extend({
     },
 
     /**
+     * @function L.supermap.widgets.openfile.prototype.onAdd
+     * @description 改变微件样式
+     * @param {string} styleName - css样式名
+     * @param {string} value - css样式值
+     */
+    setViewStyle(styleName, value) {
+        this.rootContainer.style[styleName] = value;
+    },
+
+    /**
      * @function L.supermap.widgets.openfile.prototype._initOpenFileView
      * @description 创建打开本地文件数据微件
      * @return {div}
@@ -82200,39 +82210,38 @@ var OpenFileView = external_L_default.a.Control.extend({
         this.fileInput = external_L_default.a.DomUtil.create('input', 'openFile_input', this.fileSelect);
         this.fileInput.id = "input_file";
         this.fileInput.type = "file";
-        this.fileInput.accept = ".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+        this.fileInput.accept = ".json,.geojson,.csv,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
 
         this.fileInput.onchange = (fileEventObject) => {
             this.messageBox.closeView();
             this.viewModel.readFile(fileEventObject);
         };
-
         //增加提示框：
         this.messageBox = new MessageBox();
 
-        this.viewModel.on("filesizeexceed", this._showMessageListener.bind(this));
-        this.viewModel.on("errorfileformat", this._showMessageListener.bind(this));
-        this.viewModel.on("openfilefail", this._showMessageListener.bind(this));
-        this.viewModel.on("readdatafail", this._showMessageListener.bind(this));
+        //添加监听
+        this.viewModel.on("filesizeexceed", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
+        this.viewModel.on("errorfileformat", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
+        this.viewModel.on("openfilefail", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
+        this.viewModel.on("readdatafail", (e) => {
+            this.messageBox.showView(e.message, e.messageType);
+        });
         this.viewModel.on("openfilesuccess", (e) => {
             this.event.fire("openfilesuccess", e);
         });
 
+        this.rootContainer = uploadContent;
         return uploadContent;
     },
 
     on(eventType, callback) {
         this.event.on(eventType, callback);
-    },
-
-    /**
-     * @function L.supermap.widgets.openfile.prototype._showMessageListener
-     * @description 监听 OpenFileViewModel 事件，显示提示框
-     * @param {Object} e - 事件对象
-     * @private
-     */
-    _showMessageListener(e) {
-        this.messageBox.showView(e.message, e.messageType);
     }
 
 });
@@ -83458,7 +83467,7 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
         //若当前数据流服务没变，则不进行重新订阅 todo 或者没点击暂停
         if (this.urlDataFlow === urlDataFlow) {
             if (this.dataFlowStatus) {
-                this.fire("dataFlowServiceSubscribed");
+                this.fire("dataflowfervicefubscribed");
                 return;
             }
         } else {
@@ -83472,29 +83481,30 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
         }
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
         const dataFlowLayer = new DataFlowLayer(urlDataFlow, this.options._defaultLayerOptions);
-        dataFlowLayer.on('dataupdated', this._defaultDataUpdatedCallBack.bind(this));
+        dataFlowLayer.on('subscribesuccessed', (result) => {
+            this.fire("subscribesuccessed", {result: result});
+        });
+        dataFlowLayer.on('dataupdated', (result) => {
+            //派发出订阅返回的数据：
+            this.fire("dataupdated", {result: result});
+            //若数据超出当前视图范围，则移动到数据所在视图范围：
+            let layerBounds = result.layer.getBounds(),
+                mapBounds = CommontypesConversion_CommontypesConversion.toSuperMapBounds(this.map.getBounds()),
+                layerBoundsSuperMap = CommontypesConversion_CommontypesConversion.toSuperMapBounds(layerBounds);
+            if (!mapBounds.intersectsBounds(layerBoundsSuperMap)) {
+                if (layerBoundsSuperMap.left === layerBoundsSuperMap.right && layerBoundsSuperMap.top === layerBoundsSuperMap.bottom) {
+                    this.map.setView(layerBounds.getCenter())
+                } else {
+                    this.map.flyToBounds(layerBounds);
+                }
+            }
+            if (this.popupsStatus) {
+                this.openPopups();
+            }
+        });
         dataFlowLayer.addTo(this.map);
 
         this.dataFlowLayer = dataFlowLayer;
-    },
-
-    _defaultDataUpdatedCallBack(result) {
-        //派发出订阅返回的数据：
-        this.fire("dataupdated", {result: result});
-        //若数据超出当前视图范围，则移动到数据所在视图范围：
-        let layerBounds = result.layer.getBounds(),
-            mapBounds = CommontypesConversion_CommontypesConversion.toSuperMapBounds(this.map.getBounds()),
-            layerBoundsSuperMap = CommontypesConversion_CommontypesConversion.toSuperMapBounds(layerBounds);
-        if (!mapBounds.intersectsBounds(layerBoundsSuperMap)) {
-            if (layerBoundsSuperMap.left === layerBoundsSuperMap.right && layerBoundsSuperMap.top === layerBoundsSuperMap.bottom) {
-                this.map.setView(layerBounds.getCenter())
-            } else {
-                this.map.flyToBounds(layerBounds);
-            }
-        }
-        if (this.popupsStatus) {
-            this.openPopups();
-        }
     },
 
     /**
@@ -83517,13 +83527,15 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
      */
     openPopups() {
         this.popupsStatus = true;
-        const layers = this.dataFlowLayer.getLayers();
-        for (let i = 0; i < layers.length; i++) {
-            for (let j = 0; j < layers[i].getLayers().length; j++) {
-                layers[i].getLayers()[j].openPopup();
+        if (this.dataFlowLayer) {
+            const layers = this.dataFlowLayer.getLayers();
+            for (let i = 0; i < layers.length; i++) {
+                for (let j = 0; j < layers[i].getLayers().length; j++) {
+                    layers[i].getLayers()[j].openPopup();
+                }
             }
-
         }
+
     },
     /**
      * @function L.supermap.widgets.dataFlowViewModel.prototype.closePopups
@@ -83531,10 +83543,12 @@ var DataFlowViewModel = external_L_default.a.Evented.extend({
      */
     closePopups() {
         this.popupsStatus = false;
-        const layers = this.dataFlowLayer.getLayers();
-        for (let i = 0; i < layers.length; i++) {
-            for (let j = 0; j < layers[i].getLayers().length; j++) {
-                layers[i].getLayers()[j].closePopup();
+        if (this.dataFlowLayer) {
+            const layers = this.dataFlowLayer.getLayers();
+            for (let i = 0; i < layers.length; i++) {
+                for (let j = 0; j < layers[i].getLayers().length; j++) {
+                    layers[i].getLayers()[j].closePopup();
+                }
             }
         }
     }
@@ -83602,13 +83616,11 @@ var DataFlowView = external_L_default.a.Control.extend({
             }
             if (this.options.onEachFeature) {
                 styleOptions.onEachFeature = this.options.onEachFeature;
-
             }
         }
-
         this.styleOptions = styleOptions;
-
     },
+
     /**
      * @function L.supermap.widgets.DataFlowView.prototype.onAdd
      * @description 向底图添加微件
@@ -83617,6 +83629,15 @@ var DataFlowView = external_L_default.a.Control.extend({
         this.map = map;
         this.viewModel = new DataFlowViewModel(map, this.styleOptions);
         return this._initView();
+    },
+
+    /**
+     * @function L.supermap.widgets.DataFlowView.prototype.on
+     * @param {string} eventType - 监听的事件类型
+     * @param {Function} callback - 监听事件的回调函数
+     */
+    on(eventType, callback) {
+        this.event.on(eventType, callback);
     },
 
     /**
@@ -83641,17 +83662,22 @@ var DataFlowView = external_L_default.a.Control.extend({
         dataFlowInput.type = "text";
         dataFlowInput.placeholder = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
         dataFlowInput.title = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
-        //---输入框值改变,打开清除按钮
-        dataFlowInput.oninput = this.inputOnchange.bind(this);
+
         this.dataFlowInput = dataFlowInput;
         dataFlowInputContainer.appendChild(dataFlowInput);
         //删除输入值按钮:
         const inputClearBtn = document.createElement("span");
         inputClearBtn.setAttribute("class", "supermapol-icons-close");
         inputClearBtn.hidden = true;
-        //---清除输入值
-        inputClearBtn.onclick = this.clearInputValue.bind(this);
-        this.inputClearBtn = inputClearBtn;
+        //---清除输入值【清除按钮点击事件】
+        inputClearBtn.onclick = (e) => {
+            dataFlowInput.value = "";
+            e.target.hidden = true;
+        };
+        //---输入框值改变,打开清除按钮【输入框内容改变事件】
+        dataFlowInput.oninput = () => {
+            inputClearBtn.hidden = false;
+        };
         dataFlowInputContainer.appendChild(inputClearBtn);
         dataFlowContainer1.appendChild(dataFlowInputContainer);
 
@@ -83665,14 +83691,24 @@ var DataFlowView = external_L_default.a.Control.extend({
         const attributesCheckbox = document.createElement("div");
         attributesCheckbox.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
         attributesCheckbox.checked = true;
-        attributesCheckbox.onclick = this.isShowAttributes.bind(this);
-        this.attributesCheckbox = attributesCheckbox;
         checkboxContainer.appendChild(attributesCheckbox);
         const checkboxLabel = document.createElement("div");
         checkboxLabel.setAttribute("class", "label label-selected");
         checkboxLabel.innerHTML = "显示要素信息";
-        this.checkboxLabel = checkboxLabel;
         checkboxContainer.appendChild(checkboxLabel);
+        //----是否显示属性框【属性框复选框点击事件】
+        attributesCheckbox.onclick = (e) => {
+            e.target.checked = !e.target.checked;
+            if (e.target.checked) {
+                checkboxLabel.setAttribute("class", "label label-selected");
+                e.target.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
+                this.viewModel.openPopups();
+            } else {
+                checkboxLabel.setAttribute("class", "label");
+                e.target.setAttribute("class", "widget-checkbox-default checkbox-default-img");
+                this.viewModel.closePopups();
+            }
+        };
 
         dataFlowContainer2.appendChild(checkboxContainer);
         widgetContent.appendChild(dataFlowContainer2);
@@ -83683,12 +83719,23 @@ var DataFlowView = external_L_default.a.Control.extend({
         const subscribe = document.createElement("button");
         subscribe.setAttribute("class", "widget-button-default");
         subscribe.innerHTML = "订阅";
-        subscribe.onclick = this.subscribe.bind(this);
+        //----订阅服务【订阅按钮点击事件】
+        subscribe.onclick = () => {
+            const urlDataFlow = dataFlowInput.value;
+            if (urlDataFlow === "") {
+                this.messageBox.showView("请先输入数据流服务地址。");
+                return;
+            }
+            this.viewModel.subscribe(urlDataFlow);
+        };
         dataFlowContainer3.appendChild(subscribe);
         const cancelSubscribe = document.createElement("button");
         cancelSubscribe.setAttribute("class", "widget-button-default");
         cancelSubscribe.innerHTML = "取消订阅";
-        cancelSubscribe.onclick = this.cancelSubscribe.bind(this);
+        //----取消订阅服务【取消订阅按钮点击事件】
+        cancelSubscribe.onclick = () => {
+            this.viewModel.cancelSubscribe();
+        };
         dataFlowContainer3.appendChild(cancelSubscribe);
         widgetContent.appendChild(dataFlowContainer3);
 
@@ -83707,82 +83754,26 @@ var DataFlowView = external_L_default.a.Control.extend({
 
         //增加提示框：
         this.messageBox = new MessageBox();
-        this.viewModel.on("dataFlowServiceSubscribed", this._showMessageBox.bind(this));
+
+        this.viewModel.on("dataflowfervicefubscribed", () => {
+            this.messageBox.showView("已订阅该数据流服务。");
+        });
+
+        this.viewModel.on("subscribesuccessed", () => {
+            this.messageBox.showView("数据流服务订阅成功。");
+        });
 
         /**
          * @event L.supermap.widgets.DataFlowView#dataupdated
          * @description 数据流服务成功返回数据后触发
          * @property {Object} result  - 事件返回的数据对象。
          */
-        this.viewModel.on("dataupdated", (result) => self.event.fire("dataupdated", result));
+        this.viewModel.on("dataupdated", (result) => {
+            this.messageBox.closeView();
+            this.event.fire("dataupdated", result);
+        });
 
         return widgetContainer;
-    },
-
-    _showMessageBox(e) {
-        if (e.type === "dataFlowServiceSubscribed") {
-            this.messageBox.showView("已订阅该数据流服务。");
-        }
-    },
-
-    /**
-     * @function L.supermap.widgets.DataFlowView.prototype.on
-     * @param {string} eventType - 监听的事件类型
-     * @param {Function} callback - 监听事件的回调函数
-     */
-    on(eventType, callback) {
-        this.event.on(eventType, callback);
-    },
-
-    /**
-     * 订阅
-     * @private
-     */
-    subscribe() {
-        const urlDataFlow = this.dataFlowInput.value;
-        if (urlDataFlow === "") {
-            this.messageBox.showView("请先输入数据流服务地址。");
-            return;
-        }
-        this.viewModel.subscribe(urlDataFlow);
-    },
-    /**
-     * 取消订阅
-     * @private
-     */
-    cancelSubscribe() {
-        this.viewModel.cancelSubscribe();
-    },
-    /**
-     * 是否显示要素信息
-     * @private
-     */
-    isShowAttributes(e) {
-        this.attributesCheckbox.checked = !e.target.checked;
-        if (this.attributesCheckbox.checked) {
-            this.checkboxLabel.setAttribute("class", "label label-selected");
-            this.attributesCheckbox.setAttribute("class", "widget-checkbox-default checkbox-selected-img");
-            this.viewModel.openPopups();
-        } else {
-            this.checkboxLabel.setAttribute("class", "label");
-            this.attributesCheckbox.setAttribute("class", "widget-checkbox-default checkbox-default-img");
-            this.viewModel.closePopups();
-        }
-    },
-    /**
-     * 清除输入框内容
-     * @private
-     */
-    clearInputValue() {
-        this.dataFlowInput.value = "";
-        this.inputClearBtn.hidden = true;
-    },
-    /**
-     * 输入框值改变,打开清除按钮
-     * @private
-     */
-    inputOnchange() {
-        this.inputClearBtn.hidden = false;
     }
 
 });

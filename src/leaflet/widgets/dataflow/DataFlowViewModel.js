@@ -104,7 +104,7 @@ export var DataFlowViewModel = L.Evented.extend({
         //若当前数据流服务没变，则不进行重新订阅 todo 或者没点击暂停
         if (this.urlDataFlow === urlDataFlow) {
             if (this.dataFlowStatus) {
-                this.fire("dataFlowServiceSubscribed");
+                this.fire("dataflowfervicefubscribed");
                 return;
             }
         } else {
@@ -118,29 +118,30 @@ export var DataFlowViewModel = L.Evented.extend({
         }
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
         const dataFlowLayer = new DataFlowLayer(urlDataFlow, this.options._defaultLayerOptions);
-        dataFlowLayer.on('dataupdated', this._defaultDataUpdatedCallBack.bind(this));
+        dataFlowLayer.on('subscribesuccessed', (result) => {
+            this.fire("subscribesuccessed", {result: result});
+        });
+        dataFlowLayer.on('dataupdated', (result) => {
+            //派发出订阅返回的数据：
+            this.fire("dataupdated", {result: result});
+            //若数据超出当前视图范围，则移动到数据所在视图范围：
+            let layerBounds = result.layer.getBounds(),
+                mapBounds = CommontypesConversion.toSuperMapBounds(this.map.getBounds()),
+                layerBoundsSuperMap = CommontypesConversion.toSuperMapBounds(layerBounds);
+            if (!mapBounds.intersectsBounds(layerBoundsSuperMap)) {
+                if (layerBoundsSuperMap.left === layerBoundsSuperMap.right && layerBoundsSuperMap.top === layerBoundsSuperMap.bottom) {
+                    this.map.setView(layerBounds.getCenter())
+                } else {
+                    this.map.flyToBounds(layerBounds);
+                }
+            }
+            if (this.popupsStatus) {
+                this.openPopups();
+            }
+        });
         dataFlowLayer.addTo(this.map);
 
         this.dataFlowLayer = dataFlowLayer;
-    },
-
-    _defaultDataUpdatedCallBack(result) {
-        //派发出订阅返回的数据：
-        this.fire("dataupdated", {result: result});
-        //若数据超出当前视图范围，则移动到数据所在视图范围：
-        let layerBounds = result.layer.getBounds(),
-            mapBounds = CommontypesConversion.toSuperMapBounds(this.map.getBounds()),
-            layerBoundsSuperMap = CommontypesConversion.toSuperMapBounds(layerBounds);
-        if (!mapBounds.intersectsBounds(layerBoundsSuperMap)) {
-            if (layerBoundsSuperMap.left === layerBoundsSuperMap.right && layerBoundsSuperMap.top === layerBoundsSuperMap.bottom) {
-                this.map.setView(layerBounds.getCenter())
-            } else {
-                this.map.flyToBounds(layerBounds);
-            }
-        }
-        if (this.popupsStatus) {
-            this.openPopups();
-        }
     },
 
     /**
@@ -163,13 +164,15 @@ export var DataFlowViewModel = L.Evented.extend({
      */
     openPopups() {
         this.popupsStatus = true;
-        const layers = this.dataFlowLayer.getLayers();
-        for (let i = 0; i < layers.length; i++) {
-            for (let j = 0; j < layers[i].getLayers().length; j++) {
-                layers[i].getLayers()[j].openPopup();
+        if (this.dataFlowLayer) {
+            const layers = this.dataFlowLayer.getLayers();
+            for (let i = 0; i < layers.length; i++) {
+                for (let j = 0; j < layers[i].getLayers().length; j++) {
+                    layers[i].getLayers()[j].openPopup();
+                }
             }
-
         }
+
     },
     /**
      * @function L.supermap.widgets.dataFlowViewModel.prototype.closePopups
@@ -177,10 +180,12 @@ export var DataFlowViewModel = L.Evented.extend({
      */
     closePopups() {
         this.popupsStatus = false;
-        const layers = this.dataFlowLayer.getLayers();
-        for (let i = 0; i < layers.length; i++) {
-            for (let j = 0; j < layers[i].getLayers().length; j++) {
-                layers[i].getLayers()[j].closePopup();
+        if (this.dataFlowLayer) {
+            const layers = this.dataFlowLayer.getLayers();
+            for (let i = 0; i < layers.length; i++) {
+                for (let j = 0; j < layers[i].getLayers().length; j++) {
+                    layers[i].getLayers()[j].closePopup();
+                }
             }
         }
     }

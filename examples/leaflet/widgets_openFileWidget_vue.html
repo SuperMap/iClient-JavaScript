@@ -36,6 +36,8 @@
             var me = this;
             me._div = L.DomUtil.create('div', "openFileContainer");
             me._div.id = "openFileContainer";
+            //避免与"源码"控件重叠
+            me._div.style["margin"] = "40px 4px 0px 0px";
             me._div.innerHTML = `<add_data v-bind:openFileViewModel="openFileViewModel" v-bind:messageBox="messageBox"></add_data>`;
             handleMapEvent(me._div, me._map);
             return me._div;
