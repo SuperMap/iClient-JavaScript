@@ -162,8 +162,10 @@
                 if (serviceResult.result.succeed) {
                     featureGroup.clearLayers();
                     marker = null;
-                    map.removeLayer(resultLayer);
-                    resultLayer = null;
+                    if (resultLayer) {
+                        map.removeLayer(resultLayer);
+                        resultLayer = null;
+                    }
                     initFeature();
                     widgets.alert.showAlert(resources.msg_submitSuccess, true);
                 }
@@ -175,7 +177,9 @@
 
     function clearLayer() {
         map.on('mousemove', pointerMoveHandler);
-        resultLayer.on("click", layerClickListener);
+        if (resultLayer) {
+            resultLayer.on("click", layerClickListener);
+        }
         widgets.alert.clearAlert();
     }
 
@@ -188,8 +192,10 @@
         });
         featureService.editFeatures(deleteParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
-                map.removeLayer(resultLayer);
-                resultLayer = null;
+                if (resultLayer) {
+                    map.removeLayer(resultLayer);
+                    resultLayer = null;
+                }
                 initFeature();
                 widgets.alert.showAlert(resources.text_deleteSuccess, true);
                 closeClearListener();

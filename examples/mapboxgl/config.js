@@ -126,7 +126,7 @@ var exampleConfig = {
                     thumbnail: "mb_themeGraph.png",
                     fileName: "03_themeGraph"
                 }, {
-                    name: "矩阵标签专题图",
+                    name: "标签专题图",
                     name_en: "label",
                     thumbnail: "mb_themeLabel.png",
                     fileName: "03_themeLabel"

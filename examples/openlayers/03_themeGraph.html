@@ -13,7 +13,9 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
     var map, themeLayer, options,
-        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+        host = (window.isLocal ? window.server : "http://54.223.164.155:8090"),
+        mapUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url = host + "/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
     var mapService = new ol.supermap.MapService(url);
     mapService.getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
@@ -27,7 +29,7 @@
                 projection: "EPSG:4326"
             })
         });
-        options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        options = ol.source.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest(options)
         });

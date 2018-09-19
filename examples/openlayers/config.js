@@ -147,7 +147,7 @@ var exampleConfig = {
                     thumbnail: "ol_themeGraph.png",
                     fileName: "03_themeGraph"
                 }, {
-                    name: "矩阵标签专题图",
+                    name: "标签专题图",
                     name_en: "label",
                     thumbnail: "ol_themeLabel.png",
                     fileName: "03_themeLabel"
@@ -202,8 +202,8 @@ var exampleConfig = {
                     thumbnail: "ol_overlayAnalystService.png",
                     fileName: "04_overlayAnalystService"
                 }, {
-                    name: "表面分析",
-                    name_en: "surface",
+                    name: "表面分析(提取等值线)",
+                    name_en: "surface(Getting Contour Line)",
                     thumbnail: "ol_surfaceAnalystService.png",
                     fileName: "04_surfaceAnalystService"
                 }, {
