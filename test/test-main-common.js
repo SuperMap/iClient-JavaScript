@@ -112,6 +112,7 @@ import './common/commonTypes/geometry/CollectionSpec.js';
 import './common/commonTypes/geometry/GeoTextSpec.js';
 import './common/commonTypes/geometry/LineStringSpec.js';
 import './common/commonTypes/geometry/LinearRingSpec.js';
+import './common/commontypes/geometry/UtilSpec.js';
 
 /**common -- overlay**/
 import './common/overlay/feature/ShapeFactorySpec.js';
