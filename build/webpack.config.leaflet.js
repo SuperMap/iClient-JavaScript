@@ -36,7 +36,7 @@ module.exports = {
                 //打包为es5相关配置
                 moduleRules.push({
                     test: [/\.js$/],
-                    exclude: /setImmediate | webgl-debug/,
+                    exclude: /setImmediate|webgl-debug/,
                     loader: 'babel-loader',
                     options: {
                         presets: ['es2015']
