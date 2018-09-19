@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -4123,46 +4138,58 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(126);
+var supermapol_icons = __webpack_require__(131);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
-var widgets_icon = __webpack_require__(120);
+var widgets_icon = __webpack_require__(125);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Icon.css
-var Icon = __webpack_require__(115);
+var Icon = __webpack_require__(120);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(104);
+var OpenFile = __webpack_require__(108);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(103);
+var MessageBox = __webpack_require__(107);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(102);
+var DataFlow = __webpack_require__(106);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(101);
+var POISearch = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(100);
+var WidgetContainer = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(99);
+var WidgetDropDownBox = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(98);
+var WidgetSelect = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(129);
+var CityTabsPage = __webpack_require__(134);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(97);
+var NavTabsPage = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(127);
+var PaginationContainer = __webpack_require__(132);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
-var PopContainer = __webpack_require__(96);
+var PopContainer = __webpack_require__(100);
+
+// EXTERNAL MODULE: ./src/common/widgets/css/Analysis.css
+var Analysis = __webpack_require__(99);
+
+// EXTERNAL MODULE: ./src/common/widgets/css/DistributedAnalysis.css
+var DistributedAnalysis = __webpack_require__(98);
+
+// EXTERNAL MODULE: ./src/common/widgets/css/ClientComputation.css
+var ClientComputation = __webpack_require__(97);
+
+// EXTERNAL MODULE: ./node_modules/codemirror-colorpicker/dist/codemirror-colorpicker.css
+var codemirror_colorpicker = __webpack_require__(96);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -4171,6 +4198,9 @@ var PopContainer = __webpack_require__(96);
 
 
 //微件样式
+
+
+
 
 
 
@@ -18585,10 +18615,92 @@ class OutputSetting_OutputSetting {
 }
 
 SuperMap.OutputSetting = OutputSetting_OutputSetting;
+// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.MappingParameters
+ * @category  iServer ProcessingService
+ * @classdesc 分析后结果可视化的参数类。
+ * @param {Object} options - 参数。
+ * @param {Array.<SuperMap.ThemeGridRangeItem>} [options.items] - 栅格分段专题图子项数组。
+ * @param {number} [options.numericPrecision=1] - 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。
+ * @param {SuperMap.RangeMode} [options.rangeMode=SuperMap.RangeMode.EQUALINTERVAL] - 专题图分段模式。
+ * @param {number} [options.rangeCount] - 专题图分段个数。
+ * @param {SuperMap.ColorGradientType} [options.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED] - 专题图颜色渐变模式。
+ */
+class MappingParameters_MappingParameters {
+
+    constructor(options) {
+
+        /**
+         * @member {Array.<SuperMap.ThemeGridRangeItem>} [SuperMap.MappingParameters.prototype.items]
+         * @description 栅格分段专题图子项数组。
+         */
+        this.items = null;
+
+        /**
+         * @member {number} [SuperMap.MappingParameters.prototype.numericPrecision=1]
+         * @description 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。
+         */
+        this.numericPrecision = 1;
+
+        /**
+         * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
+         * @description 专题图分段模式。
+         */
+        this.rangeMode = RangeMode.EQUALINTERVAL;
+
+        /**
+         * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
+         * @description 专题图分段个数。
+         */
+        this.rangeCount = "";
+
+        /**
+         * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
+         * @description 专题图颜色渐变模式。
+         */
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
+
+        Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.MappingParameters";
+    }
+
+    /**
+     * @function SuperMap.MappingParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        if (me.items) {
+            if (me.items.length > 0) {
+                for (var item in me.items) {
+                    me.items[item].destroy();
+                    me.items[item] = null;
+                }
+            }
+            me.items = null;
+        }
+        me.numericPrecision = null;
+        me.rangeMode = null;
+        me.rangeCount = null;
+        me.colorGradientType = null;
+    }
+
+}
+
+SuperMap.MappingParameters = MappingParameters_MappingParameters;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -18604,7 +18716,8 @@ SuperMap.OutputSetting = OutputSetting_OutputSetting;
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。   
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。   
  * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。   
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。   
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。  
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
 
@@ -18651,6 +18764,12 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         if (!options) {
             return this;
@@ -18675,6 +18794,10 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -18695,11 +18818,16 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
+
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'bounds') {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name];
+            }
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = BuffersAnalystJobsParameter[name];
             }
         }
     }
@@ -31282,6 +31410,8 @@ SuperMap.InterpolationAnalystService = InterpolationAnalystService_Interpolation
 
 
 
+
+
 /**
  * @class SuperMap.KernelDensityJobParameter
  * @category iServer ProcessingService DensityAnalyst
@@ -31289,12 +31419,13 @@ SuperMap.InterpolationAnalystService = InterpolationAnalystService_Interpolation
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
  * @param {number} [options.radius=300] - 分析的影响半径。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class KernelDensityJobParameter_KernelDensityJobParameter {
 
@@ -31309,7 +31440,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         this.datasetName = "";
 
         /**
-         * @member {SuperMap.Bounds|L.Bounds|ol.extent} SuperMap.KernelDensityJobParameter.prototype.query
+         * @member {SuperMap.Bounds|L.Bounds|ol.extent} [SuperMap.KernelDensityJobParameter.prototype.query]
          * @description 分析范围。 
          */
         this.query = "";
@@ -31368,6 +31499,12 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.KernelDensityJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
@@ -31392,6 +31529,10 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -31413,11 +31554,16 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
                 tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'query') {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
+            }
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
             }
         }
     }
@@ -32456,6 +32602,7 @@ SuperMap.OverlayAnalystService = OverlayAnalystService_OverlayAnalystService;
 
 
 
+
 /**
  * @class SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
@@ -32467,6 +32614,7 @@ SuperMap.OverlayAnalystService = OverlayAnalystService_OverlayAnalystService;
  * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
  * @param {string} [options.mode] - 叠加分析模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class OverlayGeoJobParameter_OverlayGeoJobParameter {
 
@@ -32505,10 +32653,16 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         this.overlayFields = "";
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.OverlayGeoJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+        * @member {SuperMap.MappingParameters} [SuperMap.OverlayGeoJobParameter.prototype.mappingParameters]
+        * @description 分析后结果可视化的参数类。   
+        */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
@@ -32528,6 +32682,10 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -32543,13 +32701,18 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
                 tempObj['input'][name] = OverlayGeoJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = OverlayGeoJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = OverlayGeoJobParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = OverlayGeoJobParameter[name];
+            }
         }
     }
 
@@ -34533,6 +34696,7 @@ SuperMap.SetLayerStatusService = SetLayerStatusService_SetLayerStatusService;
 
 
 
+
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
@@ -34542,6 +34706,7 @@ SuperMap.SetLayerStatusService = SetLayerStatusService_SetLayerStatusService;
  * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
  * @param {SuperMap.SpatialQueryMode} [options.mode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
@@ -34579,6 +34744,12 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SingleObjectQueryJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
@@ -34596,6 +34767,10 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
         if (this.output instanceof OutputSetting_OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -34617,8 +34792,13 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
                 tempObj['output'] = singleObjectQueryJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = singleObjectQueryJobsParameter[name];
+            }
         }
     }
 
@@ -34819,6 +34999,7 @@ SuperMap.StopQueryService = StopQueryService_StopQueryService;
 
 
 
+
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
@@ -34829,6 +35010,7 @@ SuperMap.StopQueryService = StopQueryService_StopQueryService;
  * @param {string} options.attributeField - 属性字段。
  * @param {string} options.statisticModes - 统计模式。
  * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
 
@@ -34861,6 +35043,11 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryAttributesJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
@@ -34879,6 +35066,10 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -34894,13 +35085,18 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
                 tempObj['input'][name] = SummaryAttributesJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = SummaryAttributesJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = SummaryAttributesJobsParameter[name];
+            }
         }
     }
 
@@ -34976,19 +35172,22 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
 
 
 
+
+
 /**
  * @class SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
@@ -35045,10 +35244,16 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
         this.type = SummaryType.SUMMARYMESH;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryMeshJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
 
@@ -35073,6 +35278,10 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -35092,17 +35301,21 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
                 tempObj['type'] = summaryMeshJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryMeshJobParameter[name];
                 continue;
-            }
+            }     
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 if (name === 'query') {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryMeshJobParameter[name];
                 }
             }
 
@@ -35197,13 +35410,14 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
 
 
 
+
 /**
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -35216,6 +35430,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
  * @param {SuperMap.AnalystSizeUnit} [options.meshSizeUnit=SuperMap.AnalystSizeUnit.METER] - 网格大小单位。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 汇总类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryRegionJobParameter_SummaryRegionJobParameter {
 
@@ -35314,6 +35529,12 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryRegionJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
@@ -35342,6 +35563,10 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -35365,7 +35590,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
                 tempObj['type'] = summaryRegionJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryRegionJobParameter[name];
                 continue;
@@ -35377,6 +35602,11 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
                 } else {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name];
                 }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryRegionJobParameter[name];
+                }
+
             }
         }
     }
@@ -36927,6 +37157,7 @@ SuperMap.TilesetsService = TilesetsService_TilesetsService;
 
 
 
+
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
@@ -36937,6 +37168,7 @@ SuperMap.TilesetsService = TilesetsService_TilesetsService;
  * @param {SuperMap.TopologyValidatorRule} [options.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
 
@@ -36969,10 +37201,16 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.TopologyValidatorJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
 
@@ -36992,6 +37230,10 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -37007,13 +37249,17 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
                 tempObj['input'][name] = TopologyValidatorJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = TopologyValidatorJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = TopologyValidatorJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = TopologyValidatorJobsParameter[name];
+            }
         }
     }
 }
@@ -37950,6 +38196,7 @@ SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService_UpdateTurnNod
 
 
 
+
 /**
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
@@ -37959,6 +38206,7 @@ SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService_UpdateTurnNod
  * @param {string} options.datasetOverlay - 裁剪对象数据集。 
  * @param {SuperMap.ClipAnalystMode} [options.mode=SuperMap.ClipAnalystMode.CLIP] - 裁剪分析模式。 
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。 
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class VectorClipJobsParameter_VectorClipJobsParameter {
 
@@ -37995,6 +38243,12 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.VectorClipJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
@@ -38012,6 +38266,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
         if (this.output instanceof OutputSetting_OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -38035,6 +38293,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = vectorClipJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = vectorClipJobsParameter[name];
+            }
         }
     }
 
@@ -38107,6 +38369,8 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -64019,7 +64283,7 @@ class FileModel_FileModel {
 /**
  * @class SuperMap.Widgets.MessageBox
  * @classdesc MessageBox 微件，信息框提示
- * @category  Control Widgets
+ * @category Widgets
  */
 class MessageBox {
 
@@ -64104,9 +64368,10 @@ SuperMap.Widgets.MessageBox = MessageBox;
 
 /**
  * @class SuperMap.Widgets.WidgetContainer
- * @class 微件统一外框
- * @param {string} title - 标题，必传参数
+ * @classdesc 微件统一外框。
+ * @param {string} title - 标题。
  * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ * @category Widgets
  */
 class WidgetContainer {
     constructor(title, position = null) {
@@ -64175,106 +64440,177 @@ SuperMap.Widgets.WidgetContainer = WidgetContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/WidgetSelect.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
  * @class SuperMap.Widgets.WidgetSelect
- * @classDec 微件统一 select 下拉框。
- * @param {Array} optionsArr - 需要创建的 option 数据数组。
+ * @classdesc 微件统一 select 下拉框。
+ * @param {Array.<string|Array>} options - 需要创建的 WidgetSelect 数据数组。
+ * @param {string} [options.labelName] - label 名称。
+ * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
+ * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
+ * @category Widgets
  */
 class WidgetSelect {
-    constructor(optionsArr) {
-        this._initView(optionsArr);
+    constructor(options) {
+        this._initView(options);
     }
+    _initView(options) {
+        let selectTool = this._createElement('div', "select-tool");
 
-    _initView(optionsArr) {
-        let select = document.createElement('select');
-        select.className = "widget-select-options";
-        for (let i = 0; i < optionsArr.length; i++) {
-            let ele = document.createElement('option');
-            ele.innerHTML = optionsArr[i];
-            ele.value = optionsArr[i];
-            // 默认选中第 0 个元素
-            if (i === 0) {
-                ele.selected = true;
-            }
-            select.appendChild(ele);
+        if (options.labelName) {
+            let label = this._createElement('label', 'lable_describe', selectTool);
+            label.innerHTML = options.labelName;
         }
-        this.select = select;
 
+        let chartSelect = this._createElement('div', 'chart_select', selectTool);
+        chartSelect.setAttribute('tabindex', '1');
+
+        let selectName = this._createElement('div', "select-name", chartSelect);
+        selectName.title = options.optionsArr[0];
+        selectName.innerHTML = options.optionsArr[0];
+
+        let chartTriangleBtn = this._createElement('div', 'chart-triangle-btn', chartSelect);
+        let triangleBtn = this._createElement('div', 'triangle-down-img', chartTriangleBtn);
+        let selectContent = this._createElement('div', 'select-content', chartSelect);
+        let scrollarea = this._createElement('div', 'scrollarea chart-select-content', selectContent);
+        let scrollareaContent = this._createElement('div', 'scrollarea-content', scrollarea);
+        scrollareaContent.setAttribute('tabindex', '1');
+        this.createOptions(scrollareaContent, options.optionsArr)
+        this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
+        // 下拉框显示 & 隐藏事件
+        this._selectClickEvent(chartSelect, selectContent, triangleBtn);
+        this.selectTool = selectTool;
     }
 
     /**
-     * @function WidgetSelect.prototype.getElement
+     * @function SuperMap.Widgets.WidgetSelect.prototype.getElement
      * @description 获取当前模板 Dom 元素。
      */
     getElement() {
-        return this.select;
+        return this.selectTool;
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetSelect.prototype.createOptions
+     * @description 创建所属下拉框选项。
+     */
+    createOptions(container, optionsArr) {
+        for (let i in optionsArr) {
+            let option = this._createElement('div', 'select-option', container);
+            option.title = optionsArr[i];
+            option.innerHTML = optionsArr[i];
+        }
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetSelect.prototype._selectClickEvent
+     * @description select 点击显示&隐藏事件。
+     * @private
+     */
+    _selectClickEvent(eventElement, contentElement, triangleBtn) {
+        eventElement.onclick = function (e) {
+            if (contentElement.style.display === "block") {
+                contentElement.style.display = "none";
+                triangleBtn.className = "triangle-down-img";
+            } else {
+                contentElement.style.display = "block";
+                triangleBtn.className = "triangle-up-img";
+            }
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        eventElement.onmousedown = function (evt) {
+            //console.log('drop-down-box onmousedown '+evt.target.className);
+            if (evt.target !== this) {
+                this.focus();
+                evt.preventDefault();
+                evt.stopPropagation()
+            }
+        }
+        eventElement.onblur = function () {
+
+            contentElement.style.display = "none";
+            triangleBtn.className = "triangle-down-img";
+        }
+    }
+    /**
+    * @function WidgetSelect.prototype._createElement
+    * @description 通用创建元素。
+    * @private
+    */
+    _createElement(tagName, className, parentEle) {
+        let ele = document.createElement(tagName || 'div');
+        className && ~~(ele.className = className);
+        parentEle && parentEle.appendChild(ele);
+        return ele;
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetSelect.prototype.optionClickEvent
+     * @description 下拉框的 option 的点击事件。
+     */
+    optionClickEvent(optionEleArr, selectNameEle, optionsClickCb) {
+        for (let i = 0; i < optionEleArr.children.length; i++) {
+            let childEle = optionEleArr.children[i];
+            childEle.onclick = function () {
+                selectNameEle.innerHTML = childEle.innerHTML;
+                selectNameEle.title = childEle.title;
+                if (childEle.getAttribute('data-value')) {
+                    selectNameEle.setAttribute('data-value', childEle.getAttribute('data-value'))
+                }
+                optionsClickCb && optionsClickCb(childEle);
+            }
+        }
     }
 }
-
 SuperMap.Widgets.WidgetSelect = WidgetSelect;
+
 // CONCATENATED MODULE: ./src/common/widgets/templates/WidgetDropDownBox.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
  * @class SuperMap.Widgets.WidgetDropDownBox
- * @classDec 微件统一 dropDownBox 下拉框。
- * @param {Array} optionsArr - 需要创建的 option 数据数组。
+ * @classdesc 微件统一 dropDownBox 下拉框。
+ * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
+ * @param {string} optionsArr.title - 下拉框 title。
+ * @param {string} optionsArr.remark - 下拉框解释标记文本。
+ * @param {string} optionsArr.icon - 下拉框图标。 
+ * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
+ * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
+ * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
+ * @category Widgets
  */
 class WidgetDropDownBox {
     constructor(optionsArr) {
         this._initView(optionsArr);
     }
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._initView
+     * @description 初始化下拉框。
+     * @private
+     */
     _initView(optionsArr) {
         let dropDownContainer = document.createElement('div');
         dropDownContainer.className = 'drop-down-container';
         let dropDownBox = document.createElement('div');
         dropDownBox.setAttribute('tabindex', '1');
         dropDownBox.className = "drop-down-box";
-        dropDownBox.id = 'dropDownBox';
+        dropDownContainer.appendChild(dropDownBox);
 
         let dropDownTopContainer = document.createElement('div');
-        dropDownTopContainer.id = 'dropDownTopContainer';
-
-        let dropDownTop = document.createElement('div');
-        dropDownTop.className = 'drop-down-item';
-        dropDownTop.id = 'dropDownTop';
-
-        let dropDownImg = document.createElement('div');
-        dropDownImg.className = 'drop-down-img';
-        let activeIcon = document.createElement('div');
-        activeIcon.className = optionsArr[0].icon.className;
-        activeIcon.style.background = optionsArr[0].icon.background;
-        dropDownImg.appendChild(activeIcon);
-        dropDownTop.appendChild(dropDownImg);
-
-        let dropDownTitle = document.createElement('div');
-        dropDownTitle.title = optionsArr[0].title;
-        dropDownTitle.innerHTML = optionsArr[0].title;
-        dropDownTitle.className = 'drop-down-title';
-        dropDownTop.appendChild(dropDownTitle);
-
-        let dropDownRemark = document.createElement('div');
-        dropDownRemark.title = optionsArr[0].remark;
-        dropDownRemark.innerHTML = optionsArr[0].remark;
-        dropDownRemark.className = 'drop-down-remark';
-        dropDownTop.appendChild(dropDownRemark);
-        dropDownTopContainer.appendChild(dropDownTop);
         dropDownBox.appendChild(dropDownTopContainer);
+
+        this._creatDropDownOption(optionsArr[0], dropDownTopContainer);
 
         let triangleBtnContainer = document.createElement('div');
         triangleBtnContainer.className = 'triangle-btn';
+        dropDownBox.appendChild(triangleBtnContainer);
+
         let triangleBtn = document.createElement('div');
         triangleBtn.className = 'triangle-down-img';
-        triangleBtn.id = 'triangleBtn';
         triangleBtnContainer.appendChild(triangleBtn);
-        dropDownBox.appendChild(triangleBtnContainer);
-        dropDownContainer.appendChild(dropDownBox);
 
         let creatDropDownBoxParam = {
             "parentEle": dropDownBox,
@@ -64290,12 +64626,16 @@ class WidgetDropDownBox {
         this.dropDownContainer = dropDownContainer;
 
     }
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._creatDropDownBox
+     * @description 创建下拉框。
+     * @private
+     */
     _creatDropDownBox(creatDropDownBoxParam) {
         let dropDownBox = creatDropDownBoxParam.parentEle;
         let dropDownTopContainer = creatDropDownBoxParam.dropDownTopContainer;
         let dropDownContent = document.createElement('div');
         dropDownContent.className = creatDropDownBoxParam.dropDownContent[0];
-        dropDownContent.id = creatDropDownBoxParam.dropDownContent[1];
         dropDownBox.appendChild(dropDownContent);
 
         let dropDownItems = document.createElement('div');
@@ -64305,61 +64645,73 @@ class WidgetDropDownBox {
         let scrollareaContent = document.createElement('div');
         scrollareaContent.className = creatDropDownBoxParam.scrollareaContent;
         dropDownItems.appendChild(scrollareaContent);
-
-        this._creatDropDownOptions(creatDropDownBoxParam.optionsArr, scrollareaContent);
-
+        let optionsArr = creatDropDownBoxParam.optionsArr;
+        for (let i = 0; i < optionsArr.length; i++) {
+            this._creatDropDownOption(optionsArr[i], scrollareaContent)
+        }
         // 下拉框显示 & 隐藏事件
         let triangleBtn = creatDropDownBoxParam.triangleBtn;
-        this._dropDownClickEvent(dropDownBox, dropDownContent.id, triangleBtn.id);
+        this._dropDownClickEvent(dropDownBox, dropDownContent, triangleBtn);
 
-        this._eleOnblur(dropDownBox, creatDropDownBoxParam.dropDownContent[1], triangleBtn.id)
+        this._eleOnblur(dropDownBox, dropDownContent, triangleBtn)
 
         // 下拉框 options 点击事件
         let scrollareaOptions = scrollareaContent.children;
         for (let i = 0; i < scrollareaOptions.length; i++) {
             scrollareaOptions[i].onclick = function () {
                 dropDownTopContainer.innerHTML = scrollareaOptions[i].outerHTML;
-                dropDownTopContainer.children[0].id = 'dropDownTop';
                 //evt.stopPropagation();
             }
         }
     }
 
-    _creatDropDownOptions(dataArr, parentElement) {
-        for (let i = 0; i < dataArr.length; i++) {
-            let ele = document.createElement('div');
-            ele.className = 'drop-down-item';
-            ele.setAttribute('data-value', dataArr[i]['data-value']);
-            parentElement.appendChild(ele);
-
-            let imgContainer = document.createElement('div');
-            imgContainer.className = 'drop-down-img';
-            ele.appendChild(imgContainer);
-
-            let img = document.createElement('div');
-            img.className = dataArr[i].icon.className;
-            img.style.background = dataArr[i].icon.background;
-            imgContainer.appendChild(img);
-
-            let title = document.createElement('div');
-            title.className = 'drop-down-title';
-            title.title = dataArr[i].title;
-            title.innerHTML = dataArr[i].title;
-            ele.appendChild(title);
-
-            let remark = document.createElement('div');
-            remark.className = 'drop-down-remark';
-            remark.title = dataArr[i].remark;
-            remark.innerHTML = dataArr[i].remark;
-            ele.appendChild(remark);
-
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._creatDropDownOption
+     * @description 创建下拉框子元素。
+     * @private
+     */
+    _creatDropDownOption(data, parentElement){
+        let ele = document.createElement('div');
+        ele.className = 'drop-down-item';
+        let dataItem = data;
+        if (dataItem['dataValue']) {
+            ele.setAttribute('data-value', dataItem['dataValue']);
         }
+        parentElement.appendChild(ele);
+
+        let imgContainer = document.createElement('div');
+        imgContainer.className = 'drop-down-img';
+        ele.appendChild(imgContainer);
+
+        let img = document.createElement('div');
+        if (dataItem.icon.className) {
+            img.className = dataItem.icon.className;
+        }
+        if (dataItem.icon.background) {
+            img.style.background = dataItem.icon.background;
+        }
+        imgContainer.appendChild(img);
+
+        let title = document.createElement('div');
+        title.className = 'drop-down-title';
+        title.title = dataItem.title;
+        title.innerHTML = dataItem.title;
+        ele.appendChild(title);
+
+        let remark = document.createElement('div');
+        remark.className = 'drop-down-remark';
+        remark.title = dataItem.remark;
+        remark.innerHTML = dataItem.remark;
+        ele.appendChild(remark);
     }
 
-    _dropDownClickEvent(eventElement, contentElementId, triangleBtnId) {
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._dropDownClickEvent
+     * @description 下拉框点击事件。
+     * @private
+     */
+    _dropDownClickEvent(eventElement, contentElement, triangleBtn) {
         eventElement.onclick = function (e) {
-            let contentElement = document.getElementById(contentElementId);
-            let triangleBtn = document.getElementById(triangleBtnId);
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
                 triangleBtn.className = "triangle-down-img";
@@ -64380,16 +64732,30 @@ class WidgetDropDownBox {
         }
     }
 
-    _eleOnblur(eventElement, contentElementId, triangleBtnId) {
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._eleOnblur
+     * @description 下拉框失焦事件。
+     * @private
+     */
+    _eleOnblur(eventElement, contentElement, triangleBtn) {
         eventElement.onblur = function () {
-            let contentElement = document.getElementById(contentElementId);
-            let triangleBtn = document.getElementById(triangleBtnId);
             contentElement.style.display = "none";
             triangleBtn.className = "triangle-down-img";
         }
     }
     /**
-     * @function WidgetSelect.prototype.getElement
+    * @function SuperMap.Widgets.WidgetDropDownBox.prototype._createElement
+    * @description 通用创建元素。
+    * @private
+    */
+    _createElement(tagName, className, parentEle) {
+        let ele = document.createElement(tagName || 'div');
+        className && ~~(ele.className = className);
+        parentEle && parentEle.appendChild(ele);
+        return ele;
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype.getElement
      * @description 获取当前模板 Dom 元素。
      */
     getElement() {
@@ -64600,7 +64966,7 @@ class IndexTabsPageContainer {
 
 }
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var css_CityTabsPage = __webpack_require__(129);
+var css_CityTabsPage = __webpack_require__(134);
 
 // CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -64860,7 +65226,7 @@ class NavTabsPage {
 
 }
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(127);
+var PaginationContainer = __webpack_require__(132);
 
 // CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -65455,10 +65821,303 @@ let FileReaderUtil = {
 
 
 
+
+// CONCATENATED MODULE: ./src/common/lang/Lang.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @name Lang
+ * @memberOf SuperMap
+ * @namespace
+ * @category BaseTypes
+ * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
+ */
+let Lang = {
+
+    /**
+     * @member {string} SuperMap.Lang.code
+     * @description 当前所使用的语言类型。
+     */
+    code: null,
+
+    /**
+     * @member {string} [SuperMap.Lang.defaultCode='en-US']
+     * @description 默认使用的语言类型。
+     */
+    defaultCode: "en-US",
+
+    /**
+     * @function SuperMap.Lang.getCode
+     * @description 获取当前的语言代码。
+     * @returns {string} 当前的语言代码。
+     */
+    getCode: function () {
+        if (!SuperMap.Lang.code) {
+            SuperMap.Lang.setCode();
+        }
+        return SuperMap.Lang.code;
+    },
+
+    /**
+     * @function SuperMap.Lang.setCode
+     * @description 设置语言代码。
+     * @param {String} code - 此参数遵循IETF规范。
+     */
+    setCode: function () {
+        var lang = this.getLanguageFromCookie();
+        if (lang) {
+            SuperMap.Lang.code = lang;
+            return;
+        }
+        lang = SuperMap.Lang.defaultCode;
+        if (navigator.appName === 'Netscape') {
+            lang = navigator.language;
+        } else {
+            lang = navigator.browserLanguage;
+        }
+        if (lang.indexOf('zh') === 0) {
+            lang = 'zh-CN';
+        }
+        if (lang.indexOf('en') === 0) {
+            lang = 'en-US';
+        }
+
+        SuperMap.Lang.code = lang;
+    },
+    /**
+     * @function SuperMap.Lang.getLanguageFromCookie
+     * @description 从 cookie 中获取语言类型。
+     */
+    getLanguageFromCookie() {
+        var name = 'language=';
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1)
+            }
+            if (c.indexOf(name) !== -1) {
+                return c.substring(name.length, c.length)
+            }
+        }
+        return "";
+    },
+
+    /**
+     * @function SuperMap.Lang.i18n
+     * @description 从当前语言字符串的字典查找 key。
+     * @param {String} key - 字典中 i18n 字符串值的关键字。
+     * @returns {string} 国际化的字符串。
+     */
+    i18n: function (key) {
+        var dictionary = SuperMap.Lang[SuperMap.Lang.getCode()];
+        var message = dictionary && dictionary[key];
+        if (!message) {
+            // Message not found, fall back to message key
+            message = key;
+        }
+        return message;
+    }
+
+};
+
+SuperMap.Lang = Lang;
+SuperMap.i18n = SuperMap.Lang.i18n;
+
+// CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
+
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+/**
+ * Namespace: SuperMap.Lang["en"]
+ * Dictionary for English.  Keys for entries are used in calls to
+ *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <SuperMap.String.format> calls.
+ */
+let en = {
+    'title_dataFlowService': 'Data Flow Service',
+    'title_distributedAnalysis': 'Distributed Analysis',
+    'title_clientComputing': 'Client Computing',
+
+    'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
+    'text_displayFeaturesInfo': 'Display feature information',
+    'text_subscribe': 'subscribe',
+    'text_cancelSubscribe': 'unsubscribe',
+
+    'text_densityAnalysis': 'Density Analysis',
+    'text_CalculateTheValuePerUnitArea': 'Calculate the value per unit area within the neighborhood shape',
+    'text_option_selectDataset':'Please select a dataset',
+    'text_label_dataset': 'Dataset',
+    'text_option_simplePointDensityAnalysis': 'Simple point density analysis',
+    'text_option_nuclearDensityAnalysis': 'Nuclear density analysis',
+    'text_label_analyticalMethod': 'Analytical method',
+    'text_option_quadrilateral': 'Quadrilateral',
+    'text_option_hexagon': 'hexagon',
+    'text_label_meshType': 'Mesh type',
+    'text_option_notSet': 'Not set',
+    'text_label_weightField': 'Weight field',
+    'text_label_gridSizeInMeters': 'Grid size (in meters)',
+    'text_label_searchRadius': 'Search radius',
+    'text_option_equidistantSegmentation': 'Equidistant segmentation',
+    'text_option_logarithm': 'Logarithm',
+    'text_option_equalCountingSegment': 'Equal counting segment',
+    'text_option_squareRootSegmentation': 'Square root segmentation',
+    'text_label_thematicMapSegmentationMode': 'Thematic map segmentation mode',
+    'text_label_thematicMapSegmentationParameters': 'Thematic map segmentation parameters',
+    'text_option_greenOrangePurpleGradient': 'Green orange purple gradient',
+    'text_option_greenOrangeRedGradient': 'Green orange red gradient',
+    'text_option_rainbowGradient': 'Rainbow gradient',
+    'text_option_spectralGradient': 'Spectral gradient',
+    'text_option_terrainGradient': 'Terrain gradient',
+    'text_label_thematicMapColorGradientMode': 'Thematic map color gradient mode',
+    'text_label_resultLayerName': 'Result layer name',
+    'text_chooseFile': 'Open File',
+    'text_isoline': 'Isoline',
+    'text_extractDiscreteValue': 'Extract discrete value generation curve',
+    'text_buffer': 'Buffer',
+    'text_specifyTheDistance': 'Specify the distance to create the surrounding area',
+    'text_label_analysisLayer': 'Analysis layer',
+    'text_label_extractField': 'Extract field',
+    'text_label_extractedValue': 'Extracted value',
+    'text_label_distanceAttenuation': 'Distance attenuation',
+    'text_label_gridSize': 'gridSize',
+    'text_label_bufferRadius': 'Buffer radius',
+    'text_label_defaultkilometers': 'Default 10 kilometers',
+    'text_label_kilometer': 'kilometer',
+    'text_label_unit': 'unit',
+    'text_retainOriginal': 'Retain original object field',
+    'text_mergeBuffer': 'Merge buffer',
+    'text_label_color': 'Color',
+    'text_label_buffer': '[Buffer]',
+    'text_label_isolines': '[Isolines]',
+    
+    "btn_analyze": "Analyze",
+    "btn_analyzing": "Analyzing",
+    "btn_emptyTheAnalysisLayer": "Empty the analysis layer",
+    "btn_cancelAnalysis": "Cancel",
+
+    'msg_dataFlowServiceHasBeenSubscribed': 'The data stream service has been subscribed to.',
+    'msg_inputDataFlowUrlFirst': 'Please enter the data stream service address first.',
+    'msg_datasetOrMethodUnsupport': 'This dataset does not support this analysis type. Please reselect the dataset.',
+    'msg_selectDataset': 'Please select a data set!',
+    'msg_setTheWeightField': 'Please set the weight field!',
+    'msg_theFieldNotSupportAnalysis': 'The field you currently select does not support analysis!',
+    'msg_resultIsEmpty': 'The result of the analysis is empty!'
+
+
+};
+
+SuperMap.Lang['en-US'] = en;
+
+// CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
+
+
+/**
+ * Namespace: SuperMap.Lang["zh-CN"]
+ * Dictionary for Simplified Chinese.  Keys for entries are used in calls to
+ *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <SuperMap.String.format> calls.
+ */
+let zh = {
+    'title_dataFlowService': '数据流服务',
+    'title_distributedAnalysis': '分布式分析',
+    'title_clientComputing': '客户端计算',
+    
+    'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
+    'text_displayFeaturesInfo': '显示要素信息',
+    'text_subscribe': '订阅',
+    'text_cancelSubscribe': '取消订阅',
+    
+    'text_densityAnalysis': '密度分析',
+    'text_CalculateTheValuePerUnitArea': '计算点指定邻域形状内的每单位面积量值',
+    'text_option_selectDataset':'请选择数据集',
+    'text_label_dataset': '数据集',
+    'text_option_simplePointDensityAnalysis': '简单点密度分析',
+    'text_option_nuclearDensityAnalysis': '核密度分析',
+    'text_label_analyticalMethod': '分析方法',
+    'text_option_quadrilateral': '四边形',
+    'text_option_hexagon': '六边形',
+    'text_label_meshType': '网格面类型',
+    'text_option_notSet': '未设置',
+    'text_label_weightField': '权重字段',
+    'text_label_gridSizeInMeters': '网格大小(单位为：米)',
+    'text_label_searchRadius': '搜索半径',
+    'text_option_equidistantSegmentation': '等距离分段',
+    'text_option_logarithm': '对数',
+    'text_option_equalCountingSegment': '等计数分段',
+    'text_option_squareRootSegmentation': '平方根分段',
+    'text_label_thematicMapSegmentationMode': '专题图分段模式',
+    'text_label_thematicMapSegmentationParameters': '专题图分段参数',
+    'text_option_greenOrangePurpleGradient': '绿橙紫渐变',
+    'text_option_greenOrangeRedGradient': '绿橙红渐变',
+    'text_option_rainbowGradient': '彩虹渐变',
+    'text_option_spectralGradient': '光谱渐变',
+    'text_option_terrainGradient': '地形渐变',
+    'text_label_thematicMapColorGradientMode': '专题图颜色渐变模式',
+    'text_label_resultLayerName': '结果图层名称',
+    'text_chooseFile': '选择文件',
+    'text_isoline': '等值线',
+    'text_extractDiscreteValue': '提取离散值生成曲线',
+    'text_buffer': '缓冲区',
+    'text_specifyTheDistance': '指定距离创建周边区域',
+    'text_label_analysisLayer': '分析图层',
+    'text_label_extractField': '提取字段',
+    'text_label_extractedValue': '提取值',
+    'text_label_distanceAttenuation': '距离衰减',
+    'text_label_gridSize': '栅格大小',
+    'text_label_bufferRadius': '缓冲半径',
+    'text_label_defaultkilometers': '默认10千米',
+    'text_option_kilometer': '千米',
+    'text_label_unit': '单位',
+    'text_retainOriginal': '保留原对象字段属性',
+    'text_mergeBuffer': '合并缓冲区',
+    'text_label_color': '颜色',
+    'text_label_buffer': '[缓冲区]',
+    'text_label_isolines': '[等值线]',
+
+
+    "btn_analyze": "分析",
+    "btn_analyzing": "分析中",
+    "btn_emptyTheAnalysisLayer": "清空分析图层",
+    "btn_cancelAnalysis": "取消",
+
+
+    'msg_dataFlowServiceHasBeenSubscribed': '已订阅该数据流服务。',
+    'msg_inputDataFlowUrlFirst': '请先输入数据流服务地址。',
+    'msg_datasetOrMethodUnsupport': '该数据集不支持本分析类型，请重新选择数据集',
+    'msg_selectDataset': '请选择数据集！',
+    'msg_setTheWeightField': '请设置权重字段！',
+    'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
+    'msg_resultIsEmpty': '分析的结果为空！'
+    
+};
+
+SuperMap.Lang["zh-CN"] = zh;
+
+
+// CONCATENATED MODULE: ./src/common/lang/index.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
 // CONCATENATED MODULE: ./src/common/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -78526,11 +79185,11 @@ var TurfLayer = external_L_default.a.GeoJSON.extend({
     }
 });
 
-var turfLayer = function (options) {
+var TurfLayer_turfLayer = function (options) {
     return new TurfLayer(options);
 };
 
-external_L_default.a.supermap.turfLayer = turfLayer;
+external_L_default.a.supermap.turfLayer = TurfLayer_turfLayer;
 // CONCATENATED MODULE: ./src/leaflet/overlay/HeatMapLayer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -82052,7 +82711,7 @@ external_L_default.a.supermap.trafficTransferAnalystService = trafficTransferAna
 /**
  * @class L.supermap.widgets.OpenFileViewModel
  * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
- * @category Control Widgets
+ * @category Widgets
  */
 var OpenFileViewModel = external_L_default.a.Evented.extend({
     initialize(map) {
@@ -82153,7 +82812,7 @@ external_L_default.a.supermap.widgets.util = widgetsUtil;
 /**
  * @class L.supermap.widgets.openFile
  * @classdesc openfile 微件，用于打开本地数据文件并加载到底图
- * @category  Control Widgets
+ * @category Widgets
  */
 var OpenFileView = external_L_default.a.Control.extend({
     options: {
@@ -82205,7 +82864,7 @@ var OpenFileView = external_L_default.a.Control.extend({
 
         external_L_default.a.DomUtil.create('div', 'supermapol-icons-upload', this.label);
         const fileSpan = external_L_default.a.DomUtil.create('span', 'openFile-span', this.label);
-        fileSpan.appendChild(document.createTextNode("选择文件"));
+        fileSpan.appendChild(document.createTextNode(Lang.i18n('text_chooseFile')));
 
         this.fileInput = external_L_default.a.DomUtil.create('input', 'openFile_input', this.fileSelect);
         this.fileInput.id = "input_file";
@@ -82312,49 +82971,45 @@ const CityConfig_config = {
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-
+// import {
+//     CommonUtil
+// } from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.GeoJsonLayersDataModel
  * @description 多图层数据模型
- * @category
- * @param {Array.<Object>} layers - 包含"layerName"属性的图层对象数组
+ * @category Widgets
+ * @param {Array.<Object>} layers - 图层数组。
+ * @param {L.supermap.widgets.GeoJSONLayersWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。 
  */
 var GeoJsonLayersDataModel = external_L_default.a.Evented.extend({
     initialize(layers) {
+        this.layers = [];
         if (layers && layers.length > 0) {
             this.addLayers(layers);
         }
         this.currentLayerDataModel = null;
-        this.layers = {};
     },
     addLayers(layers) {
         for (let i = 0; i < layers.length; i++) {
-            let layerName = "";
-            if (layers[i].layerName) {
-                layerName = layers[i].layerName;
-            } else {
-                layerName = Util.createUniqueID("vectorLayer_");
-            }
-
-            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i]);
+            let layerName = layers[i].layerName;
+            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
             //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
-            this[layerName] = geoJsonLayerDataModel;
-            this.fire("newlayeradded", {newLayer: {layerName: layerName, layer: geoJsonLayerDataModel}});
+            this.layers[layerName] = geoJsonLayerDataModel;
+            this.fire("newlayeradded", { newLayer: { layerName: layerName, layer: geoJsonLayerDataModel } });
         }
     },
 
     /**
      * @function L.supermap.widgets.GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
-     * @description 设置当前选中的图层
-     * @param {string} layerName - 选中的图层名
+     * @description 设置当前选中的图层。
+     * @param {string} layerName - 选中的图层名。
      */
     setCurrentLayerDataModel(layerName) {
-        if (this[layerName]) {
-            this.currentLayerDataModel = this[layerName];
+        if (this.layers[layerName]) {
+            this.currentLayerDataModel = this.layers[layerName];
         }
     }
-
 });
 
 external_L_default.a.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
@@ -82388,20 +83043,44 @@ class GeoJsonLayerDataModel {
 
     /**
      * @function GeoJsonLayerDataModel.prototype.setOperatingAttributeNames
-     * @description 指定操作字段
-     * @param {Array.<string>} operatingAttr - 查询属性字段数组，该数组为 this.attributeNames 的子集
+     * @description 指定操作字段。
+     * @param {Array.<string>} operatingAttr - 查询属性字段数组，该数组为 this.attributeNames 的子集。
      */
     setOperatingAttributeNames(operatingAttr) {
         this.operatingAttributeNames = operatingAttr;
     }
 
     /**
-     * @function GeoJsonLayerDataModel.prototype.getAttributeNames
-     * @description 获取图层属性字段
-     * @return {Array.<string>} - 返回图层属性字段
+     * @function GeoJsonLayerDataModel.prototype.getAllAttributeNames
+     * @description 获取图层所有属性字段。
+     * @return {Array.<string>} - 返回图层所有属性字段。
      */
     getAllAttributeNames() {
         return this.attributeNames;
+    }
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.getAttributeNamesByType
+     * @description 获取指定类型的图层属性字段。
+     * @param {string} [type] - 需要获取的图层属性字段的类型。目前可选 "Num"。
+     * @return {Array.<string>} - 返回指定类型的图层属性字段。
+     */
+    getAttributeNamesByType(type) {
+        //图层属性字段
+        if (this.features[0].feature.properties) {
+            let properties = this.features[0].feature.properties;
+            let attributeNames = [];
+            if (type === 'Num') {
+                for (let field in properties) {
+                    if (!isNaN(properties[field])) {
+                        attributeNames.push(field);
+                    }
+                }
+            } else {
+                attributeNames = this.attributeNames;
+            }
+            return attributeNames;
+        }
     }
 
     /**
@@ -82426,9 +83105,9 @@ class GeoJsonLayerDataModel {
         }
 
         //若图层属性对象还未存储该属性，则遍历每个feature 读取其属性值，并存储到图层属性对象中
-        this.attributes.attributeName = [];
+        this.attributes[attributeName] = [];
         for (let i = 0; i < this.features.length; i++) {
-            this.attributes[attributeName].push(this.features[i].feature.properties[attributeName]);
+            this.attributes[attributeName].push([this.features[i].feature.properties[attributeName]]);
         }
 
         return this.attributes[attributeName];
@@ -82480,7 +83159,6 @@ class GeoJsonLayerDataModel {
         });
         return features;
     }
-
 }
 
 // CONCATENATED MODULE: ./src/leaflet/widgets/poisearch/POISearchViewModel.js
@@ -82547,7 +83225,7 @@ var POISearchViewModel = external_L_default.a.Evented.extend({
      * @function L.supermap.widgets.poiSearchViewModel.prototype.search
      * @description 查询
      * @param {string} keyWord - 查询的关键字
-     * @param {string||null} searchLayerName - 执行的查询类型，默认为null,支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配
+     * @param {string} [searchLayerName=null] - 执行的查询类型，默认为null,支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配
      */
     search(keyWord, searchLayerName = null) {
         if (!searchLayerName) {
@@ -82687,7 +83365,7 @@ external_L_default.a.supermap.widgets.poiSearchViewModel = poiSearchViewModel;
 /**
  * @class L.supermap.widgets.poiSearch
  * @classdesc 地址匹配或图层要素查询微件
- * @category  Control Widgets
+ * @category Widgets
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
@@ -83372,7 +84050,7 @@ external_L_default.a.supermap.widgets.poiSearch = poiSearchView;
 /**
  * @class L.supermap.widgets.dataFlowViewModel
  * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
- * @category Control Widgets
+ * @category Widgets
  * @param {L.map} map - 当前微件所在的底图
  * @param {Object} dataFlowLayerOptions - 数据流服务返回数据数据展示样式，默认为 null，采用 ViewModel 默认样式
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
@@ -83571,7 +84249,7 @@ external_L_default.a.supermap.widgets.dataFlowViewModel = dataFlowViewModel;
 /**
  * @class L.supermap.widgets.DataFlowView
  * @classdesc dataFlow 微件，用于打开本地数据文件并加载到底图
- * @category  Control Widgets
+ * @category Widgets
  * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  `function(geoJsonPoint, latlng) {
@@ -83647,7 +84325,7 @@ var DataFlowView = external_L_default.a.Control.extend({
      * @private
      */
     _initView() {
-        const widgetContainerObj = new WidgetContainer("数据流服务", {"top": "32px", "right": "96px"});
+        const widgetContainerObj = new WidgetContainer(Lang.i18n("title_dataFlowService"), { "top": "32px", "right": "96px" });
         const widgetContainer = widgetContainerObj.getElement();
 
         const widgetContent = widgetContainerObj.getContentElement();
@@ -83660,8 +84338,8 @@ var DataFlowView = external_L_default.a.Control.extend({
         const dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "widget-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.placeholder = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
-        dataFlowInput.title = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
+        dataFlowInput.placeholder = Lang.i18n('text_input_value_inputDataFlowUrl');
+        dataFlowInput.title = Lang.i18n('text_input_value_inputDataFlowUrl');
 
         this.dataFlowInput = dataFlowInput;
         dataFlowInputContainer.appendChild(dataFlowInput);
@@ -83694,7 +84372,7 @@ var DataFlowView = external_L_default.a.Control.extend({
         checkboxContainer.appendChild(attributesCheckbox);
         const checkboxLabel = document.createElement("div");
         checkboxLabel.setAttribute("class", "label label-selected");
-        checkboxLabel.innerHTML = "显示要素信息";
+        checkboxLabel.innerHTML = Lang.i18n('text_displayFeaturesInfo');
         checkboxContainer.appendChild(checkboxLabel);
         //----是否显示属性框【属性框复选框点击事件】
         attributesCheckbox.onclick = (e) => {
@@ -83718,12 +84396,12 @@ var DataFlowView = external_L_default.a.Control.extend({
         dataFlowContainer3.setAttribute("class", "dataflow-container init-center");
         const subscribe = document.createElement("button");
         subscribe.setAttribute("class", "widget-button-default");
-        subscribe.innerHTML = "订阅";
+        subscribe.innerHTML = Lang.i18n('text_subscribe');
         //----订阅服务【订阅按钮点击事件】
         subscribe.onclick = () => {
             const urlDataFlow = dataFlowInput.value;
             if (urlDataFlow === "") {
-                this.messageBox.showView("请先输入数据流服务地址。");
+                this.messageBox.showView(Lang.i18n('msg_inputDataFlowUrlFirst'));
                 return;
             }
             this.viewModel.subscribe(urlDataFlow);
@@ -83731,7 +84409,7 @@ var DataFlowView = external_L_default.a.Control.extend({
         dataFlowContainer3.appendChild(subscribe);
         const cancelSubscribe = document.createElement("button");
         cancelSubscribe.setAttribute("class", "widget-button-default");
-        cancelSubscribe.innerHTML = "取消订阅";
+        cancelSubscribe.innerHTML = Lang.i18n('text_cancelSubscribe');
         //----取消订阅服务【取消订阅按钮点击事件】
         cancelSubscribe.onclick = () => {
             this.viewModel.cancelSubscribe();
@@ -83784,10 +84462,10290 @@ var dataFlowView = function (options) {
 
 external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
 
+// CONCATENATED MODULE: ./src/leaflet/widgets/commonmodels/GeoJsonLayersWithName.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+ 
+/**
+ * @class L.supermap.widgets.GeoJSONLayersWithName
+ * @classdesc 含有 layerName 与 GeoJSON 图层的对象。 
+ * @param {Object} layerObject - 图层对象。
+ * @param {string} layerObject.layerName -  图层名。
+ * @param {L.GeoJSON} layerObject.layer -  图层。
+ * @category Widgets
+ */
+class GeoJSONLayersWithName{
+    constructor(layerObject){
+        this.layerName = layerObject.layerName;
+        this.layer = layerObject.layer;
+    }
+}
+
+// CONCATENATED MODULE: ./src/leaflet/widgets/clientcomputation/ClientComputationViewModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.ClientComputationViewModel
+ * @classdesc 客户端计算 ViewModel。
+ * @category Widgets
+ * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
+ * @fires L.supermap.widgets.ClientComputationViewModel#analysisfailed
+ * @fires L.supermap.widgets.ClientComputationViewModel#layerloaded
+ * @fires L.supermap.widgets.ClientComputationViewModel#layersremoved
+ */
+class ClientComputationViewModel_ClientComputationViewModel extends external_L_default.a.Evented {
+    initialize(workerUrl) {
+        this.workerUrl = workerUrl;
+        this.turfLayers = [];
+    }
+    /**
+     * @function L.supermap.widgets.ClientComputationViewModel.prototype.getLayersData
+     * @description 获取填充到 view 的数据。
+     * @param {Array.<L.GeoJSON>} layersArr - 图层数组。
+     * @returns {Object} layers 数据。
+     */
+    
+    getLayersData(layersArr) {
+        let result = [];
+        for (let i = 0; i < layersArr; i++) {
+            layersArr[i] = new GeoJSONLayersWithName({
+                'layerName': layersArr[i].layerName,
+                'layer': layersArr[i].layer
+            })
+        }
+        this.geoJsonLayersDataModel = new GeoJsonLayersDataModel(layersArr);
+        // 把 layersArr 转成 key = layername 对象，方便获取 fields 时遍历
+        let dataObj = [];
+        for (let i = 0; i < layersArr.length; i++) {
+            dataObj[layersArr[i].layerName] = {
+                fields: layersArr[i].fields,
+                layer: layersArr[i].layer.toGeoJSON()
+            }
+        }
+
+        for (let key in this.geoJsonLayersDataModel.layers) {
+            let fields;
+            if (dataObj[key].fields) {
+                fields = dataObj[key].fields;
+            } else {
+                fields = this.geoJsonLayersDataModel.layers[key].getAttributeNamesByType("Num");
+            }
+            let fieldsValue = [];
+            for (let i = 0; i < fields.length; i++) {
+                fieldsValue[fields[i]] = this.geoJsonLayersDataModel.layers[key].getAttributeValueByAttributeName(fields[i]);
+                // 去空 & 去重 & 转 number
+                let arr = fieldsValue[fields[i]];
+                for (var j = 0; j < arr.length; j++) {
+                    if (arr[j] == "" || typeof (arr[j]) == "undefined") {
+                        arr.splice(j, 1);
+                        j = j - 1;
+                    }
+                    arr[j] = parseFloat(arr[j])
+                }
+                fieldsValue[fields[i]] = Array.from(new Set(arr.sort(function (a, b) {
+                    return a - b;
+                })));
+            }
+
+            let obj = {
+                layerName: key,
+                fields: fields,
+                fieldsValue: fieldsValue,
+                features: dataObj[key].layer
+            }
+            result[key] = obj;
+        }
+        return result;
+    }
+
+    /**
+     * @function L.supermap.widgets.ClientComputationViewModel.prototype.analysis
+     * @description 进行客户端计算。
+     * @param {Object} params - 客户端计算参数。
+     * @param {L.map} map - Leaflet Map 对象。
+     */
+    analysis(params, map) {
+        this.geoJsonLayersDataModel.setCurrentLayerDataModel(params.analysisLayers);
+        this.worker = new Worker(this.workerUrl);
+        let resultData = this.geoJsonLayersDataModel.currentLayerDataModel.layer.toGeoJSON();
+        if (params.analysisMethod === "isolines") {
+            let fieldsValue = params.analysisFieldsValue.split(",");
+            let pointGrid = resultData;
+            for (let j = 0; j < fieldsValue.length; j++) {
+                fieldsValue[j] = parseFloat(fieldsValue[j])
+            }
+            let me = this;
+            let analysisParams = {
+                "pointGrid": pointGrid,
+                "analysisMethod": params.analysisMethod,
+                "breaks": fieldsValue,
+                "zProperty": params.analysisFields,
+                "analysisCellSize": params.analysisCellSize,
+                "options": { gridType: "point", property: params.analysisFields, weight: Number(params.analysisBreaks) }
+            };
+            this.worker.postMessage(analysisParams);
+            this.worker.onmessage = (e) => {
+                if (e.data.features.length === 0) {
+                    /**
+                     * @event L.supermap.widgets.ClientComputationViewModel#analysisfailed
+                     * @description 事件分析失败后触发，返回结果为空。
+                     */
+                    me.fire('analysisfailed');
+                } else {
+                    let turfLayer = external_L_default.a.geoJSON(e.data, {
+                        style: {
+                            color: params.color, weight: 3
+                        },
+                        onEachFeature: function (feature, layer) {
+                            if (feature.properties) {
+                                layer.bindPopup((new AttributesPopContainer_AttributesPopContainer(feature.properties)).getElement())
+                            }
+                            layer.on({
+                                'mouseover': function () {
+                                    layer.setStyle({ color: "#ffffff", weight: 5 })
+                                },
+                                'mouseout': function () {
+                                    layer.setStyle({ color: params.color, weight: 3 })
+                                },
+                                "click": function () {
+                                    layer.setStyle({ color: "#ffffff", weight: 5 })
+
+                                }
+                            });
+                        }
+                    }).addTo(map);
+                    me.turfLayers.push(turfLayer);
+                    /**
+                     * @event L.supermap.widgets.ClientComputationViewModel#layerloaded
+                     * @description 图层加载完成后触发。
+                     * @property {L.GeoJSON} layer - 加载完成后的结果图层。
+                     * @property {string} name - 加载完成后的结果图层名称。
+                     */
+                    me.fire('layerloaded', { "layer": turfLayer, "name": params.resultLayersName });
+                    me.worker.terminate();
+                }
+
+            };
+        } else if (params.analysisMethod === "buffer") {
+            let me = this;
+            let analysisParams = {
+                "analysisMethod": "buffer",
+                "radius": params.radius,
+                "unit": params.unit,
+                "isSave": params.isSaveStatus,
+                "isUnion": params.isUnion,
+                'geoJson': resultData
+            };
+            this.worker.postMessage(analysisParams);
+            this.worker.onmessage = (e) => {
+                let turfLayer = external_L_default.a.geoJSON(e.data, {
+                    style: {
+                        color: "#ffffff", fillColor: params.color, fillOpacity: .5, weight: 1.5
+                    },
+                    onEachFeature: function (feature, layer) {
+                        if (feature.properties) {
+                            layer.bindPopup((new AttributesPopContainer_AttributesPopContainer(feature.properties)).getElement())
+                        }
+                        layer.on({
+                            'mouseover': function () {
+                                layer.setStyle({ color: "#ffffff", fillColor: "rgb(46,40,79)", fillOpacity: .5, weight: 5 })
+                            },
+                            'mouseout': function () {
+                                layer.setStyle({ color: "#ffffff", fillColor: params.color, fillOpacity: .5, weight: 1.5 })
+                            },
+                            "click": function () {
+                                layer.setStyle({ color: "#ffffff", fillColor: "rgb(46,40,79)", fillOpacity: .5, weight: 2 })
+
+                            }
+                        });
+                    }
+
+                }).addTo(map);
+                me.turfLayers.push(turfLayer);
+                me.fire('layerloaded', { "layer": turfLayer, "name": params.resultLayersName });
+                me.worker.terminate();
+            };
+        }
+    }
+
+    /**
+     * @function L.supermap.widgets.ClientComputationViewModel.prototype.clearLayers
+     * @description 清空分析图层。
+     */
+    clearLayers() {
+        for (let i in this.turfLayers) {
+            this.turfLayers[i].clearLayers()
+        }
+        /**
+         * @event L.supermap.widgets.ClientComputationViewModel#layersremoved
+         * @description 图层删除之后触发。
+         * @property {Array.<L.GeoJSON>} layer - 需要删除的图层数组。
+         */
+        this.fire('layersremoved', { layers: this.turfLayers });
+    }
+
+    /**
+     * @function L.supermap.widgets.ClientComputationViewModel.prototype.cancelAnalysis
+     * @description 取消分析。
+     */
+    cancelAnalysis() {
+        this.worker.terminate();
+    }
+}
+external_L_default.a.supermap.widgets.ClientComputationViewModel = ClientComputationViewModel_ClientComputationViewModel;
+
+// L.supermap.widgets.util = widgetsUtil;
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/formatter.js
+
+/**
+ * @method format
+ *
+ * convert color to format string
+ *
+ *     // hex
+ *     color.format({ r : 255, g : 255, b : 255 }, 'hex')  // #FFFFFF
+ *
+ *     // rgb
+ *     color.format({ r : 255, g : 255, b : 255 }, 'rgb') // rgba(255, 255, 255, 0.5);
+ *
+ *     // rgba
+ *     color.format({ r : 255, g : 255, b : 255, a : 0.5 }, 'rgb') // rgba(255, 255, 255, 0.5);
+ *
+ * @param {Object} obj  obj has r, g, b and a attributes
+ * @param {"hex"/"rgb"} type  format string type
+ * @returns {*}
+ */
+function formatter_format(obj, type, defaultColor = 'rgba(0, 0, 0, 0)') {
+
+    if (Array.isArray(obj)) {
+        obj = { r: obj[0], g: obj[1], b: obj[2], a: obj[3] }
+    }
+
+    if (type == 'hex') {
+        return formatter_hex(obj);
+    } else if (type == 'rgb') {
+        return formatter_rgb(obj, defaultColor);
+    } else if (type == 'hsl') {
+        return hsl(obj);
+    }
+
+    return obj;
+}
+
+function formatter_hex(obj) {
+    if (Array.isArray(obj)) {
+        obj = { r: obj[0], g: obj[1], b: obj[2], a: obj[3] }
+    }
+
+    var r = obj.r.toString(16);
+    if (obj.r < 16) r = "0" + r;
+
+    var g = obj.g.toString(16);
+    if (obj.g < 16) g = "0" + g;
+
+    var b = obj.b.toString(16);
+    if (obj.b < 16) b = "0" + b;
+
+    return `#${r}${g}${b}`;
+}
+
+function formatter_rgb (obj, defaultColor = 'rgba(0, 0, 0, 0)') {
+    if (Array.isArray(obj)) {
+        obj = { r: obj[0], g: obj[1], b: obj[2], a: obj[3] }
+    }
+
+    if (typeof obj == 'undefined') {
+        return undefined;
+    }
+
+    if (obj.a == 1 || typeof obj.a == 'undefined') {
+        if (isNaN(obj.r)) {
+            return defaultColor;
+        }
+        return `rgb(${obj.r},${obj.g},${obj.b})`;
+    } else {
+        return `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
+    }
+}
+
+function hsl (obj) {
+    if (Array.isArray(obj)) {
+        obj = { r: obj[0], g: obj[1], b: obj[2], a: obj[3] }
+    }
+
+    if (obj.a == 1 || typeof obj.a == 'undefined') {
+        return `hsl(${obj.h},${obj.s}%,${obj.l}%)`;
+    } else {
+        return `hsla(${obj.h},${obj.s}%,${obj.l}%,${obj.a})`;
+    }
+
+}
+
+/* harmony default export */ var formatter = ({
+    format: formatter_format,
+    rgb: formatter_rgb,
+    hsl,
+    hex: formatter_hex
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/math.js
+function round (n, k) {
+    k = typeof k == 'undefined' ? 1 : k; 
+    return Math.round(n * k) / k;
+}
+
+
+function degreeToRadian (angle) {
+    return angle * Math.PI / 180;
+}
+
+/**
+ * 
+ * convert radian to degree 
+ * 
+ * @param {*} radian 
+ * @returns {Number} 0..360
+ */
+function radianToDegree(radian) {
+    var angle =  radian * 180 / Math.PI;
+
+
+    if (angle < 0) {   // 각도가 0보다 작으면 360 에서 반전시킨다. 
+        angle = 360 + angle
+    }
+
+    return angle; 
+}
+
+
+function getXInCircle (angle, radius, centerX = 0) {
+    return centerX + radius * Math.cos(degreeToRadian (angle))
+}
+
+function getYInCircle (angle, radius, centerY = 0) {
+    return centerY + radius * Math.sin(degreeToRadian(angle))
+}    
+
+function getXYInCircle (angle, radius, centerX = 0, centerY = 0) {
+    return {
+        x : getXInCircle(angle, radius, centerX),
+        y : getYInCircle(angle, radius, centerY)
+    }
+}
+
+function caculateAngle (rx, ry) {
+    return radianToDegree(Math.atan2(ry, rx))
+}
+
+/* harmony default export */ var math = ({
+    round,
+    radianToDegree,
+    degreeToRadian,
+    getXInCircle,
+    getYInCircle,
+    caculateAngle
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/fromRGB.js
+
+
+/**
+ * @method RGBtoHSV
+ *
+ * convert rgb to hsv
+ *
+ * 		color.RGBtoHSV(0, 0, 255) === { h : 240, s : 1, v : 1 } === '#FFFF00'
+ *
+ * @param {Number} R  red color value
+ * @param {Number} G  green color value
+ * @param {Number} B  blue color value
+ * @return {Object}  hsv color code
+ */
+function RGBtoHSV(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+
+    const R1 = r / 255;
+    const G1 = g / 255;
+    const B1 = b / 255;
+
+    const MaxC = Math.max(R1, G1, B1);
+    const MinC = Math.min(R1, G1, B1);
+
+    const DeltaC = MaxC - MinC;
+
+    var H = 0;
+
+    if (DeltaC == 0) { H = 0; }
+    else if (MaxC == R1) {
+        H = 60 * (((G1 - B1) / DeltaC) % 6);
+    } else if (MaxC == G1) {
+        H = 60 * (((B1 - R1) / DeltaC) + 2);
+    } else if (MaxC == B1) {
+        H = 60 * (((R1 - G1) / DeltaC) + 4);
+    }
+
+    if (H < 0) {
+        H = 360 + H;
+    }
+
+    var S = 0;
+
+    if (MaxC == 0) S = 0;
+    else S = DeltaC / MaxC;
+
+    var V = MaxC;
+
+    return { h: H, s: S, v: V };
+}
+
+
+function RGBtoCMYK(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+
+    const R1 = r / 255;
+    const G1 = g / 255;
+    const B1 = b / 255;
+
+    const K = 1 - Math.max(R1, G1, B1);
+    const C = (1 - R1 - K) / (1 - K);
+    const M = (1 - G1 - K) / (1 - K);
+    const Y = (1 - B1 - K) / (1 - K);
+
+    return { c: C, m: M, y: Y, k: K };
+}
+
+
+function RGBtoHSL(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if (max == min) {
+        h = s = 0; // achromatic
+    } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return { h: round(h * 360), s: round(s * 100), l: round(l * 100) };
+}
+
+function fromRGB_c(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+    return gray((r + g + b) / 3 > 90 ? 0 : 255);
+}
+
+function gray(gray) {
+    return { r: gray, g: gray, b: gray };
+}
+
+function RGBtoSimpleGray(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+    return gray(Math.ceil((r + g + b) / 3));
+}
+
+
+function RGBtoGray(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+    return gray(RGBtoYCrCb(r, g, b).y);
+}
+
+
+function brightness(r, g, b) {
+        return Math.ceil(r * 0.2126 + g * 0.7152 + b * 0.0722);
+}
+
+
+function RGBtoYCrCb(r, g, b) {
+
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+    const Y = brightness(r, g, b);
+    const Cb = 0.564 * (b - Y)
+    const Cr = 0.713 * (r - Y)
+
+    return { y: Y, cr: Cr, cb: Cb };
+}
+
+function PivotRGB(n) {
+    return ((n > 0.04045) ? Math.pow((n + 0.055) / 1.055, 2.4) : n / 12.92) * 100;
+}
+
+function RGBtoXYZ(r, g, b) {
+    //sR, sG and sB (Standard RGB) input range = 0 ÷ 255
+    //X, Y and Z output refer to a D65/2° standard illuminant.
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+
+    let R = (r / 255)
+    let G = (g / 255)
+    let B = (b / 255)
+
+    R = PivotRGB(R);
+    G = PivotRGB(G);
+    B = PivotRGB(B);
+
+    const x = R * 0.4124 + G * 0.3576 + B * 0.1805;
+    const y = R * 0.2126 + G * 0.7152 + B * 0.0722;
+    const z = R * 0.0193 + G * 0.1192 + B * 0.9505;
+
+    return { x, y, z }
+}
+    
+function RGBtoLAB(r, g, b) {
+    if (arguments.length == 1) {
+        var { r, g, b } = arguments[0];
+    }
+    return XYZtoLAB(RGBtoXYZ(r, g, b));
+}
+
+/* harmony default export */ var fromRGB = ({
+    RGBtoCMYK,
+    RGBtoGray,
+    RGBtoHSL,
+    RGBtoHSV,
+    RGBtoLAB,
+    RGBtoSimpleGray,
+    RGBtoXYZ,
+    RGBtoYCrCb,
+    c: fromRGB_c,
+    brightness,
+    gray
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/fromCMYK.js
+
+function CMYKtoRGB(c, m, y, k) {
+
+    if (arguments.length == 1) {
+        var { c, m, y, k } = arguments[0];
+    }
+
+    const R = 255 * (1 - c) * (1 - k);
+    const G = 255 * (1 - m) * (1 - k);
+    const B = 255 * (1 - y) * (1 - k);
+
+    return { r: R, g: G, b: B }
+}
+
+/* harmony default export */ var fromCMYK = ({
+    CMYKtoRGB
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/fromLAB.js
+
+
+function ReverseXyz(n) {
+    return (Math.pow(n, 3) > 0.008856) ? Math.pow(n, 3) : (n - 16 / 116) / 7.787;
+}
+
+function ReverseRGB(n) {
+    return (n > 0.0031308) ? 1.055 * (Math.pow(n, (1 / 2.4))) - 0.055 : 12.92 * n;
+}
+
+function XYZtoRGB(x, y, z) {
+    if (arguments.length == 1) {
+        var { x, y, z } = arguments[0];
+    }
+    //X, Y and Z input refer to a D65/2° standard illuminant.
+    //sR, sG and sB (standard RGB) output range = 0 ÷ 255
+
+    let X = x / 100.0
+    let Y = y / 100.0
+    let Z = z / 100.0
+
+    let R = X * 3.2406 + Y * -1.5372 + Z * -0.4986;
+    let G = X * -0.9689 + Y * 1.8758 + Z * 0.0415;
+    let B = X * 0.0557 + Y * -0.2040 + Z * 1.0570;
+
+    R = ReverseRGB(R);
+    G = ReverseRGB(G);
+    B = ReverseRGB(B);
+
+    const r = round(R * 255);
+    const g = round(G * 255);
+    const b = round(B * 255);
+
+    return { r, g, b };
+}
+
+function LABtoXYZ(l, a, b) {
+    if (arguments.length == 1) {
+        var { l, a, b } = arguments[0];
+    }
+    //Reference-X, Y and Z refer to specific illuminants and observers.
+    //Common reference values are available below in this same page.
+
+    let Y = (l + 16) / 116
+    let X = a / 500 + Y
+    let Z = Y - b / 200
+
+    Y = ReverseXyz(Y);
+    X = ReverseXyz(X);
+    Z = ReverseXyz(Z);
+
+    const x = X * 95.047
+    const y = Y * 100.000
+    const z = Z * 108.883
+
+    return { x, y, z };
+}
+
+function PivotXyz(n) {
+    return (n > 0.008856) ? Math.pow(n, (1 / 3)) : (7.787 * n + 16) / 116;
+}
+
+
+function fromLAB_XYZtoLAB(x, y, z) {
+    if (arguments.length == 1) {
+        var { x, y, z } = arguments[0];
+    }
+
+    //Reference-X, Y and Z refer to specific illuminants and observers.
+    //Common reference values are available below in this same page.
+    // Observer= 2°, Illuminant= D65
+
+    let X = x / 95.047;
+    let Y = y / 100.00;
+    let Z = z / 108.883;
+
+    X = PivotXyz(X);
+    Y = PivotXyz(Y);
+    Z = PivotXyz(Z);
+
+    const l = (116 * Y) - 16;
+    const a = 500 * (X - Y);
+    const b = 200 * (Y - Z);
+
+    return { l, a, b };
+}
+
+function LABtoRGB(l, a, b) {
+    if (arguments.length == 1) {
+        var { l, a, b } = arguments[0];
+    }
+    return XYZtoRGB(LABtoXYZ(l, a, b));
+}
+
+/* harmony default export */ var fromLAB = ({
+    XYZtoRGB,
+    LABtoRGB,
+    LABtoXYZ
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/fromHSV.js
+
+
+
+/**
+ * @method HSVtoRGB
+ *
+ * convert hsv to rgb
+ *
+ * 		color.HSVtoRGB(0,0,1) === #FFFFF === { r : 255, g : 0, b : 0 }
+ *
+ * @param {Number} H  hue color number  (min : 0, max : 360)
+ * @param {Number} S  Saturation number  (min : 0, max : 1)
+ * @param {Number} V  Value number 		(min : 0, max : 1 )
+ * @returns {Object}
+ */
+function HSVtoRGB(h, s, v) {
+
+    if (arguments.length == 1) {
+        var { h, s, v } = arguments[0];
+    }
+
+    var H = h;
+    var S = s;
+    var V = v;
+
+    if (H >= 360) {
+        H = 0;
+    }
+
+    const C = S * V;
+    const X = C * (1 - Math.abs((H / 60) % 2 - 1));
+    const m = V - C;
+
+    let temp = [];
+
+    if (0 <= H && H < 60) { temp = [C, X, 0]; }
+    else if (60 <= H && H < 120) { temp = [X, C, 0]; }
+    else if (120 <= H && H < 180) { temp = [0, C, X]; }
+    else if (180 <= H && H < 240) { temp = [0, X, C]; }
+    else if (240 <= H && H < 300) { temp = [X, 0, C]; }
+    else if (300 <= H && H < 360) { temp = [C, 0, X]; }
+
+    return {
+        r: round((temp[0] + m) * 255),
+        g: round((temp[1] + m) * 255),
+        b: round((temp[2] + m) * 255)
+    };
+}
+
+function HSVtoHSL(h, s, v) {
+
+    if (arguments.length == 1) {
+        var { h, s, v } = arguments[0];
+    }
+
+    const rgb = HSVtoRGB(h, s, v);
+
+    return RGBtoHSL(rgb.r, rgb.g, rgb.b);
+}
+
+/* harmony default export */ var fromHSV = ({
+    HSVtoHSL,
+    HSVtoRGB
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/fromHSL.js
+
+
+
+function HUEtoRGB(p, q, t) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+}
+
+function HSLtoHSV(h, s, l) {
+
+    if (arguments.length == 1) {
+        var { h, s, l } = arguments[0];
+    }
+    const rgb = HSLtoRGB(h, s, l);
+
+    return RGBtoHSV(rgb.r, rgb.g, rgb.b);
+}
+
+function HSLtoRGB(h, s, l) {
+
+    if (arguments.length == 1) {
+        var { h, s, l } = arguments[0];
+    }
+
+    var r, g, b;
+
+    h /= 360;
+    s /= 100;
+    l /= 100;
+
+    if (s == 0) {
+        r = g = b = l; // achromatic
+    } else {
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = HUEtoRGB(p, q, h + 1 / 3);
+        g = HUEtoRGB(p, q, h);
+        b = HUEtoRGB(p, q, h - 1 / 3);
+    }
+
+    return { r: round(r * 255), g: round(g * 255), b: round(b * 255) };
+}
+
+/* harmony default export */ var fromHSL = ({
+    HUEtoRGB,
+    HSLtoHSV,
+    HSLtoRGB
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/fromYCrCb.js
+function YCrCbtoRGB(y, cr, cb, bit) {
+
+    if (arguments.length == 1) {
+        var { y, cr, cb, bit } = arguments[0];
+        bit = bit || 0;
+    }
+    const R = y + 1.402 * (cr - bit);
+    const G = y - 0.344 * (cb - bit) - 0.714 * (cr - bit);
+    const B = y + 1.772 * (cb - bit);
+
+    return { r: Math.ceil(R), g: Math.ceil(G), b: Math.ceil(B) }
+}
+
+/* harmony default export */ var fromYCrCb = ({
+    YCrCbtoRGB
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/ColorNames.js
+const color_names = { aliceblue: "rgb(240, 248, 255)", antiquewhite: "rgb(250, 235, 215)", aqua: "rgb(0, 255, 255)", aquamarine: "rgb(127, 255, 212)", azure: "rgb(240, 255, 255)", beige: "rgb(245, 245, 220)", bisque: "rgb(255, 228, 196)", black: "rgb(0, 0, 0)", blanchedalmond: "rgb(255, 235, 205)", blue: "rgb(0, 0, 255)", blueviolet: "rgb(138, 43, 226)", brown: "rgb(165, 42, 42)", burlywood: "rgb(222, 184, 135)", cadetblue: "rgb(95, 158, 160)", chartreuse: "rgb(127, 255, 0)", chocolate: "rgb(210, 105, 30)", coral: "rgb(255, 127, 80)", cornflowerblue: "rgb(100, 149, 237)", cornsilk: "rgb(255, 248, 220)", crimson: "rgb(237, 20, 61)", cyan: "rgb(0, 255, 255)", darkblue: "rgb(0, 0, 139)", darkcyan: "rgb(0, 139, 139)", darkgoldenrod: "rgb(184, 134, 11)", darkgray: "rgb(169, 169, 169)", darkgrey: "rgb(169, 169, 169)", darkgreen: "rgb(0, 100, 0)", darkkhaki: "rgb(189, 183, 107)", darkmagenta: "rgb(139, 0, 139)", darkolivegreen: "rgb(85, 107, 47)", darkorange: "rgb(255, 140, 0)", darkorchid: "rgb(153, 50, 204)", darkred: "rgb(139, 0, 0)", darksalmon: "rgb(233, 150, 122)", darkseagreen: "rgb(143, 188, 143)", darkslateblue: "rgb(72, 61, 139)", darkslategray: "rgb(47, 79, 79)", darkslategrey: "rgb(47, 79, 79)", darkturquoise: "rgb(0, 206, 209)", darkviolet: "rgb(148, 0, 211)", deeppink: "rgb(255, 20, 147)", deepskyblue: "rgb(0, 191, 255)", dimgray: "rgb(105, 105, 105)", dimgrey: "rgb(105, 105, 105)", dodgerblue: "rgb(30, 144, 255)", firebrick: "rgb(178, 34, 34)", floralwhite: "rgb(255, 250, 240)", forestgreen: "rgb(34, 139, 34)", fuchsia: "rgb(255, 0, 255)", gainsboro: "rgb(220, 220, 220)", ghostwhite: "rgb(248, 248, 255)", gold: "rgb(255, 215, 0)", goldenrod: "rgb(218, 165, 32)", gray: "rgb(128, 128, 128)", grey: "rgb(128, 128, 128)", green: "rgb(0, 128, 0)", greenyellow: "rgb(173, 255, 47)", honeydew: "rgb(240, 255, 240)", hotpink: "rgb(255, 105, 180)", indianred: "rgb(205, 92, 92)", indigo: "rgb(75, 0, 130)", ivory: "rgb(255, 255, 240)", khaki: "rgb(240, 230, 140)", lavender: "rgb(230, 230, 250)", lavenderblush: "rgb(255, 240, 245)", lawngreen: "rgb(124, 252, 0)", lemonchiffon: "rgb(255, 250, 205)", lightblue: "rgb(173, 216, 230)", lightcoral: "rgb(240, 128, 128)", lightcyan: "rgb(224, 255, 255)", lightgoldenrodyellow: "rgb(250, 250, 210)", lightgreen: "rgb(144, 238, 144)", lightgray: "rgb(211, 211, 211)", lightgrey: "rgb(211, 211, 211)", lightpink: "rgb(255, 182, 193)", lightsalmon: "rgb(255, 160, 122)", lightseagreen: "rgb(32, 178, 170)", lightskyblue: "rgb(135, 206, 250)", lightslategray: "rgb(119, 136, 153)", lightslategrey: "rgb(119, 136, 153)", lightsteelblue: "rgb(176, 196, 222)", lightyellow: "rgb(255, 255, 224)", lime: "rgb(0, 255, 0)", limegreen: "rgb(50, 205, 50)", linen: "rgb(250, 240, 230)", magenta: "rgb(255, 0, 255)", maroon: "rgb(128, 0, 0)", mediumaquamarine: "rgb(102, 205, 170)", mediumblue: "rgb(0, 0, 205)", mediumorchid: "rgb(186, 85, 211)", mediumpurple: "rgb(147, 112, 219)", mediumseagreen: "rgb(60, 179, 113)", mediumslateblue: "rgb(123, 104, 238)", mediumspringgreen: "rgb(0, 250, 154)", mediumturquoise: "rgb(72, 209, 204)", mediumvioletred: "rgb(199, 21, 133)", midnightblue: "rgb(25, 25, 112)", mintcream: "rgb(245, 255, 250)", mistyrose: "rgb(255, 228, 225)", moccasin: "rgb(255, 228, 181)", navajowhite: "rgb(255, 222, 173)", navy: "rgb(0, 0, 128)", oldlace: "rgb(253, 245, 230)", olive: "rgb(128, 128, 0)", olivedrab: "rgb(107, 142, 35)", orange: "rgb(255, 165, 0)", orangered: "rgb(255, 69, 0)", orchid: "rgb(218, 112, 214)", palegoldenrod: "rgb(238, 232, 170)", palegreen: "rgb(152, 251, 152)", paleturquoise: "rgb(175, 238, 238)", palevioletred: "rgb(219, 112, 147)", papayawhip: "rgb(255, 239, 213)", peachpuff: "rgb(255, 218, 185)", peru: "rgb(205, 133, 63)", pink: "rgb(255, 192, 203)", plum: "rgb(221, 160, 221)", powderblue: "rgb(176, 224, 230)", purple: "rgb(128, 0, 128)", rebeccapurple: "rgb(102, 51, 153)", red: "rgb(255, 0, 0)", rosybrown: "rgb(188, 143, 143)", royalblue: "rgb(65, 105, 225)", saddlebrown: "rgb(139, 69, 19)", salmon: "rgb(250, 128, 114)", sandybrown: "rgb(244, 164, 96)", seagreen: "rgb(46, 139, 87)", seashell: "rgb(255, 245, 238)", sienna: "rgb(160, 82, 45)", silver: "rgb(192, 192, 192)", skyblue: "rgb(135, 206, 235)", slateblue: "rgb(106, 90, 205)", slategray: "rgb(112, 128, 144)", slategrey: "rgb(112, 128, 144)", snow: "rgb(255, 250, 250)", springgreen: "rgb(0, 255, 127)", steelblue: "rgb(70, 130, 180)", tan: "rgb(210, 180, 140)", teal: "rgb(0, 128, 128)", thistle: "rgb(216, 191, 216)", tomato: "rgb(255, 99, 71)", turquoise: "rgb(64, 224, 208)", violet: "rgb(238, 130, 238)", wheat: "rgb(245, 222, 179)", white: "rgb(255, 255, 255)", whitesmoke: "rgb(245, 245, 245)", yellow: "rgb(255, 255, 0)", yellowgreen: "rgb(154, 205, 50)", transparent: "rgba(0, 0, 0, 0)" };
+
+function isColorName (name) {
+    return !!color_names[name];
+}
+
+function getColorByName (name) {
+    return color_names[name];
+}
+
+/* harmony default export */ var ColorNames = ({
+    isColorName,
+    getColorByName 
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/parser.js
+
+
+
+
+
+const color_regexp = /(#(?:[\da-f]{3}){1,2}|rgb\((?:\s*\d{1,3},\s*){2}\d{1,3}\s*\)|rgba\((?:\s*\d{1,3},\s*){3}\d*\.?\d+\s*\)|hsl\(\s*\d{1,3}(?:,\s*\d{1,3}%){2}\s*\)|hsla\(\s*\d{1,3}(?:,\s*\d{1,3}%){2},\s*\d*\.?\d+\s*\)|([\w_\-]+))/gi;
+const color_split = ','
+
+
+
+function parser_matches (str) {
+    const matches = str.match(color_regexp);
+    let result = [];
+
+    if (!matches) {
+        return result;
+    }
+
+    for (var i = 0, len = matches.length; i < len; i++) {
+
+        if (matches[i].indexOf('#') > -1 || matches[i].indexOf('rgb') > -1 || matches[i].indexOf('hsl') > -1) {
+            result.push({ color: matches[i] });
+        } else {
+            var nameColor = ColorNames.getColorByName(matches[i]);
+
+            if (nameColor) {
+                result.push({ color: matches[i], nameColor: nameColor });
+            }
+        }
+    }
+
+    var pos = { next: 0 }
+    result.forEach(item => {
+        const startIndex = str.indexOf(item.color, pos.next);
+
+        item.startIndex = startIndex;
+        item.endIndex = startIndex + item.color.length;
+
+        pos.next = item.endIndex;
+    });
+
+    return result;
+}
+
+function convertMatches (str) {
+    const m = parser_matches(str); 
+
+    m.forEach((it, index) => {
+        str = str.replace(it.color, '@' + index)
+    })
+
+    return { str, matches: m }
+}
+
+
+function convertMatchesArray (str, splitStr = ',') {
+    const ret = convertMatches(str);
+    return ret.str.split(splitStr).map((it, index) => {
+        it = trim(it);
+
+        if (ret.matches[index]) {
+            it = it.replace('@' + index, ret.matches[index].color)
+        }
+
+        return it 
+    })
+}
+
+function reverseMatches (str, matches) {
+    matches.forEach((it, index) => {
+        str = str.replace('@' + index, it.color)
+    })
+
+    return str;
+}
+
+function trim (str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
+
+/**
+ * @method rgb
+ *
+ * parse string to rgb color
+ *
+ * 		color.parse("#FF0000") === { r : 255, g : 0, b : 0 }
+ *
+ * 		color.parse("rgb(255, 0, 0)") == { r : 255, g : 0, b :0 }
+ * 		color.parse(0xff0000) == { r : 255, g : 0, b : 0 }
+ * 		color.parse(0xff000000) == { r : 255, g : 0, b : 0, a: 0 }
+ *
+ * @param {String} str color string
+ * @returns {Object}  rgb object
+ */
+function parse(str) {
+    if (typeof str == 'string') {
+
+        if (ColorNames.isColorName(str)) {
+            str = ColorNames.getColorByName(str);
+        }
+
+        if (str.indexOf("rgb(") > -1) {
+            var arr = str.replace("rgb(", "").replace(")", "").split(",");
+
+            for (var i = 0, len = arr.length; i < len; i++) {
+                arr[i] = parseInt(trim(arr[i]), 10);
+            }
+
+            var obj = { type: 'rgb', r: arr[0], g: arr[1], b: arr[2], a: 1 };
+
+            obj = Object.assign(obj, RGBtoHSL(obj));
+
+            return obj;
+        } else if (str.indexOf("rgba(") > -1) {
+            var arr = str.replace("rgba(", "").replace(")", "").split(",");
+
+            for (var i = 0, len = arr.length; i < len; i++) {
+
+                if (len - 1 == i) {
+                    arr[i] = parseFloat(trim(arr[i]));
+                } else {
+                    arr[i] = parseInt(trim(arr[i]), 10);
+                }
+            }
+
+            var obj = { type: 'rgb', r: arr[0], g: arr[1], b: arr[2], a: arr[3] };
+
+            obj = Object.assign(obj, RGBtoHSL(obj));
+
+            return obj;
+
+        } else if (str.indexOf("hsl(") > -1) {
+            var arr = str.replace("hsl(", "").replace(")", "").split(",");
+
+            for (var i = 0, len = arr.length; i < len; i++) {
+                arr[i] = parseFloat(trim(arr[i]));
+            }
+
+            var obj = { type: 'hsl', h: arr[0], s: arr[1], l: arr[2], a: 1 };
+
+            obj = Object.assign(obj, HSLtoRGB(obj));
+
+            return obj;
+        } else if (str.indexOf("hsla(") > -1) {
+            var arr = str.replace("hsla(", "").replace(")", "").split(",");
+
+            for (var i = 0, len = arr.length; i < len; i++) {
+
+                if (len - 1 == i) {
+                    arr[i] = parseFloat(trim(arr[i]));
+                } else {
+                    arr[i] = parseInt(trim(arr[i]), 10);
+                }
+            }
+
+            var obj = { type: 'hsl', h: arr[0], s: arr[1], l: arr[2], a: arr[3] };
+
+            obj = Object.assign(obj, HSLtoRGB(obj));
+
+            return obj;
+        } else if (str.indexOf("#") == 0) {
+
+            str = str.replace("#", "");
+
+            var arr = [];
+            if (str.length == 3) {
+                for (var i = 0, len = str.length; i < len; i++) {
+                    var char = str.substr(i, 1);
+                    arr.push(parseInt(char + char, 16));
+                }
+            } else {
+                for (var i = 0, len = str.length; i < len; i += 2) {
+                    arr.push(parseInt(str.substr(i, 2), 16));
+                }
+            }
+
+            var obj = { type: 'hex', r: arr[0], g: arr[1], b: arr[2], a: 1 };
+
+            obj = Object.assign(obj, RGBtoHSL(obj));
+
+            return obj;
+        }
+    } else if (typeof str == 'number') {
+        if (0x000000 <= str && str <= 0xffffff) {
+            const r = (str & 0xff0000) >> 16;
+            const g = (str & 0x00ff00) >> 8;
+            const b = (str & 0x0000ff) >> 0;
+
+            var obj = { type: 'hex', r, g, b, a: 1 };
+            obj = Object.assign(obj, RGBtoHSL(obj));
+            return obj;
+        } else if (0x00000000 <= str && str <= 0xffffffff) {
+            const r = (str & 0xff000000) >> 24;
+            const g = (str & 0x00ff0000) >> 16;
+            const b = (str & 0x0000ff00) >> 8;
+            const a = (str & 0x000000ff) / 255;
+
+            var obj = { type: 'hex', r, g, b, a };
+            obj = Object.assign(obj, RGBtoHSL(obj));
+            
+            return obj;
+        }
+    }
+
+    return str;
+
+}
+
+
+function parseGradient (colors) {
+    if (typeof colors == 'string') {
+        colors = convertMatchesArray(colors);
+    }
+
+    colors = colors.map(it => {
+        if (typeof it == 'string') {
+            const ret = convertMatches(it)
+            let arr = trim(ret.str).split(' ');
+
+            if (arr[1]) {
+                if (arr[1].includes('%')) {
+                    arr[1] = parseFloat(arr[1].replace(/%/, ''))/100
+                } else {
+                    arr[1] = parseFloat(arr[1])
+                }
+
+            } else {
+                arr[1] = '*'
+            }
+
+            arr[0] = reverseMatches(arr[0], ret.matches)
+
+            return arr;
+        } else if (Array.isArray(it)) {
+
+            if (!it[1]) {
+                it[1] = '*'
+            } else if (typeof it[1] == 'string') {
+                if (it[1].includes('%')) {
+                    it[1] = parseFloat(it[1].replace(/%/, ''))/100
+                } else {
+                    it[1] = +it[1]
+                }
+            }
+
+            return [...it]; 
+        }
+    })
+
+    const count = colors.filter(it => {
+        return it[1] === '*'
+    }).length
+
+    if (count > 0) {
+        const sum = colors.filter(it => {
+            return it[1] != '*' && it[1] != 1
+        }).map(it => it[1]).reduce((total, cur) => {
+            return total + cur
+        } , 0)
+        
+        const dist = (1 - sum) / count  
+        colors.forEach((it, index) => {
+            if (it[1] == '*' && index > 0) {
+                if (colors.length - 1 == index) {
+                    // it[1] = 1 
+                } else {
+                    it[1] = dist 
+                }
+            }
+        })
+
+    }
+
+    return colors; 
+}
+
+
+/* harmony default export */ var functions_parser = ({
+    matches: parser_matches,
+    convertMatches,
+    convertMatchesArray,
+    reverseMatches,
+    parse,
+    parseGradient,
+    trim,
+    color_regexp,
+    color_split
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/mixin.js
+
+ 
+ 
+
+
+
+/**
+ * @deprecated 
+ * 
+ * instead of this,  use blend function 
+ *  
+ * @param {*} startColor 
+ * @param {*} endColor 
+ * @param {*} t 
+ */
+function interpolateRGB(startColor, endColor, t = 0.5, exportFormat = 'hex') {
+    var obj = {
+        r: round(startColor.r + (endColor.r - startColor.r) * t),
+        g: round(startColor.g + (endColor.g - startColor.g) * t),
+        b: round(startColor.b + (endColor.b - startColor.b) * t),
+        a: round(startColor.a + (endColor.a - startColor.a) * t, 100 )
+    };  
+
+    return formatter_format(obj, obj.a < 1 ? 'rgb' : exportFormat);
+
+}
+
+function mixin_scale(scale, count = 5) {
+    if (!scale) return [];
+
+    if (typeof scale === 'string') {
+        scale = convertMatchesArray(scale);
+    }
+
+    scale = scale || [];
+    var len = scale.length;
+
+    var colors = [];
+    for (var i = 0; i < len - 1; i++) {
+        for (var index = 0; index < count; index++) {
+            colors.push(blend(scale[i], scale[i + 1], (index / count)));
+        }
+
+    }
+    return colors;
+}
+
+function blend(startColor, endColor, ratio = 0.5, format = 'hex') {
+    var s = parse(startColor);
+    var e = parse(endColor);
+
+    return interpolateRGB(s, e, ratio, format);
+}
+
+function mix(startcolor, endColor, ratio = 0.5, format = 'hex') {
+    return blend(startcolor, endColor, ratio, format);
+}
+
+/**
+ * 
+ * @param {Color|String} c 
+ */
+function contrast(c) {
+    c = parse(c);
+    return (Math.round(c.r * 299) + Math.round(c.g * 587) + Math.round(c.b * 114)) / 1000;
+}
+
+function contrastColor (c) {
+    return contrast(c) >= 128 ? 'black' : 'white'
+}
+
+function mixin_gradient(colors, count = 10) {
+    colors = parseGradient(colors);
+
+    let newColors = [] 
+    let maxCount = count - (colors.length - 1)
+    let allCount = maxCount
+
+    for (var i = 1, len = colors.length; i < len; i++) {
+
+        var startColor = colors[i-1][0]
+        var endColor = colors[i][0]
+
+        // if it is second color
+        var rate = i == 1 ? colors[i][1] : colors[i][1] - colors[i-1][1]
+
+        // if it is last color 
+        var colorCount = (i == colors.length - 1) ? allCount : Math.floor(rate * maxCount)
+
+        newColors = newColors.concat(mixin_scale([startColor, endColor], colorCount), [endColor])
+
+        allCount -= colorCount
+    }
+    return newColors;
+}
+
+function scaleHSV(color, target = 'h', count = 9, exportFormat = 'rgb', min = 0, max = 1, dist = 100) {
+    var colorObj = parse(color);
+    var hsv = RGBtoHSV(colorObj);
+    var unit = ((max - min) * dist / count);
+
+    var results = [];
+    for (var i = 1; i <= count; i++) {
+        hsv[target] = Math.abs((dist - unit * i) / dist);
+        results.push(formatter_format(HSVtoRGB(hsv), exportFormat));
+    }
+
+    return results;
+}
+
+function scaleH(color, count = 9, exportFormat = 'rgb', min = 0, max = 360) {
+    return scaleHSV(color, 'h', count, exportFormat, min, max, 1);
+}
+
+function scaleS(color, count = 9, exportFormat = 'rgb', min = 0, max = 1) {
+    return scaleHSV(color, 's', count, exportFormat, min, max, 100);
+}
+
+function scaleV(color, count = 9, exportFormat = 'rgb', min = 0, max = 1) {
+    return scaleHSV(color, 'v', count, exportFormat, min, max, 100);
+}
+
+
+/* predefined scale colors */
+mixin_scale.parula = function (count) {
+    return mixin_scale(['#352a87', '#0f5cdd', '#00b5a6', '#ffc337', '#fdff00'], count);
+};
+
+mixin_scale.jet = function (count) {
+    return mixin_scale(['#00008f', '#0020ff', '#00ffff', '#51ff77', '#fdff00', '#ff0000', '#800000'], count);
+}
+
+mixin_scale.hsv = function (count) {
+    return mixin_scale(['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff', '#ff0000'], count);
+}
+
+mixin_scale.hot = function (count) {
+    return mixin_scale(['#0b0000', '#ff0000', '#ffff00', '#ffffff'], count);
+}
+mixin_scale.pink = function (count) {
+    return mixin_scale(['#1e0000', '#bd7b7b', '#e7e5b2', '#ffffff'], count);
+}
+
+mixin_scale.bone = function (count) {
+    return mixin_scale(['#000000', '#4a4a68', '#a6c6c6', '#ffffff'], count);
+}
+
+mixin_scale.copper = function (count) {
+    return mixin_scale(['#000000', '#3d2618', '#9d623e', '#ffa167', '#ffc77f'], count);
+}
+
+/* harmony default export */ var mixin = ({
+    interpolateRGB,
+    blend,
+    mix,
+    scale: mixin_scale,
+    contrast,
+    contrastColor,
+    gradient: mixin_gradient,
+    scaleHSV,
+    scaleH,
+    scaleS,
+    scaleV
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/Kmeans.js
+function array_equals(v1, v2) {
+    if (v1.length !== v2.length) return false;
+    for (var i = 0, len = v1.length; i < len; ++i) {
+        if (v1[i] !== v2[i]) return false;
+    }
+    return true;
+}
+
+function euclidean(v1, v2) {
+    var total = 0;
+
+    for (var i = 0, len = v1.length; i < len; i++) {
+        total += Math.pow(v2[i] - v1[i], 2);
+    }
+
+    return Math.sqrt(total);
+}
+
+function manhattan(v1, v2) {
+    var total = 0;
+
+    for (var i = 0, len = v1.length; i < len; i++) {
+        total += Math.abs(v2[i] - v1[i]);
+    }
+
+    return total;
+}
+
+function Kmeans_max(v1, v2) {
+    var max = 0;
+    for (var i = 0, len = v1.length; i < len; i++) {
+        max = Math.max(max, Math.abs(v2[i] - v1[i]));
+    }
+
+    return max;
+}
+
+
+
+const distances = {
+    euclidean,
+    manhattan,
+    max: Kmeans_max
+}
+
+const create_random_number = {
+    linear: function (num, count) {
+        var centeroids = [];
+        var start = Math.round(Math.random() * num);
+        var dist = Math.floor(num / count);
+
+        do {
+
+            centeroids.push(start);
+
+            start = (start + dist) % num;
+
+        } while (centeroids.length < count);
+
+
+        return centeroids;
+    },
+
+    shuffle: function (num, count) {
+        var centeroids = [];     
+
+        while (centeroids.length < count) {
+
+            var index = Math.round(Math.random() * num);
+
+            if (centeroids.indexOf(index) == -1) {
+                centeroids.push(index);
+            }
+
+        }
+
+        return centeroids;
+    }
+
+
+}
+
+function randomCentroids(points, k, method = 'linear') {
+
+    var centeroids = create_random_number[method](points.length, k);
+
+
+
+    return centeroids.map(i => {
+        return points[i];
+    })
+
+    // var centeroids = points.slice(0);
+
+    // centeroids.sort(function () {
+    //     return (Math.round(Math.random()) - 0.5);
+    // })
+
+    // return centeroids.slice(0, k); 
+}
+
+function closestCenteroid(point, centeroids, distance) {
+    var min = Infinity, kIndex = 0;
+
+    centeroids.forEach((center, i) => {
+        var dist = distance(point, center);
+
+        if (dist < min) {
+            min = dist;
+            kIndex = i;
+        }
+    })
+
+    return kIndex;
+}
+
+function getCenteroid(assigned) {
+
+    if (!assigned.length) return [];
+
+    // initialize centeroid list 
+    let centeroid = new Array(assigned[0].length);
+    for (var i = 0, len = centeroid.length; i < len; i++) {
+        centeroid[i] = 0;
+    }
+
+    for (var index = 0, len = assigned.length; index < len; index++) {
+        var it = assigned[index];
+
+        var last = (index + 1);
+
+        for (var j = 0, jLen = it.length; j < jLen; j++) {
+            centeroid[j] += (it[j] - centeroid[j]) / last;
+        }
+    }
+
+    centeroid = centeroid.map(it => {
+        return Math.floor(it);
+    })
+
+    return centeroid;
+}
+
+function unique_array(arrays) {
+    return arrays;
+    var set = {};
+    var count = arrays.length;
+    let it = null;
+    while (count--) {
+        it = arrays[count];
+        set[JSON.stringify(it)] = it;
+    }
+
+    return Object.values(set);
+}
+
+function splitK(k, points, centeroids, distance) {
+    let assignment = new Array(k);
+
+    for (var i = 0; i < k; i++) {
+        assignment[i] = [];
+    }
+
+    for (var idx = 0, pointLength = points.length; idx < pointLength; idx++) {
+        var point = points[idx];
+        var index = closestCenteroid(point, centeroids, distance);
+        assignment[index].push(point);
+    }
+
+    return assignment;
+}
+
+function setNewCenteroid(k, points, assignment, centeroids, movement, randomFunction) {
+
+
+    for (var i = 0; i < k; i++) {
+        let assigned = assignment[i];
+
+        const centeroid = centeroids[i];
+        let newCenteroid = new Array(centeroid.length);
+
+        if (assigned.length > 0) {
+            newCenteroid = getCenteroid(assigned);
+        } else {
+            var idx = Math.floor(randomFunction() * points.length);
+            newCenteroid = points[idx];
+        }
+
+        if (array_equals(newCenteroid, centeroid)) {
+            movement = false;
+        } else {
+            movement = true;
+        }
+
+        centeroids[i] = newCenteroid;
+    }
+
+    return movement;
+}
+
+function kmeans(points, k, distanceFunction, period = 10, initialRandom = 'linear') {
+    points = unique_array(points);
+
+    k = k || Math.max(2, Math.ceil(Math.sqrt(points.length / 2)));
+
+    let distance = distanceFunction || 'euclidean';
+    if (typeof distance == 'string') {
+        distance = distances[distance];
+    }
+
+    var rng_seed = 0;
+    var random = function () {
+        rng_seed = (rng_seed * 9301 + 49297) % 233280;
+        return rng_seed / 233280;
+    };
+
+    let centeroids = randomCentroids(points, k, initialRandom);
+
+    let movement = true;
+    let iterations = 0;
+    while (movement) {
+        const assignment = splitK(k, points, centeroids, distance);
+
+        movement = setNewCenteroid(k, points, assignment, centeroids, false, random);
+
+        iterations++;
+
+        if (iterations % period == 0) {
+            break;
+        }
+
+    }
+
+    return centeroids;
+}
+
+/* harmony default export */ var Kmeans = (kmeans);
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/Canvas.js
+
+
+function each(len, callback) {
+    for (var i = 0; i < len; i += 4) {
+        callback(i);
+    }
+}
+
+function pack(bitmap, callback) {
+
+    each(bitmap.pixels.length, (i) => {
+        callback(bitmap.pixels, i)
+    })
+}
+
+const Canvas = {
+
+    create (width, height) {
+        var canvas = document.createElement('canvas');
+        canvas.width = width || 0;
+        canvas.height = height || 0;
+
+        return canvas; 
+    },
+
+    drawPixels(bitmap) {
+        var canvas = this.create(bitmap.width, bitmap.height);
+
+        var context = canvas.getContext('2d');
+        var imagedata = context.getImageData(0, 0, canvas.width, canvas.height);
+
+        imagedata.data.set(bitmap.pixels);
+
+        context.putImageData(imagedata, 0, 0);
+
+        return canvas;
+    },
+
+    createHistogram (width, height, histogram, callback, opt = { black: true, red: false, green : false, blue: false}) {
+        var canvas = this.create(width, height)
+        const context = canvas.getContext('2d')
+        context.clearRect(0, 0, width, height)
+        context.fillStyle = "white"
+        context.fillRect(0, 0, width, height)
+        context.globalAlpha = 0.7
+
+        var omit = { black: false }
+        if (opt.black) {omit.black = false  } else {omit.black = true}
+        if (opt.red) {omit.red = false  } else {omit.red = true}
+        if (opt.green) {omit.green = false  } else {omit.green = true}
+        if (opt.blue) {omit.blue = false  } else {omit.blue = true} 
+
+
+        Object.keys(histogram).forEach(color => {
+
+            if (!omit[color]) {
+
+                var array = histogram[color]
+                const ymax = Math.max.apply(Math, array)
+                const unitWith = width / array.length 
+    
+                context.fillStyle = color
+                array.forEach((it, index) => {
+                    const currentHeight = height * (it / ymax) 
+                    const x = index * unitWith 
+        
+                    context.fillRect(x, height - currentHeight, unitWith, currentHeight);
+                });
+            }
+
+        })
+
+
+        if (typeof callback == 'function') callback(canvas)
+
+    },
+
+    getHistogram (bitmap) {
+        let black = new Array(256)
+        let red = new Array(256)
+        let green = new Array(256)
+        let blue = new Array(256)
+        for(var i = 0; i < 256; i++) {
+            black[i] = 0
+            red[i] = 0
+            green[i] = 0
+            blue[i] = 0
+        }
+
+        pack(bitmap, (pixels, i) => {
+            // gray scale 
+            const grayIndex = Math.round(util_Color.brightness(pixels[i], pixels[i+1], pixels[i+2]))
+            black[grayIndex]++
+
+            red[pixels[i]]++
+            green[pixels[i+1]]++
+            blue[pixels[i+2]]++
+
+        })
+
+        return {black, red, green, blue } 
+    },
+
+    getBitmap(bitmap, area) {
+        var canvas = this.drawPixels(bitmap);
+
+        var context = canvas.getContext('2d');
+        var pixels = context.getImageData(area.x || 0, area.y || 0, area.width || canvas.width, area.height || canvas.height).data;
+
+        return { pixels, width: area.width, height: area.height };
+    },
+
+    putBitmap(bitmap, subBitmap, area) {
+
+        var canvas = this.drawPixels(bitmap);
+        var subCanvas = this.drawPixels(subBitmap);
+
+        var context = canvas.getContext('2d');
+        context.drawImage(subCanvas, area.x, area.y);
+
+        bitmap.pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+
+        return bitmap;
+    }
+
+}
+
+/* harmony default export */ var util_Canvas = (Canvas);
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/ImageLoader.js
+
+
+
+class ImageLoader_ImageLoader {
+    constructor(url, opt = {}) {
+        this.isLoaded = false; 
+        this.imageUrl = url; 
+        this.opt = opt;
+        this.initialize();
+    }
+
+    initialize () {
+        this.canvas = this.createCanvas();
+        this.context = this.canvas.getContext('2d');
+    }
+
+    createCanvas () {
+        return document.createElement('canvas');
+    }
+
+    load (callback) {
+        this.loadImage(callback);
+    }
+
+    loadImage (callback) {
+        var ctx = this.context; 
+        this.newImage = new Image();
+        const img = this.newImage
+        img.onload = () => {
+            var ratio = img.height / img.width;
+
+            if (this.opt.canvasWidth && this.opt.canvasHeight) {
+                this.canvas.width = this.opt.canvasWidth;
+                this.canvas.height = this.opt.canvasHeight;
+            } else {
+                this.canvas.width = this.opt.maxWidth ? this.opt.maxWidth : img.width;
+                this.canvas.height = this.canvas.width * ratio; 
+            }
+
+            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, this.canvas.width, this.canvas.height);
+            this.isLoaded = true; 
+            callback && callback();
+        };
+
+        this.getImageUrl(function (url) {
+            img.src = url;
+        });
+    }
+
+    load (callback) {
+        this.newImage = new Image();
+        const img = this.newImage
+        img.onload = () => {
+            this.isLoaded = true; 
+            callback && callback();
+        };
+
+        this.getImageUrl(function (url) {
+            img.src = url;
+        });
+    }
+
+    getImageUrl (callback) {
+        if (typeof this.imageUrl == 'string') {
+            return callback(this.imageUrl);
+        } else if (this.imageUrl instanceof Blob) {
+            var reader = new FileReader();
+
+            reader.onload = function (ev) {
+                callback (ev.target.result);
+            }
+
+            reader.readAsDataURL(this.imageUrl);
+        }
+    }
+
+    getRGBA (r, g, b, a) {
+        return [r, g, b, a];
+    }
+
+    toArray(filter, callback, opt = {}) {
+        var imagedata = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        var width = imagedata.width;
+        var height = imagedata.height; 
+
+        var pixels = new Uint8ClampedArray(imagedata.data);
+
+        let bitmap = {  pixels, width, height }
+
+        if (!filter) {
+            filter = (function () {
+                return (bitmap, done) => {
+                    done(bitmap)
+                }
+            })()
+        }
+
+        filter(bitmap, function (newBitmap) {
+            var tmpCanvas = util_Canvas.drawPixels(newBitmap);
+
+            if (opt.returnTo == 'canvas') {
+                callback(tmpCanvas)
+            } else {
+                callback(tmpCanvas.toDataURL(opt.outputFormat || 'image/png'))
+            }
+
+        }, opt)
+    } 
+
+    toHistogram (opt) {
+        var imagedata = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        var width = imagedata.width;
+        var height = imagedata.height; 
+
+        var pixels = new Uint8ClampedArray(imagedata.data);
+
+        let bitmap = { pixels, width, height }        
+
+        return util_Canvas.getHistogram(bitmap)
+    }
+
+    toRGB () {
+        var imagedata = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+
+        var rgba = imagedata.data;
+        var results = [];
+        for (var i = 0, len = rgba.length; i < len; i += 4){
+            results[results.length] = [rgba[i + 0],rgba[i + 1],rgba[i + 2],rgba[i + 3]];
+        }
+
+        return results; 
+    }
+
+
+}
+
+/* harmony default export */ var util_ImageLoader = (ImageLoader_ImageLoader);
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/Matrix.js
+const CONSTANT = {
+
+    identity () {
+        return [
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1 
+        ]
+    },
+
+    stretching (k) {
+        return [
+            k, 0, 0,
+            0, 1, 0,
+            0, 0, 1
+        ]
+    },
+
+    squeezing (k) {
+        return [
+            k, 0, 0,
+            0, 1/k, 0,
+            0, 0, 1
+        ]
+    },
+
+    scale (sx = 1, sy = 1) {
+        sx = sx || sx === 0 ? sx : 1;
+        sy = sy || sy === 0 ? sy : 1;
+        return [
+            sx, 0, 0,
+            0, sy, 0,
+            0, 0, 1
+        ]
+    },
+
+    scaleX (sx) {
+        return this.scale(sx)
+    },
+
+    scaleY (sy) {
+        return this.scale(1, sy)
+    },    
+
+    translate (tx, ty) {
+        return [
+            1, 0, tx,
+            0, 1, ty,
+            0, 0, 1
+        ]
+    },
+
+    rotate (angle){
+        const r = this.radian(angle)
+        return [
+            Math.cos(r), -Math.sin(r), 0,
+            Math.sin(r), Math.cos(r), 0,
+            0, 0, 1
+        ]
+    },
+
+    rotate90 () {
+        return [
+            0, -1, 0,
+            1, 0, 0,
+            0, 0, 1
+        ]
+    },
+
+    rotate180 () {
+        return [
+            -1, 0, 0,
+            0, -1, 0,
+            0, 0, 1
+        ]
+    },    
+
+    rotate270 () {
+        return [
+            0, 1, 0,
+            -1, 0, 0,
+            0, 0, 1
+        ]
+    },        
+
+    radian (degree) {
+        return degree * Math.PI / 180
+    },
+
+    skew (degreeX, degreeY) { 
+        const radianX = this.radian(degreeX);
+        const radianY = this.radian(degreeY);
+        return [
+            1, Math.tan(radianX), 0, 
+            Math.tan(radianY), 1, 0,
+            0, 0, 1 
+        ]
+    },
+
+    skewX (degreeX) {
+        const radianX = this.radian(degreeX);
+        
+        return [
+            1, Math.tan(radianX), 0, 
+            0, 1, 0,
+            0, 0, 1 
+        ]
+    },
+
+    skewY (degreeY) {
+        const radianY = this.radian(degreeY);
+        
+        return [
+            1, 0, 0, 
+            Math.tan(radianY), 1, 0,
+            0, 0, 1 
+        ]
+    },    
+
+    shear1 (angle) {
+        return [
+            1, -Math.tan(this.radian(angle)/2), 0,
+            0, 1, 0,
+            0, 0, 1
+        ]
+    }, 
+    shear2 (angle) {
+        return [
+            1, 0, 0,
+            Math.sin(this.radian(angle)), 1, 0,
+            0, 0, 1
+        ]
+    }
+}
+
+const Matrix_Matrix = {
+    CONSTANT,
+
+    radian (angle) {
+        return CONSTANT.radian(angle)
+    },
+
+    multiply (A, C) {        
+        // console.log(JSON.stringify(A), JSON.stringify(C))
+        return [   
+            A[0] * C[0] + A[1] * C[1] + A[2] * C[2], 
+            A[3] * C[0] + A[4] * C[1] + A[5] * C[2],
+            A[6] * C[0] + A[7] * C[1] + A[8] * C[2]
+        ]
+    },
+
+    identity (B) {
+        return this.multiply(CONSTANT.identity(), B)
+    },
+
+    translate (x, y, B) {
+        return this.multiply(
+            CONSTANT.translate(x, y),
+            B
+        )
+    },
+
+    rotate (angle, B) {
+        return this.multiply(
+            CONSTANT.rotate(angle),
+            B
+        )
+    },
+
+    shear1 (angle, B) {
+        return this.multiply(
+            CONSTANT.shear1(angle),
+            B
+        )
+    },
+
+    shear2 (angle, B) {
+        return this.multiply(
+            CONSTANT.shear2(angle),
+            B
+        )
+    },    
+
+    rotateShear(angle, B) {
+
+        let arr = B 
+
+        arr = this.shear1(angle, arr)
+        arr = this.shear2(angle, arr)
+        arr = this.shear1(angle, arr)
+
+        return arr
+    }
+}
+
+/* harmony default export */ var util_Matrix = (Matrix_Matrix); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/crop.js
+
+
+function crop (startX = 0, startY = 0, width, height) {
+
+    const newBitmap = createBitmap(width * height * 4, width, height)
+
+    return function (bitmap, done, opt = {}) {
+        for (var y = startY, realY = 0; y < height; y++, realY++) {
+            for (var x = startX, realX = 0; x < width; x++, realX++) {
+                newBitmap.pixels[realY * width * realX] = bitmap.pixels[y * width * x]
+            }
+        }
+
+        done(newBitmap);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/resize.js
+
+// Image manupulate 
+function resize (dstWidth, dstHeight) {
+    return function (bitmap, done, opt = {}) {
+        
+        var c = util_Canvas.drawPixels(bitmap);
+        var context = c.getContext('2d');
+
+        c.width = dstWidth;
+        c.height = dstHeight;
+
+        done({
+            pixels: new Uint8ClampedArray(context.getImageData(0, 0, dstWidth, dstHeight).data),
+            width: dstWidth,
+            height: dstHeight
+        })
+    } 
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/flipV.js
+  
+function flipV () {
+    return function (bitmap, done, opt = {}) {
+
+        const width = bitmap.width
+        const height = bitmap.height 
+        const isCenter = height % 2 == 1 ? 1 : 0 
+
+        const halfHeight = isCenter ? Math.floor(height / 2) : height / 2 ;
+
+        for (var y = 0; y < halfHeight; y++) {
+            for (var x = 0; x < width; x++) {
+
+                var startIndex = (y * width + x) << 2 
+                var endIndex = ((height -1 - y) * width + x ) << 2
+                swapColor(bitmap.pixels, startIndex, endIndex)
+
+            }
+        }
+
+        done(bitmap);
+    }
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/flipH.js
+
+function flipH () {
+    return function (bitmap, done, opt = {}) {
+
+        const width = bitmap.width
+        const height = bitmap.height 
+        const isCenter = width % 2 == 1 ? 1 : 0 
+
+        const halfWidth = isCenter ? Math.floor(width / 2) : width / 2 ;
+
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < halfWidth; x++) {
+
+                var startIndex = (y * width + x) << 2 
+                var endIndex = (y * width +  (width -1 - x) ) << 2
+                swapColor(bitmap.pixels, startIndex, endIndex)
+
+            }
+        }
+
+        done(bitmap);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/rotateDegree.js
+
+
+
+function rotateDegree(angle, cx = 'center', cy = 'center') {
+    // const r = F.radian(angle)
+
+    return function (bitmap, done, opt = {}) {
+        var newBitmap = createBitmap(bitmap.pixels.length, bitmap.width, bitmap.height)
+        const width = bitmap.width 
+        const height = bitmap.height 
+
+        if (cx == 'center') {
+            cx = Math.floor(width / 2); 
+        }
+
+        if (cy == 'center') {
+            cy = Math.floor(height/ 2);
+        }
+
+        const translateMatrix = util_Matrix.CONSTANT.translate(-cx, -cy)
+        const translateMatrix2 = util_Matrix.CONSTANT.translate(cx, cy)
+        const shear1Matrix = util_Matrix.CONSTANT.shear1(angle)
+        const shear2Matrix = util_Matrix.CONSTANT.shear2(angle)
+
+        packXY((pixels, i, x, y) => {
+            // console.log(x, y, i)
+            let arr = util_Matrix.multiply(translateMatrix, [x, y, 1])
+            
+            arr = util_Matrix.multiply(shear1Matrix, arr).map(Math.round)
+            arr = util_Matrix.multiply(shear2Matrix, arr).map(Math.round)
+            arr = util_Matrix.multiply(shear1Matrix, arr).map(Math.round)
+            arr = util_Matrix.multiply(translateMatrix2, arr)
+ 
+            const [x1, y1] = arr
+
+            if (x1 < 0) return;   
+            if (y1 < 0) return; 
+            if (x1 > width-1) return;
+            if (y1 > height-1) return; 
+
+            var endIndex = (y1 * width + x1) << 2   //  bit 2 shift is  * 4  
+
+            fillPixelColor(pixels, endIndex, bitmap.pixels, i)
+
+        })(newBitmap, function () {
+            done(newBitmap)
+        }, opt)
+    }
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/rotate.js
+
+
+
+
+function rotate (degree = 0) {
+    degree = functions_parseParamNumber(degree)     
+    degree = degree % 360
+    return function (bitmap, done, opt = {}) {
+
+        if (degree == 0) return bitmap
+
+        if (degree == 90 || degree == 270) {
+            var newBitmap = createBitmap(bitmap.pixels.length, bitmap.height, bitmap.width)
+        } else if (degree == 180) {
+            var newBitmap = createBitmap(bitmap.pixels.length, bitmap.width, bitmap.height)
+        } else {
+            return rotateDegree(degree)(bitmap, done, opt)
+        }
+        packXY((pixels, i, x, y) => {
+
+            if (degree == 90) {
+                var endIndex = (x * newBitmap.width + (newBitmap.width -1 - y) ) << 2  //  << 2 is equals to (multiply)* 4 
+            } else if (degree == 270) {
+                var endIndex = ( (newBitmap.height -1 -x) * newBitmap.width + y ) << 2
+            } else if (degree == 180) {
+                var endIndex = ((newBitmap.height -1 -y) * newBitmap.width + (newBitmap.width -1 -x)) << 2
+            }
+
+            fillPixelColor(newBitmap.pixels, endIndex, bitmap.pixels, i)
+        })(bitmap, function () {
+            done(newBitmap)
+        }, opt)
+    }
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/histogram.js
+
+
+function histogram (type = 'gray', points = []) {
+    var $realPoints = [] 
+    
+    for(var i = 0; i < points.length - 1; i++) {
+        var sp = points[i] 
+        var ep = points[i+1] 
+
+        var distX = ep[0] - sp[0]
+        var distY = ep[1] - sp[1]
+
+        var rate = distY / distX
+
+        for(var realIndex = 0, start = sp[0]; realIndex < distX; realIndex++, start++ ) {
+            $realPoints[start] = sp[1] + realIndex * rate
+        }
+    }
+
+    $realPoints[255] = 255 
+
+    if (type === 'red') {
+        return functions_pixel(() => {
+            $r = $realPoints[$r];
+        }, { }, { $realPoints })    
+    } else if (type === 'green') {
+        return functions_pixel(() => {
+            $g = $realPoints[$g];
+        }, { }, { $realPoints }) 
+    } else if (type === 'blue') {
+        return functions_pixel(() => {
+            $b = $realPoints[$b];
+        }, { }, { $realPoints })            
+    } else {
+        return functions_pixel(() => {
+
+            const l = Color.RGBtoYCrCb($r, $g, $b);
+            const c = Color.YCrCbtoRGB(clamp($realPoints[clamp(l.y)]), l.cr, l.cb, 0)
+            $r = c.r
+            $g = c.g 
+            $b = c.b 
+
+        }, { }, { $realPoints })
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/image/index.js
+
+
+
+
+
+
+
+
+/* harmony default export */ var filter_image = ({
+    crop: crop,
+    resize: resize,
+    flipH: flipH,
+    flipV: flipV,
+    rotate: rotate,
+    rotateDegree: rotateDegree,
+    histogram: histogram,
+    'rotate-degree' : rotateDegree
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/bitonal.js
+
+
+
+
+function bitonal(darkColor, lightColor, threshold = 100) {
+    let $darkColor = util_Color.parse(darkColor);
+    let $lightColor = util_Color.parse(lightColor);
+    let $threshold = threshold
+
+    return functions_pixel(() => {
+        const thresholdColor = ( $r + $g + $b ) <= $threshold ? $darkColor : $lightColor
+
+        $r = thresholdColor.r
+        $g = thresholdColor.g 
+        $b = thresholdColor.b 
+    }, {
+        $threshold
+    }, {
+        $darkColor,
+        $lightColor
+    })
+}
+
+
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/brightness.js
+
+
+/*
+ * @param {Number} amount  -100..100  ,  value < 0  is darken, value > 0 is brighten 
+ */
+function brightness_brightness (amount = 1) {
+    amount = functions_parseParamNumber(amount)    
+    const $C = Math.floor(255 * (amount / 100));
+
+    return functions_pixel(() => {
+        $r += $C 
+        $g += $C 
+        $b += $C 
+    },{ $C })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/brownie.js
+
+
+function brownie () {
+
+    const $matrix = [
+        0.5997023498159715,0.34553243048391263,-0.2708298674538042,0,
+        -0.037703249837783157,0.8609577587992641,0.15059552388459913,0,
+        0.24113635128153335,-0.07441037908422492,0.44972182064877153,0,
+        0,0,0,1
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/clip.js
+
+
+/**
+ * 
+ * @param {Number} amount from 0 to 100 
+ */
+function clip_clip (amount = 0) {
+    amount = functions_parseParamNumber(amount)    
+    const $C = Math.abs(amount) * 2.55
+
+    return functions_pixel(() => {
+
+        $r = ($r > 255 - $C) ? 255 : 0
+        $g = ($g > 255 - $C) ? 255 : 0
+        $b = ($b > 255 - $C) ? 255 : 0
+
+    }, { $C })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/contrast.js
+
+/**
+ * 
+ * @param {*} amount   min = -128, max = 128 
+ */
+function contrast_contrast(amount = 0) {
+    amount = functions_parseParamNumber(amount)       
+    const $C = Math.max((128 + amount) / 128, 0);
+
+    return functions_pixel(() => {
+        $r *= $C
+        $g *= $C
+        $b *= $C
+    }, { $C })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/gamma.js
+
+
+function gamma (amount = 1) {
+    const $C = functions_parseParamNumber(amount)    
+    return functions_pixel(() => {
+        $r = Math.pow($r / 255, $C) * 255
+        $g = Math.pow($g / 255, $C) * 255
+        $b = Math.pow($b / 255, $C) * 255
+    }, { $C })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/gradient.js
+
+
+/**
+ * F.gradient('red', 'blue', 'yellow', 'white', 10)
+ * F.gradient('red, blue, yellow, white, 10')
+ */
+function gradient_gradient () {
+    // 전체 매개변수 기준으로 파싱 
+    // 색이 아닌 것 기준으로 scale 변수로 인식 
+
+    let params = [...arguments];
+
+    if (params.length === 1 && typeof params[0] === 'string') {
+        params = util_Color.convertMatchesArray(params[0])
+    } 
+
+    params = params.map(arg => {
+        const res = util_Color.matches(arg)
+
+        if (!res.length) {
+            return { type: 'scale', value : arg }
+        }
+
+        return { type: 'param', value : arg }
+    })
+
+    let $scale = params.filter(it => { return it.type == 'scale' })[0]
+    $scale = $scale ? +$scale.value : 256
+
+    params = params.filter(it => { return it.type == 'param' }).map( it => {
+        return it.value 
+    }).join(',')
+
+    let $colors = util_Color.gradient(params, $scale).map(c => { 
+        const { r, g, b, a } = util_Color.parse(c)
+        return  {r, g, b, a} 
+    })
+
+    return functions_pixel(() => {
+        const colorIndex = functions_clamp(Math.ceil($r * 0.2126 + $g * 0.7152 + $b * 0.0722))
+        const newColorIndex = functions_clamp(Math.floor(colorIndex * ($scale / 256)))
+        const color = $colors[newColorIndex]
+
+        $r = color.r 
+        $g = color.g 
+        $b = color.b 
+        $a = functions_clamp(Math.floor(color.a * 256))
+    }, { }, { $colors, $scale })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/grayscale.js
+
+
+function grayscale (amount) { 
+    amount = functions_parseParamNumber(amount)          
+    let C = amount / 100;
+
+    if (C > 1) C = 1; 
+
+    const $matrix = [
+        (0.2126 + 0.7874 * (1 - C)), (0.7152 - 0.7152 * (1 - C)), (0.0722 - 0.0722 * (1 - C)), 0,
+        (0.2126 - 0.2126 * (1 - C)), (0.7152 + 0.2848 * (1 - C)), (0.0722 - 0.0722 * (1 - C)), 0,
+        (0.2126 - 0.2126 * (1 - C)), (0.7152 - 0.7152 * (1 - C)), (0.0722 + 0.9278 * (1 - C)), 0,
+        0, 0, 0, 1
+    ]
+    
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a
+    }, {
+        $matrix 
+    });
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/hue.js
+
+
+/*
+ * @param {Number} amount   0..360  
+ */
+function hue_hue (amount = 360) {
+    const $C = functions_parseParamNumber(amount)          
+    return functions_pixel(() => {
+        var hsv = Color.RGBtoHSV($r, $g, $b);
+
+        // 0 ~ 360 
+        var h = hsv.h;
+        h += Math.abs($amount)
+        h = h % 360
+        hsv.h = h
+
+        var rgb = Color.HSVtoRGB(hsv);
+
+        $r = rgb.r
+        $g = rgb.g
+        $b = rgb.b
+    }, {
+        $C
+    })
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/invert.js
+
+function invert (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    const $C = amount / 100; 
+
+    return functions_pixel(() => {
+        $r = (255 - $r) * $C
+        $g = (255 - $g) * $C
+        $b = (255 - $b) * $C
+    }, {
+        $C
+    })
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/kodachrome.js
+
+
+function kodachrome () {
+
+    const $matrix = [
+        1.1285582396593525,-0.3967382283601348,-0.03992559172921793,0,
+        -0.16404339962244616,1.0835251566291304,-0.05498805115633132,0,
+        -0.16786010706155763,-0.5603416277695248,1.6014850761964943,0,
+        0,0,0,1
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/matrix.js
+
+
+function matrix_matrix (
+    $a = 0, $b = 0, $c = 0, $d = 0, 
+    $e = 0, $f = 0, $g = 0, $h = 0, 
+    $i = 0, $j = 0, $k = 0, $l = 0, 
+    $m = 0, $n = 0, $o = 0, $p = 0
+) {
+
+    const $matrix = [
+        $a, $b, $c, $d, 
+        $e, $f, $g, $h, 
+        $i, $j, $k, $l, 
+        $m, $n, $o, $p
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/noise.js
+
+
+/**
+ * 
+ * @param {Number} amount 1..100
+ */
+function noise (amount = 1) {
+    const $C = functions_parseParamNumber(amount)    
+    return functions_pixel(() => {
+        const C = Math.abs($C) * 5
+        const min = -C
+        const max = C 
+        const noiseValue = Math.round(min + (Math.random() * (max - min)))
+
+        $r += noiseValue
+        $g += noiseValue
+        $b += noiseValue
+    }, {
+        $C
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/opacity.js
+
+
+
+function opacity_opacity (amount = 100) {
+    amount = functions_parseParamNumber(amount)   
+    const $C = amount / 100; 
+
+    return functions_pixel(() => {
+        $a *= $C 
+    }, { $C })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/polaroid.js
+
+
+function polaroid () {
+
+    const $matrix = [
+        1.438,-0.062,-0.062,0,
+        -0.122,1.378,-0.122,0,
+        -0.016,-0.016,1.483,0,
+        0,0,0,1
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/saturation.js
+
+
+/*
+ * @param {Number} amount  -100..100 
+ */
+function saturation (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    const C = amount / 100 
+    const L = 1 - Math.abs(C);
+
+    const $matrix = [
+        L, 0, 0, 0,
+        0, L, 0, 0,
+        0, 0, L, 0,
+        0, 0, 0, L
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix 
+    })
+
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/sepia.js
+
+
+/*
+ * @param {Number} amount  0..1 
+ */
+function sepia (amount = 1) {
+    let C = functions_parseParamNumber(amount);
+    if (C > 1) C = 1; 
+
+    const $matrix = [
+        (0.393 + 0.607 * (1 - C)), (0.769 - 0.769 * (1 - C)), (0.189 - 0.189 * (1 - C)), 0,
+        (0.349 - 0.349 * (1 - C)), (0.686 + 0.314 * (1 - C)), (0.168 - 0.168 * (1 - C)), 0,
+        (0.272 - 0.272 * (1 - C)), (0.534 - 0.534 * (1 - C)), (0.131 + 0.869 * (1 - C)), 0,
+        0, 0, 0, 1
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/shade.js
+
+
+function shade(redValue = 1, greenValue = 1, blueValue = 1) {
+    const $redValue = functions_parseParamNumber(redValue)        
+    const $greenValue = functions_parseParamNumber(greenValue)        
+    const $blueValue = functions_parseParamNumber(blueValue)      
+
+    return functions_pixel(() => {
+        $r *= $redValue
+        $g *= $greenValue
+        $b *= $blueValue
+    }, {
+        $redValue,
+        $greenValue,
+        $blueValue
+    })
+
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/shift.js
+
+
+function shift () {
+
+    const $matrix = [
+        1.438,-0.062,-0.062,0,
+        -0.122,1.378,-0.122,0,
+        -0.016,-0.016,1.483,0,
+        0,0,0,1
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/solarize.js
+
+/**
+ * change the relative darkness of (a part of an image) by overexposure to light.
+ * @param {*} r 
+ * @param {*} g 
+ * @param {*} b 
+ */
+function solarize (redValue, greenValue, blueValue) {
+    const $redValue = functions_parseParamNumber(redValue)    
+    const $greenValue = functions_parseParamNumber(greenValue)    
+    const $blueValue = functions_parseParamNumber(blueValue)    
+    return functions_pixel(() => {
+        $r = ($r < $redValue) ? 255 - $r: $r
+        $g = ($g < $greenValue) ? 255 - $g: $g
+        $b = ($b < $blueValue) ? 255 - $b: $b
+    }, {
+        $redValue, $greenValue, $blueValue
+    })
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/technicolor.js
+
+
+function technicolor () {
+
+    const $matrix = [
+        1.9125277891456083,-0.8545344976951645,-0.09155508482755585,0,
+        -0.3087833385928097,1.7658908555458428,-0.10601743074722245,0,
+        -0.231103377548616,-0.7501899197440212,1.847597816108189,0,
+        0,0,0,1
+    ]
+
+    return functions_pixel(() => {
+        $r = $matrix[0] * $r + $matrix[1] * $g + $matrix[2] * $b + $matrix[3] * $a
+        $g = $matrix[4] * $r + $matrix[5] * $g + $matrix[6] * $b + $matrix[7] * $a
+        $b = $matrix[8] * $r + $matrix[9] * $g + $matrix[10] * $b + $matrix[11] * $a
+        $a = $matrix[12] * $r + $matrix[13] * $g + $matrix[14] * $b + $matrix[15] * $a        
+    }, {
+        $matrix
+    })
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/threshold-color.js
+
+
+
+function thresholdColor (scale = 200, amount = 100, hasColor = true) {
+    const $scale = functions_parseParamNumber(scale)    
+    amount = functions_parseParamNumber(amount)    
+    const $C = amount / 100;
+    const $hasColor = hasColor
+
+    return functions_pixel(() => {
+        // refer to Color.brightness 
+        const v = ($C * Math.ceil($r * 0.2126 + $g * 0.7152 + $b * 0.0722) ) >= $scale ? 255 : 0;
+
+        if ($hasColor) {
+
+            if (v == 0) {
+                $r = 0 
+                $g = 0 
+                $b = 0
+            }
+            
+        } else {
+            const value = Math.round(v)
+            $r = value 
+            $g = value 
+            $b = value 
+        }
+        
+    }, {
+        $C, $scale, $hasColor
+    })
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/threshold.js
+
+/*
+ * @param {Number} amount  0..100 
+ */
+function threshold_threshold (scale = 200, amount = 100) {
+    return thresholdColor(scale, amount, false)
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/tint.js
+
+
+
+/* harmony default export */ var tint = (function (redTint = 1, greenTint = 1, blueTint = 1) {
+    const $redTint = parseParamNumber(redTint)       
+    const $greenTint = parseParamNumber(greenTint)       
+    const $blueTint = parseParamNumber(blueTint)       
+    return functions_pixel(() => {
+
+        $r += (255 - $r) * $redTint
+        $g += (255 - $g) * $greenTint
+        $b += (255 - $b) * $blueTint
+
+    }, {
+        $redTint, 
+        $greenTint,
+        $blueTint
+    })
+
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/pixel/index.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ var filter_pixel = ({
+    bitonal: bitonal, 
+    brightness: brightness_brightness,
+    brownie: brownie,
+    clip: clip_clip,
+    contrast: contrast_contrast,
+    gamma: gamma,
+    gradient: gradient_gradient,
+    grayscale: grayscale,
+    hue: hue_hue, 
+    invert: invert,
+    kodachrome: kodachrome,
+    matrix: matrix_matrix,
+    noise: noise, 
+    opacity: opacity_opacity,
+    polaroid: polaroid,
+    saturation: saturation,
+    sepia: sepia,
+    shade: shade,
+    shift: shift,
+    solarize: solarize,
+    technicolor: technicolor,
+    threshold: threshold_threshold,
+    'threshold-color': thresholdColor,
+    tint: tint
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/blur.js
+
+
+/* harmony default export */ var matrix_blur = (function (amount = 3, hasAlphaChannel = true) {
+
+    amount = functions_parseParamNumber(amount)
+
+    return convolution(createBlurMatrix(amount))
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/emboss.js
+
+/*
+ * carve, mold, or stamp a design on (a surface) so that it stands out in relief.
+ * 
+ * @param {Number} amount   0.0 .. 4.0 
+ */
+function emboss (amount = 4) {
+    amount = functions_parseParamNumber(amount)    
+    return convolution([
+        amount * (-2.0), -amount, 0.0,
+        -amount, 1.0, amount,
+        0.0, amount, amount * 2.0,
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/gaussian-blur.js
+
+
+function gaussianBlur (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    const C = amount / 100; 
+
+    return convolution(functions_weight([
+        1, 2, 1,
+        2, 4, 2,
+        1, 2, 1
+    ], (1/16) * C ));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/gaussian-blur-5x.js
+
+
+function gaussianBlur5x (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    const C = amount / 100;
+    return convolution(functions_weight([
+        1, 4, 6, 4, 1,
+        4, 16, 24, 16, 4,
+        6, 24, 36, 24, 6,
+        4, 16, 24, 16, 4,
+        1, 4, 6, 4, 1
+    ], (1/256) * C ));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/grayscale2.js
+
+
+function grayscale2 (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    return convolution(functions_weight([
+        0.3, 0.3, 0.3, 0, 0,
+        0.59, 0.59, 0.59, 0, 0,
+        0.11, 0.11, 0.11, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0
+    ], amount / 100));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/normal.js
+
+
+function identity () {
+    return convolution([
+        0, 0, 0,
+        0, 1, 0,
+        0, 0, 0
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/kirsch-horizontal.js
+
+
+function kirschHorizontal (count = 1) {
+    count = functions_parseParamNumber(count)    
+    return convolution([
+        5, 5, 5,
+        -3, 0, -3,
+        -3, -3, -3
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/kirsch-vertical.js
+
+
+function kirschVertical (count = 1) {
+    count = functions_parseParamNumber(count)    
+    return convolution([
+        5, -3, -3,
+        5, 0, -3,
+        5, -3, -3
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/laplacian.js
+
+
+function laplacian (amount = 100) {
+    amount = functions_parseParamNumber(amount)
+    return convolution(functions_weight([
+        -1, -1, -1,
+        -1, 8, -1,
+        -1, -1, -1
+    ], amount / 100));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/laplacian-5x.js
+
+
+function laplacian5x (amount = 100) {
+    amount = functions_parseParamNumber(amount)
+    return convolution(functions_weight([
+        -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1,
+        -1, -1, 24, -1, -1,
+        -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1
+    ], amount / 100));
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/motion-blur.js
+
+
+function motionBlur () {
+    return convolution(functions_weight([
+        1, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1,
+    ], 1 / 9));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/motion-blur-2.js
+
+
+function motionBlur2 () {
+    return convolution(functions_weight([
+        1, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+        1, 0, 0, 0, 0, 0, 0, 0, 1,
+    ], 1 / 9));
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/motion-blur-3.js
+
+
+
+function motionBlur3 () {
+    return convolution(functions_weight([
+        1, 0, 0, 0, 1, 0, 0, 0, 1,
+        0, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 1, 0, 1, 0, 1, 0, 0,
+        0, 0, 0, 1, 1, 1, 0, 0, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 1, 1, 1, 0, 0, 0,
+        0, 0, 1, 0, 1, 0, 1, 0, 0,
+        0, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 0, 1, 0, 0, 0, 1,
+    ], 1 / 9));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/negative.js
+
+
+function negative (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    return convolution(functions_weight([
+        -1, 0, 0, 0, 0,
+        0, -1, 0, 0, 0,
+        0, 0, -1, 0, 0,
+        0, 0, 0, 1, 0,
+        1, 1, 1, 1, 1
+    ], amount / 100));
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/sepia2.js
+
+
+function sepia2 (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    return convolution(functions_weight([
+        0.393, 0.349, 0.272, 0, 0,
+        0.769, 0.686, 0.534, 0, 0,
+        0.189, 0.168, 0.131, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0
+    ], amount / 100));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/sharpen.js
+
+
+function sharpen (amount = 100) {
+    amount = functions_parseParamNumber(amount)    
+    return convolution(functions_weight([
+        0, -1, 0,
+        -1, 5, -1,
+        0, -1, 0
+    ], amount / 100));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/sobel-horizontal.js
+
+
+function sobelHorizontal () {
+    return convolution([
+        -1, -2, -1,
+        0, 0, 0,
+        1, 2, 1
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/sobel-vertical.js
+
+
+function sobelVertical () {
+    return convolution([
+        -1, 0, 1,
+        -2, 0, 2,
+        -1, 0, 1
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/StackBlur.js
+/*
+
+StackBlur - a fast almost Gaussian Blur For Canvas
+
+Version: 	0.5
+Author:		Mario Klingemann
+Contact: 	mario@quasimondo.com
+Website:	http://www.quasimondo.com/StackBlurForCanvas
+Twitter:	@quasimondo
+
+In case you find this class useful - especially in commercial projects -
+I am not totally unhappy for a small donation to my PayPal account
+mario@quasimondo.de
+
+Or support me on flattr: 
+https://flattr.com/thing/72791/StackBlur-a-fast-almost-Gaussian-Blur-Effect-for-CanvasJavascript
+
+Copyright (c) 2010 Mario Klingemann
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+var mul_table = [
+    512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512,
+    454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512,
+    482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456,
+    437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512,
+    497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328,
+    320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456,
+    446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335,
+    329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512,
+    505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405,
+    399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328,
+    324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271,
+    268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456,
+    451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388,
+    385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335,
+    332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292,
+    289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259
+];
+
+
+var shg_table = [
+    9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17,
+    17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
+    19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21,
+    21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,
+    21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22,
+    22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
+    22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23,
+    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
+    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
+    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
+    23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24
+];
+
+
+function BlurStack() {
+    this.r = 0;
+    this.g = 0;
+    this.b = 0;
+    this.a = 0;
+    this.next = null;
+}
+
+function stackBlurImage(bitmap, radius, blurAlphaChannel) {
+
+    if (blurAlphaChannel)
+        return stackBlurCanvasRGBA(bitmap, 0, 0, radius);
+    else
+        return stackBlurCanvasRGB(bitmap, 0, 0, radius);
+}
+
+
+function stackBlurCanvasRGBA(bitmap, top_x, top_y, radius) {
+    if (isNaN(radius) || radius < 1) return bitmap;
+    radius |= 0;
+
+    const {pixels, width, height } = bitmap 
+    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, a_sum,
+        r_out_sum, g_out_sum, b_out_sum, a_out_sum,
+        r_in_sum, g_in_sum, b_in_sum, a_in_sum,
+        pr, pg, pb, pa, rbs;
+
+    var div = radius + radius + 1;
+    var w4 = width << 2;
+    var widthMinus1 = width - 1;
+    var heightMinus1 = height - 1;
+    var radiusPlus1 = radius + 1;
+    var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
+
+    var stackStart = new BlurStack();
+    var stack = stackStart;
+    for (i = 1; i < div; i++) {
+        stack = stack.next = new BlurStack();
+        if (i == radiusPlus1) var stackEnd = stack;
+    }
+    stack.next = stackStart;
+    var stackIn = null;
+    var stackOut = null;
+
+    yw = yi = 0;
+
+    var mul_sum = mul_table[radius];
+    var shg_sum = shg_table[radius];
+
+    for (y = 0; y < height; y++) {
+        r_in_sum = g_in_sum = b_in_sum = a_in_sum = r_sum = g_sum = b_sum = a_sum = 0;
+
+        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+        g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+        b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+        a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
+
+        r_sum += sumFactor * pr;
+        g_sum += sumFactor * pg;
+        b_sum += sumFactor * pb;
+        a_sum += sumFactor * pa;
+
+        stack = stackStart;
+
+        for (i = 0; i < radiusPlus1; i++) {
+            stack.r = pr;
+            stack.g = pg;
+            stack.b = pb;
+            stack.a = pa;
+            stack = stack.next;
+        }
+
+        for (i = 1; i < radiusPlus1; i++) {
+            p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+            r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
+            g_sum += (stack.g = (pg = pixels[p + 1])) * rbs;
+            b_sum += (stack.b = (pb = pixels[p + 2])) * rbs;
+            a_sum += (stack.a = (pa = pixels[p + 3])) * rbs;
+
+            r_in_sum += pr;
+            g_in_sum += pg;
+            b_in_sum += pb;
+            a_in_sum += pa;
+
+            stack = stack.next;
+        }
+
+
+        stackIn = stackStart;
+        stackOut = stackEnd;
+        for (x = 0; x < width; x++) {
+            pixels[yi + 3] = pa = (a_sum * mul_sum) >> shg_sum;
+            if (pa != 0) {
+                pa = 255 / pa;
+                pixels[yi] = ((r_sum * mul_sum) >> shg_sum) * pa;
+                pixels[yi + 1] = ((g_sum * mul_sum) >> shg_sum) * pa;
+                pixels[yi + 2] = ((b_sum * mul_sum) >> shg_sum) * pa;
+            } else {
+                pixels[yi] = pixels[yi + 1] = pixels[yi + 2] = 0;
+            }
+
+            r_sum -= r_out_sum;
+            g_sum -= g_out_sum;
+            b_sum -= b_out_sum;
+            a_sum -= a_out_sum;
+
+            r_out_sum -= stackIn.r;
+            g_out_sum -= stackIn.g;
+            b_out_sum -= stackIn.b;
+            a_out_sum -= stackIn.a;
+
+            p = (yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1)) << 2;
+
+            r_in_sum += (stackIn.r = pixels[p]);
+            g_in_sum += (stackIn.g = pixels[p + 1]);
+            b_in_sum += (stackIn.b = pixels[p + 2]);
+            a_in_sum += (stackIn.a = pixels[p + 3]);
+
+            r_sum += r_in_sum;
+            g_sum += g_in_sum;
+            b_sum += b_in_sum;
+            a_sum += a_in_sum;
+
+            stackIn = stackIn.next;
+
+            r_out_sum += (pr = stackOut.r);
+            g_out_sum += (pg = stackOut.g);
+            b_out_sum += (pb = stackOut.b);
+            a_out_sum += (pa = stackOut.a);
+
+            r_in_sum -= pr;
+            g_in_sum -= pg;
+            b_in_sum -= pb;
+            a_in_sum -= pa;
+
+            stackOut = stackOut.next;
+
+            yi += 4;
+        }
+        yw += width;
+    }
+
+
+    for (x = 0; x < width; x++) {
+        g_in_sum = b_in_sum = a_in_sum = r_in_sum = g_sum = b_sum = a_sum = r_sum = 0;
+
+        yi = x << 2;
+        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+        g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+        b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+        a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
+
+        r_sum += sumFactor * pr;
+        g_sum += sumFactor * pg;
+        b_sum += sumFactor * pb;
+        a_sum += sumFactor * pa;
+
+        stack = stackStart;
+
+        for (i = 0; i < radiusPlus1; i++) {
+            stack.r = pr;
+            stack.g = pg;
+            stack.b = pb;
+            stack.a = pa;
+            stack = stack.next;
+        }
+
+        yp = width;
+
+        for (i = 1; i <= radius; i++) {
+            yi = (yp + x) << 2;
+
+            r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
+            g_sum += (stack.g = (pg = pixels[yi + 1])) * rbs;
+            b_sum += (stack.b = (pb = pixels[yi + 2])) * rbs;
+            a_sum += (stack.a = (pa = pixels[yi + 3])) * rbs;
+
+            r_in_sum += pr;
+            g_in_sum += pg;
+            b_in_sum += pb;
+            a_in_sum += pa;
+
+            stack = stack.next;
+
+            if (i < heightMinus1) {
+                yp += width;
+            }
+        }
+
+        yi = x;
+        stackIn = stackStart;
+        stackOut = stackEnd;
+        for (y = 0; y < height; y++) {
+            p = yi << 2;
+            pixels[p + 3] = pa = (a_sum * mul_sum) >> shg_sum;
+            if (pa > 0) {
+                pa = 255 / pa;
+                pixels[p] = ((r_sum * mul_sum) >> shg_sum) * pa;
+                pixels[p + 1] = ((g_sum * mul_sum) >> shg_sum) * pa;
+                pixels[p + 2] = ((b_sum * mul_sum) >> shg_sum) * pa;
+            } else {
+                pixels[p] = pixels[p + 1] = pixels[p + 2] = 0;
+            }
+
+            r_sum -= r_out_sum;
+            g_sum -= g_out_sum;
+            b_sum -= b_out_sum;
+            a_sum -= a_out_sum;
+
+            r_out_sum -= stackIn.r;
+            g_out_sum -= stackIn.g;
+            b_out_sum -= stackIn.b;
+            a_out_sum -= stackIn.a;
+
+            p = (x + (((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width)) << 2;
+
+            r_sum += (r_in_sum += (stackIn.r = pixels[p]));
+            g_sum += (g_in_sum += (stackIn.g = pixels[p + 1]));
+            b_sum += (b_in_sum += (stackIn.b = pixels[p + 2]));
+            a_sum += (a_in_sum += (stackIn.a = pixels[p + 3]));
+
+            stackIn = stackIn.next;
+
+            r_out_sum += (pr = stackOut.r);
+            g_out_sum += (pg = stackOut.g);
+            b_out_sum += (pb = stackOut.b);
+            a_out_sum += (pa = stackOut.a);
+
+            r_in_sum -= pr;
+            g_in_sum -= pg;
+            b_in_sum -= pb;
+            a_in_sum -= pa;
+
+            stackOut = stackOut.next;
+
+            yi += width;
+        }
+    }
+
+    return bitmap 
+}
+
+
+function stackBlurCanvasRGBA(bitmap, top_x, top_y, radius) {
+    if (isNaN(radius) || radius < 1) return bitmap;
+    radius |= 0;
+
+    const {pixels, width, height } = bitmap
+    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum,
+        r_out_sum, g_out_sum, b_out_sum,
+        r_in_sum, g_in_sum, b_in_sum,
+        pr, pg, pb, rbs;
+
+    var div = radius + radius + 1;
+    var w4 = width << 2;
+    var widthMinus1 = width - 1;
+    var heightMinus1 = height - 1;
+    var radiusPlus1 = radius + 1;
+    var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
+
+    var stackStart = new BlurStack();
+    var stack = stackStart;
+    for (i = 1; i < div; i++) {
+        stack = stack.next = new BlurStack();
+        if (i == radiusPlus1) var stackEnd = stack;
+    }
+    stack.next = stackStart;
+    var stackIn = null;
+    var stackOut = null;
+
+    yw = yi = 0;
+
+    var mul_sum = mul_table[radius];
+    var shg_sum = shg_table[radius];
+
+    for (y = 0; y < height; y++) {
+        r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+
+        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+        g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+        b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+
+        r_sum += sumFactor * pr;
+        g_sum += sumFactor * pg;
+        b_sum += sumFactor * pb;
+
+        stack = stackStart;
+
+        for (i = 0; i < radiusPlus1; i++) {
+            stack.r = pr;
+            stack.g = pg;
+            stack.b = pb;
+            stack = stack.next;
+        }
+
+        for (i = 1; i < radiusPlus1; i++) {
+            p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+            r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
+            g_sum += (stack.g = (pg = pixels[p + 1])) * rbs;
+            b_sum += (stack.b = (pb = pixels[p + 2])) * rbs;
+
+            r_in_sum += pr;
+            g_in_sum += pg;
+            b_in_sum += pb;
+
+            stack = stack.next;
+        }
+
+
+        stackIn = stackStart;
+        stackOut = stackEnd;
+        for (x = 0; x < width; x++) {
+            pixels[yi] = (r_sum * mul_sum) >> shg_sum;
+            pixels[yi + 1] = (g_sum * mul_sum) >> shg_sum;
+            pixels[yi + 2] = (b_sum * mul_sum) >> shg_sum;
+
+            r_sum -= r_out_sum;
+            g_sum -= g_out_sum;
+            b_sum -= b_out_sum;
+
+            r_out_sum -= stackIn.r;
+            g_out_sum -= stackIn.g;
+            b_out_sum -= stackIn.b;
+
+            p = (yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1)) << 2;
+
+            r_in_sum += (stackIn.r = pixels[p]);
+            g_in_sum += (stackIn.g = pixels[p + 1]);
+            b_in_sum += (stackIn.b = pixels[p + 2]);
+
+            r_sum += r_in_sum;
+            g_sum += g_in_sum;
+            b_sum += b_in_sum;
+
+            stackIn = stackIn.next;
+
+            r_out_sum += (pr = stackOut.r);
+            g_out_sum += (pg = stackOut.g);
+            b_out_sum += (pb = stackOut.b);
+
+            r_in_sum -= pr;
+            g_in_sum -= pg;
+            b_in_sum -= pb;
+
+            stackOut = stackOut.next;
+
+            yi += 4;
+        }
+        yw += width;
+    }
+
+
+    for (x = 0; x < width; x++) {
+        g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+
+        yi = x << 2;
+        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+        g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+        b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+
+        r_sum += sumFactor * pr;
+        g_sum += sumFactor * pg;
+        b_sum += sumFactor * pb;
+
+        stack = stackStart;
+
+        for (i = 0; i < radiusPlus1; i++) {
+            stack.r = pr;
+            stack.g = pg;
+            stack.b = pb;
+            stack = stack.next;
+        }
+
+        yp = width;
+
+        for (i = 1; i <= radius; i++) {
+            yi = (yp + x) << 2;
+
+            r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
+            g_sum += (stack.g = (pg = pixels[yi + 1])) * rbs;
+            b_sum += (stack.b = (pb = pixels[yi + 2])) * rbs;
+
+            r_in_sum += pr;
+            g_in_sum += pg;
+            b_in_sum += pb;
+
+            stack = stack.next;
+
+            if (i < heightMinus1) {
+                yp += width;
+            }
+        }
+
+        yi = x;
+        stackIn = stackStart;
+        stackOut = stackEnd;
+        for (y = 0; y < height; y++) {
+            p = yi << 2;
+            pixels[p] = (r_sum * mul_sum) >> shg_sum;
+            pixels[p + 1] = (g_sum * mul_sum) >> shg_sum;
+            pixels[p + 2] = (b_sum * mul_sum) >> shg_sum;
+
+            r_sum -= r_out_sum;
+            g_sum -= g_out_sum;
+            b_sum -= b_out_sum;
+
+            r_out_sum -= stackIn.r;
+            g_out_sum -= stackIn.g;
+            b_out_sum -= stackIn.b;
+
+            p = (x + (((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width)) << 2;
+
+            r_sum += (r_in_sum += (stackIn.r = pixels[p]));
+            g_sum += (g_in_sum += (stackIn.g = pixels[p + 1]));
+            b_sum += (b_in_sum += (stackIn.b = pixels[p + 2]));
+
+            stackIn = stackIn.next;
+
+            r_out_sum += (pr = stackOut.r);
+            g_out_sum += (pg = stackOut.g);
+            b_out_sum += (pb = stackOut.b);
+
+            r_in_sum -= pr;
+            g_in_sum -= pg;
+            b_in_sum -= pb;
+
+            stackOut = stackOut.next;
+
+            yi += width;
+        }
+    }
+
+    return bitmap     
+}
+
+/* harmony default export */ var StackBlur = (stackBlurImage);
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/stack-blur.js
+
+
+
+
+/* harmony default export */ var stack_blur = (function (radius = 10, hasAlphaChannel = true) {
+    radius = functions_parseParamNumber(radius)
+
+    return function (bitmap, done, opt = {}) {
+        let newBitmap = StackBlur(bitmap, radius, hasAlphaChannel )
+
+        done(newBitmap);
+    }
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/transparency.js
+
+
+function transparency (amount = 100) {
+    amount = functions_parseParamNumber(amount)
+    return convolution(functions_weight([
+        1, 0, 0, 0, 0,
+        0, 1, 0, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 0, 0.3, 0,
+        0, 0, 0, 0, 1,
+    ], amount / 100));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/unsharp-masking.js
+
+
+function unsharpMasking (amount = 256) {
+    amount = functions_parseParamNumber(amount)
+    return convolution(functions_weight([
+        1, 4, 6, 4, 1,
+        4, 16, 24, 16, 4,
+        6, 24, -476, 24, 6,
+        4, 16, 24, 16, 4,
+        1, 4, 6, 4, 1
+    ], -1 / amount));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/matrix/index.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ var filter_matrix = ({
+     blur: matrix_blur,
+     emboss: emboss,
+     gaussianBlur: gaussianBlur,
+     'gaussian-blur': gaussianBlur,
+     gaussianBlur5x: gaussianBlur5x,
+     'gaussian-blur-5x': gaussianBlur5x,
+     grayscale2: grayscale2,
+     normal: identity,
+     kirschHorizontal: kirschHorizontal,
+     'kirsch-horizontal': kirschHorizontal,
+     kirschVertical: kirschVertical,
+     'kirsch-vertical': kirschVertical,
+     laplacian: laplacian,
+     laplacian5x: laplacian5x,
+     'laplacian-5x': laplacian5x,
+     motionBlur: motionBlur,
+     'motion-blur': motionBlur,
+     motionBlur2: motionBlur2,
+     'motion-blur-2': motionBlur2,
+     motionBlur3: motionBlur3,
+     'motion-blur-3': motionBlur3,
+     negative: negative,
+     sepia2: sepia2,
+     sharpen: sharpen,
+     sobelHorizontal: sobelHorizontal,
+     'sobel-horizontal': sobelHorizontal,
+     sobelVertical: sobelVertical,
+     'sobel-vertical': sobelVertical,
+     stackBlur: stack_blur,
+     'stack-blur': stack_blur,
+     transparency: transparency,
+     unsharpMasking: unsharpMasking,
+     'unsharp-masking': unsharpMasking
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/multi/kirsch.js
+
+
+function kirsch () {
+    return functions_filter('kirsch-horizontal kirsch-vertical');
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/multi/sobel.js
+
+
+function sobel () {
+    return functions_filter('sobel-horizontal sobel-vertical');
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/multi/vintage.js
+
+
+function vintage () {
+    return functions_filter(`brightness(15) saturation(-20) gamma(1.8)`)
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/multi/index.js
+
+
+
+
+/* harmony default export */ var multi = ({
+    kirsch: kirsch,
+    sobel: sobel,
+    vintage: vintage
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/index.js
+
+
+
+
+
+/* harmony default export */ var util_filter = ({ 
+    ...filter_image,
+    ...filter_pixel,
+    ...filter_matrix,
+    ...multi
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/filter/functions.js
+
+
+ 
+
+
+let makeId = 0 
+
+const functions_functions = {
+    partial,
+    multi: functions_multi,
+    merge,
+    weight: functions_weight,
+    repeat,
+    colorMatrix,
+    each: functions_each,
+    eachXY,
+    createRandomCount,
+    createRandRange,
+    createBitmap,
+    createBlurMatrix,
+    pack: functions_pack,
+    packXY,
+    pixel: functions_pixel,
+    getBitmap,
+    putBitmap,
+    radian,
+    convolution,
+    parseParamNumber: functions_parseParamNumber,
+    filter: functions_filter,
+    clamp: functions_clamp,
+    fillColor,
+    fillPixelColor,
+    multi: functions_multi,
+    merge,
+    matches: functions_matches,
+    parseFilter,
+    partial
+}
+
+const LocalFilter = functions_functions
+
+/* harmony default export */ var filter_functions = (functions_functions);
+
+function functions_weight(arr, num = 1) {
+    return arr.map(i => {
+        return i * num;
+    })
+}
+
+function repeat (value, num) {
+    let arr = new Array(num)
+    for(let i = 0; i < num; i++) {
+        arr[i] = value 
+    }
+    return arr; 
+}
+
+function colorMatrix(pixels, i, matrix) {
+    var r = pixels[i], g = pixels[i + 1], b = pixels[i + 2], a = pixels[i + 3];
+
+    fillColor(
+        pixels, 
+        i, 
+        matrix[0] * r + matrix[1] * g + matrix[2] * b + matrix[3] * a,
+        matrix[4] * r + matrix[5] * g + matrix[6] * b + matrix[7] * a,
+        matrix[8] * r + matrix[9] * g + matrix[10] * b + matrix[11] * a,
+        matrix[12] * r + matrix[13] * g + matrix[14] * b + matrix[15] * a
+    )
+}
+
+function functions_makeFilter(filter) {
+
+    if (typeof filter == 'function') {
+        return filter;
+    }
+
+    if (typeof filter == 'string') {
+        filter = [filter];
+    }
+
+    const filterName = filter.shift();
+
+    if (typeof filterName == 'function') {
+        return filterName;
+    }
+
+    const params = filter;
+
+    const filterFunction = util_filter[filterName] || LocalFilter[filterName] ;
+
+    if (!filterFunction) {
+        throw new Error(`${filterName} is not filter. please check filter name.`)
+    }
+    return filterFunction.apply(filterFunction, params);
+}
+
+function forLoop (max, index = 0, step = 1, callback, done, functionDumpCount = 10000, frameTimer = 'full', loopCount = 50) {
+    let runIndex = index 
+    let timer = (callback) => { 
+        setTimeout(callback, 0) 
+    }
+    
+    if (frameTimer == 'requestAnimationFrame')  {
+        timer = requestAnimationFrame
+        functionDumpCount = 1000
+    }
+
+    if (frameTimer == 'full') { /* only for loop  */
+        timer = null
+        functionDumpCount = max 
+    }
+
+    function makeFunction (count = 50) {
+        const arr = [...Array(count)];
+        
+        const functionStrings = arr.map(countIndex => {
+            return `cri = ri + i * s; if (cri >= mx) return {currentRunIndex: cri, i: null}; c(cri); i++;`
+        }).join('\n')
+
+        const smallLoopFunction = new Function ('ri', 'i', 's', 'mx', 'c', `
+            let cri = ri;
+            
+            ${functionStrings}
+            
+            return {currentRunIndex: cri, i: i} 
+        `)        
+
+        return smallLoopFunction
+    }
+
+    function runCallback () {
+
+        const smallLoopFunction = makeFunction(loopCount) // loop is call  20 callbacks at once 
+
+        let currentRunIndex = runIndex 
+        let ret = {}; 
+        let i = 0 
+        while(i < functionDumpCount) {
+            ret = smallLoopFunction(runIndex, i, step, max, callback)
+
+            if (ret.i == null) {
+                currentRunIndex = ret.currentRunIndex
+                break; 
+            }
+
+            i = ret.i
+            currentRunIndex = ret.currentRunIndex
+        }
+
+        nextCallback(currentRunIndex)
+    }
+
+    function nextCallback (currentRunIndex) {
+        if (currentRunIndex) {
+            runIndex = currentRunIndex
+        } else {
+            runIndex += step 
+        }
+
+        if (runIndex >= max) {
+            done()
+            return;  
+        }
+
+        if (timer) timer(runCallback)
+        else runCallback()
+    }
+
+    runCallback()
+}
+
+function functions_each(len, callback, done, opt = {}) {
+
+    forLoop(len, 0, 4, function (i) {
+        callback(i, i >> 2 /* xyIndex */);
+    }, function () {
+        done()
+    }, opt.functionDumpCount, opt.frameTimer, opt.loopCount)
+}
+
+function eachXY(len, width, callback, done, opt = {}) {
+
+    forLoop(len, 0, 4, function (i) {
+        var xyIndex = i >> 2 
+        callback(i, xyIndex % width, Math.floor(xyIndex / width));
+    }, function () {
+        done()
+    }, opt.functionDumpCount, opt.frameTimer, opt.loopCount)
+}
+
+function createRandRange(min, max, count) {
+    var result = [];
+
+    for (var i = 1; i <= count; i++) {
+        var num = Math.random() * (max - min) + min;
+        var sign = (Math.floor(Math.random() * 10) % 2 == 0) ? -1 : 1;
+        result.push(sign * num);
+    }
+
+    result.sort();
+
+    const centerIndex = Math.floor(count >> 1);
+    var a = result[centerIndex];
+    result[centerIndex] = result[0];
+    result[0] = a;
+
+    return result;
+}
+
+function createRandomCount() {
+    return [3 * 3, 4 * 4, 5 * 5, 6 * 6, 7 * 7, 8 * 8, 9 * 9, 10 * 10].sort(function (a, b) {
+        return 0.5 - Math.random();
+    })[0];
+}
+
+function createBitmap(length, width, height) {
+    return { pixels: new Uint8ClampedArray(length), width, height }
+}
+
+function putPixel(dstBitmap, srcBitmap, startX, startY) {
+    
+    var len = srcBitmap.pixels.length / 4; 
+    var dstX = 0, dstY = 0, x = 0, y = 0, srcIndex =0, dstIndex = 0;
+    for(var i = 0; i < len; i++) {
+        x = i % srcBitmap.width, y =  Math.floor(i / srcBitmap.width);
+
+        dstX = startX + x 
+        dstY = startY + y 
+
+        if (dstX > dstBitmap.width) continue; 
+        if (dstY > dstBitmap.height) continue; 
+
+        srcIndex = (y * srcBitmap.width + x) << 2
+        dstIndex = (dstY * dstBitmap.width + dstX) << 2
+
+        dstBitmap.pixels[dstIndex] = srcBitmap.pixels[srcIndex]
+        dstBitmap.pixels[dstIndex+1] = srcBitmap.pixels[srcIndex+1]
+        dstBitmap.pixels[dstIndex+2] = srcBitmap.pixels[srcIndex+2]
+        dstBitmap.pixels[dstIndex+3] = srcBitmap.pixels[srcIndex+3]
+    }
+
+}
+
+function getPixel(srcBitmap, dstBitmap, startX, startY) {
+    var len = dstBitmap.pixels.length >> 2; 
+    var srcX = 0, srcY = 0, x = 0, y = 0, srcIndex =0, dstIndex = 0;
+    for(var i = 0; i < len; i++) {
+        var x = i % dstBitmap.width, y =  Math.floor(i / dstBitmap.width);
+
+        srcX = startX + x 
+        srcY = startY + y 
+
+        if (srcX > srcBitmap.width) continue; 
+        if (srcY > srcBitmap.height) continue; 
+
+        srcIndex = (srcY * srcBitmap.width + srcX) << 2
+        dstIndex = (y * dstBitmap.width + x) << 2
+        
+        dstBitmap.pixels[dstIndex] = srcBitmap.pixels[srcIndex]
+        dstBitmap.pixels[dstIndex+1] = srcBitmap.pixels[srcIndex+1]
+        dstBitmap.pixels[dstIndex+2] = srcBitmap.pixels[srcIndex+2]
+        dstBitmap.pixels[dstIndex+3] = srcBitmap.pixels[srcIndex+3]
+    }
+}
+
+function cloneBitmap(bitmap, padding = 0) {
+
+
+    const width = bitmap.width + padding 
+    const height = bitmap.height + padding 
+        
+    const newBitmap = { pixels: new Uint8ClampedArray(width * height * 4), width, height }
+
+    return newBitmap
+}
+
+function getBitmap(bitmap, area) {
+    return util_Canvas.getBitmap(bitmap, area);
+}
+
+function putBitmap(bitmap, subBitmap, area) {
+    return util_Canvas.putBitmap(bitmap, subBitmap, area);
+}
+
+function functions_parseParamNumber (param) {
+    if (typeof param === 'string') {
+        param = param.replace(/deg/, '')
+        param = param.replace(/px/, '')
+    }
+    return +param 
+} 
+
+const filter_regexp = /(([\w_\-]+)(\(([^\)]*)\))?)+/gi;
+const filter_split = ' '
+
+
+
+function functions_pack(callback) {
+    return function (bitmap, done) {
+        functions_each(bitmap.pixels.length, (i, xyIndex) => {
+            callback(bitmap.pixels, i, xyIndex, bitmap.pixels[i], bitmap.pixels[i+1], bitmap.pixels[i+2], bitmap.pixels[i+3])
+        }, function () {
+            done(bitmap);
+        })
+    }
+}
+
+function makePrebuildUserFilterList (arr) {
+
+    const codeString = arr.map(it => {
+        return ` 
+            ${it.userFunction.$preContext}
+
+            ${it.userFunction.$preCallbackString}
+
+            $r = clamp($r); $g = clamp($g); $b = clamp($b); $a = clamp($a);
+        `
+     }).join('\n\n')
+
+     var rootContextObject = { clamp: functions_clamp, Color: util_Color }
+     arr.forEach(it => {
+         Object.assign(rootContextObject, it.userFunction.rootContextObject)
+     })
+
+     var rootContextDefine = `const ` + Object.keys(rootContextObject).map(key => {
+        return ` ${key} = $rc.${key} `
+     }).join(',')
+ 
+
+    let FunctionCode = ` 
+    let $r = $p[$pi], $g = $p[$pi+1], $b = $p[$pi+2], $a = $p[$pi+3];
+    
+    ${rootContextDefine}
+
+    ${codeString}
+    
+    $p[$pi] = $r; $p[$pi+1] = $g; $p[$pi+2] = $b; $p[$pi+3] = $a;
+    `
+
+    const userFunction = new Function('$p', '$pi', '$rc', FunctionCode)
+
+    return function ($pixels, $pixelIndex) {
+        userFunction($pixels, $pixelIndex, rootContextObject)
+    }
+}
+
+function makeUserFilterFunctionList (arr) {
+    let rootContextObject = {}    
+    const list = arr.map(it => {
+        let newKeys = []
+
+        Object.keys(it.context).forEach((key, i) => {
+            newKeys[key] = `n$${makeId++}${key}$` 
+        })
+
+        Object.keys(it.rootContext).forEach((key, i) => {
+            newKeys[key] = `r$${makeId++}${key}$` 
+
+            rootContextObject[newKeys[key]] = it.rootContext[key]
+        })
+
+        let preContext = Object.keys(it.context).filter(key => {
+            if (typeof it.context[key] === 'number' || typeof it.context[key] === 'string') {
+                return false 
+            } else if (Array.isArray(it.context[key])) {
+                if (typeof it.context[key][0] == 'number' || typeof it.context[key][0] == 'string') {
+                    return false 
+                }
+            }
+
+            return true 
+        }).map((key, i) => {
+            return [newKeys[key], JSON.stringify(it.context[key])].join(' = ')
+        })
+    
+        let preCallbackString = it.callback.toString().split("{");
+        
+        preCallbackString.shift()
+        preCallbackString = preCallbackString.join("{")
+        preCallbackString = preCallbackString.split("}")
+        preCallbackString.pop()
+        preCallbackString = preCallbackString.join("}")  
+
+        Object.keys(newKeys).forEach(key => {
+            var newKey = newKeys[key]
+
+            if (typeof it.context[key] === 'number' || typeof it.context[key] === 'string') {
+                preCallbackString = preCallbackString.replace(new RegExp("\\"+key, "g"), it.context[key])
+            } else if (Array.isArray(it.context[key])) {
+                if (typeof it.context[key][0] == 'number' || typeof it.context[key][0] == 'string') {
+                    it.context[key].forEach((item, index) => {
+                        preCallbackString = preCallbackString.replace(new RegExp("\\"+key+'\\[' + index + '\\]', "g"), item)
+                    })
+                } else {
+                    preCallbackString = preCallbackString.replace(new RegExp("\\"+key, "g"), newKey)
+                }
+            } else {
+                preCallbackString = preCallbackString.replace(new RegExp("\\"+key, "g"), newKey)
+            }
+        })
+
+        return { preCallbackString, preContext }
+    })
+
+    const preContext = list.map((it, i) => {
+        return it.preContext.length ? `const ${it.preContext};` : "";
+    }).join('\n\n')
+
+    const preCallbackString = list.map(it => {
+        return it.preCallbackString
+    }).join('\n\n')
+
+
+    let FunctionCode = ` 
+    let $r = $pixels[$pixelIndex], $g = $pixels[$pixelIndex+1], $b = $pixels[$pixelIndex+2], $a = $pixels[$pixelIndex+3];
+
+    ${preContext}
+
+    ${preCallbackString}
+    
+    $pixels[$pixelIndex] = $r
+    $pixels[$pixelIndex+1] = $g 
+    $pixels[$pixelIndex+2] = $b   
+    $pixels[$pixelIndex+3] = $a   
+    `
+
+    const userFunction = new Function('$pixels', '$pixelIndex', '$clamp', '$Color', FunctionCode)
+
+    userFunction.$preCallbackString = preCallbackString
+    userFunction.$preContext = preContext
+    userFunction.rootContextObject = rootContextObject 
+
+    return userFunction
+}
+
+function makeUserFilterFunction (callback, context = {}, rootContext = {}) {
+    return makeUserFilterFunctionList([{ callback, context, rootContext }])
+}
+
+function functions_pixel(callback, context = {}, rootContext = {}) {
+    const userFunction = makeUserFilterFunction(callback, context, rootContext)    
+
+    const returnCallback = function (bitmap, done) { }
+
+    returnCallback.userFunction = userFunction
+
+    return returnCallback
+}
+
+const ColorListIndex = [0, 1, 2, 3]
+
+function swapColor (pixels, startIndex, endIndex) {
+
+    ColorListIndex.forEach(i => {
+        var temp = pixels[startIndex + i]
+        pixels[startIndex + i] = pixels[endIndex + i]
+        pixels[endIndex + i] = temp
+    })
+}
+
+function packXY(callback) {
+    return function (bitmap, done, opt = {}) {
+        eachXY(bitmap.pixels.length, bitmap.width, (i, x, y) => {
+            callback(bitmap.pixels, i, x, y)
+        }, function () {
+            done(bitmap);
+        }, opt)
+
+    }
+}
+
+function radian (degree) {
+    return util_Matrix.CONSTANT.radian(degree)
+}
+
+
+function createBlurMatrix (amount = 3) {
+    const count = Math.pow(amount, 2)
+    const value = 1/count
+    return repeat (value, count)
+}
+
+function fillColor(pixels, i, r, g, b, a) {
+    if (arguments.length == 3) {      
+        var {r, g, b, a} = arguments[2]
+    }
+
+    if (typeof r == 'number') {pixels[i] = r; }
+    if (typeof g == 'number') {pixels[i + 1] = g; }
+    if (typeof b == 'number') {pixels[i + 2] = b; }
+    if (typeof a == 'number') {pixels[i + 3] = a; }
+}
+
+function fillPixelColor (targetPixels, targetIndex,  sourcePixels, sourceIndex) {
+    fillColor(
+        targetPixels, 
+        targetIndex,
+        sourcePixels[sourceIndex],
+        sourcePixels[sourceIndex+1],
+        sourcePixels[sourceIndex+2],
+        sourcePixels[sourceIndex+3]
+    )
+}
+
+function subPixelWeight  (dstPixels, pixels, dstIndex, sx, sy, sw, sh, halfSide, side, weights) {
+    var r = 0, g = 0, b = 0, a = 0, len = side ** 2 ;
+
+    for (var i = 0; i < len; i++) {
+        const cy = Math.floor(i / side)
+        const cx = i % side 
+
+        const scy = sy + cy - halfSide;
+        const scx = sx + cx - halfSide;
+
+        if (scy >= 0 && scy < sh && scx >= 0 && scx < sw) {
+            var srcIndex = (scy * sw + scx) * 4; 
+            var wt = weights[cy * side + cx];
+            r += pixels[srcIndex] * wt;
+            g += pixels[srcIndex + 1] * wt;
+            b += pixels[srcIndex + 2] * wt;
+            a += pixels[srcIndex + 3] * wt;   // weight 를 곱한 값을 계속 더한다. 
+        }                
+    }
+
+    fillColor(dstPixels, dstIndex, r, g, b, a)
+}
+
+function createWeightTable (weights, min = 0, max = 255) {
+    var weightTable = [] 
+
+    weightTable = weights.map((w, i) => {
+        return []
+    })
+
+    weights.forEach( (w, i) => {
+
+        if (w != 0) {
+            let data = weightTable[i]
+
+            for(var i = min; i <= max; i++) {
+                data[i] = w * i; 
+            }    
+        }
+
+    })
+
+    return weightTable
+}
+
+function createSubPixelWeightFunction(weights, weightTable, width, height, opaque) {
+
+    const side = Math.round(Math.sqrt(weights.length));
+    const halfSide = Math.floor(side / 2);
+    const alphaFac = opaque ? 1 : 0;
+
+    let FunctionCode = `let r = 0, g = 0, b = 0, a = 0, scy = 0, scx =0, si = 0; `
+    let R = [] 
+    let G = [] 
+    let B = [] 
+    let A = [] 
+    weights.forEach((wt, index) => {
+        const cy = Math.floor(index / side)
+        const cx = index % side
+        const distY = cy - halfSide
+        const distX = cx - halfSide
+
+        if (wt == 0) {
+            return; 
+        }
+
+        R.push(`$t[${index}][$sp[(($sy + (${distY})) * ${width} + ($sx + (${distX}))) * 4]]`)
+        G.push(`$t[${index}][$sp[(($sy + (${distY})) * ${width} + ($sx + (${distX}))) * 4 + 1]]`)
+        B.push(`$t[${index}][$sp[(($sy + (${distY})) * ${width} + ($sx + (${distX}))) * 4 + 2]]`)
+        A.push(`$t[${index}][$sp[(($sy + (${distY})) * ${width} + ($sx + (${distX}))) * 4 + 3]]`)
+
+    })
+
+    FunctionCode += `r = ${R.join(' + ')}; g = ${G.join(' + ')}; b = ${B.join(' + ')}; a = ${A.join(' + ')};`
+    FunctionCode += `$dp[$di] = r; $dp[$di+1] = g;$dp[$di+2] = b;$dp[$di+3] = a + (${alphaFac})*(255-a); `
+
+    // console.log(FunctionCode)
+
+    const subPixelFunction = new Function ('$dp', '$sp', '$di', '$sx', '$sy', '$t', FunctionCode )
+
+
+    return function ($dp, $sp, $di, $sx, $sy) {
+        subPixelFunction ($dp, $sp, $di, $sx, $sy, weightTable)
+    }
+}
+
+function convolution(weights, opaque = true) {
+    const weightTable = createWeightTable(weights)
+    return function (bitmap, done, opt = {}) {
+        const side = Math.round(Math.sqrt(weights.length));
+        const padding = side * 2     
+        
+        // 원본 크기를 늘림 
+        let sourceBitmap = cloneBitmap(bitmap, padding)
+
+        // 원본 데이타 복사 
+        putPixel (sourceBitmap, bitmap, side, side)
+
+        // 최종 아웃풋 
+        let newBitmap = createBitmap(sourceBitmap.pixels.length, sourceBitmap.width, sourceBitmap.height)
+
+        // 마지막 원본 아웃풋 
+        let returnBitmap = createBitmap(bitmap.pixels.length, bitmap.width, bitmap.height)
+
+        const subPixelWeightFunction = createSubPixelWeightFunction(weights, weightTable, sourceBitmap.width, sourceBitmap.height, opaque)
+        
+        var len = bitmap.pixels.length /4 
+        for (var i = 0; i < len; i++ ) {
+            var xyIndex = i , x = xyIndex % bitmap.width + side, y = Math.floor(xyIndex / bitmap.width) + side ;
+
+            subPixelWeightFunction(
+                newBitmap.pixels, 
+                sourceBitmap.pixels, 
+                (y * sourceBitmap.width + x) * 4, 
+                x, 
+                y 
+            );
+        }
+
+        getPixel(newBitmap, returnBitmap, side, side)
+        done(returnBitmap)        
+    }
+}
+
+
+function functions_matches (str) {
+    var ret = util_Color.convertMatches(str)
+    const matches = ret.str.match(filter_regexp);
+    let result = [];
+
+    if (!matches) {
+        return result;
+    }
+
+    result = matches.map((it) => {
+        return { filter: it, origin: util_Color.reverseMatches(it, ret.matches) }
+    })
+
+    var pos = { next: 0 }
+    result = result.map(item => {
+
+        const startIndex = str.indexOf(item.origin, pos.next);
+
+        item.startIndex = startIndex;
+        item.endIndex = startIndex + item.origin.length;
+
+        item.arr = parseFilter(item.origin) 
+
+        pos.next = item.endIndex;
+
+        return item 
+    }).filter(it => {
+        if (!it.arr.length) return false 
+        return true
+    })
+
+    return result;
+}
+
+/**
+ * Filter Parser 
+ * 
+ * F.parseFilter('blur(30)') == ['blue', '30']
+ * F.parseFilter('gradient(white, black, 3)') == ['gradient', 'white', 'black', '3']
+ * 
+ * @param {String} filterString 
+ */
+function parseFilter (filterString) {
+
+    var ret = util_Color.convertMatches(filterString)
+    const matches = ret.str.match(filter_regexp);
+
+    if (!matches[0]) {
+        return []
+    }
+
+    var arr = matches[0].split('(')
+
+    var filterName = arr.shift()
+    var filterParams = [] 
+
+    if (arr.length) {
+        filterParams = arr.shift().split(')')[0].split(',').map(f => {
+            return util_Color.reverseMatches(f, ret.matches)
+        })    
+    }
+    
+    var result = [filterName, ...filterParams].map(util_Color.trim)
+    
+    return result 
+}
+
+function functions_clamp (num) {
+    return Math.min(255, num)
+} 
+
+function functions_filter (str) {
+    return merge(functions_matches(str).map(it => {
+        return it.arr 
+    }))
+}
+
+function makeGroupedFilter(filters = []) {
+    var groupedFilter = [] 
+    var group = []
+    for (var i = 0, len = filters.length; i < len; i++) {
+        var f = filters[i]
+
+        if (f.userFunction) {
+            group.push(f)
+        } else {
+            if (group.length) {
+                groupedFilter.push([...group])
+            }
+            groupedFilter.push(f)
+            group = [] 
+        }
+    }
+
+    if (group.length) {
+        groupedFilter.push([...group])
+    }
+
+    groupedFilter.forEach((filter, index) => {
+        if (Array.isArray(filter)) {
+            groupedFilter[index] = (function () {
+                const userFunction = makePrebuildUserFilterList(filter)
+                // console.log(userFunction)
+                return function (bitmap, done) {
+
+                    for (var i = 0, len = bitmap.pixels.length; i< len;i += 4) {
+                        userFunction(bitmap.pixels, i)
+                    }
+
+                    done(bitmap)
+                    // forLoop(bitmap.pixels.length, 0, 4, function (i) {
+                    //     userFunction(bitmap.pixels, i)
+                    // }, function () {
+                    //     done(bitmap)
+                    // })
+                }
+            })()
+        }
+    })
+
+    return groupedFilter
+}
+
+/** 
+ * 
+ * multiply filters
+ * 
+ * ImageFilter.multi('blur', 'grayscale', 'sharpen', ['blur', 3], function (bitmap) {  return bitmap });
+ * 
+ */
+function functions_multi (...filters) {
+    filters = filters.map(filter => {
+        return functions_makeFilter(filter);
+    }).filter(f => f)
+
+    filters = makeGroupedFilter(filters)
+
+    var max = filters.length 
+
+    return function (bitmap, done, opt = {}) {
+
+        var currentBitmap = bitmap 
+        var index = 0 
+
+        function runFilter () {
+            filters[index].call(null, currentBitmap, function (nextBitmap) {
+                currentBitmap = nextBitmap  
+    
+                nextFilter()
+            }, opt)
+        }
+
+        function nextFilter () {
+            index++ 
+
+            if (index >= max) {
+                done(currentBitmap)
+                return;  
+            }
+
+            runFilter()
+        }
+
+        runFilter()
+    }
+}
+
+
+function merge (filters) {
+    return functions_multi(...filters);
+}
+
+/**
+ * apply filter into special area
+ * 
+ * F.partial({x,y,width,height}, filter, filter, filter )
+ * F.partial({x,y,width,height}, 'filter' )
+ * 
+ * @param {{x, y, width, height}} area 
+ * @param {*} filters   
+ */
+function partial (area, ...filters) {
+    var allFilter = null 
+    if (filters.length == 1 && typeof filters[0] === 'string') {
+        allFilter = functions_filter(filters[0])
+    } else {
+        allFilter = merge(filters)
+    } 
+
+    return (bitmap, done, opt = {}) => {
+        allFilter(getBitmap(bitmap, area), function (newBitmap) {
+            done(putBitmap(bitmap, newBitmap, area))
+        }, opt)
+    }
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/util.js
+function util_parseParamNumber (param) {
+    if (typeof param === 'string') {
+        param = param.replace(/deg/, '')
+        param = param.replace(/px/, '')
+    }
+    return +param 
+} 
+
+function util_weight(arr, num = 1) {
+    return arr.map(i => {
+        return i * num;
+    })
+}
+
+let SHADER_INDEX = 0 
+
+function convolutionString (count) {
+
+    var width = Math.sqrt(count)
+    var half = Math.floor(width/2)
+
+
+    return [...Array(count)].map((it, index) => {
+        const y = Math.floor(index / width) - half
+        const x = index % width - half
+
+        return `texture(u_image, v_texCoord + onePixel * vec2(${x}, ${y})) * u_kernel${count}[${index}]`
+    }).join(' + \n')
+}
+
+function util_multi (str) {
+    return [...arguments]; 
+}
+
+function util_convolution(arr) {
+
+    return {
+        type: 'convolution',
+        length: arr.length,
+        content: arr
+    }
+}
+
+function makeShader (str , index) {
+    return `
+        if (u_filterIndex == ${index}.0) {
+            ${str}
+        }
+    `
+}
+
+function util_shader(str, options) {
+    return {
+        type: 'shader',
+        index: SHADER_INDEX,
+        options, 
+        content: makeShader(str, SHADER_INDEX++)
+    }
+}
+
+
+function makeVertexShaderSource () {
+    return `#version 300 es 
+
+        in vec2 a_position;
+        in vec2 a_texCoord; 
+
+        uniform vec2 u_resolution;
+        uniform float u_flipY;
+
+        out vec2 v_texCoord; 
+
+        void main() {
+            vec2 zeroToOne = a_position / u_resolution;
+
+            vec2 zeroToTwo = zeroToOne * 2.0;
+
+            vec2 clipSpace = zeroToTwo - 1.0;
+
+            gl_Position = vec4(clipSpace * vec2(1, u_flipY), 0, 1);
+
+            v_texCoord = a_texCoord;
+
+        }
+    `
+}
+
+function makeConvolution(count) {
+
+    return `
+    
+    if (u_kernelSelect == ${count}.0) {
+        vec4 colorSum = ${convolutionString(count)}; 
+
+        outColor = vec4((colorSum / u_kernel${count}Weight).rgb, 1);
+        
+    }
+    `
+}
+
+function makeFragmentShaderSource (filterShaderList) {
+
+    const filterContent = filterShaderList.filter(f => f.type == 'shader').map(f => f.content).join('\n\n')
+
+    const weightTable = {'9': true} 
+
+    filterShaderList.filter(f => f.type == 'convolution').forEach(f => {
+        weightTable[f.length] = true 
+    })
+
+    const convolutionString = Object.keys(weightTable).map(len => {
+        return makeConvolution(+len)
+    }).join('\n')
+
+
+    return `#version 300 es
+
+    precision highp int;
+    precision mediump float;
+    
+    uniform sampler2D u_image;
+
+    // 3 is 3x3 matrix kernel 
+    uniform float u_kernelSelect;
+    uniform float u_filterIndex;
+
+    uniform float u_kernel9[9];
+    uniform float u_kernel9Weight;
+    uniform float u_kernel25[25];
+    uniform float u_kernel25Weight;
+    uniform float u_kernel49[49];
+    uniform float u_kernel49Weight;
+    uniform float u_kernel81[81];
+    uniform float u_kernel81Weight;    
+
+    in vec2 v_texCoord;
+    
+    out vec4 outColor;
+
+    float random (vec2 st) {
+        return fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
+    } 
+
+    // 
+    vec3 rgb2hsv(vec3 c)
+    {
+        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+        vec4 p = c.g < c.b ? vec4(c.bg, K.wz) : vec4(c.gb, K.xy);
+        vec4 q = c.r < p.x ? vec4(p.xyw, c.r) : vec4(c.r, p.yzx);
+
+        float d = q.x - min(q.w, q.y);
+        float e = 1.0e-10;
+        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+    }
+
+    vec3 hsv2rgb(vec3 c)
+    {
+        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+    
+    void main() {
+        vec4 pixelColor = texture(u_image, v_texCoord);
+        vec2 onePixel = vec2(1) / vec2(textureSize(u_image, 0));                
+
+        ${filterContent}
+
+        ${convolutionString}
+
+    }`
+}
+
+function colorToVec4(color) {
+    color = [ color.r/255, color.g/255, color.b/255, color.a || 0].map(toFloatString)
+    return 'vec4(' +  color  + ')'
+}
+
+function toFloatString(number) {
+    if (number == Math.floor(number)) {
+        return number + '.0';
+    }
+
+    return number;
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/blur.js
+
+
+/* harmony default export */ var filter_matrix_blur = (function () {
+    return util_convolution([
+        1, 1, 1,
+        1, 1, 1,
+        1, 1, 1
+    ])
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/normal.js
+
+/* harmony default export */ var normal = (function () {
+    return util_convolution([
+        0, 0, 0,
+        0, 1, 0, 
+        0, 0, 0
+    ])
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/emboss.js
+
+/*
+ * carve, mold, or stamp a design on (a surface) so that it stands out in relief.
+ * 
+ * @param {Number} amount   0.0 .. 4.0 
+ */
+function emboss_emboss (amount = 4) {
+    amount = util_parseParamNumber(amount)    
+    return util_convolution([
+        amount * (-2.0), -amount, 0.0,
+        -amount, 1.0, amount,
+        0.0, amount, amount * 2.0,
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/gaussian-blur.js
+
+
+/**
+ * 
+ * @param {Number} amount 0..1
+ */
+function gaussian_blur_gaussianBlur (amount = 1) {
+    const C = util_parseParamNumber(amount) * (1/16) 
+
+    return util_convolution(util_weight([
+        1, 2, 1,
+        2, 4, 2,
+        1, 2, 1
+    ], C ));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/gaussian-blur-5x.js
+
+
+function gaussian_blur_5x_gaussianBlur5x () {
+    return util_convolution([
+        1, 4, 6, 4, 1,
+        4, 16, 24, 16, 4,
+        6, 24, 36, 24, 6,
+        4, 16, 24, 16, 4,
+        1, 4, 6, 4, 1
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/grayscale2.js
+
+
+function grayscale2_grayscale2 () {
+    return util_convolution([
+        0.3, 0.3, 0.3, 0, 0,
+        0.59, 0.59, 0.59, 0, 0,
+        0.11, 0.11, 0.11, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/kirsch-horizontal.js
+
+
+function kirsch_horizontal_kirschHorizontal () {
+    return util_convolution([
+        5, 5, 5,
+        -3, 0, -3,
+        -3, -3, -3
+    ]);
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/kirsch-vertical.js
+
+
+function kirsch_vertical_kirschVertical () {
+    return util_convolution([
+        5, -3, -3,
+        5, 0, -3,
+        5, -3, -3
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/laplacian.js
+
+
+function laplacian_laplacian () {
+    return util_convolution([
+        -1, -1, -1,
+        -1, 8, -1,
+        -1, -1, -1
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/laplacian-5x.js
+
+
+function laplacian_5x_laplacian5x () {
+    return util_convolution([
+        -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1,
+        -1, -1, 24, -1, -1,
+        -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/motion-blur.js
+
+
+function motion_blur_motionBlur () {
+    return util_convolution([
+        1, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1,
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/motion-blur-2.js
+
+
+function motion_blur_2_motionBlur2 () {
+    return util_convolution([
+        1, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+        1, 0, 0, 0, 0, 0, 0, 0, 1,
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/motion-blur-3.js
+
+
+function motion_blur_3_motionBlur3 () {
+    return util_convolution([
+        1, 0, 0, 0, 1, 0, 0, 0, 1,
+        0, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 1, 0, 1, 0, 1, 0, 0,
+        0, 0, 0, 1, 1, 1, 0, 0, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 1, 1, 1, 0, 0, 0,
+        0, 0, 1, 0, 1, 0, 1, 0, 0,
+        0, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 0, 1, 0, 0, 0, 1,
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/negative.js
+
+
+function negative_negative () {
+    return util_convolution([
+        -1, 0, 0, 0, 0,
+        0, -1, 0, 0, 0,
+        0, 0, -1, 0, 0,
+        0, 0, 0, 1, 0,
+        1, 1, 1, 1, 1
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/sepia2.js
+
+
+function sepia2_sepia2 () {
+    return util_convolution([
+        0.393, 0.349, 0.272, 0, 0,
+        0.769, 0.686, 0.534, 0, 0,
+        0.189, 0.168, 0.131, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/sharpen.js
+
+
+function sharpen_sharpen () {
+    return util_convolution([
+        0, -1, 0,
+        -1, 5, -1,
+        0, -1, 0
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/sobel-horizontal.js
+
+
+function sobel_horizontal_sobelHorizontal () {
+    return util_convolution([
+        -1, -2, -1,
+        0, 0, 0,
+        1, 2, 1
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/sobel-vertical.js
+
+
+function sobel_vertical_sobelVertical () {
+    return util_convolution([
+        -1, 0, 1,
+        -2, 0, 2,
+        -1, 0, 1
+    ]);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/transparency.js
+
+
+function transparency_transparency () {
+    return util_convolution([
+        1, 0, 0, 0, 0,
+        0, 1, 0, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 0, 0.3, 0,
+        0, 0, 0, 0, 1,
+    ]);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/unsharp-masking.js
+
+
+function unsharp_masking_unsharpMasking () {
+    return util_convolution(util_weight([
+        1, 4, 6, 4, 1,
+        4, 16, 24, 16, 4,
+        6, 24, -476, 24, 6,
+        4, 16, 24, 16, 4,
+        1, 4, 6, 4, 1
+    ], -1 / 256));
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/matrix/index.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ var gl_filter_matrix = ({
+     blur: filter_matrix_blur,
+     normal: normal,
+     emboss: emboss_emboss,
+     gaussianBlur: gaussian_blur_gaussianBlur,
+     'gaussian-blur': gaussian_blur_gaussianBlur,
+     gaussianBlur5x: gaussian_blur_5x_gaussianBlur5x,
+     'gaussian-blur-5x': gaussian_blur_5x_gaussianBlur5x,
+     grayscale2: grayscale2_grayscale2,
+     kirschHorizontal: kirsch_horizontal_kirschHorizontal,
+     'kirsch-horizontal': kirsch_horizontal_kirschHorizontal,
+     kirschVertical: kirsch_vertical_kirschVertical,
+     'kirsch-vertical': kirsch_vertical_kirschVertical,
+     laplacian: laplacian_laplacian,
+     laplacian5x: laplacian_5x_laplacian5x,
+     'laplacian-5x': laplacian_5x_laplacian5x,
+     motionBlur: motion_blur_motionBlur,
+     'motion-blur': motion_blur_motionBlur,
+     motionBlur2: motion_blur_2_motionBlur2,
+     'motion-blur-2': motion_blur_2_motionBlur2,
+     motionBlur3: motion_blur_3_motionBlur3,
+     'motion-blur-3': motion_blur_3_motionBlur3,
+     negative: negative_negative,
+     sepia2: sepia2_sepia2,
+     sharpen: sharpen_sharpen,
+     sobelHorizontal: sobel_horizontal_sobelHorizontal,
+     'sobel-horizontal': sobel_horizontal_sobelHorizontal,
+     sobelVertical: sobel_vertical_sobelVertical,
+     'sobel-vertical': sobel_vertical_sobelVertical,
+     transparency: transparency_transparency,
+     unsharpMasking: unsharp_masking_unsharpMasking,
+     'unsharp-masking': unsharp_masking_unsharpMasking
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/bitonal.js
+
+
+
+function bitonal_bitonal(darkColor, lightColor, threshold = 0.5) {
+    let checkVlue = toFloatString(threshold)
+    let darkColorString = colorToVec4(util_Color.parse(darkColor))
+    let lightColorString = colorToVec4(util_Color.parse(lightColor))
+
+    return util_shader(`
+        if ((pixelColor.r + pixelColor.g + pixelColor.b) > ${checkVlue}) {
+            outColor = vec4(${lightColorString}.rgb, pixelColor.a);
+        } else {
+            outColor = vec4(${darkColorString}.rgb, pixelColor.a);
+        }
+    `);
+}
+
+
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/brightness.js
+
+
+/*
+ * @param {Number} amount  -1..1  ,  value < 0  is darken, value > 0 is brighten 
+ */
+function pixel_brightness_brightness (amount = 1) {
+    const C = toFloatString( util_parseParamNumber(amount) );
+
+    return util_shader(`
+        outColor = pixelColor + (${C});
+    `);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/matrix.js
+
+
+function pixel_matrix_matrix (
+    $a = 0, $b = 0, $c = 0, $d = 0, 
+    $e = 0, $f = 0, $g = 0, $h = 0, 
+    $i = 0, $j = 0, $k = 0, $l = 0, 
+    $m = 0, $n = 0, $o = 0, $p = 0
+) {
+
+    const matrix = [
+        $a, $b, $c, $d, 
+        $e, $f, $g, $h, 
+        $i, $j, $k, $l, 
+        $m, $n, $o, $p
+    ].map(toFloatString)
+    
+    return util_shader(`
+
+        outColor = vec4(
+            ${matrix[0]} * pixelColor.r + ${matrix[1]} * pixelColor.g + ${matrix[2]} * pixelColor.b + ${matrix[3]} * pixelColor.a,
+            ${matrix[4]} * pixelColor.r + ${matrix[5]} * pixelColor.g + ${matrix[6]} * pixelColor.b + ${matrix[7]} * pixelColor.a,
+            ${matrix[8]} * pixelColor.r + ${matrix[9]} * pixelColor.g + ${matrix[10]} * pixelColor.b + ${matrix[11]} * pixelColor.a,
+            ${matrix[12]} * pixelColor.r + ${matrix[13]} * pixelColor.g + ${matrix[14]} * pixelColor.b + ${matrix[15]} * pixelColor.a
+        ); 
+    `);
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/brownie.js
+
+
+function brownie_brownie () { 
+
+    return pixel_matrix_matrix(
+        0.5997023498159715,0.34553243048391263,-0.2708298674538042,0,
+        -0.037703249837783157,0.8609577587992641,0.15059552388459913,0,
+        0.24113635128153335,-0.07441037908422492,0.44972182064877153,0,
+        0,0,0,1
+    )
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/clip.js
+
+
+
+/*
+ * @param {Number} amount 0..1
+ */
+function pixel_clip_clip (amount = 0) {
+    const C = toFloatString(util_parseParamNumber(amount))
+
+    return util_shader(`
+        outColor = vec4(
+            (pixelColor.r > 1.0 - ${C}) ? 1.0 : 0.0,
+            (pixelColor.g > 1.0 - ${C}) ? 1.0 : 0.0,
+            (pixelColor.b > 1.0 - ${C}) ? 1.0 : 0.0,
+            pixelColor.a 
+        );
+    `);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/chaos.js
+
+
+function chaos (amount = 10) {
+    const C = toFloatString( util_parseParamNumber(amount) ); 
+
+    return util_shader(`
+        vec2 st = pixelColor.st;
+        st *= ${C};
+        
+        vec2 ipos = floor(st);  // get the integer coords
+
+        vec3 color = vec3(random( ipos ));
+
+        outColor = vec4(color, pixelColor.a);
+    `);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/contrast.js
+
+
+/*
+ * @param {Number} amount  0..1
+ */
+function pixel_contrast_contrast (amount = 1) {
+    const C = toFloatString(util_parseParamNumber(amount));
+
+    return util_shader(`
+        outColor = pixelColor * ${C};
+    `);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/gamma.js
+
+
+/*
+ * @param {Number} amount  -1..1  ,  value < 0  is darken, value > 0 is brighten 
+ */
+function gamma_gamma (amount = 1) {
+    const C = toFloatString( util_parseParamNumber(amount) )
+
+    return util_shader(`
+        outColor = vec4(pow(pixelColor.r, ${C}), pow(pixelColor.g, ${C}), pow(pixelColor.b, ${C}), pixelColor.a );
+    `);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/gradient.js
+
+
+/**
+ * F.gradient('red', 'blue', 'yellow', 'white', 10)
+ * F.gradient('red, blue, yellow, white, 10')
+ */
+function pixel_gradient_gradient () {
+    // 전체 매개변수 기준으로 파싱 
+    // 색이 아닌 것 기준으로 scale 변수로 인식 
+
+    let params = [...arguments];
+
+    if (params.length === 1 && typeof params[0] === 'string') {
+        params = util_Color.convertMatchesArray(params[0])
+    } 
+
+    params = params.map(arg => {
+        return arg
+    }).join(', ')
+
+    let colors = util_Color.parseGradient(params);
+
+    colors[0][1] = 0;
+    colors[colors.length-1][1] = 1; 
+
+    colors = colors.map(c => {
+        const {r, g, b, a} = util_Color.parse(c[0])
+        return [{r, g, b, a}, c[1]];
+    })
+
+    let temp = [] 
+
+    for(var i = 0, len = colors.length; i < len - 1; i++) {
+        const start = colors[i];
+        const end = colors[i+1];
+
+        const startColor = colorToVec4(start[0])
+        const endColor = colorToVec4(end[0])
+
+        const startRate = toFloatString (start[1]);
+        const endRate = toFloatString (end[1]);
+
+        temp.push(`
+            if (${startRate} <= rate && rate < ${endRate}) {
+                outColor = mix(${startColor}, ${endColor}, (rate - ${startRate})/(${endRate} - ${startRate}));
+            }
+        `)
+    }
+
+    return util_shader(`
+        float rate = (pixelColor.r * 0.2126 + pixelColor.g * 0.7152 + pixelColor.b * 0.0722); 
+
+        ${temp.join('\n')}        
+    `)
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/grayscale.js
+
+
+
+
+/**
+ * 
+ * @param {Number} amount 0..1
+ */
+function grayscale_grayscale (amount = 1) { 
+    let C = util_parseParamNumber(amount);
+
+    if (C > 1) C = 1; 
+
+    return pixel_matrix_matrix(
+        (0.2126 + 0.7874 * (1 - C)), (0.7152 - 0.7152 * (1 - C)), (0.0722 - 0.0722 * (1 - C)), 0,
+        (0.2126 - 0.2126 * (1 - C)), (0.7152 + 0.2848 * (1 - C)), (0.0722 - 0.0722 * (1 - C)), 0,
+        (0.2126 - 0.2126 * (1 - C)), (0.7152 - 0.7152 * (1 - C)), (0.0722 + 0.9278 * (1 - C)), 0,
+        0, 0, 0, 1
+    );
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/hue.js
+//http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+
+
+/*
+ * @param {Number} amount  0..1  ,  (real value 0..360)
+ */
+function pixel_hue_hue (amount = 1) {
+    const C = toFloatString( util_parseParamNumber(amount))
+
+    return util_shader(`
+        vec3 hsv = rgb2hsv(pixelColor.rgb);
+        hsv.x += ${C};
+        outColor = vec4(hsv2rgb(hsv).rgb, pixelColor.a);
+    `);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/invert.js
+
+
+function invert_invert (amount = 1) {
+    const C = toFloatString( util_parseParamNumber(amount) ); 
+
+    return util_shader(`
+        outColor = vec4(
+            (1.0 - pixelColor.r) * ${C},
+            (1.0 - pixelColor.g) * ${C},
+            (1.0 - pixelColor.b) * ${C},
+            pixelColor.a
+        );
+    `);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/kodachrome.js
+
+
+function kodachrome_kodachrome () {
+
+    return pixel_matrix_matrix(
+        1.1285582396593525,-0.3967382283601348,-0.03992559172921793,0,
+        -0.16404339962244616,1.0835251566291304,-0.05498805115633132,0,
+        -0.16786010706155763,-0.5603416277695248,1.6014850761964943,0,
+        0,0,0,1
+    )
+} 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/noise.js
+
+
+
+/**
+ * 
+ * @param {Number} amount 0..1
+ */
+function noise_noise (amount = 1) {
+
+    const C = Math.abs( util_parseParamNumber(amount))
+    const min = toFloatString( -C )
+    const max = toFloatString( C ) 
+    return util_shader(`
+        float rnd = ${min} + random( pixelColor.st ) * (${max} - ${min});
+
+        outColor = vec4(pixelColor.rgb + rnd, 1.0);
+    `);
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/opacity.js
+
+
+/**
+ * 
+ * @param {Number} amount 0..1
+ */
+function pixel_opacity_opacity (amount = 1) {
+    const C = toFloatString( util_parseParamNumber(amount)); 
+
+    return util_shader(`
+        outColor = vec4(pixelColor.rgb, pixelColor.a * ${C});
+    `);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/polaroid.js
+
+
+function polaroid_polaroid () {
+
+    return pixel_matrix_matrix(
+        1.438,-0.062,-0.062,0,
+        -0.122,1.378,-0.122,0,
+        -0.016,-0.016,1.483,0,
+        0,0,0,1
+    )
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/saturation.js
+
+
+
+
+/*
+ * @param {Number} amount  0..1 
+ */
+function saturation_saturation (amount = 0) {
+    const L = 1 - Math.abs(util_parseParamNumber(amount));
+
+    return pixel_matrix_matrix(
+        L, 0, 0, 0,
+        0, L, 0, 0,
+        0, 0, L, 0,
+        0, 0, 0, L
+    )
+
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/sepia.js
+
+
+
+/*
+ * @param {Number} amount  0..100 
+ */
+function sepia_sepia (amount = 1) {
+    let C = util_parseParamNumber(amount);
+    if (C > 1) C = 1; 
+
+    return pixel_matrix_matrix(
+        (0.393 + 0.607 * (1 - C)), (0.769 - 0.769 * (1 - C)), (0.189 - 0.189 * (1 - C)), 0,
+        (0.349 - 0.349 * (1 - C)), (0.686 + 0.314 * (1 - C)), (0.168 - 0.168 * (1 - C)), 0,
+        (0.272 - 0.272 * (1 - C)), (0.534 - 0.534 * (1 - C)), (0.131 + 0.869 * (1 - C)), 0,
+        0, 0, 0, 1
+    )
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/shade.js
+
+
+function shade_shade(redValue = 1, greenValue = 1, blueValue = 1) {
+    const r = toFloatString(util_parseParamNumber(redValue) / 255)
+    const g = toFloatString(util_parseParamNumber(greenValue) /255)
+    const b = toFloatString(util_parseParamNumber(blueValue) /255)   
+
+    return util_shader(`
+        outColor = vec4(
+            pixelColor.r * ${r},
+            pixelColor.g * ${g},
+            pixelColor.b * ${b},
+            pixelColor.a
+        );
+    `);
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/shift.js
+
+
+function shift_shift () {
+
+    return pixel_matrix_matrix(
+        1.438,-0.062,-0.062,0,
+        -0.122,1.378,-0.122,0,
+        -0.016,-0.016,1.483,0,
+        0,0,0,1
+    );
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/solarize.js
+
+
+function solarize_solarize (redValue, greenValue, blueValue) {
+    const r = toFloatString( util_parseParamNumber(redValue) )
+    const g = toFloatString( util_parseParamNumber(greenValue) )
+    const b = toFloatString( util_parseParamNumber(blueValue) )
+
+    return util_shader(`
+        outColor = vec4(
+            (pixelColor.r < ${r}) ? 1.0 - pixelColor.r: pixelColor.r,
+            (pixelColor.g < ${g}) ? 1.0 - pixelColor.g: pixelColor.g,
+            (pixelColor.b < ${b}) ? 1.0 - pixelColor.b: pixelColor.b,
+            pixelColor.a
+        );
+    `);
+}
+
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/technicolor.js
+
+
+function technicolor_technicolor () {
+
+    return pixel_matrix_matrix(
+        1.9125277891456083,-0.8545344976951645,-0.09155508482755585,0,
+        -0.3087833385928097,1.7658908555458428,-0.10601743074722245,0,
+        -0.231103377548616,-0.7501899197440212,1.847597816108189,0,
+        0,0,0,1
+    )
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/threshold-color.js
+
+
+function threshold_color_thresholdColor (scale = 1) {
+    scale = toFloatString( util_parseParamNumber(scale) )
+
+    return util_shader(`
+        float c = ( (pixelColor.r * 0.2126 + pixelColor.g * 0.7152 + pixelColor.b * 0.0722) ) >= ${scale} ? 1.0 : 0.0;
+
+        outColor = vec4(c, c, c, pixelColor.a);
+    `)
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/threshold.js
+
+/*
+ * @param {Number} amount  0..100 
+ */
+function pixel_threshold_threshold (scale = 200, amount = 100) {
+    return threshold_color_thresholdColor(scale, amount, false)
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/tint.js
+
+
+/**
+ * 
+ * @param {*} redTint  0..1
+ * @param {*} greenTint 0..1
+ * @param {*} blueTint 0..1
+ */
+/* harmony default export */ var pixel_tint = (function (redTint = 0, greenTint = 0, blueTint = 0) {
+    const r = util_parseParamNumber(redTint)       
+    const g = util_parseParamNumber(greenTint)       
+    const b = util_parseParamNumber(blueTint)  
+
+    return util_shader(`
+        outColor = vec4(
+            pixelColor.r += (1 - pixelColor.r) * ${r},
+            pixelColor.g += (1 - pixelColor.g) * ${g},
+            pixelColor.b += (1 - pixelColor.b) * ${b},
+            pixelColor.a
+        );
+    `);
+});
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/pixel/index.js
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+/* harmony default export */ var gl_filter_pixel = ({
+    bitonal: bitonal_bitonal, 
+    brightness: pixel_brightness_brightness,
+    brownie: brownie_brownie,
+    clip: pixel_clip_clip,
+    chaos: chaos,
+    contrast: pixel_contrast_contrast,
+    gamma: gamma_gamma,
+    gradient: pixel_gradient_gradient,
+    grayscale: grayscale_grayscale,
+    hue: pixel_hue_hue, 
+    invert: invert_invert,
+    kodachrome: kodachrome_kodachrome,
+    matrix: pixel_matrix_matrix,
+    noise: noise_noise, 
+    opacity: pixel_opacity_opacity,
+    polaroid: polaroid_polaroid,
+    saturation: saturation_saturation, 
+    sepia: sepia_sepia,
+    shade: shade_shade,
+    shift: shift_shift,
+    solarize: solarize_solarize,  
+    technicolor: technicolor_technicolor,
+    threshold: pixel_threshold_threshold,
+    'threshold-color': threshold_color_thresholdColor,
+    tint: pixel_tint
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/multi/kirsch.js
+
+
+function kirsch_kirsch () {
+    return util_multi('kirsch-horizontal kirsch-vertical');
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/multi/sobel.js
+
+
+function sobel_sobel () {
+    return util_multi('sobel-horizontal sobel-vertical');
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/multi/vintage.js
+
+
+function vintage_vintage () {
+    return util_multi(`brightness(0.15) saturation(-0.2) gamma(1.8)`)
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/multi/index.js
+
+
+
+
+/* harmony default export */ var filter_multi = ({
+    kirsch: kirsch_kirsch,
+    sobel: sobel_sobel,
+    vintage: vintage_vintage
+}); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/filter/index.js
+
+
+
+
+/* harmony default export */ var gl_filter = ({
+    ...gl_filter_matrix,
+    ...gl_filter_pixel,
+    ...filter_multi
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/index.js
+
+
+
+
+
+let TEXTURE_INDEX = 0 
+
+class gl_GLCanvas {
+
+    constructor (opt = {
+        width : '400px',
+        height: '300px'
+    }) {
+        this.img = opt.img; 
+        this.width = parseFloat(this.img.width || opt.width || '400px');
+        this.height = parseFloat(this.img.height || opt.height || '300px');
+        this.init()
+
+
+    }
+
+    resize () {
+        this.canvas.width = this.width; 
+        this.canvas.height = this.height; 
+        this.canvas.style.width = this.width + 'px';
+        this.canvas.style.height = this.height + 'px';
+
+        this.viewport()
+    }
+
+    /* Canvas 비우기, 비울 때 색 지정하기  */ 
+    clear (r = 0, g = 0, b = 0, a = 0) {
+        const gl = this.gl 
+
+        gl.clearColor(r, g, b, a);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);        
+    }
+
+    /* viewport 설정, 기본적으로 canvas 의 크기로 고정  */
+    viewport (x, y, width, height) {
+        const gl = this.gl 
+
+        gl.viewport(x || 0, y || 0, width || gl.canvas.width,  height || gl.canvas.height);
+    }
+
+    // canvas 초기화 
+    // gl context 구하기 
+
+    initCanvas (vertexSource, fragmentSource) {
+        this.canvas = document.createElement('canvas')
+
+        this.gl = this.canvas.getContext('webgl2');
+
+        if (!this.gl) {
+            throw new Error("you need webgl2 support")
+        }
+
+        // program 생성 
+        this.program = this.createProgram (vertexSource, fragmentSource) 
+   
+
+        // this.clear()
+        this.resize()
+
+        // buffer 설정 
+        this.initBuffer()
+    }
+
+    draw (primitiveType = 'TRIANGLES', offset = 0, count = 6) {
+        const gl = this.gl 
+
+        gl.drawArrays(gl[primitiveType], offset, count)
+    }
+
+    triangles (offset = 0, count = 6) {
+        this.draw('TRIANGLES', offset, count)
+    }
+
+    uniform2f(...args) {
+
+        var key = args.shift()
+
+        this.gl.uniform2f(...[this.locations[key], ...args])
+    }
+
+    uniform1f(...args) {
+
+        var key = args.shift()
+
+        this.gl.uniform1f(...[this.locations[key], ...args])
+    }    
+
+    uniform1fv(...args) {
+
+        var key = args.shift()
+
+        this.gl.uniform1fv(...[this.locations[key], ...args])
+    }        
+
+    uniform1i(...args) {
+
+        var key = args.shift()
+
+        this.gl.uniform1i(...[this.locations[key], ...args])
+    }    
+
+    useProgram () {
+        const gl = this.gl 
+
+        gl.useProgram(this.program);
+
+    } 
+
+    bindBuffer(key, data, drawType = 'STATIC_DRAW') {
+        const gl = this.gl 
+
+        if (!this.buffers[key]) {
+            this.buffers[key] = gl.createBuffer()
+        }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers[key])     
+        
+        if (data) {
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl[drawType]); 
+        }
+    }
+
+    enable (key) {
+        const gl = this.gl 
+
+        // array attribute 를 활성화 시킴 
+        gl.enableVertexAttribArray(this.locations[key])
+    }
+
+    location (key, type = "attribute") { 
+        if (type === 'attribute') {
+            this.locations[key] = this.gl.getAttribLocation(this.program, key)
+        } else if (type === 'uniform') {
+            this.locations[key] = this.gl.getUniformLocation(this.program, key)
+        }
+    }
+
+    a (key) {
+        return this.location(key)
+    }
+
+    u (key) { 
+        return this.location(key, "uniform")
+    }
+
+    pointer (key, type = 'FLOAT', size = 2, normalize = false, stride = 0, offset = 0) {
+        const gl = this.gl 
+
+        gl.vertexAttribPointer(this.locations[key], size, gl[type], normalize, stride, offset);
+    }
+
+    bufferData (data = []) {
+        const gl = this.gl ; 
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);        
+    }
+
+    isPowerOf2(value) {
+        return (value & (value - 1)) == 0;
+    }
+
+
+    bindTexture (key, img = undefined, mipLevel = 0, internalFormat = 'RGBA', srcFormat = 'RGBA', srcType = 'UNSIGNED_BYTE') {
+        const gl = this.gl 
+
+        if (arguments.length == 1) {
+            gl.bindTexture(gl.TEXTURE_2D, this.textures[key])
+            return; 
+        }
+
+        if ( !this.textures[key] ) {
+            this.textures[key] = gl.createTexture()
+        }
+
+        this.textureIndex[key] = TEXTURE_INDEX++;
+        // this.activeTexture(key)
+        gl.bindTexture(gl.TEXTURE_2D, this.textures[key]);
+
+        this.setTextureParameter()
+
+        gl.texImage2D(gl.TEXTURE_2D, mipLevel, gl[internalFormat], gl[srcFormat], gl[srcType], img.newImage || img);
+    }
+
+    bindColorTexture (key, data, width = 256, height = 1, mipLevel = 0, internalFormat = 'RGBA', srcFormat = 'RGBA', srcType = 'UNSIGNED_BYTE') {
+        const gl = this.gl 
+
+        if ( !this.textures[key] ) {
+            this.textures[key] = gl.createTexture()
+        }
+
+        this.textureIndex[key] = TEXTURE_INDEX++;
+        gl.bindTexture(gl.TEXTURE_2D, this.textures[key]);
+
+        this.setTextureParameter()
+
+        gl.texImage2D(gl.TEXTURE_2D, mipLevel, gl[internalFormat], width, height, 0, gl[srcFormat], gl[srcType], new Uint8Array(data));
+
+    }
+
+    bindEmptyTexture (key, width, height, mipLevel = 0, internalFormat = 'RGBA', srcFormat = 'RGBA', srcType = 'UNSIGNED_BYTE') {
+        const gl = this.gl 
+
+        if ( !this.textures[key] ) {
+            this.textures[key] = gl.createTexture()
+        }
+
+        this.textureIndex[key] = TEXTURE_INDEX++;
+        gl.bindTexture(gl.TEXTURE_2D, this.textures[key]);
+
+        this.setTextureParameter()
+
+        var border = 0; 
+        var data = null;
+
+        gl.texImage2D(gl.TEXTURE_2D, mipLevel, gl[internalFormat], width, height, border, gl[srcFormat], gl[srcType], data);
+
+    }
+
+    setTextureParameter() {
+        const gl = this.gl
+
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    }
+
+    bindFrameBufferWithTexture(key, textureKey, width, height) {
+        this.bindEmptyTexture(textureKey, width, height);
+        this.bindFrameBuffer(key, textureKey)
+    }
+
+    enumToString(value) {
+        const gl = this.gl 
+
+        if (value === 0) { 
+            return "NONE";
+        }
+        for (let key in gl) {
+            if (gl[key] === value) {
+            return key;
+            }
+        }
+        return "0x" + value.toString(16);
+    }
+
+    bindFrameBuffer (key, textureKey = null) {
+        const gl = this.gl 
+
+        if (arguments.length === 1) {
+            gl.bindFramebuffer(gl.FRAMEBUFFER, key == null ? null : this.framebuffers[key]);
+            return; 
+        }
+
+        if (!this.framebuffers[key]) {
+            // 프레임버퍼 생성하기 
+            this.framebuffers[key] = gl.createFramebuffer()
+        }
+
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffers[key]);
+    
+        // framebuffer 에 texture2d 연결 
+        const mipLevel = 0
+        var attachmentPoint = gl.COLOR_ATTACHMENT0;   // framebuffer 를 attachmentPoint 에 연결한다. 
+        // framebuffer 는 데이타를 가지고 있지 않고 연결 고리만 가지고 있다. 
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, this.textures[textureKey], mipLevel);
+
+        // framebuffer 상태 체크 하기 
+        // framebuffer 를 더 이상 할당 못할 수도 있음. 
+        const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+
+        // console.log(this.enumToString(attachmentPoint), this.enumToString(status), key, this.textures[textureKey]);
+        
+        if (status !== gl.FRAMEBUFFER_COMPLETE) {
+          return;
+        }        
+    
+    }
+
+    bindVA () {
+        const gl = this.gl 
+
+        if(!this.vao) {
+            this.vao = gl.createVertexArray();
+        }
+
+        gl.bindVertexArray(this.vao);
+    }
+
+    bindAttr (key, data, drawType = 'STATIC_DRAW', size = 2) {
+        // 버퍼를 만들고 데이타를 연결한다. 
+        this.bindBuffer(key, data, drawType)
+
+        //array 변수를 사용할 수 있도록 활성화 시킨다. 
+        this.enable(key)        
+
+        // 포인터를 지정한다. 
+        // array 변수가 어떻게 iteration 될지 지정한다. size 는 한번에 연산될 요소 개수 
+        // size 가 2 라고 했을 때 2개씩 하나의 iteration 에 들어간다. 
+        // 즉, (x, y) 가 한번에 들어감 
+        this.pointer(key, 'FLOAT', size)
+    }
+
+    /* 
+        shader 에서 사용하는 Attribute, Uniform 변수 설정 
+        변수 설정을 간소화 할 필요도 있을 듯 하다. 
+    */
+    initBuffer () {
+        
+        const { width, height } = this.canvas 
+
+        // console.log(width, height)
+
+        // 선언된 변수 location 지정 하기 
+        // location 을 지정해야 GLSL 에서 해당 변수와 연결할 수 있다. 언제? 
+        this.a("a_position");
+        this.a("a_texCoord")
+        this.u("u_resolution")
+        this.u("u_image")    
+        this.u("u_flipY") 
+
+        this.u("u_kernelSelect");
+        this.u("u_filterIndex");
+    
+        this.u("u_kernel9[0]");
+        this.u("u_kernel9Weight");
+        this.u("u_kernel25[0]");
+        this.u("u_kernel25Weight");
+        this.u("u_kernel49[0]");
+        this.u("u_kernel49Weight");        
+        this.u("u_kernel81[0]");
+        this.u("u_kernel81Weight");
+
+        this.bindVA()         
+
+        // 단순 변수를 초기화 하고 
+        this.bindAttr("a_position", [
+            0, 0,
+            width, 0,
+            0, height,
+            0, height,
+            width, 0,
+            width, height,
+        ], 'STATIC_DRAW', 2 /* components for iteration */);
+
+        // 변수에 데이타를 연결할다. 
+        this.bindAttr("a_texCoord", [
+            0.0, 0.0,
+            1.0, 0.0,
+            0.0, 1.0,
+
+            0.0, 1.0, 
+            1.0, 0.0,
+            1.0, 1.0 
+        ], 'STATIC_DRAW', 2 /* components for iteration */);
+
+
+        // texture 는 img 로 할 수도 있고 
+        this.bindTexture("u_image", this.img); 
+
+        // 비어있는 texture 도 만들 수 있다. 
+        // 객체로 제어할까? 
+        // texture 를 framebuffer 로 바로 대응시킨다. 
+        // 이후 framebuffer 가 변경되면 img_texture 가 바뀐다. 
+        this.bindFrameBufferWithTexture("frame_buffer_0", "img_texture_0", width, height)
+        this.bindFrameBufferWithTexture("frame_buffer_1", "img_texture_1", width, height)
+    }
+
+    activeTexture(index = 0) {
+        const gl = this.gl 
+
+        gl.activeTexture(gl.TEXTURE0 + index);
+    }
+
+    drawFilter () {
+        const gl = this.gl 
+
+        this.resize()
+        this.clear() 
+
+        this.useProgram()
+
+        this.bindVA()
+
+
+        this.activeTexture(0)
+        this.bindTexture('u_image')
+
+        this.uniform1i("u_image", 0)
+        this.uniform1f("u_flipY", 1);
+
+        const { width, height } = gl.canvas 
+
+        this.eachFilter((f, index) => {
+
+            this.bindFrameBuffer(`frame_buffer_${index % 2}`);
+            this.uniform2f("u_resolution", width, height);        
+            this.viewport(0, 0, width, height);
+
+            this.effectFilter(f);
+    
+            // 다음 드로잉을 위해 방금 렌더링 한 텍스처를 사용합니다.
+            this.bindTexture(`img_texture_${index % 2}`)
+        })
+
+        this.uniform1f("u_flipY", -1);  
+        this.bindFrameBuffer(null);
+        this.uniform2f("u_resolution", width, height);        
+        this.viewport(0, 0, width, height);
+
+        // clear 가 있는 이유는? 
+        this.clear()
+
+        this.effectFilter("normal");        
+    }
+
+    effectFilter (filterFunction) {
+
+        if (typeof filterFunction == 'string') {
+            filterFunction = (gl_filter[filterFunction] || gl_filter.normal).call(gl_filter)
+        }
+
+        if (filterFunction.type == 'convolution') {
+            this.uniform1f("u_kernelSelect", filterFunction.length)
+            this.uniform1f("u_filterIndex", -1.0)
+            this.uniform1fv(`u_kernel${filterFunction.length}[0]`, filterFunction.content) 
+            this.uniform1f(`u_kernel${filterFunction.length}Weight`, this.computeKernelWeight(filterFunction.content))
+        } else {
+             
+            this.uniform1f("u_kernelSelect", -1.0)
+            this.uniform1f("u_filterIndex", filterFunction.index)
+        }
+
+
+        this.triangles(0 /* 시작 지점 */, 6 /* 좌표(vertex, 꼭지점) 개수 */) ; // 총 6개를 도는데 , triangles 니깐 3개씩 묶어서 2번 돈다. 
+    }
+
+    computeKernelWeight(kernel) {
+        var weight = kernel.reduce(function(prev, curr) {
+            return prev + curr;
+        });
+        return weight <= 0 ? 1 : weight;
+    }
+
+    createProgram (vertexSource, fragmentSource) {
+
+        const gl = this.gl 
+
+        var program = gl.createProgram()
+
+        this.vertexShader = this.createVertexShader (vertexSource) 
+        this.fragmentShader = this.createFragmentShader(fragmentSource) 
+
+        // console.log(fragmentSource)      
+
+
+        gl.attachShader(program, this.vertexShader )
+        gl.attachShader(program, this.fragmentShader)
+
+        gl.linkProgram(program)
+
+        var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+        if (success) {
+
+            return program 
+        }
+
+        console.error(gl.getProgramInfoLog(program));
+        gl.deleteProgram(program)
+    }
+
+    createShader (type, source) {
+        const gl = this.gl 
+
+        var shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+
+        var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+
+        if (success) {
+            return shader; 
+        }
+
+        console.error(gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader) 
+    }
+
+    createVertexShader (vertexSource) {
+        const gl = this.gl 
+
+        return this.createShader(gl.VERTEX_SHADER, vertexSource);
+    }
+
+    createFragmentShader (fragmentSource) {
+        const gl = this.gl 
+
+        return this.createShader(gl.FRAGMENT_SHADER, fragmentSource);
+    }
+
+    eachFilter (callback) {
+        this.filterList.forEach(callback)
+    }
+
+    init () {
+        this.locations = {} 
+        this.buffers = {} 
+        this.framebuffers = {}
+        this.textures = {}
+        this.textureIndex = {}
+        this.hasTexParameter = {}
+    }
+
+    destroy () {
+        const gl = this.gl 
+
+        this.init()
+
+        gl.deleteProgram(this.program)
+    }
+
+    filter(filterList, doneCallback) {
+
+        this.filterList = filterList
+
+        this.initCanvas(makeVertexShaderSource(), makeFragmentShaderSource(this.filterList))
+
+        this.drawFilter()
+
+        if (typeof doneCallback == 'function') {
+
+            doneCallback(this)
+        }
+    }
+}
+
+/* harmony default export */ var gl = ({
+    GLCanvas: gl_GLCanvas 
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/gl/functions.js
+
+
+
+
+const gl_functions_functions = {
+    filter: gl_functions_filter
+}
+function functions_makeGroupedFilter(filters = []) {
+    var groupedFilter = [] 
+    var group = []
+    for (var i = 0, len = filters.length; i < len; i++) {
+        var f = filters[i]
+
+        if (f.userShader) {
+            group.push(f)
+        } else {
+            if (group.length) {
+                groupedFilter.push([...group])
+            }
+            groupedFilter.push(f)
+            group = [] 
+        }
+    }
+
+    if (group.length) {
+        groupedFilter.push([...group])
+    }
+
+    groupedFilter.forEach((filter, index) => {
+        if (Array.isArray(filter)) {
+            groupedFilter[index] = (function () {
+                const userFunction = makePrebuildUserFilterListForGL(filter)
+                // console.log(userFunction)
+                return function (bitmap, done) {                    
+                    for (var i = 0, len = bitmap.pixels.length; i< len;i += 4) {
+                        userFunction(bitmap.pixels, i)
+                    }
+
+                    done(bitmap)
+                }
+            })()
+        }
+    })
+
+    return groupedFilter
+}
+
+
+
+function gl_functions_multi (...filters) {
+    filters = filters.map(filter => {
+        return makeFilter(filter);
+    }).filter(f => f)
+
+    filters = functions_makeGroupedFilter(filters)
+
+    var max = filters.length 
+
+    return function (bitmap, done, opt = {}) {
+
+        var currentBitmap = bitmap 
+        var index = 0 
+
+        function runFilter () {
+            filters[index].call(null, currentBitmap, function (nextBitmap) {
+                currentBitmap = nextBitmap  
+    
+                nextFilter()
+            }, opt)
+        }
+
+        function nextFilter () {
+            index++ 
+
+            if (index >= max) {
+                done(currentBitmap)
+                return;  
+            }
+
+            runFilter()
+        }
+
+        runFilter()
+    }
+}
+
+function functions_merge (arr) {
+    return gl_functions_multi(...arr)
+}
+
+function makeFilterFunction (filterObj) {
+    const filterName = filterObj.arr[0]
+    var f = gl_filter[filterName]
+
+    let arr = filterObj.arr 
+    arr.shift()
+
+    var result = f.apply(this, arr)
+
+    return result
+}
+
+/**
+ * 겹쳐져 있는 Filter 함수를 1차원으로 나열한다. 
+ * ex)  ['sobel'] => ['sobel-horizontal', 'sobel-vertial'] 
+ * 
+ * @param {String|Array} filterString 
+ */
+function flatFilter (filterString) {
+
+    let filter_list = [] 
+
+    if (typeof filterString == 'string') {
+        filter_list = functions_matches(filterString)
+    } else if (Array.isArray(filterString)) {
+        filter_list = filterString;
+    }
+
+    let allFilter = []
+
+    filter_list.forEach(filterObj => {
+        const filterName = filterObj.arr[0] 
+
+        if (gl_filter[filterName]) {
+            const f = makeFilterFunction(filterObj);
+
+            if (f.type == 'convolution' || f.type == 'shader') {
+                allFilter.push(f)
+            } else {
+                f.forEach(subFilter => {
+                    allFilter = allFilter.concat(flatFilter(subFilter))
+                })  
+            }
+        } 
+    })
+
+    // console.log(filter_list, allFilter)
+
+    return allFilter
+}
+
+function gl_functions_filter (img, filterString, callback, opt) {
+
+    const canvas = new gl.GLCanvas({
+        width: opt.width || img.width,
+        height: opt.height || img.height,
+        img 
+    });
+
+    canvas.filter(flatFilter(filterString), function done () {
+        if (typeof callback == 'function') {
+            callback(canvas)
+        }
+    })
+}
+
+
+/* harmony default export */ var gl_functions = (gl_functions_functions); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/GL.js
+
+
+ 
+
+/* harmony default export */ var GL = ({
+    ...gl, 
+    ...gl_functions
+});
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/functions/image.js
+
+
+
+ 
+
+
+function palette(colors, k = 6, exportFormat = 'hex') {
+
+    if (colors.length > k) {
+        colors = Kmeans(colors, k);
+    }
+
+    return colors.map(c => {
+        return formatter_format(c, exportFormat);
+    }); 
+}
+
+function ImageToRGB(url, callbackOrOption = {}, callback) {
+
+    if (!callback) {
+        var img = new util_ImageLoader(url);
+        img.loadImage(() => {
+            if (typeof callbackOrOption == 'function') {
+                callbackOrOption(img.toRGB());
+            }
+
+        })
+    } else if (callback) {
+        var img = new util_ImageLoader(url, callbackOrOption);
+        img.loadImage(() => {
+            if (typeof callback == 'function') {
+                callback(img.toRGB());
+            }
+
+        })
+    }
+}
+
+function ImageToCanvas (url, filter, callback, opt = { frameTimer: 'full' }) {
+    ImageToURL(url, filter, callback, Object.assign({
+        returnTo: 'canvas'
+    }, opt))
+}
+
+function ImageToURL(url, filter, callback, opt = { frameTimer : 'full'}) {
+    var img = new util_ImageLoader(url);
+    img.loadImage(() => {
+        img.toArray(filter, function (datauri) {
+            if (typeof callback == 'function') {
+                callback(datauri)
+            }                
+        }, opt);
+    })
+}
+
+function GLToCanvas (url, filter, callback, opt = {}) {
+    var img = new util_ImageLoader(url);
+    img.load(() => {
+        GL.filter(img.newImage, filter, function done (datauri) {
+            if (typeof callback == 'function') {
+                callback(datauri)
+            }
+        }, opt)
+    })
+}
+
+function image_histogram (url, callback, opt = {}) {
+    var img = new util_ImageLoader(url);
+    img.loadImage(() => {
+        if (typeof callback == 'function') {
+            callback(img.toHistogram(opt));
+        }
+    })
+}
+
+function histogramToPoints (points, tension = 0.2) {
+
+    var controlPoints = [];
+    for(let i = 0; i < points.length; i++) {
+        var p = points[i]
+        if (i == 0) {
+            controlPoints[i] = []
+            continue; 
+        } 
+
+        if (i == points.length - 1) {
+            controlPoints[i] = []
+            continue; 
+        }
+
+        var prevPoint = points[i-1]
+        var nextPoint = points[i+1]
+
+        // 기울기 
+        var M = (nextPoint[1] - prevPoint[1]) / (nextPoint[0] - prevPoint[0])
+
+        var newControlPoint = [ 
+            prevPoint[0] + (nextPoint[0] - prevPoint[0]) * tension,
+            prevPoint[1] + (nextPoint[1] - prevPoint[1]) * tension
+        ]
+
+        var controlPoint = [
+            [...prevPoint], /* start */ 
+            [...newControlPoint] /* end */
+        ]
+
+        var P = Math.sqrt(Math.pow((p[0] - prevPoint[0]), 2) + Math.pow((p[1] - prevPoint[1]), 2))
+        var N = Math.sqrt(Math.pow((nextPoint[0] - p[0]), 2) + Math.pow((nextPoint[1] - p[1]), 2))
+
+        var rate = P / N 
+
+        var dx = controlPoint[0][0] + (controlPoint[1][0] - controlPoint[0][0] ) * rate
+        var dy = controlPoint[0][1] + (controlPoint[1][1] - controlPoint[0][1] ) * rate
+
+        controlPoint[0][0] += p[0] - dx 
+        controlPoint[0][1] += p[1] - dy 
+        controlPoint[1][0] += p[0] - dx 
+        controlPoint[1][1] += p[1] - dy         
+
+        controlPoints[i] = controlPoint
+    }
+
+    return controlPoints
+}
+
+function ImageToHistogram(url, callback, opt = { width: 200, height: 100 }) {
+
+    var img = new util_ImageLoader(url);
+    img.loadImage(() => {
+        util_Canvas.createHistogram (opt.width || 200, opt.height || 100, img.toHistogram(opt), function (canvas) {
+            if (typeof callback == 'function') callback(canvas.toDataURL('image/png'));
+        }, opt)
+    })
+}
+
+/* harmony default export */ var functions_image = ({
+    palette,
+    ImageToCanvas,
+    ImageToHistogram,
+    ImageToRGB,
+    ImageToURL,
+    GLToCanvas,
+    histogram: image_histogram,
+    histogramToPoints
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/Color.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ var util_Color = ({
+    ...formatter, 
+    ...math, 
+    ...mixin,
+    ...functions_parser,
+    ...fromYCrCb,
+    ...fromRGB,
+    ...fromCMYK,
+    ...fromHSV,
+    ...fromHSL,
+    ...fromLAB,
+    ...functions_image
+});
+
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/Dom.js
+
+
+const Dom_color = util_Color.color; 
+
+let counter = 0;
+let cached = [];
+
+class Dom {
+
+    constructor (tag, className, attr) {
+    
+        if (typeof tag != 'string') {
+            this.el = tag;
+        } else {
+    
+            var el  = document.createElement(tag);
+            this.uniqId = counter++;
+
+            if (className) {
+                el.className = className;
+            }
+
+            attr = attr || {};
+    
+            for(var k in attr) {
+                el.setAttribute(k, attr[k]);
+            }
+    
+            this.el = el;
+        }
+    }
+
+    static getScrollTop () {
+        return Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    static getScrollLeft () {
+        return Math.max(window.pageXOffset, document.documentElement.scrollLeft, document.body.scrollLeft)
+    }
+
+    attr (key, value) {
+        if (arguments.length == 1) {
+            return this.el.getAttribute(key);
+        }
+
+        this.el.setAttribute(key, value);
+
+        return this; 
+    }
+
+    closest (cls) {
+        
+        var temp = this;
+        var checkCls = false;
+    
+        while(!(checkCls = temp.hasClass(cls))) {
+            if (temp.el.parentNode) {
+                temp = new Dom(temp.el.parentNode);
+            } else {
+                return null;
+            }
+        }
+    
+        if (checkCls) {
+            return temp;
+        }
+    
+        return null;
+    }
+    
+    removeClass (cls) {
+        this.el.className = ((` ${this.el.className} `).replace(` ${cls} `, ' ')).trim();
+
+        return this; 
+    }
+    
+    hasClass (cls) {
+        if (!this.el.className)
+        {
+            return false;
+        } else {
+            var newClass = ` ${this.el.className} `;
+            return newClass.indexOf(` ${cls} `) > -1;
+        }
+    }
+    
+    addClass (cls) {
+        if (!this.hasClass(cls)) {
+            this.el.className = `${this.el.className} ${cls}`;
+        }
+
+        return this; 
+    
+    }
+
+    toggleClass (cls) {
+        if (this.hasClass(cls)) {
+            this.removeClass(cls);
+        } else {
+            this.addClass(cls);
+        }
+    }
+    
+    html (html) {
+
+        if (typeof html == 'string') {
+            this.el.innerHTML = html;
+        } else {
+            this.empty().append(html);
+        }
+
+        return this;
+    }
+
+    find (selector) {
+        return this.el.querySelector(selector)
+    } 
+
+    findAll (selector) { 
+        return this.el.querySelectorAll(selector)
+    } 
+
+    
+    empty () {
+        return this.html('');
+    }
+    
+    append (el) {
+    
+        if (typeof el == 'string') {
+            this.el.appendChild(document.createTextNode(el));
+        } else {
+            this.el.appendChild(el.el || el);
+        }
+    
+        return this;
+    }
+    
+    appendTo (target) {
+        var t = target.el ? target.el : target;
+    
+        t.appendChild(this.el);
+    
+        return this;
+    }
+    
+    remove () {
+        if (this.el.parentNode) {
+            this.el.parentNode.removeChild(this.el);
+        }
+    
+        return this;
+    }
+    
+    text () {
+        return this.el.textContent;
+    }
+    
+    css (key, value) {
+        if (arguments.length == 2) {
+            this.el.style[key] = value;
+        } else if (arguments.length == 1) {
+    
+            if (typeof key == 'string') {
+                return getComputedStyle(this.el)[key];
+            } else {
+                var keys = key || {};
+                Object.keys(keys).forEach(k => {
+                    this.el.style[k] = keys[k];    
+                })
+            } 
+    
+        }
+    
+        return this;
+    }
+
+    cssFloat (key) {
+        return parseFloat(this.css(key));
+    }
+
+    cssInt (key) {
+        return parseInt(this.css(key));
+    }
+    
+    offset () {
+        var rect = this.el.getBoundingClientRect();
+
+        return {
+            top: rect.top + Dom.getScrollTop(),
+            left: rect.left + Dom.getScrollLeft()
+        };
+    }
+    
+    position () {
+
+        if (this.el.style.top) {
+            return {
+                top: parseFloat(this.css('top')),
+                left: parseFloat(this.css('left'))
+            };
+        } else {
+            return this.el.getBoundingClientRect();
+        }
+
+    }
+
+    size () {
+        return [this.width(), this.height()]
+    }
+    
+    width () {
+        return this.el.offsetWidth || this.el.getBoundingClientRect().width;
+    }
+
+    contentWidth() {
+        return this.width() - this.cssFloat('padding-left') - this.cssFloat('padding-right');
+    }
+    
+    height () {
+        return this.el.offsetHeight || this.el.getBoundingClientRect().height;
+    }
+
+
+    contentHeight() {
+        return this.height() - this.cssFloat('padding-top') - this.cssFloat('padding-bottom');
+    }
+    
+    dataKey (key) {
+        return this.uniqId + '.' + key;
+    }
+    
+    data (key, value) {
+        if (arguments.length == 2) {
+            cached[this.dataKey(key)] = value;
+        } else if (arguments.length == 1) {
+            return cached[this.dataKey(key)];
+        } else {
+            var keys = Object.keys(cached);
+    
+            var uniqId = this.uniqId + ".";
+            return keys.filter(function (key) {
+                if (key.indexOf(uniqId) == 0) {
+                    return true;
+                }
+    
+                return false;
+            }).map(function (value) {
+                return cached[value];
+            })
+        }
+    
+        return this;
+    }
+    
+    val (value) {
+        if (arguments.length == 0) {
+            return this.el.value;
+        } else if (arguments.length == 1) {
+            this.el.value = value;
+        }
+    
+        return this;
+    }
+    
+    int () {
+        return parseInt(this.val(), 10);
+    }
+
+    float () {
+        return parseFloat(this.val());
+    }
+    
+    show () {
+        return this.css('display', 'block');
+    }
+    
+    hide () {
+        return this.css('display', 'none');
+    }
+
+    toggle () {
+        if (this.css('display') == 'none') {
+            return this.show();
+        } else {
+            return this.hide();
+        }
+    }
+
+    scrollTop () {
+        if (this.el === document.body) {
+            return document.documentElement.scrollTop
+        }
+
+        return this.el.scrollTop
+    } 
+
+    scrollLeft () {
+        if (this.el === document.body) {
+            return document.documentElement.scrollLeft
+        }
+
+        return this.el.scrollLeft
+    }
+
+    on (eventName, callback, opt1, opt2) {
+        this.el.addEventListener(eventName, callback, opt1, opt2);
+
+        return this; 
+    }
+
+    off (eventName, callback ) {
+        this.el.removeEventListener(eventName, callback);
+
+        return this; 
+    }
+
+    getElement ( ) {
+        return this.el;
+    }
+
+    createChild (tag, className = '', attrs = {}, css = {}) {
+        let $element = new Dom(tag, className, attrs);
+        $element.css(css);
+
+        this.append($element);
+
+        return $element;
+    }
+
+    firstChild () {
+        return new Dom(this.el.firstElementChild);
+    }
+
+    replace (oldElement, newElement) {
+        this.el.replaceChild(newElement, oldElement);
+
+        return this; 
+    }
+}
+
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/BaseModule.js
+class BaseModule {
+    constructor ($store) {
+        this.$store = $store;
+        this.initialize();
+    }
+
+    initialize() {
+        this.filterProps().forEach(key => {
+            this.$store.action(key, this);
+        });
+    }
+
+    filterProps (pattern = '/') {
+        return Object.getOwnPropertyNames(this.__proto__).filter(key => {
+            return key.startsWith(pattern);
+        });
+    }
+
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/module/ColorSetsList.js
+
+
+
+class ColorSetsList_ColorSetsList extends BaseModule {
+    initialize () {
+        super.initialize();
+
+        // set property
+        this.$store.colorSetsList = [
+            {   name : "Material", 
+                colors: [ 
+                    '#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', 
+                    '#2196F3', '#03A9F4', '#00BCD4',  '#009688', '#4CAF50', 
+                    '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', 
+                    '#FF5722',  '#795548', '#9E9E9E', '#607D8B' 
+                ]
+            },
+            { name : "Custom", "edit" : true, "colors" : [] },
+            { name: "Color Scale", "scale" : ['red', 'yellow', 'black' ], count : 5 }
+        ]
+        this.$store.currentColorSets = {}        
+    }
+
+    '/list' ($store) {
+        return Array.isArray($store.userList) && $store.userList.length ? $store.userList : $store.colorSetsList;
+    }
+
+    '/setUserPalette' ($store, list) {
+        $store.userList = list; 
+
+        $store.dispatch('/resetUserPalette');
+        $store.dispatch('/setCurrentColorSets');
+    }
+
+    '/resetUserPalette' ($store) {
+        if ($store.userList && $store.userList.length) {
+            $store.userList = $store.userList.map( (element, index) => {
+
+                if (typeof element.colors == 'function') {
+                    const makeCallback = element.colors; 
+
+                    element.colors = makeCallback($store);
+                    element._colors = makeCallback;
+                }
+
+                return Object.assign({ 
+                    name: `color-${index}`,
+                    colors : [] 
+                }, element)
+            })
+
+            $store.emit('changeUserList');
+        }
+    }
+
+    '/setCurrentColorSets' ($store, nameOrIndex) {
+
+        const _list = $store.dispatch('/list');
+
+        if (typeof nameOrIndex == 'undefined') {
+            $store.currentColorSets = _list[0];
+        } else if (typeof nameOrIndex == 'number') {
+            $store.currentColorSets = _list[nameOrIndex];
+        } else {
+            $store.currentColorSets = _list.filter(function (obj) {
+                return obj.name == nameOrIndex;
+            })[0];
+        }
+    
+        $store.emit('changeCurrentColorSets');
+    }
+
+    '/getCurrentColorSets' ($store) {
+        return $store.currentColorSets;
+    }
+
+    '/addCurrentColor' ($store, color) {
+        if (Array.isArray($store.currentColorSets.colors)) {
+            $store.currentColorSets.colors.push(color);
+            $store.emit('changeCurrentColorSets');
+        } 
+    }
+
+    '/setCurrentColorAll' ($store, colors = []) {
+        $store.currentColorSets.colors = colors;
+        $store.emit('changeCurrentColorSets');
+    }
+
+    '/removeCurrentColor' ($store, index) {
+        if ($store.currentColorSets.colors[index]) {
+            $store.currentColorSets.colors.splice(index, 1);
+            $store.emit('changeCurrentColorSets');
+        }
+    }
+
+    '/removeCurrentColorToTheRight' ($store, index) {
+        if ($store.currentColorSets.colors[index]) {
+            $store.currentColorSets.colors.splice(index, Number.MAX_VALUE);
+            $store.emit('changeCurrentColorSets');
+        }
+    }    
+
+    '/clearPalette' ($store) {
+        if ($store.currentColorSets.colors) {
+            $store.currentColorSets.colors = [];
+            $store.emit('changeCurrentColorSets');
+        }
+    }
+
+    '/getCurrentColors' ($store ) {
+        return $store.dispatch('/getColors', $store.currentColorSets);
+    }
+
+    '/getColors' ($store, element) {
+        if (element.scale) {
+            return util_Color.scale(element.scale, element.count);
+        }
+        
+        return element.colors || []; 
+    }
+
+    '/getColorSetsList' ($store) {
+        return $store.dispatch('/list').map(element => {
+           return {
+               name : element.name,
+               edit : element.edit,
+               colors : $store.dispatch('/getColors', element)
+           } 
+        });
+    }
+  
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/Event.js
+/* harmony default export */ var util_Event = ({    
+
+    addEvent (dom, eventName, callback) {
+        if (dom) {
+            dom.addEventListener(eventName, callback);
+        }
+    },
+   
+    removeEvent(dom, eventName, callback) {
+        if (dom) {
+            dom.removeEventListener(eventName, callback);
+        }
+    },
+
+    pos(e) {
+        if (e.touches && e.touches[0]) {
+            return e.touches[0];
+        }
+    
+        return e;
+    },
+
+    posXY (e) {
+        var pos = this.pos(e);
+        return {
+            x: pos.pageX,
+            y: pos.pageY
+        }
+    }
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/State.js
+const DELEGATE_SPLIT = '.';
+
+class State {
+  constructor (masterObj, settingObj = {}) {
+
+    this.masterObj = masterObj;
+    this.settingObj = settingObj; 
+  }
+
+  set (key, value, defaultValue = undefined) {
+    this.settingObj[key] = value || defaultValue;
+  }
+
+  init (key, ...args) {
+
+    if (!this.has(key)) {
+
+      const arr = key.split(DELEGATE_SPLIT);
+
+      const obj = this.masterObj.refs[arr[0]] || this.masterObj[arr[0]] || this.masterObj;
+      const method = arr.pop();
+
+      if (obj[method]) {
+        const value = obj[method].apply(obj, args);
+
+        this.set(key, value);
+      }
+
+    }
+  }
+
+  get (key, defaultValue = '') {
+
+    this.init(key, defaultValue);
+
+    return this.settingObj[key] || defaultValue;
+  }
+
+  has (key) {
+    return !!this.settingObj[key];
+  }
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/EventMachin.js
+
+
+
+
+const CHECK_EVENT_PATTERN = /^(click|mouse(down|up|move|enter|leave)|touch(start|move|end)|key(down|up|press)|contextmenu|change|input)/ig;
+const CHECK_LOAD_PATTERN = /^load (.*)/ig;
+const EVENT_SAPARATOR = ' '
+const META_KEYS = ['Control', 'Shift', 'Alt', 'Meta'];
+
+class EventMachin_EventMachin {
+
+  constructor() { 
+    this.state = new State(this);
+    this.refs = {} 
+
+    this.childComponents = this.components()
+  }
+
+  /**
+   * 자식으로 사용할 컴포넌트를 생성해준다. 
+   * 생성 시점에 $store 객체가 자동으로 공유된다. 
+   * 모든 데이타는 $store 기준으로 작성한다. 
+   */
+  newChildComponents () {
+    const childKeys = Object.keys(this.childComponents)
+    childKeys.forEach(key => {
+      const Component = this.childComponents[key]
+
+      this[key] = new Component(this);
+    })
+  }
+
+  /**
+   * 부모가 정의한 template 과  그 안에서 동작하는 자식 컴포넌트들을 다 합쳐서 
+   * 최종 element 를 만들어준다. 
+   * 
+   * 그리고 자동으로 load 되어질게 있으면 로드 해준다. 
+   */
+  render () {
+    // 1. 나의 template 을 만들어내고  
+    this.$el = this.parseTemplate(this.template())
+    this.refs.$el = this.$el;         
+
+    // 개별 객체 셋팅하고 
+    this.parseTarget()
+
+    // 데이타 로드 하고 
+    this.load()    
+
+  }
+ 
+  /**
+   * 자식 컴포넌트로 사용될 객체 정의 
+   */
+  components () {
+    return {} 
+  }
+
+  /**
+   * Class 기반으로 $el 을 생성하기 위해서 
+   * 선언형으로 html 템플릿을 정의한다. 
+   * 
+   * @param {*} html 
+   */
+  parseTemplate (html) {
+    const $el = new Dom("div").html(html).firstChild()
+
+    // ref element 정리 
+    var refs = $el.findAll('[ref]');
+
+    [...refs].forEach(node => {
+      const name = node.getAttribute('ref')
+      this.refs[name] = new Dom(node);
+    })
+
+    return $el; 
+  }
+
+  /**
+   * target 으로 지정된 자식 컴포넌트를 대체해준다.
+   */
+  parseTarget () {
+    const $el = this.$el; 
+    const targets = $el.findAll('[target]');
+
+    [...targets].forEach(node => {
+      const targetComponentName = node.getAttribute('target')
+      const refName = node.getAttribute('ref') || targetComponentName
+
+      var Component = this.childComponents[targetComponentName]
+      var instance = new Component(this);
+      this[refName] = instance
+      this.refs[refName] = instance.$el
+
+      if (instance) {
+        instance.render()
+        $el.replace(node, instance.$el.el)                
+      }
+    })
+  }
+
+  // load function이 정의된 객체는 load 를 실행해준다. 
+  load () {
+    
+    this.filterProps(CHECK_LOAD_PATTERN).forEach(callbackName => {
+      const elName = callbackName.split('load ')[1]
+
+      if (this.refs[elName]) { 
+        this.refs[elName].html(this.parseTemplate(this[callbackName].call(this)))
+      }
+    })
+  }
+
+  // 기본 템플릿 지정 
+  template () {
+    return '<div></div>';
+  }
+
+  initialize() {
+
+  }
+
+  /**
+   * 이벤트를 초기화한다. 
+   */
+  initializeEvent () { 
+    this.initializeEventMachin();
+
+    // 자식 이벤트도 같이 초기화 한다. 
+    // 그래서 이 메소드는 부모에서 한번만 불려도 된다. 
+    Object.keys(this.childComponents).forEach(key => {
+      if (this[key]) this[key].initializeEvent()
+    })
+
+  }
+
+  /**
+   * 자원을 해제한다. 
+   * 이것도 역시 자식 컴포넌트까지 제어하기 때문에 가장 최상위 부모에서 한번만 호출되도 된다. 
+   */
+  destroy() {
+    this.destroyEventMachin();
+    // this.refs = {} 
+
+    Object.keys(this.childComponents).forEach(key => {
+      if (this[key]) this[key].destroy()
+    })
+
+  }
+
+  destroyEventMachin () {
+    this.removeEventAll();
+  }
+
+  initializeEventMachin () {
+    this.filterProps(CHECK_EVENT_PATTERN).forEach(this.parseEvent.bind(this));
+  }
+
+  /**
+   * property 수집하기 
+   * 상위 클래스의 모든 property 를 수집해서 리턴한다. 
+   */
+  collectProps () {
+
+    if (!this.collapsedProps) {
+      var p = this.__proto__ 
+      var results = [] 
+      do {
+        results.push(...Object.getOwnPropertyNames(p))
+        p  = p.__proto__;
+      } while( p );
+
+      this.collapsedProps = results
+    }
+
+    return this.collapsedProps; 
+  }
+
+  filterProps (pattern) {
+    return this.collectProps().filter(key => {
+      return key.match(pattern);
+    });
+  }
+
+  parseEvent (key) {
+    let arr = key.split(EVENT_SAPARATOR) ;
+
+    this.bindingEvent(arr,this[key].bind(this));
+  }
+
+  getDefaultDomElement (dom) {
+    let el; 
+
+    if (dom) {
+      el = this.refs[dom] || this[dom] || window[dom]; 
+    } else {
+      el = this.el || this.$el || this.$root; 
+    }
+
+    if (el instanceof Dom) {
+      return el.getElement();
+    }
+
+    return el;
+  }
+
+  getDefaultEventObject (eventName) {
+    let arr = eventName.split('.');
+    const realEventName = arr.shift();
+
+    const isControl = arr.includes('Control');
+    const isShift =  arr.includes('Shift');
+    const isAlt = arr.includes('Alt');
+    const isMeta =  arr.includes('Meta');
+
+    arr = arr.filter((code) => {
+      return META_KEYS.includes(code) === false;
+    });
+    
+    const checkMethodList = arr.filter(code => {
+      return !!this[code];
+    });
+    
+    arr = arr.filter(code => {
+      return checkMethodList.includes(code) === false; 
+    }).map(code => {
+      return code.toLowerCase() 
+    });
+
+    return {
+      eventName : realEventName,
+      isControl,
+      isShift,
+      isAlt,
+      isMeta,
+      codes : arr,
+      checkMethodList: checkMethodList
+    }
+  }
+
+  bindingEvent ([ eventName, dom, ...delegate], callback) {
+    dom = this.getDefaultDomElement(dom);
+    let eventObject = this.getDefaultEventObject(eventName);
+
+    eventObject.dom = dom;
+    eventObject.delegate = delegate.join(EVENT_SAPARATOR);
+
+    this.addEvent(eventObject, callback);
+  }
+
+  matchPath(el, selector) {
+    if (el) {
+      if (el.matches(selector)) { return el; }
+      return this.matchPath(el.parentElement, selector);
+    }
+    return null;
+  }
+
+  getBindings () {
+
+    if (!this._bindings) {
+      this.initBindings();
+    }
+
+    return this._bindings;
+  }
+
+  addBinding (obj) {
+    this.getBindings().push(obj);
+  }
+
+  initBindings() {
+    this._bindings = [];
+  }
+
+  checkEventType (e, eventObject ) {
+    var onlyControl = e.ctrlKey ? eventObject.isControl : true;
+    var onlyShift = e.shiftKey ? eventObject.isShift : true; 
+    var onlyAlt = e.altKey ? eventObject.isAlt : true; 
+    var onlyMeta = e.metaKey ? eventObject.isMeta : true; 
+
+    var hasKeyCode = true; 
+    if (eventObject.codes.length) {
+      hasKeyCode = eventObject.codes.includes(e.code.toLowerCase()) || eventObject.codes.includes(e.key.toLowerCase());
+    }
+
+    var isAllCheck = true;  
+    if (eventObject.checkMethodList.length) {  // 체크 메소드들은 모든 메소드를 다 적용해야한다. 
+      isAllCheck = eventObject.checkMethodList.every(method => {
+        return this[method].call(this, e);
+      });
+    }
+
+    return (onlyControl && onlyAlt && onlyShift && onlyMeta && hasKeyCode && isAllCheck);
+  }
+
+  makeCallback ( eventObject, callback) {
+    if (eventObject.delegate) {
+      return (e) => {
+
+        if (this.checkEventType(e, eventObject)) {
+          const delegateTarget = this.matchPath(e.target || e.srcElement, eventObject.delegate);
+  
+          if (delegateTarget) { // delegate target 이 있는 경우만 callback 실행 
+            e.delegateTarget = delegateTarget;
+            e.$delegateTarget = new Dom(delegateTarget);
+            return callback(e);
+          } 
+        }
+
+      }
+    }  else {
+      return (e) => {
+        if (this.checkEventType(e, eventObject)) { 
+          return callback(e);
+        }
+      }
+    }
+  }
+
+  addEvent(eventObject, callback) {
+    eventObject.callback = this.makeCallback(eventObject, callback)
+    this.addBinding(eventObject);
+    util_Event.addEvent(eventObject.dom, eventObject.eventName, eventObject.callback)
+  }
+
+  removeEventAll () {
+    this.getBindings().forEach(obj => {
+      this.removeEvent(obj);
+    });
+    this.initBindings();
+  }
+
+  removeEvent({eventName, dom, callback}) {
+    util_Event.removeEvent(dom, eventName, callback);
+  }
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/UIElement.js
+
+
+const CHECK_STORE_EVENT_PATTERN = /^@/
+
+class UIElement_UIElement extends EventMachin_EventMachin {
+    constructor (opt) {
+        super(opt)
+
+        this.opt = opt || {};
+
+        if (opt && opt.$store) {
+            this.$store = opt.$store
+        }
+
+        this.initialize();
+
+        this.initializeStoreEvent();
+    }
+
+    /**
+     * initialize store event 
+     * 
+     * you can define '@xxx' method(event) in UIElement 
+     * 
+     * 
+     */
+    initializeStoreEvent () {
+        this.storeEvents = {}
+        this.filterProps(CHECK_STORE_EVENT_PATTERN).forEach((key) => {
+            const arr = key.split('@')
+            arr.shift();
+            const event = arr.join('@');
+
+            this.storeEvents[event] = this[key].bind(this)
+            this.$store.on(event, this.storeEvents[event]);
+        });
+    }
+
+    destoryStoreEvent () {
+        Object.keys(this.storeEvents).forEach(event => {
+            this.$store.off(event, this.storeEvents[event])
+        })
+    }
+}
+
+/* harmony default export */ var colorpicker_UIElement = (UIElement_UIElement); 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/util/HueColor.js
+
+
+const hue_color = [
+    { rgb : '#ff0000', start : .0 },
+    { rgb : '#ffff00', start : .17 },
+    { rgb : '#00ff00', start : .33 },
+    { rgb : '#00ffff', start : .50 },
+    { rgb : '#0000ff', start : .67 },
+    { rgb : '#ff00ff', start : .83 },
+    { rgb : '#ff0000', start : 1 }
+];
+
+function checkHueColor(p) {
+    var startColor, endColor;
+
+    for(var i = 0; i < hue_color.length;i++) {
+        if (hue_color[i].start >= p) {
+            startColor = hue_color[i-1];
+            endColor = hue_color[i];
+            break;
+        }
+    }
+
+    if (startColor && endColor) {
+        return util_Color.interpolateRGB(startColor, endColor, (p - startColor.start)/(endColor.start - startColor.start));
+    }
+
+    return hue_color[0].rgb;
+}
+
+
+function initHueColors () {
+    for(var i = 0, len = hue_color.length; i < len; i++) {
+        var hue = hue_color[i];
+
+        var obj = util_Color.parse(hue.rgb);
+
+        hue.r = obj.r;
+        hue.g = obj.g;
+        hue.b = obj.b;
+    }
+}
+
+initHueColors();
+
+/* harmony default export */ var HueColor = ({ 
+    colors : hue_color,
+    checkHueColor
+});
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/module/ColorManager.js
+
+
+
+
+
+function isUndefined (v) {
+    return typeof v == 'undefined' || v == null;  
+}
+
+class ColorManager_ColorManager extends BaseModule {
+
+    initialize () {        
+        super.initialize()
+
+        this.$store.rgb = {}
+        this.$store.hsl = {}
+        this.$store.hsv = {}
+        this.$store.alpha = 1 
+        this.$store.format = 'hex'
+
+        // this.$store.dispatch('/changeColor');
+    }
+
+    '/changeFormat' ($store, format) {
+        $store.format = format;
+
+        $store.emit('changeFormat');
+    }
+
+    '/initColor' ($store, colorObj, source) {
+        $store.dispatch('/changeColor', colorObj, source, true);
+        $store.emit('initColor')
+    }
+
+    '/changeColor' ($store, colorObj, source, isNotEmit) {
+
+        colorObj = colorObj || '#FF0000'
+
+        if (typeof colorObj == 'string') {
+            colorObj = util_Color.parse(colorObj);
+        }
+
+        colorObj.source = colorObj.source || source 
+
+        $store.alpha = isUndefined(colorObj.a) ? $store.alpha : colorObj.a; 
+        $store.format = colorObj.type != 'hsv' ? (colorObj.type || $store.format) : $store.format;
+
+        if ($store.format == 'hex' && $store.alpha < 1) {
+            $store.format = 'rgb';
+        }
+
+        if (colorObj.type == 'hsl') {
+            $store.hsl = Object.assign($store.hsl, colorObj); 
+            $store.rgb = util_Color.HSLtoRGB($store.hsl);
+            $store.hsv = util_Color.HSLtoHSV(colorObj);            
+        } else if (colorObj.type == 'hex') {
+            $store.rgb = Object.assign($store.rgb, colorObj);
+            $store.hsl = util_Color.RGBtoHSL($store.rgb);
+            $store.hsv = util_Color.RGBtoHSV(colorObj);            
+        } else if (colorObj.type == 'rgb') {
+            $store.rgb = Object.assign($store.rgb, colorObj);
+            $store.hsl = util_Color.RGBtoHSL($store.rgb);            
+            $store.hsv = util_Color.RGBtoHSV(colorObj);            
+        } else if (colorObj.type == 'hsv') {
+            $store.hsv = Object.assign($store.hsv, colorObj);
+            $store.rgb = util_Color.HSVtoRGB($store.hsv);
+            $store.hsl = util_Color.HSVtoHSL($store.hsv);
+        }
+
+        if (!isNotEmit) {
+            $store.emit('changeColor', colorObj.source);
+        }
+
+    }
+
+    '/getHueColor' ($store) {
+        return HueColor.checkHueColor($store.hsv.h/360);
+    }
+
+    '/toString' ($store, type) {
+        type = type || $store.format
+        var colorObj = $store[type] || $store.rgb
+        return util_Color.format(Object.assign({}, colorObj, {a: $store.alpha} ), type);
+    }
+
+    '/toColor' ($store, type) {
+        type = type || $store.format; 
+
+        if (type == 'rgb') {
+            return $store.dispatch('/toRGB')
+        } else if (type == 'hsl') {
+            return $store.dispatch('/toHSL')
+        } else if (type == 'hex') {
+            return $store.dispatch('/toHEX')            
+        }
+
+        return $store.dispatch('/toString', type);
+    }
+
+    '/toRGB' ($store) {
+        return $store.dispatch('/toString', 'rgb')
+    }
+
+    '/toHSL' ($store) {
+        return $store.dispatch('/toString', 'hsl')
+    }
+
+    '/toHEX' ($store) {
+        return $store.dispatch('/toString', 'hex').toUpperCase()
+    }
+
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/BaseStore.js
+class BaseStore {
+    constructor (opt) {
+        this.callbacks = [] 
+        this.actions = []
+        this.modules = opt.modules || []
+
+        this.initialize()
+    }
+
+    initialize () {
+        this.initializeModule();
+    }
+
+    initializeModule () {
+        this.modules.forEach(Module => {
+            var instance = new Module(this);
+        })
+    }
+
+    action (action, context) {
+        this.actions[action] = { context, callback: context[action] };
+    }
+
+    dispatch (action) {
+        var args = [...arguments]; 
+        var action = args.shift();
+
+        var m = this.actions[action];
+
+        if (m) {
+            return m.callback.apply(m.context, [this, ...args]);
+        }
+    }
+
+    module (ModuleObject) {
+        // this.action()
+    }
+
+    on (event, callback) {
+        this.callbacks.push({ event, callback })
+    }
+
+    off (event, callback) {
+
+        if (arguments.length == 0) {
+            this.callbacks = [] 
+        } else if (arguments.length == 1) {
+            this.callbacks = this.callbacks.filter(f => {
+                return f.event != event 
+            })
+        } else if (arguments.length == 2) {
+            this.callbacks = this.callbacks.filter(f => {
+                return f.event != event && f.callback != callback 
+            })
+        }
+
+    }
+
+    emit () {
+        var args = [...arguments];
+        var event = args.shift();
+
+        this.callbacks.filter(f => {
+            return (f.event == event)
+        }).forEach(f => {
+            if (f && typeof f.callback == 'function') {
+                f.callback(...args);
+            }
+        })
+    }    
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/BaseColorPicker.js
+
+
+
+
+
+
+class BaseColorPicker_BaseColorPicker extends colorpicker_UIElement {
+
+    constructor (opt) {
+        super(opt);
+
+        this.isColorPickerShow = false;
+        this.isShortCut = false;
+        this.hideDelay = +(typeof this.opt.hideDeplay == 'undefined' ? 2000 : this.opt.hideDelay);
+        this.timerCloseColorPicker;
+        this.autoHide = this.opt.autoHide || true;
+        this.outputFormat = this.opt.outputFormat
+        this.$checkColorPickerClass = this.checkColorPickerClass.bind(this);
+
+    }
+
+    initialize () {
+        this.$body = null;
+        this.$root = null; 
+        
+        this.$store = new BaseStore({
+            modules: [
+                ColorManager_ColorManager,
+                ColorSetsList_ColorSetsList
+            ]
+        });
+
+        this.callbackChange = () => {
+            this.callbackColorValue()
+        }
+
+        this.colorpickerShowCallback = function () { };
+        this.colorpickerHideCallback = function () { };           
+
+
+        this.$body = new Dom(this.getContainer());
+        this.$root = new Dom('div', 'codemirror-colorpicker');
+
+        //  append colorpicker to container (ex : body)
+        if (this.opt.position == 'inline') {
+            this.$body.append(this.$root);
+        }
+
+        if (this.opt.type) {    // to change css style
+            this.$root.addClass(this.opt.type);
+        }
+
+        this.$arrow = new Dom('div', 'arrow');
+        
+        this.$root.append(this.$arrow);
+
+        this.$store.dispatch('/setUserPalette', this.opt.colorSets);
+
+
+        this.render()
+
+        this.$root.append(this.$el)
+
+        this.initColorWithoutChangeEvent(this.opt.color);
+
+        // 이벤트 연결 
+        this.initializeEvent();           
+
+    }
+
+    initColorWithoutChangeEvent (color) {
+        this.$store.dispatch('/initColor', color);
+    }
+
+    /** 
+     * public method 
+     * 
+     */
+
+    /**
+     * 
+     * show colorpicker with position  
+     * 
+     * @param {{left, top, hideDelay, isShortCut}} opt 
+     * @param {String|Object} color  
+     * @param {Function} showCallback  it is called when colorpicker is shown
+     * @param {Function} hideCallback  it is called once when colorpicker is hidden
+     */
+    show(opt, color, showCallback, hideCallback) {
+
+        // 매번 이벤트를 지우고 다시 생성할 필요가 없어서 초기화 코드는 지움. 
+        // this.destroy();
+        // this.initializeEvent();
+        // define colorpicker callback
+        this.colorpickerShowCallback = showCallback;
+        this.colorpickerHideCallback = hideCallback;        
+        this.$root.css(this.getInitalizePosition()).show();
+
+        this.definePosition(opt);
+
+        this.isColorPickerShow = true;
+        this.isShortCut = opt.isShortCut || false;
+        this.outputFormat = opt.outputFormat  
+
+        // define hide delay
+        this.hideDelay = +(typeof opt.hideDelay == 'undefined' ? 2000 : opt.hideDelay );
+        if (this.hideDelay > 0) {
+            this.setHideDelay(this.hideDelay);
+        }        
+        
+        this.$root.appendTo(this.$body);
+
+        this.initColorWithoutChangeEvent(color);
+    }     
+
+    /**
+     * 
+     * initialize color for colorpicker
+     * 
+     * @param {String|Object} newColor 
+     * @param {String} format  hex, rgb, hsl
+     */
+    initColor(newColor, format) {
+        this.$store.dispatch('/changeColor', newColor, format);
+    }
+
+
+    /**
+     * hide colorpicker 
+     * 
+     */
+    hide() {
+        if (this.isColorPickerShow) {
+            // this.destroy();
+            this.$root.hide();
+            this.$root.remove();  // not empty 
+            this.isColorPickerShow = false;
+
+            this.callbackHideColorValue()
+        }
+    }
+
+    /**
+     * set to colors in current sets that you see 
+     * @param {Array} colors 
+     */
+    setColorsInPalette (colors = []) {
+        this.$store.dispatch('/setCurrentColorAll', colors);
+    }    
+
+    /**
+     * refresh all color palette 
+     * 
+     * @param {*} list 
+     */
+    setUserPalette (list = []) {
+        this.$store.dispatch('/setUserPalette', list);
+    }
+
+
+    /**
+     * private method 
+     */
+
+    getOption(key) {
+        return this.opt[key];
+    }
+
+    setOption (key, value) {
+        this.opt[key] = value; 
+    }
+
+    isType (key) {
+        return this.getOption('type') == key;
+    }
+
+    isPaletteType() {
+        return this.isType('palette');
+    }
+
+    isSketchType() {
+        return this.isType('sketch');
+    }
+
+    getContainer () {
+        return this.opt.container || document.body;
+    }
+
+    getColor(type) {
+        return this.$store.dispatch('/toColor', type);
+    }
+
+    definePositionForArrow(opt, elementScreenLeft, elementScreenTop) {
+        //this.$arrow.css({})
+    }
+
+    definePosition(opt) {
+
+        var width = this.$root.width();
+        var height = this.$root.height();
+
+        // set left position for color picker
+        var elementScreenLeft = opt.left - this.$body.scrollLeft();
+        if (width + elementScreenLeft > window.innerWidth) {
+            elementScreenLeft -= (width + elementScreenLeft) - window.innerWidth;
+        }
+        if (elementScreenLeft < 0) { elementScreenLeft = 0; }
+
+        // set top position for color picker
+        var elementScreenTop = opt.top - this.$body.scrollTop();
+        if (height + elementScreenTop > window.innerHeight) {
+            elementScreenTop -= (height + elementScreenTop) - window.innerHeight;
+        }
+        if (elementScreenTop < 0) { elementScreenTop = 0; }
+
+        // set position
+        this.$root.css({
+            left: (elementScreenLeft) + 'px',
+            top: (elementScreenTop) + 'px'
+        });
+    }
+
+    getInitalizePosition() {
+        if (this.opt.position == 'inline') {
+            return {
+                position: 'relative',
+                left: 'auto',
+                top: 'auto',
+                display: 'inline-block'
+            }
+        } else {
+           return {
+                position: 'fixed',  // color picker has fixed position
+                left: '-10000px',
+                top: '-10000px'
+            }
+        }
+    }
+
+    
+
+    setHideDelay(delayTime) {
+        delayTime = delayTime || 0;
+
+        const hideCallback = this.hide.bind(this);
+
+        this.$root.off('mouseenter');
+        this.$root.off('mouseleave');
+
+        this.$root.on('mouseenter', () => {
+            clearTimeout(this.timerCloseColorPicker);
+        });
+
+        this.$root.on('mouseleave', () => {
+            clearTimeout(this.timerCloseColorPicker);
+            this.timerCloseColorPicker = setTimeout(hideCallback, delayTime);
+        });
+
+        clearTimeout(this.timerCloseColorPicker);
+        // this.timerCloseColorPicker = setTimeout(hideCallback, delayTime);
+    }
+
+    callbackColorValue(color) {
+        color = color || this.getCurrentColor();
+
+        if (typeof this.opt.onChange == 'function') {
+            this.opt.onChange.call(this, color);
+        }
+
+        if (typeof this.colorpickerShowCallback == 'function') {
+            this.colorpickerShowCallback(color);
+        }        
+    }
+
+    callbackHideColorValue(color) {
+        color = color || this.getCurrentColor();
+        if (typeof this.opt.onHide == 'function') {
+            this.opt.onHide.call(this, color);
+        }
+
+        if (typeof this.colorpickerHideCallback == 'function') {
+            this.colorpickerHideCallback(color);
+        }        
+    }    
+
+    getCurrentColor() {
+        return this.$store.dispatch('/toColor', this.outputFormat);
+    }
+
+
+    checkColorPickerClass(el) {
+        var hasColorView = new Dom(el).closest('codemirror-colorview');
+        var hasColorPicker = new Dom(el).closest('codemirror-colorpicker');
+        var hasCodeMirror = new Dom(el).closest('CodeMirror');
+        var IsInHtml = el.nodeName == 'HTML';
+
+        return !!(hasColorPicker || hasColorView || hasCodeMirror);
+    }
+
+    checkInHtml(el) {
+        var IsInHtml = el.nodeName == 'HTML';
+
+        return IsInHtml;
+    }
+
+    initializeStoreEvent () {
+        super.initializeStoreEvent()
+
+        this.$store.on('changeColor', this.callbackChange)
+        this.$store.on('changeFormat', this.callbackChange)        
+    }
+ 
+    destroy() {
+        super.destroy();
+
+        this.$store.off('changeColor', this.callbackChange);
+        this.$store.off('changeFormat', this.callbackChange);
+
+        this.callbackChange = undefined; 
+
+        // remove color picker callback
+        this.colorpickerShowCallback = undefined;
+        this.colorpickerHideCallback = undefined;   
+    }
+
+
+     // Event Bindings 
+     'mouseup document' (e) {
+
+        // when color picker clicked in outside
+        if (this.checkInHtml(e.target)) {
+            //this.setHideDelay(hideDelay);
+        } else if (this.checkColorPickerClass(e.target) == false) {
+            this.hide();
+        }
+    }
+    
+}
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/BaseBox.js
+
+
+
+
+class BaseBox_BaseBox extends colorpicker_UIElement {
+
+    constructor (opt) {
+        super(opt)
+
+        this.source = 'base-box'
+    }
+
+ 
+    refresh () {
+        
+    }
+
+    refreshColorUI (e) {
+        
+    }    
+
+    /** push change event  */
+    changeColor (opt) {
+        this.$store.dispatch('/changeColor',Object.assign({
+            source: this.source
+        }, opt || {}))
+    }
+
+    // Event Bindings 
+    'mouseup document' (e) { 
+        this.onDragEnd(e);
+    }
+
+    'mousemove document' (e) {
+        this.onDragMove(e);
+    }
+
+    'mousedown $bar' (e) {
+        e.preventDefault();
+        this.isDown = true; 
+    }
+    
+    'mousedown $container' (e) {
+        this.isDown = true 
+        this.onDragStart(e);
+    }
+
+    'touchend document' (e) {
+        this.onDragEnd(e);
+    }
+
+    'touchmove document' (e) {
+        this.onDragMove(e);
+    }
+
+    'touchstart $bar' (e) {
+        e.preventDefault();
+        this.isDown = true; 
+    }    
+
+    'touchstart $container' (e) {
+        this.onDragStart(e);
+    }
+
+
+    onDragStart (e) {
+        this.isDown = true; 
+        this.refreshColorUI(e);
+    }
+
+    onDragMove (e) {
+        if (this.isDown) {
+            this.refreshColorUI(e);
+        }
+    }
+
+    /* called when mouse is ended move  */
+    onDragEnd (e) {
+        this.isDown = false 
+    }
+
+
+    '@changeColor' (sourceType) {
+        if (this.source != sourceType) {
+            this.refresh()
+        }
+    }
+
+    '@initColor' () { this.refresh() }    
+    
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/BaseSlider.js
+
+
+
+
+class BaseSlider_BaseSlider extends BaseBox_BaseBox {
+
+    constructor (opt) {
+        super(opt)
+
+        this.minValue = 0   // min domain value 
+        this.maxValue = 1   // max domain value 
+        this.source = 'base-slider'
+    }
+
+    /* slider container's min and max position */
+    getMinMaxPosition () {
+        var min = this.getMinPosition();
+        var width = this.getMaxDist()
+        var max = min + width;
+
+        return { min, max, width }
+    }
+
+    /** get current position on page  */
+    getCurrent (value) {
+        return min + this.getMaxDist() * value; 
+    }
+
+    /** get min position on slider container  */
+    getMinPosition () {
+        return this.refs.$container.offset().left;
+    }    
+
+    getMaxDist () {
+        return this.state.get('$container.width');
+    }
+
+    /** get dist for position value */
+    getDist (current) {
+        var {min, max} = this.getMinMaxPosition()
+
+        var dist; 
+        if (current < min) {
+            dist = 0;
+        } else if (current > max) {
+            dist = 100;
+        } else {
+            dist = (current - min) / (max - min) * 100;
+        }
+
+        return dist; 
+    }
+
+    /** get caculated dist for domain value   */
+    getCaculatedDist (e) {
+        var current = e ? this.getMousePosition(e) : this.getCurrent(this.getDefaultValue() / this.maxValue);
+        var dist = this.getDist(current);
+        
+        return dist; 
+    }
+
+    /** get default value used in slider container */
+    getDefaultValue () {
+        return 0
+    }
+
+    /** set mosue position */
+    setMousePosition (x) {
+        this.refs.$bar.css({ left : (x) + 'px' });
+    }
+
+    /** set mouse position in page */
+    getMousePosition (e) {
+        return util_Event.pos(e).pageX;
+    }    
+ 
+    refresh () {
+        this.setColorUI()
+    }
+
+    /** set drag bar position  */
+    setColorUI(v) {
+    
+        v = v || this.getDefaultValue(); 
+
+        if (v <= this.minValue) {
+            this.refs.$bar.addClass('first').removeClass('last')
+        } else if (v >= this.maxValue) {
+            this.refs.$bar.addClass('last').removeClass('first')
+        } else {
+            this.refs.$bar.removeClass('last').removeClass('first')
+        }
+
+        this.setMousePosition(this.getMaxDist() * ( (v || 0) / this.maxValue));
+    }    
+    
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/control/Hue.js
+
+
+class Hue_Hue extends BaseSlider_BaseSlider {
+
+    constructor (opt) {
+        super(opt)
+
+        this.minValue = 0
+        this.maxValue = 360
+        this.source = 'hue-control'
+    }
+
+    template () {
+        return `
+            <div class="hue">
+                <div ref="$container" class="hue-container">
+                    <div ref="$bar" class="drag-bar"></div>
+                </div>
+            </div>
+        `
+    }
+
+    getDefaultValue () {
+        return this.$store.hsv.h
+    }
+
+    refreshColorUI(e) {
+
+        var dist = this.getCaculatedDist(e);
+     
+        this.setColorUI(dist/100 * this.maxValue);
+
+        this.changeColor({
+            h: (dist/100) * this.maxValue,
+            type: 'hsv'
+        })
+    }     
+
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/control/Opacity.js
+
+
+
+
+
+const Opacity_source = 'chromedevtool-control-Opacity';
+
+class Opacity_Opacity extends BaseSlider_BaseSlider {
+
+    constructor (opt) {
+        super(opt);
+
+        this.minValue = 0;
+        this.maxValue = 1; 
+        this.source = 'opacity-control'
+    }
+
+    template () {
+        return `
+        <div class="opacity">
+            <div ref="$container" class="opacity-container">
+                <div ref="$colorbar" class="color-bar"></div>
+                <div ref="$bar" class="drag-bar2"></div>
+            </div>
+        </div>
+        `
+    }
+
+    refresh () {
+        super.refresh()
+        this.setOpacityColorBar()
+    }
+
+    setOpacityColorBar() {
+        var rgb = Object.assign({}, this.$store.rgb);
+    
+        rgb.a = 0;
+        var start = util_Color.format(rgb, 'rgb');
+    
+        rgb.a = 1;
+        var end = util_Color.format(rgb, 'rgb');
+    
+        this.setOpacityColorBarBackground(start, end);
+    }
+
+    setOpacityColorBarBackground(start, end) {
+        this.refs.$colorbar.css('background',  'linear-gradient(to right, ' + start + ', ' + end + ')');
+    }
+
+    getDefaultValue () {
+        return this.$store.alpha
+    }
+    
+    refreshColorUI(e) {
+        var dist = this.getCaculatedDist(e);
+
+        this.setColorUI(dist/100);
+
+        this.changeColor({
+            a: Math.floor(dist) / 100
+        })
+
+    }
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/chromedevtool/ColorControl.js
+
+
+
+
+const ColorControl_source = 'chromedevtool-control';
+
+class ColorControl_ColorControl extends colorpicker_UIElement {
+
+    components () {
+        return { Hue: Hue_Hue, Opacity: Opacity_Opacity }
+    }
+
+    template () {
+        return `
+        <div class="control">
+            <div target="Hue" ></div>
+            <div target="Opacity" ></div>
+            <div ref="$controlPattern" class="empty"></div>
+            <div ref="$controlColor" class="color"></div>
+        </div>
+        `
+    }
+
+    setBackgroundColor () {
+        this.refs.$controlColor.css("background-color", this.$store.dispatch('/toRGB'));
+    }
+
+    refresh () {
+        this.setColorUI();
+        this.setBackgroundColor()
+    }
+
+    setColorUI() {
+        this.Hue.setColorUI()
+        this.Opacity.setColorUI()
+    }    
+
+    '@changeColor' (sourceType) {
+        if (ColorControl_source != sourceType) {
+            this.refresh()
+        }
+    }
+
+    '@initColor' () { this.refresh() }    
+
+}
+ 
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/ColorInformation.js
+
+
+
+const ColorInformation_source = 'chromedevtool-information';
+
+class ColorInformation_ColorInformation extends colorpicker_UIElement {
+
+    template () {
+        return `
+        <div class="information hex">
+            <div ref="$informationChange" class="information-change">
+                <button ref="$formatChangeButton" type="button" class="format-change-button arrow-button"></button>
+            </div>
+            <div class="information-item hex">
+                <div class="input-field hex">
+                    <input ref="$hexCode" class="input" type="text" />
+                    <div class="title">HEX</div>
+                </div>
+            </div>
+            <div class="information-item rgb">
+                <div class="input-field rgb-r">
+                    <input ref="$rgb_r" class="input" type="number" step="1" min="0" max="255" />
+                    <div class="title">R</div>
+                </div>
+                <div class="input-field rgb-g">
+                    <input ref="$rgb_g" class="input" type="number" step="1" min="0" max="255" />
+                    <div class="title">G</div>
+                </div>
+                <div class="input-field rgb-b">
+                    <input ref="$rgb_b" class="input" type="number" step="1" min="0" max="255" />
+                    <div class="title">B</div>
+                </div>          
+                <div class="input-field rgb-a">
+                    <input ref="$rgb_a" class="input" type="number" step="0.01" min="0" max="1" />
+                    <div class="title">A</div>
+                </div>                                                            
+            </div>
+            <div class="information-item hsl">
+                <div class="input-field hsl-h">
+                    <input ref="$hsl_h" class="input" type="number" step="1" min="0" max="360" />
+                    <div class="title">H</div>
+                </div>
+                <div class="input-field hsl-s">
+                    <input ref="$hsl_s" class="input" type="number" step="1" min="0" max="100" />
+                    <div class="postfix">%</div>
+                    <div class="title">S</div>
+                </div>
+                <div class="input-field hsl-l">
+                    <input ref="$hsl_l" class="input" type="number" step="1" min="0" max="100" />
+                    <div class="postfix">%</div>                        
+                    <div class="title">L</div>
+                </div>
+                <div class="input-field hsl-a">
+                    <input ref="$hsl_a" class="input" type="number" step="0.01" min="0" max="1" />
+                    <div class="title">A</div>
+                </div>
+            </div>
+        </div>
+        `
+    }
+    
+    setCurrentFormat (format) {
+        this.format = format
+
+        this.initFormat();
+    }
+    
+    initFormat () {
+        var current_format = this.format || 'hex';
+    
+        this.$el.removeClass('hex');
+        this.$el.removeClass('rgb');
+        this.$el.removeClass('hsl');
+        this.$el.addClass(current_format);
+    }
+    
+    nextFormat() {
+        var current_format = this.format || 'hex';
+
+        var next_format = 'hex';
+        if (current_format == 'hex') {
+            next_format = 'rgb';
+        } else if (current_format == 'rgb') {
+            next_format = 'hsl';
+        } else if (current_format == 'hsl') {
+            if (this.$store.alpha == 1) {
+                next_format = 'hex';
+            } else {
+                next_format = 'rgb';
+            }
+        }
+
+        this.$el.removeClass(current_format);
+        this.$el.addClass(next_format);
+        this.format = next_format;
+
+        this.$store.dispatch('/changeFormat', this.format);
+    }
+    
+    getFormat () {
+        return this.format || 'hex';   
+    }
+
+    checkNumberKey(e) {
+        return util_Event.checkNumberKey(e);
+    }    
+
+    checkNotNumberKey(e) {
+        return !util_Event.checkNumberKey(e);
+    }        
+
+    changeRgbColor () {
+        this.$store.dispatch('/changeColor', {
+            type: 'rgb',
+            r : this.refs.$rgb_r.int(),
+            g : this.refs.$rgb_g.int(),
+            b : this.refs.$rgb_b.int(),
+            a : this.refs.$rgb_a.float(),
+            source: ColorInformation_source
+        })
+    }
+
+    changeHslColor () {
+        this.$store.dispatch('/changeColor', {
+            type: 'hsl',
+            h : this.refs.$hsl_h.int(),
+            s : this.refs.$hsl_s.int(),
+            l : this.refs.$hsl_l.int(),
+            a : this.refs.$hsl_a.float(),
+            source: ColorInformation_source
+        })        
+    }    
+
+    '@changeColor' (sourceType) {
+        if (ColorInformation_source != sourceType) {
+            this.refresh()
+        }
+    }
+
+    '@initColor' () { this.refresh() }    
+
+    'input $rgb_r' (e) {  this.changeRgbColor(); }
+    'input $rgb_g' (e) {  this.changeRgbColor(); }
+    'input $rgb_b' (e) {  this.changeRgbColor(); }
+    'input $rgb_a' (e) {  this.changeRgbColor(); }  
+    
+    'input $hsl_h' (e) {  this.changeHslColor(); }
+    'input $hsl_s' (e) {  this.changeHslColor(); }
+    'input $hsl_l' (e) {  this.changeHslColor(); }
+    'input $hsl_a' (e) {  this.changeHslColor(); }      
+
+    'keydown $hexCode' (e) {
+        if(e.which < 65 || e.which > 70) {
+            return this.checkNumberKey(e);
+        }
+    }
+    
+    'keyup $hexCode' (e) {
+        var code = this.refs.$hexCode.val();
+    
+        if(code.charAt(0) == '#' && code.length == 7) {
+            this.$store.dispatch('/changeColor', code, ColorInformation_source)
+        }
+    }
+    
+    'click $formatChangeButton' (e) {
+        this.nextFormat();
+    }
+
+    setRGBInput() {
+        this.refs.$rgb_r.val(this.$store.rgb.r);
+        this.refs.$rgb_g.val(this.$store.rgb.g);
+        this.refs.$rgb_b.val(this.$store.rgb.b);
+        this.refs.$rgb_a.val(this.$store.alpha);
+    }
+    
+    setHSLInput() {
+        this.refs.$hsl_h.val(this.$store.hsl.h);
+        this.refs.$hsl_s.val(this.$store.hsl.s);
+        this.refs.$hsl_l.val(this.$store.hsl.l);
+        this.refs.$hsl_a.val(this.$store.alpha);
+    }    
+
+    setHexInput () {
+        this.refs.$hexCode.val(this.$store.dispatch('/toHEX'));
+    }
+
+    refresh () {
+        this.setCurrentFormat(this.$store.format);
+        this.setRGBInput();
+        this.setHSLInput();
+        this.setHexInput();
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/ColorPalette.js
+
+
+
+const ColorPalette_source = 'chromedevtool-palette';
+
+class ColorPalette_ColorPalette extends colorpicker_UIElement {
+
+    template () {
+        return `
+        <div class="color">
+            <div ref="$saturation" class="saturation">
+                <div ref="$value" class="value">
+                    <div ref="$drag_pointer" class="drag-pointer"></div>
+                </div>
+            </div>        
+        </div>        
+        `
+    }
+
+    setBackgroundColor (color) {
+        this.$el.css("background-color", color);
+    }
+
+    refresh () {
+        this.setColorUI();
+    }
+
+    caculateSV () {
+        var pos = this.drag_pointer_pos || { x : 0, y : 0 };
+
+        var width = this.state.get('$el.width');
+        var height = this.state.get('$el.height');
+
+        var s = (pos.x / width);
+        var v = ((height - pos.y) / height);
+
+        this.$store.dispatch('/changeColor', {
+            type: 'hsv',
+            s,
+            v,
+            source: ColorPalette_source
+        })        
+    }
+
+    setColorUI() {
+        var  x = this.state.get('$el.width') * this.$store.hsv.s, 
+        y = this.state.get('$el.height') * ( 1 - this.$store.hsv.v );
+    
+        this.refs.$drag_pointer.css({
+            left : (x - 5) + "px",
+            top : (y - 5) + "px"
+        });
+    
+        this.drag_pointer_pos = { x , y };
+
+        this.setBackgroundColor(this.$store.dispatch('/getHueColor'))
+    }
+
+
+    setMainColor(e) {
+        // e.preventDefault();
+        var pos = this.$el.offset();         // position for screen
+        var w = this.state.get('$el.contentWidth');
+        var h = this.state.get('$el.contentHeight');
+
+        var x = util_Event.pos(e).pageX - pos.left;
+        var y = util_Event.pos(e).pageY - pos.top;
+
+        if (x < 0) x = 0;
+        else if (x > w) x = w;
+    
+        if (y < 0) y = 0;
+        else if (y > h) y = h;
+    
+        this.refs.$drag_pointer.css({
+            left: (x - 5) + 'px',
+            top: (y - 5) + 'px'
+        });
+    
+        this.drag_pointer_pos = { x , y }
+
+        this.caculateSV()
+    }    
+
+    '@changeColor' (sourceType) {
+        if (ColorPalette_source != sourceType) {
+            this.refresh()
+        }
+    }
+
+    '@initColor' () { this.refresh() }    
+
+    'mouseup document' (e) {
+        this.isDown = false; 
+    }    
+
+    'mousemove document' (e) {
+        if (this.isDown) {
+            this.setMainColor(e);
+        }
+    }
+
+    mousedown (e) {
+        this.isDown = true; 
+        this.setMainColor(e);
+    }
+    
+    mouseup (e) {
+        this.isDown = false; 
+    }
+
+
+    'touchend document' (e) {
+        this.isDown = false; 
+    }    
+
+    'touchmove document' (e) {
+        if (this.isDown) {
+            this.setMainColor(e);
+        }
+    }
+
+    touchstart (e) {
+        e.preventDefault()
+        this.isDown = true; 
+        this.setMainColor(e);
+    }
+    
+    touchend (e) {
+        this.isDown = false; 
+    }    
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/ColorSetsChooser.js
+
+
+const DATA_COLORSETS_INDEX = 'data-colorsets-index';
+
+class ColorSetsChooser_ColorSetsChooser extends colorpicker_UIElement {
+
+    template () {
+        return `
+            <div class="color-chooser">
+                <div class="color-chooser-container">
+                    <div class="colorsets-item colorsets-item-header">
+                        <h1 class="title">Color Palettes</h1>
+                        <span ref="$toggleButton" class="items">&times;</span>
+                    </div>
+                    <div ref="$colorsetsList" class="colorsets-list"></div>
+                </div>
+            </div>
+        `
+    }
+
+    refresh () {
+        this.load();
+    }
+
+    '@changeCurrentColorSets' () {
+        this.refresh()
+    }
+
+    '@toggleColorChooser' () {
+        this.toggle()
+    }
+
+    // loadable 
+    'load $colorsetsList' () {
+        // colorsets 
+        const colorSets = this.$store.dispatch('/getColorSetsList');
+
+        return `
+            <div>
+                ${colorSets.map( (element, index) => {
+                    return `
+                        <div class="colorsets-item" data-colorsets-index="${index}" >
+                            <h1 class="title">${element.name}</h1>
+                            <div class="items">
+                                <div>
+                                    ${element.colors.filter((color, i) => i < 5).map(color => {
+                                        color = color || 'rgba(255, 255, 255, 1)';
+                                        return  `<div class="color-item" title="${color}">
+                                                <div class="color-view" style="background-color: ${color}"></div>
+                                            </div>`
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>`
+                }).join('')}
+            </div>
+        `
+    }
+
+    show () {
+        this.$el.addClass('open');
+    }
+
+    hide () {
+        this.$el.removeClass('open');
+    }
+
+    toggle () {
+        this.$el.toggleClass('open');
+    }
+
+
+    'click $toggleButton' (e) {
+        this.toggle();
+    }
+
+    'click $colorsetsList .colorsets-item' (e) {
+        const $item = e.$delegateTarget;
+
+        if ($item) {
+
+            const index = parseInt($item.attr(DATA_COLORSETS_INDEX));
+
+            this.$store.dispatch('/setCurrentColorSets', index);
+
+            this.hide();
+        }
+    }
+
+    destroy () {
+        super.destroy();
+
+        this.hide();
+    }
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/CurrentColorSets.js
+
+
+
+class CurrentColorSets_CurrentColorSets extends colorpicker_UIElement {
+
+    template() {
+        return `
+            <div class="colorsets">
+                <div class="menu" title="Open Color Palettes">
+                    <button ref="$colorSetsChooseButton" type="button" class="color-sets-choose-btn arrow-button"></button>
+                </div>
+                <div ref="$colorSetsColorList" class="color-list"></div>
+            </div>
+        `
+    }    
+    
+    'load $colorSetsColorList' () {
+        const currentColorSets  = this.$store.dispatch('/getCurrentColorSets')
+        const colors  = this.$store.dispatch('/getCurrentColors')
+
+        return `
+            <div class="current-color-sets">
+            ${colors.map( (color, i) => {
+                return `<div class="color-item" title="${color}" data-index="${i}" data-color="${color}">
+                    <div class="empty"></div>
+                    <div class="color-view" style="background-color: ${color}"></div>
+                </div>`
+            }).join('')}   
+            ${currentColorSets.edit ? `<div class="add-color-item">+</div>` : ''}         
+            </div>
+        `
+    }    
+
+    refresh () {
+        this.load();
+    }
+
+
+    addColor (color) {
+        this.$store.dispatch('/addCurrentColor', color);
+    }
+
+    '@changeCurrentColorSets' () {
+        this.refresh()
+    }
+
+    'click $colorSetsChooseButton' (e) {
+        this.$store.emit('toggleColorChooser');
+    }
+
+    'contextmenu $colorSetsColorList' (e) {
+        e.preventDefault();
+        const currentColorSets  = this.$store.dispatch('/getCurrentColorSets')
+
+        if (!currentColorSets.edit) {
+            return; 
+        }
+
+        const $target = new Dom(e.target);
+        
+        const $item = $target.closest('color-item');
+
+        if ($item) {
+            const index = parseInt($item.attr('data-index'));
+
+            this.$store.emit('showContextMenu', e, index);
+        } else {
+            this.$store.emit('showContextMenu', e);            
+        }
+    }
+
+    'click $colorSetsColorList .add-color-item' (e) {
+        this.addColor(this.$store.dispatch('/toColor'));
+    }
+
+    'click $colorSetsColorList .color-item'  (e) {
+        this.$store.dispatch('/changeColor', e.$delegateTarget.attr('data-color'));
+    }
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/ui/CurrentColorSetsContextMenu.js
+
+
+
+class CurrentColorSetsContextMenu_CurrentColorSetsContextMenu extends colorpicker_UIElement {
+
+    template () {
+        return `
+            <ul class="colorsets-contextmenu">
+                <li class="menu-item small-hide" data-type="remove-color">Remove color</li>
+                <li class="menu-item small-hide" data-type="remove-all-to-the-right">Remove all to the right</li>
+                <li class="menu-item" data-type="clear-palette">Clear palette</li>
+            </ul>
+        `
+    }
+
+    show (e, index) {
+        const $event = util_Event.pos(e);
+
+        this.$el.css({
+            top: ($event.clientY - 10) + 'px',
+            left: $event.clientX + 'px' 
+        });
+        this.$el.addClass('show');
+        this.selectedColorIndex = index; 
+
+        if (typeof this.selectedColorIndex == 'undefined') {
+            this.$el.addClass('small')
+        } else {
+            this.$el.removeClass('small')
+        }
+
+    }
+
+    hide () {
+        this.$el.removeClass('show');
+    }
+
+    runCommand (command) {
+        switch(command) {
+        case 'remove-color': 
+            this.$store.dispatch('/removeCurrentColor', this.selectedColorIndex);        
+            break;
+        case 'remove-all-to-the-right': 
+            this.$store.dispatch('/removeCurrentColorToTheRight', this.selectedColorIndex);        
+            break;
+        case 'clear-palette': 
+            this.$store.dispatch('/clearPalette');
+            break;
+        }
+    }
+
+    '@showContextMenu' (e, index) {
+        this.show(e, index)
+    }
+
+    'click $el .menu-item' (e) {
+        e.preventDefault();
+
+        this.runCommand(e.$delegateTarget.attr('data-type'));
+        this.hide();        
+    }
+
+}
+
+// CONCATENATED MODULE: ./node_modules/codemirror-colorpicker/src/colorpicker/chromedevtool/index.js
+
+
+
+
+
+
+
+
+
+class chromedevtool_ChromeDevToolColorPicker extends BaseColorPicker_BaseColorPicker {
+
+    template () {
+        return `
+            <div class='colorpicker-body'>
+                <div target="palette"></div> 
+                <div target="control"></div>
+                <div target="information"></div>
+                <div target="currentColorSets"></div>
+                <div target="colorSetsChooser"></div>
+                <div target="contextMenu"></div>
+            </div>
+        `
+    }
+
+    components() {
+        return { 
+            palette: ColorPalette_ColorPalette,  
+            control: ColorControl_ColorControl,
+            information: ColorInformation_ColorInformation,
+            currentColorSets: CurrentColorSets_CurrentColorSets,
+            colorSetsChooser: ColorSetsChooser_ColorSetsChooser,
+            contextMenu: CurrentColorSetsContextMenu_CurrentColorSetsContextMenu
+        }
+    }
+
+}
+// CONCATENATED MODULE: ./src/leaflet/widgets/clientcomputation/ClientComputationView.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.clientComputation
+ * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
+ * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
+ * @category Widgets
+ */
+var ClientComputationView = external_L_default.a.Control.extend({
+
+    options: {
+        //控件位置 继承自 leaflet control
+        position: 'topright'
+    },
+
+    initialize: function (workerUrl, options) {
+        if (!workerUrl) {
+            throw new Error('workerUrl is required');
+        }
+        this.workerUrl = workerUrl;
+        external_L_default.a.Util.setOptions(this, options);
+    },
+    /**
+     * @function L.supermap.widgets.clientComputation.prototype.onAdd
+     * @description 添加控件。
+     */
+    onAdd: function (map) {
+        this.map = map;
+        if (this.options.orientation !== 'vertical') {
+            this.options.orientation = 'horizontal';
+        }
+        return this._initSpatialAnalysisView();
+    },
+    /**
+     * @function L.supermap.widgets.clientComputation.prototype.addLayer
+     * @description 添加叠加图层。
+     */
+    addLayer: function (layer) {
+        this.layers = this.layers || [];
+        this.layers.push(layer);
+        let fillData = this.viewModel.getLayersData(this.layers);
+        this.fillDataToView(fillData);
+    },
+
+    /**
+     * @function L.supermap.widgets.clientComputation.prototype.fillDataToView
+     * @private
+     * @description 填充数据到 view。
+     * @param {Object} fillData - 待填充的数据。
+     */
+    fillDataToView: function (fillData) {
+        if (!fillData) {
+            return;
+        }
+        this.fillData = fillData;
+
+        // 填充分析图层下拉框
+        let layserArr = [];
+        for (let layerName in fillData) {
+            layserArr.push(layerName);
+        }
+        let layersSelect = document.getElementById('layersSelect');
+        let layerSelectName = document.getElementById('layerSelectName');
+        // 清空 layersSelect；
+        layersSelect.innerHTML = '';
+        layerSelectName.title = layserArr[0];
+        layerSelectName.innerHTML = layserArr[0];
+        this._createOptions(layersSelect, layserArr);
+        // 设置 layer select option 点击事件
+        this.layerSelectObj.optionClickEvent(layersSelect, layerSelectName, this.layersSelectOnchange);
+
+        // 当前选中图层数据
+        let currentData = fillData[layerSelectName.title];
+        let fieldsArr = currentData.fields;
+        let textAreaData = currentData.fieldsValue;
+        // 设置当前数据
+        this.currentData = currentData;
+
+        // 填充字段下拉框
+        let fieldsSelect = document.getElementById('fieldsSelect');
+        // 清空 fieldsSelect
+        fieldsSelect.innerHTML = '';
+        let fieldsSelectNameDiv = document.getElementById('fieldsSelectName');
+        fieldsSelectNameDiv.innerHTML = fieldsArr[0];
+        fieldsSelectNameDiv.title = fieldsArr[0];
+        this._createOptions(fieldsSelect, fieldsArr);
+        this.fieldsSelectObj.optionClickEvent(fieldsSelect, fieldsSelectNameDiv, this.fieldsSelectOnchange);
+
+        // 当前选中字段
+        let fieldsSelectName = fieldsSelectNameDiv.title;
+        // 通过当前选中字段 填充 TextArea 初始值
+        let getValueTextArea = document.getElementById('getValueTextArea');
+        getValueTextArea.value = textAreaData[fieldsSelectName].toString().replace(/,/g, ",\r\n");
+        getValueTextArea.setAttribute('data-value', textAreaData[fieldsSelectName])
+
+        // 结果图层
+        let resultLayersName = document.getElementById('resultLayersName');
+        let analysisType = document.getElementById('dropDownTop').getAttribute('data-value');
+        switch (analysisType) {
+            case 'isolines': resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
+                break;
+            case 'buffer': resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
+                break;
+        }
+    },
+
+    /**
+     * @function L.supermap.widgets.clientComputation.prototype._initOpenFileView
+     * @description 创建客户端计算微件。
+     * @return {div}
+     * @private
+     */
+    _initSpatialAnalysisView: function () {
+        //初始化 ViewModel
+        this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel_ClientComputationViewModel(this.workerUrl));
+        //初始化 view
+        // widgetContainer
+        let container = (new WidgetContainer(Lang.i18n('title_clientComputing'))).getElement();
+        container.classList.add('widget-analysis-container');
+        container.children[0].style.fontSize = '12px';
+        let analysisOptionsArr = [{
+            'title': Lang.i18n('text_isoline'),
+            'dataValue': 'isolines',
+            'remark': Lang.i18n('text_extractDiscreteValue'),
+            'icon': {
+                'className': 'analyst-isoline-img',
+                'background': 'url("../../src/common/widgets/image/analyst_isoline_icon.png")'
+            }
+        }, {
+            'title': Lang.i18n('text_buffer'),
+            'dataValue': 'buffer',
+            'remark': Lang.i18n('text_specifyTheDistance'),
+            'icon': {
+                'className': 'analyst-buffer-img',
+                'background': 'url("../../src/common/widgets/image/analyst_buffer_icon.png")'
+            }
+        }];
+        let widgetContentContainer = container.children[1];
+        widgetContentContainer.classList.add('analysis-content-container');
+        widgetContentContainer.classList.add('widget-scroll-content');
+
+        // 下拉框
+        let dropDownBox = (new WidgetDropDownBox(analysisOptionsArr)).getElement();
+        widgetContentContainer.appendChild(dropDownBox);
+        let dropDownTopContainer = dropDownBox.children[0].children[0];
+        let dropDownItems = dropDownBox.children[0].children[2].children[0].children[0];
+        dropDownTopContainer.children[0].id = 'dropDownTop';
+        // analysisContainer
+        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
+        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype', analyusisTypeContainer);
+
+        // 分析图层
+        let analysisLayer = external_L_default.a.DomUtil.create('div', 'analysisLayer', analysisType);
+        let layerSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', analysisLayer);
+        layerSelectControl.id = 'layerSelectControl';
+        let layerOptions = {
+            'optionsArr': [''],
+            'labelName': Lang.i18n('text_label_analysisLayer')
+        }
+        let layerSelectObj = new WidgetSelect(layerOptions);
+        let layerSelectTool = layerSelectObj.getElement();
+        this.layerSelectObj = layerSelectObj;
+        layerSelectControl.appendChild(layerSelectTool);
+        // 图层选中div
+        let layerSelectName = layerSelectTool.children[1].children[0];
+        layerSelectName.id = 'layerSelectName';
+        // 图层下拉框select
+        let layersSelect = layerSelectTool.children[1].children[2].children[0].children[0];
+        layersSelect.id = 'layersSelect';
+
+        // ISOLINE
+        // 提取字段
+        let div = external_L_default.a.DomUtil.create('div', '', analysisType);
+        let isolineDiv = external_L_default.a.DomUtil.create('div', 'analyse ISOLINE surface_option', div);
+        let fieldsOptions = {
+            'optionsArr': [''],
+            'labelName': Lang.i18n('text_label_extractField'),
+            'optionsClickCb': this.fieldsSelectOnchange
+
+        }
+        let fieldsSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', isolineDiv);
+        let fieldsSelectObj = new WidgetSelect(fieldsOptions);
+        let fieldsSelectTool = fieldsSelectObj.getElement();
+        this.fieldsSelectObj = fieldsSelectObj;
+        let fieldsSelectName = fieldsSelectTool.children[1].children[0];
+        fieldsSelectName.id = 'fieldsSelectName';
+        let fieldsSelect = fieldsSelectTool.children[1].children[2].children[0].children[0];
+        fieldsSelect.id = 'fieldsSelect';
+        fieldsSelectControl.appendChild(fieldsSelectTool);
+
+        // 提取值
+        let textareaContainer = external_L_default.a.DomUtil.create('div', 'textarea-container', isolineDiv);
+        let textareaSpan = external_L_default.a.DomUtil.create('span', 'textarea-name', textareaContainer);
+        textareaSpan.innerHTML = Lang.i18n('text_label_extractedValue');
+        let textareaControl = external_L_default.a.DomUtil.create('div', 'textarea-control', textareaContainer);
+        textareaControl.id = 'getValueText';
+        let scrollarea = external_L_default.a.DomUtil.create('div', 'scrollarea', textareaControl);
+        let scrollareaContent = external_L_default.a.DomUtil.create('div', 'scrollarea-content', scrollarea);
+        scrollareaContent.setAttribute('tabindex', '1');
+        let getValueTextArea = external_L_default.a.DomUtil.create('textarea', 'textarea', scrollareaContent);
+        getValueTextArea.id = 'getValueTextArea';
+        getValueTextArea.setAttribute('rows', '20');
+
+        // 距离衰减
+        let breaksDiv = external_L_default.a.DomUtil.create('div', '', isolineDiv);
+        let breaksSpan = external_L_default.a.DomUtil.create('span', '', breaksDiv);
+        breaksSpan.innerHTML = Lang.i18n('text_label_distanceAttenuation');
+        let breaks = external_L_default.a.DomUtil.create('input', '', breaksDiv);
+        breaks.value = '3';
+
+        // 栅格大小
+        let cellSizeDiv = external_L_default.a.DomUtil.create('div', '', isolineDiv);
+        let cellSizeSpan = external_L_default.a.DomUtil.create('span', '', cellSizeDiv);
+        cellSizeSpan.innerHTML = Lang.i18n('text_label_gridSize');
+        let cellSize = external_L_default.a.DomUtil.create('input', '', cellSizeDiv);
+        cellSize.value = '30';
+
+        // BUFFER
+        // 缓冲半径
+        let bufferDiv = external_L_default.a.DomUtil.create('div', 'analyse BUFFER hidden', analysisType);
+        let bufferRadius = external_L_default.a.DomUtil.create('div', 'buffer-radius', bufferDiv);
+        let bufferRadiusSpan = external_L_default.a.DomUtil.create('span', '', bufferRadius);
+        bufferRadiusSpan.innerHTML = Lang.i18n('text_label_bufferRadius');
+        let bufferRadiusDiv = external_L_default.a.DomUtil.create('div', '', bufferRadius);
+        let bufferRadiusInput = external_L_default.a.DomUtil.create('input', 'buffer-radius-input', bufferRadiusDiv);
+        bufferRadiusInput.id = 'bufferRadiusInput';
+        bufferRadiusInput.value = '10';
+        bufferRadiusInput.setAttribute('placeholder', Lang.i18n('text_label_defaultkilometers'));
+        let bufferUnit = external_L_default.a.DomUtil.create('div', 'buffer-unit', bufferRadiusDiv);
+        bufferUnit.id = 'bufferUnit';
+        // 半径单位选择下拉框
+        let bufferUnitOptions = {
+            'optionsArr': [Lang.i18n('text_option_kilometer')],
+            'labelName': Lang.i18n('text_label_unit')
+        };
+
+        let bufferUnitSelectTool = (new WidgetSelect(bufferUnitOptions)).getElement();
+        let bufferUnitSelectName = bufferUnitSelectTool.children[1].children[0];
+        bufferUnitSelectName.id = 'bufferUnitSelectName';
+        let bufferUnitSelect = bufferUnitSelectTool.children[1].children[2].children[0].children[0];
+        bufferUnitSelect.id = 'bufferUnitSelect';
+        bufferUnitSelectTool.children[0].style.display = 'none';
+        bufferUnit.appendChild(bufferUnitSelectTool);
+
+        // 保留原对象字段属性
+        let saveFieldDiv = external_L_default.a.DomUtil.create('div', '', bufferRadius);
+        let saveAttrsContainer = external_L_default.a.DomUtil.create('div', 'is-save-attrs', saveFieldDiv);
+        saveAttrsContainer.id = 'saveAttrsContainer';
+        let saveAttrsCheckbox = external_L_default.a.DomUtil.create('div', 'checkbox checkbox-fault', saveAttrsContainer);
+        saveAttrsCheckbox.id = 'saveAttrsCheckbox';
+        let saveAttrsLabel = external_L_default.a.DomUtil.create('div', 'lable', saveAttrsContainer);
+        saveAttrsLabel.id = 'saveAttrsLabel';
+        saveAttrsLabel.innerHTML = Lang.i18n('text_retainOriginal');
+
+        // 合并缓冲区
+        let isUnionContainer = external_L_default.a.DomUtil.create('div', 'is-union', saveFieldDiv);
+        isUnionContainer.id = 'isUnionContainer';
+        let isUnionCheckbox = external_L_default.a.DomUtil.create('div', 'checkbox checkbox-fault', isUnionContainer);
+        isUnionCheckbox.id = 'isUnionCheckbox';
+        let isUnionLabel = external_L_default.a.DomUtil.create('div', 'lable', isUnionContainer);
+        isUnionLabel.innerHTML = Lang.i18n('text_mergeBuffer');
+        isUnionLabel.id = 'isUnionLabel';
+
+        // 颜色选择器
+        let colorpickerControl = external_L_default.a.DomUtil.create('div', 'select-control ', analysisType);
+        let colorpickerTool = external_L_default.a.DomUtil.create('div', 'select-tool', colorpickerControl);
+        let colorpickerLabel = external_L_default.a.DomUtil.create('label', 'lable_describe', colorpickerTool);
+        colorpickerLabel.innerHTML = Lang.i18n('text_label_color');
+        let colorsPickerWrapper = external_L_default.a.DomUtil.create('div', 'colors-picker-wrapper', colorpickerTool);
+        let colorsPicker = external_L_default.a.DomUtil.create('div', 'colors-picker chart_select', colorsPickerWrapper);
+        let colorsPickerSelectName = external_L_default.a.DomUtil.create('div', 'select-name colors-picker-selectName', colorsPicker);
+        colorsPickerSelectName.style.paddingTop = '1px;'
+        let colorsPickerSelectDiv = external_L_default.a.DomUtil.create('div', 'codemirror-colorpicker-control', colorsPickerSelectName);
+        colorsPickerSelectDiv.style.background = '#151B6F';
+        let colorpickerContainer = external_L_default.a.DomUtil.create('div', 'codemirror-colorpicker-container', colorsPickerWrapper);
+        colorpickerContainer.style.display = 'none';
+        colorpickerContainer.setAttribute('tabindex', '1');
+
+        new chromedevtool_ChromeDevToolColorPicker({
+            position: 'inline',
+            type: 'sketch',
+            container: colorpickerContainer,
+            onChange(color) {
+                colorsPickerSelectDiv.style.background = color;
+                console.log('when color is changed', color);
+            }
+        })
+        colorsPicker.onclick = function () {
+            if (colorpickerContainer.style.display === 'none') {
+                colorpickerContainer.style.display = 'block';
+                colorsPicker.scrollTop = '100px';
+
+            } else {
+                colorpickerContainer.style.display = 'none';
+                colorsPicker.scrollTop = '0';
+            }
+        }
+        colorpickerContainer.onmousedown = function (evt) {
+            //console.log('drop-down-box onmousedown '+evt.target.className);
+            if (evt.target !== this) {
+                this.focus();
+                evt.preventDefault();
+                evt.stopPropagation()
+            }
+        }
+        colorpickerContainer.onblur = function () {
+            colorpickerContainer.style.display = 'none';
+        }
+
+
+        // 结果图层
+        let resultLayerDiv = external_L_default.a.DomUtil.create('div', '', analysisType);
+        let resultLayerSpan = external_L_default.a.DomUtil.create('span', '', resultLayerDiv);
+        resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
+        let resultLayersName = external_L_default.a.DomUtil.create('input', '', resultLayerDiv);
+        resultLayersName.id = 'resultLayersName';
+
+        // 分析按钮
+        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'run-btn-container di-font-content-md', analyusisTypeContainer);
+        let runBtn = external_L_default.a.DomUtil.create('div', 'run-btn', runBtnContainer);
+        let analysisBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn', runBtn);
+        analysisBtn.innerHTML = Lang.i18n('btn_analyze');
+        let analysingContainer = external_L_default.a.DomUtil.create('div', 'analysing-container hidden', runBtn);
+        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'analysising-btn', analysingContainer);
+        let svgContainer = external_L_default.a.DomUtil.create('div', 'svg-container', analysisingBtn);
+        svgContainer.id = 'analyse_background';
+        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
+            <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
+            <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
+            <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
+        </svg>`
+        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
+        let analysisCancelBtn = external_L_default.a.DomUtil.create('button', 'analysis-cancel', analysingContainer);
+        analysisCancelBtn.innerHTML = Lang.i18n('btn_cancelAnalysis');
+        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
+        let me = this;
+
+        for (let i = 0; i < dropDownItems.children.length; i++) {
+            dropDownItems.children[i].onclick = () => {
+                dropDownTopContainer.innerHTML = dropDownItems.children[i].outerHTML;
+                dropDownTopContainer.children[0].id = 'dropDownTop';
+                let analysisMethod = dropDownItems.children[i].getAttribute('data-value');
+                switch (analysisMethod) {
+                    case 'buffer':
+                        isolineDiv.classList.add('hidden');
+                        bufferDiv.classList.remove('hidden');
+                        widgetContentContainer.style.height = '492px'
+                        resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
+                        break;
+                    case 'isolines':
+                        isolineDiv.classList.remove('hidden');
+                        bufferDiv.classList.add('hidden');
+                        widgetContentContainer.style.height = '712px'
+                        resultLayersName.value = Lang.i18n('text_label_isolines') + layerSelectName.title;
+                        break;
+                }
+            }
+        }
+
+        // 字段下拉框 onchange 事件
+        this.fieldsSelectOnchange = fieldsSelectOnchange.bind(this);
+        function fieldsSelectOnchange(option) {
+            if (this.fillData) {
+                let displayData = this.currentData;
+                let fieldsSelectName = option.title;
+                getValueTextArea.value = displayData.fieldsValue[fieldsSelectName].toString().replace(/,/g, ",\r\n");
+                getValueTextArea.setAttribute('data-value', displayData.fieldsValue[fieldsSelectName]);
+            }
+        }
+
+
+        // 选中图层实时改变事件
+        this.layersSelectOnchange = layersSelectOnchange.bind(this);
+        function layersSelectOnchange(option) {
+            if (this.fillData) {
+                let layerSelectName = option.title;
+                let displayData = this.fillData[layerSelectName];
+                this.currentData = displayData;
+                fieldsSelect.innerHTML = '';
+                this._createOptions(fieldsSelect, displayData.fields);
+                let fieldsSelectNameDiv = document.getElementById('fieldsSelectName');
+                let field = displayData.fields[0];
+                fieldsSelectNameDiv.title = field;
+                fieldsSelectNameDiv.innerHTML = field;
+                let fieldsSelectName = field;
+                this.fieldsSelectObj.optionClickEvent(fieldsSelect, fieldsSelectNameDiv, this.fieldsSelectOnchange);
+                getValueTextArea.value = displayData.fieldsValue[fieldsSelectName].toString().replace(/,/g, ",\r\n");
+                getValueTextArea.setAttribute('data-value', displayData.fieldsValue[fieldsSelectName]);
+
+            }
+        }
+
+        //复选框事件
+        let isSaveStatus = true;
+        //选中select
+        saveAttrsLabel.classList.add("selected");
+        saveAttrsCheckbox.classList.add("checkbox-active");
+        saveAttrsContainer.onclick = () => {
+            if (isSaveStatus) {
+                //将当前状态和样式->不选中的样式和状态
+                saveAttrsCheckbox.classList.add("checkbox-fault");
+                saveAttrsCheckbox.classList.remove("checkbox-active");
+                saveAttrsLabel.classList.remove("selected");
+                isSaveStatus = false;
+            } else {
+                //将当前样式和状态改为选中
+                saveAttrsCheckbox.classList.add("checkbox-active");
+                saveAttrsCheckbox.classList.remove("checkbox-fault");
+                saveAttrsLabel.classList.add("selected");
+                isSaveStatus = true;
+                //如果当前状态为选中的状态，则将上一个复选框的样式和状态由选中-不选中
+                if (isUnion) {
+                    //移除dom样式和复选框的状态改变
+                    isUnionCheckbox.classList.add("checkbox-fault");
+                    isUnionCheckbox.classList.remove("checkbox-active");
+                    isUnion = false;
+                }
+            }
+            me.viewModel._state(isSaveStatus, isUnion);
+        }
+        //合并缓冲区
+        //合并缓冲区，默认不选中，即为false
+        let isUnion = false;
+        isUnionContainer.onclick = () => {
+            if (isUnion) {
+                //将选中状态 由选中->不选中，修改其样式和状态
+                isUnionCheckbox.classList.add("checkbox-fault");
+                isUnionCheckbox.classList.remove("checkbox-active");
+                isUnionLabel.classList.remove("selected");
+                isUnion = false;
+
+            } else {
+                //将状态由不选中->选中，修改其样式和状态
+                isUnionCheckbox.classList.add("checkbox-active");
+                isUnionCheckbox.classList.remove("checkbox-fault");
+                isUnionLabel.classList.add("selected");
+                isUnion = true;
+                //如果当前状态为选中的，将上一个复选框改为不选中的状态
+                if (isSaveStatus) {
+                    //修改当前样式和状态
+                    saveAttrsCheckbox.classList.add("checkbox-fault");
+                    saveAttrsCheckbox.classList.remove("checkbox-active");
+                    isSaveStatus = false;
+                }
+            }
+        }
+
+        // 提示框
+        this.messageBox = new MessageBox();
+        // 分析按钮点击事件
+        analysisBtn.onclick = () => {
+            analysingContainer.style.display = 'block';
+            analysisBtn.style.display = 'none';
+            let dropDownTop = document.getElementById('dropDownTop');
+            let analysisMethod = dropDownTop.getAttribute('data-value');
+            let params;
+            switch (analysisMethod) {
+                case 'isolines': params = getIsolinesAnalysisParams();
+                    break;
+                case 'buffer': params = getBufferAnalysisParams();
+                    break;
+            }
+            me.viewModel.analysis(params, me.map);
+            me.viewModel.on('layerloaded', function () {
+                analysingContainer.style.display = 'none';
+                analysisBtn.style.display = 'block';
+            });
+            // 若分析的结果为空
+            me.viewModel.on('analysisfailed', function () {
+                analysingContainer.style.display = 'none';
+                analysisBtn.style.display = 'block';
+                me.messageBox.showView(Lang.i18n('msg_resultIsEmpty'), "failure");
+            })
+        }
+        // 取消按钮点击事件
+        analysisCancelBtn.onclick = () => {
+            analysingContainer.style.display = 'none';
+            analysisBtn.style.display = 'block';
+            me.viewModel.cancelAnalysis()
+        }
+        // 删除按钮点击事件
+        deleteLayersBtn.onclick = () => {
+            me.viewModel.clearLayers();
+        }
+        // 获取分析数据
+        function getIsolinesAnalysisParams() {
+            let dropDownTop = document.getElementById('dropDownTop');
+            let analysisMethod = dropDownTop.getAttribute('data-value');
+            let resultLayersName = document.getElementById('resultLayersName').value;
+            let analysisLayers = layerSelectName.title;
+            let analysisFields = fieldsSelectName.title;
+            let analysisFieldsValue = getValueTextArea.value.replace(/[\r\n]/g, "").split(',').toString();
+            let analysisBreaks = breaks.value;
+            let analysisCellSize = cellSize.value;
+            let color = colorsPickerSelectDiv.style.background;
+            let param = {
+                'analysisMethod': analysisMethod,
+                'analysisLayers': analysisLayers,
+                'analysisFields': analysisFields,
+                'analysisFieldsValue': analysisFieldsValue,
+                'analysisBreaks': analysisBreaks,
+                'analysisCellSize': analysisCellSize,
+                'resultLayersName': resultLayersName,
+                'color': color
+            }
+            return param;
+        }
+        function getBufferAnalysisParams() {
+            let dropDownTop = document.getElementById('dropDownTop');
+            let resultLayersName = document.getElementById('resultLayersName').value;
+            let analysisLayers = layerSelectName.title;
+            let analysisMethod = dropDownTop.getAttribute('data-value');
+            let radius = bufferRadiusInput.value;
+            let unit = bufferUnitSelectName.title;
+            let color = colorsPickerSelectDiv.style.background;
+
+            let param = {
+                'analysisMethod': analysisMethod,
+                'analysisLayers': analysisLayers,
+                'radius': radius,
+                'unit': unit,
+                'resultLayersName': resultLayersName,
+                'color': color,
+                'isSaveStatus': isSaveStatus,
+                'isUnion': isUnion
+
+            }
+            return param;
+        }
+        this._container = container;
+        this._preventMapEvent(this._container, this.map);
+
+        return this._container;
+    },
+
+    /**
+    * @function L.supermap.widgets.clientComputation.prototype._createOptions
+    * @description 创建 select 下拉框的 options。
+    * @private
+    */
+    _createOptions(container, optionsArr) {
+        for (let i in optionsArr) {
+            let option = document.createElement('div');
+            let optData = optionsArr[i];
+            option.className = 'select-option';
+            option.title = optData;
+            option.innerHTML = optData;
+            option.setAttribute('data-value', optData);
+            container.appendChild(option);
+        }
+    },
+
+    /**
+    * @function L.supermap.widgets.clientComputation.prototype._preventMapEvent
+    * @description 阻止 map 默认事件。
+    * @private
+    */
+    _preventMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+});
+
+var clientComputationView = function (options) {
+    return new ClientComputationView(options);
+};
+
+external_L_default.a.supermap.widgets.clientComputation = clientComputationView;
+// CONCATENATED MODULE: ./src/leaflet/widgets/clientcomputation/ClientComputationLayer.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class L.supermap.widgets.ClientComputationLayer
+ * @classdesc 客户端计算图层对象。
+ * @param {Object} layerObject -  图层对象。
+ * @param {string} layerObject.layerName -  图层名。
+ * @param {L.GeoJSON} layerObject.layer -  图层。
+ * @param {Array.<string>} [layerObject.fields] - 字段数组。
+ * @category Widgets
+ */
+class ClientComputationLayer{
+    constructor(layerObject){
+        this.layerName = layerObject.layerName;
+        this.layer = layerObject.layer;
+        this.fields = layerObject.fields || null;
+    }
+}
+var clientComputationLayer = function(layerObject){
+    return new ClientComputationLayer(layerObject)
+}
+external_L_default.a.supermap.widgets.clientComputationLayer = clientComputationLayer;
+
+// CONCATENATED MODULE: ./src/leaflet/widgets/distributedanalysis/DistributedAnalysisModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class L.supermap.widgets.DistributedAnalysisModel
+ * @classdesc 分布式分析微件数据模型。
+ * @category Widgets
+ * @param {string} processingUrl - 分布式分析地址。
+ * @fires L.supermap.widgets.DistributedAnalysisModel#datasetsloaded
+ * @fires L.supermap.widgets.DistributedAnalysisModel#datasetinfoloaded
+ */
+class DistributedAnalysisModel_DistributedAnalysisModel extends external_L_default.a.Evented {
+    
+    initialize(processingUrl) {
+        this.processingUrl = processingUrl
+    }
+    /**
+     * @function L.supermap.widgets.DistributedAnalysisModel.prototype.getDatasetsName
+     * @description 获取所有可进行分布式分析的数据集。
+     * @param {string} url - 分布式分析服务地址。
+     */
+    getDatasetsName() {
+        let url = this.processingUrl;
+        this.dataset = [];
+        this.dataset['datasetNames'] = [];
+        this.dataset['childUrl'] = [];
+
+        let host = 'http://' + url.split('/')[2];
+        let sharefileUrl = host + '/iserver/services/datacatalog/rest/datacatalog/sharefile.json';
+        let datasetsUrl = host + '/iserver/services/datacatalog/rest/datacatalog/relationship/datasets.json';
+        let me = this;
+        FetchRequest.get(sharefileUrl).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            me.dataset['datasetNames'] = me.dataset['datasetNames'].concat(result.datasetNames);
+            me.dataset['childUrl'] = me.dataset['childUrl'].concat(result.childUriList);
+            let _me = me;
+            FetchRequest.get(datasetsUrl).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                _me.dataset['datasetNames'] = _me.dataset['datasetNames'].concat(result.datasetNames);
+                _me.dataset['childUrl'] = _me.dataset['childUrl'].concat(result.childUriList);
+
+                let datasetHash = [];
+                for (let i in _me.dataset['datasetNames']) {
+                    datasetHash[_me.dataset.datasetNames[i]] = _me.dataset.childUrl[i]
+                }
+                /**
+                 * @event L.supermap.widgets.DistributedAnalysisModel#datasetsloaded
+                 * @description 数据集获取完成之后触发。
+                 * @property {Object} result - 数据集数据。
+                 * @property {Array.<string>} result.dataset - 数据集名称数组。
+                 * @property {Object} result.datasetHash - 数据集名称数组与数据集 URL 一一对应的对象。
+                 */ 
+                _me.fire('datasetsloaded', { 'result': { 'dataset': _me.dataset, 'datasetHash': datasetHash } });
+
+            });
+        });
+    }
+    /**
+     * @function L.supermap.widgets.DistributedAnalysisModel.prototype.getDatasetInfo
+     * @description 获得数据集类型与 fields。
+     * @param {string} datasetUrl - 数据集资源地址。
+     */
+    // 判断数据类型
+    getDatasetInfo(datasetUrl) {
+        let type;
+        let me = this;
+        FetchRequest.get(datasetUrl).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            let datasetInfo = data.datasetInfo
+            if (datasetInfo.datasetType === 'LINE' || datasetInfo.type === 'LINE') {
+                type = 'LINE';
+            } else if (datasetInfo.datasetType === 'POINT' || datasetInfo.type === 'POINT' || datasetInfo.type === 'CSV') {
+                type = 'POINT';
+            } else if (datasetInfo.datasetType === 'REGION' || datasetInfo.type === 'REGION') {
+                type = 'REGION';
+            }
+            let fields = [];
+            let fieldInfos = datasetInfo.fieldInfos || datasetInfo.fieldInfo || null;
+            if (fieldInfos) {
+                for (let i in fieldInfos) {
+                    fields.push(fieldInfos[i].name)
+                }
+                /**
+                 * @event L.supermap.widgets.DistributedAnalysisModel#datasetinfoloaded
+                 * @description 数据集查询完成之后触发。
+                 * @property {Object} result - 数据集数据。
+                 * @property {string} result.type - 数据集类型。
+                 * @property {Array.<string>} result.fields - 数据集字段。
+                 */ 
+                me.fire('datasetinfoloaded', { 'result': { 'type': type, 'fields': fields } })
+            } else {
+                let fieldsUrl = data.childUriList[0].replace('//fields', '/fields');
+                FetchRequest.get(fieldsUrl).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    let fieldNames = data.fieldNames;
+                    let fields = [];
+                    for (let i in fieldNames) {
+                        fields.push(fieldNames[i])
+                    }
+                    me.fire('datasetinfoloaded', { 'result': { 'type': type, 'fields': fields } })
+                })
+            }
+        })
+    }
+}
+external_L_default.a.supermap.widgets.DistributedAnalysisModel = DistributedAnalysisModel_DistributedAnalysisModel;
+// CONCATENATED MODULE: ./src/leaflet/widgets/distributedanalysis/DistributedAnalysisViewModel.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.DistributedAnalysisViewModel
+ * @classdesc 分布式分析 ViewModel。
+ * @category Widgets
+ * @param {string} processingUrl - 分布式分析地址。
+ * @fires L.supermap.widgets.DistributedAnalysisViewModel#datasetsloaded
+ * @fires L.supermap.widgets.DistributedAnalysisViewModel#datasetinfoloaded
+ * @fires L.supermap.widgets.DistributedAnalysisViewModel#analysisfailed
+ * @fires L.supermap.widgets.DistributedAnalysisViewModel#layerloaded
+ * @fires L.supermap.widgets.DistributedAnalysisViewModel#layersremoved
+ */
+class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external_L_default.a.Evented {
+    initialize(processingUrl) {
+        this.processingUrl = processingUrl
+    }
+    /**
+     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.getDatasetsName
+     * @description 获取所有数据集名称。
+     * @param {string} url - 分布式分析服务地址。 
+     */
+    getDatasetsName() {
+        let processingUrl = this.processingUrl;
+        this.resultLayers = [];
+        this.processingService = new ProcessingService(processingUrl);
+        this.datasetNames = [];
+        this.distributedAnalysisModel = new DistributedAnalysisModel_DistributedAnalysisModel(processingUrl);
+        this.distributedAnalysisModel.getDatasetsName();
+        let me = this;
+        this.distributedAnalysisModel.on('datasetsloaded', function(e){
+            /**
+             * @event L.supermap.widgets.DistributedAnalysisViewModel#datasetsloaded
+             * @description 数据集获取完成之后触发。
+             * @property {Object} result - 数据集数据。
+             */ 
+            me.fire('datasetsloaded', {'result': e.result});
+        })
+    }
+
+    /**
+     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.getDatasetInfo
+     * @description 获得数据集类型与 fields。
+     * @param {string} datasetUrl - 数据集资源地址。
+     */
+    getDatasetInfo(datasetUrl){
+        // 判断数据集类型
+        this.distributedAnalysisModel.getDatasetInfo(datasetUrl);
+        let me = this;
+        this.distributedAnalysisModel.on('datasetinfoloaded', function(e){
+            let type = e.result.type;
+            let fields = e.result.fields;
+             /**
+             * @event L.supermap.widgets.DistributedAnalysisViewModel#datasetinfoloaded
+             * @description 数据集类型与字段获取完成之后触发。
+             * @property {Object} result - 数据集数据。
+             * @property {string} result.type - 数据集类型。
+             * @property {Array.<string>} result.fields - 数据集所含有的字段。
+             */ 
+            me.fire('datasetinfoloaded', {'result': {'type': type, 'fields': fields}})
+        })
+    }
+
+    /**
+     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.analysis
+     * @description 进行分布式分析。
+     * @param {Object} params - 分布式分析参数。
+     * @param {L.map} map - leaflet Map 对象。
+     */
+    analysis(params, map){
+        if(params.analysisType === 'density'){
+            let kernelDensityJobParameter = new KernelDensityJobParameter_KernelDensityJobParameter({
+                'datasetName': params.datasetName,
+                'method': params.method,
+                'meshType': params.meshType,
+                'resolution': params.resolution,
+                'fields': params.fields,
+                'radius': params.radius,
+                'meshSizeUnit': 'Meter',
+                'radiusUnit': 'Meter',
+                'areaUnit': 'SquareMile',
+                'mappingParameters': new MappingParameters_MappingParameters({
+                    'rangeMode': params.mappingParameter.rangeMode,
+                    'rangeCount': params.mappingParameter.rangeCount,
+                    'colorGradientType': params.mappingParameter.colorGradientType
+                })
+            })
+            let me = this;
+            this.processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
+                if (serviceResult.error) {
+                    /**
+                     * @event L.supermap.widgets.DistributedAnalysisViewModel#analysisfailed
+                     * @description 分析失败后触发。
+                     */
+                    me.fire('analysisfailed');
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
+                            return response.json();
+                        }).then(function (result) {
+                            let mapUrl = result[0].path;
+                            let layer = external_L_default.a.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
+                            me.resultLayers.push(layer);
+                            layer.addTo(map);
+                            /**
+                             * @event L.supermap.widgets.DistributedAnalysisViewModel#layerloaded
+                             * @description 分析结果图层加载完成后触发。
+                             * @property {L.GeoJSON} layer - 结果图层。
+                             * @property {string} name - 结果图层名称。
+                             */
+                            me.fire('layerloaded', {'layer': layer, 'name': params.resultLayer})
+                        });
+                    }
+                    return info;
+                });
+            })
+        }
+        
+    }
+    /**
+     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.clearLayers
+     * @description 清空分析图层。
+     */
+    clearLayers() {
+        for (let i in this.resultLayers) {
+            this.resultLayers[i].remove();
+        }
+        /**
+         * @event L.supermap.widgets.DistributedAnalysisViewModel#layersremoved
+         * @description 图层删除后触发。
+         * @property {Array.<L.GeoJSON>} layers - 结果图层数组。
+         */
+        this.fire('layersremoved', { layers: this.resultLayers });
+    }
+    
+}
+external_L_default.a.supermap.widgets.DistributedAnalysisViewModel = DistributedAnalysisViewModel_DistributedAnalysisViewModel;
+
+// L.supermap.widgets.util = widgetsUtil;
+// CONCATENATED MODULE: ./src/leaflet/widgets/distributedanalysis/DistributedAnalysisView.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class L.supermap.widgets.distributedAnalysis
+ * @classdesc 分布式分析微件。
+ * @param {string} processingUrl - 分布式分析服务地址。
+ * @category Widgets
+ */
+var DistributedAnalysisView = external_L_default.a.Control.extend({
+
+    options: {
+        //控件位置 继承自 leaflet control
+        position: 'topright'
+    },
+
+    initialize: function (processingUrl, options) {
+        this.processingUrl = processingUrl;
+        external_L_default.a.Util.setOptions(this, options);
+    },
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype.onAdd
+     * @description 添加控件。
+     */
+    onAdd: function (map) {
+        this.map = map;
+        if (this.options.orientation !== 'vertical') {
+            this.options.orientation = 'horizontal';
+        }
+        let container = this._initDistributedAnalystView();
+        this._fillDataToView();
+        return container;
+    },
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._fillDataToView
+     * @description 填充数据到 view。
+     * @private
+     */
+    _fillDataToView: function () {
+        this.viewModel.getDatasetsName();
+        // 提示框
+        let me = this;
+        // 获取数据集
+        this.viewModel.on('datasetsloaded', function (e) {
+            let datasetOptionsArr = e.result.dataset.datasetNames;
+            me.datasetSelect.innerHTML = '';
+            me._createOptions(me.datasetSelect, datasetOptionsArr);
+            me.datasetSelectObj.optionClickEvent(me.datasetSelect, me.datasetSelectName, me.datasetSelectOnchange);
+            me.dataHash = e.result.datasetHash;
+        })
+    },
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype.addTo
+     * @description 添加控件到底图。
+     */
+    addTo: function (map) {
+        external_L_default.a.Control.prototype.addTo.call(this, map);
+        // 阻止 map 默认事件
+        this._preventMapEvent(this._container, map);
+    },
+
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._preventMapEvent
+     * @description 阻止 map 默认事件。
+     * @private
+     */
+    _preventMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    },
+
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._initDistributedAnalystView
+     * @description 创建分布式分析微件。
+     * @return {div}
+     * @private
+     */
+    _initDistributedAnalystView: function () {
+        //初始化 ViewModel:
+        this.viewModel = new DistributedAnalysisViewModel_DistributedAnalysisViewModel(this.processingUrl);
+        let me = this;
+
+        // 微件 container
+        let container = (new WidgetContainer(Lang.i18n('title_distributedAnalysis'))).getElement();
+        container.classList.add('widget-analysis-container');
+        container.children[0].style.fontSize = '12px';
+
+        // 微件内容 container
+        let widgetContentContainer = external_L_default.a.DomUtil.create('div', 'widget-content-container widget-scroll-content analysis-content-container', container);
+
+        // 分析方式下拉框
+        let analysisOptionsArr = [{
+            'title': Lang.i18n('text_densityAnalysis'),
+            'dataValue': 'density',
+            'remark': Lang.i18n('text_CalculateTheValuePerUnitArea'),
+            'icon': {
+                'className': 'analyst-density-img',
+                'background': 'url("../../src/common/widgets/image/analyst-density-icon.png")'
+            }
+        }];
+        let dropDownBox = (new WidgetDropDownBox(analysisOptionsArr)).getElement();
+        widgetContentContainer.appendChild(dropDownBox);
+        // 选中的 dropDownItem
+        let dropDownTop = dropDownBox.children[0].children[0].children[0];
+
+        // 各分析参数 container
+        let analyusisTypeContainer = external_L_default.a.DomUtil.create('div', 'analyusistype-container di-font-content-md', widgetContentContainer);
+        let analysisType = external_L_default.a.DomUtil.create('div', 'analysistype', analyusisTypeContainer);
+        let analysisLayer = external_L_default.a.DomUtil.create('div', 'analysisLayer', analysisType);
+
+        // 数据集下拉框
+        let datasetSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', analysisLayer);
+        let datasetOptions = {
+            'optionsArr': [Lang.i18n('text_option_selectDataset')],
+            'labelName': Lang.i18n('text_label_dataset'),
+            "optionsClickCb": datasetSelectOnchange.bind(this)
+        }
+        let datasetSelectObj = new WidgetSelect(datasetOptions);
+        let datasetSelectTool = datasetSelectObj.getElement();
+        this.datasetSelectObj = datasetSelectObj;
+        datasetSelectControl.appendChild(datasetSelectTool);
+        // 选中的 dataset
+        let datasetSelectName = datasetSelectTool.children[1].children[0];
+        this.datasetSelectName = datasetSelectName;
+        // dataset select container
+        let datasetSelect = datasetSelectTool.children[1].children[2].children[0].children[0];
+        datasetSelect.children[0].style.display = 'none';
+        this.datasetSelect = datasetSelect;
+
+        // 分析方法下拉框 & 网格面类型下拉框
+        let analyseIDW = external_L_default.a.DomUtil.create('div', 'analyse IDW', analysisLayer);
+        let analysisOptions = [{
+            'optionsArr': [Lang.i18n('text_option_simplePointDensityAnalysis'), Lang.i18n('text_option_nuclearDensityAnalysis')],
+            'labelName': Lang.i18n('text_label_analyticalMethod')
+            // 'optionsClickCb': analysisMethodSelectOnchange.bind(this)
+        }, {
+            'optionsArr': [Lang.i18n('text_option_quadrilateral'), Lang.i18n('text_option_hexagon')],
+            'labelName': Lang.i18n('text_label_meshType')
+        }];
+        // 分析参数 select control
+        let analysisSelectControl = external_L_default.a.DomUtil.create('div', 'select-control', analyseIDW);
+        for (let i in analysisOptions) {
+            let selectTool = (new WidgetSelect(analysisOptions[i])).getElement();
+            analysisSelectControl.appendChild(selectTool);
+        }
+
+        // 权重选择下拉框
+        let weightFieldsSelectOptions = {
+            'optionsArr': [Lang.i18n('text_option_notSet')],
+            'labelName': Lang.i18n('text_label_weightField')
+        }
+        let weightFieldsSelectObj = new WidgetSelect(weightFieldsSelectOptions);
+        let weightFieldsSelectTool = weightFieldsSelectObj.getElement();
+        analysisSelectControl.appendChild(weightFieldsSelectTool);
+        this.weightFieldsSelectObj = weightFieldsSelectObj;
+
+        // 分析方法选中值 & option attr设置
+        let analysisMethodSelectName = analysisSelectControl.children[0].children[1].children[0];
+        analysisMethodSelectName.setAttribute('data-value', '0');
+        let analysisMethodSelect = analysisSelectControl.children[0].children[1].children[2].children[0].children[0];
+        let analysisMethodDV = ['0', '1'];
+        this._setEleAtribute(analysisMethodDV, 'data-value', analysisMethodSelect.children)
+
+        // 网格面类型选中值 & option attr设置
+        let gridTypeSelectName = analysisSelectControl.children[1].children[1].children[0];
+        gridTypeSelectName.setAttribute('data-value', '0');
+        let gridTypeSelect = analysisSelectControl.children[1].children[1].children[2].children[0].children[0];
+        let gridTypeDV = ['0', '1'];
+        this._setEleAtribute(gridTypeDV, 'data-value', gridTypeSelect.children)
+
+        // 权重值选中值
+        let weightFieldsSelectName = analysisSelectControl.children[2].children[1].children[0];
+        let weightFieldsSelect = analysisSelectControl.children[2].children[1].children[2].children[0].children[0];
+
+        // 网格大小 & 搜索半径
+        let inputOptions = [{
+            'spanName': Lang.i18n('text_label_gridSizeInMeters'),
+            'value': '1000'
+        }, {
+            'spanName': Lang.i18n('text_label_searchRadius'),
+            'value': '300'
+        }];
+
+        for (let i in inputOptions) {
+            this._creatInputBox(inputOptions[i], analysisSelectControl)
+        }
+        let gridSizeInput = analysisSelectControl.children[3].children[1];
+        let searchRadiusInput = analysisSelectControl.children[4].children[1];
+
+        // 专题图分段
+        let rangeContent = external_L_default.a.DomUtil.create('div', 'range-content', analysisType);
+        let rangeContentOptions = {
+            'optionsArr': [Lang.i18n('text_option_notSet'), Lang.i18n('text_option_equidistantSegmentation'), Lang.i18n('text_option_logarithm'), Lang.i18n('text_option_equalCountingSegment'), Lang.i18n('text_option_squareRootSegmentation')],
+            'labelName': Lang.i18n('text_label_thematicMapSegmentationMode'),
+            "optionsClickCb": themeModelSelectOnchange
+        }
+        rangeContent.appendChild((new WidgetSelect(rangeContentOptions)).getElement());
+
+        let themeModelSelectName = rangeContent.children[0].children[1].children[0];
+        themeModelSelectName.setAttribute('data-value', 'NOTSET');
+        let themeModelSelect = rangeContent.children[0].children[1].children[2].children[0].children[0];
+        let themeModelDataValue = ['NOTSET', 'EQUALINTERVAL', 'LOGARITHM', 'QUANTILE', 'SQUAREROOT']
+        this._setEleAtribute(themeModelDataValue, 'data-value', themeModelSelect.children)
+
+        let rangeContentParamInput = this._creatInputBox({
+            'spanName': Lang.i18n('text_label_thematicMapSegmentationParameters'),
+            'value': '20'
+        }, rangeContent)
+        rangeContentParamInput.classList.add('hidden');
+        let rangeContentModelSelectTool = (new WidgetSelect({
+            'optionsArr': [
+                Lang.i18n('text_option_greenOrangePurpleGradient'), 
+                Lang.i18n('text_option_greenOrangeRedGradient'), 
+                Lang.i18n('text_option_rainbowGradient'), 
+                Lang.i18n('text_option_spectralGradient'), 
+                Lang.i18n('text_option_terrainGradient')],
+            'labelName': Lang.i18n('text_label_thematicMapColorGradientMode')
+        })).getElement()
+        rangeContent.appendChild(rangeContentModelSelectTool);
+        rangeContentModelSelectTool.classList.add('hidden');
+        let rangeContentModelSelect = rangeContentModelSelectTool.children[1].children[2].children[0].children[0];
+        let rangeContentModelSelectName = rangeContentModelSelectTool.children[1].children[0];
+        rangeContentModelSelectName.setAttribute('data-value', 'GREENORANGEVIOLET');
+        let rangeContentModelDV = ['GREENORANGEVIOLET', 'GREENORANGERED', 'RAINBOW', 'SPECTRUM', 'TERRAIN']
+        this._setEleAtribute(rangeContentModelDV, 'data-value', rangeContentModelSelect.children)
+        
+        // 专题图分段模式下拉框 onchange 事件
+        function themeModelSelectOnchange(option) {
+            if (option.getAttribute('data-value') !== 'NOTSET') {
+                rangeContentParamInput.classList.remove('hidden');
+                rangeContentModelSelectTool.classList.remove('hidden');
+            } else {
+                rangeContentParamInput.classList.add('hidden');
+                rangeContentModelSelectTool.classList.add('hidden');
+            }
+        }
+
+        // 结果图层
+        let resultLayerContainer = external_L_default.a.DomUtil.create('div', '', analysisType);
+        let resultLayerSpan = external_L_default.a.DomUtil.create('span', '', resultLayerContainer);
+        resultLayerSpan.innerHTML = Lang.i18n('text_label_resultLayerName');
+        let resultLayerInput = external_L_default.a.DomUtil.create('input', 'distributeInput', resultLayerContainer);
+
+
+        // 分析 & 分析中 & 取消 按钮
+        let runBtnContainer = external_L_default.a.DomUtil.create('div', 'run-btn-container di-font-content-md', analyusisTypeContainer);
+        let runBtn = external_L_default.a.DomUtil.create('div', 'run-btn', runBtnContainer);
+        let analysisBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn', runBtn);
+        analysisBtn.innerHTML = Lang.i18n('btn_analyze');
+        let analysingContainer = external_L_default.a.DomUtil.create('div', 'analysing-container hidden', runBtn);
+        let analysisingBtn = external_L_default.a.DomUtil.create('div', 'analysising-btn', analysingContainer);
+        analysisingBtn.style.width = '200px';
+        let svgContainer = external_L_default.a.DomUtil.create('div', 'svg-container', analysisingBtn);
+        svgContainer.innerHTML = `<svg class="svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
+            <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
+            <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
+            <rect class="svg-left" x="0" y="8" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
+        </svg>`
+        external_L_default.a.DomUtil.create('span', '', analysisingBtn).innerHTML = Lang.i18n('btn_analyzing');
+
+        // 删除按钮
+        let deleteLayersBtn = external_L_default.a.DomUtil.create('button', 'analysis-btn delete-layers', runBtn);
+        deleteLayersBtn.id = 'deleteLayersBtn';
+        deleteLayersBtn.innerHTML = Lang.i18n('btn_emptyTheAnalysisLayer');
+
+
+        // 交互
+        // 弹框
+        this.messageBox = new MessageBox();
+
+        // 数据集下拉框 onchange 事件
+        this.datasetSelectOnchange = datasetSelectOnchange.bind(this);
+        function datasetSelectOnchange(option) {
+            this.messageBox.closeView();
+            if (this.dataHash) {
+                weightFieldsSelect.innerHTML = '';
+                // 获取当前选中数据集类型
+                let datasetUrl = this.dataHash[option.title];
+                this.viewModel.getDatasetInfo(datasetUrl);
+                // 判断当前选中数据集是否支持该选中分析类，并填充分析权重字段
+                let _me = this;
+                this.viewModel.on('datasetinfoloaded', function (e) {
+                    weightFieldsSelectName.title = Lang.i18n('text_option_notSet');
+                    weightFieldsSelectName.innerHTML = Lang.i18n('text_option_notSet');
+                    weightFieldsSelect.innerHTML = '';
+                    let analyseType = dropDownTop.getAttribute('data-value');
+                    let type = e.result.type;
+                    let fields = e.result.fields;
+                    if(analyseType === 'density'){
+                        if(type === 'REGION' || type === 'LINE'){
+                            _me.messageBox.showView(Lang.i18n('msg_datasetOrMethodUnsupport'), "failure");
+                        }else{
+                            _me.messageBox.closeView();
+                            _me._createOptions(weightFieldsSelect, fields);
+                            _me.weightFieldsSelectObj.optionClickEvent(weightFieldsSelect, weightFieldsSelectName);
+                        }
+                    }
+                })
+            }
+        }
+        // 分析按钮点击事件
+        analysisBtn.onclick = () => {
+            me.messageBox.closeView();
+            let params = getAnalysisParam();
+            if (params.datasetName === Lang.i18n('text_option_selectDataset')) {
+                me.messageBox.showView(Lang.i18n('msg_selectDataset'), "failure");
+            } else if (params.fields === Lang.i18n('text_option_notSet')) {
+                me.messageBox.showView(Lang.i18n('msg_setTheWeightField'), "failure");
+            } else {
+                me.messageBox.closeView();
+                analysingContainer.style.display = 'block';
+                analysisBtn.style.display = 'none';
+                me.viewModel.analysis(params, me.map);
+                let _me = me;
+                me.viewModel.on('layerloaded', function () {
+                    analysingContainer.style.display = 'none';
+                    analysisBtn.style.display = 'block';
+                })
+                me.viewModel.on('analysisfailed', function () {
+                    _me.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
+                })
+            }
+        }
+
+        // 删除按钮点击事件
+        deleteLayersBtn.onclick = () => {
+            me.viewModel.clearLayers();
+        }
+
+        // 获取分析参数
+        function getAnalysisParam() {
+            let analysisType = dropDownTop.getAttribute('data-value');
+            let analysisMethod = analysisMethodSelectName.getAttribute('data-value');
+            let gridType = gridTypeSelectName.getAttribute('data-value');
+            let colorGradientType = rangeContentModelSelectName.getAttribute('data-value');
+            let themeModel = themeModelSelectName.getAttribute('data-value');
+            let date = new Date();
+            let resultLayer = resultLayerInput.value || date.getTime();
+            let mappingParameter;
+            if (themeModel === 'NOTSET') {
+                mappingParameter = '';
+            } else {
+                mappingParameter = {
+                    'rangeMode': themeModel,
+                    'rangeCount': rangeContentParamInput.value,
+                    'colorGradientType': colorGradientType
+                }
+            }
+            let analysisParam = {
+                'datasetName': datasetSelectName.title,
+                'analysisType': analysisType,
+                'method': analysisMethod,
+                'meshType': gridType,
+                'resolution': gridSizeInput.value,
+                'fields': weightFieldsSelectName.title,
+                'radius': searchRadiusInput.value,
+                'mappingParameter': mappingParameter,
+                'resultLayer': resultLayer
+            }
+            return analysisParam;
+        }
+        this._container = container;
+        return this._container;
+    },
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._createOptions
+     * @description 创建下拉框 options。
+     * @private
+     */
+    _createOptions(container, optionsArr) {
+        for (let i in optionsArr) {
+            let option = document.createElement('div');
+            option.className = 'select-option';
+            option.title = optionsArr[i];
+            option.innerHTML = optionsArr[i];
+            option.setAttribute('data-value', optionsArr[i]);
+            container.appendChild(option);
+        }
+    },
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._creatInputBox
+     * @description 创建含有 span 的 input 框。
+     * @private
+     */
+    _creatInputBox(inputOptions, parentEle) {
+        let div = external_L_default.a.DomUtil.create('div', '', parentEle);
+        let span = external_L_default.a.DomUtil.create('span', '', div);
+        span.innerHTML = inputOptions.spanName;
+        let input = external_L_default.a.DomUtil.create('input', '', div);
+        input.value = inputOptions.value;
+        input.className = 'distributeInput'
+        return div;
+    },
+    /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._setEleAtribute
+     * @description 创建含有 span 的 input 框。
+     * @private
+     */
+    _setEleAtribute(daraValueArr, attributeName, eleArr){
+        for (let i = 0; i < eleArr.length; i++) {
+            eleArr[i].setAttribute(attributeName, daraValueArr[i])
+        }
+    }
+});
+var distributedAnalysisView = function (options) {
+    return new DistributedAnalysisView(options);
+};
+
+external_L_default.a.supermap.widgets.distributedAnalysis = distributedAnalysisView;
 // CONCATENATED MODULE: ./src/leaflet/widgets/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -83807,6 +94765,17 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "poiSearchView", function() { return poiSearchView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowView", function() { return DataFlowView; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "dataFlowView", function() { return dataFlowView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "clientComputationView", function() { return clientComputationView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientComputationView", function() { return ClientComputationView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientComputationViewModel", function() { return ClientComputationViewModel_ClientComputationViewModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ClientComputationLayer", function() { return ClientComputationLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "clientComputationLayer", function() { return clientComputationLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJSONLayersWithName", function() { return GeoJSONLayersWithName; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayersDataModel", function() { return GeoJsonLayersDataModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoJsonLayerDataModel", function() { return GeoJsonLayerDataModel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisView", function() { return DistributedAnalysisView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "distributedAnalysisView", function() { return distributedAnalysisView; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DistributedAnalysisViewModel", function() { return DistributedAnalysisViewModel_DistributedAnalysisViewModel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SuperMap", function() { return SuperMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFormat", function() { return DataFormat; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ServerType", function() { return ServerType; });
@@ -83961,6 +94930,7 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
@@ -84087,7 +95057,7 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TileVectorLayer", function() { return TileVectorLayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "tiledVectorLayer", function() { return tiledVectorLayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TurfLayer", function() { return TurfLayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "turfLayer", function() { return turfLayer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "turfLayer", function() { return TurfLayer_turfLayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UnicodeMarker", function() { return UnicodeMarker; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "unicodeMarker", function() { return unicodeMarker; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "UniqueThemeLayer", function() { return UniqueThemeLayer; });
@@ -87393,7 +98363,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */
@@ -89631,22 +100601,37 @@ module.exports = __webpack_require__(41);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
+/* 105 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 109 */,
 /* 110 */,
 /* 111 */,
 /* 112 */,
 /* 113 */,
 /* 114 */,
-/* 115 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 115 */,
 /* 116 */,
 /* 117 */,
 /* 118 */,
@@ -89661,21 +100646,31 @@ module.exports = __webpack_require__(41);
 /* 122 */,
 /* 123 */,
 /* 124 */,
-/* 125 */,
-/* 126 */
+/* 125 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 127 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 126 */,
+/* 127 */,
 /* 128 */,
-/* 129 */
+/* 129 */,
+/* 130 */,
+/* 131 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 133 */,
+/* 134 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

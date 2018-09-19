@@ -5,6 +5,7 @@ import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialQueryMode} from '../REST';
 import {OutputSetting} from './OutputSetting';
+import {MappingParameters} from './MappingParameters';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
@@ -15,6 +16,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
  * @param {SuperMap.SpatialQueryMode} [options.mode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class SingleObjectQueryJobsParameter {
 
@@ -52,6 +54,12 @@ export class SingleObjectQueryJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SingleObjectQueryJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
@@ -69,6 +77,10 @@ export class SingleObjectQueryJobsParameter {
         if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -90,8 +102,13 @@ export class SingleObjectQueryJobsParameter {
                 tempObj['output'] = singleObjectQueryJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = singleObjectQueryJobsParameter[name];
+            }
         }
     }
 

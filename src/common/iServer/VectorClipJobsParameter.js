@@ -5,6 +5,7 @@ import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {ClipAnalystMode} from '../REST';
 import {OutputSetting} from './OutputSetting';
+import { MappingParameters } from './MappingParameters';
 
 /**
  * @class SuperMap.VectorClipJobsParameter
@@ -15,6 +16,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {string} options.datasetOverlay - 裁剪对象数据集。 
  * @param {SuperMap.ClipAnalystMode} [options.mode=SuperMap.ClipAnalystMode.CLIP] - 裁剪分析模式。 
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。 
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class VectorClipJobsParameter {
 
@@ -51,6 +53,12 @@ export class VectorClipJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.VectorClipJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
@@ -68,6 +76,10 @@ export class VectorClipJobsParameter {
         if (this.output instanceof OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -91,6 +103,10 @@ export class VectorClipJobsParameter {
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = vectorClipJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = vectorClipJobsParameter[name];
+            }
         }
     }
 

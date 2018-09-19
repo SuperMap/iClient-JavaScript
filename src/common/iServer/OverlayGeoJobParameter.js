@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {OutputSetting} from './OutputSetting';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { OutputSetting } from './OutputSetting';
+import { MappingParameters } from './MappingParameters';
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
@@ -16,6 +17,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
  * @param {string} [options.mode] - 叠加分析模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class OverlayGeoJobParameter {
 
@@ -54,10 +56,16 @@ export class OverlayGeoJobParameter {
         this.overlayFields = "";
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.OverlayGeoJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+        * @member {SuperMap.MappingParameters} [SuperMap.OverlayGeoJobParameter.prototype.mappingParameters]
+        * @description 分析后结果可视化的参数类。   
+        */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
@@ -77,6 +85,10 @@ export class OverlayGeoJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -92,13 +104,18 @@ export class OverlayGeoJobParameter {
                 tempObj['input'][name] = OverlayGeoJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = OverlayGeoJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = OverlayGeoJobParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = OverlayGeoJobParameter[name];
+            }
         }
     }
 

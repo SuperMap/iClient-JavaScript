@@ -13,6 +13,7 @@ export {OverlayGeoJobParameter} from '@supermap/iclient-common/iServer/OverlayGe
 export {BuffersAnalystJobsParameter} from '@supermap/iclient-common/iServer/BuffersAnalystJobsParameter';
 export {TopologyValidatorJobsParameter} from '@supermap/iclient-common/iServer/TopologyValidatorJobsParameter';
 export {OutputSetting} from '@supermap/iclient-common/iServer/OutputSetting';
+export {MappingParameters} from '@supermap/iclient-common/iServer/MappingParameters';
 export {GeoCodingParameter} from '@supermap/iclient-common/iServer/GeoCodingParameter';
 export {GeoDecodingParameter} from '@supermap/iclient-common/iServer/GeoDecodingParameter';
 export * from './overlay';

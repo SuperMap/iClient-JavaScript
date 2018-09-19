@@ -481,6 +481,8 @@ window.examplesResources = {
         "title_openFile_react": "OpenFile(React)",
         "title_openFile_vue": "OpenFile(Vue)",
         "title_dataFlow": "Data Flow",
+        "title_spatialAnalysis": 'Client Computation',
+        "title_distributeAnalysis": 'Distribute Analysis',
 
 
         "text_code": "Forward Match",
@@ -1138,6 +1140,8 @@ window.examplesResources = {
         "text_mb_deckglLayer_sftrees": "A 3d hexbin density map showing every single streets in San Francisco",
         "text_mb_deckglLayer_ukcommute": "A origin destination map using 3d arcs to show commute patterns of England and Wales residence",
         'text_openFile': "Select file",
+        'text_analysisLayer':"[Analytical Layer]",
+        'text_spatialAnalysisLayerName':"China's historical earthquake data above level 5",
 
         "btn_overlayAnalyst": "Start analysis",
         "btn_terrainCurvatureCalculation": "Start calculation",

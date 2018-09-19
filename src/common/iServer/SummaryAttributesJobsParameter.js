@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {OutputSetting} from './OutputSetting';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { OutputSetting } from './OutputSetting';
+import { MappingParameters } from './MappingParameters';
 
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
@@ -15,6 +16,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {string} options.attributeField - 属性字段。
  * @param {string} options.statisticModes - 统计模式。
  * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class SummaryAttributesJobsParameter {
 
@@ -47,6 +49,11 @@ export class SummaryAttributesJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryAttributesJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
@@ -65,6 +72,10 @@ export class SummaryAttributesJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -80,13 +91,18 @@ export class SummaryAttributesJobsParameter {
                 tempObj['input'][name] = SummaryAttributesJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = SummaryAttributesJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = SummaryAttributesJobsParameter[name];
+            }
         }
     }
 

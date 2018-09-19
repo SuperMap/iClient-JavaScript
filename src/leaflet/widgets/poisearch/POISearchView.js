@@ -17,7 +17,7 @@ import {POISearchViewModel} from './POISearchViewModel';
 /**
  * @class L.supermap.widgets.poiSearch
  * @classdesc 地址匹配或图层要素查询微件
- * @category  Control Widgets
+ * @category Widgets
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；

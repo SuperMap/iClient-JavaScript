@@ -1,10 +1,12 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {StatisticAnalystMode, SummaryType} from '../REST';
-import {OutputSetting} from './OutputSetting';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { StatisticAnalystMode, SummaryType } from '../REST';
+import { OutputSetting } from './OutputSetting';
+import { MappingParameters } from './MappingParameters';
+
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
@@ -12,13 +14,14 @@ import {OutputSetting} from './OutputSetting';
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class SummaryMeshJobParameter {
 
@@ -75,10 +78,16 @@ export class SummaryMeshJobParameter {
         this.type = SummaryType.SUMMARYMESH;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryMeshJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
 
@@ -103,6 +112,10 @@ export class SummaryMeshJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -122,17 +135,21 @@ export class SummaryMeshJobParameter {
                 tempObj['type'] = summaryMeshJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryMeshJobParameter[name];
                 continue;
-            }
+            }     
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 if (name === 'query') {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryMeshJobParameter[name];
                 }
             }
 

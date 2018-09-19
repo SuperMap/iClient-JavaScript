@@ -12,7 +12,7 @@ import {
 /**
  * @class L.supermap.widgets.OpenFileViewModel
  * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
- * @category Control Widgets
+ * @category Widgets
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize(map) {

@@ -325,13 +325,11 @@
     },
     "Control": {
         "name": "控件",
-        "name_en": "Control",
-        "content": {
-            "Widgets": {
-                "name": "微件",
-                "name_en": "Widgets"
-            }
-        }
+        "name_en": "Control"
+    },
+    "Widgets": {
+        "name": "微件",
+        "name_en": "Widgets"
     },
     "Security": {
         "name": "安全",

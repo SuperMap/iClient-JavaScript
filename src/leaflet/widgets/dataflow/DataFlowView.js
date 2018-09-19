@@ -3,13 +3,13 @@
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {MessageBox, WidgetContainer} from '@supermap/iclient-common';
-import {DataFlowViewModel} from './DataFlowViewModel';
+import { MessageBox, WidgetContainer, Lang } from '@supermap/iclient-common';
+import { DataFlowViewModel } from './DataFlowViewModel';
 
 /**
  * @class L.supermap.widgets.DataFlowView
  * @classdesc dataFlow 微件，用于打开本地数据文件并加载到底图
- * @category  Control Widgets
+ * @category Widgets
  * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  `function(geoJsonPoint, latlng) {
@@ -85,7 +85,7 @@ export var DataFlowView = L.Control.extend({
      * @private
      */
     _initView() {
-        const widgetContainerObj = new WidgetContainer("数据流服务", {"top": "32px", "right": "96px"});
+        const widgetContainerObj = new WidgetContainer(Lang.i18n("title_dataFlowService"), { "top": "32px", "right": "96px" });
         const widgetContainer = widgetContainerObj.getElement();
 
         const widgetContent = widgetContainerObj.getContentElement();
@@ -98,8 +98,8 @@ export var DataFlowView = L.Control.extend({
         const dataFlowInput = document.createElement("input");
         dataFlowInput.setAttribute("class", "widget-input-default");
         dataFlowInput.type = "text";
-        dataFlowInput.placeholder = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
-        dataFlowInput.title = "请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe";
+        dataFlowInput.placeholder = Lang.i18n('text_input_value_inputDataFlowUrl');
+        dataFlowInput.title = Lang.i18n('text_input_value_inputDataFlowUrl');
 
         this.dataFlowInput = dataFlowInput;
         dataFlowInputContainer.appendChild(dataFlowInput);
@@ -132,7 +132,7 @@ export var DataFlowView = L.Control.extend({
         checkboxContainer.appendChild(attributesCheckbox);
         const checkboxLabel = document.createElement("div");
         checkboxLabel.setAttribute("class", "label label-selected");
-        checkboxLabel.innerHTML = "显示要素信息";
+        checkboxLabel.innerHTML = Lang.i18n('text_displayFeaturesInfo');
         checkboxContainer.appendChild(checkboxLabel);
         //----是否显示属性框【属性框复选框点击事件】
         attributesCheckbox.onclick = (e) => {
@@ -156,12 +156,12 @@ export var DataFlowView = L.Control.extend({
         dataFlowContainer3.setAttribute("class", "dataflow-container init-center");
         const subscribe = document.createElement("button");
         subscribe.setAttribute("class", "widget-button-default");
-        subscribe.innerHTML = "订阅";
+        subscribe.innerHTML = Lang.i18n('text_subscribe');
         //----订阅服务【订阅按钮点击事件】
         subscribe.onclick = () => {
             const urlDataFlow = dataFlowInput.value;
             if (urlDataFlow === "") {
-                this.messageBox.showView("请先输入数据流服务地址。");
+                this.messageBox.showView(Lang.i18n('msg_inputDataFlowUrlFirst'));
                 return;
             }
             this.viewModel.subscribe(urlDataFlow);
@@ -169,7 +169,7 @@ export var DataFlowView = L.Control.extend({
         dataFlowContainer3.appendChild(subscribe);
         const cancelSubscribe = document.createElement("button");
         cancelSubscribe.setAttribute("class", "widget-button-default");
-        cancelSubscribe.innerHTML = "取消订阅";
+        cancelSubscribe.innerHTML = Lang.i18n('text_cancelSubscribe');
         //----取消订阅服务【取消订阅按钮点击事件】
         cancelSubscribe.onclick = () => {
             this.viewModel.cancelSubscribe();

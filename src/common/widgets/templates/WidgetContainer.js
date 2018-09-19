@@ -6,9 +6,10 @@ import {SuperMap} from '../../SuperMap';
 
 /**
  * @class SuperMap.Widgets.WidgetContainer
- * @class 微件统一外框
- * @param {string} title - 标题，必传参数
+ * @classdesc 微件统一外框。
+ * @param {string} title - 标题。
  * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ * @category Widgets
  */
 export class WidgetContainer {
     constructor(title, position = null) {

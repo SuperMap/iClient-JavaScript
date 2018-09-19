@@ -1193,6 +1193,18 @@ var exampleConfig = {
                     version: "9.1.0",
                     thumbnail: "widgets_POISearch.png",
                     fileName: "widgets_POISearch"
+                },{
+                    name: "客户端计算",
+                    name_en: "client computation",
+                    version: "9.1.0",
+                    thumbnail: "widgets_clientComputation.png",
+                    fileName: "widgets_clientComputation"
+                },{
+                    name: "分布式分析",
+                    name_en: "distribute analysis",
+                    version: "9.1.0",
+                    thumbnail: "widgets_distributedAnalysis.png",
+                    fileName: "widgets_distributedAnalysis"
                 }]
             },
             "widgetsAdvanced": {

@@ -230,6 +230,7 @@ import {
     MeasureService,
     NetworkAnalystServiceBase,
     OutputSetting,
+    MappingParameters,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayAnalystService,
@@ -428,11 +429,11 @@ import {
 import {
     FileTypes,
     FileConfig,
-    FileModel,
-    MessageBox,
-    WidgetContainer,
-    WidgetDropDownBox,
-    WidgetSelect,
+    FileModel, 
+    MessageBox, 
+    WidgetContainer, 
+    WidgetDropDownBox, 
+    WidgetSelect, 
     AttributesPopContainer,
     PopContainer,
     IndexTabsPageContainer,
@@ -442,6 +443,11 @@ import {
     widgetsUtil,
     FileReaderUtil
 } from './widgets';
+import {
+    Lang,
+    en,
+    zh
+} from './lang';
 
 export {
     FileTypes,
@@ -695,6 +701,7 @@ export {
     MeasureService,
     NetworkAnalystServiceBase,
     OutputSetting,
+    MappingParameters,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayAnalystService,
@@ -882,3 +889,8 @@ export {
 export {
     ElasticSearch
 };
+export {
+    Lang,
+    en,
+    zh
+}

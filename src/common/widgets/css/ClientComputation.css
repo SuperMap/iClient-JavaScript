@@ -1,0 +1,142 @@
+/**-----------分析面板滚动条----------------*/
+.scrollarea-content {
+    margin-top: 0px;
+    margin-left: 0px;
+    overflow: visible;
+    min-height: 28px;
+    /* background: white; */
+}
+
+.textarea-control {
+    height: 200px;
+    padding-right: 0;
+    overflow: hidden;
+}
+.textarea-control .scrollarea{
+    width:188px;
+}
+.textarea-control textarea {
+    overflow: scroll;
+    text-align: left;
+    font-family: "Microsoft Yahei";
+    color: #595959;
+    line-height: 1;
+    height: 200px;
+    color: rgb(89, 89, 89);
+    letter-spacing: 0.14px;
+    border: 0px;
+    width: 99%;
+    font-size: 12px;
+}
+
+.textarea-control .textarea:focus {
+    border: 1px solid transparent;
+    outline: none;
+}
+
+
+/* 缓冲区 */
+div.buffer-radius>div {
+    line-height: 28px;
+    margin-top: 8px;
+    vertical-align: middle;
+    margin-bottom: 16px;
+}
+div.buffer-radius>div>input {
+    width: 112px;
+    height: 24px;
+    margin-right: 5px;
+    margin-top: 0px;
+    display: inline-block;
+}
+div.buffer-radius .buffer-unit {
+    position: relative;
+    width: 62px;
+    height: 28px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+/* --------- 复选框 保留原对象字段属性 start  --------- */
+.is-union .checkbox,
+.is-save-attrs .checkbox {
+    position: absolute;
+    margin-top: 1px;
+    height: 14px;
+    width: 14px;
+}
+
+.is-union .lable,
+.is-save-attrs .lable {
+    margin-left: 20px;
+    line-height: 16px;
+    font-size: 12px;
+    color: #919191;
+}
+
+.is-union,
+.is-save-attrs {
+    height: 16px;
+    width: 100%;
+    margin-top: 8px;
+    position: relative;
+}
+/* -------- 复选框两种状态随意切换 --------  */
+.is-union .checkbox-fault,
+.is-save-attrs .checkbox-fault {
+    background: url("../image/iweb_checkbox_default_icon.png") no-repeat center;
+}
+
+.is-union .checkbox-active,
+.is-save-attrs .checkbox-active {
+    background: url("../image/iweb_checkbox_selected_icon.png") no-repeat center;
+}
+
+/* -------- 合并缓冲区 start --------  */
+.is-union .selected,
+.is-save-attrs .selected {
+    color: #595959 !important;
+}
+
+/* -------- end --------  */
+.buffer-unit .widget-select-options{
+    width: 100%;
+    outline: none;
+}
+.buffer-unit .select-tool{
+    width: 65px;
+}
+
+.buffer-unit .select-tool .select-name {
+    width: 32px;
+}
+
+.buffer-unit .chart-triangle-btn {
+    left: 39px;
+}
+
+.buffer-unit .select-tool .chart-select-content {
+    width: 62px;
+}
+.buffer-unit .chart_select {
+    width: 57px;
+}
+.buffer-unit .select-tool .select-content {
+    overflow: unset;
+}
+.buffer-unit .scrollarea-content .select-option{
+    width: unset;
+}
+.codemirror-colorpicker-control{
+    width: 184px;
+    height: 12px;
+    margin-top: 6px;
+    /* background: rgb(23, 40, 139); */
+}
+.select-name.colors-picker-selectName{
+    width: unset;
+}
+.codemirror-colorpicker-container{
+    position: relative;
+    left: -15px;
+    /* display: none; */
+}

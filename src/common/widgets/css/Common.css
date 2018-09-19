@@ -1,0 +1,251 @@
+.hidden,
+.display_none {
+    display: none;
+}
+
+
+/* widget container */
+.widget-analysis-container.widget-container{
+    position: absolute;
+    right: 0px;
+    top: 32px;
+    font-size: 12px;
+}
+.widget-content-container.analysis-content-container{
+    font-size: 12px;
+    padding: 16px 10px 16px 16px;
+}
+
+.run-btn-container {
+    position: relative;
+    z-index: 100;
+    margin-bottom: 12px;
+}
+
+.analyusistype-container .analysistype {
+    margin-top: 16px;
+}
+
+.select-control {
+    position: relative;
+    width: 200px;
+}
+
+.di-font-content-md {
+    font-size: 12px;
+}
+
+.analyusistype-container span,
+.analyusistype-container input,
+.analyusistype-container select,
+.analyusistype-container .textarea-control {
+    display: block;
+    color: #595959;
+    letter-spacing: 0.14px;
+}
+
+.analyusistype-container input,
+.analyusistype-container select,
+.analyusistype-container .textarea-control {
+    margin-top: 8px;
+}
+
+
+.analyusistype-container input,
+.analyusistype-container select {
+    height: 28px;
+}
+
+.analyusistype-container input,
+.analyusistype-container select,
+.analyusistype-container .textarea-control {
+    width: 183px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    outline: none;
+    font-size: 12px;
+    /* margin-bottom: 16px; */
+}
+
+.analyusistype-container input:hover,
+.analyusistype-container select:hover,
+.analyusistype-container .textarea-control:hover {
+    border: 1px solid #108EE9;
+}
+
+.analyusistype-container input:focus,
+.analyusistype-container select:focus,
+.analyusistype-container .textarea-control:focus {
+    border: 1px solid #108EE9;
+}
+
+.analysistype .clip-layer,
+.analysistype .operateLayer,
+.analysistype .analysisLayer {
+    margin-bottom: 16px;
+}
+
+.analysistype .analyse>div {
+    margin-bottom: 16px;
+}
+
+/* 分析按钮 */
+.run-btn button {
+    border: none;
+    border-radius: 2px;
+    color: #FFFFFF;
+    padding-right: 0px;
+    line-height: 2em;
+}
+
+.run-btn button.disabled {
+    cursor: not-allowed;
+    background-color: #80B5CF;
+}
+button{
+    text-transform: none;
+}
+
+.run-btn .analysis-btn,
+.run-btn .analysising-container {
+    width: 200px;
+    height: 28px;
+    padding-right: 0px;
+    background: #108EE9;
+    outline: none;
+}
+
+.run-btn .analysis-btn:hover {
+    background: #38ADF5;
+}
+
+.run-btn .analysising-btn {
+    position: relative;
+    width: 119px;
+    height: 28px;
+    line-height: 28px;
+    /* padding-left: 25px; */
+    display: inline-block;
+    border-radius: 2px;
+    background: #38ADF5;
+    cursor: not-allowed;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.run-btn .analysis-cancel {
+    width: 70px;
+    height: 28px;
+    margin-left: 12px;
+    padding-left: 0px;
+    line-height: 27px;
+    text-align: center;
+    background: #485465;
+}
+
+.run-btn .analysis-cancel:hover {
+    background: #747D8A;
+}
+
+.run-btn .analysis-cancel:focus {
+    background: #3E4857;
+    outline: none;
+}
+
+.analysising-btn span {
+    position: relative;
+    /* left: 30px; */
+    height: 28px;
+    line-height: 28px;
+    vertical-align: bottom;
+    display: inline-block;
+    margin-left: 10px;
+    color: #FFFFFF;
+}
+span {
+    color: #595959;
+}
+
+.svg-container{
+    position: relative;
+    /* left: 30px; */
+    /* top: 4px; */
+    display: inline-block;
+    cursor: not-allowed;
+    vertical-align: bottom;
+}
+svg:not(:root) {
+    overflow: hidden;
+}
+.svg-rotate {
+    position: relative;
+    top: 4px;
+    animation-name: svgrotate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    -ms-animation-name: svgrotate;
+    -ms-animation-duration: 1s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    -moz-animation-name: svgrotate;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -webkit-animation-name: svgrotate;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+@keyframes svgrotate{
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+        transform: rotate(0deg) translateZ(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg) translateZ(0);
+        transform: rotate(180deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(1turn) translateZ(0);
+        transform: rotate(1turn) translateZ(0);
+    }
+}
+@-webkit-keyframes svgrotate{
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+        transform: rotate(0deg) translateZ(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg) translateZ(0);
+        transform: rotate(180deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(1turn) translateZ(0);
+        transform: rotate(1turn) translateZ(0);
+    }
+}
+@-moz-keyframes svgrotate{
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+        transform: rotate(0deg) translateZ(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg) translateZ(0);
+        transform: rotate(180deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(1turn) translateZ(0);
+        transform: rotate(1turn) translateZ(0);
+    }
+}
+
+select.widget-select-options {
+    width: 202px ;
+    height: 28px ;
+    margin-top: -3px ;
+    margin-bottom: 16px;
+}

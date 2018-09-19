@@ -21,7 +21,6 @@
 .triangle-up-img {
     background: url("../image/triangle-up-icon.png") no-repeat;
 }
-
 .single-default-img {
     background: url("../image/radiobox-disabled.png") no-repeat;
 }
@@ -40,4 +39,7 @@
     height: 42px!important;
     width: 30px!important;
     background: url("../image/marker-gold.png") no-repeat;
+}
+.analyst-density-img{
+    background: url("../image/analyst-density-icon.png") no-repeat;
 }

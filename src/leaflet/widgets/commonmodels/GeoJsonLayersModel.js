@@ -3,51 +3,45 @@
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {
-    CommonUtil
-} from '@supermap/iclient-common';
+// import {
+//     CommonUtil
+// } from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.GeoJsonLayersDataModel
  * @description 多图层数据模型
- * @category
- * @param {Array.<Object>} layers - 包含"layerName"属性的图层对象数组
+ * @category Widgets
+ * @param {Array.<Object>} layers - 图层数组。
+ * @param {L.supermap.widgets.GeoJSONLayersWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。 
  */
 export var GeoJsonLayersDataModel = L.Evented.extend({
     initialize(layers) {
+        this.layers = [];
         if (layers && layers.length > 0) {
             this.addLayers(layers);
         }
         this.currentLayerDataModel = null;
-        this.layers = {};
     },
     addLayers(layers) {
         for (let i = 0; i < layers.length; i++) {
-            let layerName = "";
-            if (layers[i].layerName) {
-                layerName = layers[i].layerName;
-            } else {
-                layerName = CommonUtil.createUniqueID("vectorLayer_");
-            }
-
-            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i]);
+            let layerName = layers[i].layerName;
+            let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
             //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
-            this[layerName] = geoJsonLayerDataModel;
-            this.fire("newlayeradded", {newLayer: {layerName: layerName, layer: geoJsonLayerDataModel}});
+            this.layers[layerName] = geoJsonLayerDataModel;
+            this.fire("newlayeradded", { newLayer: { layerName: layerName, layer: geoJsonLayerDataModel } });
         }
     },
 
     /**
      * @function L.supermap.widgets.GeoJsonLayersDataModel.prototype.setCurrentLayerDataModel
-     * @description 设置当前选中的图层
-     * @param {string} layerName - 选中的图层名
+     * @description 设置当前选中的图层。
+     * @param {string} layerName - 选中的图层名。
      */
     setCurrentLayerDataModel(layerName) {
-        if (this[layerName]) {
-            this.currentLayerDataModel = this[layerName];
+        if (this.layers[layerName]) {
+            this.currentLayerDataModel = this.layers[layerName];
         }
     }
-
 });
 
 L.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
@@ -81,20 +75,44 @@ export class GeoJsonLayerDataModel {
 
     /**
      * @function GeoJsonLayerDataModel.prototype.setOperatingAttributeNames
-     * @description 指定操作字段
-     * @param {Array.<string>} operatingAttr - 查询属性字段数组，该数组为 this.attributeNames 的子集
+     * @description 指定操作字段。
+     * @param {Array.<string>} operatingAttr - 查询属性字段数组，该数组为 this.attributeNames 的子集。
      */
     setOperatingAttributeNames(operatingAttr) {
         this.operatingAttributeNames = operatingAttr;
     }
 
     /**
-     * @function GeoJsonLayerDataModel.prototype.getAttributeNames
-     * @description 获取图层属性字段
-     * @return {Array.<string>} - 返回图层属性字段
+     * @function GeoJsonLayerDataModel.prototype.getAllAttributeNames
+     * @description 获取图层所有属性字段。
+     * @return {Array.<string>} - 返回图层所有属性字段。
      */
     getAllAttributeNames() {
         return this.attributeNames;
+    }
+
+    /**
+     * @function GeoJsonLayerDataModel.prototype.getAttributeNamesByType
+     * @description 获取指定类型的图层属性字段。
+     * @param {string} [type] - 需要获取的图层属性字段的类型。目前可选 "Num"。
+     * @return {Array.<string>} - 返回指定类型的图层属性字段。
+     */
+    getAttributeNamesByType(type) {
+        //图层属性字段
+        if (this.features[0].feature.properties) {
+            let properties = this.features[0].feature.properties;
+            let attributeNames = [];
+            if (type === 'Num') {
+                for (let field in properties) {
+                    if (!isNaN(properties[field])) {
+                        attributeNames.push(field);
+                    }
+                }
+            } else {
+                attributeNames = this.attributeNames;
+            }
+            return attributeNames;
+        }
     }
 
     /**
@@ -119,9 +137,9 @@ export class GeoJsonLayerDataModel {
         }
 
         //若图层属性对象还未存储该属性，则遍历每个feature 读取其属性值，并存储到图层属性对象中
-        this.attributes.attributeName = [];
+        this.attributes[attributeName] = [];
         for (let i = 0; i < this.features.length; i++) {
-            this.attributes[attributeName].push(this.features[i].feature.properties[attributeName]);
+            this.attributes[attributeName].push([this.features[i].feature.properties[attributeName]]);
         }
 
         return this.attributes[attributeName];
@@ -173,5 +191,4 @@ export class GeoJsonLayerDataModel {
         });
         return features;
     }
-
 }

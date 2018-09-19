@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -15584,10 +15599,92 @@ class OutputSetting_OutputSetting {
 }
 
 SuperMap.OutputSetting = OutputSetting_OutputSetting;
+// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.MappingParameters
+ * @category  iServer ProcessingService
+ * @classdesc 分析后结果可视化的参数类。
+ * @param {Object} options - 参数。
+ * @param {Array.<SuperMap.ThemeGridRangeItem>} [options.items] - 栅格分段专题图子项数组。
+ * @param {number} [options.numericPrecision=1] - 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。
+ * @param {SuperMap.RangeMode} [options.rangeMode=SuperMap.RangeMode.EQUALINTERVAL] - 专题图分段模式。
+ * @param {number} [options.rangeCount] - 专题图分段个数。
+ * @param {SuperMap.ColorGradientType} [options.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED] - 专题图颜色渐变模式。
+ */
+class MappingParameters_MappingParameters {
+
+    constructor(options) {
+
+        /**
+         * @member {Array.<SuperMap.ThemeGridRangeItem>} [SuperMap.MappingParameters.prototype.items]
+         * @description 栅格分段专题图子项数组。
+         */
+        this.items = null;
+
+        /**
+         * @member {number} [SuperMap.MappingParameters.prototype.numericPrecision=1]
+         * @description 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。
+         */
+        this.numericPrecision = 1;
+
+        /**
+         * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
+         * @description 专题图分段模式。
+         */
+        this.rangeMode = RangeMode.EQUALINTERVAL;
+
+        /**
+         * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
+         * @description 专题图分段个数。
+         */
+        this.rangeCount = "";
+
+        /**
+         * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
+         * @description 专题图颜色渐变模式。
+         */
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
+
+        Util_Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.MappingParameters";
+    }
+
+    /**
+     * @function SuperMap.MappingParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        if (me.items) {
+            if (me.items.length > 0) {
+                for (var item in me.items) {
+                    me.items[item].destroy();
+                    me.items[item] = null;
+                }
+            }
+            me.items = null;
+        }
+        me.numericPrecision = null;
+        me.rangeMode = null;
+        me.rangeCount = null;
+        me.colorGradientType = null;
+    }
+
+}
+
+SuperMap.MappingParameters = MappingParameters_MappingParameters;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -15603,7 +15700,8 @@ SuperMap.OutputSetting = OutputSetting_OutputSetting;
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。   
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。   
  * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。   
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。   
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。  
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
 
@@ -15650,6 +15748,12 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         if (!options) {
             return this;
@@ -15674,6 +15778,10 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -15694,11 +15802,16 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
+
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'bounds') {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name];
+            }
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = BuffersAnalystJobsParameter[name];
             }
         }
     }
@@ -28281,6 +28394,8 @@ SuperMap.InterpolationAnalystService = InterpolationAnalystService_Interpolation
 
 
 
+
+
 /**
  * @class SuperMap.KernelDensityJobParameter
  * @category iServer ProcessingService DensityAnalyst
@@ -28288,12 +28403,13 @@ SuperMap.InterpolationAnalystService = InterpolationAnalystService_Interpolation
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
  * @param {number} [options.radius=300] - 分析的影响半径。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class KernelDensityJobParameter_KernelDensityJobParameter {
 
@@ -28308,7 +28424,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         this.datasetName = "";
 
         /**
-         * @member {SuperMap.Bounds|L.Bounds|ol.extent} SuperMap.KernelDensityJobParameter.prototype.query
+         * @member {SuperMap.Bounds|L.Bounds|ol.extent} [SuperMap.KernelDensityJobParameter.prototype.query]
          * @description 分析范围。 
          */
         this.query = "";
@@ -28367,6 +28483,12 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.KernelDensityJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。
+         */
+        this.mappingParameters = null;
+
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
@@ -28391,6 +28513,10 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -28412,11 +28538,16 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
                 tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'query') {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
+            }
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
             }
         }
     }
@@ -29455,6 +29586,7 @@ SuperMap.OverlayAnalystService = OverlayAnalystService_OverlayAnalystService;
 
 
 
+
 /**
  * @class SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
@@ -29466,6 +29598,7 @@ SuperMap.OverlayAnalystService = OverlayAnalystService_OverlayAnalystService;
  * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
  * @param {string} [options.mode] - 叠加分析模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class OverlayGeoJobParameter_OverlayGeoJobParameter {
 
@@ -29504,10 +29637,16 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         this.overlayFields = "";
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.OverlayGeoJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+        * @member {SuperMap.MappingParameters} [SuperMap.OverlayGeoJobParameter.prototype.mappingParameters]
+        * @description 分析后结果可视化的参数类。   
+        */
+        this.mappingParameters = null;
 
         Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
@@ -29527,6 +29666,10 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -29542,13 +29685,18 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
                 tempObj['input'][name] = OverlayGeoJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = OverlayGeoJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = OverlayGeoJobParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = OverlayGeoJobParameter[name];
+            }
         }
     }
 
@@ -31532,6 +31680,7 @@ SuperMap.SetLayerStatusService = SetLayerStatusService_SetLayerStatusService;
 
 
 
+
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
@@ -31541,6 +31690,7 @@ SuperMap.SetLayerStatusService = SetLayerStatusService_SetLayerStatusService;
  * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
  * @param {SuperMap.SpatialQueryMode} [options.mode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
@@ -31578,6 +31728,12 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SingleObjectQueryJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
@@ -31595,6 +31751,10 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
         if (this.output instanceof OutputSetting_OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -31616,8 +31776,13 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
                 tempObj['output'] = singleObjectQueryJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = singleObjectQueryJobsParameter[name];
+            }
         }
     }
 
@@ -31818,6 +31983,7 @@ SuperMap.StopQueryService = StopQueryService_StopQueryService;
 
 
 
+
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
@@ -31828,6 +31994,7 @@ SuperMap.StopQueryService = StopQueryService_StopQueryService;
  * @param {string} options.attributeField - 属性字段。
  * @param {string} options.statisticModes - 统计模式。
  * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
 
@@ -31860,6 +32027,11 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryAttributesJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util_Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
@@ -31878,6 +32050,10 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -31893,13 +32069,18 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
                 tempObj['input'][name] = SummaryAttributesJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = SummaryAttributesJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = SummaryAttributesJobsParameter[name];
+            }
         }
     }
 
@@ -31975,19 +32156,22 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
 
 
 
+
+
 /**
  * @class SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
@@ -32044,10 +32228,16 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
         this.type = SummaryType.SUMMARYMESH;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryMeshJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util_Util.extend(this, options);
 
@@ -32072,6 +32262,10 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -32091,17 +32285,21 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
                 tempObj['type'] = summaryMeshJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryMeshJobParameter[name];
                 continue;
-            }
+            }     
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 if (name === 'query') {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryMeshJobParameter[name];
                 }
             }
 
@@ -32196,13 +32394,14 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
 
 
 
+
 /**
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -32215,6 +32414,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
  * @param {SuperMap.AnalystSizeUnit} [options.meshSizeUnit=SuperMap.AnalystSizeUnit.METER] - 网格大小单位。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 汇总类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryRegionJobParameter_SummaryRegionJobParameter {
 
@@ -32313,6 +32513,12 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryRegionJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
@@ -32341,6 +32547,10 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -32364,7 +32574,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
                 tempObj['type'] = summaryRegionJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryRegionJobParameter[name];
                 continue;
@@ -32376,6 +32586,11 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
                 } else {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name];
                 }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryRegionJobParameter[name];
+                }
+
             }
         }
     }
@@ -33926,6 +34141,7 @@ SuperMap.TilesetsService = TilesetsService_TilesetsService;
 
 
 
+
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
@@ -33936,6 +34152,7 @@ SuperMap.TilesetsService = TilesetsService_TilesetsService;
  * @param {SuperMap.TopologyValidatorRule} [options.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
 
@@ -33968,10 +34185,16 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.TopologyValidatorJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util_Util.extend(this, options);
 
@@ -33991,6 +34214,10 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -34006,13 +34233,17 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
                 tempObj['input'][name] = TopologyValidatorJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = TopologyValidatorJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = TopologyValidatorJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = TopologyValidatorJobsParameter[name];
+            }
         }
     }
 }
@@ -34949,6 +35180,7 @@ SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService_UpdateTurnNod
 
 
 
+
 /**
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
@@ -34958,6 +35190,7 @@ SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService_UpdateTurnNod
  * @param {string} options.datasetOverlay - 裁剪对象数据集。 
  * @param {SuperMap.ClipAnalystMode} [options.mode=SuperMap.ClipAnalystMode.CLIP] - 裁剪分析模式。 
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。 
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class VectorClipJobsParameter_VectorClipJobsParameter {
 
@@ -34994,6 +35227,12 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.VectorClipJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util_Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
@@ -35011,6 +35250,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
         if (this.output instanceof OutputSetting_OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -35034,6 +35277,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = vectorClipJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = vectorClipJobsParameter[name];
+            }
         }
     }
 
@@ -35106,6 +35353,8 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -61018,7 +61267,7 @@ class FileModel_FileModel {
 /**
  * @class SuperMap.Widgets.MessageBox
  * @classdesc MessageBox 微件，信息框提示
- * @category  Control Widgets
+ * @category Widgets
  */
 class MessageBox {
 
@@ -61103,9 +61352,10 @@ SuperMap.Widgets.MessageBox = MessageBox;
 
 /**
  * @class SuperMap.Widgets.WidgetContainer
- * @class 微件统一外框
- * @param {string} title - 标题，必传参数
+ * @classdesc 微件统一外框。
+ * @param {string} title - 标题。
  * @param {Object} position - 设置外框绝对位置，包括上下左右：{"top":"5px","bottom":"5px","left":"5px","right":"5px"}
+ * @category Widgets
  */
 class WidgetContainer {
     constructor(title, position = null) {
@@ -61174,106 +61424,177 @@ SuperMap.Widgets.WidgetContainer = WidgetContainer;
 // CONCATENATED MODULE: ./src/common/widgets/templates/WidgetSelect.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
  * @class SuperMap.Widgets.WidgetSelect
- * @classDec 微件统一 select 下拉框。
- * @param {Array} optionsArr - 需要创建的 option 数据数组。
+ * @classdesc 微件统一 select 下拉框。
+ * @param {Array.<string|Array>} options - 需要创建的 WidgetSelect 数据数组。
+ * @param {string} [options.labelName] - label 名称。
+ * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
+ * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
+ * @category Widgets
  */
 class WidgetSelect {
-    constructor(optionsArr) {
-        this._initView(optionsArr);
+    constructor(options) {
+        this._initView(options);
     }
+    _initView(options) {
+        let selectTool = this._createElement('div', "select-tool");
 
-    _initView(optionsArr) {
-        let select = document.createElement('select');
-        select.className = "widget-select-options";
-        for (let i = 0; i < optionsArr.length; i++) {
-            let ele = document.createElement('option');
-            ele.innerHTML = optionsArr[i];
-            ele.value = optionsArr[i];
-            // 默认选中第 0 个元素
-            if (i === 0) {
-                ele.selected = true;
-            }
-            select.appendChild(ele);
+        if (options.labelName) {
+            let label = this._createElement('label', 'lable_describe', selectTool);
+            label.innerHTML = options.labelName;
         }
-        this.select = select;
 
+        let chartSelect = this._createElement('div', 'chart_select', selectTool);
+        chartSelect.setAttribute('tabindex', '1');
+
+        let selectName = this._createElement('div', "select-name", chartSelect);
+        selectName.title = options.optionsArr[0];
+        selectName.innerHTML = options.optionsArr[0];
+
+        let chartTriangleBtn = this._createElement('div', 'chart-triangle-btn', chartSelect);
+        let triangleBtn = this._createElement('div', 'triangle-down-img', chartTriangleBtn);
+        let selectContent = this._createElement('div', 'select-content', chartSelect);
+        let scrollarea = this._createElement('div', 'scrollarea chart-select-content', selectContent);
+        let scrollareaContent = this._createElement('div', 'scrollarea-content', scrollarea);
+        scrollareaContent.setAttribute('tabindex', '1');
+        this.createOptions(scrollareaContent, options.optionsArr)
+        this.optionClickEvent(scrollareaContent, selectName, options.optionsClickCb);
+        // 下拉框显示 & 隐藏事件
+        this._selectClickEvent(chartSelect, selectContent, triangleBtn);
+        this.selectTool = selectTool;
     }
 
     /**
-     * @function WidgetSelect.prototype.getElement
+     * @function SuperMap.Widgets.WidgetSelect.prototype.getElement
      * @description 获取当前模板 Dom 元素。
      */
     getElement() {
-        return this.select;
+        return this.selectTool;
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetSelect.prototype.createOptions
+     * @description 创建所属下拉框选项。
+     */
+    createOptions(container, optionsArr) {
+        for (let i in optionsArr) {
+            let option = this._createElement('div', 'select-option', container);
+            option.title = optionsArr[i];
+            option.innerHTML = optionsArr[i];
+        }
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetSelect.prototype._selectClickEvent
+     * @description select 点击显示&隐藏事件。
+     * @private
+     */
+    _selectClickEvent(eventElement, contentElement, triangleBtn) {
+        eventElement.onclick = function (e) {
+            if (contentElement.style.display === "block") {
+                contentElement.style.display = "none";
+                triangleBtn.className = "triangle-down-img";
+            } else {
+                contentElement.style.display = "block";
+                triangleBtn.className = "triangle-up-img";
+            }
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        eventElement.onmousedown = function (evt) {
+            //console.log('drop-down-box onmousedown '+evt.target.className);
+            if (evt.target !== this) {
+                this.focus();
+                evt.preventDefault();
+                evt.stopPropagation()
+            }
+        }
+        eventElement.onblur = function () {
+
+            contentElement.style.display = "none";
+            triangleBtn.className = "triangle-down-img";
+        }
+    }
+    /**
+    * @function WidgetSelect.prototype._createElement
+    * @description 通用创建元素。
+    * @private
+    */
+    _createElement(tagName, className, parentEle) {
+        let ele = document.createElement(tagName || 'div');
+        className && ~~(ele.className = className);
+        parentEle && parentEle.appendChild(ele);
+        return ele;
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetSelect.prototype.optionClickEvent
+     * @description 下拉框的 option 的点击事件。
+     */
+    optionClickEvent(optionEleArr, selectNameEle, optionsClickCb) {
+        for (let i = 0; i < optionEleArr.children.length; i++) {
+            let childEle = optionEleArr.children[i];
+            childEle.onclick = function () {
+                selectNameEle.innerHTML = childEle.innerHTML;
+                selectNameEle.title = childEle.title;
+                if (childEle.getAttribute('data-value')) {
+                    selectNameEle.setAttribute('data-value', childEle.getAttribute('data-value'))
+                }
+                optionsClickCb && optionsClickCb(childEle);
+            }
+        }
     }
 }
-
 SuperMap.Widgets.WidgetSelect = WidgetSelect;
+
 // CONCATENATED MODULE: ./src/common/widgets/templates/WidgetDropDownBox.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
  * @class SuperMap.Widgets.WidgetDropDownBox
- * @classDec 微件统一 dropDownBox 下拉框。
- * @param {Array} optionsArr - 需要创建的 option 数据数组。
+ * @classdesc 微件统一 dropDownBox 下拉框。
+ * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
+ * @param {string} optionsArr.title - 下拉框 title。
+ * @param {string} optionsArr.remark - 下拉框解释标记文本。
+ * @param {string} optionsArr.icon - 下拉框图标。 
+ * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
+ * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
+ * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
+ * @category Widgets
  */
 class WidgetDropDownBox {
     constructor(optionsArr) {
         this._initView(optionsArr);
     }
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._initView
+     * @description 初始化下拉框。
+     * @private
+     */
     _initView(optionsArr) {
         let dropDownContainer = document.createElement('div');
         dropDownContainer.className = 'drop-down-container';
         let dropDownBox = document.createElement('div');
         dropDownBox.setAttribute('tabindex', '1');
         dropDownBox.className = "drop-down-box";
-        dropDownBox.id = 'dropDownBox';
+        dropDownContainer.appendChild(dropDownBox);
 
         let dropDownTopContainer = document.createElement('div');
-        dropDownTopContainer.id = 'dropDownTopContainer';
-
-        let dropDownTop = document.createElement('div');
-        dropDownTop.className = 'drop-down-item';
-        dropDownTop.id = 'dropDownTop';
-
-        let dropDownImg = document.createElement('div');
-        dropDownImg.className = 'drop-down-img';
-        let activeIcon = document.createElement('div');
-        activeIcon.className = optionsArr[0].icon.className;
-        activeIcon.style.background = optionsArr[0].icon.background;
-        dropDownImg.appendChild(activeIcon);
-        dropDownTop.appendChild(dropDownImg);
-
-        let dropDownTitle = document.createElement('div');
-        dropDownTitle.title = optionsArr[0].title;
-        dropDownTitle.innerHTML = optionsArr[0].title;
-        dropDownTitle.className = 'drop-down-title';
-        dropDownTop.appendChild(dropDownTitle);
-
-        let dropDownRemark = document.createElement('div');
-        dropDownRemark.title = optionsArr[0].remark;
-        dropDownRemark.innerHTML = optionsArr[0].remark;
-        dropDownRemark.className = 'drop-down-remark';
-        dropDownTop.appendChild(dropDownRemark);
-        dropDownTopContainer.appendChild(dropDownTop);
         dropDownBox.appendChild(dropDownTopContainer);
+
+        this._creatDropDownOption(optionsArr[0], dropDownTopContainer);
 
         let triangleBtnContainer = document.createElement('div');
         triangleBtnContainer.className = 'triangle-btn';
+        dropDownBox.appendChild(triangleBtnContainer);
+
         let triangleBtn = document.createElement('div');
         triangleBtn.className = 'triangle-down-img';
-        triangleBtn.id = 'triangleBtn';
         triangleBtnContainer.appendChild(triangleBtn);
-        dropDownBox.appendChild(triangleBtnContainer);
-        dropDownContainer.appendChild(dropDownBox);
 
         let creatDropDownBoxParam = {
             "parentEle": dropDownBox,
@@ -61289,12 +61610,16 @@ class WidgetDropDownBox {
         this.dropDownContainer = dropDownContainer;
 
     }
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._creatDropDownBox
+     * @description 创建下拉框。
+     * @private
+     */
     _creatDropDownBox(creatDropDownBoxParam) {
         let dropDownBox = creatDropDownBoxParam.parentEle;
         let dropDownTopContainer = creatDropDownBoxParam.dropDownTopContainer;
         let dropDownContent = document.createElement('div');
         dropDownContent.className = creatDropDownBoxParam.dropDownContent[0];
-        dropDownContent.id = creatDropDownBoxParam.dropDownContent[1];
         dropDownBox.appendChild(dropDownContent);
 
         let dropDownItems = document.createElement('div');
@@ -61304,61 +61629,73 @@ class WidgetDropDownBox {
         let scrollareaContent = document.createElement('div');
         scrollareaContent.className = creatDropDownBoxParam.scrollareaContent;
         dropDownItems.appendChild(scrollareaContent);
-
-        this._creatDropDownOptions(creatDropDownBoxParam.optionsArr, scrollareaContent);
-
+        let optionsArr = creatDropDownBoxParam.optionsArr;
+        for (let i = 0; i < optionsArr.length; i++) {
+            this._creatDropDownOption(optionsArr[i], scrollareaContent)
+        }
         // 下拉框显示 & 隐藏事件
         let triangleBtn = creatDropDownBoxParam.triangleBtn;
-        this._dropDownClickEvent(dropDownBox, dropDownContent.id, triangleBtn.id);
+        this._dropDownClickEvent(dropDownBox, dropDownContent, triangleBtn);
 
-        this._eleOnblur(dropDownBox, creatDropDownBoxParam.dropDownContent[1], triangleBtn.id)
+        this._eleOnblur(dropDownBox, dropDownContent, triangleBtn)
 
         // 下拉框 options 点击事件
         let scrollareaOptions = scrollareaContent.children;
         for (let i = 0; i < scrollareaOptions.length; i++) {
             scrollareaOptions[i].onclick = function () {
                 dropDownTopContainer.innerHTML = scrollareaOptions[i].outerHTML;
-                dropDownTopContainer.children[0].id = 'dropDownTop';
                 //evt.stopPropagation();
             }
         }
     }
 
-    _creatDropDownOptions(dataArr, parentElement) {
-        for (let i = 0; i < dataArr.length; i++) {
-            let ele = document.createElement('div');
-            ele.className = 'drop-down-item';
-            ele.setAttribute('data-value', dataArr[i]['data-value']);
-            parentElement.appendChild(ele);
-
-            let imgContainer = document.createElement('div');
-            imgContainer.className = 'drop-down-img';
-            ele.appendChild(imgContainer);
-
-            let img = document.createElement('div');
-            img.className = dataArr[i].icon.className;
-            img.style.background = dataArr[i].icon.background;
-            imgContainer.appendChild(img);
-
-            let title = document.createElement('div');
-            title.className = 'drop-down-title';
-            title.title = dataArr[i].title;
-            title.innerHTML = dataArr[i].title;
-            ele.appendChild(title);
-
-            let remark = document.createElement('div');
-            remark.className = 'drop-down-remark';
-            remark.title = dataArr[i].remark;
-            remark.innerHTML = dataArr[i].remark;
-            ele.appendChild(remark);
-
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._creatDropDownOption
+     * @description 创建下拉框子元素。
+     * @private
+     */
+    _creatDropDownOption(data, parentElement){
+        let ele = document.createElement('div');
+        ele.className = 'drop-down-item';
+        let dataItem = data;
+        if (dataItem['dataValue']) {
+            ele.setAttribute('data-value', dataItem['dataValue']);
         }
+        parentElement.appendChild(ele);
+
+        let imgContainer = document.createElement('div');
+        imgContainer.className = 'drop-down-img';
+        ele.appendChild(imgContainer);
+
+        let img = document.createElement('div');
+        if (dataItem.icon.className) {
+            img.className = dataItem.icon.className;
+        }
+        if (dataItem.icon.background) {
+            img.style.background = dataItem.icon.background;
+        }
+        imgContainer.appendChild(img);
+
+        let title = document.createElement('div');
+        title.className = 'drop-down-title';
+        title.title = dataItem.title;
+        title.innerHTML = dataItem.title;
+        ele.appendChild(title);
+
+        let remark = document.createElement('div');
+        remark.className = 'drop-down-remark';
+        remark.title = dataItem.remark;
+        remark.innerHTML = dataItem.remark;
+        ele.appendChild(remark);
     }
 
-    _dropDownClickEvent(eventElement, contentElementId, triangleBtnId) {
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._dropDownClickEvent
+     * @description 下拉框点击事件。
+     * @private
+     */
+    _dropDownClickEvent(eventElement, contentElement, triangleBtn) {
         eventElement.onclick = function (e) {
-            let contentElement = document.getElementById(contentElementId);
-            let triangleBtn = document.getElementById(triangleBtnId);
             if (contentElement.style.display === "block") {
                 contentElement.style.display = "none";
                 triangleBtn.className = "triangle-down-img";
@@ -61379,16 +61716,30 @@ class WidgetDropDownBox {
         }
     }
 
-    _eleOnblur(eventElement, contentElementId, triangleBtnId) {
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype._eleOnblur
+     * @description 下拉框失焦事件。
+     * @private
+     */
+    _eleOnblur(eventElement, contentElement, triangleBtn) {
         eventElement.onblur = function () {
-            let contentElement = document.getElementById(contentElementId);
-            let triangleBtn = document.getElementById(triangleBtnId);
             contentElement.style.display = "none";
             triangleBtn.className = "triangle-down-img";
         }
     }
     /**
-     * @function WidgetSelect.prototype.getElement
+    * @function SuperMap.Widgets.WidgetDropDownBox.prototype._createElement
+    * @description 通用创建元素。
+    * @private
+    */
+    _createElement(tagName, className, parentEle) {
+        let ele = document.createElement(tagName || 'div');
+        className && ~~(ele.className = className);
+        parentEle && parentEle.appendChild(ele);
+        return ele;
+    }
+    /**
+     * @function SuperMap.Widgets.WidgetDropDownBox.prototype.getElement
      * @description 获取当前模板 Dom 元素。
      */
     getElement() {
@@ -61598,14 +61949,10 @@ class IndexTabsPageContainer {
     }
 
 }
-// EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var css_CityTabsPage = __webpack_require__(16);
-
 // CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -61858,9 +62205,6 @@ class NavTabsPage {
     }
 
 }
-// EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(14);
-
 // CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -61868,12 +62212,11 @@ var PaginationContainer = __webpack_require__(14);
 
 
 
-
 /**
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
  */
-class PaginationContainer_PaginationContainer {
+class PaginationContainer {
     constructor(contents = null, pageCounts = 0) {
         this.currentPage = 0;
         this.pageNumberLis = [];
@@ -62168,7 +62511,7 @@ class PaginationContainer_PaginationContainer {
 
 }
 
-SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
+SuperMap.Widgets.PaginationContainer = PaginationContainer;
 // CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -62454,10 +62797,303 @@ let FileReaderUtil = {
 
 
 
+
+// CONCATENATED MODULE: ./src/common/lang/Lang.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @name Lang
+ * @memberOf SuperMap
+ * @namespace
+ * @category BaseTypes
+ * @description 国际化的命名空间，包含多种语言和方法库来设置和获取当前的语言。
+ */
+let Lang = {
+
+    /**
+     * @member {string} SuperMap.Lang.code
+     * @description 当前所使用的语言类型。
+     */
+    code: null,
+
+    /**
+     * @member {string} [SuperMap.Lang.defaultCode='en-US']
+     * @description 默认使用的语言类型。
+     */
+    defaultCode: "en-US",
+
+    /**
+     * @function SuperMap.Lang.getCode
+     * @description 获取当前的语言代码。
+     * @returns {string} 当前的语言代码。
+     */
+    getCode: function () {
+        if (!SuperMap.Lang.code) {
+            SuperMap.Lang.setCode();
+        }
+        return SuperMap.Lang.code;
+    },
+
+    /**
+     * @function SuperMap.Lang.setCode
+     * @description 设置语言代码。
+     * @param {String} code - 此参数遵循IETF规范。
+     */
+    setCode: function () {
+        var lang = this.getLanguageFromCookie();
+        if (lang) {
+            SuperMap.Lang.code = lang;
+            return;
+        }
+        lang = SuperMap.Lang.defaultCode;
+        if (navigator.appName === 'Netscape') {
+            lang = navigator.language;
+        } else {
+            lang = navigator.browserLanguage;
+        }
+        if (lang.indexOf('zh') === 0) {
+            lang = 'zh-CN';
+        }
+        if (lang.indexOf('en') === 0) {
+            lang = 'en-US';
+        }
+
+        SuperMap.Lang.code = lang;
+    },
+    /**
+     * @function SuperMap.Lang.getLanguageFromCookie
+     * @description 从 cookie 中获取语言类型。
+     */
+    getLanguageFromCookie() {
+        var name = 'language=';
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1)
+            }
+            if (c.indexOf(name) !== -1) {
+                return c.substring(name.length, c.length)
+            }
+        }
+        return "";
+    },
+
+    /**
+     * @function SuperMap.Lang.i18n
+     * @description 从当前语言字符串的字典查找 key。
+     * @param {String} key - 字典中 i18n 字符串值的关键字。
+     * @returns {string} 国际化的字符串。
+     */
+    i18n: function (key) {
+        var dictionary = SuperMap.Lang[SuperMap.Lang.getCode()];
+        var message = dictionary && dictionary[key];
+        if (!message) {
+            // Message not found, fall back to message key
+            message = key;
+        }
+        return message;
+    }
+
+};
+
+SuperMap.Lang = Lang;
+SuperMap.i18n = SuperMap.Lang.i18n;
+
+// CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
+
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+/**
+ * Namespace: SuperMap.Lang["en"]
+ * Dictionary for English.  Keys for entries are used in calls to
+ *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <SuperMap.String.format> calls.
+ */
+let en = {
+    'title_dataFlowService': 'Data Flow Service',
+    'title_distributedAnalysis': 'Distributed Analysis',
+    'title_clientComputing': 'Client Computing',
+
+    'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
+    'text_displayFeaturesInfo': 'Display feature information',
+    'text_subscribe': 'subscribe',
+    'text_cancelSubscribe': 'unsubscribe',
+
+    'text_densityAnalysis': 'Density Analysis',
+    'text_CalculateTheValuePerUnitArea': 'Calculate the value per unit area within the neighborhood shape',
+    'text_option_selectDataset':'Please select a dataset',
+    'text_label_dataset': 'Dataset',
+    'text_option_simplePointDensityAnalysis': 'Simple point density analysis',
+    'text_option_nuclearDensityAnalysis': 'Nuclear density analysis',
+    'text_label_analyticalMethod': 'Analytical method',
+    'text_option_quadrilateral': 'Quadrilateral',
+    'text_option_hexagon': 'hexagon',
+    'text_label_meshType': 'Mesh type',
+    'text_option_notSet': 'Not set',
+    'text_label_weightField': 'Weight field',
+    'text_label_gridSizeInMeters': 'Grid size (in meters)',
+    'text_label_searchRadius': 'Search radius',
+    'text_option_equidistantSegmentation': 'Equidistant segmentation',
+    'text_option_logarithm': 'Logarithm',
+    'text_option_equalCountingSegment': 'Equal counting segment',
+    'text_option_squareRootSegmentation': 'Square root segmentation',
+    'text_label_thematicMapSegmentationMode': 'Thematic map segmentation mode',
+    'text_label_thematicMapSegmentationParameters': 'Thematic map segmentation parameters',
+    'text_option_greenOrangePurpleGradient': 'Green orange purple gradient',
+    'text_option_greenOrangeRedGradient': 'Green orange red gradient',
+    'text_option_rainbowGradient': 'Rainbow gradient',
+    'text_option_spectralGradient': 'Spectral gradient',
+    'text_option_terrainGradient': 'Terrain gradient',
+    'text_label_thematicMapColorGradientMode': 'Thematic map color gradient mode',
+    'text_label_resultLayerName': 'Result layer name',
+    'text_chooseFile': 'Open File',
+    'text_isoline': 'Isoline',
+    'text_extractDiscreteValue': 'Extract discrete value generation curve',
+    'text_buffer': 'Buffer',
+    'text_specifyTheDistance': 'Specify the distance to create the surrounding area',
+    'text_label_analysisLayer': 'Analysis layer',
+    'text_label_extractField': 'Extract field',
+    'text_label_extractedValue': 'Extracted value',
+    'text_label_distanceAttenuation': 'Distance attenuation',
+    'text_label_gridSize': 'gridSize',
+    'text_label_bufferRadius': 'Buffer radius',
+    'text_label_defaultkilometers': 'Default 10 kilometers',
+    'text_label_kilometer': 'kilometer',
+    'text_label_unit': 'unit',
+    'text_retainOriginal': 'Retain original object field',
+    'text_mergeBuffer': 'Merge buffer',
+    'text_label_color': 'Color',
+    'text_label_buffer': '[Buffer]',
+    'text_label_isolines': '[Isolines]',
+    
+    "btn_analyze": "Analyze",
+    "btn_analyzing": "Analyzing",
+    "btn_emptyTheAnalysisLayer": "Empty the analysis layer",
+    "btn_cancelAnalysis": "Cancel",
+
+    'msg_dataFlowServiceHasBeenSubscribed': 'The data stream service has been subscribed to.',
+    'msg_inputDataFlowUrlFirst': 'Please enter the data stream service address first.',
+    'msg_datasetOrMethodUnsupport': 'This dataset does not support this analysis type. Please reselect the dataset.',
+    'msg_selectDataset': 'Please select a data set!',
+    'msg_setTheWeightField': 'Please set the weight field!',
+    'msg_theFieldNotSupportAnalysis': 'The field you currently select does not support analysis!',
+    'msg_resultIsEmpty': 'The result of the analysis is empty!'
+
+
+};
+
+SuperMap.Lang['en-US'] = en;
+
+// CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
+
+
+/**
+ * Namespace: SuperMap.Lang["zh-CN"]
+ * Dictionary for Simplified Chinese.  Keys for entries are used in calls to
+ *     <SuperMap.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <SuperMap.String.format> calls.
+ */
+let zh = {
+    'title_dataFlowService': '数据流服务',
+    'title_distributedAnalysis': '分布式分析',
+    'title_clientComputing': '客户端计算',
+    
+    'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
+    'text_displayFeaturesInfo': '显示要素信息',
+    'text_subscribe': '订阅',
+    'text_cancelSubscribe': '取消订阅',
+    
+    'text_densityAnalysis': '密度分析',
+    'text_CalculateTheValuePerUnitArea': '计算点指定邻域形状内的每单位面积量值',
+    'text_option_selectDataset':'请选择数据集',
+    'text_label_dataset': '数据集',
+    'text_option_simplePointDensityAnalysis': '简单点密度分析',
+    'text_option_nuclearDensityAnalysis': '核密度分析',
+    'text_label_analyticalMethod': '分析方法',
+    'text_option_quadrilateral': '四边形',
+    'text_option_hexagon': '六边形',
+    'text_label_meshType': '网格面类型',
+    'text_option_notSet': '未设置',
+    'text_label_weightField': '权重字段',
+    'text_label_gridSizeInMeters': '网格大小(单位为：米)',
+    'text_label_searchRadius': '搜索半径',
+    'text_option_equidistantSegmentation': '等距离分段',
+    'text_option_logarithm': '对数',
+    'text_option_equalCountingSegment': '等计数分段',
+    'text_option_squareRootSegmentation': '平方根分段',
+    'text_label_thematicMapSegmentationMode': '专题图分段模式',
+    'text_label_thematicMapSegmentationParameters': '专题图分段参数',
+    'text_option_greenOrangePurpleGradient': '绿橙紫渐变',
+    'text_option_greenOrangeRedGradient': '绿橙红渐变',
+    'text_option_rainbowGradient': '彩虹渐变',
+    'text_option_spectralGradient': '光谱渐变',
+    'text_option_terrainGradient': '地形渐变',
+    'text_label_thematicMapColorGradientMode': '专题图颜色渐变模式',
+    'text_label_resultLayerName': '结果图层名称',
+    'text_chooseFile': '选择文件',
+    'text_isoline': '等值线',
+    'text_extractDiscreteValue': '提取离散值生成曲线',
+    'text_buffer': '缓冲区',
+    'text_specifyTheDistance': '指定距离创建周边区域',
+    'text_label_analysisLayer': '分析图层',
+    'text_label_extractField': '提取字段',
+    'text_label_extractedValue': '提取值',
+    'text_label_distanceAttenuation': '距离衰减',
+    'text_label_gridSize': '栅格大小',
+    'text_label_bufferRadius': '缓冲半径',
+    'text_label_defaultkilometers': '默认10千米',
+    'text_option_kilometer': '千米',
+    'text_label_unit': '单位',
+    'text_retainOriginal': '保留原对象字段属性',
+    'text_mergeBuffer': '合并缓冲区',
+    'text_label_color': '颜色',
+    'text_label_buffer': '[缓冲区]',
+    'text_label_isolines': '[等值线]',
+
+
+    "btn_analyze": "分析",
+    "btn_analyzing": "分析中",
+    "btn_emptyTheAnalysisLayer": "清空分析图层",
+    "btn_cancelAnalysis": "取消",
+
+
+    'msg_dataFlowServiceHasBeenSubscribed': '已订阅该数据流服务。',
+    'msg_inputDataFlowUrlFirst': '请先输入数据流服务地址。',
+    'msg_datasetOrMethodUnsupport': '该数据集不支持本分析类型，请重新选择数据集',
+    'msg_selectDataset': '请选择数据集！',
+    'msg_setTheWeightField': '请设置权重字段！',
+    'msg_theFieldNotSupportAnalysis': '您当前选择的字段不支持分析！',
+    'msg_resultIsEmpty': '分析的结果为空！'
+    
+};
+
+SuperMap.Lang["zh-CN"] = zh;
+
+
+// CONCATENATED MODULE: ./src/common/lang/index.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+
+
+
 // CONCATENATED MODULE: ./src/common/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -73323,6 +73959,7 @@ external_mapboxgl_default.a.supermap.TrafficTransferAnalystService = TrafficTran
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MathExpressionAnalysisParameters", function() { return MathExpressionAnalysisParameters_MathExpressionAnalysisParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MeasureParameters", function() { return MeasureParameters_MeasureParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlapDisplayedOptions", function() { return OverlapDisplayedOptions_OverlapDisplayedOptions; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayAnalystParameters", function() { return OverlayAnalystParameters_OverlayAnalystParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OverlayGeoJobParameter", function() { return OverlayGeoJobParameter_OverlayGeoJobParameter; });
@@ -74324,19 +74961,6 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (this && this.clearImmediate);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 15 */,
-/* 16 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

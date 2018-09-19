@@ -555,7 +555,29 @@ deps = {
                     "des": "打开文件微件",
                     "des_en": "Open file widgets"
                 }]
-            }
+            },
+            "ClientComputation ": {
+                "name": "客户端计算微件",
+                "src": [
+                    "./src/leaflet/widgets/ClientComputationView.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.widgets.clientComputation",
+                    "des": "客户端计算微件",
+                    "des_en": "Client computation widget"
+                }]
+            },
+            "DistributedAnalysis": {
+                "name": "分布式分析微件",
+                "src": [
+                    "./src/leaflet/widgets/DistributedAnalysisView.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.widgets.distributedAnalysis",
+                    "des": "分布式分析微件",
+                    "des_en": "Distributed analysis widget"
+                }]
+            },
         }
 
     },

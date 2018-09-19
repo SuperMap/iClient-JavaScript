@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -5879,10 +5894,93 @@ class OutputSetting_OutputSetting {
 }
 
 SuperMap.OutputSetting = OutputSetting_OutputSetting;
+// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
+/* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SuperMap.MappingParameters
+ * @category  iServer ProcessingService
+ * @classdesc 分析后结果可视化的参数类。
+ * @param {Object} options - 参数。
+ * @param {Array.<SuperMap.ThemeGridRangeItem>} [options.items] - 栅格分段专题图子项数组。
+ * @param {number} [options.numericPrecision=1] - 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。
+ * @param {SuperMap.RangeMode} [options.rangeMode=SuperMap.RangeMode.EQUALINTERVAL] - 专题图分段模式。
+ * @param {number} [options.rangeCount] - 专题图分段个数。
+ * @param {SuperMap.ColorGradientType} [options.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED] - 专题图颜色渐变模式。
+ */
+class MappingParameters_MappingParameters {
+
+    constructor(options) {
+
+        /**
+         * @member {Array.<SuperMap.ThemeGridRangeItem>} [SuperMap.MappingParameters.prototype.items]
+         * @description 栅格分段专题图子项数组。
+         */
+        this.items = null;
+
+        /**
+         * @member {number} [SuperMap.MappingParameters.prototype.numericPrecision=1]
+         * @description 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。
+         */
+        this.numericPrecision = 1;
+
+        /**
+         * @member {SuperMap.RangeMode} [SuperMap.MappingParameters.prototype.RangeMode=SuperMap.RangeMode.EQUALINTERVAL]
+         * @description 专题图分段模式。
+         */
+        this.rangeMode = RangeMode.EQUALINTERVAL;
+
+        /**
+         * @member {number} [SuperMap.MappingParameters.prototype.rangeCount]
+         * @description 专题图分段个数。
+         */
+        this.rangeCount = "";
+
+        /**
+         * @member {SuperMap.ColorGradientType} [SuperMap.MappingParameters.prototype.colorGradientType=SuperMap.ColorGradientType.YELLOW_RED]
+         * @description 专题图颜色渐变模式。
+         */
+        this.colorGradientType = ColorGradientType.YELLOW_RED;
+
+        Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.MappingParameters";
+    }
+
+    /**
+     * @function SuperMap.MappingParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        if (me.items) {
+            if (me.items.length > 0) {
+                for (var item in me.items) {
+                    me.items[item].destroy();
+                    me.items[item] = null;
+                }
+            }
+            me.items = null;
+        }
+        me.numericPrecision = null;
+        me.rangeMode = null;
+        me.rangeCount = null;
+        me.colorGradientType = null;
+    }
+
+}
+
+SuperMap.MappingParameters = MappingParameters_MappingParameters;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -5895,12 +5993,13 @@ SuperMap.OutputSetting = OutputSetting_OutputSetting;
  * @param {Object} options - 参数。 
  * @param {string} options.datasetName - 数据集名。 
  * @param {string} options.fields - 权重索引。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。 
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。 
  * @param {number} [options.resolution=80] - 分辨率。 
  * @param {number} [options.method=0] - 分析方法。 
  * @param {number} [options.meshType=0] - 分析类型。 
  * @param {number} [options.radius=300] - 分析的影响半径。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class KernelDensityJobParameter_KernelDensityJobParameter {
 
@@ -5915,7 +6014,7 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
         this.datasetName = "";
 
         /**
-         * @member {SuperMap.Bounds|L.Bounds|ol.extent} SuperMap.KernelDensityJobParameter.prototype.query
+         * @member {SuperMap.Bounds|L.Bounds|ol.extent} [SuperMap.KernelDensityJobParameter.prototype.query]
          * @description 分析范围。 
          */
         this.query = "";
@@ -5974,6 +6073,12 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.KernelDensityJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
@@ -5998,6 +6103,10 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6019,11 +6128,16 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
                 tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'query') {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
+            }
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
             }
         }
     }
@@ -6039,6 +6153,7 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
 
 
 
+
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
@@ -6048,6 +6163,7 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
  * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
  * @param {SuperMap.SpatialQueryMode} [options.mode=SuperMap.SpatialQueryMode.CONTAIN] - 空间查询模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
 
@@ -6085,6 +6201,12 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SingleObjectQueryJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
@@ -6102,6 +6224,10 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
         if (this.output instanceof OutputSetting_OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -6123,8 +6249,13 @@ class SingleObjectQueryJobsParameter_SingleObjectQueryJobsParameter {
                 tempObj['output'] = singleObjectQueryJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = singleObjectQueryJobsParameter[name];
+            }
         }
     }
 
@@ -6140,6 +6271,7 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
 
 
 
+
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
@@ -6150,6 +6282,7 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
  * @param {string} options.attributeField - 属性字段。
  * @param {string} options.statisticModes - 统计模式。
  * @param {SuperMap.OutputSetting} [options.output] -输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
 
@@ -6182,6 +6315,11 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryAttributesJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
@@ -6200,6 +6338,10 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6215,13 +6357,18 @@ class SummaryAttributesJobsParameter_SummaryAttributesJobsParameter {
                 tempObj['input'][name] = SummaryAttributesJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = SummaryAttributesJobsParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = SummaryAttributesJobsParameter[name];
+            }
         }
     }
 
@@ -6236,19 +6383,22 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
 
 
 
+
+
 /**
  * @class SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {SuperMap.StatisticAnalystMode} [options.statisticModes=SuperMap.StatisticAnalystMode.AVERAGE] - 分析模式。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 聚合类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryMeshJobParameter_SummaryMeshJobParameter {
 
@@ -6305,10 +6455,16 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
         this.type = SummaryType.SUMMARYMESH;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.SummaryMeshJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.SummaryMeshJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryMeshJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
 
@@ -6333,6 +6489,10 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6352,17 +6512,21 @@ class SummaryMeshJobParameter_SummaryMeshJobParameter {
                 tempObj['type'] = summaryMeshJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryMeshJobParameter[name];
                 continue;
-            }
+            }     
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 if (name === 'query') {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
                 } else {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryMeshJobParameter[name];
                 }
             }
 
@@ -6392,13 +6556,14 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
 
 
 
+
 /**
  * @class SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -6411,6 +6576,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
  * @param {SuperMap.AnalystSizeUnit} [options.meshSizeUnit=SuperMap.AnalystSizeUnit.METER] - 网格大小单位。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 汇总类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class SummaryRegionJobParameter_SummaryRegionJobParameter {
 
@@ -6509,6 +6675,12 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryRegionJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
@@ -6537,6 +6709,10 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6560,7 +6736,7 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
                 tempObj['type'] = summaryRegionJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryRegionJobParameter[name];
                 continue;
@@ -6572,6 +6748,11 @@ class SummaryRegionJobParameter_SummaryRegionJobParameter {
                 } else {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name];
                 }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryRegionJobParameter[name];
+                }
+
             }
         }
     }
@@ -6588,6 +6769,7 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
 
 
 
+
 /**
  * @class SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
@@ -6599,6 +6781,7 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
  * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
  * @param {string} [options.mode] - 叠加分析模式。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class OverlayGeoJobParameter_OverlayGeoJobParameter {
 
@@ -6637,10 +6820,16 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
         this.overlayFields = "";
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.OverlayGeoJobParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.OverlayGeoJobParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+        * @member {SuperMap.MappingParameters} [SuperMap.OverlayGeoJobParameter.prototype.mappingParameters]
+        * @description 分析后结果可视化的参数类。   
+        */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
@@ -6660,6 +6849,10 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6675,13 +6868,18 @@ class OverlayGeoJobParameter_OverlayGeoJobParameter {
                 tempObj['input'][name] = OverlayGeoJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = OverlayGeoJobParameter[name];
                 continue;
             }
+            
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = OverlayGeoJobParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = OverlayGeoJobParameter[name];
+            }
         }
     }
 
@@ -6697,6 +6895,7 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
 
 
 
+
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
  * @category iServer ProcessingService BufferAnalyst
@@ -6707,7 +6906,8 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。   
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。   
  * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。   
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。   
+ * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。  
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
 
@@ -6754,6 +6954,12 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
          * @description 输出参数设置类。
          */
         this.output = null;
+        
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         if (!options) {
             return this;
@@ -6778,6 +6984,10 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6798,11 +7008,16 @@ class BuffersAnalystJobsParameter_BuffersAnalystJobsParameter {
                 tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
+
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'bounds') {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
             } else {
                 tempObj['analyst'][name] = BuffersAnalystJobsParameter[name];
+            }
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = BuffersAnalystJobsParameter[name];
             }
         }
     }
@@ -6819,6 +7034,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
 
 
 
+
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
@@ -6829,6 +7045,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
  * @param {SuperMap.TopologyValidatorRule} [options.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
 
@@ -6861,10 +7078,16 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.TopologyValidatorJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
 
@@ -6884,6 +7107,10 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -6899,13 +7126,17 @@ class TopologyValidatorJobsParameter_TopologyValidatorJobsParameter {
                 tempObj['input'][name] = TopologyValidatorJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = TopologyValidatorJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = TopologyValidatorJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = TopologyValidatorJobsParameter[name];
+            }
         }
     }
 }
@@ -9098,6 +9329,7 @@ SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsSe
 
 
 
+
 /**
  * @class SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
@@ -9107,6 +9339,7 @@ SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsSe
  * @param {string} options.datasetOverlay - 裁剪对象数据集。 
  * @param {SuperMap.ClipAnalystMode} [options.mode=SuperMap.ClipAnalystMode.CLIP] - 裁剪分析模式。 
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。 
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 class VectorClipJobsParameter_VectorClipJobsParameter {
 
@@ -9143,6 +9376,12 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.VectorClipJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
@@ -9160,6 +9399,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
         if (this.output instanceof OutputSetting_OutputSetting) {
             this.output.destroy();
             this.output = null;
+        }
+        if (this.mappingParameters instanceof MappingParameters_MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
         }
     }
 
@@ -9183,6 +9426,10 @@ class VectorClipJobsParameter_VectorClipJobsParameter {
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = vectorClipJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = vectorClipJobsParameter[name];
+            }
         }
     }
 
@@ -10359,6 +10606,7 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BuffersAnalystJobsParameter", function() { return BuffersAnalystJobsParameter_BuffersAnalystJobsParameter; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TopologyValidatorJobsParameter", function() { return TopologyValidatorJobsParameter_TopologyValidatorJobsParameter; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "OutputSetting", function() { return OutputSetting_OutputSetting; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MappingParameters", function() { return MappingParameters_MappingParameters; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoCodingParameter", function() { return GeoCodingParameter_GeoCodingParameter; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoDecodingParameter", function() { return GeoDecodingParameter_GeoDecodingParameter; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapVLayer", function() { return MapVLayer_MapVLayer; });
@@ -10369,6 +10617,7 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 

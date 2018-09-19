@@ -1,10 +1,11 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {SummaryType, AnalystSizeUnit} from '../REST';
-import {OutputSetting} from './OutputSetting';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { SummaryType, AnalystSizeUnit } from '../REST';
+import { OutputSetting } from './OutputSetting';
+import { MappingParameters } from './MappingParameters';
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
@@ -12,7 +13,7 @@ import {OutputSetting} from './OutputSetting';
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} options.query - 分析范围。
+ * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.query] - 分析范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {SuperMap.StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -25,6 +26,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {SuperMap.AnalystSizeUnit} [options.meshSizeUnit=SuperMap.AnalystSizeUnit.METER] - 网格大小单位。
  * @param {SuperMap.SummaryType} [options.type=SuperMap.SummaryType.SUMMARYMESH] - 汇总类型。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class SummaryRegionJobParameter {
 
@@ -123,6 +125,12 @@ export class SummaryRegionJobParameter {
          */
         this.output = null;
 
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.SummaryRegionJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
@@ -151,6 +159,10 @@ export class SummaryRegionJobParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters){
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -174,7 +186,7 @@ export class SummaryRegionJobParameter {
                 tempObj['type'] = summaryRegionJobParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = summaryRegionJobParameter[name];
                 continue;
@@ -186,6 +198,11 @@ export class SummaryRegionJobParameter {
                 } else {
                     tempObj['analyst'][name] = summaryRegionJobParameter[name];
                 }
+                if(name === 'mappingParameters'){
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = summaryRegionJobParameter[name];
+                }
+
             }
         }
     }

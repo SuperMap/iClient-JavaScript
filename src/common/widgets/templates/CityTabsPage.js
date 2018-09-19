@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
 import {IndexTabsPageContainer} from './IndexTabsPageContainer';
-import '../css/CityTabsPage.css';
 import {Util} from '../../commontypes/Util';
 
 /**

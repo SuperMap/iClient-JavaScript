@@ -164,6 +164,7 @@ export {
     MathExpressionAnalysisParameters,
     MeasureParameters,
     OutputSetting,
+    MappingParameters,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayGeoJobParameter,

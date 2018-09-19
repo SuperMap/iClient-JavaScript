@@ -4,12 +4,12 @@
 import L from "leaflet";
 import '../../core/Base';
 import {OpenFileViewModel} from "./OpenFileViewModel";
-import {MessageBox} from '@supermap/iclient-common';
+import {MessageBox, Lang} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.openFile
  * @classdesc openfile 微件，用于打开本地数据文件并加载到底图
- * @category  Control Widgets
+ * @category Widgets
  */
 export var OpenFileView = L.Control.extend({
     options: {
@@ -61,7 +61,7 @@ export var OpenFileView = L.Control.extend({
 
         L.DomUtil.create('div', 'supermapol-icons-upload', this.label);
         const fileSpan = L.DomUtil.create('span', 'openFile-span', this.label);
-        fileSpan.appendChild(document.createTextNode("选择文件"));
+        fileSpan.appendChild(document.createTextNode(Lang.i18n('text_chooseFile')));
 
         this.fileInput = L.DomUtil.create('input', 'openFile_input', this.fileSelect);
         this.fileInput.id = "input_file";

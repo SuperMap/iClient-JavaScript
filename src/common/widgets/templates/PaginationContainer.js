@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
 
-import '../css/PaginationContainer.css';
 
 /**
  * @class SuperMap.Widgets.PaginationContainer

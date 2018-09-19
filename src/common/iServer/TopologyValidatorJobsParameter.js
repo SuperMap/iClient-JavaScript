@@ -1,10 +1,11 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {Util} from '../commontypes/Util';
-import {TopologyValidatorRule} from '../REST';
-import {OutputSetting} from './OutputSetting';
+import { SuperMap } from '../SuperMap';
+import { Util } from '../commontypes/Util';
+import { TopologyValidatorRule } from '../REST';
+import { OutputSetting } from './OutputSetting';
+import { MappingParameters } from './MappingParameters';
 
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
@@ -16,6 +17,7 @@ import {OutputSetting} from './OutputSetting';
  * @param {SuperMap.TopologyValidatorRule} [options.rule=SuperMap.TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
  * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
+ * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 export class TopologyValidatorJobsParameter {
 
@@ -48,10 +50,16 @@ export class TopologyValidatorJobsParameter {
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         /**
-         * @member {SuperMap.OutputSetting} SuperMap.TopologyValidatorJobsParameter.prototype.output
+         * @member {SuperMap.OutputSetting} [SuperMap.TopologyValidatorJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.TopologyValidatorJobsParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。   
+         */
+        this.mappingParameters = null;
 
         Util.extend(this, options);
 
@@ -71,6 +79,10 @@ export class TopologyValidatorJobsParameter {
             this.output.destroy();
             this.output = null;
         }
+        if (this.mappingParameters instanceof MappingParameters) {
+            this.mappingParameters.destroy();
+            this.mappingParameters = null;
+        }
     }
 
     /**
@@ -86,13 +98,17 @@ export class TopologyValidatorJobsParameter {
                 tempObj['input'][name] = TopologyValidatorJobsParameter[name];
                 continue;
             }
-            if (name === "output"){
+            if (name === "output") {
                 tempObj['output'] = tempObj['output'] || {};
                 tempObj['output'] = TopologyValidatorJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
             tempObj['analyst'][name] = TopologyValidatorJobsParameter[name];
+            if(name === 'mappingParameters'){
+                tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                tempObj['analyst']['mappingParameters'] = TopologyValidatorJobsParameter[name];
+            }
         }
     }
 }

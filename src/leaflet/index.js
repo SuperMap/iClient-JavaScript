@@ -164,6 +164,7 @@ import {
     MathExpressionAnalysisParameters,
     MeasureParameters,
     OutputSetting,
+    MappingParameters,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayGeoJobParameter,
@@ -333,7 +334,18 @@ import {
     POISearchView,
     poiSearchView,
     DataFlowView,
-    dataFlowView
+    dataFlowView,
+    ClientComputationView,
+    clientComputationView,
+    ClientComputationViewModel,
+    ClientComputationLayer,
+    clientComputationLayer,
+    GeoJSONLayersWithName,
+    GeoJsonLayersDataModel,
+    GeoJsonLayerDataModel,
+    DistributedAnalysisView,
+    distributedAnalysisView,
+    DistributedAnalysisViewModel
 } from './widgets';
 
 export {
@@ -344,7 +356,18 @@ export {
     POISearchView,
     poiSearchView,
     DataFlowView,
-    dataFlowView
+    dataFlowView,
+    clientComputationView,
+    ClientComputationView,
+    ClientComputationViewModel,
+    ClientComputationLayer,
+    clientComputationLayer,
+    GeoJSONLayersWithName,
+    GeoJsonLayersDataModel,
+    GeoJsonLayerDataModel,
+    DistributedAnalysisView,
+    distributedAnalysisView,
+    DistributedAnalysisViewModel
 }
 
 export {
@@ -510,6 +533,7 @@ export {
     MathExpressionAnalysisParameters,
     MeasureParameters,
     OutputSetting,
+    MappingParameters,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayGeoJobParameter,
