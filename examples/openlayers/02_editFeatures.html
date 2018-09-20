@@ -313,27 +313,32 @@
     }
 
     function selectListener(e) {
+        var deletedId = null;
         map.forEachFeatureAtPixel(e.pixel, function (feature) {
-            var deleteParams = new SuperMap.EditFeaturesParameters({
-                dataSourceName: "World",
-                dataSetName: "Capitals",
-                IDs: [feature.getProperties().ID],
-                editType: "delete"
-            });
+            //只删选中第一个要素：
+            if (!deletedId) {
+                deletedId = feature.getProperties().ID;
+                var deleteParams = new SuperMap.EditFeaturesParameters({
+                    dataSourceName: "World",
+                    dataSetName: "Capitals",
+                    IDs: [deletedId],
+                    editType: "delete"
+                });
 
-            editFeaturesService.editFeatures(deleteParams, function (serviceResult) {
-                if (serviceResult.result.succeed) {
-                    initFeature();
-                    vectorSource.clear();
-                    isclearPoint = false;
-                    closeSelectListener();
-                    widgets.alert.showAlert(resources.text_deleteSuccess, true);
-                } else {
-                    widgets.alert.showAlert(resources.msg_deleteFailed, false)
-                }
-            });
+                editFeaturesService.editFeatures(deleteParams, function (serviceResult) {
+                    if (serviceResult.result.succeed) {
+                        initFeature();
+                        vectorSource.clear();
+                        isclearPoint = false;
+                        closeSelectListener();
+                        widgets.alert.showAlert("resources.text_deleteSuccess", true);
+                    } else {
+                        widgets.alert.showAlert("resources.msg_deleteFailed", false)
+                    }
+                });
+            }
         }, {
-            hitTolerance: 10
+            hitTolerance: 1
         });
 
     }

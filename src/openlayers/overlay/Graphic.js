@@ -90,7 +90,7 @@ export class Graphic extends ol.source.ImageCanvas {
                 let coordinate = e.coordinate;
                 let resolution = e.frameState.viewState.resolution;
                 let pixel = e.pixel;
-                me._forEachFeatureAtCoordinate(coordinate, resolution, options.onClick, pixel, e);
+                me.map.forEachFeatureAtPixel(coordinate, resolution, options.onClick, pixel, e);
             });
         }
 

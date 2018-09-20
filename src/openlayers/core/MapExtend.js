@@ -22,7 +22,8 @@ export var MapExtend = function () {
         const resolution = this.getView().getResolution();
         const coordinate = this.getCoordinateFromPixel(pixel);
         for (let i = 0; i < layers.length; i++) {
-            if (layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
+            //当前高效率点图层满足筛选条件/并且可视时，可被选中：
+            if (layers[i].getVisible() && layerFilter.call(null, layers[i]) && layers[i].getSource()._forEachFeatureAtCoordinate) {
                 layers[i].getSource()._forEachFeatureAtCoordinate(coordinate, resolution, callback, pixel);
             }
         }

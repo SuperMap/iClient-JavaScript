@@ -902,28 +902,28 @@ var exampleConfig = {
                 name: "点线面绘制",
                 name_en: "draw",
                 content: [{
-                    name: "绘制",
-                    name_en: "draw",
+                    name: "图形绘制",
+                    name_en: "Features Drawing",
                     thumbnail: "drawFeatures.png",
                     fileName: "drawFeatures"
                 }, {
-                    name: "手写",
-                    name_en: "freehand draw",
+                    name: "手写图形绘制",
+                    name_en: "Handwritten Graphic Drawing",
                     thumbnail: "freehandDrawFeatures.png",
                     fileName: "freehandDrawFeatures"
                 }, {
-                    name: "捕捉",
-                    name_en: "snap draw",
+                    name: "捕捉图形绘制",
+                    name_en: "Snap Features Drawing",
                     thumbnail: "snapDrawFeatures.png",
                     fileName: "snapDrawFeatures"
                 }, {
-                    name: "修改",
-                    name_en: "modify",
+                    name: "修改图形",
+                    name_en: "Modify Features",
                     thumbnail: "modifyFeatures.png",
                     fileName: "modifyFeatures"
                 }, {
-                    name: "拖拽",
-                    name_en: "drag",
+                    name: "拖拽图形",
+                    name_en: "Features Dragging",
                     thumbnail: "dragFeatures.png",
                     fileName: "dragFeatures"
                 }]

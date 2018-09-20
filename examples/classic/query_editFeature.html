@@ -37,10 +37,14 @@
     <div class='panel-heading'>
         <h5 class='panel-title text-center' data-i18n="resources.title_editFeature"></h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addFeature" onclick="activateAddFeature()"/>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_selectFeature" onclick="activateSelectedFeature()"/>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_editFeature" onclick="editselectedFeature()"/>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteFeature" onclick="deleteSelectedFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addFeature"
+               onclick="activateAddFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_selectFeature"
+               onclick="activateSelectedFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_editFeature"
+               onclick="editselectedFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteFeature"
+               onclick="deleteSelectedFeature()"/>
     </div>
 </div>
 <div id="map"></div>
@@ -96,13 +100,34 @@
     function addLayer() {
         map.addLayers([layer, vectorLayer]);
         map.setCenter(new SuperMap.LonLat(117, 40), 0);
+        readDataToVectorLayer();
+    }
+
+    //每次操作后，更新VectorLayer上的要素
+    function readDataToVectorLayer() {
+        var GetFeaturesByBoundsParameters, getFeaturesByGeometryService;
+        GetFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters({
+            datasetNames: ["Jingjin:BaseMap_R"],
+            spatialQueryMode: SuperMap.REST.SpatialQueryMode.INTERSECT,
+            bounds: map.getExtent()
+        });
+        getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByBoundsService(url3, {
+            eventListeners: {
+                "processCompleted": function (e) {
+                    console.log(e);
+                    vectorLayer.addFeatures(e.result.features);
+                },
+                "processFailed": null
+            }
+        });
+        getFeaturesByGeometryService.processAsync(GetFeaturesByBoundsParameters);
     }
 
     //激活添加地物
     function activateAddFeature() {
         widgets.alert.clearAlert();
         //先清除上次的显示结果
-        vectorLayer.removeAllFeatures();
+//        vectorLayer.removeAllFeatures();
         clearAllDeactivate();
         drawPolygon.activate();
     }
@@ -147,11 +172,13 @@
         if ((addResultIds && addResultIds.length > 0) || (resourceInfo && resourceInfo.succeed)) {
             widgets.alert.showAlert(resources.msg_addFeatureSuccess, true, 240);
             vectorLayer.removeAllFeatures();
+            readDataToVectorLayer();
             //重新加载图层
             layer.redraw();
         } else {
             widgets.alert.showAlert(resources.msg_addFeatureFailed, false, 240);
         }
+
     }
 
     function processFailed(e) {
@@ -161,7 +188,6 @@
     //激活选择地物
     function activateSelectedFeature() {
         widgets.alert.clearAlert();
-        vectorLayer.removeAllFeatures();
         clearAllDeactivate();
         drawPoint.activate();
     }
@@ -194,6 +220,7 @@
             originFeatures = getFeaturesEventArgs.originResult.features,
             result = getFeaturesEventArgs.result;
         vectorLayer.removeAllFeatures();
+
         if (originFeatures === null || originFeatures.length === 0) {
             widgets.alert.showAlert(resources.msg_queryFeatureEmpty, false, 240);
             return;
@@ -211,6 +238,7 @@
                 vectorLayer.addFeatures(feature);
             }
         }
+        readDataToVectorLayer();
     }
 
     //激活编辑地物
@@ -274,6 +302,7 @@
         else {
             widgets.alert.showAlert(resources.msg_updateFeatureFailed, false, 240);
         }
+        readDataToVectorLayer();
     }
 
     //删除选中地物
@@ -307,6 +336,7 @@
             widgets.alert.showAlert(resources.msg_deleteFeatureSuccess, true, 240);
             //重新加载图层
             vectorLayer.removeAllFeatures();
+            readDataToVectorLayer();
             layer.redraw();
         }
         else {
