@@ -63773,7 +63773,7 @@ class ThemeLayer_Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.addFeatures
-     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -63979,7 +63979,7 @@ class ThemeLayer_Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素。
-     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
@@ -63996,7 +63996,7 @@ class ThemeLayer_Theme {
                 // 若是 GeometryVector 直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
-                //GeoJOSN 规范数据类型
+                //GeoJSON 规范数据类型
                 let format = new GeoJSON_GeoJSON();
                 featuresTemp = featuresTemp.concat(format.read(features[i]));
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -64014,7 +64014,7 @@ class ThemeLayer_Theme {
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link mapboxgl.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature(features) {
@@ -69292,7 +69292,7 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
     /**
      * @function mapboxgl.supermap.HeatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {Object} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型。
+     * @param {Object} features - 待添加的要素数组，支持 GeoJSON 规范数据类型。
      *
      * @example
      * var geojson = {
@@ -69548,7 +69548,7 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
     /**
      * @function mapboxgl.supermap.HeatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {Object} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型。
+     * @param {Object} features - 待添加的要素数组，支持 GeoJSON 规范数据类型。
      */
     toiClientFeature(features) {
         if (!Util_Util.isArray(features)) {
@@ -69560,7 +69560,7 @@ class HeatMapLayer_HeatMapLayer extends external_mapboxgl_default.a.Evented {
                 // 若是 GeometryVector 直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
-                //GeoJOSN 规范数据类型
+                //GeoJSON 规范数据类型
                 let format = new GeoJSON_GeoJSON();
                 featuresTemp = featuresTemp.concat(format.read(features[i]));
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -69784,7 +69784,7 @@ external_mapboxgl_default.a.supermap.HeatMapLayer = HeatMapLayer_HeatMapLayer;
  * @param {string} layerTypeID - 高效率图层类型 ID，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
  *                 "polygon-layer" 高效率面图层、 "arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
  * @param {Object} options -  图层配置项，包括以下参数：
- * @param {Array.<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型。
+ * @param {Array.<Object>} options.data - 图层数据,支持 GeoJSON 规范数据类型。
  * @param {Object} options.callback - deckgl 图层回调函数配置项。
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
  * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；

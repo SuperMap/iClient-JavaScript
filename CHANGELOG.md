@@ -221,7 +221,7 @@
   - `L.supermap.ThemeLayer` 及其子类 
     - `addFeatures` 方法默认只支持添加经纬度坐标要素，新增 `options.alwaysMapCRS` 参数，设置该参数为true , `addFeatures` 方法可添加底图坐标要素
 
-    - `addFeatures` 方法支持 `L.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
+    - `addFeatures` 方法支持 `L.supermap.ThemeFeature` 类型和 `GeoJSON` 规范数据类型的 `feature` 数组
 
     - 废弃`_createFeature` 接口,由 `toiClientFeature` 接口代替
 
@@ -306,7 +306,7 @@
 - 可视化 - 客户端专题图
 
   - `ol.supermap.Theme` 及其子类
-    - `addFeatures` 方法支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJOSN` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
+    - `addFeatures` 方法支持传入 `ol.supermap.ThemeFeature` 类型、`GeoJSON` 规范数据类型，以及`ol.Feature`类型的 `feature` 数组
 
     - 废弃 `toFeature` 方法,由 `toiClientFeature` 方法代替
 
@@ -381,7 +381,7 @@
 - 可视化 - 客户端专题图
 
   - `mapboxgl.supermap.ThemeLayer` 及其子类
-    - `addFeatures` 方法，支持传入  `mapboxgl.supermap.ThemeFeature` 类型和 `GeoJOSN` 规范数据类型的 `feature` 数组
+    - `addFeatures` 方法，支持传入  `mapboxgl.supermap.ThemeFeature` 类型和 `GeoJSON` 规范数据类型的 `feature` 数组
 
     - 废弃 `toFeature` 方法，由 `toiClientFeature` 方法代替
 

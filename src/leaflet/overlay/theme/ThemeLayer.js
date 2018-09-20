@@ -122,7 +122,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象或 L.supermap.themeFeature 类型。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
+     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -435,7 +435,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJOSN 规范数据类型。
+     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
      * @returns {Array.<SuperMap.Feature.Vector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -453,7 +453,7 @@ export var ThemeLayer = L.Layer.extend({
                 // 若是 GeometryVector 类型直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
-                //GeoJOSN 规范数据类型
+                //GeoJSON 规范数据类型
                 const format = new GeoJSONFormat();
                 featuresTemp = featuresTemp.concat(format.read(features[i]));
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -471,7 +471,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJOSN 规范数据类型。
+     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {

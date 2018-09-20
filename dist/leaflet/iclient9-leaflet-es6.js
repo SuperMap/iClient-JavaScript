@@ -67570,10 +67570,10 @@ external_L_default.a.Util.NormalizeScale = NormalizeScale;
  * @function L.Util.transform
  * @description 将要素转换为指定坐标。
  * @param {(L.Marker|L.CircleMarker|L.Polyline|L.Polygon|L.Rectangle|L.LatLngBounds|L.Bounds|Object)} feature - 待转要素包括 Leaflet Vector Layers
- *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds} 类型和 GeoJOSN 规范数据类型。
+ *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds} 类型和 GeoJSON 规范数据类型。
  * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换源坐标系。
  * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系。
- * @returns {Object} 返回 GeoJOSN 规范数据类型。
+ * @returns {Object} 返回 GeoJSON 规范数据类型。
  */
 var transform = function (feature, sourceCRS = external_L_default.a.CRS.EPSG4326, targetCRS) {
     let selfFeatures = null;
@@ -69859,7 +69859,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象或 L.supermap.themeFeature 类型。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
+     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -70172,7 +70172,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJOSN 规范数据类型。
+     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
      * @returns {Array.<SuperMap.Feature.Vector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -70190,7 +70190,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
                 // 若是 GeometryVector 类型直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
-                //GeoJOSN 规范数据类型
+                //GeoJSON 规范数据类型
                 const format = new GeoJSON_GeoJSON();
                 featuresTemp = featuresTemp.concat(format.read(features[i]));
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -70208,7 +70208,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJOSN 规范数据类型。
+     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {
@@ -79299,7 +79299,7 @@ var HeatMapLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式。
+     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 HeatMapFeature 格式。
      *
      * @example
      * var geojson = {
@@ -79670,7 +79670,7 @@ var HeatMapLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型和 HeatMapFeature 格式。
+     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 HeatMapFeature 格式。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {

@@ -195,7 +195,7 @@ export class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.addFeatures
-     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -401,7 +401,7 @@ export class Theme {
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @description 转为 iClient 要素。
-     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
@@ -418,7 +418,7 @@ export class Theme {
                 // 若是 GeometryVector 直接返回
                 featuresTemp.push(features[i]);
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
-                //GeoJOSN 规范数据类型
+                //GeoJSON 规范数据类型
                 let format = new GeoJSONFormat();
                 featuresTemp = featuresTemp.concat(format.read(features[i]));
             } else if (features[i].geometry && features[i].geometry.parts) {
@@ -436,7 +436,7 @@ export class Theme {
      * @function mapboxgl.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link mapboxgl.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJOSN 规范数据类型。
+     * @param {mapboxgl.supermap.ThemeFeature|Object} features - 待转要素包括 mapboxgl.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature(features) {

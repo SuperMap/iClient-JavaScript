@@ -19,7 +19,7 @@ import './graphic';
  * @param {string} layerTypeID - 高效率图层类型 ID，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
  *                 "polygon-layer" 高效率面图层、 "arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
  * @param {Object} options -  图层配置项，包括以下参数：
- * @param {Array.<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型。
+ * @param {Array.<Object>} options.data - 图层数据,支持 GeoJSON 规范数据类型。
  * @param {Object} options.callback - deckgl 图层回调函数配置项。
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
  * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；

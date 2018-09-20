@@ -68724,7 +68724,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJOSN 规范数据类型，以及 {@link ol.feature}。
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJSON 规范数据类型，以及 {@link ol.feature}。
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据，
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
@@ -69046,7 +69046,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJOSN 规范数据类型，以及 {@link ol.feature}。
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJSON 规范数据类型，以及 {@link ol.feature}。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
@@ -69074,7 +69074,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
                 //iServer服务器返回数据格式
                 featuresTemp.push(ServerFeature_ServerFeature.fromJson(features[i]).toFeature());
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
-                //GeoJOSN 规范数据类型
+                //GeoJSON 规范数据类型
                 const format = new GeoJSON_GeoJSON();
                 featuresTemp = featuresTemp.concat(format.read(features[i]));
             } else {
@@ -69089,7 +69089,7 @@ class theme_Theme_Theme extends external_ol_default.a.source.ImageCanvas {
      * @function ol.source.Theme.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ol.source.Theme#toiClientFeature} 代替。
-     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJOSN 规范数据类型，以及 {@link ol.feature}。
+     * @param {(ol.supermap.ThemeFeature|Object|ol.Feature)} features - 待转要素包括 {@link ol.supermap.ThemeFeature} 类型、GeoJSON 规范数据类型，以及 {@link ol.feature}。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toFeature(features) {
@@ -75830,7 +75830,7 @@ class HeatMap_HeatMap extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(Object|Array.<ol.Feature>|ol.Feature)} features - 待添加的要素数组，支持 GeoJOSN 规范数据类型和 {@link ol.Feature} 格式
+     * @param {(Object|Array.<ol.Feature>|ol.Feature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 {@link ol.Feature} 格式
      * @example
      * var geojson = {
      *      "type": "FeatureCollection",
@@ -76142,7 +76142,7 @@ class HeatMap_HeatMap extends external_ol_default.a.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {Object|Array.<ol.Feature>} features - 待添加的要素数组,支持 GeoJOSN 规范数据类型和 {@link ol.Feature} 格式。
+     * @param {Object|Array.<ol.Feature>} features - 待添加的要素数组,支持 GeoJSON 规范数据类型和 {@link ol.Feature} 格式。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {
