@@ -48,15 +48,16 @@ export var GraphicCanvasRenderer = L.Class.extend({
                 style = this.defaultStyle;
             }
             if (style.img) {
-                p1 = L.point(center.x - style.img.width / 2, center.y - style.img.height / 2);
-                p2 = L.point(center.x + style.img.width / 2, center.y + style.img.height / 2);
+                let anchor = style.anchor || [style.img.width / 2, style.img.height / 2];
+                p1 = L.point(center.x - anchor[0], center.y - anchor[1]);
+                p2 = L.point(p1.x + style.img.width, p1.y + style.img.height);
             } else {
                 p1 = L.point(center.x - style.width / 2, center.y - style.height / 2);
                 p2 = L.point(center.x + style.width / 2, center.y + style.height / 2);
             }
             bounds = L.bounds(p1, p2);
             if (bounds.contains(map.latLngToLayerPoint(evt.latlng))) {
-                return layer.options.onClick.call(layer, graphics[i]);
+                return layer.options.onClick.call(layer, graphics[i],evt);
             }
         }
     },
@@ -113,7 +114,7 @@ L.Canvas.include({
         var point = this._coordinateToPoint(latLng);
 
         var pt = L.point(point),
-            ac = L.point(style.anchor);
+            ac = L.point(style.anchor || [width / 2, height / 2]);
         point = [pt.x - ac.x, pt.y - ac.y];
 
         //参数分别为：图片，图片裁剪下x,y位置，裁剪长宽，放置在画布的位置x,y, 占取画布长宽

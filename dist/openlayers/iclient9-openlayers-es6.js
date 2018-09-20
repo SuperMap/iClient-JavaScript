@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -3175,58 +3190,55 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(126);
+var supermapol_icons = __webpack_require__(125);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
-var widgets_icon = __webpack_require__(119);
+var widgets_icon = __webpack_require__(118);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Icon.css
-var Icon = __webpack_require__(114);
+var Icon = __webpack_require__(113);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(102);
+var OpenFile = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(101);
+var MessageBox = __webpack_require__(100);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(100);
+var DataFlow = __webpack_require__(99);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(99);
+var POISearch = __webpack_require__(98);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(98);
+var WidgetContainer = __webpack_require__(97);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(97);
+var WidgetDropDownBox = __webpack_require__(96);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(96);
+var WidgetSelect = __webpack_require__(95);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(95);
+var CityTabsPage = __webpack_require__(94);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(94);
+var NavTabsPage = __webpack_require__(93);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(93);
+var PaginationContainer = __webpack_require__(92);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
-var PopContainer = __webpack_require__(92);
+var PopContainer = __webpack_require__(91);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Analysis.css
-var Analysis = __webpack_require__(91);
+var Analysis = __webpack_require__(90);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DistributedAnalysis.css
-var DistributedAnalysis = __webpack_require__(90);
+var DistributedAnalysis = __webpack_require__(89);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/ClientComputation.css
-var ClientComputation = __webpack_require__(89);
-
-// EXTERNAL MODULE: ./node_modules/codemirror-colorpicker/dist/codemirror-colorpicker.css
-var codemirror_colorpicker = __webpack_require__(88);
+var ClientComputation = __webpack_require__(88);
 
 // CONCATENATED MODULE: ./src/common/css/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -3235,8 +3247,6 @@ var codemirror_colorpicker = __webpack_require__(88);
 
 
 //微件样式
-
-
 
 
 
@@ -38562,7 +38572,7 @@ class TokenServiceParameter_TokenServiceParameter {
     /**
      * @function SuperMap.TokenServiceParameter.prototype.toJSON
      * @description 将所有信息转成 JSON 字符串
-     * @return {string} 参数的 JSON 字符串
+     * @returns {string} 参数的 JSON 字符串
      */
     toJSON() {
         return {
@@ -40128,7 +40138,7 @@ class CartoCSS_CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.parse
      * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
-     * @return {Object} CartoCSS规则集
+     * @returns {Object} CartoCSS规则集
      */
     parse(str) {
         var parser = this.parser;
@@ -40140,7 +40150,7 @@ class CartoCSS_CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.toShaders
      * @description 将CartoCSS规则集转化为着色器
-     * @return {Array} CartoCSS着色器集
+     * @returns {Array} CartoCSS着色器集
      */
     toShaders() {
         if (this.ruleSet) {
@@ -40272,7 +40282,7 @@ class CartoCSS_CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.getShaders
      * @description 获取CartoCSS着色器
-     * @return {Array} 着色器集
+     * @returns {Array} 着色器集
      * @example
      *   //shaders的结构大概如下：
      *   var shaders=[
@@ -54427,7 +54437,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox。
      *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
      * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
-     * @return {Boolean} 初始化参数是否成功。
+     * @returns {Boolean} 初始化参数是否成功。
      */
     initBaseParameter() {
         // 参数初始化是否成功
@@ -54520,7 +54530,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @function SuperMap.Feature.Theme.Graph.prototype.resetLocation
      * @description 根据地理位置 lonlat 重置专题要素（图表）位置。
      * @param {SuperMap.LonLat} lonlat - 专题要素新的像素中心位置。
-     * @return {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @returns {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
         if (lonlat) {
@@ -54647,7 +54657,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @function SuperMap.Feature.Theme.Graph.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {SuperMap.Lonlat} lonlat - 带转换的地理坐标。
-     * @return 屏幕像素坐标。
+     * @returns 屏幕像素坐标。
      */
     getLocalXY(lonlat) {
         return this.layer.getLocalXY(lonlat);
@@ -54661,7 +54671,7 @@ class Graph_Graph extends feature_Theme_Theme {
  * @param {SuperMap.Feature.Vector} data - 数据。
  * @param {Array.<string>} [fields] - 字段名数组。
  * @param {number} [decimalNumber] - 小数位处理参数，对获取到的属性数据值进行小数位处理。
- * @return {Array.<string>} 字段名数组对应的属性数据值数组。
+ * @returns {Array.<string>} 字段名数组对应的属性数据值数组。
  */
 feature_Theme_Theme.getDataValues = function (data, fields, decimalNumber) {
     if (!data.attributes) {
@@ -54926,7 +54936,7 @@ class Bar_Bar extends Graph_Graph {
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
      *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
      *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *         width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      *
@@ -55403,7 +55413,7 @@ class Bar3D_Bar3D extends Graph_Graph {
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
      *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
      *                  xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *                  width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
@@ -56011,7 +56021,7 @@ class overlay_Line_Line extends Graph_Graph {
      *              本函数中图形配置对象 setting 可设属性：<br>
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
      *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。<br>
      *         width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
@@ -56499,7 +56509,7 @@ class overlay_Point_Point extends Graph_Graph {
      *              本函数中图形配置对象 setting 可设属性：<br>
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
      *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *         width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
@@ -57463,7 +57473,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
     /**
      * @function SuperMap.Feature.Theme.Vector.prototype.getShapesCount
      * @description 获得专题要素中可视化图形的数量。
-     * @return {number} 可视化图形的数量。
+     * @returns {number} 可视化图形的数量。
      */
     getShapesCount() {
         return this.shapes.length;
@@ -63305,7 +63315,7 @@ class FileModel_FileModel {
      * @function SuperMap.FileModel.prototype.get
      * @description 获取数据值
      * @param {string} key - 属性名称
-     * @return {string|Object} value - 返回属性值
+     * @returns {string|Object} value - 返回属性值
      */
     get(key) {
         return this[key];
@@ -63483,7 +63493,7 @@ SuperMap.Widgets.WidgetContainer = WidgetContainer;
 
 /**
  * @class SuperMap.Widgets.WidgetSelect
- * @classdesc 微件统一 select 下拉框。
+ * @classdesc 微件统一的文字下拉框。
  * @param {Array.<string|Array>} options - 需要创建的 WidgetSelect 数据数组。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
@@ -63610,7 +63620,7 @@ SuperMap.Widgets.WidgetSelect = WidgetSelect;
 
 /**
  * @class SuperMap.Widgets.WidgetDropDownBox
- * @classdesc 微件统一 dropDownBox 下拉框。
+ * @classdesc 微件统一的图片下拉框。
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.title - 下拉框 title。
  * @param {string} optionsArr.remark - 下拉框解释标记文本。
@@ -64677,7 +64687,7 @@ let FileReaderUtil = {
      * @description 将读取回来得数据统一处理为 geoJson 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
-     * @return {Object} geojson - 返回标准 GeoJson 规范格式数据
+     * @returns {Object} geojson - 返回标准 GeoJson 规范格式数据
      * @private
      */
     processDataToGeoJson(type, data) {
@@ -64713,7 +64723,7 @@ let FileReaderUtil = {
      * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
      * @description 表格文件数据处理
      * @param {Object} data - 读取的表格文件数据
-     * @return {Object} - 返回标准 GeoJson 规范格式数据
+     * @returns {Object} - 返回标准 GeoJson 规范格式数据
      * @private
      */
     processExcelDataToGeoJson(data) {
@@ -73567,10 +73577,10 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicBy
-     * @description 在Vector的要素数组gra[hics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
-     * @param {String} property - graphic的某个属性名称。
-     * @param {String} value - property所对应的值。
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
+     * @param {String} property - graphic 的某个属性名称。
+     * @param {String} value - property 所对应的值。
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -73585,9 +73595,9 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicById
-     * @description 通过给定一个id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性id
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性 id
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy("id", graphicId);
@@ -73595,10 +73605,10 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic的某个属性名称。
-     * @param {String} attrValue - property所对应的值。
-     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic 的某个属性名称。
+     * @param {String} attrValue - property 所对应的值。
+     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -73616,8 +73626,8 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 删除要素数组，默认将删除所有要素
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
+     * @description 删除要素数组，默认将删除所有要素。
+     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -79747,8 +79757,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -79757,6 +79765,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });
@@ -82532,7 +82542,7 @@ module.exports = function(proj4){
 /* 65 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 66 */
@@ -84832,12 +84842,7 @@ module.exports = __webpack_require__(36);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 102 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 102 */,
 /* 103 */,
 /* 104 */,
 /* 105 */,
@@ -84848,30 +84853,29 @@ module.exports = __webpack_require__(36);
 /* 110 */,
 /* 111 */,
 /* 112 */,
-/* 113 */,
-/* 114 */
+/* 113 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 114 */,
 /* 115 */,
 /* 116 */,
 /* 117 */,
-/* 118 */,
-/* 119 */
+/* 118 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 119 */,
 /* 120 */,
 /* 121 */,
 /* 122 */,
 /* 123 */,
 /* 124 */,
-/* 125 */,
-/* 126 */
+/* 125 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

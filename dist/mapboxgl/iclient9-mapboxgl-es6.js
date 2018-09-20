@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -36494,7 +36509,7 @@ class TokenServiceParameter_TokenServiceParameter {
     /**
      * @function SuperMap.TokenServiceParameter.prototype.toJSON
      * @description 将所有信息转成 JSON 字符串
-     * @return {string} 参数的 JSON 字符串
+     * @returns {string} 参数的 JSON 字符串
      */
     toJSON() {
         return {
@@ -38060,7 +38075,7 @@ class CartoCSS_CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.parse
      * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
-     * @return {Object} CartoCSS规则集
+     * @returns {Object} CartoCSS规则集
      */
     parse(str) {
         var parser = this.parser;
@@ -38072,7 +38087,7 @@ class CartoCSS_CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.toShaders
      * @description 将CartoCSS规则集转化为着色器
-     * @return {Array} CartoCSS着色器集
+     * @returns {Array} CartoCSS着色器集
      */
     toShaders() {
         if (this.ruleSet) {
@@ -38204,7 +38219,7 @@ class CartoCSS_CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.getShaders
      * @description 获取CartoCSS着色器
-     * @return {Array} 着色器集
+     * @returns {Array} 着色器集
      * @example
      *   //shaders的结构大概如下：
      *   var shaders=[
@@ -52359,7 +52374,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox。
      *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
      * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
-     * @return {Boolean} 初始化参数是否成功。
+     * @returns {Boolean} 初始化参数是否成功。
      */
     initBaseParameter() {
         // 参数初始化是否成功
@@ -52452,7 +52467,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @function SuperMap.Feature.Theme.Graph.prototype.resetLocation
      * @description 根据地理位置 lonlat 重置专题要素（图表）位置。
      * @param {SuperMap.LonLat} lonlat - 专题要素新的像素中心位置。
-     * @return {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @returns {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
         if (lonlat) {
@@ -52579,7 +52594,7 @@ class Graph_Graph extends feature_Theme_Theme {
      * @function SuperMap.Feature.Theme.Graph.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {SuperMap.Lonlat} lonlat - 带转换的地理坐标。
-     * @return 屏幕像素坐标。
+     * @returns 屏幕像素坐标。
      */
     getLocalXY(lonlat) {
         return this.layer.getLocalXY(lonlat);
@@ -52593,7 +52608,7 @@ class Graph_Graph extends feature_Theme_Theme {
  * @param {SuperMap.Feature.Vector} data - 数据。
  * @param {Array.<string>} [fields] - 字段名数组。
  * @param {number} [decimalNumber] - 小数位处理参数，对获取到的属性数据值进行小数位处理。
- * @return {Array.<string>} 字段名数组对应的属性数据值数组。
+ * @returns {Array.<string>} 字段名数组对应的属性数据值数组。
  */
 feature_Theme_Theme.getDataValues = function (data, fields, decimalNumber) {
     if (!data.attributes) {
@@ -52858,7 +52873,7 @@ class Bar_Bar extends Graph_Graph {
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
      *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
      *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *         width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      *
@@ -53335,7 +53350,7 @@ class Bar3D_Bar3D extends Graph_Graph {
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
      *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:
      *                  xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *                  width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
@@ -53943,7 +53958,7 @@ class overlay_Line_Line extends Graph_Graph {
      *              本函数中图形配置对象 setting 可设属性：<br>
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
      *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。<br>
      *         width - {number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
@@ -54431,7 +54446,7 @@ class overlay_Point_Point extends Graph_Graph {
      *              本函数中图形配置对象 setting 可设属性：<br>
      *              xShapeBlank - {Array.<number>} 水平方向上的图形空白间隔参数。
      *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
-     * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
+     * @returns {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
      *         xPositions - {Array.<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
      *         width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      */
@@ -55395,7 +55410,7 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
     /**
      * @function SuperMap.Feature.Theme.Vector.prototype.getShapesCount
      * @description 获得专题要素中可视化图形的数量。
-     * @return {number} 可视化图形的数量。
+     * @returns {number} 可视化图形的数量。
      */
     getShapesCount() {
         return this.shapes.length;
@@ -61237,7 +61252,7 @@ class FileModel_FileModel {
      * @function SuperMap.FileModel.prototype.get
      * @description 获取数据值
      * @param {string} key - 属性名称
-     * @return {string|Object} value - 返回属性值
+     * @returns {string|Object} value - 返回属性值
      */
     get(key) {
         return this[key];
@@ -61415,7 +61430,7 @@ SuperMap.Widgets.WidgetContainer = WidgetContainer;
 
 /**
  * @class SuperMap.Widgets.WidgetSelect
- * @classdesc 微件统一 select 下拉框。
+ * @classdesc 微件统一的文字下拉框。
  * @param {Array.<string|Array>} options - 需要创建的 WidgetSelect 数据数组。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
@@ -61542,7 +61557,7 @@ SuperMap.Widgets.WidgetSelect = WidgetSelect;
 
 /**
  * @class SuperMap.Widgets.WidgetDropDownBox
- * @classdesc 微件统一 dropDownBox 下拉框。
+ * @classdesc 微件统一的图片下拉框。
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.title - 下拉框 title。
  * @param {string} optionsArr.remark - 下拉框解释标记文本。
@@ -62609,7 +62624,7 @@ let FileReaderUtil = {
      * @description 将读取回来得数据统一处理为 geoJson 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
-     * @return {Object} geojson - 返回标准 GeoJson 规范格式数据
+     * @returns {Object} geojson - 返回标准 GeoJson 规范格式数据
      * @private
      */
     processDataToGeoJson(type, data) {
@@ -62645,7 +62660,7 @@ let FileReaderUtil = {
      * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
      * @description 表格文件数据处理
      * @param {Object} data - 读取的表格文件数据
-     * @return {Object} - 返回标准 GeoJson 规范格式数据
+     * @returns {Object} - 返回标准 GeoJson 规范格式数据
      * @private
      */
     processExcelDataToGeoJson(data) {
@@ -65225,7 +65240,7 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.setLabelsStyle
-     * @description 设置标签要素的Style。
+     * @description 设置标签要素的 Style。
      * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
      * @returns {Array.<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
      */
@@ -65332,7 +65347,7 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。</br>
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。 
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -65389,9 +65404,9 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算bounds的效率。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。</br>
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -65584,10 +65599,10 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.rotationBounds
-     * @description 旋转bounds。
+     * @description 旋转 bounds。
      *
-     * @param {SuperMap.Bounds} bounds - 要旋转的bounds。
-     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性 y (纵坐标)。
+     * @param {SuperMap.Bounds} bounds - 要旋转的 bounds。
+     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性X（横坐标），属性Y（纵坐标）。
      * @param {number} angle - 旋转角度（顺时针）。
      *
      * @returns {Array.<Object>} bounds 旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
@@ -65622,7 +65637,7 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getRotatedLocation
-     * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
+     * @description 获取一个点绕旋转中心顺时针旋转后的位置（此方法用于屏幕坐标）。
      *
      * @param {number} x - 旋转点横坐标。
      * @param {number} y - 旋转点纵坐标。
@@ -65630,7 +65645,7 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
      * @param {number} ry - 旋转中心点纵坐标。
      * @param {number} angle - 旋转角度。
      *
-     * @returns {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @returns {Object} 旋转后的坐标位置对象，该对象含有属性X（横坐标），属性Y（纵坐标）。
      */
     getRotatedLocation(x, y, rx, ry, angle) {
         var loc = {},
@@ -65766,11 +65781,9 @@ class LabelThemeLayer_Label extends GeoFeatureThemeLayer_GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖。
-     *
-     * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。</br>
+     * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
-     *
-     * @returns {boolean} 是否压盖，true表示压盖。
+     * @returns {boolean} 是否压盖，true 表示压盖。
      */
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
@@ -67456,13 +67469,13 @@ external_mapboxgl_default.a.supermap.UniqueTheme3DLayer = UniqueTheme3DLayer_Uni
  * @classdesc  单值专题图层。
  * @param {string} name - 图层名。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {string} opt_options.themeField - 指定创建专题图字段。
  * @param {Object} opt_options.style - 专题图样式。
  * @param {Object} opt_options.styleGroups - 各专题类型样式组。
+ * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
  * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
@@ -67742,7 +67755,7 @@ class GraphicLayer_GraphicLayer {
      * @function mapboxgl.supermap.GraphicLayer.prototype.onAdd
      * @description 图层添加到地图。
      * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
-     * @return {mapboxgl.supermap.GraphicLayer}
+     * @returns {mapboxgl.supermap.GraphicLayer}
      */
     onAdd(map) {
         this.map = map;
@@ -67892,10 +67905,10 @@ class GraphicLayer_GraphicLayer {
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.getGraphicBy
-     * @description 在Vector的要素数组gra[hics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
-     * @param {String} property - graphic的某个属性名称。
-     * @param {String} value - property所对应的值。
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
+     * @param {String} property - graphic 的某个属性名称。
+     * @param {String} value - property 所对应的值。
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -67910,9 +67923,9 @@ class GraphicLayer_GraphicLayer {
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.getGraphicById
-     * @description 通过给定一个id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性id
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性 id
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy("id", graphicId);
@@ -67920,10 +67933,10 @@ class GraphicLayer_GraphicLayer {
 
     /**
      * @function mapboxgl.supermap.GraphicLayer.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic的某个属性名称。
-     * @param {String} attrValue - property所对应的值。
-     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic 的某个属性名称。
+     * @param {String} attrValue - property 所对应的值。
+     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -69773,8 +69786,20 @@ external_mapboxgl_default.a.supermap.HeatMapLayer = HeatMapLayer_HeatMapLayer;
  * @param {Object} options -  图层配置项，包括以下参数：
  * @param {Array.<Object>} options.data - 图层数据,支持 GeoJOSN 规范数据类型。
  * @param {Object} options.callback - deckgl 图层回调函数配置项。
- * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
+ * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；
+ * @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项：* @param {boolean}
+ * options.props.lightSettings - 公共配置项：光照，包含以下几个配置；
+ * @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
+ * @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
+ * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
+ * @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
+ * @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
+ * @param {number} [options.props.lightSettings.modelMatrix] - 光照配置项：光位置的变换矩阵。
+ * @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
+ * @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
+ * @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
+ * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
  * @param {number} [options.props.opacity=1] - 公共配置项：图层透明度。
  * @param {boolean} [options.props.pickable=false] - 公共配置项：是否响应鼠标事件（鼠标点击，鼠标滑动)。
  * @param {function} [options.props.autoHighlight=false] - 公共配置项：鼠标滑动高亮要素。
@@ -69787,16 +69812,6 @@ external_mapboxgl_default.a.supermap.HeatMapLayer = HeatMapLayer_HeatMapLayer;
  * @param {number} [options.props.radiusMinPixels=0] - "scatter-plot" 配置项：半径最小像素值。
  * @param {number} [options.props.radiusMaxPixels=Number.MAX_SAFE_INTEGER]  - "scatter-plot" 配置项：半径最大像素值。
  * @param {boolean} [options.props.fp64=false] - "scatter-plot" 配置项：否应以高精度64位模式呈现图层。
- * @param {boolean} options.props.lightSettings - 公共配置项：光照，包含以下几个配置；
- * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
- *  @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
- *  @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
- *  @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
- *  @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
- *  @param {number} [options.props.lightSettings.modelMatrix] - 光照配置项：光位置的变换矩阵。
- *  @param {number} [options.props.lightSettings.ambientRatio=0.4] - 光照配置项：光照的环境比例。
- *  @param {number} [options.props.lightSettings.diffuseRatio=0.6] - 光照配置项：光的漫反射率。
- *  @param {number} [options.props.lightSettings.specularRatio=0.8] - 光照配置项：光的镜面反射率。
  * @param {number} [options.props.widthScale=1] - "path-layer" 配置项：线宽比例。
  * @param {number} [options.props.widthMinPixels=0] - "path-layer" 配置项：线宽最小像素值。
  * @param {number} [options.props.widthMaxPixels=Number.MAX_SAFE_INTEGER] - "path-layer" 配置项：线宽最大像素值。
@@ -69820,10 +69835,8 @@ external_mapboxgl_default.a.supermap.HeatMapLayer = HeatMapLayer_HeatMapLayer;
  * @param {boolean} [options.props.strokeWidth=1] - "arc-layer" 配置项：线宽。
  * @param {boolean} [options.props.radius=1000] - "hexagon-layer" 配置项：六边形半径值。
  * @param {boolean} [options.props.extruded=false] - "hexagon-layer" 配置项：是否拉伸要素。
- * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；
  * @param {boolean} [options.props.upperPercentile=100] - "hexagon-layer" 配置项：筛选箱并通过upperPercentile重新计算颜色。 颜色值大于upperPercentile的六边形将被隐藏。
  * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
- * @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项：
  * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
  */
@@ -69832,12 +69845,12 @@ class DeckglLayer_DeckglLayer {
     constructor(layerTypeID, options) {
         // Util.extend(defaultProps, options);
         /**
-         * @member mapboxgl.supermap.DeckglLayer.prototype.id - {string}
+         * @member {string} mapboxgl.supermap.DeckglLayer.prototype.id
          * @description 高效率点图层 id。
          */
         this.layerTypeID = layerTypeID;
         /**
-         * @member mapboxgl.supermap.DeckglLayer.prototype.graphics - {Array.<mapboxgl.supermap.Graphic>}
+         * @member {Array.<mapboxgl.supermap.Graphic>} mapboxgl.supermap.DeckglLayer.prototype.graphics 
          * @description 点要素对象数组。
          */
         this.data = [].concat(options.data);
@@ -69858,7 +69871,7 @@ class DeckglLayer_DeckglLayer {
     /**
      * @function mapboxgl.supermap.DeckglLayer.prototype.onAdd
      * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
-     * @return {mapboxgl.supermap.DeckglLayer}
+     * @returns {mapboxgl.supermap.DeckglLayer}
      */
     onAdd(map) {
         this.map = map;
@@ -69912,7 +69925,7 @@ class DeckglLayer_DeckglLayer {
      * @function mapboxgl.supermap.DeckglLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前（如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后）。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -69957,8 +69970,8 @@ class DeckglLayer_DeckglLayer {
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
      * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值（像素）。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值（像素）。
      * @param {number} [styleOptions.strokeWidth=12] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
