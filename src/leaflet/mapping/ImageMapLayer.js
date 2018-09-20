@@ -95,7 +95,7 @@ export var ImageMapLayer = Layer.extend({
      * @private
      * @function L.supermap.imageMapLayer.prototype.onAdd
      * @description 添加到地图。
-     * @param {L.map} map - 待添加到的地图对象。
+     * @param {L.Map} map - 待添加到的地图对象。
      */
     onAdd: function (map) {
         this.update = Util.throttle(this.update, this.options.updateInterval, this);
@@ -114,7 +114,7 @@ export var ImageMapLayer = Layer.extend({
      * @private
      * @function L.supermap.imageMapLayer.prototype.onRemove
      * @description 从地图上移除。
-     * @param {L.map} map - 待移除的地图对象。
+     * @param {L.Map} map - 待移除的地图对象。
      */
     onRemove: function (map) { // eslint-disable-line no-unused-vars
         if (this._currentImage) {

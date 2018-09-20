@@ -72,7 +72,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.onRemove
      * @description 删除某个地图。
-     * @param {L.map} map - 要删除的地图。
+     * @param {L.Map} map - 要删除的地图。
      */
     onRemove: function (map) {
         var me = this;
@@ -83,7 +83,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.onAdd
      * @description 添加专题图。
-     * @param {L.map} map - 要添加的地图。
+     * @param {L.Map} map - 要添加的地图。
      * @private
      */
     onAdd: function (map) {

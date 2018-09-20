@@ -387,7 +387,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.setLabelsStyle
-     * @description 设置标签要素的Style。
+     * @description 设置标签要素的 Style。
      * @param {Array.<SuperMap.Feature.Vector>} labelFeatures - 需要设置 Style 的标签要素数组。
      * @returns {Array.<SuperMap.Feature.Vector>} 赋予 Style 后的标签要素数组。
      */
@@ -494,7 +494,7 @@ export class Label extends GeoFeature {
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。</br>
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。 
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -551,9 +551,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算bounds的效率。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。</br>
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -746,10 +746,10 @@ export class Label extends GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.rotationBounds
-     * @description 旋转bounds。
+     * @description 旋转 bounds。
      *
-     * @param {SuperMap.Bounds} bounds - 要旋转的bounds。
-     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性 y (纵坐标)。
+     * @param {SuperMap.Bounds} bounds - 要旋转的 bounds。
+     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性X（横坐标），属性Y（纵坐标）。
      * @param {number} angle - 旋转角度（顺时针）。
      *
      * @returns {Array.<Object>} bounds 旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
@@ -784,7 +784,7 @@ export class Label extends GeoFeature {
 
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.getRotatedLocation
-     * @description 获取一个点绕旋转中心顺时针旋转后的位置。（此方法用于屏幕坐标）
+     * @description 获取一个点绕旋转中心顺时针旋转后的位置（此方法用于屏幕坐标）。
      *
      * @param {number} x - 旋转点横坐标。
      * @param {number} y - 旋转点纵坐标。
@@ -792,7 +792,7 @@ export class Label extends GeoFeature {
      * @param {number} ry - 旋转中心点纵坐标。
      * @param {number} angle - 旋转角度。
      *
-     * @returns {Object} 旋转后的坐标位置对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @returns {Object} 旋转后的坐标位置对象，该对象含有属性X（横坐标），属性Y（纵坐标）。
      */
     getRotatedLocation(x, y, rx, ry, angle) {
         var loc = {},
@@ -928,11 +928,9 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.isQuadrilateralOverLap
      * @description 判断两个四边形是否有压盖。
-     *
-     * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。</br>
+     * @param {Array.<Object>} quadrilateral - 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @param {Array.<Object>} quadrilateral2 - 第二个四边形节点数组。
-     *
-     * @returns {boolean} 是否压盖，true表示压盖。
+     * @returns {boolean} 是否压盖，true 表示压盖。
      */
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,

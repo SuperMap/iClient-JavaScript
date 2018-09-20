@@ -250,7 +250,7 @@ export class Graph extends Theme {
      * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox。
      *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
      * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
-     * @return {Boolean} 初始化参数是否成功。
+     * @returns {Boolean} 初始化参数是否成功。
      */
     initBaseParameter() {
         // 参数初始化是否成功
@@ -343,7 +343,7 @@ export class Graph extends Theme {
      * @function SuperMap.Feature.Theme.Graph.prototype.resetLocation
      * @description 根据地理位置 lonlat 重置专题要素（图表）位置。
      * @param {SuperMap.LonLat} lonlat - 专题要素新的像素中心位置。
-     * @return {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @returns {Array.<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
         if (lonlat) {
@@ -470,7 +470,7 @@ export class Graph extends Theme {
      * @function SuperMap.Feature.Theme.Graph.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {SuperMap.Lonlat} lonlat - 带转换的地理坐标。
-     * @return 屏幕像素坐标。
+     * @returns 屏幕像素坐标。
      */
     getLocalXY(lonlat) {
         return this.layer.getLocalXY(lonlat);
@@ -484,7 +484,7 @@ export class Graph extends Theme {
  * @param {SuperMap.Feature.Vector} data - 数据。
  * @param {Array.<string>} [fields] - 字段名数组。
  * @param {number} [decimalNumber] - 小数位处理参数，对获取到的属性数据值进行小数位处理。
- * @return {Array.<string>} 字段名数组对应的属性数据值数组。
+ * @returns {Array.<string>} 字段名数组对应的属性数据值数组。
  */
 Theme.getDataValues = function (data, fields, decimalNumber) {
     if (!data.attributes) {

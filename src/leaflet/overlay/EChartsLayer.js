@@ -63,7 +63,7 @@ export const EchartsLayer = L.Layer.extend({
      * @private
      * @function L.supermap.echartsLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.map} map - 待添加的地图。
+     * @param {L.Map} map - 待添加的地图。
      */
     onAdd: function (map) {
         this._map = map;
@@ -228,7 +228,7 @@ export const EchartsLayer = L.Layer.extend({
  * @class L.supermap.LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类。
- * @param {L.map} leafletMap - 地图。
+ * @param {L.Map} leafletMap - 地图。
  */
 export function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;

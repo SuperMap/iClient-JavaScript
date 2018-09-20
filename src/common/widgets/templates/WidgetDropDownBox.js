@@ -5,7 +5,7 @@ import { SuperMap } from '../../SuperMap';
 
 /**
  * @class SuperMap.Widgets.WidgetDropDownBox
- * @classdesc 微件统一 dropDownBox 下拉框。
+ * @classdesc 微件统一的图片下拉框。
  * @param {Array.<Object>} optionsArr - 需要创建的 option 数据数组。
  * @param {string} optionsArr.title - 下拉框 title。
  * @param {string} optionsArr.remark - 下拉框解释标记文本。

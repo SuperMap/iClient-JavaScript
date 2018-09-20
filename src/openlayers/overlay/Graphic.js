@@ -253,10 +253,10 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicBy
-     * @description 在Vector的要素数组gra[hics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
-     * @param {String} property - graphic的某个属性名称。
-     * @param {String} value - property所对应的值。
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
+     * @param {String} property - graphic 的某个属性名称。
+     * @param {String} value - property 所对应的值。
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -271,9 +271,9 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicById
-     * @description 通过给定一个id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性id
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性 id
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy("id", graphicId);
@@ -281,10 +281,10 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic的某个属性名称。
-     * @param {String} attrValue - property所对应的值。
-     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic 的某个属性名称。
+     * @param {String} attrValue - property 所对应的值。
+     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -302,8 +302,8 @@ export class Graphic extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Graphic.prototype.removeGraphics
-     * @description 删除要素数组，默认将删除所有要素
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
+     * @description 删除要素数组，默认将删除所有要素。
+     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素

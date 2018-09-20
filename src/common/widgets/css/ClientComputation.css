@@ -126,17 +126,3 @@ div.buffer-radius .buffer-unit {
 .buffer-unit .scrollarea-content .select-option{
     width: unset;
 }
-.codemirror-colorpicker-control{
-    width: 184px;
-    height: 12px;
-    margin-top: 6px;
-    /* background: rgb(23, 40, 139); */
-}
-.select-name.colors-picker-selectName{
-    width: unset;
-}
-.codemirror-colorpicker-container{
-    position: relative;
-    left: -15px;
-    /* display: none; */
-}

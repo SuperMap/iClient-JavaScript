@@ -31,9 +31,9 @@ import Attributions from '../core/Attributions'
  * @param {string} options.layerNames - 指定图层的名称列表，支持的类型为矢量图层。
  * @param {string} options.layersID - 获取进行切片的地图图层 ID。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型。
- * @param {string}  [options.cartoCSS] - 客户端CartoCSS样式字符串。
+ * @param {string}  [options.cartoCSS] - 客户端 CartoCSS 样式字符串。
  * @param {boolean} [options.serverCartoCSSStyle=true] - 是否使用服务端 CartoCSS 样式。
- * @param {boolean} [options.processCharacters=false] - 设置客户端CartoCSS样式时是否进行特定字符转换。
+ * @param {boolean} [options.processCharacters=false] - 设置客户端 CartoCSS 样式时是否进行特定字符转换。
  * @param {L.Proj.CRS} [options.crs] - 坐标系统类。
  * @param {boolean} [options.returnAttributes=false] - 是否返回 attributes。
  * @param {string} [options.expands] - expands。
@@ -106,7 +106,7 @@ export var TileVectorLayer = VectorGrid.extend({
      * @private
      * @function L.supermap.tiledVectorLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.map} map - 待添加的地图。
+     * @param {L.Map} map - 待添加的地图。
      */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;

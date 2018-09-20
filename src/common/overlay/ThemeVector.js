@@ -647,7 +647,7 @@ export class ThemeVector extends Theme {
     /**
      * @function SuperMap.Feature.Theme.Vector.prototype.getShapesCount
      * @description 获得专题要素中可视化图形的数量。
-     * @return {number} 可视化图形的数量。
+     * @returns {number} 可视化图形的数量。
      */
     getShapesCount() {
         return this.shapes.length;

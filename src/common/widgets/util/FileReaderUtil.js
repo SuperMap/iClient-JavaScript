@@ -78,7 +78,7 @@ export let FileReaderUtil = {
      * @description 将读取回来得数据统一处理为 geoJson 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
-     * @return {Object} geojson - 返回标准 GeoJson 规范格式数据
+     * @returns {Object} geojson - 返回标准 GeoJson 规范格式数据
      * @private
      */
     processDataToGeoJson(type, data) {
@@ -114,7 +114,7 @@ export let FileReaderUtil = {
      * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
      * @description 表格文件数据处理
      * @param {Object} data - 读取的表格文件数据
-     * @return {Object} - 返回标准 GeoJson 规范格式数据
+     * @returns {Object} - 返回标准 GeoJson 规范格式数据
      * @private
      */
     processExcelDataToGeoJson(data) {

@@ -82,7 +82,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.onRemove
      * @description 删除某个地图。
-     * @param {L.map} map - 要删除的地图。
+     * @param {L.Map} map - 要删除的地图。
      * @private
      */
     onRemove: function (map) {
@@ -94,7 +94,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.onAdd
      * @description 添加专题图。
-     * @param {L.map} map - 要添加的地图。
+     * @param {L.Map} map - 要添加的地图。
      * @private
      */
     onAdd: function (map) {

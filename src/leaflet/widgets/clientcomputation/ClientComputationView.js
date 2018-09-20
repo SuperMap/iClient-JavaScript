@@ -6,8 +6,6 @@ import '../../core/Base';
 import { ClientComputationViewModel } from "./ClientComputationViewModel";
 import { WidgetContainer, WidgetDropDownBox, WidgetSelect, MessageBox, Lang } from '@supermap/iclient-common';
 
-import ChromeDevToolColorPicker from 'codemirror-colorpicker/src/colorpicker/chromedevtool'
-
 /**
  * @class L.supermap.widgets.clientComputation
  * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
@@ -115,7 +113,7 @@ export var ClientComputationView = L.Control.extend({
     /**
      * @function L.supermap.widgets.clientComputation.prototype._initOpenFileView
      * @description 创建客户端计算微件。
-     * @return {div}
+     * @returns {HTMLElement}
      * @private
      */
     _initSpatialAnalysisView: function () {
@@ -269,53 +267,6 @@ export var ClientComputationView = L.Control.extend({
         isUnionLabel.innerHTML = Lang.i18n('text_mergeBuffer');
         isUnionLabel.id = 'isUnionLabel';
 
-        // 颜色选择器
-        let colorpickerControl = L.DomUtil.create('div', 'select-control ', analysisType);
-        let colorpickerTool = L.DomUtil.create('div', 'select-tool', colorpickerControl);
-        let colorpickerLabel = L.DomUtil.create('label', 'lable_describe', colorpickerTool);
-        colorpickerLabel.innerHTML = Lang.i18n('text_label_color');
-        let colorsPickerWrapper = L.DomUtil.create('div', 'colors-picker-wrapper', colorpickerTool);
-        let colorsPicker = L.DomUtil.create('div', 'colors-picker chart_select', colorsPickerWrapper);
-        let colorsPickerSelectName = L.DomUtil.create('div', 'select-name colors-picker-selectName', colorsPicker);
-        colorsPickerSelectName.style.paddingTop = '1px;'
-        let colorsPickerSelectDiv = L.DomUtil.create('div', 'codemirror-colorpicker-control', colorsPickerSelectName);
-        colorsPickerSelectDiv.style.background = '#151B6F';
-        let colorpickerContainer = L.DomUtil.create('div', 'codemirror-colorpicker-container', colorsPickerWrapper);
-        colorpickerContainer.style.display = 'none';
-        colorpickerContainer.setAttribute('tabindex', '1');
-
-        new ChromeDevToolColorPicker({
-            position: 'inline',
-            type: 'sketch',
-            container: colorpickerContainer,
-            onChange(color) {
-                colorsPickerSelectDiv.style.background = color;
-                console.log('when color is changed', color);
-            }
-        })
-        colorsPicker.onclick = function () {
-            if (colorpickerContainer.style.display === 'none') {
-                colorpickerContainer.style.display = 'block';
-                colorsPicker.scrollTop = '100px';
-
-            } else {
-                colorpickerContainer.style.display = 'none';
-                colorsPicker.scrollTop = '0';
-            }
-        }
-        colorpickerContainer.onmousedown = function (evt) {
-            //console.log('drop-down-box onmousedown '+evt.target.className);
-            if (evt.target !== this) {
-                this.focus();
-                evt.preventDefault();
-                evt.stopPropagation()
-            }
-        }
-        colorpickerContainer.onblur = function () {
-            colorpickerContainer.style.display = 'none';
-        }
-
-
         // 结果图层
         let resultLayerDiv = L.DomUtil.create('div', '', analysisType);
         let resultLayerSpan = L.DomUtil.create('span', '', resultLayerDiv);
@@ -354,7 +305,7 @@ export var ClientComputationView = L.Control.extend({
                     case 'buffer':
                         isolineDiv.classList.add('hidden');
                         bufferDiv.classList.remove('hidden');
-                        widgetContentContainer.style.height = '492px'
+                        widgetContentContainer.style.height = '422px'
                         resultLayersName.value = Lang.i18n('text_label_buffer') + layerSelectName.title;
                         break;
                     case 'isolines':
@@ -426,7 +377,6 @@ export var ClientComputationView = L.Control.extend({
                     isUnion = false;
                 }
             }
-            me.viewModel._state(isSaveStatus, isUnion);
         }
         //合并缓冲区
         //合并缓冲区，默认不选中，即为false
@@ -502,7 +452,6 @@ export var ClientComputationView = L.Control.extend({
             let analysisFieldsValue = getValueTextArea.value.replace(/[\r\n]/g, "").split(',').toString();
             let analysisBreaks = breaks.value;
             let analysisCellSize = cellSize.value;
-            let color = colorsPickerSelectDiv.style.background;
             let param = {
                 'analysisMethod': analysisMethod,
                 'analysisLayers': analysisLayers,
@@ -510,8 +459,7 @@ export var ClientComputationView = L.Control.extend({
                 'analysisFieldsValue': analysisFieldsValue,
                 'analysisBreaks': analysisBreaks,
                 'analysisCellSize': analysisCellSize,
-                'resultLayersName': resultLayersName,
-                'color': color
+                'resultLayersName': resultLayersName
             }
             return param;
         }
@@ -522,7 +470,6 @@ export var ClientComputationView = L.Control.extend({
             let analysisMethod = dropDownTop.getAttribute('data-value');
             let radius = bufferRadiusInput.value;
             let unit = bufferUnitSelectName.title;
-            let color = colorsPickerSelectDiv.style.background;
 
             let param = {
                 'analysisMethod': analysisMethod,
@@ -530,7 +477,6 @@ export var ClientComputationView = L.Control.extend({
                 'radius': radius,
                 'unit': unit,
                 'resultLayersName': resultLayersName,
-                'color': color,
                 'isSaveStatus': isSaveStatus,
                 'isUnion': isUnion
 

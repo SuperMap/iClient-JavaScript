@@ -29,7 +29,7 @@ export class FileModel {
      * @function SuperMap.FileModel.prototype.get
      * @description 获取数据值
      * @param {string} key - 属性名称
-     * @return {string|Object} value - 返回属性值
+     * @returns {string|Object} value - 返回属性值
      */
     get(key) {
         return this[key];

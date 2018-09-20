@@ -69,7 +69,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
      * @private
      * @function L.supermap.dataFlowLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.map} map - 待添加的地图。
+     * @param {L.Map} map - 待添加的地图。
      */
     onAdd: function (map) { // eslint-disable-line no-unused-vars
         this.dataService = new DataFlowService(this.url, {
@@ -101,7 +101,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
      * @private
      * @function L.supermap.dataFlowLayer.prototype.onRemove
      * @description 删除指定地图。
-     * @param {L.map} map - 待删除的地图。
+     * @param {L.Map} map - 待删除的地图。
      */
     onRemove: function (map) { // eslint-disable-line no-unused-vars
         L.LayerGroup.prototype.onRemove.call(this, map);

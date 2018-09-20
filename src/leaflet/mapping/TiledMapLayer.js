@@ -83,7 +83,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @private
      * @function L.supermap.tiledMapLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.map} map - 待添加的影像地图参数。
+     * @param {L.Map} map - 待添加的影像地图参数。
      */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;

@@ -88,7 +88,7 @@ export var DistributedAnalysisView = L.Control.extend({
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._initDistributedAnalystView
      * @description 创建分布式分析微件。
-     * @return {div}
+     * @returns {HTMLElement}
      * @private
      */
     _initDistributedAnalystView: function () {
@@ -410,7 +410,7 @@ export var DistributedAnalysisView = L.Control.extend({
     },
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._setEleAtribute
-     * @description 创建含有 span 的 input 框。
+     * @description 设置元素的属性名和属性值。
      * @private
      */
     _setEleAtribute(daraValueArr, attributeName, eleArr){

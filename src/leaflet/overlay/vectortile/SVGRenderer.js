@@ -49,7 +49,7 @@ export var SVGRenderer = L.SVG.extend({
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
      * @description 添加到地图。
-     * @param {L.map} map - map 对象。
+     * @param {L.Map} map - map 对象。
      */
     addTo: function (map) {
         this._map = map;
@@ -65,7 +65,7 @@ export var SVGRenderer = L.SVG.extend({
     /**
      * @function L.supermap.SVGRenderer.prototype.removeFrom
      * @description 从地图移除。
-     * @param {L.map} map - map 对象。
+     * @param {L.Map} map - map 对象。
      */
     removeFrom: function (map) {
         var _map = map || this._map;

@@ -54,7 +54,7 @@ export var POISearchView = L.Control.extend({
         //初始化微件业务逻辑执行对象 viewModel
         this.viewModel = new POISearchViewModel(map, this.options.cityGeoCodingConfig);
 
-        return this._initOpenFileView();
+        return this._initPoiSearchView();
     },
     /**
      * @function L.supermap.widgets.poiSearch.prototype.addSearchLayer
@@ -77,12 +77,12 @@ export var POISearchView = L.Control.extend({
 
     /*----------以下是创建 dom 元素的方法---------*/
     /**
-     * @function L.supermap.widgets.poiSearch.prototype._initOpenFileView
-     * @description 创建打开本地文件数据微件
-     * @return {div}
+     * @function L.supermap.widgets.poiSearch.prototype._initPoiSearchView
+     * @description 创建地址匹配或图层要素查询微件。
+     * @returns {HTMLElement}
      * @private
      */
-    _initOpenFileView() {
+    _initPoiSearchView() {
         // self 便于 this 对象的使用
         const self = this;
         const div = document.createElement("div");

@@ -34,7 +34,7 @@ const defaultProps = {
  * @extends {L.Path}
  * @param {Array.<L.supermap.graphic>} graphics - 要素对象。
  * @param {Object} options - 图层参数。
- * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值："webgl","canvas"（webgl渲染目前只支持散点）。
+ * @param {string}   [options.render='canvas']  -  指定使用的渲染器。可选值：“webgl”，“canvas”（webgl 渲染目前只支持散点）。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
  * @param {number} [options.opacity=0.8] - 要素透明度。
@@ -126,10 +126,10 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicBy
-     * @description 在Vector的要素数组graphics里面遍历每一个graphic，当graphic[property]===value时，返回此graphic（并且只返回第一个）。
-     * @param {String} property - graphic的某个属性名称。
-     * @param {String} value - property所对应的值。
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
+     * @param {String} property - graphic 的某个属性名称。
+     * @param {String} value - property 所对应的值。
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -144,9 +144,9 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicById
-     * @description 通过给定一个id，返回对应的矢量要素。
-     * @param {String} graphicId - 矢量要素的属性id
-     * @return {ol.Graphic} 一个匹配的graphic。
+     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param {String} graphicId - 矢量要素的属性 id。
+     * @returns {ol.Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy("id", graphicId);
@@ -154,10 +154,10 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.getGraphicsByAttribute
-     * @description 通过给定一个属性的key值和value值，返回所有匹配的要素数组。
-     * @param {String} attrName - graphic的某个属性名称。
-     * @param {String} attrValue - property所对应的值。
-     * @return {Array.<ol.Graphic>} 一个匹配的graphic数组。
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param {String} attrName - graphic 的某个属性名称。
+     * @param {String} attrValue - property 所对应的值。
+     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -175,8 +175,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function L.supermap.graphicLayer.prototype.removeGraphics
-     * @description 删除要素数组，默认将删除所有要素
-     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组
+     * @description 删除要素数组，默认将删除所有要素。
+     * @param {Array.<ol.Graphic>} [graphics=null] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素

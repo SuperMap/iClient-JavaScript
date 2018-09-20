@@ -71,7 +71,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
      * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.analysis
      * @description 进行分布式分析。
      * @param {Object} params - 分布式分析参数。
-     * @param {L.map} map - leaflet Map 对象。
+     * @param {L.Map} map - leaflet Map 对象。
      */
     analysis(params, map){
         if(params.analysisType === 'density'){
@@ -143,5 +143,3 @@ export class DistributedAnalysisViewModel extends L.Evented {
     
 }
 L.supermap.widgets.DistributedAnalysisViewModel = DistributedAnalysisViewModel;
-
-// L.supermap.widgets.util = widgetsUtil;

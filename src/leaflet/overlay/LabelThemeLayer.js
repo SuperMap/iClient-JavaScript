@@ -20,11 +20,11 @@ import {
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param {string} name - 图层名。
  * @param {Object} options - 图层参数。
+ * @param {string} options.themeFields - 指定创建专题图字段。 
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {string} options.themeFields - 指定创建专题图字段。 
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
@@ -121,7 +121,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function L.supermap.LabelThemeLayer.prototype.onAdd
      * @description 添加专题图。
-     * @param {L.map} map - 要添加的地图。
+     * @param {L.Map} map - 要添加的地图。
      * @private
      */
     onAdd: function (map) {

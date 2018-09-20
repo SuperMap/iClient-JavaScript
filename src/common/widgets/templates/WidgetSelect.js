@@ -5,7 +5,7 @@
 import { SuperMap } from '../../SuperMap';
 /**
  * @class SuperMap.Widgets.WidgetSelect
- * @classdesc 微件统一 select 下拉框。
+ * @classdesc 微件统一的文字下拉框。
  * @param {Array.<string|Array>} options - 需要创建的 WidgetSelect 数据数组。
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。

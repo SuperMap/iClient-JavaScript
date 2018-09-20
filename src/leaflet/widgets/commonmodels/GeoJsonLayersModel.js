@@ -47,9 +47,10 @@ export var GeoJsonLayersDataModel = L.Evented.extend({
 L.supermap.widgets.GeoJsonLayersDataModel = GeoJsonLayersDataModel;
 
 
-/*
+/**
  * @class L.supermap.widgets.GeoJsonLayerDataModel
- * @classdesc 图层数据模型，用于图层要素数据及属性管理等
+ * @classdesc 图层数据模型，用于图层要素数据及属性管理等。
+ * @param {L.GeoJSON} layer - GeoJSON 图层。
  * 注：leaflet没有 feature 的概念
  */
 export class GeoJsonLayerDataModel {
@@ -85,7 +86,7 @@ export class GeoJsonLayerDataModel {
     /**
      * @function GeoJsonLayerDataModel.prototype.getAllAttributeNames
      * @description 获取图层所有属性字段。
-     * @return {Array.<string>} - 返回图层所有属性字段。
+     * @returns {Array.<string>} - 返回图层所有属性字段。
      */
     getAllAttributeNames() {
         return this.attributeNames;
@@ -94,8 +95,8 @@ export class GeoJsonLayerDataModel {
     /**
      * @function GeoJsonLayerDataModel.prototype.getAttributeNamesByType
      * @description 获取指定类型的图层属性字段。
-     * @param {string} [type] - 需要获取的图层属性字段的类型。目前可选 "Num"。
-     * @return {Array.<string>} - 返回指定类型的图层属性字段。
+     * @param {string} [type] - 需要获取的图层属性字段的类型。目前可选 "Num"，若不传此参数，则默认返回所有字段。
+     * @returns {Array.<string>} - 返回指定类型的图层属性字段。
      */
     getAttributeNamesByType(type) {
         //图层属性字段
@@ -118,7 +119,7 @@ export class GeoJsonLayerDataModel {
     /**
      * @function GeoJsonLayerDataModel.prototype.getAllFeatures
      * @description 获取图层所有要素
-     * @return {Array.<Object>} - 返回图层要素
+     * @returns {Array.<Object>} - 返回图层要素
      */
     getAllFeatures() {
         return this.features;
@@ -128,7 +129,7 @@ export class GeoJsonLayerDataModel {
      * @function GeoJsonLayerDataModel.prototype.getAttributeValueByAttributeName
      * @description 通过属性字段名获取属性值
      * @param {string} attributeName - 图层要素属性字段名
-     * @return {Object} - 图层要素属性值对象
+     * @returns {Object} - 图层要素属性值对象
      */
     getAttributeValueByAttributeName(attributeName) {
         //如果图层属性对象中已存在该属性，则直接返回
@@ -156,7 +157,7 @@ export class GeoJsonLayerDataModel {
      * @function GeoJsonLayerDataModel.prototype.getFeaturesByKeyWord
      * @description 通过关键字查找要素对象
      * @param {string} keyWord - 查询关键字
-     * @return {Array.<Object>} - 返回要素对象数组
+     * @returns {Array.<Object>} - 返回要素对象数组
      */
     getFeaturesByKeyWord(keyWord) {
         let features = [], keyReg = new RegExp(keyWord.toLowerCase());

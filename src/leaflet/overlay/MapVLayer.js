@@ -42,7 +42,7 @@ export var MapVLayer = L.Layer.extend({
      * @private
      * @function L.supermap.mapVLayer.prototype.onAdd
      * @description 添加地图图层。
-     * @param {L.map} map - 要添加的地图。
+     * @param {L.Map} map - 要添加的地图。
      */
     onAdd: function (map) {
         this._map = map;

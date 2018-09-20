@@ -85,7 +85,7 @@ export class ClientComputationViewModel extends L.Evented {
      * @function L.supermap.widgets.ClientComputationViewModel.prototype.analysis
      * @description 进行客户端计算。
      * @param {Object} params - 客户端计算参数。
-     * @param {L.map} map - Leaflet Map 对象。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     analysis(params, map) {
         this.geoJsonLayersDataModel.setCurrentLayerDataModel(params.analysisLayers);
@@ -117,7 +117,7 @@ export class ClientComputationViewModel extends L.Evented {
                 } else {
                     let turfLayer = L.geoJSON(e.data, {
                         style: {
-                            color: params.color, weight: 3
+                            color: '#1060C2', weight: 3
                         },
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
@@ -128,7 +128,7 @@ export class ClientComputationViewModel extends L.Evented {
                                     layer.setStyle({ color: "#ffffff", weight: 5 })
                                 },
                                 'mouseout': function () {
-                                    layer.setStyle({ color: params.color, weight: 3 })
+                                    layer.setStyle({ color: '#1060C2', weight: 3 })
                                 },
                                 "click": function () {
                                     layer.setStyle({ color: "#ffffff", weight: 5 })
@@ -163,7 +163,7 @@ export class ClientComputationViewModel extends L.Evented {
             this.worker.onmessage = (e) => {
                 let turfLayer = L.geoJSON(e.data, {
                     style: {
-                        color: "#ffffff", fillColor: params.color, fillOpacity: .5, weight: 1.5
+                        color: "#ffffff", fillColor: '#1060C2', fillOpacity: .5, weight: 1.5
                     },
                     onEachFeature: function (feature, layer) {
                         if (feature.properties) {
@@ -174,7 +174,7 @@ export class ClientComputationViewModel extends L.Evented {
                                 layer.setStyle({ color: "#ffffff", fillColor: "rgb(46,40,79)", fillOpacity: .5, weight: 5 })
                             },
                             'mouseout': function () {
-                                layer.setStyle({ color: "#ffffff", fillColor: params.color, fillOpacity: .5, weight: 1.5 })
+                                layer.setStyle({ color: "#ffffff", fillColor: '#1060C2', fillOpacity: .5, weight: 1.5 })
                             },
                             "click": function () {
                                 layer.setStyle({ color: "#ffffff", fillColor: "rgb(46,40,79)", fillOpacity: .5, weight: 2 })
@@ -216,5 +216,3 @@ export class ClientComputationViewModel extends L.Evented {
     }
 }
 L.supermap.widgets.ClientComputationViewModel = ClientComputationViewModel;
-
-// L.supermap.widgets.util = widgetsUtil;

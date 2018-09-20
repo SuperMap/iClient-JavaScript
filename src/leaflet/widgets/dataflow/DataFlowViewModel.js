@@ -10,8 +10,8 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  * @class L.supermap.widgets.dataFlowViewModel
  * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
  * @category Widgets
- * @param {L.map} map - 当前微件所在的底图
- * @param {Object} dataFlowLayerOptions - 数据流服务返回数据数据展示样式，默认为 null，采用 ViewModel 默认样式
+ * @param {L.Map} map - 当前微件所在的底图
+ * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
@@ -54,7 +54,7 @@ export var DataFlowViewModel = L.Evented.extend({
     initialize(map, dataFlowLayerOptions = null) {
         if (map) {
             /**
-             * @member {L.map} - [L.supermap.widgets.dataFlowViewModel.prototype.map]
+             * @member {L.Map} [L.supermap.widgets.dataFlowViewModel.prototype.map]
              * @description 当前微件所在的底图
              */
             this.map = map;
@@ -65,30 +65,30 @@ export var DataFlowViewModel = L.Evented.extend({
         L.Util.extend(this.options._defaultLayerOptions, dataFlowLayerOptions);
 
         /**
-         * @member {boolean} - [L.supermap.widgets.dataFlowViewModel.prototype.popupsStatus=true]
+         * @member {boolean} [L.supermap.widgets.dataFlowViewModel.prototype.popupsStatus=true]
          * @description 图层 popup 打开 "true" 或关闭 "false" 的状态
          */
         this.popupsStatus = true;
         /**
-         * @member {boolean} - [ L.supermap.widgets.dataFlowViewModel.prototype.dataFlowStatus=false]
+         * @member {boolean} [L.supermap.widgets.dataFlowViewModel.prototype.dataFlowStatus=false]
          * @description 数据流服务当前状态，订阅 "true" 或未订阅 "false" 的状态
          */
         this.dataFlowStatus = false;
 
         /**
-         * @member {string} - [L.supermap.widgets.dataFlowViewModel.prototype.urlDataFlow=""]
+         * @member {string} [L.supermap.widgets.dataFlowViewModel.prototype.urlDataFlow=""]
          * @description 数据流地址
          */
         this.urlDataFlow = "";
 
         /**
-         * @member {Array.<Object>} - [L.supermap.widgets.dataFlowViewModel.prototype.currentFeatures]
+         * @member {Array.<Object>} [L.supermap.widgets.dataFlowViewModel.prototype.currentFeatures]
          * @description 当前订阅数据流返回的要素数组
          */
         this.currentFeatures = [];
 
         /**
-         * @member {L.supermap.dataFlowLayer} - [L.supermap.widgets.dataFlowViewModel.prototype.dataFlowLayer=null]
+         * @member {L.supermap.dataFlowLayer} [L.supermap.widgets.dataFlowViewModel.prototype.dataFlowLayer=null]
          * @description 当前 dataFlowLayer 图层对象
          */
         this.dataFlowLayer = null;
@@ -97,8 +97,8 @@ export var DataFlowViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.dataFlowViewModel.prototype.subscribe
-     * @description 订阅数据流
-     * @param {string} urlDataFlow - 数据流服务地址
+     * @description 订阅数据流。
+     * @param {string} urlDataFlow - 数据流服务地址。
      */
     subscribe(urlDataFlow) {
         //若当前数据流服务没变，则不进行重新订阅 todo 或者没点击暂停

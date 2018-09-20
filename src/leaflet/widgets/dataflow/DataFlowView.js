@@ -81,7 +81,7 @@ export var DataFlowView = L.Control.extend({
     /**
      * @function L.supermap.widgets.DataFlowView.prototype._initView
      * @description 创建打开本地文件数据微件
-     * @return {div}
+     * @returns {HTMLElement}
      * @private
      */
     _initView() {

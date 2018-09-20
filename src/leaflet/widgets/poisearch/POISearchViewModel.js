@@ -10,8 +10,8 @@ import {GeoJsonLayersDataModel} from '../commonmodels/GeoJsonLayersModel';
 
 /**
  * @class L.supermap.widgets.poiSearchViewModel
- * @classdesc 搜索定位微件 viewModel 用于处理定位微件的一些业务逻辑代码
- * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
+ * @classdesc 搜索定位微件 viewModel，用于处理定位微件的一些业务逻辑代码。
+ * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
  */
 export var POISearchViewModel = L.Evented.extend({
     options: {
@@ -24,8 +24,8 @@ export var POISearchViewModel = L.Evented.extend({
     initialize(map, options) {
         if (map) {
             /**
-             * @member {L.map} - [L.supermap.widgets.dataFlowViewModel.prototype.map]
-             * @description 当前微件所在的底图
+             * @member {L.Map} [L.supermap.widgets.poiSearchViewModel.prototype.map]
+             * @description 当前微件所在的底图。
              */
             this.map = map;
         } else {
@@ -59,9 +59,9 @@ export var POISearchViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.poiSearchViewModel.prototype.search
-     * @description 查询
-     * @param {string} keyWord - 查询的关键字
-     * @param {string} searchLayerName - 执行的查询类型，默认为null,支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配
+     * @description 查询。
+     * @param {string} keyWord - 查询的关键字。
+     * @param {string} [searchLayerName] - 执行的查询类型，支执行矢量图层属性查询，当为 "geocode" 则执行地址匹配。
      */
     search(keyWord, searchLayerName) {
         if (!searchLayerName) {
@@ -73,9 +73,9 @@ export var POISearchViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.poiSearchViewModel.prototype.searchFromLayer
-     * @description 图层属性查询
-     * @param {string} searchLayerName - 查询的图层名
-     * @param {string} keyWord - 图层属性搜索关键字
+     * @description 图层属性查询。
+     * @param {string} searchLayerName - 查询的图层名。
+     * @param {string} keyWord - 图层属性搜索关键字。
      */
     searchFromLayer(keyWord, searchLayerName) {
         if (this.dataModel[searchLayerName]) {
@@ -90,8 +90,8 @@ export var POISearchViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.poiSearchViewModel.prototype.addSearchLayers
-     * @description 添加新的可查询图层
-     * @param {Array.<L.GeoJSON>} layers - 新添加的图层对象
+     * @description 添加新的可查询图层。
+     * @param {Array.<L.GeoJSON>} layers - 新添加的图层对象。
      */
     addSearchLayers(layers) {
         this.dataModel.addLayers(layers)
@@ -99,8 +99,8 @@ export var POISearchViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.poiSearchViewModel.prototype.panToLayer
-     * @description 缩放到指定图层
-     * @param {string} layerName - 指定缩放的图层名
+     * @description 缩放到指定图层。
+     * @param {string} layerName - 指定缩放的图层名。
      */
     panToLayer(layerName) {
         if (this.dataModel[layerName]) {
@@ -110,8 +110,8 @@ export var POISearchViewModel = L.Evented.extend({
 
     /**
      * @function L.supermap.widgets.poiSearchViewModel.prototype.panToCity
-     * @description 缩放到指定城市
-     * @param {string} city - 指定缩放的城市名
+     * @description 缩放到指定城市。
+     * @param {string} city - 指定缩放的城市名。
      */
     panToCity(city) {
         this.geoCodeParam.address = city;
@@ -131,8 +131,8 @@ export var POISearchViewModel = L.Evented.extend({
     },
     /**
      * @function L.supermap.widgets.poiSearchViewModel.prototype.cityGeocodeService
-     * @description 城市地址匹配
-     * @param {string} keyWords - 城市地址匹配关键字
+     * @description 城市地址匹配。
+     * @param {string} keyWords - 城市地址匹配关键字。
      */
     cityGeocodeService(keyWords) {
         //todo 是否保留缓存？请求过的数据保留一份缓存？

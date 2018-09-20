@@ -876,7 +876,7 @@ export class CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.parse
      * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
-     * @return {Object} CartoCSS规则集
+     * @returns {Object} CartoCSS规则集
      */
     parse(str) {
         var parser = this.parser;
@@ -888,7 +888,7 @@ export class CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.toShaders
      * @description 将CartoCSS规则集转化为着色器
-     * @return {Array} CartoCSS着色器集
+     * @returns {Array} CartoCSS着色器集
      */
     toShaders() {
         if (this.ruleSet) {
@@ -1020,7 +1020,7 @@ export class CartoCSS {
     /**
      * @function SuperMap.CartoCSS.prototype.getShaders
      * @description 获取CartoCSS着色器
-     * @return {Array} 着色器集
+     * @returns {Array} 着色器集
      * @example
      *   //shaders的结构大概如下：
      *   var shaders=[

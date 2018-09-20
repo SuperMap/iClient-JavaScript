@@ -14,7 +14,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @category Visualization MapV
  * @private
  * @extends mapv.BaseLayer
- * @param {L.map} map - 待渲染的地图。
+ * @param {L.Map} map - 待渲染的地图。
  * @param {L.Layer} layer - 待渲染的图层。
  * @param {DataSet} dataSet - 待渲染的数据集。
  * @param {Object} options - 渲染的参数。

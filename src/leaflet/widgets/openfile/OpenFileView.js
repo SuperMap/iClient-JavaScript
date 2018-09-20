@@ -44,7 +44,7 @@ export var OpenFileView = L.Control.extend({
     /**
      * @function L.supermap.widgets.openfile.prototype._initOpenFileView
      * @description 创建打开本地文件数据微件
-     * @return {div}
+     * @returns {HTMLElement}
      * @private
      */
     _initOpenFileView: function () {

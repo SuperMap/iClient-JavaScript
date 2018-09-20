@@ -22,4 +22,3 @@ import '../widgets/css/PopContainer.css';
 import '../widgets/css/Analysis.css';
 import '../widgets/css/DistributedAnalysis.css'
 import '../widgets/css/ClientComputation.css'
-import 'codemirror-colorpicker/dist/codemirror-colorpicker.css'

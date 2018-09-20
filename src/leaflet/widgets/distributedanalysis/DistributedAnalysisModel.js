@@ -66,7 +66,6 @@ export class DistributedAnalysisModel extends L.Evented {
      * @description 获得数据集类型与 fields。
      * @param {string} datasetUrl - 数据集资源地址。
      */
-    // 判断数据类型
     getDatasetInfo(datasetUrl) {
         let type;
         let me = this;
