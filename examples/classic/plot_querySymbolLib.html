@@ -206,10 +206,11 @@
         var container = document.getElementById("queryResult");
         var table = document.createElement("table");
         drawNodeClick = function () {
-            drawGraphicObject.activate();
+            drawGraphicObject.deactivate();
             drawGraphicObject.handler.libID = this.libID;
             drawGraphicObject.handler.symbolCode = this.symbolCode;
             drawGraphicObject.handler.serverUrl = this.serverUrl;
+            drawGraphicObject.activate();
         };
         var i = 0;
         var rowLength = (queryResult.length % 3 === 0) ? queryResult.length / 3 : queryResult.length / 3 + 1;

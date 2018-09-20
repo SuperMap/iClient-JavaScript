@@ -103,11 +103,11 @@
         var container = document.getElementById("queryResult");
         var table = document.createElement("table");
         var  drawNodeClick = function () {
-            drawControl.handler.enable();
+            drawControl.handler.disable();
             drawControl.handler.libID = this.libID;
             drawControl.handler.code = this.symbolCode;
             drawControl.handler.serverUrl = this.serverUrl;
-
+            drawControl.handler.enable();
         };
         var i = 0;
         var rowLength = (queryResult.length % 3 === 0) ? queryResult.length / 3 : queryResult.length / 3 + 1;
