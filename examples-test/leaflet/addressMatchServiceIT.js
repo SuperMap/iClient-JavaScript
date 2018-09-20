@@ -8,9 +8,9 @@ module.exports = {
         browser.waitForElementPresent('.panel-body', 10000);
         /*在正向匹配服务中输入值，并判断结果*/
         browser.setValue('#address', '公司');
-        browser.setValue('#filters', '北京');
+        browser.setValue('#filters', '北京,石景山区');
         browser.setValue('#fromIndex', 0);
-        browser.setValue('#toIndex', 10);
+        browser.setValue('#toIndex', 1);
         browser.setValue('#maxReturn', -1);
         browser.setValue('#prjCoordSys', '{epsgcode:4326}');
         browser.pause(1000);
@@ -19,9 +19,8 @@ module.exports = {
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
             browser.elements('class name', 'leaflet-marker-icon', function (result) {
-                browser.assert.equal(result.value.length, 10, "expect query result of '正向匹配' to be 10, actual is " + result.value.length);
+                browser.assert.equal(result.value.length, 1, "expect query result of '正向匹配' to be 10, actual is " + result.value.length);
             });
-            browser.pause(1000);
             browser.click('.leaflet-marker-icon', function () {
                 browser.pause(1000);
                 browser.waitForElementPresent('.leaflet-popup.leaflet-zoom-animated', 10000);

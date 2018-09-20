@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {config} from '../../../leaflet/widgets/poisearch/CityConfig';
+import {config} from './CityConfig';
 import {
     WidgetSelect,
     MessageBox,
