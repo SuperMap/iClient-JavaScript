@@ -246,8 +246,8 @@ SuperMap.Lang.en = {
 	'SUPPRESS':"SUPPRESS",
 	'EIGHTSPIRAL':"EIGHTSPIRAL",
 	'HAPPYVALLEY':"HAPPYVALLEY",
-
 	'LITERATESIGN':"LITERATESIGN",
+    'textContent':"Please input text",
 
 	'undoStackOverflow': 'undo stack overflow',
 

@@ -311,8 +311,8 @@ SuperMap.Lang["zh-CN"] = {
     'SUPPRESS':"压制点",
     'EIGHTSPIRAL':"八字盘旋点",
     'HAPPYVALLEY':"跑马圈点",
-
     'LITERATESIGN':"标牌文字",
+    'textContent':"请输入文本",
 
     'undoStackOverflow': '撤销的栈溢出',
 
