@@ -56,7 +56,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
-            inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.js");
+            inputScript("https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
             inputScript("https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js");
@@ -74,7 +74,7 @@
             inputScript("http://cdn.bootcss.com/elasticsearch/15.0.0/elasticsearch.min.js");
         }
         if (inArray(includes, 'deck')) {
-            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
+            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
         if (inArray(includes, 'xlsx')) {
             inputScript("https://cdn.bootcss.com/xlsx/0.12.13/xlsx.core.min.js");

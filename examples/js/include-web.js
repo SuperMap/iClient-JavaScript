@@ -41,8 +41,8 @@
         if (!inArray(excludes, 'example-i18n')) {
             inputScript("https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js");
 
-            inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.js");
-            inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.js");
+            inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
+            inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
 
             inputScript("../js/utils.js");
             inputScript("../js/localization.js");

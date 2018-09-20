@@ -64,7 +64,7 @@
         }
 
         if (inArray(includes, 'deck')) {
-            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.js");
+            inputScript("http://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js");
         }
         if (!inArray(excludes, 'iclient9-openlayers')) {
             if (supportES6()) {
