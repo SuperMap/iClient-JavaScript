@@ -168,7 +168,7 @@
             props: {
                 widthScale: 20,
                 widthMinPixels: 2,
-                onHover: (feature) => {
+                onHover: function(feature) {
                     if (!popup) {
                         popup = new mapboxgl.Popup({
                             anchor: 'bottom',
@@ -188,13 +188,13 @@
                 }
             },
             callback: {
-                getPath: (feature) => {
+                getPath: function(feature) {
                     if (!feature.geometry || !feature.geometry.coordinates) {
                         return [0, 0]
                     }
                     return feature.geometry.coordinates;
                 },
-                getColor: (feature) => {
+                getColor: function(feature) {
                     if (feature.properties.elevation >= -40 && feature.properties.elevation < 79.4) {
                         return [55, 83, 94];
                     } else if (feature.properties.elevation >= 79.4 && feature.properties.elevation < 198.8) {

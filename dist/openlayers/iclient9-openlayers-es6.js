@@ -73632,18 +73632,16 @@ class overlay_Graphic_Graphic extends external_ol_default.a.source.ImageCanvas {
         }
 
         for (let i = graphics.length - 1; i >= 0; i--) {
-            var graphic = graphics[i];
+            let graphic = graphics[i];
 
             //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = Util_Util.indexOf(this.graphics, graphic);
+            let findex = Util_Util.indexOf(this.graphics, graphic);
 
             if (findex === -1) {
                 continue;
             }
             this.graphics.splice(findex, 1);
-            //这里移除了graphic之后将它的layer也移除掉，避免内存泄露
-            graphic = null;
         }
 
         //删除完成后重新设置 setGraphics，以更新
@@ -79749,6 +79747,8 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GeoFeature", function() { return GeoFeature_GeoFeature; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Theme", function() { return theme_Theme_Theme; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ThemeFeature", function() { return ThemeFeature_ThemeFeature; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "pointStyle", function() { return DeafultCanvasStyle_pointStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineStyle", function() { return DeafultCanvasStyle_lineStyle; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonStyle", function() { return DeafultCanvasStyle_polygonStyle; });
@@ -79757,8 +79757,6 @@ external_ol_default.a.supermap.TrafficTransferAnalystService = TrafficTransferAn
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lineMap", function() { return lineMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "polygonMap", function() { return polygonMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StyleMap", function() { return StyleMap; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VectorTileStyles", function() { return VectorTileStyles_VectorTileStyles; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MapboxStyles", function() { return MapboxStyles_MapboxStyles; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AddressMatchService", function() { return services_AddressMatchService_AddressMatchService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChartService", function() { return ChartService_ChartService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DataFlowService", function() { return services_DataFlowService_DataFlowService; });

@@ -160,14 +160,14 @@
             },
             callback: {
                 getStrokeWidth: 12,
-                getSourcePosition: (feature) => {
+                getSourcePosition: function(feature) {
                     if (!feature.residence_lat || !feature.residence_lng) {
                         console.log(feature);
                         return [0, 0]
                     }
                     return [Number(feature.residence_lng), Number(feature.residence_lat)];
                 },
-                getTargetPosition: (feature) => {
+                getTargetPosition: function(feature) {
                     if (!feature.workplace_lng || !feature.workplace_lat) {
                         console.log(feature);
                         return [0, 0]
@@ -185,7 +185,7 @@
             radiusMinPixels: 0.8,
             autoHighlight: true,
             highlightColor: [255, 255, 0, 255],
-            onHover: (e) => {
+            onHover: function(e) {
                 if (!popup) {
                     popup = new mapboxgl.Popup({
                         anchor: 'bottom',

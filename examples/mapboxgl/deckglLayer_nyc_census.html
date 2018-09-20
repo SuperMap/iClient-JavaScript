@@ -186,7 +186,7 @@
                 }
             },
             callback: {
-                getPolygon: (feature) => {
+                getPolygon: function(feature) {
                     if (!feature.geometry || !feature.geometry.coordinates) {
                         console.log(feature);
                         return [0, 0]
@@ -194,7 +194,7 @@
                     return feature.geometry.coordinates;
                 },
                 getElevation: d => d.properties.Population / 8,
-                getFillColor: (feature) => {
+                getFillColor: function(feature) {
                     if (feature.properties.Population >= 0 && feature.properties.Population < 1670.5) {
                         return [25, 66, 102];
                     } else if (feature.properties.Population >= 1670.5 && feature.properties.Population < 2259.0) {

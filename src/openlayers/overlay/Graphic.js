@@ -318,18 +318,16 @@ export class Graphic extends ol.source.ImageCanvas {
         }
 
         for (let i = graphics.length - 1; i >= 0; i--) {
-            var graphic = graphics[i];
+            let graphic = graphics[i];
 
             //如果我们传入的grapchic在graphics数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = CommonUtil.indexOf(this.graphics, graphic);
+            let findex = CommonUtil.indexOf(this.graphics, graphic);
 
             if (findex === -1) {
                 continue;
             }
             this.graphics.splice(findex, 1);
-            //这里移除了graphic之后将它的layer也移除掉，避免内存泄露
-            graphic = null;
         }
 
         //删除完成后重新设置 setGraphics，以更新

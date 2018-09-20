@@ -1603,8 +1603,8 @@ a.leaflet-control-ctv-toggle {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          left: -5px;
-          top: -5px; }
+          -webkit-transform: translateX(-50%) translateY(-50%);
+                  transform: translateX(-50%) translateY(-50%); }
     .codemirror-colorpicker .colorpicker-body > .color > .saturation {
       background-color: rgba(204, 154, 129, 0);
       background-image: -webkit-gradient(linear, left top, right top, from(#FFF), to(rgba(204, 154, 129, 0)));
@@ -2291,8 +2291,8 @@ a.leaflet-control-ctv-toggle {
         border-radius: 0px;
         overflow: hidden;
         height: 100%;
-        background: -webkit-gradient(linear, left top, left bottom, from(#ff0000), color-stop(17%, #ffff00), color-stop(33%, #00ff00), color-stop(50%, #00ffff), color-stop(67%, #0000ff), color-stop(83%, #ff00ff), to(#ff0000));
-        background: linear-gradient(to bottom, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%); }
+        background: -webkit-gradient(linear, left bottom, left top, from(#ff0000), color-stop(17%, #ffff00), color-stop(33%, #00ff00), color-stop(50%, #00ffff), color-stop(67%, #0000ff), color-stop(83%, #ff00ff), to(#ff0000));
+        background: linear-gradient(to top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%); }
       .codemirror-colorpicker.mini-vertical .control .opacity > .opacity-container {
         border-radius: 0px;
         overflow: hidden;
@@ -2310,9 +2310,9 @@ a.leaflet-control-ctv-toggle {
         -webkit-transform: none;
                 transform: none; }
         .codemirror-colorpicker.mini-vertical .control .drag-bar.last:before, .codemirror-colorpicker.mini-vertical .control .drag-bar.last:after, .codemirror-colorpicker.mini-vertical .control .drag-bar2.last:before, .codemirror-colorpicker.mini-vertical .control .drag-bar2.last:after {
-          top: -1px; }
+          top: 2px; }
         .codemirror-colorpicker.mini-vertical .control .drag-bar.first:before, .codemirror-colorpicker.mini-vertical .control .drag-bar.first:after, .codemirror-colorpicker.mini-vertical .control .drag-bar2.first:before, .codemirror-colorpicker.mini-vertical .control .drag-bar2.first:after {
-          top: 1px; }
+          top: -1px; }
         .codemirror-colorpicker.mini-vertical .control .drag-bar:before, .codemirror-colorpicker.mini-vertical .control .drag-bar2:before {
           content: "";
           position: absolute;
@@ -2377,6 +2377,74 @@ a.leaflet-control-ctv-toggle {
       width: 30px;
       height: 30px;
       border-radius: 2px; }
+  .codemirror-colorpicker.xd {
+    display: inline-block;
+    padding-top: 12px;
+    width: 245px; }
+    .codemirror-colorpicker.xd .color {
+      display: inline-block;
+      margin-left: 12px;
+      margin-bottom: 12px;
+      width: 170px;
+      height: 170px;
+      vertical-align: middle;
+      border-radius: 3px;
+      overflow: hidden;
+      -webkit-box-sizing: border-box;
+              box-sizing: border-box;
+      border: 1px solid #cecece; }
+      .codemirror-colorpicker.xd .color > .saturation > .value > .drag-pointer {
+        border: 2px solid white;
+        width: 7px;
+        height: 7px;
+        -webkit-box-shadow: 0 0 1px 0px black, inset 0 0 1px 0px black;
+                box-shadow: 0 0 1px 0px black, inset 0 0 1px 0px black; }
+    .codemirror-colorpicker.xd .control {
+      height: 170px;
+      padding: 0px;
+      vertical-align: middle;
+      display: inline-block;
+      margin-right: 12px;
+      margin-bottom: 12px; }
+      .codemirror-colorpicker.xd .control .hue, .codemirror-colorpicker.xd .control .opacity {
+        margin: 0px;
+        padding: 0px;
+        width: 13px;
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        border-radius: 3px;
+        margin-left: 8px; }
+      .codemirror-colorpicker.xd .control .hue > .hue-container {
+        border-radius: 0px;
+        overflow: hidden;
+        height: 100%;
+        background: -webkit-gradient(linear, left bottom, left top, from(#ff0000), color-stop(17%, #ffff00), color-stop(33%, #00ff00), color-stop(50%, #00ffff), color-stop(67%, #0000ff), color-stop(83%, #ff00ff), to(#ff0000));
+        background: linear-gradient(to top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%); }
+      .codemirror-colorpicker.xd .control .opacity > .opacity-container {
+        border-radius: 0px;
+        overflow: hidden;
+        height: 100%; }
+      .codemirror-colorpicker.xd .control .drag-bar, .codemirror-colorpicker.xd .control .drag-bar2 {
+        border: 0px;
+        background-color: transparent;
+        border: 2px solid white;
+        -webkit-box-shadow: 0 0 1px 0px black, inset 0 0 1px 0px black;
+                box-shadow: 0 0 1px 0px black, inset 0 0 1px 0px black;
+        width: 10px;
+        height: 10px;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        -webkit-transform: none;
+                transform: none;
+        overflow: hidden;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%); }
+    .codemirror-colorpicker.xd .information {
+      margin-top: 5px; }
 
 .colorsets-contextmenu {
   position: fixed;

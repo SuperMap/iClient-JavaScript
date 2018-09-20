@@ -540,7 +540,7 @@ export var POISearchView = L.Control.extend({
      * @private
      */
     _createResultListByPageNum(page, data) {
-        let start = 0, end = 8;
+        let start = 0, end;
         if (page === 1 && data.length < 8) {
             //data数据不满8个时：
             end = data.length;

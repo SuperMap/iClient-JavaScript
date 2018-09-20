@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -488,14 +473,14 @@ __webpack_require__.r(__webpack_exports__);
 // CONCATENATED MODULE: ./src/common/SuperMap.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap.Widgets = window.SuperMap.Widgets || {};
 
 // CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -679,7 +664,7 @@ SuperMap.Pixel = Pixel_Pixel;
 // CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 /**
  *@namespace SuperMap
@@ -1152,7 +1137,7 @@ var ArrayExt = SuperMap.Array = {
 // CONCATENATED MODULE: ./src/common/commontypes/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -2196,7 +2181,7 @@ SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
 
 /**
  * @description 获取文本外接矩形宽度与高度。
- * @param {SuperMap.Style} style - 文本样式。
+ * @param {SuperMap.ThemeStyle} style - 文本样式。
  * @param {string} text - 文本内容。
  * @param {Object} element - DOM 元素。
  * @returns {Object} 返回裁剪后的宽度，高度信息。
@@ -2231,7 +2216,7 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
 // CONCATENATED MODULE: ./src/common/commontypes/Event.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -2573,7 +2558,7 @@ SuperMap.Event.observe(window, 'unload', SuperMap.Event.unloadCache, false);
 // CONCATENATED MODULE: ./src/common/commontypes/Events.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -3107,7 +3092,7 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
 // CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -3738,7 +3723,7 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
 // CONCATENATED MODULE: ./src/common/util/PromisePolyfill.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 window.Promise = promise_default.a;
@@ -3752,7 +3737,7 @@ var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 // CONCATENATED MODULE: ./src/common/util/FetchRequest.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -4173,7 +4158,7 @@ SuperMap.Util.RequestJSONPPromise = {
 // CONCATENATED MODULE: ./src/common/security/SecurityManager.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -4524,7 +4509,7 @@ SuperMap.SecurityManager = SecurityManager_SecurityManager;
 // CONCATENATED MODULE: ./src/common/REST.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -5686,7 +5671,7 @@ var AggregationQueryBuilderType = SuperMap.AggregationQueryBuilderType = {
 // CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
  // eslint-disable-line no-unused-vars
@@ -5828,7 +5813,7 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo_DatasourceConnectio
 // CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -5897,7 +5882,7 @@ SuperMap.OutputSetting = OutputSetting_OutputSetting;
 // CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -5978,7 +5963,7 @@ SuperMap.MappingParameters = MappingParameters_MappingParameters;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -6147,7 +6132,7 @@ SuperMap.KernelDensityJobParameter = KernelDensityJobParameter_KernelDensityJobP
 // CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -6266,7 +6251,7 @@ SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter_SingleO
 // CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -6377,7 +6362,7 @@ SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter_Summary
 // CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -6550,7 +6535,7 @@ SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter_SummaryMeshJobParamet
 // CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -6764,7 +6749,7 @@ SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter_SummaryRegionJobP
 // CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -6889,7 +6874,7 @@ SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter_OverlayGeoJobParameter;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -7028,7 +7013,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -7145,7 +7130,7 @@ SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter_Topolog
 // CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -7233,7 +7218,7 @@ SuperMap.GeoCodingParameter = GeoCodingParameter_GeoCodingParameter;
 // CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -7341,7 +7326,7 @@ var external_function_try_return_mapv_catch_e_return_ = __webpack_require__(0);
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -7479,7 +7464,7 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
+     * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -7681,7 +7666,7 @@ class MapVRenderer_MapVRenderer extends MapVBaseLayer {
 // CONCATENATED MODULE: ./src/classic/overlay/MapVLayer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -7913,18 +7898,18 @@ SuperMap_SuperMap.Layer.MapVLayer = MapVLayer_MapVLayer;
 // CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 // CONCATENATED MODULE: ./src/classic/overlay/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 // CONCATENATED MODULE: ./src/common/commontypes/Credential.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 /**
@@ -8021,7 +8006,7 @@ SuperMap.Credential = Credential;
 // CONCATENATED MODULE: ./src/common/format/Format.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -8093,7 +8078,7 @@ SuperMap.Format = Format_Format;
 // CONCATENATED MODULE: ./src/common/format/JSON.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -8389,7 +8374,7 @@ SuperMap.Format.JSON = JSON_JSONFormat;
 // CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -8767,7 +8752,7 @@ SuperMap.CommonServiceBase = CommonServiceBase_CommonServiceBase;
 // CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -8865,7 +8850,7 @@ SuperMap.AddressMatchService = AddressMatchService_AddressMatchService;
 // CONCATENATED MODULE: ./src/classic/services/AddressMatchService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -8932,7 +8917,7 @@ SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_Addres
 // CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9074,7 +9059,7 @@ SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9136,7 +9121,7 @@ SuperMap.KernelDensityJobsService = KernelDensityJobsService_KernelDensityJobsSe
 // CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9197,7 +9182,7 @@ SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService_SingleObjec
 // CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9262,7 +9247,7 @@ SuperMap.SummaryMeshJobsService = SummaryMeshJobsService_SummaryMeshJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9323,7 +9308,7 @@ SuperMap.SummaryRegionJobsService = SummaryRegionJobsService_SummaryRegionJobsSe
 // CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9440,7 +9425,7 @@ SuperMap.VectorClipJobsParameter = VectorClipJobsParameter_VectorClipJobsParamet
 // CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9501,7 +9486,7 @@ SuperMap.VectorClipJobsService = VectorClipJobsService_VectorClipJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9565,7 +9550,7 @@ SuperMap.OverlayGeoJobsService = OverlayGeoJobsService_OverlayGeoJobsService;
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9624,7 +9609,7 @@ SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService_BuffersAnalystJob
 // CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9685,7 +9670,7 @@ SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService_TopologyVal
 // CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -9746,7 +9731,7 @@ SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService_SummaryAttr
 // CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
@@ -10591,7 +10576,7 @@ SuperMap_SuperMap.REST.ProcessingService = ProcessingService_ProcessingService;
 // CONCATENATED MODULE: ./src/classic/services/index.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 // CONCATENATED MODULE: ./src/classic/index.js

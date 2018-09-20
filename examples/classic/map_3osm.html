@@ -21,7 +21,7 @@
             new SuperMap.Control.MousePosition()
         ]
     });
-    osmLayer = new SuperMap.Layer.OSM();
+    osmLayer = new SuperMap.Layer.OSM("OSM");
     vector = new SuperMap.Layer.Vector("vector");
     map.addLayers([osmLayer, vector]);
     addData();

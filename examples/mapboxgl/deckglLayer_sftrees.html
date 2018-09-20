@@ -127,8 +127,8 @@
         url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var map, popup;
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-            " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
+        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
 
     map = new mapboxgl.Map({
         container: 'map',
@@ -188,7 +188,7 @@
                     numberOfLights: 4 //光照值
                 },
                 //如需了解其他配置详情，请查看 DeckglLayer api
-                onHover: (feature) => {
+                onHover: function (feature) {
                     if (!popup) {
                         popup = new mapboxgl.Popup({
                             anchor: 'bottom',
@@ -209,7 +209,7 @@
                 }
             },
             callback: {
-                getPosition: (feature) => {
+                getPosition: function (feature) {
                     if (!feature.latitude || !feature.longitude) {
                         return [0, 0]
                     }
