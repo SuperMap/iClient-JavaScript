@@ -30,6 +30,15 @@
             z-index: 100;
             border-radius: 4px;
         }
+
+        .layerItems {
+            border: 1px solid #999;
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            background-color: rgba(255,255,255,0.5);
+            padding-right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -38,10 +47,13 @@
         <h5 class='panel-title text-center' data-i18n="resources.text_cartoCSSHightlight"></h5></div>
     <div class='panel-body content'>
         <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelHighlight"
-               onclick="layer.unHightlightFeatures();closeInfoWin();"/>
-        <ul id='layerItems' style="display: none;position: absolute;"></ul>
+               onclick="closeInfoWin();"/>
     </div>
 </div>
+<div class="layerItems">选择需要高亮的要素：
+    <ul id='layerItems'></ul>
+</div>
+
 <div id="map"></div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/classic/include-classic.js"></script>
@@ -57,7 +69,7 @@
         }
 </script>
 <script>
-    var map, layer, layerItems, infowin, featureInfoes,
+    var map, layer, layerItems,layerItemsContainer, infowin, featureInfoes,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-china400/rest/maps/China";
     init();
@@ -67,6 +79,7 @@
             widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
+        layerItemsContainer = document.getElementsByClassName('layerItems')[0];
         layerItems = document.getElementById('layerItems');
         map = new SuperMap.Map("map", {
             controls: [
@@ -96,11 +109,12 @@
                     while (layerItems.firstChild) {
                         layerItems.removeChild(layerItems.firstChild);
                     }
-                    layerItems.style.top = evt.clientY + 'px';
-                    layerItems.style.left = evt.clientX + 'px';
+                    layerItemsContainer.style.top = evt.clientY + 'px';
+                    layerItemsContainer.style.left = evt.clientX + 'px';
                     for (var i = 0, len = featureInfoes.length; i < len; i++) {
                         var li = document.createElement('li');
                         li.innerHTML = featureInfoes[i].cartoLayer.layerName;
+                        console.log(featureInfoes[i]);
                         li.setAttribute('data-index', i);
                         layerItems.appendChild(li);
                         if (i !== (len - 1)) {
@@ -108,17 +122,18 @@
                         }
                         li.onclick = liClickHandle;
                     }
-                    layerItems.style.display = 'block';
+
+                    layerItemsContainer.style.display = 'block';
                 } else {
-                    layerItems.style.display = 'none';
+                    layerItemsContainer.style.display = 'none';
                 }
 
             },
             'rightclick': function () {
-                layerItems.style.display = 'none';
+                layerItemsContainer.style.display = 'none';
             },
             'move': function () {
-                layerItems.style.display = 'none';
+                layerItemsContainer.style.display = 'none';
             }
         });
     }
@@ -131,7 +146,7 @@
         layer.highlightFeatures(featureInfoes[index]);
         var lonlat = map.getLonLatFromViewPortPx(featureInfoes.xy);
         openPopup(featureInfoes[index].feature, lonlat);
-        layerItems.style.display = 'none';
+        layerItemsContainer.style.display = 'none';
     }
 
 
@@ -171,6 +186,7 @@
     }
 
     function closeInfoWin() {
+        layer.unHightlightFeatures();
         if (infowin) {
             try {
                 infowin.hide();

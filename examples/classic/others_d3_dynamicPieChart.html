@@ -15,7 +15,8 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" exclude="iclient-classic" include="d3" src="../../dist/classic/include-classic.js"></script>
+<script type="text/javascript" exclude="iclient-classic" include="d3"
+        src="../../dist/classic/include-classic.js"></script>
 <script type="text/javascript">
     var map, layer, utfgrid, control, d3Layer,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
@@ -23,6 +24,7 @@
     var pieChartDom;
     var elementsDiv;
     var isMapMoving = false;
+
     //判断浏览器是否支持 Svg
     function hasSVG() {
         var doc = document;
@@ -87,11 +89,12 @@
         //创建图表 div, 设置其基本属性, 并添加到  Elements 图层
         pieChartDom = document.createElement("div");
         pieChartDom.id = "piechart";
-        pieChartDom.style.width = 128;
-        pieChartDom.style.height = 128;
+        pieChartDom.style.width = "128px";
+        pieChartDom.style.height = "128px";
         pieChartDom.style.position = "absolute";
-        pieChartDom.style.opacity = 0.8;
+        pieChartDom.style.opacity = "0.8";
         elementsDiv.appendChild(pieChartDom);
+        console.log(pieChartDom.style.width);
 
         //创建 UTFGrid 图层，用于更新饼图数据
         utfgrid = new SuperMap.Layer.UTFGrid("UTFGridLayer", url,
@@ -113,6 +116,7 @@
         });
         map.addControl(control);
     }
+
     $(document).ready(function () {
         init();
     });
@@ -145,13 +149,14 @@
                     ];
 
                     //取图表 div 大小作为创建图表的参数
-                    var width = parseFloat(pieChartDom.style.width),
-                        height = parseFloat(pieChartDom.style.height),
+//                    console.log(pieChartDom);
+                    var width = parseFloat(128),
+                        height = parseFloat(128),
                         radius = Math.min(width, height) / 2;
 
                     //图表位置
-                    pieChartDom.style.left = pixel.x - width / 2;
-                    pieChartDom.style.top = pixel.y - height / 2;
+                    pieChartDom.style.left = pixel.x - width / 2+"px";
+                    pieChartDom.style.top = pixel.y - height / 2+"px";
 
                     var color = d3.scale.ordinal()
                         .range(["#1874CD", "#87CEFA"]);
@@ -199,6 +204,7 @@
             }
         }
     };
+
     //添加图层
     function addLayer() {
         var center = new SuperMap.LonLat(9733502.481499, 4614406.969325);
