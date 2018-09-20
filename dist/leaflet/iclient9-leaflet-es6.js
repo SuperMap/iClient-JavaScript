@@ -4138,43 +4138,43 @@ module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/common/css/supermapol-icons.css
-var supermapol_icons = __webpack_require__(131);
+var supermapol_icons = __webpack_require__(134);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/widgets-icon.css
-var widgets_icon = __webpack_require__(125);
+var widgets_icon = __webpack_require__(127);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/Icon.css
-var Icon = __webpack_require__(120);
+var Icon = __webpack_require__(122);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/OpenFile.css
-var OpenFile = __webpack_require__(108);
+var OpenFile = __webpack_require__(110);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/MessageBox.css
-var MessageBox = __webpack_require__(107);
+var MessageBox = __webpack_require__(109);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/DataFlow.css
-var DataFlow = __webpack_require__(106);
+var DataFlow = __webpack_require__(108);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/POISearch.css
-var POISearch = __webpack_require__(105);
+var POISearch = __webpack_require__(107);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetContainer.css
-var WidgetContainer = __webpack_require__(104);
+var WidgetContainer = __webpack_require__(106);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetDropDownBox.css
-var WidgetDropDownBox = __webpack_require__(103);
+var WidgetDropDownBox = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/WidgetSelect.css
-var WidgetSelect = __webpack_require__(102);
+var WidgetSelect = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var CityTabsPage = __webpack_require__(134);
+var CityTabsPage = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/NavTabsPage.css
-var NavTabsPage = __webpack_require__(101);
+var NavTabsPage = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(132);
+var PaginationContainer = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/common/widgets/css/PopContainer.css
 var PopContainer = __webpack_require__(100);
@@ -7205,7 +7205,7 @@ SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
 
 /**
  * @description 获取文本外接矩形宽度与高度。
- * @param {SuperMap.Style} style - 文本样式。
+ * @param {SuperMap.ThemeStyle} style - 文本样式。
  * @param {string} text - 文本内容。
  * @param {Object} element - DOM 元素。
  * @returns {Object} 返回裁剪后的宽度，高度信息。
@@ -64965,14 +64965,10 @@ class IndexTabsPageContainer {
     }
 
 }
-// EXTERNAL MODULE: ./src/common/widgets/css/CityTabsPage.css
-var css_CityTabsPage = __webpack_require__(134);
-
 // CONCATENATED MODULE: ./src/common/widgets/templates/CityTabsPage.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -65225,9 +65221,6 @@ class NavTabsPage {
     }
 
 }
-// EXTERNAL MODULE: ./src/common/widgets/css/PaginationContainer.css
-var PaginationContainer = __webpack_require__(132);
-
 // CONCATENATED MODULE: ./src/common/widgets/templates/PaginationContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -65235,12 +65228,11 @@ var PaginationContainer = __webpack_require__(132);
 
 
 
-
 /**
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
  */
-class PaginationContainer_PaginationContainer {
+class PaginationContainer {
     constructor(contents = null, pageCounts = 0) {
         this.currentPage = 0;
         this.pageNumberLis = [];
@@ -65535,7 +65527,7 @@ class PaginationContainer_PaginationContainer {
 
 }
 
-SuperMap.Widgets.PaginationContainer = PaginationContainer_PaginationContainer;
+SuperMap.Widgets.PaginationContainer = PaginationContainer;
 // CONCATENATED MODULE: ./src/common/widgets/util/Util.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -81863,7 +81855,6 @@ external_L_default.a.supermap.processingService = processingService;
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务来源 iServer|iPortal|online。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.returnFeatureWithFieldCaption=false] - 请求是否携带 cookie。
  * @example
  * L.supermap.queryService(url).queryByBounds(param,function(result){
  *   //doSomething
@@ -81892,7 +81883,6 @@ var services_QueryService_QueryService = ServiceBase.extend({
                 processCompleted: callback,
                 processFailed: callback
             },
-            returnFeatureWithFieldCaption: me.options.returnFeatureWithFieldCaption,
             format: me._processFormat(resultFormat)
         });
 
@@ -83638,7 +83628,7 @@ var POISearchView = external_L_default.a.Control.extend({
         //--------搜索按钮 END
 
         //查询结果页面
-        const resultDomObj = new PaginationContainer_PaginationContainer();
+        const resultDomObj = new PaginationContainer();
         this._resultDomObj = resultDomObj;
         const resultContainer = function createResultPage() {
             const resultContainer = resultDomObj.getElement();
@@ -100625,8 +100615,18 @@ module.exports = __webpack_require__(41);
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 109 */,
-/* 110 */,
+/* 109 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 111 */,
 /* 112 */,
 /* 113 */,
@@ -100636,39 +100636,29 @@ module.exports = __webpack_require__(41);
 /* 117 */,
 /* 118 */,
 /* 119 */,
-/* 120 */
+/* 120 */,
+/* 121 */,
+/* 122 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 121 */,
-/* 122 */,
 /* 123 */,
 /* 124 */,
-/* 125 */
+/* 125 */,
+/* 126 */,
+/* 127 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 126 */,
-/* 127 */,
 /* 128 */,
 /* 129 */,
 /* 130 */,
-/* 131 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 132 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 131 */,
+/* 132 */,
 /* 133 */,
 /* 134 */
 /***/ (function(module, exports) {

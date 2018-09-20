@@ -1,6 +1,6 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import './supermapol-icons.css';
 
 //微件样式
@@ -22,4 +22,4 @@ import '../widgets/css/PopContainer.css';
 import '../widgets/css/Analysis.css';
 import '../widgets/css/DistributedAnalysis.css'
 import '../widgets/css/ClientComputation.css'
-import '../../../node_modules/codemirror-colorpicker/dist/codemirror-colorpicker.css'
+import 'codemirror-colorpicker/dist/codemirror-colorpicker.css'

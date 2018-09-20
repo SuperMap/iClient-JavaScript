@@ -1,6 +1,6 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at/r* http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
     SuperMap
 } from '../SuperMap';
@@ -27,7 +27,7 @@ import {
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间,单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
- * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
+ * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  */
 export class QueryParameters {
 
@@ -95,7 +95,7 @@ export class QueryParameters {
         this.returnCustomResult = false;
         /**
          * @member {boolean} [SuperMap.QueryParameters.prototype.returnFeatureWithFieldCaption=false]
-         * @description 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名;为 true 时，返回的是字段别名。
+         * @description 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
          */
         this.returnFeatureWithFieldCaption = false;
         Util.extend(this, options);
