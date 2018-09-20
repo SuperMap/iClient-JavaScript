@@ -339,7 +339,8 @@ describe('Util', () =>{
         var text = "北京超图";
         var dom = document.createElement('div');
         var result=Util.getTextBounds(style,text,dom);
-        expect(result.textWidth).toEqual(65);
+        expect(result.textWidth).toBeGreaterThan(60);
+        expect(result.textWidth).toBeLessThan(70);
         expect(result.textHeight).toEqual(18);
     });
 
