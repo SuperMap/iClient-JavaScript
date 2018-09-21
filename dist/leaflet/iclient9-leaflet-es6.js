@@ -11874,7 +11874,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
             /**
              * @function SuperMap.Format.GeoJSON.extract.feature
              * @description 返回一个表示单个要素对象的 GeoJSON 的一部分。
-             * @param {Object} feature - iServer 要素对象。
+             * @param {SuperMap.ServerFeature} feature - iServer 要素对象。
              * @returns {Object} 一个表示点的对象。
              */
             'feature': function (feature) {
@@ -12049,7 +12049,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     /**
      * @function SuperMap.Format.GeoJSON.prototype.read
      * @description 反序列化一个 GeoJSON 字符串。
-     * @param {string} json - GeoJSON 字符串
+     * @param {GeoJSONObject} json - GeoJSON 字符串
      * @param {Function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
      * @returns {Object}  返回值依赖于 type 参数的值。
@@ -12166,7 +12166,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     /**
      * @function SuperMap.Format.GeoJSON.prototype.parseFeature
      * @description 将一个 GeoJSON 中的 feature 转化成 {@link SuperMap.Feature.Vector}> 对象。
-     * @param {Object} obj - 从 GeoJSON 对象中创建一个对象。
+     * @param {GeoJSONObject} obj - 从 GeoJSON 对象中创建一个对象。
      * @returns {SuperMap.Feature.Vector} 一个要素。
      */
     parseFeature(obj) {
@@ -12193,7 +12193,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     /**
      * @function SuperMap.Format.GeoJSON.prototype.parseGeometry
      * @description 将一个 GeoJSON 中的几何要素转化成 {@link SuperMap.Geometry} 对象。
-     * @param {Object} obj - 从 GeoJSON 对象中创建一个对象。
+     * @param {GeoJSONObject} obj - 从 GeoJSON 对象中创建一个对象。
      * @returns {SuperMap.Geometry} 一个几何要素。
      */
     parseGeometry(obj) {
@@ -12235,9 +12235,9 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
     /**
      * @function SuperMap.Format.GeoJSON.write
      * @description 序列化一个要素对象，几何对象，要素对象数组为一个 GeoJSON 字符串。
-     * @param {Object} obj - 一个 {@link SuperMap.Feature.Vector}> 对象，一个 {@link SuperMap.Geometry} 对象或者一个要素对象数组。
+     * @param {Object} obj - 一个 {@link SuperMap.Feature.Vector} 对象，一个 {@link SuperMap.Geometry} 对象或者一个要素对象数组。
      * @param {boolean} [pretty=false] - 是否使用换行和缩进来控制输出。
-     * @returns {string} 一个 GeoJSON 字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
+     * @returns {GeoJSONObject} 一个 GeoJSON 字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
      */
     write(obj, pretty) {
         var geojson = {
@@ -12275,7 +12275,7 @@ class GeoJSON_GeoJSON extends JSON_JSONFormat {
      * @function SuperMap.Format.GeoJSON.createCRSObject
      * @description 从一个要素对象中创建一个坐标参考系对象。
      * @param {SuperMap.Feature.Vector} object - 要素对象。
-     * @returns {Object} 一个可作为 GeoJSON 对象的 CRS 属性使用的对象。
+     * @returns {GeoJSONObject} 一个可作为 GeoJSON 对象的 CRS 属性使用的对象。
      */
     createCRSObject(object) {
         var proj = object.layer.projection.toString();
@@ -18852,7 +18852,7 @@ SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter_BuffersAnalys
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
-*/
+ */
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
     constructor(url, options) {
@@ -18886,12 +18886,18 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(me._processUrl(url), null, {proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(me._processUrl(url), null, {
+            proxy: me.proxy
+        }).then(function (response) {
             return response.json();
         }).then(function (result) {
-            me.events.triggerEvent("processCompleted", {result: result});
+            me.events.triggerEvent("processCompleted", {
+                result: result
+            });
         }).catch(function (e) {
-            me.eventListeners.processFailed({error: e});
+            me.eventListeners.processFailed({
+                error: e
+            });
         });
     }
 
@@ -18904,14 +18910,19 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addJob(url, params, paramType, seconds) {
-        var me = this, parameterObject = null;
+        var me = this,
+            parameterObject = null;
         if (params && params instanceof paramType) {
             parameterObject = new Object();
             paramType.toObject(params, parameterObject);
         }
         var options = {
             proxy: me.proxy,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            withCredentials: me.withCredentials,
+            isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
@@ -18922,7 +18933,9 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
                 me.serviceProcessFailed(result);
             }
         }).catch(function (e) {
-            me.serviceProcessFailed({error: e});
+            me.serviceProcessFailed({
+                error: e
+            });
         });
     }
 
@@ -18932,23 +18945,35 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(me._processUrl(result.newResourceLocation), {_t: new Date().getTime()})
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                        _t: new Date().getTime()
+                    })
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                    me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                    if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                        me.events.triggerEvent("processRunning", {
+                            id: job.id,
+                            state: job.state
+                        });
+                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                            clearInterval(id);
+                            me.events.triggerEvent("processFailed", {
+                                error: job.state.errorMsg,
+                                state: job.state.runState
+                            });
+                        }
+                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                            clearInterval(id);
+                            me.events.triggerEvent("processCompleted", {
+                                result: job
+                            });
+                        }
+                    }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
-                    }
-                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                        clearInterval(id);
-                        me.events.triggerEvent("processCompleted", {result: job});
-                    }
-                }).catch(function (e) {
-                    clearInterval(id);
-                    me.events.triggerEvent("processFailed", {error: e});
-                });
+                        me.events.triggerEvent("processFailed", {
+                            error: e
+                        });
+                    });
             }, seconds);
         }
     }
@@ -18971,7 +18996,6 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
 }
 
 SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
-
 // CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -19162,7 +19186,7 @@ class NetworkAnalystServiceBase_NetworkAnalystServiceBase extends CommonServiceB
      * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。只处理结果中的路由，由子类实现。
      * @param {Object} result - 服务器返回的结果对象。
-     * @returns {Object} GeoJSON 对象。
+     * @returns {GeoJSONObject} GeoJSON 对象。
      */
     toGeoJSONResult(result) { // eslint-disable-line no-unused-vars
         return null;
@@ -20478,8 +20502,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase_CommonServiceBas
 
     /**
      * @function SuperMap.DataFlowService.prototype.broadcast
-     * @description 加载广播数据
-     * @param {Object} geoJSONFeature - JSON 格式的要素数据
+     * @description 加载广播数据。
+     * @param {GeoJSONObject} geoJSONFeature - JSON 格式的要素数据。
      */
     broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket||!this.broadcastWebSocket.isOpen) {
@@ -21648,7 +21672,7 @@ SuperMap.DensityAnalystService = DensityAnalystService_DensityAnalystService;
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @category iServer Data
  * @param {Object} options - 参数。 
- * @param {Array.<SuperMap.Feature.Vector|GeoJSON|ol.feature>} options.features - 当前需要创建或者是修改的要素集。 
+ * @param {Array.<SuperMap.Feature.Vector|GeoJSONObject|ol.feature>} options.features - 当前需要创建或者是修改的要素集。 
  * @param {boolean} [options.returnContent=false] - 是返回创建要素的 ID 数组还是返回 featureResult 资源的 URI。 
  * @param {SuperMap.EditType} [options.editType=SuperMap.EditType.ADD] - POST 动作类型 (ADD、UPDATE、DELETE)。 
  * @param {Array.<string|integer>} [options.IDs] - 删除要素时的要素的 ID 数组。 
@@ -21670,7 +21694,7 @@ class EditFeaturesParameters_EditFeaturesParameters {
         this.dataSetName = null;
 
         /**
-         * @member {Array.<SuperMap.Feature.Vector|GeoJSON|ol.feature>} SuperMap.EditFeaturesParameters.prototype.features
+         * @member {Array.<SuperMap.Feature.Vector|GeoJSONObject|ol.feature>} SuperMap.EditFeaturesParameters.prototype.features
          * @description 当前需要创建或者是修改的要素集。 
          */
         this.features = null;
@@ -24655,8 +24679,8 @@ SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter_GeoHashGridAggParamet
  * @param {Object} options - 参数。 
  * @param {Object} options.operateGeometry - 叠加分析的操作几何对象。 </br>
  *                                   点类型可以是：{@link SuperMap.Geometry.Point}|{@link L.Point}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
- *                                   线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|GeoJSON。</br>
- *                                   面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|GeoJSON。 
+ *                                   线类型可以是：{@link SuperMap.Geometry.LineString}|{@link SuperMap.Geometry.LinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link GeoJSONObject}。</br>
+ *                                   面类型可以是：{@link SuperMap.Geometry.Polygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link GeoJSONObject}。 
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。 
  * @param {Array.<Object>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。 
  * @param {Array.<Object>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。 
@@ -44928,145 +44952,145 @@ class ThemeStyle_ThemeStyle {
     constructor(options) {
         options = options || {};
         /**
-         * @member {boolean} - [SuperMap.ThemeStyle.prototype.fill=true]
+         * @member {boolean} [SuperMap.ThemeStyle.prototype.fill=true]
          * @description 是否填充，不需要填充则设置为 false。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
          */
         this.fill = true;
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.fillColor="#000000"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.fillColor="#000000"]
          * @description 十六进制填充颜色。
          */
         this.fillColor = "#000000";
         /**
-         *  @member {number} - [SuperMap.ThemeStyle.prototype.fillOpacity=1]
+         *  @member {number} [SuperMap.ThemeStyle.prototype.fillOpacity=1]
          *  @description 填充不透明度。取值范围[0, 1]。
          */
         this.fillOpacity = 1;
         /**
-         * @member {boolean} - [SuperMap.ThemeStyle.prototype.stroke=false]
+         * @member {boolean} [SuperMap.ThemeStyle.prototype.stroke=false]
          * @description  是否描边，不需要描边则设置为false。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
          */
         this.stroke = false;
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.strokeColor="#000000"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.strokeColor="#000000"]
          * @description  十六进制描边颜色。
          */
         this.strokeColor = "#000000";
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.strokeOpacity=1]
+         * @member {number} [SuperMap.ThemeStyle.prototype.strokeOpacity=1]
          * @description  描边的不透明度。取值范围[0, 1]。
          */
         this.strokeOpacity = 1;
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.strokeWidth=1]
+         * @member {number} [SuperMap.ThemeStyle.prototype.strokeWidth=1]
          * @description  线宽度/描边宽度。
          */
         this.strokeWidth = 1;
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.strokeLinecap="butt"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.strokeLinecap="butt"]
          * @description  线帽样式；strokeLinecap 有三种类型 “butt", "round", "square" 。
          */
         this.strokeLinecap = "butt";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.strokeLineJoin="miter"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.strokeLineJoin="miter"]
          * @description  线段连接样式；strokeLineJoin 有三种类型 “miter", "round", "bevel"。
          */
         this.strokeLineJoin = "miter";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.strokeDashstyle="solid"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.strokeDashstyle="solid"]
          * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
          * solid 表示实线。
          */
         this.strokeDashstyle = "solid";
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.pointRadius=6（像素）]
-         * @description   点半径。
+         * @member {number} [SuperMap.ThemeStyle.prototype.pointRadius=6]
+         * @description   点半径。单位为像素。
          */
         this.pointRadius = 6;
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.shadowBlur=0]
+         * @member {number} [SuperMap.ThemeStyle.prototype.shadowBlur=0]
          * @description   阴影模糊度，（大于 0 有效）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
          */
         this.shadowBlur = 0;
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.shadowColor='#000000']
+         * @member {string} [SuperMap.ThemeStyle.prototype.shadowColor='#000000']
          * @description  阴影颜色。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
          */
         this.shadowColor = "#000000";
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.shadowOffsetX=0]
+         * @member {number} [SuperMap.ThemeStyle.prototype.shadowOffsetX=0]
          * @description 阴影 X 方向偏移值。
          */
         this.shadowOffsetX = 0;
         /**
-         * @member {number} - SuperMap.ThemeStyle.prototype.shadowOffsetY
+         * @member {number} SuperMap.ThemeStyle.prototype.shadowOffsetY
          * @description Y 方向偏移值。
          */
         this.shadowOffsetY = 0;
         /**
-         * @member {string} - SuperMap.ThemeStyle.prototype.label
+         * @member {string} [SuperMap.ThemeStyle.prototype.label]
          * @description 专题要素附加文本标签内容。
          */
         this.label = "";
         /**
-         * @member boolean - SuperMap.ThemeStyle.prototype.labelRect
+         * @member {boolean} [SuperMap.ThemeStyle.prototype.labelRect=false]
          * @description 是否显示文本标签矩形背景。
          */
         this.labelRect = false;
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.fontColor]
+         * @member {string} [SuperMap.ThemeStyle.prototype.fontColor]
          * @description 附加文本字体颜色。
          */
         this.fontColor = "";
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.fontSize=12]
+         * @member {number} [SuperMap.ThemeStyle.prototype.fontSize=12]
          * @description 附加文本字体大小,单位是像素。
          */
         this.fontSize = 12;
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.fontStyle="normal"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.fontStyle="normal"]
          * @description 附加文本字体样式。可设值："normal", "italic", "oblique"。
          */
         this.fontStyle = "normal";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.fontVariant="normal"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.fontVariant="normal"]
          * @description 附加文本字体变体。可设值："normal", "small-caps"。
          */
         this.fontVariant = "normal";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.fontWeight="normal"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.fontWeight="normal"]
          * @description 附加文本字体粗细。可设值："normal", "bold", "bolder", "lighter"。
          */
         this.fontWeight = "normal";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.fontFamily="arial,sans-serif"]
+         * @member {string} [SuperMap.ThemeStyle.prototype.fontFamily="arial,sans-serif"]
          * @description 附加文本字体系列。fontFamily 值是字体族名称或/及类族名称的一个优先表，每个值逗号分割，浏览器会使用它可识别的第一个
          * 可以使用具体的字体名称（"times"、"courier"、"arial"）或字体系列名称（"serif"、"sans-serif"、"cursive"、"fantasy"、"monospace"）。
          */
         this.fontFamily = "arial,sans-serif";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.labelPosition='top']
+         * @member {string} [SuperMap.ThemeStyle.prototype.labelPosition='top']
          * @description 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'。
          */
         this.labelPosition = "top";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.labelAlign='center']
+         * @member {string} [SuperMap.ThemeStyle.prototype.labelAlign='center']
          * @description 附加文本水平对齐。可以是 'left', 'right', 'center'。
          */
         this.labelAlign = "center";
         /**
-         * @member {string} - [SuperMap.ThemeStyle.prototype.labelBaseline='middle']
+         * @member {string} [SuperMap.ThemeStyle.prototype.labelBaseline='middle']
          * @description  附加文本垂直对齐。 可以是 'top', 'bottom', 'middle'。
          */
         this.labelBaseline = "middle";
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.labelXOffset=0]
-         * @description  附加文本在x轴方向的偏移量。
+         * @member {number} [SuperMap.ThemeStyle.prototype.labelXOffset=0]
+         * @description  附加文本在 X 轴方向的偏移量。
          */
         this.labelXOffset = 0;
         /**
-         * @member {number} - [SuperMap.ThemeStyle.prototype.labelYOffset=0]
-         * @description 附加文本在y轴方向的偏移量。
+         * @member {number} [SuperMap.ThemeStyle.prototype.labelYOffset=0]
+         * @description 附加文本在 Y 轴方向的偏移量。
          */
         this.labelYOffset = 0;
 
@@ -57826,49 +57850,49 @@ class ThemeVector_ThemeVector extends feature_Theme_Theme {
         }
 
         /**
-         * @member {SuperMap.Bounds} - SuperMap.Feature.Theme.Vector.prototype.dataBounds
+         * @member {SuperMap.Bounds} [SuperMap.Feature.Theme.Vector.prototype.dataBounds]
          * @description 用户数据的（feature.geometry）地理范围。
          */
         this.dataBounds = data.geometry.getBounds();
 
         /**
-         * @member {number} - [SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel=2]
+         * @member {number} [SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel=2]
          * @description 节点抽稀像素距离。
          */
         this.nodesClipPixel = 2;
 
         /**
-         * @member {boolean} -  [SuperMap.Feature.Theme.Vector.prototype.isHoverAble=true]
+         * @member {boolean} [SuperMap.Feature.Theme.Vector.prototype.isHoverAble=true]
          * @description 图形是否可 hover。
          */
         this.isHoverAble = true;
 
         /**
-         * @member {boolean} - [SuperMap.Feature.Theme.Vector.prototype.isMultiHover=true]
+         * @member {boolean} [SuperMap.Feature.Theme.Vector.prototype.isMultiHover=true]
          * @description 是否使用多图形高亮，isHoverAble 为 true 时生效。
          */
         this.isMultiHover = true;
 
         /**
-         * @member {boolean} - [SuperMap.Feature.Theme.Vector.prototype.isClickAble=true]
+         * @member {boolean} [SuperMap.Feature.Theme.Vector.prototype.isClickAble=true]
          * @description 图形是否可点击。
          */
         this.isClickAble = true;
 
         /**
-         * @member {Object} - [SuperMap.Feature.Theme.Vector.prototype.highlightStyle]
+         * @member {Object} [SuperMap.Feature.Theme.Vector.prototype.highlightStyle]
          * @description 高亮样式。
          */
         this.highlightStyle = null;
 
         /**
-         * @member {Object} - SuperMap.Feature.Theme.Vector.prototype.shapeOptions
+         * @member {Object} [SuperMap.Feature.Theme.Vector.prototype.shapeOptions]
          * @description 添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做。
          */
         this.shapeOptions = {};
 
         /**
-         * @member {Object} - SuperMap.Feature.Theme.Vector.prototype.style
+         * @member {Object} [SuperMap.Feature.Theme.Vector.prototype.style]
          * @description 可视化图形的 style。在子类中规定其对象结构和默认属性值。
          */
         this.style = style || {};
@@ -65632,10 +65656,10 @@ let FileReaderUtil = {
 
     /**
      * @function SuperMap.Widgets.FileReaderUtil.prototype.processDataToGeoJson
-     * @description 将读取回来得数据统一处理为 geoJson 格式
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式
      * @param {string} type - 文件类型
      * @param {Object} data - 读取返回的数据对象
-     * @returns {Object} geojson - 返回标准 GeoJson 规范格式数据
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
      * @private
      */
     processDataToGeoJson(type, data) {
@@ -65671,7 +65695,7 @@ let FileReaderUtil = {
      * @function SuperMap.Widgets.FileReaderUtil.prototype.processExcelDataToGeoJson
      * @description 表格文件数据处理
      * @param {Object} data - 读取的表格文件数据
-     * @returns {Object} - 返回标准 GeoJson 规范格式数据
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
      * @private
      */
     processExcelDataToGeoJson(data) {
@@ -67570,10 +67594,10 @@ external_L_default.a.Util.NormalizeScale = NormalizeScale;
  * @function L.Util.transform
  * @description 将要素转换为指定坐标。
  * @param {(L.Marker|L.CircleMarker|L.Polyline|L.Polygon|L.Rectangle|L.LatLngBounds|L.Bounds|Object)} feature - 待转要素包括 Leaflet Vector Layers
- *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds} 类型和 GeoJSON 规范数据类型。
+ *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds}|{@link GeoJSONObject} 类型。
  * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换源坐标系。
  * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系。
- * @returns {Object} 返回 GeoJSON 规范数据类型。
+ * @returns {GeoJSONObject} 返回 GeoJSON 规范数据类型。
  */
 var transform = function (feature, sourceCRS = external_L_default.a.CRS.EPSG4326, targetCRS) {
     let selfFeatures = null;
@@ -67885,7 +67909,7 @@ external_L_default.a.supermap.cloudTileLayer = cloudTileLayer;
  *      L.supermap.imageMapLayer(url).addTo(map);
  * @param {string} url - 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param {Object} options - 图层可选参数。
- * @param {number} [options.layersID] - 如果有 layersID，则是在使用专题图。
+ * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 地图瓦片是否透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务器缓存出图。
@@ -67907,6 +67931,9 @@ external_L_default.a.supermap.cloudTileLayer = cloudTileLayer;
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @fires L.supermap.imageMapLayer#load
+ * @fires L.supermap.imageMapLayer#error
+ * @fires L.supermap.imageMapLayer#loading
  */
 var ImageMapLayer = external_L_["Layer"].extend({
 
@@ -67952,7 +67979,7 @@ var ImageMapLayer = external_L_["Layer"].extend({
         //平移时图层延迟刷新间隔时间。
         updateInterval: 150,
         //启用托管地址。
-        tileProxy:null,
+        tileProxy: null,
         format: 'png'
 
     },
@@ -68172,8 +68199,12 @@ var ImageMapLayer = external_L_["Layer"].extend({
                 map.removeLayer(newImage);
             }
 
-
-            this.fire('load', {bounds: bounds});
+            /**
+             * @event L.supermap.imageMapLayer#load
+             * @description 请求图层加载完成后触发。
+             * @property {L.bounds} bounds  - 图层 bounds。
+             */
+            this.fire('load', { bounds: bounds });
         };
 
 
@@ -68181,11 +68212,20 @@ var ImageMapLayer = external_L_["Layer"].extend({
 
         image.once('error', function () {
             this._map.removeLayer(image);
+            /**
+             * @event L.supermap.imageMapLayer#error
+             * @description 请求图层加载失败后触发。
+             */
             this.fire('error');
             image.off('load', onLoad, this);
         }, this);
 
-        this.fire('loading', {bounds: bounds});
+        /**
+         * @event L.supermap.imageMapLayer#loading
+         * @description 请求图层加载中触发。
+         * @property {L.bounds} bounds  - 图层 bounds。
+         */
+        this.fire('loading', { bounds: bounds });
 
     },
 
@@ -68488,7 +68528,7 @@ external_L_default.a.supermap.tiandituTileLayer = tiandituTileLayer;
  *      L.supermap.tiledMapLayer(url).addTo(map);
  * @param {string} url - 影像图层地址。
  * @param {Object} options - 影像图层参数。
- * @param {number} [options.layersID] - 图层 ID，如果有 layersID，则是在使用专题图。
+ * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 是否背景透明。
  * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
@@ -68504,6 +68544,8 @@ external_L_default.a.supermap.tiandituTileLayer = tiandituTileLayer;
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @fires L.supermap.tiledMapLayer#tilesetsinfoloaded
+ * @fires L.supermap.tiledMapLayer#tileversionschanged
  */
 var TiledMapLayer = external_L_default.a.TileLayer.extend({
 
@@ -68649,6 +68691,11 @@ var TiledMapLayer = external_L_default.a.TileLayer.extend({
         if (!this.tileSets) {
             return;
         }
+        /**
+         * @event L.supermap.tiledMapLayer#tilesetsinfoloaded
+         * @description 瓦片集信息设置完成后触发。
+         * @property {Array.<Object>} tileVersions  - 瓦片集信息。
+         */
         this.fire('tilesetsinfoloaded', {
             tileVersions: this.tileSets.tileVersions
         });
@@ -68695,6 +68742,11 @@ var TiledMapLayer = external_L_default.a.TileLayer.extend({
             var result = me.mergeTileVersionParam(name);
             if (result) {
                 me.tileSetsIndex = me.tempIndex;
+                /**
+                 * @event L.supermap.tiledMapLayer#tileversionschanged
+                 * @description 切片的版本切换和重绘成功之后触发。
+                 * @property {Object} tileVersion  - 该版本的切片。
+                 */
                 me.fire('tileversionschanged', {
                     tileVersion: tileVersions[me.tempIndex]
                 });
@@ -69344,7 +69396,7 @@ class CartoCSSToLeaflet_CartoCSSToLeaflet {
      * @param {number} zoom - 缩放级别。
      * @param {number} scale - 比例尺。
      * @param {Array.<Object>} shader - 渲染器对象数组。
-     * @param {L.feature} feature - 要素。
+     * @param {Object} feature - 要素。
      * @param {string} [fromServer] - 服务源。
      */
     getValidStyleFromCarto(zoom, scale, shader, feature, fromServer) {
@@ -69858,8 +69910,8 @@ var ThemeLayer = external_L_default.a.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象或 L.supermap.themeFeature 类型。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
+     * @description 向专题图图层中添加数据。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -69876,8 +69928,8 @@ var ThemeLayer = external_L_default.a.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.destroyFeatures
-     * @description 销毁某个要素。
-     * @param {SuperMap.Feature.Vector} features - 将被销毁的要素。
+     * @description 销毁要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 将被销毁的要素。
      */
     destroyFeatures: function (features) {
         if (features === undefined) {
@@ -69895,7 +69947,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {L.feature} features - 将被删除得要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 将被删除的要素。
      */
     removeFeatures: function (features) {
         var me = this;
@@ -70172,7 +70224,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {Array.<SuperMap.Feature.Vector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -70208,7 +70260,7 @@ var ThemeLayer = external_L_default.a.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {
@@ -70355,8 +70407,8 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象或 L.supermap.themeFeature 类型。
-     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature)} features - 待填加的要素。
+     * @description 向专题图图层中添加数据。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待填加的要素。
      */
     addFeatures: function (features) {
         var me = this;
@@ -70383,7 +70435,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {L.features} features - 要删除的要素。
+     * @param {SuperMap.Feature.Vector} features - 要删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.clearCache();
@@ -70473,7 +70525,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
-     * @param {L.feature} feature - 要创建的要素。
+     * @param {SuperMap.Feature.Vector} feature - 要创建的要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -70960,7 +71012,7 @@ var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      /**
      * @function L.supermap.LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {L.features} features - 要删除的要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
@@ -71293,7 +71345,7 @@ var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -71352,7 +71404,7 @@ var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -72230,6 +72282,12 @@ external_L_default.a.supermap.unicodeMarker = unicodeMarker;
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @fires L.supermap.webmap#mapLoaded
+ * @fires L.supermap.webmap#coordconvertsuccess
+ * @fires L.supermap.webmap#coordconvertfailed
+ * @fires L.supermap.webmap#featureunselected
+ * @fires L.supermap.webmap#featureselected
+ * @fires L.supermap.webmap#featuremousemove
  */
 var WebMap = external_L_default.a.LayerGroup.extend({
 
@@ -72349,7 +72407,12 @@ var WebMap = external_L_default.a.LayerGroup.extend({
             }
             this.createLayer(type, layerInfo);
         }
-        this.fire('mapLoaded', {
+        /**
+         * @event L.supermap.webmap#maploaded
+         * @description 底图加载完成后触发。
+         * @property {L.Map} map  - Leaflet Map 对象。
+         */
+        this.fire('maploaded', {
             map: this._map
         });
     },
@@ -72801,7 +72864,7 @@ var WebMap = external_L_default.a.LayerGroup.extend({
         unique.style = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             unique.style.fill = false;
-        }else{
+        } else {
             unique.style.fill = true;
         }
         unique.style.stroke = true;
@@ -73240,6 +73303,11 @@ var WebMap = external_L_default.a.LayerGroup.extend({
             };
         }
         if (success) {
+            /**
+             * @event L.supermap.webmap#coordconvertsuccess
+             * @description 坐标转换成功后触发。
+             * @property {L.latLng} newCoor  - 转换成功后的坐标。
+             */
             me.fire('coordconvertsuccess', {
                 newCoor: newCoor
             });
@@ -73293,6 +73361,11 @@ var WebMap = external_L_default.a.LayerGroup.extend({
             if (!this.actived) {
                 return;
             }
+            /**
+             * @event L.supermap.webmap#coordconvertfailed
+             * @description 坐标转换失败后触发。
+             * @property {Object} err - error 对象。
+             */
             this.fire('coordconvertfailed', {
                 err: err
             });
@@ -73398,7 +73471,12 @@ var WebMap = external_L_default.a.LayerGroup.extend({
                 return;
             }
             if (this.selectedFeature) {
-                this.fire('featureUnSelected', {
+                /**
+                 * @event L.supermap.webmap#featureunselected
+                 * @description 重置选中的要素为空。
+                 * @property {SuperMap.Feature.Vector} feature - 在重置之前选中的要素。
+                 */
+                this.fire('featureunselected', {
                     feature: this.selectedFeature
                 });
                 this.selectedFeature = null;
@@ -73409,7 +73487,12 @@ var WebMap = external_L_default.a.LayerGroup.extend({
             }
             if (feature) {
                 this.selectedFeature = feature;
-                this.fire('featureSelected', {
+                /**
+                 * @event L.supermap.webmap#featureselected
+                 * @description 点击要素，要素存在之后触发。设置选中的要素。
+                 * @property {SuperMap.Feature.Vector} feature - 点击的要素。
+                 */
+                this.fire('featureselected', {
                     feature: feature
                 });
             }
@@ -73424,7 +73507,12 @@ var WebMap = external_L_default.a.LayerGroup.extend({
                     feature = themeLayer.getFeatureById(evt.target.refDataID);
                 }
                 if (feature) {
-                    this.fire('featureMousemove', {
+                    /**
+                     * @event L.supermap.webmap#featuremousemove
+                     * @description 鼠标移动到要素上之后触发。
+                     * @property {SuperMap.Feature.Vector} feature - 当前被移动到的要素。
+                     */
+                    this.fire('featuremousemove', {
                         feature: feature
                     });
                 }
@@ -73560,7 +73648,7 @@ var services_DataFlowService_DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的 GeoJSON 几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
+     * @param {Array.<GeoJSONObject>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -74364,7 +74452,7 @@ var MapvRenderer = MapVLayer.extend({
  * @extends {L.GeoJSON}
  * @param {string} url - 数据流图层服务地址
  * @param {Object} options - 设置图层参数。
- * @param {Object} [options.geometry] - GeoJSON 几何对象。
+ * @param {GeoJSONObject} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
@@ -74449,7 +74537,7 @@ var NormalRenderer = external_L_default.a.GeoJSON.extend({
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。
  'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。
- * @param {Object} [options.geometry] - GeoJSON 几何对象。
+ * @param {GeoJSONObject} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
@@ -74548,7 +74636,7 @@ var DataFlowLayer = external_L_default.a.LayerGroup.extend({
     /**
      * @function L.supermap.dataFlowLayer.prototype.setGeometry
      * @description 设置集合要素。
-     * @param {Object} geometry - 待设置的 GeoJSON 几何要素对象。
+     * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
      */
     setGeometry: function (geometry) {
         this.dataService.setGeometry(geometry);
@@ -76223,11 +76311,16 @@ var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.addFeatures 
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象 或 L.supermap.themeFeature 类型。
-     * @param {L.features} features - 待添加的要素。
+     * @description 向专题图图层中添加数据。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
+        /**
+         * @event L.supermap.GraphThemeLayer#beforefeaturesadded
+         * @description 向专题图图层中添加数据之前触发。
+         * @property {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features  - 待添加的要素。
+         */
         me.fire("beforefeaturesadded", {features: features});
 
         //转换 features 形式
@@ -76296,7 +76389,7 @@ var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素（图表）。
-     * @param {L.features} feature - 待创建的要素。
+     * @param {Object} feature - 待创建的要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -76461,7 +76554,7 @@ var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {L.features} features - 待删除的要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 待删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
@@ -77018,7 +77111,7 @@ var VectorFeatureType = {
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {L.feature} feature — 要素。
+ * @param {Object} feature — 要素。
  */
 var Symbolizer = external_L_default.a.Class.extend({
 
@@ -77102,7 +77195,7 @@ var Symbolizer = external_L_default.a.Class.extend({
  * @category Visualization VectorTile
  * @private
  * @extends {L.Path}
- * @param {L.feature} feature - 要素。
+ * @param {Object} feature - 要素。
  * @param {number} pxPerExtent - 文本符号大小。
  */
 var TextSymbolizer = external_L_default.a.Path.extend({
@@ -77323,7 +77416,7 @@ SVGRenderer.include({
  * @category Visualization VectorTile
  * @private
  * @extends {L.CircleMarker}
- * @param {L.feature} feature - 点要素。
+ * @param {Object} feature - 点要素。
  * @param {number} pxPerExtent - 点符号大小。
  */
 var PointSymbolizer = external_L_default.a.CircleMarker.extend({
@@ -77533,7 +77626,7 @@ var PolyBase = {
  * @category Visualization VectorTile
  * @private
  * @extends {L.Polyline}
- * @param {L.feature} feature - 线要素。
+ * @param {Object} feature - 线要素。
  * @param {number} pxPerExtent - 线长。
  */
 var LineSymbolizer = external_L_default.a.Polyline.extend({
@@ -77586,7 +77679,7 @@ var LineSymbolizer = external_L_default.a.Polyline.extend({
  * @category Visualization VectorTile
  * @private
  * @extends {L.Polygon}
- * @param {L.feature} feature - 面要素。
+ * @param {Object} feature - 面要素。
  * @param {number} pxPerExtent - 面积像素大小。
  */
 var RegionSymbolizer = external_L_default.a.Polygon.extend({
@@ -77942,7 +78035,7 @@ var VectorTile = external_L_default.a.Class.extend({
     /**
      * @function L.supermap.VectorTile.prototype.render
      * @description 渲染切片要素。
-     * @param {L.feature} tileFeature - 要渲染的切片要素。
+     * @param {Object} tileFeature - 要渲染的切片要素。
      * @param {Object} coords - 切片坐标参数对象。
      */
     render: function (tileFeature, coords) {
@@ -78612,7 +78705,7 @@ var TileVectorLayer = VectorGrid.extend({
      * @function L.supermap.tiledVectorLayer.prototype.getVectorTileLayerStyle
      * @description 获取图层风格信息，当 CartoCSS 中包含有对该图层的渲染信息时，优先获取，否则获取 layers 资源下 layerSytle 的渲染信息。
      * @param {Object} coords - 图层坐标参数对象。
-     * @param {L.feature} feature - 要获取的要素。
+     * @param {Object} feature - 要获取的要素。
      */
     getVectorTileLayerStyle: function (coords, feature) {
         if (!feature) {
@@ -79299,7 +79392,7 @@ var HeatMapLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 HeatMapFeature 格式。
+     * @param {(GeoJSONObject|L.supermap.heatMapFeature)} features - 待添加的要素数组。
      *
      * @example
      * var geojson = {
@@ -79670,7 +79763,7 @@ var HeatMapLayer = external_L_default.a.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 HeatMapFeature 格式。
+     * @param {(GeoJSONObject|L.supermap.heatMapFeature)} features - 待添加的要素数组。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {

@@ -134,7 +134,7 @@
             url: mapURL,
         }),
     }));
-    var processingService = new ol.supermap.ProcessingService(processingsUrl);
+    var processingService = new ol.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);

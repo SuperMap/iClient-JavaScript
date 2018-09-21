@@ -142,7 +142,7 @@
         map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
     }
 
-    var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
+    var processingService = new SuperMap.REST.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
     if (!window.isLocal) {
         SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
     }

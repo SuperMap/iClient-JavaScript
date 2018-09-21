@@ -181,7 +181,7 @@
             areaUnit: $('#areaUnit option:selected').attr('value'),
         });
 
-        new mapboxgl.supermap.ProcessingService(processingUrl).addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
+        new mapboxgl.supermap.ProcessingService(processingUrl,{withCredentials:window.isLocal}).addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;

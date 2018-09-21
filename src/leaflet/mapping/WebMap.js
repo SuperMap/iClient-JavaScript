@@ -628,9 +628,9 @@ export var WebMap = L.LayerGroup.extend({
             type: "GeometryCollection",
             geometries: []
         }, {
-            	pointToLayer: pointToLayer,
-                opacity: opacity
-            });
+            pointToLayer: pointToLayer,
+            opacity: opacity
+        });
         //this.registerVectorEvent(vector);
     },
     createUniqueLayer: function (layerInfo, themeSettings) {
@@ -821,7 +821,7 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () { });
+                }, function () {});
             } else {
                 var newFeautures = [],
                     features = layerInfo.features;

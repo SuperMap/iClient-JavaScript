@@ -147,7 +147,7 @@
     }
 
     //分布式分析：
-    var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl);
+    var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
 
     function getQuery() {
         if ($('#query').val() === "") {

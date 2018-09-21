@@ -80,7 +80,7 @@
         }),
     }));
 
-    var processingService = new ol.supermap.ProcessingService(processingsUrl);
+    var processingService = new ol.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
 
     initForm();
     bindClick();

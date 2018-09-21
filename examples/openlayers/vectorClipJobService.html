@@ -100,7 +100,7 @@
             url: mapURL,
         }),
     }));
-    var processingService = new ol.supermap.ProcessingService(processingsUrl);
+    var processingService = new ol.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
     var source = new ol.source.Vector({wrapX: false});
     var vector = new ol.layer.Vector({
         source: source

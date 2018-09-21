@@ -1,11 +1,21 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from './CommonServiceBase';
-import {FetchRequest} from '../util/FetchRequest';
-import {Util} from '../commontypes/Util';
-import {SecurityManager} from '../security/SecurityManager';
+import {
+    SuperMap
+} from '../SuperMap';
+import {
+    CommonServiceBase
+} from './CommonServiceBase';
+import {
+    FetchRequest
+} from '../util/FetchRequest';
+import {
+    Util
+} from '../commontypes/Util';
+import {
+    SecurityManager
+} from '../security/SecurityManager';
 
 /**
  * @class SuperMap.ProcessingServiceBase
@@ -19,7 +29,7 @@ import {SecurityManager} from '../security/SecurityManager';
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
-*/
+ */
 export class ProcessingServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
@@ -53,12 +63,18 @@ export class ProcessingServiceBase extends CommonServiceBase {
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(me._processUrl(url), null, {proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(me._processUrl(url), null, {
+            proxy: me.proxy
+        }).then(function (response) {
             return response.json();
         }).then(function (result) {
-            me.events.triggerEvent("processCompleted", {result: result});
+            me.events.triggerEvent("processCompleted", {
+                result: result
+            });
         }).catch(function (e) {
-            me.eventListeners.processFailed({error: e});
+            me.eventListeners.processFailed({
+                error: e
+            });
         });
     }
 
@@ -71,14 +87,19 @@ export class ProcessingServiceBase extends CommonServiceBase {
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addJob(url, params, paramType, seconds) {
-        var me = this, parameterObject = null;
+        var me = this,
+            parameterObject = null;
         if (params && params instanceof paramType) {
             parameterObject = new Object();
             paramType.toObject(params, parameterObject);
         }
         var options = {
             proxy: me.proxy,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            withCredentials: me.withCredentials,
+            isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
@@ -89,7 +110,9 @@ export class ProcessingServiceBase extends CommonServiceBase {
                 me.serviceProcessFailed(result);
             }
         }).catch(function (e) {
-            me.serviceProcessFailed({error: e});
+            me.serviceProcessFailed({
+                error: e
+            });
         });
     }
 
@@ -99,23 +122,35 @@ export class ProcessingServiceBase extends CommonServiceBase {
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(me._processUrl(result.newResourceLocation), {_t: new Date().getTime()})
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                        _t: new Date().getTime()
+                    })
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                    me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                    if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                        me.events.triggerEvent("processRunning", {
+                            id: job.id,
+                            state: job.state
+                        });
+                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                            clearInterval(id);
+                            me.events.triggerEvent("processFailed", {
+                                error: job.state.errorMsg,
+                                state: job.state.runState
+                            });
+                        }
+                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                            clearInterval(id);
+                            me.events.triggerEvent("processCompleted", {
+                                result: job
+                            });
+                        }
+                    }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
-                    }
-                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                        clearInterval(id);
-                        me.events.triggerEvent("processCompleted", {result: job});
-                    }
-                }).catch(function (e) {
-                    clearInterval(id);
-                    me.events.triggerEvent("processFailed", {error: e});
-                });
+                        me.events.triggerEvent("processFailed", {
+                            error: e
+                        });
+                    });
             }, seconds);
         }
     }

@@ -122,7 +122,7 @@
         $("#summarymeshS").hide();
         $("#summaryregionS").show();
     });
-    var processingService = new ol.supermap.ProcessingService(processingsUrl),
+    var processingService = new ol.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal}),
         info = new ol.control.Control({element: document.getElementById('popup')});
 
     info.setMap(map);

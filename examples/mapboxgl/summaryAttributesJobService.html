@@ -104,7 +104,7 @@
         SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
     }
 
-    var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl);
+    var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl,{withCredentials:window.isLocal});
 
     function bindClick() {
         $('#btn').on('click', function () {

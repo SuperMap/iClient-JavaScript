@@ -78,7 +78,7 @@
         $("#summarymeshS").hide();
         $("#summaryregionS").show();
     });
-    var processingService = new L.supermap.processingService(processingUrl);
+    var processingService = new L.supermap.processingService(processingUrl,{withCredentials:window.isLocal});
     if (!window.isLocal) {
         SuperMap.SecurityManager.registerToken('http://54.223.164.155:8090/iserver', token);
     }
