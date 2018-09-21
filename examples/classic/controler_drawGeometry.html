@@ -52,17 +52,14 @@
     modifyCtrl = new SuperMap.Control.ModifyFeature(vecotrLayer);
     selectCtrl = new SuperMap.Control.SelectFeature(vecotrLayer, {
         onSelect: function (feature) {
-            console.log('click');
-            console.log(feature);
+            //选中要素操作
         },
         onUnselect: function (feature) {
-            console.log('unselect');
-            console.log(feature);
+            //未选中要素操作
         },
         callbacks: {
             dblclick: function (feature) {
-                console.log('dblclick');
-                console.log(feature);
+                //双击逻辑回调
             }
         },
         hover: false,
