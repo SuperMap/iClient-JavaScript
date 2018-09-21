@@ -129,16 +129,14 @@ export var ClientComputationView = L.Control.extend({
             'dataValue': 'isolines',
             'remark': Lang.i18n('text_extractDiscreteValue'),
             'icon': {
-                'className': 'analyst-isoline-img',
-                'background': 'url("../../src/common/widgets/image/analyst_isoline_icon.png")'
+                'className': 'analyst-isoline-img'
             }
         }, {
             'title': Lang.i18n('text_buffer'),
             'dataValue': 'buffer',
             'remark': Lang.i18n('text_specifyTheDistance'),
             'icon': {
-                'className': 'analyst-buffer-img',
-                'background': 'url("../../src/common/widgets/image/analyst_buffer_icon.png")'
+                'className': 'analyst-buffer-img'
             }
         }];
         let widgetContentContainer = container.children[1];

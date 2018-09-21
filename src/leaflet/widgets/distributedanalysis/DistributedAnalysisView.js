@@ -110,8 +110,7 @@ export var DistributedAnalysisView = L.Control.extend({
             'dataValue': 'density',
             'remark': Lang.i18n('text_CalculateTheValuePerUnitArea'),
             'icon': {
-                'className': 'analyst-density-img',
-                'background': 'url("../../src/common/widgets/image/analyst-density-icon.png")'
+                'className': 'analyst-density-img'
             }
         }];
         let dropDownBox = (new WidgetDropDownBox(analysisOptionsArr)).getElement();

@@ -68,14 +68,14 @@ var Localization = {
     
                         }
                         window.resources = window.examplesResources;
-                        i18next.addResourceBundle(lang, 'translation', window.resources);
+                        i18next.addResourceBundle && i18next.addResourceBundle(lang, 'translation', window.resources);
                         callback && callback();
     
                     })
     
                 } else {
                     window.resources = window.examplesResources;
-                    i18next.addResourceBundle(lang, 'translation', window.resources);
+                    i18next.addResourceBundle && i18next.addResourceBundle(lang, 'translation', window.resources);
                     callback && callback();
                 }
             });
@@ -98,7 +98,7 @@ var Localization = {
             rootNameSpace.oldResources = rootNameSpace.resources;
         }
         //example只开放资源映射到resources字段
-        var resources = i18next.getResourceBundle(utils.getLanguage());
+        var resources = i18next.getResourceBundle && i18next.getResourceBundle(utils.getLanguage());
         rootNameSpace.resources = resources && resources.resources;
     }
 

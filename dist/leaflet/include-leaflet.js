@@ -83,7 +83,7 @@
             if (supportES6() && !inArray(includes, 'iclient9-plot-leaflet')) {
                 inputScript("../../dist/leaflet/iclient9-leaflet-es6.js");
             } else {
-                inputScript("../../dist/leaflet/iclient9-leaflet.min.js");
+                inputScript("../../dist/leaflet/iclient9-leaflet.js");
             }
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
