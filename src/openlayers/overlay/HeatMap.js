@@ -99,7 +99,7 @@ export class HeatMap extends ol.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(Object|Array.<ol.Feature>|ol.Feature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 {@link ol.Feature} 格式
+     * @param {(GeoJSONObject|Array.<ol.Feature>)} features - 待添加的要素数组。
      * @example
      * var geojson = {
      *      "type": "FeatureCollection",
@@ -411,7 +411,7 @@ export class HeatMap extends ol.source.ImageCanvas {
     /**
      * @function ol.source.HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {Object|Array.<ol.Feature>} features - 待添加的要素数组,支持 GeoJSON 规范数据类型和 {@link ol.Feature} 格式。
+     * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
      */
     toiClientFeature(features) {

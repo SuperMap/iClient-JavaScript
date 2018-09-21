@@ -87,8 +87,8 @@ export class GeoFeature extends Theme {
 
     /**
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
-     * @description 添加要素
-     * @param {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} features - 要素对象
+     * @description 添加要素。
+     * @param {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} features - 要素对象。
      */
     addFeatures(features) {
         mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
@@ -107,7 +107,7 @@ export class GeoFeature extends Theme {
     /**
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {Object} features - 要删除的要素对象。
+     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();

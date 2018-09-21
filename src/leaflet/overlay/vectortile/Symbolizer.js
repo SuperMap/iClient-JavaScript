@@ -9,7 +9,7 @@ import L from "leaflet";
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {L.feature} feature — 要素。
+ * @param {Object} feature — 要素。
  */
 export var Symbolizer = L.Class.extend({
 

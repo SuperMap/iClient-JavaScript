@@ -18,8 +18,8 @@ export class Util {
 
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
-     * @description 将 geoJSON 对象转为 SuperMap 几何图形。
-     * @param {Object} geoJSON - geoJSON 对象。
+     * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
+     * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
      */
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {

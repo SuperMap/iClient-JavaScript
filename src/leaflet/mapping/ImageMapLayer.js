@@ -1,9 +1,9 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L, {Util, Layer, ImageOverlay} from "leaflet";
+import L, { Util, Layer, ImageOverlay } from "leaflet";
 import "../core/Base";
-import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} from "@supermap/iclient-common";
+import { ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential } from "@supermap/iclient-common";
 import Attributions from '../core/Attributions'
 /**
  * @class L.supermap.imageMapLayer
@@ -14,7 +14,7 @@ import Attributions from '../core/Attributions'
  *      L.supermap.imageMapLayer(url).addTo(map);
  * @param {string} url - 地图服务地址,如：http://localhost:8090/iserver/services/map-china400/rest/maps/China
  * @param {Object} options - 图层可选参数。
- * @param {number} [options.layersID] - 如果有 layersID，则是在使用专题图。
+ * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
  * @param {boolean} [options.redirect=false] - 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 地图瓦片是否透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务器缓存出图。
@@ -36,6 +36,9 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.tileProxy] - 启用托管地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"bmp" 、"jpg" 和 "gif" 四种表述类型。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @fires L.supermap.imageMapLayer#load
+ * @fires L.supermap.imageMapLayer#error
+ * @fires L.supermap.imageMapLayer#loading
  */
 export var ImageMapLayer = Layer.extend({
 
@@ -81,7 +84,7 @@ export var ImageMapLayer = Layer.extend({
         //平移时图层延迟刷新间隔时间。
         updateInterval: 150,
         //启用托管地址。
-        tileProxy:null,
+        tileProxy: null,
         format: 'png'
 
     },
@@ -301,8 +304,12 @@ export var ImageMapLayer = Layer.extend({
                 map.removeLayer(newImage);
             }
 
-
-            this.fire('load', {bounds: bounds});
+            /**
+             * @event L.supermap.imageMapLayer#load
+             * @description 请求图层加载完成后触发。
+             * @property {L.bounds} bounds  - 图层 bounds。
+             */
+            this.fire('load', { bounds: bounds });
         };
 
 
@@ -310,11 +317,20 @@ export var ImageMapLayer = Layer.extend({
 
         image.once('error', function () {
             this._map.removeLayer(image);
+            /**
+             * @event L.supermap.imageMapLayer#error
+             * @description 请求图层加载失败后触发。
+             */
             this.fire('error');
             image.off('load', onLoad, this);
         }, this);
 
-        this.fire('loading', {bounds: bounds});
+        /**
+         * @event L.supermap.imageMapLayer#loading
+         * @description 请求图层加载中触发。
+         * @property {L.bounds} bounds  - 图层 bounds。
+         */
+        this.fire('loading', { bounds: bounds });
 
     },
 

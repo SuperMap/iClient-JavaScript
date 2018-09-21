@@ -11,7 +11,7 @@ import {PolyBase} from './SymbolizerPolyBase';
  * @category Visualization VectorTile
  * @private
  * @extends {L.Polygon}
- * @param {L.feature} feature - 面要素。
+ * @param {Object} feature - 面要素。
  * @param {number} pxPerExtent - 面积像素大小。
  */
 export var RegionSymbolizer = L.Polygon.extend({

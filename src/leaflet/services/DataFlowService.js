@@ -90,7 +90,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的 GeoJSON 几何要素数据。
-     * @param {Array.<Object>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
+     * @param {Array.<GeoJSONObject>} geometry - 设置增添的 GeoJSON 几何要素对象数组。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);

@@ -59,7 +59,7 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
      * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。只处理结果中的路由，由子类实现。
      * @param {Object} result - 服务器返回的结果对象。
-     * @returns {Object} GeoJSON 对象。
+     * @returns {GeoJSONObject} GeoJSON 对象。
      */
     toGeoJSONResult(result) { // eslint-disable-line no-unused-vars
         return null;

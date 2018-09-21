@@ -22,7 +22,7 @@ import {
  * @param {Object} options - 设置图层参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为'normal'，'mapv'。
  'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link L.supermap.mapVLayer} 方式绘制实时数据。
- * @param {Object} [options.geometry] - GeoJSON 几何对象。
+ * @param {GeoJSONObject} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
@@ -121,7 +121,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
     /**
      * @function L.supermap.dataFlowLayer.prototype.setGeometry
      * @description 设置集合要素。
-     * @param {Object} geometry - 待设置的 GeoJSON 几何要素对象。
+     * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
      */
     setGeometry: function (geometry) {
         this.dataService.setGeometry(geometry);

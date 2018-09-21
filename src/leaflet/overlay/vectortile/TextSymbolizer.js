@@ -12,7 +12,7 @@ import {SVGRenderer} from './SVGRenderer';
  * @category Visualization VectorTile
  * @private
  * @extends {L.Path}
- * @param {L.feature} feature - 要素。
+ * @param {Object} feature - 要素。
  * @param {number} pxPerExtent - 文本符号大小。
  */
 export var TextSymbolizer = L.Path.extend({

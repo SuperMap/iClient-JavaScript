@@ -232,7 +232,7 @@ export class CartoCSSToLeaflet {
      * @param {number} zoom - 缩放级别。
      * @param {number} scale - 比例尺。
      * @param {Array.<Object>} shader - 渲染器对象数组。
-     * @param {L.feature} feature - 要素。
+     * @param {Object} feature - 要素。
      * @param {string} [fromServer] - 服务源。
      */
     getValidStyleFromCarto(zoom, scale, shader, feature, fromServer) {

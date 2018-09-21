@@ -74,6 +74,12 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @fires L.supermap.webmap#mapLoaded
+ * @fires L.supermap.webmap#coordconvertsuccess
+ * @fires L.supermap.webmap#coordconvertfailed
+ * @fires L.supermap.webmap#featureunselected
+ * @fires L.supermap.webmap#featureselected
+ * @fires L.supermap.webmap#featuremousemove
  */
 export var WebMap = L.LayerGroup.extend({
 
@@ -193,7 +199,12 @@ export var WebMap = L.LayerGroup.extend({
             }
             this.createLayer(type, layerInfo);
         }
-        this.fire('mapLoaded', {
+        /**
+         * @event L.supermap.webmap#maploaded
+         * @description 底图加载完成后触发。
+         * @property {L.Map} map  - Leaflet Map 对象。
+         */
+        this.fire('maploaded', {
             map: this._map
         });
     },
@@ -617,9 +628,9 @@ export var WebMap = L.LayerGroup.extend({
             type: "GeometryCollection",
             geometries: []
         }, {
-            pointToLayer: pointToLayer,
-            opacity: opacity
-        });
+            	pointToLayer: pointToLayer,
+                opacity: opacity
+            });
         //this.registerVectorEvent(vector);
     },
     createUniqueLayer: function (layerInfo, themeSettings) {
@@ -645,7 +656,7 @@ export var WebMap = L.LayerGroup.extend({
         unique.style = layerInfo.style.pointStyle;
         if (vectorType === "LINE") {
             unique.style.fill = false;
-        }else{
+        } else {
             unique.style.fill = true;
         }
         unique.style.stroke = true;
@@ -810,7 +821,7 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () {});
+                }, function () { });
             } else {
                 var newFeautures = [],
                     features = layerInfo.features;
@@ -1084,6 +1095,11 @@ export var WebMap = L.LayerGroup.extend({
             };
         }
         if (success) {
+            /**
+             * @event L.supermap.webmap#coordconvertsuccess
+             * @description 坐标转换成功后触发。
+             * @property {L.latLng} newCoor  - 转换成功后的坐标。
+             */
             me.fire('coordconvertsuccess', {
                 newCoor: newCoor
             });
@@ -1137,6 +1153,11 @@ export var WebMap = L.LayerGroup.extend({
             if (!this.actived) {
                 return;
             }
+            /**
+             * @event L.supermap.webmap#coordconvertfailed
+             * @description 坐标转换失败后触发。
+             * @property {Object} err - error 对象。
+             */
             this.fire('coordconvertfailed', {
                 err: err
             });
@@ -1242,7 +1263,12 @@ export var WebMap = L.LayerGroup.extend({
                 return;
             }
             if (this.selectedFeature) {
-                this.fire('featureUnSelected', {
+                /**
+                 * @event L.supermap.webmap#featureunselected
+                 * @description 重置选中的要素为空。
+                 * @property {SuperMap.Feature.Vector} feature - 在重置之前选中的要素。
+                 */
+                this.fire('featureunselected', {
                     feature: this.selectedFeature
                 });
                 this.selectedFeature = null;
@@ -1253,7 +1279,12 @@ export var WebMap = L.LayerGroup.extend({
             }
             if (feature) {
                 this.selectedFeature = feature;
-                this.fire('featureSelected', {
+                /**
+                 * @event L.supermap.webmap#featureselected
+                 * @description 点击要素，要素存在之后触发。设置选中的要素。
+                 * @property {SuperMap.Feature.Vector} feature - 点击的要素。
+                 */
+                this.fire('featureselected', {
                     feature: feature
                 });
             }
@@ -1268,7 +1299,12 @@ export var WebMap = L.LayerGroup.extend({
                     feature = themeLayer.getFeatureById(evt.target.refDataID);
                 }
                 if (feature) {
-                    this.fire('featureMousemove', {
+                    /**
+                     * @event L.supermap.webmap#featuremousemove
+                     * @description 鼠标移动到要素上之后触发。
+                     * @property {SuperMap.Feature.Vector} feature - 当前被移动到的要素。
+                     */
+                    this.fire('featuremousemove', {
                         feature: feature
                     });
                 }

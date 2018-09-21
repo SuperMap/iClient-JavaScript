@@ -10,7 +10,7 @@ import L from "leaflet";
  * @category Visualization VectorTile
  * @private
  * @extends {L.CircleMarker}
- * @param {L.feature} feature - 点要素。
+ * @param {Object} feature - 点要素。
  * @param {number} pxPerExtent - 点符号大小。
  */
 export var PointSymbolizer = L.CircleMarker.extend({

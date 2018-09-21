@@ -3,6 +3,7 @@ var lfapi = "http://leafletjs.com/reference-1.3.1.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="http://iclient.supermap.io/libs/iclient8c/apidoc/files/SuperMap"
+var geojsonapi = "http://geojson.org";
 var typeLinks = {
     //openlayers
     "ol.Map": olapi + "ol.Map.html",
@@ -52,6 +53,8 @@ var typeLinks = {
     "L.CircleMarker": lfapi + '#circlemarker',
     "L.Path-option": lfapi + '#path-option',
     "L.Rectangle": lfapi + '#rectangle',
+    'L.LatLngBounds': lfapi+ '#latlngbounds',
+    'L.Map': lfapi + '#map-example',
 
     //mapboxgl
     "mapboxgl.Evented": mbglapi + '#Evented',
@@ -62,7 +65,10 @@ var typeLinks = {
 
     //classic
     "SuperMap.Layer":classicapi + '/Layer-js.html',
-
+    "SuperMap.Layer.Graph": classicapi + '/Layer/Theme/Graph-js.html#SuperMap.Layer.Graph',
+    
+	//GeoJSON
+    "GeoJSONObject": geojsonapi
     
 }
 exports.typeLinks = typeLinks;

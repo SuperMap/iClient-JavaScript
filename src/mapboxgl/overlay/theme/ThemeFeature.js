@@ -10,7 +10,7 @@ import {Util} from '../../core/Util';
  * @class mapboxgl.supermap.ThemeFeature
  * @category  Visualization Theme
  * @classdesc 专题图要素类。
- * @param {Object} geometry - 专题图要素几何对象，GeoJSON 格式。
+ * @param {GeoJSONObject} geometry - 专题图要素几何对象。
  * @param {Object} [attributes] - 几何对象属性。
  */
 export class ThemeFeature {

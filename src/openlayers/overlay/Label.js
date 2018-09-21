@@ -20,8 +20,8 @@ import {
  * @classdesc 标签专题图图层源。
  * @param {string} name - 名称。
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {string|Object} [opt_options.attributions] - 版权信息。
  * @param {string} [opt_options.logo] - Logo。
@@ -141,7 +141,7 @@ export class Label extends GeoFeature {
     /**
      * @function ol.source.Label.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {Object} features - 要删除的要素对象。
+     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];

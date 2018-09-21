@@ -128,7 +128,7 @@ export class Label extends GeoFeature {
     /**
      * @function mapboxgl.supermap.LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {Object} features - 要删除的要素对象。
+     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];

@@ -63,8 +63,8 @@ export class Graph extends Theme {
 
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象。
-     * @param {Array.<mapboxgl.supermap.ThemeFeature>} features - 待添加的要素。
+     * @description 向专题图图层中添加数据，支持的 feature 类型为：iServer 返回的 feature JSON 对象。
+     * @param {SuperMap.ServerFeature} features - 待添加的要素。
      */
     addFeatures(features) {
         var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', {
@@ -362,7 +362,7 @@ export class Graph extends Theme {
     /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {Object} features - 要删除的要素。
+     * @param {SuperMap.Feature.Vector} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();

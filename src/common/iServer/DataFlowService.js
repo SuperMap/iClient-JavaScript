@@ -86,8 +86,8 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function SuperMap.DataFlowService.prototype.broadcast
-     * @description 加载广播数据
-     * @param {Object} geoJSONFeature - JSON 格式的要素数据
+     * @description 加载广播数据。
+     * @param {GeoJSONObject} geoJSONFeature - JSON 格式的要素数据。
      */
     broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket||!this.broadcastWebSocket.isOpen) {

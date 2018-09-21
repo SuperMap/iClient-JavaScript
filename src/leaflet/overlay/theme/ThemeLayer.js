@@ -121,8 +121,8 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象或 L.supermap.themeFeature 类型。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 L.supermap.ThemeFeature 类型和 GeoJSON 规范数据类型。
+     * @description 向专题图图层中添加数据。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -139,8 +139,8 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.destroyFeatures
-     * @description 销毁某个要素。
-     * @param {SuperMap.Feature.Vector} features - 将被销毁的要素。
+     * @description 销毁要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 将被销毁的要素。
      */
     destroyFeatures: function (features) {
         if (features === undefined) {
@@ -158,7 +158,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {L.feature} features - 将被删除得要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 将被删除的要素。
      */
     removeFeatures: function (features) {
         var me = this;
@@ -435,7 +435,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {L.supermap.themeFeature|Object} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {Array.<SuperMap.Feature.Vector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -471,7 +471,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link L.supermap.ThemeLayer#toiClientFeature} 代替。
-     * @param {(L.supermap.themeFeature|Object)} features - 待转要素包括 {@link L.supermap.ThemeFeature} 类型和 GeoJSON 规范数据类型。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待转要素。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {

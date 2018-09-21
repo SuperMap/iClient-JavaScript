@@ -68,11 +68,16 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.addFeatures 
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象 或 L.supermap.themeFeature 类型。
-     * @param {L.features} features - 待添加的要素。
+     * @description 向专题图图层中添加数据。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
+        /**
+         * @event L.supermap.GraphThemeLayer#beforefeaturesadded
+         * @description 向专题图图层中添加数据之前触发。
+         * @property {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features  - 待添加的要素。
+         */
         me.fire("beforefeaturesadded", {features: features});
 
         //转换 features 形式
@@ -141,7 +146,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素（图表）。
-     * @param {L.features} feature - 待创建的要素。
+     * @param {Object} feature - 待创建的要素。
      */
     createThematicFeature: function (feature) {
         var me = this;
@@ -306,7 +311,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
-     * @param {L.features} features - 待删除的要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 待删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;

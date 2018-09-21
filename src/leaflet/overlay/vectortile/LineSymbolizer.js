@@ -11,7 +11,7 @@ import {PolyBase} from './SymbolizerPolyBase';
  * @category Visualization VectorTile
  * @private
  * @extends {L.Polyline}
- * @param {L.feature} feature - 线要素。
+ * @param {Object} feature - 线要素。
  * @param {number} pxPerExtent - 线长。
  */
 export var LineSymbolizer = L.Polyline.extend({

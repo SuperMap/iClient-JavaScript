@@ -124,7 +124,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 HeatMapFeature 格式。
+     * @param {(GeoJSONObject|L.supermap.heatMapFeature)} features - 待添加的要素数组。
      *
      * @example
      * var geojson = {
@@ -495,7 +495,7 @@ export var HeatMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.heatMapLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(Object|HeatMapFeature)} features - 待添加的要素数组，支持 GeoJSON 规范数据类型和 HeatMapFeature 格式。
+     * @param {(GeoJSONObject|L.supermap.heatMapFeature)} features - 待添加的要素数组。
      * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {

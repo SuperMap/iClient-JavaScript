@@ -23,19 +23,19 @@ export class MapVLayer extends SuperMap.Layer {
         super(name, options);
 
         /**
-         * @member {mapv.DataSet} - SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
          * @description mapv dataset 对象。
          */
         this.dataSet = null;
 
         /**
-         * @member {Object} - SuperMap.Layer.MapVLayer.prototype.options
+         * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
          * @description mapv 绘图风格配置信息。
          */
         this.options = null;
 
         /**
-         * @member {boolean} - [SuperMap.Layer.MapVLayer.prototype.supported=false]
+         * @member {boolean} [SuperMap.Layer.MapVLayer.prototype.supported=false]
          * @description 当前浏览器是否支持 canvas 绘制。决定了 MapV 图是否可用，内部判断使用。
          */
         this.supported = false;
@@ -48,7 +48,7 @@ export class MapVLayer extends SuperMap.Layer {
 
         /**
          * @private
-         * @member {CanvasContext} - SuperMap.Layer.MapVLayer.prototype.canvasContext
+         * @member {CanvasContext} SuperMap.Layer.MapVLayer.prototype.canvasContext
          * @description MapV 图主绘制对象。
          */
         this.canvasContext = null;

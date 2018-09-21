@@ -82,8 +82,8 @@ export class Graph extends Theme {
 
     /**
      * @function ol.source.Graph.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象或 {@link L.supermap.themeFeature} 类型。
-     * @param {Object} features - 待填加得要素。
+     * @description 向专题图图层中添加数据。
+     * @param {(SuperMap.ServerFeature|L.supermap.themeFeature)} features - 待添加的要素。
      */
     addFeatures(features) {
         var ret = this.dispatchEvent({
@@ -150,8 +150,8 @@ export class Graph extends Theme {
 
     /**
      * @function ol.source.Graph.prototype.createThematicFeature
-     * @description  向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
-     * @param {Object} feature - 待填加得要素。
+     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
+     * @param {SuperMap.ServerFeature} feature - 待添加的要素。
      *
      */
     createThematicFeature(feature) {
@@ -388,7 +388,7 @@ export class Graph extends Theme {
     /**
      * @function ol.source.Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {Object} features - 要删除的要素。
+     * @param {SuperMap.Feature.Vector} features - 要删除的要素。
      */
     removeFeatures(features) {
         this.clearCache();

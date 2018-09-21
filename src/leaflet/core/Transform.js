@@ -8,10 +8,10 @@ import {CommonUtil} from '@supermap/iclient-common';
  * @function L.Util.transform
  * @description 将要素转换为指定坐标。
  * @param {(L.Marker|L.CircleMarker|L.Polyline|L.Polygon|L.Rectangle|L.LatLngBounds|L.Bounds|Object)} feature - 待转要素包括 Leaflet Vector Layers
- *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds} 类型和 GeoJSON 规范数据类型。
+ *              的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds}|{@link GeoJSONObject} 类型。
  * @param {L.Proj.CRS} [sourceCRS=L.CRS.EPSG4326] - 要素转换源坐标系。
  * @param {L.Proj.CRS} targetCRS - 要素转换目标坐标系。
- * @returns {Object} 返回 GeoJSON 规范数据类型。
+ * @returns {GeoJSONObject} 返回 GeoJSON 规范数据类型。
  */
 export var transform = function (feature, sourceCRS = L.CRS.EPSG4326, targetCRS) {
     let selfFeatures = null;

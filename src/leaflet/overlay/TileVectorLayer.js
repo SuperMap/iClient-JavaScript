@@ -254,7 +254,7 @@ export var TileVectorLayer = VectorGrid.extend({
      * @function L.supermap.tiledVectorLayer.prototype.getVectorTileLayerStyle
      * @description 获取图层风格信息，当 CartoCSS 中包含有对该图层的渲染信息时，优先获取，否则获取 layers 资源下 layerSytle 的渲染信息。
      * @param {Object} coords - 图层坐标参数对象。
-     * @param {L.feature} feature - 要获取的要素。
+     * @param {Object} feature - 要获取的要素。
      */
     getVectorTileLayerStyle: function (coords, feature) {
         if (!feature) {

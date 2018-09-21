@@ -149,7 +149,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      /**
      * @function L.supermap.LabelThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
-     * @param {L.features} features - 要删除的要素。
+     * @param {Array.<SuperMap.Feature.Vector>} features - 要删除的要素。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         this.labelFeatures = [];
@@ -482,7 +482,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -541,7 +541,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
      *
-     * @param {SuperMap.Feature.Vector} feature - 需要计算bounds的标签要素数。
+     * @param {SuperMap.Feature.Vector} feature - 需要计算 bounds 的标签要素数。
      * @param {L.point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
