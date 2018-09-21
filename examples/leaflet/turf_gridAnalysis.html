@@ -49,64 +49,64 @@
             var me = this;
             me._div = L.DomUtil.create('div');
             me._div.style.width = '420px';
-            me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
-    <div class='panel-heading'>
-        <h5 class='panel-title text-center'>` + resources.text_createGrid + `</h5></div>
-    <div class='panel-body' id='gridsBody'>
-        <div class='input-group'>
-            <span class='input-group-addon'>` + resources.text_gridAnalysisType + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
-            <select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>
-                <option value='hexGrid' selected>` + resources.text_hexGrid + `</option>
-                <option value='pointGrid'>` + resources.text_pointGrid + `</option>
-                <option value='squareGrid'>` + resources.text_squareGrid + `</option>
-                <option value='triangleGrid'>` + resources.text_triangleGrid + `</option>
-            </select>
-        </div>
-        <p></p>
-        <div class='input-group'>
-            <span class='input-group-addon'>` + resources.text_unitGridSize + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
-            <input id='cellSide' type='text' class='form-control' value='50'/>
-        </div>
-        <p></p>
-        <div class='input-group'>
-            <span class='input-group-addon'>` + resources.text_gridUnitSizeUnit + `<span title='` + resources.text_requiredField + `' style='color: red;'> * </span></span>
-            <select class='form-control' id='units' name='mode'>
-                <option value='degrees'>` + resources.text_degrees + `</option>
-                <option value='radians'>` + resources.text_radians + `</option>
-                <option value='miles' selected>` + resources.text_miles + `</option>
-                <option value='kilometers'>` + resources.text_kilometers + `</option>
-            </select>
-        </div>
-        <p></p>
-        <div id='squareGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon'>` + resources.text_adjustSize + `</span>
-            <span class='form-control'>
-                <input id='completelyWithin' type='checkbox'>
-                </span>
-        </div>
-        <p></p>
-        <div id='pointGridChoic' class='input-group' style='display: none'>
-            <span class='input-group-addon'>` + resources.text_adjustPoint + `</span>
-            <span class='form-control'>
-                <input id='iscentered' type='checkbox'>
-                </span><span class='input-group-addon'>` + resources.text_creationRange + `</span>
-            <span class='form-control'><input id='isbboxIsMask' type='checkbox'>
-                </span>
-        </div>
-        <p></p>
-        <div id='hexGridChoic' class='input-group'>
-            <span class='input-group-addon'>` + resources.text_returnedByTriangle + `</span>
-            <span class='form-control'>
-                <input id='triangles' type='checkbox'>
-                </span>
-        </div>
-        <p></p>
-        <div align='right' class='input-group'>
-            <input type='button' id='createGridBtn' class='btn btn-primary' value='` + resources.btn_createGrid + `'/>&nbsp
-            <input type='button' id='clearGridBtn' class='btn btn-primary' value='` + resources.text_input_value_clear + `'/>
-        </div>
-    </div>
-</div>`;
+            me._div.innerHTML = "<div class='panel panel-primary editPane' id='editPane'>"+
+                "<div class='panel-heading'>"+
+            "<h5 class='panel-title text-center'>" + resources.text_createGrid + "</h5></div>"+
+            "<div class='panel-body' id='gridsBody'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_gridAnalysisType + "<span title=" + resources.text_requiredField + " style='color: red;'> * </span></span>"+
+            "<select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>"+
+            "<option value='hexGrid' selected>" + resources.text_hexGrid + "</option>"+
+            "<option value='pointGrid'>" + resources.text_pointGrid + "</option>"+
+            "<option value='squareGrid'>" + resources.text_squareGrid + "</option>"+
+            "<option value='triangleGrid'>" + resources.text_triangleGrid + "</option>"+
+            "</select>"+
+            "</div>"+
+            "<p></p>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_unitGridSize + "<span title=" + resources.text_requiredField + " style='color: red;'> * </span></span>"+
+            "<input id='cellSide' type='text' class='form-control' value='50'/>"+
+            "</div>"+
+            "<p></p>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_gridUnitSizeUnit + "<span title=" + resources.text_requiredField + " style='color: red;'> * </span></span>"+
+            "<select class='form-control' id='units' name='mode'>"+
+            "<option value='degrees'>" + resources.text_degrees + "</option>"+
+            "<option value='radians'>" + resources.text_radians + "</option>"+
+            "<option value='miles' selected>" + resources.text_miles + "</option>"+
+            "<option value='kilometers'>" + resources.text_kilometers + "</option>"+
+            "</select>"+
+            "</div>"+
+            "<p></p>"+
+            "<div id='squareGridChoic' class='input-group' style='display: none'>"+
+            "<span class='input-group-addon'>" + resources.text_adjustSize + "</span>"+
+            "<span class='form-control'>"+
+            "<input id='completelyWithin' type='checkbox'>"+
+            "</span>"+
+            "</div>"+
+            "<p></p>"+
+            "<div id='pointGridChoic' class='input-group' style='display: none'>"+
+            "<span class='input-group-addon'>" + resources.text_adjustPoint + "</span>"+
+            "<span class='form-control'>"+
+            "<input id='iscentered' type='checkbox'>"+
+            "</span><span class='input-group-addon'>" + resources.text_creationRange + "</span>"+
+            "<span class='form-control'><input id='isbboxIsMask' type='checkbox'>"+
+            "</span>"+
+            "</div>"+
+            "<p></p>"+
+            "<div id='hexGridChoic' class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_returnedByTriangle + "</span>"+
+            "<span class='form-control'>"+
+            "<input id='triangles' type='checkbox'>"+
+            "</span>"+
+            "</div>"+
+            "<p></p>"+
+            "<div align='right' class='input-group'>"+
+            "<input type='button' id='createGridBtn' class='btn btn-primary' value=" + resources.btn_createGrid + ">&nbsp"+
+            "<input type='button' id='clearGridBtn' class='btn btn-primary' value=" + resources.text_input_value_clear + ">"+
+            "</div>"+
+            "</div>"+
+            "</div>";
             handleMapEvent(me._div, me._map);
             return me._div;
         };

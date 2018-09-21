@@ -92,8 +92,8 @@ function createSideBarMenuItem(id, config, containAll) {
         a: for (var key in config.content) {
             var examples = config.content[key].content;
             if (examples) {
-                for (let index = 0; index < examples.length; index++) {
-                    const element = examples[index];
+                for (var index = 0; index < examples.length; index++) {
+                    var element = examples[index];
                     if (element.version === window.version) {
                         config.content[key].hasNewExamples = true;
                         hasNewExamples = true;

@@ -38,7 +38,7 @@
             me._div.id = "openFileContainer";
             //避免与"源码"控件重叠
             me._div.style["margin"] = "40px 4px 0px 0px";
-            me._div.innerHTML = `<add_data v-bind:openFileViewModel="openFileViewModel" v-bind:messageBox="messageBox"></add_data>`;
+            me._div.innerHTML = "<add_data v-bind:openFileViewModel='openFileViewModel' v-bind:messageBox='messageBox'></add_data>";
             handleMapEvent(me._div, me._map);
             return me._div;
         };
@@ -68,16 +68,17 @@
                 text: resources.text_openFile
             }
         },
-        template:
-            `<div class="file-select">
-                <label class="file-selectSpan" for="input_file">
-                <div class="supermapol-icons-upload"/>
-                <span class="openFile-span">{{text}}</span>
-                </label>
-                <input class="openFile_input" id="input_file" type="file"
-                       accept=".json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
-                       v-on:change="fileSelectfn(this,$event)"/>
-            </div>`,
+        template: [
+            "<div class='file-select'>",
+            "<label class='file-selectSpan' for='input_file'>",
+            "<div class='supermapol-icons-upload'/>",
+            "<span class='openFile-span'>{{text}}</span>",
+            "</label>",
+            "<input class='openFile_input' id='input_file' type='file'",
+            "accept='.json,.geojson,.csv,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'",
+            "v-on:change='fileSelectfn(this, $event)'>",
+            "</div>"
+        ].join(""),
         methods: {
             fileSelectfn(self, e) {
                 //绑定事件监听

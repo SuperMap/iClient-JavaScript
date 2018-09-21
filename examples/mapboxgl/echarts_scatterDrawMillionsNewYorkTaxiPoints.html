@@ -73,7 +73,7 @@
         if (idx >= CHUNK_COUNT) {
             return;
         }
-        var dataURL = `http://iclient.supermap.io/web/data/bigdata_nytaxi/data_${idx}.bin`;
+        var dataURL = "http://iclient.supermap.io/web/data/bigdata_nytaxi/data_" + idx + ".bin";
         var xhr = new XMLHttpRequest();
         xhr.open('GET', dataURL, true);
         xhr.responseType = 'arraybuffer';

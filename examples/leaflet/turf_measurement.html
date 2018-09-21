@@ -45,54 +45,53 @@
             var me = this;
             me._div = L.DomUtil.create('div');
             me._div.style.width = '350px';
-            me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
-    <div class='panel-heading'>
-        <h5 class='panel-title text-center'>` + resources.text_Jingshen + `</h5>
-    </div>
-    <div class='panel panel-body chooseItems' style="margin-bottom:0px;padding-bottom: 0px">
-                <select class='form-control' id='menuSelect' >
-                <option value='along' selected='selected'>along</option>
-                <option value='area'>area</option>
-                <option value='bbox'>bbox</option>
-                <option value='center'>center</option>
-                <option value='destination'>destination</option>
-                <option value='distance'>distance</option>
-                <option value='midpoint'>midpoint</option>
-                <option value='square'>square</option>
-                <option value='greatCircle'>greatCircle</option>
-                <option value='bezierSpline'>bezierSpline</option>
-                <option value='buffer'>buffer</option>
-                <option value='circle'>circle</option>
-                </select>
-    </div>
-    <hr/>
-                <div class='panel-body' id='params' style="padding-top: 0px">
-                <div class='input-group'>
-                <span class='input-group-addon'>` + resources.text_distanceUnit + `</span>
-                <select class='form-control' id='unitSelect' name='unitSelect'>
-                <option value='kilometers' selected = "selected">kilometers</option>
-                <option value='miles'>miles</option>
-                <option value='degrees'>degrees</option>
-                <option value='radians'>radians</option>
-                </select>
-                </div>
-                <p></p>
-                <div class='input-group'>
-                <span class='input-group-addon'>` + resources.text_distanceToStart + `</span>
-                <input id='distance' type='text' class='form-control' placeholder="` + resources.text_distance + `"  val="0.5"/>
-                </div>
-                <p></p>
-                <div class='input-group'>
-                <span class='input-group-addon'>` + resources.text_position + `</span>
-                <input id='bearing' type='text' class='form-control' placeholder="` + resources.text_positionRange + `"/>
-                </div>
-                <p></p>
-                <div align='right' class='input-group'>
-                <input type='button' id='calc' class='btn btn-primary' value='` + resources.btn_getResult + `'/>
-                </div>
-                </div>
-                </div>`
-            ;
+            me._div.innerHTML = "<div class='panel panel-primary editPane' id='editPane'>"+
+                "<div class='panel-heading'>"+
+            "<h5 class='panel-title text-center'>"+ resources.text_Jingshen + "</h5>"+
+            "</div>"+
+            "<div class='panel panel-body chooseItems' style='margin-bottom:0px;padding-bottom: 0px'>"+
+            "<select class='form-control' id='menuSelect' >"+
+            "<option value='along' selected='selected'>along</option>"+
+            "<option value='area'>area</option>"+
+            "<option value='bbox'>bbox</option>"+
+            "<option value='center'>center</option>"+
+            "<option value='destination'>destination</option>"+
+            "<option value='distance'>distance</option>"+
+            "<option value='midpoint'>midpoint</option>"+
+            "<option value='square'>square</option>"+
+            "<option value='greatCircle'>greatCircle</option>"+
+            "<option value='bezierSpline'>bezierSpline</option>"+
+            "<option value='buffer'>buffer</option>"+
+            "<option value='circle'>circle</option>"+
+            "</select>"+
+            "</div>"+
+            "<hr/>"+
+            "<div class='panel-body' id='params' style='padding-top: 0px'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_distanceUnit + "</span>"+
+            "<select class='form-control' id='unitSelect' name='unitSelect'>"+
+            "<option value='kilometers' selected = 'selected'>kilometers</option>"+
+            "<option value='miles'>miles</option>"+
+            "<option value='degrees'>degrees</option>"+
+            "<option value='radians'>radians</option>"+
+            "</select>"+
+            "</div>"+
+            "<p></p>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_distanceToStart + "</span>"+
+            "<input id='distance' type='text' class='form-control' placeholder=" + resources.text_distance + " val='0.5'/>"+
+            "</div>"+
+            "<p></p>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_position + "</span>"+
+            "<input id='bearing' type='text' class='form-control' placeholder=" + resources.text_positionRange + "/>"+
+            "</div>"+
+            "<p></p>"+
+            "<div align='right' class='input-group'>"+
+            "<input type='button' id='calc' class='btn btn-primary' value=" + resources.btn_getResult + "/>"+
+            "</div>"+
+            "</div>"+
+            "</div>";
             handleMapEvent(me._div, me._map);
             return me._div;
         };

@@ -48,20 +48,20 @@
             var me = this;
             me._div = L.DomUtil.create('div');
             me._div.style.width = '420px';
-            me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
-    <div class='panel-heading'>
-        <h5 class='panel-title text-center'>` + resources.text_classificationAnalysis + `</h5></div>
-    <div class='panel-body content' id='classificationBody' '>
-        <div class='panel'>
-            <div class='input-group'>
-                <span class='input-group-addon'>` + resources.text_classificationAnalysisType + `<span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
-                <select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>
-                    <option value='nearestOption' selected>nearestAnalyze</option>
-                </select>
-            </div>
-        </div>
-        <div class='input-group' id="nearestBody"></div>
-    </div>`;
+            me._div.innerHTML = "<div class='panel panel-primary editPane' id='editPane'>"+
+    "<div class='panel-heading'>"+
+            "<h5 class='panel-title text-center'>" + resources.text_classificationAnalysis + "</h5></div>"+
+            "<div class='panel-body content' id='classificationBody' >"+
+            "<div class='panel'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>" + resources.text_classificationAnalysisType + "<span data-i18n='[title]resources.text_requiredField' style='color: red;'> * </span></span>"+
+            "<select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>"+
+            "<option value='nearestOption' selected>nearestAnalyze</option>"+
+            "</select>"+
+            "</div>"+
+            "</div>"+
+            "<div class='input-group' id='nearestBody'></div>"+
+            "</div>";
             handleMapEvent(me._div, me._map);
             return me._div;
         };

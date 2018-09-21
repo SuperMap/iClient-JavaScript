@@ -26,9 +26,9 @@
 <script type="text/javascript" include="echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-            " Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
-            " <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
+        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+        " <a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts</a>";
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
 
@@ -73,7 +73,7 @@
         if (idx > CHUNK_COUNT) {
             return;
         }
-        var dataURL = `http://iclient.supermap.io/web/data/bigdata_roads_50w/data_${idx}.bin`;
+        var dataURL = "http://iclient.supermap.io/web/data/bigdata_roads_50w/data_" + idx + ".bin";
         var xhr = new XMLHttpRequest();
         xhr.open('GET', dataURL, true);
         xhr.responseType = 'arraybuffer';
