@@ -3,7 +3,7 @@
  *          iclient9-leaflet.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0-beta
+ *          version: v9.1.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44,32 +44,17 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -65104,7 +65089,7 @@ class NavTabsPage {
 
     _initContainer(tabs) {
         const navTabsPage = document.createElement("div");
-        navTabsPage.setAttribute("class", "nav-tabs-page");
+        navTabsPage.setAttribute("class", "widgets-navtabs-page");
 
         //关闭按钮
         const closeBtn = document.createElement("span");
@@ -65115,13 +65100,13 @@ class NavTabsPage {
         //标签
         const navTabsTitle = document.createElement("div");
         this.navTabsTitle = navTabsTitle;
-        navTabsTitle.setAttribute("class", "nav-tabs-title");
+        navTabsTitle.setAttribute("class", "widgets-navtabs-title");
         navTabsPage.appendChild(navTabsTitle);
 
         //内容
         const navTabsContent = document.createElement("div");
         this.navTabsContent = navTabsContent;
-        navTabsContent.setAttribute("class", "nav-tabs-content");
+        navTabsContent.setAttribute("class", "widgets-navtabs-content");
         navTabsPage.appendChild(navTabsContent);
 
         //若 tabs 初始传入值，则
@@ -83232,8 +83217,8 @@ var POISearchViewModel = external_L_default.a.Evented.extend({
      * @param {string} keyWord - 图层属性搜索关键字。
      */
     searchFromLayer(keyWord, searchLayerName) {
-        if (this.dataModel[searchLayerName]) {
-            let resultFeatures = this.dataModel[searchLayerName].getFeaturesByKeyWord(keyWord);
+        if (this.dataModel.layers[searchLayerName]) {
+            let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 this.fire("searchlayersucceed", {result: resultFeatures});
             } else {
@@ -83257,8 +83242,8 @@ var POISearchViewModel = external_L_default.a.Evented.extend({
      * @param {string} layerName - 指定缩放的图层名。
      */
     panToLayer(layerName) {
-        if (this.dataModel[layerName]) {
-            this.map.flyToBounds(this.dataModel[layerName].layer.getBounds());
+        if (this.dataModel.layers[layerName]) {
+            this.map.flyToBounds(this.dataModel.layers[layerName].layer.getBounds());
         }
     },
 
@@ -83601,7 +83586,7 @@ var POISearchView = external_L_default.a.Control.extend({
             this._clearSearchResult();
             this.messageBox.closeView();
             navTabsPageObject.closeView();
-            const keyWord = this.poiInput.value;
+            const keyWord = this.poiInput.value.trim();
             if (keyWord === "") {
                 this.messageBox.showView("搜索关键字不能为空，请输入搜索条件。");
                 return;
@@ -83723,11 +83708,11 @@ var POISearchView = external_L_default.a.Control.extend({
         layerOption.appendChild(singleSelect);
 
         //attributes-select todo 暂不支持该功能
-        const attributesSelect = (new WidgetSelect(layer.layer.attributeNames)).getElement();
+        // const attributesSelect = (new WidgetSelect(layer.layer.attributeNames)).getElement();
         //选择查询的字段  todo 限制图层查找属性功能待属性选择框优化后完善
-        attributesSelect.onchange = (e) => {
+        /*attributesSelect.onchange = (e) => {
             this.searchAttributes = e.target.value;
-        };
+        };*/
         // layerOption.appendChild(attributesSelect);
 
         document.getElementsByClassName("poi-layers-body")[0].appendChild(layerOption);
@@ -84457,21 +84442,25 @@ external_L_default.a.supermap.widgets.dataFlow = dataFlowView;
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
- 
+
+
+
 /**
  * @class L.supermap.widgets.GeoJSONLayersWithName
- * @classdesc 含有 layerName 与 GeoJSON 图层的对象。 
+ * @classdesc 含有 layerName 与 GeoJSON 图层的对象。
  * @param {Object} layerObject - 图层对象。
  * @param {string} layerObject.layerName -  图层名。
  * @param {L.GeoJSON} layerObject.layer -  图层。
  * @category Widgets
  */
-class GeoJSONLayersWithName{
-    constructor(layerObject){
+class GeoJSONLayersWithName {
+    constructor(layerObject) {
         this.layerName = layerObject.layerName;
         this.layer = layerObject.layer;
     }
 }
+
+external_L_default.a.supermap.widgets.GeoJSONLayersWithName = GeoJSONLayersWithName;
 
 // CONCATENATED MODULE: ./src/leaflet/widgets/clientcomputation/ClientComputationViewModel.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -89585,7 +89574,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://localhost:4873/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\2018\\git\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

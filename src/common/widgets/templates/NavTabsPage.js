@@ -23,7 +23,7 @@ export class NavTabsPage {
 
     _initContainer(tabs) {
         const navTabsPage = document.createElement("div");
-        navTabsPage.setAttribute("class", "nav-tabs-page");
+        navTabsPage.setAttribute("class", "widgets-navtabs-page");
 
         //关闭按钮
         const closeBtn = document.createElement("span");
@@ -34,13 +34,13 @@ export class NavTabsPage {
         //标签
         const navTabsTitle = document.createElement("div");
         this.navTabsTitle = navTabsTitle;
-        navTabsTitle.setAttribute("class", "nav-tabs-title");
+        navTabsTitle.setAttribute("class", "widgets-navtabs-title");
         navTabsPage.appendChild(navTabsTitle);
 
         //内容
         const navTabsContent = document.createElement("div");
         this.navTabsContent = navTabsContent;
-        navTabsContent.setAttribute("class", "nav-tabs-content");
+        navTabsContent.setAttribute("class", "widgets-navtabs-content");
         navTabsPage.appendChild(navTabsContent);
 
         //若 tabs 初始传入值，则

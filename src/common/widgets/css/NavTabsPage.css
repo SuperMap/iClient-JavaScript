@@ -1,4 +1,4 @@
-.nav-tabs-page {
+.widgets-navtabs-page {
     position: absolute;
     overflow: hidden;
     min-width: 520px;
@@ -13,7 +13,7 @@
     z-index: 1000;
 }
 
-.nav-tabs-page .supermapol-icons-close {
+.widgets-navtabs-page .supermapol-icons-close {
     position: absolute;
     cursor: pointer;
     top: 11px;
@@ -21,14 +21,14 @@
     color: #BFBFBF;
 }
 
-.nav-tabs-title {
+.widgets-navtabs-title {
     height: 35px;
     line-height: 36px;
     background-color: #F5F5F5;
     box-shadow: 0 1px 0 0 #E9E9E9;
 }
 
-.nav-tabs-title > span {
+.widgets-navtabs-title > span {
     float: left;
     color: #919191;
     cursor: pointer;
@@ -37,12 +37,12 @@
     text-align: center;
 }
 
-.nav-tabs-title > span.tabs-select {
+.widgets-navtabs-title > span.tabs-select {
     color: #595959;
     background: white;
     border-bottom: 2px solid transparent;
 }
 
-.nav-tabs-content {
+.widgets-navtabs-content {
 
 }

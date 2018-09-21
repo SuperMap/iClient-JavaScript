@@ -27,7 +27,7 @@
         center: [25, 40],
         zoom: 3,
     });
-    var host = window.isLocal ? window.server : "http://54.223.164.155:8090";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + '/iserver/services/map-china400/rest/maps/China';
     var sqlurl = host + "/iserver/services/map-world/rest/maps/World";
 
@@ -51,8 +51,10 @@
             .queryByBounds(param, function (serviceResult) {
                 var result = serviceResult.result;
                 var resultLayer = L.geoJSON(result.recordsets[0].features).addTo(map);
-                resultLayer.layerName = "首都";
-                poiSearch.addSearchLayer([resultLayer]);
+                poiSearch.addSearchLayer([new L.supermap.widgets.GeoJSONLayersWithName({
+                    layerName: "首都",
+                    layer: resultLayer
+                })]);
             });
     }
 </script>

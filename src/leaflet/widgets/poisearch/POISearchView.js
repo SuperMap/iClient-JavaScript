@@ -5,7 +5,7 @@ import L from "leaflet";
 import '../../core/Base';
 import {config} from './CityConfig';
 import {
-    WidgetSelect,
+    // WidgetSelect,
     MessageBox,
     NavTabsPage,
     CityTabsPage,
@@ -263,7 +263,7 @@ export var POISearchView = L.Control.extend({
             this._clearSearchResult();
             this.messageBox.closeView();
             navTabsPageObject.closeView();
-            const keyWord = this.poiInput.value;
+            const keyWord = this.poiInput.value.trim();
             if (keyWord === "") {
                 this.messageBox.showView("搜索关键字不能为空，请输入搜索条件。");
                 return;
@@ -385,11 +385,11 @@ export var POISearchView = L.Control.extend({
         layerOption.appendChild(singleSelect);
 
         //attributes-select todo 暂不支持该功能
-        const attributesSelect = (new WidgetSelect(layer.layer.attributeNames)).getElement();
+        // const attributesSelect = (new WidgetSelect(layer.layer.attributeNames)).getElement();
         //选择查询的字段  todo 限制图层查找属性功能待属性选择框优化后完善
-        attributesSelect.onchange = (e) => {
+        /*attributesSelect.onchange = (e) => {
             this.searchAttributes = e.target.value;
-        };
+        };*/
         // layerOption.appendChild(attributesSelect);
 
         document.getElementsByClassName("poi-layers-body")[0].appendChild(layerOption);

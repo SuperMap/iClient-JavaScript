@@ -78,8 +78,8 @@ export var POISearchViewModel = L.Evented.extend({
      * @param {string} keyWord - 图层属性搜索关键字。
      */
     searchFromLayer(keyWord, searchLayerName) {
-        if (this.dataModel[searchLayerName]) {
-            let resultFeatures = this.dataModel[searchLayerName].getFeaturesByKeyWord(keyWord);
+        if (this.dataModel.layers[searchLayerName]) {
+            let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
                 this.fire("searchlayersucceed", {result: resultFeatures});
             } else {
@@ -103,8 +103,8 @@ export var POISearchViewModel = L.Evented.extend({
      * @param {string} layerName - 指定缩放的图层名。
      */
     panToLayer(layerName) {
-        if (this.dataModel[layerName]) {
-            this.map.flyToBounds(this.dataModel[layerName].layer.getBounds());
+        if (this.dataModel.layers[layerName]) {
+            this.map.flyToBounds(this.dataModel.layers[layerName].layer.getBounds());
         }
     },
 
