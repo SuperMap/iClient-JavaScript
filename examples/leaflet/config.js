@@ -12,7 +12,7 @@ var exampleConfig = {
         content: {
             "map": {
                 name: "地图",
-                name_en: "map service",
+                name_en: "Map service",
                 content: [{
                     name: "4326底图",
                     name_en: "4326 coordinate system",
@@ -100,7 +100,7 @@ var exampleConfig = {
             },
             "data": {
                 name: "数据",
-                name_en: "data service",
+                name_en: "Data service",
                 content: [{
                     name: "ID查询",
                     name_en: "ID query",
@@ -155,7 +155,7 @@ var exampleConfig = {
             },
             "theme": {
                 name: "专题图",
-                name_en: "server thematic service",
+                name_en: "Server thematic service",
                 content: [{
                     name: "点密度专题图",
                     name_en: "dot density",
@@ -200,7 +200,7 @@ var exampleConfig = {
             },
             "spatialAnalyst": {
                 name: "空间分析",
-                name_en: "spatial analysis service",
+                name_en: "Spatial analysis service",
                 content: [{
                     name: "数据集缓冲区分析",
                     name_en: "buffer",
@@ -310,7 +310,7 @@ var exampleConfig = {
             },
             "networkAnalyst": {
                 name: "网络分析",
-                name_en: "network analysis service",
+                name_en: "Network analysis service",
                 content: [{
                     name: "服务区分析",
                     name_en: "service area",
@@ -345,7 +345,7 @@ var exampleConfig = {
             },
             "trafficTransferAnalyst": {
                 name: "交通换乘",
-                name_en: "traffic transfer analysis",
+                name_en: "Traffic transfer analysis",
                 content: [{
                     name: "交通换乘",
                     name_en: "traffic transfer",
@@ -355,7 +355,7 @@ var exampleConfig = {
             },
             "processingService": {
                 name: "分布式分析",
-                name_en: "distributed analysis services",
+                name_en: "Distributed analysis services",
                 content: [{
                     name: "密度分析",
                     name_en: "density",
@@ -405,7 +405,7 @@ var exampleConfig = {
             },
             "addressMatch": {
                 name: "地址匹配",
-                name_en: "address matching service",
+                name_en: "Address matching service",
                 content: [{
                     name: "地址匹配",
                     name_en: "address match",
@@ -415,7 +415,7 @@ var exampleConfig = {
             },
             "dataFlow": {
                 name: "数据流",
-                name_en: "data flow service",
+                name_en: "Data flow service",
                 content: [{
                     name: "数据流",
                     name_en: "data flow",
@@ -432,7 +432,7 @@ var exampleConfig = {
             },
             "security": {
                 name: "安全",
-                name_en: "security",
+                name_en: "Security",
                 content: [{
                     name: "安全认证",
                     name_en: "security certification",
@@ -448,7 +448,7 @@ var exampleConfig = {
         content: {
             "ip_map": {
                 name: "地图",
-                name_en: "web map",
+                name_en: "Web map",
                 content: [{
                     name: "举办过奥运会的城市",
                     name_en: "city hosted the Olympic Games",
@@ -458,7 +458,7 @@ var exampleConfig = {
             },
             "ip_security": {
                 name: "安全",
-                name_en: "security",
+                name_en: "Security",
                 content: [{
                     name: "安全认证",
                     name_en: "security certification",
@@ -468,7 +468,7 @@ var exampleConfig = {
             },
             "ip_querymaps": {
                 name: "地图列表",
-                name_en: "web map list",
+                name_en: "Web map list",
                 content: [{
                     name: "地图列表",
                     name_en: "web map list",
@@ -485,7 +485,7 @@ var exampleConfig = {
         content: {
             "ol_map": {
                 name: "地图",
-                name_en: "web map",
+                name_en: "Web map",
                 content: [{
                     name: "黄龙溪徒步",
                     name_en: "Huanglongxi walking",
@@ -495,7 +495,7 @@ var exampleConfig = {
             },
             "ol_security": {
                 name: "安全",
-                name_en: "security",
+                name_en: "Security",
                 content: [{
                     name: "安全认证",
                     name_en: "security certification",
@@ -512,7 +512,7 @@ var exampleConfig = {
         content: {
             "im_node": {
                 name: "节点",
-                name_en: "node",
+                name_en: "Node",
                 content: [{
                     name: "节点管理",
                     name_en: "node management",
@@ -529,7 +529,7 @@ var exampleConfig = {
         content: {
             "es_viz": {
                 name: "可视化",
-                name_en: "visualization",
+                name_en: "Visualization",
                 content: [{
                     name: "热力/格网图",
                     name_en: "heat/grid map",
@@ -546,11 +546,11 @@ var exampleConfig = {
     },
     "viz": {
         name: "可视化",
-        name_en: "visualization",
+        name_en: "Visualization",
         content: {
             "heat": {
                 name: "热力图",
-                name_en: "heat map",
+                name_en: "Heat map",
                 content: [{
                     name: "随机点",
                     name_en: "random points",
@@ -577,7 +577,7 @@ var exampleConfig = {
             },
             "animate": {
                 name: "动画",
-                name_en: "animation",
+                name_en: "Animation",
                 content: [{
                     name: "闪烁点",
                     name_en: "flashing points",
@@ -587,7 +587,7 @@ var exampleConfig = {
             },
             "cluster": {
                 name: "聚合",
-                name_en: "cluster",
+                name_en: "Cluster",
                 content: [{
                     name: "点聚合",
                     name_en: "marker cluster",
@@ -597,7 +597,7 @@ var exampleConfig = {
             },
             "graphicLayer": {
                 name: "高效率点图层",
-                name_en: "high efficiency point layer",
+                name_en: "High efficiency point layer",
                 content: [
                     {
                         name: "纽约出租车18万点",
@@ -848,7 +848,7 @@ var exampleConfig = {
             },
             "tileVectorLayer": {
                 name: "矢量瓦片",
-                name_en: "vector tile layer",
+                name_en: "Vector tile layer",
                 content: [
                     {
                         name: "默认风格",
@@ -897,7 +897,7 @@ var exampleConfig = {
             },
             "themeLayer": {
                 name: "客户端专题图",
-                name_en: "client thematic layer",
+                name_en: "Client thematic layer",
                 content: [{
                     name: "单值专题图",
                     name_en: "unique",
@@ -929,11 +929,11 @@ var exampleConfig = {
     },
     "dynamicPlot": {
         name: "动态标绘",
-        name_en: "dynamicPlot",
+        name_en: "DynamicPlot",
         content: {
             "plot": {
                 name: "标绘",
-                name_en: "plot",
+                name_en: "Plot",
                 content: [{
                     name: "动态标绘",
                     name_en: "dynamic plot",
@@ -991,6 +991,7 @@ var exampleConfig = {
                 }, {
                     name: "查询标号",
                     name_en: "query symbol",
+                    version: "9.1.0",
                     thumbnail: "plot_querySymbolLib.png",
                     fileName: "plot_querySymbolLib"
                 }, {
@@ -1003,7 +1004,7 @@ var exampleConfig = {
             },
             "trendMap": {
                 name: "态势图",
-                name_en: "trend plot",
+                name_en: "Trend plot",
                 content: [{
                     name: "保存和加载",
                     name_en: "save and load",
@@ -1026,7 +1027,7 @@ var exampleConfig = {
             },
             "other": {
                 name: "其他",
-                name_en: "others",
+                name_en: "Others",
                 content: [{
                     name: "几何查询",
                     name_en: "symbol geometry query",
@@ -1069,7 +1070,7 @@ var exampleConfig = {
     },
     "clientSpatialAnalyst": {
         name: "客户端分析",
-        name_en: "client spatial analysis",
+        name_en: "Client spatial analysis",
         content: {
             "Turf": {
                 name: "Turf",
@@ -1099,11 +1100,11 @@ var exampleConfig = {
     },
     "control": {
         name: "控件",
-        name_en: "control",
+        name_en: "Control",
         content: {
             "draw": {
                 name: "点线面绘制",
-                name_en: "draw",
+                name_en: "Draw",
                 content: [{
                     name: "绘制与修改",
                     name_en: "draw and modify",
@@ -1118,7 +1119,7 @@ var exampleConfig = {
             },
             "changeTileVersion": {
                 name: "缓存切换",
-                name_en: "tile version switch",
+                name_en: "Tile version switch",
                 content: [{
                     name: "多版本缓存切换控件",
                     name_en: "tile version switch control",
@@ -1128,7 +1129,7 @@ var exampleConfig = {
             },
             "leafletOfficialControl": {
                 name: "基础控件",
-                name_en: "base control",
+                name_en: "Base control",
                 content: [{
                     name: "缩放控件",
                     name_en: "zoom control",
@@ -1170,7 +1171,7 @@ var exampleConfig = {
     },
     "widgets": {
         name: "微件",
-        name_en: "widgets",
+        name_en: "Widgets",
         content: {
             "widgetsSuperMap": {
                 name: "基础",
@@ -1254,12 +1255,12 @@ var exampleConfig = {
     },
     "mapping": {
         name: "互联网地图",
-        name_en: "Internet map",
+        name_en: "Third party map",
         localIgnore: true,
         content: {
             "Baidu": {
                 name: "百度地图",
-                name_en: "baidu map",
+                name_en: "Baidu map",
                 content: [{
                     name: "百度地图",
                     name_en: "baidu layer",
@@ -1269,7 +1270,7 @@ var exampleConfig = {
             },
             "Tianditu": {
                 name: "天地图",
-                name_en: "tianditu",
+                name_en: "Tianditu",
                 content: [{
                     name: "天地图-墨卡托",
                     name_en: "tianditu-mercator",

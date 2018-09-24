@@ -6,27 +6,32 @@ const serveIndex = require('serve-index')
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const product = process.argv[2] || 'leaflet';
-const config = require(`./webpack.config.${product}.js`);
-const entry = [`./src/${product}/index.js`];
-if (['leaflet', 'openlayers'].includes(product)) {
-  entry.push(`./src/${product}/css/index.js`);
-}
-config.mode = 'development';
-config.entry = entry;
-config.output.filename = product === 'classic' ? `iclient-classic-es6.js` : `iclient9-${product}-es6.js`
-config.devtool = 'cheap-module-eval-source-map';
-
-
-const compiler = webpack(config);
+const product = process.argv[2];
 const app = module.exports = express();
-const instance = webpackDevMiddleware(compiler, {
-  publicPath: `/dist/${product}`,
-  stats: {
-    colors: true
+if (product) {
+  const config = require(`./webpack.config.${product}.js`);
+  const entry = [`./src/${product}/index.js`];
+  if (['leaflet', 'openlayers'].includes(product)) {
+    entry.push(`./src/${product}/css/index.js`);
   }
-});
-app.use(instance);
+  config.mode = 'development';
+  config.entry = entry;
+  config.output.filename = product === 'classic' ? `iclient-classic-es6.js` : `iclient9-${product}-es6.js`
+  config.devtool = 'cheap-module-eval-source-map';
+
+
+  const compiler = webpack(config);
+  const instance = webpackDevMiddleware(compiler, {
+    publicPath: `/dist/${product}`,
+    stats: {
+      colors: true
+    }
+  });
+  app.use(instance);
+  instance.waitUntilValid(() => {
+    open(`http://localhost:9999/examples/${product}`);
+  });
+}
 
 const server = app.listen(9999, () => {
   const host = server.address().address;
@@ -49,6 +54,6 @@ app.use("/en/docs", express.static('docs'), serveIndex('docs'));
 app.use("/en/dist", express.static('dist'), serveIndex('dist'));
 app.use("/en/build", express.static('build'), serveIndex('build'));
 app.use("/en", express.static('web/en'), serveIndex('web/en'));
-instance.waitUntilValid(() => {
-  open(`http://localhost:9999/examples/${product}`);
-});
+if (!product) {
+  open(`http://localhost:9999/examples/leaflet`);
+}

@@ -102,11 +102,7 @@
     <label for='positron' data-i18n="resources.text_positronStyle"></label>
 </div>
 <script type="text/javascript" include='bootstrap-css' src="../js/include-web.js"></script>
-<link href="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js"></script>
-<script type="text/javascript"
-        src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
-<script type="text/javascript" src="../../dist/openlayers/iclient9-openlayers.min.js"></script>
+<script type="text/javascript" include='ol-debug,ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
 <script type="text/javascript">
     var url = (window.isLocal ? window.server : "http://54.223.164.155:8090") +
         "/iserver/services/map-beijing/rest/maps/beijingMap";

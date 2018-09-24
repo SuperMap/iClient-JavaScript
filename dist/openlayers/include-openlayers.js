@@ -49,9 +49,13 @@
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
-        if (!inArray(excludes, 'ol')) {
+        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug')) {
             inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol.css");
             inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol.js");
+        }
+        if (inArray(includes, 'ol-debug')) {
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");

@@ -8,12 +8,8 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mvtVectorLayer"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <!--<script type="text/javascript" src="../../dist/openlayers/include-openlayers.js"></script>-->
-    <link href="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.css" rel="stylesheet">
     <!--当前示例使用 ol-debug 原因：ol.format.MVT 默认坐标系为 3857，最新代码未更新该默认设置，需使用ol-debug，设置 defaultDataProjection 参数，以支持4326底图-->
-    <script src="https://cdn.bootcss.com/openlayers/4.6.5/ol-debug.js"></script>
-    <script type="text/javascript" src="http://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2/olms.js"></script>
-    <script type="text/javascript" src="../../dist/openlayers/iclient9-openlayers.js"></script>
+    <script type="text/javascript" include='ol-debug,ol-mapbox-style' src="../../dist/openlayers/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;

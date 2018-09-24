@@ -13,7 +13,7 @@ var exampleConfig = {
         content: {
             "map": {
                 name: "地图",
-                name_en: "map service",
+                name_en: "Map service",
                 content: [{
                     name: "3857底图",
                     name_en: "3857 coordinate system",
@@ -59,7 +59,7 @@ var exampleConfig = {
             },
             "data": {
                 name: "数据",
-                name_en: "data service",
+                name_en: "Data service",
                 content: [{
                     name: "ID查询",
                     name_en: "ID query",
@@ -109,7 +109,7 @@ var exampleConfig = {
             },
             "theme": {
                 name: "专题图",
-                name_en: "server thematic service",
+                name_en: "Server thematic service",
                 content: [{
                     name: "点密度专题图",
                     name_en: "dot density",
@@ -154,7 +154,7 @@ var exampleConfig = {
             },
             "spatialAnalyst": {
                 name: "空间分析",
-                name_en: "spatial analysis service",
+                name_en: "Spatial analysis service",
                 content: [{
                     name: "数据集缓冲区分析",
                     name_en: "buffer",
@@ -219,7 +219,7 @@ var exampleConfig = {
             },
             "addressMatch": {
                 name: "地址匹配",
-                name_en: "address matching service",
+                name_en: "Address matching service",
                 content: [{
                     name: "地址匹配",
                     name_en: "address match",
@@ -229,7 +229,7 @@ var exampleConfig = {
             },
             "dataFlow": {
                 name: "数据流",
-                name_en: "data flow service",
+                name_en: "Data flow service",
                 content: [{
                     name: "数据流",
                     name_en: "data flow",
@@ -239,7 +239,7 @@ var exampleConfig = {
             },
             "processingService": {
                 name: "分布式分析",
-                name_en: "distributed analysis services",
+                name_en: "Distributed analysis services",
                 content: [{
                     name: "密度分析",
                     name_en: "density",
@@ -291,11 +291,11 @@ var exampleConfig = {
     },
     "viz": {
         name: "可视化",
-        name_en: "visualization",
+        name_en: "Visualization",
         content: {
             "heat": {
                 name: "热力图",
-                name_en: "heat map",
+                name_en: "Heat map",
                 version: "9.1.0",
                 content: [{
                     name: "随机点 (Classic)",
@@ -307,7 +307,7 @@ var exampleConfig = {
             },
             "VectorTileLayer": {
                 name: "矢量瓦片",
-                name_en: "vector tile",
+                name_en: "Vector tile",
                 content: [
                     {
                         name: "China",
@@ -383,7 +383,7 @@ var exampleConfig = {
             },
             "graphicLayer": {
                 name: "高效率点图层",
-                name_en: "high efficiency point layer",
+                name_en: "High efficiency point layer",
                 content: [
                     {
                         name: "纽约出租车145万上车点",
@@ -559,7 +559,6 @@ var exampleConfig = {
             "DeckGL": {
                 name: "DeckGL",
                 name_en: "DeckGL",
-                version: "9.1.0",
                 content: [{
                     name: "路径图（线）",
                     name_en: "path",
@@ -710,7 +709,6 @@ var exampleConfig = {
             "threejs": {
                 name: "threejs",
                 name_en: "threejs",
-                version: "9.1.0",
                 content: [
                     {
                         name: "建筑模型",
@@ -797,7 +795,7 @@ var exampleConfig = {
     },
     "control": {
         name: "控件",
-        name_en: "control",
+        name_en: "Control",
         content: {
             "BasicControl": {
                 name: "基础控件",
