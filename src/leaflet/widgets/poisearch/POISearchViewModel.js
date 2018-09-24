@@ -11,6 +11,8 @@ import {GeoJsonLayersDataModel} from '../commonmodels/GeoJsonLayersModel';
 /**
  * @class L.supermap.widgets.poiSearchViewModel
  * @classdesc 搜索定位微件 viewModel，用于处理定位微件的一些业务逻辑代码。
+ * @category Widgets POISearch
+ * @private
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
  */
 export var POISearchViewModel = L.Evented.extend({

@@ -8,8 +8,8 @@ import {MessageBox, Lang} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.openFile
- * @classdesc openfile 微件，用于打开本地数据文件并加载到底图
- * @category Widgets
+ * @classdesc 打开文件微件，用于打开本地数据文件并加载到底图
+ * @category Widgets OpenFile
  */
 export var OpenFileView = L.Control.extend({
     options: {
@@ -19,8 +19,9 @@ export var OpenFileView = L.Control.extend({
         position: 'topright'
     },
     /**
-     * @function L.supermap.widgets.openfile.prototype.onAdd
+     * @function L.supermap.widgets.openFile.prototype.onAdd
      * @description 向底图添加微件
+     * @private
      */
     onAdd: function (map) {
         this.map = map;
@@ -32,7 +33,7 @@ export var OpenFileView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.openfile.prototype.onAdd
+     * @function L.supermap.widgets.openFile.prototype.setViewStyle
      * @description 改变微件样式
      * @param {string} styleName - css样式名
      * @param {string} value - css样式值
@@ -42,7 +43,7 @@ export var OpenFileView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.openfile.prototype._initOpenFileView
+     * @function L.supermap.widgets.openFile.prototype._initOpenFileView
      * @description 创建打开本地文件数据微件
      * @returns {HTMLElement}
      * @private

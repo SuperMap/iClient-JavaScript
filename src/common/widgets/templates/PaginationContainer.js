@@ -7,6 +7,7 @@ import {SuperMap} from '../../SuperMap';
 /**
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
+ * @category Widgets Common
  */
 export class PaginationContainer {
     constructor(contents = null, pageCounts = 0) {

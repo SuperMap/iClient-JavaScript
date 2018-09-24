@@ -17,13 +17,15 @@ import {POISearchViewModel} from './POISearchViewModel';
 /**
  * @class L.supermap.widgets.poiSearch
  * @classdesc 地址匹配或图层要素查询微件
- * @category Widgets
+ * @category Widgets POISearch
+ * @param {Object} options - 可选参数
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
  *                                    配置两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或 ["成都市","北京市"]，用户可根据自己的项目需求进行配置
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
+ * @extends {L.Control}
  */
 export var POISearchView = L.Control.extend({
     options: {
@@ -48,6 +50,7 @@ export var POISearchView = L.Control.extend({
     /**
      * @function L.supermap.widgets.poiSearch.prototype.onAdd
      * @description 向底图添加微件
+     * @private
      */
     onAdd: function (map) {
         this.map = map;
@@ -58,7 +61,7 @@ export var POISearchView = L.Control.extend({
     },
     /**
      * @function L.supermap.widgets.poiSearch.prototype.addSearchLayer
-     * @description 添加可查询的图层到 viewModel
+     * @description 添加可查询的图层
      * @param {Array.<L.GeoJSON>|L.GeoJSON} layers - 可查询的图层
      */
     addSearchLayer(layers) {
@@ -168,7 +171,7 @@ export var POISearchView = L.Control.extend({
             //选择查询图层【图层列表点击事件】
             layerSelectOptions.onclick = (e) => {
                 //先进行清除操作
-                self._clearSearchResult();
+                self.clearSearchResult();
 
                 let selectLayerOption = null;
                 if (e.target.classList[0] === "widgets-singlesSelect") {
@@ -260,7 +263,7 @@ export var POISearchView = L.Control.extend({
         searchBtn.onclick = () => {
             //若是遮挡结果显示，则关闭
             resultDomObj.closeView();
-            this._clearSearchResult();
+            this.clearSearchResult();
             this.messageBox.closeView();
             navTabsPageObject.closeView();
             const keyWord = this.poiInput.value.trim();
@@ -330,7 +333,7 @@ export var POISearchView = L.Control.extend({
 
         //清除输入框内容【输入框删除按钮点击事件】
         poiInputClose.onclick = (e) => {
-            this._clearSearchResult();
+            this.clearSearchResult();
             poiInput.value = "";
             e.target.hidden = true;
             resultDomObj.closeView();
@@ -462,7 +465,7 @@ export var POISearchView = L.Control.extend({
         //----图层查询结果监听
         this.viewModel.on("searchlayersucceed", (e) => {
             const data = e.result;
-            this._clearSearchResult();
+            this.clearSearchResult();
             this.searchResultLayer = L.featureGroup(data, {
                 pointToLayer: null
             }).bindPopup(function (layer) {
@@ -479,7 +482,7 @@ export var POISearchView = L.Control.extend({
         this.viewModel.on("geocodesucceed", (e) => {
             const data = e.result;
             //先清空当前有的地址匹配图层
-            this._clearSearchResult();
+            this.clearSearchResult();
 
             this.searchResultLayer = L.geoJSON(data)
                 .bindPopup(function (layer) {
@@ -623,10 +626,10 @@ export var POISearchView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.poiSearch.prototype._clearSearchResult
+     * @function L.supermap.widgets.poiSearch.prototype.clearSearchResult
      * @description 清空当前查询的结果等
      */
-    _clearSearchResult() {
+    clearSearchResult() {
         if (this.searchResultLayer) {
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式

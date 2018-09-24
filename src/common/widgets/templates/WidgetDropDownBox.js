@@ -13,7 +13,7 @@ import { SuperMap } from '../../SuperMap';
  * @param {string} [optionsArr.dataValue] - 下拉框 attribute 名为 data-value 的值 。
  * @param {string} [optionsArr.icon.className] - 下拉框图标类名。
  * @param {string} [optionsArr.icon.background] - 下拉框图标背景 url。
- * @category Widgets
+ * @category Widgets Common
  */
 export class WidgetDropDownBox {
     constructor(optionsArr) {

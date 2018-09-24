@@ -1,9 +1,11 @@
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-/**
- * @class NavTabsPage
+ import {SuperMap} from '../../SuperMap';
+ /**
+ * @class SuperMap.Widgets.NavTabsPage
  * @classdesc 标签页面组件
+ * @category Widgets Common
  * @param {Array.<Object>} [tabs=[]] - 标签对象数组 [{title: "",content: HTMLElement}],初始时，传入则创建页面。
  * todo 思考拆分的控件应该以哪种方式使用
  */
@@ -136,3 +138,4 @@ export class NavTabsPage {
     }
 
 }
+SuperMap.Widgets.NavTabsPage = NavTabsPage;

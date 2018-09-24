@@ -8,7 +8,8 @@ import { FetchRequest } from '@supermap/iclient-common';
 /**
  * @class L.supermap.widgets.DistributedAnalysisModel
  * @classdesc 分布式分析微件数据模型。
- * @category Widgets
+ * @private
+ * @category Widgets DistributedAnalysis
  * @param {string} processingUrl - 分布式分析地址。
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetsloaded
  * @fires L.supermap.widgets.DistributedAnalysisModel#datasetinfoloaded

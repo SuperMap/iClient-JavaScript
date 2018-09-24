@@ -7,9 +7,10 @@ import { MessageBox, WidgetContainer, Lang } from '@supermap/iclient-common';
 import { DataFlowViewModel } from './DataFlowViewModel';
 
 /**
- * @class L.supermap.widgets.DataFlowView
- * @classdesc dataFlow 微件，用于打开本地数据文件并加载到底图
- * @category Widgets
+ * @class L.supermap.widgets.dataFlow
+ * @classdesc 数据流微件。
+ * @category Widgets DataFlow
+ * @param {Object} options - 可选参数
  * @param {string} [options.position="topright"] - 控件所在位置，包括 'topleft', 'topright', 'bottomleft' or 'bottomright'
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  `function(geoJsonPoint, latlng) {
@@ -62,6 +63,7 @@ export var DataFlowView = L.Control.extend({
     /**
      * @function L.supermap.widgets.DataFlowView.prototype.onAdd
      * @description 向底图添加微件
+     * @private
      */
     onAdd(map) {
         this.map = map;

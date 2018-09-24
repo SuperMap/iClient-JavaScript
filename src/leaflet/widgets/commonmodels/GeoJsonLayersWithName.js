@@ -11,7 +11,7 @@ import '../../core/Base';
  * @param {Object} layerObject - 图层对象。
  * @param {string} layerObject.layerName -  图层名。
  * @param {L.GeoJSON} layerObject.layer -  图层。
- * @category Widgets
+ * @category Widgets Common
  */
 export class GeoJSONLayersWithName {
     constructor(layerObject) {

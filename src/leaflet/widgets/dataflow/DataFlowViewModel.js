@@ -9,7 +9,8 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
 /**
  * @class L.supermap.widgets.dataFlowViewModel
  * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
- * @category Widgets
+ * @category Widgets DataFlow
+ * @private
  * @param {L.Map} map - 当前微件所在的底图
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。

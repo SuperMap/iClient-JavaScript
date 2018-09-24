@@ -10,7 +10,7 @@ import { WidgetContainer, WidgetDropDownBox, WidgetSelect, MessageBox, Lang } fr
  * @class L.supermap.widgets.distributedAnalysis
  * @classdesc 分布式分析微件。
  * @param {string} processingUrl - 分布式分析服务地址。
- * @category Widgets
+ * @category Widgets DistributedAnalysis
  */
 export var DistributedAnalysisView = L.Control.extend({
 
@@ -26,6 +26,7 @@ export var DistributedAnalysisView = L.Control.extend({
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype.onAdd
      * @description 添加控件。
+     * @private
      */
     onAdd: function (map) {
         this.map = map;

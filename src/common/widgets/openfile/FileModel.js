@@ -6,6 +6,8 @@ import {FileTypes, FileConfig} from '../CommonTypes'
 /**
  * @class SuperMap.FileModel
  * @description 文件数据微件数据模型，用于存储一些文件数据或状态，todo 结构待完善
+ * @category Widgets OpenFile
+ * @private
  */
 export class FileModel {
     constructor(options) {

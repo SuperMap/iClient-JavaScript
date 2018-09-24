@@ -329,7 +329,33 @@
     },
     "Widgets": {
         "name": "微件",
-        "name_en": "Widgets"
+        "name_en": "Widgets",
+        "content": {
+            "Common": {
+                "name": "通用",
+                "name_en": "Common"
+            },
+            "OpenFile": {
+                "name": "打开文件微件",
+                "name_en": "OpenFile"
+            },
+            "DataFlow": {
+                "name": "数据流微件",
+                "name_en": "DataFlow"
+            },
+            "ClientComputation": {
+                "name": "客户端计算微件",
+                "name_en": "ClientComputation"
+            },
+            "DistributedAnalysis": {
+                "name": "分布式分析微件",
+                "name_en": "DistributedAnalysis"
+            },
+            "POISearch": {
+                "name": "地址匹配或图层要素查询微件",
+                "name_en": "POISearch"
+            }
+        }
     },
     "Security": {
         "name": "安全",

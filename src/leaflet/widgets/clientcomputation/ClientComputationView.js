@@ -10,7 +10,7 @@ import { WidgetContainer, WidgetDropDownBox, WidgetSelect, MessageBox, Lang } fr
  * @class L.supermap.widgets.clientComputation
  * @classdesc 客户端计算微件，用于进行叠加图层的客户端计算。
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
- * @category Widgets
+ * @category Widgets ClientComputationLayer
  */
 export var ClientComputationView = L.Control.extend({
 
@@ -29,6 +29,7 @@ export var ClientComputationView = L.Control.extend({
     /**
      * @function L.supermap.widgets.clientComputation.prototype.onAdd
      * @description 添加控件。
+     * @private
      */
     onAdd: function (map) {
         this.map = map;

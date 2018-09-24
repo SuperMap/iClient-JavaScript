@@ -10,7 +10,7 @@ import { SuperMap } from '../../SuperMap';
  * @param {string} [options.labelName] - label 名称。
  * @param {Array.<string>} options.optionsArr - 需要创建的 option 数据数组。
  * @param {Function} [options.optionsClickCb] - option 点击事件回调函数。
- * @category Widgets
+ * @category Widgets Common
  */
 export class WidgetSelect {
     constructor(options) {
