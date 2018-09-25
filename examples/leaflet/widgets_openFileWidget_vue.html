@@ -25,7 +25,7 @@
     var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
 
-    var openFileViewModel = new L.supermap.widgets.OpenFileViewModel(map);
+    var openFileViewModel = L.supermap.widgets.openFileViewModel(map);
     var messageBox = new SuperMap.Widgets.MessageBox();
 
     initEditView();

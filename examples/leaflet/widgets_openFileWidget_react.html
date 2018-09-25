@@ -94,7 +94,7 @@
         }
     }
 
-    var openFileViewModel = new L.supermap.widgets.OpenFileViewModel(map);
+    var openFileViewModel = L.supermap.widgets.openFileViewModel(map);
     var messageBox = new SuperMap.Widgets.MessageBox();
     ReactDOM.render(
             <AddData openFileViewModel={openFileViewModel} messageBox={messageBox} text={resources.text_openFile}/>,
