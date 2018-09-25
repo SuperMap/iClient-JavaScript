@@ -3,115 +3,126 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_GlobalWind"></title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" include="echarts,echarts-gl" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script>
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var map,
-        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
-        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script>
+        var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+        var map,
+            mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
+            attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
             " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             "Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
-            "<a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu + " ECharts  Echarts-gl</a>";
+            "<a href='http://echarts.baidu.com' target='_blank'>© 2017 " + resources.title_3baidu +
+            " ECharts  Echarts-gl</a>";
 
-    map = new mapboxgl.Map({
-        container: 'map',
-        altitudeScale: 2,
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
+        map = new mapboxgl.Map({
+            container: 'map',
+            altitudeScale: 2,
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [mapUrl],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
                     "type": "raster",
-                    "tiles": [mapUrl],
-                    "tileSize": 256
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-            }]
-        },
-        center: [0, 0],
-        zoom: 1,
-    });
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
-    map.on('load', function () {
-
-        $.getJSON('../data/globalWindData.json', function (windData) {
-
-            var data = [];
-            var p = 0;
-            var maxMag = 0;
-            var minMag = Infinity;
-            for (var j = 0; j < windData.ny; j++) {
-                for (var i = 0; i < windData.nx; i++, p++) {
-                    var vx = windData.data[p][0];
-                    var vy = windData.data[p][1];
-                    var mag = Math.sqrt(vx * vx + vy * vy);
-                    // 数据是一个一维数组
-                    // [ [经度, 维度，向量经度方向的值，向量维度方向的值] ]
-                    data.push([
-                        i / windData.nx * 360 - 180,
-                        j / windData.ny * 180 - 90,
-                        vx,
-                        vy,
-                        mag
-                    ]);
-                    maxMag = Math.max(mag, maxMag);
-                    minMag = Math.min(mag, minMag);
-                }
-            }
-
-            var echartslayer = new EchartsLayer(map);
-            echartslayer.chart.setOption({
-                GLMap: {
-                    roam: true,
-                },
-                geo: {
-                    map: "GLMap"
-                },
-                visualMap: {
-                    left: 'right',
-                    min: minMag,
-                    max: maxMag,
-                    dimension: 4,
-                    inRange: {
-//                         color: ['green', 'yellow', 'red']
-                        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-                    },
-                    realtime: false,
-                    calculable: true,
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                series: [{
-                    type: 'flowGL',
-                    coordinateSystem: 'GLMap',
-                    data: data,
-                    particleDensity: 512,
-                    particleSpeed: 2,
-                    particleSize: 1,
-                    gridWidth: windData.nx,
-                    gridHeight: windData.ny,
-                    itemStyle: {
-                        opacity: 0.7
-                    }
+                    "source": "raster-tiles",
                 }]
-            });
-
+            },
+            center: [0, 0],
+            zoom: 1,
         });
-    });
-</script>
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+        map.on('load', function () {
+
+            $.getJSON('../data/globalWindData.json', function (windData) {
+
+                var data = [];
+                var p = 0;
+                var maxMag = 0;
+                var minMag = Infinity;
+                for (var j = 0; j < windData.ny; j++) {
+                    for (var i = 0; i < windData.nx; i++, p++) {
+                        var vx = windData.data[p][0];
+                        var vy = windData.data[p][1];
+                        var mag = Math.sqrt(vx * vx + vy * vy);
+                        // 数据是一个一维数组
+                        // [ [经度, 维度，向量经度方向的值，向量维度方向的值] ]
+                        var y = j / windData.ny * 180 - 90;
+                        if (y > 85 || y < -85) {
+                            continue;
+                        }
+                        data.push([
+                            i / windData.nx * 360 - 180,
+                            y,
+                            vx,
+                            vy,
+                            mag
+                        ]);
+                        maxMag = Math.max(mag, maxMag);
+                        minMag = Math.min(mag, minMag);
+                    }
+                }
+
+                var echartslayer = new EchartsLayer(map);
+                echartslayer.chart.setOption({
+                    GLMap: {
+                        roam: true,
+                    },
+                    geo: {
+                        map: "GLMap"
+                    },
+                    visualMap: {
+                        left: 'right',
+                        min: minMag,
+                        max: maxMag,
+                        dimension: 4,
+                        inRange: {
+                            //                         color: ['green', 'yellow', 'red']
+                            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8',
+                                '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027',
+                                '#a50026'
+                            ]
+                        },
+                        realtime: false,
+                        calculable: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    series: [{
+                        type: 'flowGL',
+                        coordinateSystem: 'GLMap',
+                        data: data,
+                        particleDensity: 512,
+                        particleSpeed: 2,
+                        particleSize: 1,
+                        gridWidth: windData.nx,
+                        gridHeight: windData.ny,
+                        itemStyle: {
+                            opacity: 0.7
+                        }
+                    }]
+                });
+
+            });
+        });
+    </script>
 
 </body>
+
 </html>

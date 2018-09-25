@@ -135,7 +135,7 @@
                                 for (var i = 0; i < result.length; i++) {
                                     names.push(result[i].attributes.BOROUGH);
                                     data1.push(parseFloat(result[i].attributes.RECORDCOUNT));
-                                    data2.push(parseFloat(result[i].attributes.SUM_LOCATIONID0));
+                                    data2.push(parseFloat(result[i].attributes.SUM_LOCATIONID));
                                 }
                                 $("#echarts").show();
                                 var ChartDom = document.createElement("div");
@@ -154,7 +154,7 @@
                                         textStyle: {
                                             color: '#fff',
                                         },
-                                        data: ['RECORDCOUNT', 'SUM_LOCATIONID0']
+                                        data: ['RECORDCOUNT', 'SUM_LOCATIONID']
                                     },
                                     grid: {
                                         left: '3%',
@@ -222,7 +222,7 @@
                                             barCategoryGap: '50%'
                                         },
                                         {
-                                            name: 'SUM_LOCATIONID0',
+                                            name: 'SUM_LOCATIONID',
                                             type: 'bar',
                                             yAxisIndex: 1,
                                             itemStyle: {

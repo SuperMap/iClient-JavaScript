@@ -164,7 +164,7 @@
             $('#msg_container').remove();
         }
         widgets.loader.showLoader();
-        if (map && map.getSource("kernerlLayer")) {
+        if (map && map.getLayer("kernerlLayer")) {
             map.removeLayer("kernerlLayer")
             map.removeSource("kernerlSource");
         }
