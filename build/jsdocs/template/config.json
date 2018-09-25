@@ -351,9 +351,9 @@
                 "name": "分布式分析微件",
                 "name_en": "DistributedAnalysis"
             },
-            "POISearch": {
-                "name": "地址匹配或图层要素查询微件",
-                "name_en": "POISearch"
+            "Search": {
+                "name": "查询微件",
+                "name_en": "Search"
             }
         }
     },

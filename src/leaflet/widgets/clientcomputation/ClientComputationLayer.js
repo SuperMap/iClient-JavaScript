@@ -6,7 +6,7 @@ import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.widgets.ClientComputationLayer
+ * @class L.supermap.widgets.clientComputationLayer
  * @classdesc 客户端计算图层对象。
  * @param {Object} layerObject -  图层对象。
  * @param {string} layerObject.layerName -  图层名。

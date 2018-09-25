@@ -1192,8 +1192,8 @@ var exampleConfig = {
                     name: "地址匹配与图层要素查询",
                     name_en: "address match add features search",
                     version: "9.1.0",
-                    thumbnail: "widgets_POISearch.png",
-                    fileName: "widgets_POISearch"
+                    thumbnail: "widgets_Search.png",
+                    fileName: "widgets_Search"
                 },{
                     name: "客户端计算",
                     name_en: "client computation",

@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import { DistributedAnalysisViewModel } from "./DistributedAnalysisViewModel";
-import { WidgetContainer, WidgetDropDownBox, WidgetSelect, MessageBox, Lang } from '@supermap/iclient-common';
+import {DistributedAnalysisViewModel} from "./DistributedAnalysisViewModel";
+import {CommonContainer, DropDownBox, Select, MessageBox, Lang} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.distributedAnalysis
@@ -89,7 +89,7 @@ export var DistributedAnalysisView = L.Control.extend({
         let me = this;
 
         // 微件 container
-        let container = (new WidgetContainer(Lang.i18n('title_distributedAnalysis'))).getElement();
+        let container = (new CommonContainer(Lang.i18n('title_distributedAnalysis'))).getElement();
         container.classList.add('widget-analysis-container');
         container.children[0].style.fontSize = '12px';
 
@@ -105,7 +105,7 @@ export var DistributedAnalysisView = L.Control.extend({
                 'className': 'analyst-density-img'
             }
         }];
-        let dropDownBox = (new WidgetDropDownBox(analysisOptionsArr)).getElement();
+        let dropDownBox = (new DropDownBox(analysisOptionsArr)).getElement();
         widgetContentContainer.appendChild(dropDownBox);
         // 选中的 dropDownItem
         let dropDownTop = dropDownBox.children[0].children[0].children[0];
@@ -122,7 +122,7 @@ export var DistributedAnalysisView = L.Control.extend({
             'labelName': Lang.i18n('text_label_dataset'),
             "optionsClickCb": datasetSelectOnchange.bind(this)
         }
-        let datasetSelectObj = new WidgetSelect(datasetOptions);
+        let datasetSelectObj = new Select(datasetOptions);
         let datasetSelectTool = datasetSelectObj.getElement();
         this.datasetSelectObj = datasetSelectObj;
         datasetSelectControl.appendChild(datasetSelectTool);
@@ -147,7 +147,7 @@ export var DistributedAnalysisView = L.Control.extend({
         // 分析参数 select control
         let analysisSelectControl = L.DomUtil.create('div', 'select-control', analyseIDW);
         for (let i in analysisOptions) {
-            let selectTool = (new WidgetSelect(analysisOptions[i])).getElement();
+            let selectTool = (new Select(analysisOptions[i])).getElement();
             analysisSelectControl.appendChild(selectTool);
         }
 
@@ -156,7 +156,7 @@ export var DistributedAnalysisView = L.Control.extend({
             'optionsArr': [Lang.i18n('text_option_notSet')],
             'labelName': Lang.i18n('text_label_weightField')
         }
-        let weightFieldsSelectObj = new WidgetSelect(weightFieldsSelectOptions);
+        let weightFieldsSelectObj = new Select(weightFieldsSelectOptions);
         let weightFieldsSelectTool = weightFieldsSelectObj.getElement();
         analysisSelectControl.appendChild(weightFieldsSelectTool);
         this.weightFieldsSelectObj = weightFieldsSelectObj;
@@ -201,7 +201,7 @@ export var DistributedAnalysisView = L.Control.extend({
             'labelName': Lang.i18n('text_label_thematicMapSegmentationMode'),
             "optionsClickCb": themeModelSelectOnchange
         }
-        rangeContent.appendChild((new WidgetSelect(rangeContentOptions)).getElement());
+        rangeContent.appendChild((new Select(rangeContentOptions)).getElement());
 
         let themeModelSelectName = rangeContent.children[0].children[1].children[0];
         themeModelSelectName.setAttribute('data-value', 'NOTSET');
@@ -214,12 +214,12 @@ export var DistributedAnalysisView = L.Control.extend({
             'value': '20'
         }, rangeContent)
         rangeContentParamInput.classList.add('hidden');
-        let rangeContentModelSelectTool = (new WidgetSelect({
+        let rangeContentModelSelectTool = (new Select({
             'optionsArr': [
-                Lang.i18n('text_option_greenOrangePurpleGradient'), 
-                Lang.i18n('text_option_greenOrangeRedGradient'), 
-                Lang.i18n('text_option_rainbowGradient'), 
-                Lang.i18n('text_option_spectralGradient'), 
+                Lang.i18n('text_option_greenOrangePurpleGradient'),
+                Lang.i18n('text_option_greenOrangeRedGradient'),
+                Lang.i18n('text_option_rainbowGradient'),
+                Lang.i18n('text_option_spectralGradient'),
                 Lang.i18n('text_option_terrainGradient')],
             'labelName': Lang.i18n('text_label_thematicMapColorGradientMode')
         })).getElement()
@@ -230,7 +230,7 @@ export var DistributedAnalysisView = L.Control.extend({
         rangeContentModelSelectName.setAttribute('data-value', 'GREENORANGEVIOLET');
         let rangeContentModelDV = ['GREENORANGEVIOLET', 'GREENORANGERED', 'RAINBOW', 'SPECTRUM', 'TERRAIN']
         this._setEleAtribute(rangeContentModelDV, 'data-value', rangeContentModelSelect.children)
-        
+
         // 专题图分段模式下拉框 onchange 事件
         function themeModelSelectOnchange(option) {
             if (option.getAttribute('data-value') !== 'NOTSET') {
@@ -278,6 +278,7 @@ export var DistributedAnalysisView = L.Control.extend({
 
         // 数据集下拉框 onchange 事件
         this.datasetSelectOnchange = datasetSelectOnchange.bind(this);
+
         function datasetSelectOnchange(option) {
             this.messageBox.closeView();
             if (this.dataHash) {
@@ -294,10 +295,10 @@ export var DistributedAnalysisView = L.Control.extend({
                     let analyseType = dropDownTop.getAttribute('data-value');
                     let type = e.result.type;
                     let fields = e.result.fields;
-                    if(analyseType === 'density'){
-                        if(type === 'REGION' || type === 'LINE'){
+                    if (analyseType === 'density') {
+                        if (type === 'REGION' || type === 'LINE') {
                             _me.messageBox.showView(Lang.i18n('msg_datasetOrMethodUnsupport'), "failure");
-                        }else{
+                        } else {
                             _me.messageBox.closeView();
                             _me._createOptions(weightFieldsSelect, fields);
                             _me.weightFieldsSelectObj.optionClickEvent(weightFieldsSelect, weightFieldsSelectName);
@@ -306,6 +307,7 @@ export var DistributedAnalysisView = L.Control.extend({
                 })
             }
         }
+
         // 分析按钮点击事件
         analysisBtn.onclick = () => {
             me.messageBox.closeView();
@@ -367,6 +369,7 @@ export var DistributedAnalysisView = L.Control.extend({
             }
             return analysisParam;
         }
+
         this._container = container;
         this._preventMapEvent(this._container, this.map);
         return this._container;
@@ -405,7 +408,7 @@ export var DistributedAnalysisView = L.Control.extend({
      * @description 设置元素的属性名和属性值。
      * @private
      */
-    _setEleAtribute(daraValueArr, attributeName, eleArr){
+    _setEleAtribute(daraValueArr, attributeName, eleArr) {
         for (let i = 0; i < eleArr.length; i++) {
             eleArr[i].setAttribute(attributeName, daraValueArr[i])
         }

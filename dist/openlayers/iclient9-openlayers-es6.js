@@ -63407,7 +63407,7 @@ class MessageBox {
 }
 
 SuperMap.Widgets.MessageBox = MessageBox;
-// CONCATENATED MODULE: ./src/common/widgets/templates/WidgetContainer.js
+// CONCATENATED MODULE: ./src/common/widgets/templates/CommonContainer.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -63485,7 +63485,7 @@ class WidgetContainer {
 }
 
 SuperMap.Widgets.WidgetContainer = WidgetContainer;
-// CONCATENATED MODULE: ./src/common/widgets/templates/WidgetSelect.js
+// CONCATENATED MODULE: ./src/common/widgets/templates/Select.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -63612,7 +63612,7 @@ class WidgetSelect {
 }
 SuperMap.Widgets.WidgetSelect = WidgetSelect;
 
-// CONCATENATED MODULE: ./src/common/widgets/templates/WidgetDropDownBox.js
+// CONCATENATED MODULE: ./src/common/widgets/templates/DropDownBox.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/

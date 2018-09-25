@@ -8,6 +8,8 @@ import {SuperMap} from '../../SuperMap';
  * @class SuperMap.Widgets.PaginationContainer
  * @classdesc 分页组件模板
  * @category Widgets Common
+ * @param {HTMLElement} contents - 页面填充的 DOM 元素对象
+ * @param {number} pageCounts - 页数
  */
 export class PaginationContainer {
     constructor(contents = null, pageCounts = 0) {

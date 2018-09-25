@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import { MessageBox, WidgetContainer, Lang } from '@supermap/iclient-common';
-import { DataFlowViewModel } from './DataFlowViewModel';
+import {MessageBox, CommonContainer, Lang} from '@supermap/iclient-common';
+import {DataFlowViewModel} from './DataFlowViewModel';
 
 /**
  * @class L.supermap.widgets.dataFlow
@@ -26,7 +26,7 @@ import { DataFlowViewModel } from './DataFlowViewModel';
                                                     };
                                             }`
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
- * @fires L.supermap.widgets.DataFlowView#dataupdated
+ * @fires L.supermap.widgets.dataFlow#dataupdated
  */
 export var DataFlowView = L.Control.extend({
     options: {
@@ -62,7 +62,7 @@ export var DataFlowView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.DataFlowView.prototype.onAdd
+     * @function L.supermap.widgets.dataFlow.prototype.onAdd
      * @description 向底图添加微件
      * @private
      */
@@ -73,7 +73,7 @@ export var DataFlowView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.DataFlowView.prototype.on
+     * @function L.supermap.widgets.dataFlow.prototype.on
      * @param {string} eventType - 监听的事件类型
      * @param {Function} callback - 监听事件的回调函数
      */
@@ -82,16 +82,16 @@ export var DataFlowView = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.widgets.DataFlowView.prototype._initView
+     * @function L.supermap.widgets.dataFlow.prototype._initView
      * @description 创建打开本地文件数据微件
      * @returns {HTMLElement}
      * @private
      */
     _initView() {
-        const widgetContainerObj = new WidgetContainer(Lang.i18n("title_dataFlowService"), { "top": "32px", "right": "96px" });
-        const widgetContainer = widgetContainerObj.getElement();
+        const ContainerObj = new CommonContainer(Lang.i18n("title_dataFlowService"), {"top": "32px", "right": "96px"});
+        const Container = ContainerObj.getElement();
 
-        const widgetContent = widgetContainerObj.getContentElement();
+        const widgetContent = ContainerObj.getContentElement();
         widgetContent.style.padding = "10px 18px";
         const dataFlowContainer1 = document.createElement("div");
         dataFlowContainer1.setAttribute("class", "dataflow-container");
@@ -182,12 +182,12 @@ export var DataFlowView = L.Control.extend({
 
         //关闭在控件上触发地图的事件响应：
         const self = this;
-        widgetContainer.addEventListener('mouseover', function () {
+        Container.addEventListener('mouseover', function () {
             self.map.dragging.disable();
             self.map.scrollWheelZoom.disable();
             self.map.doubleClickZoom.disable();
         });
-        widgetContainer.addEventListener('mouseout', function () {
+        Container.addEventListener('mouseout', function () {
             self.map.dragging.enable();
             self.map.scrollWheelZoom.enable();
             self.map.doubleClickZoom.enable();
@@ -205,8 +205,8 @@ export var DataFlowView = L.Control.extend({
         });
 
         /**
-         * @event L.supermap.widgets.DataFlowView#dataupdated
-         * @description 数据流服务成功返回数据后触发。
+         * @event L.supermap.widgets.dataFlow#dataupdated
+         * @description 数据流服务成功返回数据后触发
          * @property {Object} result  - 事件返回的数据对象。
          */
         this.viewModel.on("dataupdated", (result) => {
@@ -214,7 +214,7 @@ export var DataFlowView = L.Control.extend({
             this.event.fire("dataupdated", result);
         });
 
-        return widgetContainer;
+        return Container;
     }
 
 });

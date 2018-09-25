@@ -80,10 +80,10 @@ export var DataFlowViewModel = L.Evented.extend({
         this.dataFlowStatus = false;
 
         /**
-         * @member {string} [L.supermap.widgets.dataFlowViewModel.prototype.urlDataFlow=""]
+         * @member {string} [L.supermap.widgets.dataFlowViewModel.prototype.dataFlowUrl=""]
          * @description 数据流地址
          */
-        this.urlDataFlow = "";
+        this.dataFlowUrl = "";
 
         /**
          * @member {Array.<Object>} [L.supermap.widgets.dataFlowViewModel.prototype.currentFeatures]
@@ -102,11 +102,11 @@ export var DataFlowViewModel = L.Evented.extend({
     /**
      * @function L.supermap.widgets.dataFlowViewModel.prototype.subscribe
      * @description 订阅数据流。
-     * @param {string} urlDataFlow - 数据流服务地址。
+     * @param {string} dataFlowUrl - 数据流服务地址。
      */
-    subscribe(urlDataFlow) {
+    subscribe(dataFlowUrl) {
         //若当前数据流服务没变，则不进行重新订阅 todo 或者没点击暂停
-        if (this.urlDataFlow === urlDataFlow) {
+        if (this.dataFlowUrl === dataFlowUrl) {
             if (this.dataFlowStatus) {
                 /**
                  * @event L.supermap.widgets.dataFlowViewModel#dataflowfervicefubscribed
@@ -116,7 +116,7 @@ export var DataFlowViewModel = L.Evented.extend({
                 return;
             }
         } else {
-            this.urlDataFlow = urlDataFlow
+            this.dataFlowUrl = dataFlowUrl
         }
         this.dataFlowStatus = true;
         //移除已有图层
@@ -125,7 +125,7 @@ export var DataFlowViewModel = L.Evented.extend({
             this.dataFlowLayer = null;
         }
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
-        const dataFlowLayer = new DataFlowLayer(urlDataFlow, this.options._defaultLayerOptions);
+        const dataFlowLayer = new DataFlowLayer(dataFlowUrl, this.options._defaultLayerOptions);
         dataFlowLayer.on('subscribesuccessed', (result) => {
             /**
              * @event L.supermap.widgets.dataFlowViewModel#subscribesuccessed
@@ -190,7 +190,6 @@ export var DataFlowViewModel = L.Evented.extend({
                 }
             }
         }
-
     },
     /**
      * @function L.supermap.widgets.dataFlowViewModel.prototype.closePopups

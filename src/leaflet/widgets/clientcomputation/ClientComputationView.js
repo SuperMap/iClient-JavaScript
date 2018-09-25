@@ -4,7 +4,7 @@
 import L from "leaflet";
 import '../../core/Base';
 import { ClientComputationViewModel } from "./ClientComputationViewModel";
-import { WidgetContainer, WidgetDropDownBox, WidgetSelect, MessageBox, Lang } from '@supermap/iclient-common';
+import { CommonContainer, DropDownBox, Select, MessageBox, Lang } from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.widgets.clientComputation
@@ -121,8 +121,8 @@ export var ClientComputationView = L.Control.extend({
         //初始化 ViewModel
         this.workerUrl && ~~(this.viewModel = new ClientComputationViewModel(this.workerUrl));
         //初始化 view
-        // widgetContainer
-        let container = (new WidgetContainer(Lang.i18n('title_clientComputing'))).getElement();
+        // Container
+        let container = (new CommonContainer(Lang.i18n('title_clientComputing'))).getElement();
         container.classList.add('widget-analysis-container');
         container.children[0].style.fontSize = '12px';
         let analysisOptionsArr = [{
@@ -145,7 +145,7 @@ export var ClientComputationView = L.Control.extend({
         widgetContentContainer.classList.add('widget-scroll-content');
 
         // 下拉框
-        let dropDownBox = (new WidgetDropDownBox(analysisOptionsArr)).getElement();
+        let dropDownBox = (new DropDownBox(analysisOptionsArr)).getElement();
         widgetContentContainer.appendChild(dropDownBox);
         let dropDownTopContainer = dropDownBox.children[0].children[0];
         let dropDownItems = dropDownBox.children[0].children[2].children[0].children[0];
@@ -162,7 +162,7 @@ export var ClientComputationView = L.Control.extend({
             'optionsArr': [''],
             'labelName': Lang.i18n('text_label_analysisLayer')
         }
-        let layerSelectObj = new WidgetSelect(layerOptions);
+        let layerSelectObj = new Select(layerOptions);
         let layerSelectTool = layerSelectObj.getElement();
         this.layerSelectObj = layerSelectObj;
         layerSelectControl.appendChild(layerSelectTool);
@@ -184,7 +184,7 @@ export var ClientComputationView = L.Control.extend({
 
         }
         let fieldsSelectControl = L.DomUtil.create('div', 'select-control', isolineDiv);
-        let fieldsSelectObj = new WidgetSelect(fieldsOptions);
+        let fieldsSelectObj = new Select(fieldsOptions);
         let fieldsSelectTool = fieldsSelectObj.getElement();
         this.fieldsSelectObj = fieldsSelectObj;
         let fieldsSelectName = fieldsSelectTool.children[1].children[0];
@@ -239,7 +239,7 @@ export var ClientComputationView = L.Control.extend({
             'labelName': Lang.i18n('text_label_unit')
         };
 
-        let bufferUnitSelectTool = (new WidgetSelect(bufferUnitOptions)).getElement();
+        let bufferUnitSelectTool = (new Select(bufferUnitOptions)).getElement();
         let bufferUnitSelectName = bufferUnitSelectTool.children[1].children[0];
         bufferUnitSelectName.id = 'bufferUnitSelectName';
         let bufferUnitSelect = bufferUnitSelectTool.children[1].children[2].children[0].children[0];

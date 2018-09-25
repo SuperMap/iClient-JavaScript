@@ -8,9 +8,9 @@ import {FileModel} from './openfile/FileModel';
 //提示框微件
 import {MessageBox} from './messagebox/MessageBox';
 //公用模板：
-import {WidgetContainer} from './templates/WidgetContainer';
-import {WidgetSelect} from './templates/WidgetSelect';
-import {WidgetDropDownBox} from './templates/WidgetDropDownBox';
+import {CommonContainer} from './templates/CommonContainer';
+import {Select} from './templates/Select';
+import {DropDownBox} from './templates/DropDownBox';
 import {AttributesPopContainer} from './templates/AttributesPopContainer';
 import {PopContainer} from './templates/PopContainer';
 
@@ -25,9 +25,9 @@ import {widgetsUtil, FileReaderUtil} from './util';
 export {FileTypes, FileConfig}
 export {FileModel};
 export {MessageBox};
-export {WidgetContainer};
-export {WidgetSelect};
-export {WidgetDropDownBox};
+export {CommonContainer};
+export {Select};
+export {DropDownBox};
 export {AttributesPopContainer};
 export {PopContainer};
 
