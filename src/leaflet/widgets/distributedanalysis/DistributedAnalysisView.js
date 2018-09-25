@@ -179,21 +179,51 @@ export var DistributedAnalysisView = L.Control.extend({
         let weightFieldsSelectName = analysisSelectControl.children[2].children[1].children[0];
         let weightFieldsSelect = analysisSelectControl.children[2].children[1].children[2].children[0].children[0];
 
-        // 网格大小 & 搜索半径
+        // 分析范围 & 网格大小 & 搜索半径 & 面积单位
+        // 分析范围
         let inputOptions = [{
-            'spanName': Lang.i18n('text_label_gridSizeInMeters'),
-            'value': '1000'
-        }, {
-            'spanName': Lang.i18n('text_label_searchRadius'),
-            'value': '300'
+            'spanName': '分析范围',
+            'value': ''
         }];
-
         for (let i in inputOptions) {
             this._creatInputBox(inputOptions[i], analysisSelectControl)
+        }、
+        let queryRangeInput = analysisSelectControl.children[3].children[1];
+        queryRangeInput.setAttribute('placeholder', '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850')
+        queryRangeInput.title = '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850';
+        // 网格大小
+        let gridSizeUnitSelectOptions = {
+            'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
-        let gridSizeInput = analysisSelectControl.children[3].children[1];
-        let searchRadiusInput = analysisSelectControl.children[4].children[1];
+        let gridSizeOptions = {
+            'labelName':'网格大小',
+            'selectOptions':gridSizeUnitSelectOptions
+        }
+        let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
+        let gridSizeInput = gridSizeContainer.children[1].children[0];
+        gridSizeInput.value = '1000';
+        let gridSizeUnitSelectName = gridSizeContainer.children[1].children[1].children[0].children[0].children[0];
 
+        // 搜索半径 
+        let searchRadiusUnitSelectOptions = {
+            'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
+        }
+        let searchRadiusOptions = {
+            'labelName':'搜索半径',
+            'selectOptions':searchRadiusUnitSelectOptions
+        }
+        let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
+        let searchRadiusInput = searchRadiusContainer.children[1].children[0];
+        searchRadiusInput.value = '300';
+        let searchRadiusSelectName = searchRadiusContainer.children[1].children[1].children[0].children[0].children[0];
+        // 面积单位
+        let areaUnitSelectOptions = {
+            'labelName':'面积单位',
+            'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
+        }
+        let areaUnitSelectTool= (new Select(areaUnitSelectOptions)).getElement();
+        analysisSelectControl.appendChild(areaUnitSelectTool);
+        let areaUnitSelectName = areaUnitSelectTool.children[1].children[0];
         // 专题图分段
         let rangeContent = L.DomUtil.create('div', 'range-content', analysisType);
         let rangeContentOptions = {
@@ -328,6 +358,8 @@ export var DistributedAnalysisView = L.Control.extend({
                 })
                 me.viewModel.on('analysisfailed', function () {
                     _me.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
+                    analysingContainer.style.display = 'none';
+                    analysisBtn.style.display = 'block';
                 })
             }
         }
@@ -342,6 +374,10 @@ export var DistributedAnalysisView = L.Control.extend({
             let analysisType = dropDownTop.getAttribute('data-value');
             let analysisMethod = analysisMethodSelectName.getAttribute('data-value');
             let gridType = gridTypeSelectName.getAttribute('data-value');
+            let queryRange = queryRangeInput.value;
+            let gridSizeUnit = gridSizeUnitSelectName.title;
+            let searchRadiusUnit = searchRadiusSelectName.title;
+            let areaUnit = areaUnitSelectName.title
             let colorGradientType = rangeContentModelSelectName.getAttribute('data-value');
             let themeModel = themeModelSelectName.getAttribute('data-value');
             let date = new Date();
@@ -362,8 +398,12 @@ export var DistributedAnalysisView = L.Control.extend({
                 'method': analysisMethod,
                 'meshType': gridType,
                 'resolution': gridSizeInput.value,
+                'gridSizeUnit': gridSizeUnit,
+                'queryRange': queryRange,
                 'fields': weightFieldsSelectName.title,
                 'radius': searchRadiusInput.value,
+                'searchRadiusUnit':searchRadiusUnit,
+                'areaUnit': areaUnit,
                 'mappingParameter': mappingParameter,
                 'resultLayer': resultLayer
             }
@@ -404,6 +444,25 @@ export var DistributedAnalysisView = L.Control.extend({
         return div;
     },
     /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._creatInputBox
+     * @description 创建含有 span 的 input 框。
+     * @private
+     */
+    _creatUnitSelectBox(options, parentEle) {
+        let unitSelectBoxContainer = L.DomUtil.create('div','buffer-radius', parentEle);
+        let unitSelectSpan = L.DomUtil.create('span','', unitSelectBoxContainer);
+        unitSelectSpan.innerHTML = options.labelName;
+        let unitSelectInputContainer = L.DomUtil.create('div','', unitSelectBoxContainer);
+        L.DomUtil.create('input','buffer-radius-input', unitSelectInputContainer);
+
+        let unitSelectUnitContainer = L.DomUtil.create('div','buffer-unit', unitSelectInputContainer);
+        let unitSelectOptions = options.selectOptions;
+        let unitSelectTool = (new Select(unitSelectOptions)).getElement();
+        unitSelectUnitContainer.appendChild(unitSelectTool)
+
+        return unitSelectBoxContainer;
+    },
+    /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._setEleAtribute
      * @description 设置元素的属性名和属性值。
      * @private
@@ -413,6 +472,7 @@ export var DistributedAnalysisView = L.Control.extend({
             eleArr[i].setAttribute(attributeName, daraValueArr[i])
         }
     }
+    
 });
 export var distributedAnalysisView = function (options) {
     return new DistributedAnalysisView(options);

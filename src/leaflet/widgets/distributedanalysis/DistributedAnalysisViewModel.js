@@ -82,10 +82,10 @@ export class DistributedAnalysisViewModel extends L.Evented {
                 'resolution': params.resolution,
                 'fields': params.fields,
                 'radius': params.radius,
-                'meshSizeUnit': 'Meter',
-                'radiusUnit': 'Meter',
-                'areaUnit': 'SquareMile',
-                'query':'',
+                'meshSizeUnit': params.gridSizeUnit,
+                'radiusUnit': params.searchRadiusUnit,
+                'areaUnit': params.areaUnit,
+                'query':params.queryRange,
                 'mappingParameters': new MappingParameters({
                     'rangeMode': params.mappingParameter.rangeMode,
                     'rangeCount': params.mappingParameter.rangeCount,
@@ -95,6 +95,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
             let me = this;
             this.processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
                 if (serviceResult.error) {
+                    
                     /**
                      * @event L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
                      * @description 分析失败后触发。

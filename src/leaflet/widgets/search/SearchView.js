@@ -16,9 +16,9 @@ import {SearchViewModel} from './SearchViewModel';
 
 /**
  * @class L.supermap.widgets.search
- * @classdesc 查询微件
+ * @classdesc 图层查询微件。
  * @category Widgets Search
- * @param {Object} options - 可选参数
+ * @param {Object} options - 可选参数。
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；

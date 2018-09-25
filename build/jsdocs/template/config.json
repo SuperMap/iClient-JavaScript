@@ -352,7 +352,7 @@
                 "name_en": "DistributedAnalysis"
             },
             "Search": {
-                "name": "查询微件",
+                "name": "图层查询微件",
                 "name_en": "Search"
             }
         }

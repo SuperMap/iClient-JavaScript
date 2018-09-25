@@ -44,17 +44,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -31561,7 +31576,11 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'query') {
-                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                if(tempObj['analyst'][name]){
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                }else{
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
             }
@@ -83012,7 +83031,6 @@ var openFileViewModel = function (options) {
 };
 
 external_L_default.a.supermap.widgets.openFileViewModel = openFileViewModel;
-
 external_L_default.a.supermap.widgets.util = widgetsUtil;
 // CONCATENATED MODULE: ./src/leaflet/widgets/openfile/OpenFileView.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
@@ -85777,10 +85795,10 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
                 'resolution': params.resolution,
                 'fields': params.fields,
                 'radius': params.radius,
-                'meshSizeUnit': 'Meter',
-                'radiusUnit': 'Meter',
-                'areaUnit': 'SquareMile',
-                'query':'',
+                'meshSizeUnit': params.gridSizeUnit,
+                'radiusUnit': params.searchRadiusUnit,
+                'areaUnit': params.areaUnit,
+                'query':params.queryRange,
                 'mappingParameters': new MappingParameters_MappingParameters({
                     'rangeMode': params.mappingParameter.rangeMode,
                     'rangeCount': params.mappingParameter.rangeCount,
@@ -85790,6 +85808,7 @@ class DistributedAnalysisViewModel_DistributedAnalysisViewModel extends external
             let me = this;
             this.processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
                 if (serviceResult.error) {
+                    
                     /**
                      * @event L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
                      * @description 分析失败后触发。
@@ -86025,21 +86044,51 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         let weightFieldsSelectName = analysisSelectControl.children[2].children[1].children[0];
         let weightFieldsSelect = analysisSelectControl.children[2].children[1].children[2].children[0].children[0];
 
-        // 网格大小 & 搜索半径
+        // 分析范围 & 网格大小 & 搜索半径 & 面积单位
+        // 分析范围
         let inputOptions = [{
-            'spanName': Lang.i18n('text_label_gridSizeInMeters'),
-            'value': '1000'
-        }, {
-            'spanName': Lang.i18n('text_label_searchRadius'),
-            'value': '300'
+            'spanName': '分析范围',
+            'value': ''
         }];
-
         for (let i in inputOptions) {
             this._creatInputBox(inputOptions[i], analysisSelectControl)
         }
-        let gridSizeInput = analysisSelectControl.children[3].children[1];
-        let searchRadiusInput = analysisSelectControl.children[4].children[1];
+        let queryRangeInput = analysisSelectControl.children[3].children[1];
+        queryRangeInput.setAttribute('placeholder', '默认为输入数据的全幅范围。范例：[-74.050,40.650,-73.850,40.850]')
+        queryRangeInput.title = '默认为输入数据的全幅范围。范例：[-74.050,40.650,-73.850,40.850]';
+        // 网格大小
+        let gridSizeUnitSelectOptions = {
+            'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
+        }
+        let gridSizeOptions = {
+            'labelName':'网格大小',
+            'selectOptions':gridSizeUnitSelectOptions
+        }
+        let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
+        let gridSizeInput = gridSizeContainer.children[1].children[0];
+        gridSizeInput.value = '1000';
+        let gridSizeUnitSelectName = gridSizeContainer.children[1].children[1].children[0].children[0].children[0];
 
+        // 搜索半径 
+        let searchRadiusUnitSelectOptions = {
+            'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
+        }
+        let searchRadiusOptions = {
+            'labelName':'搜索半径',
+            'selectOptions':searchRadiusUnitSelectOptions
+        }
+        let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
+        let searchRadiusInput = searchRadiusContainer.children[1].children[0];
+        searchRadiusInput.value = '300';
+        let searchRadiusSelectName = searchRadiusContainer.children[1].children[1].children[0].children[0].children[0];
+        // 面积单位
+        let areaUnitSelectOptions = {
+            'labelName':'面积单位',
+            'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
+        }
+        let areaUnitSelectTool= (new Select(areaUnitSelectOptions)).getElement();
+        analysisSelectControl.appendChild(areaUnitSelectTool);
+        let areaUnitSelectName = areaUnitSelectTool.children[1].children[0];
         // 专题图分段
         let rangeContent = external_L_default.a.DomUtil.create('div', 'range-content', analysisType);
         let rangeContentOptions = {
@@ -86174,6 +86223,8 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                 })
                 me.viewModel.on('analysisfailed', function () {
                     _me.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
+                    analysingContainer.style.display = 'none';
+                    analysisBtn.style.display = 'block';
                 })
             }
         }
@@ -86188,6 +86239,10 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             let analysisType = dropDownTop.getAttribute('data-value');
             let analysisMethod = analysisMethodSelectName.getAttribute('data-value');
             let gridType = gridTypeSelectName.getAttribute('data-value');
+            let queryRange = queryRangeInput.value;
+            let gridSizeUnit = gridSizeUnitSelectName.title;
+            let searchRadiusUnit = searchRadiusSelectName.title;
+            let areaUnit = areaUnitSelectName.title
             let colorGradientType = rangeContentModelSelectName.getAttribute('data-value');
             let themeModel = themeModelSelectName.getAttribute('data-value');
             let date = new Date();
@@ -86208,8 +86263,12 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
                 'method': analysisMethod,
                 'meshType': gridType,
                 'resolution': gridSizeInput.value,
+                'gridSizeUnit': gridSizeUnit,
+                'queryRange': queryRange,
                 'fields': weightFieldsSelectName.title,
                 'radius': searchRadiusInput.value,
+                'searchRadiusUnit':searchRadiusUnit,
+                'areaUnit': areaUnit,
                 'mappingParameter': mappingParameter,
                 'resultLayer': resultLayer
             }
@@ -86250,6 +86309,25 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         return div;
     },
     /**
+     * @function L.supermap.widgets.distributedAnalysis.prototype._creatInputBox
+     * @description 创建含有 span 的 input 框。
+     * @private
+     */
+    _creatUnitSelectBox(options, parentEle) {
+        let unitSelectBoxContainer = external_L_default.a.DomUtil.create('div','buffer-radius', parentEle);
+        let unitSelectSpan = external_L_default.a.DomUtil.create('span','', unitSelectBoxContainer);
+        unitSelectSpan.innerHTML = options.labelName;
+        let unitSelectInputContainer = external_L_default.a.DomUtil.create('div','', unitSelectBoxContainer);
+        external_L_default.a.DomUtil.create('input','buffer-radius-input', unitSelectInputContainer);
+
+        let unitSelectUnitContainer = external_L_default.a.DomUtil.create('div','buffer-unit', unitSelectInputContainer);
+        let unitSelectOptions = options.selectOptions;
+        let unitSelectTool = (new Select(unitSelectOptions)).getElement();
+        unitSelectUnitContainer.appendChild(unitSelectTool)
+
+        return unitSelectBoxContainer;
+    },
+    /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._setEleAtribute
      * @description 设置元素的属性名和属性值。
      * @private
@@ -86259,6 +86337,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             eleArr[i].setAttribute(attributeName, daraValueArr[i])
         }
     }
+    
 });
 var distributedAnalysisView = function (options) {
     return new DistributedAnalysisView(options);
@@ -89907,7 +89986,7 @@ module.exports = function(proj4){
 /* 74 */
 /***/ (function(module) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
+module.exports = {"_args":[["proj4@2.3.15","D:\\iClient-JavaScript"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"D:\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"};
 
 /***/ }),
 /* 75 */

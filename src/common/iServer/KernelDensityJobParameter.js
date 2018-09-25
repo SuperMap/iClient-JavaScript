@@ -153,7 +153,11 @@ export class KernelDensityJobParameter {
             
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'query') {
-                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                if(tempObj['analyst'][name]){
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                }else{
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
             }

@@ -128,5 +128,4 @@ export var openFileViewModel = function (options) {
 };
 
 L.supermap.widgets.openFileViewModel = openFileViewModel;
-
 L.supermap.widgets.util = widgetsUtil;
