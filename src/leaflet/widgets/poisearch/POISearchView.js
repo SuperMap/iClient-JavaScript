@@ -18,7 +18,7 @@ import {POISearchViewModel} from './POISearchViewModel';
  * @class L.supermap.widgets.poiSearch
  * @classdesc 地址匹配或图层要素查询微件
  * @category Widgets POISearch
- * @param {Object} options - 可选参数
+ * @param {Object} options - 可选参数。
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
@@ -26,6 +26,7 @@ import {POISearchViewModel} from './POISearchViewModel';
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应
  * @param {boolean} [options.isGeoCoding=true] - 是否支持城市地址匹配功能
  * @extends {L.Control}
+ * @fires L.supermap.widgets.poiSearch#searchsucceed
  */
 export var POISearchView = L.Control.extend({
     options: {
@@ -475,6 +476,11 @@ export var POISearchView = L.Control.extend({
             this._flyToBounds(this.searchResultLayer.getBounds());
             //查询结果列表：
             this._prepareResultData(data);
+            /**
+             * @event L.supermap.widgets.poiSearch#searchsucceed
+             * @description 图层查询成功后触发。
+             * @property {L.GeoJSON} result - GeoJSON 图层。
+             */
             this.event.fire("searchsucceed", {result: this.searchResultLayer.toGeoJSON()});
         });
 

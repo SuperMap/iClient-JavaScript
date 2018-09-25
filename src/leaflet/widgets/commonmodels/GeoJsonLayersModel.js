@@ -11,8 +11,10 @@ import '../../core/Base';
  * @class L.supermap.widgets.GeoJsonLayersDataModel
  * @description 多图层数据模型
  * @category Widgets Common
+ * @private
  * @param {Array.<Object>} layers - 图层数组。
  * @param {L.supermap.widgets.GeoJSONLayersWithName} layers.layerObject - 含有 layerName 与 GeoJSON 图层的对象。 
+ * @fires L.supermap.widgets.GeoJsonLayersDataModel#newlayeradded
  */
 export var GeoJsonLayersDataModel = L.Evented.extend({
     initialize(layers) {
@@ -28,6 +30,13 @@ export var GeoJsonLayersDataModel = L.Evented.extend({
             let geoJsonLayerDataModel = new GeoJsonLayerDataModel(layers[i].layer);
             //赋给 GeoJsonLayersDataModel 对象 layerName 属性，每个图层名对应一个 layerDataModel 对象
             this.layers[layerName] = geoJsonLayerDataModel;
+            /**
+             * @event L.supermap.widgets.GeoJsonLayersDataModel#newlayeradded
+             * @description 新图层添加完成之后触发。
+             * @property {Object} newLayer - 新添加的图层数据。
+             * @property {string} newLayer.layerName - 图层名。
+             * @property {L.supermap.widgets.GeoJsonLayersDataModel} newLayer.layer - 图层。
+             */
             this.fire("newlayeradded", { newLayer: { layerName: layerName, layer: geoJsonLayerDataModel } });
         }
     },

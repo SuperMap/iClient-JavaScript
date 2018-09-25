@@ -26,6 +26,8 @@ import {
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
  * @param {boolean} [options.visibility=true] - 图层是否可见。
  * @param {number} [options.opacity=1] - 图层透明度。
+ * @fires mapboxgl.supermap.ThemeLayer#changelayer
+ * @fires mapboxgl.supermap.ThemeLayer#featuresremoved
  */
 export class Theme {
 
@@ -188,6 +190,12 @@ export class Theme {
                 null, null, null, opacity);
 
             if (this.map !== null) {
+                 /**
+                 * @event mapboxgl.supermap.ThemeLayer#changelayer
+                 * @description 图层属性改变之后触发。
+                 * @property {Object} layer - 图层。
+                 * @property {string} property - 被改变的属性。
+                 */
                 mapboxgl.Evented.prototype.fire('changelayer', {layer: this, property: "opacity"});
             }
         }
@@ -245,6 +253,12 @@ export class Theme {
             this.redrawThematicFeatures(this.map.getBounds());
         }
         var succeed = featuresFailRemoved.length == 0 ? true : false;
+        /**
+         * @event mapboxgl.supermap.ThemeLayer#featuresremoved
+         * @description 要素删除之后触发。
+         * @property {Array.<SuperMap.Feature.Vector>} features - 未被成功删除的要素。
+         * @property {boolean} succeed - 删除成功与否。
+         */
         mapboxgl.Evented.prototype.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
     }
 

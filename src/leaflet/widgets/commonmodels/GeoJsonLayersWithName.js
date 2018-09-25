@@ -8,6 +8,7 @@ import '../../core/Base';
 /**
  * @class L.supermap.widgets.GeoJSONLayersWithName
  * @classdesc 含有 layerName 与 GeoJSON 图层的对象。
+ * @private
  * @param {Object} layerObject - 图层对象。
  * @param {string} layerObject.layerName -  图层名。
  * @param {L.GeoJSON} layerObject.layer -  图层。

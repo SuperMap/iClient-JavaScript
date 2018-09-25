@@ -7,23 +7,22 @@ import { DistributedAnalysisModel } from "./DistributedAnalysisModel";
 import { KernelDensityJobParameter, MappingParameters, FetchRequest} from "@supermap/iclient-common";
 import { ProcessingService } from '../../services/ProcessingService'
 /**
- * @class L.supermap.widgets.DistributedAnalysisViewModel
- * @classdesc 分布式分析 ViewModel。
+ * @class L.supermap.widgets.distributedAnalysisViewModel
+ * @classdesc 分布式分析微件功能类。
  * @category Widgets DistributedAnalysis
- * @private
  * @param {string} processingUrl - 分布式分析地址。
- * @fires L.supermap.widgets.DistributedAnalysisViewModel#datasetsloaded
- * @fires L.supermap.widgets.DistributedAnalysisViewModel#datasetinfoloaded
- * @fires L.supermap.widgets.DistributedAnalysisViewModel#analysisfailed
- * @fires L.supermap.widgets.DistributedAnalysisViewModel#layerloaded
- * @fires L.supermap.widgets.DistributedAnalysisViewModel#layersremoved
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#layerloaded
+ * @fires L.supermap.widgets.distributedAnalysisViewModel#layersremoved
  */
 export class DistributedAnalysisViewModel extends L.Evented {
     initialize(processingUrl) {
         this.processingUrl = processingUrl
     }
     /**
-     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.getDatasetsName
+     * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.getDatasetsName
      * @description 获取所有数据集名称。
      * @param {string} url - 分布式分析服务地址。 
      */
@@ -37,7 +36,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
         let me = this;
         this.distributedAnalysisModel.on('datasetsloaded', function(e){
             /**
-             * @event L.supermap.widgets.DistributedAnalysisViewModel#datasetsloaded
+             * @event L.supermap.widgets.distributedAnalysisViewModel#datasetsloaded
              * @description 数据集获取完成之后触发。
              * @property {Object} result - 数据集数据。
              */ 
@@ -46,7 +45,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.getDatasetInfo
+     * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.getDatasetInfo
      * @description 获得数据集类型与 fields。
      * @param {string} datasetUrl - 数据集资源地址。
      */
@@ -58,7 +57,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
             let type = e.result.type;
             let fields = e.result.fields;
              /**
-             * @event L.supermap.widgets.DistributedAnalysisViewModel#datasetinfoloaded
+             * @event L.supermap.widgets.distributedAnalysisViewModel#datasetinfoloaded
              * @description 数据集类型与字段获取完成之后触发。
              * @property {Object} result - 数据集数据。
              * @property {string} result.type - 数据集类型。
@@ -69,7 +68,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.analysis
+     * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.analysis
      * @description 进行分布式分析。
      * @param {Object} params - 分布式分析参数。
      * @param {L.Map} map - leaflet Map 对象。
@@ -86,6 +85,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
                 'meshSizeUnit': 'Meter',
                 'radiusUnit': 'Meter',
                 'areaUnit': 'SquareMile',
+                'query':'',
                 'mappingParameters': new MappingParameters({
                     'rangeMode': params.mappingParameter.rangeMode,
                     'rangeCount': params.mappingParameter.rangeCount,
@@ -96,7 +96,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
             this.processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult){
                 if (serviceResult.error) {
                     /**
-                     * @event L.supermap.widgets.DistributedAnalysisViewModel#analysisfailed
+                     * @event L.supermap.widgets.distributedAnalysisViewModel#analysisfailed
                      * @description 分析失败后触发。
                      */
                     me.fire('analysisfailed');
@@ -112,7 +112,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
                             me.resultLayers.push(layer);
                             layer.addTo(map);
                             /**
-                             * @event L.supermap.widgets.DistributedAnalysisViewModel#layerloaded
+                             * @event L.supermap.widgets.distributedAnalysisViewModel#layerloaded
                              * @description 分析结果图层加载完成后触发。
                              * @property {L.GeoJSON} layer - 结果图层。
                              * @property {string} name - 结果图层名称。
@@ -127,7 +127,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
         
     }
     /**
-     * @function L.supermap.widgets.DistributedAnalysisViewModel.prototype.clearLayers
+     * @function L.supermap.widgets.distributedAnalysisViewModel.prototype.clearLayers
      * @description 清空分析图层。
      */
     clearLayers() {
@@ -135,7 +135,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
             this.resultLayers[i].remove();
         }
         /**
-         * @event L.supermap.widgets.DistributedAnalysisViewModel#layersremoved
+         * @event L.supermap.widgets.distributedAnalysisViewModel#layersremoved
          * @description 图层删除后触发。
          * @property {Array.<L.GeoJSON>} layers - 结果图层数组。
          */
@@ -143,4 +143,7 @@ export class DistributedAnalysisViewModel extends L.Evented {
     }
     
 }
-L.supermap.widgets.DistributedAnalysisViewModel = DistributedAnalysisViewModel;
+export var distributedAnalysisViewModel = function (options) {
+    return new DistributedAnalysisViewModel(options);
+};
+L.supermap.widgets.distributedAnalysisViewModel = distributedAnalysisViewModel;

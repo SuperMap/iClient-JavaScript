@@ -20,6 +20,7 @@ import '../core/Base';
  * @param {string} [options.fontFamily='sans-serif'] - 符号的字体。
  * @param {string} [options.textAlign='center'] - 符号内容的对齐方式。
  * @param {string} [options.textBaseline='middle'] - 绘制符号时使用的基线。
+ * @fires L.supermap.unicodeMarker#move
  */
 export var UnicodeMarker = L.Path.extend({
     // @section
@@ -42,16 +43,27 @@ export var UnicodeMarker = L.Path.extend({
         this._latlng = latlng;
     },
 
-    // @method setLatLng(latLng: LatLng): this
-    // Sets the position of a circle marker to a new location.
+    /**
+     * @function L.supermap.unicodeMarker.prototype.setLatLng
+     * @description 设置 marker 新坐标。
+     * @param {L.LatLng} setLatLng - 需要设置的新坐标。
+     */
     setLatLng: function (latlng) {
         this._latlng = latlng;
         this.redraw();
+        /**
+         * @event L.supermap.unicodeMarker#move
+         * @description circle marker 重设坐标之后触发。
+         * @property {L.LatLng} latlng - 当前 marker 坐标。
+         */
         return this.fire('move', {latlng: this._latlng});
     },
 
-    // @method getLatLng(): LatLng
-    // Returns the current geographical position of the circle marker
+    /**
+     * @function L.supermap.unicodeMarker.prototype.getLatLng
+     * @description 获取 marker 坐标。
+     * @returns {L.LatLng} 返回当前 marker 坐标。
+     */
     getLatLng: function () {
         return this._latlng;
     },

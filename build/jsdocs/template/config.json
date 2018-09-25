@@ -336,7 +336,7 @@
                 "name_en": "Common"
             },
             "OpenFile": {
-                "name": "打开文件微件",
+                "name": "打开本地文件微件",
                 "name_en": "OpenFile"
             },
             "DataFlow": {

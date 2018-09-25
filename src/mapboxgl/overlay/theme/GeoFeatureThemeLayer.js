@@ -25,6 +25,7 @@ import {Theme} from './ThemeLayer';
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @extends {mapboxgl.supermap.ThemeLayer}
+ * @fires mapboxgl.supermap.GeoFeatureThemeLayer#beforefeaturesadded
  */
 
 export class GeoFeature extends Theme {
@@ -91,6 +92,11 @@ export class GeoFeature extends Theme {
      * @param {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} features - 要素对象。
      */
     addFeatures(features) {
+        /**
+         * @event mapboxgl.supermap.GeoFeatureThemeLayer#beforefeaturesadded
+         * @description 要素添加之前触发。
+         * @property {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} features - 被添加的要素。
+         */
         mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
         //转换 features 形式
         this.features = this.toiClientFeature(features);

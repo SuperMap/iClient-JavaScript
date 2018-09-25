@@ -32,6 +32,8 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  *
  * @extends {L.Layer}
+ * @fires L.supermap.heatMapLayer#featuresremoved
+ * @fires L.supermap.heatMapLayer#changelayer
  */
 export var HeatMapLayer = L.Layer.extend({
     options: {
@@ -428,6 +430,12 @@ export var HeatMapLayer = L.Layer.extend({
         }
         var succeed = heatPointsFailedRemoved.length == 0 ? true : false;
         //派发删除features成功的事件
+        /**
+         * @event L.supermap.heatMapLayer#featuresremoved
+         * @description 删除features成功后触发。
+         * @property {Array.<SuperMap.Feature.Vector>} features  - 事件对象。
+         * @property {boolean} succeed  - 删除是否成功，false 为失败，true 为成功。
+         */
         this._map.fire("featuresremoved", {features: heatPointsFailedRemoved, succeed: succeed});
         this.refresh();
     },
@@ -469,6 +477,12 @@ export var HeatMapLayer = L.Layer.extend({
         var me = this;
         CommonUtil.modifyDOMElement(me.rootCanvas, null, null, null, null, null, null, me.options.opacity);
         if (me._map !== null) {
+            /**
+             * @event L.supermap.heatMapLayer#changelayer
+             * @description 图层透明度更新成功之后触发。
+             * @property {L.supermap.heatMapLayer} layer - 图层。
+             * @property {string} property - 改变的图层属性。
+             */
             me._map.fire("changelayer", {layer: me, property: "opacity"});
         }
     },

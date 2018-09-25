@@ -8,14 +8,13 @@ import { GeoJSONLayersWithName } from '../commonmodels/GeoJsonLayersWithName';
 import { GeoJsonLayersDataModel } from '../commonmodels/GeoJsonLayersModel';
 import { AttributesPopContainer } from '@supermap/iclient-common';
 /**
- * @class L.supermap.widgets.ClientComputationViewModel
- * @classdesc 客户端计算 ViewModel。
- * @private
- * @category Widgets ClientComputationLayer
+ * @class L.supermap.widgets.clientComputationViewModel
+ * @classdesc 客户端计算微件功能类。
+ * @category Widgets ClientComputation
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
- * @fires L.supermap.widgets.ClientComputationViewModel#analysisfailed
- * @fires L.supermap.widgets.ClientComputationViewModel#layerloaded
- * @fires L.supermap.widgets.ClientComputationViewModel#layersremoved
+ * @fires L.supermap.widgets.clientComputationViewModel#analysisfailed
+ * @fires L.supermap.widgets.clientComputationViewModel#layerloaded
+ * @fires L.supermap.widgets.clientComputationViewModel#layersremoved
  */
 export class ClientComputationViewModel extends L.Evented {
     initialize(workerUrl) {
@@ -23,12 +22,11 @@ export class ClientComputationViewModel extends L.Evented {
         this.turfLayers = [];
     }
     /**
-     * @function L.supermap.widgets.ClientComputationViewModel.prototype.getLayersData
+     * @function L.supermap.widgets.clientComputationViewModel.prototype.getLayersData
      * @description 获取填充到 view 的数据。
      * @param {Array.<L.GeoJSON>} layersArr - 图层数组。
      * @returns {Object} layers 数据。
      */
-    
     getLayersData(layersArr) {
         let result = [];
         for (let i = 0; i < layersArr; i++) {
@@ -83,7 +81,7 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.widgets.ClientComputationViewModel.prototype.analysis
+     * @function L.supermap.widgets.clientComputationViewModel.prototype.analysis
      * @description 进行客户端计算。
      * @param {Object} params - 客户端计算参数。
      * @param {L.Map} map - Leaflet Map 对象。
@@ -111,7 +109,7 @@ export class ClientComputationViewModel extends L.Evented {
             this.worker.onmessage = (e) => {
                 if (e.data.features.length === 0) {
                     /**
-                     * @event L.supermap.widgets.ClientComputationViewModel#analysisfailed
+                     * @event L.supermap.widgets.clientComputationViewModel#analysisfailed
                      * @description 事件分析失败后触发，返回结果为空。
                      */
                     me.fire('analysisfailed');
@@ -140,7 +138,7 @@ export class ClientComputationViewModel extends L.Evented {
                     }).addTo(map);
                     me.turfLayers.push(turfLayer);
                     /**
-                     * @event L.supermap.widgets.ClientComputationViewModel#layerloaded
+                     * @event L.supermap.widgets.clientComputationViewModel#layerloaded
                      * @description 图层加载完成后触发。
                      * @property {L.GeoJSON} layer - 加载完成后的结果图层。
                      * @property {string} name - 加载完成后的结果图层名称。
@@ -193,7 +191,7 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.widgets.ClientComputationViewModel.prototype.clearLayers
+     * @function L.supermap.widgets.clientComputationViewModel.prototype.clearLayers
      * @description 清空分析图层。
      */
     clearLayers() {
@@ -201,7 +199,7 @@ export class ClientComputationViewModel extends L.Evented {
             this.turfLayers[i].clearLayers()
         }
         /**
-         * @event L.supermap.widgets.ClientComputationViewModel#layersremoved
+         * @event L.supermap.widgets.clientComputationViewModel#layersremoved
          * @description 图层删除之后触发。
          * @property {Array.<L.GeoJSON>} layer - 需要删除的图层数组。
          */
@@ -209,11 +207,14 @@ export class ClientComputationViewModel extends L.Evented {
     }
 
     /**
-     * @function L.supermap.widgets.ClientComputationViewModel.prototype.cancelAnalysis
+     * @function L.supermap.widgets.clientComputationViewModel.prototype.cancelAnalysis
      * @description 取消分析。
      */
     cancelAnalysis() {
         this.worker.terminate();
     }
 }
-L.supermap.widgets.ClientComputationViewModel = ClientComputationViewModel;
+export var clientComputationViewModel = function (options) {
+    return new ClientComputationViewModel(options);
+};
+L.supermap.widgets.clientComputationViewModel = clientComputationViewModel;

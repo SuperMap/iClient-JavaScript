@@ -28,6 +28,7 @@ import Attributions from '../../core/Attributions'
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
+ * @fires L.supermap.ThemeLayer#featuresremoved
  */
 export var ThemeLayer = L.Layer.extend({
 
@@ -205,6 +206,12 @@ export var ThemeLayer = L.Layer.extend({
         }
 
         var succeed = featuresFailRemoved.length == 0;
+        /**
+         * @event L.supermap.ThemeLayer#featuresremoved
+         * @description 删除的要素成功之后触发。
+         * @property {Array.<SuperMap.Feature.Vector>} features - 事件对象。
+         * @property {boolean} succeed - 要输是否删除成功，true 为删除成功，false 为删除失败。
+         */
         me.fire("featuresremoved", {
             features: featuresFailRemoved,
             succeed: succeed
@@ -509,6 +516,12 @@ export var ThemeLayer = L.Layer.extend({
         var me = this;
         CommonUtil.modifyDOMElement(me.container, null, null, null, null, null, null, me.options.opacity);
         if (me._map !== null) {
+            /**
+             * @event L.supermap.ThemeLayer#changelayer
+             * @description 图层属性改变之后触发。
+             * @property {Object} layer - 图层。
+             * @property {string} property - 图层属性。
+             */
             me._map.fire("changelayer", {
                 layer: me,
                 property: "opacity"

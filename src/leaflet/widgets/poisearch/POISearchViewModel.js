@@ -7,13 +7,16 @@ import {GeoCodingParameter} from '@supermap/iclient-common';
 import {AddressMatchService} from '../../services/AddressMatchService';
 import {GeoJsonLayersDataModel} from '../commonmodels/GeoJsonLayersModel';
 
-
 /**
  * @class L.supermap.widgets.poiSearchViewModel
- * @classdesc 搜索定位微件 viewModel，用于处理定位微件的一些业务逻辑代码。
+ * @classdesc 搜索定位微件功能类。
  * @category Widgets POISearch
- * @private
+ * @param {Object} options - 可选参数。
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
+ * @fires L.supermap.widgets.poiSearchViewModel#newlayeradded
+ * @fires L.supermap.widgets.poiSearchViewModel#searchlayersucceed
+ * @fires L.supermap.widgets.poiSearchViewModel#searchfield
+ * @fires L.supermap.widgets.poiSearchViewModel#geocodesucceed
  */
 export var POISearchViewModel = L.Evented.extend({
     options: {
@@ -55,6 +58,12 @@ export var POISearchViewModel = L.Evented.extend({
         //监听 dataModel 数据变化：//看如何优化
         this.dataModel.on("newlayeradded", (e) => {
             let newLayer = e.newLayer;
+
+            /**
+             * @event L.supermap.widgets.poiSearchViewModel#newlayeradded
+             * @description 新图层添加之后触发。
+             * @property {L.supermap.widgets.GeoJsonLayersDataModel} newLayer - 图层对象。
+             */
             this.fire("newlayeradded", {newLayer: newLayer});
         });
     },
@@ -83,8 +92,18 @@ export var POISearchViewModel = L.Evented.extend({
         if (this.dataModel.layers[searchLayerName]) {
             let resultFeatures = this.dataModel.layers[searchLayerName].getFeaturesByKeyWord(keyWord);
             if (resultFeatures && resultFeatures.length > 0) {
+                /**
+                 * @event L.supermap.widgets.poiSearchViewModel#searchlayersucceed
+                 * @description 图层属性查询成功后触发。
+                 * @property {Object} result - 图层数据。
+                 */
                 this.fire("searchlayersucceed", {result: resultFeatures});
             } else {
+                /**
+                 * @event L.supermap.widgets.poiSearchViewModel#searchfield
+                 * @description 图层属性查询失败后触发。
+                 * @property {string} searchType - 图层属性查询状态。
+                 */
                 this.fire("searchfield", {searchType: "searchLayersField"});
             }
         }
@@ -139,6 +158,11 @@ export var POISearchViewModel = L.Evented.extend({
     cityGeocodeService(keyWords) {
         //todo 是否保留缓存？请求过的数据保留一份缓存？
         if (this.searchCache[keyWords]) {
+            /**
+             * @event L.supermap.widgets.poiSearchViewModel#geocodesucceed
+             * @description 城市地址匹配成功够触发。
+             * @property {Object} result - 城市匹配成功后返回的数据。
+             */
             this.fire("geocodesucceed", {result: this.searchCache[keyWords]});
         } else {
             this.geoCodeParam.address = keyWords;

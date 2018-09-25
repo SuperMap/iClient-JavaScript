@@ -18,6 +18,13 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {Function} [options.onEachFeature] -  设置每个数据加载 popup 等。
  * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @fires L.supermap.dataFlowService#broadcastSocketConnected
+ * @fires L.supermap.dataFlowService#broadcastSocketError
+ * @fires L.supermap.dataFlowService#broadcastFailed
+ * @fires L.supermap.dataFlowService#broadcastSuccessed
+ * @fires L.supermap.dataFlowService#subscribeSocketError
+ * @fires L.supermap.dataFlowService#messageSuccessed
+ * @fires L.supermap.dataFlowService#setFilterParamSuccessed
  */
 export var DataFlowService = ServiceBase.extend({
 
@@ -35,6 +42,38 @@ export var DataFlowService = ServiceBase.extend({
         }
         ServiceBase.prototype.initialize.call(this, url, options);
         this.dataFlow = new DataFlow(url, options);
+        /**
+         * @event L.supermap.dataFlowService#broadcastSocketConnected
+         * @description broadcast Socket 连接成功。
+         */
+        /**
+         * @event L.supermap.dataFlowService#broadcastSocketError
+         * @description broadcast Socket 连接失败。
+         */
+        /**
+         * @event L.supermap.dataFlowService#broadcastFailed
+         * @description 广播失败。
+         */
+        /**
+         * @event L.supermap.dataFlowService#broadcastSuccessed
+         * @description 广播成功。
+         */
+        /**
+         * @event L.supermap.dataFlowService#subscribeSocketConnected
+         * @description 订阅数据连接成功。
+         */
+        /**
+         * @event L.supermap.dataFlowService#subscribeSocketError
+         * @description 订阅数据连接失败。
+         */
+        /**
+         * @event L.supermap.dataFlowService#messageSuccessed
+         * @description 获取信息成功。
+         */
+        /**
+         * @event L.supermap.dataFlowService#setFilterParamSuccessed
+         * @description 设置过滤参数成功。
+         */
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,

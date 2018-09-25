@@ -20,6 +20,13 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common';
  * @param {Object} options - 加载实时数据可选参数。
  * @param {Array.<Object>} [options.geometry] - 设置增添的几何要素对象数组。
  * @param {Object} [options.excludeField] - 排除字段。
+ * @fires mapboxgl.supermap.DataFlowService#broadcastSocketConnected
+ * @fires mapboxgl.supermap.DataFlowService#broadcastSocketError
+ * @fires mapboxgl.supermap.DataFlowService#broadcastFailed
+ * @fires mapboxgl.supermap.DataFlowService#broadcastSuccessed
+ * @fires mapboxgl.supermap.DataFlowService#subscribeSocketError
+ * @fires mapboxgl.supermap.DataFlowService#messageSuccessed
+ * @fires mapboxgl.supermap.DataFlowService#setFilterParamSuccessed
  */
 export class DataFlowService extends ServiceBase {
 
@@ -31,6 +38,39 @@ export class DataFlowService extends ServiceBase {
         }
         super(url, options);
         this.dataFlow = new DataFlow(url, options);
+        /**
+         * @event mapboxgl.supermap.DataFlowService#broadcastSocketConnected
+         * @description broadcast Socket 连接成功。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#broadcastSocketError
+         * @description broadcast Socket 连接失败。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#broadcastFailed
+         * @description 广播失败。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#broadcastSuccessed
+         * @description 广播成功。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#subscribeSocketConnected
+         * @description 订阅数据连接成功。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#subscribeSocketError
+         * @description 订阅数据连接失败。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#messageSuccessed
+         * @description 获取信息成功。
+         */
+        /**
+         * @event mapboxgl.supermap.DataFlowService#setFilterParamSuccessed
+         * @description 设置过滤参数成功。
+         */
+
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
@@ -44,6 +84,11 @@ export class DataFlowService extends ServiceBase {
         });
         var me = this;
         me.on('subscribeSocketConnected', function (e) {
+            /**
+             * @event mapboxgl.supermap.DataFlowService#subscribeSuccessed
+             * @description 数据流服务订阅成功后触发。
+             * @property {Object} e - 事件对象。
+             */
             me.fire('subscribeSuccessed', e);
         })
 

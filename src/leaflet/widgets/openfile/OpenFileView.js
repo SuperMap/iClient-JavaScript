@@ -10,6 +10,7 @@ import {MessageBox, Lang} from '@supermap/iclient-common';
  * @class L.supermap.widgets.openFile
  * @classdesc 打开文件微件，用于打开本地数据文件并加载到底图
  * @category Widgets OpenFile
+ * @fires L.supermap.widgets.openFile#openfilesuccess
  */
 export var OpenFileView = L.Control.extend({
     options: {
@@ -18,6 +19,7 @@ export var OpenFileView = L.Control.extend({
         //控件位置 继承自leaflet control
         position: 'topright'
     },
+    
     /**
      * @function L.supermap.widgets.openFile.prototype.onAdd
      * @description 向底图添加微件
@@ -90,6 +92,11 @@ export var OpenFileView = L.Control.extend({
             this.messageBox.showView(e.message, e.messageType);
         });
         this.viewModel.on("openfilesuccess", (e) => {
+            /**
+             * @event L.supermap.widgets.openFile#openfilesuccess
+             * @description 打开文件成功。
+             * @property {Object} e - 事件对象。
+             */
             this.event.fire("openfilesuccess", e);
         });
 

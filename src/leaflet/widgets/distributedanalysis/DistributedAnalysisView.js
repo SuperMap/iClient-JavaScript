@@ -55,15 +55,6 @@ export var DistributedAnalysisView = L.Control.extend({
             me.dataHash = e.result.datasetHash;
         })
     },
-    /**
-     * @function L.supermap.widgets.distributedAnalysis.prototype.addTo
-     * @description 添加控件到底图。
-     */
-    addTo: function (map) {
-        L.Control.prototype.addTo.call(this, map);
-        // 阻止 map 默认事件
-        this._preventMapEvent(this._container, map);
-    },
 
     /**
      * @function L.supermap.widgets.distributedAnalysis.prototype._preventMapEvent
@@ -377,6 +368,7 @@ export var DistributedAnalysisView = L.Control.extend({
             return analysisParam;
         }
         this._container = container;
+        this._preventMapEvent(this._container, this.map);
         return this._container;
     },
     /**

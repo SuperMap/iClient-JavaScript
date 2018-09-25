@@ -10,10 +10,14 @@ import {
 } from '@supermap/iclient-common';
 
 /**
- * @class L.supermap.widgets.OpenFileViewModel
- * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
+ * @class L.supermap.widgets.openFileViewModel
+ * @classdesc 打开本地文件微件功能类。
  * @category Widgets OpenFile
- * @private
+ * @param {L.Map} map - leaflet map 对象。
+ * @fires L.supermap.widgets.openFileViewModel#filesizeexceed
+ * @fires L.supermap.widgets.openFileViewModel#errorfileformat
+ * @fires L.supermap.widgets.openFileViewModel#openfilesuccess
+ * @fires L.supermap.widgets.openFileViewModel#openfilefail
  */
 export var OpenFileViewModel = L.Evented.extend({
     initialize(map) {
@@ -26,7 +30,7 @@ export var OpenFileViewModel = L.Evented.extend({
 
 
     /**
-     * @function L.supermap.widgets.OpenFileViewModel.prototype.readFile
+     * @function L.supermap.widgets.openFileViewModel.prototype.readFile
      * @description 选中文件并加载到底图
      * @param {Object} fileEventObject - 通过文件选择框打开的本地文件对象
      */
@@ -36,6 +40,12 @@ export var OpenFileViewModel = L.Evented.extend({
         //文件大小限制
         if (file.size > this.fileModel.FileConfig.fileMaxSize) {
             // document.alert("File supports up to 10M.");
+            /**
+             * @event L.supermap.widgets.openFileViewModel#filesizeexceed
+             * @description 超出文件大小限制后触发。
+             * @property {string} messageType - 警告类型。
+             * @property {string} message - 警告内容。
+             */
             this.fire("filesizeexceed", {messageType: "warring", message: "文件大小不得超过 10M。"});
             return false;
         }
@@ -46,6 +56,12 @@ export var OpenFileViewModel = L.Evented.extend({
         //文件格式不支持
         if (!fileType) {
             // document.alert("Unsupported data type.");
+            /**
+             * @event L.supermap.widgets.openFileViewModel#errorfileformat
+             * @description 文件格式不支持时触发。
+             * @property {string} messageType - 警告类型。
+             * @property {string} message - 警告内容。
+             */
             this.fire("errorfileformat", {messageType: "failure", message: "不支持该文件格式！"});
             return false;
         }
@@ -66,7 +82,7 @@ export var OpenFileViewModel = L.Evented.extend({
     },
 
     /**
-     * @function L.supermap.widgets.OpenFileViewModel.prototype._readData
+     * @function L.supermap.widgets.openFileViewModel.prototype._readData
      * @description 数据文件中的数据
      * @private
      */
@@ -81,12 +97,24 @@ export var OpenFileViewModel = L.Evented.extend({
             //将数据统一转换为 geoJson 格式加载到底图
             const geojson = FileReaderUtil.processDataToGeoJson(type, data);
             if (geojson) {
+                /**
+                 * @event L.supermap.widgets.openFileViewModel#openfilesuccess
+                 * @description 打开文件成功。
+                 * @property {GeoJSONObject} result - GeoJSON 格式数据。
+                 * @property {string} layerName - 图层名。
+                 */
                 this.fire("openfilesuccess", {
                     result: geojson,
                     layerName: this.fileModel.loadFileObject.fileName.split('.')[0]
                 });
             }
         }, () => {
+            /**
+             * @event L.supermap.widgets.openFileViewModel#openfilefail
+             * @description 打开文件失败。
+             * @property {string} messageType - 警告类型。
+             * @property {string} message - 警告内容。
+             */
             me.fire("openfilefail", {messageType: "failure", message: "打开文件失败！"});
             // throw new Error("Incorrect data format: " + error);
         }, this);
@@ -99,6 +127,6 @@ export var openFileViewModel = function (options) {
     return new OpenFileViewModel(options);
 };
 
-L.supermap.widgets.OpenFileViewModel = openFileViewModel;
+L.supermap.widgets.openFileViewModel = openFileViewModel;
 
 L.supermap.widgets.util = widgetsUtil;

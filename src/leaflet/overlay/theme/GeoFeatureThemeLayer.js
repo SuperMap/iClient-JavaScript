@@ -31,6 +31,7 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
  *                                        禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ * @fires L.supermap.GeoFeatureThemeLayer#beforefeaturesadded
  */
 export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
@@ -71,6 +72,12 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      */
     addFeatures: function (features) {
         var me = this;
+
+        /**
+         * @event L.supermap.GeoFeatureThemeLayer#beforefeaturesadded
+         * @description 向专题图图层中添加数据之前触发。
+         * @property {(SuperMap.ServerFeature|L.supermap.themeFeature|GeoJSONObject)} features - 事件对象。
+         */
         me.fire("beforefeaturesadded", {features: features});
 
         //转换 features 形式

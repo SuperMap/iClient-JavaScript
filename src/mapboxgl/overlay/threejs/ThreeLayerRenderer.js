@@ -47,6 +47,9 @@ const cancel = window.cancelAnimationFrame ||
  *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
  *
  * @extends {mapboxgl.Evented}
+ * @fires mapboxgl.supermap.ThreeLayer#initialized
+ * @fires mapboxgl.supermap.ThreeLayer#draw
+ * @fires mapboxgl.supermap.ThreeLayer#rendererinitialized
  */
 export class ThreeLayerRenderer {
 
@@ -67,20 +70,14 @@ export class ThreeLayerRenderer {
         }
         this.prepare();
         /**
-         * initialized事件, 初始化好three后触发
-         * @event mapboxgl.supermap.ThreeLayer#prepare
-         * @type {Object}
-         * @property {string} type  - prepare
-         * @property {Object} target  - layer
+         * @event mapboxgl.supermap.ThreeLayer#initialized
+         * @description three 初始化之后后触发。
          */
         this._layer.fire("initialized");
         this._layer && this._layer.draw(this.context, this.scene, this.camera);
         /**
-         * draw绘制事件, 调用提供给外部绘制的接口后触发
          * @event mapboxgl.supermap.ThreeLayer#draw
-         * @type {Object}
-         * @property {string} type  - draw
-         * @property {Object} target  - layer
+         * @description draw 绘制事件, 调用提供给外部绘制的接口后触发
          */
         this._layer.fire("draw");
         this.renderScene();
@@ -96,7 +93,7 @@ export class ThreeLayerRenderer {
         this.locationCamera();
         this.animationFrame = this.renderFrame((function () {
             this.animationFrame = null;
-            this.context && this.context.render(this.scene, this.camera);
+            this.context && this.context.render(this.scene, this.camera); 
         }).bind(this));
     }
 
@@ -130,11 +127,8 @@ export class ThreeLayerRenderer {
             this._initContainer();
             this._initThreeRenderer();
             /**
-             * rendererinitialized事件，初始化three渲染器后触发
              * @event mapboxgl.supermap.ThreeLayer#rendererinitialized
-             * @type {Object}
-             * @property {string} type  - rendererinitialized
-             * @property {Object} target  - layer
+             * @description rendererinitialized 事件，初始化 three 渲染器后触发
              */
             this._layer.fire("rendererinitialized");
         } else {

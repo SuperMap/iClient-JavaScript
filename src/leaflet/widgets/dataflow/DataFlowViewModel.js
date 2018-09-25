@@ -3,16 +3,16 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import {DataFlowLayer} from "../../overlay/DataFlowLayer";
-import {CommontypesConversion} from '../../core/CommontypesConversion';
+import { DataFlowLayer } from "../../overlay/DataFlowLayer";
+import { CommontypesConversion } from '../../core/CommontypesConversion';
 
 /**
  * @class L.supermap.widgets.dataFlowViewModel
- * @classdesc 打开本地文件微件 ViewModel，用于管理一些业务逻辑
+ * @classdesc 数据流微件功能类。
  * @category Widgets DataFlow
- * @private
  * @param {L.Map} map - 当前微件所在的底图
  * @param {Object} [dataFlowLayerOptions] - 数据流服务返回数据数据展示样式，默认采用 ViewModel 默认样式。
+ * @param {Object} options - 可选参数。
  * @param {Function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
@@ -27,6 +27,9 @@ import {CommontypesConversion} from '../../core/CommontypesConversion';
                                                     };
                                             }`
  * @param {Function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。 用于将事件和弹出窗口附加到要素。 默认情况下，对新创建的图层不执行任何操作
+ * @fires L.supermap.widgets.dataFlowViewModel#dataflowfervicefubscribed
+ * @fires L.supermap.widgets.dataFlowViewModel#subscribesuccessed
+ * @fires L.supermap.widgets.dataFlowViewModel#dataupdated
  */
 export var DataFlowViewModel = L.Evented.extend({
     options: {
@@ -105,6 +108,10 @@ export var DataFlowViewModel = L.Evented.extend({
         //若当前数据流服务没变，则不进行重新订阅 todo 或者没点击暂停
         if (this.urlDataFlow === urlDataFlow) {
             if (this.dataFlowStatus) {
+                /**
+                 * @event L.supermap.widgets.dataFlowViewModel#dataflowfervicefubscribed
+                 * @description 数据流订阅成功后触发。
+                 */
                 this.fire("dataflowfervicefubscribed");
                 return;
             }
@@ -120,11 +127,21 @@ export var DataFlowViewModel = L.Evented.extend({
         //创建DataFlowLayer，创建DataFlowLayer订阅iServer dataflow服务并将结果加载到地图上
         const dataFlowLayer = new DataFlowLayer(urlDataFlow, this.options._defaultLayerOptions);
         dataFlowLayer.on('subscribesuccessed', (result) => {
-            this.fire("subscribesuccessed", {result: result});
+            /**
+             * @event L.supermap.widgets.dataFlowViewModel#subscribesuccessed
+             * @description 数据流订阅成功后触发。
+             * @property {Object} result - 返回的数据。
+             */
+            this.fire("subscribesuccessed", { result: result });
         });
         dataFlowLayer.on('dataupdated', (result) => {
             //派发出订阅返回的数据：
-            this.fire("dataupdated", {result: result});
+            /**
+             * @event L.supermap.widgets.dataFlowViewModel#dataupdated
+             * @description 数据返回成功之后触发。
+             * @property {Object} result - 返回的数据。
+             */
+            this.fire("dataupdated", { result: result });
             //若数据超出当前视图范围，则移动到数据所在视图范围：
             let layerBounds = result.layer.getBounds(),
                 mapBounds = CommontypesConversion.toSuperMapBounds(this.map.getBounds()),

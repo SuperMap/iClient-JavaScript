@@ -378,6 +378,8 @@ export class ThreeLayer extends mapboxgl.Evented {
      * @param {THREE.Scene} scene - threejs 场景对象。详情请参考：[THREE.Scene]{@link https://threejs.org/docs/index.html#api/scenes/Scene}
      * @param {THREE.Camera} camera - threejs 相机对象。详情请参考：[THREE.Camera]{@link https://threejs.org/docs/index.html#api/cameras/Camera}
      * @returns {this} this对象。
+     * @fires mapboxgl.supermap.ThreeLayer#render
+     * @fires mapboxgl.supermap.ThreeLayer#renderscene
      * @example
      * var threeLayer = new mapboxgl.supermap.ThreeLayer('three');
      * //可以通过重写 draw 实现模型绘制
@@ -399,12 +401,9 @@ export class ThreeLayer extends mapboxgl.Evented {
     renderScene() {
         this.renderer.renderScene();
         /**
-         * renderScene 事件，场景渲染后触发。
          * @event mapboxgl.supermap.ThreeLayer#renderscene
-         * @type {Object}
-         * @property {string} type  - renderscene
-         * @property {Object} target  - layer
-         */
+         * @description renderScene 事件，场景渲染后触发。
+         */ 
         this.fire("renderscene");
         return this;
     }
@@ -415,11 +414,8 @@ export class ThreeLayer extends mapboxgl.Evented {
 
     _update() {
         /**
-         * render 事件，地图渲染时(地图状态改变时)触发。
          * @event mapboxgl.supermap.ThreeLayer#render
-         * @type {Object}
-         * @property {string} type  - render
-         * @property {Object} target  - layer
+         * @description render 事件，地图渲染时(地图状态改变时)触发。
          */
         this.renderScene();
         this.fire('render');

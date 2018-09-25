@@ -16,6 +16,7 @@ import Attributions from '../core/Attributions'
  * @param {Object} options - 参数。
  * @param {string} [options.attributionPrefix] - 版权信息前缀。
  * @param {string} [options.attribution='© 2017 百度 MapV'] - 版权信息。
+ * @fires L.supermap.mapVLayer#loaded
  */
 export var MapVLayer = L.Layer.extend({
 
@@ -54,6 +55,10 @@ export var MapVLayer = L.Layer.extend({
         container.style.height = size.y + "px";
         this.renderer = new MapVRenderer(map, this, this.dataSet, this.mapVOptions);
         this.draw();
+        /**
+         * @event L.supermap.mapVLayer#loaded
+         * @description 图层添加完成之后触发。
+         */
         this.fire("loaded");
     },
 
