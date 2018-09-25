@@ -65994,8 +65994,10 @@ let en = {
     'text_label_meshType': 'Mesh type',
     'text_option_notSet': 'Not set',
     'text_label_weightField': 'Weight field',
-    'text_label_gridSizeInMeters': 'Grid size (in meters)',
+    'text_label_gridSizeInMeters': 'Grid size',
     'text_label_searchRadius': 'Search radius',
+    'text_label_queryRange': 'Scope of analysis',
+    'text_label_areaUnit': 'Area unit',
     'text_option_equidistantSegmentation': 'Equidistant segmentation',
     'text_option_logarithm': 'Logarithm',
     'text_option_equalCountingSegment': 'Equal counting segment',
@@ -66028,6 +66030,7 @@ let en = {
     'text_label_color': 'Color',
     'text_label_buffer': '[Buffer]',
     'text_label_isolines': '[Isolines]',
+    'text_label_queryRangeTips': 'The default is the full range of input data. Example: -74.050, 40.650, -73.850, 40.850',
     
     "btn_analyze": "Analyze",
     "btn_analyzing": "Analyzing",
@@ -66082,8 +66085,10 @@ let zh = {
     'text_label_meshType': '网格面类型',
     'text_option_notSet': '未设置',
     'text_label_weightField': '权重字段',
-    'text_label_gridSizeInMeters': '网格大小(单位为：米)',
+    'text_label_gridSizeInMeters': '网格大小',
     'text_label_searchRadius': '搜索半径',
+    'text_label_queryRange': '分析范围',
+    'text_label_areaUnit': '面积单位',
     'text_option_equidistantSegmentation': '等距离分段',
     'text_option_logarithm': '对数',
     'text_option_equalCountingSegment': '等计数分段',
@@ -66116,7 +66121,7 @@ let zh = {
     'text_label_color': '颜色',
     'text_label_buffer': '[缓冲区]',
     'text_label_isolines': '[等值线]',
-
+    'text_label_queryRangeTips': '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850',
 
     "btn_analyze": "分析",
     "btn_analyzing": "分析中",
@@ -83423,7 +83428,7 @@ class GeoJsonLayerDataModel {
 
 /**
  * @class L.supermap.widgets.searchViewModel
- * @classdesc 查询微件功能类。
+ * @classdesc 图层查询微件功能类。
  * @category Widgets Search
  * @param {Object} options - 可选参
  * @param {Object} [options.cityGeoCodingConfig] - 城市地址匹配服务配置，包括：{addressUrl:"",key:""} 默认为 online 地址匹配服务，与 options.cityConfig 对应。
@@ -83640,9 +83645,9 @@ external_L_default.a.supermap.widgets.searchViewModel = searchViewModel;
 
 /**
  * @class L.supermap.widgets.search
- * @classdesc 查询微件
+ * @classdesc 图层查询微件。
  * @category Widgets Search
- * @param {Object} options - 可选参数
+ * @param {Object} options - 可选参数。
  * @param {string} [options.position='topright'] - 控件位置，继承自 leaflet control。
  * @param {string} [options.addressUrl] - 配置地址匹配服务。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；
@@ -86047,21 +86052,22 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         // 分析范围 & 网格大小 & 搜索半径 & 面积单位
         // 分析范围
         let inputOptions = [{
-            'spanName': '分析范围',
+            'spanName': Lang.i18n('text_label_queryRange'),
             'value': ''
         }];
         for (let i in inputOptions) {
             this._creatInputBox(inputOptions[i], analysisSelectControl)
         }
         let queryRangeInput = analysisSelectControl.children[3].children[1];
-        queryRangeInput.setAttribute('placeholder', '默认为输入数据的全幅范围。范例：[-74.050,40.650,-73.850,40.850]')
-        queryRangeInput.title = '默认为输入数据的全幅范围。范例：[-74.050,40.650,-73.850,40.850]';
+        queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'))
+        queryRangeInput.title = Lang.i18n('text_label_queryRangeTips');
+        
         // 网格大小
         let gridSizeUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
         let gridSizeOptions = {
-            'labelName':'网格大小',
+            'labelName': Lang.i18n('text_label_gridSizeInMeters'),
             'selectOptions':gridSizeUnitSelectOptions
         }
         let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
@@ -86074,7 +86080,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
         let searchRadiusOptions = {
-            'labelName':'搜索半径',
+            'labelName': Lang.i18n('text_label_searchRadius'),
             'selectOptions':searchRadiusUnitSelectOptions
         }
         let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
@@ -86083,7 +86089,7 @@ var DistributedAnalysisView = external_L_default.a.Control.extend({
         let searchRadiusSelectName = searchRadiusContainer.children[1].children[1].children[0].children[0].children[0];
         // 面积单位
         let areaUnitSelectOptions = {
-            'labelName':'面积单位',
+            'labelName': Lang.i18n('text_label_areaUnit'),
             'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
         }
         let areaUnitSelectTool= (new Select(areaUnitSelectOptions)).getElement();

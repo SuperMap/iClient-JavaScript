@@ -182,21 +182,22 @@ export var DistributedAnalysisView = L.Control.extend({
         // 分析范围 & 网格大小 & 搜索半径 & 面积单位
         // 分析范围
         let inputOptions = [{
-            'spanName': '分析范围',
+            'spanName': Lang.i18n('text_label_queryRange'),
             'value': ''
         }];
         for (let i in inputOptions) {
             this._creatInputBox(inputOptions[i], analysisSelectControl)
-        }、
+        }
         let queryRangeInput = analysisSelectControl.children[3].children[1];
-        queryRangeInput.setAttribute('placeholder', '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850')
-        queryRangeInput.title = '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850';
+        queryRangeInput.setAttribute('placeholder', Lang.i18n('text_label_queryRangeTips'))
+        queryRangeInput.title = Lang.i18n('text_label_queryRangeTips');
+        
         // 网格大小
         let gridSizeUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
         let gridSizeOptions = {
-            'labelName':'网格大小',
+            'labelName': Lang.i18n('text_label_gridSizeInMeters'),
             'selectOptions':gridSizeUnitSelectOptions
         }
         let gridSizeContainer = this._creatUnitSelectBox(gridSizeOptions, analysisSelectControl);
@@ -209,7 +210,7 @@ export var DistributedAnalysisView = L.Control.extend({
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         }
         let searchRadiusOptions = {
-            'labelName':'搜索半径',
+            'labelName': Lang.i18n('text_label_searchRadius'),
             'selectOptions':searchRadiusUnitSelectOptions
         }
         let searchRadiusContainer = this._creatUnitSelectBox(searchRadiusOptions, analysisSelectControl);
@@ -218,7 +219,7 @@ export var DistributedAnalysisView = L.Control.extend({
         let searchRadiusSelectName = searchRadiusContainer.children[1].children[1].children[0].children[0].children[0];
         // 面积单位
         let areaUnitSelectOptions = {
-            'labelName':'面积单位',
+            'labelName': Lang.i18n('text_label_areaUnit'),
             'optionsArr': ['SquareMile', 'SquareMeter', 'Hectare', 'Acre', 'SquareFoot', 'SquareYard']
         }
         let areaUnitSelectTool= (new Select(areaUnitSelectOptions)).getElement();

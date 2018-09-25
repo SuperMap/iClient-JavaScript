@@ -32,8 +32,10 @@ let zh = {
     'text_label_meshType': '网格面类型',
     'text_option_notSet': '未设置',
     'text_label_weightField': '权重字段',
-    'text_label_gridSizeInMeters': '网格大小(单位为：米)',
+    'text_label_gridSizeInMeters': '网格大小',
     'text_label_searchRadius': '搜索半径',
+    'text_label_queryRange': '分析范围',
+    'text_label_areaUnit': '面积单位',
     'text_option_equidistantSegmentation': '等距离分段',
     'text_option_logarithm': '对数',
     'text_option_equalCountingSegment': '等计数分段',
@@ -66,7 +68,7 @@ let zh = {
     'text_label_color': '颜色',
     'text_label_buffer': '[缓冲区]',
     'text_label_isolines': '[等值线]',
-
+    'text_label_queryRangeTips': '默认为输入数据的全幅范围。范例：-74.050,40.650,-73.850,40.850',
 
     "btn_analyze": "分析",
     "btn_analyzing": "分析中",
