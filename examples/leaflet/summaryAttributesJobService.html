@@ -104,7 +104,7 @@
                             for (var i = 0; i < result.length; i++) {
                                 names.push(result[i].properties.BOROUGH);
                                 data1.push(parseFloat(result[i].properties.RECORDCOUNT));
-                                data2.push(parseFloat(result[i].properties.SUM_LOCATIONID0));
+                                data2.push(parseFloat(result[i].properties.SUM_LOCATIONID));
                             }
                             option = {
                                 backgroundColor: '#0E2A43',
@@ -113,7 +113,7 @@
                                     textStyle: {
                                         color: '#fff',
                                     },
-                                    data: ['RECORDCOUNT', 'SUM_LOCATIONID0']
+                                    data: ['RECORDCOUNT', 'SUM_LOCATIONID']
                                 },
                                 grid: {
                                     left: '3%',
@@ -181,7 +181,7 @@
                                         barCategoryGap: '50%'
                                     },
                                     {
-                                        name: 'SUM_LOCATIONID0',
+                                        name: 'SUM_LOCATIONID',
                                         type: 'bar',
                                         yAxisIndex: 1,
 

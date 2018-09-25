@@ -124,7 +124,7 @@
                         for (var i = 0; i < result.length; i++) {
                             names.push(result[i].properties.BOROUGH);
                             data1.push(parseFloat(result[i].properties.RECORDCOUNT));
-                            data2.push(parseFloat(result[i].properties.SUM_LOCATIONID0));
+                            data2.push(parseFloat(result[i].properties.SUM_LOCATIONID));
                         }
                         chart.setOption({
                             yAxis: [
@@ -143,7 +143,7 @@
                                     data: data1
                                 },
                                 {
-                                    name: "SUM_LOCATIONID0",
+                                    name: "SUM_LOCATIONID",
                                     data: data2
                                 }
                             ]
@@ -166,7 +166,7 @@
             textStyle: {
                 color: '#fff',
             },
-            data: ['RECORDCOUNT', 'SUM_LOCATIONID0']
+            data: ['RECORDCOUNT', 'SUM_LOCATIONID']
         },
         grid: {
             left: '3%',
