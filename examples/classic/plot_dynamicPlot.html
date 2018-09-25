@@ -139,10 +139,6 @@
         </li>
 
         <li>
-            <a class="glyphicon glyphicon-retweet notArrow" data-i18n="[title]resources.text_screenshot" onclick="mapToImg1()"></a>
-        </li>
-
-        <li>
             <a class="glyphicon glyphicon-adjust notArrow" data-i18n="[title]resources.text_avoid"></a>
             <ul>
                 <li><input type="button" data-i18n="[value]resources.btn_avoidEdit" onclick="drawAvoidRegion()"
@@ -465,11 +461,6 @@
         } else {
             plottingLayer.setSelected(true);
         }
-    }
-
-    //截屏
-    function mapToImg1() {
-        MapToImg && MapToImg.excute(map);
     }
 
     //绘制避让区域

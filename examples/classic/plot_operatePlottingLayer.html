@@ -111,6 +111,7 @@
     function removeLayer() {
         widgets.alert.clearAlert();
         if (plottingLayers.length !== 0) {
+            plottingEdit.unselectFeatures();
             var plottingLayer = plottingLayers[plottingLayers.length - 1];
             plottingLayer.events.on({"removed": layerRemoved});
             map.removeLayer(plottingLayer);
