@@ -286,6 +286,9 @@ describe('openlayers_GeoFeature', () => {
                 }
             }]
         });
+        geoFeature.setMaxCacheCount(5);
+        expect(geoFeature.maxCacheCount).toBe(5);
+        expect(geoFeature.getCacheCount()).toBe(0);
         geoFeature.destroy();
         expect(geoFeature).not.toBeNull();
         expect(geoFeature.maxCacheCount).toBeNull();
@@ -299,8 +302,68 @@ describe('openlayers_GeoFeature', () => {
         expect(geoFeature.style).toBeNull();
         expect(geoFeature.highlightStyle).toBeNull();
         expect(geoFeature.isAllowFeatureStyle).toBeNull();
+        
     });
-
+    it("createThematicFeature", () => {
+        var geoFeature = new GeoFeature("ThemeLayer", {
+            map: map,
+            features: features,
+            style: {
+                shadowBlur: 16,
+                shadowColor: "#000000",
+                fillColor: "#FFFFFF"
+            },
+            isHoverAble: true,
+            highlightStyle: {
+                stroke: true,
+                strokeWidth: 4,
+                strokeColor: 'blue',
+                fillColor: "#00EEEE",
+                fillOpacity: 0.8
+            },
+            themeField: "POP_DENSITY99",
+            styleGroups: [
+                {
+                    start: 0,
+                    end: 0.02,
+                    style: {
+                        color: '#FDE2CA'
+                    }
+                },
+                {
+                    start: 0.02,
+                    end: 0.04,
+                    style: {
+                        color: '#FACE9C'
+                    }
+                },
+                {
+                    start: 0.04,
+                    end: 0.06,
+                    style: {
+                        color: '#F09C42'
+                    }
+                },
+                {
+                    start: 0.06,
+                    end: 0.1,
+                    style: {
+                        color: '#D0770B'
+                    }
+                },
+                {
+                    start: 0.1,
+                    end: 0.2,
+                    style: {
+                        color: '#945305'
+                    }
+                }]
+        });
+        var themeFeature=geoFeature.createThematicFeature(features[0]);
+        expect(themeFeature).not.toBeNull();
+        expect(themeFeature.data).not.toBeNull();
+        expect(themeFeature.data.fieldNames.length).toBe(22);
+    });
     it("removeAllFeatures", () => {
         var geoFeature = new GeoFeature("ThemeLayer", {
             map: map,
@@ -357,6 +420,66 @@ describe('openlayers_GeoFeature', () => {
                 }]
         });
         geoFeature.removeAllFeatures();
+        expect(geoFeature.cache instanceof Object).toBeTruthy();
+        expect(geoFeature.cacheFields instanceof Array).toBeTruthy();
+        expect(geoFeature.cacheFields.length).toBe(0)
+    });
+    it("removeFeatures", () => {
+        var geoFeature = new GeoFeature("ThemeLayer", {
+            map: map,
+            features: features,
+            style: {
+                shadowBlur: 16,
+                shadowColor: "#000000",
+                fillColor: "#FFFFFF"
+            },
+            isHoverAble: true,
+            highlightStyle: {
+                stroke: true,
+                strokeWidth: 4,
+                strokeColor: 'blue',
+                fillColor: "#00EEEE",
+                fillOpacity: 0.8
+            },
+            themeField: "POP_DENSITY99",
+            styleGroups: [
+                {
+                    start: 0,
+                    end: 0.02,
+                    style: {
+                        color: '#FDE2CA'
+                    }
+                },
+                {
+                    start: 0.02,
+                    end: 0.04,
+                    style: {
+                        color: '#FACE9C'
+                    }
+                },
+                {
+                    start: 0.04,
+                    end: 0.06,
+                    style: {
+                        color: '#F09C42'
+                    }
+                },
+                {
+                    start: 0.06,
+                    end: 0.1,
+                    style: {
+                        color: '#D0770B'
+                    }
+                },
+                {
+                    start: 0.1,
+                    end: 0.2,
+                    style: {
+                        color: '#945305'
+                    }
+                }]
+        });
+        geoFeature.removeFeatures();
         expect(geoFeature.cache instanceof Object).toBeTruthy();
         expect(geoFeature.cacheFields instanceof Array).toBeTruthy();
         expect(geoFeature.cacheFields.length).toBe(0)

@@ -10,7 +10,7 @@ import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
-
+import  './openlayers/overlay/DataFlowSpec.js';
 import  './openlayers/overlay/graphic/GraphicSpec.js';
 import './openlayers/overlay/GraphicSpec.js';
 

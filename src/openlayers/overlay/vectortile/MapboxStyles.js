@@ -102,7 +102,7 @@ export class MapboxStyles extends ol.Observable {
         }
     }
     /**
-     * @function ol.supermap.MapboxStyles.getStyleFunction
+     * @function ol.supermap.MapboxStyles.prototype.getStyleFunction
      * @description 获取 ol.FeatureStyleFunction。
      * @returns {ol.FeatureStyleFunction} 返回 ol.FeatureStyleFunction。
      */
@@ -110,7 +110,7 @@ export class MapboxStyles extends ol.Observable {
         return this.featureStyleFuntion;
     }
     /**
-     * @function ol.supermap.MapboxStyles.getStylesBySourceLayer
+     * @function ol.supermap.MapboxStyles.prototype.getStylesBySourceLayer
      * @param {string} sourceLayer - 数据图层名称。
      */
     getStylesBySourceLayer(sourceLayer) {
