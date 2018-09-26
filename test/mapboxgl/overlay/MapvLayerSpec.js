@@ -111,4 +111,99 @@ describe('mapboxgl_MapVLayer', () => {
         expect(thisMapvlayer).not.toBeNull();
         expect(thisMapvlayer.renderer.canvasLayer.canvas.style.display).toBe('none');
     });
+
+
+
+    it('addData', () => {
+        var data = [{
+            geometry: {
+                type: 'Point',
+                coordinates: [109, 32]
+            },
+            count: 111
+        }];
+        var dataset = new DataSet(data);
+        var tempoption = {
+            shadowBlur: 30
+        }
+        mapvLayer.addData(dataset, tempoption);
+        expect(mapvLayer.dataSet).not.toBeNull();
+        expect(mapvLayer.dataSet._data[1000].count).toEqual(111);
+        expect(mapvLayer.dataSet._data[1000].geometry.coordinates[0]).toEqual(109);
+        expect(mapvLayer.dataSet._data[1000].geometry.coordinates[1]).toEqual(32);
+        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(30);
+    });
+
+    it('getData', () => {
+        var dataset = mapvLayer.getData();
+        expect(dataset._data.length).toEqual(1000);
+    });
+
+    //删除数据
+    it('removeData', (done) => {
+        var filter = (data) => {
+            if (mapvLayer.dataSet._data.indexOf(data) === 2) {
+                return true
+            }
+            return false;
+        };
+        mapvLayer.removeData(filter);
+        setTimeout(() => {
+            expect(mapvLayer.dataSet._data.length).toEqual(999);
+            done();
+        }, 6000);
+    });
+
+    it('update', () => {
+        var data = [{
+            geometry: {
+                type: 'Point',
+                coordinates: [109, 32]
+            },
+            count: 111
+        }];
+        var dataset = new DataSet(data);
+        var tempoption = {
+            shadowBlur: 40
+        }
+        var opt = {data: dataset, options: tempoption};
+        mapvLayer.update(opt);
+        expect(mapvLayer.dataSet._data.length).toEqual(1);
+        expect(mapvLayer.dataSet._data[0].count).toEqual(111);
+        expect(mapvLayer.dataSet._data[0].geometry.coordinates[0]).toEqual(109);
+        expect(mapvLayer.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
+        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(40);
+    });
+
+    it('clearData', () => {
+        mapvLayer.clearData();
+        expect(mapvLayer.dataSet._data.length).toEqual(0);
+    });
+
+    it('draw, redraw', () => {
+        mapvLayer.draw();
+        expect(mapvLayer.canvas.width).toEqual(500);
+        expect(mapvLayer.canvas.style.width).toBe('500px');
+        mapvLayer.redraw();
+        expect(mapvLayer.canvas.width).toEqual(500);
+        expect(mapvLayer.canvas.style.width).toBe('500px');
+    });
+
+    it('setZIndex', () => {
+        mapvLayer.setZIndex(2);
+        expect(mapvLayer.canvas.style.zIndex).toEqual('2');
+    });
+
+    it('getCanvas', () => {
+        var canvas = mapvLayer.getCanvas();
+        expect(canvas).not.toBeNull();
+        expect(mapvLayer.canvas.width).toEqual(500);
+        expect(mapvLayer.canvas.height).toEqual(500);
+    });
+
+    it('getContainer', () => {
+        var container = mapvLayer.getContainer();
+        expect(container).not.toBeNull();
+    });
+
 });

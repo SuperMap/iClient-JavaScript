@@ -14,6 +14,10 @@ import './mapboxgl/overlay/UniqueThemeLayerSpec.js';
 import './mapboxgl/overlay/UniqueTheme3DLayerSpec.js';
 import './mapboxgl/overlay/DeckglLayerSpec.js';
 
+import './mapboxgl/overlay/graphic/GraphicSpec.js';
+import './mapboxgl/overlay/GraphicLayerSpec.js';
+
+
 /*mapboxgl -- services*/
 import './mapboxgl/services/AddressMatchServiceSpec.js';
 import './mapboxgl/services/BufferAnalysisSpec.js';

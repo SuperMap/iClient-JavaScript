@@ -248,4 +248,118 @@ describe('mapboxgl_DeckglLayer', () => {
             done();
         }, 3000)
     });
+
+    it("getGraphicBy add getGraphicById", (done) => {
+        let graphics = [];
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
+            renderer: ['canvas']
+        });
+        for (let j = 0; j < coors.length; ++j) {
+            graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
+            graphics[j].setId(j);
+            graphics[j].setAttributes({name: "graphic_" + j});
+        }
+        const graphicLayer = new ol.layer.Image({
+            source: new Graphic({
+                graphics: graphics,
+                map: map
+            })
+        });
+        map.addLayer(graphicLayer);
+
+        setTimeout(() => {
+            const graphic = graphicLayer.getSource().getGraphicBy("id", 1);
+            expect(graphic).not.toBeNull();
+            expect(graphic.getId()).toEqual(1);
+
+            const graphic1 = graphicLayer.getSource().getGraphicById(1);
+            expect(graphic1.getId()).toEqual(1);
+
+            map.removeLayer(graphicLayer);
+            done();
+        }, 4000)
+
+
+    });
+    it("getGraphicsByAttribute", (done) => {
+        let graphics = [];
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
+            renderer: ['canvas']
+        });
+        for (let j = 0; j < coors.length; ++j) {
+            graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
+            graphics[j].setId(j);
+            graphics[j].setAttributes({name: "graphic_" + j});
+        }
+        const graphicLayer = new ol.layer.Image({
+            source: new Graphic({
+                graphics: graphics,
+                map: map
+            })
+        });
+        map.addLayer(graphicLayer);
+
+        setTimeout(() => {
+            const graphic = graphicLayer.getSource().getGraphicsByAttribute("name", "graphic_1");
+            expect(graphic).not.toBeNull();
+            expect(graphic[0].getAttributes().name).toBe("graphic_1");
+            map.removeLayer(graphicLayer);
+            done();
+        }, 4000);
+    });
+    it("removeGraphics", () => {
+        let graphics = [];
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
+            renderer: ['canvas']
+        });
+        for (let j = 0; j < coors.length; ++j) {
+            graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
+            graphics[j].setId(j);
+            graphics[j].setAttributes({name: "graphic_" + j});
+        }
+        const graphicLayer = new ol.layer.Image({
+            source: new Graphic({
+                graphics: graphics,
+                map: map
+            })
+        });
+        map.addLayer(graphicLayer);
+
+        setTimeout(() => {
+            const graphicSource = graphicLayer.getSource();
+            //删除单个
+            let deleteGraphic = graphic[0];
+            expect(graphicSource.graphics.length).toEqual(5);
+            graphicSource.removeGraphics(deleteGraphic);
+            expect(graphicSource.graphics.length).toEqual(4);
+
+            //多个
+            deleteGraphic = [graphic[1], graphic[2]];
+            graphicSource.removeGraphics(deleteGraphic);
+            expect(graphicSource.graphics.length).toEqual(2);
+
+            //默认
+            graphicSource.removeGraphics();
+            expect(graphicSource.graphics.length).toEqual(0);
+        }, 4000);
+
+    });
 });

@@ -1,4 +1,3 @@
-import '../../libs/deck.gl/5.1.3/deck.gl';
 import {graphicLayer} from '../../../src/leaflet/overlay/GraphicLayer';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {circleStyle} from '../../../src/leaflet/overlay/graphic/CircleStyle';
@@ -80,5 +79,126 @@ describe('leaflet_GraphicLayer', () => {
             layer.remove();
         }, 1000)
     });
+
+    describe("GraphicLayer_graphic 相关", () => {
+        let layer, graphics = [];
+        const coors = [
+            [-35.16, 38.05],
+            [-36.16, 39.05],
+            [-36.16, 40.05],
+            [-37.16, 40.05],
+            [-38.16, 39.05]
+        ];
+        beforeAll(() => {
+            for (let j = 0; j < coors.length; ++j) {
+                graphics[j] = graphic({
+                    latLng: L.latLng(coors[j][0], coors[j][1])
+                });
+                graphics[j].setId(j);
+                graphics[j].setAttributes({name: "graphic_" + j});
+            }
+
+        });
+
+        it("getGraphicBy add getGraphicById", (done) => {
+            layer = graphicLayer(graphics).addTo(map);
+            setTimeout(() => {
+                const graphic = layer.getGraphicBy("id", 1);
+                expect(graphic).not.toBeNull();
+                expect(graphic.getId()).toEqual(1);
+
+                const graphic1 = layer.getGraphicById(1);
+                expect(graphic1.getId()).toEqual(1);
+
+                done();
+            }, 1000);
+
+        });
+
+        it("getGraphicsByAttribute", (done) => {
+            layer = graphicLayer(graphics).addTo(map);
+            setTimeout(() => {
+                const graphic = layer.getGraphicsByAttribute("name", "graphic_1");
+                expect(graphic).not.toBeNull();
+                expect(graphic[0].getAttributes().name).toBe("graphic_1");
+                done();
+            }, 1000);
+
+        });
+
+        it("removeGraphics", (done) => {
+            layer = graphicLayer(graphics).addTo(map);
+            setTimeout(() => {
+                //删除单个
+                let deleteGraphic = graphics[0];
+                expect(layer.graphics.length).toEqual(5);
+                layer.removeGraphics(deleteGraphic);
+                expect(layer.graphics.length).toEqual(4);
+
+                //多个
+                deleteGraphic = [graphics[1], graphics[2]];
+                layer.removeGraphics(deleteGraphic);
+                expect(layer.graphics.length).toEqual(2);
+
+                //默认
+                layer.removeGraphics();
+                expect(layer.graphics.length).toEqual(0);
+
+                done();
+            }, 1000);
+        });
+
+        it("getState", (done) => {
+            layer = graphicLayer(graphics).addTo(map);
+            setTimeout(() => {
+                const state = layer.getState();
+                expect(state).not.toBeNull();
+                expect(state.color).toBe("#3388ff");
+                done();
+            }, 1000);
+        });
+
+        it("setStyle", (done) => {
+            layer = graphicLayer(graphics, {
+                render: "canvas",
+                color: [0, 0, 0, 255]
+            }).addTo(map);
+            setTimeout(() => {
+                expect(layer.options.color).toEqual([0, 0, 0, 255]);
+                layer.setStyle({color: "blue"});
+                expect(layer.options.color).toEqual("blue");
+                done();
+            }, 4000);
+        });
+
+        it("addGraphics", (done) => {
+            layer = graphicLayer(graphics).addTo(map);
+            setTimeout(() => {
+                layer.addGraphics(graphics);
+                expect(layer.graphics.length).toEqual(10);
+                done();
+            }, 4000);
+        });
+
+        it("setGraphics", (done) => {
+            layer = graphicLayer(graphics).addTo(map);
+            setTimeout(() => {
+                layer.clear();
+                expect(layer.graphics.length).toEqual(0);
+                let graphics = [];
+                for (let j = 0; j < coors.length; ++j) {
+                    graphics[j] = graphic({
+                        latLng: L.latLng(coors[j][0], coors[j][1])
+                    });
+                    graphics[j].setId(j);
+                    graphics[j].setAttributes({name: "graphic_" + j});
+                }
+                layer.setGraphics(graphics);
+                expect(layer.graphics.length).toEqual(5);
+                done();
+            }, 4000);
+        });
+    });
+
 });
 

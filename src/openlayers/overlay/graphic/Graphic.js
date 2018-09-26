@@ -48,9 +48,8 @@ export class Graphic extends ol.Object {
     /**
      * @function ol.Graphic.prototype.setId
      * @description 设置当前要素 ID。
-     * @param {string} id - 要素 ID。 
+     * @param {string} id - 要素 ID。
      */
-
     setId(id) {
         this.id = id;
     }

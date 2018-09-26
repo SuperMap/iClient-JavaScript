@@ -95,4 +95,103 @@ describe('openlayers_MapV', () => {
         }, 5000)
     });
 
+    it('addData', () => {
+        var data = [{
+            geometry: {
+                type: 'Point',
+                coordinates: [109, 32]
+            },
+            count: 111
+        }];
+        var dataset = new DataSet(data);
+        var tempoption = {
+            shadowBlur: 30
+        }
+        mapVSource.addData(dataset, tempoption);
+        expect(mapVSource.dataSet).not.toBeNull();
+        expect(mapVSource.dataSet._data[1000].count).toEqual(111);
+        expect(mapVSource.dataSet._data[1000].geometry.coordinates[0]).toEqual(109);
+        expect(mapVSource.dataSet._data[1000].geometry.coordinates[1]).toEqual(32);
+        expect(mapVSource.mapVOptions.shadowBlur).toEqual(30);
+    });
+
+    it('getData', () => {
+        var dataset = mapVSource.getData();
+        expect(dataset._data.length).toEqual(1000);
+    });
+
+    //删除数据
+    it('removeData', (done) => {
+        var filter = (data) => {
+            if (mapVSource.dataSet._data.indexOf(data) === 2) {
+                return true
+            }
+            return false;
+        }
+        mapVSource.removeData(filter);
+        setTimeout(() => {
+            expect(mapVSource.dataSet._data.length).toEqual(999);
+            done();
+        }, 6000);
+    });
+
+    it('update', () => {
+        var data = [{
+            geometry: {
+                type: 'Point',
+                coordinates: [109, 32]
+            },
+            count: 111
+        }];
+        var dataset = new DataSet(data);
+        var tempoption = {
+            shadowBlur: 40
+        }
+        var opt = {data: dataset, options: tempoption};
+        mapVSource.update(opt);
+        expect(mapVSource.dataSet._data.length).toEqual(1);
+        expect(mapVSource.dataSet._data[0].count).toEqual(111);
+        expect(mapVSource.dataSet._data[0].geometry.coordinates[0]).toEqual(109);
+        expect(mapVSource.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
+        expect(mapVSource.mapVOptions.shadowBlur).toEqual(40);
+    });
+
+    it('clearData', () => {
+        mapVSource.clearData();
+        expect(mapVSource.dataSet._data.length).toEqual(0);
+    });
+
+    it('draw, redraw', () => {
+        mapVSource.draw();
+        expect(mapVSource.canvas.width).toEqual(500);
+        expect(mapVSource.canvas.style.width).toBe('500px');
+        mapVSource.redraw();
+        expect(mapVSource.canvas.width).toEqual(500);
+        expect(mapVSource.canvas.style.width).toBe('500px');
+    });
+
+    it('setZIndex', () => {
+        mapVSource.setZIndex(2);
+        expect(mapVSource.canvas.style.zIndex).toEqual('2');
+    });
+
+    it('getCanvas', () => {
+        var canvas = mapVSource.getCanvas();
+        expect(canvas).not.toBeNull();
+        expect(mapVSource.canvas.width).toEqual(500);
+        expect(mapVSource.canvas.height).toEqual(500);
+    });
+
+    it('getContainer', () => {
+        var container = mapVSource.getContainer();
+        expect(container).not.toBeNull();
+    });
+
+    it('getTopLeft', () => {
+        var topLeft = mapVSource.getTopLeft();
+        expect(topLeft).not.toBeNull();
+     /*   expect(topLeft.lng).toEqual(87.01171875);
+        expect(topLeft.lat).toEqual(48.63290858589535);*/
+    });
+
 });
