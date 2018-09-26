@@ -15,6 +15,7 @@ import './leaflet/mapping/WebMapSpec.js';
 import './leaflet/overlay/DataFlowlayerSpec.js';
 import './leaflet/overlay/EchartsLayerSpec.js';
 /*deck相关测试未通过，待解决后打开注释*/
+import './leaflet/overlay/graphic/GraphicSpec.js';
 import './leaflet/overlay/GraphicLayerSpec.js';
 import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/GraphThemeLayerSpec.js';

@@ -11,6 +11,7 @@ import './openlayers/mapping/WebMapSpec.js';
 
 /*openlayers -- overlay*/
 
+import  './openlayers/overlay/graphic/GraphicSpec.js';
 import './openlayers/overlay/GraphicSpec.js';
 
 import './openlayers/overlay/GraphSpec.js';
