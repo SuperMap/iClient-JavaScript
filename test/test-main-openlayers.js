@@ -57,4 +57,6 @@ import './openlayers/services/TerrainCurvatureCalculateSpec.js';
 import './openlayers/services/ThemeServiceSpec.js';
 import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
+import './openlayers/services/AddressMatchServiceSpec.js';
+import './openlayers/services/GridCellInfosServiceSpec.js';
 
