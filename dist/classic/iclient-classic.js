@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0-beta
+ *          version: v9.1.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2647,7 +2647,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
-*/
+ */
 var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
 
@@ -2693,12 +2693,18 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
         key: 'getJobs',
         value: function getJobs(url) {
             var me = this;
-            _FetchRequest.FetchRequest.get(me._processUrl(url), null, { proxy: me.proxy }).then(function (response) {
+            _FetchRequest.FetchRequest.get(me._processUrl(url), null, {
+                proxy: me.proxy
+            }).then(function (response) {
                 return response.json();
             }).then(function (result) {
-                me.events.triggerEvent("processCompleted", { result: result });
+                me.events.triggerEvent("processCompleted", {
+                    result: result
+                });
             }).catch(function (e) {
-                me.eventListeners.processFailed({ error: e });
+                me.eventListeners.processFailed({
+                    error: e
+                });
             });
         }
 
@@ -2722,7 +2728,11 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
             }
             var options = {
                 proxy: me.proxy,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                withCredentials: me.withCredentials,
+                isInTheSameDomain: me.isInTheSameDomain
             };
             _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
                 return response.json();
@@ -2733,7 +2743,9 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                     me.serviceProcessFailed(result);
                 }
             }).catch(function (e) {
-                me.serviceProcessFailed({ error: e });
+                me.serviceProcessFailed({
+                    error: e
+                });
             });
         }
     }, {
@@ -2744,21 +2756,33 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
             var me = this;
             if (result) {
                 var id = setInterval(function () {
-                    _FetchRequest.FetchRequest.get(me._processUrl(result.newResourceLocation), { _t: new Date().getTime() }).then(function (response) {
+                    _FetchRequest.FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                        _t: new Date().getTime()
+                    }).then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                        me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
+                        me.events.triggerEvent("processRunning", {
+                            id: job.id,
+                            state: job.state
+                        });
                         if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
                             clearInterval(id);
-                            me.events.triggerEvent("processFailed", { error: job.state.errorMsg, state: job.state.runState });
+                            me.events.triggerEvent("processFailed", {
+                                error: job.state.errorMsg,
+                                state: job.state.runState
+                            });
                         }
                         if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
                             clearInterval(id);
-                            me.events.triggerEvent("processCompleted", { result: job });
+                            me.events.triggerEvent("processCompleted", {
+                                result: job
+                            });
                         }
                     }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", { error: e });
+                        me.events.triggerEvent("processFailed", {
+                            error: e
+                        });
                     });
                 }, seconds);
             }
@@ -6433,7 +6457,7 @@ _SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParamet
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.KernelDensityJobParameter = undefined;
 
@@ -6470,156 +6494,160 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。   
  */
 var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () {
-  function KernelDensityJobParameter(options) {
-    _classCallCheck(this, KernelDensityJobParameter);
+    function KernelDensityJobParameter(options) {
+        _classCallCheck(this, KernelDensityJobParameter);
 
-    if (!options) {
-      return;
-    }
-    /**
-     * @member {string} SuperMap.KernelDensityJobParameter.prototype.datasetName
-     * @description 数据集名。
-     */
-    this.datasetName = "";
+        if (!options) {
+            return;
+        }
+        /**
+         * @member {string} SuperMap.KernelDensityJobParameter.prototype.datasetName
+         * @description 数据集名。
+         */
+        this.datasetName = "";
 
-    /**
-     * @member {SuperMap.Bounds|L.Bounds|ol.extent} [SuperMap.KernelDensityJobParameter.prototype.query]
-     * @description 分析范围。 
-     */
-    this.query = "";
+        /**
+         * @member {SuperMap.Bounds|L.Bounds|ol.extent} [SuperMap.KernelDensityJobParameter.prototype.query]
+         * @description 分析范围。 
+         */
+        this.query = "";
 
-    /**
-     * @member {number} [SuperMap.KernelDensityJobParameter.prototype.resolution=80]
-     * @description 网格大小。
-     */
-    this.resolution = 80;
+        /**
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.resolution=80]
+         * @description 网格大小。
+         */
+        this.resolution = 80;
 
-    /**
-     * @member {number} [SuperMap.KernelDensityJobParameter.prototype.method=0]
-     * @description 分析方法。
-     */
-    this.method = 0;
+        /**
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.method=0]
+         * @description 分析方法。
+         */
+        this.method = 0;
 
-    /**
-     * @member {number} [SuperMap.KernelDensityJobParameter.prototype.meshType=0]
-     * @description 分析类型。
-     */
-    this.meshType = 0;
+        /**
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.meshType=0]
+         * @description 分析类型。
+         */
+        this.meshType = 0;
 
-    /**
-     * @member {string} SuperMap.KernelDensityJobParameter.prototype.fields
-     * @description 权重索引。
-     */
-    this.fields = "";
+        /**
+         * @member {string} SuperMap.KernelDensityJobParameter.prototype.fields
+         * @description 权重索引。
+         */
+        this.fields = "";
 
-    /**
-     * @member {number} [SuperMap.KernelDensityJobParameter.prototype.radius=300]
-     * @description 分析的影响半径。
-     */
-    this.radius = 300;
+        /**
+         * @member {number} [SuperMap.KernelDensityJobParameter.prototype.radius=300]
+         * @description 分析的影响半径。
+         */
+        this.radius = 300;
 
-    /**
-     * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
-     * @description 网格大小单位。
-     */
-    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+        /**
+         * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit=SuperMap.AnalystSizeUnit.METER]
+         * @description 网格大小单位。
+         */
+        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
 
-    /**
-     * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
-     * @description 搜索半径单位。
-     */
-    this.radiusUnit = _REST.AnalystSizeUnit.METER;
+        /**
+         * @member {SuperMap.AnalystSizeUnit} [SuperMap.KernelDensityJobParameter.prototype.radiusUnit=SuperMap.AnalystSizeUnit.METER]
+         * @description 搜索半径单位。
+         */
+        this.radiusUnit = _REST.AnalystSizeUnit.METER;
 
-    /**
-     * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
-     * @description 面积单位。
-     */
-    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+        /**
+         * @member {SuperMap.AnalystAreaUnit} [SuperMap.KernelDensityJobParameter.prototype.areaUnit=SuperMap.AnalystAreaUnit.SQUAREMILE]
+         * @description 面积单位。
+         */
+        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-    /**
-     * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
-     * @description 输出参数设置类
-     */
-    this.output = null;
-
-    /**
-     * @member {SuperMap.MappingParameters} [SuperMap.KernelDensityJobParameter.prototype.mappingParameters]
-     * @description 分析后结果可视化的参数类。
-     */
-    this.mappingParameters = null;
-
-    _Util.Util.extend(this, options);
-
-    this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
-  }
-
-  /**
-   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-
-
-  _createClass(KernelDensityJobParameter, [{
-    key: 'destroy',
-    value: function destroy() {
-      this.datasetName = null;
-      this.query = null;
-      this.resolution = null;
-      this.method = null;
-      this.radius = null;
-      this.meshType = null;
-      this.fields = null;
-      this.meshSizeUnit = null;
-      this.radiusUnit = null;
-      this.areaUnit = null;
-      if (this.output instanceof _OutputSetting.OutputSetting) {
-        this.output.destroy();
+        /**
+         * @member {SuperMap.OutputSetting} SuperMap.KernelDensityJobParameter.prototype.output
+         * @description 输出参数设置类
+         */
         this.output = null;
-      }
-      if (this.mappingParameters instanceof _MappingParameters.MappingParameters) {
-        this.mappingParameters.destroy();
+
+        /**
+         * @member {SuperMap.MappingParameters} [SuperMap.KernelDensityJobParameter.prototype.mappingParameters]
+         * @description 分析后结果可视化的参数类。
+         */
         this.mappingParameters = null;
-      }
+
+        _Util.Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param {SuperMap.KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
-     * @param {SuperMap.KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
-     * @description 将密度分析任务参数对象转换为 JSON 对象。
-     * @returns JSON 对象。
+     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
-  }], [{
-    key: 'toObject',
-    value: function toObject(kernelDensityJobParameter, tempObj) {
-      for (var name in kernelDensityJobParameter) {
-        if (name === "datasetName") {
-          tempObj['input'] = tempObj['input'] || {};
-          tempObj['input'][name] = kernelDensityJobParameter[name];
-          continue;
-        }
-        if (name === "output") {
-          tempObj['output'] = tempObj['output'] || {};
-          tempObj['output'] = kernelDensityJobParameter[name];
-          continue;
+
+    _createClass(KernelDensityJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.query = null;
+            this.resolution = null;
+            this.method = null;
+            this.radius = null;
+            this.meshType = null;
+            this.fields = null;
+            this.meshSizeUnit = null;
+            this.radiusUnit = null;
+            this.areaUnit = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
+            if (this.mappingParameters instanceof _MappingParameters.MappingParameters) {
+                this.mappingParameters.destroy();
+                this.mappingParameters = null;
+            }
         }
 
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        if (name === 'query') {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-        } else {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name];
-        }
-        if (name === 'mappingParameters') {
-          tempObj['analyst'][name] = tempObj['analyst'][name] || {};
-          tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
-        }
-      }
-    }
-  }]);
+        /**
+         * @function SuperMap.KernelDensityJobParameter.toObject
+         * @param {SuperMap.KernelDensityJobParameter} kernelDensityJobParameter - 密度分析任务参数类。
+         * @param {SuperMap.KernelDensityJobParameter} tempObj - 密度分析任务参数对象。
+         * @description 将密度分析任务参数对象转换为 JSON 对象。
+         * @returns JSON 对象。
+         */
 
-  return KernelDensityJobParameter;
+    }], [{
+        key: 'toObject',
+        value: function toObject(kernelDensityJobParameter, tempObj) {
+            for (var name in kernelDensityJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = kernelDensityJobParameter[name];
+                    continue;
+                }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = kernelDensityJobParameter[name];
+                    continue;
+                }
+
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                if (name === 'query') {
+                    if (tempObj['analyst'][name]) {
+                        tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                    } else {
+                        tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                    }
+                } else {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
+                if (name === 'mappingParameters') {
+                    tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+                    tempObj['analyst']['mappingParameters'] = kernelDensityJobParameter[name];
+                }
+            }
+        }
+    }]);
+
+    return KernelDensityJobParameter;
 }();
 
 _SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
@@ -10210,7 +10238,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _classCallCheck(this, MapVLayer);
 
         /**
-         * @member {mapv.DataSet} - SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
          * @description mapv dataset 对象。
          */
         var _this = _possibleConstructorReturn(this, (MapVLayer.__proto__ || Object.getPrototypeOf(MapVLayer)).call(this, name, options));
@@ -10218,13 +10246,13 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.dataSet = null;
 
         /**
-         * @member {Object} - SuperMap.Layer.MapVLayer.prototype.options
+         * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
          * @description mapv 绘图风格配置信息。
          */
         _this.options = null;
 
         /**
-         * @member {boolean} - [SuperMap.Layer.MapVLayer.prototype.supported=false]
+         * @member {boolean} [SuperMap.Layer.MapVLayer.prototype.supported=false]
          * @description 当前浏览器是否支持 canvas 绘制。决定了 MapV 图是否可用，内部判断使用。
          */
         _this.supported = false;
@@ -10237,7 +10265,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
 
         /**
          * @private
-         * @member {CanvasContext} - SuperMap.Layer.MapVLayer.prototype.canvasContext
+         * @member {CanvasContext} SuperMap.Layer.MapVLayer.prototype.canvasContext
          * @description MapV 图主绘制对象。
          */
         _this.canvasContext = null;
@@ -10263,7 +10291,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         if (_this.options.context == '2d') {
             _this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
-        _this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
+        _this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
 
         _this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
         return _this;

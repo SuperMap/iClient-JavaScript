@@ -15,7 +15,7 @@ import Attributions from '../core/Attributions'
  * @param {Object} mapVOptions - MapV 图层参数。
  * @param {Object} options - 参数。
  * @param {string} [options.attributionPrefix] - 版权信息前缀。
- * @param {string} [options.attribution='© 2017 百度 MapV'] - 版权信息。
+ * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权信息。
  * @fires L.supermap.mapVLayer#loaded
  */
 export var MapVLayer = L.Layer.extend({

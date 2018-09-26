@@ -19,11 +19,11 @@ let Attributions = {
     },
 
     ECharts: {
-        attribution: `© 2017 百度 ECharts`
+        attribution: `© 2018 百度 ECharts`
     },
 
     MapV: {
-        attribution: `© 2017 百度 MapV `
+        attribution: `© 2018 百度 MapV `
     },
 
     Turf: {
@@ -31,7 +31,7 @@ let Attributions = {
     },
 
     Baidu: {
-        attribution: `Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方`
+        attribution: `Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方`
     },
 
     Cloud: {

@@ -14,7 +14,7 @@ import Attributions from '../core/Attributions'
  * @param {Object} echartsOptions - 图表参数。
  * @param {Object} options - 可选图层参数。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
- * @param {string} [options.attribution='© 2017 百度 ECharts'] - 版权信息。
+ * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权信息。
  */
 export const EchartsLayer = L.Layer.extend({
 

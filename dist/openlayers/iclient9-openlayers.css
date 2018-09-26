@@ -3,7 +3,7 @@
  *          iclient9-openlayers.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0-beta
+ *          version: v9.1.0
  *         
  */
 .drop-down-container {
@@ -676,7 +676,7 @@
 .file-selectSpan {
     position: relative;
 /*    margin: 20px auto;*/
-    width: 100px;
+    width: 110px;
     height: 32px;
     font-size: 14px;
     color: #595959;
@@ -1803,7 +1803,7 @@ label {
 .city-content > span:hover {
     color: #0083CB;
 }
-.nav-tabs-page {
+.widgets-navtabs-page {
     position: absolute;
     overflow: hidden;
     min-width: 520px;
@@ -1818,7 +1818,7 @@ label {
     z-index: 1000;
 }
 
-.nav-tabs-page .supermapol-icons-close {
+.widgets-navtabs-page .supermapol-icons-close {
     position: absolute;
     cursor: pointer;
     top: 11px;
@@ -1826,14 +1826,14 @@ label {
     color: #BFBFBF;
 }
 
-.nav-tabs-title {
+.widgets-navtabs-title {
     height: 35px;
     line-height: 36px;
     background-color: #F5F5F5;
     box-shadow: 0 1px 0 0 #E9E9E9;
 }
 
-.nav-tabs-title > span {
+.widgets-navtabs-title > span {
     float: left;
     color: #919191;
     cursor: pointer;
@@ -1842,13 +1842,13 @@ label {
     text-align: center;
 }
 
-.nav-tabs-title > span.tabs-select {
+.widgets-navtabs-title > span.tabs-select {
     color: #595959;
     background: white;
     border-bottom: 2px solid transparent;
 }
 
-.nav-tabs-content {
+.widgets-navtabs-content {
 
 }.widgets-pagination {
     line-height: normal;

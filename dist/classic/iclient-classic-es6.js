@@ -3,7 +3,7 @@
  *          iclient-classic.(http://iclient.supermap.io)
  *          Copyright© 2000 - 2018 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v9.1.0-beta
+ *          version: v9.1.0
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6131,7 +6131,11 @@ class KernelDensityJobParameter_KernelDensityJobParameter {
             
             tempObj['analyst'] = tempObj['analyst'] || {};
             if (name === 'query') {
-                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                if(tempObj['analyst'][name]){
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                }else{
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
             } else {
                 tempObj['analyst'][name] = kernelDensityJobParameter[name];
             }
@@ -7700,19 +7704,19 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         super(name, options);
 
         /**
-         * @member {mapv.DataSet} - SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
          * @description mapv dataset 对象。
          */
         this.dataSet = null;
 
         /**
-         * @member {Object} - SuperMap.Layer.MapVLayer.prototype.options
+         * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
          * @description mapv 绘图风格配置信息。
          */
         this.options = null;
 
         /**
-         * @member {boolean} - [SuperMap.Layer.MapVLayer.prototype.supported=false]
+         * @member {boolean} [SuperMap.Layer.MapVLayer.prototype.supported=false]
          * @description 当前浏览器是否支持 canvas 绘制。决定了 MapV 图是否可用，内部判断使用。
          */
         this.supported = false;
@@ -7725,7 +7729,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
 
         /**
          * @private
-         * @member {CanvasContext} - SuperMap.Layer.MapVLayer.prototype.canvasContext
+         * @member {CanvasContext} SuperMap.Layer.MapVLayer.prototype.canvasContext
          * @description MapV 图主绘制对象。
          */
         this.canvasContext = null;
@@ -7751,7 +7755,7 @@ class MapVLayer_MapVLayer extends SuperMap_SuperMap.Layer {
         if (this.options.context == '2d') {
             this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
         }
-        this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
+        this.attribution = "© 2018 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
 
         this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
@@ -8951,7 +8955,7 @@ SuperMap_SuperMap.REST.AddressMatchService = services_AddressMatchService_Addres
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {SuperMap.ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务器类型，iServer|iPortal|Online。
  * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
-*/
+ */
 class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_CommonServiceBase {
 
     constructor(url, options) {
@@ -8985,12 +8989,18 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      */
     getJobs(url) {
         var me = this;
-        FetchRequest.get(me._processUrl(url), null, {proxy: me.proxy}).then(function (response) {
+        FetchRequest.get(me._processUrl(url), null, {
+            proxy: me.proxy
+        }).then(function (response) {
             return response.json();
         }).then(function (result) {
-            me.events.triggerEvent("processCompleted", {result: result});
+            me.events.triggerEvent("processCompleted", {
+                result: result
+            });
         }).catch(function (e) {
-            me.eventListeners.processFailed({error: e});
+            me.eventListeners.processFailed({
+                error: e
+            });
         });
     }
 
@@ -9003,14 +9013,19 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addJob(url, params, paramType, seconds) {
-        var me = this, parameterObject = null;
+        var me = this,
+            parameterObject = null;
         if (params && params instanceof paramType) {
             parameterObject = new Object();
             paramType.toObject(params, parameterObject);
         }
         var options = {
             proxy: me.proxy,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            withCredentials: me.withCredentials,
+            isInTheSameDomain: me.isInTheSameDomain
         };
         FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
@@ -9021,7 +9036,9 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
                 me.serviceProcessFailed(result);
             }
         }).catch(function (e) {
-            me.serviceProcessFailed({error: e});
+            me.serviceProcessFailed({
+                error: e
+            });
         });
     }
 
@@ -9031,23 +9048,35 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(me._processUrl(result.newResourceLocation), {_t: new Date().getTime()})
+                FetchRequest.get(me._processUrl(result.newResourceLocation), {
+                        _t: new Date().getTime()
+                    })
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                    me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                    if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                        me.events.triggerEvent("processRunning", {
+                            id: job.id,
+                            state: job.state
+                        });
+                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                            clearInterval(id);
+                            me.events.triggerEvent("processFailed", {
+                                error: job.state.errorMsg,
+                                state: job.state.runState
+                            });
+                        }
+                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                            clearInterval(id);
+                            me.events.triggerEvent("processCompleted", {
+                                result: job
+                            });
+                        }
+                    }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
-                    }
-                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                        clearInterval(id);
-                        me.events.triggerEvent("processCompleted", {result: job});
-                    }
-                }).catch(function (e) {
-                    clearInterval(id);
-                    me.events.triggerEvent("processFailed", {error: e});
-                });
+                        me.events.triggerEvent("processFailed", {
+                            error: e
+                        });
+                    });
             }, seconds);
         }
     }
@@ -9070,7 +9099,6 @@ class ProcessingServiceBase_ProcessingServiceBase extends CommonServiceBase_Comm
 }
 
 SuperMap.ProcessingServiceBase = ProcessingServiceBase_ProcessingServiceBase;
-
 // CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 /* Copyright© 2000 - 2018 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
