@@ -31,7 +31,7 @@ describe('classic_ProcessingService', () => {
     it('getKernelDensityJobs_processCompleted', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/density")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/density") === 0) {
                 var escapedJson = "[" + kernelDensityJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -84,7 +84,7 @@ describe('classic_ProcessingService', () => {
     it('getKernelDensityJob', (done) => {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/density" + "/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/density" + "/" + id) === 0) {
                 var escapedJson = kernelDensityJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -144,7 +144,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf( url + "/spatialanalyst/density/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/density/" + id) === 0) {
                 var escapedJson = kernelDensityJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -220,7 +220,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryMeshJobs_processCompleted', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/aggregatepoints")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/aggregatepoints") === 0) {
                 // 转义后的json字符串
                 var escapedJson = "[" + summaryMeshJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
@@ -270,7 +270,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryMeshJob', (done) => {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/aggregatepoints/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/aggregatepoints/" + id) === 0) {
                 var escapedJson = summaryMeshJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -326,7 +326,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/aggregatepoints/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/aggregatepoints/" + id) === 0) {
                 var escapedJson = summaryMeshJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -395,7 +395,7 @@ describe('classic_ProcessingService', () => {
     it('getQueryJobs_processCompleted', (done) => {
         var id = id_singleObjectQueryJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/query")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/query") === 0) {
                 var escapedJson = "[" + singleObjectQueryJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -421,7 +421,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.analyst.mode).toBe("INTERSECT");
             expect(setting.analyst.inputQuery).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"singleRegion_R\"]}]}");
             expect(setting.analyst.datasetQuery).toBe("samples_processing_singleRegion_R");
-            expect(setting.analyst.geometryQuery).toBeNull();
+            expect(setting.analyst.geometryQuery.length).toBe(0);
             expect(setting.analyst.attributeFilter).toBeNull();
             expect(setting.appName).toBe("spatialquerygeo");
             expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
@@ -445,7 +445,7 @@ describe('classic_ProcessingService', () => {
     it('getQueryJob', (done) => {
         var id = id_singleObjectQueryJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/query/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/query/" + id) === 0) {
                 var escapedJson = singleObjectQueryJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -470,7 +470,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.analyst.mode).toBe("INTERSECT");
             expect(setting.analyst.inputQuery).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"singleRegion_R\"]}]}");
             expect(setting.analyst.datasetQuery).toBe("samples_processing_singleRegion_R");
-            expect(setting.analyst.geometryQuery).toBeNull();
+            expect(setting.analyst.geometryQuery.length).toBe(0);
             expect(setting.analyst.attributeFilter).toBeNull();
             expect(setting.appName).toBe("spatialquerygeo");
             expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
@@ -501,7 +501,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/query/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/query/" + id) === 0) {
                 var escapedJson = singleObjectQueryJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -510,7 +510,7 @@ describe('classic_ProcessingService', () => {
         var singleObjectQueryJobParameter = new SingleObjectQueryJobsParameter({
             datasetName: "samples_processing_newyorkZone_R",    //必填参数, 源数据集
             datasetQuery: "samples_processing_singleRegion_R",  //必填参数, 查询对象数据集
-            geometryQuery: null,                                //查询对象所在的几何对象
+            geometryQuery: [],                                //查询对象所在的几何对象
             mode: "INTERSECT"                                   //必填参数, 查询对象模式
         });
         processingService.addQueryJob(singleObjectQueryJobParameter, (result) => {
@@ -533,7 +533,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.analyst.mode).toBe("INTERSECT");
             expect(setting.analyst.inputQuery).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"singleRegion_R\"]}]}");
             expect(setting.analyst.datasetQuery).toBe("samples_processing_singleRegion_R");
-            expect(setting.analyst.geometryQuery).toBeNull();
+            expect(setting.analyst.geometryQuery.length).toBe(0);
             expect(setting.analyst.attributeFilter).toBeNull();
             expect(setting.appName).toBe("spatialquerygeo");
             expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
@@ -569,7 +569,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryRegionJobs_processCompleted', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/summaryregion")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryregion") === 0) {
                 var escapedJson = "[" + summaryRegionJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -628,7 +628,7 @@ describe('classic_ProcessingService', () => {
     it('getSummaryRegionJob', (done) => {
         var id = id_summaryRegionJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/summaryregion/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryregion/" + id) === 0) {
                 var escapedJson = summaryRegionJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -696,7 +696,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/summaryregion/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/summaryregion/" + id) === 0) {
                 var escapedJson = summaryRegionJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -781,7 +781,7 @@ describe('classic_ProcessingService', () => {
     it('getVectorClipJobs_processCompleted', (done) => {
         var id = id_vectorClipJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/vectorclip")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/vectorclip") === 0) {
                 var escapedJson = "[" + vectorClipJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -832,7 +832,7 @@ describe('classic_ProcessingService', () => {
     it('getVectorClipJob', (done) => {
         var id = id_vectorClipJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/vectorclip/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/vectorclip/" + id) === 0) {
                 var escapedJson = vectorClipJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -889,7 +889,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/vectorclip/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/vectorclip/" + id) === 0) {
                 var escapedJson = vectorClipJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -958,7 +958,7 @@ describe('classic_ProcessingService', () => {
     it('getOverlayGeoJobs_processCompleted', (done) => {
         var id = id_overlayGeoJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/overlay")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/overlay") === 0) {
                 var escapedJson = "[" + overlayGeoJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1010,7 +1010,7 @@ describe('classic_ProcessingService', () => {
     it('getOverlayGeoJob', (done) => {
         var id = id_overlayGeoJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/overlay/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/overlay/" + id) === 0) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1068,7 +1068,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/overlay/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/overlay/" + id) === 0) {
                 var escapedJson = overlayGeoJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1138,7 +1138,7 @@ describe('classic_ProcessingService', () => {
     it('getBuffersJobs_processCompleted', (done) => {
         var id = id_buffersAnalystJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/buffers")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/buffers") === 0) {
                 var escapedJson = "[" + buffersAnalystJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1190,7 +1190,7 @@ describe('classic_ProcessingService', () => {
     it('getBuffersJob', (done) => {
         var id = id_buffersAnalystJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/buffers/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/buffers/" + id) === 0) {
                 var escapedJson = buffersAnalystJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1249,7 +1249,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/buffers/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/buffers/" + id) === 0) {
                 var escapedJson = buffersAnalystJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1320,7 +1320,7 @@ describe('classic_ProcessingService', () => {
     it('getTopologyValidatorJobs_processCompleted', (done) => {
         var id = id_topologyValidatorJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/topologyvalidator")===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/topologyvalidator") === 0) {
                 var escapedJson = "[" + topologyValidatorJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1371,7 +1371,7 @@ describe('classic_ProcessingService', () => {
     it('getTopologyValidatorJob', (done) => {
         var id = id_topologyValidatorJob;
         spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-            if (testUrl.indexOf(url + "/spatialanalyst/topologyvalidator/" + id)===0) {
+            if (testUrl.indexOf(url + "/spatialanalyst/topologyvalidator/" + id) === 0) {
                 var escapedJson = topologyValidatorJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1428,7 +1428,7 @@ describe('classic_ProcessingService', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
-            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/topologyvalidator/" + id)===0) {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/topologyvalidator/" + id) === 0) {
                 var escapedJson = topologyValidatorJob_get;
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -1488,6 +1488,180 @@ describe('classic_ProcessingService', () => {
             expect(topologyValidatorJobState.runState).toBe("FINISHED");
             processingService.destroy();
             topologyValidatorJobParameter.destroy();
+            done();
+        });
+    });
+
+    /*SummaryAttributesJobsService*/
+    it('getSummaryAttributesJobs_processCompleted', (done) => {
+        var id = id_summaryAttributesJob;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryattributes") === 0) {
+                var escapedJson = "[" + summaryAttributesJob_get + "]";
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        processingService.getSummaryAttributesJobs((result) => {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryAttributesJobsService");
+            expect(result.object.format).toBe("GEOJSON");
+            expect(result.object.url).toBe(url + "/spatialanalyst/summaryattributes");
+            expect(result.result.length).toEqual(1);
+            expect(result.result[0].id).toBe(id);
+            var state = result.result[0].state;
+            expect(state.elapsedTime).toEqual(17);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1538016529288);
+            expect(state.endTime).toEqual(1538016534477);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(4348);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result[0].setting;
+            expect(setting.analyst.groupField).toBe("");
+            expect(setting.analyst.statisticModes).toBe("");
+            expect(setting.analyst.resultField).toBeNull();
+            expect(setting.analyst.attributeField).toBe("");
+            expect(setting.appName).toBeNull();
+            expect(setting.input.datasetInfo.name).toBe("smtiles_processing_newyorkZone_R");
+            expect(setting.input.datasetInfo.datasetName).toBe("newyorkZone_R");
+            expect(setting.input.datasetInfo.type).toBe("UDB");
+            expect(setting.input.datasetInfo.url).toBe("D:\\processing.udb");
+            expect(setting.input.datasetInfo.datasetType).toBe("REGION");
+            expect(setting.input.datasetInfo.bounds).toBe("Left=-74.25551784310493,Bottom=40.496084221255856,Right=-73.70014827248451,Top=40.91538866049913");
+            expect(setting.input.datasetInfo.epsgCode).toEqual(4326);
+            expect(setting.input.datasetName).toBe("smtiles_processing_newyorkZone_R");
+            expect(setting.output.datasetName).toBe("analystResult");
+            expect(setting.output.datasourcePath).toBe("D:\\42870ee3_65ce_4c59_9b27_44cb096d969a.udb");
+            expect(setting.output.outputPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.output.type).toBe("UDB");
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toEqual(1);
+            processingService.destroy();
+            done();
+        });
+    });
+
+    it('getSummaryAttributesJob', (done) => {
+        var id = id_summaryAttributesJob;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryattributes/" + id) === 0) {
+                var escapedJson = summaryAttributesJob_get;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        processingService.getSummaryAttributesJob(id, (result) => {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryAttributesJobsService");
+            expect(result.object.format).toBe("GEOJSON");
+            expect(result.object.url).toBe(url + "/spatialanalyst/summaryattributes");
+            expect(result.result.id).toBe(id);
+            var state = result.result.state;
+            expect(state.elapsedTime).toEqual(17);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1538016529288);
+            expect(state.endTime).toEqual(1538016534477);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(4348);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result.setting;
+            expect(setting.analyst.groupField).toBe("");
+            expect(setting.analyst.statisticModes).toBe("");
+            expect(setting.analyst.resultField).toBeNull();
+            expect(setting.analyst.attributeField).toBe("");
+            expect(setting.appName).toBeNull();
+            expect(setting.input.datasetInfo.name).toBe("smtiles_processing_newyorkZone_R");
+            expect(setting.input.datasetInfo.datasetName).toBe("newyorkZone_R");
+            expect(setting.input.datasetInfo.type).toBe("UDB");
+            expect(setting.input.datasetInfo.url).toBe("D:\\processing.udb");
+            expect(setting.input.datasetInfo.datasetType).toBe("REGION");
+            expect(setting.input.datasetInfo.bounds).toBe("Left=-74.25551784310493,Bottom=40.496084221255856,Right=-73.70014827248451,Top=40.91538866049913");
+            expect(setting.input.datasetInfo.epsgCode).toEqual(4326);
+            expect(setting.input.datasetName).toBe("smtiles_processing_newyorkZone_R");
+            expect(setting.output.datasetName).toBe("analystResult");
+            expect(setting.output.datasourcePath).toBe("D:\\42870ee3_65ce_4c59_9b27_44cb096d969a.udb");
+            expect(setting.output.outputPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.output.type).toBe("UDB");
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toEqual(1);
+
+            processingService.destroy();
+            done();
+        });
+    });
+
+    it('addSummaryAttributesJob, getSummaryAttributesJobState', (done) => {
+        var id = id_summaryAttributesJob;
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
+            if (testUrl === url + "/spatialanalyst/summaryattributes.json?token=" + token) {
+                var escapedJson = summaryAttributesJob_post;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/summaryattributes/" + id) === 0) {
+                var escapedJson = summaryAttributesJob_get;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
+            datasetName: "smtiles_processing_newyorkZone_R",
+            groupField: "",
+            attributeField: "",
+            statisticModes: ""
+        });
+        processingService.addSummaryAttributesJob(summaryAttributesJobsParameter, (result) => {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryAttributesJobsService");
+            expect(result.object.format).toBe("GEOJSON");
+            expect(result.object.url).toBe(url + "/spatialanalyst/summaryattributes");
+            expect(result.result.id).toBe(id);
+            var state = result.result.state;
+            expect(state.elapsedTime).toEqual(17);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1538016529288);
+            expect(state.endTime).toEqual(1538016534477);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(4348);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result.setting;
+            expect(setting.analyst.groupField).toBe("");
+            expect(setting.analyst.statisticModes).toBe("");
+            expect(setting.analyst.resultField).toBeNull();
+            expect(setting.analyst.attributeField).toBe("");
+            expect(setting.appName).toBeNull();
+            expect(setting.input.datasetInfo.name).toBe("smtiles_processing_newyorkZone_R");
+            expect(setting.input.datasetInfo.datasetName).toBe("newyorkZone_R");
+            expect(setting.input.datasetInfo.type).toBe("UDB");
+            expect(setting.input.datasetInfo.url).toBe("D:\\processing.udb");
+            expect(setting.input.datasetInfo.datasetType).toBe("REGION");
+            expect(setting.input.datasetInfo.bounds).toBe("Left=-74.25551784310493,Bottom=40.496084221255856,Right=-73.70014827248451,Top=40.91538866049913");
+            expect(setting.input.datasetInfo.epsgCode).toEqual(4326);
+            expect(setting.input.datasetName).toBe("smtiles_processing_newyorkZone_R");
+            expect(setting.output.datasetName).toBe("analystResult");
+            expect(setting.output.datasourcePath).toBe("D:\\42870ee3_65ce_4c59_9b27_44cb096d969a.udb");
+            expect(setting.output.outputPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.output.type).toBe("UDB");
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toEqual(1);
+
+            var summaryAttributesJobState = processingService.getSummaryAttributesJobState(id);
+            expect(summaryAttributesJobState.elapsedTime).toEqual(17);
+            expect(summaryAttributesJobState.endState).toBeTruthy();
+            expect(summaryAttributesJobState.startTime).toEqual(1538016529288);
+            expect(summaryAttributesJobState.endTime).toEqual(1538016534477);
+            expect(summaryAttributesJobState.errorMsg).toBeNull();
+            expect(summaryAttributesJobState.errorStackTrace).toBeNull();
+            expect(summaryAttributesJobState.publisherelapsedTime).toEqual(4348);
+            expect(summaryAttributesJobState.runState).toBe("FINISHED");
+            processingService.destroy();
+            summaryAttributesJobsParameter.destroy();
             done();
         });
     });
