@@ -415,7 +415,7 @@ describe('openlayers_ProcessingService', () => {
             expect(setting.analyst.mode).toBe("INTERSECT");
             expect(setting.analyst.inputQuery).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"singleRegion_R\"]}]}");
             expect(setting.analyst.datasetQuery).toBe("samples_processing_singleRegion_R");
-            expect(setting.analyst.geometryQuery).toBeNull();
+            expect(setting.analyst.geometryQuery.length).toBe(0);
             expect(setting.analyst.attributeFilter).toBeNull();
             expect(setting.appName).toBe("spatialquerygeo");
             expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
@@ -463,7 +463,7 @@ describe('openlayers_ProcessingService', () => {
             expect(setting.analyst.mode).toBe("INTERSECT");
             expect(setting.analyst.inputQuery).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"singleRegion_R\"]}]}");
             expect(setting.analyst.datasetQuery).toBe("samples_processing_singleRegion_R");
-            expect(setting.analyst.geometryQuery).toBeNull();
+            expect(setting.analyst.geometryQuery.length).toBe(0);
             expect(setting.analyst.attributeFilter).toBeNull();
             expect(setting.appName).toBe("spatialquerygeo");
             expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
@@ -525,7 +525,7 @@ describe('openlayers_ProcessingService', () => {
             expect(setting.analyst.mode).toBe("INTERSECT");
             expect(setting.analyst.inputQuery).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"singleRegion_R\"]}]}");
             expect(setting.analyst.datasetQuery).toBe("samples_processing_singleRegion_R");
-            expect(setting.analyst.geometryQuery).toBeNull();
+            expect(setting.analyst.geometryQuery.length).toBe(0);
             expect(setting.analyst.attributeFilter).toBeNull();
             expect(setting.appName).toBe("spatialquerygeo");
             expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
