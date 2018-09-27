@@ -1,11 +1,23 @@
 import ol from 'openlayers';
 import '../../libs/deck.gl/5.1.3/deck.gl';
-import {CloverShape} from '../../../src/openlayers/overlay/graphic/CloverShape';
-import {HitCloverShape} from '../../../src/openlayers/overlay/graphic/HitCloverShape';
-import {Graphic} from '../../../src/openlayers/overlay/Graphic';
-import {MapService} from '../../../src/openlayers/services/MapService';
-import {TileSuperMapRest} from '../../../src/openlayers/mapping/TileSuperMapRest';
-import {FetchRequest} from '../../../src/common/util/FetchRequest';
+import {
+    CloverShape
+} from '../../../src/openlayers/overlay/graphic/CloverShape';
+import {
+    HitCloverShape
+} from '../../../src/openlayers/overlay/graphic/HitCloverShape';
+import {
+    Graphic
+} from '../../../src/openlayers/overlay/Graphic';
+import {
+    MapService
+} from '../../../src/openlayers/services/MapService';
+import {
+    TileSuperMapRest
+} from '../../../src/openlayers/mapping/TileSuperMapRest';
+import {
+    FetchRequest
+} from '../../../src/common/util/FetchRequest';
 
 var url = "http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China_4326";
 describe('openlayers_GraphicLayer', () => {
@@ -58,58 +70,57 @@ describe('openlayers_GraphicLayer', () => {
                 }),
                 renderer: ['canvas']
             });
-            var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-            var layer = new ol.layer.Tile({
-                source: new TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-            var randomCircleStyles = new ol.style.Circle({
-                radius: 5,
-                fill: new ol.style.Fill({
-                    color: '#000000'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000000'
-                })
-            });
-            for (var j = 0; j < count; ++j) {
-                graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
-                graphics[j].setStyle(randomCircleStyles);
-            }
-            var clone = graphics[0].clone();
-            expect(clone.getId()).toEqual(graphics[0].getId());
-            expect(clone.getGeometry()).toEqual(graphics[0].getGeometry());
-            expect(clone.getStyle()).toEqual(graphics[0].getStyle());
-            clone.destroy();
-            graphicLayer = new ol.layer.Image({
-                source: new Graphic({
-                    graphics: graphics,
-                    map: map,
-                    highLightStyle: new ol.style.Circle({
-                        radius: 5,
-                        fill: new ol.style.Fill({
-                            color: '#000000'
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: '#000000'
+            map.once('postrender', function () {
+                var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+                var layer = new ol.layer.Tile({
+                    source: new TileSuperMapRest(options)
+                });
+                map.addLayer(layer);
+                var randomCircleStyles = new ol.style.Circle({
+                    radius: 5,
+                    fill: new ol.style.Fill({
+                        color: '#000000'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000000'
+                    })
+                });
+                for (var j = 0; j < count; ++j) {
+                    graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
+                    graphics[j].setStyle(randomCircleStyles);
+                }
+                var clone = graphics[0].clone();
+                expect(clone.getId()).toEqual(graphics[0].getId());
+                expect(clone.getGeometry()).toEqual(graphics[0].getGeometry());
+                expect(clone.getStyle()).toEqual(graphics[0].getStyle());
+                clone.destroy();
+                graphicLayer = new ol.layer.Image({
+                    source: new Graphic({
+                        graphics: graphics,
+                        map: map,
+                        highLightStyle: new ol.style.Circle({
+                            radius: 5,
+                            fill: new ol.style.Fill({
+                                color: '#000000'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#000000'
+                            })
                         })
                     })
-                })
+                });
+                map.addLayer(graphicLayer);
+                var a = new Graphic({
+                    graphics: graphics,
+                    map: map
+                })._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
+                    console.log(result);
+                });
+                expect(a).not.toBeNull();
+                // map.removeLayer(graphicLayer);
+                done();
             });
-            map.addLayer(graphicLayer);
         });
-        setTimeout(() => {
-            // expect(1).not.toBeNull();
-            var a = new Graphic({
-                graphics: graphics,
-                map: map
-            })._forEachFeatureAtCoordinate(coors[1], 1, (result) => {
-                console.log(result);
-            });
-            expect(a).not.toBeNull();
-            // map.removeLayer(graphicLayer);
-            done();
-        }, 1000)
     });
 
     it('constructor_webgl', (done) => {
@@ -164,12 +175,8 @@ describe('openlayers_GraphicLayer', () => {
                 })
             });
             map.addLayer(graphicLayer);
-        });
-        setTimeout(() => {
-            // expect(1).not.toBeNull();
-            // map.removeLayer(graphicLayer);
             done();
-        }, 1000)
+        });
     });
 
     it('CloverShape', (done) => {
@@ -188,76 +195,75 @@ describe('openlayers_GraphicLayer', () => {
                 }),
                 renderer: ['webgl']
             });
-            var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-            var layer = new ol.layer.Tile({
-                source: new TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-            var cloverShapeStyle = new CloverShape({
-                radius: 20,
-                angle: 30,
-                count: 3,
-                stroke: new ol.style.Stroke({
-                    color: "rgba(0,166,0,1)",
-                }),
-                fill: new ol.style.Fill({
-                    color: "rgba(0,166,0,1)",
-                }),
-            })
-            expect(cloverShapeStyle.getCount()).toEqual(3);
-            for (var j = 0; j < count; ++j) {
-                graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
-                graphics[j].setStyle(cloverShapeStyle);
-            }
-            var hitCloverShape = new HitCloverShape({
-                radius: 20,
-                angle: 30,
-                stroke: new ol.style.Stroke({
-                    color: "rgba(255,166,0,1)",
-                }),
-                fill: new ol.style.Fill({
-                    color: "rgba(255,166,0,1)",
-                }),
-                sAngle: 30,
-                eAngle: 60
-            })
-            expect(hitCloverShape.getSAngle()).toEqual(30);
-            expect(hitCloverShape.getEAngle()).toEqual(60);
-            graphicLayer = new ol.layer.Image({
-                source: new Graphic({
-                    graphics: graphics,
-                    map: map,
-                    onclick: (result) => {
-                        console.log(result);
-                    },
-                    highLightStyle: hitCloverShape
-                })
-            });
-            map.addLayer(graphicLayer);
-        });
-
-        setTimeout(() => {
-            var resolution = 1;
-            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], resolution, (result) => {
-                console.log(result);
-                expect(result).not.toBeNull();
-            });
-            graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], resolution, (result) => {
-                expect(result).not.toBeNull();
-            });
-            graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], resolution, (result) => {
-                expect(result).not.toBeNull();
-            });
-
-            let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
-            map.forEachFeatureAtPixel(pixel,
-                (graphic) => {
-                    expect(graphic).not.toBeNull();
-                    console.log(graphic);
+            map.once('postrender', function () {
+                var options = TileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+                var layer = new ol.layer.Tile({
+                    source: new TileSuperMapRest(options)
                 });
-            // map.removeLayer(graphicLayer);
-            done();
-        }, 4000)
+                map.addLayer(layer);
+                var cloverShapeStyle = new CloverShape({
+                    radius: 20,
+                    angle: 30,
+                    count: 3,
+                    stroke: new ol.style.Stroke({
+                        color: "rgba(0,166,0,1)",
+                    }),
+                    fill: new ol.style.Fill({
+                        color: "rgba(0,166,0,1)",
+                    }),
+                })
+                expect(cloverShapeStyle.getCount()).toEqual(3);
+                for (var j = 0; j < count; ++j) {
+                    graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
+                    graphics[j].setStyle(cloverShapeStyle);
+                }
+                var hitCloverShape = new HitCloverShape({
+                    radius: 20,
+                    angle: 30,
+                    stroke: new ol.style.Stroke({
+                        color: "rgba(255,166,0,1)",
+                    }),
+                    fill: new ol.style.Fill({
+                        color: "rgba(255,166,0,1)",
+                    }),
+                    sAngle: 30,
+                    eAngle: 60
+                })
+                expect(hitCloverShape.getSAngle()).toEqual(30);
+                expect(hitCloverShape.getEAngle()).toEqual(60);
+                graphicLayer = new ol.layer.Image({
+                    source: new Graphic({
+                        graphics: graphics,
+                        map: map,
+                        onclick: (result) => {
+                            console.log(result);
+                        },
+                        highLightStyle: hitCloverShape
+                    })
+                });
+                map.addLayer(graphicLayer);
+                var resolution = 1;
+                graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[2], resolution, (result) => {
+                    console.log(result);
+                    expect(result).not.toBeNull();
+                });
+                graphicLayer.getSource()._forEachFeatureAtCoordinate(coors[1], resolution, (result) => {
+                    expect(result).not.toBeNull();
+                });
+                graphicLayer.getSource()._forEachFeatureAtCoordinate([-126.16, 39.05], resolution, (result) => {
+                    expect(result).not.toBeNull();
+                });
+
+                let pixel = map.getPixelFromCoordinate([-36.16, 39.05]);
+                map.forEachFeatureAtPixel(pixel,
+                    (graphic) => {
+                        expect(graphic).not.toBeNull();
+                        console.log(graphic);
+                    });
+                // map.removeLayer(graphicLayer);
+                done();
+            });
+        });
     });
 
     it("addGraphics", (done) => {
@@ -274,7 +280,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -306,7 +314,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -344,7 +354,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -377,7 +389,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -420,7 +434,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -453,7 +469,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -470,7 +488,9 @@ describe('openlayers_GraphicLayer', () => {
             for (let j = 0; j < coors.length; ++j) {
                 graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
                 graphics[j].setId(j);
-                graphics[j].setAttributes({name: "graphic_" + j});
+                graphics[j].setAttributes({
+                    name: "graphic_" + j
+                });
             }
 
             graphicLayer.getSource().setGraphics(graphics);
@@ -493,7 +513,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
@@ -506,7 +528,9 @@ describe('openlayers_GraphicLayer', () => {
 
         setTimeout(() => {
             expect(graphicLayer.getSource().color).toEqual("red");
-            graphicLayer.getSource().setStyle({color: "blue"});
+            graphicLayer.getSource().setStyle({
+                color: "blue"
+            });
             expect(graphicLayer.getSource().color).toEqual("blue");
             done()
         }, 4000);
@@ -526,7 +550,9 @@ describe('openlayers_GraphicLayer', () => {
         for (let j = 0; j < coors.length; ++j) {
             graphics[j] = new ol.Graphic(new ol.geom.Point(coors[j]));
             graphics[j].setId(j);
-            graphics[j].setAttributes({name: "graphic_" + j});
+            graphics[j].setAttributes({
+                name: "graphic_" + j
+            });
         }
         const graphicLayer = new ol.layer.Image({
             source: new Graphic({
