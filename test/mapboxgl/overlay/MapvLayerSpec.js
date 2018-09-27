@@ -6,7 +6,19 @@ var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('mapboxgl_MapVLayer', () => {
     var originalTimeout;
+    let data = [], dataSet;
     var testDiv, map, mapvLayer;
+    var options = {
+        gradient: {
+            0: 'blue',
+            0.5: 'yellow',
+            1: 'red'
+        },
+        lineWidth: 0.5,
+        max: 30,
+        draw: 'intensity',
+        layerID: "mapv"
+    };
     beforeAll(() => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -38,49 +50,46 @@ describe('mapboxgl_MapVLayer', () => {
             center: [112, 37.94],
             zoom: 3
         });
-        map.on('load', () => {
-            var randomCount = 1000;
-            var data = [];
-            var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
-            // 构造数据
-            while (randomCount--) {
-                var cityCenter1 = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-                var cityCenter2 = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
-                data.push({
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: [[cityCenter1.lng - 1 + Math.random() * 1, cityCenter1.lat - 1 + Math.random() * 1],
-                            [cityCenter2.lng - 1 + Math.random() * 1, cityCenter2.lat - 1 + Math.random() * 1]
-                        ]
-                    },
-                    count: 30 * Math.random()
-                });
-            }
-            var dataSet = new DataSet(data);
-            var options = {
-                gradient: {
-                    0: 'blue',
-                    0.5: 'yellow',
-                    1: 'red'
-                },
-                lineWidth: 0.5,
-                max: 30,
-                draw: 'intensity'
-            };
-            mapvLayer = new MapvLayer(map, dataSet, options);
-        });
 
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        var randomCount = 1000;
+        var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
+        // 构造数据
+        while (randomCount--) {
+            var cityCenter1 = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+            var cityCenter2 = utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+            data.push({
+                geometry: {
+                    type: 'LineString',
+                    coordinates: [[cityCenter1.lng - 1 + Math.random() * 1, cityCenter1.lat - 1 + Math.random() * 1],
+                        [cityCenter2.lng - 1 + Math.random() * 1, cityCenter2.lat - 1 + Math.random() * 1]
+                    ]
+                },
+                count: 30 * Math.random()
+            });
+        }
+        dataSet = new DataSet(data);
+
+        if (!map.getLayer("mapv")) {
+            mapvLayer = new MapvLayer(map, dataSet, options);
+        }
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+
+        if (map.getLayer("mapv")) {
+            map.removeLayer("mapv");
+        }
+        dataSet = null;
+        data = [];
     });
     afterAll(() => {
         document.body.removeChild(testDiv);
-        map=null;    });
+        map = null;
+    });
 
     it('initialize', (done) => {
         setTimeout(() => {
@@ -111,8 +120,6 @@ describe('mapboxgl_MapVLayer', () => {
         expect(thisMapvlayer).not.toBeNull();
         expect(thisMapvlayer.renderer.canvasLayer.canvas.style.display).toBe('none');
     });
-
-
 
     it('addData', () => {
         var data = [{
@@ -180,30 +187,9 @@ describe('mapboxgl_MapVLayer', () => {
         expect(mapvLayer.dataSet._data.length).toEqual(0);
     });
 
-    it('draw, redraw', () => {
-        mapvLayer.draw();
-        expect(mapvLayer.canvas.width).toEqual(500);
-        expect(mapvLayer.canvas.style.width).toBe('500px');
-        mapvLayer.redraw();
-        expect(mapvLayer.canvas.width).toEqual(500);
-        expect(mapvLayer.canvas.style.width).toBe('500px');
-    });
-
     it('setZIndex', () => {
         mapvLayer.setZIndex(2);
         expect(mapvLayer.canvas.style.zIndex).toEqual('2');
-    });
-
-    it('getCanvas', () => {
-        var canvas = mapvLayer.getCanvas();
-        expect(canvas).not.toBeNull();
-        expect(mapvLayer.canvas.width).toEqual(500);
-        expect(mapvLayer.canvas.height).toEqual(500);
-    });
-
-    it('getContainer', () => {
-        var container = mapvLayer.getContainer();
-        expect(container).not.toBeNull();
     });
 
 });

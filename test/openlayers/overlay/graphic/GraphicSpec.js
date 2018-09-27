@@ -30,4 +30,9 @@ describe('openlayers_Graphic', () => {
         expect(graphic.getAttributes().type).toBe("point");
         graphic = null;
     });
+    it("getStyleFunction", () => {
+        graphic = new Graphic(new ol.geom.Point([-35.16, 38.05]), null);
+        expect(graphic.getStyleFunction()).toBeUndefined();
+        graphic = null;
+    });
 });
