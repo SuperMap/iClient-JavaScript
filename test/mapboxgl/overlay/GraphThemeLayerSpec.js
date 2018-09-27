@@ -290,4 +290,55 @@ describe('mapboxgl_GraphThemeLayer', () => {
         expect(graphThemeLayer.cache).toEqual(Object({}));
         graphThemeLayer.clear();
     });
+
+    it('setVisibility', () => {
+        var graphThemeLayer = new Graph("GraphThemeLayer", "Bar", {
+            map: map,
+            isOverLay: false,
+            themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
+            chartsSetting: {
+                width: 240,
+                height: 100,
+                codomain: [0, 40000]
+            },
+            charts: [1, 2, 3],
+            cache: {'name': 'ONETWO'}
+        });
+        expect(graphThemeLayer.visibility).toBeTruthy();
+        graphThemeLayer.setVisibility(false);
+        expect(graphThemeLayer.visibility).toBeFalsy();
+    });
+    xit('moveTo', () => {
+        const graphThemeLayer = new Graph("GraphThemeLayer", "Bar", {
+            map: map,
+            isOverLay: false,
+            themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
+            chartsSetting: {
+                width: 240,
+                height: 100,
+                codomain: [0, 40000]
+            },
+            charts: [1, 2, 3],
+            cache: {'name': 'ONETWO'}
+        });
+        map.addLayer(graphThemeLayer);
+        const graphThemeLayer2 = new Graph("GraphThemeLayer2", "Bar", {
+            map: map,
+            isOverLay: false,
+            themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
+            chartsSetting: {
+                width: 240,
+                height: 100,
+                codomain: [0, 40000]
+            },
+            charts: [1, 2, 3],
+            cache: {'name': 'ONETWO'}
+        });
+        map.addLayer(graphThemeLayer2);
+        const zIndex = graphThemeLayer.div.style.zIndex;
+        const zIndex2 = graphThemeLayer2.div.style.zIndex;
+        expect(zIndex2).toBeGreaterThan(zIndex);
+        graphThemeLayer.moveTo("graphThemeLayer2");
+        expect(zIndex).toBeGreaterThan(zIndex2);
+    });
 });

@@ -31,9 +31,25 @@ describe('leaflet_Graphic', () => {
         expect(graphic.getAttributes().type).toBe("point");
         graphic = null;
     });
-    it("getCanvas", () => {
+    it("setCanvas, getCanvas", () => {
         graphic = graphicObj(option);
         expect(graphic.getCanvas()).toBeUndefined();
+        graphic.setCanvas("canvas");
+        expect(graphic.getCanvas()).toBe("canvas");
+        graphic = null;
+    });
+    it("setLatLng, getLatLng", () => {
+        graphic = graphicObj(option);
+        graphic.setLatLng(L.latLng(0, 0));
+        expect(graphic.getLatLng().lat).toEqual(0);
+        expect(graphic.getLatLng().lng).toEqual(0);
+        graphic = null;
+    });
+    it("setStyle, getStyle", () => {
+        graphic = graphicObj(option);
+        expect(graphic.getStyle()).toBeUndefined();
+        graphic.setStyle("Style");
+        expect(graphic.getStyle()).toBe("Style");
         graphic = null;
     });
 });

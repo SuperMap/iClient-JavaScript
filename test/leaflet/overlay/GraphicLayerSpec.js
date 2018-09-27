@@ -149,11 +149,12 @@ describe('leaflet_GraphicLayer', () => {
             }, 1000);
         });
 
-        it("getState", (done) => {
+        it("getState,getRenderer", (done) => {
             layer = graphicLayer(graphics).addTo(map);
             setTimeout(() => {
                 const state = layer.getState();
                 expect(state).not.toBeNull();
+                expect(layer.getRenderer()).not.toBeNull();
                 expect(state.color).toBe("#3388ff");
                 done();
             }, 1000);
