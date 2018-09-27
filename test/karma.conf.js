@@ -48,20 +48,20 @@ module.exports = function (config) {
             /***leaflet的源码***/
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
-            '../src/leaflet/**/!(GraphicLayer|WebGLRenderer|ClientComputationView|index).js',
+            '../src/leaflet/**/!(ClientComputationView|index).js',
             /**测试文件**/
             './test-main-leaflet.js',
 
             /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
             {pattern: '../src/openlayers/**/**/*.css', include: false},
-            '../src/openlayers/**/!(Graphic|WebGLRenderer|index|MapboxStyles).js',
+            '../src/openlayers/**/!(index).js',
             /**测试文件**/
             './test-main-openlayers.js',
 
             /***mapboxgl***/
             {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
-            '../src/mapboxgl/**/!(GraphicLayer|index).js',
+            '../src/mapboxgl/**/!(index).js',
             /**测试文件**/
             './test-main-mapboxgl.js'
 
@@ -86,17 +86,17 @@ module.exports = function (config) {
             './test-main-common.js': ['browserify'],
 
             '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            '../src/leaflet/**/!(GraphicLayer|WebGLRenderer|ClientComputationView|index).js': ['browserify'],
+            '../src/leaflet/**/!(ClientComputationView|index).js': ['browserify'],
             './leaflet/**/*Spec.js': ['browserify'],
             './test-main-leaflet.js': ['browserify'],
 
             '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
-            '../src/openlayers/**/!(Graphic|WebGLRenderer|index).js': ['browserify'],
+            '../src/openlayers/**/!(index).js': ['browserify'],
             './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],
 
             '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
-            '../src/mapboxgl/**/!(GraphicLayer|index).js': ['browserify'],
+            '../src/mapboxgl/**/!(index).js': ['browserify'],
             './mapboxgl/**/*Spec.js': ['browserify'],
             './test-main-mapboxgl.js': ['browserify']
         },
