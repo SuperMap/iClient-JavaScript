@@ -31,4 +31,9 @@ describe('leaflet_Graphic', () => {
         expect(graphic.getAttributes().type).toBe("point");
         graphic = null;
     });
+    it("getCanvas", () => {
+        graphic = graphicObj(option);
+        expect(graphic.getCanvas()).toBeUndefined();
+        graphic = null;
+    });
 });
